@@ -60,7 +60,9 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 iPartitionNo)
   
   m_nTreeDeleteCnt = 0;
   m_nTreeInsertCnt = 0;
-  
+
+  m_bTreeDebug = false;
+
   _checkInitialised_(CN_INDEXTREE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -932,6 +934,26 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
     pEntWrk->vAppendElement(hRow, pColumn);
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tree debug mode?                                                       */
+/*----------------------------------------------------------------------------*/
+bool IndexTree::bTreeDebug(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  return m_bTreeDebug;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tree debug mode?                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vTreeDebug(bool bDebug)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_bTreeDebug = bDebug;
 }
 
 /*----------------------------------------------------------------------------*/

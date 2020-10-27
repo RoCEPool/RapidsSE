@@ -21,6 +21,8 @@ namespace Indexing
     i8 m_nTreeDeleteCnt; // insert
     i8 m_nTreeInsertCnt; // insert
 
+    bool m_bTreeDebug; // currently debugging
+  
     // must be last
     Footer m_xFooter;
     
@@ -58,6 +60,8 @@ namespace Indexing
     Ent*       aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer);
     EntBuffer* pRootBuffer(void);
     void       vRootBuffer(EntBuffer* pRootBuffer);
+    bool       bTreeDebug(void);
+    void       vTreeDebug(bool bDebug);
     i8         nTreeDeleteCnt(void);
     void       vTreeDeleteInc(void);
     i8         nTreeInsertCnt(void);

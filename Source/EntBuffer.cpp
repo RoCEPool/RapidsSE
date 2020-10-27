@@ -1768,6 +1768,16 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* get tree debug mode                                                        */
+/*----------------------------------------------------------------------------*/
+bool EntBuffer::bTreeDebug(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return m_pIndexTree->bTreeDebug();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get running delete count                                                   */
 /*----------------------------------------------------------------------------*/
 i8 EntBuffer::nTreeDeleteCnt(void)
