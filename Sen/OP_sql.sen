@@ -390,7 +390,7 @@
       IndexTree[].asSrc
 
 
-      "orders" "orders_Idx2" op__table_index assert
+      "orders" "orders_Idx1" op__table_index assert
 
       Table[].asAltStreamDef
 
@@ -666,7 +666,7 @@ then
 
   ZK_PULSEMARKER_handler
 
-  "orders" "orders_Idx1" op__table_index assert
+  "orders" "orders_Idx2" op__table_index assert
 
   Table[].asSrcStreamDef
 
@@ -674,7 +674,7 @@ then
   IndexTree[].asSrc
 
 
-  "lineItem" "lineItem_Idx1" op__table_index assert
+  "lineItem" "lineItem_Idx2" op__table_index assert
 
   Table[].asAltStreamDef
 
