@@ -51,7 +51,7 @@ yum update -y
 # Install any additional applications
 yum groupinstall "Development Tools" -y
 yum install texinfo -y
-yum install nload nethogs bmon iftop iperf3 -y
+yum install nload nethogs bmon iftop iperf3 iotop -y
 
 
 # ----------------------------------------------------------------------------------------
