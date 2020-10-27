@@ -813,6 +813,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
     vTrace("\nJob %p: %s\n"_Stz,this,m_sJobNm.szStz());
   pFile->vPrint("\nJob %p: %s\n"_Stz,this,m_sJobNm.szStz());
   
+  s48K sOpTags;
   i8 nStages = m_pPipeline->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     
@@ -832,22 +833,29 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
         
         i8 nOpdLeft = pQueueLeft->nQueuedOperands();
         
+        pOp->pOpTagSet()->vSprint(sOpTags);
+
         if (bStdOut)
-          vTrace("%s %s[%lld] : %s ___ %lld\n"_Stz
+          vTrace("%s %s[%lld] : %s ___ %lld %s\n"_Stz
                  ,m_pPipeline->szPipelineNm()
                  ,pStage->szStageNm()
                  ,i_Strand
                  
                  ,pOp->szOpNm()
-                 ,nOpdLeft);
+                 ,nOpdLeft
+                 ,sOpTags.szStz()
+                 );
         
-        pFile->vPrint("%s %s[%lld] : %s ___ %lld\n"_Stz
+        pFile->vPrint("%s %s[%lld] : %s ___ %lld %s\n"_Stz
           ,m_pPipeline->szPipelineNm()
           ,pStage->szStageNm()
           ,i_Strand
           
           ,pOp->szOpNm()
-          ,nOpdLeft);
+          ,nOpdLeft
+          ,sOpTags.szStz()
+          );
+        
       }
     }
   }

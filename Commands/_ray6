@@ -37,7 +37,7 @@ print section "Load LineItem";
 /bg /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10-LineItem";
 
 sleep 3;
-opdq false;
+opdq true;
 
 //space;
 //sztbl lineitem;
