@@ -345,7 +345,7 @@
 /*----------------------------------------------------------------------------*/
 : op__loop
 
-  0 locals| iOperandKind |
+  0 0 locals| iOperandKind iOperandYield |
  
   op__pipelineJobWait
 
@@ -378,6 +378,12 @@
 
       else
  
+        iOperandYield 1 + to iOperandYield
+        10 iOperandYield == if
+          task::yield
+          0 to iOperandYield
+        then
+
         // bide till next operand is available
         PipeIn[].bide
 
