@@ -44,10 +44,10 @@ success
  
 //------------------------------------------------------------------------------
 // create an index on O_ORDERKEY
-CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
+CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
 affected: 0
 
-CREATE INDEX orders_idx2 ON Orders(O_CUSTKEY);
+CREATE INDEX orders_idx2 ON Orders(O_ORDERKEY);
 affected: 0
 
 // check orders of index
@@ -59,12 +59,12 @@ rows:
 // check columns of index
 lsidxcol orders orders_idx1;
 rows:
-("O_ORDERKEY", "INTEGER", 19, 0, false, false)
+("O_CUSTKEY", "INTEGER", 19, 0, false, true)
 
 // check columns of index
 lsidxcol orders orders_idx2;
 rows:
-("O_CUSTKEY", "INTEGER", 19, 0, false, true)
+("O_ORDERKEY", "INTEGER", 19, 0, false, false)
 
 // load the table
 //load orders "/TPCH/SF1/orders.tbl" <field_delimiter> = "|";

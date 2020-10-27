@@ -17,17 +17,32 @@ O_COMMENT         VARCHAR(79) NOT NULL
 success
 
 //------------------------------------------------------------------------------
-// create an index on O_ORDERKEY
-CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
+// create an index on O_CUSTKEY
+CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
 affected: 0
 
 // check orders of index
 lsidx orders;
 rows:
-  ("orders_idx1",false,false)
+("orders_idx1",false,false)
 
 // check columns of index
 lsidxcol orders orders_idx1;
+rows:
+("O_CUSTKEY", "INTEGER", 19, 0, false, false)
+
+//------------------------------------------------------------------------------
+// create an index on O_ORDERKEY
+CREATE INDEX orders_idx2 ON orders(O_ORDERKEY);
+affected: 0
+
+// check orders of index
+lsidx orders;
+rows:
+  ("orders_idx2",false,false)
+
+// check columns of index
+lsidxcol orders orders_idx2;
 rows:
   ("O_ORDERKEY", "INTEGER", 19, 0, false, true)
 
