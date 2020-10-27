@@ -58,6 +58,9 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 iPartitionNo)
   m_iPartitionNo = iPartitionNo;
   m_pRootEntBuffer  = nullptr;
   
+  m_nTreeDeleteCnt = 0;
+  m_nTreeInsertCnt = 0;
+  
   _checkInitialised_(CN_INDEXTREE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -930,6 +933,47 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* get running delete count                                                   */
+/*----------------------------------------------------------------------------*/
+i8 IndexTree::nTreeDeleteCnt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  return m_nTreeDeleteCnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc running delete count                                                   */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vTreeDeleteInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_nTreeDeleteCnt++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get running insert count                                                   */
+/*----------------------------------------------------------------------------*/
+i8 IndexTree::nTreeInsertCnt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  return m_nTreeInsertCnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc running insert count                                                   */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vTreeInsertInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_nTreeInsertCnt++;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

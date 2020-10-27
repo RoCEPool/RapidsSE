@@ -59,6 +59,10 @@ namespace Indexing
     Index*  pIndex(void);
     IndexDef*  pIndexDef(void);
     void    vPrintRows(void);
+  
+    i8      nTreeDeleteCnt(void);
+    i8      nTreeInsertCnt(void);
+
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions

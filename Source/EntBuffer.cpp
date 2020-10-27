@@ -1768,6 +1768,26 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* get running delete count                                                   */
+/*----------------------------------------------------------------------------*/
+i8 EntBuffer::nTreeDeleteCnt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return m_pIndexTree->nTreeDeleteCnt();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get running insert count                                                   */
+/*----------------------------------------------------------------------------*/
+i8 EntBuffer::nTreeInsertCnt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return m_pIndexTree->nTreeInsertCnt();
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vTruncate(void)

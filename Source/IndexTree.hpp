@@ -17,6 +17,9 @@ namespace Indexing
     i8        m_iPartitionNo;  // which partition no
     
     EntBuffer* m_pRootEntBuffer;    // the root ent buffer
+  
+    i8 m_nTreeDeleteCnt; // insert
+    i8 m_nTreeInsertCnt; // insert
 
     // must be last
     Footer m_xFooter;
@@ -55,6 +58,10 @@ namespace Indexing
     Ent*       aPositionPriorEntry(Key* aFindKey, EntBuffer** ppEntBuffer);
     EntBuffer* pRootBuffer(void);
     void       vRootBuffer(EntBuffer* pRootBuffer);
+    i8         nTreeDeleteCnt(void);
+    void       vTreeDeleteInc(void);
+    i8         nTreeInsertCnt(void);
+    void       vTreeInsertInc(void);
     void       vTruncate(void);
     bool       bVerify(void);
     bool       bVerifyIndex(void);
