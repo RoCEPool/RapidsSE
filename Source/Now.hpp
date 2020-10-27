@@ -29,6 +29,7 @@ namespace Gadgets
     i8   iSinceEpoch(void);
 
     Stz* sz(void);
+    Stz* szPath(void);
     Stz* sz(Dtm* pTsp);
 
     i8   wTsp(void);

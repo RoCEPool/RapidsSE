@@ -65,6 +65,7 @@ static const Stz* F_TSP_frac  = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s"_S
 static const Stz* F_VCH_enclose = "'"_Stz;
 
 static const Stz* F_NOW       = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz;
+static const Stz* F_NOW_path  = "%02lld-%02lld-%02lld-%02lld-%02lld-%02lld"_Stz;
 
 
 static Stz* C_DATE_FORMAT          = "date_format"_Stz;

@@ -1003,7 +1003,11 @@ void Engine::vMungeCheck(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vOperandQueueReport(bool bStdOut)
 {
-  s256 sPath = "../tmp/OpdqReport.txt"_Stz;
+  Now oNow;
+
+  s256 sPath;
+  
+  sPath.vSprint("../tmp/OpdqReport_%s.txt"_Stz,oNow.szPath());
   
   File* pFile = new File(nullptr);
 
