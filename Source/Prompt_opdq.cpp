@@ -23,8 +23,9 @@ PromptFun __Prompt_opdq (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_opdq(SePrompt* pPrompt)
 {
-  
   vTrace("Operand Queue Report\n"_Stz);
+
+  Engine::vOperandQueueReport();
   
   return true;
 }

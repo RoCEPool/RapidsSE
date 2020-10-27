@@ -999,6 +999,26 @@ void Engine::vMungeCheck(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operand queue report                                                       */
+/*----------------------------------------------------------------------------*/
+void Engine::vOperandQueueReport(void)
+{
+  s256 sPath = "../tmp/OpdqReport.txt"_Stz;
+  
+  File* pFile = new File(nullptr);
+
+  pFile->bOpenMode(sPath,C_OPEN_WRITE);
+  
+  JobList* pJobPttList = AM::pParticipatingJobs();
+  pJobPttList->vGrabLock();
+  pJobPttList->vOperandQueueReport(pFile);
+  pJobPttList->vDropLock();
+
+  pFile->vClose();
+  delete pFile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create or open the Log                                                     */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenLog(void)

@@ -104,6 +104,7 @@ namespace Jobs
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
+    void vOperandQueueReport(File* pFile);
     bool bParticipantHasError(void);
     void vParticipantHasError(bool bHasError);
     eEC ePopulateJob(TagSet* pTagSet);

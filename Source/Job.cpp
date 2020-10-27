@@ -800,6 +800,49 @@ void Job::vNormalSides(bool bNormalSides)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operand queue report                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vOperandQueueReport(File* pFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  
+  if (! m_pPipeline)
+    return;
+  
+  vTrace("\nJob %p: %s\n"_Stz,this,m_sJobNm.szStz());
+  
+  i8 nStages = m_pPipeline->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    
+    Stage* pStage = m_pPipeline->pGet(i_Stage);
+    
+    i8 nStrands = pStage->nItems();
+    for (i8 i_Strand = 0; i_Strand < nStrands; i_Strand++) {
+ 
+      Strand* pStrand= pStage->pGet(i_Strand);
+      
+      i8 nOps = pStrand->nItems();
+      for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+
+        Op* pOp = pStrand->pGet(i_Op);
+        
+        OperandQueue* pQueueLeft = pOp->pQueueLeft();
+        
+        i8 nOpdLeft = pQueueLeft->nQueuedOperands();
+        
+        vTrace("%s %s[%lld] : %s ___ %lld\n"_Stz
+               ,m_pPipeline->szPipelineNm()
+               ,pStage->szStageNm()
+               ,i_Strand
+               
+               ,pOp->szOpNm()
+               ,nOpdLeft);
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(void)

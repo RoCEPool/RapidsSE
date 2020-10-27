@@ -353,6 +353,26 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("\n"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* operand queue report                                                       */
+/*----------------------------------------------------------------------------*/
+void JobList::vOperandQueueReport(File* pFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST);
+  
+  SkipListNL* pSkipList = m_pJobsSkipList;
+  
+  i8 iLevelZero = 0;
+    
+  SkipNode* pNode = pSkipList->pFirst(iLevelZero);
+  while (pNode) {
+    Job* pJob = (Job*)(pNode->m_pObject);
+    
+    pJob->vOperandQueueReport(pFile);
+    
+    pNode = pSkipList->pNext(pNode,iLevelZero);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
