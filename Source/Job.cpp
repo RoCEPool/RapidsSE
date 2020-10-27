@@ -836,24 +836,24 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
         pOp->pOpTagSet()->vSprint(sOpTags);
 
         if (bStdOut)
-          vTrace("%s %s[%lld] : %s ___ %lld %s\n"_Stz
+          vTrace("%s %s[%lld] : %s%s ___ %lld\n"_Stz
                  ,m_pPipeline->szPipelineNm()
                  ,pStage->szStageNm()
                  ,i_Strand
                  
                  ,pOp->szOpNm()
-                 ,nOpdLeft
                  ,sOpTags.szStz()
+                 ,nOpdLeft
                  );
         
-        pFile->vPrint("%s %s[%lld] : %s ___ %lld %s\n"_Stz
+        pFile->vPrint("%s %s[%lld] : %s%s ___ %lld\n"_Stz
           ,m_pPipeline->szPipelineNm()
           ,pStage->szStageNm()
           ,i_Strand
           
           ,pOp->szOpNm()
-          ,nOpdLeft
           ,sOpTags.szStz()
+          ,nOpdLeft
           );
         
       }
