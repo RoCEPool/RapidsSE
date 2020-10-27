@@ -750,9 +750,7 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEnt, Ent** aaPriorEntry)
 Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
 {
   _static_
-  
-  static i8 i_Insert = 0;
-    
+      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   EntBuffer* pRootEntBuffer = *ppRootEntBuffer;
@@ -764,7 +762,9 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEnt, EntBuffer** ppRootEntBuffer)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i_Insert++;
+  pRootEntBuffer->m_pIndexTree->vTreeInsertInc();
+  
+  i8 i_Insert = pRootEntBuffer->m_pIndexTree->nTreeInsertCnt();
 
 #ifdef EB_TRACE_INSERT
   IndexDef* pIndexDef = pRootEntBuffer->m_pIndexDef;
