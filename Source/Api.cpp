@@ -127,7 +127,7 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
 
     }
     
-    pJobTags->vContentDump();
+    //pJobTags->vContentDump();
   }
   
   pJob->ePopulateJob(pTagSet);
