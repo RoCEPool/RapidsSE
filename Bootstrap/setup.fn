@@ -467,6 +467,7 @@ function displayWelcome() {
   source "${VERSION_FILE}"
 
   echo "Welcome to the installation wizard for RapidsSE version ${SE_VERSION_STR}."
+  echo "(git ${SE_COMMIT_HASH})"
   echo ""
   echo "This will guide you through the process of installing and setting up RapidsSE"
   echo "on a cluster."
