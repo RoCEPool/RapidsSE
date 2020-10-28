@@ -681,7 +681,7 @@ SeDeputy* SePrompt::pFindDeputy(void)
     if (m_paSeDeputy[i_Deputy]->bAvailable()) {
       pSeDeputy = m_paSeDeputy[i_Deputy];
       pSeDeputy->vAvailable(false);
-      vTrace("Found Deputy %lld\n"_Stz,i_Deputy);
+      //vTrace("Found Deputy %lld\n"_Stz,i_Deputy);
       break;
     }
   }

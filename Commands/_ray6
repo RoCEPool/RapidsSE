@@ -14,7 +14,7 @@ _lineitem_dates
 //_lineitemIndex
 
 //time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
-/time CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE);
+// /time CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE);
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Load LineItem";
@@ -28,16 +28,40 @@ print section "Load LineItem";
 // /time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
 // /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
 // /tags /time /summary /diary fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
-// /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
+/time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10-LineItem";
 
-/bg /time /summary fload customer "/Users/Shared/tpch/SF10/customer.csv"     <max_errors> =  100 <note> = "SF10-Customer";
+// /bg /time /summary fload customer "/Users/Shared/tpch/SF10/customer.csv"     <max_errors> =  100 <note> = "SF10-Customer";
 
-/bg /time /summary fload orders "/Users/Shared/tpch/SF10/orders.csv"     <max_errors> =  100 <note> = "SF10-Orders";
+// /bg /time /summary fload orders "/Users/Shared/tpch/SF10/orders.csv"     <max_errors> =  100 <note> = "SF10-Orders";
 
-/bg /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10-LineItem";
+// /bg /time /summary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10-LineItem";
 
-sleep 3;
-opdq true;
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+//print section "Sleeping...";
+//
+//sleep 5;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Create L_SHIPDATE";
+
+/time CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE) <note> = "SF10-L_SHIPDATE";
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "reorder L_SHIPDATE";
+
+/time reorder lineitem lineitem2 "l_shipDate '9999-01-01' <";
+
+drop table lineitem;
+
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+print section "Sleeping...";
+
+sleep 5;
+
+/time create index lineitem2_idx1 on lineitem2 (l_shipdate);
+
+//sleep 3;
+//opdq true;
 
 //space;
 //sztbl lineitem;
