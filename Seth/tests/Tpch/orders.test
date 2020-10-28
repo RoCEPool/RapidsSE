@@ -36,9 +36,10 @@ rows:
 CREATE INDEX orders_idx2 ON orders(O_ORDERKEY);
 affected: 0
 
-// check orders of index
+// check index of orders
 lsidx orders;
 rows:
+  ("orders_idx1",false,false)
   ("orders_idx2",false,false)
 
 // check columns of index
