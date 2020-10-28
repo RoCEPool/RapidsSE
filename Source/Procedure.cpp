@@ -239,10 +239,10 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   // get the procedure text and tokenise it
   
   TagSet* pWrdTagSet = pwMatchedProc->pWrdTagSet();
-  if (pwMatchedProc->szWordNm()->bSame("drop__table"_Stz)) {
-    pWrdTagSet->vDumpSet(true);
-    vDebugPoint();
-  }
+//  if (pwMatchedProc->szWordNm()->bSame("drop__table"_Stz)) {
+//    pWrdTagSet->vDumpSet(true);
+//    vDebugPoint();
+//  }
   
   Stz* szPrdText = pWrdTagSet->szValue("procText"_Stz);
   
