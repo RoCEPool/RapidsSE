@@ -109,7 +109,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_VERSION);
   gxPromptCatalog.vFuns(PF_WAITING);
 
-  vTrace("success: %lld rows affected\n"_Stz, gxPromptCatalog.m_nFunctions);
+  vTrace("\nsuccess: %lld rows affected\n"_Stz, gxPromptCatalog.m_nFunctions);
   
   return true;
 }

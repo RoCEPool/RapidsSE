@@ -89,7 +89,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
     if (bPmtTagSet)
       pPmtTagSet->vDelete(sTagNm);
 
-    vTrace("success: 0 rows affected\n"_Stz);
+    vTrace("\nsuccess: 0 rows affected\n"_Stz);
     return true;
   }
     
@@ -102,7 +102,7 @@ bool Prompt::bPrompt_tag(SePrompt* pPrompt)
 
   if (bPmtTagSet)
     pPmtTagSet->vReplace(sTagNm,sTagValue);
-  vTrace("success: 0 rows affected\n"_Stz);
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
 }

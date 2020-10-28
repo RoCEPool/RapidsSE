@@ -39,7 +39,7 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
   
   if (nTokens == 1) {
     vTrace("IndexEntries: %lld\n"_Stz, AM::nIndexEntries());
-    vTrace("success: 1 rows affected\n"_Stz);
+    vTrace("\nsuccess: 1 rows affected\n"_Stz);
     return true;
   }
   
@@ -51,7 +51,7 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
   
   AM::vIndexEntries(iIndexEntries);
   
-  vTrace("success: 0 rows affected\n"_Stz);
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
 }

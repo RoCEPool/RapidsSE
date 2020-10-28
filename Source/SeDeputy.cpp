@@ -310,7 +310,7 @@ void SeDeputy::vReportTime(void)
            );
   }
   
-  vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
+  vTrace("time %lldms\n\n"_Stz,m_oTimer.iMilliseconds());
 }
 /*----------------------------------------------------------------------------*/
 /* get session                                                                */

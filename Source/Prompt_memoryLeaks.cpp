@@ -111,7 +111,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
 
 L_REPORT:
-  vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+  vTrace("\nsuccess: %lld rows affected\n"_Stz, iRowsProcessed);
   
   if (iRowsProcessed && bFatal)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,

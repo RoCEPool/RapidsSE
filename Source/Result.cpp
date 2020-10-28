@@ -144,11 +144,11 @@ void Result::vPrintDist2pcResponse(void)
       vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
              iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
     else
-      vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+      vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
              iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
   }
   else {
-    vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+    vTrace("\nsuccess: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
   }
 }
 
@@ -163,7 +163,7 @@ void Result::vPrintLocalResponse(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // success
-  vTrace("success: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+  vTrace("\nsuccess: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
 }
 
 //! TO GO
@@ -200,7 +200,7 @@ void Result::vPrintOldJobResponses(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Success
-  vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+  vTrace("\nsuccess: %lld rows affected\n"_Stz, iRowsProcessed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -394,7 +394,7 @@ void Result::vProcessBufferQueue(void)
           if (AM::bMetadata()) {
             s4K sMetadata;
             pStreamDef->vToMetadata(sMetadata.szStz());
-            vTrace("%s\n"_Stz, sMetadata.szStz());
+            vTrace("\n%s\n\n"_Stz, sMetadata.szStz());
           }
         }
         break;

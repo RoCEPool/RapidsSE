@@ -37,9 +37,9 @@ bool Prompt::bPrompt_version(SePrompt* pPrompt)
   ASSERT(pInpTknVec->pGet(0)->bSame("version"_Stz));
   
   if (AM::bMetadata()) {
-    vTrace("metadata: (version VARCHAR)\n"_Stz);
+    vTrace("\nmetadata: (version VARCHAR)\n\n"_Stz);
     vInfo("row: ('%s')\n"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
-    vTrace("success: 1 rows affected\n"_Stz);
+    vTrace("\nsuccess: 1 rows affected\n"_Stz);
   }
   else
     vInfo("%s\n"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
