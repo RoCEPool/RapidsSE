@@ -49,6 +49,8 @@
   // set the xmit kind
   <xmitKind> >int op.xmitKind!
 
+  999999999999 task::operandYield!
+
   op__topology
 
   find: xmit_EosMarker   ZK_EOSMARKER   op[].handler!

@@ -39,6 +39,8 @@ namespace Tasks
     i8           m_iTraceMask;   // tracing mask
     eCN          m_eWhatJob;     // what job this task is/was for (debugging)
   
+    i8           m_nOperandYield;  //
+  
     Profile*     m_pProfile;     // runtime profile
 
     // always last

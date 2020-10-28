@@ -81,11 +81,12 @@ Task::Task(Job* pJob)
   // m_oWakeup
   
   m_pForth       = nullptr;
-  m_pLogicUnit      = nullptr;
+  m_pLogicUnit   = nullptr;
 
   m_iTraceMask   = C_TRACE_NONE;
   m_eWhatJob     = pJob->eClass();
 
+  m_nOperandYield = 10;
 
   _checkInitialised_(CN_TASK);
   

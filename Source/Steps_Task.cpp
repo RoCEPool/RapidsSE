@@ -14,6 +14,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::scheduledelete"_Stz,&Step::vTaskDelete);
   vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
   vAddStep("task::dump"_Stz,          &Step::vTaskDump);
+  vAddStep("task::operandYield@"_Stz, &Step::vTaskOperandYieldFetch);
+  vAddStep("task::operandYield!"_Stz, &Step::vTaskOperandYieldStore);
   vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);
   vAddStep("task::sleepMsec"_Stz,     &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,     &Step::vTaskSleepSsec);
@@ -245,6 +247,30 @@ void Step::vTaskNameFetch(void)
   s256 sName((Stz*)pThatTask->szJobName());
   
   m_pDataStack->vPushStr(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::operandYield@ -- operand yield fetch                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskOperandYieldFetch(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushInt(m_pTask->m_nOperandYield);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::operandYield! -- operand yield store                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskOperandYieldStore(void)
+{
+  ENTRY();
+    
+  m_pTask->m_nOperandYield = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

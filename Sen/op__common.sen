@@ -379,7 +379,7 @@
       else
  
         iOperandYield 1 + to iOperandYield
-        10 iOperandYield == if
+        iOperandYield task::operandYield@ >= if
           task::yield
           0 to iOperandYield
         then

@@ -1628,6 +1628,8 @@ public:
   void vTaskJobFetch(void);
   void vTaskJobStore(void);
   void vTaskNameFetch(void);
+  void vTaskOperandYieldFetch(void);
+  void vTaskOperandYieldStore(void);
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
   void vTaskSeedInitially(void);
