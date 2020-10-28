@@ -29,7 +29,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  vTrace("::SePrompt\n"_Stz);
+  //vTrace("::SePrompt\n"_Stz);
   
   i8 iPartition = 0;
   
@@ -78,7 +78,7 @@ SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
       
-  vTrace("~SePrompt\n"_Stz);
+  //vTrace("~SePrompt\n"_Stz);
   
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]) {
@@ -112,7 +112,7 @@ SePrompt::~SePrompt(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void* SePrompt::aEntryPoint_bg(void* pArg)
 {
-  vTrace("aEntryPoint_bg\n"_Stz);
+  //vTrace("aEntryPoint_bg\n"_Stz);
   sleep(1000000);
   
   return nullptr;
@@ -165,7 +165,7 @@ void SePrompt::vPromptLoop(void)
     //vJotDisable(0x27,0);
   }
     
-  vTrace("vPromptLoop\n"_Stz);
+  //vTrace("vPromptLoop\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -29,7 +29,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  vTrace("::SeDeputy\n"_Stz);
+  //vTrace("::SeDeputy\n"_Stz);
   
   m_i_Deputy  = i_Deputy;
   m_pSePrompt = pSePrompt;
@@ -68,7 +68,7 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void* SeDeputy::aEntryPoint(void* pArg)
 {
-  vTrace("SeDeputy::aEntryPoint\n"_Stz);
+  //vTrace("SeDeputy::aEntryPoint\n"_Stz);
   
   SeDeputy* pSeDeputy = _pSeDeputy(pArg);
   
@@ -88,7 +88,7 @@ void SeDeputy::vDeputyLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  vTrace("SeDeputy::vDeputyLoop\n"_Stz);
+  //vTrace("SeDeputy::vDeputyLoop\n"_Stz);
   
   while (m_bContinue) {
 
