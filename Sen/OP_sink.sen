@@ -38,8 +38,8 @@
     Operand[].newErroredMarker
     Operand[].pipeOut
 
-  else
-    grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
+  //else
+  //  grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
   then
 
   true

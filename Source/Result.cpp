@@ -250,6 +250,7 @@ void Result::vProcessBufferQueue(void)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_xJobResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
+        vTrace("\n"_Stz);
         pCrwBuffer->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;
@@ -260,6 +261,7 @@ void Result::vProcessBufferQueue(void)
       case CN_CSVBUFFER: {
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
         m_xJobResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
+        vTrace("\n"_Stz);
         pCsvBuffer->vPrintRecords();
         AM::vDeleteOperand(pOperand);
         break;
@@ -270,6 +272,7 @@ void Result::vProcessBufferQueue(void)
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         m_xJobResponse.m_ixRowsProcessed += pEntBuffer->nItems();
+        vTrace("\n"_Stz);
         pEntBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
         break;
@@ -289,6 +292,7 @@ void Result::vProcessBufferQueue(void)
         InfoSet* pInfoSet = _pInfoSet(pOperand);
         ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
         m_xJobResponse.m_ixRowsProcessed += pInfoSet->nInfoRows();
+        vTrace("\n"_Stz);
         pInfoSet->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;
@@ -368,6 +372,7 @@ void Result::vProcessBufferQueue(void)
 //                 spDataBuffer.sz(pRsbBuffer),
 //                 pRsbBuffer->nRsb());
         m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRsb();
+        vTrace("\n"_Stz);
         pRsbBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
         break;
@@ -378,6 +383,7 @@ void Result::vProcessBufferQueue(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_xJobResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
+        vTrace("\n"_Stz);
         pSrtBuffer->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;
@@ -394,7 +400,7 @@ void Result::vProcessBufferQueue(void)
           if (AM::bMetadata()) {
             s4K sMetadata;
             pStreamDef->vToMetadata(sMetadata.szStz());
-            vTrace("\n%s\n\n"_Stz, sMetadata.szStz());
+            vTrace("\n%s\n"_Stz, sMetadata.szStz());
           }
         }
         break;
@@ -404,6 +410,7 @@ void Result::vProcessBufferQueue(void)
         StreamSet* pStreamSet = _pStreamSet(pOperand);
         ASSERT( ! pStreamSet->szInfoSetNm()->bSame(C_NO_NAME) );
         m_xJobResponse.m_ixRowsProcessed += pStreamSet->nInfoRows();
+        vTrace("\n"_Stz);
         pStreamSet->vPrintRows(pStreamDef);
         AM::vDeleteOperand(pOperand);
         break;

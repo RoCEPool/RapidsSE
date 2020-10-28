@@ -11,7 +11,7 @@ rows:
  ('R','F',37719753.00,56568041380.90,53741286634.36,55889611947.82,25.50,38250.85,0.05,1478870)
  
 // Query 6
-Query6 lineitem lineitem_idx2;
+Query6 lineitem lineitem_idx1;
 unordered rows:
 ( 75207429.08 )
 

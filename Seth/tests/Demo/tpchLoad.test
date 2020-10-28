@@ -9,6 +9,16 @@ fload customer "/TPCH/SF1/customer.tbl";
 compactidx customer customer_idx1;
 success
 
+count;
+failure contains: "invalid command"
+
+count x;
+failure contains: "no such table"
+
+count customer;
+rows:
+ (150000)
+
 //------------------------------------------------------------------------------
 // load orders
 fload orders "/TPCH/SF1/orders.tbl";
@@ -16,6 +26,10 @@ success
 
 compactIdx Orders Orders_Idx1;
 success
+
+count orders;
+rows:
+  (1500000)
 
 //------------------------------------------------------------------------------
 // load lineitem
@@ -27,6 +41,10 @@ success
 
 compactIdx LineItem lineItem_Idx2;
 success
+
+count lineitem;
+rows:
+  (6001215)
 
 } -- end of loop
 

@@ -571,8 +571,8 @@ void Job::vJobError(eEC eErrorCode)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (m_xResult.m_bJobHasError) {
-    vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
-      aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
+    //vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
+    //  aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
   }
   else {
     m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
