@@ -51,6 +51,18 @@ success
 create index Idx on T1 (key);
 affected: 0
 
+// check idx with incorrect params
+lsidx;
+failure contains: 'invalid command'
+                       
+// check idx with incorrect params
+lsidx T1 T2;
+failure contains: 'invalid command'
+
+// check idx with incorrect params
+lsidx T2 T1;
+failure contains: 'invalid command'
+                       
 // check idx of invalid table
 lsidx T2;
 failure contains: 'no such table'
