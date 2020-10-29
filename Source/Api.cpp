@@ -47,6 +47,20 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* delete job  =                                                              */
+/*----------------------------------------------------------------------------*/
+void Api::vDeleteJob(Job** ppJob)
+{
+  _static_
+  
+  Job* pJob = * ppJob;
+  * ppJob = nullptr;
+
+  delete pJob;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
 void Api::vExecuteJob(Session* pSession, Job* pJob)
@@ -175,8 +189,9 @@ eEC Api::ePrepareJob(Job**     ppJob,
   
   // this should go
   if (pJob->bJobHasError()) {
-    Jobs::vJob_post(pJob);
-    Api::vJob_4_DeleteJob(&pJob);
+    eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
+    pJob->vPrintResult(eResponse);
+    Api::vDeleteJob(&pJob);
     return EC_ZZZ_OTHER;
   }
   
@@ -238,20 +253,6 @@ void Api::vJob_2_SpawnJob_dedicated(Job* pJob)
   RASSERT(! pJob->pTask());
   
   Api::vSpawnJob_dedicated(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vJob_4_DeleteJob(Job** ppJob)
-{
-  _static_
-  
-  Job* pJob = * ppJob;
-  
-  delete pJob;
-  
-  * ppJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

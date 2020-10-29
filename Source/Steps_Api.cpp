@@ -116,11 +116,12 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Jobs::vJob_post(pJob);
-  
+  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
+  pJob->vPrintResult(eResponse);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Api::vJob_4_DeleteJob(&pJob);
+  Api::vDeleteJob(&pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

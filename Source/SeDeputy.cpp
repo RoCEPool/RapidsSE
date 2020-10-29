@@ -144,7 +144,7 @@ void SeDeputy::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  Api::vJob_4_DeleteJob(&m_pJob);
+  Api::vDeleteJob(&m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
