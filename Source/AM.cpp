@@ -603,9 +603,9 @@ void AM::vSpawnJob_op(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob_prompt(Job* pJob)
+bool AM::bSpawnJob_session(Job* pJob)
 {
-  bool bResult = Api::bSpawnJob_prompt(pJob);
+  bool bResult = Api::bSpawnJob_session(pJob);
   
   return bResult;
 }

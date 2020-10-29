@@ -49,7 +49,7 @@ namespace Interface
   
   // external
   static bool bSpawnJob_connector(Job* pJob);
-  static bool bSpawnJob_prompt(Job* pJob);
+  static bool bSpawnJob_session(Job* pJob);
   
   // internal
   static void vSpawnJob_dedicated(Job* pJob);

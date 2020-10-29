@@ -229,7 +229,7 @@ void Api::vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked)
   
   RASSERT(! pJob->pTask());
   
-  bool bSpawned = Api::bSpawnJob_prompt(pJob);
+  bool bSpawned = Api::bSpawnJob_session(pJob);
   RASSERT(bSpawned);
 }
 
@@ -708,10 +708,12 @@ void Api::vSpawnJob_service(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob_prompt(Job* pJob)
+bool Api::bSpawnJob_session(Job* pJob)
 {
   _static_
   
+  RASSERT(JS_LOCKED == pJob->eJobState());
+
   
   RASSERT(! pJob->pTask());
   
@@ -832,7 +834,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   
 
   // spawn the insertTable job
-  IGNORE_RETURN(Api::bSpawnJob_prompt(pJob));
+  IGNORE_RETURN(Api::bSpawnJob_session(pJob));
   //! ApiState::vMarkApiLoc(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
