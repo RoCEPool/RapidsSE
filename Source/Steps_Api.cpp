@@ -189,9 +189,9 @@ void Step::vApiSpawnDemon(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bDedicated)
-    Api::vJob_2_SpawnJob_dedicated(pJob);
+    Api::vSpawnJob_dedicated(pJob);
   else
-    Api::vJob_2_SpawnJob_service(pJob);
+    Api::vSpawnJob_service(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

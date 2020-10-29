@@ -220,27 +220,6 @@ eEC Api::ePrepareJob(Job**     ppJob,
 
 
 
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vJob_2_SpawnJob_service(Job* pJob)
-{
-  
-  RASSERT(! pJob->pTask());
-  
-  Api::vSpawnJob_service(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vJob_2_SpawnJob_dedicated(Job* pJob)
-{
-  
-  RASSERT(! pJob->pTask());
-  
-  Api::vSpawnJob_dedicated(pJob);
-}
 
 /*----------------------------------------------------------------------------*/
 /* is the command a shortform?                                                */
@@ -663,7 +642,7 @@ void Api::vSpawnJob_dedicated(Job* pJob)
 {
   _static_
   
-  
+  RASSERT(! pJob->pTask());
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }
@@ -687,7 +666,8 @@ void Api::vSpawnJob_service(Job* pJob)
 {
   _static_
   
-  
+  RASSERT(! pJob->pTask());
+
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddService(pJob->pTask());
 }
