@@ -108,7 +108,7 @@ void Step::vApiExecuteRequest(void)
   
   Api::vMutexLock(pSession,pJob);
   
-  Api::vJob_2_SpawnJob_prompt(pJob);
+  bool bSpawned = Api::bSpawnJob_session(pJob);
 
   Api::vMutexWaitCond(pSession,pJob);
   

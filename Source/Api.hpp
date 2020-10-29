@@ -22,7 +22,6 @@ namespace Interface
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static void vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked=true);
   static void vJob_2_SpawnJob_service(Job* pJob);
   static void vJob_2_SpawnJob_dedicated(Job* pJob);
 

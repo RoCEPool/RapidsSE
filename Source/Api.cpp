@@ -71,12 +71,12 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
     
   // spawn the job
   if (pJob->bHasTag_noWait()) {
-    Api::vJob_2_SpawnJob_prompt(pJob);
+    Api::bSpawnJob_session(pJob);
     Api::vMutexUnlock(pSession,pJob);
     return;
   }
   else {
-    Api::vJob_2_SpawnJob_prompt(pJob);
+    Api::bSpawnJob_session(pJob);
   }
   
   Api::vMutexWaitCond(pSession,pJob);
@@ -219,19 +219,6 @@ eEC Api::ePrepareJob(Job**     ppJob,
 /*----------------------------------------------------------------------------*/
 
 
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked)
-{
-  RASSERT(! bMustBeLocked || JS_LOCKED == pJob->eJobState());
-  
-  RASSERT(! pJob->pTask());
-  
-  bool bSpawned = Api::bSpawnJob_session(pJob);
-  RASSERT(bSpawned);
-}
 
 /*----------------------------------------------------------------------------*/
 /* api...                                                                     */
