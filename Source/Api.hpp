@@ -13,18 +13,17 @@ namespace Interface
   static void     vFreeSession(Session* pSession);
 
   static void     vExecuteJob(Session* pSession, Job* pJob);
-  
+  static eEC      ePrepareJob(Job**     ppJob,
+                              TokenVec* pCmdTknVec,
+                              TokenVec* pLitTknVec,
+                              TagSet*   pTagSet,
+                              ReqTuple* axReqTuple);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static eEC  eJob_1_PreJob(Job**     ppJob,
-                            TokenVec* pCmdTknVec,
-                            TokenVec* pLitTknVec,
-                            TagSet*   pTagSet,
-                            ReqTuple* axReqTuple);
   static void vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked=true);
   static void vJob_2_SpawnJob_service(Job* pJob);
   static void vJob_2_SpawnJob_dedicated(Job* pJob);
-  static void vJob_3_PostJob(Job* pJob);
   static void vJob_4_DeleteJob(Job** ppJob);
 
   static bool bShortForm(TokenVec* pCmdTknVec);

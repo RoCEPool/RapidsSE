@@ -82,7 +82,7 @@ namespace Prompt
 
     bool bGetCommand(SeDeputy* pSeDeputy);
     bool bPrepareJob(SeDeputy* pSeDeputy);
-    void vExecuteJob(SeDeputy* pSeDeputy);
+    void vDeputiseJob(SeDeputy* pSeDeputy);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);

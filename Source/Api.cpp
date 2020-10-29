@@ -71,15 +71,14 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
-/* api...                                                                     */
+/* prepare job                                                                     */
 /*----------------------------------------------------------------------------*/
-eEC Api::eJob_1_PreJob(Job**     ppJob,
-                       TokenVec* pCmdTknVec,
-                       TokenVec* pLitTknVec,
-                       TagSet*   pTagSet,
-                       ReqTuple* axReqTuple)
+eEC Api::ePrepareJob(Job**     ppJob,
+                     TokenVec* pCmdTknVec,
+                     TokenVec* pLitTknVec,
+                     TagSet*   pTagSet,
+                     ReqTuple* axReqTuple)
 {
   _static_
 
@@ -176,7 +175,7 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
   
   // this should go
   if (pJob->bJobHasError()) {
-    Api::vJob_3_PostJob(pJob);
+    Jobs::vJob_post(pJob);
     Api::vJob_4_DeleteJob(&pJob);
     return EC_ZZZ_OTHER;
   }
@@ -199,6 +198,11 @@ eEC Api::eJob_1_PreJob(Job**     ppJob,
 
   return EC_NONE;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -234,16 +238,6 @@ void Api::vJob_2_SpawnJob_dedicated(Job* pJob)
   RASSERT(! pJob->pTask());
   
   Api::vSpawnJob_dedicated(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vJob_3_PostJob(Job* pJob)
-{
-  _static_
-  
-  Jobs::vJob_post(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
