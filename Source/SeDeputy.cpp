@@ -123,20 +123,23 @@ void SeDeputy::vExecuteJob(void)
   
   m_oTimer.vStart();
 
-  Api::vMutexLock(m_pSession,m_pJob);
-    
-  // spawn the job
-  if (m_pJob->bHasTag_noWait()) {
-    Api::vJob_2_SpawnJob_prompt(m_pJob);
-    Api::vMutexUnlock(m_pSession,m_pJob);
-    return;
-  }
-  else {
-    Api::vJob_2_SpawnJob_prompt(m_pJob);
-  }
+//  Api::vMutexLock(m_pSession,m_pJob);
+//
+//  // spawn the job
+//  if (m_pJob->bHasTag_noWait()) {
+//    Api::vJob_2_SpawnJob_prompt(m_pJob);
+//    Api::vMutexUnlock(m_pSession,m_pJob);
+//    return;
+//  }
+//  else {
+//    Api::vJob_2_SpawnJob_prompt(m_pJob);
+//  }
+//
+//  Api::vMutexWaitCond(m_pSession,m_pJob);
+//  Api::vMutexUnlock(m_pSession,m_pJob);
   
-  Api::vMutexWaitCond(m_pSession,m_pJob);
-  Api::vMutexUnlock(m_pSession,m_pJob);
+  Api::vExecuteJob(m_pSession,m_pJob);
+  
   m_oTimer.vUpdate();
 
 

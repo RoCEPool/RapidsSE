@@ -47,6 +47,32 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* execute job (spawn job and wait for completion)                            */
+/*----------------------------------------------------------------------------*/
+void Api::vExecuteJob(Session* pSession, Job* pJob)
+{
+  _static_
+  
+  Api::vMutexLock(pSession,pJob);
+    
+  // spawn the job
+  if (pJob->bHasTag_noWait()) {
+    Api::vJob_2_SpawnJob_prompt(pJob);
+    Api::vMutexUnlock(pSession,pJob);
+    return;
+  }
+  else {
+    Api::vJob_2_SpawnJob_prompt(pJob);
+  }
+  
+  Api::vMutexWaitCond(pSession,pJob);
+  
+  Api::vMutexUnlock(pSession,pJob);
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* api...                                                                     */
 /*----------------------------------------------------------------------------*/
 eEC Api::eJob_1_PreJob(Job**     ppJob,
@@ -417,7 +443,7 @@ void Api::vMutexLock(Session* pSession, Job* pJob)
 {
   _static_
   
-  pSession->m_pMutex->vLock(pSession);
+  pSession->m_pSsnMutex->vLock(pSession);
         
   pJob->vJobState(JS_LOCKED);
 }
@@ -433,7 +459,7 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
     
   pJob->vJobState(JS_RUNNING);
   
-  pSession->m_pMutex->vUnlock(pSession);
+  pSession->m_pSsnMutex->vUnlock(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -445,7 +471,7 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
-    pSession->m_pMutex->vWait(pSession);
+    pSession->m_pSsnMutex->vWait(pSession);
     
   } while (pJob->eJobState() != JS_SIGNALLED);
 
@@ -794,7 +820,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   
   // lock this job's session mutex
   Session* pSession = pJob->pSession();
-  pSession->m_pMutex->vLock(pJob);
+  pSession->m_pSsnMutex->vLock(pJob);
   
   //  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   //  if (0 != rCode)
@@ -828,7 +854,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
     //    vTrace("ThreadMutex:\n"_Stz);
     //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
     
-       pSession->m_pMutex->vWait(pJob);
+       pSession->m_pSsnMutex->vWait(pJob);
     //    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
     //                              &pJob->m_xThreadMutex);
     //    if (0 != rCode)
@@ -849,7 +875,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   pJob->vJobState(JS_RUNNING);
   
   // unlock this job's session mutex
-  pSession->m_pMutex->vUnlock(pJob);
+  pSession->m_pSsnMutex->vUnlock(pJob);
   
   //  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
   //  if (0 != rCode)

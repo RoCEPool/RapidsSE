@@ -1459,9 +1459,9 @@ void Step::vJobSignalCompletion(void)
   
   m_pTask->vJob(nullptr);
 
-  pSession->m_pMutex->vLock(m_pTask);
-  pSession->m_pMutex->vSignal(m_pTask);
-  pSession->m_pMutex->vUnlock(m_pTask);
+  pSession->m_pSsnMutex->vLock(m_pTask);
+  pSession->m_pSsnMutex->vSignal(m_pTask);
+  pSession->m_pSsnMutex->vUnlock(m_pTask);
 
   m_pTask->vDropTaskLock();
 

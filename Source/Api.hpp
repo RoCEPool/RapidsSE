@@ -12,6 +12,8 @@ namespace Interface
   static Session* pAllocSession(eSK eSession);
   static void     vFreeSession(Session* pSession);
 
+  static void     vExecuteJob(Session* pSession, Job* pJob);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static eEC  eJob_1_PreJob(Job**     ppJob,
