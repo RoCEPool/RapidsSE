@@ -289,7 +289,7 @@ namespace Oblique
     static void vSetOperand(XmitOperand* pXmitOperand, Operand* pOperand);
     
     static bool bSpawnJob_connector(Job* pJob);
-    static bool bSpawnJob_prompt(Job* pJob);
+    static bool bSpawnJob_session(Job* pJob);
     
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     static void vSpawnJob_dedicated(Job* pJob);

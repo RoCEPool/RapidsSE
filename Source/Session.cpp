@@ -115,7 +115,7 @@ Session::Session(void)
 
   m_sToDo           = ""_Stz;
     
-  m_pMutex          = new Mutex(MK_JOB,this);
+  m_pSsnMutex          = new Mutex(MK_JOB,this);
     
   _checkInitialised_(CN_SESSION);
   
@@ -144,7 +144,7 @@ Session::~Session(void) noexcept(false)
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;
     
-  delete m_pMutex;
+  delete m_pSsnMutex;
     
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,

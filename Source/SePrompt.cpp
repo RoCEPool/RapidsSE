@@ -184,7 +184,7 @@ void SePrompt::vPromptLoop(void)
     if (! bPrepareJob(pSeDeputy))
       continue;
     
-    vExecuteJob(pSeDeputy);
+    vDeputiseJob(pSeDeputy);
 
     pSeDeputy = nullptr;
     
@@ -321,11 +321,11 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
   Job* pJob = pSeDeputy->pJob();
   pSeDeputy->vJob(nullptr);
   
-  eEC eError = Api::eJob_1_PreJob(&pJob,
-                                  m_pInpTknVec,
-                                  m_pLitTknVec,
-                                 &m_oExtTagSet,
-                                 &m_xReqTuple);
+  eEC eError = Api::ePrepareJob(&pJob,
+                                m_pInpTknVec,
+                                m_pLitTknVec,
+                                &m_oExtTagSet,
+                                &m_xReqTuple);
   
   pSeDeputy->vJob(pJob);
   
@@ -351,7 +351,7 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
 /*----------------------------------------------------------------------------*/
 /* get next command from input                                                */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vExecuteJob(SeDeputy* pSeDeputy)
+void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

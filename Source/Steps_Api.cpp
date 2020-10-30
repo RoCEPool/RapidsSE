@@ -83,7 +83,7 @@ void Step::vApiExecuteRequest(void)
   Job* pJob = nullptr;
   TagSet oTagSet;
   
-  eError = Api::eJob_1_PreJob(&pJob,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
+  eError = Api::ePrepareJob(&pJob,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -108,7 +108,7 @@ void Step::vApiExecuteRequest(void)
   
   Api::vMutexLock(pSession,pJob);
   
-  Api::vJob_2_SpawnJob_prompt(pJob);
+  bool bSpawned = Api::bSpawnJob_session(pJob);
 
   Api::vMutexWaitCond(pSession,pJob);
   
@@ -116,11 +116,12 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Api::vJob_3_PostJob(pJob);
+  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
+  pJob->vPrintResult(eResponse);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Api::vJob_4_DeleteJob(&pJob);
+  Api::vDeleteJob(&pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -165,7 +166,7 @@ void Step::vApiSpawnDemon(void)
   TagSet oTagSet;
   ReqTuple xReqTuple;
   
-  eEC eError = Api::eJob_1_PreJob(&pJob,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
+  eEC eError = Api::ePrepareJob(&pJob,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);

@@ -122,32 +122,18 @@ void SeDeputy::vExecuteJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   m_oTimer.vStart();
-
-  Api::vMutexLock(m_pSession,m_pJob);
-    
-  // spawn the job
-  if (m_pJob->bHasTag_noWait()) {
-    Api::vJob_2_SpawnJob_prompt(m_pJob);
-    Api::vMutexUnlock(m_pSession,m_pJob);
-    return;
-  }
-  else {
-    Api::vJob_2_SpawnJob_prompt(m_pJob);
-  }
   
-  Api::vMutexWaitCond(m_pSession,m_pJob);
-  Api::vMutexUnlock(m_pSession,m_pJob);
+  Api::vExecuteJob(m_pSession,m_pJob);
+  
   m_oTimer.vUpdate();
 
-
-  if (bExecutePipeline()) {
-    // start the buffer queue processing while the pipeline ops are running
+  // start the buffer queue processing while the pipeline ops are running
+  if (bProcessPipelineResults())
     m_pJob->m_xResult.vProcessBufferQueue();
-  }
+  
+  eRS eResponse = (eRS)m_pJob->pJobTags()->iValue("<rspKind>"_Stz);
+  m_pJob->vPrintResult(eResponse);
 
-  Api::vJob_3_PostJob(m_pJob);
-  
-  
   vReportTime();
 }
 
@@ -158,7 +144,7 @@ void SeDeputy::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  Api::vJob_4_DeleteJob(&m_pJob);
+  Api::vDeleteJob(&m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +208,7 @@ void SeDeputy::vCreateSession(void)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a pipeline job                                         */
 /*----------------------------------------------------------------------------*/
-bool SeDeputy::bExecutePipeline(void)
+bool SeDeputy::bProcessPipelineResults(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   

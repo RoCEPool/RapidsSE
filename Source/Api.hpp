@@ -12,18 +12,18 @@ namespace Interface
   static Session* pAllocSession(eSK eSession);
   static void     vFreeSession(Session* pSession);
 
+  static void     vDeleteJob(Job** ppJob);
+  static void     vExecuteJob(Session* pSession, Job* pJob);
+  static eEC      ePrepareJob(Job**     ppJob,
+                              TokenVec* pCmdTknVec,
+                              TokenVec* pLitTknVec,
+                              TagSet*   pTagSet,
+                              ReqTuple* axReqTuple);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static eEC  eJob_1_PreJob(Job**     ppJob,
-                            TokenVec* pCmdTknVec,
-                            TokenVec* pLitTknVec,
-                            TagSet*   pTagSet,
-                            ReqTuple* axReqTuple);
-  static void vJob_2_SpawnJob_prompt(Job* pJob, bool bMustBeLocked=true);
   static void vJob_2_SpawnJob_service(Job* pJob);
   static void vJob_2_SpawnJob_dedicated(Job* pJob);
-  static void vJob_3_PostJob(Job* pJob);
-  static void vJob_4_DeleteJob(Job** ppJob);
 
   static bool bShortForm(TokenVec* pCmdTknVec);
   static bool bExpandToLongForm(TokenVec* pCmdTknVec);
@@ -48,7 +48,7 @@ namespace Interface
   
   // external
   static bool bSpawnJob_connector(Job* pJob);
-  static bool bSpawnJob_prompt(Job* pJob);
+  static bool bSpawnJob_session(Job* pJob);
   
   // internal
   static void vSpawnJob_dedicated(Job* pJob);

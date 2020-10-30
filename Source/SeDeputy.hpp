@@ -54,7 +54,7 @@ namespace Prompt
   
     void vCreateSession(void);
 
-    bool bExecutePipeline(void);
+    bool bProcessPipelineResults(void);
   
     Job* pJob(void);
     void vJob(Job* pJob);

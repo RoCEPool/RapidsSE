@@ -1326,15 +1326,6 @@ eEC Jobs::eJob_checkCluster(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* post-execute job function                                                  */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_post(Job* pJob)
-{
-  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-  pJob->vPrintResult(eResponse);
-}
-
-/*----------------------------------------------------------------------------*/
 /* pre-send job function                                                      */
 /*----------------------------------------------------------------------------*/
 JOBS_fn(vJob_send)
