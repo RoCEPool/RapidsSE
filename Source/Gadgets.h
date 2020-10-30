@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Pool.h"
+#include "Structures.h"
 
 //------------------------------------------------------------------------------
 
@@ -99,7 +99,6 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 #include "Decider.hpp"
 #include "EnumFlags.hpp"
 #include "FreqDist.hpp"
-#include "HshLib.hpp"
 #include "HV.hpp"
 #include "MemTest.hpp"
 #include "NextGid.hpp"
@@ -107,8 +106,6 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 #include "PtnLib.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"
-#include "Slab.hpp"
-#include "SlabAllocator.hpp"
 #include "Sleep.hpp"
 #include "Scan.hpp"
 #include "Sprint.hpp"

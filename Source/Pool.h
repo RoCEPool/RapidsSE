@@ -42,6 +42,8 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "Heap.hpp"
 #include "ObjectsInPool.hpp"
 #include "Region.hpp"
+#include "Slab.hpp"
+#include "SlabAllocator.hpp"
 
 
 extern BufferPool* gpBufferPool;
