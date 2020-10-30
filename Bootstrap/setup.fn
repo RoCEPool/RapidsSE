@@ -785,8 +785,8 @@ function askMemSize() {
       continue
     fi
 
-    if [[ ${line} -lt "${MINIMUM_MEM_SIZE}" ]]; then
-      echo "Invalid input: memory segment size must be at least 4GB."
+    if [[ ${line} -lt "${MINIMUM_SHM_SIZE}" ]]; then
+      echo "Invalid input: memory segment size must be at least ${MINIMUM_SHM_SIZE} GB."
       continue
     fi
 
@@ -1276,7 +1276,7 @@ function collectHostSizeInfo() {
   local nodeName
   local tempFile
 
-  tempFile=$(mktemp tmp.XXXXXXXXXX)
+  tempFile=$(mktemp)
 
   debugPrint "About to collect the CPU/memory/SHM stats from each node and write them to ${tempFile}"
 
@@ -1338,10 +1338,12 @@ function collectHostSizeInfo() {
   done < "${tempFile}"
 
   if [ "${DEBUG}" -eq 1 ]; then
+    echo ""
     declare -p NODE_CORE_COUNT
     declare -p NODE_TOTAL_MEM
     declare -p NODE_TOTAL_SHM
     declare -p NODE_FREE_SHM
+    echo ""
   fi
 
   rm -f "${tempFile}" &>/dev/null || true
@@ -1378,24 +1380,134 @@ function updateDefaults() {
   local minFreeShm
 
   minCoreCount="$(arrayGetMinNonNegativeValue "${sortedCoreCount[@]}")"
-  minTotalMem="$(arrayGetMinNonNegativeValue "${sortedTotalMem[0]}")"
-  minTotalShm="$(arrayGetMinNonNegativeValue "${sortedTotalShm[0]}")"
-  minFreeShm="$(arrayGetMinNonNegativeValue "${sortedFreeShm[0]}")"
+  minTotalMem="$(arrayGetMinNonNegativeValue "${sortedTotalMem[@]}")"
+  minTotalShm="$(arrayGetMinNonNegativeValue "${sortedTotalShm[@]}")"
+  minFreeShm="$(arrayGetMinNonNegativeValue "${sortedFreeShm[@]}")"
 
-  debugPrint "minCoreCount = ${minCoreCount}"
-  debugPrint "minTotalMem  = ${minTotalMem}"
-  debugPrint "minTotalShm  = ${minTotalShm}"
-  debugPrint "minFreeShm   = ${minFreeShm}"
+  debugPrint "\nMinimum Cluster Capabilities:" \
+             "\n  minCoreCount = ${minCoreCount}" \
+             "\n  minTotalMem  = ${minTotalMem}" \
+             "\n  minTotalShm  = ${minTotalShm}" \
+             "\n  minFreeShm   = ${minFreeShm}" \
+             "\n"
 
 
-  # TODO: How do we set the partitions, threads and shm from this?
-  # TODO: Account for the fact that the minimum values may be -1.
+  # System Sizing Recommendations:
+  # -----------------------------
 
-  # Partitions should be equal to the number of cores, with a minimum of 1.
+  # Partitions should be equal to half the number of cores, with a minimum of 1
+  # and a maximum of 32 (currently).
   
+  # Threads should be set to the number of cores, with a minimum of 8 threads
+  # or #partitions + 6, whichever is greater. There is no default maximum value.
 
-  # Threads should be 4x partitions + 8. Minimum 16.
-  # Memory should be set to 95% of system RAM. Minimum 4GB.
+  # Memory should be set to the total size of the system's shared memory device
+  # (/dev/shm) with a hard maximum of 95% of the total system RAM. 
+  
+  # Examples:
+  #  CPU Cores:   Partitions:   Threads:  Notes:
+  #  ----------   -----------   --------  ------
+  #        1            1           8       1
+  #        2            1           8       1
+  #        4            2           8       1
+  #        6            3           9       2
+  #        8            4          10       2
+  #       10            5          11       2
+  #       12            6          12       3
+  #       16            8          16       3
+  #       20           10          20       3
+  #       32           16          32       3
+  #       40           20          40       3
+  #       64           32          64       3
+  #       80           32          80       3,4
+  #      128           32         128       3,4
+ 
+    # Note 1: Threads are limited to a minimum of 8.
+    # Note 2: Threads are limited to a minimum of partitions + 6.
+    # Note 3: Threads are limited to CPU core count.
+    # Note 4: Partitions are limited to a maximum of 32.
+ 
+  
+  # Total RAM   SE SHM**
+  # ---------   ------
+  #     4 GB      3 GB 
+  #     8 GB      7 GB
+  #    16 GB     15 GB
+  #    32 GB     30 GB
+  #    64 GB     60 GB
+  #    96 GB     91 GB
+  #   128 GB    121 GB 
+  #   256 GB    243 GB
+  #   384 GB    364 GB
+  #   512 GB    486 GB
+  #   768 GB    729 GB
+  #  1024 GB    972 GB
+
+    # ** If the total size of /dev/shm is smaller then SE's shared memory
+    # segment is limited to this smaller size.
+
+
+  # If the installer cannot determine any system parameters then the following
+  # defaults will be used:
+  #  partitions :  8 
+  #  threads    : 16
+  #  memory     : 60 GB
+
+
+  # Account for the fact that the minimum values may be -1.
+  if [ "${minCoreCount}" -gt 0 ]; then
+    NODE_CFG_DEFAULT_PARTITIONS=$((minCoreCount / 2))
+
+    # Check for minimum partitions
+    if [ "${NODE_CFG_DEFAULT_PARTITIONS}" -le 0 ]; then 
+      NODE_CFG_DEFAULT_PARTITIONS=1
+    fi
+
+    # Check for maximum partitions
+    if [ "${NODE_CFG_DEFAULT_PARTITIONS}" -gt "${MAXIMUM_NUM_PARTITIONS}" ]; then
+      NODE_CFG_DEFAULT_PARTITIONS="${MAXIMUM_NUM_PARTITIONS}"
+    fi
+
+    # Start the threads at partitions + 6
+    NODE_CFG_DEFAULT_THREADS=$((NODE_CFG_DEFAULT_PARTITIONS + 6))
+
+    # If number of cores is greater then use that
+    if [ "${minCoreCount}" -gt "${NODE_CFG_DEFAULT_THREADS}" ]; then
+      NODE_CFG_DEFAULT_THREADS="${minCoreCount}"
+    fi
+
+    # Check for the hard minimum number of threads
+    if [ "${NODE_CFG_DEFAULT_THREADS}" -lt "${MINIMUM_NUM_THREADS}" ]; then
+      NODE_CFG_DEFAULT_THREADS="${MINIMUM_NUM_THREADS}"
+    fi
+
+  fi
+
+  # Shared memory.
+  # Need to handle decimal numbers with memory. Bash can typically only handle integers.
+  if [ "$(echo "${minTotalShm} > 0" | bc -l)" -eq 1 ]; then
+
+    # Set the default memory to the total shared memory (rounded down to an integer).
+    NODE_CFG_DEFAULT_MEM="$(echo "scale=0; ${minTotalShm} * 10 / 10" | bc -l)"
+
+    # Check if this is > 95% of the system's memory size (integer rounded)
+    local mem95Pct="$(echo "scale=0; ${minTotalMem} * 95 / 100" | bc -l)"
+
+    if [ "${NODE_CFG_DEFAULT_MEM}" -gt "${mem95Pct}" ]; then
+      NODE_CFG_DEFAULT_MEM="${mem95Pct}"
+    fi
+
+    # Check the minimum
+    if [ "${NODE_CFG_DEFAULT_MEM}" -lt "${MINIMUM_SHM_SIZE}" ]; then
+      errorExit "One of the nodes in the cluster has a smaller shared memory size (/dev/shm) or smaller total RAM than SE supports. SE requires a minimum of ${MINIMUM_RAM_SIZE} GB RAM and ${MINIMUM_SHM_SIZE} GB of shared memory."
+    fi
+  fi
+
+  debugPrint "\nRecommended settings for this cluster are:" \
+             "\nPartitions : ${NODE_CFG_DEFAULT_PARTITIONS}" \
+             "\nThreads    : ${NODE_CFG_DEFAULT_THREADS}" \
+             "\nMemory     : ${NODE_CFG_DEFAULT_MEM} GB" \
+             "\n"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1415,7 +1527,7 @@ function arrayGetMinNonNegativeValue() {
       continue
     fi
 
-    if [ "${min}" -eq -1 ]; then
+    if [ "$(echo "${min} == -1" | bc -l)" -eq 1 ]; then 
       # This is the first min value
       min="$i"
       continue

@@ -7,6 +7,8 @@
 ### Environment Variables                                                   ###
 ###############################################################################
 
+# NO_RESOLVE_HOSTS=1  Skip the check that hostnames are resolvable
+
 
 ###############################################################################
 ### Constants                                                               ###
@@ -34,12 +36,13 @@ readonly NODE_CFG_DEFAULT_PORT="5541"
 readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
          NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
          NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
-         NODE_CFG_DEFAULT_MEM="32"        # in GB, per node. Non-const.
+         NODE_CFG_DEFAULT_MEM="60"        # in GB, per node. Non-const.
 readonly NODE_CFG_DEFAULT_PARAMS=""
 
-readonly MINIMUM_MEM_SIZE="4"
+readonly MINIMUM_RAM_SIZE="4"
+readonly MINIMUM_SHM_SIZE="3"
 readonly MINIMUM_NUM_THREADS="8"
-
+readonly MAXIMUM_NUM_PARTITIONS="32" # for now
 
 ###############################################################################
 ### Significant Global Variables                                            ###
@@ -72,17 +75,20 @@ NODE_SEQ_NUM=0
 # The name of the current node, given in the --name argument to the script.
 CURRENT_NODE_NAME=""
 
-# The number of cores on each node, keyed by node name.
+# Associative array of the number of cores on each node, keyed by node name.
 declare -gA NODE_CORE_COUNT
 
-# The amount of memory (in GB) on each node, keyed by node name.
+# Associative array of the amount of memory (in GB) on each node, keyed by node name.
 declare -gA NODE_TOTAL_MEM
 
-# The maximum size of the SHM segment (in GB) on each node, keyed by node name.
+# Associative array of the maximum size of the SHM segment (in GB) on each node, 
+# keyed by node name.
 declare -gA NODE_TOTAL_SHM
 
-# The current size of the SHM segment (in GB) that is available on each node, keyed by node name.
+# Associative array of the current size of the SHM segment (in GB) that is 
+# available on each node, keyed by node name.
 declare -gA NODE_FREE_SHM
+
 
 ###############################################################################
 ### Functions                                                               ###

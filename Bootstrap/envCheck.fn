@@ -75,7 +75,7 @@ function validateHostsAreResolvable() {
   local host
   local output
 
-  if [ "${NO_RESOLVE_HOSTS:-x}" == "x" ]; then
+  if [ "${NO_RESOLVE_HOSTS:-x}" != "x" ]; then
     debugPrint "Skipping host resolution."
     return
   fi
