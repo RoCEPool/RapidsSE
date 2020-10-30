@@ -92,10 +92,10 @@ void SeDeputy::vDeputyLoop(void)
   
   while (m_bContinue) {
 
-    m_pThread->m_pMutex->vLock(m_pSePrompt);
+    m_pThread->m_oMutex.vLock(m_pSePrompt);
     m_bAvailable = true;
-    m_pThread->m_pMutex->vWait(m_pSePrompt);
-    m_pThread->m_pMutex->vUnlock(m_pSePrompt);
+    m_pThread->m_oMutex.vWait(m_pSePrompt);
+    m_pThread->m_oMutex.vUnlock(m_pSePrompt);
   
     if (! m_bContinue)
       break;
@@ -123,6 +123,8 @@ void SeDeputy::vExecuteJob(void)
   
   m_oTimer.vStart();
   
+  if (m_pSession != m_pJob->pSession())
+    vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
   RASSERT(m_pSession == m_pJob->pSession());
   
   Api::vExecuteJob(m_pJob);
@@ -268,7 +270,7 @@ Mutex* SeDeputy::pMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return m_pThread->m_pMutex;
+  return &m_pThread->m_oMutex;
 }
 
 /*----------------------------------------------------------------------------*/

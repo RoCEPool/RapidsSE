@@ -56,13 +56,13 @@ void Thread::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
-: Focal(CN_THREAD,AM::iNextThreadId(),C_UNKNOWN)
+: Focal(CN_THREAD,AM::iNextThreadId(),C_UNKNOWN),
+  m_oMutex(MK_THREAD,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_eThreadState = HS_NONE;
   m_eDedicated   = CN_NONE;
-  m_pMutex       = new Mutex(MK_THREAD,this);
 
   m_pTask        = nullptr;
   m_nAssignedTasks = 0;
@@ -86,7 +86,6 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  delete m_pMutex;
   delete m_pPsxThd;
   
   vIncStepNo(); -- gixThread;

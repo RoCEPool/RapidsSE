@@ -57,7 +57,7 @@ namespace Sessions
   
     s4K      m_sToDo;            // prompt to do
       
-    Mutex*   m_pSsnMutex;           // 
+    Mutex    m_oSsnMutex;           //
     
   private:
 

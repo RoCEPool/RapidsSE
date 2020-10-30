@@ -418,7 +418,7 @@ void Api::vMutexLock(Session* pSession, Job* pJob)
 {
   _static_
   
-  pSession->m_pSsnMutex->vLock(pSession);
+  pSession->m_oSsnMutex.vLock(pSession);
         
   pJob->vJobState(JS_LOCKED);
 }
@@ -434,7 +434,7 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
     
   pJob->vJobState(JS_RUNNING);
   
-  pSession->m_pSsnMutex->vUnlock(pSession);
+  pSession->m_oSsnMutex.vUnlock(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,7 +446,7 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
-    pSession->m_pSsnMutex->vWait(pSession);
+    pSession->m_oSsnMutex.vWait(pSession);
     
   } while (pJob->eJobState() != JS_SIGNALLED);
 

@@ -29,7 +29,7 @@ namespace Prompt
   {
   private:
   
-    Mutex*    m_pMutex;      // mutex for prompt
+    Mutex     m_oMutex;      // mutex for prompt
 
   
     Input*    m_pInput;      // input processor from session

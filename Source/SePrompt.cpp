@@ -25,7 +25,8 @@ __aFooterFunction(SePrompt)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
-: Focal(CN_SEPROMPT,AM::iNextPromptId(),C_UNKNOWN)
+: Focal(CN_SEPROMPT,AM::iNextPromptId(),C_UNKNOWN),
+  m_oMutex(MK_THREAD,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -33,7 +34,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   i8 iPartition = 0;
   
-  m_pMutex = new Mutex(MK_THREAD,this);
   
   m_nDeputies = 0;
   
@@ -95,7 +95,6 @@ SePrompt::~SePrompt(void) noexcept(false)
       m_paSeDeputy[i_Deputy] = nullptr;
     }
   }
-  delete m_pMutex;
   
   delete m_pInput;
   
@@ -357,14 +356,14 @@ void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   if (! pSeDeputy->pJob()->bHasTag_bg()) {
-    m_pMutex->vLock(this);
+    m_oMutex.vLock(this);
   
     pSeDeputy->pMutex()->vLock(this);
     pSeDeputy->pMutex()->vSignal(this);
     pSeDeputy->pMutex()->vUnlock(this);
 
-    m_pMutex->vWait(this);
-    m_pMutex->vUnlock(this);
+    m_oMutex.vWait(this);
+    m_oMutex.vUnlock(this);
     
     while (! pSeDeputy->bAvailable())
       AM::vNapMsec(10,CN_SEPROMPT);
@@ -969,7 +968,7 @@ Mutex* SePrompt::pMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pMutex;
+  return &m_oMutex;
 }
 
 /*----------------------------------------------------------------------------*/
