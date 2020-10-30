@@ -18,6 +18,7 @@ fi
 function validateEnvironment() {
 
   echo "Validating the installation environment on all nodes..."
+  echo ""
 
   # Check that all hosts are resolvable.
   validateHostsAreResolvable
@@ -37,13 +38,15 @@ function validateEnvironment() {
 
   # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
 
-  # TODO: Check if the SE reserved memory size exceeds RAM.
+  # Check if the SE reserved memory size exceeds /dev/shm total size (if this exists).
+  validateShmAgainstTotalSize
 
-  # TODO: Check if the SE reserved memory size exceeds /dev/shm total size (if this exists).
+  # Check if the SE reserved memory size exceeds 95% of RAM.
+  validateShmAgainstRAM
 
   # TODO: Check if the SE reserved memory size exceeds the available SHM space.
 
-  # TODO: Check if the number of threads is more than 2x number of physical cores.
+  # TODO: Check if the number of threads is more than the number of physical cores.
 
   # Check that the installation dir can be created (if not already) on each node,
   # and that it is writable.
@@ -56,8 +59,6 @@ function validateEnvironment() {
   # TODO: Check that node names are unique.
 
   # TODO: Check that there is at least one hostname.
-
-  # TODO: Check that each hostname is resolvable.
 
   # TODO: Check that NODE_SEQ_NUM is always non-zero if we read in an existing config
 
@@ -274,6 +275,55 @@ function validateHostsReachableBySsh() {
   done
 
   debugPrint "Successfully validated that all nodes can be reached by SSH."
+}
+
+  
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Validates that the shared memory segment does not exceed the size of shared
+# memory on any node.
+# Params: None
+
+function validateShmAgainstTotalSize() {
+
+  local nodeName
+  local host
+  local nodeShm   # SE SHM allocated for a given node
+  local shmTotal  # OS SHM on /dev/shm
+
+  for nodeName in "${!NODE_TOTAL_SHM[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
+    shmTotal="${NODE_TOTAL_SHM[${nodeName}]}"
+
+    if [ "$(echo "${nodeShm} > ${shmTotal}" | bc -l)" -eq 1 ]; then
+      errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds the allocation of shared memory on that host (${shmTotal}GB). Refer to \"df -h /dev/shm\" on that host."
+    fi
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Check if the SE shared memory size exceeds 95% of RAM on any node.
+# Params: None
+
+function validateShmAgainstRAM() {
+
+  local nodeName
+  local host
+  local nodeShm   # SE SHM allocated for a given node
+  local ram       # OS total RAM
+
+  for nodeName in "${!NODE_TOTAL_MEM[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
+    ram="${NODE_TOTAL_MEM[${nodeName}]}"
+  
+    if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ]; then
+      errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds 95% of total RAM on that host (${ram}GB)."
+    fi
+  done
 }
 
 

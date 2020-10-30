@@ -79,10 +79,11 @@ CURRENT_NODE_NAME=""
 declare -gA NODE_CORE_COUNT
 
 # Associative array of the amount of memory (in GB) on each node, keyed by node name.
+# Values can be decimal values.
 declare -gA NODE_TOTAL_MEM
 
 # Associative array of the maximum size of the SHM segment (in GB) on each node, 
-# keyed by node name.
+# keyed by node name. Values can be decimal values.
 declare -gA NODE_TOTAL_SHM
 
 # Associative array of the current size of the SHM segment (in GB) that is 
