@@ -133,11 +133,19 @@ eEC Api::ePrepareJob(Job**     ppJob,
     return EC_LOW_MEMORY;
   
   Job* pJob;
+  
+  ReqTuple xReqTuple;
+  
+  if (! pSession)
+    axReqTuple = &xReqTuple;
+  
   if (pLitTknVec)
     pJob = new Job(axReqTuple, pLitTknVec);
   else
     pJob = new Job(axReqTuple);
   
+  axReqTuple->m_iReqNo++;
+
   // To GO : For DEMO
   // create tags in the job for the params from the literal token vector
   if (pLitTknVec && pLitTknVec->nItems()) {

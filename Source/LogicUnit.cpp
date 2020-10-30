@@ -1915,6 +1915,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SQL: ArgGet(iArg); //  set sql no
         dLU0(EO_SQL);
         aRluCommon->m_iSql = iArg;
+        vRlu_QUERYFRAG(pLU,iArg);
         break;//+endCase
         
       case EO_TRACEOFF: ArgNil(); // set trace off

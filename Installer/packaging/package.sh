@@ -16,10 +16,10 @@ set -Eeo pipefail
 ### Environment Variables                                                   ###
 ###############################################################################
 # Set these environment variables to non-null values to use them:
-#  DEBUG        - print extra debugging information
-#  NO_MOD_CHECK - don't check for modified files that haven't been committed.
-#  NO_BUILD     - don't compile the software
-
+#  DEBUG         - print extra debugging information
+#  NO_MOD_CHECK  - don't check for modified files that haven't been committed.
+#  NO_BUILD      - don't compile the software
+#  NO_SHELLCHECK - don't run shellcheck on the scripts beforehand.
 
 ###############################################################################
 ### Constants                                                               ###

@@ -68,6 +68,16 @@ void LogicTimer::vEndTmr(eEO eCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* query fragment                                                             */
+/*----------------------------------------------------------------------------*/
+void LogicTimer::vQueryFrag(i8 iQueryFrag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICTIMER,_FOOTER_);
+  
+  m_iQueryFrag = iQueryFrag;
+}
+
+/*----------------------------------------------------------------------------*/
 /* report                                                                     */
 /*----------------------------------------------------------------------------*/
 void LogicTimer::vReport(void)

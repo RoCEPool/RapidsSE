@@ -276,7 +276,7 @@ bool SePrompt::bGetCommand(SeDeputy* pSeDeputy)
   
   // prompt has finessed the final input token vector at this stage
   
-  m_xReqTuple.m_iReqNo++;
+  //m_xReqTuple.m_iReqNo++;
   
   vLogCommand();
   
