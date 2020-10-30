@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace Locking
 {
   class SP_Mutex : public SP
   {

@@ -2,7 +2,7 @@
 /* Mutex.cpp -- Mutex (posix pthread mutex and condition variable)            */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Locking.h"
 
 
 Atomic gixMutex;
@@ -15,7 +15,7 @@ Atomic gixMutex_err;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Mutex* Resources::_pMutex(void* aAddr)
+Mutex* Locking::_pMutex(void* aAddr)
 {
   Mutex* pMutex = reinterpret_cast<Mutex*>(aAddr);
   
@@ -25,38 +25,10 @@ Mutex* Resources::_pMutex(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* Mutex::operator new(size_t)
-{
-  void* pMutex = HeapMem::pAllocate(CN_MUTEX);
-  
-  return pMutex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Mutex::operator new(size_t, Mutex* pMutex)
-{
-  return pMutex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void Mutex::operator delete(void* pMutexAddress)
-{
-  Object* pObject = reinterpret_cast<Object*>(pMutexAddress);
-  
-  HeapMem::vFree(pObject);
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Mutex::Mutex(eMK eKind, Focal* pIsFor)
-: Resource(CN_MUTEX,pIsFor)
+: Object(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -105,23 +77,14 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
   RASSERT(! iResult);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (AM::bAttached()) AM::pResourceTracker()->vIncMutexOpen();
-  
+    
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 #endif
   
   _checkInitialised_(CN_MUTEX);
-  
-  SP_Gid spId;
-  
-  vIncStepNo(); ++ gixMutex;
-  AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
-              "Mutex -%s construct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
-              aMK[m_eMutex],
-              spId.sz(m_pIsFor->m_iFocalId),
-              * gixMutex, * gixMutex_err);
+    
+  ++ gixMutex;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
 }
@@ -150,19 +113,12 @@ Mutex::~Mutex(void) noexcept(false)
   iResult = pthread_condattr_destroy(&m_xCondAttr);
   RASSERT(! iResult);
 
-  if (AM::bAttached()) AM::pResourceTracker()->vDecMutexOpen();
     
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif
   
-  vIncStepNo(); -- gixMutex;
-  SP_Gid spId;
-  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
-              "Mutex -%s destruct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
-              aMK[m_eMutex],
-              spId.sz(m_pIsFor->m_iFocalId),
-              * gixMutex, * gixMutex_err);
+  -- gixMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,12 +161,7 @@ void Mutex::vBroadcast(void)
   gpAttachMap->m_oStatistics.Mutex.m_nBroadcasts++;
 #endif
   
-  vIncStepNo(); ++ m_ixBroadcast;
-  AM::vLogRes(SL_INF,this,RA_MTX_BROADCAST,
-              "Mutex -%s broadcast() |m_ixBroadcast=%lld|"_Stz, //!format-LogRes
-              aMK[m_eMutex],
-              * m_ixBroadcast,
-              C_VARGS_END);
+  ++ m_ixBroadcast;
 
   // mutex does not have to be locked (double-check this)
   
@@ -226,9 +177,6 @@ void Mutex::vBroadcast(void)
   // failure -- some error has occurred
 
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_cond_broadcast() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,9 +206,6 @@ bool Mutex::bIsLocked(void)
   // failure -- some error has occurred
 
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_lock() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
 
   return false;
 }
@@ -307,12 +252,7 @@ bool Mutex::bLock(Focal* pLockFor)
     RASSERT(! m_pLockedBy);
     m_pLockedBy = pLockFor;
 
-    vIncStepNo(); ++ m_ixLock;
-    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                "Mutex -%s locked |m_ixLock=%lld|"_Stz, //!format-LogRes
-                aMK[m_eMutex],
-                * m_ixLock,
-                C_VARGS_END);
+    ++ m_ixLock;
     return true;
   }
   
@@ -320,12 +260,7 @@ bool Mutex::bLock(Focal* pLockFor)
   // success: busy -- mutex has not been locked by calling thread
   
   if (EBUSY == iRetVal) {
-    vIncStepNo(); ++ m_ixBusy;
-    AM::vLogRes(SL_INF,this,RA_MTX_BUSY,
-                "Mutex -%s busy |m_ixBusy=%lld|"_Stz, //!format-LogRes
-                aMK[m_eMutex],
-                * m_ixBusy,
-                C_VARGS_END);
+    ++ m_ixBusy;
     return false;
   }
   
@@ -333,9 +268,6 @@ bool Mutex::bLock(Focal* pLockFor)
   // failure -- some error has occurred
   
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_trylock() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
   return false;
 }
 
@@ -354,13 +286,7 @@ void Mutex::vLock(Focal* pLockFor)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vIncStepNo(); ++ m_ixLock;
-  AM::vLogRes(SL_INF,this,RA_MTX_LOCK,
-              "Mutex -%s lock() |m_ixLock=%lld|"_Stz, //!format-LogRes
-              aMK[m_eMutex],
-              * m_ixLock,
-              C_VARGS_END);
-  
+  ++ m_ixLock;
   
   // DO NOT TOUCH m_pLockedBy
   
@@ -374,25 +300,7 @@ void Mutex::vLock(Focal* pLockFor)
     RASSERT(! m_pLockedBy);
     m_pLockedBy = pLockFor;
     
-    vIncStepNo(); ++ m_ixLocked;
-    
-    SP_Gid spId;
-    
-    if (m_pIsFor == pLockFor)
-      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex -%s %s locked by owner |m_ixLocked=%lld|"_Stz, //!format-LogRes
-                  aMK[m_eMutex],
-                  spId.sz(m_pIsFor->m_iFocalId),
-                  * m_ixLocked,
-                  C_VARGS_END);
-    else
-      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex -%s %s locked by %p |m_ixLocked=%lld|"_Stz, //!format-LogRes
-                  aMK[m_eMutex],
-                  spId.sz(m_pIsFor->m_iFocalId),
-                  pLockFor,
-                  * m_ixLocked,
-                  C_VARGS_END);
+    ++ m_ixLocked;
     
     return;
   }
@@ -401,9 +309,6 @@ void Mutex::vLock(Focal* pLockFor)
   // failure -- some error has occurred
   
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_lock() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,13 +347,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
 #endif
   
-  vIncStepNo(); ++ m_ixWaitTimed;
-  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
-              "-%s wait for signal or timeout(%lldus) |m_ixWaitTimed=%lld|"_Stz, //!format-LogRes
-              aMK[m_eMutex],
-              iMicroSeconds,
-              * m_ixWaitTimed,
-              C_VARGS_END);
+  ++ m_ixWaitTimed;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -470,12 +369,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
     
-    vIncStepNo(); ++ m_ixSignaled;
-    AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
-                "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
-                aMK[m_eMutex],
-                * m_ixSignaled,
-                C_VARGS_END);
+    ++ m_ixSignaled;
     
     return;
   }
@@ -491,12 +385,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-    vIncStepNo(); ++ m_ixTimedout;
-    AM::vLogRes(SL_INF,this,RA_MTX_TIMEDOUT,
-                "Mutex -%s owner wait has timedout; locked reacquired |m_ixTimedout=%lld|"_Stz, //!format-LogRes
-                aMK[m_eMutex],
-                * m_ixTimedout,
-                C_VARGS_END);
+    ++ m_ixTimedout;
     return;
   }
   
@@ -504,9 +393,6 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
   // failure -- some error has occurred
   
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_cond_wait() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -527,12 +413,7 @@ void Mutex::vSignal(Focal* pLockedBy)
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
 #endif
   
-  vIncStepNo(); ++ m_ixSignal;
-  AM::vLogRes(SL_INF,this,RA_MTX_SIGNAL,
-              "Mutex -%s signal() |m_ixSignal=%lld|"_Stz, //!format-LogRes
-              aMK[m_eMutex],
-              * m_ixSignal,
-              C_VARGS_END);
+  ++ m_ixSignal;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_cond_signal(&m_xCond);                    // non-blocking
@@ -551,9 +432,7 @@ void Mutex::vSignal(Focal* pLockedBy)
   // failure -- some error has occurred
 
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_cond_signal() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,15 +461,8 @@ void Mutex::vUnlock(Focal* pLockedBy)
   // success -- mutex has been unlocked by calling thread
   
   if (0 == iRetVal) {
-    vIncStepNo(); ++ m_ixUnlock;
-    
-    AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
-                "Mutex -%s unlocked by %s |m_ixUnlock=%lld|"_Stz, //!format-LogRes
-                aMK[m_eMutex],
-                (m_pIsFor == pLockedBy) ? "owner"_Stz : "non-owner"_Stz,
-                * m_ixUnlock,
-                C_VARGS_END);
-    
+    ++ m_ixUnlock;
+        
     return;
   }
   
@@ -598,11 +470,6 @@ void Mutex::vUnlock(Focal* pLockedBy)
   // failure -- some error has occurred
   
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_unlock() error; iRetVal=%lld |gixMutex_err=%lld|"_Stz, //!format-LogRes
-              iRetVal,
-              * gixMutex_err,
-              C_VARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -628,12 +495,7 @@ void Mutex::vWait(Focal* pLockedBy)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  vIncStepNo(); ++ m_ixWaitIndef;
-  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_SIGNAL,
-              "-%s wait for signal; mutex will be dropped |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
-              aMK[m_eMutex],
-              * m_ixWaitIndef,
-              C_VARGS_END);
+  ++ m_ixWaitIndef;
 
   // clear tracking of the mutex lock state
   m_pWaitedBy = m_pLockedBy;
@@ -653,12 +515,7 @@ void Mutex::vWait(Focal* pLockedBy)
     m_pLockedBy = m_pWaitedBy;
     m_pWaitedBy = nullptr;
 
-    vIncStepNo(); ++ m_ixSignaled;
-    AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
-                "Mutex -%s owner was signaled; mutex reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
-                aMK[m_eMutex],
-                * m_ixSignaled,
-                C_VARGS_END);
+    ++ m_ixSignaled;
     return;
   }
   
@@ -666,9 +523,6 @@ void Mutex::vWait(Focal* pLockedBy)
   // failure -- some error has occurred
 
   ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_cond_wait() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
 }
 
 /*----------------------------------------------------------------------------*/

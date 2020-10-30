@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace Locking
 {
-  class Mutex : public Resource
+  class Mutex : public Object
   {
   public:
     eMK     m_eMutex;    // kind of mutex
@@ -33,10 +33,6 @@ namespace Resources
     // must be last
     Footer m_xFooter;
   
-    void* operator new(size_t);
-    void* operator new(size_t, Mutex* pMutex);
-    void operator delete(void* pMutexAddress);
-
     Mutex(eMK eKind, Focal* pIsFor);
    ~Mutex(void) noexcept(false);
   
