@@ -78,6 +78,19 @@ void vRlu_EXIT(void* aLU)
   pLogicUnit->vExit();
 }
 
+/*----------------------------------------------------------------------------*/
+/* add query fragment EO timer                                                */
+/*----------------------------------------------------------------------------*/
+void vRlu_QUERYFRAG(void* aLU, i8 iQueryFrag)
+{
+  _static_
+  
+  if (AM::bRLUTimer()) {
+    LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+    pLogicUnit->m_pLogicTimer->vQueryFrag(iQueryFrag);
+  }
+}
 
 
 /*----------------------------------------------------------------------------*/

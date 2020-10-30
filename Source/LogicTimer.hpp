@@ -25,6 +25,7 @@ namespace Expressions
   
     void vBeginTmr(void);
     void vEndTmr(eEO eCode);
+    void vQueryFrag(i8 iQueryFrag);
 
     void vReport(void);
 
