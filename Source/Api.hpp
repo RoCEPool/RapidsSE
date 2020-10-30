@@ -54,17 +54,11 @@ namespace Interface
   static void vSpawnJob_received(Job* pJob);
   static void vSpawnJob_service(Job* pJob);
   static void vSpawnJob_system(Job* pJob);
-  static void vSpawnJobAndWait(Job* pJob);
   
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   
   static void vWaitForAllJobsToComplete(void);
     
-  //! TO GO
-  static void vSpawnJobDedicated(Job* pJob);
-  static bool bReseedJob(Session* pSession, Job* pJob);
-  
-  
   private:
   
   static void vCreateTaskForJob(Job* pJob);

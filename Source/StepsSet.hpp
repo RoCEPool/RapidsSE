@@ -656,7 +656,6 @@ public:
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
-  void vJobReseed(void);
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
   void vJobRowsInvalidFetch(void);
