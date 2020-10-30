@@ -63,10 +63,12 @@ void Api::vDeleteJob(Job** ppJob)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Session* pSession, Job* pJob)
+void Api::vExecuteJob(Job* pJob)
 {
   _static_
   
+  Session* pSession = pJob->pSession();
+
   Api::vMutexLock(pSession,pJob);
     
   // spawn the job
@@ -86,18 +88,22 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
 
 
 /*----------------------------------------------------------------------------*/
-/* prepare job                                                                     */
+/* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Job**     ppJob,
+                     Session*  pSession,
                      TokenVec* pCmdTknVec,
                      TokenVec* pLitTknVec,
-                     TagSet*   pTagSet,
+                     TagSet*   pExtraTagSet,
                      ReqTuple* axReqTuple)
 {
   _static_
 
   *ppJob = nullptr;
 
+
+  //axReqTuple->m_i_Session = pSession->m_i_Session;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
@@ -119,7 +125,7 @@ eEC Api::ePrepareJob(Job**     ppJob,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
+  if ( ! AM::bParseCmd(pExtraTagSet,pCmdTknVec) )
     return EC_INVALID_COMMAND;
       
       
@@ -169,7 +175,7 @@ eEC Api::ePrepareJob(Job**     ppJob,
     //pJobTags->vContentDump();
   }
   
-  pJob->ePopulateJob(pTagSet);
+  pJob->ePopulateJob(pExtraTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
@@ -968,8 +974,6 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
   
   return true;
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

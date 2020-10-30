@@ -13,8 +13,9 @@ namespace Interface
   static void     vFreeSession(Session* pSession);
 
   static void     vDeleteJob(Job** ppJob);
-  static void     vExecuteJob(Session* pSession, Job* pJob);
+  static void     vExecuteJob(Job* pJob);
   static eEC      ePrepareJob(Job**     ppJob,
+                              Session* pSession, 
                               TokenVec* pCmdTknVec,
                               TokenVec* pLitTknVec,
                               TagSet*   pTagSet,

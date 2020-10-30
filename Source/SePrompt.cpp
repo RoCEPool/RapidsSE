@@ -322,6 +322,7 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
   pSeDeputy->vJob(nullptr);
   
   eEC eError = Api::ePrepareJob(&pJob,
+                                pSeDeputy->pSession(),
                                 m_pInpTknVec,
                                 m_pLitTknVec,
                                 &m_oExtTagSet,

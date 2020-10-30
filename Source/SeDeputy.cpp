@@ -123,7 +123,9 @@ void SeDeputy::vExecuteJob(void)
   
   m_oTimer.vStart();
   
-  Api::vExecuteJob(m_pSession,m_pJob);
+  RASSERT(m_pSession == m_pJob->pSession());
+  
+  Api::vExecuteJob(m_pJob);
   
   m_oTimer.vUpdate();
 

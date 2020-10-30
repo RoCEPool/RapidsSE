@@ -83,7 +83,7 @@ void Step::vApiExecuteRequest(void)
   Job* pJob = nullptr;
   TagSet oTagSet;
   
-  eError = Api::ePrepareJob(&pJob,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
+  eError = Api::ePrepareJob(&pJob,pSession,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -166,7 +166,7 @@ void Step::vApiSpawnDemon(void)
   TagSet oTagSet;
   ReqTuple xReqTuple;
   
-  eEC eError = Api::ePrepareJob(&pJob,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
+  eEC eError = Api::ePrepareJob(&pJob,nullptr,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
