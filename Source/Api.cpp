@@ -136,8 +136,9 @@ eEC Api::ePrepareJob(Job**     ppJob,
   
   ReqTuple xReqTuple;
   
-  if (! pSession)
+  if (! pSession) {
     axReqTuple = &xReqTuple;
+  }
   
   if (pLitTknVec)
     pJob = new Job(axReqTuple, pLitTknVec);

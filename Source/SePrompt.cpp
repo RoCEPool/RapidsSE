@@ -315,11 +315,13 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
 
   m_xReqTuple.m_i_Session = pSeDeputy->pSession()->m_i_Session;
   
-  pSeDeputy->vJob(nullptr);
+  RASSERT(! pSeDeputy->pJob());
+//  pSeDeputy->vJob(nullptr);
+//
+//  Job* pJob = pSeDeputy->pJob();
+//  pSeDeputy->vJob(nullptr);
   
-  Job* pJob = pSeDeputy->pJob();
-  pSeDeputy->vJob(nullptr);
-  
+  Job* pJob = nullptr;
   eEC eError = Api::ePrepareJob(&pJob,
                                 pSeDeputy->pSession(),
                                 m_pInpTknVec,
@@ -327,6 +329,10 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
                                 &m_oExtTagSet,
                                 &m_xReqTuple);
   
+  if (pSeDeputy->pSession() != pJob->pSession())
+    vTrace("bPrepareJob %p v %p\n"_Stz,pSeDeputy->pSession(),pJob->pSession());
+  RASSERT(pSeDeputy->pSession() == pJob->pSession());
+
   pSeDeputy->vJob(pJob);
   
   if (eError) {

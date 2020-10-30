@@ -92,7 +92,10 @@ void SeDeputy::vDeputyLoop(void)
   
   while (m_bContinue) {
 
+    RASSERT(!m_pJob);
+
     m_pThread->m_oMutex.vLock(m_pSePrompt);
+    RASSERT(!m_pJob);
     m_bAvailable = true;
     m_pThread->m_oMutex.vWait(m_pSePrompt);
     m_pThread->m_oMutex.vUnlock(m_pSePrompt);
@@ -100,6 +103,9 @@ void SeDeputy::vDeputyLoop(void)
     if (! m_bContinue)
       break;
     
+    RASSERT(m_pJob);
+    if (m_pSession != m_pJob->pSession())
+      vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
     vExecuteJob();
 
     if (! m_pJob->bHasTag_bg()) {
@@ -261,6 +267,11 @@ void SeDeputy::vJob(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   m_pJob = pJob;
+  
+  if (m_pSession != m_pJob->pSession())
+    vTrace("vJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
+  RASSERT(m_pSession == m_pJob->pSession());
+
 }
 
 /*----------------------------------------------------------------------------*/

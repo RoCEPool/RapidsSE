@@ -570,7 +570,7 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
   if (C_UNKNOWN == aReqTuple->m_i_Session)
     return nullptr;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(aReqTuple->m_i_Origin);
+  Session* pSession = AM::pSessionArray()->pGetSession(aReqTuple->m_i_Session);
 
   return pSession;
 }
