@@ -792,9 +792,9 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate the SE session                                                    */
+/* spi wait till all jobs completed                                           */
 /*----------------------------------------------------------------------------*/
-void Api::vWaitForAllJobsToComplete(void)
+void Api::vSpinTillAllJobsCompleted(void)
 {
   _static_
   
