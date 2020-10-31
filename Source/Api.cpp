@@ -78,14 +78,17 @@ eEC Api::ePrepareJob(Job**     ppJob,
                      Session*  pSession,
                      TokenVec* pCmdTknVec,
                      TokenVec* pLitTknVec,
-                     TagSet*   pExtraTagSet,
-                     ReqTuple* axReqTuple)
+                     TagSet*   pExtraTagSet)
 {
   _static_
 
+  RASSERT(pSession);
+
   *ppJob = nullptr;
+  Job* pJob = nullptr;;
 
-
+  ReqTuple* axReqTuple = &pSession->m_xReqTuple;
+  
   //axReqTuple->m_i_Session = pSession->m_i_Session;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -115,14 +118,6 @@ eEC Api::ePrepareJob(Job**     ppJob,
       
   if (! AM::bPassesLowMem())
     return EC_LOW_MEMORY;
-  
-  Job* pJob;
-  
-  ReqTuple xReqTuple;
-  
-  if (! pSession) {
-    axReqTuple = &xReqTuple;
-  }
   
   if (pLitTknVec)
     pJob = new Job(axReqTuple, pLitTknVec);

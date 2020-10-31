@@ -307,8 +307,7 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
                                 pSeDeputy->pSession(),
                                 m_pInpTknVec,
                                 m_pLitTknVec,
-                                &m_oExtTagSet,
-                                &pSeDeputy->pSession()->m_xReqTuple);
+                                &m_oExtTagSet);
   
   
   if (eError) {

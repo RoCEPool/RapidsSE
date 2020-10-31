@@ -83,7 +83,7 @@ void Step::vApiExecuteRequest(void)
   Job* pJob = nullptr;
   TagSet oTagSet;
   
-  eError = Api::ePrepareJob(&pJob,pSession,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
+  eError = Api::ePrepareJob(&pJob,pSession,pDmnTknVec,nullptr,&oTagSet);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -158,11 +158,15 @@ void Step::vApiSpawnDemon(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job* pJob = nullptr;
   TagSet oTagSet;
-  ReqTuple xReqTuple;
   
-  eEC eError = Api::ePrepareJob(&pJob,nullptr,pDmnTknVec,nullptr,&oTagSet,&xReqTuple);
+  Session* pSession = Api::pAllocSession(SK_INTERNAL);
+  pSession->vPartition(0);
+
+  eEC eError = Api::ePrepareJob(&pJob,pSession,pDmnTknVec,nullptr,&oTagSet);
   
+
   if (eError) {
+    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
@@ -189,6 +193,8 @@ void Step::vApiSpawnDemon(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  Api::vFreeSession(pSession);
+
   m_pDataStack->vPushInt(true);
   
   delete pDmnTknVec;

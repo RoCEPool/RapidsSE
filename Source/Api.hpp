@@ -18,8 +18,7 @@ namespace Interface
                           Session* pSession,
                           TokenVec* pCmdTknVec,
                           TokenVec* pLitTknVec,
-                          TagSet*   pTagSet,
-                          ReqTuple* axReqTuple);
+                          TagSet*   pTagSet);
 
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
