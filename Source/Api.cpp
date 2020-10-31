@@ -83,11 +83,7 @@ eEC Api::ePrepareJob(Session*  pSession,
 
   RASSERT(pSession);
   RASSERT(! pSession->m_pSsnJob);
-
-  ReqTuple* axReqTuple = &pSession->m_xReqTuple;
-  
-  //axReqTuple->m_i_Session = pSession->m_i_Session;
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
@@ -117,11 +113,11 @@ eEC Api::ePrepareJob(Session*  pSession,
     return EC_LOW_MEMORY;
   
   if (pLitTknVec)
-    pSession->m_pSsnJob = new Job(axReqTuple, pLitTknVec);
+    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple, pLitTknVec);
   else
-    pSession->m_pSsnJob = new Job(axReqTuple);
+    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);
   
-  axReqTuple->m_iReqNo++;
+  pSession->m_xReqTuple.m_iReqNo++;
 
   // To GO : For DEMO
   // create tags in the job for the params from the literal token vector
