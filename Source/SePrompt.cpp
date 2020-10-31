@@ -81,12 +81,14 @@ SePrompt::~SePrompt(void) noexcept(false)
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]) {
       
-      m_paSeDeputy[i_Deputy]->pMutex()->vLock(this);
-      m_paSeDeputy[i_Deputy]->vContinue(false);
-      m_paSeDeputy[i_Deputy]->pMutex()->vSignal(this);
-      m_paSeDeputy[i_Deputy]->pMutex()->vUnlock(this);
+//      m_paSeDeputy[i_Deputy]->pMutex()->vLock(this);
+//      m_paSeDeputy[i_Deputy]->vContinue(false);
+//      m_paSeDeputy[i_Deputy]->pMutex()->vSignal(this);
+//      m_paSeDeputy[i_Deputy]->pMutex()->vUnlock(this);
 
-      while (! m_paSeDeputy[i_Deputy]->bExited())
+      m_paSeDeputy[i_Deputy]->vTerminate();
+      
+      while (! m_paSeDeputy[i_Deputy]->bTerminated())
         AM::vNapMsec(10,CN_SEPROMPT);
 
       delete m_paSeDeputy[i_Deputy];
@@ -329,11 +331,12 @@ void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
   if (! pSeDeputy->pJob()->bHasTag_bg()) {
     m_oMutex.vLock(this);
   
-    pSeDeputy->pMutex()->vLock(this);
-    pSeDeputy->vAvailable(false);
-    pSeDeputy->pMutex()->vSignal(this);
-    pSeDeputy->pMutex()->vUnlock(this);
-
+//    pSeDeputy->pMutex()->vLock(this);
+//    pSeDeputy->vAvailable(false);
+//    pSeDeputy->pMutex()->vSignal(this);
+//    pSeDeputy->pMutex()->vUnlock(this);
+    pSeDeputy->vDeputiseJob();
+    
     m_oMutex.vWait(this);
     m_oMutex.vUnlock(this);
     
@@ -341,11 +344,12 @@ void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
       AM::vNapMsec(10,CN_SEPROMPT);
   }
   else {
-    pSeDeputy->pMutex()->vLock(this);
-    pSeDeputy->vAvailable(false);
-    pSeDeputy->pMutex()->vSignal(this);
-    pSeDeputy->pMutex()->vUnlock(this);
-  }
+//    pSeDeputy->pMutex()->vLock(this);
+//    pSeDeputy->vAvailable(false);
+//    pSeDeputy->pMutex()->vSignal(this);
+//    pSeDeputy->pMutex()->vUnlock(this);
+      pSeDeputy->vDeputiseJob();
+    }
   
   pSeDeputy = nullptr;
 }

@@ -38,29 +38,26 @@ namespace Prompt
 
     bool bContinue(void);
     void vContinue(bool bContinue);
-
-    bool bExited(void);
-    void vExited(bool bExited);
-
-    void vDeputyLoop(void);
-
-    void vDeleteJob(void);
-  
-    void vExecuteJob(void);
-  
     void vCreateSession(void);
 
-    bool bProcessPipelineResults(void);
+    void vDeleteJob(void);
+    void vDeputiseJob(void);
+    void vDeputyLoop(void);
   
+    void vExecuteJob(void);
+    
     Job* pJob(void);
     void vJob(Job* pJob);
-
-    Mutex* pMutex(void);
+  
+    bool bProcessPipelineResults(void);
   
     void vReportTime(void);
 
     Session* pSession(void);
     void     vSession(Session* pSession);
+
+    void vTerminate(void);
+    bool bTerminated(void);
 
   private:
 

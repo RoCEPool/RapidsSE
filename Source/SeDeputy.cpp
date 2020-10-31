@@ -211,37 +211,16 @@ void SeDeputy::vCreateSession(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potentially execute a pipeline job                                         */
+/* signal this deputy to execute its job                                      */
 /*----------------------------------------------------------------------------*/
-bool SeDeputy::bProcessPipelineResults(void)
+void SeDeputy::vDeputiseJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  if (AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipeline"_Stz) ||
-      AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipelineLocal"_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set/clear exited                                                           */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vExited(bool bExited)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_bExited = bExited;
-}
-
-/*----------------------------------------------------------------------------*/
-/* has this deputy exited ?                                                   */
-/*----------------------------------------------------------------------------*/
-bool SeDeputy::bExited(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_bExited;
+  m_pThread->m_oMutex.vLock(nullptr);
+  m_bAvailable = false;
+  m_pThread->m_oMutex.vSignal(nullptr);
+  m_pThread->m_oMutex.vUnlock(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,13 +249,17 @@ void SeDeputy::vJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get mutex                                                                  */
+/* potentially execute a pipeline job                                         */
 /*----------------------------------------------------------------------------*/
-Mutex* SeDeputy::pMutex(void)
+bool SeDeputy::bProcessPipelineResults(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return &m_pThread->m_oMutex;
+  if (AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipeline"_Stz) ||
+      AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipelineLocal"_Stz))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,6 +311,28 @@ void SeDeputy::vSession(Session* pSession)
   m_pSession = pSession;
 }
 
+/*----------------------------------------------------------------------------*/
+/* signal this deputy to terminate                                            */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vTerminate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_pThread->m_oMutex.vLock(nullptr);
+  m_bContinue = false;
+  m_pThread->m_oMutex.vSignal(nullptr);
+  m_pThread->m_oMutex.vUnlock(nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* has this deputy terminated ?                                               */
+/*----------------------------------------------------------------------------*/
+bool SeDeputy::bTerminated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_bExited;
+}
 
 /*============================================================================*/
 /* end                                                                        */
