@@ -42,7 +42,6 @@ namespace Prompt
     bool bAvailable(void);
     void vDeputiseJob(void);
     Job* pJob(void);
-    bool bProcessPipelineResults(void);
     void vReportTime(void);
     Session* pSession(void);
     void vTerminate(void);

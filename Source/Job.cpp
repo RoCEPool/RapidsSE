@@ -564,6 +564,20 @@ void Job::vIncRowsInvalid(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a pipeline job?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Job::bIsPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (AM::szJobName(this)->bSame("pipeline"_Stz) ||
+      AM::szJobName(this)->bSame("pipelineLocal"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set job error                                                              */
 /*----------------------------------------------------------------------------*/
 void Job::vJobError(eEC eErrorCode)

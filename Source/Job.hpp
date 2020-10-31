@@ -86,6 +86,7 @@ namespace Jobs
     bool bHasTag_noWait(void);
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
+    bool bIsPipeline(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);

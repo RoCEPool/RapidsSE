@@ -134,7 +134,7 @@ void SeDeputy::vExecuteJob(void)
   Api::vExecuteJob(m_pSession->m_pSsnJob);
   
   // start the buffer queue processing while the pipeline ops are running
-  if (bProcessPipelineResults())
+  if (m_pSession->m_pSsnJob->bIsPipeline())
     m_pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
   
   eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
@@ -187,20 +187,6 @@ Job* SeDeputy::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pSession->m_pSsnJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a pipeline job                                         */
-/*----------------------------------------------------------------------------*/
-bool SeDeputy::bProcessPipelineResults(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  if (AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipeline"_Stz) ||
-      AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipelineLocal"_Stz))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
