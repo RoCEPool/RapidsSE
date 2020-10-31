@@ -205,8 +205,6 @@ void SeDeputy::vCreateSession(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   m_pSession = Api::pAllocSession(SK_EXTERNAL);
-  m_pSession->vPartition(0);
-  m_pSession->m_pSsnJob   = nullptr;
 
   eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);

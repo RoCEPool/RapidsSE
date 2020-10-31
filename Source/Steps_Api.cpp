@@ -70,7 +70,6 @@ void Step::vApiExecuteRequest(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  pSession->vPartition(0);
   
   eError = pSession->eInit("rapidsse"_Stz,"public"_Stz);
 
@@ -160,7 +159,6 @@ void Step::vApiSpawnDemon(void)
   TagSet oTagSet;
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  pSession->vPartition(0);
 
   eEC eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);
   
