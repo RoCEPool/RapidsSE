@@ -196,6 +196,13 @@ eEC Api::ePrepareJob(Session*  pSession,
   //! ALKA: Come back to this : 3 feb 2020
   //pJob->vJobClass(nullptr, (char*)__func__);
   
+  
+  TagSet* pSsnTagSet = &pSession->m_oSsnTagSet;
+   pSession->m_pSsnJob->pJobTags()->vCopy(pSsnTagSet);
+  
+  if ( pSession->m_pSsnJob->bHasTag(C_TAG_TAGS))
+     pSession->m_pSsnJob->pJobTags()->vDumpSet();
+
   return EC_NONE;
 }
 

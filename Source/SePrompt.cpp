@@ -314,12 +314,6 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
     return false;
   }
   
-  TagSet* pSsnTagSet = & pSeDeputy->pSession()->m_oSsnTagSet;
-  pSeDeputy->pJob()->pJobTags()->vCopy(pSsnTagSet);
-  
-  if (pSeDeputy->pJob()->bHasTag(C_TAG_TAGS))
-    pSeDeputy->pJob()->pJobTags()->vDumpSet();
-
   vMakeDiaryDir(pSeDeputy);
   
   return true;
