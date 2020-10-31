@@ -19,7 +19,7 @@ namespace Prompt
     
     bool      m_bAvailable;
     bool      m_bContinue;
-    bool      m_bExited;
+    bool      m_bTerminated;
 
     // must be last
     Footer m_xFooter;
@@ -40,24 +40,15 @@ namespace Prompt
     // -- -- -- -- -- --
   
     bool bAvailable(void);
-
-    void vCreateSession(void);
-
     void vDeputiseJob(void);
-  
     Job* pJob(void);
-  
     bool bProcessPipelineResults(void);
-  
     void vReportTime(void);
-
     Session* pSession(void);
-
     void vTerminate(void);
     bool bTerminated(void);
 
   private:
-
     Footer* aFooter(void);
   };
 

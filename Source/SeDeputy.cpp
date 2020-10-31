@@ -38,14 +38,17 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   m_pSession  = nullptr;
 
-  m_bAvailable = false;
-  m_bContinue  = true;
-  m_bExited    = false;
+  m_bAvailable  = false;
+  m_bContinue   = true;
+  m_bTerminated = false;
 
   _checkInitialised_(CN_SEDEPUTY);
   
-  vCreateSession();
-  
+  m_pSession = Api::pAllocSession(SK_EXTERNAL);
+
+  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+  RASSERT(EC_NONE == eError);
+
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
 
@@ -56,9 +59,7 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  vTrace("~SeDeputy\n"_Stz);
-  
-  Api::vFreeSession(m_pSession);
+   Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
   
   delete m_pThread;
@@ -69,7 +70,7 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void* SeDeputy::aEntryPoint(void* pArg)
 {
-  //vTrace("SeDeputy::aEntryPoint\n"_Stz);
+  _static_
   
   SeDeputy* pSeDeputy = _pSeDeputy(pArg);
   
@@ -88,9 +89,7 @@ void* SeDeputy::aEntryPoint(void* pArg)
 void SeDeputy::vDeputyLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  //vTrace("SeDeputy::vDeputyLoop\n"_Stz);
-  
+    
   while (m_bContinue) {
 
     RASSERT(!m_pSession->m_pSsnJob);
@@ -118,7 +117,7 @@ void SeDeputy::vDeputyLoop(void)
     vDeleteJob();
   }
   
-  m_bExited = true;
+  m_bTerminated = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,19 +164,6 @@ bool SeDeputy::bAvailable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_bAvailable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new session                                                       */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vCreateSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_pSession = Api::pAllocSession(SK_EXTERNAL);
-
-  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
-  RASSERT(EC_NONE == eError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +263,7 @@ bool SeDeputy::bTerminated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return m_bExited;
+  return m_bTerminated;
 }
 
 /*============================================================================*/
