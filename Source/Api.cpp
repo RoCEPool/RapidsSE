@@ -69,20 +69,17 @@ void Api::vExecuteJob(Job* pJob)
   
   Session* pSession = pJob->pSession();
 
-  Api::vMutexLock(pSession,pJob);
-    
   // spawn the job
   if (pJob->bHasTag_noWait()) {
+    Api::vMutexLock(pSession,pJob);
     Api::bSpawnJob_session(pJob);
     Api::vMutexUnlock(pSession,pJob);
     return;
   }
-  else {
-    Api::bSpawnJob_session(pJob);
-  }
   
+  Api::vMutexLock(pSession,pJob);
+  Api::bSpawnJob_session(pJob);
   Api::vMutexWaitCond(pSession,pJob);
-  
   Api::vMutexUnlock(pSession,pJob);
 }
 

@@ -335,12 +335,6 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
   
   vTrace("SePrompt::bPrepareJob 30\n"_Stz);
   
-  if (pSeDeputy->pSession() != pJob->pSession())
-    vTrace("bPrepareJob %p v %p\n"_Stz,pSeDeputy->pSession(),pJob->pSession());
-  RASSERT(pSeDeputy->pSession() == pJob->pSession());
-
-  pSeDeputy->vJob(pJob);
-  
   if (eError) {
     RASSERT(! pSeDeputy->pJob());
     vTrace("error: %s\n"_Stz,aEC[eError]);
@@ -348,6 +342,18 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
       vDumpInpTknVec(true);
     return false;
   }
+  
+  vTrace("SePrompt::bPrepareJob 31\n"_Stz);
+
+  if (pSeDeputy->pSession() != pJob->pSession())
+    vTrace("bPrepareJob %p v %p\n"_Stz,pSeDeputy->pSession(),pJob->pSession());
+  vTrace("SePrompt::bPrepareJob 32\n"_Stz);
+  RASSERT(pSeDeputy->pSession() == pJob->pSession());
+
+  vTrace("SePrompt::bPrepareJob 33\n"_Stz);
+  pSeDeputy->vJob(pJob);
+  vTrace("SePrompt::bPrepareJob 36\n"_Stz);
+
   
   vTrace("SePrompt::bPrepareJob 40\n"_Stz);
 

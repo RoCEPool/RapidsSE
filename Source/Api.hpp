@@ -41,16 +41,16 @@ namespace Interface
   static void vMonitorPortrait(s48K& sPortrait);
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  static bool bShortForm(TokenVec* pCmdTknVec);
-  static bool bExpandToLongForm(TokenVec* pCmdTknVec);
-
-  static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);
   static void vMutexWaitCond(Session* pSession, Job* pJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  static bool bShortForm(TokenVec* pCmdTknVec);
+  static bool bExpandToLongForm(TokenVec* pCmdTknVec);
+  static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   private:
   
