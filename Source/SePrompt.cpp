@@ -30,13 +30,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //vTrace("::SePrompt\n"_Stz);
-  
-  i8 iPartition = 0;
-  
-  
   m_nDeputies = 0;
-  
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     m_paSeDeputy[i_Deputy] = nullptr;
   }
@@ -55,12 +49,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pObjectsInPool = new ObjectsInPool;
   m_pSnapshotObjects = new ObjectsInPool;
   
-  
-//  if (AM::bDeveloper())
-//    m_pBPA = new BPA;
-  
   d_iDebugMode = gxArgs.m_iPromptDebug;
-
 
   m_pLitTknVec = new TokenVec;
     
@@ -75,17 +64,10 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-      
-  //vTrace("~SePrompt\n"_Stz);
-  
+        
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]) {
       
-//      m_paSeDeputy[i_Deputy]->pMutex()->vLock(this);
-//      m_paSeDeputy[i_Deputy]->vContinue(false);
-//      m_paSeDeputy[i_Deputy]->pMutex()->vSignal(this);
-//      m_paSeDeputy[i_Deputy]->pMutex()->vUnlock(this);
-
       m_paSeDeputy[i_Deputy]->vTerminate();
       
       while (! m_paSeDeputy[i_Deputy]->bTerminated())
@@ -331,10 +313,6 @@ void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
   if (! pSeDeputy->pJob()->bHasTag_bg()) {
     m_oMutex.vLock(this);
   
-//    pSeDeputy->pMutex()->vLock(this);
-//    pSeDeputy->vAvailable(false);
-//    pSeDeputy->pMutex()->vSignal(this);
-//    pSeDeputy->pMutex()->vUnlock(this);
     pSeDeputy->vDeputiseJob();
     
     m_oMutex.vWait(this);
@@ -344,12 +322,8 @@ void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
       AM::vNapMsec(10,CN_SEPROMPT);
   }
   else {
-//    pSeDeputy->pMutex()->vLock(this);
-//    pSeDeputy->vAvailable(false);
-//    pSeDeputy->pMutex()->vSignal(this);
-//    pSeDeputy->pMutex()->vUnlock(this);
       pSeDeputy->vDeputiseJob();
-    }
+  }
   
   pSeDeputy = nullptr;
 }
@@ -1468,7 +1442,6 @@ bool SePrompt::bTranslateProcedure(void)
   
   return false;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
