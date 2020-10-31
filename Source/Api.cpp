@@ -71,16 +71,16 @@ void Api::vExecuteJob(Job* pJob)
 
   // spawn the job
   if (pJob->bHasTag_noWait()) {
-    Api::vMutexLock(pSession,pJob);
+    //Api::vMutexLock(pSession,pJob);
     Api::bSpawnJob_session(pJob);
-    Api::vMutexUnlock(pSession,pJob);
+    //Api::vMutexUnlock(pSession,pJob);
     return;
   }
   
-  Api::vMutexLock(pSession,pJob);
+  //Api::vMutexLock(pSession,pJob);
   Api::bSpawnJob_session(pJob);
-  Api::vMutexWaitCond(pSession,pJob);
-  Api::vMutexUnlock(pSession,pJob);
+  //Api::vMutexWaitCond(pSession,pJob);
+  //Api::vMutexUnlock(pSession,pJob);
 }
 
 
@@ -663,6 +663,9 @@ bool Api::bSpawnJob_session(Job* pJob)
 {
   _static_
   
+  Session* pSession = pJob->pSession();
+  Api::vMutexLock(pSession,pJob);
+
   RASSERT(JS_LOCKED == pJob->eJobState());
 
   
@@ -681,7 +684,12 @@ bool Api::bSpawnJob_session(Job* pJob)
   vCreateTaskForJob(pJob);
   
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
-  
+
+  if (! pJob->bHasTag_noWait())
+    Api::vMutexWaitCond(pSession,pJob);
+
+  Api::vMutexUnlock(pSession,pJob);
+
   return true;
 }
 

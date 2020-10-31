@@ -106,13 +106,13 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Api::vMutexLock(pSession,pJob);
+  //Api::vMutexLock(pSession,pJob);
   
   bool bSpawned = Api::bSpawnJob_session(pJob);
 
-  Api::vMutexWaitCond(pSession,pJob);
+  //Api::vMutexWaitCond(pSession,pJob);
   
-  Api::vMutexUnlock(pSession,pJob);
+  //Api::vMutexUnlock(pSession,pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

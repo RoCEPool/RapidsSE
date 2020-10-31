@@ -42,9 +42,6 @@ namespace Interface
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
 
-  static void vMutexLock(Session* pSession, Job* pJob);
-  static void vMutexUnlock(Session* pSession, Job* pJob);
-  static void vMutexWaitCond(Session* pSession, Job* pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -53,7 +50,10 @@ namespace Interface
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   private:
-  
+  static void vMutexLock(Session* pSession, Job* pJob);
+  static void vMutexUnlock(Session* pSession, Job* pJob);
+  static void vMutexWaitCond(Session* pSession, Job* pJob);
+
   static void vCreateTaskForJob(Job* pJob);
 
   };
