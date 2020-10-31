@@ -105,14 +105,8 @@ void Step::vApiExecuteRequest(void)
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //Api::vMutexLock(pSession,pJob);
-  
+   
   bool bSpawned = Api::bSpawnJob_session(pJob);
-
-  //Api::vMutexWaitCond(pSession,pJob);
-  
-  //Api::vMutexUnlock(pSession,pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

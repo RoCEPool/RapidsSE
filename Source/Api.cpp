@@ -68,21 +68,8 @@ void Api::vExecuteJob(Job* pJob)
   _static_
   
   Session* pSession = pJob->pSession();
-
-  // spawn the job
-  if (pJob->bHasTag_noWait()) {
-    //Api::vMutexLock(pSession,pJob);
-    Api::bSpawnJob_session(pJob);
-    //Api::vMutexUnlock(pSession,pJob);
-    return;
-  }
-  
-  //Api::vMutexLock(pSession,pJob);
   Api::bSpawnJob_session(pJob);
-  //Api::vMutexWaitCond(pSession,pJob);
-  //Api::vMutexUnlock(pSession,pJob);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
