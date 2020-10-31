@@ -26,7 +26,6 @@ namespace Interface
   static bool bShortForm(TokenVec* pCmdTknVec);
   static bool bExpandToLongForm(TokenVec* pCmdTknVec);
 
-  static bool bPassesLowMem(void);
 
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 

@@ -264,6 +264,7 @@ namespace Oblique
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bParseCmd(TagSet* pTagSet, TokenVec* pTknVec);
+    static bool bPassesLowMem(void);
     static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
     static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);

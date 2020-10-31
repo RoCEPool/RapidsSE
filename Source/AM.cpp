@@ -1441,6 +1441,33 @@ void AM::vOperandsInc(void)
   ++ gpAttachMap->m_nxOperands;
 }
 
+/*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::bPassesLowMem(void)
+{
+  _static_
+
+  //! ALKA: while cleaning up JobClass all jobs had m_eFlags
+  //! as JF_LOWMEM hence returning true
+  return true;
+  
+//  if (aJobCLass->m_eFlags != JF_LOWMEM)
+//    return true;
+//
+//  if (! gpBufferPool->bLowMemory())
+//    return true;
+//
+//  if (aJobCLass->m_aCommand2)
+//    vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
+//           aJobCLass->m_aCommand1,aJobCLass->m_aCommand2);
+//  else
+//    vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
+//           aJobCLass->m_aCommand1);
+
+//  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
