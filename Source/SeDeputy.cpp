@@ -37,13 +37,14 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_pThread   = new Thread;
 
   m_pSession  = nullptr;
-  m_pJob      = nullptr;
 
   m_bAvailable = false;
   m_bContinue  = true;
   m_bExited    = false;
 
   _checkInitialised_(CN_SEDEPUTY);
+  
+  vCreateSession();
   
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -92,10 +93,10 @@ void SeDeputy::vDeputyLoop(void)
   
   while (m_bContinue) {
 
-    RASSERT(!m_pJob);
+    RASSERT(!m_pSession->m_pSsnJob);
 
     m_pThread->m_oMutex.vLock(m_pSePrompt);
-    RASSERT(!m_pJob);
+    RASSERT(!m_pSession->m_pSsnJob);
     m_bAvailable = true;
     m_pThread->m_oMutex.vWait(m_pSePrompt);
     m_pThread->m_oMutex.vUnlock(m_pSePrompt);
@@ -103,12 +104,12 @@ void SeDeputy::vDeputyLoop(void)
     if (! m_bContinue)
       break;
     
-    RASSERT(m_pJob);
-    if (m_pSession != m_pJob->pSession())
-      vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
+    RASSERT(m_pSession->m_pSsnJob);
+    if (m_pSession != m_pSession->m_pSsnJob->pSession())
+      vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
     vExecuteJob();
 
-    if (! m_pJob->bHasTag_bg()) {
+    if (! m_pSession->m_pSsnJob->bHasTag_bg()) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
       m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
@@ -127,18 +128,18 @@ void SeDeputy::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
-  if (m_pSession != m_pJob->pSession())
-    vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
-  RASSERT(m_pSession == m_pJob->pSession());
+  if (m_pSession != m_pSession->m_pSsnJob->pSession())
+    vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
+  RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
   
-  Api::vExecuteJob(m_pJob);
+  Api::vExecuteJob(m_pSession->m_pSsnJob);
   
   // start the buffer queue processing while the pipeline ops are running
   if (bProcessPipelineResults())
-    m_pJob->m_xResult.vProcessBufferQueue();
+    m_pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
   
-  eRS eResponse = (eRS)m_pJob->pJobTags()->iValue("<rspKind>"_Stz);
-  m_pJob->vPrintResult(eResponse);
+  eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
+  m_pSession->m_pSsnJob->vPrintResult(eResponse);
 
   vReportTime();
 }
@@ -150,7 +151,7 @@ void SeDeputy::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  Api::vDeleteJob(&m_pJob);
+  Api::vDeleteJob(&m_pSession->m_pSsnJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,7 +206,7 @@ void SeDeputy::vCreateSession(void)
   
   m_pSession = Api::pAllocSession(SK_EXTERNAL);
   m_pSession->vPartition(0);
-  m_pJob   = nullptr;
+  m_pSession->m_pSsnJob   = nullptr;
 
   eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);
@@ -218,8 +219,8 @@ bool SeDeputy::bProcessPipelineResults(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  if (AM::szJobName(m_pJob)->bSame("pipeline"_Stz) ||
-      AM::szJobName(m_pJob)->bSame("pipelineLocal"_Stz))
+  if (AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipeline"_Stz) ||
+      AM::szJobName(m_pSession->m_pSsnJob)->bSame("pipelineLocal"_Stz))
     return true;
   else
     return false;
@@ -252,7 +253,7 @@ Job* SeDeputy::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return m_pJob;
+  return m_pSession->m_pSsnJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,11 +263,11 @@ void SeDeputy::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pJob = pJob;
+  m_pSession->m_pSsnJob = pJob;
   
-  if (m_pSession != m_pJob->pSession())
-    vTrace("vJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
-  RASSERT(m_pSession == m_pJob->pSession());
+  if (m_pSession != m_pSession->m_pSsnJob->pSession())
+    vTrace("vJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
+  RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
 
 }
 
@@ -287,14 +288,14 @@ void SeDeputy::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  //m_pJob->pTagSet()->vPrint();
+  //m_pSession->m_pSsnJob->pTagSet()->vPrint();
   
-  if (! m_pJob->bHasTag_time())
+  if (! m_pSession->m_pSsnJob->bHasTag_time())
     return;
   
-  if (m_pJob->bSummaryTag()) {
+  if (m_pSession->m_pSsnJob->bSummaryTag()) {
     
-    Stz* szNote = m_pJob->pJobTags()->szValue(C_TAG_NOTE);
+    Stz* szNote = m_pSession->m_pSsnJob->pJobTags()->szValue(C_TAG_NOTE);
     
     Now spNow;
     vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
@@ -307,7 +308,7 @@ void SeDeputy::vReportTime(void)
            );
   }
   
-  vTrace("time %lldms\n\n"_Stz,m_pJob->iTimerMsec());
+  vTrace("time %lldms\n\n"_Stz,m_pSession->m_pSsnJob->iTimerMsec());
 }
 /*----------------------------------------------------------------------------*/
 /* get session                                                                */

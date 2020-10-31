@@ -109,7 +109,7 @@ Session::Session(void)
   m_iPartition      = C_UNKNOWN;
   
   //m_oDicStack;
-  m_pJob            = nullptr;
+  m_pSsnJob         = nullptr;
   m_pTx             = nullptr;
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
@@ -362,7 +362,7 @@ void Session::vReport(void)
   
   vTrace("Session %llx job %llx\n"_Stz,
          this,
-         m_pJob);
+         m_pSsnJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,7 +431,7 @@ void Session::vFreeSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_pJob            = nullptr;
+  m_pSsnJob         = nullptr;
   m_pTx             = nullptr;
   m_bSessionExiting = false;
   

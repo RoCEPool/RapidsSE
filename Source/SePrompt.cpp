@@ -423,8 +423,6 @@ SeDeputy* SePrompt::pCreateDeputy(void)
   SeDeputy* pSeDeputy =
     m_paSeDeputy[m_nDeputies] = new SeDeputy(m_nDeputies,this);
   
-  pSeDeputy->vCreateSession();
-  
   m_nDeputies++;
   
   while (! pSeDeputy->bAvailable())

@@ -16,7 +16,6 @@ namespace Prompt
     Thread*   m_pThread;
 
     Session*  m_pSession;  // rapidsse session
-    Job*      m_pJob;      // job
     
     bool      m_bAvailable;
     bool      m_bContinue;
