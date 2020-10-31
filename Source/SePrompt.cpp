@@ -330,6 +330,7 @@ void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
     m_oMutex.vLock(this);
   
     pSeDeputy->pMutex()->vLock(this);
+    pSeDeputy->vAvailable(false);
     pSeDeputy->pMutex()->vSignal(this);
     pSeDeputy->pMutex()->vUnlock(this);
 
@@ -341,6 +342,7 @@ void SePrompt::vDeputiseJob(SeDeputy* pSeDeputy)
   }
   else {
     pSeDeputy->pMutex()->vLock(this);
+    pSeDeputy->vAvailable(false);
     pSeDeputy->pMutex()->vSignal(this);
     pSeDeputy->pMutex()->vUnlock(this);
   }
@@ -649,8 +651,6 @@ SeDeputy* SePrompt::pFindDeputy(void)
   for (i8 i_Deputy = 0; i_Deputy < m_nDeputies; i_Deputy++) {
     if (m_paSeDeputy[i_Deputy]->bAvailable()) {
       pSeDeputy = m_paSeDeputy[i_Deputy];
-      pSeDeputy->vAvailable(false);
-      //vTrace("Found Deputy %lld\n"_Stz,i_Deputy);
       break;
     }
   }
@@ -659,10 +659,8 @@ SeDeputy* SePrompt::pFindDeputy(void)
     return pSeDeputy;
   
   pSeDeputy = pCreateDeputy();
-  if (pSeDeputy) {
-    pSeDeputy->vAvailable(false);
+  if (pSeDeputy)
     return pSeDeputy;
-  }
 
   return nullptr;
 }
