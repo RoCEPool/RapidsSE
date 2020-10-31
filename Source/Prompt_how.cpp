@@ -27,19 +27,19 @@ bool Prompt::bPrompt_how(SePrompt* pPrompt)
   
   i8 nTokens = pInpTknVec->nItems();
 
-  i8 iReqId = pPrompt->iRequestId();
+  //i8 iReqId = pPrompt->iRequestId();
   
   i8 iDetail = C_UNKNOWN;
   if (2 == nTokens)
     iDetail = pInpTknVec->pGet(1)->iToI8();
   
-  vTrace("how: request %lld\n"_Stz,
+  vTrace("how: request\n"_Stz,
          
-         iReqId,
+         //iReqId,
          
          C_VARGS_END);
   
-  AM::vLogHow(iReqId,iDetail);
+  AM::vLogHow(-1,iDetail);
   
   return true;
 }

@@ -289,7 +289,7 @@ bool SePrompt::bGetCommand(SeDeputy* pSeDeputy)
   m_oExtTagSet.vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
   m_oExtTagSet.vInsert(C_TAG_HOST,sHostName);
   m_oExtTagSet.vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
-  m_oExtTagSet.vInsert(C_TAG_REQUEST,m_xReqTuple.m_iReqNo);
+  m_oExtTagSet.vInsert(C_TAG_REQUEST,pSeDeputy->pSession()->m_xReqTuple.m_iReqNo);
   m_oExtTagSet.vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
   m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
   
@@ -315,7 +315,7 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
 
   vTrace("SePrompt::bPrepareJob 10\n"_Stz);
   
-  m_xReqTuple.m_i_Session = pSeDeputy->pSession()->m_i_Session;
+  //m_xReqTuple.m_i_Session = pSeDeputy->pSession()->m_i_Session;
   
   RASSERT(! pSeDeputy->pJob());
 //  pSeDeputy->vJob(nullptr);
@@ -331,7 +331,7 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
                                 m_pInpTknVec,
                                 m_pLitTknVec,
                                 &m_oExtTagSet,
-                                &m_xReqTuple);
+                                &pSeDeputy->pSession()->m_xReqTuple);
   
   vTrace("SePrompt::bPrepareJob 30\n"_Stz);
   
@@ -926,9 +926,9 @@ void SePrompt::vLogCommand(void)
   sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
   
   vIncStepNo();
-  AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
-              "%lld %s"_Stz, //!format-LogPrm
-              m_xReqTuple.m_iReqNo,sCommand.szStz());
+//  AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
+//              "%lld %s"_Stz, //!format-LogPrm
+//              m_xReqTuple.m_iReqNo,sCommand.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1167,12 +1167,12 @@ bool SePrompt::bRedirectFromFile(void)
 /*----------------------------------------------------------------------------*/
 /* get command id                                                             */
 /*----------------------------------------------------------------------------*/
-i8 SePrompt::iRequestId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_xReqTuple.m_iReqNo;
-}
+//i8 SePrompt::iRequestId(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+//  
+//  return m_xReqTuple.m_iReqNo;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* init the extracted tag set                                                 */

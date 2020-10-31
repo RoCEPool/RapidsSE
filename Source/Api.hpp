@@ -21,6 +21,8 @@ namespace Interface
                           TagSet*   pTagSet,
                           ReqTuple* axReqTuple);
 
+  static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
+  
   // external
   static bool bSpawnJob_connector(Job* pJob);
   static bool bSpawnJob_session(Job* pJob);
@@ -39,10 +41,7 @@ namespace Interface
 
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
-  static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static bool bShortForm(TokenVec* pCmdTknVec);

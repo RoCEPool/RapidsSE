@@ -57,8 +57,10 @@ namespace Sessions
   
     s4K      m_sToDo;            // prompt to do
       
-    Mutex    m_oSsnMutex;           //
+    Mutex    m_oSsnMutex;        //
+    ReqTuple m_xReqTuple;        // request information
     
+
   private:
 
     // must be last

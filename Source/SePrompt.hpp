@@ -32,8 +32,8 @@ namespace Prompt
     Mutex     m_oMutex;      // mutex for prompt
 
   
-    Input*    m_pInput;      // input processor from session
-    TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
+    Input*    m_pInput;      // input processor
+    TokenVec* m_pInpTknVec;  // token vector 
 
     TagSet    m_oPmtTagSet;  // tag set which controls this prompt
     i8        m_iDivisionNo; // division numbering
@@ -41,7 +41,7 @@ namespace Prompt
     bool      m_bContinue;   // continue processing commands?
 
     TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
-    ReqTuple  m_xReqTuple;   // request information
+
 
     Timer     m_oTimer;      // the timer
 
