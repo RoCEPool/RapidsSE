@@ -32,29 +32,26 @@ namespace Prompt
    ~SeDeputy(void) noexcept(false);
   
     static void* aEntryPoint(void* pArg);
+  
+    void vDeputyLoop(void);
+    void vExecuteJob(void);
+    void vDeleteJob(void);
 
+    // -- -- -- -- -- --
+  
     bool bAvailable(void);
-    void vAvailable(bool bAvailable);
 
-    bool bContinue(void);
-    void vContinue(bool bContinue);
     void vCreateSession(void);
 
-    void vDeleteJob(void);
     void vDeputiseJob(void);
-    void vDeputyLoop(void);
   
-    void vExecuteJob(void);
-    
     Job* pJob(void);
-    void vJob(Job* pJob);
   
     bool bProcessPipelineResults(void);
   
     void vReportTime(void);
 
     Session* pSession(void);
-    void     vSession(Session* pSession);
 
     void vTerminate(void);
     bool bTerminated(void);

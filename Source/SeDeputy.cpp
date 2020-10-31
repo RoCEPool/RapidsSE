@@ -158,16 +158,6 @@ void SeDeputy::vDeleteJob(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set/clear available                                                        */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vAvailable(bool bAvailable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_bAvailable = bAvailable;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this deputy available to execute jobs?                                  */
 /*----------------------------------------------------------------------------*/
 bool SeDeputy::bAvailable(void)
@@ -175,26 +165,6 @@ bool SeDeputy::bAvailable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_bAvailable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set/clear continue                                                         */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vContinue(bool bContinue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_bContinue = bContinue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this deputy to continue ?                                               */
-/*----------------------------------------------------------------------------*/
-bool SeDeputy::bContinue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_bContinue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,21 +201,6 @@ Job* SeDeputy::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pSession->m_pSsnJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job                                                                    */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vJob(Job* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_pSession->m_pSsnJob = pJob;
-  
-  if (m_pSession != m_pSession->m_pSsnJob->pSession())
-    vTrace("vJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
-  RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,6 +246,7 @@ void SeDeputy::vReportTime(void)
   
   vTrace("time %lldms\n\n"_Stz,m_pSession->m_pSsnJob->iTimerMsec());
 }
+
 /*----------------------------------------------------------------------------*/
 /* get session                                                                */
 /*----------------------------------------------------------------------------*/
@@ -299,16 +255,6 @@ Session* SeDeputy::pSession(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set session                                                                */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vSession(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_pSession = pSession;
 }
 
 /*----------------------------------------------------------------------------*/
