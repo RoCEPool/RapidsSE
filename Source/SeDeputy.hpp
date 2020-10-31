@@ -17,13 +17,10 @@ namespace Prompt
 
     Session*  m_pSession;  // rapidsse session
     Job*      m_pJob;      // job
-  
-    Timer     m_oTimer;    // the timer
-  
+    
     bool      m_bAvailable;
     bool      m_bContinue;
     bool      m_bExited;
-
 
     // must be last
     Footer m_xFooter;

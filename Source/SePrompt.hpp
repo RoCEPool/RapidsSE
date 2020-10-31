@@ -42,9 +42,6 @@ namespace Prompt
 
     TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
 
-
-    Timer     m_oTimer;      // the timer
-
     bool      m_bOneCommand; // run one command only
     bool      m_bOneRun;     // one command has been run?
 

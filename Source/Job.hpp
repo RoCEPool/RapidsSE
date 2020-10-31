@@ -22,7 +22,7 @@ namespace Jobs
     eJL       m_eJobList;     // which job list the job is currently in
     eJP       m_eJobPhase;    // which job phase the job is currently in
     eJS       m_eJobState;    // current state of the job
-  
+
   public:
     Result    m_xResult;      // result of this job
     
@@ -144,6 +144,7 @@ namespace Jobs
     bool bSummaryTag(void);
     Task* pTask(void);
     void vTask(Task* pTask);
+    i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
     bool bWasReceived(void);

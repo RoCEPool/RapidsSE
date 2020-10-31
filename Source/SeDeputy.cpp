@@ -126,17 +126,13 @@ void SeDeputy::vDeputyLoop(void)
 void SeDeputy::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  m_oTimer.vStart();
-  
+    
   if (m_pSession != m_pJob->pSession())
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
   RASSERT(m_pSession == m_pJob->pSession());
   
   Api::vExecuteJob(m_pJob);
   
-  m_oTimer.vUpdate();
-
   // start the buffer queue processing while the pipeline ops are running
   if (bProcessPipelineResults())
     m_pJob->m_xResult.vProcessBufferQueue();
@@ -311,7 +307,7 @@ void SeDeputy::vReportTime(void)
            );
   }
   
-  vTrace("time %lldms\n\n"_Stz,m_oTimer.iMilliseconds());
+  vTrace("time %lldms\n\n"_Stz,m_pJob->iTimerMsec());
 }
 /*----------------------------------------------------------------------------*/
 /* get session                                                                */

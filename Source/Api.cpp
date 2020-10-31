@@ -670,11 +670,14 @@ bool Api::bSpawnJob_session(Job* pJob)
   
   vCreateTaskForJob(pJob);
   
+  pJob->vTimerStart();
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
-  if (! pJob->bHasTag_noWait())
+  if (! pJob->bHasTag_noWait()) {
     Api::vMutexWaitCond(pSession,pJob);
-
+    pJob->vTimerUpdate();
+  }
+  
   Api::vMutexUnlock(pSession,pJob);
 
   return true;

@@ -48,8 +48,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_iSectionNo  = 0;
   m_bContinue   = true;
   
-  // m_oTimer
-
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
 
