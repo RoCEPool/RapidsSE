@@ -70,9 +70,7 @@ namespace Prompt
 
     SePrompt(bool bOneCommand, bool bSethScript);
    ~SePrompt(void) noexcept(false);
-  
-    static void* aEntryPoint_bg(void* pArg);
-  
+    
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
