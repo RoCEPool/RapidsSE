@@ -300,18 +300,8 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  vTrace("SePrompt::bPrepareJob 10\n"_Stz);
-  
-  //m_xReqTuple.m_i_Session = pSeDeputy->pSession()->m_i_Session;
-  
   RASSERT(! pSeDeputy->pJob());
-//  pSeDeputy->vJob(nullptr);
-//
-//  Job* pJob = pSeDeputy->pJob();
-//  pSeDeputy->vJob(nullptr);
-  
-  vTrace("SePrompt::bPrepareJob 20\n"_Stz);
-  
+    
   Job* pJob = nullptr;
   eEC eError = Api::ePrepareJob(&pJob,
                                 pSeDeputy->pSession(),
@@ -320,7 +310,6 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
                                 &m_oExtTagSet,
                                 &pSeDeputy->pSession()->m_xReqTuple);
   
-  vTrace("SePrompt::bPrepareJob 30\n"_Stz);
   
   if (eError) {
     RASSERT(! pSeDeputy->pJob());
@@ -330,19 +319,9 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
     return false;
   }
   
-  vTrace("SePrompt::bPrepareJob 31\n"_Stz);
-
-  if (pSeDeputy->pSession() != pJob->pSession())
-    vTrace("bPrepareJob %p v %p\n"_Stz,pSeDeputy->pSession(),pJob->pSession());
-  vTrace("SePrompt::bPrepareJob 32\n"_Stz);
   RASSERT(pSeDeputy->pSession() == pJob->pSession());
 
-  vTrace("SePrompt::bPrepareJob 33\n"_Stz);
   pSeDeputy->vJob(pJob);
-  vTrace("SePrompt::bPrepareJob 36\n"_Stz);
-
-  
-  vTrace("SePrompt::bPrepareJob 40\n"_Stz);
 
   TagSet* pSsnTagSet = & pSeDeputy->pSession()->m_oSsnTagSet;
   pSeDeputy->pJob()->pJobTags()->vCopy(pSsnTagSet);
