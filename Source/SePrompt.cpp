@@ -941,6 +941,31 @@ Mutex* SePrompt::pMutex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* nap till all bg jobs have completed                                        */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vNapTillBgJobsCompleted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  bool bNotice = true;
+  
+  for (i8 i_Deputy = 0; i_Deputy < m_nDeputies; i_Deputy++) {
+    
+    SeDeputy* pDeputy = m_paSeDeputy[i_Deputy];
+    
+    while (! pDeputy->bAvailable()) {
+      if (bNotice) {
+        bNotice = false;
+        vTrace("Waiting on /bg jobs\n"_Stz);
+      }
+      AM::vNapMsec(10,CN_SEPROMPT);
+    }
+  }
+  
+  vTrace("No /bg jobs\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* next division number                                                       */
 /*----------------------------------------------------------------------------*/
 i8 SePrompt::iNextDivisionNo(void)
@@ -1275,7 +1300,7 @@ bool SePrompt::bShortCut(SeDeputy* pSeDeputy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* no wait                                                                    */
+/* get snapshot objects                                                       */
 /*----------------------------------------------------------------------------*/
 ObjectsInPool* SePrompt::pSnapshotObjects(void)
 {

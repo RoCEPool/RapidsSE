@@ -107,6 +107,7 @@ namespace Prompt
     void vLogFreeSpace(void);
     void vMakeDiaryDir(SeDeputy* pSeDeputy);
     Mutex* pMutex(void);
+    void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);
@@ -124,7 +125,7 @@ namespace Prompt
     TagSet* pPmtTagSet(void);
     bool bShortCut(SeDeputy* pSeDeputy);
     ShortCutVec* pShortCutVec(void);
-    ObjectsInPool*  pSnapshotObjects(void);
+    ObjectsInPool* pSnapshotObjects(void);
     bool bStdIn(void);
     bool bSubSsnTags(SeDeputy* pSeDeputy);
     void vTrackingMemory(bool bTrackMemory);

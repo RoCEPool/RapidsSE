@@ -151,6 +151,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
 #include "Prompt_version.hpp"
 
+#include "Prompt_wait_bg.hpp"
 #include "Prompt_waiting.hpp"
 #include "Prompt_with.hpp"
 #include "Prompt_without.hpp"
