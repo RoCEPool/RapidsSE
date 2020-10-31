@@ -302,9 +302,7 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
 
   RASSERT(! pSeDeputy->pJob());
     
-  Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob(&pJob,
-                                pSeDeputy->pSession(),
+  eEC eError = Api::ePrepareJob(pSeDeputy->pSession(),
                                 m_pInpTknVec,
                                 m_pLitTknVec,
                                 &m_oExtTagSet);
@@ -318,10 +316,6 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
     return false;
   }
   
-  RASSERT(pSeDeputy->pSession() == pJob->pSession());
-
-  pSeDeputy->vJob(pJob);
-
   TagSet* pSsnTagSet = & pSeDeputy->pSession()->m_oSsnTagSet;
   pSeDeputy->pJob()->pJobTags()->vCopy(pSsnTagSet);
   

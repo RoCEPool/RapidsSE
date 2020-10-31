@@ -74,8 +74,7 @@ void Api::vExecuteJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job**     ppJob,
-                     Session*  pSession,
+eEC Api::ePrepareJob(Session*  pSession,
                      TokenVec* pCmdTknVec,
                      TokenVec* pLitTknVec,
                      TagSet*   pExtraTagSet)
@@ -83,9 +82,7 @@ eEC Api::ePrepareJob(Job**     ppJob,
   _static_
 
   RASSERT(pSession);
-
-  *ppJob = nullptr;
-  Job* pJob = nullptr;;
+  RASSERT(! pSession->m_pSsnJob);
 
   ReqTuple* axReqTuple = &pSession->m_xReqTuple;
   
@@ -120,9 +117,9 @@ eEC Api::ePrepareJob(Job**     ppJob,
     return EC_LOW_MEMORY;
   
   if (pLitTknVec)
-    pJob = new Job(axReqTuple, pLitTknVec);
+    pSession->m_pSsnJob = new Job(axReqTuple, pLitTknVec);
   else
-    pJob = new Job(axReqTuple);
+    pSession->m_pSsnJob = new Job(axReqTuple);
   
   axReqTuple->m_iReqNo++;
 
@@ -130,7 +127,7 @@ eEC Api::ePrepareJob(Job**     ppJob,
   // create tags in the job for the params from the literal token vector
   if (pLitTknVec && pLitTknVec->nItems()) {
     
-    TagSet* pJobTags = pJob->pJobTags();
+    TagSet* pJobTags = pSession->m_pSsnJob->pJobTags();
     
     for (i8 i_Tkn = 0; i_Tkn < pLitTknVec->nItems(); i_Tkn++) {
       
@@ -163,7 +160,7 @@ eEC Api::ePrepareJob(Job**     ppJob,
     //pJobTags->vContentDump();
   }
   
-  pJob->ePopulateJob(pExtraTagSet);
+  pSession->m_pSsnJob->ePopulateJob(pExtraTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
@@ -173,38 +170,36 @@ eEC Api::ePrepareJob(Job**     ppJob,
   
   //vTrace("sCmd: %s\n %lld\n"_Stz,sCmd.szStz(),sCmd.nSize());
 
-  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
+  pSession->m_pSsnJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
   
   
-  ASSERT(! pJob->pTask());
+  ASSERT(! pSession->m_pSsnJob->pTask());
   
   if (AM::bVerbose())
-    pJob->pJobTags()->vDumpSet();
+    pSession->m_pSsnJob->pJobTags()->vDumpSet();
   
   // this should go
-  if (pJob->bJobHasError()) {
-    eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-    pJob->vPrintResult(eResponse);
-    Api::vDeleteJob(&pJob);
+  if (pSession->m_pSsnJob->bJobHasError()) {
+    eRS eResponse = (eRS)pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
+    pSession->m_pSsnJob->vPrintResult(eResponse);
+    Api::vDeleteJob(&pSession->m_pSsnJob);
     return EC_ZZZ_OTHER;
   }
   
 
-  if (pJob->bHasTag(C_TAG_LIFE)) {
+  if (pSession->m_pSsnJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
-    pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pJob->pJobTags()));
+    pSession->m_pSsnJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pSession->m_pSsnJob->pJobTags()));
     //pJob->pTagSet()->vPrint();
   }
   
-  RASSERT(JS_LOCKED != pJob->eJobState());
+  RASSERT(JS_LOCKED != pSession->m_pSsnJob->eJobState());
         
-  pJob->vSeed(SS_SEED_REQ);
+  pSession->m_pSsnJob->vSeed(SS_SEED_REQ);
         
   //! ALKA: Come back to this : 3 feb 2020
   //pJob->vJobClass(nullptr, (char*)__func__);
-
-  *ppJob = pJob;
-
+  
   return EC_NONE;
 }
 

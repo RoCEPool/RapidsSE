@@ -80,10 +80,9 @@ void Step::vApiExecuteRequest(void)
 
   TokenVec* pDmnTknVec = TokenVec::pTokenise(sRequest);
   
-  Job* pJob = nullptr;
   TagSet oTagSet;
   
-  eError = Api::ePrepareJob(&pJob,pSession,pDmnTknVec,nullptr,&oTagSet);
+  eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -92,6 +91,8 @@ void Step::vApiExecuteRequest(void)
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Job* pJob = pSession->m_pSsnJob;
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
@@ -156,13 +157,12 @@ void Step::vApiSpawnDemon(void)
   TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job* pJob = nullptr;
   TagSet oTagSet;
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   pSession->vPartition(0);
 
-  eEC eError = Api::ePrepareJob(&pJob,pSession,pDmnTknVec,nullptr,&oTagSet);
+  eEC eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);
   
 
   if (eError) {
@@ -173,6 +173,8 @@ void Step::vApiSpawnDemon(void)
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Job* pJob = pSession->m_pSsnJob;
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
