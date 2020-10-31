@@ -105,7 +105,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if ( ! AM::bParseCmd(pExtraTagSet,pCmdTknVec) )
+  if ( ! AM::bParseCmd(pCmdTknVec,pExtraTagSet) )
     return EC_INVALID_COMMAND;
       
       

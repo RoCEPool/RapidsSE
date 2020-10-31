@@ -1050,7 +1050,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   TokenVec* pTknVec = new TokenVec;
   pTknVec->vTokenise(szCmdStr);
 
-  bool b = AM::bParseCmd(pOpJobTagSet,pTknVec);
+  bool b = AM::bParseCmd(pTknVec,pOpJobTagSet);
   RASSERT(b);
 //  if (! b) {
 //    //vTrace("Unable to match job syntax\n"_Stz);

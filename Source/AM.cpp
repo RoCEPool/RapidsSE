@@ -344,9 +344,9 @@ i8 AM::iLvlRatio(void) {
   return gpAttachMap->Arg.m_iLvlRatio;
 }
 
-bool AM::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
+bool AM::bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet)
 {
-  return CmdHelper::bParseCmd(pTagSet,pTknVec);
+  return CmdHelper::bParseCmd(pTknVec,pExtraTagSet);
 }
 
 

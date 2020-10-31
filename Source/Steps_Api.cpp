@@ -78,11 +78,11 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  TokenVec* pDmnTknVec = TokenVec::pTokenise(sRequest);
+  TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
   
   TagSet oTagSet;
   
-  eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);
+  eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -124,7 +124,7 @@ void Step::vApiExecuteRequest(void)
   
   Api::vFreeSession(pSession);
   
-  delete pDmnTknVec;
+  delete pReqTknVec;
   delete pWithTagStrTknVec;
   
   

@@ -30,7 +30,7 @@ TagSet* CmdHelper::pCmdTagSet(Stz* szJobNm)
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool CmdHelper::bParseCmd(TagSet* pTagSet, TokenVec* pTknVec)
+bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
 {
   Dic* pRootDic = AM::pRootDic();
 
