@@ -44,7 +44,8 @@ function validateEnvironment() {
   # Check if the SE reserved memory size exceeds 95% of RAM.
   validateShmAgainstRAM
 
-  # TODO: Check if the SE reserved memory size exceeds the available SHM space.
+  # Check if the SE reserved memory size exceeds the available SHM space.
+  validateShmAgainstAvailableMem
 
   # TODO: Check if the number of threads is more than the number of physical cores.
 
@@ -322,6 +323,31 @@ function validateShmAgainstRAM() {
   
     if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ]; then
       errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds 95% of total RAM on that host (${ram}GB)."
+    fi
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Check if the shared memory size exceeds the available shared memory space
+# on /dev/shm. Issue a warning if this is the case.
+# Params: None
+
+function validateShmAgainstAvailableMem() {
+  
+  local nodeName
+  local host
+  local nodeShm   # SE SHM allocated for a given node
+  local availableShm  # The space left on /dev/shm
+
+  for nodeName in "${!NODE_FREE_SHM[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
+    availableShm="${NODE_FREE_SHM[${nodeName}]}"
+
+    if [ "$(echo "${nodeShm} > ${availableShm}" | bc -l)" -eq 1 ]; then
+      printWarning "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds the available shared memory space on /dev/shm on that host (${availableShm}GB)."
     fi
   done
 }
