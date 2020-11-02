@@ -390,7 +390,7 @@ void Result::vProcessBufferQueue(void)
       }
         
       // -- -- -- -- -- --
-        
+
       case CN_STREAMDEF: {
         //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
         if ( ! pStreamDef ) {
