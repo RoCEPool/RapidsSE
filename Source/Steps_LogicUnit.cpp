@@ -81,7 +81,6 @@ void Step::vLogicUnitAltTableFetch(void)
 void Step::vLogicUnitDiaryAction(void)
 {
   ENTRY();
-  
  
   i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
   i8 i_Enum      = m_pDataStack->iPopInt(__func__);
@@ -91,6 +90,11 @@ void Step::vLogicUnitDiaryAction(void)
   i8 i_ActEnumGroup = m_pDataStack->iPopInt(__func__);
   i8 i_ActEnum      = m_pDataStack->iPopInt(__func__);
 
+  if ( ! AM::bRLUDiary() ) {
+    EXIT();
+    return;
+  }
+  
   m_pLogicUnit->m_oSince.vUpdate();
   i8 nNanoSeconds = m_pLogicUnit->m_oSince.iNanoseconds();
   
@@ -109,7 +113,7 @@ void Step::vLogicUnitDiaryFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(m_pLogicUnit);
+  m_pDataStack->vPushPtr(m_pLogicUnit->m_pRluDiary);
 
   EXIT();
 }
@@ -124,6 +128,11 @@ void Step::vLogicUnitDiaryJobNote(void)
   s256 sJobNote;
   m_pDataStack->vPopStr(sJobNote, __func__);
 
+  if ( ! AM::bRLUDiary() ) {
+    EXIT();
+    return;
+  }
+  
   m_pLogicUnit->vDiaryJobNote(sJobNote);
 
   EXIT();
@@ -139,6 +148,11 @@ void Step::vLogicUnitDiaryName(void)
   s32 sName;
   m_pDataStack->vPopStr(sName, __func__);
 
+  if ( ! AM::bRLUDiary() ) {
+    EXIT();
+    return;
+  }
+  
   m_pLogicUnit->vDiaryName(sName);
 
   EXIT();
@@ -154,6 +168,11 @@ void Step::vLogicUnitDiaryNote(void)
   i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
   i8 i_Enum      = m_pDataStack->iPopInt(__func__);
   i8 iItem       = m_pDataStack->iPopInt(__func__);
+  
+  if ( ! AM::bRLUDiary() ) {
+    EXIT();
+    return;
+  }
   
   m_pLogicUnit->m_oSince.vUpdate();
   i8 nNanoSeconds = m_pLogicUnit->m_oSince.iNanoseconds();
@@ -177,6 +196,11 @@ void Step::vLogicUnitDiaryDir(void)
   s256 sDir;
   m_pDataStack->vPopStr(sDir, __func__);
 
+  if ( ! AM::bRLUDiary() ) {
+    EXIT();
+    return;
+  }
+  
   m_pLogicUnit->vDiaryDir(sDir);
 
   EXIT();
@@ -192,6 +216,11 @@ void Step::vLogicUnitDiaryTitle(void)
   s256 sTitle;
   m_pDataStack->vPopStr(sTitle, __func__);
 
+  if ( ! AM::bRLUDiary() ) {
+    EXIT();
+    return;
+  }
+  
   m_pLogicUnit->vDiaryTitle(sTitle);
 
   EXIT();

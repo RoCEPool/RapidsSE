@@ -134,7 +134,7 @@
   task::doneFinally
 
   //"Signalling waiting thread" .
-  job[] job.signalCompletion
+  job::informInvokerOfCompletion
   // task has no job
   task::scheduledelete
 

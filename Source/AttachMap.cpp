@@ -278,6 +278,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_bProgress        = pArgs->m_bProgress;
   Arg.m_sRegionName      = pArgs->m_sRegionName;
   Arg.m_iRegionSize      = pArgs->m_iRegionSize;
+  Arg.m_bRLUDiary        = pArgs->m_bRLUDiary;
   Arg.m_bRLUTimer        = pArgs->m_bRLUTimer;
   Arg.m_nSlotsPerNode    = pArgs->m_nSlotsPerNode;
   Arg.m_nSubIngesters    = pArgs->m_nSubIngesters;

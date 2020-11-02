@@ -424,9 +424,10 @@ void Mutex::vSignal(Focal* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  if (m_bObserve) {
-    vDebugPoint();
-  }
+  // uncomment his if you wish to observe the signal
+//  if (m_bObserve) {
+//    vDebugPoint();
+//  }
   
   //!
   //! Calling thread must have locked the mutex
