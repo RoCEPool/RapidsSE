@@ -32,7 +32,8 @@ function validateEnvironment() {
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh
 
-  # TODO: Check if SE is running in any of these host:directory combinations.
+  # Check if SE is running in any of these host:directory combinations.
+  validateSENotRunning
 
   # Check if the port is not being used on any of the hosts.
   validatePortsNotInUse
@@ -281,6 +282,32 @@ function validateHostsReachableBySsh() {
   done
 
   debugPrint "Successfully validated that all nodes can be reached by SSH."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Validate that SE is not running on any of the host:dir combinations.
+# Params: None
+
+function validateSENotRunning() {
+  
+  local nodeName
+  local host
+  local path
+  local pid
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    path="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+    pid="$(getRemoteRunningPid "${nodeName}")"
+
+    if [ -n "${pid}" ]; then
+      errorExit "RapidsSE is already running on ${nodeName} [host ${host}] in path: ${path}"
+    fi
+
+  done
 }
 
 
