@@ -223,7 +223,12 @@
 /*----------------------------------------------------------------------------*/
 : job::informInvokerOfCompletion
 
-  job[] job.signalCompletion
+  "<plProtocol>" PP_SIGNAL_SESSION if
+    job[] job.signalCompletion
+  else
+    "unknown plProtocol" .
+    HAZARD
+  then
 ;
 
 /*============================================================================*/

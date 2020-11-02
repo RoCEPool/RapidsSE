@@ -284,6 +284,8 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  m_oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  
   eEC eError = Api::ePrepareJob(pSeDeputy->pSession(),
                                 m_pInpTknVec,
                                 m_pLitTknVec,

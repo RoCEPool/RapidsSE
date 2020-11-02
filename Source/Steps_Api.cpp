@@ -80,7 +80,8 @@ void Step::vApiExecuteRequest(void)
   TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
   
   TagSet oTagSet;
-  
+  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+
   eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
   if (eError) {
@@ -157,7 +158,8 @@ void Step::vApiSpawnDemon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   TagSet oTagSet;
-  
+  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_NONE);
+
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
 
   eEC eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);

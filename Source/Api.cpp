@@ -159,8 +159,6 @@ eEC Api::ePrepareJob(Session*  pSession,
   
   pSession->m_pSsnJob->ePopulateJob(pExtraTagSet);
 
-  pSession->m_pSsnJob->pJobTags()->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
   
