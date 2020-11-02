@@ -33,6 +33,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
   vAddStep("index[].verify"_Stz,        &Step::vIndexVerify);
+  vAddStep("index[].verifyPtn"_Stz,     &Step::vIndexVerifyPtn);
   vAddStep("index[].visualize"_Stz,     &Step::vIndexVisualize);
 }
 
@@ -696,6 +697,38 @@ void Step::vIndexVerify(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
+  m_pDataStack->vPushInt(bVerified);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].verifyPtn -- verify partition of index                             */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexVerifyPtn(void)
+{
+  ENTRY();
+  
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIdxNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Job* pJob = m_pTask->m_pJob;
+  i8 i_Ptn  = pJob->m_pOp->iPartition();
+  i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
+
+  IndexTree *pIndexTree = pTable->pPartition(i_Slot)->pIndexTree(iIdxNo);
+  
+  EntBuffer *pIndexRootBuffer = pIndexTree->pRootBuffer();
+
+  bool bVerified;
+  if (pIndexRootBuffer)
+    bVerified = pIndexRootBuffer->bVerify();
+  else
+    bVerified = true;
+  
   m_pDataStack->vPushInt(bVerified);
   
   EXIT();

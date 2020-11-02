@@ -269,7 +269,7 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete
+  // compact index
   sPath
   "
   procedure compact index
@@ -399,6 +399,29 @@
   end ;
   "
   api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify index
+  sPath
+  "
+  procedure verify index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | periodicOp once | stageB
+
+    stage stageB on all partitions :
+      verifyIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
 ;
 
 /*----------------------------------------------------------------------------*/

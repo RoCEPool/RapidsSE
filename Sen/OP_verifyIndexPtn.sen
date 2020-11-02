@@ -1,20 +1,30 @@
 /*============================================================================*/
-/* OP_compactIndex.sen -- Operator compact index                              */
+/* OP_verifyIndexPtn.sen -- Operator verify partition of index                */
 /*============================================================================*/
 
-" OP_compactIndex.sen" .verbose
+" OP_verifyIndexPtn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: CompactIndexPtn_PulseMarker \handler
+: VerifyIndexPtn_PulseMarker \handler
 
+  // check if we can verify the index
+  <indexNm> <tableNm> check::validIndexAssembly not if
+    op.pipelineJob@ ERROR_JOB
+    PipeIn[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    true
+    exit
+  then
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   PipeIn[].pipeOut
 
-  // compact the index
-  index[].compactPtn
+  // verify partition of index
+  index[].verifyPtn assert
 
   Operand[].newEosMarker
   Operand[].pipeOut
@@ -25,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: CompactIndexPtn_StartMarker \handler
+: VerifyIndexPtn_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
@@ -41,14 +51,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute for compactIndex req                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : CompactIndexPtn_req \operator
+ : VerifyIndexPtn_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: CompactIndexPtn_PulseMarker ZK_PULSEMARKER op[].handler!
-  find: CompactIndexPtn_StartMarker ZK_STARTMARKER op[].handler!
+  find: VerifyIndexPtn_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: VerifyIndexPtn_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -61,9 +71,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: compactIndexPtn :: compactIndexPtn <tableNm> <indexNm> ;
+cmdSyntax: verifyIndexPtn :: verifyIndexPtn <tableNm> <indexNm> ;
 
-: compactIndexPtn _cmdTags tagCopy: op_tags
+: verifyIndexPtn _cmdTags tagCopy: op_tags
   tags{ <cmdDesc>  = "--desc for op--" }
 ;
 

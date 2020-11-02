@@ -461,6 +461,7 @@ public:
   void vIndexGenEntBuffers(void);
   void vIndexSize(void);
   void vIndexVerify(void);
+  void vIndexVerifyPtn(void);
   void vIndexVisualize(void);
 
   // index steps - to go
