@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* OP_waitPL.sen -- Operator Wait on Pipeline                                 */
+/* OP_callPipeline.sen -- Operator Call Pipeline                              */
 /*============================================================================*/
 
-" OP_waitPL.sen" .verbose
+" OP_callPipeline.sen" .verbose
 
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : waitPL_req \operator
+ : callPipeline_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -26,9 +26,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: waitPL :: waitPL ;
+cmdSyntax: callPipeline :: callPipeline ;
 
-: waitPL _cmdTags tagCopy: op_tags
+: callPipeline _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 
