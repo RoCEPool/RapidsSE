@@ -400,7 +400,8 @@ function doClusterInstall() {
 
   else 
     # Scripted installation
-    
+    errorExit "Scripted installation is not yet implemented."
+ 
     # Assert that we have a config file
     [ -f "${CONFIG_FILE}" ] || errorExit "Config file does not exist: ${CONFIG_FILE}"
 
@@ -761,7 +762,7 @@ function askMemSize() {
   echo "that RapidsSE will use for managing data, tables, indexes, etc."
   echo ""
   echo "This is how much shared memory has been provisioned by the operating system for"
-  echo "each node in the cluster (refer to df -h /dev/shm) :"
+  echo "each node in the cluster (refer to the command: df -h /dev/shm) :"
 
   local nodeName
   local hostName

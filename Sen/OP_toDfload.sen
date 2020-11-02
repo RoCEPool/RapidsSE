@@ -21,14 +21,15 @@
 
   InfoSet[].firstRow to Row[]
 
-  0 InfoSet[].colVal@ locals| sPath |
-
+  0 InfoSet[].colVal@ locals| sPath | sPath .
+  1 InfoSet[].colVal@ locals| iPathNo | iPathNo .
+  2 InfoSet[].colVal@ locals| iPathOf | iPathOf .
   InfoSet[].delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload %v \"%v\";" str.format locals| sDfload |
-  sDfload .
+  sPath <tableNm> "dfload %v \"%v\";" str.format locals| sRequest |
+  sRequest .
 
   // find the __path table def
   C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
@@ -37,7 +38,7 @@
   infoSetTable[] infoSet[].new
     OI_CALLPIPELINE infoSet[].opInfoset!
 
-  1 0 sDfload 3 infoSet[].addRowVargs
+  iPathOf iPathNo sRequest 3 infoSet[].addRowVargs
     
   InfoSet[].pipeOut
 

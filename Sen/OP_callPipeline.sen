@@ -21,9 +21,9 @@
 
   InfoSet[].firstRow to Row[]
 
-  0 InfoSet[].colVal@ locals| sDfload | sDfload .
-  1 InfoSet[].colVal@ locals| iCallNo | iCallNo .
-  2 InfoSet[].colVal@ locals| iCallOf | iCallOf .
+  0 InfoSet[].colVal@ locals| sRequest | sRequest .
+  1 InfoSet[].colVal@ locals| iReqNo | iReqNo .
+  2 InfoSet[].colVal@ locals| iReqOf | iReqOf .
 
   InfoSet[].delete
 

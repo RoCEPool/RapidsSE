@@ -61,13 +61,8 @@ function validateEnvironment() {
 
   # TODO: If an installation already exists on any node, confirm that the user wishes to overwrite it.
 
-  # TODO: Check that node names don't contain spaces or special characters.
-
-  # TODO: Check that node names are unique.
-
-  # TODO: Check that there is at least one hostname.
-
-  # TODO: Check that NODE_SEQ_NUM is always non-zero if we read in an existing config
+  # Check that node names don't contain spaces or special characters and are unique.
+  validateNodeNames
 
 }
 
@@ -586,7 +581,29 @@ function validateInstallDirIsWritable() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Check that node names don't contain spaces or special characters and are unique.
+# Params: None
 
+function validateNodeNames() {
+
+  local nodeName
+  local re="^[[:alpha:]][[:alnum:]]*$"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    if ! [[ "${nodeName}" =~ $re ]]; then
+      errorExit "Invalid node name: $nodeName"
+    fi
+  done
+
+  # Test for uniqueness of node names.
+  declare -a dups=()
+  readarray -t dups < <(printf "%s\n" "${NODE_LIST[@]}" | sort | uniq -d | uniq -u)
+  
+  if [ "${#dups[@]}" -gt 0 ]; then
+    errorExit "Cannot have duplicate node names: ${dups[*]}"
+  fi
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

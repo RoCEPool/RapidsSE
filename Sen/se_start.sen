@@ -1991,7 +1991,9 @@
   sPath
   "
   define table __pathInfo (
-    path           VARCHAR NOT NULL
+    path           VARCHAR NOT NULL ,
+    pathNo         INTEGER NOT NULL ,
+    pathOf         INTEGER NOT NULL
   ) ;
   "
   api::executeRequest
