@@ -75,6 +75,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.regionSize"_Stz,        gxArgs.m_iRegionSize);
   Constants::vAddConstant("args.reload"_Stz,            gxArgs.m_bReload);
   Constants::vAddConstant("args.restart"_Stz,           gxArgs.m_bRestart);
+  Constants::vAddConstant("args.RLUDiary"_Stz,          gxArgs.m_bRLUDiary);
   Constants::vAddConstant("args.RLUTimer"_Stz,          gxArgs.m_bRLUTimer);
   Constants::vAddConstant("args.senDir"_Stz,            gxArgs.m_sSenDir);
   Constants::vAddConstant("args.slots"_Stz,             gxArgs.m_nSlotsPerNode);

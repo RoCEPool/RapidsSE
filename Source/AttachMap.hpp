@@ -45,6 +45,7 @@ namespace StorageEngine
       bool   m_bProgress;
       s32    m_sRegionName;
       i8     m_iRegionSize;
+      bool   m_bRLUDiary;      
       bool   m_bRLUTimer;
       i8     m_nSlotsPerNode;
       i8     m_nSubIngesters;

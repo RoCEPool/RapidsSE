@@ -325,19 +325,10 @@
 /* call handler for operand                                                   */
 /*----------------------------------------------------------------------------*/
 : op__handle params| pHandler iOperandKind |
-/*
-  LogicUnit[].diary@ if
 
-    0 iOperandKind EG_ZK LogicUnit[].diaryNote
-    pHandler execute
-    1 iOperandKind EG_ZK LogicUnit[].diaryNote
-
-  else
-*/
-    pHandler execute
-/*
-  then
- */
+  0 iOperandKind EG_ZK LogicUnit[].diaryNote
+  pHandler execute
+  1 iOperandKind EG_ZK LogicUnit[].diaryNote
 ;
 
 /*----------------------------------------------------------------------------*/
