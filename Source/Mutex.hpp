@@ -10,6 +10,7 @@ namespace Locking
   public:
     eMK     m_eMutex;    // kind of mutex
   
+    bool    m_bObserve;  // observe this mutex?
     Focal*  m_pLockedBy; // by whom is the mutex locked?
     Focal*  m_pWaitedBy; // for whom is the mutex being waited on?
 
@@ -43,6 +44,8 @@ namespace Locking
     bool bIsLockedByCaller(Focal* pLockedBy);
     bool bLock(Focal* pLockFor);
     void vLock(Focal* pLockedBy);
+    bool bObserve(void);
+    void vObserve(bool bObserve);
     void vPause(Focal* pLockFor, i8 iMicroSeconds);
     void vSignal(Focal* pLockedBy);
     void vUnlock(Focal* pLockedBy);

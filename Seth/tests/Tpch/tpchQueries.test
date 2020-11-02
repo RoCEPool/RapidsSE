@@ -13,7 +13,7 @@ rows:
 // Query 6
 Query6 lineitem lineitem_idx1;
 unordered rows:
-( 75207429.08 )
+( 123140554.79 )
 
 // Query 4
 Query_4b;

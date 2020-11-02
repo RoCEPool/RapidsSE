@@ -7,6 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
+  /*    */ ZK_CALLMARKER,
   /*    */ ZK_CANCELMARKER,
   /*    */ ZK_CANCELLEDMARKER,
   /*    */ ZK_COUNTINFO,
@@ -21,10 +22,13 @@ enum eZK // operand kind
   /*    */ ZK_INDEXDEF,
   /*    */ ZK_LOCKSTATS,
   /*    */ ZK_NODEINFO,
+  /*    */ ZK_PATHINFO,
   /*    */ ZK_PROFILE,
   /*    */ ZK_PROGRESSUNITS,
   /*    */ ZK_PULSEMARKER,
   /*    */ ZK_PULSEDMARKER,
+  /*    */ ZK_RETURNMARKER,
+  /*    */ ZK_RETURNEDMARKER,
   /*    */ ZK_RSBBUFFER,
   /*    */ ZK_SEEKOFFSETS,
   /*    */ ZK_SRTBUFFER,
@@ -40,6 +44,7 @@ static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "ZK_CALLMARKER"_Stz,
   /*    */ "ZK_CANCELMARKER"_Stz,
   /*    */ "ZK_CANCELLEDMARKER"_Stz,
   /*    */ "ZK_COUNTINFO"_Stz,
@@ -54,10 +59,13 @@ static Stz* aZK[]
   /*    */ "ZK_INDEXDEF"_Stz,
   /*    */ "ZK_LOCKSTATS"_Stz,
   /*    */ "ZK_NODEINFO"_Stz,
+  /*    */ "ZK_PATHINFO"_Stz,
   /*    */ "ZK_PROFILE"_Stz,
   /*    */ "ZK_PROGRESSUNITS"_Stz,
   /*    */ "ZK_PULSEMARKER"_Stz,
   /*    */ "ZK_PULSEDMARKER"_Stz,
+  /*    */ "ZK_RETURNMARKER"_Stz,
+  /*    */ "ZK_RETURNEDMARKER"_Stz,
   /*    */ "ZK_RSBBUFFER"_Stz,
   /*    */ "ZK_SEEKOFFSETS"_Stz,
   /*    */ "ZK_SRTBUFFER"_Stz,

@@ -45,6 +45,7 @@ namespace Oblique
     static bool bMunged(void);
     static Stz* szRegionName(void);
     static i8   iRegionSize(void);
+    static bool bRLUDiary(void);
     static bool bRLUTimer(void);
     static bool bSethScript(void);
     static i8   nSlotsPerNode(void);

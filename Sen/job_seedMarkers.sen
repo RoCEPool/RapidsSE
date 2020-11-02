@@ -129,7 +129,8 @@
   //"Signalling the thread waiting on job completion" .
   Done_Finally
 
-  job[] job.signalCompletion
+  job::informInvokerOfCompletion
+
   // task has no job 
   task::scheduledelete
 
@@ -353,7 +354,8 @@
   Done_Finally
 
   //"Signalling the thread waiting on job completion" .
-  pJob job.signalCompletion
+  job::informInvokerOfCompletion
+
   // task has no job
   task::scheduledelete
 

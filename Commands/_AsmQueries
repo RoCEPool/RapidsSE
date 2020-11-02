@@ -164,8 +164,8 @@ print "executing Query6...";
   where
     l_shipdate >= "1994-01-01"
     and l_shipdate < "1995-01-01"
-    and l_discount > 0.05
-    and l_discount < 0.07
+    and l_discount >= 0.05
+    and l_discount <= 0.07
     and l_quantity < 24;
 
 // drop table customer;
@@ -222,10 +222,11 @@ print "executing Query6...";
  
  
  SQLITE SF1 Q6:
- 75207768.1855003
+ 123141078.228299
  
  SE SF1 Q6:
- row: (75207429.08)
+row: (123140554.79)
+
  
  
  
@@ -274,7 +275,7 @@ print "executing Query6...";
  row: ('5-LOW',87)
 
  Q6:
- row: (1324714.93)
+ row: (2100209.24)
  
  */
 

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_StartMarker \handler
 
-  //0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
   // new the pot[]
   Pot[].new
@@ -109,7 +109,7 @@
 : EOAsm_PulseMarker \handler
 
   PipeIn[].isNull not if
-    //ZK_PULSEMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
     PipeIn[].pipeOut // ZK_PULSEMARKER_handler
   then
 
@@ -162,7 +162,7 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_CrwBuffer \handler
 
-  //0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
   Operand[].asSrcCrwBuffer
@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_RsbBuffer \handler
 
-  //0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
 
   //Pipein[] "GOT RSBBUFFER %v" .printf
   Operand[].pipeIn
@@ -195,7 +195,7 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_EosMarker \handler
 
-  //0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
   // Invoked from PULSEMARKER call again?
   Operand[].isNull not if
@@ -222,7 +222,7 @@
   Pot[].pipeoutAllDangling
   Pot[].delete
 
-  //ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler
 
 ;
@@ -232,7 +232,7 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_StreamDef \handler
 
-  //0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   Pipein[] to StreamDef[]
   nullptr to Pipein[]

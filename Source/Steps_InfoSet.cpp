@@ -14,8 +14,10 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
+  vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
+  vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
   vAddStep("InfoSet[].firstRow"_Stz,         &Step::vInfoSetFirstRow);
   vAddStep("InfoSet[].get"_Stz,              &Step::vInfoSetGet);
@@ -25,6 +27,8 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].name"_Stz,             &Step::vInfoSetName);
   vAddStep("InfoSet[].new"_Stz,              &Step::vInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
+  vAddStep("InfoSet[].opInfoset@"_Stz,       &Step::vInfoSetOpInfosetFetch);
+  vAddStep("InfoSet[].opInfoset!"_Stz,       &Step::vInfoSetOpInfosetStore);
   vAddStep("InfoSet[].pipeOut"_Stz,          &Step::vInfoSetPipeOut);
   vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
@@ -157,6 +161,55 @@ void Step::vInfoSetAddRowCount(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushInt(pRow ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addRowVarg -- add a row by variable arguments                    */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddRowVargs(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 nCols = pStreamDef->nColumns(C_ALL);
+  i8 nArgs = m_pDataStack->iPopInt(__func__);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
+  
+  Row* aRow = pInfoSet->aAllotRow();
+  Stz* szTail;
+  i8   nSize;
+
+  i8 iInt;
+  s256 sStr;
+  for (i8 i_Arg = 0; i_Arg < nArgs && i_Arg < nCols; i_Arg++) {
+    
+    Column* pColumn = pStreamDef->pGetColumn(i_Arg);
+
+    eDM eDatum = pColumn->eDatum();
+    
+    switch (eDatum) {
+        
+      case DM_INT:
+        iInt = m_pDataStack->iPopInt(__func__);
+        aRow->m_waColVal[i_Arg].m_iWrd = iInt;
+        break;
+        
+      case DM_VCH:
+        m_pDataStack->vPopStr(sStr,__func__);
+        nSize = sStr.nSize();
+        szTail = (Stz*)pInfoSet->ayAllotTail(nSize);
+        StrLib::vCopy(szTail->azChar(),sStr.azChar());
+        break;
+        
+      default:
+        RASSERT(0);
+    }
+    
+  }
   
   EXIT();
 }
@@ -331,6 +384,46 @@ void Step::vInfoSetChunkFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* InfoSet[].colVal@ -- column value fetch                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetColValFetch(void)
+{
+  ENTRY();
+    
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 nCols = pStreamDef->nColumns(C_ALL);
+
+  i8 i_Col = m_pDataStack->iPopInt(__func__);
+
+  Column* pColumn = pStreamDef->pGetColumn(i_Col);
+  eDM eDatum = pColumn->eDatum();
+
+  Row* aRow = *m_pLogicUnit->m_xpRow;
+  
+  i8 iInt;
+  s256 sStr;
+
+  switch (eDatum) {
+      
+    case DM_INT:
+      iInt = aRow->m_waColVal[i_Col].m_iWrd;
+      m_pDataStack->vPushInt(iInt);
+      break;
+      
+    case DM_VCH:
+      sStr = aRow->m_waColVal[i_Col].m_szVch;
+      m_pDataStack->vPushStz(sStr);
+      break;
+      
+    default:
+      RASSERT(0);
+  }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* InfoSet[].delete -- operand infoset                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetDelete(void)
@@ -467,6 +560,38 @@ void Step::vInfoSetNextRow(void)
   ASSERT(pRow);
   
   m_pDataStack->vPushPtr(pInfoSet->aNextRow(pRow));
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].opInfoset@ -- fetch m_eOpInfoset                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetOpInfosetFetch(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
+  
+  eOI eOpInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet)->eOpInfoSet();
+  
+  m_pDataStack->vPushInt(eOpInfoSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].opInfoset! -- store m_eOpInfoset                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetOpInfosetStore(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
+  
+  eOI eOpInfoSet = (eOI)m_pDataStack->iPopInt(__func__);
+  
+  _pInfoSet(*m_pLogicUnit->m_xpInfoSet)->vOpInfoSet(eOpInfoSet);
+    
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -51,6 +51,7 @@ public:
 
   // api
   void vApiAddProcedure(void);
+  void vApiExecuteNested(void);
   void vApiExecuteRequest(void);
   void vApiSpawnDemon(void);
 
@@ -532,8 +533,10 @@ public:
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
   void vInfoSetAddRowCount(void);
+  void vInfoSetAddRowVargs(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
+  void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
   void vInfoSetFirstRow(void);
   void vInfoSetGet(void);
@@ -543,6 +546,8 @@ public:
   void vInfoSetName(void);
   void vInfoSetNew(void);
   void vInfoSetNextRow(void);
+  void vInfoSetOpInfosetFetch(void);
+  void vInfoSetOpInfosetStore(void);
   void vInfoSetPipeOut(void);
   void vInfoSetRdCsvChunk(void);
   void vInfoSetSet(void);
@@ -659,6 +664,7 @@ public:
   void vJobRemoveParticipant(void);
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
+  void vJobReturnMarker(void);
   void vJobRowsInvalidFetch(void);
   void vJobRowsInvalidStore(void);
   void vJobRowsProcessedFetch(void);
@@ -673,7 +679,7 @@ public:
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
-  void vJobSignalCompletion(void);
+  void vJobSignalSession(void);
   void vJobSlotFetch(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawnReceived(void);

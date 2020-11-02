@@ -33,6 +33,7 @@ Args::Args(void)
   m_sRegionName   = ""_Stz;
   m_sRegionPrefix = "/SE"_Stz;
   m_iRegionSize   = (4 * 1_GB);
+  m_bRLUDiary     = false;
   m_bRLUTimer     = false;
   
 #ifdef WITH_APPLE
@@ -97,6 +98,7 @@ Args::Args(void)
   m_iPromptDebug     = 0;
   m_bReload          = false;
   m_bRestart         = true;
+  m_bRLUDiary        = false;
   m_bRLUTimer        = false;
   m_nSubIngesters    = 4;
   m_nSubLoaders      = 4;
@@ -286,6 +288,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_bDeveloper = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--RLUdiary"_Stz)) {
+      m_bRLUDiary = true;
       continue;
     }
     

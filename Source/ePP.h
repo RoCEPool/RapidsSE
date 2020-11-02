@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* ePP.h -- Pipe Actions                                                      */
+/* ePP.h -- Pipeline Protocol                                                 */
 /*============================================================================*/
 #pragma once
 
-enum ePP // pipe actions
+enum ePP // pipeline protocol
 {
-  /*  0 */ PP_NONE=0,
+  /* 0 */ PP_NONE=0,
   
-  /*    */ PP_PIPE_IN,
-  /*    */ PP_PIPE_OUT,
+  /* 1 */ PP_SIGNAL_SESSION,
+  /* 2 */ PP_RETURN_MARKER,
 
-  /*    */ PP_ENUMS,
+  /* 3 */ PP_ENUMS
 };
 
 static Stz* aPP[]
 {
-  /*  0 */ "NONE"_Stz,
+  /* 0 */ "PP_NONE"_Stz,
   
-  /*    */ "PP_PIPE_IN"_Stz,
-  /*    */ "PP_PIPE_OUT"_Stz,
+  /* 1 */ "PP_SIGNAL_SESSION"_Stz,
+  /* 2 */ "PP_RETURN_MARKER"_Stz,
 
-  /*    */ "ENUMS"_Stz,
+  /* 3 */ "PP_ENUMS"_Stz
 };
 
 /*============================================================================*/

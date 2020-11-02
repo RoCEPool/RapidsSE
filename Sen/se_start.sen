@@ -764,6 +764,28 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dxload
+  sPath
+  "
+  procedure dxload
+    parameters $table $paths
+  begin
+
+    stage stageA on origin :
+        start
+      | periodicOp once
+      | eachPath $paths
+      | toDfload $table
+      | callPipeline
+      | waitPipeline
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
   sPath
   "
@@ -1919,6 +1941,18 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_CALLPIPELINE
+  sPath
+  "
+  define table __callPipeline (
+    request        VARCHAR NOT NULL ,
+    requestNo      INTEGER NOT NULL ,
+    requestOf      INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOCKSTATS
   sPath
   "
@@ -1952,6 +1986,15 @@
   "
   api::executeRequest
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PATHINFO
+  sPath
+  "
+  define table __pathInfo (
+    path           VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PROGRESSUNITS
