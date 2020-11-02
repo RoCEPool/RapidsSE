@@ -2035,7 +2035,7 @@ void LogicUnit::vGenerateQuery600(void)
   
   vAddCodeArg(EO_PUSH_LOCALI,Q6_LOCAL_DISCOUNT);
   vAddCodeArg(EO_INTEGER, 7);
-  vAddCode(EO_LESSTHAN);
+  vAddCode(EO_LESSEQUAL);
   vAddCodeLabel(EO_JMP_FALSE, "RETURN_FALSE:"_Stz);
   
   vAddCodeArg(EO_PUSH_LOCALI,Q6_LOCAL_QUANTITY);

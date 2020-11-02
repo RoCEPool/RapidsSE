@@ -11,8 +11,8 @@ from
 where
     l_shipdate >= "1994-01-01"
     and l_shipdate < "1995-01-01"
-    and l_discount > 0.05
-    and l_discount < 0.07
+    and l_discount >= 0.05
+    and l_discount <= 0.07
     and l_quantity < 24;
 
 failure contains: "no such table"
@@ -49,8 +49,8 @@ from
 where
   l_shipdate >= "1994-01-01"
   and l_shipdate < "1995-01-01"
-  and l_discount > 0.05
-  and l_discount < 0.07
+  and l_discount >= 0.05
+  and l_discount <= 0.07
   and l_quantity < 24;
 failure contains: "no such index"
 
@@ -68,8 +68,8 @@ from
 where
   l_shipdate >= 1
   and l_shipdate < "1995-01-01"
-  and l_discount > 0.05
-  and l_discount < 0.07
+  and l_discount >= 0.05
+  and l_discount <= 0.07
   and l_quantity < 24;
 failure contains: "invalid command"
 
@@ -82,8 +82,8 @@ from
 where
   l_shipdate >= "1994-01-01"
   and l_shipdate < "x"
-  and l_discount > 0.05
-  and l_discount < 0.07
+  and l_discount >= 0.05
+  and l_discount <= 0.07
   and l_quantity < 24;
 failure contains: "invalid command"
 
@@ -96,8 +96,8 @@ from
 where
   l_shipdate >= "1994-01-01"
   and l_shipdate < "1995-01-01"
-  and l_discount > 0.3.4
-  and l_discount < 0.07
+  and l_discount >= 0.3.4
+  and l_discount <= 0.07
   and l_quantity < 24;
 failure contains: "invalid command"
 
@@ -110,8 +110,8 @@ from
 where
   l_shipdate >= "1994-01-01"
   and l_shipdate < "1995-01-01"
-  and l_discount > 0.05
-  and l_discount < "xyz"
+  and l_discount >= 0.05
+  and l_discount <= "xyz"
   and l_quantity < 24;
 failure contains: "invalid command"
 
@@ -124,8 +124,8 @@ from
 where
   l_shipdate >= "1994-01-01"
   and l_shipdate < "1995-01-01"
-  and l_discount > 0.05
-  and l_discount < 0.07
+  and l_discount >= 0.05
+  and l_discount <= 0.07
   and l_quantity < "x";
 failure contains: "invalid command"
 
@@ -138,8 +138,8 @@ from
 where
   l_shipdate >= "1994-01-01"
   and l_shipdate < "1995-01-01"
-  and l_discount > 0.05
-  and l_discount < 0.07
+  and l_discount >= 0.05
+  and l_discount <= 0.07
   and l_quantity < 24;
 
 rows: 0
@@ -163,12 +163,12 @@ lineitem
 where
 l_shipdate >= "1994-01-01"
 and l_shipdate < "1995-01-01"
-and l_discount > 0.05
-and l_discount < 0.07
+and l_discount >= 0.05
+and l_discount <= 0.07
 and l_quantity < 24;
 
 unordered rows:
-( 75207429.08 )
+( 123140554.79 )
 
 CLEANUP {
   
