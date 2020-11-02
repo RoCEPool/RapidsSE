@@ -7,6 +7,25 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: eachPath_PulseMarker \handler
+ 
+  "eachPath_PulseMarker" .
+
+  ZK_PULSEMARKER_handler
+
+  // find the __path table def
+  C_TDEF_PATHINFO op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+    OI_PATHINFO infoSet[].opInfoset!
+    
+  InfoSet[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : eachPath_req \operator
@@ -15,6 +34,7 @@
 
   op__topology
 
+  find: eachPath_PulseMarker ZK_PULSEMARKER op[].handler!
 
   op__loop
 

@@ -25,6 +25,8 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].name"_Stz,             &Step::vInfoSetName);
   vAddStep("InfoSet[].new"_Stz,              &Step::vInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
+  vAddStep("InfoSet[].opInfoset@"_Stz,       &Step::vInfoSetOpInfosetFetch);
+  vAddStep("InfoSet[].opInfoset!"_Stz,       &Step::vInfoSetOpInfosetStore);
   vAddStep("InfoSet[].pipeOut"_Stz,          &Step::vInfoSetPipeOut);
   vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
@@ -467,6 +469,38 @@ void Step::vInfoSetNextRow(void)
   ASSERT(pRow);
   
   m_pDataStack->vPushPtr(pInfoSet->aNextRow(pRow));
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].opInfoset@ -- fetch m_eOpInfoset                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetOpInfosetFetch(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
+  
+  eOI eOpInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet)->eOpInfoSet();
+  
+  m_pDataStack->vPushInt(eOpInfoSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].opInfoset! -- store m_eOpInfoset                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetOpInfosetStore(void)
+{
+  ENTRY();
+  
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
+  
+  eOI eOpInfoSet = (eOI)m_pDataStack->iPopInt(__func__);
+  
+  _pInfoSet(*m_pLogicUnit->m_xpInfoSet)->vOpInfoSet(eOpInfoSet);
+    
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

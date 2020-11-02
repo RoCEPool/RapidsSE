@@ -183,6 +183,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LISTPARTITIONS"_Stz,C_TDEF_LISTPARTITIONS);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,    C_TDEF_LOCKSTATS);
   vAddConstant("C_TDEF_NODEINFO"_Stz,     C_TDEF_NODEINFO);
+  vAddConstant("C_TDEF_PATHINFO"_Stz,         C_TDEF_PATHINFO);
   vAddConstant("C_TDEF_PINGINFO"_Stz,     C_TDEF_PINGINFO);
   vAddConstant("C_TDEF_PROGRESSUNITS"_Stz,C_TDEF_PROGRESSUNITS);
   vAddConstant("C_TDEF_PWF"_Stz,          C_TDEF_PWF);
@@ -646,6 +647,16 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
+  // OI_ : operator infoset
+  /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
+  /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
+  /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
+  /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
+  /*  0 */ vAddConstant("OI_PATHINFO"_Stz,      OI_PATHINFO);
+  /*  0 */ vAddConstant("OI_PROGRESSUNITS"_Stz, OI_PROGRESSUNITS);
+  /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
+  /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
+
   // PD_ : pipe direction
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PP_NONE);
   /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);
@@ -747,6 +758,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
+  /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PULSEMARKER"_Stz,     ZK_PULSEMARKER);

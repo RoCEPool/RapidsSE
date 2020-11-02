@@ -1987,10 +1987,10 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_PATH
+  // C_TDEF_PATHINFO
   sPath
   "
-  define table __path (
+  define table __pathInfo (
     path           VARCHAR NOT NULL
   ) ;
   "

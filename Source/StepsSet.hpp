@@ -544,6 +544,8 @@ public:
   void vInfoSetName(void);
   void vInfoSetNew(void);
   void vInfoSetNextRow(void);
+  void vInfoSetOpInfosetFetch(void);
+  void vInfoSetOpInfosetStore(void);
   void vInfoSetPipeOut(void);
   void vInfoSetRdCsvChunk(void);
   void vInfoSetSet(void);

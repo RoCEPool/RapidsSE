@@ -7,6 +7,21 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_PATHINFO ...                                                */
+/*----------------------------------------------------------------------------*/
+: toDfload_PathInfo \handler
+ 
+  "toDfload_PathInfo" .
+
+  PipeIn[] to Infoset[]
+  nullptr to Pipein[]
+
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : toDfload_req \operator
@@ -15,6 +30,7 @@
 
   op__topology
 
+  find: toDfload_PathInfo ZK_PATHINFO op[].handler!
 
   op__loop
 
