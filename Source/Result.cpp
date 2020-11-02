@@ -357,6 +357,11 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
+          case OM_UNNESTEDMARKER: {
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
           default:
             ASSERT(0);
         }

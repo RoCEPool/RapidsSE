@@ -19,6 +19,7 @@ enum eOM // operator markers
   /*    */ OM_PULSEDMARKER,
   /*    */ OM_STARTMARKER,
   /*    */ OM_STARTEDMARKER,
+  /*    */ OM_UNNESTEDMARKER,
 
   /*    */ OM_ENUMS,
 };
@@ -39,6 +40,7 @@ static Stz* aOM[]
   /*    */ "PULSEDMARKER"_Stz,
   /*    */ "STARTMARKER"_Stz,
   /*    */ "STARTEDMARKER"_Stz,
+  /*    */ "UNNESTEDMARKER"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
