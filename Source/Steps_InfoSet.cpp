@@ -17,6 +17,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
+  vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
   vAddStep("InfoSet[].firstRow"_Stz,         &Step::vInfoSetFirstRow);
   vAddStep("InfoSet[].get"_Stz,              &Step::vInfoSetGet);
@@ -379,6 +380,46 @@ void Step::vInfoSetChunkFile(void)
   // free the read block
   MemLib::vFreeBlock(pReadBlock, C_2K);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].colVal@ -- column value fetch                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetColValFetch(void)
+{
+  ENTRY();
+    
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 nCols = pStreamDef->nColumns(C_ALL);
+
+  i8 i_Col = m_pDataStack->iPopInt(__func__);
+
+  Column* pColumn = pStreamDef->pGetColumn(i_Col);
+  eDM eDatum = pColumn->eDatum();
+
+  Row* aRow = *m_pLogicUnit->m_xpRow;
+  
+  i8 iInt;
+  s256 sStr;
+
+  switch (eDatum) {
+      
+    case DM_INT:
+      iInt = aRow->m_waColVal[i_Col].m_iWrd;
+      m_pDataStack->vPushInt(iInt);
+      break;
+      
+    case DM_VCH:
+      sStr = aRow->m_waColVal[i_Col].m_szVch;
+      m_pDataStack->vPushStz(sStr);
+      break;
+      
+    default:
+      RASSERT(0);
+  }
+
   EXIT();
 }
 

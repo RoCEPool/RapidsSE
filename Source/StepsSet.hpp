@@ -536,6 +536,7 @@ public:
   void vInfoSetAddRowVargs(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
+  void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
   void vInfoSetFirstRow(void);
   void vInfoSetGet(void);

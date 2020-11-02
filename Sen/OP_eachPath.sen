@@ -22,7 +22,7 @@
   infoSetTable[] infoSet[].new
     OI_PATHINFO infoSet[].opInfoset!
 
-  0 1 infoSet[].addRowVargs
+  "abc" 1 infoSet[].addRowVargs
     
   InfoSet[].pipeOut
 ;
