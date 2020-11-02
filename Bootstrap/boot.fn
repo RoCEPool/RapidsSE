@@ -28,7 +28,6 @@ readonly EXE="${EXE_DIR}/rapidsse"
 
 readonly NOHUP_FILE="${ROOT_DIR}/se.log"
 readonly PIDFILE="${ROOT_DIR}/se.pid"
-readonly REMOTE_PID_FILENAME="se.pid"
 
 readonly START_SCRIPT="startSE.sh"
 readonly STOP_SCRIPT="stopSE.sh"
@@ -550,41 +549,6 @@ function printNodeStatus() {
   else
     echo "${CURRENT_NODE_NAME} is not running."
   fi
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Returns the PID of the SE process running on a given node name, or an
-## empty string if the process is not running.
-##
-## Params:
-##  $1 : The name of the node to enquire on.
-
-function getRemoteRunningPid() {
-
-  local nodeName="$1"
-
-  local host
-  local dir
-  local pid
-  local remoteCmd
-
-  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
-
-  remoteCmd="if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p "
-  
-  pid="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
-
-  local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
-
-  if [[ "${pid}" =~ $re ]]; then
-    pid="${BASH_REMATCH[1]}"
-  else
-   pid=""
-  fi
-
-  echo "${pid}"
 }
 
 

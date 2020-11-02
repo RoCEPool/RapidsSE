@@ -32,9 +32,11 @@ function validateEnvironment() {
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh
 
-  # TODO: Check if SE is running in any of these host:directory combinations.
+  # Check if SE is running in any of these host:directory combinations.
+  validateSENotRunning
 
-  # TODO: Check if the port is not being used on any of the hosts.
+  # Check if the port is not being used on any of the hosts.
+  validatePortsNotInUse
 
   # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
 
@@ -44,9 +46,14 @@ function validateEnvironment() {
   # Check if the SE reserved memory size exceeds 95% of RAM.
   validateShmAgainstRAM
 
-  # TODO: Check if the SE reserved memory size exceeds the available SHM space.
+  # Check if the SE reserved memory size exceeds the available SHM space.
+  validateShmAgainstAvailableMem
 
-  # TODO: Check if the number of threads is more than the number of physical cores.
+  # Check that the number of partitions is acceptable.
+  validatePartitions
+
+  # Check that the number of threads is acceptable.
+  validateThreads
 
   # Check that the installation dir can be created (if not already) on each node,
   # and that it is writable.
@@ -277,6 +284,80 @@ function validateHostsReachableBySsh() {
   debugPrint "Successfully validated that all nodes can be reached by SSH."
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Validate that SE is not running on any of the host:dir combinations.
+# Params: None
+
+function validateSENotRunning() {
+  
+  local nodeName
+  local host
+  local path
+  local pid
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    path="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+    pid="$(getRemoteRunningPid "${nodeName}")"
+
+    if [ -n "${pid}" ]; then
+      errorExit "RapidsSE is already running on ${nodeName} [host ${host}] in path: ${path}"
+    fi
+
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Validate that the port specified for each node is not currently in use.
+# Params: None
+
+function validatePortsNotInUse() {
+
+  local nodeName
+  local host
+  local port
+  local remoteCmd
+  local output
+
+  declare -a sshArgs
+  declare -a failedNodes
+  failedNodes=()
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+
+    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${port} && echo \"PORT_IN_USE\""
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it
+    output="$(ssh "${sshArgs[@]}" || true)"
+
+    if [ "${output}" == "PORT_IN_USE" ]; then
+      failedNodes+=("${nodeName}")
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="The port specified for RapidsSE is already in use on the following nodes:"
+    
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${port}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
   
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Validates that the shared memory segment does not exceed the size of shared
@@ -323,6 +404,114 @@ function validateShmAgainstRAM() {
     if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ]; then
       errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds 95% of total RAM on that host (${ram}GB)."
     fi
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Check if the shared memory size exceeds the available shared memory space
+# on /dev/shm. Issue a warning if this is the case.
+# Params: None
+
+function validateShmAgainstAvailableMem() {
+  
+  local nodeName
+  local host
+  local nodeShm   # SE SHM allocated for a given node
+  local availableShm  # The space left on /dev/shm
+
+  for nodeName in "${!NODE_FREE_SHM[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
+    availableShm="${NODE_FREE_SHM[${nodeName}]}"
+
+    if [ "$(echo "${nodeShm} > ${availableShm}" | bc -l)" -eq 1 ]; then
+      printWarning "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds the available shared memory space on /dev/shm on that host (${availableShm}GB)."
+    fi
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Validate that the number of partitions is acceptable. This includes the 
+# following rules:
+#   - #partitions is > 0
+#   - #partitions is <= 32 (for now) 
+#   - #partitions is <= #cores
+#
+# Params: None
+
+function validatePartitions() {
+
+  local nodeName
+  local host
+  local nodePartitions # SE #partitions for a given node
+  local cores          # #cpu cores on a given node
+
+  for nodeName in "${!NODE_CORE_COUNT[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    nodePartitions="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PARTITIONS_KEY}")"
+    cores="${NODE_CORE_COUNT[${nodeName}]}"
+
+    if [ "${nodePartitions}" -lt 1 ]; then
+
+      errorExit "The number of partitions specified for RapidsSE on ${nodeName} [host ${host}] (${nodePartitions}) must be greater than zero."
+    fi
+
+    if [ "${nodePartitions}" -gt "${MAXIMUM_NUM_PARTITIONS}" ]; then
+      errorExit "The number of partitions specified for RapidsSE on ${nodeName} [host ${host}] (${nodePartitions}) is greater than the maximum number of partitions currently allowed (${MAXIMUM_NUM_PARTITIONS})."
+    fi
+
+    if [ "${nodePartitions}" -gt "${cores}" ]; then
+      errorExit "The number of partitions specified for RapidsSE on ${nodeName} [host ${host}] (${nodePartitions}) is greater than the number of cores for that node (${cores})."
+    fi
+  done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Validate that the number of threads is acceptable. This includes the following
+# rules:
+#   - #threads must be at least the minimum (error).
+#   - #threads must be >= #partitions (error).
+#   - #threads must be >= #partitions + 6.
+#   - #threads should not be > #cores unless to meet any of the above rules.
+# 
+# Params: None
+
+function validateThreads() {
+
+  local nodeName
+  local host
+  local nodeThreads    # SE #threads for a given node
+  local nodePartitions # SE #partitions for a given node
+  local cores          # #cpu cores on a given node
+
+  for nodeName in "${!NODE_CORE_COUNT[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    nodeThreads="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_THREADS_KEY}")"
+    nodePartitions="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PARTITIONS_KEY}")"
+    cores="${NODE_CORE_COUNT[${nodeName}]}"
+
+    if [ "${nodeThreads}" -lt "${MINIMUM_NUM_THREADS}" ]; then
+      errorExit "The number of threads specified for RapidsSE on ${nodeName} [host ${host}] (${nodeThreads}) is less than the minimum value (${MINIMUM_NUM_THREADS})."
+    fi
+
+    if [ "${nodeThreads}" -lt "${nodePartitions}" ]; then
+      errorExit "The number of threads specified for RapidsSE on ${nodeName} [host ${host}] (${nodeThreads}) is less than the number of partitions for that node (${nodePartitions})."
+    fi
+
+    if [ "${nodeThreads}" -lt $((nodePartitions + 6)) ]; then
+      errorExit "The number of threads specified for RapidsSE on ${nodeName} [host ${host}] (${nodeThreads}) must be at least $((nodePartitions + 6)) for the given number of partitions on this node (${nodePartitions})."
+    fi
+
+    if [[ "${nodeThreads}" -gt ${cores} && "${nodeThreads}" -ne "${MINIMUM_NUM_THREADS}" && "${nodeThreads}" -ne $((nodePartitions + 6)) ]]; then
+      printWarning "The number of threads specified for RapidsSE on ${nodeName} [host ${host}] (${nodeThreads}) exceeds the number of cores for that node (${cores}). This can cause sub-optimal performance."
+    fi
+
   done
 }
 

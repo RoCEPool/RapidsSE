@@ -1131,6 +1131,7 @@ EOT
     echo ""
     echo "The cluster configuration has been written out to the file:"
     echo "    ${outputFile}"
+    echo ""
   fi
 
   debugPrint "\nContents of the cluster configuration file: ${outputFile}\n $(cat "${outputFile}")\n"
