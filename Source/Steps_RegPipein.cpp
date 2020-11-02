@@ -110,7 +110,7 @@ void Step::vRegPipeinKind(void)
 
        switch(pMarker->eOpMarker()) {
        
-        case OM_CANCELMARKER:     eOperand = ZK_CANCELMARKER;    break;
+         case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
          case OM_ERROREDMARKER:   eOperand = ZK_ERROREDMARKER;   break;
@@ -118,6 +118,8 @@ void Step::vRegPipeinKind(void)
          case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
          case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
+         case OM_RETURNMARKER:    eOperand = ZK_RETURNMARKER;    break;
+         case OM_RETURNEDMARKER:  eOperand = ZK_RETURNEDMARKER;  break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
          default:  ASSERT(0);

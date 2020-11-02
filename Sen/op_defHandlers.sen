@@ -5,6 +5,16 @@
 " OPERAND__handlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CALLMARKER ...                                              */
+/*----------------------------------------------------------------------------*/
+: ZK_CALLMARKER_handler \handler
+
+  //"ZK_CALLMARKER_handler" .verbose
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
 : ZK_CANCELMARKER_handler \handler
@@ -183,6 +193,26 @@
 : ZK_PULSEDMARKER_handler \handler
 
   //"ZK_PULSEDMARKER_handler" .verbose
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_RETURNMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: ZK_RETURNMARKER_handler \handler
+
+  //"ZK_RETURNMARKER_handler" .verbose
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_RETURNEDMARKER ...                                          */
+/*----------------------------------------------------------------------------*/
+: ZK_RETURNEDMARKER_handler \handler
+
+  //"ZK_RETURNEDMARKER_handler" .verbose
   PipeIn[].pipeOut
   true
 ;

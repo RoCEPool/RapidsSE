@@ -351,13 +351,18 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
-          case OM_STARTMARKER: {
-            //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
+          case OM_RETURNMARKER: {
             AM::vDeleteOperand(pOperand);
             break;
           }
             
-          case OM_UNNESTEDMARKER: {
+          case OM_RETURNEDMARKER: {
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
+          case OM_STARTMARKER: {
+            //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
             break;
           }
