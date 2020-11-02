@@ -213,6 +213,7 @@ assert::stack_0
         "OP_visualizeIndex.sen"       include
         "OP_visualizeTable.sen"       include
 
+        "OP_waitPL.sen"               include
         "OP_waker.sen"                include
         "OP_wrFile.sen"               include
 
