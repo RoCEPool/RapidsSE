@@ -87,7 +87,7 @@ wait_bg;
 // print "vfyidx";
 // /time vfyidx lineitem lineitem_idx1;
 print "verify index";
-/time verify index lineitem lineitem_idx1;
+/time /tags verify index lineitem lineitem_idx1;
 
 //dumpidx lineitem lineitem_idx1;
 /*============================================================================*/
