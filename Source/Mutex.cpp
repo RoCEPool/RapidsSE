@@ -34,6 +34,8 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
   
   m_eMutex    = eKind;
   
+  m_bObserve  = false;
+  
   m_pLockedBy = nullptr;
   m_pWaitedBy = nullptr;
 
@@ -312,6 +314,26 @@ void Mutex::vLock(Focal* pLockFor)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get observe                                                                */
+/*----------------------------------------------------------------------------*/
+bool Mutex::bObserve(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  return m_bObserve;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set observe                                                                */
+/*----------------------------------------------------------------------------*/
+void Mutex::vObserve(bool bObserve)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  m_bObserve = bObserve;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calling thread pauses for limited time to be signalled     (blocking call) */
 /*----------------------------------------------------------------------------*/
 void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
@@ -401,6 +423,11 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
 void Mutex::vSignal(Focal* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  // uncomment his if you wish to observe the signal
+//  if (m_bObserve) {
+//    vDebugPoint();
+//  }
   
   //!
   //! Calling thread must have locked the mutex

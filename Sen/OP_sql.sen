@@ -402,7 +402,7 @@
       true Pot[].useStreamDefOut
       //StreamDefOut[].duplicate to StreamDef[]
 
-      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
+      ZK_STREAMDEF EG_ZK PD_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
 
       StreamDefOut[].pipeout
     endof
@@ -433,7 +433,7 @@
       true Pot[].useStreamDefOut
       //StreamDefOut[].duplicate to StreamDef[]
 
-      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
+      ZK_STREAMDEF EG_ZK PD_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
 
       StreamDefOut[].pipeout
     endof
@@ -458,7 +458,7 @@
       true Pot[].useStreamDefOut
       //StreamDefOut[].duplicate to StreamDef[]
 
-      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
+      ZK_STREAMDEF EG_ZK PD_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
 
       StreamDefOut[].pipeout
     endof
@@ -476,7 +476,7 @@
       streamDefOut_400
       true Pot[].useStreamDefOut
       //StreamDefOut[].duplicate to StreamDef[]
-      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
+      ZK_STREAMDEF EG_ZK PD_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
       StreamDefOut[].pipeout
     endof
 
@@ -499,7 +499,7 @@
       streamDefOut_401
       true Pot[].useStreamDefOut
       //StreamDefOut[].duplicate to StreamDef[]
-      ZK_STREAMDEF EG_ZK PP_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
+      ZK_STREAMDEF EG_ZK PD_PIPE_OUT 0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryAction
       StreamDefOut[].pipeout
     endof
 
@@ -573,7 +573,7 @@
 
   PipeIn[].isNull not if
 
-    ZK_PULSEMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
 
     PipeIn[].pipeOut // ZK_PULSEMARKER_handler
     // "PIPEDOUT PULSE MARKER" .
@@ -603,7 +603,7 @@ then
     then
     Pot[].pipeoutAllDanglingPtns
     Operand[].newEosMarker
-    ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
     Operand[].pipeOut
     Pot[].delete
     true
@@ -617,7 +617,7 @@ then
 
   // "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 301=PULSEMARKER" .
 
-  ZK_PULSEMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
 
   ZK_PULSEMARKER_handler
 
@@ -647,7 +647,7 @@ then
 
   //"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 302=PULSEMARKER" .
 
-  ZK_PULSEMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
 
   ZK_PULSEMARKER_handler
 
@@ -1023,7 +1023,7 @@ then
   //nullptr task[] task.profile!
   //Operand[].pipeOut
 
-  ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler
 ;
 

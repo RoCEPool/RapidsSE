@@ -645,10 +645,15 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
-  // PP_ : pipe actions
-  /*  0 */ vAddConstant("PP_NONE"_Stz,      PP_NONE);
-  /*  0 */ vAddConstant("PP_PIPE_IN"_Stz,   PP_PIPE_IN);
-  /*  0 */ vAddConstant("PP_PIPE_OUT"_Stz,  PP_PIPE_OUT);
+  // PD_ : pipe direction
+  /*  0 */ vAddConstant("PD_NONE"_Stz,      PP_NONE);
+  /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);
+  /*  0 */ vAddConstant("PD_PIPE_OUT"_Stz,  PD_PIPE_OUT);
+  
+  // PP_ : pipeline protocol
+  /*  0 */ vAddConstant("PP_NONE"_Stz,           PP_NONE);
+  /*  0 */ vAddConstant("PP_SIGNAL_SESSION"_Stz, PP_SIGNAL_SESSION);
+  /*  0 */ vAddConstant("PP_MARKER_WAITPL"_Stz,  PP_MARKER_WAITPL);
   
   // PY_ : priority
   /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);

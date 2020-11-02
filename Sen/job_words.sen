@@ -218,6 +218,23 @@
   then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* this job has completed; coordinate with invoker                            */
+/*----------------------------------------------------------------------------*/
+: job::informInvokerOfCompletion
+
+  "<plProtocol>" PP_SIGNAL_SESSION if
+    job[] job.signalCompletion
+  else
+    "<plProtocol>" PP_MARKER_WAITPL if
+    "PP_MARKER_WAITPL not yet supported" .
+    HAZARD
+  else
+    "unknown plProtocol" .
+    HAZARD
+  then then
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

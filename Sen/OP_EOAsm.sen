@@ -109,7 +109,7 @@
 : EOAsm_PulseMarker \handler
 
   PipeIn[].isNull not if
-    ZK_PULSEMARKER EG_ZK PP_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
     PipeIn[].pipeOut // ZK_PULSEMARKER_handler
   then
 
@@ -222,7 +222,7 @@
   Pot[].pipeoutAllDangling
   Pot[].delete
 
-  ZK_EOSMARKER EG_ZK PP_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler
 
 ;

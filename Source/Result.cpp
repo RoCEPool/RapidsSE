@@ -357,6 +357,11 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
+          case OM_UNNESTEDMARKER: {
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
           default:
             ASSERT(0);
         }
@@ -390,7 +395,7 @@ void Result::vProcessBufferQueue(void)
       }
         
       // -- -- -- -- -- --
-        
+
       case CN_STREAMDEF: {
         //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
         if ( ! pStreamDef ) {

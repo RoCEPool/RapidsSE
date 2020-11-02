@@ -123,12 +123,13 @@ eEC Api::ePrepareJob(Session*  pSession,
   // create tags in the job for the params from the literal token vector
   if (pLitTknVec && pLitTknVec->nItems()) {
     
-    TagSet* pJobTags = pSession->m_pSsnJob->pJobTags();
     
     for (i8 i_Tkn = 0; i_Tkn < pLitTknVec->nItems(); i_Tkn++) {
       
       Token* pTkn = pLitTknVec->pGet(i_Tkn);
       
+      TagSet* pJobTags = pSession->m_pSsnJob->pJobTags();
+
       Stz* szTag;
       switch(i_Tkn) {
         case 0: szTag = C_TAG_PARAM0; break;
@@ -157,7 +158,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   }
   
   pSession->m_pSsnJob->ePopulateJob(pExtraTagSet);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
   
@@ -667,6 +668,7 @@ bool Api::bSpawnJob_session(Job* pJob)
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
   if (! pJob->bHasTag_noWait()) {
+    pSession->m_oSsnMutex.vObserve(true);
     Api::vMutexWaitCond(pSession,pJob);
     pJob->vTimerUpdate();
   }
