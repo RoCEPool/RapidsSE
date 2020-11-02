@@ -8,4 +8,4 @@
 ../tests/LocalFunctions/testList
 ../testsMN/Misc/testList
 ../tests/Table/testList
-//../tests/Demo/testList
+../tests/Demo/testList
