@@ -20,8 +20,10 @@ namespace Locking
 #include "Atomic.hpp"
 #include "Lock.hpp"
 #include "LockTracker.hpp"
+#include "Mutex.hpp"
 
 #include "SP_Lock.hpp"
+#include "SP_Mutex.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

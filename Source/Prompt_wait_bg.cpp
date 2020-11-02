@@ -1,33 +1,30 @@
 /*============================================================================*/
-/* Prompt_bg.cpp -- start prompt background thread                            */
+/* Prompt_wait_bg.cpp -- wait on bg jobs                                      */
 /*============================================================================*/
 
 #include "Prompt.h"
 
-PromptFun __Prompt_bg (
-  PF_BYE,            // prompt function
-  "Prompt_bg"_Stz,   // name of the prompt function
+PromptFun __Prompt_wait_bg (
+  PF_WAIT_BG,        // prompt function
+  "Prompt_wait_bg"_Stz,  // name of the prompt function
   "comment"_Stz,     // comment about the function
-  "bg"_Stz,          // the prompt command
+  "wait_bg"_Stz,     // the prompt command
   nullptr,           // the second word
-  bPrompt_bg,        // prompt function
+  bPrompt_wait_bg,   // prompt function
   true,              // enabled
 
   true,              // visible
-  "bg"_Stz,          // help
+  "wait_bg"_Stz,     // help
   ""_Stz             // description
 );
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_bg(SePrompt* pPrompt)
+bool Prompt::bPrompt_wait_bg(SePrompt* pPrompt)
 {
+  pPrompt->vNapTillBgJobsCompleted();
   
-  Thread* pThread = new Thread;
-  
-  pThread->vSpawnPsxThd(SePrompt::aEntryPoint_bg,pThread);
-
   return true;
 }
 

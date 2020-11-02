@@ -10,8 +10,8 @@ namespace Jobs
   public:
   
     static TagSet* pCmdTagSet(Stz* szJobNm);
-    static bool    bParseCmd(TagSet*   pArgTags,
-                             TokenVec* pTknVec);
+    static bool    bParseCmd(TokenVec* pTknVec,
+                             TagSet*   pArgTags);
     
   private:
     static bool bExtractAllArgs(TagSet*   pArgTags,

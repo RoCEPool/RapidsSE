@@ -16,14 +16,10 @@ namespace Prompt
     Thread*   m_pThread;
 
     Session*  m_pSession;  // rapidsse session
-    Job*      m_pJob;      // job
-  
-    Timer     m_oTimer;    // the timer
-  
+    
     bool      m_bAvailable;
     bool      m_bContinue;
-    bool      m_bExited;
-
+    bool      m_bTerminated;
 
     // must be last
     Footer m_xFooter;
@@ -36,38 +32,22 @@ namespace Prompt
    ~SeDeputy(void) noexcept(false);
   
     static void* aEntryPoint(void* pArg);
-
-    bool bAvailable(void);
-    void vAvailable(bool bAvailable);
-
-    bool bContinue(void);
-    void vContinue(bool bContinue);
-
-    bool bExited(void);
-    void vExited(bool bExited);
-
+  
     void vDeputyLoop(void);
-
-    void vDeleteJob(void);
-  
     void vExecuteJob(void);
-  
-    void vCreateSession(void);
+    void vDeleteJob(void);
 
-    bool bProcessPipelineResults(void);
+    // -- -- -- -- -- --
   
+    bool bAvailable(void);
+    void vDeputiseJob(void);
     Job* pJob(void);
-    void vJob(Job* pJob);
-
-    Mutex* pMutex(void);
-  
     void vReportTime(void);
-
     Session* pSession(void);
-    void     vSession(Session* pSession);
+    void vTerminate(void);
+    bool bTerminated(void);
 
   private:
-
     Footer* aFooter(void);
   };
 

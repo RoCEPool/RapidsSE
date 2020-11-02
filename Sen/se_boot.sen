@@ -89,11 +89,12 @@ assert::stack_0
         "OP_bufferGen.sen"            include
         "OP_burst.sen"                include
 
+        "OP_callPL.sen"               include
         "OP_catFile.sen"              include
         "OP_changeFolder.sen"         include
         "OP_chunk.sen"                include
         "OP_compactIdx.sen"           include
-        "OP_compactIndex.sen"         include
+        "OP_compactIndexPtn.sen"      include
         "OP_connector.sen"            include
         "OP_consume.sen"              include
         "OP_createCatalog.sen"        include
@@ -207,6 +208,7 @@ assert::stack_0
         "OP_upsert.sen"               include
 
         "OP_verifyIndex.sen"          include
+        "OP_verifyIndexPtn.sen"       include
         "OP_verifyTable.sen"          include
         "OP_visualizeIndex.sen"       include
         "OP_visualizeTable.sen"       include

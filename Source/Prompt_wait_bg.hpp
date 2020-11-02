@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_bg.hpp -- start prompt background thread                            */
+/* Prompt_wait_bg.hpp -- wait on bg jobs                                      */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_bg(SePrompt* pPrompt);
+  bool bPrompt_wait_bg(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

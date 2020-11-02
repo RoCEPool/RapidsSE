@@ -68,7 +68,8 @@ void Session::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Session::Session(void)
-: Focal(CN_SESSION, AM::iNextSessionId(), C_UNKNOWN)
+: Focal(CN_SESSION, AM::iNextSessionId(), C_UNKNOWN),
+  m_oSsnMutex(MK_JOB,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -108,14 +109,13 @@ Session::Session(void)
   m_iPartition      = C_UNKNOWN;
   
   //m_oDicStack;
-  m_pJob            = nullptr;
+  m_pSsnJob         = nullptr;
   m_pTx             = nullptr;
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
   m_sToDo           = ""_Stz;
     
-  m_pSsnMutex          = new Mutex(MK_JOB,this);
     
   _checkInitialised_(CN_SESSION);
   
@@ -143,9 +143,7 @@ Session::~Session(void) noexcept(false)
   
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;
-    
-  delete m_pSsnMutex;
-    
+        
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
               "Session destruct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
@@ -364,7 +362,7 @@ void Session::vReport(void)
   
   vTrace("Session %llx job %llx\n"_Stz,
          this,
-         m_pJob);
+         m_pSsnJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +431,7 @@ void Session::vFreeSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_pJob            = nullptr;
+  m_pSsnJob         = nullptr;
   m_pTx             = nullptr;
   m_bSessionExiting = false;
   

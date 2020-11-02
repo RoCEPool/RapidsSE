@@ -20,12 +20,9 @@ namespace Resources
 #include "Dir.hpp"
 #include "Fifo.hpp"
 #include "File.hpp"
-#include "Mutex.hpp"
 #include "PsxThd.hpp"
 #include "Socket.hpp"
 #include "TlsKeys.hpp"
-
-#include "SP_Mutex.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

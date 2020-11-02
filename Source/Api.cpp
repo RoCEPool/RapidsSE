@@ -63,41 +63,27 @@ void Api::vDeleteJob(Job** ppJob)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Session* pSession, Job* pJob)
+void Api::vExecuteJob(Job* pJob)
 {
   _static_
   
-  Api::vMutexLock(pSession,pJob);
-    
-  // spawn the job
-  if (pJob->bHasTag_noWait()) {
-    Api::bSpawnJob_session(pJob);
-    Api::vMutexUnlock(pSession,pJob);
-    return;
-  }
-  else {
-    Api::bSpawnJob_session(pJob);
-  }
-  
-  Api::vMutexWaitCond(pSession,pJob);
-  
-  Api::vMutexUnlock(pSession,pJob);
+  Session* pSession = pJob->pSession();
+  Api::bSpawnJob_session(pJob);
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* prepare job                                                                     */
+/* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job**     ppJob,
+eEC Api::ePrepareJob(Session*  pSession,
                      TokenVec* pCmdTknVec,
                      TokenVec* pLitTknVec,
-                     TagSet*   pTagSet,
-                     ReqTuple* axReqTuple)
+                     TagSet*   pExtraTagSet)
 {
   _static_
 
-  *ppJob = nullptr;
-
+  RASSERT(pSession);
+  RASSERT(! pSession->m_pSsnJob);
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
@@ -119,24 +105,25 @@ eEC Api::ePrepareJob(Job**     ppJob,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if ( ! AM::bParseCmd(pTagSet,pCmdTknVec) )
+  if ( ! AM::bParseCmd(pCmdTknVec,pExtraTagSet) )
     return EC_INVALID_COMMAND;
       
       
-  if (! Api::bPassesLowMem())
+  if (! AM::bPassesLowMem())
     return EC_LOW_MEMORY;
   
-  Job* pJob;
   if (pLitTknVec)
-    pJob = new Job(axReqTuple, pLitTknVec);
+    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple, pLitTknVec);
   else
-    pJob = new Job(axReqTuple);
+    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);
   
+  pSession->m_xReqTuple.m_iReqNo++;
+
   // To GO : For DEMO
   // create tags in the job for the params from the literal token vector
   if (pLitTknVec && pLitTknVec->nItems()) {
     
-    TagSet* pJobTags = pJob->pJobTags();
+    TagSet* pJobTags = pSession->m_pSsnJob->pJobTags();
     
     for (i8 i_Tkn = 0; i_Tkn < pLitTknVec->nItems(); i_Tkn++) {
       
@@ -169,7 +156,7 @@ eEC Api::ePrepareJob(Job**     ppJob,
     //pJobTags->vContentDump();
   }
   
-  pJob->ePopulateJob(pTagSet);
+  pSession->m_pSsnJob->ePopulateJob(pExtraTagSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
@@ -179,37 +166,42 @@ eEC Api::ePrepareJob(Job**     ppJob,
   
   //vTrace("sCmd: %s\n %lld\n"_Stz,sCmd.szStz(),sCmd.nSize());
 
-  pJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
+  pSession->m_pSsnJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
   
   
-  ASSERT(! pJob->pTask());
+  ASSERT(! pSession->m_pSsnJob->pTask());
   
   if (AM::bVerbose())
-    pJob->pJobTags()->vDumpSet();
+    pSession->m_pSsnJob->pJobTags()->vDumpSet();
   
   // this should go
-  if (pJob->bJobHasError()) {
-    eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-    pJob->vPrintResult(eResponse);
-    Api::vDeleteJob(&pJob);
+  if (pSession->m_pSsnJob->bJobHasError()) {
+    eRS eResponse = (eRS)pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
+    pSession->m_pSsnJob->vPrintResult(eResponse);
+    Api::vDeleteJob(&pSession->m_pSsnJob);
     return EC_ZZZ_OTHER;
   }
   
 
-  if (pJob->bHasTag(C_TAG_LIFE)) {
+  if (pSession->m_pSsnJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
-    pJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pJob->pJobTags()));
+    pSession->m_pSsnJob->vPrint("Job New: %s"_Stz,spTagSet.sz(pSession->m_pSsnJob->pJobTags()));
     //pJob->pTagSet()->vPrint();
   }
   
-  RASSERT(JS_LOCKED != pJob->eJobState());
+  RASSERT(JS_LOCKED != pSession->m_pSsnJob->eJobState());
         
-  pJob->vSeed(SS_SEED_REQ);
+  pSession->m_pSsnJob->vSeed(SS_SEED_REQ);
         
   //! ALKA: Come back to this : 3 feb 2020
   //pJob->vJobClass(nullptr, (char*)__func__);
-
-  *ppJob = pJob;
+  
+  
+  TagSet* pSsnTagSet = &pSession->m_oSsnTagSet;
+   pSession->m_pSsnJob->pJobTags()->vCopy(pSsnTagSet);
+  
+  if ( pSession->m_pSsnJob->bHasTag(C_TAG_TAGS))
+     pSession->m_pSsnJob->pJobTags()->vDumpSet();
 
   return EC_NONE;
 }
@@ -220,27 +212,6 @@ eEC Api::ePrepareJob(Job**     ppJob,
 
 
 
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vJob_2_SpawnJob_service(Job* pJob)
-{
-  
-  RASSERT(! pJob->pTask());
-  
-  Api::vSpawnJob_service(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api...                                                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vJob_2_SpawnJob_dedicated(Job* pJob)
-{
-  
-  RASSERT(! pJob->pTask());
-  
-  Api::vSpawnJob_dedicated(pJob);
-}
 
 /*----------------------------------------------------------------------------*/
 /* is the command a shortform?                                                */
@@ -360,34 +331,6 @@ bool Api::bExpandToLongForm(TokenVec* pCmdTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* passes the low-memory condition?                                           */
-/*----------------------------------------------------------------------------*/
-bool Api::bPassesLowMem(void)
-{
-  _static_
-
-  //! ALKA: while cleaning up JobClass all jobs had m_eFlags
-  //! as JF_LOWMEM hence returning true
-  return true;
-  
-//  if (aJobCLass->m_eFlags != JF_LOWMEM)
-//    return true;
-//  
-//  if (! gpBufferPool->bLowMemory())
-//    return true;
-//  
-//  if (aJobCLass->m_aCommand2)
-//    vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
-//           aJobCLass->m_aCommand1,aJobCLass->m_aCommand2);
-//  else
-//    vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
-//           aJobCLass->m_aCommand1);
-
-//  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* populate tagset from given token vector                                    */
 /*----------------------------------------------------------------------------*/
 void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
@@ -425,7 +368,7 @@ void Api::vMutexLock(Session* pSession, Job* pJob)
 {
   _static_
   
-  pSession->m_pSsnMutex->vLock(pSession);
+  pSession->m_oSsnMutex.vLock(pSession);
         
   pJob->vJobState(JS_LOCKED);
 }
@@ -441,7 +384,7 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
     
   pJob->vJobState(JS_RUNNING);
   
-  pSession->m_pSsnMutex->vUnlock(pSession);
+  pSession->m_oSsnMutex.vUnlock(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,7 +396,7 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
-    pSession->m_pSsnMutex->vWait(pSession);
+    pSession->m_oSsnMutex.vWait(pSession);
     
   } while (pJob->eJobState() != JS_SIGNALLED);
 
@@ -663,7 +606,7 @@ void Api::vSpawnJob_dedicated(Job* pJob)
 {
   _static_
   
-  
+  RASSERT(! pJob->pTask());
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }
@@ -687,7 +630,8 @@ void Api::vSpawnJob_service(Job* pJob)
 {
   _static_
   
-  
+  RASSERT(! pJob->pTask());
+
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddService(pJob->pTask());
 }
@@ -699,6 +643,9 @@ bool Api::bSpawnJob_session(Job* pJob)
 {
   _static_
   
+  Session* pSession = pJob->pSession();
+  Api::vMutexLock(pSession,pJob);
+
   RASSERT(JS_LOCKED == pJob->eJobState());
 
   
@@ -716,8 +663,16 @@ bool Api::bSpawnJob_session(Job* pJob)
   
   vCreateTaskForJob(pJob);
   
+  pJob->vTimerStart();
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+
+  if (! pJob->bHasTag_noWait()) {
+    Api::vMutexWaitCond(pSession,pJob);
+    pJob->vTimerUpdate();
+  }
   
+  Api::vMutexUnlock(pSession,pJob);
+
   return true;
 }
 
@@ -795,100 +750,6 @@ void Api::vCreateTaskForJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Spawn amd wait for job to complete                                         */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnJobAndWait(Job* pJob)
-{
-  _static_
-  
-  
-  // lock this job's session mutex
-  Session* pSession = pJob->pSession();
-  pSession->m_pSsnMutex->vLock(pJob);
-  
-  //  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
-  //  if (0 != rCode)
-  //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-  
-  //! ApiState::vMarkApiLoc(pSession,106);
-  
-  // set the job state to be locked
-  pJob->vJobState(JS_LOCKED);
-  
-  pJob->vSeed(SS_SEED_REQ);
-    
-  pJob->vTimerStart();
-  
-
-  // spawn the insertTable job
-  IGNORE_RETURN(Api::bSpawnJob_session(pJob));
-  //! ApiState::vMarkApiLoc(pSession,107);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for condition & state
-  
-  // wait till signalled
-  do {
-    
-    RASSERT( _bIsValidJob(pJob->eClass()) );
-    
-    //    vTrace("ThreadCond:\n"_Stz);
-    //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
-    //
-    //    vTrace("ThreadMutex:\n"_Stz);
-    //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
-    
-       pSession->m_pSsnMutex->vWait(pJob);
-    //    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
-    //                              &pJob->m_xThreadMutex);
-    //    if (0 != rCode)
-    //      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-    
-    RASSERT( _bIsValidJob(pJob->eClass()) );
-    
-    
-  } while (pJob->eJobState() != JS_SIGNALLED);
-  
-  RASSERT( _bIsValidJob(pJob->eClass()) );
-  
-  //! ApiState::vMarkApiLoc(pSession,108);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // set the job state back to running
-  pJob->vJobState(JS_RUNNING);
-  
-  // unlock this job's session mutex
-  pSession->m_pSsnMutex->vUnlock(pJob);
-  
-  //  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-  //  if (0 != rCode)
-  //    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn dedicated job                                                        */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnJobDedicated(Job* pJob)
-{
-  _static_
-  
-  ASSERT(SS_ENUMS != pJob->eSeed());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pJob->pTask())
-    AM::vLogWriteCsv(false);
-  
-  ASSERT(! pJob->pTask());
-  Task* pNewTask = new Task(pJob);
-  
-  pJob->vTimerStart();
-  
-  Scheduler::vTaskApi_AddDedicated(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
@@ -919,9 +780,9 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate the SE session                                                    */
+/* spi wait till all jobs completed                                           */
 /*----------------------------------------------------------------------------*/
-void Api::vWaitForAllJobsToComplete(void)
+void Api::vSpinTillAllJobsCompleted(void)
 {
   _static_
   
@@ -946,50 +807,6 @@ void Api::vWaitForAllJobsToComplete(void)
 }
 
 //! TO GO
-
-/*----------------------------------------------------------------------------*/
-/* reseed job                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Api::bReseedJob(Session* pSession, Job* pJob)
-{
-  _static_
-  
-  ASSERT(SS_ENUMS != pJob->eSeed());
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (! pJob->pTask())
-    AM::vLogWriteCsv(false);
-  
-  ASSERT(pJob->pTask());
-  Task* pTask = pJob->pTask();
-  pTask->vReseed();
-  
-  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
-              "pJob=%p"_Stz, //!format-LogPrm
-              pJob,
-              C_VARGS_END);
-  
-  
-  //Scheduler::vAddTaskGeneral(pTask);
-  
-  return true;
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */

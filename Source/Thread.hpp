@@ -11,7 +11,7 @@ namespace Threads
   public:  
     eHS      m_eThreadState;  // thread state
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
-    Mutex*   m_pMutex;        // this threads mutex
+    Mutex    m_oMutex;        // this threads mutex
 
     Task*    m_pTask;         // task current being executed
     i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread

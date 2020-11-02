@@ -461,6 +461,7 @@ public:
   void vIndexGenEntBuffers(void);
   void vIndexSize(void);
   void vIndexVerify(void);
+  void vIndexVerifyPtn(void);
   void vIndexVisualize(void);
 
   // index steps - to go
@@ -656,7 +657,6 @@ public:
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
-  void vJobReseed(void);
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
   void vJobRowsInvalidFetch(void);

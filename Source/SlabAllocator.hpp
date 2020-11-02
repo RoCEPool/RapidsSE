@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Gadgets
+namespace Pool
 {
   class SlabAllocator : public Object
   {

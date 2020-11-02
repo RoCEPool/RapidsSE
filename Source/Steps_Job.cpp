@@ -74,7 +74,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
-  vAddStep("job.reseed"_Stz,           &Step::vJobReseed);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
   vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
@@ -1135,29 +1134,6 @@ void Step::vJobRemoveParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.reseed -- reseed the job on the stack                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vJobReseed(void)
-{
-  ENTRY();
-  
-  i8 i_Seed = m_pDataStack->iPopInt(__func__);
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
-              "%s spawned by %s"_Stz, //!format-LogSvc
-              aCN[pJob->eClass()],
-              aCN[m_pTask->m_pJob->eClass()],
-              C_VARGS_END);
-  
-  pJob->vSeed((eSS)i_Seed);
-  IGNORE_RETURN(Api::bReseedJob(nullptr,pJob));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.response@ -- fetch the job response from a node                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobResponseFetch(void)
@@ -1459,9 +1435,9 @@ void Step::vJobSignalCompletion(void)
   
   m_pTask->vJob(nullptr);
 
-  pSession->m_pSsnMutex->vLock(m_pTask);
-  pSession->m_pSsnMutex->vSignal(m_pTask);
-  pSession->m_pSsnMutex->vUnlock(m_pTask);
+  pSession->m_oSsnMutex.vLock(m_pTask);
+  pSession->m_oSsnMutex.vSignal(m_pTask);
+  pSession->m_oSsnMutex.vUnlock(m_pTask);
 
   m_pTask->vDropTaskLock();
 

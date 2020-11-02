@@ -29,11 +29,11 @@ namespace Prompt
   {
   private:
   
-    Mutex*    m_pMutex;      // mutex for prompt
+    Mutex     m_oMutex;      // mutex for prompt
 
   
-    Input*    m_pInput;      // input processor from session
-    TokenVec* m_pInpTknVec;  // token vector from Session::m_pTokenVec
+    Input*    m_pInput;      // input processor
+    TokenVec* m_pInpTknVec;  // token vector 
 
     TagSet    m_oPmtTagSet;  // tag set which controls this prompt
     i8        m_iDivisionNo; // division numbering
@@ -41,9 +41,6 @@ namespace Prompt
     bool      m_bContinue;   // continue processing commands?
 
     TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
-    ReqTuple  m_xReqTuple;   // request information
-
-    Timer     m_oTimer;      // the timer
 
     bool      m_bOneCommand; // run one command only
     bool      m_bOneRun;     // one command has been run?
@@ -73,9 +70,7 @@ namespace Prompt
 
     SePrompt(bool bOneCommand, bool bSethScript);
    ~SePrompt(void) noexcept(false);
-  
-    static void* aEntryPoint_bg(void* pArg);
-  
+    
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
@@ -112,6 +107,7 @@ namespace Prompt
     void vLogFreeSpace(void);
     void vMakeDiaryDir(SeDeputy* pSeDeputy);
     Mutex* pMutex(void);
+    void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     ObjectsInPool*  pObjectsInPool(void);
@@ -129,7 +125,7 @@ namespace Prompt
     TagSet* pPmtTagSet(void);
     bool bShortCut(SeDeputy* pSeDeputy);
     ShortCutVec* pShortCutVec(void);
-    ObjectsInPool*  pSnapshotObjects(void);
+    ObjectsInPool* pSnapshotObjects(void);
     bool bStdIn(void);
     bool bSubSsnTags(SeDeputy* pSeDeputy);
     void vTrackingMemory(bool bTrackMemory);

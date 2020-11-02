@@ -330,6 +330,15 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
+          case OM_EXITMARKER: {
+            //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
+            //if ( ! bHasError )
+            //  vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+            AM::vDeleteOperand(pOperand);
+            goto L_EXIT;
+            break;
+          }
+            
           case OM_PULSEMARKER: {
             //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
@@ -345,15 +354,6 @@ void Result::vProcessBufferQueue(void)
           case OM_STARTMARKER: {
             //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
-            break;
-          }
-            
-          case OM_EXITMARKER: {
-            //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
-            //if ( ! bHasError )
-            //  vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
-            AM::vDeleteOperand(pOperand);
-            goto L_EXIT;
             break;
           }
             
@@ -406,6 +406,7 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
+      // -- -- -- -- -- --
       case CN_STREAMSET: {
         StreamSet* pStreamSet = _pStreamSet(pOperand);
         ASSERT( ! pStreamSet->szInfoSetNm()->bSame(C_NO_NAME) );
@@ -416,7 +417,7 @@ void Result::vProcessBufferQueue(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       default:
         RASSERT(0);
@@ -430,8 +431,6 @@ L_EXIT:
   
   if (pStreamDef)
     AM::vDeleteOperand(pStreamDef);
-  return;
-  
 }
 
 /*----------------------------------------------------------------------------*/

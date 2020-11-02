@@ -17,6 +17,7 @@ namespace Library
 #include "IntLib.hpp"
 #include "MagLib.hpp"
 #include "Dtm.hpp"
+#include "HshLib.hpp"
 
 #include "SP_Bits.hpp"
 

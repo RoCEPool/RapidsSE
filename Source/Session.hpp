@@ -50,15 +50,17 @@ namespace Sessions
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
 
-    TagSet   m_oSsnTagSet;         // session level tags
+    TagSet   m_oSsnTagSet;       // session level tags
 
-    Job*     m_pJob;             // job session currently executing
+    Job*     m_pSsnJob;          // job session currently executing
     Tx*      m_pTx;              // current transaction
   
     s4K      m_sToDo;            // prompt to do
       
-    Mutex*   m_pSsnMutex;           // 
+    Mutex    m_oSsnMutex;        //
+    ReqTuple m_xReqTuple;        // request information
     
+
   private:
 
     // must be last
