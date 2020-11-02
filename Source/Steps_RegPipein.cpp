@@ -95,6 +95,7 @@ void Step::vRegPipeinKind(void)
     case CN_INFOSET  : {
       InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpPipein);
       switch(pInfoSet->eOpInfoSet()) {
+        case OI_CALLPIPELINE:     eOperand = ZK_CALLPIPELINE;    break;
         case OI_COUNTINFO:        eOperand = ZK_COUNTINFO;       break;
         case OI_LOCKSTATS:        eOperand = ZK_LOCKSTATS;       break;
         case OI_NODEINFO:         eOperand = ZK_NODEINFO;        break;

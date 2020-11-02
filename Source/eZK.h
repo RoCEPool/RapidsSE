@@ -7,7 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
-  /*    */ ZK_CALLMARKER,
+  /*    */ ZK_CALLPIPELINE,
   /*    */ ZK_CANCELMARKER,
   /*    */ ZK_CANCELLEDMARKER,
   /*    */ ZK_COUNTINFO,
@@ -44,7 +44,7 @@ static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "ZK_CALLMARKER"_Stz,
+  /*    */ "ZK_CALLPIPELINE"_Stz,
   /*    */ "ZK_CANCELMARKER"_Stz,
   /*    */ "ZK_CANCELLEDMARKER"_Stz,
   /*    */ "ZK_COUNTINFO"_Stz,

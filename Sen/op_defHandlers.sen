@@ -5,11 +5,11 @@
 " OPERAND__handlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CALLMARKER ...                                              */
+/* handler for ZK_CALLPIPELINE ...                                              */
 /*----------------------------------------------------------------------------*/
-: ZK_CALLMARKER_handler \handler
+: ZK_CALLPIPELINE_handler \handler
 
-  //"ZK_CALLMARKER_handler" .verbose
+  //"ZK_CALLPIPELINE_handler" .verbose
   PipeIn[].pipeOut
   true
 ;

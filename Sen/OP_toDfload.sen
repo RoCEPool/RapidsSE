@@ -27,7 +27,19 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload %v \"%v\";" str.format .
+  sPath <tableNm> "dfload %v \"%v\";" str.format locals| sDfload |
+  sDfload .
+
+  // find the __path table def
+  C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+    OI_CALLPIPELINE infoSet[].opInfoset!
+
+  1 0 sDfload 3 infoSet[].addRowVargs
+    
+  InfoSet[].pipeOut
 
   true
 ;

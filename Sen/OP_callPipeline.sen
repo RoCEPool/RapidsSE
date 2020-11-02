@@ -7,6 +7,30 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CALLPIPELINE ...                                            */
+/*----------------------------------------------------------------------------*/
+: callPipeline_CallPipeline \handler
+
+  "callPipeline_CallPipeline" .
+
+  PipeIn[] to Infoset[]
+  nullptr to Pipein[]
+
+  // find the __path table def
+  C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
+
+  InfoSet[].firstRow to Row[]
+
+  0 InfoSet[].colVal@ locals| sDfload | sDfload .
+  1 InfoSet[].colVal@ locals| iCallNo | iCallNo .
+  2 InfoSet[].colVal@ locals| iCallOf | iCallOf .
+
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : callPipeline_req \operator
@@ -14,6 +38,8 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: callPipeline_CallPipeline ZK_CALLPIPELINE op[].handler!
 
 
   op__loop
