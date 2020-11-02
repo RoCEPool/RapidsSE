@@ -16,7 +16,7 @@ INCLUDE 'tpchLoad.test';
 LOG 'Running tpch queries...';
 
 //------------------------------------------------------------------------------
-LOOP 50 {
+LOOP 25 {
 INCLUDE 'tpchQueries.test';
 } -- end of loop
 
