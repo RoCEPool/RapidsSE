@@ -1,5 +1,5 @@
-//tpchQuery1.test
-tpchQuery3.test
-//tpchQuery4.test
-//tpchQuery6.test
+tpchQuery1.test
+//tpchQuery3.test
+tpchQuery4.test
+tpchQuery6.test
 tpchLoop.test
