@@ -76,6 +76,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
+  vAddStep("job.returnMarker"_Stz,     &Step::vJobReturnMarker);
   vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
   vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
   vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
@@ -90,7 +91,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
-  vAddStep("job.signalCompletion"_Stz, &Step::vJobSignalCompletion);
+  vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
   vAddStep("job.scheduleNextPhase"_Stz, &Step::vJobScheduleNextPhase);
   vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
@@ -1167,6 +1168,18 @@ void Step::vJobResponseStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.returnMarker -- queue a return marker on outer waiting op              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReturnMarker(void)
+{
+  ENTRY();
+  
+  NEVER_REACH;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.rowsInvalid@ -- fetch the rows invalid by the job from a node          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRowsInvalidFetch(void)
@@ -1394,9 +1407,9 @@ void Step::vJobShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.signalCompletion -- signal the waiting session                         */
+/* job.signalSession -- signal the waiting session                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSignalCompletion(void)
+void Step::vJobSignalSession(void)
 {
   ENTRY();
   

@@ -660,6 +660,7 @@ public:
   void vJobRemoveParticipant(void);
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
+  void vJobReturnMarker(void);
   void vJobRowsInvalidFetch(void);
   void vJobRowsInvalidStore(void);
   void vJobRowsProcessedFetch(void);
@@ -674,7 +675,7 @@ public:
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
-  void vJobSignalCompletion(void);
+  void vJobSignalSession(void);
   void vJobSlotFetch(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawnReceived(void);

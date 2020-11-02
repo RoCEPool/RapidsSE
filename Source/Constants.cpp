@@ -172,6 +172,7 @@ void Constants::vAddConstantsCpp(void)
   // table definition
   vAddConstant("C_TDEF_ANALYZEINDEX"_Stz, C_TDEF_ANALYZEINDEX);
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz, C_TDEF_ANALYZETABLE);
+  vAddConstant("C_TDEF_CALLPIPELINE"_Stz, C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COUNT"_Stz,        C_TDEF_COUNT);
   vAddConstant("C_TDEF_COUNTINFO"_Stz,    C_TDEF_COUNTINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,   C_TDEF_GRIDSANITY);
@@ -653,7 +654,7 @@ void Constants::vAddConstantsCpp(void)
   // PP_ : pipeline protocol
   /*  0 */ vAddConstant("PP_NONE"_Stz,           PP_NONE);
   /*  0 */ vAddConstant("PP_SIGNAL_SESSION"_Stz, PP_SIGNAL_SESSION);
-  /*  0 */ vAddConstant("PP_MARKER_WAITPL"_Stz,  PP_MARKER_WAITPL);
+  /*  0 */ vAddConstant("PP_RETURN_MARKER"_Stz,  PP_RETURN_MARKER);
   
   // PY_ : priority
   /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);

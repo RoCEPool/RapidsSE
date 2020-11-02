@@ -224,10 +224,10 @@
 : job::informInvokerOfCompletion
 
   "<plProtocol>" PP_SIGNAL_SESSION if
-    job[] job.signalCompletion
+    job[] job.signalSession
   else
-    "<plProtocol>" PP_MARKER_WAITPL if
-    "PP_MARKER_WAITPL not yet supported" .
+    "<plProtocol>" PP_RETURN_MARKER if
+    "PP_RETURN_MARKER not yet supported" .
     HAZARD
   else
     "unknown plProtocol" .
