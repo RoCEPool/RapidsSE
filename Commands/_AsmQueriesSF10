@@ -192,7 +192,7 @@ and l_discount >= 0.05
 and l_discount <= 0.07
 and l_quantity < 24;
 
-
+*/
 Print "Running POC Queries...";
 
 /time Query1 lineitem;
@@ -219,12 +219,12 @@ create index Orders_Idx1 ON Orders(O_CUSTKEY);
 create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "loading Orders...";
-/time fload Orders "/TPCH/SF10/orders.tbl";
+/time dfload Orders "/TPCH/SF10/orders.tbl";
 
 compactIdx Orders Orders_Idx1;
 
 /time Query_4b ;
-*/
+
 // drop table customer;
 // drop table orders;
 // drop table lineitem;
