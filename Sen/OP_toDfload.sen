@@ -16,6 +16,13 @@
   PipeIn[] to Infoset[]
   nullptr to Pipein[]
 
+  // find the __path table def
+  C_TDEF_PATHINFO op__tableDef_infoSet assert
+
+  InfoSet[].firstRow to Row[]
+
+  0 InfoSet[].colVal@ .
+
   InfoSet[].delete
 
   true

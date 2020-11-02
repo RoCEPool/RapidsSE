@@ -25,6 +25,15 @@
   "abc" 1 infoSet[].addRowVargs
     
   InfoSet[].pipeOut
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+    OI_PATHINFO infoSet[].opInfoset!
+
+  "def" 1 infoSet[].addRowVargs
+    
+  InfoSet[].pipeOut
+
 ;
 
 /*----------------------------------------------------------------------------*/

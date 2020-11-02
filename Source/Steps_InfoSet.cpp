@@ -203,6 +203,7 @@ void Step::vInfoSetAddRowVargs(void)
         nSize = sStr.nSize();
         szTail = (Stz*)pInfoSet->ayAllotTail(nSize);
         StrLib::vCopy(szTail->azChar(),sStr.azChar());
+        aRow->m_waColVal[i_Arg].m_iWrd = pInfoSet->iToOffset(szTail);
         break;
         
       default:
@@ -403,7 +404,8 @@ void Step::vInfoSetColValFetch(void)
   
   i8 iInt;
   s256 sStr;
-
+  Dtm wDtm;
+  
   switch (eDatum) {
       
     case DM_INT:
@@ -412,7 +414,8 @@ void Step::vInfoSetColValFetch(void)
       break;
       
     case DM_VCH:
-      sStr = aRow->m_waColVal[i_Col].m_szVch;
+      wDtm = aRow->m_waColVal[i_Col];
+      sStr = aRow->szStzGet(i_Col);
       m_pDataStack->vPushStz(sStr);
       break;
       

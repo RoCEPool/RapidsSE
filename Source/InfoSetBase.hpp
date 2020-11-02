@@ -29,7 +29,7 @@ namespace InfoData
     void vInfoSetNm(Stz* szInfoSetNm);
     Row* aNextRow(Row* pPrevRow);
     
-  private:
+  //private:
     i8   iToOffset(Stz* aItem);
   };
 
