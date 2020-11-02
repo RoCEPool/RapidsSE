@@ -34,7 +34,8 @@ function validateEnvironment() {
 
   # TODO: Check if SE is running in any of these host:directory combinations.
 
-  # TODO: Check if the port is not being used on any of the hosts.
+  # Check if the port is not being used on any of the hosts.
+  validatePortsNotInUse
 
   # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
 
@@ -280,6 +281,54 @@ function validateHostsReachableBySsh() {
   done
 
   debugPrint "Successfully validated that all nodes can be reached by SSH."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Validate that the port specified for each node is not currently in use.
+# Params: None
+
+function validatePortsNotInUse() {
+
+  local nodeName
+  local host
+  local port
+  local remoteCmd
+  local output
+
+  declare -a sshArgs
+  declare -a failedNodes
+  failedNodes=()
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+
+    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${port} && echo \"PORT_IN_USE\""
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it
+    output="$(ssh "${sshArgs[@]}" || true)"
+
+    if [ "${output}" == "PORT_IN_USE" ]; then
+      failedNodes+=("${nodeName}")
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="The port specified for RapidsSE is already in use on the following nodes:"
+    
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${port}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
 }
 
   
