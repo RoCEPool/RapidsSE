@@ -99,6 +99,7 @@ static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
 
 static Stz* C_TDEF_ANALYZEINDEX     = "__analyzeIndex"_Stz;
 static Stz* C_TDEF_ANALYZETABLE     = "__analyzeTable"_Stz;
+static Stz* C_TDEF_CALLPIPELINE     = "__callPipeline"_Stz;
 static Stz* C_TDEF_COUNT            = "__count"_Stz;
 static Stz* C_TDEF_COUNTINFO        = "__countInfo"_Stz;
 static Stz* C_TDEF_GRIDSANITY       = "__gridSanity"_Stz;

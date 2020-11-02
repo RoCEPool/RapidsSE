@@ -172,6 +172,7 @@ void Constants::vAddConstantsCpp(void)
   // table definition
   vAddConstant("C_TDEF_ANALYZEINDEX"_Stz, C_TDEF_ANALYZEINDEX);
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz, C_TDEF_ANALYZETABLE);
+  vAddConstant("C_TDEF_CALLPIPELINE"_Stz, C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COUNT"_Stz,        C_TDEF_COUNT);
   vAddConstant("C_TDEF_COUNTINFO"_Stz,    C_TDEF_COUNTINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,   C_TDEF_GRIDSANITY);
