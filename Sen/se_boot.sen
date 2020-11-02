@@ -118,6 +118,7 @@ assert::stack_0
 
         "OP_eatAll.sen"               include
         "OP_eatSome.sen"              include
+        "OP_eachPath.sen"             include
         "OP_emitStreamDef.sen"        include
         "OP_etcTest.sen"              include
         "OP_exemplar.sen"             include
@@ -189,12 +190,14 @@ assert::stack_0
         "OP_syntaxIndex.sen"          include
         "OP_syntaxTable.sen"          include
         "OP_syntaxUniqueIndex.sen"    include
+
         "OP_tableSizes.sen"           include
         "OP_toCrwH.sen"               include
         "OP_toCrwHash.sen"            include
         "OP_toCrwHfast.sen"           include
         "OP_toCsv.sen"                include
         "OP_toDemon.sen"              include
+        "OP_toDfload.sen"             include
         "OP_toHshCrw.sen"             include
         "OP_toNstRsb.sen"             include
         "OP_toPtnRsb.sen"             include

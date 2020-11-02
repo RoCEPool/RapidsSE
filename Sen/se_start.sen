@@ -774,8 +774,8 @@
     stage stageA on origin :
         start
       | periodicOp once
-//      | eachPath $paths
-//      | toDfload $table
+      | eachPath $paths
+      | toDfload $table
       | callPipeline
       | waitPipeline
       | sink
