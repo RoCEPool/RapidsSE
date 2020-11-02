@@ -21,9 +21,13 @@
 
   InfoSet[].firstRow to Row[]
 
-  0 InfoSet[].colVal@ .
+  0 InfoSet[].colVal@ locals| sPath |
 
   InfoSet[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  sPath <tableNm> "dfload %v \"%v\";" str.format .
 
   true
 ;
