@@ -14,6 +14,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
+  vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
   vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
@@ -159,6 +160,55 @@ void Step::vInfoSetAddRowCount(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushInt(pRow ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addRowVarg -- add a row by variable arguments                    */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddRowVargs(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpInfoSetTable);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 nCols = pStreamDef->nColumns(C_ALL);
+  i8 nArgs = m_pDataStack->iPopInt(__func__);
+  
+  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
+  
+  Row* aRow = pInfoSet->aAllotRow();
+  Stz* szTail;
+  i8   nSize;
+
+  i8 iInt;
+  s256 sStr;
+  for (i8 i_Arg = 0; i_Arg < nArgs && i_Arg < nCols; i_Arg++) {
+    
+    Column* pColumn = pStreamDef->pGetColumn(i_Arg);
+
+    eDM eDatum = pColumn->eDatum();
+    
+    switch (eDatum) {
+        
+      case DM_INT:
+        iInt = m_pDataStack->iPopInt(__func__);
+        aRow->m_waColVal[i_Arg].m_iWrd = iInt;
+        break;
+        
+      case DM_VCH:
+        m_pDataStack->vPopStr(sStr,__func__);
+        nSize = sStr.nSize();
+        szTail = (Stz*)pInfoSet->ayAllotTail(nSize);
+        StrLib::vCopy(szTail->azChar(),sStr.azChar());
+        break;
+        
+      default:
+        RASSERT(0);
+    }
+    
+  }
   
   EXIT();
 }

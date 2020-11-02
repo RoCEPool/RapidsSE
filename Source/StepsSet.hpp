@@ -533,6 +533,7 @@ public:
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
   void vInfoSetAddRowCount(void);
+  void vInfoSetAddRowVargs(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
   void vInfoSetDelete(void);
