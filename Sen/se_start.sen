@@ -2025,6 +2025,9 @@
   define table __returnPipeline (
     errorCode      INTEGER NOT NULL ,
     assocText      VARCHAR NOT NULL
+                                 
+//  , requestNo      INTEGER NOT NULL
+//  , requestOf      INTEGER NOT NULL
   ) ;
   "
   api::executeRequest

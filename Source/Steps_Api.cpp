@@ -107,6 +107,9 @@ void Step::vApiExecuteNested(void)
   Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
 
+  pJobTagSet->vReplace(C_TAG_REQNO,iReqNo);
+  pJobTagSet->vReplace(C_TAG_REQOF,iReqOf);
+
 //  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
 //  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   

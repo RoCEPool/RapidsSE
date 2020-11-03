@@ -224,7 +224,7 @@
 : job::returnPipeline
 
 
-  // find the __path table def
+  // find the __returnPipeline table def
   C_TDEF_RETURNPIPELINE "op__tableDef_infoSet" find execute assert
 
   infoSetTable[] infoSet[].new

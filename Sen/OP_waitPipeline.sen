@@ -29,7 +29,17 @@
 
   "waitPipeline_ReturnPipeline" .
 
-  PipeIn[].delete
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
+
+  // find the __returnPipeline table def
+  C_TDEF_RETURNPIPELINE "op__tableDef_infoSet" find execute assert
+
+  InfoSet[].firstRow to Row[]
+  0 InfoSet[].colVal@ "ReturnPipeline: %v" str.format .
+  InfoSet[].delete
+
+  nullptr to InfoSetTable[]
 
   Operand[].newEosMarker
   Operand[].pipeOut
@@ -39,6 +49,7 @@
 
   Operand[].newPulsedMarker
   Operand[].pipeOut
+
   true
 ;
 
