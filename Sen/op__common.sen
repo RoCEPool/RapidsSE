@@ -343,7 +343,7 @@
   infoSetTable[] infoSet[].new
     OI_RETURNPIPELINE infoSet[].opInfoset!
 
-  0 1 InfoSet[].addRowVargs
+  0 <reqOf> <reqNo> 3 InfoSet[].addRowVargs
 
   InfoSet[]
   nullptr to InfoSet[]

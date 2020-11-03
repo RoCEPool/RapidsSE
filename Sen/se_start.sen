@@ -2023,11 +2023,11 @@
   sPath
   "
   define table __returnPipeline (
+    requestNo      INTEGER NOT NULL ,
+    requestOf      INTEGER NOT NULL ,
     errorCode      INTEGER NOT NULL ,
     assocText      VARCHAR NOT NULL
                                  
-//  , requestNo      INTEGER NOT NULL
-//  , requestOf      INTEGER NOT NULL
   ) ;
   "
   api::executeRequest

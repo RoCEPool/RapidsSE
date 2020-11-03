@@ -36,7 +36,8 @@
   C_TDEF_RETURNPIPELINE "op__tableDef_infoSet" find execute assert
 
   InfoSet[].firstRow to Row[]
-  0 InfoSet[].colVal@ "ReturnPipeline: %v" str.format .
+  2 InfoSet[].colVal@ 1 InfoSet[].colVal@ 0 InfoSet[].colVal@
+    "Got ReturnPipeline [%v.%v] : error %v" str.format .
   InfoSet[].delete
 
   nullptr to InfoSetTable[]
