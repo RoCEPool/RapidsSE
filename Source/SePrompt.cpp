@@ -225,6 +225,7 @@ bool SePrompt::bGetCommand(SeDeputy* pSeDeputy)
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
+  vExtractPaths();
   vExtractCtlTags();
 
   if (! bExtractSupTags())
@@ -557,6 +558,33 @@ void SePrompt::vExtractCtlTags(void)
     vCutToken(0);
     vCutToken(0);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract additional paths                                                   */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vExtractPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Paths = m_pInpTknVec->iFindToken("paths"_Stz,TN_NAME);
+
+  if (C_UNKNOWN == i_Paths)
+    return;
+  
+  m_pInpTknVec->vRemoveToken(i_Paths);
+
+  s32 sName;
+  
+  i8 nPaths;
+  for (nPaths = 0; i_Paths < m_pInpTknVec->nTokens(); nPaths++) {
+    sName.vSprint("<path%lld>"_Stz,nPaths);
+    Token* pTkn = m_pInpTknVec->pGet(i_Paths);
+    m_oExtTagSet.vAppend(sName,pTkn->szChars());
+    m_pInpTknVec->vRemoveToken(i_Paths);
+  }
+  
+  m_oExtTagSet.vAppend("<paths>"_Stz,nPaths);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -95,6 +95,7 @@ namespace Prompt
     void vDumpInpTknVec(bool bForce);
     bool bExecuteFunction(void);
     void vExtractCtlTags(void);
+    void vExtractPaths(void);
     bool bExtractSupTags(void);
     SeDeputy* pFindDeputy(void);
     void vFocalOutline(s4K& sOutline);
