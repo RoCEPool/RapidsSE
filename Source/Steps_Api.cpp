@@ -60,13 +60,16 @@ void Step::vApiExecuteNested(void)
   s48K sRequest;
   m_pDataStack->vPopStr(sRequest,__func__);
 
-  s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
+  i8 iReqNo = m_pDataStack->iPopInt(__func__);
+  i8 iReqOf = m_pDataStack->iPopInt(__func__);
 
-  if (AM::bVerbose()) {
-    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
-    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
-  }
+//  s48K sWithTagStr;
+//  m_pDataStack->vPopStr(sWithTagStr,__func__);
+//
+//  if (AM::bVerbose()) {
+//    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
+//    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -81,7 +84,7 @@ void Step::vApiExecuteNested(void)
   TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
   
   TagSet oTagSet;
-  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_RETURN_MARKER);
 
   eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
@@ -100,8 +103,10 @@ void Step::vApiExecuteNested(void)
   Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
-  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
-  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
+//  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
+//  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
+  
+  pJobTagSet->vCopy(m_pLogicUnit->m_xpOp->pOpTagSet());
   
   if (AM::bVerbose())
     pJobTagSet->vDumpSet();
@@ -112,21 +117,21 @@ void Step::vApiExecuteNested(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-  pJob->vPrintResult(eResponse);
+//  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
+//  pJob->vPrintResult(eResponse);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Api::vDeleteJob(&pJob);
+//  Api::vDeleteJob(&pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pDataStack->vPushInt(true);
   
-  Api::vFreeSession(pSession);
+//  Api::vFreeSession(pSession);
   
   delete pReqTknVec;
-  delete pWithTagStrTknVec;
+  //delete pWithTagStrTknVec;
   
   
   EXIT();

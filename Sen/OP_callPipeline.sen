@@ -27,6 +27,8 @@
 
   InfoSet[].delete
 
+  iReqOf iReqNo sRequest api::executeNested assert
+
   true
 ;
 

@@ -28,7 +28,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload %v \"%v\";" str.format locals| sRequest |
+  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sRequest |
   sRequest .
 
   // find the __path table def
