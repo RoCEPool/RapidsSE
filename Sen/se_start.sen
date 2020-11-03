@@ -768,14 +768,14 @@
   sPath
   "
   procedure dxload
-    parameters $table $paths
+    parameters $table
   begin
 
     stage stageA on origin :
         start
       | periodic once
-      | eachPath $paths
-      | toDfload $table
+      | eachPath 
+      |   toDfload $table
       | callPipeline
       | waitPipeline
       | sink

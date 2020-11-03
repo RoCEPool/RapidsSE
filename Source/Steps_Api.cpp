@@ -54,7 +54,7 @@ void Step::vApiExecuteNested(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
+  //m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
   
   eEC eError;
   ReqTuple xReqTuple;
@@ -116,7 +116,7 @@ void Step::vApiExecuteNested(void)
   m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
   pJobTagSet->vCopy(m_pLogicUnit->m_xpOp->pOpTagSet());
   
-//  if (AM::bVerbose())
+  if (AM::bVerbose())
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

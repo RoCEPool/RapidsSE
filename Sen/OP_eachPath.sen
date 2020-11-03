@@ -17,24 +17,26 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  <paths> locals| nPaths |
+
   // find the __path table def
   C_TDEF_PATHINFO op__tableDef_infoSet assert
 
-  // create a first infoSet operand
-  infoSetTable[] infoSet[].new
-    OI_PATHINFO infoSet[].opInfoset!
+  nPaths 0
+  do
+    // create each infoSet operand
+    infoSetTable[] infoSet[].new
+      OI_PATHINFO infoSet[].opInfoset!
 
-  -1 0 <paths> 3 infoSet[].addRowVargs
-    
-  InfoSet[].pipeOut
-
-  // create a second infoSet operand
-  infoSetTable[] infoSet[].new
-    OI_PATHINFO infoSet[].opInfoset!
-
-  2 1 <paths> 3 infoSet[].addRowVargs
-    
-  InfoSet[].pipeOut
+    nPaths
+     I
+     "<path" I >str str.cat ">" str.cat
+       job[] job.tagSet@ tagSet.getStr
+     3
+     infoSet[].addRowVargs
+        
+    InfoSet[].pipeOut
+  loop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: eachPath :: eachPath <paths> ;
+cmdSyntax: eachPath :: eachPath ;
 
 : eachPath _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
