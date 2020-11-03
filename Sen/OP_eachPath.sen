@@ -15,14 +15,24 @@
 
   ZK_PULSEMARKER_handler
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // find the __path table def
   C_TDEF_PATHINFO op__tableDef_infoSet assert
 
-  // create an infoSet operand
+  // create a first infoSet operand
   infoSetTable[] infoSet[].new
     OI_PATHINFO infoSet[].opInfoset!
 
-  1 0 <paths> 3 infoSet[].addRowVargs
+  -1 0 <paths> 3 infoSet[].addRowVargs
+    
+  InfoSet[].pipeOut
+
+  // create a second infoSet operand
+  infoSetTable[] infoSet[].new
+    OI_PATHINFO infoSet[].opInfoset!
+
+  2 1 <paths> 3 infoSet[].addRowVargs
     
   InfoSet[].pipeOut
 ;

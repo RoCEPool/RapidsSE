@@ -49,6 +49,12 @@
   C_TDEF_RETURNPIPELINE "op__tableDef_infoSet" find execute assert
 
   InfoSet[].firstRow to Row[]
+
+  1 InfoSet[].colVal@ -1 != if
+    1 InfoSet[].colVal@ to counter1[]
+  then
+  
+
   2 InfoSet[].colVal@ 1 InfoSet[].colVal@ 0 InfoSet[].colVal@
     Counter1[] Counter0[]
     "Got ReturnPipeline %v of %v : [%v.%v] error %v" str.format .
@@ -56,14 +62,22 @@
 
   nullptr to InfoSetTable[]
 
-  Operand[].newEosMarker
-  Operand[].pipeOut
 
-  Operand[].newPulseMarker
-  Operand[].pipeOut
+  Counter0[] Counter1[] == if
 
-  Operand[].newPulsedMarker
-  Operand[].pipeOut
+    "All ReturnPipeline's gathered" .
+
+    Operand[].newEosMarker
+    Operand[].pipeOut
+
+    Operand[].newPulseMarker
+    Operand[].pipeOut
+
+    Operand[].newPulsedMarker
+    Operand[].pipeOut
+
+  then
+
 
   true
 ;
