@@ -400,16 +400,22 @@ function doClusterInstall() {
 
   else 
     # Scripted installation
-    errorExit "Scripted installation is not yet implemented."
  
     # Assert that we have a config file
     [ -f "${CONFIG_FILE}" ] || errorExit "Config file does not exist: ${CONFIG_FILE}"
 
-    # TODO: Load and validate config
-    # TODO: Validate config/environment
-    # TODO: Write config file?
-    # TODO: Install all nodes
-    
+    # Load and validate config
+    loadClusterConfig
+
+    #  Write config file?
+    local outputConfig="${DEFAULT_CONFIG_PATH}"
+    writeClusterConfig "${outputConfig}"
+
+    # Validate the installation environment
+    validateEnvironment
+
+    # Install all nodes
+    distributeSoftware "${outputConfig}"
   fi
 }
 
