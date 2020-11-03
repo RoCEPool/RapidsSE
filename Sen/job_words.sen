@@ -223,12 +223,13 @@
 /*----------------------------------------------------------------------------*/
 : job::informInvokerOfCompletion
 
-  "<plProtocol>" PP_SIGNAL_SESSION if
+  <plProtocol> PP_SIGNAL_SESSION == if
+"signalling session" .
     job[] job.signalSession
   else
-    "<plProtocol>" PP_RETURN_MARKER if
-    "PP_RETURN_MARKER not yet supported" .
-    HAZARD
+    <plProtocol> PP_RETURN_PIPELINE == if
+"return pipeline" .
+    job[] job.returnPipeline
   else
     "unknown plProtocol" .
     HAZARD

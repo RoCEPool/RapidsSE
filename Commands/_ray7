@@ -15,7 +15,7 @@ _lineitem_dates
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Loading";
 
-dxLoad lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv" ;
+dxLoad lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" ;
 
 /*============================================================================*/
 /* end                                                                        */

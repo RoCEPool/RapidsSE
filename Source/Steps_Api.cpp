@@ -54,6 +54,8 @@ void Step::vApiExecuteNested(void)
 {
   ENTRY();
 
+  m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
+  
   eEC eError;
   ReqTuple xReqTuple;
 
@@ -84,7 +86,7 @@ void Step::vApiExecuteNested(void)
   TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
   
   TagSet oTagSet;
-  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_RETURN_MARKER);
+  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_RETURN_PIPELINE);
 
   eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
@@ -102,13 +104,14 @@ void Step::vApiExecuteNested(void)
   
   Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
-  
+
 //  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
 //  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
+  m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
   pJobTagSet->vCopy(m_pLogicUnit->m_xpOp->pOpTagSet());
   
-  if (AM::bVerbose())
+//  if (AM::bVerbose())
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

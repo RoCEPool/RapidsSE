@@ -664,7 +664,7 @@ public:
   void vJobRemoveParticipant(void);
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
-  void vJobReturnMarker(void);
+  void vJobReturnPipeline(void);
   void vJobRowsInvalidFetch(void);
   void vJobRowsInvalidStore(void);
   void vJobRowsProcessedFetch(void);

@@ -170,33 +170,34 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
   
   // table definition
-  vAddConstant("C_TDEF_ANALYZEINDEX"_Stz, C_TDEF_ANALYZEINDEX);
-  vAddConstant("C_TDEF_ANALYZETABLE"_Stz, C_TDEF_ANALYZETABLE);
-  vAddConstant("C_TDEF_CALLPIPELINE"_Stz, C_TDEF_CALLPIPELINE);
-  vAddConstant("C_TDEF_COUNT"_Stz,        C_TDEF_COUNT);
-  vAddConstant("C_TDEF_COUNTINFO"_Stz,    C_TDEF_COUNTINFO);
-  vAddConstant("C_TDEF_GRIDSANITY"_Stz,   C_TDEF_GRIDSANITY);
-  vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,  C_TDEF_LISTCOLUMNS);
-  vAddConstant("C_TDEF_LISTCONTENTS"_Stz, C_TDEF_LISTCONTENTS);
-  vAddConstant("C_TDEF_LISTFOLDER"_Stz,   C_TDEF_LISTFOLDER);
-  vAddConstant("C_TDEF_LISTINDEX"_Stz,    C_TDEF_LISTINDEX);
+  vAddConstant("C_TDEF_ANALYZEINDEX"_Stz,  C_TDEF_ANALYZEINDEX);
+  vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
+  vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
+  vAddConstant("C_TDEF_COUNT"_Stz,         C_TDEF_COUNT);
+  vAddConstant("C_TDEF_COUNTINFO"_Stz,     C_TDEF_COUNTINFO);
+  vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
+  vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,   C_TDEF_LISTCOLUMNS);
+  vAddConstant("C_TDEF_LISTCONTENTS"_Stz,  C_TDEF_LISTCONTENTS);
+  vAddConstant("C_TDEF_LISTFOLDER"_Stz,    C_TDEF_LISTFOLDER);
+  vAddConstant("C_TDEF_LISTINDEX"_Stz,     C_TDEF_LISTINDEX);
   vAddConstant("C_TDEF_LISTPARTITIONS"_Stz,C_TDEF_LISTPARTITIONS);
-  vAddConstant("C_TDEF_LOCKSTATS"_Stz,    C_TDEF_LOCKSTATS);
-  vAddConstant("C_TDEF_NODEINFO"_Stz,     C_TDEF_NODEINFO);
-  vAddConstant("C_TDEF_PATHINFO"_Stz,         C_TDEF_PATHINFO);
-  vAddConstant("C_TDEF_PINGINFO"_Stz,     C_TDEF_PINGINFO);
-  vAddConstant("C_TDEF_PROGRESSUNITS"_Stz,C_TDEF_PROGRESSUNITS);
-  vAddConstant("C_TDEF_PWF"_Stz,          C_TDEF_PWF);
-  vAddConstant("C_TDEF_SEEKOFFSETS"_Stz,  C_TDEF_SEEKOFFSETS);
-  vAddConstant("C_TDEF_SHOWCLUSTER"_Stz,  C_TDEF_SHOWCLUSTER);
-  vAddConstant("C_TDEF_SIZEINDEX"_Stz,    C_TDEF_SIZEINDEX);
-  vAddConstant("C_TDEF_SIZETABLE"_Stz,    C_TDEF_SIZETABLE);
-  vAddConstant("C_TDEF_SPACE"_Stz,        C_TDEF_SPACE);
-  vAddConstant("C_TDEF_STATUS"_Stz,       C_TDEF_STATUS);
-  vAddConstant("C_TDEF_TABLESIZES"_Stz,   C_TDEF_TABLESIZES);
-  vAddConstant("C_TDEF_TOTALUNITS"_Stz,   C_TDEF_TOTALUNITS);
-  vAddConstant("C_TDEF_VERIFYINDEX"_Stz,  C_TDEF_VERIFYINDEX);
-  vAddConstant("C_TDEF_VERIFYTABLE"_Stz,  C_TDEF_VERIFYTABLE);
+  vAddConstant("C_TDEF_LOCKSTATS"_Stz,     C_TDEF_LOCKSTATS);
+  vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);
+  vAddConstant("C_TDEF_PATHINFO"_Stz,      C_TDEF_PATHINFO);
+  vAddConstant("C_TDEF_PINGINFO"_Stz,      C_TDEF_PINGINFO);
+  vAddConstant("C_TDEF_PROGRESSUNITS"_Stz, C_TDEF_PROGRESSUNITS);
+  vAddConstant("C_TDEF_PWF"_Stz,           C_TDEF_PWF);
+  vAddConstant("C_TDEF_RETURNPIPELINE"_Stz,C_TDEF_RETURNPIPELINE);
+  vAddConstant("C_TDEF_SEEKOFFSETS"_Stz,   C_TDEF_SEEKOFFSETS);
+  vAddConstant("C_TDEF_SHOWCLUSTER"_Stz,   C_TDEF_SHOWCLUSTER);
+  vAddConstant("C_TDEF_SIZEINDEX"_Stz,     C_TDEF_SIZEINDEX);
+  vAddConstant("C_TDEF_SIZETABLE"_Stz,     C_TDEF_SIZETABLE);
+  vAddConstant("C_TDEF_SPACE"_Stz,         C_TDEF_SPACE);
+  vAddConstant("C_TDEF_STATUS"_Stz,        C_TDEF_STATUS);
+  vAddConstant("C_TDEF_TABLESIZES"_Stz,    C_TDEF_TABLESIZES);
+  vAddConstant("C_TDEF_TOTALUNITS"_Stz,    C_TDEF_TOTALUNITS);
+  vAddConstant("C_TDEF_VERIFYINDEX"_Stz,   C_TDEF_VERIFYINDEX);
+  vAddConstant("C_TDEF_VERIFYTABLE"_Stz,   C_TDEF_VERIFYTABLE);
 
   // hardware
   vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSec());
@@ -664,9 +665,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("PD_PIPE_OUT"_Stz,  PD_PIPE_OUT);
   
   // PP_ : pipeline protocol
-  /*  0 */ vAddConstant("PP_NONE"_Stz,           PP_NONE);
-  /*  0 */ vAddConstant("PP_SIGNAL_SESSION"_Stz, PP_SIGNAL_SESSION);
-  /*  0 */ vAddConstant("PP_RETURN_MARKER"_Stz,  PP_RETURN_MARKER);
+  /*  0 */ vAddConstant("PP_NONE"_Stz,            PP_NONE);
+  /*  0 */ vAddConstant("PP_SIGNAL_SESSION"_Stz,  PP_SIGNAL_SESSION);
+  /*  0 */ vAddConstant("PP_RETURN_PIPELINE"_Stz, PP_RETURN_PIPELINE);
   
   // PY_ : priority
   /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);

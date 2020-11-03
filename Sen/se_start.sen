@@ -2019,6 +2019,17 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_RETURNPIPELINE
+  sPath
+  "
+  define table __returnPipeline (
+    errorCode      INTEGER NOT NULL ,
+    assocText      VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SEEKOFFSETS
   sPath
   "

@@ -114,6 +114,7 @@ static Stz* C_TDEF_PATHINFO         = "__pathInfo"_Stz;
 static Stz* C_TDEF_PINGINFO         = "__pingInfo"_Stz;
 static Stz* C_TDEF_PROGRESSUNITS    = "__progressUnits"_Stz;
 static Stz* C_TDEF_PWF              = "__pwf"_Stz;
+static Stz* C_TDEF_RETURNPIPELINE   = "__returnPipeline"_Stz;
 static Stz* C_TDEF_SEEKOFFSETS      = "__seekOffsets"_Stz;
 static Stz* C_TDEF_SHOWCLUSTER      = "__cluster"_Stz;
 static Stz* C_TDEF_SIZEINDEX        = "__sizeIndex"_Stz;
