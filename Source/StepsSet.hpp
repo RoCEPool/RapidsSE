@@ -659,6 +659,8 @@ public:
   void vJobPreSend(void);
   void vJobPrintMember(void);
 
+  void vJobQueueReturn(void);
+
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);

@@ -5,7 +5,7 @@
 " OPERAND__handlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CALLPIPELINE ...                                              */
+/* handler for ZK_CALLPIPELINE ...                                            */
 /*----------------------------------------------------------------------------*/
 : ZK_CALLPIPELINE_handler \handler
 
@@ -208,21 +208,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_RETURNMARKER ...                                            */
+/* handler for ZK_RETURNPIPELINE ...                                          */
 /*----------------------------------------------------------------------------*/
-: ZK_RETURNMARKER_handler \handler
+: ZK_RETURNPIPELINE_handler \handler
 
-  //"ZK_RETURNMARKER_handler" .verbose
-  PipeIn[].pipeOut
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_RETURNEDMARKER ...                                          */
-/*----------------------------------------------------------------------------*/
-: ZK_RETURNEDMARKER_handler \handler
-
-  //"ZK_RETURNEDMARKER_handler" .verbose
+  //"ZK_RETURNPIPELINE_handler" .verbose
   PipeIn[].pipeOut
   true
 ;

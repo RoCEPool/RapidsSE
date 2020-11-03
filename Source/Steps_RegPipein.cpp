@@ -101,6 +101,7 @@ void Step::vRegPipeinKind(void)
         case OI_NODEINFO:         eOperand = ZK_NODEINFO;        break;
         case OI_PATHINFO:         eOperand = ZK_PATHINFO;        break;
         case OI_PROGRESSUNITS:    eOperand = ZK_PROGRESSUNITS;   break;
+        case OI_RETURNPIPELINE:   eOperand = ZK_RETURNPIPELINE;  break;
         case OI_SEEKOFFSETS:      eOperand = ZK_SEEKOFFSETS;     break;
         case OI_TOTALUNITS:       eOperand = ZK_TOTALUNITS;      break;
         default: RASSERT(0);
@@ -120,8 +121,6 @@ void Step::vRegPipeinKind(void)
          case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
          case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
-         case OM_RETURNMARKER:    eOperand = ZK_RETURNMARKER;    break;
-         case OM_RETURNEDMARKER:  eOperand = ZK_RETURNEDMARKER;  break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
          default:  RASSERT(0);

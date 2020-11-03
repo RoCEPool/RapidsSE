@@ -4,7 +4,43 @@
 
 " OP_waitPL.sen" .verbose
 
-// ... to be coded
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: waitPipeline_PulseMarker \handler
+
+  PipeIn[].delete
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEDMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: waitPipeline_PulsedMarker \handler
+
+  PipeIn[].delete
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: waitPipeline_ReturnPipeline \handler
+
+  "waitPipeline_ReturnPipeline" .
+
+  PipeIn[].delete
+
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  Operand[].newPulseMarker
+  Operand[].pipeOut
+
+  Operand[].newPulsedMarker
+  Operand[].pipeOut
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
@@ -15,6 +51,9 @@
 
   op__topology
 
+  find: waitPipeline_PulseMarker    ZK_PULSEMARKER    op[].handler!
+  find: waitPipeline_PulsedMarker   ZK_PULSEDMARKER   op[].handler!
+  find: waitPipeline_ReturnPipeline ZK_RETURNPIPELINE op[].handler!
 
   op__loop
 

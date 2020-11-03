@@ -100,6 +100,8 @@ void Step::vApiExecuteNested(void)
 
   Job* pJob = pSession->m_pSsnJob;
 
+  pJob->m_pOuterOp = m_pTask->m_pJob->m_pOp;
+  
   TagSet* pJobTagSet = pJob->pJobTags();
   
   Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
@@ -116,6 +118,7 @@ void Step::vApiExecuteNested(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    
+  pJobTagSet->vReplace(C_TAG_NOWAIT,1);
   bool bSpawned = Api::bSpawnJob_session(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

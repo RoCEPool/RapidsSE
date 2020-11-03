@@ -172,7 +172,8 @@ Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
   
   m_pPipeline = nullptr;
   m_pOp       = nullptr;
-    
+  m_pOuterOp  = nullptr;
+
   //m_xResult
   // -- -- -- -- -- --
   

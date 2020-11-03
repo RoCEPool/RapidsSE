@@ -71,12 +71,14 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
+  vAddStep("job.queueReturn"_Stz,      &Step::vJobQueueReturn);
+
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
-  vAddStep("job.returnPipeline"_Stz,   &Step::vJobReturnPipeline);
+//  vAddStep("job.returnPipeline"_Stz,   &Step::vJobReturnPipeline);
   vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
   vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
   vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
@@ -1043,6 +1045,23 @@ void Step::vJobPreSend(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.queueReturn -- queue a return piepline on outer waiting op             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobQueueReturn(void)
+{
+  ENTRY();
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  Op* pOuterOp = m_pTask->m_pJob->m_pOuterOp;
+  Op* pDownstreamOp = pOuterOp->pDownstreamOp();
+  
+  pDownstreamOp->vAppendLeft(pOperand,m_pTask,false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.removeLocal -- remove job from local job set                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveLocal(void)
@@ -1167,17 +1186,19 @@ void Step::vJobResponseStore(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* job.returnPipeline -- queue a return piepline on outer waiting op          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobReturnPipeline(void)
-{
-  ENTRY();
-  
-  NEVER_REACH;
-  
-  EXIT();
-}
+///*----------------------------------------------------------------------------*/
+///* job.returnPipeline -- queue a return piepline on outer waiting op          */
+///*----------------------------------------------------------------------------*/
+//void Step::vJobReturnPipeline(void)
+//{
+//  ENTRY();
+//
+//  Operand* pOperand = nullptr;
+//
+//  m_pDataStack->vPushPtr(pOperand);
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* job.rowsInvalid@ -- fetch the rows invalid by the job from a node          */

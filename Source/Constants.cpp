@@ -656,6 +656,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
   /*  0 */ vAddConstant("OI_PATHINFO"_Stz,      OI_PATHINFO);
   /*  0 */ vAddConstant("OI_PROGRESSUNITS"_Stz, OI_PROGRESSUNITS);
+  /*  0 */ vAddConstant("OI_RETURNPIPELINE"_Stz,OI_RETURNPIPELINE);
   /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
   /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
 
@@ -766,6 +767,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PULSEMARKER"_Stz,     ZK_PULSEMARKER);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
+  /*  0 */ vAddConstant("ZK_RETURNPIPELINE"_Stz,  ZK_RETURNPIPELINE);
   /*  0 */ vAddConstant("ZK_RSBBUFFER"_Stz,       ZK_RSBBUFFER);
   /*  0 */ vAddConstant("ZK_SEEKOFFSETS"_Stz,     ZK_SEEKOFFSETS);
   /*  0 */ vAddConstant("ZK_SRTBUFFER"_Stz,       ZK_SRTBUFFER);

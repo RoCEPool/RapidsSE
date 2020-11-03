@@ -13,6 +13,7 @@ enum eOI // operator Infoset
   /*    */ OI_NODEINFO,
   /*    */ OI_PATHINFO,
   /*    */ OI_PROGRESSUNITS,
+  /*    */ OI_RETURNPIPELINE,
   /*    */ OI_SEEKOFFSETS,
   /*    */ OI_TOTALUNITS,
  
@@ -29,6 +30,7 @@ static Stz* aOI[]
   /*    */ "NODEINFO"_Stz,
   /*    */ "PATHINFO"_Stz,
   /*    */ "PROGRESSUNITS"_Stz,
+  /*    */ "RETURNPIPELINE"_Stz,
   /*    */ "SEEKOFFSETS"_Stz,
   /*    */ "TOTALUNITS"_Stz,
 

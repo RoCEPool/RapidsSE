@@ -12,6 +12,9 @@
 : callPipeline_StartMarker \handler
 
   "waitPipeline" op.findOp op.downstreamOp!
+
+  PipeIn[].pipeOut
+  true 
 ;
 
 /*----------------------------------------------------------------------------*/

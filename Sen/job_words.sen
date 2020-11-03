@@ -219,6 +219,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* return pipleine                                                            */
+/*----------------------------------------------------------------------------*/
+: job::returnPipeline
+
+
+  // find the __path table def
+  C_TDEF_RETURNPIPELINE "op__tableDef_infoSet" find execute assert
+
+  infoSetTable[] infoSet[].new
+    OI_RETURNPIPELINE infoSet[].opInfoset!
+
+  0 1 InfoSet[].addRowVargs
+
+  InfoSet[]
+  nullptr to InfoSet[]
+;
+
+/*----------------------------------------------------------------------------*/
 /* this job has completed; coordinate with invoker                            */
 /*----------------------------------------------------------------------------*/
 : job::informInvokerOfCompletion
@@ -229,7 +247,9 @@
   else
     <plProtocol> PP_RETURN_PIPELINE == if
 //"return pipeline" .
-    job[] job.returnPipeline
+
+    job::returnPipeline
+    job.queueReturn
   else
     "unknown plProtocol" .
     HAZARD
