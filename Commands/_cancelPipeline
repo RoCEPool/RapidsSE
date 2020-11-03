@@ -45,7 +45,7 @@ create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
  begin
  
  stage stageA on origin:
- start | periodicOp once | stageB
+ start | periodic once | stageB
  
  stage stageB on all partitions:
  scan lineitem 30 | stageC
@@ -63,7 +63,7 @@ pipeline forever
 begin
 
   stage stageA on origin:
-    start | periodicOp min 1 | print "hello" | stageB
+    start | periodic min 1 | print "hello" | stageB
 
   stage stageB on origin:
     sink | stageA

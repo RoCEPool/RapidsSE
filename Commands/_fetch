@@ -39,7 +39,7 @@ pipeline _fetch
 begin
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan T1 "jidx_key 1 >= jidx_key 2 <= and " | stageC
@@ -57,7 +57,7 @@ pipeline _fetch
 begin
  
  stage stageA on origin:
- start | periodicOp once | stageB
+ start | periodic once | stageB
 
  stage stageB on all partitions:
  scan T1 "jidx_key 1 = " || scan T1 "jidx_key 2 = " | rowOnceOp | stageC
@@ -74,7 +74,7 @@ pipeline _fetch
 begin
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan T1 | projectOp jidx_name | stageC
@@ -91,7 +91,7 @@ pipeline _fetch
 begin
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan T1 | limitOp 10 | stageC

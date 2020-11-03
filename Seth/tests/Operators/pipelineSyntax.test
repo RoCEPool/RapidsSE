@@ -11,7 +11,7 @@ pipeline
 begin
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
@@ -27,7 +27,7 @@ failure contains: 'invalid command'
 pipeline testPipeline
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
@@ -43,7 +43,7 @@ failure contains: 'invalid command'
 pipeline testPipeline
 begin
   stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
@@ -59,7 +59,7 @@ failure contains: 'invalid command'
 pipeline testPipeline
 begin
   stage stageA origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
@@ -75,7 +75,7 @@ failure contains: 'invalid command'
 pipeline testPipeline
 begin
   stage stageA on:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC

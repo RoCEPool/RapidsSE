@@ -9,7 +9,7 @@ procedure sp_fetch
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan $Table | stageC
@@ -26,7 +26,7 @@ procedure t_upsert
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     genCsv $Table | toCrw $Table | upsertOp $Table | stageC

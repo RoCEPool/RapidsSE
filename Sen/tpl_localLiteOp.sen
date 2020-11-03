@@ -57,7 +57,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | /localLiteOp/ |
+    start | periodic once | /localLiteOp/ |
       output | sink | stageA
 
   end
@@ -75,7 +75,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | /localLiteOp/ $param |
+    start | periodic once | /localLiteOp/ $param |
       output | sink | stageA
 
   end
@@ -93,7 +93,7 @@
     begin
 
     stage stageA on origin :
-      start | periodicOp once | /localLiteOp/ $param0 $param1 |
+      start | periodic once | /localLiteOp/ $param0 $param1 |
         output | sink | stageA
 
     end

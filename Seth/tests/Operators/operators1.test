@@ -69,7 +69,7 @@ pipeline scan1
 begin
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan OpTableXXX | stageC
@@ -87,7 +87,7 @@ pipeline scan2
 begin
 
 stage stageA on origin:
-start | periodicOp once | stageB
+start | periodic once | stageB
 
 stage stageB on all partitions:
 scan OpTableXXX | stageC
@@ -107,7 +107,7 @@ pipeline scan1
   begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan OpTable1 | stageC
@@ -150,7 +150,7 @@ pipeline scan2
   begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan OpTable1 | stageC
@@ -197,7 +197,7 @@ pipeline scan3
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan OpTable1 | stageC

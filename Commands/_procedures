@@ -12,7 +12,7 @@ procedure cpTable
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan $Table1 | dupCrw | insert $Table2 | stageC
@@ -30,7 +30,7 @@ end;
 //begin
 //
 //  stage stageA on origin :
-//    start | periodicOp once | emitStremDef $Table1 | stageB
+//    start | periodic once | emitStremDef $Table1 | stageB
 //
 //  stage stageB on all nodes :
 //   createTable $table2 | stageC
@@ -51,7 +51,7 @@ procedure create catalog
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     createCatalog $catalogNm | stageC
@@ -69,7 +69,7 @@ procedure create schema
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     createSchema $schemaNm | stageC
@@ -87,7 +87,7 @@ procedure create table
 begin
 
   stage stageA on origin :
-    start | periodicOp once | syntaxTable $tableNm $etc | stageB
+    start | periodic once | syntaxTable $tableNm $etc | stageB
 
   stage stageB on all nodes :
     createTable $tableNm $etc | stageC
@@ -105,7 +105,7 @@ procedure create tenant
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     createTenant $tenantNm | stageC
@@ -123,7 +123,7 @@ procedure define2 table
 begin
 
 stage stageA on origin :
-  start | periodicOp once | syntaxTable $tableNm $etc |
+  start | periodic once | syntaxTable $tableNm $etc |
     createTable $tableNm $etc | sink | stageA
 
 end;
@@ -136,7 +136,7 @@ procedure drop catalog
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     dropCatalog $catalogNm | stageC
@@ -154,7 +154,7 @@ procedure drop index
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     truncateIndex $tableNm $indexNm | stageC
@@ -175,7 +175,7 @@ procedure drop schema
 begin
 
 stage stageA on origin :
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
 stage stageB on all nodes :
   dropSchema $schemaNm | stageC
@@ -193,7 +193,7 @@ procedure drop table
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     truncateTable $tableNm | stageC
@@ -214,7 +214,7 @@ procedure drop tenant
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     dropTenant $tenantNm | stageC
@@ -232,7 +232,7 @@ procedure export
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan $Table | toCsv | stageC
@@ -253,7 +253,7 @@ procedure gridSanity
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes:
     nodeInfo | stageC
@@ -272,7 +272,7 @@ procedure load
 begin
 
   stage stageA on origin:
-    start | periodicOp once | chunk $file | stageB
+    start | periodic once | chunk $file | stageB
 
   stage stageB on all partitions on origin:
     rdCsvChunk $file |
@@ -297,7 +297,7 @@ procedure partitionScan
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on partition $partition:
     scan $table | stageC
@@ -316,7 +316,7 @@ procedure predicateFetch
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     fetch $table $predicate | stageC
@@ -335,7 +335,7 @@ procedure select table
 begin
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   scan $Table | stageC
@@ -353,7 +353,7 @@ parameters $table
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan $table | stageC
@@ -372,7 +372,7 @@ procedure truncate
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     truncateTable $table | stageC
@@ -397,7 +397,7 @@ parameters $arg1 $arg2 $etc
 begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     etcTest $arg1 $arg2 $etc | stageC
@@ -419,7 +419,7 @@ begin
 
     start              |
 
-    periodicOp once    |
+    periodic once    |
 
     chunk $file        | // read chunks of file, produce (seekOffset) =>
     // dump seekOffsets 1 |
@@ -476,7 +476,7 @@ end
 //
 //    start              |
 //
-//    periodicOp once    |
+//    periodic once    |
 //
 //    chunk $file        | // read chunks of file, produce (seekOffset) =>
 //    // dump seekOffsets 1 |
@@ -531,7 +531,7 @@ end
 //  stage stageA on origin:
 //
 //    start              |
-//    periodicOp once    |
+//    periodic once    |
 //    chunk $file        | // read chunks of file, produce (seekOffset) =>
 //
 //    dump seekOffsets 1 |

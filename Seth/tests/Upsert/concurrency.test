@@ -26,7 +26,7 @@ LOOP 6 {
   begin
 
     stage stageA on origin:
-      start | periodicOp once | stageB
+      start | periodic once | stageB
 
     stage stageB on all partitions:
       genCsv T | toCrw T | upsertOp T | stageC
@@ -71,7 +71,7 @@ CREATE 1 THREADS {
     begin
     
       stage stageA on origin:
-        start | periodicOp once | stageB
+        start | periodic once | stageB
       
       stage stageB on all partitions:
         purge T | stageC
@@ -144,7 +144,7 @@ LOOP 10 {
   begin
 
     stage stageA on origin:
-      start | periodicOp once | stageB
+      start | periodic once | stageB
 
     stage stageB on all partitions:
       snapshot T | stageC
@@ -169,7 +169,7 @@ pipeline t_purge
 begin
 
   stage stageA on origin:
-  start | periodicOp once | stageB
+  start | periodic once | stageB
 
   stage stageB on all partitions:
   purge T | stageC

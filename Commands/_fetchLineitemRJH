@@ -6,7 +6,7 @@
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan lineitem | stageC
@@ -21,7 +21,7 @@ pipeline lineitem_fetch
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan lineitem | stats | toStatDemon | stageC

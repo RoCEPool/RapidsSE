@@ -20,7 +20,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     createCatalog $catalogNm | stageC
@@ -41,7 +41,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | syntaxIndex $indexNm $etc | stageB
+    start | periodic once | syntaxIndex $indexNm $etc | stageB
 
   stage stageB on all nodes :
     createIndex $indexNm | stageC
@@ -65,7 +65,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | syntaxUniqueIndex $indexNm $etc | stageB
+    start | periodic once | syntaxUniqueIndex $indexNm $etc | stageB
 
   stage stageB on all nodes :
     createIndex $indexNm | stageC
@@ -90,7 +90,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | syntaxIndex $indexNm $etc | stageB
+    start | periodic once | syntaxIndex $indexNm $etc | stageB
 
   stage stageB on all nodes :
     createIndex $indexNm | stageC
@@ -117,7 +117,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | syntaxUniqueIndex $indexNm $etc | stageB
+    start | periodic once | syntaxUniqueIndex $indexNm $etc | stageB
 
   stage stageB on all nodes :
     createIndex $indexNm | stageC
@@ -144,7 +144,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     createSchema $schemaNm | stageC
@@ -165,7 +165,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | syntaxTable $tableNm $etc | stageB
+    start | periodic once | syntaxTable $tableNm $etc | stageB
 
   stage stageB on all nodes :
     createTable | stageC
@@ -186,7 +186,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     createTenant $tenantNm | stageC
@@ -207,7 +207,7 @@
   begin
 
     stage stageA on origin :
-      start | periodicOp once | emitStreamDef $Table1 | stageB
+      start | periodic once | emitStreamDef $Table1 | stageB
 
     stage stageB on all nodes :
       createTable $table2 | stageC
@@ -231,7 +231,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | syntaxTable $tableNm $etc |
+    start | periodic once | syntaxTable $tableNm $etc |
       defineTable $tableNm | sink | stageA
 
   end ;
@@ -247,7 +247,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     delete $table $predicate | stageC
@@ -277,7 +277,7 @@
   begin
 
     stage stageA on origin :
-      start | periodicOp once | stageB
+      start | periodic once | stageB
 
     stage stageB on all partitions :
       compactIndexPtn $tableNm $indexNm | stageC
@@ -298,7 +298,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     dropCatalog $catalogNm | stageC
@@ -319,7 +319,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     truncateIndex $tableNm $indexNm | stageC
@@ -343,7 +343,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     dropSchema $schemaNm | stageC
@@ -364,7 +364,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     truncateTable $tableNm | stageC
@@ -388,7 +388,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     dropTenant $tenantNm | stageC
@@ -409,7 +409,7 @@
   begin
 
     stage stageA on origin :
-      start | periodicOp once | stageB
+      start | periodic once | stageB
 
     stage stageB on all partitions :
       verifyIndexPtn $tableNm $indexNm | stageC
@@ -440,7 +440,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     rowCount $table | stageC
@@ -461,7 +461,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     scan $Table | toCsv | stageC
@@ -484,7 +484,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all nodes :
     nodeInfo | stageC
@@ -505,7 +505,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | chunk $file | stageB
+    start | periodic once | chunk $file | stageB
 
   stage stageB on all partitions on origin :
     rdCsvChunk $file |
@@ -533,7 +533,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on partition $partition :
     scan $table | stageC
@@ -555,7 +555,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     fetch $table $predicate | stageC
@@ -576,7 +576,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     scan $Table | stageC
@@ -597,7 +597,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     scan $table | stageC
@@ -618,7 +618,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     truncateTable $table | stageC
@@ -650,7 +650,7 @@
 
     start              |
 
-    periodicOp once    |
+    periodic once    |
 
     chunk $file        | // read chunks of file, produce (seekOffset) =>
     // dump seekOffsets 1 |
@@ -711,7 +711,7 @@
 
     start              |
  
-    periodicOp once    |
+    periodic once    |
 
     stageB
 
@@ -773,7 +773,7 @@
 
     stage stageA on origin :
         start
-      | periodicOp once
+      | periodic once
       | eachPath $paths
       | toDfload $table
       | callPipeline
@@ -794,7 +794,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | catFile $FileIn | wrFile $FileOut | sink | stageA
+    start | periodic once | catFile $FileIn | wrFile $FileOut | sink | stageA
 
   end ;
   "
@@ -812,7 +812,7 @@
   begin
 
     stage stageA on origin :
-      start | periodicOp once | catFile $File | output | sink | stageA
+      start | periodic once | catFile $File | output | sink | stageA
 
   end ;
   "
@@ -830,7 +830,7 @@
 
     stage stageA on origin :
       start
-        | periodicOp once
+        | periodic once
 //        | catFile $File
         | rdCsvCyclic $File $NTimes
         | toRsb $Table
@@ -862,7 +862,7 @@
   begin
 
     stage stageA on origin :
-      start | periodicOp once |
+      start | periodic once |
         rdCsvCyclic $FileIn $NTimes | output | sink | stageA
 
   end ;
@@ -892,7 +892,7 @@
 
     stage stageA on origin :
       start
-        | periodicOp once
+        | periodic once
         //|  rdCsvCyclic $File $NTimes
         | catFile $File
         | toRsb $Table
@@ -924,7 +924,7 @@
 
     stage stageA on origin :
       start
-        | periodicOp once
+        | periodic once
         //|  rdCsvCyclic $File $NTimes
         | catFile $File
         | toRsb $Table
@@ -958,7 +958,7 @@
 
      start |
 
-     periodicOp once |
+     periodic once |
 
      rdCsvCyclic $File $NTimes |
 
@@ -1015,7 +1015,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     scan $Table | stageC
@@ -1042,7 +1042,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | rdCrwFile $File | stageB
+    start | periodic once | rdCrwFile $File | stageB
 
   stage stageB on all partitions :
     insert $Table | stageC
@@ -1065,7 +1065,7 @@
   begin
 
   stage stageA on origin :
-    start | periodicOp once | emitStreamDef $Table1 | stageB
+    start | periodic once | emitStreamDef $Table1 | stageB
 
   stage stageB on all nodes :
     createTable $table2 | stageC
@@ -1098,7 +1098,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1127,7 +1127,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1157,7 +1157,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1183,7 +1183,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1218,7 +1218,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1253,7 +1253,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1283,7 +1283,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1313,7 +1313,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1341,7 +1341,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1377,7 +1377,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1406,7 +1406,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions : //300
@@ -1436,7 +1436,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1466,7 +1466,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1496,7 +1496,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1532,7 +1532,7 @@
 
   stage stageA on origin :
   start
-  | periodicOp once
+  | periodic once
   | stageB
 
   stage stageB on all partitions :
@@ -1561,7 +1561,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1591,7 +1591,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1621,7 +1621,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1651,7 +1651,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :
@@ -1688,7 +1688,7 @@
 
   stage stageA on origin :
     start
-    | periodicOp once
+    | periodic once
     | stageB
 
   stage stageB on all partitions :

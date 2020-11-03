@@ -8,7 +8,7 @@
 /* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 /*
-: periodicOp_ErrorMarker \handler
+: periodic_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
   PipeIn[].delete
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: periodicOp_PulseMarker \handler
+: periodic_PulseMarker \handler
 
   //"Operand:- ZK_PULSEMARKER" .verbose
   PipeIn[].pipeOut
@@ -54,9 +54,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for periodicOp request                     (on node where spawned) */
+/* execute for periodic request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : periodicOp_req \operator
+ : periodic_req \operator
  
   LogReqEntry SEED_REQ
 
@@ -85,8 +85,8 @@
 
   op__topology
 
-  //find: periodicOp_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: periodicOp_PulseMarker ZK_PULSEMARKER op[].handler!
+  //find: periodic_ErrorMarker ZK_ERRORMARKER op[].handler!
+  find: periodic_PulseMarker ZK_PULSEMARKER op[].handler!
 
   op__loop
 
@@ -98,11 +98,11 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: periodicOp :: periodicOp once ;
-cmdSyntax: periodicOp :: periodicOp min <minutes> ;
-cmdSyntax: periodicOp :: periodicOp hour <hours> ;
+cmdSyntax: periodic :: periodic once ;
+cmdSyntax: periodic :: periodic min <minutes> ;
+cmdSyntax: periodic :: periodic hour <hours> ;
 
-: periodicOp _cmdTags tagCopy: op_tags
+: periodic _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

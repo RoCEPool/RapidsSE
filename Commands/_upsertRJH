@@ -65,7 +65,7 @@ pipeline t_upsert
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     genCsv T | toCrw T | upsertOp T | stageC
@@ -93,7 +93,7 @@ pipeline t_scan
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     scan T | toCsv |stageC
@@ -111,7 +111,7 @@ pipeline t_snapshot
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on all partitions:
     snapshot T | stageC

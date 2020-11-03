@@ -80,7 +80,7 @@ begin
 
 stage stageA on origin :
   start
-  | periodicOp once
+  | periodic once
   | stageB robin
 
 stage stageB on all partitions :
@@ -103,7 +103,7 @@ begin
 
 stage stageA on origin :
   start
-  | periodicOp once
+  | periodic once
   | stageB robin
 
 stage stageB on all partitions :
@@ -199,7 +199,7 @@ docol epochTake;
 begin
 
   stage stageA on origin:
-    start | periodicOp once | stageB
+    start | periodic once | stageB
 
   stage stageB on origin:
     GenCsv T | passThru | stageC
@@ -215,7 +215,7 @@ end
 begin
 
 stage stageA on origin:
-start | periodicOp once | stageB
+start | periodic once | stageB
 
 stage stageB on all partitions:
 scan lineitem | toCsv | stageC
@@ -231,7 +231,7 @@ end
 begin
 
   stage stageA on origin:
-  start | periodicOponce | stageB
+  start | periodiconce | stageB
 
   stage stageB on all partitions:
   scan lineitem | toCsv | stageC
@@ -249,7 +249,7 @@ python "sample" "printString" | sink | stageA
 begin
 
 stage stageA on origin:
-start | periodicOp once | stageB
+start | periodic once | stageB
 
 stage stageB on all partitions:
 scan lineitem | toCsv | toCrw lineitem2 | stageC
