@@ -2,6 +2,7 @@
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
 
+../tests/Demo/testList
 ../tests/Datums/testList
 ../tests/Ddl/testList
 ../tests/Examples/testList
@@ -17,4 +18,3 @@
 ../tests/Table/testList
 ../tests/Index/testList
 ../tests/Tpch/testList
-../tests/Demo/testList
