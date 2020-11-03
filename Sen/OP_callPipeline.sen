@@ -7,6 +7,40 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: callPipeline_StartMarker \handler
+
+  "waitPipeline" op.findOp op.downstreamOp!
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CALLPIPELINE ...                                            */
+/*----------------------------------------------------------------------------*/
+: callPipeline_CallPipeline \handler
+
+  "callPipeline_CallPipeline" .
+
+  PipeIn[] to Infoset[]
+  nullptr to Pipein[]
+
+  // find the __path table def
+  C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
+
+  InfoSet[].firstRow to Row[]
+
+  0 InfoSet[].colVal@ locals| sRequest | sRequest .
+  1 InfoSet[].colVal@ locals| iReqNo | iReqNo .
+  2 InfoSet[].colVal@ locals| iReqOf | iReqOf .
+
+  InfoSet[].delete
+
+  iReqOf iReqNo sRequest api::executeNested assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : callPipeline_req \operator
@@ -14,6 +48,9 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: callPipeline_CallPipeline ZK_CALLPIPELINE op[].handler!
+  find: callPipeline_StartMarker  ZK_STARTMARKER  op[].handler!
 
 
   op__loop

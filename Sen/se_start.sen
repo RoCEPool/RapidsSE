@@ -764,6 +764,28 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dxload
+  sPath
+  "
+  procedure dxload
+    parameters $table $paths
+  begin
+
+    stage stageA on origin :
+        start
+      | periodicOp once
+      | eachPath $paths
+      | toDfload $table
+      | callPipeline
+      | waitPipeline
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
   sPath
   "
@@ -1923,7 +1945,9 @@
   sPath
   "
   define table __callPipeline (
-    request        VARCHAR NOT NULL
+    request        VARCHAR NOT NULL ,
+    requestNo      INTEGER NOT NULL ,
+    requestOf      INTEGER NOT NULL
   ) ;
   "
   api::executeRequest
@@ -1962,6 +1986,17 @@
   "
   api::executeRequest
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PATHINFO
+  sPath
+  "
+  define table __pathInfo (
+    path           VARCHAR NOT NULL ,
+    pathNo         INTEGER NOT NULL ,
+    pathOf         INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PROGRESSUNITS
@@ -1979,6 +2014,17 @@
   "
   define table __pwf (
     folder   VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_RETURNPIPELINE
+  sPath
+  "
+  define table __returnPipeline (
+    errorCode      INTEGER NOT NULL ,
+    assocText      VARCHAR NOT NULL
   ) ;
   "
   api::executeRequest

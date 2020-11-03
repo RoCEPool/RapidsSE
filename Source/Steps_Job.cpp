@@ -76,7 +76,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
-  vAddStep("job.returnMarker"_Stz,     &Step::vJobReturnMarker);
+  vAddStep("job.returnPipeline"_Stz,   &Step::vJobReturnPipeline);
   vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
   vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
   vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
@@ -1168,9 +1168,9 @@ void Step::vJobResponseStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.returnMarker -- queue a return marker on outer waiting op              */
+/* job.returnPipeline -- queue a return piepline on outer waiting op          */
 /*----------------------------------------------------------------------------*/
-void Step::vJobReturnMarker(void)
+void Step::vJobReturnPipeline(void)
 {
   ENTRY();
   

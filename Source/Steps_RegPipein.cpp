@@ -95,13 +95,15 @@ void Step::vRegPipeinKind(void)
     case CN_INFOSET  : {
       InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpPipein);
       switch(pInfoSet->eOpInfoSet()) {
+        case OI_CALLPIPELINE:     eOperand = ZK_CALLPIPELINE;    break;
         case OI_COUNTINFO:        eOperand = ZK_COUNTINFO;       break;
         case OI_LOCKSTATS:        eOperand = ZK_LOCKSTATS;       break;
         case OI_NODEINFO:         eOperand = ZK_NODEINFO;        break;
+        case OI_PATHINFO:         eOperand = ZK_PATHINFO;        break;
         case OI_PROGRESSUNITS:    eOperand = ZK_PROGRESSUNITS;   break;
         case OI_SEEKOFFSETS:      eOperand = ZK_SEEKOFFSETS;     break;
         case OI_TOTALUNITS:       eOperand = ZK_TOTALUNITS;      break;
-        default: ASSERT(0);
+        default: RASSERT(0);
       }
       break;
     }
@@ -122,7 +124,7 @@ void Step::vRegPipeinKind(void)
          case OM_RETURNEDMARKER:  eOperand = ZK_RETURNEDMARKER;  break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
-         default:  ASSERT(0);
+         default:  RASSERT(0);
        }
       break;
     }

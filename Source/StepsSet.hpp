@@ -533,8 +533,10 @@ public:
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
   void vInfoSetAddRowCount(void);
+  void vInfoSetAddRowVargs(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
+  void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
   void vInfoSetFirstRow(void);
   void vInfoSetGet(void);
@@ -544,6 +546,8 @@ public:
   void vInfoSetName(void);
   void vInfoSetNew(void);
   void vInfoSetNextRow(void);
+  void vInfoSetOpInfosetFetch(void);
+  void vInfoSetOpInfosetStore(void);
   void vInfoSetPipeOut(void);
   void vInfoSetRdCsvChunk(void);
   void vInfoSetSet(void);
@@ -660,7 +664,7 @@ public:
   void vJobRemoveParticipant(void);
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
-  void vJobReturnMarker(void);
+  void vJobReturnPipeline(void);
   void vJobRowsInvalidFetch(void);
   void vJobRowsInvalidStore(void);
   void vJobRowsProcessedFetch(void);
@@ -1023,6 +1027,8 @@ public:
 
   // operator
   void vOpAckPipelineJob(void);
+  void vOpDownstreamOpStore(void);
+  void vOpFindOp(void);
   void vOpNextOpStore(void);
   void vOpNextStageStore(void);
   void vOpOpNameFetch(void);

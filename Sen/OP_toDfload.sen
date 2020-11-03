@@ -1,0 +1,77 @@
+/*============================================================================*/
+/* OP_toDfload.sen -- Operator To Dfload                                      */
+/*============================================================================*/
+
+" OP_toDfload.sen" .verbose
+
+// ... to be coded
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PATHINFO ...                                                */
+/*----------------------------------------------------------------------------*/
+: toDfload_PathInfo \handler
+ 
+  "toDfload_PathInfo" .
+
+  PipeIn[] to Infoset[]
+  nullptr to Pipein[]
+
+  // find the __path table def
+  C_TDEF_PATHINFO op__tableDef_infoSet assert
+
+  InfoSet[].firstRow to Row[]
+
+  0 InfoSet[].colVal@ locals| sPath | sPath .
+  1 InfoSet[].colVal@ locals| iPathNo | iPathNo .
+  2 InfoSet[].colVal@ locals| iPathOf | iPathOf .
+  InfoSet[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sRequest |
+  sRequest .
+
+  // find the __path table def
+  C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  infoSetTable[] infoSet[].new
+    OI_CALLPIPELINE infoSet[].opInfoset!
+
+  iPathOf iPathNo sRequest 3 infoSet[].addRowVargs
+    
+  InfoSet[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for call pipeline req                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : toDfload_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: toDfload_PathInfo ZK_PATHINFO op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toDfload :: toDfload <tableNm> ;
+
+: toDfload _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -18,6 +18,10 @@
     // pipeout the (StartMarker)
     PipeIn[].pipeOut
 
+    // new and pipe out (StreamDef)  DOES NOT SET StreamDef[]??
+    Operand[].newStreamDef
+    Operand[].pipeOut
+
   then
 
   true
@@ -31,9 +35,6 @@
   // pipe out the (PulseMarker)
   PipeIn[].pipeOut
 
-  // new and pipe out (StreamDef)  DOES NOT SET StreamDef[]??
-  Operand[].newStreamDef
-  Operand[].pipeOut
 
   true
 ;

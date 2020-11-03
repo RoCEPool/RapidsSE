@@ -8,7 +8,7 @@ enum ePP // pipeline protocol
   /* 0 */ PP_NONE=0,
   
   /* 1 */ PP_SIGNAL_SESSION,
-  /* 2 */ PP_RETURN_MARKER,
+  /* 2 */ PP_RETURN_PIPELINE,
 
   /* 3 */ PP_ENUMS
 };
@@ -18,7 +18,7 @@ static Stz* aPP[]
   /* 0 */ "PP_NONE"_Stz,
   
   /* 1 */ "PP_SIGNAL_SESSION"_Stz,
-  /* 2 */ "PP_RETURN_MARKER"_Stz,
+  /* 2 */ "PP_RETURN_PIPELINE"_Stz,
 
   /* 3 */ "PP_ENUMS"_Stz
 };

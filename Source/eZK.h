@@ -7,7 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
-  /*    */ ZK_CALLMARKER,
+  /*    */ ZK_CALLPIPELINE,
   /*    */ ZK_CANCELMARKER,
   /*    */ ZK_CANCELLEDMARKER,
   /*    */ ZK_COUNTINFO,
@@ -22,6 +22,7 @@ enum eZK // operand kind
   /*    */ ZK_INDEXDEF,
   /*    */ ZK_LOCKSTATS,
   /*    */ ZK_NODEINFO,
+  /*    */ ZK_PATHINFO,
   /*    */ ZK_PROFILE,
   /*    */ ZK_PROGRESSUNITS,
   /*    */ ZK_PULSEMARKER,
@@ -43,7 +44,7 @@ static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "ZK_CALLMARKER"_Stz,
+  /*    */ "ZK_CALLPIPELINE"_Stz,
   /*    */ "ZK_CANCELMARKER"_Stz,
   /*    */ "ZK_CANCELLEDMARKER"_Stz,
   /*    */ "ZK_COUNTINFO"_Stz,
@@ -58,6 +59,7 @@ static Stz* aZK[]
   /*    */ "ZK_INDEXDEF"_Stz,
   /*    */ "ZK_LOCKSTATS"_Stz,
   /*    */ "ZK_NODEINFO"_Stz,
+  /*    */ "ZK_PATHINFO"_Stz,
   /*    */ "ZK_PROFILE"_Stz,
   /*    */ "ZK_PROGRESSUNITS"_Stz,
   /*    */ "ZK_PULSEMARKER"_Stz,

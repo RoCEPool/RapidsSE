@@ -12,6 +12,8 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
   
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
+  vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
+  vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
   vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
@@ -32,6 +34,48 @@ void Step::vOpAckPipelineJob(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   pOp->vAckJob();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.downstreamOp! -- store downstream op                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpDownstreamOpStore(void)
+{
+  ENTRY();
+    
+  Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+
+  pOp->vDownstreamOp(pDownstreamOp);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.findOp -- find downstream op by name                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpFindOp(void)
+{
+  ENTRY();
+    
+  s32 sOpName;
+  m_pDataStack->vPopStr(sOpName,__func__);
+  
+  Op* pDownstreamOp = nullptr;
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  for (Op* pScanOp = pOp->pNextOp(); pScanOp; pScanOp = pScanOp->pNextOp()) {
+    if (pScanOp->szOpNm()->bSame(sOpName)) {
+      pDownstreamOp = pScanOp;
+      break;
+    }
+  }
+
+  m_pDataStack->vPushPtr(pDownstreamOp);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
