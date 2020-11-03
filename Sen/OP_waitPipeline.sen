@@ -5,6 +5,17 @@
 " OP_waitPL.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: waitPipeline_StartMarker \handler
+
+  0  to Counter0[]
+  -1 to Counter1[]
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : waitPipeline_PulseMarker \handler
@@ -32,12 +43,15 @@
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
+  Counter0[] 1 + to Counter0[]
+
   // find the __returnPipeline table def
   C_TDEF_RETURNPIPELINE "op__tableDef_infoSet" find execute assert
 
   InfoSet[].firstRow to Row[]
   2 InfoSet[].colVal@ 1 InfoSet[].colVal@ 0 InfoSet[].colVal@
-    "Got ReturnPipeline [%v.%v] : error %v" str.format .
+    Counter1[] Counter0[]
+    "Got ReturnPipeline %v of %v : [%v.%v] error %v" str.format .
   InfoSet[].delete
 
   nullptr to InfoSetTable[]
@@ -66,6 +80,7 @@
   find: waitPipeline_PulseMarker    ZK_PULSEMARKER    op[].handler!
   find: waitPipeline_PulsedMarker   ZK_PULSEDMARKER   op[].handler!
   find: waitPipeline_ReturnPipeline ZK_RETURNPIPELINE op[].handler!
+  find: waitPipeline_StartMarker    ZK_STARTMARKER    op[].handler!
 
   op__loop
 
