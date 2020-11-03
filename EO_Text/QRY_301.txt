@@ -167,6 +167,7 @@ Label QRY_301_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label AGG_REV
   //EO_PRINTF "AGG_REV\n"
+  //EO_RSB_SRC_PRINT
   EO_RSB_DST_ZERO
 
   EO_RSB_SRC_PUSHCOLI 0 //Q300_ORDERKEY
@@ -236,6 +237,7 @@ Label CONTINUE
   EO_JMP NXT_AGG2
 
 Label RET_AGG
+  //EO_RSB_DST_PRINT
 
   // not quite right...
   EO_CALL LIM_SBR
