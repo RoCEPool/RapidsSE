@@ -332,6 +332,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* return pipleine                                                            */
+/*----------------------------------------------------------------------------*/
+: op__returnPipeline
+
+
+  // find the __returnPipeline table def
+  C_TDEF_RETURNPIPELINE op__tableDef_infoSet assert
+
+  infoSetTable[] infoSet[].new
+    OI_RETURNPIPELINE infoSet[].opInfoset!
+
+  0 1 InfoSet[].addRowVargs
+
+  InfoSet[]
+  nullptr to InfoSet[]
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* default operator loop                                                      */
 /*----------------------------------------------------------------------------*/
 : op__loop
