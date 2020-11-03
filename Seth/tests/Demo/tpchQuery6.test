@@ -15,7 +15,7 @@ where
     and l_discount <= 0.07
     and l_quantity < 24;
 
-failure contains: "no such table"
+failure contains: "no such"
 
 //------------------------------------------------------------------------------
 // create table lineitem

@@ -108,11 +108,6 @@
 /*----------------------------------------------------------------------------*/
 : EOAsm_PulseMarker \handler
 
-  PipeIn[].isNull not if
-    ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
-    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
-  then
-
   //
   // HACK:: till we get the ASM of query text's out of this operator
 
@@ -123,7 +118,7 @@
   // eg 300 creates streamdef in startMarker handler
   // sends it out
   // 301 gets an error while ASM of 301 query text
-  // can't handle stream marker (from inside ASM code (no ASM)
+  // can't handle stream marker (from inside ASM code (no ASM))
 
   // pipeout streamDefout if any (q3)
   StreamDefOut[].isNull not if
@@ -132,6 +127,11 @@
 
   // END HACK
   //
+
+  PipeIn[].isNull not if
+    ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
+  then
 
   // execute plan PULSEMARKER_HANDLER
   ZK_PULSEMARKER Counter0[] executeAsmArgs
@@ -148,7 +148,7 @@
     Pot[].pipeoutAllCompletedPtns
   else
     //"not called again" .
-    Pot[].pipeoutAllDanglingPtns
+    //Pot[].pipeoutAllDanglingPtns
     // force op loop to call EOAsm_EosMarker to end
     "EOAsm_EosMarker" word::find LogicUnit[].handler!
     true LogicUnit[].callAgain!
@@ -213,13 +213,12 @@
     exit
   then
 
-  //"handle EOSMARKER" .
   // handle EOSMARKER
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
 
   // pipe out all pot[]
-  Pot[].pipeoutAllDangling
+  Pot[].pipeoutAllDanglingPtns
   Pot[].delete
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
