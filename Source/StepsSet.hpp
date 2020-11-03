@@ -1027,6 +1027,8 @@ public:
 
   // operator
   void vOpAckPipelineJob(void);
+  void vOpDownstreamOpStore(void);
+  void vOpFindOp(void);
   void vOpNextOpStore(void);
   void vOpNextStageStore(void);
   void vOpOpNameFetch(void);

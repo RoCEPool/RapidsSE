@@ -7,6 +7,14 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: callPipeline_StartMarker \handler
+
+  "waitPipeline" op.findOp op.downstreamOp!
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CALLPIPELINE ...                                            */
 /*----------------------------------------------------------------------------*/
 : callPipeline_CallPipeline \handler
@@ -42,6 +50,7 @@
   op__topology
 
   find: callPipeline_CallPipeline ZK_CALLPIPELINE op[].handler!
+  find: callPipeline_StartMarker  ZK_STARTMARKER  op[].handler!
 
 
   op__loop

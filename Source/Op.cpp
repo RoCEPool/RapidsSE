@@ -81,6 +81,8 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_iRobin     = 0;
   m_iLocalRobin = 0;
   
+  m_pDownstreamOp = nullptr;
+  
   vInitOperandHandlers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -281,6 +283,26 @@ bool Op::bAppendRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set downstream op                                                          */
+/*----------------------------------------------------------------------------*/
+Op* Op::pDownstreamOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pDownstreamOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set downstream op                                                          */
+/*----------------------------------------------------------------------------*/
+void Op::vDownstreamOp(Op* pDownstreamOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pDownstreamOp = pDownstreamOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vDropTaskLock(void)
@@ -395,6 +417,23 @@ i8 Op::iNextOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_iNextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next op (in stage)                                                     */
+/*----------------------------------------------------------------------------*/
+Op* Op::pNextOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  if (m_iNextStage != m_pStage->pStageSpec()->i_StageSpec())
+    return nullptr;
+  
+  Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+
+  Op* pNextOp = pStage->pGet(m_iNextStage)->pGet(m_iNextOp);
+  
+  return pNextOp;
 }
 
 /*----------------------------------------------------------------------------*/

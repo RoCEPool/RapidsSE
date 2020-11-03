@@ -224,11 +224,11 @@
 : job::informInvokerOfCompletion
 
   <plProtocol> PP_SIGNAL_SESSION == if
-"signalling session" .
+//"signalling session" .
     job[] job.signalSession
   else
     <plProtocol> PP_RETURN_PIPELINE == if
-"return pipeline" .
+//"return pipeline" .
     job[] job.returnPipeline
   else
     "unknown plProtocol" .

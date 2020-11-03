@@ -38,6 +38,8 @@ namespace Pipelines
     i8             m_iRobin;         // xmit Round Robin partition/node/thread
     i8             m_iLocalRobin;    // xmit Round Robin local partition/node/thread
   
+    Op*            m_pDownstreamOp;  // downstream op
+  
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     
     // must be last
@@ -60,6 +62,8 @@ namespace Pipelines
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
+    Op*  pDownstreamOp(void);
+    void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
     void vFocalOutline(s4K& sOutline);
@@ -69,6 +73,7 @@ namespace Pipelines
     bool bIsLocked(void);
     void vJobPipeline(Job* pJob);
     i8   iNextOp(void);
+    Op*  pNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
     void vNextStage(i8 iNextStage);
