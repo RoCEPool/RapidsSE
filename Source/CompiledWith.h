@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-static char* RAPIDSSE_VERSION_STRING = (char*)"3.0.4 alpha";
-static long  RAPIDSSE_VERSION_NUMBER = 0x030104;
+static char* RAPIDSSE_VERSION_STRING = (char*)"0.5.0 alpha";
+static long  RAPIDSSE_VERSION_NUMBER = 0x000500;
 
-static char* RAPIDSSE_FORMAT_STRING  = (char*)"3.0.4";
-static long  RAPIDSSE_FORMAT_NUMBER  = 0x030104;
+static char* RAPIDSSE_FORMAT_STRING  = (char*)"0.5.0";
+static long  RAPIDSSE_FORMAT_NUMBER  = 0x000500;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // platform

@@ -26,27 +26,27 @@ extern s256 gi_szaArgv[];
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
-  printf("sizeof(Object) %lld\n",       (i8)sizeof(Object));
-  printf("sizeof(Operand) %lld\n",      (i8)sizeof(Operand));
-  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
-  printf("sizeof(DataBuffer) %lld\n",   (i8)sizeof(DataBuffer));
-  printf("sizeof(Ent) %lld\n",          (i8)sizeof(Ent));
-  printf("sizeof(Ent_gen) %lld\n",      (i8)sizeof(Ent_gen));
-  printf("sizeof(Ent_int) %lld\n",      (i8)sizeof(Ent_int));
-  printf("sizeof(EntWrk) %lld\n",       (i8)sizeof(EntWrk));
-  printf("sizeof(Fact) %lld\n",         (i8)sizeof(Fact));
-  printf("sizeof(LogicUnit) %lld\n",    (i8)sizeof(LogicUnit));
-  printf("sizeof(Method) %lld\n",       (i8)sizeof(Method));
-  printf("sizeof(SP_Ent) %lld\n",       (i8)sizeof(SP_Ent));
-  printf("sizeof(SP_Key) %lld\n",       (i8)sizeof(SP_Key));
-  printf("sizeof(SP_Ref) %lld\n",       (i8)sizeof(SP_Ref));
+//  printf("sizeof(Object) %lld\n",       (i8)sizeof(Object));
+//  printf("sizeof(Operand) %lld\n",      (i8)sizeof(Operand));
+//  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
+//  printf("sizeof(DataBuffer) %lld\n",   (i8)sizeof(DataBuffer));
+//  printf("sizeof(Ent) %lld\n",          (i8)sizeof(Ent));
+//  printf("sizeof(Ent_gen) %lld\n",      (i8)sizeof(Ent_gen));
+//  printf("sizeof(Ent_int) %lld\n",      (i8)sizeof(Ent_int));
+//  printf("sizeof(EntWrk) %lld\n",       (i8)sizeof(EntWrk));
+//  printf("sizeof(Fact) %lld\n",         (i8)sizeof(Fact));
+//  printf("sizeof(LogicUnit) %lld\n",    (i8)sizeof(LogicUnit));
+//  printf("sizeof(Method) %lld\n",       (i8)sizeof(Method));
+//  printf("sizeof(SP_Ent) %lld\n",       (i8)sizeof(SP_Ent));
+//  printf("sizeof(SP_Key) %lld\n",       (i8)sizeof(SP_Key));
+//  printf("sizeof(SP_Ref) %lld\n",       (i8)sizeof(SP_Ref));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Qty xQty;
-  
-  xQty = Datums::xQtyTest();
-  printf("Qty isNull=%lld Value=%lld\n",(i8)xQty.m_bIsNull,xQty.m_iValue);
+//  Qty xQty;
+//  
+//  xQty = Datums::xQtyTest();
+//  printf("Qty isNull=%lld Value=%lld\n",(i8)xQty.m_bIsNull,xQty.m_iValue);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  size_t size = C_64KB;
