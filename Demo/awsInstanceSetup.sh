@@ -268,8 +268,8 @@ cat << EOF > /etc/telegraf/telegraf.conf
 EOF
 
 # Start influxdb and telegraf
-#systemctl start influxdb 
-#systemctl start telegraf
+systemctl start influxdb 
+systemctl start telegraf
 
 cd ~ || exit
 
