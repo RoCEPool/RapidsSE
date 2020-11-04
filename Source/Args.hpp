@@ -118,6 +118,8 @@ namespace Arguments
     void vSanityCheck(void);
     void vScribble(void);
   
+    bool bUserPrompt(void);
+  
     Footer* aFooter(void);
   };
 }

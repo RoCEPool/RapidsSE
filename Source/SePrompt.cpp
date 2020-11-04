@@ -1006,6 +1006,12 @@ void SePrompt::vPromptUser(void)
   if (gxArgs.m_bSethScript)
     return;
   
+  if (gxArgs.bUserPrompt()) {
+    vInfo("se> "_Stz);
+    fflush(stdin);
+    return;
+  }
+  
   bool bHasStarted = AM::bHasStarted();
 
   bool bLowMem = gpBufferPool->bLowMemory();
