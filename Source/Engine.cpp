@@ -719,7 +719,7 @@ void Engine::vErrorHandler(Error* pError)
 /*----------------------------------------------------------------------------*/
 void Engine::vGetCopyright(s256& sCopyright)
 {
-  sCopyright = "Copyright (c) Borrui Data 2020"_Stz;
+  sCopyright = "(c) 2020 Rapids Data Technology Co. Ltd"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
