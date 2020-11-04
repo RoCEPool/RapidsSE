@@ -734,11 +734,12 @@ void Engine::vGetWelcome(s256& sWelcome)
   szRelDbg = "release"_Stz;
 #endif
   
-  sWelcome.vSprint("RapidsSE %s (%s version, pid %lld)"_Stz,
+  sWelcome.vSprint("RapidsSE %s (%s version, pid %lld, git %s)"_Stz,
                    
                    RAPIDSSE_VERSION_STRING,
                    szRelDbg,
-                   Process::iGetPid()
+                   Process::iGetPid(),
+                   gsBuildGitHash
                   );
 }
 
