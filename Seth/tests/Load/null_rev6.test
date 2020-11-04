@@ -14,7 +14,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/load/null.csv" ;
+oldLoad T1 "../DATA/Load/null.csv" ;
 success
 
 // predicateFetch rows
@@ -51,7 +51,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/load/null_enclosedBy.csv" <enclosed_by_leading> =  "'" ;
+oldLoad T1 "../DATA/Load/null_enclosedBy.csv" <enclosed_by_leading> =  "'" ;
 success
 
 // predicateFetch rows
@@ -88,7 +88,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/load/null_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
+oldLoad T1 "../DATA/Load/null_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows

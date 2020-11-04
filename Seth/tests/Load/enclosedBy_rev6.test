@@ -19,7 +19,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/load/enclosedBy1.csv" ;
+oldLoad T1 "../DATA/Load/enclosedBy1.csv" ;
 failure contains: '5 invalid'
 
 // predicateFetch rows
@@ -56,7 +56,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad table T1 with <enclosed_by_leading> =  '
-oldLoad T1 "../DATA/load/enclosedBy2.csv" <enclosed_by_leading> = "'" ;
+oldLoad T1 "../DATA/Load/enclosedBy2.csv" <enclosed_by_leading> = "'" ;
 failure contains: '1 invalid'
 
 // predicateFetch rows
@@ -93,7 +93,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad table T1 2ith <enclosed_by_leading> =  [ and enclosed_by_trailing ]
-oldLoad T1 "../DATA/load/enclosedBy3.csv" <enclosed_by_leading> = "[" <enclosed_by_trailing> = "]";
+oldLoad T1 "../DATA/Load/enclosedBy3.csv" <enclosed_by_leading> = "[" <enclosed_by_trailing> = "]";
 failure contains: '7 invalid'
 
 // predicateFetch rows

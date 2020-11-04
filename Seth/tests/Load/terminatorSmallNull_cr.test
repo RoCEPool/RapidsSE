@@ -12,7 +12,7 @@ create table terminator_cr (
 success
 
 // oldLoad data into the table with default formatter settings
-oldLoad terminator_cr "../DATA/load/terminatorSmallNull_cr.csv" record_ends "\n";
+oldLoad terminator_cr "../DATA/Load/terminatorSmallNull_cr.csv" record_ends "\n";
 failure contains: '1 invalid'
 
 // create index

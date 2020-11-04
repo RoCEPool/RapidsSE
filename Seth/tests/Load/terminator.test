@@ -57,7 +57,7 @@ create index idx on terminator(pcol1);
 success
 
 // oldLoad data into the table with default formatter settings
-oldLoad terminator "../DATA/load/terminator.csv"  field_delimiter "|";
+oldLoad terminator "../DATA/Load/terminator.csv"  field_delimiter "|";
 success
 
 tableScan terminator;

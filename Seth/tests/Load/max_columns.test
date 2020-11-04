@@ -174,7 +174,7 @@ create table max_columns (
 );
 success
 
-oldLoad max_columns "../DATA/load/max_150_columns_varchar100.csv" ;
+oldLoad max_columns "../DATA/Load/max_150_columns_varchar100.csv" ;
 success
 
 drop table max_columns;
@@ -251,7 +251,7 @@ create table max_columns (
   c_field059   VARCHAR(254)
 );
 
-oldLoad max_columns "../DATA/load/max_60_columns_varchar254.csv" ;
+oldLoad max_columns "../DATA/Load/max_60_columns_varchar254.csv" ;
 success
 
 drop table max_columns;

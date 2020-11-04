@@ -16,7 +16,7 @@ create table PART (
   p_comment VARCHAR(23)
 );
 
-oldLoad PART "../DATA/load/part.csv" ;
+oldLoad PART "../DATA/Load/part.csv" ;
 
 /*============================================================================*/
 /* end                                                                        */

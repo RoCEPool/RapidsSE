@@ -35,7 +35,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // oldLoad data into the table with default formatter settings
-oldLoad rdp "../DATA/load/rdp.csv" <enclosed_by_leading> =  "'";
+oldLoad rdp "../DATA/Load/rdp.csv" <enclosed_by_leading> =  "'";
 success
 
 // unable to select 3000 because of min/max's

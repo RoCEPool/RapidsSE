@@ -13,7 +13,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult escape
-oldLoad T1 "../DATA/load/escape_defaults.csv";
+oldLoad T1 "../DATA/Load/escape_defaults.csv";
 success
 
 // predicateFetch rows
@@ -48,7 +48,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult escape
-oldLoad T1 "../DATA/load/escape_enclosed.csv" <enclosed_by_leading> =  "'";
+oldLoad T1 "../DATA/Load/escape_enclosed.csv" <enclosed_by_leading> =  "'";
 success
 
 // predicateFetch rows
@@ -83,7 +83,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult escape
-oldLoad T1 "../DATA/load/escape_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
+oldLoad T1 "../DATA/Load/escape_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows

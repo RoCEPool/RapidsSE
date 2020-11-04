@@ -15,11 +15,11 @@ oldLoad T1;
 failure contains: 'invalid command'
 
 // incomplete oldLoad command
-oldLoad "../DATA/load/null.csv";
+oldLoad "../DATA/Load/null.csv";
 failure contains: 'invalid command'
 
 // oldLoad non-existent table T1
-oldLoad T1 "../DATA/load/null.csv" ;
+oldLoad T1 "../DATA/Load/null.csv" ;
 failure contains: 'no such table'
 
 create table T1 (
