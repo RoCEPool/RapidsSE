@@ -174,7 +174,7 @@ bool SePrompt::bGetCommand(SeDeputy* pSeDeputy)
   s32 sHostName;
   Hardware::vHostName(sHostName);
 
-  if (bStdIn()) {
+  if (bStdIn() && ! *pSeDeputy->pSession()->m_sToDo.azChar()) {
     vReportOther();
     vPromptUser();
   }
