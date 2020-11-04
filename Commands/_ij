@@ -10,7 +10,7 @@ create table lt (
 create index li on lt(l_key);
 
 print "loading lt.csv..." ;
-load lt "../JTEST/leftTable.csv" ;
+oldLoad lt "../JTEST/leftTable.csv" ;
 
 create table rt (
 r_key   INTEGER NOT NULL,
@@ -19,7 +19,7 @@ r_name  VARCHAR(32) NOT NULL
 create index ri on rt(r_key);
 
 print "loading rt.csv..." ;
-load rt "../JTEST/rightTable.csv" ;
+oldLoad rt "../JTEST/rightTable.csv" ;
 
 join lt li rt ri;
 

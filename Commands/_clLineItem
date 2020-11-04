@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  _clLineitem - create and load TPC-H Lineitem table for SF1                */
+/*  _clLineitem - create and oldLoad TPC-H Lineitem table for SF1                */
 /*============================================================================*/
 
 bc;

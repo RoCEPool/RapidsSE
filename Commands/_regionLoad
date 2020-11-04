@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _regionLoad - create and load TPC-H Region table for SF1                   */
+/* _regionLoad - create and oldLoad TPC-H Region table for SF1                   */
 /*============================================================================*/
 
 create table region (
@@ -9,7 +9,7 @@ create table region (
 );
 
 print "loading region.csv..." ;
-load region "/tpch/region.csv" ;
+oldLoad region "/tpch/region.csv" ;
 
 pwf ;
 lf ;

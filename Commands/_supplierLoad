@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _supplierLoad - create and load TPC-H Supllier table for SF1               */
+/* _supplierLoad - create and oldLoad TPC-H Supllier table for SF1               */
 /*============================================================================*/
 
 create table supplier (
@@ -17,7 +17,7 @@ CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 print "loading supplier.csv..." ;
 
 //docol stepsReset;
-load supplier "/tpch/SF1/supplier.csv" ;
+oldLoad supplier "/tpch/SF1/supplier.csv" ;
 //docol stepsList;
 
 pwf ;

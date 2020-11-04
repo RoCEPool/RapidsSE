@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _customerLoad - create and load TPC-H Customer table for SF1               */
+/* _customerLoad - create and oldLoad TPC-H Customer table for SF1               */
 /*============================================================================*/
 
 bc;
@@ -19,7 +19,7 @@ CREATE INDEX customer_idx1 ON customer(c_custkey);
 CREATE INDEX customer_idx2 ON customer(c_nationkey);
 
 print "loading customer.csv..." ;
-load customer "/tpch/SF1/customer.csv" ;
+oldLoad customer "/tpch/SF1/customer.csv" ;
 
 pwf ;
 lf ;

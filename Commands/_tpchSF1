@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _TPCH/SF1-- tpc-h creation, load, predicateFetch and drop for scale factor 1         */
+/* _TPCH/SF1-- tpc-h creation, oldLoad, predicateFetch and drop for scale factor 1         */
 /*============================================================================*/
 
 bc;
@@ -98,23 +98,23 @@ print "loading partsupp.csv..." ;
 
 print "loading customer.csv..." ;
 
-//time load partsupp "/TPCH/SF1/temp.tbl" <field_delimiter> =  "|";
+//time oldLoad partsupp "/TPCH/SF1/temp.tbl" <field_delimiter> =  "|";
 
-/time load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> =  "|";
+/time oldLoad partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> =  "|";
 
-/time load customer "/TPCH/SF1/customer.tbl" <field_delimiter> =  "|";
+/time oldLoad customer "/TPCH/SF1/customer.tbl" <field_delimiter> =  "|";
 print "loading lineitem.csv..." ;
-/time load lineitem "/TPCH/SF1/lineitem.csv" ;
+/time oldLoad lineitem "/TPCH/SF1/lineitem.csv" ;
 print "loading nation.csv..." ;
-/time load nation "/TPCH/SF1/nation.tbl" <field_delimiter> =  "|";
+/time oldLoad nation "/TPCH/SF1/nation.tbl" <field_delimiter> =  "|";
 print "loading orders.csv..." ;
-/time load orders "/TPCH/SF1/orders.tbl" <field_delimiter> =  "|";
+/time oldLoad orders "/TPCH/SF1/orders.tbl" <field_delimiter> =  "|";
 print "loading part.csv..." ;
-/time load part "/TPCH/SF1/part.tbl" <field_delimiter> =  "|";
+/time oldLoad part "/TPCH/SF1/part.tbl" <field_delimiter> =  "|";
 print "loading region.csv..." ;
-/time load region "/TPCH/SF1/region.tbl" <field_delimiter> =  "|";
+/time oldLoad region "/TPCH/SF1/region.tbl" <field_delimiter> =  "|";
 print "loading supplier.csv..." ;
-/time load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> =  "|";
+/time oldLoad supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> =  "|";
 print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -226,11 +226,11 @@ print "-----------------------------------------------------------------------";
  i8 nBytes = pColVec->nItems() * 4;
  C: 32MB->27MB
  L: 724MB->438MB
- N: 2MB->1MB----------------> 10 rows failed to load
+ N: 2MB->1MB----------------> 10 rows failed to oldLoad
  O: 128MB->110MB
- P: 32MB->15MB--------------> 17491 rows failed to load
+ P: 32MB->15MB--------------> 17491 rows failed to oldLoad
  PS: 96MB->90MB
- R: 389B->1MB---------------> 3 rows failed to load
+ R: 389B->1MB---------------> 3 rows failed to oldLoad
  S: 1.3MB->2MB
  
  Experiment 3
@@ -241,7 +241,7 @@ print "-----------------------------------------------------------------------";
  O: 128MB->110MB
  P: 32MB->16MB
  PS: 96MB->90MB
- R: 389B->1MB---------------> 3 rows failed to load
+ R: 389B->1MB---------------> 3 rows failed to oldLoad
  S: 1.3MB->2MB
  
  Experiment 4

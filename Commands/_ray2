@@ -14,7 +14,7 @@ _lineitemIndex
 // ./time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Load LineItem";
+print section "oldLoad LineItem";
 
 //print "Sleeping ...";
 //sleep 5;

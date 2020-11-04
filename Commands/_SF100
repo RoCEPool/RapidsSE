@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  _SF1 - create and load TPC-H Lineitem table for SF1                       */
+/*  _SF1 - create and oldLoad TPC-H Lineitem table for SF1                       */
 /*============================================================================*/
 
 create table lineitem (
@@ -28,7 +28,7 @@ CREATE INDEX idx ON lineitem(l_orderkey);
 print "loading lineitem.csv..." ;
 
 timerStart;
-load lineitem "/tpch/SF100/lineitem.csv" ;
+oldLoad lineitem "/tpch/SF100/lineitem.csv" ;
 timerEnd;
 
 antbl lineitem;

@@ -22,7 +22,7 @@ vch_col14  VARCHAR,
 vch_col15  VARCHAR
 );
 
-load vchTbl "/DATA/Encoding/varchar.csv" ;
+oldLoad vchTbl "/DATA/Encoding/varchar.csv" ;
 
 // check no of rows
 //predicateFetch vchTbl;

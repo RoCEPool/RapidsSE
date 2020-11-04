@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _vch -- vch creation and load etc                                          */
+/* _vch -- vch creation and oldLoad etc                                          */
 /*============================================================================*/
 
 //ping ;
@@ -14,7 +14,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_defaults.csv" ;
+oldLoad vch "../JTEST/vch_defaults.csv" ;
 
 predicateFetch vch;
 
@@ -30,7 +30,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_no_enclosed.csv"
+oldLoad vch "../JTEST/vch_no_enclosed.csv"
   <enclosed_by_leading> =  "\0" ;
 
 predicateFetch vch;
@@ -46,7 +46,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_no_enclosed_no_escape.csv"
+oldLoad vch "../JTEST/vch_no_enclosed_no_escape.csv"
   <enclosed_by_leading> =  "\0" <escape_char> =  "\0" ;
 
 predicateFetch vch;
@@ -62,7 +62,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_no_escape.csv"
+oldLoad vch "../JTEST/vch_no_escape.csv"
   <escape_char> =  "\0" ;
 
 predicateFetch vch;
@@ -79,7 +79,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_term_defaults.csv"
+oldLoad vch "../JTEST/vch_term_defaults.csv"
   record_terminator ";" ;
 
 predicateFetch vch;
@@ -95,7 +95,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_term_no_enclosed.csv"
+oldLoad vch "../JTEST/vch_term_no_enclosed.csv"
   record_terminator ";" <enclosed_by_leading> =  "\0" ;
 
 predicateFetch vch;
@@ -111,7 +111,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
+oldLoad vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
   record_terminator ";" <enclosed_by_leading> =  "\0" <escape_char> =  "\0" ;
 
 predicateFetch vch;
@@ -127,7 +127,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_term_no_escape.csv"
+oldLoad vch "../JTEST/vch_term_no_escape.csv"
   record_terminator ";" <escape_char> =  "\0" ;
 
 predicateFetch vch;
@@ -143,7 +143,7 @@ vch_comment VARCHAR(64) NOT NULL
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_delimiter.csv"
+oldLoad vch "../JTEST/vch_delimiter.csv"
   <field_delimiter> =  "|";
 
 predicateFetch vch;

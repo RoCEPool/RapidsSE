@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _k100 -- load and query duplicates                                         */
+/* _k100 -- oldLoad and query duplicates                                         */
 /*============================================================================*/
 
 create table k100 (
@@ -27,7 +27,7 @@ create index idx_100values on k100 (j100_100values);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "loading k100.csv..." ;
-load k100 "../JTEST/k100.csv" ;
+oldLoad k100 "../JTEST/k100.csv" ;
 
 predicateFetch k100 ;
 

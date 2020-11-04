@@ -47,7 +47,7 @@ print "loading lineitem.csv..." ;
 //docol stepsReset;
 //docol memoryReset;
 //docol schedulerReset;
-load lineitem "/tpch/SF10/lineitem.csv" ;
+oldLoad lineitem "/tpch/SF10/lineitem.csv" ;
 //sleep 10 ;
 //space;
 //docol schedulerList;

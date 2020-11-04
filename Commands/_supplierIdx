@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _supplierLoad - create and load TPC-H Supllier table for SF1               */
+/* _supplierLoad - create and oldLoad TPC-H Supllier table for SF1               */
 /*============================================================================*/
 
 cf~ ;
@@ -31,7 +31,7 @@ create index idx2 on supplier (S_NAME);
 create index idx4 on supplier (S_COMMENT);
 
 print "loading supplier.csv..." ;
-load supplier "/tpch/SF1/supplier.csv" ;
+oldLoad supplier "/tpch/SF1/supplier.csv" ;
 print "loaded supplier.csv..." ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 22 ...\n" ;

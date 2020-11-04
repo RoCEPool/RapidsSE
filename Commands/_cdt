@@ -19,7 +19,7 @@ create index jCdt_idx1 on jCdt (jA);
 create index jCdt_idx5 on jCdt (jE);
 
 //docol stepsReset;
-load jCdt "../JTEST/jCdt.csv";
+oldLoad jCdt "../JTEST/jCdt.csv";
 
 predicateFetch jCdt ;
 

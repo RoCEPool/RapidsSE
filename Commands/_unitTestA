@@ -188,9 +188,9 @@ print section "tag delete";
 tag delete <<enclosed_by_leading> = >;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-print section "Load Table";
+print section "oldLoad Table";
 
-/time load lineitem "../DATA/TPCH/lineitem10.csv";
+/time oldLoad lineitem "../DATA/TPCH/lineitem10.csv";
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "size Table";
@@ -298,9 +298,9 @@ print section "Truncate Table";
 truncate lineitem;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-print section "Load Table";
+print section "oldLoad Table";
 
-Load lineitem "/tmp/lineitem_export.csv" ;
+oldLoad lineitem "/tmp/lineitem_export.csv" ;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "table Scan";

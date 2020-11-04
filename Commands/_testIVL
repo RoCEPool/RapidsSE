@@ -15,7 +15,7 @@ create index idx_ivl on jidxIvl (jidx_ivl);
 //create index idx2 on jidxIvl (jidx_100);
 //create index idx3 on jidxIvl (jidx_name);
 
-load jidxIvl "../JTEST/jidxIvl.csv" ;
+oldLoad jidxIvl "../JTEST/jidxIvl.csv" ;
 
 //anidx jidxIvl idx_ivl ;
 dumpidx jidxIvl idx_ivl ;

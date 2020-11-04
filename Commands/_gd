@@ -33,7 +33,7 @@ print "";
 print "=====================================================================";
 print "loading data";
 print "=====================================================================";
-load SensorEvents "/tmp/SensorEvents.csv";
+oldLoad SensorEvents "/tmp/SensorEvents.csv";
 
 print "";
 print "=====================================================================";

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _SF10 - create and load TPC-H Lineitem table for SF10                      */
+/* _SF10 - create and oldLoad TPC-H Lineitem table for SF10                      */
 /*============================================================================*/
 
 bc;
@@ -30,8 +30,8 @@ print "creating index on l_partkey...";
 print "loading lineitem.csv..." ;
 
 timerStart;
-//load lineitem "/tpch/SF10/lineitem.csv" <field_delimiter> =  "|" record_ends "|" ;
-load lineitem "/tpch/SF10/lineitem.csv" ;
+//oldLoad lineitem "/tpch/SF10/lineitem.csv" <field_delimiter> =  "|" record_ends "|" ;
+oldLoad lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
 
 //antbl lineitem;

@@ -37,7 +37,7 @@ create index lineitem_idx on lineitem (l_shipdate);
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time load lineitem "/DATA/TPCH/lineitem10.csv";
+/time oldLoad lineitem "/DATA/TPCH/lineitem10.csv";
 ///time Query6_I lineitem lineitem_idx;
 ///time Query6 lineitem lineitem_idx;
 /time Query1_ASM_I lineitem "../EO_text/QRY_100.txt" "../EO_text/QRY_103.txt" ;

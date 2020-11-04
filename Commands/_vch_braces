@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _vch_braces -- vch creation and load etc                                   */
+/* _vch_braces -- vch creation and oldLoad etc                                   */
 /*============================================================================*/
 
 //ping ;
@@ -14,7 +14,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_braces.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> =  "}" ;
+oldLoad vch "../JTEST/vch_braces.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> =  "}" ;
 
 predicateFetch vch;
 

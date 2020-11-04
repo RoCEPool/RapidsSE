@@ -23,7 +23,7 @@ create table T1 (
 // create indexes
 create index T1_idx on T1 (jidx_key);
 
-load T1 "../DATA/Operators/operators1_1.csv" ;
+oldLoad T1 "../DATA/Operators/operators1_1.csv" ;
 
 tableScan T1;
 

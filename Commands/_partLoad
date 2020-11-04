@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _partLoad -- create and load TPC-H Part table for SF1                      */
+/* _partLoad -- create and oldLoad TPC-H Part table for SF1                      */
 /*============================================================================*/
 
 status ;
@@ -18,7 +18,7 @@ create table part (
 CREATE INDEX part_idx1 ON part(p_brand);
 
 print "loading part.csv..." ;
-load part "/tpch/SF1/part.csv" ;
+oldLoad part "/tpch/SF1/part.csv" ;
 
 pwf ;
 lf ;

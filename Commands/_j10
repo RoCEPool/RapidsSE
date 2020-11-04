@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _j10 -- jtest creation and load etc                                        */
+/* _j10 -- jtest creation and oldLoad etc                                        */
 /*============================================================================*/
 bc;
 
@@ -13,8 +13,8 @@ create table j10 (
 create index idx on j10(j10_key);
 
 print "loading j10.csv..." ;
-load j1 "../JTEST/j10.csv" ;
-load j10 "../JTEST/j10.csv" ;
+oldLoad j1 "../JTEST/j10.csv" ;
+oldLoad j10 "../JTEST/j10.csv" ;
 
 lspart;
 
@@ -127,7 +127,7 @@ create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 print "loading j10.tbl from exported file ..." ;
-load j10 "/tmp/j10_ex.csv" <enclosed_by_leading> =  "'" <enclosed_by_trailing> =  "'";
+oldLoad j10 "/tmp/j10_ex.csv" <enclosed_by_leading> =  "'" <enclosed_by_trailing> =  "'";
 
 predicateFetch j10;
 
@@ -138,7 +138,7 @@ j10_key   INTEGER NOT NULL,
 j10_name  VARCHAR(32) NOT NULL
 );
 print "loading j10.tbl from exported file ..." ;
-load j10 "/tmp/j10_dex.csv" ;
+oldLoad j10 "/tmp/j10_dex.csv" ;
 
 predicateFetch j10;
 

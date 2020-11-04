@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _indexDemoSF10 - create and load Supllier table for SF10                   */
+/* _indexDemoSF10 - create and oldLoad Supllier table for SF10                   */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@ create index idx2 on supplier (S_NAME);
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
 print "Loading table..." ;
-load supplier "/tpch/SF10/supplier.csv" ;
+oldLoad supplier "/tpch/SF10/supplier.csv" ;
 print "loaded supplier.csv..." ;
 
 pwf ;

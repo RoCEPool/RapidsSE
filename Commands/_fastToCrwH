@@ -19,9 +19,9 @@ create table tspTbl (
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Load tspTbl";
+print section "oldLoad tspTbl";
 
-load tspTbl "../DATA/Datums/timestamp.csv" ;
+oldLoad tspTbl "../DATA/Datums/timestamp.csv" ;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/

@@ -17,10 +17,10 @@ print section "Create Index";
 _lineItemIndex
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection load;
-print section "Load Table";
+logSection oldLoad;
+print section "oldLoad Table";
 
-/time load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" <max_errors> =  100;
+/time oldLoad lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" <max_errors> =  100;
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 logSection analyse1

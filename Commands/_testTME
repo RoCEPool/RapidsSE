@@ -23,7 +23,7 @@ create index idx_tme on jidxTme (jidx_tme);
 //create index idx2 on jidxTme (jidx_100);
 //create index idx3 on jidxTme (jidx_name);
 
-load jidxTme "../JTEST/jidxTme.csv" ;
+oldLoad jidxTme "../JTEST/jidxTme.csv" ;
 
 //anidx jidxTme idx_tme ;
 dumpidx jidxTme idx_tme ;

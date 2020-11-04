@@ -15,7 +15,7 @@ create table bolTbl (
   bol_col8   BOOLEAN
 );
 
-load bolTbl "/DATA/Datums/boolean.csv" ;
+oldLoad bolTbl "/DATA/Datums/boolean.csv" ;
 
 dumptbl bolTbl;
 

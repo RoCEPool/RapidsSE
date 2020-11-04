@@ -22,7 +22,7 @@ int_col14  INTEGER     NOT NULL,
 int_col15  INTEGER
 );
 
-load intTbl "/home/rapids/SE_SCALE/integer10M.csv" ;
+oldLoad intTbl "/home/rapids/SE_SCALE/integer10M.csv" ;
 
 print "\n predicateFetch noPrint";
 /time predicateFetch intTbl noPrint;

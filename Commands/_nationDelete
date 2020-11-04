@@ -12,7 +12,7 @@ create table nation (
 );
 
 create index nation_idx1 ON nation(N_NationKey);
-load nation "/DATA/TPCH/nation.csv" ;
+oldLoad nation "/DATA/TPCH/nation.csv" ;
 
 print "\n\n------------------";
 print "TableScan";

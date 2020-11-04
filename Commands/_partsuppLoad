@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _partsuppLoad -- create and load TPC-H PartSupp table for SF1              */
+/* _partsuppLoad -- create and oldLoad TPC-H PartSupp table for SF1              */
 /*============================================================================*/
 
 create table partsupp (
@@ -13,7 +13,7 @@ CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
 
 
 print "loading partsupp.csv..." ;
-load partsupp "/tpch/SF1/partsupp.csv" ;
+oldLoad partsupp "/tpch/SF1/partsupp.csv" ;
 
 pwf ;
 lf ;

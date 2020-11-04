@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* _loadPipeline.test -- Load pipeline tests                                  */
+/* _loadPipeline.test -- oldLoad pipeline tests                                  */
 /*----------------------------------------------------------------------------*/
 
 // strat cluster
@@ -33,9 +33,9 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 // create indexes
 create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 
-/time load lineitem "/DATA/TPCH/lineitem10.csv";
-//load lineitem "/DATA/TPCH/lineitem20k.csv";
-//time load lineitem "/TPCH/SF1/lineitem.csv";
+/time oldLoad lineitem "/DATA/TPCH/lineitem10.csv";
+//oldLoad lineitem "/DATA/TPCH/lineitem20k.csv";
+//time oldLoad lineitem "/TPCH/SF1/lineitem.csv";
 
 antbl lineitem;
 anidx lineitem lineitem_idx1;

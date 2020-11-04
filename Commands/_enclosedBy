@@ -19,7 +19,7 @@ create table T1 (
 );
 
 print "loading table T1..." ;
-load T1 "../JTEST/enclosedBy1.csv" ;
+oldLoad T1 "../JTEST/enclosedBy1.csv" ;
 
 print "predicateFetch should return only valid rows" ;
 predicateFetch T1;
@@ -38,7 +38,7 @@ col_comment VARCHAR(15)
 );
 
 print "loading table T1 2ith <enclosed_by_leading> =  ' ..." ;
-load T1 "../JTEST/enclosedBy2.csv" <enclosed_by_leading> =  "'";
+oldLoad T1 "../JTEST/enclosedBy2.csv" <enclosed_by_leading> =  "'";
 
 print "predicateFetch should return only valid rows" ;
 predicateFetch T1;
@@ -57,7 +57,7 @@ col_comment VARCHAR(15)
 );
 
 print "loading table T1 2ith <enclosed_by_leading> =  [ and <enclosed_by_trailing> =  ] ..." ;
-load T1 "../JTEST/enclosedBy3.csv" <enclosed_by_leading> =  "[" <enclosed_by_trailing> =  "]";
+oldLoad T1 "../JTEST/enclosedBy3.csv" <enclosed_by_leading> =  "[" <enclosed_by_trailing> =  "]";
 
 print "predicateFetch should return only valid rows" ;
 predicateFetch T1;

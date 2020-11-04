@@ -15,8 +15,8 @@ S_ACCTBAL       DECIMAL(15,2) NOT NULL,
 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-// load the table
-load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> =  "|";
+// oldLoad the table
+oldLoad supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> =  "|";
 
 create index idx on supplier (S_NATIONKEY);
 

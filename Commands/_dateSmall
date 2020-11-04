@@ -22,7 +22,7 @@ dte_col14  DATE     NOT NULL,
 dte_col15  DATE
 );
 
-load dteTbl "/DATA/Encoding/dateSmall.csv" ;
+oldLoad dteTbl "/DATA/Encoding/dateSmall.csv" ;
 
 print "Fetching dteTbl noPrint";
 /time predicateFetch dteTbl noPrint;

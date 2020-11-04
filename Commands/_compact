@@ -24,7 +24,7 @@ create table lineitem (
 create index idx1 ON lineitem(L_ORDERKEY);
 
 print "loading lineitem.csv..." ;
-load lineitem "/tpch/SF10/lineitem.csv" ;
+oldLoad lineitem "/tpch/SF10/lineitem.csv" ;
 
 vfyidx lineitem idx1;
 visidx lineitem idx1;
@@ -68,7 +68,7 @@ create table lineitem (
 create index idx1 ON lineitem(L_ORDERKEY);
 
 print "loading lineitem.csv..." ;
-load lineitem "/tpch/SF10/lineitem.csv" ;
+oldLoad lineitem "/tpch/SF10/lineitem.csv" ;
 
 vfyidx lineitem idx1;
 visidx lineitem idx1;
@@ -185,7 +185,7 @@ create table supplier (
 CREATE INDEX idx1 ON supplier(s_suppkey);
 
 print "loading supplier.csv..." ;
-load supplier "/tpch/SF1/supplier.csv" ;
+oldLoad supplier "/tpch/SF1/supplier.csv" ;
 
 vfyidx supplier idx1;
 visidx supplier idx1;
@@ -212,7 +212,7 @@ create table j100 (
 create index idx1 on j100 (j100_key);
 
 print "loading j100_dup.csv..." ;
-load j100 "../JTEST/j100_dup.csv" ;
+oldLoad j100 "../JTEST/j100_dup.csv" ;
 
 vfyidx j100 idx1;
 visidx j100 idx1;
@@ -236,7 +236,7 @@ create table j100 (
 create index idx1 on j100 (j100_key);
 
 print "loading j100.csv..." ;
-load j100 "../JTEST/j100.csv" ;
+oldLoad j100 "../JTEST/j100.csv" ;
 
 vfyidx j100 idx1;
 visidx j100 idx1;
@@ -263,7 +263,7 @@ create table j10 (
 create index idx1 on j10 (j10_key);
 
 print "loading j10.csv..." ;
-load j10 "../JTEST/j10.csv" ;
+oldLoad j10 "../JTEST/j10.csv" ;
 
 vfyidx j10 idx1;
 visidx j10 idx1;

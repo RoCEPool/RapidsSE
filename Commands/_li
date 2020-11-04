@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* _li - create and load TPC-H Lineitem table for SF1                         */
+/* _li - create and oldLoad TPC-H Lineitem table for SF1                         */
 /*============================================================================*/
 
 bc;
 
 _lineitem
 
-/time load lineitem "/tpch/SF1/lineitem.csv" ;
+/time oldLoad lineitem "/tpch/SF1/lineitem.csv" ;
 
 /time predicateFetch lineitem displayOff;
 

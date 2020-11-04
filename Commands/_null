@@ -14,7 +14,7 @@ vch_comment VARCHAR(64) NOT NULL
 );
 
 print "loading table vch..." ;
-load vch "../JTEST/vch_braces_nulls.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> =  "}" ;
+oldLoad vch "../JTEST/vch_braces_nulls.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> =  "}" ;
 
 predicateFetch vch;
 

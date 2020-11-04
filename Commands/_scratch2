@@ -10,7 +10,7 @@ col_vch      VARCHAR(15),
 col_int      INTEGER
 );
 
-load T1 "../DATA/Load/emptyString2.csv" <<enclosed_by_leading> = > = "{" <<enclosed_by_trailing> = > = "}";
+oldLoad T1 "../DATA/load/emptyString2.csv" <<enclosed_by_leading> = > = "{" <<enclosed_by_trailing> = > = "}";
 tableScan T1;
 /*============================================================================*/
 /* end                                                                        */

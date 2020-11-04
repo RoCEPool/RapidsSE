@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _tpchLoad -- create and load TPC-H tables for SF1                          */
+/* _tpchLoad -- create and oldLoad TPC-H tables for SF1                          */
 /*============================================================================*/
 
 _customerLoad

@@ -15,7 +15,7 @@ create index idx1 on j10 (j10_key);
 //create index idx2 on j10 (j10_name);
 
 print "loading j10.csv..." ;
-load j10 "../JTEST/j10_dup.csv" ;
+oldLoad j10 "../JTEST/j10_dup.csv" ;
 
 
 dumpidx j10 idx1;

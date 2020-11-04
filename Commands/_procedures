@@ -265,9 +265,9 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* load data into a table from a csv file                                     */
+/* oldLoad data into a table from a csv file                                     */
 /*----------------------------------------------------------------------------*/
-procedure load
+procedure oldLoad
   parameters $table $file
 begin
 
@@ -284,7 +284,7 @@ begin
     insert $table | stageD
 
   stage stageD on origin:
-    progress "Load" | toStatDemon | sink | stageA
+    progress "oldLoad" | toStatDemon | sink | stageA
 
 end
 ;
@@ -409,7 +409,7 @@ end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* fast load data into a table from a csv file                                */
+/* fast oldLoad data into a table from a csv file                                */
 /*----------------------------------------------------------------------------*/
 procedure fload
   parameters $table $file

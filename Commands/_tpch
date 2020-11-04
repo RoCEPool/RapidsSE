@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _tpch -- create and load TPC-H tables for SF1                              */
+/* _tpch -- create and oldLoad TPC-H tables for SF1                              */
 /*============================================================================*/
 
 bc;
@@ -15,14 +15,14 @@ _supplier
 
 lf ;
 
-load customer "/tpch/SF1/customer.csv" ;
-//load lineitem "/tpch/SF1/lineitem.csv" ;
-//load nation   "/tpch/SF1/nation.csv"   ;
-//load orders   "/tpch/SF1/orders.csv"  ;
-//load part     "/tpch/SF1/part.csv"     ;
-//load partsupp "/tpch/SF1/partsupp.csv" ;
-//load region   "/tpch/SF1/region.csv"       ;
-//load supplier "/tpch/SF1/supplier.csv" ;
+oldLoad customer "/tpch/SF1/customer.csv" ;
+//oldLoad lineitem "/tpch/SF1/lineitem.csv" ;
+//oldLoad nation   "/tpch/SF1/nation.csv"   ;
+//oldLoad orders   "/tpch/SF1/orders.csv"  ;
+//oldLoad part     "/tpch/SF1/part.csv"     ;
+//oldLoad partsupp "/tpch/SF1/partsupp.csv" ;
+//oldLoad region   "/tpch/SF1/region.csv"       ;
+//oldLoad supplier "/tpch/SF1/supplier.csv" ;
 
 tableSizes ;
 

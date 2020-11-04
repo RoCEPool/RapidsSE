@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ordersLoad - create and load TPC-H Orders table for SF1                   */
+/* _ordersLoad - create and oldLoad TPC-H Orders table for SF1                   */
 /*============================================================================*/
 
 
@@ -18,7 +18,7 @@ create table orders (
 CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
 
 print "loading orders.csv..." ;
-load orders "/tpch/SF1/orders.csv" ;
+oldLoad orders "/tpch/SF1/orders.csv" ;
 
 pwf ;
 lf ;

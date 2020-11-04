@@ -24,7 +24,7 @@ create index idx_dte on jidxDte (jidx_dte);
 //create index idx2 on jidxDte (jidx_100);
 //create index idx3 on jidxDte (jidx_name);
 
-load jidxDte "../JTEST/jidxDte.csv" ;
+oldLoad jidxDte "../JTEST/jidxDte.csv" ;
 
 //anidx jidxDte idx_dte ;
 //dumpidx jidxDte idx_dte ;

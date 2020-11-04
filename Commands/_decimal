@@ -22,7 +22,7 @@ dec_col14  DECIMAL(15,2)     NOT NULL,
 dec_col15  DECIMAL
 );
 
-load decTbl "/DATA/Encoding/decimal.csv" ;
+oldLoad decTbl "/DATA/Encoding/decimal.csv" ;
 
 print "Fetching decTbl noPrint";
 /time predicateFetch decTbl noPrint;

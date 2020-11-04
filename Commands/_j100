@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _j100 -- jtest creation and load etc                                       */
+/* _j100 -- jtest creation and oldLoad etc                                       */
 /*============================================================================*/
 
 ping ;
@@ -11,7 +11,7 @@ create table j100 (
 );
 
 print "loading j100.csv..." ;
-load j100 "../JTEST/j100.csv" ;
+oldLoad j100 "../JTEST/j100.csv" ;
 
 pwf ;
 lf ;

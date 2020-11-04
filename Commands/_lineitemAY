@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _lineitemAY - create and load TPC-H LineItem table                         */
+/* _lineitemAY - create and oldLoad TPC-H LineItem table                         */
 /*============================================================================*/
 
 //markact all on;
@@ -47,15 +47,15 @@ space;
 //IndexEntries 4000;
 
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
-//time load lineitem "/tpch/SF0/lineitem_1.csv" <max_errors> =  100;
-//time load lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
-// /time load lineitem "/DATA/TPCH/lineitem1.csv"; // <max_errors> =  100;
-//time load lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
-//time load lineitem "/DATA/TPCH/lineitem10K.csv" <max_errors> =  100;
-//time load lineitem "/DATA/TPCH/lineitem10k.csv" <max_errors> =  100;
-//time load lineitem "/DATA/TPCH/lineitem10.csv" <max_errors> =  100;
-// /time load lineitem "/DATA/TPCH/lineitem10k.csv"; // <max_errors> =  100;
-///time load lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
+//time oldLoad lineitem "/tpch/SF0/lineitem_1.csv" <max_errors> =  100;
+//time oldLoad lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
+// /time oldLoad lineitem "/DATA/TPCH/lineitem1.csv"; // <max_errors> =  100;
+//time oldLoad lineitem "/tpch/SF1/lineitem.csv" <max_errors> =  100;
+//time oldLoad lineitem "/DATA/TPCH/lineitem10K.csv" <max_errors> =  100;
+//time oldLoad lineitem "/DATA/TPCH/lineitem10k.csv" <max_errors> =  100;
+//time oldLoad lineitem "/DATA/TPCH/lineitem10.csv" <max_errors> =  100;
+// /time oldLoad lineitem "/DATA/TPCH/lineitem10k.csv"; // <max_errors> =  100;
+///time oldLoad lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
 ///time fload lineitem "/tpch/SF1/lineitem.csv"; // <max_errors> =  100;
 
 //fload lineitem "/tpch/SF1/lineitem.csv";
@@ -124,7 +124,7 @@ end ;
 //expr_project_1 lineitem "/DATA/TPCH/lineitem10K.csv";
 // /time ctas lineitem lineitem2;
 
-//load lineitem "/DATA/TPCH/lineitem10.csv";
+//oldLoad lineitem "/DATA/TPCH/lineitem10.csv";
 //drop table lineitem;
 //space;
 //sztbl lineitem;
@@ -295,9 +295,9 @@ docol epochDump;
  //CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
  
  print "loading orders..." ;
- time load orders "/DATA/tpch/orders10.csv" <max_errors> =  100;
- //time load orders "/DATA/tpch/orders10k.csv" <max_errors> =  100;
- //time load orders "/tpch/SF1/orders.tbl" <field_delimiter> =  "|" <max_errors> =  100;
+ time oldLoad orders "/DATA/tpch/orders10.csv" <max_errors> =  100;
+ //time oldLoad orders "/DATA/tpch/orders10k.csv" <max_errors> =  100;
+ //time oldLoad orders "/tpch/SF1/orders.tbl" <field_delimiter> =  "|" <max_errors> =  100;
 
 //docol epochDump;
 /*

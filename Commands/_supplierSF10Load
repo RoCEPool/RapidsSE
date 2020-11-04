@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _supplierLoad - create and load TPC-H Supllier table for SF1               */
+/* _supplierLoad - create and oldLoad TPC-H Supllier table for SF1               */
 /*============================================================================*/
 
 cf ~ ;
@@ -25,7 +25,7 @@ create table supplier (
 );
 
 print "loading supplier.csv..." ;
-load supplier "/tpch/SF10/supplier.csv" ;
+oldLoad supplier "/tpch/SF10/supplier.csv" ;
 
 pwf ;
 lf ;

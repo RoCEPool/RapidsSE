@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _lineitemRJH - create and load TPC-H LineItem table                        */
+/* _lineitemRJH - create and oldLoad TPC-H LineItem table                        */
 /*============================================================================*/
 
 _bootCluster
@@ -52,8 +52,8 @@ print section "List Columns";
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection load;
-print section "Load Table";
+logSection oldLoad;
+print section "oldLoad Table";
 
 // /nowait monitor 3;
 

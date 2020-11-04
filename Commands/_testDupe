@@ -10,7 +10,7 @@ create table jDupe (
 
 create index jDupe_idx1 on jDupe (jDupe_i);
 
-load jDupe "../JTEST/jDupe27.csv";
+oldLoad jDupe "../JTEST/jDupe27.csv";
 
 dumpidx jDupe jDupe_idx1;
 

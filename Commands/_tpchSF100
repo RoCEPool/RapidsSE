@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _TPCH/SF100 -- tpc h creation and load etc                                 */
+/* _TPCH/SF100 -- tpc h creation and oldLoad etc                                 */
 /*============================================================================*/
 bc;
 
@@ -93,21 +93,21 @@ print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "-----------------------------------------------------------------------";
 print "loading customer.csv..." ;
-/time load customer "/TPCH/SF100/customer.csv" ;
+/time oldLoad customer "/TPCH/SF100/customer.csv" ;
 print "loading lineitem.csv..." ;
-/time load lineitem "/TPCH/SF100/lineitem.csv" ;
+/time oldLoad lineitem "/TPCH/SF100/lineitem.csv" ;
 print "loading nation.csv..." ;
-/time load nation "/TPCH/SF100/nation.csv" ;
+/time oldLoad nation "/TPCH/SF100/nation.csv" ;
 print "loading orders.csv..." ;
-/time load orders "/TPCH/SF100/orders.csv" ;
+/time oldLoad orders "/TPCH/SF100/orders.csv" ;
 print "loading part.csv..." ;
-/time load part "/TPCH/SF100/part.csv" ;
+/time oldLoad part "/TPCH/SF100/part.csv" ;
 print "loading partsupp.csv..." ;
-/time load partsupp "/TPCH/SF100/partsupp.csv" ;
+/time oldLoad partsupp "/TPCH/SF100/partsupp.csv" ;
 print "loading region.csv..." ;
-/time load region "/TPCH/SF100/region.csv" ;
+/time oldLoad region "/TPCH/SF100/region.csv" ;
 print "loading supplier.csv..." ;
-/time load supplier "/TPCH/SF100/supplier.csv" ;
+/time oldLoad supplier "/TPCH/SF100/supplier.csv" ;
 print "-----------------------------------------------------------------------";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

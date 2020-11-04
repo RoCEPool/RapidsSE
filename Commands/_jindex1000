@@ -11,7 +11,7 @@ create table j1000 (
 
 print "loading j1000.csv..." ;
 create index idx on j1000 (j1000_key);
-load j1000 "../JTEST/j1000.csv" ;
+oldLoad j1000 "../JTEST/j1000.csv" ;
 
 predicateFetch j1000 "j1000_key 0 =";
 print "\n";
