@@ -4162,7 +4162,7 @@ void Task::vAddMunged(Forth* pForth)
     "  // load\n"
     "  sPath\n"
     "  \"\n"
-    "  procedure load\n"
+    "  procedure oldLoad\n"
     "    parameters $table $file\n"
     "  begin\n"
     "\n"
