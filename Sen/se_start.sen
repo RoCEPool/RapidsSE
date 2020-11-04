@@ -764,10 +764,10 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dxload
+  // dload
   sPath
   "
-  procedure dxload
+  procedure dload
     parameters $table
   begin
 
