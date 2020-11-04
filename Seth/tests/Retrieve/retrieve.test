@@ -15,7 +15,7 @@ bol_col8  BOOLEAN     NOT NULL
 );
 success
 
-load retTbl "../DATA/Retrieve/retrieve.csv" ;
+oldLoad retTbl "../DATA/Retrieve/retrieve.csv" ;
 success
 
 // check no of rows

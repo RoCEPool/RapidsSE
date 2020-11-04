@@ -14,7 +14,7 @@ success
 create index T1_idx1 on T1 (jA, jC);
 success
 
-load T1 "../DATA/Select/rangeCombo.csv";
+oldLoad T1 "../DATA/Select/rangeCombo.csv";
 success
 
 tableScan T1;

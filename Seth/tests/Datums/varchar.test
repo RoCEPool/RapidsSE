@@ -50,7 +50,7 @@ lsidxcol VchTbl vch_idx3;
 rows:
   ('vch_col5', 'VARCHAR', 64000, 0, true, false)
 
-load VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
+oldLoad VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 failure contains: '2 invalid'
 
 // check no of rows

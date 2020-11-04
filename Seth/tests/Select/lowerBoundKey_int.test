@@ -24,7 +24,7 @@ success
 //create index jCdt_idx4 on jCdt (jD);
 //success
 
-load jCdt "../DATA/Select/range2.csv";
+oldLoad jCdt "../DATA/Select/range2.csv";
 success
 
 vfyidx jCdt jCdt_idx1;

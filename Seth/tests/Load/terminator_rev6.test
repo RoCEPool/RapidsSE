@@ -12,8 +12,8 @@ success
 create index idx on T1 (col_id);
 success
 
-// load T1 with deafult enclosedBy
-load T1 "../Seth/tests/Load/terminatorVch_rev6.csv" record_terminator "|" record_ends "\n";
+// oldLoad T1 with deafult enclosedBy
+oldLoad T1 "../Seth/tests/oldLoad/terminatorVch_rev6.csv" record_terminator "|" record_ends "\n";
 success
 
 // predicateFetch rows
@@ -38,8 +38,8 @@ success
 create index idx on T1 (col_id);
 success
 
-// load T1 with deafult enclosedBy
-load T1 ".../DATA/Load/terminatorInt_rev6.csv" record_terminator "|" record_ends "\n";
+// oldLoad T1 with deafult enclosedBy
+oldLoad T1 ".../DATA/load/terminatorInt_rev6.csv" record_terminator "|" record_ends "\n";
 success
 
 // predicateFetch rows

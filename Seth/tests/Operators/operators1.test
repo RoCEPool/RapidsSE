@@ -28,7 +28,7 @@ lsidx OpTable1;
 rows:
 ('OpTable1_idx', false, false)
 
-load OpTable1 "../DATA/Operators/operators1_1.csv" ;
+oldLoad OpTable1 "../DATA/Operators/operators1_1.csv" ;
 success
 
 // check no of rows
@@ -57,7 +57,7 @@ lsidx OpTable2;
 rows:
 ('OpTable2_idx', false, false)
 
-load OpTable2 "../DATA/Operators/operators1_2.csv" ;
+oldLoad OpTable2 "../DATA/Operators/operators1_2.csv" ;
 success
 
 // check no of rows

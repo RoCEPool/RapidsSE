@@ -22,7 +22,7 @@ success
 create index idx on Q1 (jA);
 success
 
-load Q1 "../DATA/Queries/L0_SingleBuffer.csv";
+oldLoad Q1 "../DATA/Queries/L0_SingleBuffer.csv";
 success
 
 dumpidx Q1 idx2;

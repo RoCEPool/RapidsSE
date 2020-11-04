@@ -42,7 +42,7 @@ lsidxcol decTbl dec_idx2;
 rows:
 ('dec_col6', 'DECIMAL',19, 0, true, false)
 
-load decTbl "../DATA/Datums/decimal.csv" ;
+oldLoad decTbl "../DATA/Datums/decimal.csv" ;
 failure contains: '15 invalid'
 
 // check no of rows

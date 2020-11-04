@@ -19,7 +19,7 @@ success
 
 create index tbl9idx1 on table9(pcol9);
 
-load TABLE9 "../DATA/Index/tbl9data.csv" ;
+oldLoad TABLE9 "../DATA/Index/tbl9data.csv" ;
 success
 
 create index tbl9idx2 on table9(scol9);

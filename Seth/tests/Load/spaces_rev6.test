@@ -13,8 +13,8 @@ success
 create index idx on T1 (col_id);
 success
 
-// load T1 with deafult enclosedBy
-load T1 "../DATA/Load/spaces.csv" ;
+// oldLoad T1 with deafult enclosedBy
+oldLoad T1 "../DATA/load/spaces.csv" ;
 success
 
 // predicateFetch rows
@@ -43,8 +43,8 @@ success
 create index idx on T1 (col_id);
 success
 
-// load T1 with deafult enclosedBy
-load T1 "../DATA/Load/spaces_enclosedBy.csv" <enclosed_by_leading> =  "'" ;
+// oldLoad T1 with deafult enclosedBy
+oldLoad T1 "../DATA/load/spaces_enclosedBy.csv" <enclosed_by_leading> =  "'" ;
 success
 
 // predicateFetch rows
@@ -73,8 +73,8 @@ success
 create index idx on T1 (col_id);
 success
 
-// load T1 with deafult enclosedBy
-load T1 "../DATA/Load/spaces_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
+// oldLoad T1 with deafult enclosedBy
+oldLoad T1 "../DATA/load/spaces_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows

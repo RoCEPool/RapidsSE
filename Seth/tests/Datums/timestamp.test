@@ -41,7 +41,7 @@ lsidxcol tspTbl tsp_idx2;
 rows:
 ('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
 
-load tspTbl "../DATA/Datums/timestamp.csv" ;
+oldLoad tspTbl "../DATA/Datums/timestamp.csv" ;
 failure contains: '27 invalid'
 
 // check no of rows

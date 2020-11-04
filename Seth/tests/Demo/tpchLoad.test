@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
--- tpch load
+-- tpch oldLoad
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// load customer
+// oldLoad customer
 fload customer "/TPCH/SF1/customer.tbl";
 
 compactidx customer customer_idx1;
@@ -20,7 +20,7 @@ rows:
  (150000)
 
 //------------------------------------------------------------------------------
-// load orders
+// oldLoad orders
 fload orders "/TPCH/SF1/orders.tbl";
 success
 
@@ -32,7 +32,7 @@ rows:
   (1500000)
 
 //------------------------------------------------------------------------------
-// load lineitem
+// oldLoad lineitem
 fload lineitem "/TPCH/SF1/lineitem.tbl";
 success
 

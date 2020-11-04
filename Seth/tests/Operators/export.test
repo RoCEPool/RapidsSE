@@ -23,7 +23,7 @@ success
 create index OpTable1_idx on OpTable1 (jidx_key);
 success
 
-load OpTable1 "../DATA/Operators/operators1_1.csv" ;
+oldLoad OpTable1 "../DATA/Operators/operators1_1.csv" ;
 success
 
 // check no of rows
@@ -48,7 +48,7 @@ success
 truncate OpTable1;
 success
 
-load OpTable1 "/tmp/opTable1.csv" ;
+oldLoad OpTable1 "/tmp/opTable1.csv" ;
 success
 
 // check no of rows

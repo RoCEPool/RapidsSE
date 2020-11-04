@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* regressionData -- Regression data load tests                               */
+/* regressionData -- Regression data oldLoad tests                               */
 /*----------------------------------------------------------------------------*/
 
 // create the tables
@@ -262,98 +262,98 @@ create table RETURNS (
 );
 success
 
-// load data into the tables
-load TABLE1 "../DATA/Load/tbl1data.csv" ;
+// oldLoad data into the tables
+oldLoad TABLE1 "../DATA/load/tbl1data.csv" ;
 success
 
-load TABLE2 "../DATA/Load/tbl2data.csv" ;
+oldLoad TABLE2 "../DATA/load/tbl2data.csv" ;
 success
 
-load TABLE3 "../DATA/Load/tbl3data.csv" ;
+oldLoad TABLE3 "../DATA/load/tbl3data.csv" ;
 success
 
-load TABLE4 "../DATA/Load/tbl4data.csv" ;
+oldLoad TABLE4 "../DATA/load/tbl4data.csv" ;
 success
 
-load TABLE5 "../DATA/Load/tbl5data.csv" ;
+oldLoad TABLE5 "../DATA/load/tbl5data.csv" ;
 success
 
-load TABLE6 "../DATA/Load/tbl6data.csv" ;
+oldLoad TABLE6 "../DATA/load/tbl6data.csv" ;
 success
 
-load TABLE7 "../DATA/Load/tbl7data.csv" ;
+oldLoad TABLE7 "../DATA/load/tbl7data.csv" ;
 success
 
-load TABLE8 "../DATA/Load/tbl8data.csv" ;
+oldLoad TABLE8 "../DATA/load/tbl8data.csv" ;
 success
 
-load TABLE9 "../DATA/Load/tbl9data.csv" ;
+oldLoad TABLE9 "../DATA/load/tbl9data.csv" ;
 success
 
-load ORDERS "../DATA/Load/orders.csv" ;
+oldLoad ORDERS "../DATA/load/orders.csv" ;
 success
 
-load LINEITEM "../DATA/Load/lineitem.csv" ;
+oldLoad LINEITEM "../DATA/load/lineitem.csv" ;
 success
 
-load CUSTOMERH "../DATA/Load/customer.csv" ;
+oldLoad CUSTOMERH "../DATA/load/customer.csv" ;
 success
 
-load PARTSUPP "../DATA/Load/partsupp.csv" <record_ends> = "\r\n";
+oldLoad PARTSUPP "../DATA/load/partsupp.csv" <record_ends> = "\r\n";
 success
 
-load PART "../DATA/Load/part.csv" ;
+oldLoad PART "../DATA/load/part.csv" ;
 success
 
-load SHIPPING "../DATA/Load/shipping.csv" ;
+oldLoad SHIPPING "../DATA/load/shipping.csv" ;
 success
 
-load SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
+oldLoad SHIPADDRESS "../DATA/load/shipaddr.csv" ;
 success
 
-load SUPPLIER "../DATA/Load/supplier.csv" ;
+oldLoad SUPPLIER "../DATA/load/supplier.csv" ;
 success
 
-load MANUFACTURER "../DATA/Load/manufacturer.csv";
+oldLoad MANUFACTURER "../DATA/load/manufacturer.csv";
 success
 
-load NATION "../DATA/Load/nation.csv" <record_ends> = "\r\n";;
+oldLoad NATION "../DATA/load/nation.csv" <record_ends> = "\r\n";;
 success
 
-load REGION "../DATA/Load/region.csv" ;
+oldLoad REGION "../DATA/load/region.csv" ;
 success
 
-load RETURNS "../DATA/Load/returns.csv";
+oldLoad RETURNS "../DATA/load/returns.csv";
 success
 
 // tests row limits
 create table limitRow (col0 VARCHAR(20000));
 success
 
-//load limitRow "../Seth/tests/Load/largeRow1.csv";
+//oldLoad limitRow "../Seth/tests/oldLoad/largeRow1.csv";
 //success
 
 //predicateFetch limitRow;
 //rows: 0
 
-load limitRow "../DATA/Load/largeRow2.csv";
+oldLoad limitRow "../DATA/load/largeRow2.csv";
 failure contains: '1 invalid'
 
 tableScan limitRow;
 rows: 0
 
-load limitRow "../DATA/Load/largeRow3.csv";
+oldLoad limitRow "../DATA/load/largeRow3.csv";
 failure contains: '1 invalid'
 
 tableScan limitRow;
 rows: 0
 /*
-load limitRow "../DATA/Load/15KRow.csv";
+oldLoad limitRow "../DATA/load/15KRow.csv";
 
 predicateFetch limitRow;
 rows: 1
 
-load limitRow "../DATA/Load/16KRow.csv";
+oldLoad limitRow "../DATA/load/16KRow.csv";
 
 predicateFetch limitRow;
 rows: 2

@@ -500,7 +500,7 @@
   // load
   sPath
   "
-  procedure load
+  procedure oldLoad
     parameters $table $file
   begin
 

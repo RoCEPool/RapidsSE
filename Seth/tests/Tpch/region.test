@@ -11,8 +11,8 @@ R_COMMENT         VARCHAR(152)
 success
 
 -----------------------------------------------------------------------
-// load the table
-//load region "/TPCH/SF1/region.tbl" <field_delimiter> = "|";
+// oldLoad the table
+//oldLoad region "/TPCH/SF1/region.tbl" <field_delimiter> = "|";
 fload region "/TPCH/SF1/region.tbl";
 success
 

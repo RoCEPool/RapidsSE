@@ -13,49 +13,49 @@ create index idx on tsp (tsp_key);
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with incorrect formatters
+// oldLoad data into the table with incorrect formatters
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD.MM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD.MM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "XX-DD-MM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "XX-DD-MM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YY-DD-MM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YY-DD-MM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYY-DD-MM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYY-DD-MM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-XX-MM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-XX-MM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DX-MM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DX-MM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-XM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-XM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-MX" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-MX" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY/DD-MM" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY/DD-MM" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM-YYYD" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM-YYYD" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-MM-YYYD" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-MM-YYYD" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-DD/YYYYY" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-DD/YYYYY" ;
 failure contains: 'invalid command'
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM/YYYYY" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM/YYYYY" ;
 failure contains: 'invalid command'
 
 //------------------------------------------------------------------------------
-// load data into the table with inserts (default formatter)
+// oldLoad data into the table with inserts (default formatter)
 /*
 begin insert tsp;
 success
@@ -181,7 +181,7 @@ drop table tsp;
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with default formatter settings
+// oldLoad data into the table with default formatter settings
 
 // create the tables
 create table tsp (
@@ -190,7 +190,7 @@ create table tsp (
 );
 success
 
-load tsp "../DATA/Load/tsp_YYYY-MM-DD.csv" ;
+oldLoad tsp "../DATA/load/tsp_YYYY-MM-DD.csv" ;
 success
 
 create index idx on tsp (tsp_key);
@@ -235,7 +235,7 @@ drop table tsp;
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with default formatter settings
+// oldLoad data into the table with default formatter settings
 
 // create the tables
 create table tsp (
@@ -245,7 +245,7 @@ create table tsp (
 success
 
 
-load tsp "../DATA/Load/tsp_YYYY-MM-DD.csv" <DATE_FORMAT> = "YYYY-MM-DD";
+oldLoad tsp "../DATA/load/tsp_YYYY-MM-DD.csv" <DATE_FORMAT> = "YYYY-MM-DD";
 success
 
 create index idx on tsp (tsp_key);
@@ -290,7 +290,7 @@ drop table tsp;
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with DATE FORMAT YYYY-DD-MM
+// oldLoad data into the table with DATE FORMAT YYYY-DD-MM
 // create the tables
 
 create table tsp (
@@ -299,7 +299,7 @@ create table tsp (
 );
 success
 
-load tsp "../DATA/Load/tsp_YYYY-DD-MM.csv" <DATE_FORMAT> = "YYYY-DD-MM";
+oldLoad tsp "../DATA/load/tsp_YYYY-DD-MM.csv" <DATE_FORMAT> = "YYYY-DD-MM";
 success
 
 create index idx on tsp (tsp_key);
@@ -344,7 +344,7 @@ drop table tsp;
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with DATE FORMAT DD-YYYY-MM
+// oldLoad data into the table with DATE FORMAT DD-YYYY-MM
 // create the tables
 
 create table tsp (
@@ -353,7 +353,7 @@ tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-load tsp "../DATA/Load/tsp_DD-YYYY-MM.csv" <DATE_FORMAT> = "DD-YYYY-MM";
+oldLoad tsp "../DATA/load/tsp_DD-YYYY-MM.csv" <DATE_FORMAT> = "DD-YYYY-MM";
 success
 
 create index idx on tsp (tsp_key);
@@ -398,7 +398,7 @@ drop table tsp;
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with DATE FORMAT DD-MM-YYYY
+// oldLoad data into the table with DATE FORMAT DD-MM-YYYY
 // create the tables
 
 create table tsp (
@@ -407,7 +407,7 @@ tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-load tsp "../DATA/Load/tsp_DD-MM-YYYY.csv" <DATE_FORMAT> = "DD-MM-YYYY";
+oldLoad tsp "../DATA/load/tsp_DD-MM-YYYY.csv" <DATE_FORMAT> = "DD-MM-YYYY";
 success
 
 create index idx on tsp (tsp_key);
@@ -452,7 +452,7 @@ drop table tsp;
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with DATE FORMAT MM/DD/YYYY
+// oldLoad data into the table with DATE FORMAT MM/DD/YYYY
 // create the tables
 
 create table tsp (
@@ -461,7 +461,7 @@ create table tsp (
 );
 success
 
-load tsp "../DATA/Load/tsp_MM-DD-YYYY_backslash.csv" <DATE_FORMAT> = "MM/DD/YYYY";
+oldLoad tsp "../DATA/load/tsp_MM-DD-YYYY_backslash.csv" <DATE_FORMAT> = "MM/DD/YYYY";
 success
 
 create index idx on tsp (tsp_key);
@@ -506,7 +506,7 @@ drop table tsp;
 success
 
 //------------------------------------------------------------------------------
-// load data into the table with DATE FORMAT MM/YYYY/DD
+// oldLoad data into the table with DATE FORMAT MM/YYYY/DD
 // create the tables
 
 create table tsp (
@@ -515,7 +515,7 @@ create table tsp (
 );
 success
 
-load tsp "../DATA/Load/tsp_MM-YYYY-DD_backslash.csv" <DATE_FORMAT> = "MM/YYYY/DD";
+oldLoad tsp "../DATA/load/tsp_MM-YYYY-DD_backslash.csv" <DATE_FORMAT> = "MM/YYYY/DD";
 success
 
 create index idx on tsp (tsp_key);

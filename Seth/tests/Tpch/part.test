@@ -32,8 +32,8 @@ lsidxcol part part_idx1;
 rows:
   ("P_BRAND", "VARCHAR", 10, 0, false, false)
 
-// load the table
-//load part "/TPCH/SF1/part.tbl" <field_delimiter> = "|";
+// oldLoad the table
+//oldLoad part "/TPCH/SF1/part.tbl" <field_delimiter> = "|";
 fload part "/TPCH/SF1/part.tbl";
 success
 

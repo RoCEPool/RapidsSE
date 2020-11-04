@@ -27,8 +27,8 @@ lsidxcol partsupp partsupp_idx1;
 rows:
   ("PS_SUPPKEY", "INTEGER", 19, 0, false, false)
 
-// load the table
-//load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
+// oldLoad the table
+//oldLoad partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
 fload partsupp "/TPCH/SF1/partsupp.tbl";
 success
 

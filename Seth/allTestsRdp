@@ -2,7 +2,7 @@ dbth.sh -f tests/Connector/Examples/testList
 dbth.sh -f tests/Connector/Regression/testList
 dbth.sh -f tests/Connector/InsertSelect/testList
 //dbth.sh -f tests/Connector/Export/testList
-dbth.sh -f tests/Connector/Load/testList
+dbth.sh -f tests/Connector/oldLoad/testList
 dbth.sh -f tests/Connector/Select/testList
 dbth.sh -f tests/Connector/Table/testList
 dbth.sh -f tests/Connector/Insert/testList

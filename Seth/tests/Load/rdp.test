@@ -34,8 +34,8 @@ success
 create index rdp_idx_0 on rdp(rdp_testno);
 success
 
-// load data into the table with default formatter settings
-load rdp "../DATA/Load/rdp.csv" <enclosed_by_leading> =  "'";
+// oldLoad data into the table with default formatter settings
+oldLoad rdp "../DATA/load/rdp.csv" <enclosed_by_leading> =  "'";
 success
 
 // unable to select 3000 because of min/max's
@@ -287,8 +287,8 @@ success
 create index rdp_idx_0 on rdp(rdp_testno);
 success
 
-// load data into the table with default formatter settings
-load rdp "/tmp/rdp_dex.csv" <enclosed_by_leading> =  "'";
+// oldLoad data into the table with default formatter settings
+oldLoad rdp "/tmp/rdp_dex.csv" <enclosed_by_leading> =  "'";
 success
 
 // unable to select 3000 because of min/max's
@@ -538,8 +538,8 @@ success
 create index rdp_idx_0 on rdp(rdp_testno);
 success
 
-// load data into the table with default formatter settings
-load rdp "/tmp/rdp_ex.csv" <enclosed_by_leading> =  "'";
+// oldLoad data into the table with default formatter settings
+oldLoad rdp "/tmp/rdp_ex.csv" <enclosed_by_leading> =  "'";
 success
 
 // unable to select 3000 because of min/max's
@@ -779,7 +779,7 @@ CLEANUP {
 }
 
 // Seth:
-// ./seth.sh tests/Load/rdp.test
+// ./seth.sh tests/oldLoad/rdp.test
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */
 /*----------------------------------------------------------------------------*/

@@ -28,15 +28,15 @@ success
 create index idx4 on T1 (jA,jB,jC,jD);
 success
 
-// (6) load the table
-load T1 "../DATA/Index/rangeQuery.csv";
+// (6) oldLoad the table
+oldLoad T1 "../DATA/Index/rangeQuery.csv";
 success
 
-// (7) create an index on one column after load
+// (7) create an index on one column after oldLoad
 create index T1_idx5 on T1 (jE);
 success
 
-// (8) create an index on two columns after load
+// (8) create an index on two columns after oldLoad
 create index T1_idx6 on T1 (jE,jA);
 success
 

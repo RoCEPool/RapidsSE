@@ -18,7 +18,7 @@ success
 
 create index idx on part (p_type);
 
-load part "../DATA/Load/part_curlyBraces.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}" <record_ends> = "\n";
+oldLoad part "../DATA/load/part_curlyBraces.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}" <record_ends> = "\n";
 success
 
 tableScan part;

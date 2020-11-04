@@ -43,7 +43,7 @@ lsidxcol bolTbl bol_idx2;
 rows:
   ('bol_col8', 'BOOLEAN', 0, 0, true, false)
 
-load bolTbl "../DATA/Datums/boolean.csv" ;
+oldLoad bolTbl "../DATA/Datums/boolean.csv" ;
 failure contains: '19 invalid'
 
 // check no of rows

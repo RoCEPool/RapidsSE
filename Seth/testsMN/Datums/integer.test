@@ -38,7 +38,7 @@ lsidxcol IntTbl int_idx2;
 rows:
   ('int_col4', 'INTEGER', 19, 0, true, false)
 
-load IntTbl "../DATA/Datums/integer.csv" ;
+oldLoad IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows
@@ -128,8 +128,8 @@ rows: 0
 predicateFetch intTbl "int_col1 14 =";
 rows: 0
 
-// load from exported file
-load IntTbl "/tmp/integer.csv" ;
+// oldLoad from exported file
+oldLoad IntTbl "/tmp/integer.csv" ;
 success
 
 // check no of rows

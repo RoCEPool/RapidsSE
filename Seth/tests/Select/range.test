@@ -27,7 +27,7 @@ success
 create index jCdt_idx5 on jCdt (jE);
 success
 
-load jCdt "../DATA/Select/range.csv";
+oldLoad jCdt "../DATA/Select/range.csv";
 success
 
 //------------------------------------------------------------------------------
