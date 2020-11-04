@@ -1724,13 +1724,14 @@ void Engine::vStartSystem(void)
            *gixPsxThd,
            *gixSocket
            );
-
-    // mark attachmap to be ready for connections
-    gpAttachMap->vAttachMapState(C_READY);
+  }
+  
+  // mark attachmap to be ready for connections
+  gpAttachMap->vAttachMapState(C_READY);
     
+  if (AM::bVerboseProgress()) {
     vInfo("\n++\n++ System Started\n++\n"_Stz);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/

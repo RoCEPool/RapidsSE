@@ -94,7 +94,7 @@ Args::Args(void)
   m_bMunged          = false;
   m_nOperands        = 0;
   m_nPeriodicSleep   = 10;
-  m_bProgress        = true;
+  m_bProgress        = false;
   m_iPromptDebug     = 0;
   m_bReload          = false;
   m_bRestart         = true;
