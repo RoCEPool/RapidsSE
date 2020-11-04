@@ -10,8 +10,8 @@ _lineitem
 
 print "loading LineItem...";
 
-/time fload LineItem "../FASTLOAD/data/lineitem_100.csv";
-// /time fload LineItem "/Users/Shared/tpch/SF1/lineitem.csv";
+/time load LineItem "../FASTLOAD/data/lineitem_100.csv";
+// /time load LineItem "/Users/Shared/tpch/SF1/lineitem.csv";
 
 //tableScan lineItem;
 

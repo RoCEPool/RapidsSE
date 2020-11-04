@@ -13,7 +13,7 @@ success
 -----------------------------------------------------------------------
 // oldLoad the table
 //oldLoad region "/TPCH/SF1/region.tbl" <field_delimiter> = "|";
-fload region "/TPCH/SF1/region.tbl";
+load region "/TPCH/SF1/region.tbl";
 success
 
 tableScan region;

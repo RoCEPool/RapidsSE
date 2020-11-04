@@ -49,7 +49,7 @@ rows:
 
 // oldLoad the table
 //oldLoad orders "/TPCH/SF1/orders.tbl" <field_delimiter> = "|";
-fload orders "/TPCH/SF1/orders.tbl";
+load orders "/TPCH/SF1/orders.tbl";
 success
 
 tableScan orders;

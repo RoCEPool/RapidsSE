@@ -12,7 +12,7 @@ create table uniFlt (
 );
 success
 
-fload uniFlt "../FASTLOAD/Data/uniFlt.csv" ;
+load uniFlt "../FASTLOAD/Data/uniFlt.csv" ;
 success
 
 // check no of rows

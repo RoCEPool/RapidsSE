@@ -56,10 +56,10 @@ space;
 //time oldLoad lineitem "/DATA/TPCH/lineitem10.csv" <max_errors> =  100;
 // /time oldLoad lineitem "/DATA/TPCH/lineitem10k.csv"; // <max_errors> =  100;
 ///time oldLoad lineitem "/tpch/SF0/lineitem_100k.csv" <max_errors> =  100;
-///time fload lineitem "/tpch/SF1/lineitem.csv"; // <max_errors> =  100;
+///time load lineitem "/tpch/SF1/lineitem.csv"; // <max_errors> =  100;
 
-//fload lineitem "/tpch/SF1/lineitem.csv";
-///time fload lineitem "/tpch/SF1/lineitem.csv";
+//load lineitem "/tpch/SF1/lineitem.csv";
+///time load lineitem "/tpch/SF1/lineitem.csv";
 //tableScan lineitem;
 
 //expr_filter_1 lineitem "/DATA/TPCH/lineitem10K.csv";

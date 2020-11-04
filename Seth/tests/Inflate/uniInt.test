@@ -12,7 +12,7 @@ create table uniInt (
 );
 success
 
-fload uniInt "../FASTLOAD/Data/uniInt.csv" ;
+load uniInt "../FASTLOAD/Data/uniInt.csv" ;
 success
 
 // check no of rows

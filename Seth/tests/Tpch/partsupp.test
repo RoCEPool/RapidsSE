@@ -29,7 +29,7 @@ rows:
 
 // oldLoad the table
 //oldLoad partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
-fload partsupp "/TPCH/SF1/partsupp.tbl";
+load partsupp "/TPCH/SF1/partsupp.tbl";
 success
 
 tableScan partsupp;

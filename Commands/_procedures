@@ -411,7 +411,7 @@ end
 /*----------------------------------------------------------------------------*/
 /* fast oldLoad data into a table from a csv file                                */
 /*----------------------------------------------------------------------------*/
-procedure fload
+procedure load
   parameters $table $file
 begin
 
@@ -468,7 +468,7 @@ begin
 end
 ;
 /*----------------------------------------------------------------------------*/
-//procedure fload
+//procedure load
 //  parameters $table $file
 //begin
 //
@@ -523,7 +523,7 @@ end
 //;
 
 /*----------------------------------------------------------------------------*/
-//procedure fload
+//procedure load
 //  parameters $table $file
 //begin
 //
@@ -562,7 +562,7 @@ end
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  stage stageD on origin:
 //
-//    progress "FLoad"  |
+//    progress "load"  |
 //    sink              |
 //    stageA
 //

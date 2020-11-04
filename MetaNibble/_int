@@ -9,7 +9,7 @@ print "creating intTable..." ;
 );
 
 print "loading int.csv..." ;
-/time fload intTable "../MetaNibble/Data/int.csv" ;
+/time load intTable "../MetaNibble/Data/int.csv" ;
 
 print "scaning int.csv..." ;
 /time tableScan intTable;

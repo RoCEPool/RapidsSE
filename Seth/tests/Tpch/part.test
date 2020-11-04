@@ -34,7 +34,7 @@ rows:
 
 // oldLoad the table
 //oldLoad part "/TPCH/SF1/part.tbl" <field_delimiter> = "|";
-fload part "/TPCH/SF1/part.tbl";
+load part "/TPCH/SF1/part.tbl";
 success
 
 tableScan part;

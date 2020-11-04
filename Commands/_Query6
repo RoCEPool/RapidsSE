@@ -53,7 +53,7 @@ print "*****************************************************************";
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-///time fload lineitem "/tpch/SF1/lineitem.csv";
+///time load lineitem "/tpch/SF1/lineitem.csv";
 //tablescan lineitem;
 ///time Query6 lineitem idx;
 
@@ -80,7 +80,7 @@ create index idx2 on lineitem2 (l_shipdate);
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // RAY
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-///time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+///time load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
 ///time Query6 lineitem idx;
 
 /*============================================================================*/

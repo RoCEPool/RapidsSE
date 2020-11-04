@@ -12,7 +12,7 @@ create table uniBcd (
 );
 success
 
-fload uniBcd "../FASTLOAD/Data/uniBcd.csv" ;
+load uniBcd "../FASTLOAD/Data/uniBcd.csv" ;
 success
 
 // check no of rows

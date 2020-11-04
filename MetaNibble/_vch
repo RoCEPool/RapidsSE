@@ -10,7 +10,7 @@ print "creating vchTable..." ;
 );
 
 print "loading vch.csv..." ;
-/time fload vchTable "../MetaNibble/Data/vch.csv" ;
+/time load vchTable "../MetaNibble/Data/vch.csv" ;
 
 print "scaning vch.csv..." ;
 /time tableScan vchTable;

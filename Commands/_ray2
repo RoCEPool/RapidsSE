@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray2 : timing fload of lineitem 6 Oct 2020                                */
+/* _ray2 : timing load of lineitem 6 Oct 2020                                */
 /*============================================================================*/
 
 bc;
@@ -19,13 +19,13 @@ print section "oldLoad LineItem";
 //print "Sleeping ...";
 //sleep 5;
 
-// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
-/time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
-// /time /summary fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
-// /time /summary /diary fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
-// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
-// /tags /time /summary /diary fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
-// /time /summary /diary fload lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
+// /time load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
+/time load lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
+// /time /summary load lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
+// /time /summary /diary load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
+// /time load lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
+// /tags /time /summary /diary load lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
+// /time /summary /diary load lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10";
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Indexes LineItem";

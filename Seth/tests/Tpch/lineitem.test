@@ -62,7 +62,7 @@ rows:
 
 // oldLoad the table
 //oldLoad lineitem "/TPCH/SF1/lineitem.tbl" <field_delimiter> = "|";
-fload lineitem "/TPCH/SF1/lineitem.tbl";
+load lineitem "/TPCH/SF1/lineitem.tbl";
 success
 
 //tableScan lineitem;

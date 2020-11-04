@@ -58,7 +58,7 @@ create table LineItem                      // SF * 6,000,000 rows
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // RAY
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-///time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+///time load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
 ///time Query1 lineitem;
 
 drop table lineitem;

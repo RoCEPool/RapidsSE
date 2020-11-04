@@ -21,8 +21,8 @@ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
 L_SHIPMODE      CHAR(10)      NOT NULL,
 L_COMMENT       VARCHAR(44)   NOT NULL
 );
-/time fload lineitem "/TPCH/SF10/lineitem.tbl";
-///time fload lineitem "/DATA/TPCH/lineitem10.csv";
+/time load lineitem "/TPCH/SF10/lineitem.tbl";
+///time load lineitem "/DATA/TPCH/lineitem10.csv";
 antbl lineitem;
 /time create index lineitem_idx1 on lineitem (l_shipdate);
 /time create index lineitem_idx2 on lineitem (l_orderkey);
@@ -49,6 +49,6 @@ anidx lineitem lineitem_idx1;
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
  /time create index lineitem_idx1 on lineitem (l_shipdate);
- /time fload lineitem "/TPCH/SF1/lineitem.tbl";
+ /time load lineitem "/TPCH/SF1/lineitem.tbl";
  /time drop table lineitem;
  */

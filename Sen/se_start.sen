@@ -639,10 +639,10 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fload
+  // load
   sPath
   "
-  procedure fload
+  procedure load
     parameters $table $file
   begin
 

@@ -12,7 +12,7 @@ create table uniDte (
 );
 success
 
-fload uniDte "../FASTLOAD/Data/uniDte.csv" ;
+load uniDte "../FASTLOAD/Data/uniDte.csv" ;
 success
 
 // check no of rows

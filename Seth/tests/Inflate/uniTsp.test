@@ -12,7 +12,7 @@ create table UniTsp (
 );
 success
 
-fload UniTsp "../FASTLOAD/Data/UniTsp.csv" ;
+load UniTsp "../FASTLOAD/Data/UniTsp.csv" ;
 success
 
 // check no of rows

@@ -55,14 +55,14 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "Loading demo data" ;
 
-/nowait fload customer "/mnt/disk1/tpch/sf100/customer.tbl";
-/nowait fload customer "/mnt/disk2/tpch/sf100/customer.tbl";
+/nowait load customer "/mnt/disk1/tpch/sf100/customer.tbl";
+/nowait load customer "/mnt/disk2/tpch/sf100/customer.tbl";
 
-/nowait fload lineitem "/mnt/disk1/tpch/sf100/lineitem.tbl";
-/nowait fload lineitem "/mnt/disk2/tpch/sf100/lineitem.tbl";
+/nowait load lineitem "/mnt/disk1/tpch/sf100/lineitem.tbl";
+/nowait load lineitem "/mnt/disk2/tpch/sf100/lineitem.tbl";
 
-/nowait fload orders "/mnt/disk1/tpch/sf100/orders.tbl";
-/nowait fload orders "/mnt/disk2/tpch/sf100/orders.tbl";
+/nowait load orders "/mnt/disk1/tpch/sf100/orders.tbl";
+/nowait load orders "/mnt/disk2/tpch/sf100/orders.tbl";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

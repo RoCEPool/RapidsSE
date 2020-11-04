@@ -28,7 +28,7 @@ rows:
 
 // oldLoad the table
 //oldLoad nation "/TPCH/SF1/nation.tbl" <field_delimiter> = "|";
-fload nation "/TPCH/SF1/nation.tbl";
+load nation "/TPCH/SF1/nation.tbl";
 success
 
 tableScan nation;

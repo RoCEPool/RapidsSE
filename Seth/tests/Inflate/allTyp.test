@@ -20,7 +20,7 @@ create table allTyp (
 );
 success
 
-fload allTyp "../FASTLOAD/Data/allTyp.csv" ;
+load allTyp "../FASTLOAD/Data/allTyp.csv" ;
 success
 
 // check no of rows

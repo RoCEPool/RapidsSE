@@ -233,7 +233,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // oldLoad lineitem
-fload lineitem "/TPCH/SF1/lineitem.tbl";
+load lineitem "/TPCH/SF1/lineitem.tbl";
 success
 
 compactIdx LineItem lineItem_Idx2;
@@ -277,7 +277,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // oldLoad orders
-fload orders "/TPCH/SF1/orders.tbl";
+load orders "/TPCH/SF1/orders.tbl";
 success
 
 compactIdx Orders Orders_Idx2;
@@ -311,7 +311,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // oldLoad lineitem
-fload lineitem "/TPCH/SF1/lineitem.tbl";
+load lineitem "/TPCH/SF1/lineitem.tbl";
 success
 
 compactIdx LineItem lineItem_Idx2;

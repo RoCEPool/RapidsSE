@@ -33,7 +33,7 @@ rows:
 -----------------------------------------------------------------------
 // oldLoad the table
 //oldLoad supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
-fload supplier "/TPCH/SF1/supplier.tbl";
+load supplier "/TPCH/SF1/supplier.tbl";
 success
 
 tableScan supplier;

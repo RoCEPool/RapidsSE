@@ -12,7 +12,7 @@ create table uniBol (
 );
 success
 
-fload uniBol "../FASTLOAD/Data/uniBol.csv" ;
+load uniBol "../FASTLOAD/Data/uniBol.csv" ;
 success
 
 // check no of rows

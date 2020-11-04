@@ -35,7 +35,7 @@ create index lineitem_idx on lineitem (l_shipdate);
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SF1 
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time fload lineitem "/TPCH/SF1/lineitem.tbl";
+/time load lineitem "/TPCH/SF1/lineitem.tbl";
 compactidx lineitem lineitem_idx;
 
 /time Query1_ASM_I lineitem "../EO_text/QRY_100.txt" "../EO_text/QRY_103.txt" ;

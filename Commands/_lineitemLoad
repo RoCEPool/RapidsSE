@@ -14,9 +14,9 @@ print "loading lineitem.csv..." ;
 
 space;
 
-///time fload lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv";
-// /time fload lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
-/time fload lineitem "/Users/Shared/tpch/SF1/lineitem.csv";
+///time load lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv";
+// /time load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
+/time load lineitem "/Users/Shared/tpch/SF1/lineitem.csv";
 
 space;
 
