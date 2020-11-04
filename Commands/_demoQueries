@@ -1,10 +1,22 @@
+// TPC-H Demo Queries.
+//
+// Any literal values (integers, strings, dates, etc) can be changed in the below
+// queries, but not the rest of the query.
+// All of these TPC-H queries also begin with the keyword "demo".
+//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print ""
 print "Executing Query1...";
 
 demo select
   L_RETURNFLAG,
   L_LINESTATUS,
   sum(l_QUANTITY) as SUM_QTY,
-  sum(L_EXTENDEDPRICE) as SUM_BASE_PRICE, sum(L_EXTENDEDPRICE*L_DISCOUNT) as SUM_DISC_PRICE, sum(L_EXTENDEDPRICE*L_DISCOUNT*L_TAX) as SUM_CHARGE, avg(L_QUANTITY) as AVG_QTY,
+  sum(L_EXTENDEDPRICE) as SUM_BASE_PRICE, 
+  sum(L_EXTENDEDPRICE*L_DISCOUNT) as SUM_DISC_PRICE, 
+  sum(L_EXTENDEDPRICE*L_DISCOUNT*L_TAX) as SUM_CHARGE, 
+  avg(L_QUANTITY) as AVG_QTY,
   avg(L_EXTENDEDPRICE) as AVG_PRICE,
   avg(L_DISCOUNT) as AVG_DISC,
   count(*) as COUNT_ORDER
@@ -17,11 +29,13 @@ where
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print ""
 print "Executing Query3...";
 
 demo select
   L_ORDERKEY,
-  sum(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE, O_ORDERDATE,
+  sum(L_EXTENDEDPRICE*L_DISCOUNT) as REVENUE, 
+  O_ORDERDATE,
   O_SHIPPRIORITY
 from
   CUSTOMER,
@@ -41,6 +55,7 @@ order by
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print ""
 print "Executing Query4...";
 
 demo select
@@ -66,6 +81,7 @@ order by O_ORDERPRIORITY;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print ""
 print "Executing Query6...";
 
 demo select
