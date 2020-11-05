@@ -215,6 +215,8 @@ bool SePrompt::bGetCommand(SeDeputy* pSeDeputy)
   if (bRedirectFromFile())
     return false;
 
+  vExtractPaths();
+  vExtractCtlTags();
 
   if (bExecuteFunction())
     return false;
@@ -224,9 +226,6 @@ bool SePrompt::bGetCommand(SeDeputy* pSeDeputy)
 
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
-
-  vExtractPaths();
-  vExtractCtlTags();
 
   if (! bExtractSupTags())
     return false;
@@ -524,6 +523,8 @@ bool SePrompt::bExecuteFunction(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  Timer oTimer;
+
   PromptFun* pPromptDesc =
     gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
   
@@ -532,8 +533,13 @@ bool SePrompt::bExecuteFunction(void)
   
   //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
   
+  oTimer.vStart();
   (pPromptDesc->m_fPrompt)(this);
-  
+  oTimer.vUpdate();
+
+  if (m_oExtTagSet.bHasName(C_TAG_TIME))
+    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
+
   return true;
 }
 
