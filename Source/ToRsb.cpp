@@ -22,7 +22,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
   m_pPipelineJob = AM::pPipelineJob();
-  m_nPtns        = AM::nPartitions();
+  m_nPtns        = AM::nPartitionsInGrid();
 
   m_pStreamDef = pStreamDef;
   m_pFmt       = pFmt;

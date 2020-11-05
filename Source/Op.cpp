@@ -1582,7 +1582,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       m_iRobin++;
-      i_Ptn = m_iRobin % AM::pGrid()->nPartitions();
+      i_Ptn = m_iRobin % AM::pGrid()->nPartitionsInGrid();
       
       // xmitNode is the partition node
       m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
@@ -1661,7 +1661,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, e
       
     case XK_ROBIN:
       m_iRobin++;
-      i_SendPtn = m_iRobin % AM::pGrid()->nPartitions();
+      i_SendPtn = m_iRobin % AM::pGrid()->nPartitionsInGrid();
       break;
       
     default:

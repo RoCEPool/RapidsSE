@@ -106,7 +106,7 @@ void Step::vGridPartitions(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::pGrid()->nPartitions());
+  m_pDataStack->vPushInt(AM::pGrid()->nPartitionsInGrid());
   
   EXIT();
 }
@@ -121,7 +121,7 @@ void Step::vGridShow(void)
   vTrace("Grid::\n"_Stz);
   vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nDefinedNodes());
   vTrace("  %lld slots per node\n"_Stz,AM::pGrid()->nSlotsPerNode());
-  vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitions());
+  vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitionsInGrid());
   
   for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
     Node* pNode = AM::pGrid()->pGetNode(i_Node);

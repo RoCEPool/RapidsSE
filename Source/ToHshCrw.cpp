@@ -27,7 +27,7 @@ ToHshCrw::ToHshCrw(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
   m_pCrwBuffer = nullptr;
 
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitionsInGrid(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
@@ -40,7 +40,7 @@ ToHshCrw::~ToHshCrw(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitionsInGrid(); i_Ptn++)
     delete m_paRowCompactor[i_Ptn];
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);

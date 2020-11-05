@@ -108,7 +108,7 @@ namespace Oblique
     static i8   iPid(void);
     static void vProcessExit(void);
     static bool bProgress(void);
-    static i8   nPartitions(void);
+    static i8   nPartitionsInGrid(void);
     static Queues* pQueues(void);
     static ResourceTracker* pResourceTracker(void);
     static Article* pRootArticle(void);

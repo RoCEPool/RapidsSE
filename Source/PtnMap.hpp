@@ -10,7 +10,7 @@ namespace Partitioning
   private:
     Lock m_okLock;
   
-    i8   m_iaInNode[C_MAX__PTNS]; // which node is a partition in
+    i8   m_iaInNode[C_MAX_PTNS]; // which node is a partition in
   
     // must be last
     Footer m_xFooter;

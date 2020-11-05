@@ -39,7 +39,7 @@ HashSet::~HashSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
 
   // Assert we don't have any dangling buffers
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitionsInGrid(); i_Ptn++)
     RASSERT(! m_paBufferChain[i_Ptn]);
 }
 

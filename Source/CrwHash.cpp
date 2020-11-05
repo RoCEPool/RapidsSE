@@ -29,7 +29,7 @@ CrwHash::CrwHash(Table* pTable)
     m_paRowCompactor[i_Partition] = nullptr;
   }
   
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitionsInGrid(); i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
   
   _checkInitialised_(CN_CRWHASH);
@@ -45,7 +45,7 @@ CrwHash::~CrwHash(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
   // Assert we don't have any dangling buffers
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitionsInGrid(); i_Ptn++) {
     delete m_paRowCompactor[i_Ptn];
     RASSERT( ! m_pCrwBuffer[i_Ptn] );    
   }

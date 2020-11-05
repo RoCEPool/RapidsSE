@@ -22,7 +22,7 @@ PtnMap::PtnMap(i8 nPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX__PTNS; i_Ptn++) {
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNS; i_Ptn++) {
     m_iaInNode[i_Ptn] = C_UNKNOWN;
   }
 
