@@ -82,12 +82,7 @@ void Grid::vInit(i8 nDefinedNodes, i8 nSlotsPerNode)
   m_pThisNode       = nullptr;
   m_iStartNode      = C_UNKNOWN;
   m_bHasStarted     = false;
-  
-  // initialize the partition array
-  for (i8 i_Partition = 0; i_Partition < C_MAX_SLOTS; i_Partition++) {
-    m_iPartition[i_Partition] = C_UNKNOWN;
-  }
-    
+      
   // initialize the node array
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
     m_pNodes[i_Node] = nullptr;
@@ -309,12 +304,6 @@ void Grid::vThisNode(i8 iNode)
   
   m_iThisNode = iNode;
   m_pThisNode = pGetNode(iNode);
-  
-  // now initialize the array of partition numbers on this node
-  for (i8 i_Slot = 0; i_Slot < m_nSlotsPerNode; i_Slot++) {
-    m_iPartition[i_Slot] = TablePtn::iSlotToPartition(i_Slot);
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/

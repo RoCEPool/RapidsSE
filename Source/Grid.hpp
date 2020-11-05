@@ -25,9 +25,6 @@ namespace Grids
 
     i8     m_iStartNode;       // node that started the cluster
 
-    // NOT HAPPY WITH NAME - alka
-    i8     m_iPartition[C_MAX_SLOTS]; // partition no's on this node
-
     Node*  m_pNodes[C_MAX_NODES]; // array of nodes
   
     // must be last
