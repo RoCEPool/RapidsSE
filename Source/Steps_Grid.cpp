@@ -280,7 +280,7 @@ void Step::vGridToSlot(void)
   
   i8 iPartitionId = m_pDataStack->iPopInt(__func__);
   
-  i8 iSlot = TablePtn::iPartitionToSlot(iPartitionId);
+  i8 iSlot = TablePtn::iPartitionToTablePtn(iPartitionId);
   
   m_pDataStack->vPushInt(iSlot);                     //! DISCUSS WITH ALKA
   

@@ -36,7 +36,7 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
     // node,slot
     m_i_Ptn = i_Strand;
     m_i_Nde = TablePtn::iPartitionToNode(m_i_Ptn);
-    m_i_Slt = TablePtn::iPartitionToSlot(m_i_Ptn);
+    m_i_Slt = TablePtn::iPartitionToTablePtn(m_i_Ptn);
   }
   
   vSynthesiseName();

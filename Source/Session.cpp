@@ -372,7 +372,7 @@ i8 Session::iSlot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return TablePtn::iPartitionToSlot(m_iPartition);
+  return TablePtn::iPartitionToTablePtn(m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/

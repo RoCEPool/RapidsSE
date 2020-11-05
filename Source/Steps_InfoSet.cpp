@@ -141,9 +141,9 @@ void Step::vInfoSetAddRowCount(void)
   
   // get the slot
   Job* pJob = m_pTask->m_pJob;
-  i8 iPtn = pJob->m_pOp->iPartition();
+  i8 i_Ptn = pJob->m_pOp->iPartition();
   
-  i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
+  i8 iSlot = TablePtn::iPartitionToTablePtn(i_Ptn);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNTINFO);

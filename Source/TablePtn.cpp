@@ -110,11 +110,11 @@ i8 TablePtn::iPartitionToNode(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* convert partition number to slot number                                    */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::iPartitionToSlot(i8 iPartition)
+i8 TablePtn::iPartitionToTablePtn(i8 i_Ptn)
 {
-  i8 iSlot = iPartition / AM::nDefinedNodes();
+  i8 i_TablePtn = i_Ptn / AM::nDefinedNodes();
   
-  return iSlot;
+  return i_TablePtn;
 }
 
 /*----------------------------------------------------------------------------*/
