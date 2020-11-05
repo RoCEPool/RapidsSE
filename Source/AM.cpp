@@ -74,7 +74,7 @@ i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormatters;          }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
-bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
+bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->bHasStarted();   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->Arg.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -83,7 +83,7 @@ LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
-  return gpAttachMap->m_pGrid->m_pThisNode->szNodeNm();  }
+  return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();  }
 JobList* AM::pOriginatingJobs(void) {
   return gpAttachMap->m_pQueues->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) {

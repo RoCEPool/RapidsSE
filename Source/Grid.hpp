@@ -18,11 +18,14 @@ namespace Grids
     i8     m_nDefinedNodes;    // total number of nodes in the grid
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
 
-  public:
     i8     m_iThisNode;        // this node number
     Node*  m_pThisNode;        // this node pointer
-    i8     m_iStartNode;       // node that started the cluster
+  
     bool   m_bHasStarted;      // has the cluster started ?
+
+    i8     m_iStartNode;       // node that started the cluster
+
+  public:
   
   
     // NOT HAPPY WITH NAME - alka

@@ -1160,7 +1160,7 @@ void SePrompt::vResetExtractedTagSet(SeDeputy* pSeDeputy)
   
   m_oExtTagSet.vReset();
   m_oExtTagSet.vInsert(C_TAG_BYPROMPT,1);
-  m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->m_iThisNode);
+  m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   m_oExtTagSet.vInsert(C_TAG_SESSION,pSeDeputy->pSession()->m_i_Session);
 }
 

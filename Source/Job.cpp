@@ -1345,7 +1345,7 @@ void Job::vWasReceived(bool bWasReceived)
 /*----------------------------------------------------------------------------*/
 eEC Jobs::eJob_checkCluster(void)
 {
-  if (AM::pGrid()->m_bHasStarted)
+  if (AM::pGrid()->bHasStarted())
     return EC_NONE;
   else
     return EC_CLUSTER_NOT_CONNECTED;

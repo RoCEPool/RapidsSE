@@ -1029,7 +1029,7 @@ void Engine::vOperandQueueReport(bool bStdOut)
 void Engine::vOpenLog(void)
 {
   bool bStarting = false;
-  if (0 == AM::pGrid()->m_iThisNode && gxArgs.m_bStart)
+  if (0 == AM::pGrid()->iThisNode() && gxArgs.m_bStart)
     bStarting = true;
   
   AM::vLogOpenBySE(bStarting);
