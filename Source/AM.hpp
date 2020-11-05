@@ -48,10 +48,10 @@ namespace Oblique
     static bool bRLUDiary(void);
     static bool bRLUTimer(void);
     static bool bSethScript(void);
-    static i8   nSlotsPerNode(void);
     static i8   nSubIngesters(void);
     static i8   nSubInserters(void);
     static i8   nSubLoaders(void);
+    static i8   nTablePtns(void);
     static i8   nThreads(void);
 
     static TagSet* pDbgTagSet(void);

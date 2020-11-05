@@ -28,15 +28,15 @@ static const i8 C_MAX_PTNS          = C_64KB;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 64;     // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
-static const i8 C_MAX_SLOTS         = 128;    // max slots per node
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STRANDS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
+static const i8 C_MAX_TABLEPTNS     = 128;    // max tablePtn's per table
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
 // max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
-static const i8 C_MAX_PARTITIONS    = C_MAX_SLOTS * C_MAX_NODES;
+static const i8 C_MAX_PARTITIONS    = C_MAX_TABLEPTNS * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;
 static const i8 C_MIN_LVL_RATIO     = 2;

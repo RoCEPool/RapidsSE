@@ -1340,7 +1340,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       m_iRobin++;
-      i_Slt = m_iRobin % AM::pGrid()->nSlotsPerNode();
+      i_Slt = m_iRobin % AM::pGrid()->nTablePtns();
       i_Ptn = TablePtn::iSlotToPartition(i_Slt);
       
       // xmitNode is the partition node
@@ -1517,7 +1517,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_LOCALROBIN : {
       m_iLocalRobin++;
-      i_Slot = m_iLocalRobin % AM::pGrid()->nSlotsPerNode();
+      i_Slot = m_iLocalRobin % AM::pGrid()->nTablePtns();
       i_Ptn = TablePtn::iSlotToPartition(i_Slot);
       
       // xmitNode is this node

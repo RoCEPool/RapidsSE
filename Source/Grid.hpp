@@ -13,7 +13,7 @@ namespace Grids
   
     s32    m_sGridNm;
   
-    i8     m_nSlotsPerNode;    // no of partition slots on each node
+    i8     m_nTablePtns;       // no of partition slots on each node
   
     i8     m_nDefinedNodes;    // total number of nodes in the grid
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
@@ -53,9 +53,9 @@ namespace Grids
     void vInit(i8 nNodes, i8 nSlotsPerNode);
     void vRemoveNode(Node* pNode);
     i8   nPartitionsInGrid(void);
-    i8   nSlotsPerNode(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
+    i8   nTablePtns(void);
     i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNode(i8 iNode);

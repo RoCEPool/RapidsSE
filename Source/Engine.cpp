@@ -1255,7 +1255,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_SESSIONS       = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MAX_SHM_PERCENT    = %lld\n"_Stz,C_MAX_SHM_PERCENT);
   vTrace("  C_MAX_SHORTCUTS      = %lld\n"_Stz,C_MAX_SHORTCUTS);
-  vTrace("  C_MAX_SLOTS          = %lld\n"_Stz,C_MAX_SLOTS);
+  vTrace("  C_MAX_TABLEPTNS          = %lld\n"_Stz,C_MAX_TABLEPTNS);
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
   vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
   vTrace("  C_MAX_STRANDS        = %lld\n"_Stz,C_MAX_STRANDS);
@@ -1572,7 +1572,7 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pFocalObjects = new FocalObjects;
   gpAttachMap->m_pQueues = new Queues;
     
-  gpAttachMap->m_pGrid = new Grid(gxArgs.m_nNodes, gxArgs.m_nSlotsPerNode);
+  gpAttachMap->m_pGrid = new Grid(gxArgs.m_nNodes, gxArgs.m_nTablePtns);
   
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
   

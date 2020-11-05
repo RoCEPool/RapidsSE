@@ -113,7 +113,7 @@ void Pipeline::vDump(void)
          m_sPipelineNm.szStz(),
          pGrid->szGridNm(),
          pGrid->nDefinedNodes(),
-         pGrid->nSlotsPerNode());
+         pGrid->nTablePtns());
     
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the stages with the operators

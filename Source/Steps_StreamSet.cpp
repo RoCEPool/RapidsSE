@@ -186,7 +186,7 @@ void Step::vStreamSetAddGridSanity(void)
   
   // get slots per node for this node
   bool bPartitions = false;
-  i8 nSlotsPerNode = pGrid->nSlotsPerNode();
+  i8 nSlotsPerNode = pGrid->nTablePtns();
   if (pNodeInfo->m_waColVal[2] == nSlotsPerNode)
     bPartitions = true;
   

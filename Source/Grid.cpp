@@ -73,7 +73,7 @@ void Grid::vInit(i8 nDefinedNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_nSlotsPerNode   = nSlotsPerNode;
+  m_nTablePtns   = nSlotsPerNode;
   
   m_nDefinedNodes   = nDefinedNodes;
   m_nConnectedNodes = 0;
@@ -244,7 +244,7 @@ i8 Grid::nPartitionsInGrid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  i8 nPartitions = m_nSlotsPerNode * m_nConnectedNodes;
+  i8 nPartitions = m_nTablePtns * m_nConnectedNodes;
 
   return nPartitions;
 }
@@ -266,16 +266,6 @@ void Grid::vRemoveNode(Node* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of partition slots per node in the grid                         */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nSlotsPerNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_nSlotsPerNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get grid node where cluster was started                                    */
 /*----------------------------------------------------------------------------*/
 i8 Grid::iStartNode(void)
@@ -293,6 +283,16 @@ void Grid::vStartNode(i8 iStartNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_iStartNode = iStartNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partition slots per node in the grid                         */
+/*----------------------------------------------------------------------------*/
+i8 Grid::nTablePtns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_nTablePtns;
 }
 
 /*----------------------------------------------------------------------------*/

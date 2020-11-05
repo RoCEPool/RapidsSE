@@ -45,7 +45,7 @@ Table::Table(Stz* szTableNm)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < AM::nTablePtns(); i_Slot++) {
     
     TablePtn* pPartition = new TablePtn(this);
     m_pTablePtnVec->vAdd(pPartition);
@@ -87,7 +87,7 @@ Table::~Table(void) noexcept(false)
   delete m_pPtnStreamDef;
   
   // delete the TablePtn's
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < AM::nTablePtns(); i_Slot++) {
     delete m_pTablePtnVec->pGet(i_Slot);
   }
   m_pTablePtnVec->vClear();
@@ -205,7 +205,7 @@ void Table::vAddIndex(Index* pIndex)
   m_pIdxVec->vAdd(pIndex);
   
   // create an IndexTree for the index in each partition
-  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
     TablePtn* pPartition = this->pPartition(iPartition);
     pPartition->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), iPartition));
   }
@@ -268,7 +268,7 @@ i8 Table::nCrwBuffers(void)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
     iBuffers += pPartition(iPartition)->nCrwBuffers();
   }
   
@@ -326,7 +326,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
     IndexTree* pIndexTree = pPartition(iPartition)->pIndexTree(iIndexNo);
     
     iBuffers += pIndexTree->nEntBuffers();
@@ -544,7 +544,7 @@ bool Table::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_Partn = 0; i_Partn < AM::nSlotsPerNode(); i_Partn++) {
+  for (i8 i_Partn = 0; i_Partn < AM::nTablePtns(); i_Partn++) {
     bool bPopulated = m_pTablePtnVec->pGet(i_Partn)->bPopulateIndex(iIndexNo);
     
     if (! bPopulated)
@@ -565,7 +565,7 @@ void Table::vRemoveIndex(Index* pIndex)
   m_pIdxVec->vRemove(pIndex);
   
   // remove the index from each tablePtn
-  for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < AM::nTablePtns(); i_Slot++) {
     m_pTablePtnVec->pGet(i_Slot)->vRemoveIndex(pIndex->iIndexNo());
   }
 }
@@ -666,7 +666,7 @@ void Table::vStreamDef(StreamDef* pStreamDef)
   
   m_pStreamDef = pStreamDef;
   
-  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
     TablePtn* pPartition = this->pPartition(iPartition);
     ReadApi* pReadApi = pPartition->pReadApi();
     pReadApi->vStreamDef(pStreamDef);
@@ -703,7 +703,7 @@ i8 Table::iToPartition(i8 iRowHash)
 #else
   
   // modulo the hash to get partition number
-  i8 nPartitions = AM::nSlotsPerNode() * AM::nConnectedNodes();
+  i8 nPartitions = AM::nTablePtns() * AM::nConnectedNodes();
   
   i_Ptn = iRowHash % nPartitions;
 
@@ -775,7 +775,7 @@ bool Table::bVerifyIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nTablePtns(); iSlot++) {
     
     bool bVerify = true;
     
@@ -799,7 +799,7 @@ bool Table::bVerifyTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // verify all the row buffers with the r ow data
-  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nTablePtns(); iSlot++) {
     
     bool bVerify = true;
     
@@ -822,7 +822,7 @@ void Table::vCompactIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nTablePtns(); iSlot++) {
     IndexTree *pIndexTree = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo());
     pIndexTree->vCompact();
   }

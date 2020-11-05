@@ -24,7 +24,7 @@ namespace Arguments
     s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir
-    i8    m_nSlotsPerNode; // partition slots per node
+    i8    m_nTablePtns; // partition slots per node
   
     i8    m_iLiftNo;
     

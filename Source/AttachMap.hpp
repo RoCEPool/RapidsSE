@@ -47,7 +47,7 @@ namespace StorageEngine
       i8     m_iRegionSize;
       bool   m_bRLUDiary;      
       bool   m_bRLUTimer;
-      i8     m_nSlotsPerNode;
+      i8     m_nTablePtns;
       i8     m_nSubIngesters;
       i8     m_nSubInserters;
       i8     m_nSubLoaders;

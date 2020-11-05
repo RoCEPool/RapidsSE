@@ -260,7 +260,7 @@ void Step::vIndexDump(void)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
@@ -747,7 +747,7 @@ void Step::vIndexVisualize(void)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Table Partition %lld\n"_Stz, iPartition);

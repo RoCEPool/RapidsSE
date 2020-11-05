@@ -66,7 +66,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.nodeName"_Stz,          gxArgs.m_sNodeName);
   Constants::vAddConstant("args.nodes"_Stz,             gxArgs.m_nNodes);
   Constants::vAddConstant("args.operands"_Stz,          gxArgs.m_nOperands);
-  Constants::vAddConstant("args.partitionsPerNode"_Stz, gxArgs.m_nSlotsPerNode);
+  Constants::vAddConstant("args.partitionsPerNode"_Stz, gxArgs.m_nTablePtns);
   Constants::vAddConstant("args.periodicSleep"_Stz,     gxArgs.m_nPeriodicSleep);
   Constants::vAddConstant("args.progress"_Stz,          gxArgs.m_bProgress);
   Constants::vAddConstant("args.prompt"_Stz,            gxArgs.m_bPrompt);
@@ -78,7 +78,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.RLUDiary"_Stz,          gxArgs.m_bRLUDiary);
   Constants::vAddConstant("args.RLUTimer"_Stz,          gxArgs.m_bRLUTimer);
   Constants::vAddConstant("args.senDir"_Stz,            gxArgs.m_sSenDir);
-  Constants::vAddConstant("args.slots"_Stz,             gxArgs.m_nSlotsPerNode);
+  Constants::vAddConstant("args.slots"_Stz,             gxArgs.m_nTablePtns);
   Constants::vAddConstant("args.start"_Stz,             gxArgs.m_bStart);
   Constants::vAddConstant("args.status"_Stz,            gxArgs.m_bStatus);
   Constants::vAddConstant("args.stop"_Stz,              gxArgs.m_bStop);
@@ -145,7 +145,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_512KB"_Stz, C_512KB);
 
   vAddConstant("C_MAX_INDEXES"_Stz,       C_MAX_INDEXES);
-  vAddConstant("C_MAX_SLOTS"_Stz,         C_MAX_SLOTS);
+  vAddConstant("C_MAX_TABLEPTNS"_Stz,         C_MAX_TABLEPTNS);
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
 

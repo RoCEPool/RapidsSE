@@ -150,7 +150,7 @@ void Step::vNodePartitions(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::pGrid()->nSlotsPerNode());
+  m_pDataStack->vPushInt(AM::pGrid()->nTablePtns());
   
   EXIT();
 }

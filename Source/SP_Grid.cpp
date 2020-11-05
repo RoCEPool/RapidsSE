@@ -43,7 +43,7 @@ Stz* SP_Grid::sz(Grid* pGrid)
                   pGrid->nDefinedNodes(),
                   pGrid->nConnectedNodes(),
                   
-                  pGrid->nSlotsPerNode(),
+                  pGrid->nTablePtns(),
                   pGrid->nPartitionsInGrid(),
 
                   C_VARGS_END

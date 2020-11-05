@@ -280,7 +280,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_iRegionSize      = pArgs->m_iRegionSize;
   Arg.m_bRLUDiary        = pArgs->m_bRLUDiary;
   Arg.m_bRLUTimer        = pArgs->m_bRLUTimer;
-  Arg.m_nSlotsPerNode    = pArgs->m_nSlotsPerNode;
+  Arg.m_nTablePtns    = pArgs->m_nTablePtns;
   Arg.m_nSubIngesters    = pArgs->m_nSubIngesters;
   Arg.m_nSubInserters    = 0;
   Arg.m_nSubLoaders      = pArgs->m_nSubLoaders;
@@ -352,7 +352,7 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeNm()->azChar());
   vTrace("  --region %s\n"_Stz,Arg.m_sRegionName.azChar());
   vTrace("  --size %lld\n"_Stz,Arg.m_iRegionSize);
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->nSlotsPerNode());
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->nTablePtns());
 
 }
 
