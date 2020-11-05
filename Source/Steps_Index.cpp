@@ -144,7 +144,7 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table partition
-  TablePtn* pPartition = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower and upper entries
@@ -158,7 +158,7 @@ void Step::vIndexDeleteNext(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get IndexTree
   i8 iIndexNo = pIndex->iIndexNo();
-  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   HV_Row hRow(pTable->pStreamDef(),C_ALL);
@@ -261,8 +261,8 @@ void Step::vIndexDump(void)
   Table* pTable = pIndex->pTable();
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pPartition = pTable->pTablePtn(iPartition);
-    IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+    TablePtn* pTablePtn = pTable->pTablePtn(iPartition);
+    IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
     
     pIndexTree->vDump(false);
@@ -748,8 +748,8 @@ void Step::vIndexVisualize(void)
   Table* pTable = pIndex->pTable();
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pPartition = pTable->pTablePtn(iPartition);
-    IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+    TablePtn* pTablePtn = pTable->pTablePtn(iPartition);
+    IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
     vTrace("Table Partition %lld\n"_Stz, iPartition);
     pIndexTree->vVisualize();
   }

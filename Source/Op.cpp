@@ -1474,7 +1474,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_HASHED : {
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      i_Ptn = pDataBuffer->iPartitionNo();
+      i_Ptn = pDataBuffer->i_TablePtn();
       
       // xmitNode is the partition node
       m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
@@ -1651,7 +1651,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, e
       
     case XK_HASHED : {
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      i_SendPtn = pDataBuffer->iPartitionNo();
+      i_SendPtn = pDataBuffer->i_TablePtn();
       break;
     }
       

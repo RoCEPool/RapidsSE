@@ -47,8 +47,8 @@ Table::Table(Stz* szTableNm)
   // create the table partitions
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
     
-    TablePtn* pPartition = new TablePtn(this);
-    m_pTablePtnVec->vAdd(pPartition);
+    TablePtn* pTablePtn = new TablePtn(this);
+    m_pTablePtnVec->vAdd(pTablePtn);
     
     i8 iPartition = TablePtn::iSlotToPartition(i_TablePtn);
     m_pTablePtnVec->pGet(i_TablePtn)->vPartitionId(iPartition);
@@ -206,8 +206,8 @@ void Table::vAddIndex(Index* pIndex)
   
   // create an IndexTree for the index in each partition
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
-    TablePtn* pPartition = this->pTablePtn(i_TablePtn);
-    pPartition->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), i_TablePtn));
+    TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
+    pTablePtn->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), i_TablePtn));
   }
 }
 
@@ -221,9 +221,9 @@ void Table::vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows)
   i8 nRowsTotal    = 0;
   i8 nBuffersTotal = 0;
   
-  TablePtn* pPartition = this->pTablePtn(iSlot);
+  TablePtn* pTablePtn = this->pTablePtn(iSlot);
   
-  CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
+  CrwBuffer* pCrwBuffer = pTablePtn->pRootCrwBuffer();
   
   if (pCrwBuffer)
     pCrwBuffer->vAnalyze(nBuffers, nRows);
@@ -382,7 +382,7 @@ IndexDef* Table::pIndexDef(Table* pTable, i8 iIndexNo)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // append the buffer entries into the table
 //
-//  TablePtn* pPartition = this->pPartition(iSlot);
+//  TablePtn* pTablePtn = this->pPartition(iSlot);
 //
 //  t8 tPerspectibe = AM::tThisTLSPespective();
 //
@@ -417,7 +417,7 @@ IndexDef* Table::pIndexDef(Table* pTable, i8 iIndexNo)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // append the buffer entries into the table
 //
-//  TablePtn* pPartition = this->pPartition(iSlot);
+//  TablePtn* pTablePtn = this->pPartition(iSlot);
 //
 //  t8 tPerspective = 0; //AM::tThisTLSPespective();
 //
@@ -471,8 +471,8 @@ void Table::vLazyBuildIndexes(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  TablePtn* pPartition = this->pTablePtn(iSlot);
-  IndexTreeVec* pInedexTreeVec = pPartition->pIndexTreeVec();
+  TablePtn* pTablePtn = this->pTablePtn(iSlot);
+  IndexTreeVec* pInedexTreeVec = pTablePtn->pIndexTreeVec();
   i8 nIndexes = pInedexTreeVec->nItems();
   
   // iterate all indexes of the table
@@ -484,7 +484,7 @@ void Table::vLazyBuildIndexes(i8 iSlot)
     Index* pIndex = pNewIndexTree->pIndex();
     
     // get an H0 buffer
-    EntBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
+    EntBuffer *pIndexBuffer = pTablePtn->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
     
     // build skip list for all H0 buffers
     if (pIndexBuffer)
@@ -667,8 +667,8 @@ void Table::vStreamDef(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
   
   for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    TablePtn* pPartition = this->pTablePtn(iPartition);
-    ReadApi* pReadApi = pPartition->pReadApi();
+    TablePtn* pTablePtn = this->pTablePtn(iPartition);
+    ReadApi* pReadApi = pTablePtn->pReadApi();
     pReadApi->vStreamDef(pStreamDef);
   }
 }
@@ -740,7 +740,7 @@ i8 Table::iToPartition(i8 iRowHash)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // append the buffer entries into the table
 //
-//  TablePtn* pPartition = this->pPartition(iSlot);
+//  TablePtn* pTablePtn = this->pPartition(iSlot);
 //
 //  t8 tPerspectibe = AM::tThisTLSPespective();
 //
@@ -754,8 +754,8 @@ bool Table::bVerifyIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  TablePtn* pPartition = this->pTablePtn(0);             //# discuss with Alka
-  IndexTreeVec* pIdxTreeVec = pPartition->pIndexTreeVec();
+  TablePtn* pTablePtn = this->pTablePtn(0);             //# discuss with Alka
+  IndexTreeVec* pIdxTreeVec = pTablePtn->pIndexTreeVec();
   i8 nIndexes = pIdxTreeVec->nItems();
 
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {

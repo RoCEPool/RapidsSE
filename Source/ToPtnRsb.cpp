@@ -136,7 +136,7 @@ void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
     ASSERT(bNewed);
   }
   
-  pDstRsbBuffer->vPartitionNo(i_Ptn);
+  pDstRsbBuffer->vTablePtn(i_Ptn);
   
   m_pIntoRowSlab = pDstRsbBuffer->pRowSlab();
 }

@@ -145,7 +145,7 @@ Rsb* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab,bool* pbNewBuffer)
     ASSERT(bNewed);
   }
   
-  pDstRsbBuffer->vPartitionNo(i_Ptn);
+  pDstRsbBuffer->vTablePtn(i_Ptn);
   
   //i8 iRow = pDstRowSlab->nRows() - 1;
   //Rsb* aDstRsb = pDstRowSlab->aRsbAdr(iRow);
@@ -180,7 +180,7 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 
   //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
   
-  pAddBuffer->vPartitionNo(i_Ptn);
+  pAddBuffer->vTablePtn(i_Ptn);
   
   // link the old with this
   pAddBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);

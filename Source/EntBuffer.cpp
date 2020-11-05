@@ -1497,7 +1497,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          m_pHigherBuffer,sHigherBuffer.szStz(),m_pPrevBuffer,m_pNextBuffer);
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
-         m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_iPartitionNo,m_iBufferHeight);
+         m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_i_TablePtn,m_iBufferHeight);
   
   SkipRoots* aSkipRoots = this->aSkipRoots();
   vTrace("  skipRoots: %p[%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,

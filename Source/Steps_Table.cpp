@@ -227,9 +227,9 @@ void Step::vTableDump(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pPartition = pTable->pTablePtn(iPartition);
+    TablePtn* pTablePtn = pTable->pTablePtn(iPartition);
     vTrace("Partition %lld\n"_Stz, iPartition);
-    pPartition->vDump();
+    pTablePtn->vDump();
   }
   
   EXIT();
@@ -527,7 +527,7 @@ void Step::vTableScan(void)
   i8 iSlot = pJob_SubFetch->i_TablePtn();
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  TablePtn* pPartition = pTable->pPartition(iSlot);
+  TablePtn* pTablePtn = pTable->pPartition(iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position in the first row buffer
@@ -654,9 +654,9 @@ void Step::vTableVisualize(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pPartition = pTable->pTablePtn(iPartition);
+    TablePtn* pTablePtn = pTable->pTablePtn(iPartition);
     vTrace("Table Partition %lld\n"_Stz, iPartition);
-    pPartition->vVisualizeTable();
+    pTablePtn->vVisualizeTable();
   }
   
   EXIT();

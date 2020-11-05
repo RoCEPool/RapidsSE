@@ -75,7 +75,7 @@ void Step::vEntBufferPartitionFetch(void)
   Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pIndexBuffer->iPartitionNo());
+  m_pDataStack->vPushInt(pIndexBuffer->i_TablePtn());
   
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vEntBufferPartitionStore(void)
   
   i8 iPartitionNo = m_pDataStack->iPopInt(__func__);
   
-  pIndexBuffer->vPartitionNo(iPartitionNo);
+  pIndexBuffer->vTablePtn(iPartitionNo);
   
   EXIT();
 }

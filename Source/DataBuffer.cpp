@@ -30,7 +30,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo     = iBufferNo();
-  m_iPartitionNo  = C_UNKNOWN;
+  m_i_TablePtn    = C_UNKNOWN;
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
   m_bIsPermanent = bIsPermanent;
@@ -106,21 +106,21 @@ void DataBuffer::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vPartitionNo(i8 iPartitionNo)
+void DataBuffer::vTablePtn(i8 i_TablePtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iPartitionNo = iPartitionNo;
+  m_i_TablePtn = i_TablePtn;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get partition no                                                           */
 /*----------------------------------------------------------------------------*/
-i8 DataBuffer::iPartitionNo(void)
+i8 DataBuffer::i_TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iPartitionNo;
+  return m_i_TablePtn;
 }
 
 /*----------------------------------------------------------------------------*/

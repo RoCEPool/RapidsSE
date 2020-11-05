@@ -185,7 +185,7 @@ CrwBuffer* CrwHash::pNewCrwBuffer(i8 i_Ptn)
   
   // set table and ptn no in it
   pCrwBuffer->vTable(m_pTable);
-  pCrwBuffer->vPartitionNo(i_Ptn);
+  pCrwBuffer->vTablePtn(i_Ptn);
   
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn], true);

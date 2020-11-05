@@ -91,10 +91,10 @@ TablePtn::~TablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  TablePtn* pPartition = _pTablePtn(pObject);
+  TablePtn* pTablePtn = _pTablePtn(pObject);
   
   vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
-         pPartition->m_iPartitionId, pPartition->m_pIndexTreeVec);
+         pTablePtn->m_iPartitionId, pTablePtn->m_pIndexTreeVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -706,7 +706,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
     
     m_pRootCrwBuffer = new CrwBuffer;
     m_pRootCrwBuffer->vTable(m_pTable);
-    m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
+    m_pRootCrwBuffer->vTablePtn(m_iPartitionId);
     m_pRootCrwBuffer->vIsPermanent(true);
     
     m_pCurrentCrwBuffer = m_pRootCrwBuffer;
@@ -716,7 +716,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   pCrwBuffer->vTable(m_pTable);
-  pCrwBuffer->vPartitionNo(m_iPartitionId);
+  pCrwBuffer->vTablePtn(m_iPartitionId);
   pCrwBuffer->vIsPermanent(true);
 
   pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
@@ -906,7 +906,7 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   
   pCrwBuffer->vTable(pTable());
-  pCrwBuffer->vPartitionNo(iPartitionId());
+  pCrwBuffer->vTablePtn(iPartitionId());
   pCrwBuffer->vIsPermanent(false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

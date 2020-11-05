@@ -633,7 +633,7 @@ void CrwBuffer::vShow(void)
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
   
-  vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
+  vTrace("  partition: %lld \n"_Stz, m_i_TablePtn);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
