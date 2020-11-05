@@ -45,13 +45,13 @@ Table::Table(Stz* szTableNm)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
-  for (i8 i_Slot = 0; i_Slot < AM::nTablePtns(); i_Slot++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
     
     TablePtn* pPartition = new TablePtn(this);
     m_pTablePtnVec->vAdd(pPartition);
     
-    i8 iPartition = TablePtn::iSlotToPartition(i_Slot);
-    m_pTablePtnVec->pGet(i_Slot)->vPartitionId(iPartition);
+    i8 iPartition = TablePtn::iSlotToPartition(i_TablePtn);
+    m_pTablePtnVec->pGet(i_TablePtn)->vPartitionId(iPartition);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -87,8 +87,8 @@ Table::~Table(void) noexcept(false)
   delete m_pPtnStreamDef;
   
   // delete the TablePtn's
-  for (i8 i_Slot = 0; i_Slot < AM::nTablePtns(); i_Slot++) {
-    delete m_pTablePtnVec->pGet(i_Slot);
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+    delete m_pTablePtnVec->pGet(i_TablePtn);
   }
   m_pTablePtnVec->vClear();
   
@@ -565,8 +565,8 @@ void Table::vRemoveIndex(Index* pIndex)
   m_pIdxVec->vRemove(pIndex);
   
   // remove the index from each tablePtn
-  for (i8 i_Slot = 0; i_Slot < AM::nTablePtns(); i_Slot++) {
-    m_pTablePtnVec->pGet(i_Slot)->vRemoveIndex(pIndex->iIndexNo());
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+    m_pTablePtnVec->pGet(i_TablePtn)->vRemoveIndex(pIndex->iIndexNo());
   }
 }
 
@@ -634,11 +634,11 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 /*----------------------------------------------------------------------------*/
 /* get root buffer of given index                                             */
 /*----------------------------------------------------------------------------*/
-EntBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
+EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  TablePtn* pTblPtn = pTablePtn(i_Slot);
+  TablePtn* pTblPtn = pTablePtn(i_TablePtn);
   
   IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index);
   

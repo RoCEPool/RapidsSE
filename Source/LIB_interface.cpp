@@ -346,7 +346,7 @@ void vLib_PRINTF(void* pLU, Stz* szFmt, i8** aaiDstk)
   
   vTrace("[Q%lld.%lld] %s"_Stz,
          aRluCommon->m_iSql,
-         aRluCommon->m_i_Slot,
+         aRluCommon->m_i_TablePtn,
          caFormatted);
   
   // publish

@@ -524,7 +524,7 @@ void Step::vTableScan(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  i8 iSlot = pJob_SubFetch->i_Slot();
+  i8 iSlot = pJob_SubFetch->i_TablePtn();
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
   TablePtn* pPartition = pTable->pPartition(iSlot);

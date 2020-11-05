@@ -98,7 +98,7 @@ Job::Job(eCN eClassNo)
   
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
-  m_i_Slot    = C_UNKNOWN;
+  m_i_TablePtn    = C_UNKNOWN;
   
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -150,7 +150,7 @@ Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
 
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
-  m_i_Slot    = C_UNKNOWN;
+  m_i_TablePtn    = C_UNKNOWN;
   
   m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
@@ -745,7 +745,7 @@ void Job::vMarkJob(void)
                       m_iFocalId,
                       aCN[eClass()],
                       m_xReqTuple.m_i_Session,
-                      m_i_Slot);
+                      m_i_TablePtn);
   sJobMark.vSprintCat("  phase %s state %s list %s"_Stz,
                       aJP[m_eJobPhase],
                       aJS[m_eJobState],
@@ -1202,23 +1202,23 @@ Stz* Job::szSide(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get slot on this node this sub job processes                               */
+/* get table partition on this node this sub job processes                    */
 /*----------------------------------------------------------------------------*/
-i8 Job::i_Slot(void)
+i8 Job::i_TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_i_Slot;
+  return m_i_TablePtn;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set slot on this node this sub job processes                               */
+/* set table partition on this node this sub job processes                    */
 /*----------------------------------------------------------------------------*/
-void Job::vSlot(i8 i_Slot)
+void Job::vTablePtn(i8 i_TablePtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_i_Slot = i_Slot;
+  m_i_TablePtn = i_TablePtn;
 }
 
 
@@ -1240,13 +1240,13 @@ void Job::vShow(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   vTrace("%s parentId %03lld seed %s "
-         "i_Session %03lld i_Slot %lld WasReceived %lld\n"_Stz,
+         "i_Session %03lld i_TablePtn %lld WasReceived %lld\n"_Stz,
          aCN[eClass()],
          m_iParentId,
          aSS[m_eSeed],
          
          m_xReqTuple.m_i_Session,
-         m_i_Slot,
+         m_i_TablePtn,
          (i8)m_bWasReceived
          );
 }

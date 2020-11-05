@@ -61,7 +61,7 @@ namespace MetaData
     StreamDef* pPtnStreamDef(void);
     void    vPublish(i8 iPartitionNo);
     bool    bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
-    EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
+    EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);

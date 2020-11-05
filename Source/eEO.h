@@ -143,7 +143,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_NEVERREACH,       // assert (never reach code)
   /*    */ EO_SANITY,           // sanity check
   /*    */ EO_SLEEP,            // sleep for top seconds
-  /*    */ EO_SLOT,             // push i_Slot
+  /*    */ EO_SLOT,             // push i_TablePtn
   /*    */ EO_SQL,              // set sql no
   /*    */ EO_TRACEOFF,         // set trace off
   /*    */ EO_TRACEON,          // set trace on

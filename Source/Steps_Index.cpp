@@ -102,10 +102,10 @@ void Step::vIndexCompactPtn(void)
   
   Job* pJob = m_pTask->m_pJob;
   i8 i_Ptn  = pJob->m_pOp->iPartition();
-  i8 i_Slot = TablePtn::iPartitionToTablePtn(i_Ptn);
+  i8 i_TablePtn = TablePtn::iPartitionToTablePtn(i_Ptn);
 
   
-  IndexTree *pIndexTree = pTable->pTablePtn(i_Slot)->pIndexTree(iIdxNo);
+  IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);
   
   pIndexTree->vCompact();
 
@@ -717,9 +717,9 @@ void Step::vIndexVerifyPtn(void)
   
   Job* pJob = m_pTask->m_pJob;
   i8 i_Ptn  = pJob->m_pOp->iPartition();
-  i8 i_Slot = TablePtn::iPartitionToTablePtn(i_Ptn);
+  i8 i_TablePtn = TablePtn::iPartitionToTablePtn(i_Ptn);
 
-  IndexTree *pIndexTree = pTable->pTablePtn(i_Slot)->pIndexTree(iIdxNo);
+  IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);
   
   EntBuffer *pIndexRootBuffer = pIndexTree->pRootBuffer();
 

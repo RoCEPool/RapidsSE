@@ -1458,7 +1458,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   i8 i_Ptn;
-  i8 i_Slot;
+  i8 i_TablePtn;
   
   // get the next stage
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
@@ -1517,8 +1517,8 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_LOCALROBIN : {
       m_iLocalRobin++;
-      i_Slot = m_iLocalRobin % AM::pGrid()->nTablePtns();
-      i_Ptn = TablePtn::iSlotToPartition(i_Slot);
+      i_TablePtn = m_iLocalRobin % AM::pGrid()->nTablePtns();
+      i_Ptn = TablePtn::iSlotToPartition(i_TablePtn);
       
       // xmitNode is this node
       m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);

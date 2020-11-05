@@ -54,7 +54,7 @@ RluDiary::~RluDiary(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* write out                                                                  */
 /*----------------------------------------------------------------------------*/
-void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot, i8 nQueueLength,
+void RluDiary::vAddNote(i8 i_Sql, i8 i_TablePtn, i8 nQueueLength,
                         i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
                         i8 iAction, i8 i_ActEnumGroup, i8 i_ActEnum)
 {
@@ -78,7 +78,7 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot, i8 nQueueLength,
 //      vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld,%lls,%s\n"_Stz,
 //
 //              i_Sql,
-//              i_Slot,
+//              i_TablePtn,
 //
 //              m_nDiaryEnt,
 //              m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
@@ -100,7 +100,7 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_Slot, i8 nQueueLength,
 //      vTrace("[Q%lld.%lld] %lld,%lld,%lld,%s,%lld,%lld\n"_Stz,
 //
 //            i_Sql,
-//            i_Slot,
+//            i_TablePtn,
 //
 //            m_nDiaryEnt,
 //            m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup,
