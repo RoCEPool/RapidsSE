@@ -43,7 +43,7 @@ bool Prompt::bPrompt_show(SePrompt* pPrompt)
     
     SP_Node spNode;
     for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
-      Node* pNode = AM::pGrid()->m_pNodes[i_Node];
+      Node* pNode = AM::pGrid()->pGetNode(i_Node);
       vTrace("  %s\n"_Stz,spNode.sz(pNode));
     }
     

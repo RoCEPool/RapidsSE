@@ -498,7 +498,7 @@ void Step::vStreamSetAddShowCluster(void)
   
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
-  Node* pNode = AM::pGrid()->m_pNodes[i_Node];
+  Node* pNode = AM::pGrid()->pGetNode(i_Node);
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNode->szNodeNm(),
