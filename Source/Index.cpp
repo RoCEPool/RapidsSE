@@ -135,7 +135,7 @@ void Index::vAnalyze(i8 iSlot, i8& nBuffers, i8& nEntries)
   i8 nEntriesTotal = 0;
   i8 nBuffersTotal = 0;
   
-  IndexTree* pIndexTree = m_pTable->pPartition(iSlot)->pIndexTree(m_iIndexNo);
+  IndexTree* pIndexTree = m_pTable->pTablePtn(iSlot)->pIndexTree(m_iIndexNo);
   EntBuffer *pIndexBuffer = pIndexTree->pRootBuffer();
   
   nBuffers = 0;

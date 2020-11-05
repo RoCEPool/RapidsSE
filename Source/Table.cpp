@@ -205,9 +205,9 @@ void Table::vAddIndex(Index* pIndex)
   m_pIdxVec->vAdd(pIndex);
   
   // create an IndexTree for the index in each partition
-  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    TablePtn* pPartition = this->pPartition(iPartition);
-    pPartition->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), iPartition));
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+    TablePtn* pPartition = this->pTablePtn(i_TablePtn);
+    pPartition->vAddIndex(new IndexTree(pIndex, pIndex->pIndexDef(), i_TablePtn));
   }
 }
 
@@ -221,7 +221,7 @@ void Table::vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows)
   i8 nRowsTotal    = 0;
   i8 nBuffersTotal = 0;
   
-  TablePtn* pPartition = this->pPartition(iSlot);
+  TablePtn* pPartition = this->pTablePtn(iSlot);
   
   CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
   
@@ -269,7 +269,7 @@ i8 Table::nCrwBuffers(void)
   i8 iBuffers = 0;
   
   for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    iBuffers += pPartition(iPartition)->nCrwBuffers();
+    iBuffers += pTablePtn(iPartition)->nCrwBuffers();
   }
   
   return iBuffers;
@@ -327,7 +327,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   i8 iBuffers = 0;
   
   for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    IndexTree* pIndexTree = pPartition(iPartition)->pIndexTree(iIndexNo);
+    IndexTree* pIndexTree = pTablePtn(iPartition)->pIndexTree(iIndexNo);
     
     iBuffers += pIndexTree->nEntBuffers();
   }
@@ -471,7 +471,7 @@ void Table::vLazyBuildIndexes(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  TablePtn* pPartition = this->pPartition(iSlot);
+  TablePtn* pPartition = this->pTablePtn(iSlot);
   IndexTreeVec* pInedexTreeVec = pPartition->pIndexTreeVec();
   i8 nIndexes = pInedexTreeVec->nItems();
   
@@ -530,11 +530,11 @@ void Table::vMarkTable(void)
 /*----------------------------------------------------------------------------*/
 /* get a partition                                                            */
 /*----------------------------------------------------------------------------*/
-TablePtn* Table::pPartition(i8 iSlot)
+TablePtn* Table::pTablePtn(i8 i_TablePtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pTablePtnVec->pGet(iSlot);;
+  return m_pTablePtnVec->pGet(i_TablePtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,7 +638,7 @@ EntBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  TablePtn* pTblPtn = pPartition(i_Slot);
+  TablePtn* pTblPtn = pTablePtn(i_Slot);
   
   IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index);
   
@@ -667,7 +667,7 @@ void Table::vStreamDef(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
   
   for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    TablePtn* pPartition = this->pPartition(iPartition);
+    TablePtn* pPartition = this->pTablePtn(iPartition);
     ReadApi* pReadApi = pPartition->pReadApi();
     pReadApi->vStreamDef(pStreamDef);
   }
@@ -754,7 +754,7 @@ bool Table::bVerifyIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  TablePtn* pPartition = this->pPartition(0);             //# discuss with Alka
+  TablePtn* pPartition = this->pTablePtn(0);             //# discuss with Alka
   IndexTreeVec* pIdxTreeVec = pPartition->pIndexTreeVec();
   i8 nIndexes = pIdxTreeVec->nItems();
 
@@ -780,7 +780,7 @@ bool Table::bVerifyIndex(Index* pIndex)
     bool bVerify = true;
     
     EntBuffer *pIndexBuffer =
-      pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRootBuffer();
+      pTablePtn(iSlot)->pIndexTree(pIndex->iIndexNo())->pRootBuffer();
     
     if (pIndexBuffer)
       bVerify = pIndexBuffer->bVerify();
@@ -803,7 +803,7 @@ bool Table::bVerifyTable(void)
     
     bool bVerify = true;
     
-    bVerify = pPartition(iSlot)->bVerifyTable();
+    bVerify = pTablePtn(iSlot)->bVerifyTable();
     
     if ( ! bVerify )
       return bVerify;
@@ -823,7 +823,7 @@ void Table::vCompactIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   for (i8 iSlot = 0; iSlot < AM::nTablePtns(); iSlot++) {
-    IndexTree *pIndexTree = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo());
+    IndexTree *pIndexTree = pTablePtn(iSlot)->pIndexTree(pIndex->iIndexNo());
     pIndexTree->vCompact();
   }
 }

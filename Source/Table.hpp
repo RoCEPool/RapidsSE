@@ -56,7 +56,6 @@ namespace MetaData
     bool    bIsLoading(void);
     void    vLazyBuildIndexes(i8 iSlot);
     void    vMarkTable(void);
-    TablePtn* pPartition(i8 iSlot);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
     StreamDef* pPtnStreamDef(void);
@@ -66,6 +65,7 @@ namespace MetaData
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
+    TablePtn* pTablePtn(i8 i_TablePtn);
     void    vTidyUpIndex(i8 iIndexNo);
     i8      iToPartition(i8 iRowHash);
     

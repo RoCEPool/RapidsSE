@@ -105,7 +105,7 @@ void Step::vIndexCompactPtn(void)
   i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
 
   
-  IndexTree *pIndexTree = pTable->pPartition(i_Slot)->pIndexTree(iIdxNo);
+  IndexTree *pIndexTree = pTable->pTablePtn(i_Slot)->pIndexTree(iIdxNo);
   
   pIndexTree->vCompact();
 
@@ -261,7 +261,7 @@ void Step::vIndexDump(void)
   Table* pTable = pIndex->pTable();
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pPartition = pTable->pPartition(iPartition);
+    TablePtn* pPartition = pTable->pTablePtn(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
     
@@ -469,7 +469,7 @@ void Step::vIndexIndexTree(void)
 
   Table* pTable = pIndex->pTable();
   
-  TablePtn* pTablePtn = pTable->pPartition(iSlot);
+  TablePtn* pTablePtn = pTable->pTablePtn(iSlot);
   
   i8 iIndexNo = pIndex->iIndexNo();
 
@@ -719,7 +719,7 @@ void Step::vIndexVerifyPtn(void)
   i8 i_Ptn  = pJob->m_pOp->iPartition();
   i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
 
-  IndexTree *pIndexTree = pTable->pPartition(i_Slot)->pIndexTree(iIdxNo);
+  IndexTree *pIndexTree = pTable->pTablePtn(i_Slot)->pIndexTree(iIdxNo);
   
   EntBuffer *pIndexRootBuffer = pIndexTree->pRootBuffer();
 
@@ -748,7 +748,7 @@ void Step::vIndexVisualize(void)
   Table* pTable = pIndex->pTable();
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pPartition = pTable->pPartition(iPartition);
+    TablePtn* pPartition = pTable->pTablePtn(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Table Partition %lld\n"_Stz, iPartition);
     pIndexTree->vVisualize();
