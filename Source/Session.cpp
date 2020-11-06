@@ -106,7 +106,7 @@ Session::Session(void)
   
   m_iPid = Process::iGetPid();
 
-  m_i_TablePtn      = C_UNKNOWN;
+  m_iPtnNo      = C_UNKNOWN;
   
   //m_oDicStack;
   m_pSsnJob         = nullptr;
@@ -206,7 +206,7 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("pid %lld %s partition %lld slot %lld"_Stz,
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
-         pSession->m_i_TablePtn,
+         pSession->m_iPtnNo,
          pSession->i_TablePtn());
 }
 
@@ -330,7 +330,7 @@ i8 Session::iPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return m_i_TablePtn;
+  return m_iPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,7 +340,7 @@ void Session::vPartition(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_i_TablePtn = iPartition;
+  m_iPtnNo = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,13 +366,13 @@ void Session::vReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* which slot                                                                 */
+/* which table partition                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Session::i_TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return TablePtn::iPtnNoToTablePtn(m_i_TablePtn);
+  return TablePtn::iPtnNoToTablePtn(m_iPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/
