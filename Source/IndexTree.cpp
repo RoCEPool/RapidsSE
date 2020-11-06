@@ -47,7 +47,7 @@ void IndexTree::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 iPartitionNo)
+IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
 : Object(CN_INDEXTREE)
 , m_okLock(LK_INDEX_TREE,this)
 {
@@ -55,7 +55,7 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 iPartitionNo)
   
   m_pIndex = pIndex;
   m_pIndexDef = pIndexDef ? new IndexDef(pIndexDef) : nullptr;
-  m_iPartitionNo = iPartitionNo;
+  m_i_TablePtn = i_TablePtn;
   m_pRootEntBuffer  = nullptr;
   
   m_nTreeDeleteCnt = 0;
@@ -736,7 +736,7 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   ASSERT(! m_pRootEntBuffer);
   
   m_pRootEntBuffer = new EntBuffer(this);
-  m_pRootEntBuffer->vPtnNo(m_iPartitionNo);
+  m_pRootEntBuffer->vPtnNo(m_i_TablePtn);
   
   return m_pRootEntBuffer;
 }

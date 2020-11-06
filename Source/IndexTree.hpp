@@ -14,7 +14,7 @@ namespace Indexing
     Lock      m_okLock;        // lock on the buffer tree
     Index*    m_pIndex;        // which index
     IndexDef* m_pIndexDef;     // index definition
-    i8        m_iPartitionNo;  // which partition no
+    i8        m_i_TablePtn;    // which table partition
     
     EntBuffer* m_pRootEntBuffer;    // the root ent buffer
   
@@ -31,7 +31,7 @@ namespace Indexing
     void* operator new(size_t, IndexTree* pIndexTree);
     void  operator delete(void*);
     
-    IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 iPartitionNo);
+    IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn);
    ~IndexTree(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
