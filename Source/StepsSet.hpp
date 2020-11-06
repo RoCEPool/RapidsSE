@@ -1256,6 +1256,7 @@ public:
   void vRegOperandNewEosMarker(void);
   void vRegOperandNewExitMarker(void);
   void vRegOperandNewExitedMarker(void);
+  void vRegOperandNewCancelMarker(void);
   void vRegOperandNewCsvBuffer(void);
   void vRegOperandNewErrorMarker(void);
   void vRegOperandNewErroredMarker(void);

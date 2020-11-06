@@ -473,6 +473,8 @@ void Constants::vAddConstantsCpp(void)
   /* 48 */ vAddConstant("EC_NULL_INTERFACE"_Stz,     EC_NULL_INTERFACE);
   /* 49 */ vAddConstant("EC_NULLPTR"_Stz,            EC_NULLPTR);
   
+  /*    */ vAddConstant("EC_PIPELINE_PROTOCOL_ERROR"_Stz,EC_PIPELINE_PROTOCOL_ERROR);
+  
   /* 50 */ vAddConstant("EC_RESPONSE_PENDING"_Stz,   EC_RESPONSE_PENDING);
   
   /* 51 */ vAddConstant("EC_SCHEMA_EXISTS"_Stz,      EC_SCHEMA_EXISTS);

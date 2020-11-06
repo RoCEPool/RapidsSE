@@ -29,6 +29,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].invokePython"_Stz,   &Step::vRegOperandInvokePython);
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vRegOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vRegOperandKind);
+  vAddStep("Operand[].newCancelMarker"_Stz,&Step::vRegOperandNewCancelMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vRegOperandNewCsvBuffer);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vRegOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vRegOperandNewErrorMarker);
@@ -511,6 +512,20 @@ void Step::vRegOperandNext(void)
   if (m_pLogicUnit->m_xpOperandA.bIsNull())
     m_pLogicUnit->m_xpOperandA = m_pTask->m_pJob->m_pOp->pPopQueue();
   ASSERT(*m_pLogicUnit->m_xpOperandA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newCancelMarker -- new a cancel marker                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewCancelMarker(void)
+{
+  ENTRY();
+  
+  ASSERT (m_pLogicUnit->m_xpOperandA.bIsNull());
+  
+  m_pLogicUnit->m_xpOperandA = new Marker(OM_CANCELMARKER);
   
   EXIT();
 }

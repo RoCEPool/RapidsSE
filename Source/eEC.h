@@ -116,6 +116,8 @@ enum eEC // error code
   /* */ EC_NULL_INTERFACE,
   /* */ EC_NULLPTR,
   
+  /* */ EC_PIPELINE_PROTOCOL_ERROR,
+  
   /* */ EC_RESPONSE_PENDING,
   
   /* */ EC_SCHEMA_EXISTS,
@@ -251,6 +253,8 @@ static Stz* aEC[]
   /* */ "null interface"_Stz,
   /* */ "nullptr"_Stz,
 
+  /* */ "pipeline protocol error"_Stz,
+  
   /* */ "response pending"_Stz,
   
   /* */ "schema exists"_Stz,

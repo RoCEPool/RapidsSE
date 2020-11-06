@@ -262,8 +262,16 @@
 /*----------------------------------------------------------------------------*/
 : ZK_STARTEDMARKER_handler \handler
 
-  //"ZK_STARTEDMARKER_handler" .verbose
-  PipeIn[].pipeOut
+  "ZK_STARTEDMARKER_handler" .verbose
+
+  // Only OP_Start can get a STARTEDMARKER
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
   true
 ;
 
