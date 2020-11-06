@@ -120,11 +120,11 @@ i8 TablePtn::iPtnNoToTablePtn(i8 iPtnNo)
 /*----------------------------------------------------------------------------*/
 /* convert slot number to partition number                                    */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::iTablePtnToPtnNo(i8 i_TablePtn)
+tPN TablePtn::tTablePtnToPtnNo(i8 i_TablePtn)
 {
-  i8 iPtnNo = (i_TablePtn * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  tPN tPtnNo = (i_TablePtn * AM::nDefinedNodes()) + AM::iThisNodeNo();
   
-  return iPtnNo;
+  return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -705,7 +705,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
     
     m_pRootCrwBuffer = new CrwBuffer;
     m_pRootCrwBuffer->vTable(m_pTable);
-    m_pRootCrwBuffer->vTablePtn(m_iPartitionId);
+    m_pRootCrwBuffer->vPtnNo(m_iPartitionId);
     m_pRootCrwBuffer->vIsPermanent(true);
     
     m_pCurrentCrwBuffer = m_pRootCrwBuffer;
@@ -715,7 +715,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   pCrwBuffer->vTable(m_pTable);
-  pCrwBuffer->vTablePtn(m_iPartitionId);
+  pCrwBuffer->vPtnNo(m_iPartitionId);
   pCrwBuffer->vIsPermanent(true);
 
   pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
@@ -905,7 +905,7 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   
   pCrwBuffer->vTable(pTable());
-  pCrwBuffer->vTablePtn(iPartitionId());
+  pCrwBuffer->vPtnNo(iPartitionId());
   pCrwBuffer->vIsPermanent(false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

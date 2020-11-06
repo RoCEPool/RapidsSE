@@ -50,7 +50,7 @@ SrtBuffer::SrtBuffer(i8 nRowRefs, i8 i_TablePtn)
   
   m_nRowRefs = nRowRefs;
   m_bIsLast = false;
-  m_i_TablePtn = i_TablePtn;
+  m_tPtnNo = i_TablePtn;
   m_nSrtSetBytes = sizeof(SrtSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
@@ -122,7 +122,7 @@ SrtBuffer* SrtBuffer::aCopySrtSet(SrtSet* aSrtSet)
   if (! aNewSrtSet) {
     
     // create a new merge SrtBuffer
-    SrtBuffer* pSrtBuffer = new SrtBuffer(m_nRowRefs, m_i_TablePtn);
+    SrtBuffer* pSrtBuffer = new SrtBuffer(m_nRowRefs, m_tPtnNo);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // link this buffer to the new buffer
@@ -369,7 +369,7 @@ void SrtBuffer::vShow(void)
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
   
-  vTrace("  partition: %lld \n"_Stz, m_i_TablePtn);
+  vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
     
   SrtSet* aSrtSet = aFirstSrtSet();
     
@@ -406,7 +406,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
   
-  vTrace("  partition: %lld \n"_Stz, m_i_TablePtn);
+  vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
   
   SrtSet* aSrtSet = aFirstSrtSet();
   

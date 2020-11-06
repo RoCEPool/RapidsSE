@@ -188,7 +188,7 @@ CrwBuffer* IndexStream::pRead(RowOnce* pRowOnce)
   // create a result buffer for the results
   pCrwBuffer = new CrwBuffer;
   pCrwBuffer->vTable(m_pTablePtn->pTable());
-  pCrwBuffer->vTablePtn(m_pTablePtn->iPartitionId()) ;
+  pCrwBuffer->vPtnNo(m_pTablePtn->iPartitionId()) ;
   
   // create a row compactor for the crw buffer
   pRowCompactor = new RowCompactor;

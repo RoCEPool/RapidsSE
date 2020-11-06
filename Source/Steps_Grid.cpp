@@ -264,9 +264,9 @@ void Step::vGridToPartition(void)
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  i8 iPartitionId = TablePtn::iTablePtnToPtnNo(i_TablePtn);
+  tPN tPtnNo = TablePtn::tTablePtnToPtnNo(i_TablePtn);
   
-  m_pDataStack->vPushInt(iPartitionId);              //! DISCUSS WITH ALKA
+  m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
   
   EXIT();
 }
@@ -278,9 +278,9 @@ void Step::vGridToSlot(void)
 {
   ENTRY();
   
-  i8 iPartitionId = m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
-  i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(iPartitionId);
+  i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(tPtnNo);
   
   m_pDataStack->vPushInt(i_TablePtn);                     //! DISCUSS WITH ALKA
   
