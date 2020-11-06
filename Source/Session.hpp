@@ -45,7 +45,7 @@ namespace Sessions
     
     i8       m_iPid;             // process which created this session
   
-    i8       m_iPartition;       // which partition this session connects to
+    i8       m_i_TablePtn;       // which table partition this session processes
     DicStack m_oDicStack;        // dictionary stack
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
