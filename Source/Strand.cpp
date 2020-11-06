@@ -30,13 +30,13 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
     // node only
     m_i_Nde = i_Strand;
     m_i_Ptn = C_UNKNOWN;
-    m_i_Slt = C_UNKNOWN;
+    m_i_TablePtn = C_UNKNOWN;
   }
   else {
     // node,slot
     m_i_Ptn = i_Strand;
     m_i_Nde = TablePtn::iPartitionToNode(m_i_Ptn);
-    m_i_Slt = TablePtn::iPartitionToTablePtn(m_i_Ptn);
+    m_i_TablePtn = TablePtn::iPartitionToTablePtn(m_i_Ptn);
   }
   
   vSynthesiseName();
@@ -75,7 +75,7 @@ void Strand::vDump(void)
     vTrace("  [%02lld] (N%lld,S%02lld) Partition-Strand %s:\n"_Stz,
            m_i_Strand,
            m_i_Nde,
-           m_i_Slt,
+           m_i_TablePtn,
            m_sStrandNm.szStz());
   }
 
@@ -109,11 +109,11 @@ i8 Strand::i_Ptn(void)
 /*----------------------------------------------------------------------------*/
 /* get slot this strand needs to run on                                     */
 /*----------------------------------------------------------------------------*/
-i8 Strand::i_Slt(void)
+i8 Strand::i_TablePtn(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
-  return m_i_Slt;
+  return m_i_TablePtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +166,7 @@ void Strand::vSynthesiseName(void)
   else {
     m_sStrandNm.vSprint("_strandv_N%lldS%lld_of_%s"_Stz,
                           m_i_Nde,
-                          m_i_Slt,
+                          m_i_TablePtn,
                           m_pStageSpec->szStageNm());
   }
 }

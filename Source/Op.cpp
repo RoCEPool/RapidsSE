@@ -1323,7 +1323,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   i8 i_Ptn;
-  i8 i_Slt;
+  i8 i_TablePtn;
   
   // get the next stage
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
@@ -1340,8 +1340,8 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       m_iRobin++;
-      i_Slt = m_iRobin % AM::pGrid()->nTablePtns();
-      i_Ptn = TablePtn::iSlotToPartition(i_Slt);
+      i_TablePtn = m_iRobin % AM::pGrid()->nTablePtns();
+      i_Ptn = TablePtn::iTablePtnToPtnNo(i_TablePtn);
       
       // xmitNode is the partition node
       m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
@@ -1518,7 +1518,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     case XK_LOCALROBIN : {
       m_iLocalRobin++;
       i_TablePtn = m_iLocalRobin % AM::pGrid()->nTablePtns();
-      i_Ptn = TablePtn::iSlotToPartition(i_TablePtn);
+      i_Ptn = TablePtn::iTablePtnToPtnNo(i_TablePtn);
       
       // xmitNode is this node
       m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);

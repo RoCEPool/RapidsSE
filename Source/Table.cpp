@@ -50,7 +50,7 @@ Table::Table(Stz* szTableNm)
     TablePtn* pTablePtn = new TablePtn(this);
     m_pTablePtnVec->vAdd(pTablePtn);
     
-    i8 iPartition = TablePtn::iSlotToPartition(i_TablePtn);
+    i8 iPartition = TablePtn::iTablePtnToPtnNo(i_TablePtn);
     m_pTablePtnVec->pGet(i_TablePtn)->vPartitionId(iPartition);
   }
   

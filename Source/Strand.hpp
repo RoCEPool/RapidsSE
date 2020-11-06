@@ -14,7 +14,7 @@ namespace Pipelines
   
     i8         m_i_Ptn;       // which partition in grid
     i8         m_i_Nde;       // which node in grid
-    i8         m_i_Slt;       // which slot in node
+    i8         m_i_TablePtn;       // which slot in node
 
     // must be last
     Footer m_xFooter;
@@ -31,7 +31,7 @@ namespace Pipelines
     i8     i_Strand(void);
     i8     i_Nde(void);
     i8     i_Ptn(void);
-    i8     i_Slt(void);
+    i8     i_TablePtn(void);
   
     StageSpec* pStageSpec(void);
     void   vSpawnOperatorJobs(i8 iSessionId, i8 iNode);

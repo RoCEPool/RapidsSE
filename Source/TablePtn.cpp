@@ -120,7 +120,7 @@ i8 TablePtn::iPartitionToTablePtn(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* convert slot number to partition number                                    */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::iSlotToPartition(i8 iSlot)
+i8 TablePtn::iTablePtnToPtnNo(i8 iSlot)
 {
   i8 iPartition =
   (iSlot * AM::nDefinedNodes()) + AM::iThisNodeNo();

@@ -70,7 +70,7 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
-                                    TablePtn::iSlotToPartition(iSlot),
+                                    TablePtn::iTablePtnToPtnNo(iSlot),
                                     nBuffers,
                                     nEntries,
                                     C_VARGS_END);
@@ -112,7 +112,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
-                                    TablePtn::iSlotToPartition(iSlot),
+                                    TablePtn::iTablePtnToPtnNo(iSlot),
                                     nBuffers,
                                     nRows,
                                     C_VARGS_END);
