@@ -562,28 +562,6 @@ StreamDef*  Table::pPtnStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* publish rows/buffers                                                       */
-/*----------------------------------------------------------------------------*/
-void Table::vPublish(i8 iPartition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  vTrace("Publishing table %s\n"_Stz, m_sTableNm.azChar());
-  
-  // get the table ptn
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartition);
-  
-  // publish the ptn
-  pTablePtn->vPublish();
-  
-  // publish all other indices
-//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-//    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-//    m_xSlots.vPublishIndex(iPartition, pIndex->iIndexNo());
-//  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to purge oldest buffer                                             */
 /*----------------------------------------------------------------------------*/
 bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)

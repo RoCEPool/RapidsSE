@@ -767,50 +767,6 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* publish the index buffers                                                  */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vPublish(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  if ( ! m_pRootCrwBuffer)
-    return;
-  
-  m_okLock.vGrabWrite();
-  
-  // is there a current buffer ?
-  if ( ! m_pCurrentCrwBuffer) {
-    m_okLock.vDropWrite();
-    return;
-  }
-  
-  StreamDef* pStreamDef = m_pCurrentCrwBuffer->pStreamDef();
-  HV_Rec hvRec(pStreamDef, C_ALL);
-  
-  // create a row for retrieving the row
-  HV_Row hRow(pStreamDef, C_ALL);
-  
-  // publish the current buffer (last buffer that was added)
-  i8 nRowCount = m_pCurrentCrwBuffer->nRowCount();
-  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
-    
-    // get the inflated compact row
-    m_pCurrentCrwBuffer->vGetRow(hRow, i_Row);
-    
-    // append the row to the record
-    hvRec->vAppend(hRow);
-    
-    vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
-  }
-  
-  vTrace("Partition%lld: published %lld rows\n"_Stz,m_tPtnNo,
-         m_pCurrentCrwBuffer->nRowCount());
-  
-  m_okLock.vDropWrite();
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* purge the table buffers                                                    */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bPurge(i8 iOlderThanSeconds)

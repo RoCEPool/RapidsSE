@@ -1584,7 +1584,6 @@ public:
   void vTablePtnStreamDefFetch(void);
   void vTableLazyBuildIndexes(void);
   void vTableNew(void);
-  void vTablePublish(void);
   void vTablePurge(void);
   void vTableDeleteIndex(void);
   void vTableScan(void);

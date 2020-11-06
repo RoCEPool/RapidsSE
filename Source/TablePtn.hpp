@@ -59,7 +59,6 @@ namespace Partitioning
     tPN  tPtnNo(void);
     void vPtnNo(tPN tPtnNod);
     bool bPopulateIndex(i8 iIndexNo);
-    void vPublish(void);
     bool bPurge(i8 iOlderThanSeconds);
     ReadApi* pReadApi(void);
     void vRemoveIndex(i8 iIndexNo);

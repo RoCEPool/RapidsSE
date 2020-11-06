@@ -31,7 +31,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].isDefinitionOnly!"_Stz, &Step::vTableIsDefinitionOnlyStore);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
-  vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
@@ -468,22 +467,6 @@ void Step::vTablePtnStreamDefFetch(void)
   StreamDef* pStreamDef = pTable->pPtnStreamDef();
   
   m_pDataStack->vPushPtr(pStreamDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.publish -- purge rows/buffers in table on data stack                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePublish(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_TablePtn = m_pDataStack->iPopAsInt(__func__);
-  
-  pTable->vPublish(i_TablePtn);
   
   EXIT();
 }
