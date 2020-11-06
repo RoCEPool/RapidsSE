@@ -90,7 +90,7 @@ Session::Session(void)
   m_iSenLoc    = 0;
   
   m_oTimer.vReset();
-  m_iTotalMsec = 0;
+  m_qTotalUsec = 0;
   
   m_nBegun     = 0;
   m_nExecuted  = 0;
@@ -109,12 +109,12 @@ Session::Session(void)
   m_iPtnNo      = C_UNKNOWN;
   
   //m_oDicStack;
-  m_pSsnJob         = nullptr;
-  m_pTx             = nullptr;
-  m_bSessionExiting = false;
-  m_pJobStack       = new Stack(KK_JOB_STACK);
+  m_pSsnJob     = nullptr;
+  m_pTx         = nullptr;
+  m_bExiting    = false;
+  m_pJobStack   = new Stack(KK_JOB_STACK);
 
-  m_sToDo           = ""_Stz;
+  m_sToDo       = ""_Stz;
     
     
   _checkInitialised_(CN_SESSION);
@@ -419,7 +419,7 @@ void Session::vFreeSession(i8 i_NextFree)
   m_iSenLoc    = 0;
   
   m_oTimer.vReset();
-  m_iTotalMsec = 0;
+  m_qTotalUsec = 0;
   
   m_nBegun     = 0;
   m_nExecuted  = 0;
@@ -431,9 +431,9 @@ void Session::vFreeSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_pSsnJob         = nullptr;
-  m_pTx             = nullptr;
-  m_bSessionExiting = false;
+  m_pSsnJob    = nullptr;
+  m_pTx        = nullptr;
+  m_bExiting   = false;
   
   RASSERT(0 == m_pJobStack->nValues());
 }
@@ -486,7 +486,7 @@ void Session::vTraceSession(void)
          m_nApiErrors,
          m_nJobNew,
          m_nJobDelete,
-         m_iTotalMsec
+         m_qTotalUsec
          );
 }
 

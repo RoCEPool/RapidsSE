@@ -55,7 +55,7 @@ void Step::vSessionDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tagSet@ -- fetch ename-set of session semantic                   */
+/* session.tagSet@ -- fetch ename-set of session semantic                     */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTagSetFetch(void)
 {
@@ -80,7 +80,7 @@ void Step::vSessionIsExiting(void)
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushInt(pSession->m_bSessionExiting);
+  m_pDataStack->vPushInt(pSession->m_bExiting);
   
   EXIT();
 }

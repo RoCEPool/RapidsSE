@@ -363,7 +363,7 @@ void SessionArray::vApiError(Session* pSession, eEC eError)
   pSession->m_eApiError = eError;
   
   pSession->m_oTimer.vUpdate();
-  pSession->m_iTotalMsec += pSession->m_oTimer.iMicroseconds();
+  pSession->m_qTotalUsec += pSession->m_oTimer.iMicroseconds();
 
   pSession->m_nApiErrors++;
 }
@@ -404,7 +404,7 @@ void SessionArray::vApiReturn(Session* pSession)
   
   pSession->m_bRunning = false;
   pSession->m_oTimer.vUpdate();
-  pSession->m_iTotalMsec += pSession->m_oTimer.iMicroseconds();
+  pSession->m_qTotalUsec += pSession->m_oTimer.iMicroseconds();
 
 //  if (xState[i_Session].m_eApiFun == AC_FetchNextBuffer)
 //    vTrace("Timer start: %lld; Timer update: %lld Time: %lldus\n"_Stz,
