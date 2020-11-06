@@ -34,7 +34,7 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(i8 nDefinedNodes, i8 nSlotsPerNode);
+    Grid(i8 nDefinedNodes, i8 nTablePtns);
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -50,7 +50,7 @@ namespace Grids
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
     void vIncConnectedNodes(void);
-    void vInit(i8 nNodes, i8 nSlotsPerNode);
+    void vInit(i8 nNodes, i8 nTablePtns);
     void vRemoveNode(Node* pNode);
     i8   nPartitionsInGrid(void);
     void vStartNode(i8 iStartNode);

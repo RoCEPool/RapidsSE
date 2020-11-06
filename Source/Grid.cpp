@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Grids -- Grid Model                                                        */
+/* Grid.cpp -- Grid                                                           */
 /*============================================================================*/
 
 #include "Grids.h"
@@ -42,7 +42,7 @@ void Grid::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(i8 nNodes, i8 nSlotsPerNode)
+Grid::Grid(i8 nNodes, i8 nTablePtns)
 : Object(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
@@ -51,7 +51,7 @@ Grid::Grid(i8 nNodes, i8 nSlotsPerNode)
   
   m_pArticle = new Article(m_sGridNm,this,nullptr);
   
-  vInit(nNodes, nSlotsPerNode);
+  vInit(nNodes, nTablePtns);
   
   _checkInitialised_(CN_GRID);
   
@@ -73,7 +73,7 @@ void Grid::vInit(i8 nDefinedNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_nTablePtns   = nSlotsPerNode;
+  m_nTablePtns      = nSlotsPerNode;
   
   m_nDefinedNodes   = nDefinedNodes;
   m_nConnectedNodes = 0;
