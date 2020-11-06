@@ -68,9 +68,9 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, Stz* szIpAddr, i8 iPortNo)
   m_pRecvSocket = nullptr;
   m_pSendSocket = nullptr;
   
-  m_iRegionSize  = C_UNKNOWN;
-  m_iFreeSpace   = C_UNKNOWN;
-  m_iFreePercent = C_UNKNOWN;
+  m_qRegionSize  = C_UNKNOWN;
+  m_qFreeSpace   = C_UNKNOWN;
+  m_qFreePercent = C_UNKNOWN;
 
   _checkInitialised_(CN_NODE);
   
@@ -246,61 +246,61 @@ void Node::vSendSocket(Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 /* get known free percent                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Node::iFreePercent(void)
+i8 Node::qFreePercent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  return m_iFreePercent;
+  return m_qFreePercent;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set known free percent                                                     */
 /*----------------------------------------------------------------------------*/
-void Node::vFreePercent(i8 iFreePercent)
+void Node::vFreePercent(i8 qFreePercent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_iFreePercent = iFreePercent;
+  m_qFreePercent = qFreePercent;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get known free space                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Node::iFreeSpace(void)
+i8 Node::qFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  return m_iFreeSpace;
+  return m_qFreeSpace;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set known free space                                                       */
 /*----------------------------------------------------------------------------*/
-void Node::vFreeSpace(i8 iFreeSpace)
+void Node::vFreeSpace(i8 qFreeSpace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_iFreeSpace = iFreeSpace;
+  m_qFreeSpace = qFreeSpace;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get known region size                                                      */
 /*----------------------------------------------------------------------------*/
-i8 Node::iRegionSize(void)
+i8 Node::qRegionSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  return m_iRegionSize;
+  return m_qRegionSize;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set known region size                                                      */
 /*----------------------------------------------------------------------------*/
-void Node::vRegionSize(i8 iRegionSize)
+void Node::vRegionSize(i8 qRegionSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_iRegionSize = iRegionSize;
+  m_qRegionSize = qRegionSize;
 }
 
 /*----------------------------------------------------------------------------*/

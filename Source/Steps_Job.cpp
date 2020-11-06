@@ -1494,7 +1494,7 @@ void Step::vJobSlotFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->i_Slot());
+  m_pDataStack->vPushInt(pJob->i_TablePtn());
   
   EXIT();
 }

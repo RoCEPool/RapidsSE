@@ -45,9 +45,9 @@ void Step::vStreamSetTableDump(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
   
   for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pPartition = pTable->pPartition(iPartition);
+    TablePtn* pTablePtn = pTable->pTablePtn(iPartition);
     vTrace("Partition %lld\n"_Stz, iPartition);
-    pPartition->vDump();
+    pTablePtn->vDump();
   }
   
   EXIT();

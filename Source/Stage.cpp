@@ -58,7 +58,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
   StageSpec* pStageSpec = pStrand->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStrand->i_Nde() == AM::pGrid()->iThisNode()) {
+      pStrand->i_Node() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
     Op* pOp = pStrand->pGet(0);
@@ -83,7 +83,7 @@ Strand* Stage::pGetPartitionStrand(i8 i_Ptn)
     pStageSpec = pStrand->pStageSpec();
     
     if ( ! pStageSpec->bNodeTopo() &&
-        pStrand->i_Ptn() == i_Ptn)
+        pStrand->tPtnNo() == i_Ptn)
       return pStrand;
   }
   
@@ -105,7 +105,7 @@ Strand* Stage::pGetNodeStrand(i8 i_Nde)
     pStageSpec = pStrand->pStageSpec();
     
     if (pStageSpec->bNodeTopo() &&
-        pStrand->i_Nde() == i_Nde)
+        pStrand->i_Node() == i_Nde)
       return pStrand;
   }
   
@@ -146,12 +146,12 @@ i8 Stage::nOpsOnNode(i8 iNode)
 
     if (m_pStageSpec->bNodeTopo()) {
       // skip if Op not for this node
-      if (pStrand->i_Nde() == iNode) {
+      if (pStrand->i_Node() == iNode) {
         nOps += pStrand->nItems();
       }
     }
     else {
-      i8 iPartitionNode = TablePtn::iPartitionToNode(pStrand->i_Ptn());
+      i8 iPartitionNode = TablePtn::iPtnNoToNode(pStrand->tPtnNo());
       if (iPartitionNode == iNode) {
         nOps += pStrand->nItems();
       }
@@ -257,7 +257,7 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
   StageSpec* pStageSpec = pStrand->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStrand->i_Nde() == AM::pGrid()->iThisNode()) {
+      pStrand->i_Node() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
     Op* pOp = pStrand->pGet(0);
@@ -317,7 +317,7 @@ void Stage::vCreateStrands(void)
     case PO_ALL_PARTITIONS_ON_ORIGIN:
       RASSERT( ! m_pStageSpec->bNodeTopo());
       for (i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitionsInGrid(); i_Ptn++) {
-        i_Nde = TablePtn::iPartitionToNode(i_Ptn);
+        i_Nde = TablePtn::iPtnNoToNode(i_Ptn);
         if (i_Nde == m_pPipeline->iOriginatingNode())
           vAdd(new Strand(m_pStageSpec, i_Ptn));
       }
@@ -350,12 +350,12 @@ void Stage::vCreateStrands(void)
       
       if (m_pStageSpec->bNodeTopo()) {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vNode(pStrand->i_Nde());
+        pOp->vNode(pStrand->i_Node());
         pStrand->vAdd(pOp);
       }
       else {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vPartition(pStrand->i_Ptn());
+        pOp->vPtnNo(pStrand->tPtnNo());
         pStrand->vAdd(pOp);
       }
     }

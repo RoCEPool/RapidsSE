@@ -47,7 +47,7 @@ namespace Expressions
     RluDiary(void);
    ~RluDiary(void) noexcept(false);
   
-    void vAddNote(i8 i_Sql, i8 i_Slot, i8 nQueueLength,
+    void vAddNote(i8 i_Sql, i8 i_TablePtn, i8 nQueueLength,
                   i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 i_nNanoSecs,
                   
                   i8 iAction, i8 i_ActEnumGroup, i8 i_ActEnum

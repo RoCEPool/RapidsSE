@@ -11,19 +11,19 @@ namespace Grids
   private:
     Article* m_pArticle;
 
-    i8    m_iNodeNo;    // node number
-    s32   m_sNodeNm;    // name of the node
-    s32   m_sIPAddr;    // ip address of node
-    i8    m_iPortNo;    // port number of node
+    i8  m_iNodeNo;    // node number
+    s32 m_sNodeNm;    // name of the node
+    s32 m_sIPAddr;    // ip address of node
+    i8  m_iPortNo;    // port number of node
   
-    eNS   m_eState;     // node state
+    eNS m_eState;     // node state
   
     Socket* m_pRecvSocket;  // socket used for receiving from node
     Socket* m_pSendSocket;  // socket used for sending to node
   
-    i8    m_iRegionSize;  // last known region size
-    i8    m_iFreeSpace;   // last known free space
-    i8    m_iFreePercent; // last known free percent 
+    i8 m_qRegionSize;  // last known region size
+    i8 m_qFreeSpace;   // last known free space
+    i8 m_qFreePercent; // last known free percent
 
     // must be last
     Footer m_xFooter;
@@ -56,12 +56,12 @@ namespace Grids
     Socket* pSendSocket(void);
     void vSendSocket(Socket* pSocket);
   
-    i8   iFreePercent(void);
-    void vFreePercent(i8 iFreePercent);
-    i8   iFreeSpace(void);
-    void vFreeSpace(i8 iFreeSpace);
-    i8   iRegionSize(void);
-    void vRegionSize(i8 iRegionSize);
+    i8   qFreePercent(void);
+    void vFreePercent(i8 qFreePercent);
+    i8   qFreeSpace(void);
+    void vFreeSpace(i8 qFreeSpace);
+    i8   qRegionSize(void);
+    void vRegionSize(i8 qRegionSize);
 
     Footer* aFooter(void);
   };

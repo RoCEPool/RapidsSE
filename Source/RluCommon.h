@@ -24,7 +24,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   i8   m_iSql;
   i8   m_bTrace;
 
-  i8   m_i_Slot;
+  i8   m_i_TablePtn;
 
   i8   m_nPtns;
   i8   m_iHash;

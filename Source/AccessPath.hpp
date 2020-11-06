@@ -36,8 +36,8 @@ namespace Plans
     Table* pTable(void);
     void vTable(Table* pTable);
     
-    TablePtn* pPartition(void);
-    void vPartition(TablePtn* pPartition);
+    TablePtn* pTablePtn(void);
+    void vPartition(TablePtn* pTablePtn);
     
     bool bIsCandidate(void);
     void vIsCandidate(bool bIsCandidate);

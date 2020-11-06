@@ -101,7 +101,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   
-  m_xRluCommon.m_i_Slot = C_UNKNOWN;
+  m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
   m_xRluCommon.m_nPtns  = AM::nPartitionsInGrid();
   m_xRluCommon.m_iHash  = 0;
   
@@ -329,7 +329,7 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
     m_pRluDiary = new RluDiary;
 
   
-  m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_Slot,
+  m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_TablePtn,
                         nQueueLength,
                         
                         i_EnumGroup,i_Enum,iItem,nNanoSecs,
@@ -461,7 +461,7 @@ void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_xRluCommon.m_i_Slot = AM::pTaskJob()->m_pOp->iPartition();
+  m_xRluCommon.m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -862,7 +862,7 @@ void LogicUnit::vDiaryReport(void)
                        m_pRluDiary->szDiaryDir(),
                        m_pRluDiary->szDiaryNm(),
                        m_xRluCommon.m_iSql,
-                       m_xRluCommon.m_i_Slot
+                       m_xRluCommon.m_i_TablePtn
                        );
   else
     sDiaryPath.vSprint("%s/RluDiary_%s.csv"_Stz,
@@ -1241,7 +1241,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  aRluCommon->m_i_Slot = AM::pTaskJob()->m_pOp->iPartition();
+  aRluCommon->m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
   aRluCommon->m_nPtns  = AM::nPartitionsInGrid();
   aRluCommon->m_iHash  = 0;
 
@@ -1785,7 +1785,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         azTopA = (char*) *(aiDstk--);
         dLU1(EO_STR_PRINTADR,azTopA);
         printf("[Q%lld.%lld] %s\n",
-               aRluCommon->m_iSql,aRluCommon->m_i_Slot,azTopA);
+               aRluCommon->m_iSql,aRluCommon->m_i_TablePtn,azTopA);
 #endif
         break;//+endCase
         
@@ -1795,7 +1795,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         printf("EO_STR_PRINTSTK : %lld %p\n",iTopA,(char*)szTopA);
         dLU1(EO_STR_PRINTSTK,iTopA);
         printf("[Q%lld,%lld] %s\n",
-               aRluCommon->m_iSql,aRluCommon->m_i_Slot,(char*)szTopA);
+               aRluCommon->m_iSql,aRluCommon->m_i_TablePtn,(char*)szTopA);
         aiDstk -= (iTopA/8) + 2;
         break;//+endCase
         
@@ -1911,9 +1911,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vLib_SLEEP(pLU,iTopA);
         break;//+endCase
               
-      case EO_SLOT: ArgNil(); // push i_Slot
-        dLU1(EO_SLOT,aRluCommon->m_i_Slot);
-        *(++aiDstk) = aRluCommon->m_i_Slot;
+      case EO_SLOT: ArgNil(); // push i_TablePtn
+        dLU1(EO_SLOT,aRluCommon->m_i_TablePtn);
+        *(++aiDstk) = aRluCommon->m_i_TablePtn;
         break;//+endCase
         
       case EO_SQL: ArgGet(iArg); //  set sql no
@@ -1955,7 +1955,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopA = *(aiDstk--);
         szRes = szLib_DTE_PRINT(pLU,iTopA);
         printf("[Q%lld.%lld] %s\n",
-               aRluCommon->m_iSql,aRluCommon->m_i_Slot,(char*)szRes);
+               aRluCommon->m_iSql,aRluCommon->m_i_TablePtn,(char*)szRes);
         break;//+endCase
 
       case EO_DTE_YEAR: ArgNil(); // pop top, push year of date

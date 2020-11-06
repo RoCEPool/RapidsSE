@@ -10,7 +10,7 @@ namespace DataBuffers
   protected:
     Lock   m_okLock;        // lock
     i8     m_iBufferNo;     // this DataBuffer's buffer number
-    i8     m_iPartitionNo;  // partition no this buffer belongs to
+    tPN    m_tPtnNo;        // partition no this buffer belongs to
     i8     m_iBufferHeight; // buffer height in the tree
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
@@ -29,8 +29,8 @@ namespace DataBuffers
     void        vDropWrite(void);
     void        vGrabWrite(void);
   
-    void        vPartitionNo(i8 iPartitionNo);
-    i8          iPartitionNo(void);
+    void        vPtnNo(tPN tPtnNo);
+    tPN         tPtnNo(void);
     
     Birth&      oWhenNewed(void);
   

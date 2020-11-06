@@ -8,10 +8,10 @@ namespace Partitioning
   class TablePtn : public Object
   {
   private:
-    Lock m_okLock;         // lock on the partition
+    Lock   m_okLock;       // lock on the partition
     Table* m_pTable;       // table this partition belongs to
-    i8   m_iPartitionId;   // partition number
-    bool m_bLowMemLoad;    // was low memory detected during this load
+    tPN    m_tPtnNo;       // partition number (in grid)
+    bool   m_bLowMemLoad;  // was low memory detected during this load
 
     CrwBuffer* m_pRootCrwBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentCrwBuffer; // the data current buffer for insert
@@ -25,9 +25,9 @@ namespace Partitioning
     
   public:
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static i8   iPartitionToNode(i8 iPartition);
-    static i8   iPartitionToSlot(i8 iPartition);
-    static i8   iSlotToPartition(i8 iSlot);
+    static i8   iPtnNoToNode(tPN tPtnNo);
+    static i8   iPtnNoToTablePtn(tPN tPtnNo);
+    static tPN  tTablePtnToPtnNo(i8 i_TablePtn);
   
     void* operator new(size_t);
     void  operator delete(void*);
@@ -56,8 +56,8 @@ namespace Partitioning
     CrwBuffer* pNewCurrentCrwBuffer(void);
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);
-    i8   iPartitionId(void);
-    void vPartitionId(i8 iPartitionId);
+    tPN  tPtnNo(void);
+    void vPtnNo(tPN tPtnNod);
     bool bPopulateIndex(i8 iIndexNo);
     void vPublish(void);
     bool bPurge(i8 iOlderThanSeconds);

@@ -141,9 +141,9 @@ void Step::vInfoSetAddRowCount(void)
   
   // get the slot
   Job* pJob = m_pTask->m_pJob;
-  i8 iPtn = pJob->m_pOp->iPartition();
+  i8 i_Ptn = pJob->m_pOp->tPtnNo();
   
-  i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
+  i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(i_Ptn);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNTINFO);
@@ -151,7 +151,7 @@ void Step::vInfoSetAddRowCount(void)
   i8 nBuffers = 0;
   i8 nRows = 0;
   
-  pTable->vAnalyze(iSlot, nBuffers, nRows);
+  pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,

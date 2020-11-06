@@ -41,7 +41,7 @@ namespace Jobs
   private:
     Decider m_oAcksRmg_2pc;   // acks remaining for coordinating 2pc job
     eSS     m_eSeed;          // seed to spawn
-    i8      m_i_Slot;         // slot on its node this job processes
+    i8      m_i_TablePtn;         // slot on its node this job processes
     Task*   m_pTaskJ;         // task executing the job
 
     // must be last
@@ -141,8 +141,8 @@ namespace Jobs
     void vSeed(eSS eSeed);
     Session* pSession(void);
     void vShow(void);
-    i8   i_Slot(void);
-    void vSlot(i8 i_Slot);
+    i8   i_TablePtn(void);
+    void vTablePtn(i8 i_TablePtn);
     bool bSummaryTag(void);
     Task* pTask(void);
     void vTask(Task* pTask);

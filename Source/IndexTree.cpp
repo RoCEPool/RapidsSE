@@ -736,7 +736,7 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   ASSERT(! m_pRootEntBuffer);
   
   m_pRootEntBuffer = new EntBuffer(this);
-  m_pRootEntBuffer->vPartitionNo(m_iPartitionNo);
+  m_pRootEntBuffer->vPtnNo(m_iPartitionNo);
   
   return m_pRootEntBuffer;
 }

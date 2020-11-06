@@ -24,13 +24,14 @@ namespace Sessions
     
     bool  m_bRunning;    // api call still running?
     bool  m_bSignalled;  // calling thread has been signalled?
-    
+    bool  m_bExiting;    // is session exiting ?
+
     void* m_aStackBase;  // stack base of thread which made api call
     void* m_aStackPtr;   // stack addr of thread which made api call
     
     
     Timer m_oTimer;      // call timer
-    i8    m_iTotalMsec;  // total time in us
+    i8    m_qTotalUsec;  // total-quanity time in microseconds
     
     i8    m_nBegun;      // number of __begun received
     i8    m_nCancelled;  // number of __cancelled received
@@ -45,9 +46,8 @@ namespace Sessions
     
     i8       m_iPid;             // process which created this session
   
-    i8       m_iPartition;       // which partition this session connects to
+    tPN      m_tPtnNo;           // which partition this session processes
     DicStack m_oDicStack;        // dictionary stack
-    bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
 
     TagSet   m_oSsnTagSet;       // session level tags
@@ -87,7 +87,7 @@ namespace Sessions
       
     void      vReport(void);
     
-    i8        iSlot(void);
+    i8        i_TablePtn(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   

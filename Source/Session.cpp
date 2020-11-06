@@ -90,7 +90,7 @@ Session::Session(void)
   m_iSenLoc    = 0;
   
   m_oTimer.vReset();
-  m_iTotalMsec = 0;
+  m_qTotalUsec = 0;
   
   m_nBegun     = 0;
   m_nExecuted  = 0;
@@ -106,15 +106,15 @@ Session::Session(void)
   
   m_iPid = Process::iGetPid();
 
-  m_iPartition      = C_UNKNOWN;
+  m_tPtnNo      = C_UNKNOWN;
   
   //m_oDicStack;
-  m_pSsnJob         = nullptr;
-  m_pTx             = nullptr;
-  m_bSessionExiting = false;
-  m_pJobStack       = new Stack(KK_JOB_STACK);
+  m_pSsnJob     = nullptr;
+  m_pTx         = nullptr;
+  m_bExiting    = false;
+  m_pJobStack   = new Stack(KK_JOB_STACK);
 
-  m_sToDo           = ""_Stz;
+  m_sToDo       = ""_Stz;
     
     
   _checkInitialised_(CN_SESSION);
@@ -206,8 +206,8 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("pid %lld %s partition %lld slot %lld"_Stz,
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
-         pSession->m_iPartition,
-         pSession->iSlot());
+         pSession->m_tPtnNo,
+         pSession->i_TablePtn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,7 +330,7 @@ i8 Session::iPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return m_iPartition;
+  return m_tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,7 +340,7 @@ void Session::vPartition(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_iPartition = iPartition;
+  m_tPtnNo = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,13 +366,13 @@ void Session::vReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* which slot                                                                 */
+/* which table partition                                                      */
 /*----------------------------------------------------------------------------*/
-i8 Session::iSlot(void)
+i8 Session::i_TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return TablePtn::iPartitionToSlot(m_iPartition);
+  return TablePtn::iPtnNoToTablePtn(m_tPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,7 +419,7 @@ void Session::vFreeSession(i8 i_NextFree)
   m_iSenLoc    = 0;
   
   m_oTimer.vReset();
-  m_iTotalMsec = 0;
+  m_qTotalUsec = 0;
   
   m_nBegun     = 0;
   m_nExecuted  = 0;
@@ -431,9 +431,9 @@ void Session::vFreeSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_pSsnJob         = nullptr;
-  m_pTx             = nullptr;
-  m_bSessionExiting = false;
+  m_pSsnJob    = nullptr;
+  m_pTx        = nullptr;
+  m_bExiting   = false;
   
   RASSERT(0 == m_pJobStack->nValues());
 }
@@ -486,7 +486,7 @@ void Session::vTraceSession(void)
          m_nApiErrors,
          m_nJobNew,
          m_nJobDelete,
-         m_iTotalMsec
+         m_qTotalUsec
          );
 }
 

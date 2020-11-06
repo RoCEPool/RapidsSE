@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+typedef i8 tPN; // opaque type for partition number in grid
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // bcd / decimal
 class Bcd

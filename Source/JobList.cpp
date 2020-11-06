@@ -232,7 +232,7 @@ void JobList::vLogJobs(i8 iJobId)
                  pJob,
                  pJob->m_iFocalId,
                  pJob->iParentId(),
-                 pJob->i_Slot(),
+                 pJob->i_TablePtn(),
                 
                  aJP[pJob->eJobPhase()],
                  aJS[pJob->eJobState()],

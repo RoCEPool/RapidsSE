@@ -70,8 +70,8 @@ void Step::vCrwBufferSnapshot(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
   Table* pTable = pCrwBuffer->pTable();
-  i8 i_Ptn = pCrwBuffer->iPartitionNo();
-  TablePtn* pTablePtn = pTable->pPartition(i_Ptn);
+  i8 i_Ptn = pCrwBuffer->tPtnNo();
+  TablePtn* pTablePtn = pTable->pTablePtn(i_Ptn);
   
   t8 tPerspective = AM::tThisTLSPespective();
 

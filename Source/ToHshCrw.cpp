@@ -57,7 +57,7 @@ void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  i8 i_Ptn = pRsbBuffer->iPartitionNo();
+  i8 i_Ptn = pRsbBuffer->tPtnNo();
   
   //pRsbBuffer->pRowSlab()->vDumpNst();
   
@@ -173,7 +173,7 @@ CrwBuffer* ToHshCrw::pNewCrwBuffer(i8 i_Ptn)
   CrwBuffer* pCrwBuffer = new CrwBuffer();
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
-  pCrwBuffer->vPartitionNo(i_Ptn);
+  pCrwBuffer->vPtnNo(i_Ptn);
 
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn],false);

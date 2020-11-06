@@ -40,7 +40,7 @@ Stz* SP_DataBuffer::sz(DataBuffer* pDataBuffer)
   StrLib::vSprint(m_caResult,
                   "%p Partition=%lld No=%lld Height=%lld Age=%llds Permanent=%lld"_Stz,
                   pDataBuffer,
-                  pDataBuffer->iPartitionNo(),
+                  pDataBuffer->tPtnNo(),
                   pDataBuffer->iBufferNo(),
                   pDataBuffer->iBufferHeight(),
                   pDataBuffer->iAgeSec(),

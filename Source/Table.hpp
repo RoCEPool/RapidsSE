@@ -41,32 +41,30 @@ namespace MetaData
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
     
     void    vAddIndex(Index* pIndex);
-    void    vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);
+    void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
     void    vCompactIndex(Index* pIndex);
     void    vCreatePtnDef(void);
     i8      nCrwBuffers(void);
     void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
-    i8      nIndexBuffers(i8 iIndexNo);
-    IndexDef* pIndexDef(Table* pTable, i8 iIndexNo);
+    i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     void    vIsDefinitionOnly(bool bIsDefinitionOnly);
     void    vIsLoading(bool bIsLoading);
     bool    bIsLoading(void);
-    void    vLazyBuildIndexes(i8 iSlot);
+    void    vLazyBuildIndexes(i8 i_TablePtn);
     void    vMarkTable(void);
-    TablePtn* pPartition(i8 iSlot);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
     StreamDef* pPtnStreamDef(void);
     void    vPublish(i8 iPartitionNo);
     bool    bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
-    EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
+    EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
-    void    vTidyUpIndex(i8 iIndexNo);
+    TablePtn* pTablePtn(i8 i_TablePtn);
     i8      iToPartition(i8 iRowHash);
     
     //void vInsdelBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
