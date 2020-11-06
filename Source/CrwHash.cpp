@@ -24,13 +24,13 @@ CrwHash::CrwHash(Table* pTable)
   
   m_pTable = pTable;
   
-  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-    m_pCrwBuffer[i_Partition]     = nullptr;
-    m_paRowCompactor[i_Partition] = nullptr;
+  for (tPN tPtnNo = 0; tPtnNo < C_MAX_PARTITIONS; tPtnNo++) {
+    m_pCrwBuffer[tPtnNo]     = nullptr;
+    m_paRowCompactor[tPtnNo] = nullptr;
   }
   
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitionsInGrid(); i_Ptn++)
-    m_paRowCompactor[i_Ptn] = new RowCompactor;
+  for (tPN tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++)
+    m_paRowCompactor[tPtnNo] = new RowCompactor;
   
   _checkInitialised_(CN_CRWHASH);
   
@@ -121,33 +121,33 @@ eEC CrwHash::eAppendRow(RowSingle* pRow)
 /*----------------------------------------------------------------------------*/
 /* return the ptn crwBuffer                                                   */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwHash::pCrwBuffer(i8 iPtn)
+CrwBuffer* CrwHash::pCrwBuffer(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
-  return m_pCrwBuffer[iPtn];
+  return m_pCrwBuffer[tPtnNo];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the ptn crwBuffer                                                      */
 /*----------------------------------------------------------------------------*/
-void CrwHash::vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer)
+void CrwHash::vCrwBuffer(tPN tPtnNo, CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
-  m_pCrwBuffer[iPtn] = pCrwBuffer;
+  m_pCrwBuffer[tPtnNo] = pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return a full crwBuffer for given partition (if any)                       */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwHash::pFullCrwBuffer(i8 iPtn)
+CrwBuffer* CrwHash::pFullCrwBuffer(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
   CrwBuffer* pFullCrwBuffer = nullptr;
   
-  CrwBuffer* pCrwBuffer = m_pCrwBuffer[iPtn] ?
-                            m_pCrwBuffer[iPtn]->pNextCrwBuffer() : nullptr;
+  CrwBuffer* pCrwBuffer = m_pCrwBuffer[tPtnNo] ?
+                            m_pCrwBuffer[tPtnNo]->pNextCrwBuffer() : nullptr;
   while (pCrwBuffer) {
     pFullCrwBuffer = pCrwBuffer;
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
@@ -168,7 +168,7 @@ CrwBuffer* CrwHash::pFullCrwBuffer(i8 iPtn)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwHash::pNewCrwBuffer(i8 i_Ptn)
+CrwBuffer* CrwHash::pNewCrwBuffer(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWHASH,_FOOTER_);
 
@@ -176,19 +176,19 @@ CrwBuffer* CrwHash::pNewCrwBuffer(i8 i_Ptn)
   CrwBuffer* pCrwBuffer = new CrwBuffer();;
   
   // link the old with this
-  pCrwBuffer->vNextBuffer(m_pCrwBuffer[i_Ptn]);
+  pCrwBuffer->vNextBuffer(m_pCrwBuffer[tPtnNo]);
   
-  if (m_pCrwBuffer[i_Ptn])
-    m_pCrwBuffer[i_Ptn]->vPrevBuffer(pCrwBuffer);
+  if (m_pCrwBuffer[tPtnNo])
+    m_pCrwBuffer[tPtnNo]->vPrevBuffer(pCrwBuffer);
   
-  m_pCrwBuffer[i_Ptn] = pCrwBuffer;
+  m_pCrwBuffer[tPtnNo] = pCrwBuffer;
   
   // set table and ptn no in it
   pCrwBuffer->vTable(m_pTable);
-  pCrwBuffer->vPtnNo(i_Ptn);
+  pCrwBuffer->vPtnNo(tPtnNo);
   
   // open buffer for append
-  pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn], true);
+  pCrwBuffer->vAppendOpen(m_paRowCompactor[tPtnNo], true);
   
   //m_pCrwBuffer[i_Ptn]->vDump();
   

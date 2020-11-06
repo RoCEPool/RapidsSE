@@ -24,10 +24,10 @@ namespace Load
     
   public:
     eEC        eAppendRow(RowSingle* pRow);
-    CrwBuffer* pCrwBuffer(i8 iPtn);
-    void       vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer);
-    CrwBuffer* pFullCrwBuffer(i8 iPtn);
-    CrwBuffer* pNewCrwBuffer(i8 iPartition);
+    CrwBuffer* pCrwBuffer(tPN tPtnNo);
+    void       vCrwBuffer(tPN tPtnNo, CrwBuffer* pCrwBuffer);
+    CrwBuffer* pFullCrwBuffer(tPN tPtnNo);
+    CrwBuffer* pNewCrwBuffer(tPN tPtnNo);
         
     Footer* aFooter(void);
   };
