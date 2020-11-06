@@ -48,8 +48,7 @@ namespace MetaData
     void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
-    i8      nIndexBuffers(i8 iIndexNo);
-    IndexDef* pIndexDef(Table* pTable, i8 iIndexNo);
+    i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     void    vIsDefinitionOnly(bool bIsDefinitionOnly);
     void    vIsLoading(bool bIsLoading);
@@ -66,7 +65,6 @@ namespace MetaData
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
-    void    vTidyUpIndex(i8 iIndexNo);
     i8      iToPartition(i8 iRowHash);
     
     //void vInsdelBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
