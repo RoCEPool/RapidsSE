@@ -17,7 +17,7 @@ void Step::vAddSteps_WriteHash(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwHash[].create -- create the CrwHash                                 */
+/* CrwHash[].create -- create the CrwHash                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashCreate(void)
 {
@@ -29,7 +29,7 @@ void Step::vWriteHashCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwHash[].delete -- delete the CrwHash                                 */
+/* CrwHash[].delete -- delete the CrwHash                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashDelete(void)
 {
@@ -43,50 +43,50 @@ void Step::vWriteHashDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwHash[].crwBuffer@ -- get crwbuffer for given partition                */
+/* CrwHash[].crwBuffer@ -- get crwbuffer for given partition                  */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashCrwBufferFetch(void)
 {
   ENTRY();
   
-  i8 iPartition = m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
   CrwHash* pWriteHash = *m_pLogicUnit->m_xpCrwHash;
 
-  m_pDataStack->vPushPtr(pWriteHash->pCrwBuffer(iPartition));
+  m_pDataStack->vPushPtr(pWriteHash->pCrwBuffer(tPtnNo));
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwHash[].crwBuffer! -- set crwbuffer for partition                      */
+/* CrwHash[].crwBuffer! -- set crwbuffer for partition                        */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashCrwBufferStore(void)
 {
   ENTRY();
   
-  i8 iPartition = m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
   
   CrwHash* pWriteHash = *m_pLogicUnit->m_xpCrwHash;
 
-  pWriteHash->vCrwBuffer(iPartition, pCrwBuffer);
+  pWriteHash->vCrwBuffer(tPtnNo, pCrwBuffer);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwHash[].FullCrwBuffer@ -- get full crwbuffer for partition             */
+/* CrwHash[].FullCrwBuffer@ -- get full crwbuffer for partition               */
 /*----------------------------------------------------------------------------*/
 void Step::vWriteHashFullCrwBufferFetch(void)
 {
   ENTRY();
   
-  i8 iPartition = m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
 
   CrwHash* pWriteHash = *m_pLogicUnit->m_xpCrwHash;
 
-  CrwBuffer* pCrwBuffer = pWriteHash->pFullCrwBuffer(iPartition);
+  CrwBuffer* pCrwBuffer = pWriteHash->pFullCrwBuffer(tPtnNo);
   
   m_pDataStack->vPushPtr(pCrwBuffer);
   
