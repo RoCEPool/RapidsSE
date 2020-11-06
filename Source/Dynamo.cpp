@@ -729,7 +729,7 @@ bool Dynamo::bParseOnNode(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* parse topology: on partition                                               */
+/* parse topology: on partition <tPtnNo>                                      */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bParseOnPartition(void)
 {
@@ -748,7 +748,7 @@ bool Dynamo::bParseOnPartition(void)
     if (i_Ptn >= AM::pGrid()->nPartitionsInGrid())
       return false;
     
-    m_pStageSpec->vPartition(i_Ptn);
+    m_pStageSpec->vPtnNo(i_Ptn);
     return true;
   }
   

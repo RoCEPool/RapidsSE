@@ -330,7 +330,7 @@ void Stage::vCreateStrands(void)
       
     case PO_SPECIFIC_PARTITION:
       RASSERT(! m_pStageSpec->bNodeTopo());
-      i_Ptn = m_pStageSpec->iPartition();
+      i_Ptn = m_pStageSpec->tPtnNo();
       vAdd(new Strand(m_pStageSpec, i_Ptn));
       break;
       

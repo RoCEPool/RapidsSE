@@ -15,7 +15,7 @@ namespace PipelineSpecs
     ePO  m_eTopology;  // stage topoplogy
     bool m_bNodeTopo;  // is node-level topology (or partition)?
     i8   m_iNode;      // stage node
-    i8   m_iPartition; // stage ptn
+    tPN  m_tPtnNo;     // stage ptn
     //i8  m_nThreads;  // threads
     
     // must be last
@@ -35,8 +35,8 @@ namespace PipelineSpecs
     void vNode(i8 i_Nde);
     i8   iNode(void);
     bool bNodeTopo(void);
-    i8   iPartition(void);
-    void vPartition(i8 i_Ptn);
+    tPN  tPtnNo(void);
+    void vPtnNo(tPN tPtnNo);
     OpSpec* pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);
     //void vThreads(i8 iThreads);
     //i8   nThreads(void);
