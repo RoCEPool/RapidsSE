@@ -267,8 +267,8 @@ i8 Table::nCrwBuffers(void)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    iBuffers += pTablePtn(iPartition)->nCrwBuffers();
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+    iBuffers += pTablePtn(i_TablePtn)->nCrwBuffers();
   }
   
   return iBuffers;
@@ -325,8 +325,8 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    IndexTree* pIndexTree = pTablePtn(iPartition)->pIndexTree(iIndexNo);
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+    IndexTree* pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(iIndexNo);
     
     iBuffers += pIndexTree->nEntBuffers();
   }
@@ -563,14 +563,14 @@ StreamDef*  Table::pPtnStreamDef(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to purge oldest buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
+bool Table::bPurge(i8 i_TablePtn, i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   //vTrace("Purging table %s\n"_Stz, m_sTableNm.azChar());
   
   // get the table ptn
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartition);
+  TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TablePtn);
   
   // purge the table ptn
   bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
@@ -580,7 +580,7 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 //
 //    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
 //
-//    bool bPurged = m_xSlots.bPurgeIndex(iPartition, pIndex->iIndexNo(), iOlderThanSeconds);
+//    bool bPurged = m_xSlots.bPurgeIndex(i_TablePtn, pIndex->iIndexNo(), iOlderThanSeconds);
 //
 //    if (! bPurged)
 //      return false;
@@ -624,8 +624,8 @@ void Table::vStreamDef(StreamDef* pStreamDef)
   
   m_pStreamDef = pStreamDef;
   
-  for (i8 iPartition = 0; iPartition < AM::nTablePtns(); iPartition++) {
-    TablePtn* pTablePtn = this->pTablePtn(iPartition);
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+    TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
     ReadApi* pReadApi = pTablePtn->pReadApi();
     pReadApi->vStreamDef(pStreamDef);
   }
