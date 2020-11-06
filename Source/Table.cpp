@@ -47,11 +47,10 @@ Table::Table(Stz* szTableNm)
   // create the table partitions
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
     
-    TablePtn* pTablePtn = new TablePtn(this);
-    m_pTablePtnVec->vAdd(pTablePtn);
-    
     tPN tPtnNo = TablePtn::tTablePtnToPtnNo(i_TablePtn);
-    m_pTablePtnVec->pGet(i_TablePtn)->vPtnNo(tPtnNo);
+    TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+    
+    m_pTablePtnVec->vAdd(pTablePtn);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

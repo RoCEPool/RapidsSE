@@ -32,7 +32,7 @@ namespace Partitioning
     void* operator new(size_t);
     void  operator delete(void*);
     
-    TablePtn(Table* pTable);
+    TablePtn(Table* pTable, tPN tPtnNo);
     ~TablePtn(void) noexcept(false);
   
     void vAddIndex(IndexTree* pIndexTree);
@@ -57,7 +57,6 @@ namespace Partitioning
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);
     tPN  tPtnNo(void);
-    void vPtnNo(tPN tPtnNod);
     bool bPopulateIndex(i8 iIndexNo);
     bool bPurge(i8 iOlderThanSeconds);
     ReadApi* pReadApi(void);

@@ -45,15 +45,15 @@ void TablePtn::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TablePtn::TablePtn(Table* pTable)
+TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
 : Object(CN_TABLEPTN)
 , m_okLock(LK_PARTITION,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_tPtnNo = C_UNKNOWN;
   m_pTable = pTable;
-  
+  m_tPtnNo = tPtnNo;
+
   m_bLowMemLoad = false;
   
   m_pRootCrwBuffer  = nullptr;
@@ -735,16 +735,6 @@ tPN TablePtn::tPtnNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this partitions partitionId                                            */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vPtnNo(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_tPtnNo = tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
