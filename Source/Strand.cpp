@@ -29,14 +29,14 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
   if (m_pStageSpec->bNodeTopo()) {
     // node only
     m_i_Node = i_Strand;
-    m_iPtnNo = C_UNKNOWN;
+    m_tPtnNo = C_UNKNOWN;
     m_i_TablePtn = C_UNKNOWN;
   }
   else {
     // node,slot
-    m_iPtnNo = i_Strand;
-    m_i_Node = TablePtn::iPtnNoToNode(m_iPtnNo);
-    m_i_TablePtn = TablePtn::iPtnNoToTablePtn(m_iPtnNo);
+    m_tPtnNo = i_Strand;
+    m_i_Node = TablePtn::iPtnNoToNode(m_tPtnNo);
+    m_i_TablePtn = TablePtn::iPtnNoToTablePtn(m_tPtnNo);
   }
   
   vSynthesiseName();
@@ -97,13 +97,13 @@ i8 Strand::i_Node(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition this strand needs to run on                                  */
+/* get partition in grid this strand needs to run on                          */
 /*----------------------------------------------------------------------------*/
-i8 Strand::iPtnNo(void)
+i8 Strand::tPtnNo(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
-  return m_iPtnNo;
+  return m_tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +137,7 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
   if (m_pStageSpec->bNodeTopo())
     iPtnOnNode = m_i_Node;
   else
-    iPtnOnNode = TablePtn::iPtnNoToNode(m_iPtnNo);
+    iPtnOnNode = TablePtn::iPtnNoToNode(m_tPtnNo);
   
   if (iPtnOnNode == i_ThisNode) {
     // for each operator in the stage ptn

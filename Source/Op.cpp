@@ -1012,7 +1012,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Strand* pStrand = pNextStage->pGetPartitionStrand(m_iPartition);
-      i8 i_Ptn = pStrand->iPtnNo();
+      i8 i_Ptn = pStrand->tPtnNo();
       vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, i_Ptn);
       break;
     }
@@ -1395,7 +1395,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
         
         Strand* pStrand = pNextStage->pGet(i_Strand);
-        i_Ptn = pStrand->iPtnNo();
+        i_Ptn = pStrand->tPtnNo();
         
         // xmitNode is the partition node
     

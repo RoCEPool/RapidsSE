@@ -12,7 +12,7 @@ namespace Pipelines
     i8         m_i_Strand;    // which strand of stage
     StageSpec* m_pStageSpec;  // this is a strand of which stage
   
-    i8         m_iPtnNo;       // which partition in grid
+    tPN        m_tPtnNo;       // which partition in grid
     i8         m_i_Node;       // which node in grid
     i8         m_i_TablePtn;   // which table partition in node
 
@@ -30,7 +30,7 @@ namespace Pipelines
   
     i8     i_Strand(void);
     i8     i_Node(void);
-    i8     iPtnNo(void);
+    tPN    tPtnNo(void);
     i8     i_TablePtn(void);
   
     StageSpec* pStageSpec(void);

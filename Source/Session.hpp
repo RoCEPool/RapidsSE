@@ -46,7 +46,7 @@ namespace Sessions
     
     i8       m_iPid;             // process which created this session
   
-    i8       m_iPtnNo;           // which partition this session processes
+    tPN      m_tPtnNo;           // which partition this session processes
     DicStack m_oDicStack;        // dictionary stack
     Stack*   m_pJobStack;        // stack of jobs
 

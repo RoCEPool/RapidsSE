@@ -83,7 +83,7 @@ Strand* Stage::pGetPartitionStrand(i8 i_Ptn)
     pStageSpec = pStrand->pStageSpec();
     
     if ( ! pStageSpec->bNodeTopo() &&
-        pStrand->iPtnNo() == i_Ptn)
+        pStrand->tPtnNo() == i_Ptn)
       return pStrand;
   }
   
@@ -151,7 +151,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      i8 iPartitionNode = TablePtn::iPtnNoToNode(pStrand->iPtnNo());
+      i8 iPartitionNode = TablePtn::iPtnNoToNode(pStrand->tPtnNo());
       if (iPartitionNode == iNode) {
         nOps += pStrand->nItems();
       }
@@ -355,7 +355,7 @@ void Stage::vCreateStrands(void)
       }
       else {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vPartition(pStrand->iPtnNo());
+        pOp->vPartition(pStrand->tPtnNo());
         pStrand->vAdd(pOp);
       }
     }
