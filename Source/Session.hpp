@@ -81,8 +81,8 @@ namespace Sessions
     void      vEndTx(void);
     void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
-    i8        iPartition(void);
-    void      vPartition(i8 iPartition);
+    tPN       tPtnNo(void);
+    void      vPtnNo(tPN tPtnNo);
     DicStack* pPathStack(void);
       
     void      vReport(void);

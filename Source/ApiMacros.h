@@ -232,7 +232,7 @@ EndDefine
   if ( (iTrace & API_TL_ERROR) == API_TL_ERROR) \
     vTrace("!%s(%s): %p(%lld)\n"_Stz,  \
            aAC[eApiCall], aMarker, \
-           pSession, pSession ? pSession->iPartition() : -1); \
+           pSession, pSession ? pSession->tPtnNo() : -1); \
 } \
 EndDefine
 
@@ -250,7 +250,7 @@ EndDefine
   if ( (iTrace & API_TL_ERROR) == API_TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
            aAC[eApiCall], aMarker, \
-           pSession, pSession ? pSession->iPartition() : -1, \
+           pSession, pSession ? pSession->tPtnNo() : -1, \
            aEC[eErrorCode], (i8)eErrorCode); \
 } \
 EndDefine
@@ -269,7 +269,7 @@ EndDefine
   if ( (iTrace & API_TL_ERROR) == API_TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s\n"_Stz,  \
            aAC[eApiCall], aMarker, \
-           pSession, pSession ? pSession->iPartition() : -1, \
+           pSession, pSession ? pSession->tPtnNo() : -1, \
            sParam ? sParam : "<null>"_Stz); \
 } \
 EndDefine

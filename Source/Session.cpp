@@ -326,7 +326,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 /*----------------------------------------------------------------------------*/
 /* which partition                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Session::iPartition(void)
+tPN Session::tPtnNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -336,11 +336,11 @@ i8 Session::iPartition(void)
 /*----------------------------------------------------------------------------*/
 /* set partition                                                              */
 /*----------------------------------------------------------------------------*/
-void Session::vPartition(i8 iPartition)
+void Session::vPtnNo(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_tPtnNo = iPartition;
+  m_tPtnNo = tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
