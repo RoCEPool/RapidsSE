@@ -101,7 +101,7 @@ void Step::vIndexCompactPtn(void)
   Table* pTable = pIndex->pTable();
   
   Job* pJob = m_pTask->m_pJob;
-  i8 i_Ptn  = pJob->m_pOp->iPartition();
+  i8 i_Ptn  = pJob->m_pOp->tPtnNo();
   i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(i_Ptn);
 
   
@@ -463,7 +463,7 @@ void Step::vIndexIndexTree(void)
   
   Job* pJob = m_pTask->m_pJob;
   
-  i8 i_Ptn = pJob->m_pOp->iPartition();
+  i8 i_Ptn = pJob->m_pOp->tPtnNo();
 
   i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(i_Ptn);
 
@@ -716,7 +716,7 @@ void Step::vIndexVerifyPtn(void)
   Table* pTable = pIndex->pTable();
   
   Job* pJob = m_pTask->m_pJob;
-  i8 i_Ptn  = pJob->m_pOp->iPartition();
+  i8 i_Ptn  = pJob->m_pOp->tPtnNo();
   i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(i_Ptn);
 
   IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);

@@ -461,7 +461,7 @@ void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  m_xRluCommon.m_i_TablePtn = AM::pTaskJob()->m_pOp->iPartition();
+  m_xRluCommon.m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1241,7 +1241,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     *(++aiDstk) = iOuterArg0;
   }
   
-  aRluCommon->m_i_TablePtn = AM::pTaskJob()->m_pOp->iPartition();
+  aRluCommon->m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
   aRluCommon->m_nPtns  = AM::nPartitionsInGrid();
   aRluCommon->m_iHash  = 0;
 

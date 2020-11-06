@@ -124,7 +124,7 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->iPartition());
+  m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->tPtnNo());
   
   EXIT();
 }

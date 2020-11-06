@@ -355,7 +355,7 @@ void Stage::vCreateStrands(void)
       }
       else {
         Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vPartition(pStrand->tPtnNo());
+        pOp->vPtnNo(pStrand->tPtnNo());
         pStrand->vAdd(pOp);
       }
     }
