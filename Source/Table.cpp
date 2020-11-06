@@ -51,7 +51,7 @@ Table::Table(Stz* szTableNm)
     m_pTablePtnVec->vAdd(pTablePtn);
     
     tPN tPtnNo = TablePtn::tTablePtnToPtnNo(i_TablePtn);
-    m_pTablePtnVec->pGet(i_TablePtn)->vPartitionId(tPtnNo);
+    m_pTablePtnVec->pGet(i_TablePtn)->vPtnNo(tPtnNo);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

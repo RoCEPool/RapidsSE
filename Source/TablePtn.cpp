@@ -51,7 +51,7 @@ TablePtn::TablePtn(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_iPartitionId = -1;
+  m_tPtnNo = C_UNKNOWN;
   m_pTable = pTable;
   
   m_bLowMemLoad = false;
@@ -94,7 +94,7 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
   TablePtn* pTablePtn = _pTablePtn(pObject);
   
   vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
-         pTablePtn->m_iPartitionId, pTablePtn->m_pIndexTreeVec);
+         pTablePtn->m_tPtnNo, pTablePtn->m_pIndexTreeVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -705,7 +705,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
     
     m_pRootCrwBuffer = new CrwBuffer;
     m_pRootCrwBuffer->vTable(m_pTable);
-    m_pRootCrwBuffer->vPtnNo(m_iPartitionId);
+    m_pRootCrwBuffer->vPtnNo(m_tPtnNo);
     m_pRootCrwBuffer->vIsPermanent(true);
     
     m_pCurrentCrwBuffer = m_pRootCrwBuffer;
@@ -715,7 +715,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   pCrwBuffer->vTable(m_pTable);
-  pCrwBuffer->vPtnNo(m_iPartitionId);
+  pCrwBuffer->vPtnNo(m_tPtnNo);
   pCrwBuffer->vIsPermanent(true);
 
   pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
@@ -728,23 +728,23 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get this partitions partitionId                                            */
+/* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::iPartitionId(void)
+tPN TablePtn::tPtnNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_iPartitionId;
+  return m_tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set this partitions partitionId                                            */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vPartitionId(i8 iPartitionId)
+void TablePtn::vPtnNo(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_iPartitionId = iPartitionId;
+  m_tPtnNo = tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -803,7 +803,7 @@ void TablePtn::vPublish(void)
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
   
-  vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionId,
+  vTrace("Partition%lld: published %lld rows\n"_Stz,m_tPtnNo,
          m_pCurrentCrwBuffer->nRowCount());
   
   m_okLock.vDropWrite();
@@ -905,7 +905,7 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   
   pCrwBuffer->vTable(pTable());
-  pCrwBuffer->vPtnNo(iPartitionId());
+  pCrwBuffer->vPtnNo(tPtnNo());
   pCrwBuffer->vIsPermanent(false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
