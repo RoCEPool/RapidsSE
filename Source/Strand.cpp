@@ -28,15 +28,15 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
   // determine the node,slot coordinates of this strand
   if (m_pStageSpec->bNodeTopo()) {
     // node only
-    m_i_Nde = i_Strand;
-    m_i_Ptn = C_UNKNOWN;
+    m_i_Node = i_Strand;
+    m_iPtnNo = C_UNKNOWN;
     m_i_TablePtn = C_UNKNOWN;
   }
   else {
     // node,slot
-    m_i_Ptn = i_Strand;
-    m_i_Nde = TablePtn::iPartitionToNode(m_i_Ptn);
-    m_i_TablePtn = TablePtn::iPartitionToTablePtn(m_i_Ptn);
+    m_iPtnNo = i_Strand;
+    m_i_Node = TablePtn::iPtnNoToNode(m_iPtnNo);
+    m_i_TablePtn = TablePtn::iPtnNoToTablePtn(m_iPtnNo);
   }
   
   vSynthesiseName();
@@ -68,13 +68,13 @@ void Strand::vDump(void)
   if (m_pStageSpec->bNodeTopo()) {
     vTrace("  [%02lld] (N%lld) Node-Strand %s:\n"_Stz,
            m_i_Strand,
-           m_i_Nde,
+           m_i_Node,
            m_sStrandNm.szStz());
   }
   else {
     vTrace("  [%02lld] (N%lld,S%02lld) Partition-Strand %s:\n"_Stz,
            m_i_Strand,
-           m_i_Nde,
+           m_i_Node,
            m_i_TablePtn,
            m_sStrandNm.szStz());
   }
@@ -87,27 +87,27 @@ void Strand::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition this strand needs to run on                                */
+/* get partition this strand needs to run on                                  */
 /*----------------------------------------------------------------------------*/
-i8 Strand::i_Nde(void)
+i8 Strand::i_Node(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
-  return m_i_Nde;
+  return m_i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition this strand needs to run on                                */
+/* get partition this strand needs to run on                                  */
 /*----------------------------------------------------------------------------*/
-i8 Strand::i_Ptn(void)
+i8 Strand::iPtnNo(void)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
-  return m_i_Ptn;
+  return m_iPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get slot this strand needs to run on                                     */
+/* get slot this strand needs to run on                                       */
 /*----------------------------------------------------------------------------*/
 i8 Strand::i_TablePtn(void)
 {
@@ -117,7 +117,7 @@ i8 Strand::i_TablePtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage spec for this strand                                           */
+/* get stage spec for this strand                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* Strand::pStageSpec(void)
 {
@@ -129,17 +129,17 @@ StageSpec* Strand::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
+void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
-  i8 iPtnNode;
+  i8 iPtnOnNode;
   if (m_pStageSpec->bNodeTopo())
-    iPtnNode = m_i_Nde;
+    iPtnOnNode = m_i_Node;
   else
-    iPtnNode = TablePtn::iPartitionToNode(m_i_Ptn);
+    iPtnOnNode = TablePtn::iPtnNoToNode(m_iPtnNo);
   
-  if (iPtnNode == iNode) {
+  if (iPtnOnNode == i_ThisNode) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       
@@ -160,12 +160,12 @@ void Strand::vSynthesiseName(void)
  
   if (m_pStageSpec->bNodeTopo()) {
     m_sStrandNm.vSprint("_strand_N%lld_of_%s"_Stz,
-                          m_i_Nde,
+                          m_i_Node,
                           m_pStageSpec->szStageNm());
   }
   else {
     m_sStrandNm.vSprint("_strandv_N%lldS%lld_of_%s"_Stz,
-                          m_i_Nde,
+                          m_i_Node,
                           m_i_TablePtn,
                           m_pStageSpec->szStageNm());
   }

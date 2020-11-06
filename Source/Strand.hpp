@@ -12,9 +12,9 @@ namespace Pipelines
     i8         m_i_Strand;    // which strand of stage
     StageSpec* m_pStageSpec;  // this is a strand of which stage
   
-    i8         m_i_Ptn;       // which partition in grid
-    i8         m_i_Nde;       // which node in grid
-    i8         m_i_TablePtn;       // which slot in node
+    i8         m_iPtnNo;       // which partition in grid
+    i8         m_i_Node;       // which node in grid
+    i8         m_i_TablePtn;   // which table partition in node
 
     // must be last
     Footer m_xFooter;
@@ -29,8 +29,8 @@ namespace Pipelines
     void   vDump(void);
   
     i8     i_Strand(void);
-    i8     i_Nde(void);
-    i8     i_Ptn(void);
+    i8     i_Node(void);
+    i8     iPtnNo(void);
     i8     i_TablePtn(void);
   
     StageSpec* pStageSpec(void);

@@ -162,7 +162,7 @@ void Grid::vDumpPartitioning(void)
   if (nPartitionsInGrid()) {
     for (i8 i_Index = 0; i_Index < nPartitionsInGrid(); i_Index++)
       vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
-             TablePtn::iPartitionToNode(i_Index));
+             TablePtn::iPtnNoToNode(i_Index));
     vTrace("\n"_Stz);
   }
 }

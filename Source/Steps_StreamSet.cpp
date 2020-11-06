@@ -323,7 +323,7 @@ void Step::vStreamSetAddListPartitions(void)
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
-  i8 iNode = TablePtn::iPartitionToNode(iPartition);
+  i8 iNode = TablePtn::iPtnNoToNode(iPartition);
   Node* pNode = pGrid->pGetNode(iNode);
   
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,

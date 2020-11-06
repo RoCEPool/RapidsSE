@@ -548,7 +548,7 @@ void Op::vPartition(i8 iPartition)
   m_iPartition = iPartition;
 
   // set the node tis partition belongs to 
-  m_iNode = TablePtn::iPartitionToNode(m_iPartition);
+  m_iNode = TablePtn::iPtnNoToNode(m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1012,14 +1012,14 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Strand* pStrand = pNextStage->pGetPartitionStrand(m_iPartition);
-      i8 i_Ptn = pStrand->i_Ptn();
+      i8 i_Ptn = pStrand->iPtnNo();
       vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, i_Ptn);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 i_Nde = TablePtn::iPartitionToNode(m_iPartition);
+      i8 i_Nde = TablePtn::iPtnNoToNode(m_iPartition);
       vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Nde);
       break;
     }
@@ -1344,7 +1344,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       i_Ptn = TablePtn::iTablePtnToPtnNo(i_TablePtn);
       
       // xmitNode is the partition node
-      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      m_iXmitNode = TablePtn::iPtnNoToNode(i_Ptn);
       ASSERT(m_iXmitNode == m_pPipeline->iOriginatingNode());
    
       if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
@@ -1395,11 +1395,11 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
         
         Strand* pStrand = pNextStage->pGet(i_Strand);
-        i_Ptn = pStrand->i_Ptn();
+        i_Ptn = pStrand->iPtnNo();
         
         // xmitNode is the partition node
     
-        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+        m_iXmitNode = TablePtn::iPtnNoToNode(i_Ptn);
         if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
  #ifdef WITH_NO_XMIT_OPT
           if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
@@ -1477,7 +1477,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       i_Ptn = pDataBuffer->i_TablePtn();
       
       // xmitNode is the partition node
-      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      m_iXmitNode = TablePtn::iPtnNoToNode(i_Ptn);
       
 #ifdef WITH_NO_XMIT_OPT
       if ( m_iXmitNode == i_ThisNode) {
@@ -1521,7 +1521,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       i_Ptn = TablePtn::iTablePtnToPtnNo(i_TablePtn);
       
       // xmitNode is this node
-      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      m_iXmitNode = TablePtn::iPtnNoToNode(i_Ptn);
       RASSERT(m_iXmitNode == AM::pGrid()->iThisNode());
       
       ASSERT( ! bSet );
@@ -1537,7 +1537,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       for (i_Ptn = 0; i_Ptn < pNextStage->nItems(); i_Ptn++) {
         
         // xmitNode is the partition node
-        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+        m_iXmitNode = TablePtn::iPtnNoToNode(i_Ptn);
         ASSERT( ! bSet );
 #ifdef WITH_NO_XMIT_OPT
         if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
@@ -1585,7 +1585,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       i_Ptn = m_iRobin % AM::pGrid()->nPartitionsInGrid();
       
       // xmitNode is the partition node
-      m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+      m_iXmitNode = TablePtn::iPtnNoToNode(i_Ptn);
       
       ASSERT( ! bSet );
       vSend(pOperand, bSet, m_iXmitNode, i_Ptn);
@@ -1668,7 +1668,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, e
       ASSERT(0);
   }
   
-  m_iXmitNode = TablePtn::iPartitionToNode(i_SendPtn);
+  m_iXmitNode = TablePtn::iPtnNoToNode(i_SendPtn);
   vSend(pOperand, bSet, m_iXmitNode, i_SendPtn);
   
   // delete the operand

@@ -372,7 +372,7 @@ i8 Session::i_TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return TablePtn::iPartitionToTablePtn(m_iPartition);
+  return TablePtn::iPtnNoToTablePtn(m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/

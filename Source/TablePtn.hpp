@@ -25,8 +25,8 @@ namespace Partitioning
     
   public:
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static i8   iPartitionToNode(i8 i_Ptn);
-    static i8   iPartitionToTablePtn(i8 i_Ptn);
+    static i8   iPtnNoToNode(i8 iPtnNo);
+    static i8   iPtnNoToTablePtn(i8 iPtnNo);
     static i8   iTablePtnToPtnNo(i8 i_TablePtn);
   
     void* operator new(size_t);
