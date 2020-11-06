@@ -128,7 +128,7 @@ void vLib_PTN_CALC(void* pLU)
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
   aRluCommon->m_i_Ptn =
-    PtnLib::iPartition(aRluCommon->m_iHash,aRluCommon->m_nPtns);
+    PtnLib::tPtnNo(aRluCommon->m_iHash,aRluCommon->m_nPtns);
 }
 
 /*----------------------------------------------------------------------------*/

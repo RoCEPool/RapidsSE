@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 PtnLib::iPartition(i8 iRunningHash, i8 nPtns)
+tPN PtnLib::tPtnNo(i8 iRunningHash, i8 nPartitionsInGrid)
 {
   _static_
   
-  i8 i_Ptn = iRunningHash % nPtns;
+  i8 tPtnNo = iRunningHash % nPartitionsInGrid;
 
-  return i_Ptn;
+  return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
