@@ -90,9 +90,9 @@ void Step::vEntBufferPartitionStore(void)
   Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  i8 iPartitionNo = m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
-  pIndexBuffer->vPtnNo(iPartitionNo);
+  pIndexBuffer->vPtnNo(tPtnNo);
   
   EXIT();
 }

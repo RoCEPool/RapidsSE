@@ -636,9 +636,9 @@ void Step::vTableVisualize(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->nTablePtns(); iPartition++) {
-    TablePtn* pTablePtn = pTable->pTablePtn(iPartition);
-    vTrace("Table Partition %lld\n"_Stz, iPartition);
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::pGrid()->nTablePtns(); i_TablePtn++) {
+    TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+    vTrace("Table Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->vVisualizeTable();
   }
   

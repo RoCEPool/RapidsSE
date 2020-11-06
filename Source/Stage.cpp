@@ -151,8 +151,8 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      i8 iPartitionNode = TablePtn::iPtnNoToNode(pStrand->tPtnNo());
-      if (iPartitionNode == iNode) {
+      i8 iNode_exe = TablePtn::iPtnNoToNode(pStrand->tPtnNo());
+      if (iNode_exe == iNode) {
         nOps += pStrand->nItems();
       }
     }
