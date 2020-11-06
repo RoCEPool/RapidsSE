@@ -36,7 +36,7 @@ void Step::vQueuesExecutingLength(void)
 {
   ENTRY();
   
-  i8 iSlot = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
   Queues* pQueues = AM::pQueues();
   m_pDataStack->vPushInt(pQueues->nTasksExecuting());
@@ -51,7 +51,7 @@ void Step::vQueuesReadyLength(void)
 {
   ENTRY();
   
-  i8 iSlot = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
   Queues* pQueues = AM::pQueues();
   m_pDataStack->vPushInt(pQueues->nTasksReady());

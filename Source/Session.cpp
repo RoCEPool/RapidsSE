@@ -207,7 +207,7 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSession->m_iPartition,
-         pSession->iSlot());
+         pSession->i_TablePtn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,7 +368,7 @@ void Session::vReport(void)
 /*----------------------------------------------------------------------------*/
 /* which slot                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Session::iSlot(void)
+i8 Session::i_TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   

@@ -54,7 +54,7 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
   // get the slot
-  i8 iSlot = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
@@ -65,12 +65,12 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   i8 nBuffers = 0;
   i8 nEntries = 0;
   
-  pIndex->vAnalyze(iSlot, nBuffers, nEntries);
+  pIndex->vAnalyze(i_TablePtn, nBuffers, nEntries);
   
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
-                                    TablePtn::iTablePtnToPtnNo(iSlot),
+                                    TablePtn::iTablePtnToPtnNo(i_TablePtn),
                                     nBuffers,
                                     nEntries,
                                     C_VARGS_END);
@@ -96,7 +96,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   // get the slot
-  i8 iSlot = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
@@ -107,12 +107,12 @@ void Step::vStreamSetAddAnalyzeTable(void)
   i8 nBuffers = 0;
   i8 nRows = 0;
   
-  pTable->vAnalyze(iSlot, nBuffers, nRows);
+  pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
   
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
-                                    TablePtn::iTablePtnToPtnNo(iSlot),
+                                    TablePtn::iTablePtnToPtnNo(i_TablePtn),
                                     nBuffers,
                                     nRows,
                                     C_VARGS_END);

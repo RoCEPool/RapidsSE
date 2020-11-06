@@ -465,11 +465,11 @@ void Step::vIndexIndexTree(void)
   
   i8 i_Ptn = pJob->m_pOp->iPartition();
 
-  i8 iSlot = TablePtn::iPartitionToTablePtn(i_Ptn);
+  i8 i_TablePtn = TablePtn::iPartitionToTablePtn(i_Ptn);
 
   Table* pTable = pIndex->pTable();
   
-  TablePtn* pTablePtn = pTable->pTablePtn(iSlot);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   i8 iIndexNo = pIndex->iIndexNo();
 

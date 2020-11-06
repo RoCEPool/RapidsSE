@@ -98,21 +98,21 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert partition number to node number                                    */
+/* convert grid-wide partition number to which node its on node               */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::iPartitionToNode(i8 iPartition)
+i8 TablePtn::iPartitionToNode(i8 iPtnNo)
 {
-  i8 iNode = iPartition % AM::nDefinedNodes();
+  i8 i_Node = iPtnNo % AM::nDefinedNodes();
   
-  return iNode;
+  return i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert partition number to slot number                                    */
+/* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::iPartitionToTablePtn(i8 i_Ptn)
+i8 TablePtn::iPartitionToTablePtn(i8 iPtnNo)
 {
-  i8 i_TablePtn = i_Ptn / AM::nDefinedNodes();
+  i8 i_TablePtn = iPtnNo / AM::nDefinedNodes();
   
   return i_TablePtn;
 }
@@ -120,12 +120,11 @@ i8 TablePtn::iPartitionToTablePtn(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* convert slot number to partition number                                    */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::iTablePtnToPtnNo(i8 iSlot)
+i8 TablePtn::iTablePtnToPtnNo(i8 i_TablePtn)
 {
-  i8 iPartition =
-  (iSlot * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  i8 iPtnNo = (i_TablePtn * AM::nDefinedNodes()) + AM::iThisNodeNo();
   
-  return iPartition;
+  return iPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/

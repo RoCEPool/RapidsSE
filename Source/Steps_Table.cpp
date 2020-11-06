@@ -134,7 +134,7 @@ void Step::vTableAsSrcStreamDef(void)
 void Step::vTableLazyBuildIndexes(void)
 {
   ENTRY();
-  i8 iSlot;
+  i8 i_TablePtn;
   s48K sString;
   
   m_pDataStack->vPopStr(sString,__func__);
@@ -144,9 +144,9 @@ void Step::vTableLazyBuildIndexes(void)
   
   m_pDataStack->vPopStr(sString,__func__);
   
-  iSlot = sString.iToI8();
+  i_TablePtn = sString.iToI8();
   
-  pTable->vLazyBuildIndexes(iSlot);
+  pTable->vLazyBuildIndexes(i_TablePtn);
   
   EXIT();
 }
@@ -300,8 +300,8 @@ void Step::vTableTablePtnFetch(void)
   Job* pJob = m_pTask->m_pJob;
   
   i8 i_Ptn = pJob->m_pOp->iPartition();
-  i8 iSlot = TablePtn::iPartitionToTablePtn(i_Ptn);
-  TablePtn* pTablePtn = pTable->pTablePtn(iSlot);
+  i8 i_TablePtn = TablePtn::iPartitionToTablePtn(i_Ptn);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);
   
@@ -321,8 +321,8 @@ void Step::vTableTablePtnZero(void)
   
   i8 i_Ptn = 0; // pJob->m_pOp->iPartition();
   
-  i8 iSlot = TablePtn::iPartitionToTablePtn(i_Ptn);
-  TablePtn* pTablePtn = pTable->pTablePtn(iSlot);
+  i8 i_TablePtn = TablePtn::iPartitionToTablePtn(i_Ptn);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);
   
@@ -481,9 +481,9 @@ void Step::vTablePublish(void)
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  i8 iSlot = m_pDataStack->iPopAsInt(__func__);
+  i8 i_TablePtn = m_pDataStack->iPopAsInt(__func__);
   
-  pTable->vPublish(iSlot);
+  pTable->vPublish(i_TablePtn);
   
   EXIT();
 }
@@ -497,11 +497,11 @@ void Step::vTablePurge(void)
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  i8 iSlot = m_pDataStack->iPopAsInt(__func__);
+  i8 i_TablePtn = m_pDataStack->iPopAsInt(__func__);
   
   i8 iOlderThanSeconds = m_pDataStack->iPopAsInt(__func__);
   
-  bool bPurged = pTable->bPurge(iSlot,iOlderThanSeconds);
+  bool bPurged = pTable->bPurge(i_TablePtn,iOlderThanSeconds);
   
   EXIT();
 }
@@ -524,10 +524,10 @@ void Step::vTableScan(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  i8 iSlot = pJob_SubFetch->i_TablePtn();
+  i8 i_TablePtn = pJob_SubFetch->i_TablePtn();
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  TablePtn* pTablePtn = pTable->pPartition(iSlot);
+  TablePtn* pTablePtn = pTable->pPartition(i_TablePtn);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position in the first row buffer
@@ -535,7 +535,7 @@ void Step::vTableScan(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results
-  pFetchBuffer = new FetchBuffer(pTable, iSlot);
+  pFetchBuffer = new FetchBuffer(pTable, i_TablePtn);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
@@ -569,7 +569,7 @@ void Step::vTableScan(void)
         pQueue->vAppend(pFetchBuffer);
         
         // create another FetchBuffer for the results
-        pFetchBuffer = new FetchBuffer(pTable, iSlot);
+        pFetchBuffer = new FetchBuffer(pTable, i_TablePtn);
         
         // insert row from entry in new fetchBuffer
         bool bResult = pFetchBuffer->bAppendCrw(aCrw);

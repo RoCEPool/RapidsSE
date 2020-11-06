@@ -87,7 +87,7 @@ namespace Sessions
       
     void      vReport(void);
     
-    i8        iSlot(void);
+    i8        i_TablePtn(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   

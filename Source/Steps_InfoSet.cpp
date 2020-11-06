@@ -143,7 +143,7 @@ void Step::vInfoSetAddRowCount(void)
   Job* pJob = m_pTask->m_pJob;
   i8 i_Ptn = pJob->m_pOp->iPartition();
   
-  i8 iSlot = TablePtn::iPartitionToTablePtn(i_Ptn);
+  i8 i_TablePtn = TablePtn::iPartitionToTablePtn(i_Ptn);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNTINFO);
@@ -151,7 +151,7 @@ void Step::vInfoSetAddRowCount(void)
   i8 nBuffers = 0;
   i8 nRows = 0;
   
-  pTable->vAnalyze(iSlot, nBuffers, nRows);
+  pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
   
   Row* pRow = pInfoSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,

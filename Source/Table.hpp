@@ -41,7 +41,7 @@ namespace MetaData
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
     
     void    vAddIndex(Index* pIndex);
-    void    vAnalyze(i8 iSlot, i8& nBuffers, i8& nRows);
+    void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
     void    vCompactIndex(Index* pIndex);
     void    vCreatePtnDef(void);
     i8      nCrwBuffers(void);
@@ -54,7 +54,7 @@ namespace MetaData
     void    vIsDefinitionOnly(bool bIsDefinitionOnly);
     void    vIsLoading(bool bIsLoading);
     bool    bIsLoading(void);
-    void    vLazyBuildIndexes(i8 iSlot);
+    void    vLazyBuildIndexes(i8 i_TablePtn);
     void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);

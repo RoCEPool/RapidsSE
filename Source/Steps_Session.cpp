@@ -110,7 +110,7 @@ void Step::vSessionSlotFetch(void)
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushInt(pSession->iSlot());
+  m_pDataStack->vPushInt(pSession->i_TablePtn());
   
   EXIT();
 }
