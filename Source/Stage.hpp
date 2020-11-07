@@ -26,7 +26,7 @@ namespace Pipelines
     
     void    vCancelPipeline(Task* pTriggeringTask);
     Strand* pGetPartitionStrand(i8 i_Ptn);
-    Strand* pGetNodeStrand(i8 i_Nde);
+    Strand* pGetNodeStrand(i8 i_Node);
     i8      nOpsOnNode(i8 iNode);
     Op*     pPipeOutOp(ePX eTopologyX, i8 i_Node, tPN tPtnNo, i8 iOp);
     Stz*    szStageNm(void);

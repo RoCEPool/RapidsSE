@@ -120,11 +120,11 @@ i8 StageSpec::iNode(void)
 /*----------------------------------------------------------------------------*/
 /* set node                                                                   */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vNode(i8 i_Nde)
+void StageSpec::vNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_iNode = i_Nde;
+  m_iNode = i_Node;
 }
 
 /*----------------------------------------------------------------------------*/

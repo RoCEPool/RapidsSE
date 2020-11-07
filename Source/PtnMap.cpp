@@ -51,9 +51,9 @@ i8 PtnMap::i_WhichNode(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Nde = m_iaInNode[i_Ptn];
+  i8 i_Node = m_iaInNode[i_Ptn];
   
-  return i_Nde;
+  return i_Node;
 }
 
 /*============================================================================*/

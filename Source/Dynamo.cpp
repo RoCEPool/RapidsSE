@@ -716,10 +716,10 @@ bool Dynamo::bParseOnNode(void)
     vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.szStz());
 #endif
     m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
-    i8 i_Nde = sLocus.szStz()->iToI8();
-    if ( i_Nde > AM::pGrid()->nConnectedNodes() )
+    i8 i_Node = sLocus.szStz()->iToI8();
+    if ( i_Node > AM::pGrid()->nConnectedNodes() )
       return false;
-    m_pStageSpec->vNode(i_Nde);
+    m_pStageSpec->vNode(i_Node);
     return true;
   }
   

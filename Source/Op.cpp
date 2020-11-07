@@ -1256,17 +1256,17 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, tPN tPtnNo)
+void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   XmitOperand* pXmitOperand;
   
   // new an xmit operand
-  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, this, i_Nde, tPtnNo);
+  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, this, i_Node, tPtnNo);
   
   // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(i_Nde);
+  Node* pSendNode = AM::pGrid()->pGetNode(i_Node);
   
   if (bSet) {
     
@@ -1305,8 +1305,8 @@ void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eX
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
-  for (i8 i_Nde = 0; i_Nde < pNextStage->nItems(); i_Nde++) {
-    vSend(pOperand, bSet, i_Nde, C_UNKNOWN);
+  for (i8 i_Node = 0; i_Node < pNextStage->nItems(); i_Node++) {
+    vSend(pOperand, bSet, i_Node, C_UNKNOWN);
   }
   
   // delete the operand
@@ -1599,7 +1599,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
 /*----------------------------------------------------------------------------*/
 /* send the operand to a specific node                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind,i8 i_Nde)
+void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind,i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1611,7 +1611,7 @@ void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eX
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
-  vSend(pOperand, bSet, i_Nde, C_UNKNOWN);
+  vSend(pOperand, bSet, i_Node, C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);

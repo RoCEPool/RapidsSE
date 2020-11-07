@@ -32,7 +32,7 @@ namespace PipelineSpecs
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
     Stz* szStageNm(void);
-    void vNode(i8 i_Nde);
+    void vNode(i8 i_Node);
     i8   iNode(void);
     bool bNodeTopo(void);
     tPN  tPtnNo(void);

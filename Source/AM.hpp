@@ -250,7 +250,8 @@ namespace Oblique
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
     static void vDeleteXmitOperand(XmitOperand* pXmitOperand);
     static Operand* pDuplicateOperand(Operand* pOperand);
-    static XmitOperand* pNewXmitOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn);
+    static XmitOperand* pNewXmitOperand(Job* pParentJob, Operand* pOperand,
+                                        Op* pOp, i8 iNde, tPN tPtnNo);
     
     static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
     
