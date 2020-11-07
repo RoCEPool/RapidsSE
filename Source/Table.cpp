@@ -103,7 +103,7 @@ Table::~Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
-void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Table::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
   Table* pTable = _pTable(pObject);
   
@@ -114,20 +114,20 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* find table                                                                 */
 /*----------------------------------------------------------------------------*/
-Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
+Table* Table::pFindTable(DicStack* pDicStack, Stz* szTableNm)
 {
   _static_
   
   Dic* pDic = pDicStack->pTop();
   
-  Word* pTableDicWord = pDic->pFindWord(aTableNm);
+  Word* pTableDicWord = pDic->pFindWord(szTableNm);
   
   if ( !pTableDicWord )
     return nullptr;
   
   Dic* pTableDic = _pDic(pTableDicWord->pObject());
   
-  Word* pTableWord = pTableDic->pFindWord(aTableNm);
+  Word* pTableWord = pTableDic->pFindWord(szTableNm);
   
   if ( !pTableWord )
     return nullptr;
@@ -140,11 +140,11 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
 /*----------------------------------------------------------------------------*/
 /* get indexDef of index of given table                                       */
 /*----------------------------------------------------------------------------*/
-IndexDef* Table::pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo)
+IndexDef* Table::pIndexDef(DicStack* pDicStack, Stz* szTableNm, i8 iIndexNo)
 {
   _static_
   
-  Table* pTable = Table::pFindTable(pDicStack,aTableNm);
+  Table* pTable = Table::pFindTable(pDicStack,szTableNm);
   if ( !pTable )
     return nullptr;
   
@@ -177,14 +177,55 @@ void Table::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* get streamDef of given table                                               */
 /*----------------------------------------------------------------------------*/
-StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* aTableNm)
+StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
 {
   _static_
   
-  Table* pTable = pFindTable(pDicStack,aTableNm);
+  Table* pTable = pFindTable(pDicStack,szTableNm);
   
   return pTable ? pTable->m_pStreamDef : nullptr;
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* convert grid-wide partition number to which node its on node               */
+/*----------------------------------------------------------------------------*/
+i8 Table::iPtnNoToNode(tPN tPtnNo)
+{
+  _static_
+  
+  i8 i_Node = tPtnNo % AM::nDefinedNodes();
+  
+  return i_Node;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert grid-wide partition number to table partition on its node          */
+/*----------------------------------------------------------------------------*/
+i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
+{
+  _static_
+  
+  i8 i_TablePtn = tPtnNo / AM::nDefinedNodes();
+  
+  return i_TablePtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert tablePtn to partition number (in grid)                             */
+/*----------------------------------------------------------------------------*/
+tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
+{
+  _static_
+  
+  tPN tPtnNo = (i_TablePtn * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  
+  return tPtnNo;
+}
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

@@ -102,6 +102,8 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPtnNoToNode(tPN tPtnNo)
 {
+  _static_
+  
   i8 i_Node = tPtnNo % AM::nDefinedNodes();
   
   return i_Node;
@@ -112,6 +114,8 @@ i8 TablePtn::iPtnNoToNode(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPtnNoToTablePtn(tPN tPtnNo)
 {
+  _static_
+  
   i8 i_TablePtn = tPtnNo / AM::nDefinedNodes();
   
   return i_TablePtn;
@@ -122,6 +126,8 @@ i8 TablePtn::iPtnNoToTablePtn(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 tPN TablePtn::tTablePtnToPtnNo(i8 i_TablePtn)
 {
+  _static_
+  
   tPN tPtnNo = (i_TablePtn * AM::nDefinedNodes()) + AM::iThisNodeNo();
   
   return tPtnNo;
