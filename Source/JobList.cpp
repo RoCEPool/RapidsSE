@@ -225,7 +225,7 @@ void JobList::vLogJobs(i8 iJobId)
   
   while (pNode) {
     Job* pJob = _pJob(pNode->m_pObject);
-    AM::vLogFyi("  %s %p %03lld parent %03lld slot[%lld] "  //!format-LogFyi
+    AM::vLogFyi("  %s %p %03lld parent %03lld tablePtn[%lld] "  //!format-LogFyi
                 "phase %s state %s acksRmg %lld/%lld partNode %lld"_Stz,
                
                  aCN[pJob->eClass()],

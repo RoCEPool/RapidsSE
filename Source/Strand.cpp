@@ -25,7 +25,7 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
   m_pStageSpec = pStageSpec;
   m_i_Strand   = i_Strand;
   
-  // determine the node,slot coordinates of this strand
+  // determine the node,tablePtn coordinates of this strand
   if (m_pStageSpec->bNodeTopo()) {
     // node only
     m_i_Node = i_Strand;
@@ -33,7 +33,7 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
     m_i_TablePtn = C_UNKNOWN;
   }
   else {
-    // node,slot
+    // node,tablePtn
     m_tPtnNo = i_Strand;
     m_i_Node = TablePtn::iPtnNoToNode(m_tPtnNo);
     m_i_TablePtn = TablePtn::iPtnNoToTablePtn(m_tPtnNo);
@@ -107,7 +107,7 @@ i8 Strand::tPtnNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get slot this strand needs to run on                                       */
+/* get tablePtn this strand needs to run on                                   */
 /*----------------------------------------------------------------------------*/
 i8 Strand::i_TablePtn(void)
 {

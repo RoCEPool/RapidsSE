@@ -38,7 +38,7 @@ Stz* SP_Grid::sz(Grid* pGrid)
   
   StrLib::vSprint(m_caResult,
                   "%lld nodes %lld connected nodes %lld "
-                  "slots/node %lld total partitions"_Stz,
+                  "partitions/table %lld total partitions"_Stz,
                   
                   pGrid->nDefinedNodes(),
                   pGrid->nConnectedNodes(),

@@ -78,13 +78,13 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.RLUDiary"_Stz,          gxArgs.m_bRLUDiary);
   Constants::vAddConstant("args.RLUTimer"_Stz,          gxArgs.m_bRLUTimer);
   Constants::vAddConstant("args.senDir"_Stz,            gxArgs.m_sSenDir);
-  Constants::vAddConstant("args.slots"_Stz,             gxArgs.m_nTablePtns);
   Constants::vAddConstant("args.start"_Stz,             gxArgs.m_bStart);
   Constants::vAddConstant("args.status"_Stz,            gxArgs.m_bStatus);
   Constants::vAddConstant("args.stop"_Stz,              gxArgs.m_bStop);
   Constants::vAddConstant("args.subIngesters"_Stz,      gxArgs.m_nSubIngesters);
   Constants::vAddConstant("args.subLoaders"_Stz,        gxArgs.m_nSubLoaders);
   Constants::vAddConstant("args.supervisorSleep"_Stz,   gxArgs.m_nSupervisorSleep);
+  Constants::vAddConstant("args.tablePtns"_Stz,         gxArgs.m_nTablePtns);
   Constants::vAddConstant("args.threads"_Stz,           gxArgs.m_nThreads);
   Constants::vAddConstant("args.touch"_Stz,             gxArgs.m_bTouch);
   Constants::vAddConstant("args.tracepoint"_Stz,        gxArgs.m_bTracepoint);

@@ -69,11 +69,11 @@ Grid::~Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void Grid::vInit(i8 nDefinedNodes, i8 nSlotsPerNode)
+void Grid::vInit(i8 nDefinedNodes, i8 nTablePtns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_nTablePtns      = nSlotsPerNode;
+  m_nTablePtns      = nTablePtns;
   
   m_nDefinedNodes   = nDefinedNodes;
   m_nConnectedNodes = 0;
@@ -286,7 +286,7 @@ void Grid::vStartNode(i8 iStartNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of partition slots per node in the grid                         */
+/* get number of partitions per table in the grid                             */
 /*----------------------------------------------------------------------------*/
 i8 Grid::nTablePtns(void)
 {

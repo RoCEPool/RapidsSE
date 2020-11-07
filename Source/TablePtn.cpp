@@ -118,7 +118,7 @@ i8 TablePtn::iPtnNoToTablePtn(tPN tPtnNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert slot number to partition number                                    */
+/* convert tablePtn to partition number (in grid)                             */
 /*----------------------------------------------------------------------------*/
 tPN TablePtn::tTablePtnToPtnNo(i8 i_TablePtn)
 {

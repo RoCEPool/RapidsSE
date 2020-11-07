@@ -741,7 +741,7 @@ void Job::vMarkJob(void)
 {
   s48K sJobMark;
   
-  sJobMark.vSprintCat("Job %03lld %s session %lld slot %lld\n"_Stz,
+  sJobMark.vSprintCat("Job %03lld %s session %lld tablePtn %lld\n"_Stz,
                       m_iFocalId,
                       aCN[eClass()],
                       m_xReqTuple.m_i_Session,

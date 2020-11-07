@@ -346,7 +346,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nSlotsPerNode());
+//  ASSERT(i_TablePtn < AM::nTablePtns());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pCrwBuffer->nRowCount() == 0) {
@@ -381,7 +381,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nSlotsPerNode());
+//  ASSERT(i_TablePtn < AM::nTablePtns());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pRsbBuffer->nRsb() == 0) {
@@ -580,7 +580,7 @@ bool Table::bPurge(i8 i_TablePtn, i8 iOlderThanSeconds)
 //
 //    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
 //
-//    bool bPurged = m_xSlots.bPurgeIndex(i_TablePtn, pIndex->iIndexNo(), iOlderThanSeconds);
+//    bool bPurged =bPurgeIndex(i_TablePtn, pIndex->iIndexNo(), iOlderThanSeconds);
 //
 //    if (! bPurged)
 //      return false;
@@ -682,7 +682,7 @@ i8 Table::iToPartition(i8 iRowHash)
 //  // This function is invoked when we insert rows into a table via a
 //  // begin/insert/end and via the API's insert-select
 //
-//  ASSERT(i_TablePtn < AM::nSlotsPerNode());
+//  ASSERT(i_TablePtn < AM::nTablePtns());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
 //  if (pCrwBuffer->nRowCount() == 0) {

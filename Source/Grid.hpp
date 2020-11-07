@@ -13,7 +13,7 @@ namespace Grids
   
     s32    m_sGridNm;
   
-    i8     m_nTablePtns;       // no of partition slots on each node
+    i8     m_nTablePtns;       // no of table partitions on each node
   
     i8     m_nDefinedNodes;    // total number of nodes in the grid
     i8     m_nConnectedNodes;  // number of connected nodes in the grid

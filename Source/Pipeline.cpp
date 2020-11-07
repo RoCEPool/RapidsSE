@@ -109,7 +109,7 @@ void Pipeline::vDump(void)
   
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
     
-  vTrace("Pipeline-Job %s Grid %s with %lld Nodes %lld Slots/Node:\n"_Stz,
+  vTrace("Pipeline-Job %s Grid %s with %lld Nodes %lld tablePtns:\n"_Stz,
          m_sPipelineNm.szStz(),
          pGrid->szGridNm(),
          pGrid->nDefinedNodes(),

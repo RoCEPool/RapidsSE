@@ -203,7 +203,7 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Session* pSession = _pSession(pObject);
   
-  vTrace("pid %lld %s partition %lld slot %lld"_Stz,
+  vTrace("pid %lld %s partition %lld tablePtn %lld"_Stz,
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSession->m_tPtnNo,
