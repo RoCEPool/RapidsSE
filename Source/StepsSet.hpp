@@ -832,48 +832,6 @@ public:
   void vJob_SortEnd(void);
   void vJob_SortExecute(void);
 
-  // job SubExporter
-  void vJob_SubExporterBegin(void);
-  void vJob_SubExporterChunk(void);
-  void vJob_SubExporterEnd(void);
-  void vJob_SubExporterSpawn(void);
-  void vJob_SubExporterExportJobFetch(void);
-
-  // job SubFetch
-  void vJob_SubFetchBufferQueueFetch(void);
-  void vJob_SubFetchPhraseFetch(void);
-  void vJob_SubFetchPlannerFetch(void);
-  void vJob_SubFetchSlotFetch(void);
-
-  // job SubPublish
-  void vJob_SubPublishBegin(void);
-  void vJob_SubPublishChunk(void);
-  void vJob_SubPublishEnd(void);
-  void vJob_SubPublishSlotFetch(void);
-  void vJob_SubPublishTableStore(void);
-  void vJob_SubPublishPublishJobIdFetch(void);
-
-  // job SubPurger
-  void vJob_SubPurgerBegin(void);
-  void vJob_SubPurgerChunk(void);
-  void vJob_SubPurgerEnd(void);
-
-  void vJob_SubPurgerSlotFetch(void);
-  void vJob_SubPurgerPurgeJobIdFetch(void);
-
-  // job SubWalker
-  void vJob_SubWalkerBegin(void);
-  void vJob_SubWalkerChunk(void);
-  void vJob_SubWalkerEnd(void);
-  void vJob_SubWalkerWalkJobFetch(void);
-  void vJob_SubWalkerSpawn(void);
-
-  // job Walk
-  void vJob_WalkBegin(void);
-  void vJob_WalkEnd(void);
-  void vJob_WalkIndexStore(void);
-  void vJob_WalkTableStore(void);
-
   // kbase
   void vKbaseCallSchedule(void);
   void vKbaseDelete(void);

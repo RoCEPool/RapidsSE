@@ -945,7 +945,6 @@ void Step::vJobParticipantResponseStore(void)
   Response* pResponse = new Response;
   
   // set node and error in the response
-  //RASSERT(iNode == pParticipantJob->m_iParticipantNode);
   pResponse->m_iNode           = pParticipantJob->iParticipantNode();
   pResponse->m_sResponse       = pParticipantJob->szResponse();
   pResponse->m_ixRowsProcessed = pParticipantJob->iRowsProcessed();
