@@ -59,7 +59,7 @@ XmitOperand::XmitOperand(void)
   m_pOperand       = nullptr;
   m_iPipelineJobId = C_UNKNOWN;
   m_iNode          = C_UNKNOWN;
-  m_iPartition     = C_UNKNOWN;
+  m_tPtnNo         = C_UNKNOWN;
   
   m_eTopologyX     = PX_NONE;
   m_iNextStage     = C_UNKNOWN;
@@ -88,13 +88,13 @@ XmitOperand::~XmitOperand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
                                          i8 iPipelineJobId,
-                                         Op* pOp, i8 iNde, i8 iPtn)
+                                         Op* pOp, i8 i_Node, tPN tPtnNo)
 {
   XmitOperand* pXmitOperand = new XmitOperand;
   
   pXmitOperand->m_iPipelineJobId = iPipelineJobId;
-  pXmitOperand->m_iNode          = iNde;
-  pXmitOperand->m_iPartition     = iPtn;
+  pXmitOperand->m_iNode          = i_Node;
+  pXmitOperand->m_tPtnNo         = tPtnNo;
   pXmitOperand->m_pOperand       = pOperand;
   
   pXmitOperand->m_eTopologyX     = pOp->eTopologyX();

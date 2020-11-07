@@ -164,7 +164,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
+Op* Stage::pPipeOutOp(ePX eTopologyX, i8 i_Node, tPN tPtnNo, i8 iOp)
 {
   Op* pOp = nullptr;
   Strand* pNdeStrand = nullptr;
@@ -178,41 +178,41 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
     case PX_ORIGIN_TO_ALL_NODES:
-      pNdeStrand = this->pGetNodeStrand(iNde);
+      pNdeStrand = this->pGetNodeStrand(i_Node);
       pOp = pNdeStrand->pGet(iOp);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStrand = pGet(iPtn);
+      pPtnStrand = pGet(tPtnNo);
       pOp = pPtnStrand->pGet(iOp);
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-      pPtnStrand = pGetPartitionStrand(iPtn);
+      pPtnStrand = pGetPartitionStrand(tPtnNo);
       pOp = pPtnStrand->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pNdeStrand = this->pGetNodeStrand(iNde);
+      pNdeStrand = this->pGetNodeStrand(i_Node);
       pOp = pNdeStrand->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       //pPtnStrand = pGet(iPtn);
-      pPtnStrand = pGetPartitionStrand(iPtn);
+      pPtnStrand = pGetPartitionStrand(tPtnNo);
       pOp = pPtnStrand->pGet(iOp);
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStrand = pGetPartitionStrand(iPtn);
+      pPtnStrand = pGetPartitionStrand(tPtnNo);
       pOp = pPtnStrand->pGet(iOp);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pPtnStrand = pGet(0);
-      ASSERT(pPtnStrand->i_Ptn() == iPtn);
+      ASSERT(pPtnStrand->tPtnNo() == tPtnNo);
       pOp = pPtnStrand->pGet(iOp);
       break;
       

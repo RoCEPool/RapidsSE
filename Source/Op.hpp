@@ -120,13 +120,14 @@ namespace Pipelines
     Footer* aFooter(void);
     
   private:
-    void vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn);
+    void vSend(Operand* pOperand, bool bSet, i8 i_Nde, tPN tPtnNo);
     void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
     void vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
     void vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
     void vSendToNode(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind,i8 i_Nde);
     void vSendToOrigin(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
-    void vSendToPartition(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind, i8 i_Ptn);
+    void vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
+                          eXK eXmitKind, tPN tPtnNo);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

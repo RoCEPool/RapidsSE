@@ -13,7 +13,7 @@ namespace Jobs
     
     i8         m_iPipelineJobId;  // pipeline job id
     i8         m_iNode;           // node id
-    i8         m_iPartition;      // partition
+    tPN        m_tPtnNo;          // partition (in grid)
     ePX        m_eTopologyX;      // cross topology
     i8         m_iNextStage;      // next stage
     i8         m_iNextOp;         // nextOp in the nextStage
@@ -29,7 +29,8 @@ namespace Jobs
     XmitOperand(void);
     ~XmitOperand(void) noexcept(false);
     
-    static XmitOperand* pNewXmitOperand(Operand* pOperand, i8 iParentJobId, Op* pOp, i8 iNde, i8 iPtn);
+    static XmitOperand* pNewXmitOperand(Operand* pOperand, i8 iParentJobId,
+                                        Op* pOp, i8 i_Node, tPN tPtnNo);
     
   public:
     void vShow(void);

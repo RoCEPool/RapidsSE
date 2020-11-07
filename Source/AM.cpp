@@ -1349,10 +1349,11 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn)
+XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand, Op* pOp,
+                                 i8 i_Node, i8 tPtnNo)
 {
-  XmitOperand* pXmitOperand = XmitOperand::pNewXmitOperand(
-                                 pOperand, pParentJob->m_iFocalId, pOp, iNde, iPtn);
+  XmitOperand* pXmitOperand =
+    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iFocalId,pOp,i_Node,tPtnNo);
   
   return pXmitOperand;
 }

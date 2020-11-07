@@ -984,8 +984,6 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   
   switch(m_eTopologyX) {
       
-    
-      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
@@ -1012,15 +1010,15 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Strand* pStrand = pNextStage->pGetPartitionStrand(m_tPtnNo);
-      i8 i_Ptn = pStrand->tPtnNo();
-      vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, i_Ptn);
+      tPN tPtnNo = pStrand->tPtnNo();
+      vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, tPtnNo);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 i_Nde = TablePtn::iPtnNoToNode(m_tPtnNo);
-      vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Nde);
+      i8 i_Node = TablePtn::iPtnNoToNode(m_tPtnNo);
+      vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Node);
       break;
     }
       
@@ -1258,14 +1256,14 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, i8 i_Ptn)
+void Op::vSend(Operand* pOperand, bool bSet, i8 i_Nde, tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   XmitOperand* pXmitOperand;
   
   // new an xmit operand
-  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, this, i_Nde, i_Ptn);
+  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, this, i_Nde, tPtnNo);
   
   // get the send node in the task
   Node* pSendNode = AM::pGrid()->pGetNode(i_Nde);
@@ -1391,7 +1389,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL: {
       
-      ASSERT(pNextStage->nItems() == AM::pGrid()->nSlotsPerNode());
+      ASSERT(pNextStage->nItems() == AM::pGrid()->nTablePtns());
       for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
         
         Strand* pStrand = pNextStage->pGet(i_Strand);
@@ -1533,7 +1531,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL: {
       
-      ASSERT(pNextStage->nItems() == AM::pGrid()->nPartitions());
+      ASSERT(pNextStage->nItems() == AM::pGrid()->nPartitionsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // xmitNode is the partition node
@@ -1637,11 +1635,12 @@ void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK 
 /*----------------------------------------------------------------------------*/
 /* send the operand to a partition                                            */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind, i8 i_Ptn)
+void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
+                          eXK eXmitKind, tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 i_SendPtn = C_UNKNOWN;
+  tPN tSendPtn = C_UNKNOWN;
   
   ASSERT(eXmitKind == XK_NORMAL ||
          eXmitKind == XK_ROBIN  ||
@@ -1651,25 +1650,25 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet, e
       
     case XK_HASHED : {
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      i_SendPtn = pDataBuffer->tPtnNo();
+      tSendPtn = pDataBuffer->tPtnNo();
       break;
     }
       
     case XK_NORMAL:
-      i_SendPtn = i_Ptn;
+      tSendPtn = tPtnNo;
       break;
       
     case XK_ROBIN:
       m_iRobin++;
-      i_SendPtn = m_iRobin % AM::pGrid()->nPartitionsInGrid();
+      tSendPtn = m_iRobin % AM::pGrid()->nPartitionsInGrid();
       break;
       
     default:
       ASSERT(0);
   }
   
-  m_iXmitNode = TablePtn::iPtnNoToNode(i_SendPtn);
-  vSend(pOperand, bSet, m_iXmitNode, i_SendPtn);
+  m_iXmitNode = TablePtn::iPtnNoToNode(tSendPtn);
+  vSend(pOperand, bSet, m_iXmitNode, tSendPtn);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);

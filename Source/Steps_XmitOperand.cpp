@@ -48,7 +48,7 @@ void Step::vXmitOperandPipeOut(void)
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pXmitOperand->m_eTopologyX,
                                pXmitOperand->m_iNode,
-                               pXmitOperand->m_iPartition,
+                               pXmitOperand->m_tPtnNo,
                                pXmitOperand->m_iNextOp);
   
   //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
