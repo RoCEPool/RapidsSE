@@ -259,12 +259,12 @@ void Step::vGridToNode(void)
 {
   ENTRY();
   
-  i8 iPtnNo = m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
   
-  i8 i_Node = TablePtn::iPtnNoToNode(iPtnNo);
+  i8 i_Node = TablePtn::iPtnNoToNode(tPtnNo);
   
   m_pDataStack->vPushInt(i_Node);
   

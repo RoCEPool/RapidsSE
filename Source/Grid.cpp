@@ -160,9 +160,9 @@ void Grid::vDumpPartitioning(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   if (nPartitionsInGrid()) {
-    for (i8 i_Index = 0; i_Index < nPartitionsInGrid(); i_Index++)
-      vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
-             TablePtn::iPtnNoToNode(i_Index));
+    for (tPN tPtnNo = 0; tPtnNo < nPartitionsInGrid(); tPtnNo++)
+      vTrace("Partition: %lld; Node: %lld\n"_Stz, tPtnNo,
+             TablePtn::iPtnNoToNode(tPtnNo));
     vTrace("\n"_Stz);
   }
 }

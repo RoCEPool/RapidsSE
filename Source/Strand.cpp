@@ -133,13 +133,13 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
 {
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
-  i8 iPtnOnNode;
+  i8 i_OnNode;
   if (m_pStageSpec->bNodeTopo())
-    iPtnOnNode = m_i_Node;
+    i_OnNode = m_i_Node;
   else
-    iPtnOnNode = TablePtn::iPtnNoToNode(m_tPtnNo);
+    i_OnNode = TablePtn::iPtnNoToNode(m_tPtnNo);
   
-  if (iPtnOnNode == i_ThisNode) {
+  if (i_OnNode == i_ThisNode) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       
@@ -152,7 +152,7 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* synthesise name of this strand                                           */
+/* synthesise name of this strand                                             */
 /*----------------------------------------------------------------------------*/
 void Strand::vSynthesiseName(void)
 {
