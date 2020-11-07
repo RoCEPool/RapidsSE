@@ -38,7 +38,7 @@ StageSpec::StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec
   
   m_eTopology     = PO_NONE;
   m_bNodeTopo     = true;
-  m_iNode         = C_UNKNOWN;
+  m_i_Node        = C_UNKNOWN;
   m_tPtnNo        = C_UNKNOWN;
   //m_nThreads    = 1;
   
@@ -114,7 +114,7 @@ i8 StageSpec::iNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  return m_iNode;
+  return m_i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +124,7 @@ void StageSpec::vNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_iNode = i_Node;
+  m_i_Node = i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +275,7 @@ void StageSpec::vPrint(void)
                                       break;
     case PO_ORIGIN:                   vTrace("on origin"_Stz);
                                       break;
-    case PO_SPECIFIC_NODE:            vTrace("on node %s"_Stz,m_iNode);
+    case PO_SPECIFIC_NODE:            vTrace("on node %s"_Stz,m_i_Node);
                                       break;
     case PO_SPECIFIC_PARTITION:       vTrace("on partition %s"_Stz,m_tPtnNo);
                                       break;

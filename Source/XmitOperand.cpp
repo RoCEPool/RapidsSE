@@ -58,7 +58,7 @@ XmitOperand::XmitOperand(void)
   
   m_pOperand       = nullptr;
   m_iPipelineJobId = C_UNKNOWN;
-  m_iNode          = C_UNKNOWN;
+  m_i_Node          = C_UNKNOWN;
   m_tPtnNo         = C_UNKNOWN;
   
   m_eTopologyX     = PX_NONE;
@@ -93,7 +93,7 @@ XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
   XmitOperand* pXmitOperand = new XmitOperand;
   
   pXmitOperand->m_iPipelineJobId = iPipelineJobId;
-  pXmitOperand->m_iNode          = i_Node;
+  pXmitOperand->m_i_Node         = i_Node;
   pXmitOperand->m_tPtnNo         = tPtnNo;
   pXmitOperand->m_pOperand       = pOperand;
   

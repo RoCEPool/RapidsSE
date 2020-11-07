@@ -27,7 +27,7 @@ namespace Pipelines
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    i8             m_iNode;          // node no
+    i8             m_i_Node;         // node no
     i8             m_tPtnNo;         // partition no (in grid)
     
     ePX            m_eTopologyX;     // cross topology

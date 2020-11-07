@@ -71,7 +71,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  m_iNode         = C_UNKNOWN;
+  m_i_Node        = C_UNKNOWN;
   m_tPtnNo        = C_UNKNOWN;
   
   m_eTopologyX = PX_NONE;
@@ -180,7 +180,7 @@ void Op::vAckJob(void)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
            AM::szJobName(m_pOpJob),
            m_pStage->szStageNm(),
-           m_iNode,
+           m_i_Node,
            m_tPtnNo);
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pOpJob));
@@ -323,7 +323,7 @@ void Op::vDump(void)
   vTrace("--\n"_Stz);
   vTrace("%p:\n"_Stz,this);
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
-  vTrace("m_iNode=%lld\n"_Stz,m_iNode);
+  vTrace("m_i_Node=%lld\n"_Stz,m_i_Node);
   vTrace("m_tPtnNo=%lld\n"_Stz,m_tPtnNo);
 }
 
@@ -473,7 +473,7 @@ i8 Op::iNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_iNode;
+  return m_i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -483,7 +483,7 @@ void Op::vNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_iNode = iNode;
+  m_i_Node = iNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -548,7 +548,7 @@ void Op::vPtnNo(tPN tPtnNo)
   m_tPtnNo = tPtnNo;
 
   // set the node tis partition belongs to 
-  m_iNode = TablePtn::iPtnNoToNode(m_tPtnNo);
+  m_i_Node = TablePtn::iPtnNoToNode(m_tPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,7 +634,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_iNode,
+           m_i_Node,
            m_tPtnNo,
            m_pPipelineJob,
            "vPipeOut :"_Stz,
@@ -651,7 +651,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   
     // get the op to forward to depending on the cross topology
     Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
-                                 m_iNode,
+                                 m_i_Node,
                                  m_tPtnNo,
                                  m_iNextOp);
     if (m_bAppendRight)
@@ -680,7 +680,7 @@ void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_iNode,
+           m_i_Node,
            m_tPtnNo,
            m_pPipelineJob,
            "vPipeOut :"_Stz,
@@ -714,7 +714,7 @@ void Op::vPipeToJob(Operand* pOperand)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_iNode,
+           m_i_Node,
            m_tPtnNo,
            m_pPipelineJob,
            "vPipeToJob :"_Stz,
@@ -763,7 +763,7 @@ Operand* Op::pPopQueue(void)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_iNode,
+           m_i_Node,
            m_tPtnNo,
            m_pPipelineJob,
            "pPopQueue :"_Stz,
@@ -807,7 +807,7 @@ Operand* Op::pPopQueueOoO(void)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_iNode,
+           m_i_Node,
            m_tPtnNo,
            m_pPipelineJob,
            "pPopQueue :"_Stz,

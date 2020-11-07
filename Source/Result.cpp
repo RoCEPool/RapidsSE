@@ -116,7 +116,7 @@ void Result::vPrintDist2pcResponse(void)
     vTrace("error: "_Stz);
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
       vTrace("node%lld: %s; "_Stz,
-             m_pOriginResponseVec->pGet(i_Node)->m_iNode,
+             m_pOriginResponseVec->pGet(i_Node)->m_i_Node,
              aEC[m_pOriginResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
     vTrace("\n"_Stz);

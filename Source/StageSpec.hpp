@@ -14,7 +14,7 @@ namespace PipelineSpecs
   
     ePO  m_eTopology;  // stage topoplogy
     bool m_bNodeTopo;  // is node-level topology (or partition)?
-    i8   m_iNode;      // stage node
+    i8   m_i_Node;     // stage node
     tPN  m_tPtnNo;     // stage ptn
     //i8  m_nThreads;  // threads
     

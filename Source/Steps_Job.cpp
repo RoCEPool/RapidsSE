@@ -945,7 +945,7 @@ void Step::vJobParticipantResponseStore(void)
   Response* pResponse = new Response;
   
   // set node and error in the response
-  pResponse->m_iNode           = pParticipantJob->iParticipantNode();
+  pResponse->m_i_Node           = pParticipantJob->iParticipantNode();
   pResponse->m_sResponse       = pParticipantJob->szResponse();
   pResponse->m_ixRowsProcessed = pParticipantJob->iRowsProcessed();
   pResponse->m_ixRowsInvalid   = pParticipantJob->iRowsInvalid();

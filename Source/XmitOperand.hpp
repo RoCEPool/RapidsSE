@@ -12,7 +12,7 @@ namespace Jobs
     Operand*   m_pOperand;        // operand
     
     i8         m_iPipelineJobId;  // pipeline job id
-    i8         m_iNode;           // node id
+    i8         m_i_Node;          // node id
     tPN        m_tPtnNo;          // partition (in grid)
     ePX        m_eTopologyX;      // cross topology
     i8         m_iNextStage;      // next stage
