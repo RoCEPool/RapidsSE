@@ -160,7 +160,7 @@ void StageSpec::vPtnNo(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* prepend a consumeOp spec                                                   */
 /*----------------------------------------------------------------------------*/
-OpSpec* StageSpec::pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
+OpSpec* StageSpec::pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   

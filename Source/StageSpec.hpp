@@ -37,7 +37,7 @@ namespace PipelineSpecs
     bool bNodeTopo(void);
     tPN  tPtnNo(void);
     void vPtnNo(tPN tPtnNo);
-    OpSpec* pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp);
+    OpSpec* pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 i_Op);
     //void vThreads(i8 iThreads);
     //i8   nThreads(void);
     ePO  eTopology(void);
