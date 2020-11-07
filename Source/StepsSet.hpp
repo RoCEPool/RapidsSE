@@ -1544,7 +1544,6 @@ public:
   void vTableNew(void);
   void vTablePurge(void);
   void vTableDeleteIndex(void);
-  void vTableScan(void);
   void vTableSet(void);
   void vTableSize(void);
   void vTableStreamDefFetch(void);

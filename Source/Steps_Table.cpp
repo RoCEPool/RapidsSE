@@ -32,7 +32,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
-  vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
   vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
@@ -486,97 +485,6 @@ void Step::vTablePurge(void)
   
   bool bPurged = pTable->bPurge(i_TablePtn,iOlderThanSeconds);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.scan -- scan the table                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vTableScan(void)
-{
-  ENTRY();
- /*
-  FetchBuffer* pFetchBuffer;
-  Datum xVariable;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get parameters for the primitive
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(m_pDataStack->pPopPtr(__func__));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get members from subFetch
-  i8 i_TablePtn = pJob_SubFetch->i_TablePtn();
-  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
-  
-  TablePtn* pTablePtn = pTable->pPartition(i_TablePtn);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // position in the first row buffer
-  CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a result buffer for the results
-  pFetchBuffer = new FetchBuffer(pTable, i_TablePtn);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // did we get an entryBuffer ?
-  if (! pCrwBuffer) {
-    // mark this buffer as the last buffer
-    pFetchBuffer->vIsLast(true);
-    
-    // put the buffer in the session bufferQueue
-    pQueue->vAppend(pFetchBuffer);
-    
-    EXIT();
-    return;
-  }
-  
-  
-  while (pCrwBuffer) {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // iterate thru the buffer till no more entries
-    for (i8 iRow = 0; iRow < pCrwBuffer->nRowCount(); iRow++) {
-      
-      // get the row from the buffer
-      Crw* aCrw = pCrwBuffer->aCrw(iRow);
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // insert row from entry in FetchBuffer
-      if ( ! pFetchBuffer->bAppendCrw(aCrw)) {
-        
-        // Buffer is Full
-        // put this FetchBuffer in session bufferQueue
-        pQueue->vAppend(pFetchBuffer);
-        
-        // create another FetchBuffer for the results
-        pFetchBuffer = new FetchBuffer(pTable, i_TablePtn);
-        
-        // insert row from entry in new fetchBuffer
-        bool bResult = pFetchBuffer->bAppendCrw(aCrw);
-        RASSERT(bResult);
-      }
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check if session exiting
-      //if (pSession->m_bSessionExiting)
-      //  pCrwBuffer = nullptr;
-    }
-    
-    // get next buffer from the current indexBuffer
-    pCrwBuffer = pCrwBuffer->pNextBuffer();
-    
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark this buffer as the last buffer
-  pFetchBuffer->vIsLast(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put the buffer in the session bufferQueue
-  pQueue->vAppend(pFetchBuffer);
- */
   EXIT();
 }
 

@@ -274,7 +274,6 @@ void Constants::vAddConstantsCpp(void)
   /* 19 */ vAddConstant("CN_PIPELINE"_Stz,     CN_PIPELINE);
   /* 20 */ vAddConstant("CN_DIR"_Stz,          CN_DIR);
   
-  /*    */ vAddConstant("CN_FETCHBUFFER"_Stz,  CN_FETCHBUFFER);
   /* 21 */ vAddConstant("CN_FIFO"_Stz,         CN_FIFO);
   /* 21 */ vAddConstant("CN_FILE"_Stz,         CN_FILE);
   /*  5 */ vAddConstant("CN_FIPVAL"_Stz,       CN_FIPVAL);

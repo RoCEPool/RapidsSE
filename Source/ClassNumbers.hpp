@@ -86,7 +86,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__F__,
   /* */ CN_FACT,
-  /* */ CN_FETCHBUFFER,
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FILTER_FETCH,
@@ -440,7 +439,6 @@ static Stz* aCN[]
 
   /* */ "_F__"_Stz,                // CN__F__
   /* */ "FACT"_Stz,                // CN_FACT
-  /* */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /* */ "FIFO"_Stz,                // CN_FIFO
   /* */ "FILE"_Stz,                // CN_FILE
   /* */ "FILTER_FETCH"_Stz,        // CN_FILTER_FETCH
