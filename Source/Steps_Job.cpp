@@ -94,11 +94,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
-  vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
   vAddStep("job.scheduleNextPhase"_Stz, &Step::vJobScheduleNextPhase);
   vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
-  
+  vAddStep("job.tablePtn@"_Stz,        &Step::vJobTablePtnFetch);
+
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
 }
@@ -1485,20 +1485,6 @@ void Step::vJobSignalSession(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.slot@ -- fetch job slot                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSlotFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->i_TablePtn());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.scheduleNextPhase -- schedule next phase for the job                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobScheduleNextPhase(void)
@@ -1565,6 +1551,20 @@ void Step::vJobStateDiagram(void)
   AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
   m_pDataStack->vPushStr(sDiagram);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.tablePtb@ -- fetch tablePtn                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTablePtnFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushInt(pJob->i_TablePtn());
   
   EXIT();
 }
