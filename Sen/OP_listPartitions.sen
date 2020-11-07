@@ -21,7 +21,7 @@
   // create an infoSet operand
   streamSetTable[] streamSet[].new
 
-  grid::slots 0 do
+  grid::tablePtns 0 do
 
     // add nodeInfo to the infoSet
     I grid::toPartition

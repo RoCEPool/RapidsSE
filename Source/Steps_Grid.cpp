@@ -16,11 +16,11 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
-  vAddStep("grid::slots"_Stz,             &Step::vGridSlots);
   vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
   vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
   vAddStep("grid::StartNode!"_Stz,        &Step::vGridStartNodeStore);
   vAddStep("grid::StartNode@"_Stz,        &Step::vGridStartNodeFetch);
+  vAddStep("grid::tablePtns"_Stz,         &Step::vGridTablePtns);
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("grid::toNode"_Stz,            &Step::vGridToNode);
@@ -142,9 +142,9 @@ void Step::vGridShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::slots -- get number of slots of partitions per node in the grid       */
+/* grid::tablePtns -- get number of partitions per table in the grid          */
 /*----------------------------------------------------------------------------*/
-void Step::vGridSlots(void)
+void Step::vGridTablePtns(void)
 {
   ENTRY();
   

@@ -26,8 +26,8 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  // add a row for each slot
-  grid::slots 0
+  // add a row for each table ptn
+  grid::tablePtns 0
   do
     // insert index verify
     I index[] streamSetTable[] StreamSet[].addAnalyzeIndex  not if

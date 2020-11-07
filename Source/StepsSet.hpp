@@ -428,11 +428,11 @@ public:
   void vGridNode(void);
   void vGridPartitions(void);
   void vGridShow(void);
-  void vGridSlots(void);
   void vGridStartedStore(void);
   void vGridStartedFetch(void);
   void vGridStartNodeStore(void);
   void vGridStartNodeFetch(void);
+  void vGridTablePtns(void);
   void vGridThisNodeFetch(void);
   void vGridThisNodeNameFetch(void);
   void vGridToNode(void);
