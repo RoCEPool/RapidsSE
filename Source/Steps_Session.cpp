@@ -9,18 +9,18 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("session::this"_Stz,            &Step::vSessionThis);
+  vAddStep("session::this"_Stz,      &Step::vSessionThis);
   
-  vAddStep("session.dicStack@"_Stz,        &Step::vSessionDicStackFetch);
-  vAddStep("session.dump"_Stz,             &Step::vSessionDump);
-  vAddStep("session.tagSet@"_Stz,        &Step::vSessionTagSetFetch);
-  vAddStep("session.isExiting"_Stz,        &Step::vSessionIsExiting);
-  vAddStep("session.pid"_Stz,              &Step::vSessionPid);
-  vAddStep("session.slot@"_Stz,            &Step::vSessionSlotFetch);
-  vAddStep("session.todo@"_Stz,            &Step::vSessionToDoFetch);
-  vAddStep("session.todo!"_Stz,            &Step::vSessionToDoStore);
-  vAddStep("session.tx@"_Stz,              &Step::vSessionTxFetch);
-  vAddStep("session.tx!"_Stz,              &Step::vSessionTxStore);
+  vAddStep("session.dicStack@"_Stz,  &Step::vSessionDicStackFetch);
+  vAddStep("session.dump"_Stz,       &Step::vSessionDump);
+  vAddStep("session.tagSet@"_Stz,    &Step::vSessionTagSetFetch);
+  vAddStep("session.isExiting"_Stz,  &Step::vSessionIsExiting);
+  vAddStep("session.pid"_Stz,        &Step::vSessionPid);
+  vAddStep("session.tablePtn@"_Stz,  &Step::vSessionTablePtnFetch);
+  vAddStep("session.todo@"_Stz,      &Step::vSessionToDoFetch);
+  vAddStep("session.todo!"_Stz,      &Step::vSessionToDoStore);
+  vAddStep("session.tx@"_Stz,        &Step::vSessionTxFetch);
+  vAddStep("session.tx!"_Stz,        &Step::vSessionTxStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,9 +101,9 @@ void Step::vSessionPid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.slot@ -- fetch slot of SE session                                  */
+/* session.tablePtn@ -- fetch tablePtn of SE session                           */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionSlotFetch(void)
+void Step::vSessionTablePtnFetch(void)
 {
   ENTRY();
   

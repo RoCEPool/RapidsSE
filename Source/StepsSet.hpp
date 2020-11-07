@@ -1370,7 +1370,7 @@ public:
   void vSessionTagSetFetch(void);
   void vSessionIsExiting(void);
   void vSessionPid(void);
-  void vSessionSlotFetch(void);
+  void vSessionTablePtnFetch(void);
   void vSessionThis(void);
   void vSessionToDoFetch(void);
   void vSessionToDoStore(void);
