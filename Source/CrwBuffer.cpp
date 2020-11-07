@@ -180,7 +180,7 @@ void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
 //    if (bDetailed)
 //      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
 //                           AM::szNodeNm(),
-//                           pNextBuffer->m_iPartitionNo,
+//                           pNextBuffer->m_tPtnNo,
 //                           iBuffers,
 //                           pNextBuffer->nRowCount());
     
@@ -259,7 +259,7 @@ bool CrwBuffer::bAppendSrw(RowSingle* pSrwSrc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
 #ifdef WITH_ENCODING_TRACE
-  vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
+  vTrace("Partition:%lld\n"_Stz, m_tPtnNo);
 #endif
   
   bool bAppended = m_pRowCompactor->bCompactSrw(pSrwSrc);
@@ -750,7 +750,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //  i8 nRowRefs = 1;
 //  
 //  HV_Row hRow(pTable()->pStreamDef(),C_ALL);
-//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //  
 //  i8 nRows = nRowCount();
 //  
@@ -761,7 +761,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //    if ( ! pSrtSet ) {
 //      
 //      // create a new SrtBuffer
-//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
 //      pSrtBuffer = pNewSrtBuffer;
 //      pSrtSet = pSrtBuffer->aAllotSrtSet();

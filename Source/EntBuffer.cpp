@@ -463,7 +463,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   if (bDetailed)
     sAnalysis.vCatSprint(" row: (%s, %lld, %5lld,' L%lld', %lld)\n"_Stz,
                          AM::szNodeNm(),
-                         m_iPartitionNo,
+                         m_tPtnNo,
                          iBuffers,
                          m_iBufferHeight,
                          m_nItems);
@@ -1727,7 +1727,7 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 //  i8 nRowRefs = 1;
 //  
 //  HV_Row hRow(m_pIndex->pTable()->pStreamDef(), C_ALL);
-//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //  
 //  Ent* aEntry = aLeadEntry();
 //  SrtSet* pSrtSet;
@@ -1738,7 +1738,7 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 //    if ( ! pSrtSet ) {
 //      
 //      // create a new SrtBuffer
-//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
 //      pSrtBuffer = pNewSrtBuffer;
 //      pSrtSet = pSrtBuffer->aAllotSrtSet();

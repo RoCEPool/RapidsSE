@@ -93,7 +93,7 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   TablePtn* pTablePtn = _pTablePtn(pObject);
   
-  vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
+  vTrace("m_tPtnNo %lld, DataVec %p\n"_Stz,
          pTablePtn->m_tPtnNo, pTablePtn->m_pIndexTreeVec);
 }
 
@@ -571,7 +571,7 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 //    pEncoding_upsert->vEncodeRsb(aRsb_upsert);
 //
 //    Stz* szRsb = spRowPix.sz(aRsb_upsert);
-//    TRACE_UPSERT( vTrace("Upsert(P%lld) %lld: %s\n"_Stz,m_iPartitionId,i_Row,szRsb); )
+//    TRACE_UPSERT( vTrace("Upsert(P%lld) %lld: %s\n"_Stz,m_tPtnNo,i_Row,szRsb); )
 //
 //    xEntWrk.vElmSeqSize(0);
 //    pIndexTree->vExtractKey(&xEntWrk,aRsb_upsert);
