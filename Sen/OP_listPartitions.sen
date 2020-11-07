@@ -24,11 +24,11 @@
   grid::tablePtns 0 do
 
     // add nodeInfo to the infoSet
-    I grid::toPartition
+    I grid::tablePtnToPtnNo
     streamSetTable[] streamSet[].addListPartitions  not if
       StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
-      I grid::toPartition
+      I grid::tablePtnToPtnNo
       streamSetTable[] StreamSet[].addListPartitions assert
     then
 

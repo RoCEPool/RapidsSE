@@ -427,17 +427,17 @@ public:
   void vGridIncConnectedNodes(void);
   void vGridNode(void);
   void vGridPartitions(void);
+  void vGridPtnNoToTablePtn(void);
   void vGridShow(void);
   void vGridStartedStore(void);
   void vGridStartedFetch(void);
   void vGridStartNodeStore(void);
   void vGridStartNodeFetch(void);
   void vGridTablePtns(void);
+  void vGridTablePtnToPtnNo(void);
   void vGridThisNodeFetch(void);
   void vGridThisNodeNameFetch(void);
   void vGridToNode(void);
-  void vGridToPartition(void);
-  void vGridToSlot(void);
 
   // group by
   void vGroupByApplyBuffer(void);

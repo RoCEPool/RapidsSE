@@ -15,17 +15,17 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
+  vAddStep("grid::ptnNoToTablePtn"_Stz,   &Step::vGridPtnNoToTablePtn);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
   vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
   vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
   vAddStep("grid::StartNode!"_Stz,        &Step::vGridStartNodeStore);
   vAddStep("grid::StartNode@"_Stz,        &Step::vGridStartNodeFetch);
   vAddStep("grid::tablePtns"_Stz,         &Step::vGridTablePtns);
+  vAddStep("grid::tablePtnToPtnNo"_Stz,   &Step::vGridTablePtnToPtnNo);
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("grid::toNode"_Stz,            &Step::vGridToNode);
-  vAddStep("grid::toPartition"_Stz,       &Step::vGridToPartition);
-  vAddStep("grid::toSlot"_Stz,            &Step::vGridToSlot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ void Step::vGridConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::definedNodes -- get number of nodes in the grid                             */
+/* grid::definedNodes -- get number of nodes in the grid                      */
 /*----------------------------------------------------------------------------*/
 void Step::vGridDefinedNodes(void)
 {
@@ -120,7 +120,7 @@ void Step::vGridShow(void)
   
   vTrace("Grid::\n"_Stz);
   vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nDefinedNodes());
-  vTrace("  %lld slots per node\n"_Stz,AM::pGrid()->nTablePtns());
+  vTrace("  %lld partitions per table\n"_Stz,AM::pGrid()->nTablePtns());
   vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitionsInGrid());
   
   for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
@@ -149,6 +149,22 @@ void Step::vGridTablePtns(void)
   ENTRY();
   
   m_pDataStack->vPushInt(AM::pGrid()->nTablePtns());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::TablePtnToPtnNo -- tablePtn to ptnNo                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vGridTablePtnToPtnNo(void)
+{
+  ENTRY();
+  
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  
+  tPN tPtnNo = TablePtn::tTablePtnToPtnNo(i_TablePtn);
+  
+  m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
   
   EXIT();
 }
@@ -256,25 +272,9 @@ void Step::vGridToNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::toPartition -- convert slot to partitionId                           */
+/* grid::ptnNoToTablePtn -- convert ptnNo to tablePtn                         */
 /*----------------------------------------------------------------------------*/
-void Step::vGridToPartition(void)
-{
-  ENTRY();
-  
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
-  
-  tPN tPtnNo = TablePtn::tTablePtnToPtnNo(i_TablePtn);
-  
-  m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::toSlot -- convert partitionId to slot                                */
-/*----------------------------------------------------------------------------*/
-void Step::vGridToSlot(void)
+void Step::vGridPtnNoToTablePtn(void)
 {
   ENTRY();
   
