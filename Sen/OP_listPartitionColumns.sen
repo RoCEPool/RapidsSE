@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : lspartcol_action
 
-  0 locals| iPartitionCols |
+  0 locals| nPtnCols |
 
   // find the table
   <tableNm> op__table not if
@@ -31,10 +31,10 @@
 
   // get the ptn stream def from the table
   Table[].ptnStreamDef@ to streamDef[]
-  streamDef[].columnCount@ to iPartitionCols
+  streamDef[].columnCount@ to nPtnCols
 
   // insert a row in the infoset for each column
-  iPartitionCols 0 do
+  nPtnCols 0 do
     I streamDef[].column@
     streamSetTable[] StreamSet[].addColumnDef  not if
       StreamSet[].pipeOut

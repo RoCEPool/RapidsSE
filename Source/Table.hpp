@@ -58,7 +58,7 @@ namespace MetaData
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
     StreamDef* pPtnStreamDef(void);
-    bool    bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
+    bool    bPurge(i8 i_TablePtn, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
@@ -66,9 +66,9 @@ namespace MetaData
     TablePtn* pTablePtn(i8 i_TablePtn);
     i8      iToPartition(i8 iRowHash);
     
-    //void vInsdelBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
-    //void vInsdelBuffer(i8 iTxId, i8 iPartition, RsbBuffer* pRsbBuffer);
-    //void vUpsertBuffer(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
+    //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
+    //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RsbBuffer* pRsbBuffer);
+    //void vUpsertBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
