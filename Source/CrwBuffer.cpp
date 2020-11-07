@@ -641,8 +641,8 @@ void CrwBuffer::vShow(void)
   vTrace("\n"_Stz);
   vTrace("Rows (by cacheLine):\n"_Stz);
   
-  for (i8 iIndex = 0; iIndex < nRows; iIndex++)
-    vShowRow(iIndex);
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++)
+    vShowRow(i_Row);
   
   vTrace("\n"_Stz);
   vTrace("=================================================="

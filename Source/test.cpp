@@ -1168,14 +1168,14 @@ void vTest18(void)
   char c[C_1K];
   Timer oTimer;
   
-  for (i8 iIndex = 0; iIndex < C_1K-1; iIndex++)
-    a[iIndex] = 'a';
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++)
+    a[i_Char] = 'a';
   a[C_1K-1] = '\0';
   
   i8 n = 0;
   
   oTimer.vStart();
-  for (i8 iIndex = 0; iIndex < C_1K-1; iIndex++) {
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
     MemLib::vCopy(&c[0], &a[0], C_1K, CN_NONE);
     n++;
   }
@@ -1185,7 +1185,7 @@ void vTest18(void)
   
   n = 0;
   oTimer.vStart();
-  for (i8 iIndex = 0; iIndex < C_1K-1; iIndex++) {
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
     i8 nL = StrLib::nCopy(&b[0],&a[0]);
     n++;
     //RASSERT(nL == C_1K-1);

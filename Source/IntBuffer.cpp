@@ -113,11 +113,11 @@ void IntBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* append an integer value to the buffer                                      */
 /*----------------------------------------------------------------------------*/
-void IntBuffer::vAppendValue(i8 i_Value)
+void IntBuffer::vAppendValue(i8 iValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
   
-  m_iIntArray[m_nInts++] = i_Value;
+  m_iIntArray[m_nInts++] = iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,21 +134,21 @@ void IntBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the value at index from the buffer                                     */
 /*----------------------------------------------------------------------------*/
-i8 IntBuffer::iGetValue(i8 i_Index)
+i8 IntBuffer::iGetValue(i8 i_Int)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
   
-  return m_iIntArray[i_Index];
+  return m_iIntArray[i_Int];
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the element at index from the buffer                                   */
 /*----------------------------------------------------------------------------*/
-i8* IntBuffer::aGetElement(i8 i_Index)
+i8* IntBuffer::aGetElement(i8 i_Int)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
   
-  return &m_iIntArray[i_Index];
+  return &m_iIntArray[i_Int];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,8 +282,8 @@ void IntBuffer::vShow(void)
   vTrace("\n"_Stz);
   vTrace("Values:\n"_Stz);
   
-  for (i8 iIndex = 0; iIndex < m_nInts; iIndex++)
-    vTrace("0x%x m_iIntArray[%lld]: %lld\n"_Stz, &m_iIntArray[iIndex], iIndex, m_iIntArray[iIndex]);
+  for (i8 i_Row = 0; i_Row < m_nInts; i_Row++)
+    vTrace("0x%x m_iIntArray[%lld]: %lld\n"_Stz, &m_iIntArray[i_Row], i_Row, m_iIntArray[i_Row]);
   
   vTrace("\n"_Stz);
   vTrace("=================================================="

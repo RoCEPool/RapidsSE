@@ -387,38 +387,38 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
-  i8 iIndex = 0;
+  i8 i_Offset = 0;
   
   // leading YYYY
   if (*dateFormat->azChar() == 'Y') {
     
     // expect YYYY
-    if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-         (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-         (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-         (*(dateFormat + iIndex++)->azChar() != 'Y') )
+    if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+         (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+         (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+         (*(dateFormat + i_Offset++)->azChar() != 'Y') )
       return false;
     
     // extract format separator
-    Stz* pSeparator= dateFormat + iIndex++;
+    Stz* pSeparator= dateFormat + i_Offset++;
     m_cDateSeparator = *pSeparator->azChar();
     
     // is next character 'M' ?
-    if (*(dateFormat + iIndex)->azChar() == 'M') {
+    if (*(dateFormat + i_Offset)->azChar() == 'M') {
       
       // FORMAT should be YYYY-MM-DD
       // expect another M
-      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
-           (*(dateFormat + iIndex++)->azChar() != 'M'))
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'M'))
         return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
         return false;
       
       // expect DD
-      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
-           (*(dateFormat + iIndex++)->azChar() != 'D') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'D') )
         return false;
       
       m_eDateComponent[0] = DC_YYYY;
@@ -430,17 +430,17 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     else {
       // FORMAT should be YYYY-DD-MM
       // expect DD
-      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
-           (*(dateFormat + iIndex++)->azChar() != 'D'))
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'D'))
         return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
         return false;
       
       // expect MM
-      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
-           (*(dateFormat + iIndex++)->azChar() != 'M') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'M') )
         return false;
       
       m_eDateComponent[0] = DC_YYYY;
@@ -453,32 +453,32 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
   else if (*dateFormat->azChar() == 'M') {
     
     // expect MM
-    if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
-        (*(dateFormat + iIndex++)->azChar() != 'M') )
+    if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
+        (*(dateFormat + i_Offset++)->azChar() != 'M') )
       return false;
     
     // extract format separator
-    Stz* pSeparator= dateFormat + iIndex++;
+    Stz* pSeparator= dateFormat + i_Offset++;
     m_cDateSeparator = *pSeparator->azChar();
     
     // is next character 'Y' ?
-    if (*(dateFormat + iIndex)->azChar() == 'Y') {
+    if (*(dateFormat + i_Offset)->azChar() == 'Y') {
       
       // FORMAT should be MM-YYYY-DD
       // expect YYY
-      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->azChar() != 'Y') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') )
         return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
         return false;
       
       // expect DD
-      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
-          (*(dateFormat + iIndex++)->azChar() != 'D') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'D') )
         return false;
       
       m_eDateComponent[0] = DC_MM;
@@ -488,19 +488,19 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     else {
       // FORMAT should be MM-DD-YYYY
       // expect DD
-      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
-          (*(dateFormat + iIndex++)->azChar() != 'D'))
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'D'))
         return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
         return false;
       
       // expect YYYY
-      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->azChar() != 'Y') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+          (*(dateFormat + i_Offset++)->azChar() != 'Y') )
         return false;
       
       m_eDateComponent[0] = DC_MM;
@@ -513,32 +513,32 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
   else if (*dateFormat->azChar() == 'D') {
     
     // expect DD
-    if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
-         (*(dateFormat + iIndex++)->azChar() != 'D') )
+    if ( (*(dateFormat + i_Offset++)->azChar() != 'D') ||
+         (*(dateFormat + i_Offset++)->azChar() != 'D') )
       return false;
     
     // extract format separator
-    Stz* pSeparator= dateFormat + iIndex++;
+    Stz* pSeparator= dateFormat + i_Offset++;
     m_cDateSeparator = *pSeparator->azChar();
     
     // is next character 'M' ?
-    if (*(dateFormat + iIndex)->azChar() == 'M') {
+    if (*(dateFormat + i_Offset)->azChar() == 'M') {
       
       // FORMAT should be DD-MM-YYYY
       // expect another M
-      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
-           (*(dateFormat + iIndex++)->azChar() != 'M') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'M') )
         return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
         return false;
       
       // expect YYYY
-      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-           (*(dateFormat + iIndex++)->azChar() != 'Y') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') )
         return false;
       
       m_eDateComponent[0] = DC_DD;
@@ -549,18 +549,18 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
     else {
       
       // expect YYYY
-      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-           (*(dateFormat + iIndex++)->azChar() != 'Y') ||
-           (*(dateFormat + iIndex++)->azChar() != 'Y') )
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'Y') )
         return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->azChar() != m_cDateSeparator) )
+      if ( (*(dateFormat + i_Offset++)->azChar() != m_cDateSeparator) )
         return false;
       
-      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
-           (*(dateFormat + iIndex++)->azChar() != 'M'))
+      if ( (*(dateFormat + i_Offset++)->azChar() != 'M') ||
+           (*(dateFormat + i_Offset++)->azChar() != 'M'))
         return false;
       
       m_eDateComponent[0] = DC_DD;

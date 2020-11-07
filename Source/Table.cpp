@@ -362,11 +362,11 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // append the buffer entries into the table
 //
-//  TablePtn* pTablePtn = this->pPartition(i_TablePtn);
+//  TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 //
 //  t8 tPerspectibe = AM::tThisTLSPespective();
 //
-//  pPartition->vInsdelBuffer(pCrwBuffer,tPerspectibe);
+//  pTablePtn->vInsdelBuffer(pCrwBuffer,tPerspectibe);
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -397,11 +397,11 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // append the buffer entries into the table
 //
-//  TablePtn* pTablePtn = this->pPartition(i_TablePtn);
+//  TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 //
 //  t8 tPerspective = 0; //AM::tThisTLSPespective();
 //
-//  pPartition->vInsdelBuffer(pRsbBuffer,tPerspective);
+//  pTablePtn->vInsdelBuffer(pRsbBuffer,tPerspective);
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -698,11 +698,11 @@ i8 Table::iToPartition(i8 iRowHash)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // append the buffer entries into the table
 //
-//  TablePtn* pTablePtn = this->pPartition(i_TablePtn);
+//  TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 //
 //  t8 tPerspectibe = AM::tThisTLSPespective();
 //
-//  pPartition->vUpsertBuffer(pCrwBuffer,tPerspectibe);
+//  pTablePtn->vUpsertBuffer(pCrwBuffer,tPerspectibe);
 //}
 
 /*----------------------------------------------------------------------------*/

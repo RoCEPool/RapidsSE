@@ -28,12 +28,12 @@ namespace SortBuffers
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     ////////////////////////////////////////////////////////////////////////////
-    void       vAppendValue(i8 i_Value);
+    void       vAppendValue(i8 iValue);
     i8         nCount(void);
     void       vDump(void);
     void       vBufferCount(i8& nBuffers);
-    i8         iGetValue(i8 iIndex);
-    i8*        aGetElement(i8 iIndex);
+    i8         iGetValue(i8 i_Int);
+    i8*        aGetElement(i8 i_Int);
     bool       bHasSpace(void);
     IntBuffer* pLastBuffer(i8& iCount);
     void       vLinkBuffer(IntBuffer* pIntBuffer);
