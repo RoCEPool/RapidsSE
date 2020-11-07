@@ -139,11 +139,10 @@ void Step::vInfoSetAddRowCount(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
   
-  // get the slot
+  // get the table partition
   Job* pJob = m_pTask->m_pJob;
-  i8 i_Ptn = pJob->m_pOp->tPtnNo();
-  
-  i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(i_Ptn);
+  tPN tPtnNo = pJob->m_pOp->tPtnNo();
+  i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(tPtnNo);
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNTINFO);

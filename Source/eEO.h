@@ -143,8 +143,8 @@ enum eEO : u1 // expression operators
   /*    */ EO_NEVERREACH,       // assert (never reach code)
   /*    */ EO_SANITY,           // sanity check
   /*    */ EO_SLEEP,            // sleep for top seconds
-  /*    */ EO_SLOT,             // push i_TablePtn
   /*    */ EO_SQL,              // set sql no
+  /*    */ EO_TABLEPTN,         // push i_TablePtn
   /*    */ EO_TRACEOFF,         // set trace off
   /*    */ EO_TRACEON,          // set trace on
   /*    */ EO_NOOP,             // no op
@@ -446,8 +446,8 @@ static Stz* aEO[]
   /*    */ "EO_NEVERREACH"_Stz,
   /*    */ "EO_SANITY"_Stz,
   /*    */ "EO_SLEEP"_Stz,
-  /*    */ "EO_SLOT"_Stz,
   /*    */ "EO_SQL"_Stz,
+  /*    */ "EO_TABLEPTN"_Stz,
   /*    */ "EO_TRACEOFF"_Stz,
   /*    */ "EO_TRACEON"_Stz,
   /*    */ "EO_NOOP"_Stz,
@@ -755,8 +755,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_NEVERREACH
   { EA_NONE,    0 },  // EO_SANITY
   { EA_NONE,    0 },  // EO_SLEEP
-  { EA_NONE,    0 },  // EO_SLOT
   { EA_INT,     8 },  // EO_SQL
+  { EA_NONE,    0 },  // EO_TABLEPTN
   { EA_NONE,    0 },  // EO_TRACEOFF
   { EA_NONE,    0 },  // EO_TRACEON
   { EA_NONE,    0 },  // EO_NOOP

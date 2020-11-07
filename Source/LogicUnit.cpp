@@ -1911,15 +1911,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vLib_SLEEP(pLU,iTopA);
         break;//+endCase
               
-      case EO_SLOT: ArgNil(); // push i_TablePtn
-        dLU1(EO_SLOT,aRluCommon->m_i_TablePtn);
-        *(++aiDstk) = aRluCommon->m_i_TablePtn;
-        break;//+endCase
-        
       case EO_SQL: ArgGet(iArg); //  set sql no
         dLU0(EO_SQL);
         aRluCommon->m_iSql = iArg;
         vRlu_QUERYFRAG(pLU,iArg);
+        break;//+endCase
+        
+      case EO_TABLEPTN: ArgNil(); // push i_TablePtn
+        dLU1(EO_TABLEPTN,aRluCommon->m_i_TablePtn);
+        *(++aiDstk) = aRluCommon->m_i_TablePtn;
         break;//+endCase
         
       case EO_TRACEOFF: ArgNil(); // set trace off
