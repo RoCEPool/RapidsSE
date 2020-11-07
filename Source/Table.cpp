@@ -47,7 +47,7 @@ Table::Table(Stz* szTableNm)
   // create the table partitions
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
     
-    tPN tPtnNo = TablePtn::tTablePtnToPtnNo(i_TablePtn);
+    tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
     TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
     
     m_pTablePtnVec->vAdd(pTablePtn);

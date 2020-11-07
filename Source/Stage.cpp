@@ -151,7 +151,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      i8 iNode_exe = TablePtn::iPtnNoToNode(pStrand->tPtnNo());
+      i8 iNode_exe = Table::iPtnNoToNode(pStrand->tPtnNo());
       if (iNode_exe == iNode) {
         nOps += pStrand->nItems();
       }
@@ -316,7 +316,7 @@ void Stage::vCreateStrands(void)
     case PO_ALL_PARTITIONS_ON_ORIGIN:
       RASSERT( ! m_pStageSpec->bNodeTopo());
       for (t_PtnNo = 0; t_PtnNo < AM::pGrid()->nPartitionsInGrid(); t_PtnNo++) {
-        i_Node = TablePtn::iPtnNoToNode(t_PtnNo);
+        i_Node = Table::iPtnNoToNode(t_PtnNo);
         if (i_Node == m_pPipeline->iOriginatingNode())
           vAdd(new Strand(m_pStageSpec, t_PtnNo));
       }

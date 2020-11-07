@@ -298,7 +298,7 @@ void Step::vTableTablePtnFetch(void)
   Job* pJob = m_pTask->m_pJob;
   
   i8 i_Ptn = pJob->m_pOp->tPtnNo();
-  i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(i_Ptn);
+  i8 i_TablePtn = Table::iPtnNoToTablePtn(i_Ptn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);
@@ -319,7 +319,7 @@ void Step::vTableTablePtnZero(void)
   
   tPN tPtnNo = 0;
   
-  i8 i_TablePtn = TablePtn::iPtnNoToTablePtn(tPtnNo);
+  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);

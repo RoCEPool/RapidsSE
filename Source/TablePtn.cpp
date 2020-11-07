@@ -98,42 +98,6 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert grid-wide partition number to which node its on node               */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::iPtnNoToNode(tPN tPtnNo)
-{
-  _static_
-  
-  i8 i_Node = tPtnNo % AM::nDefinedNodes();
-  
-  return i_Node;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert grid-wide partition number to table partition on its node          */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::iPtnNoToTablePtn(tPN tPtnNo)
-{
-  _static_
-  
-  i8 i_TablePtn = tPtnNo / AM::nDefinedNodes();
-  
-  return i_TablePtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert tablePtn to partition number (in grid)                             */
-/*----------------------------------------------------------------------------*/
-tPN TablePtn::tTablePtnToPtnNo(i8 i_TablePtn)
-{
-  _static_
-  
-  tPN tPtnNo = (i_TablePtn * AM::nDefinedNodes()) + AM::iThisNodeNo();
-  
-  return tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
