@@ -53,7 +53,7 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   // get the index to be analyzed
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
-  // get the slot
+  // get the tablePtn
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
   // get the streamDef from the table
@@ -95,7 +95,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
   // get the index to be analyzed
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  // get the slot
+  // get the tablePtn
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
   // get the streamDef from the table
@@ -184,10 +184,10 @@ void Step::vStreamSetAddGridSanity(void)
   if (pNodeInfo->m_waColVal[1] == iRegionSize)
     bRegionSize = true;
   
-  // get slots per node for this node
+  // get partitions per table for this node
   bool bPartitions = false;
-  i8 nSlotsPerNode = pGrid->nTablePtns();
-  if (pNodeInfo->m_waColVal[2] == nSlotsPerNode)
+  i8 nTablePtns = pGrid->nTablePtns();
+  if (pNodeInfo->m_waColVal[2] == nTablePtns)
     bPartitions = true;
   
   // check if the regionSize and partitions match
