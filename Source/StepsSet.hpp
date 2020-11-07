@@ -1380,13 +1380,6 @@ public:
   // shell
   void vShellExecute(void);
 
-  // slots
-  void vSlotsColumnFetch(void);
-  void vSlotsColumnCountFetch(void);
-  void vSlotsColumnName(void);
-  void vSlotsCreateStreamDef(void);
-  void vSlotsSubDic(void);
-
   // socket
   void vSocketAccept(void);
   void vSocketClose(void);
