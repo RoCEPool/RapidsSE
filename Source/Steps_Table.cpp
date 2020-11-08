@@ -444,19 +444,31 @@ void Step::vTableListPartition(void)
 {
   ENTRY();
   
+  tPN tPtnNo = m_pDataStack->iPopAsInt(__func__);
+
   Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
 
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
 
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
+  s256 sOutput;
+  sOutput.vSprint("Ptn %lld"_Stz,tPtnNo);
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
-                                    "...tbd"_Stz,
+                                    sOutput.azChar(),
                                     C_VARGS_END);
-   
-  //m_pDataStack->vPushInt(pRow ? true : false);
   
+  if (! pRow) {
+    m_pDataStack->vPushInt(tPtnNo);
+    EXIT();
+    return;
+  }
+  
+  if (++tPtnNo < AM::nPartitionsInGrid())
+    m_pDataStack->vPushInt(tPtnNo);
+  else
+    m_pDataStack->vPushInt(false);
   EXIT();
 }
 

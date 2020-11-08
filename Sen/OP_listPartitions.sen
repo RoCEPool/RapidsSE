@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : lsptn_action
 
+  0 locals| iCursor |
+
   // find the table
   <tableNm> op__table not if
     false
@@ -24,9 +26,13 @@
   // pipeout the streamDef
   streamDef[].pipeOut
 
-  streamSetTable[] StreamSet[].new
-
-  table[].listPartition
+  begin
+    streamSetTable[] StreamSet[].new
+    iCursor table[].listPartition to iCursor
+    
+    iCursor while
+      StreamSet[].pipeOut
+  repeat
 
   // pipeout the infoset
   StreamSet[].pipeOut
