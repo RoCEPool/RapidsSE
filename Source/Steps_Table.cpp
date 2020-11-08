@@ -444,6 +444,19 @@ void Step::vTableListPartition(void)
 {
   ENTRY();
   
+  Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+
+  StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+
+  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    "...tbd"_Stz,
+                                    C_VARGS_END);
+   
+  //m_pDataStack->vPushInt(pRow ? true : false);
+  
   EXIT();
 }
 
