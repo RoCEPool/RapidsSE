@@ -35,7 +35,7 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
   else {
     // node,tablePtn
     m_tPtnNo = i_Strand;
-    m_i_Node = Table::iPtnNoToNode(m_tPtnNo);
+    m_i_Node = PtnMap::iPtnNoToNode(m_tPtnNo);
     m_i_TablePtn = Table::iPtnNoToTablePtn(m_tPtnNo);
   }
   
@@ -137,7 +137,7 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
   if (m_pStageSpec->bNodeTopo())
     i_OnNode = m_i_Node;
   else
-    i_OnNode = Table::iPtnNoToNode(m_tPtnNo);
+    i_OnNode = PtnMap::iPtnNoToNode(m_tPtnNo);
   
   if (i_OnNode == i_ThisNode) {
     // for each operator in the stage ptn

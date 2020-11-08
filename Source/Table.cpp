@@ -188,18 +188,6 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
 
 
 /*----------------------------------------------------------------------------*/
-/* convert grid-wide partition number to which node its on node               */
-/*----------------------------------------------------------------------------*/
-i8 Table::iPtnNoToNode(tPN tPtnNo)
-{
-  _static_
-  
-  i8 i_Node = tPtnNo % AM::nDefinedNodes();
-  
-  return i_Node;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
 i8 Table::iPtnNoToTablePtn(tPN tPtnNo)

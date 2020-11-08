@@ -39,7 +39,6 @@ namespace MetaData
     static void       vMonitorPortrait(s48K& sPortrait);
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
     
-    static i8   iPtnNoToNode(tPN tPtnNo);
     static i8   iPtnNoToTablePtn(tPN tPtnNo);
     static tPN  tTablePtnToPtnNo(i8 i_TablePtn);
 

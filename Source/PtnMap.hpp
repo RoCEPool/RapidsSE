@@ -22,6 +22,8 @@ namespace Partitioning
     PtnMap(i8 nPartitions);
    ~PtnMap(void) noexcept(false);
   
+    static i8 iPtnNoToNode(tPN tPtnNo);
+
     i8 i_WhichNode(i8 i_Ptn);
   
   private:

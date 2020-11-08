@@ -457,7 +457,7 @@ void Step::vTableListPartition(void)
 
   
   for (;;) {
-    i8 i_Node     = Table::iPtnNoToNode(tPtnNo);
+    i8 i_Node     = PtnMap::iPtnNoToNode(tPtnNo);
     i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
 
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
