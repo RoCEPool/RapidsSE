@@ -1628,6 +1628,13 @@ void Engine::vStartSystem(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Creating Partition Map\n"_Stz);
+
+  gpAttachMap->m_pPtnMap = new PtnMap(AM::nPartitionsInGrid());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::bVerboseProgress())
     vInfo("  Opening Shared Log\n"_Stz);

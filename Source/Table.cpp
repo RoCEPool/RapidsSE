@@ -35,7 +35,7 @@ Table::Table(Stz* szTableNm)
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nBuckets());
-  m_pPtnMap    = new PtnMap(AM::nPartitionsInGrid());
+  //m_pPtnMap    = new PtnMap(AM::nPartitionsInGrid());
   m_bIsLoading = false;
   m_bDefinitionOnly = false;
 
@@ -80,7 +80,6 @@ Table::~Table(void) noexcept(false)
   
   delete m_pIdxVec;
   delete m_pBucketMap;
-  delete m_pPtnMap;
 
   delete m_pStreamDef;
   delete m_pPtnStreamDef;

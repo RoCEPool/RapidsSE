@@ -15,7 +15,6 @@ namespace MetaData
     IdxVec*    m_pIdxVec;     // index vector
     Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap;  // bucket (to partition) map
-    PtnMap*    m_pPtnMap;     // partition (to node) map
     bool       m_bIsLoading;  // data is loading
     bool       m_bDefinitionOnly; // table is a definition only
     
