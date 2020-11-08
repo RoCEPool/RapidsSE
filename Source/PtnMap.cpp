@@ -43,13 +43,25 @@ PtnMap::~PtnMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to which node its on                    */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::iPtnNoToNode(tPN tPtnNo)
+i8 PtnMap::i_PtnNoToNode(tPN tPtnNo)
 {
   _static_
   
   i8 i_Node = tPtnNo % AM::nDefinedNodes();
   
   return i_Node;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert grid-wide partition number to strand on its node                   */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::i_PtnNoToStrand(tPN tPtnNo)
+{
+  _static_
+  
+  i8 i_Strand = tPtnNo / AM::nDefinedNodes();
+  
+  return i_Strand;
 }
 
 

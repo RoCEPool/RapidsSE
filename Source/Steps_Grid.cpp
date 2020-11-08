@@ -264,7 +264,7 @@ void Step::vGridToNode(void)
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
   
-  i8 i_Node = PtnMap::iPtnNoToNode(tPtnNo);
+  i8 i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
   
   m_pDataStack->vPushInt(i_Node);
   
