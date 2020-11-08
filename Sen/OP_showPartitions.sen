@@ -1,0 +1,68 @@
+/*============================================================================*/
+/* OP_showPartitions.sen -- Operator show partitions                          */
+/*============================================================================*/
+
+" OP_showPartitions.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: lsptn_action
+
+  0 locals| iColumns |
+
+  // find the table
+  <tableNm> op__table not if
+    false
+    exit
+  then
+
+  // get the table column count
+  Table[].columnCount@ to iColumns
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeOut
+
+  // create an infoSet operand
+  streamSetTable[] StreamSet[].new
+
+  // insert a row in the infoset for each column
+  iColumns 0 do
+    I Table[].column@
+    streamSetTable[] StreamSet[].addColumnDef not if
+      StreamSet[].pipeOut
+      streamSetTable[] streamSet[].new
+      I Table[].column@
+      streamSetTable[] StreamSet[].addColumnDef assert
+    then
+  loop
+
+  // pipeout the infoset
+  StreamSet[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: lsptn :: lsptn <tableNm> ;
+
+: lsptn _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <streamDef>   = __listColumns
+    <params>      = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
