@@ -186,6 +186,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_PATHINFO"_Stz,      C_TDEF_PATHINFO);
   vAddConstant("C_TDEF_PINGINFO"_Stz,      C_TDEF_PINGINFO);
   vAddConstant("C_TDEF_PROGRESSUNITS"_Stz, C_TDEF_PROGRESSUNITS);
+  vAddConstant("C_TDEF_PROMPTOUT"_Stz,     C_TDEF_PROMPTOUT);
   vAddConstant("C_TDEF_PWF"_Stz,           C_TDEF_PWF);
   vAddConstant("C_TDEF_RETURNPIPELINE"_Stz,C_TDEF_RETURNPIPELINE);
   vAddConstant("C_TDEF_SEEKOFFSETS"_Stz,   C_TDEF_SEEKOFFSETS);

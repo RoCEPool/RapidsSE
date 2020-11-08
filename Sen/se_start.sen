@@ -1835,6 +1835,16 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PROMPTOUT
+  sPath
+  "
+  define table __promptOut (
+    outLine   VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SHOWCLUSTER
   sPath
   "
