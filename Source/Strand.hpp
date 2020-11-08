@@ -9,12 +9,11 @@ namespace Pipelines
   {
   private:
     s32        m_sStrandNm;   // synthesised name of this strand
-    i8         m_i_Strand;    // which strand of stage
     StageSpec* m_pStageSpec;  // this is a strand of which stage
   
     tPN        m_tPtnNo;       // which partition in grid
     i8         m_i_Node;       // which node in grid
-    i8         m_i_TablePtn;   // which table partition in node
+    i8         m_i_Strand;    // which strand of stage
 
     // must be last
     Footer m_xFooter;
@@ -31,7 +30,6 @@ namespace Pipelines
     i8     i_Strand(void);
     i8     i_Node(void);
     tPN    tPtnNo(void);
-    i8     i_TablePtn(void);
   
     StageSpec* pStageSpec(void);
     void   vSpawnOperatorJobs(i8 iSessionId, i8 iNode);

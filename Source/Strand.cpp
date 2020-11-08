@@ -23,20 +23,19 @@ Strand::Strand(StageSpec* pStageSpec, i8 i_Strand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   
   m_pStageSpec = pStageSpec;
-  m_i_Strand   = i_Strand;
   
   // determine the node,tablePtn coordinates of this strand
   if (m_pStageSpec->bNodeTopo()) {
     // node only
-    m_i_Node = i_Strand;
-    m_tPtnNo = C_UNKNOWN;
-    m_i_TablePtn = C_UNKNOWN;
+    m_tPtnNo     = C_UNKNOWN;
+    m_i_Node     = i_Strand;
+    m_i_Strand   = i_Strand;
   }
   else {
     // node,tablePtn
-    m_tPtnNo = i_Strand;
-    m_i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
-    m_i_TablePtn = Table::iPtnNoToTablePtn(m_tPtnNo);
+    m_tPtnNo     = i_Strand;
+    m_i_Node     = PtnMap::i_PtnNoToNode(m_tPtnNo);
+    m_i_Strand   = i_Strand;
   }
   
   vSynthesiseName();
@@ -75,7 +74,7 @@ void Strand::vDump(void)
     vTrace("  [%02lld] (N%lld,S%02lld) Partition-Strand %s:\n"_Stz,
            m_i_Strand,
            m_i_Node,
-           m_i_TablePtn,
+           m_i_Strand,
            m_sStrandNm.szStz());
   }
 
@@ -104,16 +103,6 @@ i8 Strand::tPtnNo(void)
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   return m_tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tablePtn this strand needs to run on                                   */
-/*----------------------------------------------------------------------------*/
-i8 Strand::i_TablePtn(void)
-{
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
-  
-  return m_i_TablePtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +155,7 @@ void Strand::vSynthesiseName(void)
   else {
     m_sStrandNm.vSprint("_strandv_N%lldS%lld_of_%s"_Stz,
                           m_i_Node,
-                          m_i_TablePtn,
+                          m_i_Strand,
                           m_pStageSpec->szStageNm());
   }
 }
