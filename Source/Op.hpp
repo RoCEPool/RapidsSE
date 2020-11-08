@@ -10,6 +10,7 @@ namespace Pipelines
   private:
     s32            m_sOpNm;          // name of the operator
     OpSpec*        m_pOpSpec;        // specification of this operator
+    Strand*        m_pStrand;        // which strand of stage
     Stage*         m_pStage;         // which stage of pipeline
     Pipeline*      m_pPipeline;      // which pipeline
   
@@ -49,7 +50,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline);
+    Op(OpSpec* pOpSpec, Strand* pStrand, Stage* pStage, Pipeline* pPipeline);
    ~Op(void) noexcept(false);
   
     void vDump(i8 i_Op);

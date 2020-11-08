@@ -92,7 +92,7 @@ namespace Partitioning      { class BucketMap;       class PtnMap;
 namespace Persistence       { class CarryOver;                                }
 namespace Pipelines         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
-                              class StageVec;                                 }
+                              class StageVec;        class Strand;            }
 namespace PipelineSpecs     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
 namespace Plans             { class Planner;                                  }

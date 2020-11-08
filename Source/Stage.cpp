@@ -344,19 +344,23 @@ void Stage::vCreateStrands(void)
     OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
     
     // add the operator to the stages of the stageNdeVec
-    for (i8 i_Index = 0; i_Index < nItems(); i_Index++) {
-      Strand* pStrand = pGet(i_Index);
+    for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
+      Strand* pStrand = pGet(i_Strand);
       
-      if (m_pStageSpec->bNodeTopo()) {
-        Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vNode(pStrand->i_Node());
-        pStrand->vAdd(pOp);
-      }
-      else {
-        Op* pOp = new Op(pOpSpec,this,m_pPipeline);
-        pOp->vPtnNo(pStrand->tPtnNo());
-        pStrand->vAdd(pOp);
-      }
+//      if (m_pStageSpec->bNodeTopo()) {
+//        Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
+//        pOp->vNode(pStrand->i_Node());
+//        pStrand->vAdd(pOp);
+//      }
+//      else {
+//        Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
+//        pOp->vPtnNo(pStrand->tPtnNo());
+//        pStrand->vAdd(pOp);
+//      }
+
+      Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
+      pStrand->vAdd(pOp);
+
     }
   }
 }

@@ -45,7 +45,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
+Op::Op(OpSpec* pOpSpec, Strand* pStrand, Stage* pStage, Pipeline* pPipeline)
 : Focal(CN_OP,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->pJob()))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -54,6 +54,7 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   
   m_sOpNm     = pOpSpec->szOpNm();
   m_pOpSpec   = pOpSpec;
+  m_pStrand   = pStrand;
   m_pStage    = pStage;
   m_pPipeline = pPipeline;
 
@@ -71,8 +72,14 @@ Op::Op(OpSpec* pOpSpec, Stage* pStage, Pipeline* pPipeline)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  m_i_Node        = C_UNKNOWN;
-  m_tPtnNo        = C_UNKNOWN;
+  if (pStage->pStageSpec()->bNodeTopo()) {
+    m_tPtnNo = C_UNKNOWN;
+    m_i_Node = pStrand->i_Node();
+  }
+  else {
+    m_tPtnNo = pStrand->tPtnNo();
+    m_i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
+  }
   
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
