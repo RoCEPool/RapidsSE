@@ -298,8 +298,8 @@ void Step::vTableTablePtnFetch(void)
   
   Job* pJob = m_pTask->m_pJob;
   
-  i8 i_Ptn = pJob->m_pOp->tPtnNo();
-  i8 i_TablePtn = Table::iPtnNoToTablePtn(i_Ptn);
+  tPN tPtnNo = pJob->m_pOp->tPtnNo();
+  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);
@@ -444,31 +444,43 @@ void Step::vTableListPartition(void)
 {
   ENTRY();
   
-  tPN tPtnNo = m_pDataStack->iPopAsInt(__func__);
-
+  s256 sOutput;
+  
   Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
 
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
 
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
-  s256 sOutput;
-  sOutput.vSprint("Ptn %lld"_Stz,tPtnNo);
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
-                                    C_VARGS_BEGIN,
-                                    sOutput.azChar(),
-                                    C_VARGS_END);
   
-  if (! pRow) {
-    m_pDataStack->vPushInt(tPtnNo);
-    EXIT();
-    return;
+  tPN tPtnNo = m_pDataStack->iPopAsInt(__func__);
+
+  
+  for (;;) {
+    i8 i_Node     = Table::iPtnNoToNode(tPtnNo);
+    i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
+
+    sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
+                    tPtnNo,i_Node,i_TablePtn);
+  
+    Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      sOutput.azChar(),
+                                      C_VARGS_END);
+  
+    if (! pRow) {
+      // call again
+      m_pDataStack->vPushInt(tPtnNo);
+      break;
+    }
+    
+    if (++tPtnNo >= AM::nPartitionsInGrid()) {
+      // done
+      m_pDataStack->vPushInt(false);
+      break;
+    }
   }
-  
-  if (++tPtnNo < AM::nPartitionsInGrid())
-    m_pDataStack->vPushInt(tPtnNo);
-  else
-    m_pDataStack->vPushInt(false);
+
   EXIT();
 }
 
