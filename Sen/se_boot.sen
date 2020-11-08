@@ -138,8 +138,9 @@ assert::stack_0
         "OP_listColumns.sen"          include
         "OP_listIndexes.sen"          include
         "OP_listIndexColumns.sen"     include
-        "OP_listParts.sen"            include
         "OP_listPartitionColumns.sen" include
+        "OP_listPartitions.sen"       include
+        "OP_listParts.sen"            include
         "OP_listSchemas.sen"          include
         "OP_listTables.sen"           include
         "OP_listTableDefs.sen"        include
@@ -176,7 +177,6 @@ assert::stack_0
         "OP_scan.sen"                 include
         "OP_send.sen"                 include
         "OP_showcluster.sen"          include
-        "OP_showPartitions.sen"       include
         "OP_sink.sen"                 include
         "OP_sizeIndex.sen"            include
         "OP_sizeTable.sen"            include
