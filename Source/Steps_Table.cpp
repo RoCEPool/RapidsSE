@@ -30,6 +30,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].isDefinitionOnly@"_Stz, &Step::vTableIsDefinitionOnlyFetch);
   vAddStep("table[].isDefinitionOnly!"_Stz, &Step::vTableIsDefinitionOnlyStore);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
+  vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
@@ -432,6 +433,16 @@ void Step::vTableIsDefinitionOnlyStore(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   pTable->vIsDefinitionOnly(m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].listPartition -- list partition                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTableListPartition(void)
+{
+  ENTRY();
   
   EXIT();
 }
