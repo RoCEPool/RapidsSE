@@ -281,24 +281,25 @@ void Stage::vCreateStrands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
-  tPN t_PtnNo;
+  tPN tPtnNo;
   i8 i_Node;
     
+  OpSpec* pOpSpec;
+  Strand* pStrand;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create StageNde's and StagePtn's depending on the toplogy of the stage
   
   switch (m_pStageSpec->eTopology()) {
       
+      
+    // node topologies
+      
     case PO_ALL_NODES:
       RASSERT(m_pStageSpec->bNodeTopo());
-      for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++)
-        vAdd(new Strand(m_pStageSpec, i_Node));
-      break;
-      
-    case PO_ALL_PARTITIONS:
-      RASSERT(! m_pStageSpec->bNodeTopo());
-      for (t_PtnNo = 0; t_PtnNo < AM::pGrid()->nPartitionsInGrid(); t_PtnNo++)
-        vAdd(new Strand(m_pStageSpec, t_PtnNo));
+      for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
+        pStrand = new Strand(m_pStageSpec, C_UNKNOWN, C_UNKNOWN, i_Node);
+        vAdd(pStrand);
+      }
       break;
       
     case PO_ORIGIN:
@@ -310,27 +311,44 @@ void Stage::vCreateStrands(void)
                  m_pPipeline->iOriginatingNode());
         }
       }
-      vAdd(new Strand(m_pStageSpec, m_pPipeline->iOriginatingNode()));
+      pStrand = new Strand(m_pStageSpec, C_UNKNOWN, C_UNKNOWN,
+                          m_pPipeline->iOriginatingNode());
+      vAdd(pStrand);
       break;
-      
-    case PO_ALL_PARTITIONS_ON_ORIGIN:
-      RASSERT( ! m_pStageSpec->bNodeTopo());
-      for (t_PtnNo = 0; t_PtnNo < AM::pGrid()->nPartitionsInGrid(); t_PtnNo++) {
-        i_Node = PtnMap::i_PtnNoToNode(t_PtnNo);
-        if (i_Node == m_pPipeline->iOriginatingNode())
-          vAdd(new Strand(m_pStageSpec, t_PtnNo));
-      }
-      break;
-      
+        
     case PO_SPECIFIC_NODE:
       RASSERT(m_pStageSpec->bNodeTopo());
       RASSERT(0);
       break;
+        
+
+      
+    // partition topologies
+
+    case PO_ALL_PARTITIONS:
+      RASSERT(! m_pStageSpec->bNodeTopo());
+      for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
+        pStrand = new Strand(m_pStageSpec, C_UNKNOWN, C_UNKNOWN, tPtnNo);
+        vAdd(pStrand);
+      }
+      break;
+      
+    case PO_ALL_PARTITIONS_ON_ORIGIN:
+      RASSERT(! m_pStageSpec->bNodeTopo());
+      for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
+        i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
+        if (i_Node == m_pPipeline->iOriginatingNode()) {
+          pStrand = new Strand(m_pStageSpec, C_UNKNOWN, C_UNKNOWN, tPtnNo);
+          vAdd(pStrand);
+        }
+      }
+      break;
       
     case PO_SPECIFIC_PARTITION:
       RASSERT(! m_pStageSpec->bNodeTopo());
-      t_PtnNo = m_pStageSpec->tPtnNo();
-      vAdd(new Strand(m_pStageSpec, t_PtnNo));
+      tPtnNo = m_pStageSpec->tPtnNo();
+      pStrand = new Strand(m_pStageSpec, C_UNKNOWN, C_UNKNOWN, tPtnNo);
+      vAdd(pStrand);
       break;
       
     default:
@@ -341,11 +359,11 @@ void Stage::vCreateStrands(void)
   // populate the opVec and StageNde's and stagePtn's from the opSpec
   
   for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
-    OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
+    pOpSpec = m_pStageSpec->pGet(i_OpSpec);
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
-      Strand* pStrand = pGet(i_Strand);
+      pStrand = pGet(i_Strand);
       
 //      if (m_pStageSpec->bNodeTopo()) {
 //        Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
