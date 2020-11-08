@@ -27,7 +27,6 @@ namespace Pipelines
   
     void   vDump(void);
   
-    i8     i_Strand(void);
     i8     i_Node(void);
     tPN    tPtnNo(void);
   

@@ -25,18 +25,22 @@ Strand::Strand(StageSpec* pStageSpec, tPN tPtnNo, i8 i_Node, i8 i_Strand)
   m_pStageSpec = pStageSpec;
   
   // determine the node,tablePtn coordinates of this strand
-  if (m_pStageSpec->bNodeTopo()) {
-    // node only
-    m_tPtnNo     = C_UNKNOWN;
-    m_i_Node     = i_Strand;
-    m_i_Strand   = i_Strand;
-  }
-  else {
-    // node,tablePtn
-    m_tPtnNo     = i_Strand;
-    m_i_Node     = PtnMap::i_PtnNoToNode(m_tPtnNo);
-    m_i_Strand   = i_Strand;
-  }
+//  if (m_pStageSpec->bNodeTopo()) {
+//    // node only
+//    m_tPtnNo     = tPtnNo;
+//    m_i_Node     = i_Node;
+//    m_i_Strand   = i_Strand;
+//  }
+//  else {
+//    // node,tablePtn
+//    m_tPtnNo     = tPtnNo;
+//    m_i_Node     = i_Node;
+//    m_i_Strand   = i_Strand;
+//  }
+
+  m_tPtnNo   = tPtnNo;
+  m_i_Node   = i_Node;
+  m_i_Strand = i_Strand;
   
   vSynthesiseName();
 
