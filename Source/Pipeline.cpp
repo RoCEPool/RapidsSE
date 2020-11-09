@@ -16,15 +16,15 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode)
+Pipeline::Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm = pPipelineSpec->szPipelineNm();
+  m_sPipelineNm   = pPipelineSpec->szPipelineNm();
   
-  m_pJob = pJob;
+  m_pJob          = pJob;
   m_pPipelineSpec = pPipelineSpec;
-  m_iOriginatingNode = iOriginatingNode;
+  m_i_Origin      = i_Origin;
   
   m_bErrored      = false;
   m_bPulsed       = false;
@@ -148,11 +148,11 @@ bool Pipeline::bErrored(void)
 /*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Pipeline::iOriginatingNode(void)
+i8 Pipeline::i_Origin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_iOriginatingNode;
+  return m_i_Origin;
 }
 
 /*----------------------------------------------------------------------------*/

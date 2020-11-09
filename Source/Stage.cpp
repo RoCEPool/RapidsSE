@@ -321,7 +321,7 @@ void Stage::vCreateStrands(void)
     case PO_ORIGIN:
       RASSERT(m_pStageSpec->bNodeTopo());
       tPtnNo = C_UNKNOWN;
-      i_Node = m_pPipeline->iOriginatingNode();
+      i_Node = m_pPipeline->i_Origin();
       i_Strand = 0;
       pStrand = new Strand(m_pStageSpec, this,
                            tPtnNo, i_Node, i_Strand);
@@ -351,7 +351,7 @@ void Stage::vCreateStrands(void)
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
         i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
-        if (i_Node == m_pPipeline->iOriginatingNode()) {
+        if (i_Node == m_pPipeline->i_Origin()) {
           i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
           pStrand = new Strand(m_pStageSpec, this,
                                tPtnNo, i_Node, i_Strand);

@@ -9,14 +9,14 @@ namespace Pipelines
   {
   private:
     s32  m_sPipelineNm; // name of this pipeline
-  
+    i8   m_i_Origin;    // originating node
+
     PipelineSpec* m_pPipelineSpec; // specification of this pipeline
   
     // -- -- -- -- -- --
 
     Job* m_pJob; // job this pipeline belongs to
   
-    i8   m_iOriginatingNode;
 
     bool m_bPulsed;
     bool m_bErrored;
@@ -34,7 +34,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 iOriginatingNode);
+    Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
    ~Pipeline(void) noexcept(false);
   
     void     vDump(void);
@@ -43,7 +43,7 @@ namespace Pipelines
     bool     bCancelled(void);
     bool     bErrored(void);
     void     vErrored(bool bErrored);
-    i8       iOriginatingNode(void);
+    i8       i_Origin(void);
     Job*     pJob(void);
     i8       nOpsOnNode(i8 iNode);
     Op*      pOpToPulse(void);
