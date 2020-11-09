@@ -57,25 +57,12 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   m_sStageNm    = pStrand->pStage()->szStageNm();
   m_sStrandNm   = pStrand->szStrandNm();
   m_sOpNm       = pOpSpec->szOpNm();
+  m_i_Op        = pOpSpec->i_OpSpec();
   
   m_pOpSpec   = pOpSpec;
   m_pStrand   = pStrand;
   m_pStage    = pStrand->pStage();
   m_pPipeline = pStrand->pPipeline();
-
-  m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
-  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
-  
-  m_pPipelineJob  = m_pPipeline->pJob();
-  m_pOpJob        = nullptr;
-  
-  m_bPulsedLimit  = false;
-  m_iWorkQuanta   = 1;
-  m_iWorkDone     = 0;
-
-  m_bAppendRight  = pOpSpec->bAppendRight();
-  m_pQueueLeft    = new OperandQueue;
-  m_pQueueRight   = new OperandQueue;
 
   if (m_pStage->pStageSpec()->bNodeTopo()) {
     m_tPtnNo = C_UNKNOWN;
@@ -86,6 +73,22 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
     m_i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
   }
   
+  // -- -- -- -- -- --
+
+  m_pPipelineJob  = m_pPipeline->pJob();
+  m_pOpJob        = nullptr;
+  
+  m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
+  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
+  
+  m_bPulsedLimit  = false;
+  m_iWorkQuanta   = 1;
+  m_iWorkDone     = 0;
+
+  m_bAppendRight  = pOpSpec->bAppendRight();
+  m_pQueueLeft    = new OperandQueue;
+  m_pQueueRight   = new OperandQueue;
+
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
   m_iNextOp    = C_UNKNOWN;
@@ -1355,9 +1358,9 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       
       // xmitNode is the partition node
       m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
-      ASSERT(m_iXmitNode == m_pPipeline->iOriginatingNode());
+      ASSERT(m_iXmitNode == m_pPipeline->i_Origin());
    
-      if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
+      if ( m_iXmitNode == m_pPipeline->i_Origin()) {
         ASSERT( ! bSet );
         
 #ifdef WITH_NO_XMIT_OPT
@@ -1410,7 +1413,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
         // xmitNode is the partition node
     
         m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
-        if ( m_iXmitNode == m_pPipeline->iOriginatingNode()) {
+        if ( m_iXmitNode == m_pPipeline->i_Origin()) {
  #ifdef WITH_NO_XMIT_OPT
           if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
                 m_iXmitNode == i_ThisNode) {
@@ -1637,7 +1640,7 @@ void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK 
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
-  m_iXmitNode = m_pPipeline->iOriginatingNode();
+  m_iXmitNode = m_pPipeline->i_Origin();
   vSend(pOperand, bSet, m_iXmitNode, C_UNKNOWN);
   
   // delete the operand
