@@ -5,11 +5,11 @@
 " OP_totalCount.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER...                                                       */
+/* on ZK_DATAPULSE...                                                         */
 /*----------------------------------------------------------------------------*/
-: totalCount_PulseMarker \handler
+: totalCount_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the C_TABLEDEF_COUNT
@@ -81,7 +81,7 @@
   op__topology
 
   find: totalCount_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: totalCount_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: totalCount_DataMarker ZK_DATAPULSE op[].handler!
   find: totalCount_countInfo   ZK_COUNTINFO   op[].handler!
 
   op__loop

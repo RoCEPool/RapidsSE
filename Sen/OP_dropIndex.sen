@@ -5,9 +5,9 @@
 " OP_dropIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: dropIndex_PulseMarker
+: dropIndex_DataMarker
 
   // check if we can drop the index
   <indexNm> <tableNm> check::validIndexAssembly not if
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: dropIndex_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: dropIndex_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

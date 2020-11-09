@@ -5,9 +5,9 @@
 " OP_syntaxTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: syntaxTable_PulseMarker
+: syntaxTable_DataMarker
 
   //job[] job.tagSet@ tagSet.asStr .
 
@@ -46,7 +46,7 @@
 
   op__topology
 
-  find: syntaxTable_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: syntaxTable_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

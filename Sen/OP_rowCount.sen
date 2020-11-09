@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_INFOSET...                                                           */
 /*----------------------------------------------------------------------------*/
-: rowCount_PulseMarker \handler
+: rowCount_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the __countInfo table
@@ -54,7 +54,7 @@
 
   op__topology
 
-  find: rowCount_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: rowCount_DataMarker ZK_DATAPULSE op[].handler!
   find: rowCount_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

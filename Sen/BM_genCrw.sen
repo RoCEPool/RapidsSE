@@ -5,9 +5,9 @@
 " BM_genCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* on ZK_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
-: BM_GenCrw_PulseMarker \handler
+: BM_GenCrw_DataMarker \handler
 
   // pipe out the pulse marker to the next operator
   PipeIn[].pipeOut
@@ -53,7 +53,7 @@
 
   op__topology
 
-  find: BM_GenCrw_PulseMarker true ZK_PULSEMARKER op[].handler!
+  find: BM_GenCrw_DataMarker true ZK_DATAPULSE op[].handler!
   find: BM_GenCrw_StartMarker true ZK_STARTMARKER op[].handler!
 
   op__loop

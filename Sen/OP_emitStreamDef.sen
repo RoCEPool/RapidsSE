@@ -5,13 +5,13 @@
 " OP_emitStreamDef.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: emitStreamDef_PulseMarker \handler
+: emitStreamDef_DataMarker \handler
 
   0 locals| rateSecs |
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -49,7 +49,7 @@
 
   op__topology
 
-  //find: emitStreamDef_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  //find: emitStreamDef_DataMarker  ZK_DATAPULSE  op[].handler!
   find: emitStreamDef_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

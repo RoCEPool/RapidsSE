@@ -204,13 +204,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: delete_PulseMarker \handler
+: delete_DataMarker \handler
 
   0 locals| iPhrases |
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -277,7 +277,7 @@
 
   find: delete_CancelMarker ZK_CANCELMARKER op[].handler!
   //find: delete_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: delete_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: delete_DataMarker  ZK_DATAPULSE  op[].handler!
   find: delete_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

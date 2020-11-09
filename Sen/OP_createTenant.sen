@@ -5,9 +5,9 @@
 " OP_createTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: createTenant_PulseMarker
+: createTenant_DataMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
@@ -60,7 +60,7 @@
 
   op__topology
 
-  find: createTenant_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: createTenant_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

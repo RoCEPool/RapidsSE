@@ -5,15 +5,15 @@
 " OP_toDemon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* on ZK_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
-: OP_toDemon_PulseMarker \handler
+: OP_toDemon_DataMarker \handler
 
-  "OP_toDemon_PulseMarker" .
+  "OP_toDemon_DataMarker" .
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 
-  Operand[].newPulseMarker operand[] 
+  Operand[].newDataPulse operand[] 
     "__anyDemon" find word.object@
     pipeline.pipeout
 ;
@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: OP_toDemon_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: OP_toDemon_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

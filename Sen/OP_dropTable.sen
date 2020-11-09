@@ -5,9 +5,9 @@
 " OP_dropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: dropTable_PulseMarker
+: dropTable_DataMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove table
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: dropTable_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: dropTable_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

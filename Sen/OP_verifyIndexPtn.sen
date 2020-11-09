@@ -5,9 +5,9 @@
 " OP_verifyIndexPtn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: VerifyIndexPtn_PulseMarker \handler
+: VerifyIndexPtn_DataMarker \handler
 
   // check if we can verify the index
   <indexNm> <tableNm> check::validIndexAssembly not if
@@ -57,7 +57,7 @@
 
   op__topology
 
-  find: VerifyIndexPtn_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: VerifyIndexPtn_DataMarker ZK_DATAPULSE op[].handler!
   find: VerifyIndexPtn_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

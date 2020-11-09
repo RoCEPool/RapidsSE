@@ -5,9 +5,9 @@
 " OP_dropCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: dropCatalog_PulseMarker
+: dropCatalog_DataMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove catalog
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: dropCatalog_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: dropCatalog_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

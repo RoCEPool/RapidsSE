@@ -157,8 +157,8 @@
   pwCmdTags word.name_trunc locals| sOpNm |
   // sOpNm "LiteOP: %v" .printf
 
-  // synthesize word : sOpNm_PulseMarker \\handler ... ;
-  "/liteOp/" sOpNm tpl_liteOp_PulseMarker str.replace to sText
+  // synthesize word : sOpNm_DataMarker \\handler ... ;
+  "/liteOp/" sOpNm tpl_liteOp_DataMarker str.replace to sText
   sText >interpret
 
   // synthesize word : sOpNm_req ... ;
@@ -181,8 +181,8 @@
   pwCmdTags word.name_trunc locals| sOpNm |
   // sOpNm "LocalLiteOP: %v" .printf
 
-  // synthesize : sOpNm_PulseMarker
-  "/localLiteOp/" sOpNm tpl_localLiteOp_PulseMarker str.replace to sText
+  // synthesize : sOpNm_DataMarker
+  "/localLiteOp/" sOpNm tpl_localLiteOp_DataMarker str.replace to sText
   sText >interpret
 
   // synthesize : sOpNm_req

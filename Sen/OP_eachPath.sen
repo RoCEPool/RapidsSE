@@ -7,13 +7,13 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: eachPath_PulseMarker \handler
+: eachPath_DataMarker \handler
  
-  "eachPath_PulseMarker" .
+  "eachPath_DataMarker" .
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -48,7 +48,7 @@
 
   op__topology
 
-  find: eachPath_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: eachPath_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

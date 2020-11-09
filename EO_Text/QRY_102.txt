@@ -15,9 +15,9 @@ Routine QRY_103
 
   // check for PULSEMARKER
   EO_DUP
-  EO_INTEGER  ZK_PULSEMARKER
+  EO_INTEGER  ZK_DATAPULSE
   EO_EQUAL
-  EO_JMP_TRUE PULSEMARKER_HANDLER
+  EO_JMP_TRUE DATAPULSE_HANDLER
 
   // check for ZK_STREAMDEF
   EO_DUP
@@ -42,9 +42,9 @@ Routine QRY_103
   EO_NEVERREACH
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_PULSEMARKER handler
-Label PULSEMARKER_HANDLER
-  EO_PRINTF "**PULSEMARKER_HANDLER : 103**\n"
+  // ZK_DATAPULSE handler
+Label DATAPULSE_HANDLER
+  EO_PRINTF "**DATAPULSE_HANDLER : 103**\n"
   EO_POP
   EO_JMP QRY_103_DONE
 

@@ -5,12 +5,12 @@
 " OP_truncateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: truncateTable_PulseMarker \handler
+: truncateTable_DataMarker \handler
 
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
 
   // truncate the buffers of the tablePtn
   tablePtn[].truncate
@@ -49,7 +49,7 @@
 
   op__topology
 
-  find: truncateTable_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: truncateTable_DataMarker ZK_DATAPULSE op[].handler!
   find: truncateTable_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

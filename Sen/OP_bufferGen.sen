@@ -5,11 +5,11 @@
 " OP_bufferGen.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: BufferGen_PulseMarker \handler
+: BufferGen_DataMarker \handler
 
-  "Operand:- ZK_PULSEMARKER" .verbose
+  "Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   <nBuffers> 0 do
@@ -25,7 +25,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* BufferGen request                                   (on node where spawned) */
+/* BufferGen request                                  (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : BufferGen_req \operator
 
@@ -35,7 +35,7 @@
 
   op__topology
 
-  find: BufferGen_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: BufferGen_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

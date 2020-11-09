@@ -5,12 +5,12 @@
 " OP_compactIndexPtn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: CompactIndexPtn_PulseMarker \handler
+: CompactIndexPtn_DataMarker \handler
 
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // compact the index
@@ -47,7 +47,7 @@
 
   op__topology
 
-  find: CompactIndexPtn_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: CompactIndexPtn_DataMarker ZK_DATAPULSE op[].handler!
   find: CompactIndexPtn_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

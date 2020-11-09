@@ -13,9 +13,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: createSchema_PulseMarker
+: createSchema_DataMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
@@ -68,7 +68,7 @@
 
   op__topology
 
-  find: createSchema_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: createSchema_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

@@ -266,7 +266,7 @@
 : table::dropTable params| sTableNm |
 
   /*
-   * This is called from : dropTable_PulseMarker in procedure drop table
+   * This is called from : dropTable_DataMarker in procedure drop table
    *
    * At this stage the table (and its indexes) will have been truncated
    * All that remains to be done is remove the table and indexes assemblies

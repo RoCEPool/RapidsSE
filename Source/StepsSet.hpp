@@ -1211,14 +1211,14 @@ public:
   void vRegOperandInvokePython(void);
   void vRegOperandInvokePythonShell(void);
   void vRegOperandKind(void);
-  void vRegOperandNewEosMarker(void);
-  void vRegOperandNewExitMarker(void);
-  void vRegOperandNewExitedMarker(void);
   void vRegOperandNewCancelMarker(void);
   void vRegOperandNewCsvBuffer(void);
+  void vRegOperandNewDataPulse(void);
+  void vRegOperandNewEosMarker(void);
   void vRegOperandNewErrorMarker(void);
   void vRegOperandNewErroredMarker(void);
-  void vRegOperandNewPulseMarker(void);
+  void vRegOperandNewExitMarker(void);
+  void vRegOperandNewExitedMarker(void);
   void vRegOperandNewPulsedMarker(void);
   void vRegOperandNewStartMarker(void);
   void vRegOperandNewStartedMarker(void);

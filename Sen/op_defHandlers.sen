@@ -203,11 +203,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: ZK_PULSEMARKER_handler \handler
+: ZK_DATAPULSE_handler \handler
 
-  //"ZK_PULSEMARKER_handler" .verbose
+  //"ZK_DATAPULSE_handler" .verbose
   PipeIn[].pipeOut
   true
 ;

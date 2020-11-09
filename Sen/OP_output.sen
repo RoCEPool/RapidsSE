@@ -64,13 +64,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: output_PulseMarker \handler
+: output_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
-  Operand[].newPulseMarker
+  Operand[].newDataPulse
   Operand[].pipeToJob
 
   true
@@ -147,7 +147,7 @@ true
   find: output_EntBuffer   ZK_ENTBUFFER   op[].handler!
   find: output_EosMarker   ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: output_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: output_DataMarker ZK_DATAPULSE op[].handler!
   find: output_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: output_StartMarker ZK_STARTMARKER op[].handler!

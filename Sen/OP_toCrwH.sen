@@ -31,11 +31,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                BEGIN */
+/* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: toCrwH_PulseMarker \handler
+: toCrwH_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
 
   // pipe out the pulsemarker
   PipeIn[].pipeOut
@@ -120,7 +120,7 @@
 
   find: toCrwH_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: toCrwH_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toCrwH_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toCrwH_DataMarker ZK_DATAPULSE op[].handler!
   find: toCrwH_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

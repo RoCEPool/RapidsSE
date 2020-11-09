@@ -5,11 +5,11 @@
 " OP_toCrwHash.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* on ZK_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
-: toCrwHash_PulseMarker \handler
+: toCrwHash_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
 
   // pipe out the pulsemarker
   PipeIn[].pipeOut
@@ -133,7 +133,7 @@
 
   find: toCrwHash_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: toCrwHash_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toCrwHash_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toCrwHash_DataMarker ZK_DATAPULSE op[].handler!
   find: toCrwHash_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

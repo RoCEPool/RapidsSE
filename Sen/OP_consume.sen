@@ -66,11 +66,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: consumeOp_PulseMarker \handler
+: consumeOp_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   xmits[].handlePulse if
     PipeIn[].pipeOut
   else
@@ -136,7 +136,7 @@
   find: consumeOp_EosMarker    ZK_EOSMARKER    op[].handler!
   //find: consumeOp_ErrorMarker  ZK_ERRORMARKER  op[].handler!
   find: consumeOp_ExitMarker   ZK_EXITMARKER   op[].handler!
-  find: consumeOp_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: consumeOp_DataMarker  ZK_DATAPULSE  op[].handler!
   find: consumeOp_PulsedMarker ZK_PULSEDMARKER op[].handler!
   find: consumeOp_StartMarker  ZK_STARTMARKER  op[].handler!
   find: consumeOp_StreamDef    ZK_STREAMDEF    op[].handler!

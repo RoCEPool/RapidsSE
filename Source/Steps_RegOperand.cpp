@@ -31,12 +31,12 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].kind"_Stz,           &Step::vRegOperandKind);
   vAddStep("Operand[].newCancelMarker"_Stz,&Step::vRegOperandNewCancelMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vRegOperandNewCsvBuffer);
+  vAddStep("Operand[].newDataPulse"_Stz,   &Step::vRegOperandNewDataPulse);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vRegOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vRegOperandNewErrorMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vRegOperandNewErroredMarker);
   vAddStep("Operand[].newExitMarker"_Stz,  &Step::vRegOperandNewExitMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vRegOperandNewExitedMarker);
-  vAddStep("Operand[].newPulseMarker"_Stz, &Step::vRegOperandNewPulseMarker);
   vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vRegOperandNewPulsedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vRegOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vRegOperandNewStartedMarker);
@@ -474,12 +474,12 @@ void Step::vRegOperandKind(void)
        switch(pMarker->eOpMarker()) {
        
          case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
+         case OM_DATAPULSE:       eOperand = ZK_DATAPULSE;       break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
          case OM_ERROREDMARKER:   eOperand = ZK_ERROREDMARKER;   break;
          case OM_EXITMARKER:      eOperand = ZK_EXITMARKER;      break;
          case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
-         case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
          case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
@@ -540,6 +540,20 @@ void Step::vRegOperandNewCsvBuffer(void)
   ASSERT (m_pLogicUnit->m_xpOperandA.bIsNull());
   
   m_pLogicUnit->m_xpOperandA = new CsvBuffer;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newDataPulse -- new a data pulse                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewDataPulse(void)
+{
+  ENTRY();
+  
+  ASSERT (m_pLogicUnit->m_xpOperandA.bIsNull());
+  
+  m_pLogicUnit->m_xpOperandA = new Marker(OM_DATAPULSE);
   
   EXIT();
 }
@@ -610,20 +624,6 @@ void Step::vRegOperandNewExitedMarker(void)
   ASSERT (m_pLogicUnit->m_xpOperandA.bIsNull());
   
   m_pLogicUnit->m_xpOperandA = new Marker(OM_EXITEDMARKER);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newPulseMarker -- new a pulse marker                             */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandNewPulseMarker(void)
-{
-  ENTRY();
-  
-  ASSERT (m_pLogicUnit->m_xpOperandA.bIsNull());
-  
-  m_pLogicUnit->m_xpOperandA = new Marker(OM_PULSEMARKER);
   
   EXIT();
 }

@@ -15,11 +15,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                BEGIN */
+/* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: toPtnRsb_PulseMarker \handler
+: toPtnRsb_DataMarker \handler
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@
   op__topology
 
   find: toPtnRsb_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toPtnRsb_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toPtnRsb_DataMarker ZK_DATAPULSE op[].handler!
   find: toPtnRsb_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: toPtnRsb_StartMarker ZK_STARTMARKER op[].handler!
 

@@ -567,20 +567,20 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker_300
+: sql_DataMarker_300
 
   // "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 300=PULSEMARKER" .
 
   PipeIn[].isNull not if
 
-    ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
 
-    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
+    PipeIn[].pipeOut // ZK_DATAPULSE_handler
     // "PIPEDOUT PULSE MARKER" .
   then
 
 //  LogicUnit[].calledAgain@ not if
-//    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
+//    PipeIn[].pipeOut // ZK_DATAPULSE_handler
 //  then
 
 
@@ -603,7 +603,7 @@ then
     then
     Pot[].pipeoutAllDanglingPtns
     Operand[].newEosMarker
-    ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+    ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
     Operand[].pipeOut
     Pot[].delete
     true
@@ -613,13 +613,13 @@ then
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker_301
+: sql_DataMarker_301
 
   // "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 301=PULSEMARKER" .
 
-  ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 
 //  "lineitem" "lineitem_Idx1" op__table_index assert
 //
@@ -643,13 +643,13 @@ then
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker_302
+: sql_DataMarker_302
 
   //"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 302=PULSEMARKER" .
 
-  ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 
 //  idxDef_int indexDef[] indexTree[].new
 //  indexTree[].asTmp
@@ -660,11 +660,11 @@ then
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker_400
+: sql_DataMarker_400
 
   //"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 400=PULSEMARKER" .
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 
   "orders" "orders_Idx2" op__table_index assert
 
@@ -703,11 +703,11 @@ then
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker_401
+: sql_DataMarker_401
 
   //"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 401=PULSEMARKER" .
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 
 /*
   idxDef_vch indexDef[] indexTree[].new
@@ -721,13 +721,13 @@ then
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker_600
+: sql_DataMarker_600
 
   //"++++++++++++++++++++++++++++ 600=PULSEMARKER ++++++++++++++++++++++++++++" .
 
   0 locals| pColumn |
 
-  ZK_PULSEMARKER_handler
+  ZK_DATAPULSE_handler
 
   // new a streamDef from table
   table[] StreamDef[].new
@@ -773,27 +773,27 @@ then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                BEGIN */
+/* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: sql_PulseMarker \handler
+: sql_DataMarker \handler
 
-  0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryNote
+  0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryNote
 
   <queryNo> >int locals| queryNo |
 
   queryNo case
 
-    300 of sql_PulseMarker_300   endof
-    301 of sql_PulseMarker_301   endof
-    302 of sql_PulseMarker_302   endof
+    300 of sql_DataMarker_300   endof
+    301 of sql_DataMarker_301   endof
+    302 of sql_DataMarker_302   endof
 
-    400 of sql_PulseMarker_400   endof
-    401 of sql_PulseMarker_401   endof
+    400 of sql_DataMarker_400   endof
+    401 of sql_DataMarker_401   endof
 
-    600 of sql_PulseMarker_600   endof
+    600 of sql_DataMarker_600   endof
 
     //"++++++++++++++++++++++++++++ OTHER=PULSEMARKER ++++++++++++++++++++++++++++" .
-    ZK_PULSEMARKER_handler
+    ZK_DATAPULSE_handler
 
   endcase
 
@@ -1107,7 +1107,7 @@ then
 
   find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: sql_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: sql_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: sql_DataMarker ZK_DATAPULSE op[].handler!
   find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: sql_StartMarker ZK_STARTMARKER op[].handler!
   find: sql_StreamDef   ZK_STREAMDEF   op[].handler!

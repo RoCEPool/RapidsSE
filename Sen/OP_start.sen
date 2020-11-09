@@ -97,7 +97,7 @@
 
   //"Operand:- ZK_STARTEDMARKER" .verbose
   PipeIn[].delete
-  Operand[].newPulseMarker
+  Operand[].newDataPulse
   Operand[].pipeOut
 
   true

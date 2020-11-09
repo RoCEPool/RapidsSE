@@ -5,11 +5,11 @@
 " OP_purge.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: purge_PulseMarker \handler
+: purge_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -51,7 +51,7 @@
 
   op__topology
 
-  find: purge_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: purge_DataMarker ZK_DATAPULSE op[].handler!
   find: purge_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

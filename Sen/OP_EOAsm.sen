@@ -104,9 +104,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                BEGIN */
+/* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: EOAsm_PulseMarker \handler
+: EOAsm_DataMarker \handler
 
   //
   // HACK:: till we get the ASM of query text's out of this operator
@@ -129,12 +129,12 @@
   //
 
   PipeIn[].isNull not if
-    ZK_PULSEMARKER EG_ZK PD_PIPE_OUT 0 ZK_PULSEMARKER EG_ZK LogicUnit[].diaryAction
-    PipeIn[].pipeOut // ZK_PULSEMARKER_handler
+    ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
+    PipeIn[].pipeOut // ZK_DATAPULSE_handler
   then
 
-  // execute plan PULSEMARKER_HANDLER
-  ZK_PULSEMARKER Counter0[] executeAsmArgs
+  // execute plan DATAPULSE_HANDLER
+  ZK_DATAPULSE Counter0[] executeAsmArgs
 
   false LogicUnit[].calledAgain!
 
@@ -266,7 +266,7 @@
 
   find: EOAsm_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: EOAsm_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: EOAsm_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: EOAsm_DataMarker ZK_DATAPULSE op[].handler!
   find: EOAsm_RsbBuffer   ZK_RSBBUFFER   op[].handler!
   find: EOAsm_StartMarker ZK_STARTMARKER op[].handler!
   find: EOAsm_StreamDef   ZK_STREAMDEF   op[].handler!

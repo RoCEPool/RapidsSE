@@ -5,12 +5,12 @@
 " tpl_localLiteOp.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* on ZK_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
-: tpl_localLiteOp_PulseMarker
+: tpl_localLiteOp_DataMarker
 
 "
-  : /localLiteOp/_PulseMarker \\handler
+  : /localLiteOp/_DataMarker \\handler
 
     /localLiteOp/_action if
       PipeIn[].pipeOut
@@ -35,7 +35,7 @@
 
     op__topology
 
-    find: /localLiteOp/_PulseMarker  ZK_PULSEMARKER op[].handler!
+    find: /localLiteOp/_DataMarker  ZK_DATAPULSE op[].handler!
 
     op__loop
 

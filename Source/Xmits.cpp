@@ -153,7 +153,7 @@ bool Xmits::bPulseDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   if (m_iPulseMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_PULSEMARKER received %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp ZK_DATAPULSE received %lld; expected %lld\n"_Stz,
            m_iPulseMarkers, m_iXmits);
   
   if (m_iPulseMarkers == m_iXmits) {

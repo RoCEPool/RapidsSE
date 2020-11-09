@@ -5,11 +5,11 @@
 " OP_snapshot.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: snapshot_PulseMarker \handler
+: snapshot_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -71,7 +71,7 @@
 
   op__topology
 
-  find: snapshot_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: snapshot_DataMarker ZK_DATAPULSE op[].handler!
   find: snapshot_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

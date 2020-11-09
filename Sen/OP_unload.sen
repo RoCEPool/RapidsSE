@@ -13,9 +13,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                BEGIN */
+/* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: unload_PulseMarker \handler
+: unload_DataMarker \handler
 
   ZK_PULSEDMARKER_handler
 ;
@@ -50,7 +50,7 @@
 
   find: unload_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: unload_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: unload_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: unload_DataMarker ZK_DATAPULSE op[].handler!
   find: unload_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

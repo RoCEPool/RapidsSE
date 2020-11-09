@@ -28,9 +28,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                BEGIN */
+/* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: toRsb_PulseMarker \handler
+: toRsb_DataMarker \handler
 
   // pipe out the (PulseMarker)
   PipeIn[].pipeOut
@@ -140,7 +140,7 @@
   find: toRsb_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: toRsb_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: toRsb_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toRsb_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: toRsb_DataMarker ZK_DATAPULSE op[].handler!
   find: toRsb_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

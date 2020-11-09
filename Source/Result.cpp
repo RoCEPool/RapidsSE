@@ -313,6 +313,12 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
+          case OM_DATAPULSE: {
+            //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
           case OM_EOSMARKER: {
             //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
@@ -336,12 +342,6 @@ void Result::vProcessBufferQueue(void)
             //  vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
             AM::vDeleteOperand(pOperand);
             goto L_EXIT;
-            break;
-          }
-            
-          case OM_PULSEMARKER: {
-            //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
-            AM::vDeleteOperand(pOperand);
             break;
           }
             

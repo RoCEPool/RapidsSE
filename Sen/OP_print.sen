@@ -5,11 +5,11 @@
 " OP_print.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: print_PulseMarker \handler
+: print_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
   <string> .
 
@@ -25,7 +25,7 @@
 
   op__topology
 
-  find: print_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: print_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

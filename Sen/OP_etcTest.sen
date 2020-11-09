@@ -5,11 +5,11 @@
 " OP_etcTest" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: etcTest_PulseMarker \handler
+: etcTest_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
   <etc> <arg2> <arg1> "etcTest : arg1 = %v arg2 = %v etc = %v" .printf
 
@@ -25,7 +25,7 @@
 
   op__topology
 
-  find: etcTest_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: etcTest_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

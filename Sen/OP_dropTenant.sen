@@ -5,9 +5,9 @@
 " OP_dropTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: dropTenant_PulseMarker
+: dropTenant_DataMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in tenants
@@ -49,7 +49,7 @@
 
   op__topology
 
-  find: dropTenant_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: dropTenant_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

@@ -74,13 +74,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-// ": scan_PulseMarker" .
+// ": scan_DataMarker" .
 
-: scan_PulseMarker \handler
+: scan_DataMarker \handler
  
-  debug::flag@ if "(Revised) scan_PulseMarker handler" . then
+  debug::flag@ if "(Revised) scan_DataMarker handler" . then
 
   // pipe out the pulse marker
   PipeIn[].pipeOut
@@ -171,7 +171,7 @@
 
   find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
   find: scan_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: scan_PulseMarker  ZK_PULSEMARKER  op[].handler!
+  find: scan_DataMarker  ZK_DATAPULSE  op[].handler!
   find: scan_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

@@ -5,11 +5,11 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_PULSEMARKER ...                                                      */
+/* on ZK_DATAPULSE ...                                                        */
 /*----------------------------------------------------------------------------*/
-: chunk_PulseMarker \handler
+: chunk_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the __seekOffsets table
@@ -101,7 +101,7 @@
 
   op__topology
 
-  find: chunk_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: chunk_DataMarker ZK_DATAPULSE op[].handler!
   find: chunk_StartMarker ZK_STARTMARKER op[].handler!
   find: chunk_ExitMarker  ZK_EXITMARKER  op[].handler!
 

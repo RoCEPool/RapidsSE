@@ -5,9 +5,9 @@
 " OP_dropSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: dropSchema_PulseMarker
+: dropSchema_DataMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove schema
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: dropSchema_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: dropSchema_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

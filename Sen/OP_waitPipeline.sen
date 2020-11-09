@@ -16,9 +16,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: waitPipeline_PulseMarker \handler
+: waitPipeline_DataMarker \handler
 
   PipeIn[].delete
   true
@@ -70,7 +70,7 @@
     Operand[].newEosMarker
     Operand[].pipeOut
 
-    Operand[].newPulseMarker
+    Operand[].newDataPulse
     Operand[].pipeOut
 
     Operand[].newPulsedMarker
@@ -91,7 +91,7 @@
 
   op__topology
 
-  find: waitPipeline_PulseMarker    ZK_PULSEMARKER    op[].handler!
+  find: waitPipeline_DataMarker    ZK_DATAPULSE    op[].handler!
   find: waitPipeline_PulsedMarker   ZK_PULSEDMARKER   op[].handler!
   find: waitPipeline_ReturnPipeline ZK_RETURNPIPELINE op[].handler!
   find: waitPipeline_StartMarker    ZK_STARTMARKER    op[].handler!

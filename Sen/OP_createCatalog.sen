@@ -5,9 +5,9 @@
 " OP_createCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: createCatalog_PulseMarker
+: createCatalog_DataMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
@@ -60,7 +60,7 @@
 
   op__topology
 
-  find: createCatalog_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: createCatalog_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

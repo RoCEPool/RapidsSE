@@ -20,11 +20,11 @@
 ;
 */
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: periodic_PulseMarker \handler
+: periodic_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
    Counter1[] if
@@ -40,7 +40,7 @@
       repeat
       0 to  Counter0[]
        Counter1[] "Sending PULSEMARKER after %v mins" str.format .
-      Operand[].newPulseMarker
+      Operand[].newDataPulse
       Operand[].pipeOut
       true
     while assert::stack_0 repeat
@@ -86,7 +86,7 @@
   op__topology
 
   //find: periodic_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: periodic_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: periodic_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

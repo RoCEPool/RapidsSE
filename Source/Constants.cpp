@@ -755,6 +755,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_COUNTINFO"_Stz,       ZK_COUNTINFO);
   /*  0 */ vAddConstant("ZK_CRWBUFFER"_Stz,       ZK_CRWBUFFER);
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
+  /*  0 */ vAddConstant("ZK_DATAPULSE"_Stz,       ZK_DATAPULSE);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
@@ -767,7 +768,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
-  /*  0 */ vAddConstant("ZK_PULSEMARKER"_Stz,     ZK_PULSEMARKER);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
   /*  0 */ vAddConstant("ZK_RETURNPIPELINE"_Stz,  ZK_RETURNPIPELINE);
   /*  0 */ vAddConstant("ZK_RSBBUFFER"_Stz,       ZK_RSBBUFFER);

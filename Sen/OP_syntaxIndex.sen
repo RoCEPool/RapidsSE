@@ -59,9 +59,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: syntaxIndex_PulseMarker
+: syntaxIndex_DataMarker
 
   0 0 locals| sTableNm sSmt |
 
@@ -132,7 +132,7 @@
 
   op__topology
 
-  find: syntaxIndex_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: syntaxIndex_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 

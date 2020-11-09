@@ -5,11 +5,11 @@
 " OP_genCsv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEMARKER ...                                             */
+/* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: genCsv_PulseMarker \handler
+: genCsv_DataMarker \handler
 
-  //"Operand:- ZK_PULSEMARKER" .verbose
+  //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -53,7 +53,7 @@
 
   op__topology
 
-  find: genCsv_PulseMarker ZK_PULSEMARKER op[].handler!
+  find: genCsv_DataMarker ZK_DATAPULSE op[].handler!
   find: genCsv_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
