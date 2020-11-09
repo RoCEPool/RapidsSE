@@ -44,7 +44,7 @@ namespace Pipelines
     i8             m_iXmitNode;      // xmit node (for xmit)
     eXK            m_eXmitKind;      // xmit kind
     i8             m_iRobin;         // xmit Round Robin partition/node/thread
-    i8             m_iLocalRobin;    // xmit Round Robin local partition/node/thread
+    i8             m_iLocalRobin;    // xmit Round Robin local ptn/node/thread
   
     Op*            m_pDownstreamOp;  // downstream op
   

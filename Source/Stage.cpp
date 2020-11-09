@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stage.cpp -- Pipe Stage                                                    */
+/* Stage.cpp -- Stage of Pipeline                                             */
 /*============================================================================*/
 
 #include "Pipelines.h"
@@ -12,7 +12,6 @@ __pCastFunction(Pipelines,Stage,CN_STAGE)
 __aNewFunction(Stage,CN_STAGE)
 __vDeleteFunction(Stage,CN_STAGE)
 __aFooterFunction(Stage)
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -372,28 +371,19 @@ void Stage::vCreateStrands(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the opVec and StageNde's and stagePtn's from the opSpec
   
-  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
-    pOpSpec = m_pStageSpec->pGet(i_OpSpec);
+  // add the operator to the stages of the stageNdeVec
+  for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
+    pStrand = pGet(i_Strand);
     
-    // add the operator to the stages of the stageNdeVec
-    for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
-      pStrand = pGet(i_Strand);
-      
-//      if (m_pStageSpec->bNodeTopo()) {
-//        Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
-//        pOp->vNode(pStrand->i_Node());
-//        pStrand->vAdd(pOp);
-//      }
-//      else {
-//        Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
-//        pOp->vPtnNo(pStrand->tPtnNo());
-//        pStrand->vAdd(pOp);
-//      }
-
-      Op* pOp = new Op(pOpSpec,pStrand);
-      pStrand->vAdd(pOp);
-
-    }
+//    for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
+//      pOpSpec = m_pStageSpec->pGet(i_OpSpec);
+//
+//      Op* pOp = new Op(pOpSpec,pStrand);
+//      pStrand->vAdd(pOp);
+//    }
+    
+    pStrand->vCreateOps();
+    
   }
 }
 
