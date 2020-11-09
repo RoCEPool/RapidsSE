@@ -71,6 +71,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   else {
     m_tPtnNo = pStrand->tPtnNo();
     m_i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
+    RASSERT(pStrand->i_Node() == m_i_Node);
   }
   
   // -- -- -- -- -- --
@@ -89,7 +90,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  m_eTopologyX = PX_NONE;
+  m_eCrossTopo = PX_NONE;
   m_iNextStage = C_UNKNOWN;
   m_iNextOp    = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
@@ -295,6 +296,26 @@ bool Op::bAppendRight(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_bAppendRight;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+ePX Op::eCrossTopo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vCrossTopo(ePX eCrossTopo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_eCrossTopo = eCrossTopo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -665,7 +686,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     Stage* pStage = m_pPipeline->pGet(m_iNextStage);
   
     // get the op to forward to depending on the cross topology
-    Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+    Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                  m_i_Node,
                                  m_tPtnNo,
                                  m_iNextOp);
@@ -997,7 +1018,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
     eXmitKind = XK_ROBIN;
   
-  switch(m_eTopologyX) {
+  switch(m_eCrossTopo) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_NODES_TO_ORIGIN:
@@ -1190,26 +1211,6 @@ TagSet* Op::pTopologyTagSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-ePX Op::eTopologyX(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_eTopologyX;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vTopologyX(ePX eTopologyX)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_eTopologyX = eTopologyX;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set work quanta                                                            */
 /*----------------------------------------------------------------------------*/
 void Op::vWorkQuanta(i8 iWorkQuanta)
@@ -1370,7 +1371,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
           Stage* pStage = m_pPipeline->pGet(m_iNextStage);
 
           // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                        m_iXmitNode,
                                        i_Ptn,
                                        m_iNextOp);
@@ -1422,7 +1423,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
             Stage* pStage = m_pPipeline->pGet(m_iNextStage);
             
             // get the op to forward to depending on the cross topology
-            Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+            Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                          m_iXmitNode,
                                          i_Ptn,
                                          m_iNextOp);
@@ -1499,7 +1500,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
         Stage* pStage = m_pPipeline->pGet(m_iNextStage);
         
         // get the op to forward to depending on the cross topology
-        Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+        Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                      m_iXmitNode,
                                      tPtnNo,
                                      m_iNextOp);
@@ -1560,7 +1561,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
           Stage* pStage = m_pPipeline->pGet(m_iNextStage);
           
           // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                        m_iXmitNode,
                                        tPtnNo,
                                        m_iNextOp);

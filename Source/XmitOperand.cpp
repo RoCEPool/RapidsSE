@@ -61,7 +61,7 @@ XmitOperand::XmitOperand(void)
   m_i_Node          = C_UNKNOWN;
   m_tPtnNo         = C_UNKNOWN;
   
-  m_eTopologyX     = PX_NONE;
+  m_eCrossTopo     = PX_NONE;
   m_iNextStage     = C_UNKNOWN;
   m_iNextOp        = C_UNKNOWN;
   
@@ -97,7 +97,7 @@ XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
   pXmitOperand->m_tPtnNo         = tPtnNo;
   pXmitOperand->m_pOperand       = pOperand;
   
-  pXmitOperand->m_eTopologyX     = pOp->eTopologyX();
+  pXmitOperand->m_eCrossTopo     = pOp->eCrossTopo();
   pXmitOperand->m_iNextStage     = pOp->iNextStage();
   pXmitOperand->m_iNextOp        = pOp->iNextOp();
   

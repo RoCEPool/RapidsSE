@@ -38,7 +38,7 @@ namespace Pipelines
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    ePX            m_eTopologyX;     // cross topology
+    ePX            m_eCrossTopo;     // cross topology
     i8             m_iNextStage;     // next stage in the cross topology
     i8             m_iNextOp;        // next Op in the stage
     i8             m_iXmitNode;      // xmit node (for xmit)
@@ -70,6 +70,8 @@ namespace Pipelines
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
+    ePX  eCrossTopo(void);
+    void vCrossTopo(ePX eCrossTopo);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
@@ -117,8 +119,6 @@ namespace Pipelines
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
     TagSet* pTopologyTagSet(void);
-    ePX  eTopologyX(void);
-    void vTopologyX(ePX eTopologyX);
     void vWorkQuanta(i8 iWorkQuanta);
     eXK  eXmitKind(void);
     void vXmitKind(eXK eXmitKind);

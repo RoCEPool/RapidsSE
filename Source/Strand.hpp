@@ -18,7 +18,9 @@ namespace Pipelines
     Pipeline*  m_pPipeline;   // which pipeline
 
     tPN  m_tPtnNo; // this strand processes m_tPtnNo in grid
+                   //   will be C_UNKNOWN for stage with node topology
     i8   m_i_Node; // this strand processes m_i_Node in grid
+                   //   is PtnMap::i_PtnNoToNode(m_tPtnNo);
  
     // -- -- -- -- -- --
 

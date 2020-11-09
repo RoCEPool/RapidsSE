@@ -133,7 +133,7 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
 /*----------------------------------------------------------------------------*/
 /* prepend a consumeOp spec                                                   */
 /*----------------------------------------------------------------------------*/
-OpSpec* StageSpec::pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 i_Op)
+OpSpec* StageSpec::pPrependConsumeOp(ePX eCrossTopo, i8 iStage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
