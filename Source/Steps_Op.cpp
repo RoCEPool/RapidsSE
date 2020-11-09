@@ -138,7 +138,7 @@ void Step::vOpPiplineJobFetch(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  m_pDataStack->vPushPtr(pOp->pPipeline()->pJob());
+  m_pDataStack->vPushPtr(pOp->pPipeline()->pPipelineJob());
   
   EXIT();
 }

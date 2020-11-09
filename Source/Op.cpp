@@ -47,7 +47,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Strand* pStrand)
 : Focal(CN_OP,AM::iNextOpId()
-, AM::iJobUniqueId(pStrand->pPipeline()->pJob()))
+, AM::iJobUniqueId(pStrand->pPipeline()->pPipelineJob()))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -75,7 +75,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   
   // -- -- -- -- -- --
 
-  m_pPipelineJob  = m_pPipeline->pJob();
+  m_pPipelineJob  = m_pPipeline->pPipelineJob();
   m_pOpJob        = nullptr;
   
   m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
@@ -186,7 +186,7 @@ void Op::vAckJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pTask = AM::pExecutingTask(m_pPipeline->pJob());
+  Task* pTask = AM::pExecutingTask(m_pPipeline->pPipelineJob());
   
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr

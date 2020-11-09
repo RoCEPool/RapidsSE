@@ -356,7 +356,7 @@ Job* AM::pPipelineJob(void)
   
   Job* pOpJob = AM::pTaskJob();
   
-  Job* pPipelineJob = pOpJob->m_pOp->pPipeline()->pJob();
+  Job* pPipelineJob = pOpJob->m_pOp->pPipeline()->pPipelineJob();
   return pPipelineJob;
 }
 

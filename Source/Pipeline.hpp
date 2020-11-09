@@ -15,18 +15,15 @@ namespace Pipelines
   
     // -- -- -- -- -- --
 
-    Job* m_pJob; // job this pipeline belongs to
+    Job* m_pPipelineJob; // job this pipeline belongs to
   
-
     bool m_bPulsed;
     bool m_bErrored;
     
     bool m_bPulsedLimit;
     Op*  m_pOpToPulse;
     bool m_bCancelled;
-      
-  private:
-  
+        
     // must be last
     Footer m_xFooter;
     
@@ -34,7 +31,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
+    Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
    ~Pipeline(void) noexcept(false);
   
     void     vDump(void);
@@ -44,9 +41,9 @@ namespace Pipelines
     bool     bErrored(void);
     void     vErrored(bool bErrored);
     i8       i_Origin(void);
-    Job*     pJob(void);
     i8       nOpsOnNode(i8 iNode);
     Op*      pOpToPulse(void);
+    Job*     pPipelineJob(void);
     Stz*     szPipelineNm(void);
     PipelineSpec* pPipelineSpec(void);
     void     vPopulateOpVec(PipelineSpec* pPipelineSpec);
