@@ -8,20 +8,22 @@ namespace Pipelines
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>
   {
   private:
-    s32           m_sPipelineNm;
+    s32  m_sPipelineNm; // name of this pipeline
   
-    PipelineSpec* m_pPipelineSpec;
+    PipelineSpec* m_pPipelineSpec; // specification of this pipeline
   
-    Job*          m_pJob;
-  
-    i8            m_iOriginatingNode;
+    // -- -- -- -- -- --
 
-    bool          m_bPulsed;
-    bool          m_bErrored;
+    Job* m_pJob; // job this pipeline belongs to
+  
+    i8   m_iOriginatingNode;
+
+    bool m_bPulsed;
+    bool m_bErrored;
     
-    bool          m_bPulsedLimit;
-    Op*           m_pOpToPulse;
-    bool          m_bCancelled;
+    bool m_bPulsedLimit;
+    Op*  m_pOpToPulse;
+    bool m_bCancelled;
       
   private:
   

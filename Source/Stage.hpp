@@ -9,11 +9,14 @@ namespace Pipelines
   {
   private:
     s32  m_sPipelineNm; // pipeline name
-    s32  m_sStageNm;    // stage name
-  
+    s32  m_sStageNm;    // name of this stage
+    i8   m_i_Stage;     // [stage] in pipeline
+
     StageSpec*  m_pStageSpec; // specification of this stage
     Pipeline*   m_pPipeline;  // which pipeline
   
+    // -- -- -- -- -- --
+
     // must be last
     Footer m_xFooter;
 

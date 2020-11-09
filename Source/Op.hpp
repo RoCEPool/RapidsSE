@@ -9,14 +9,20 @@ namespace Pipelines
   {
   private:
     s32  m_sPipelineNm; // pipeline name
-    s32  m_sStageNm;    // stage name
-    s32  m_sStrandNm;   // synthesised name of this strand
-    s32  m_sOpNm;       // name of the operator
+    s32  m_sStageNm;    // stage name within pipeline
+    s32  m_sStrandNm;   // strand name within strand within pipeline
+    s32  m_sOpNm;       // name of this operator
+    i8   m_i_Op;        // [op] in strand
+
+    OpSpec*   m_pOpSpec;   // specification of this operator
+    Strand*   m_pStrand;   // which strand of stage of pipleine
+    Stage*    m_pStage;    // which stage of pipeline
+    Pipeline* m_pPipeline; // which pipeline
   
-    OpSpec*        m_pOpSpec;        // specification of this operator
-    Strand*        m_pStrand;        // which strand of stage
-    Stage*         m_pStage;         // which stage of pipeline
-    Pipeline*      m_pPipeline;      // which pipeline
+    i8   m_tPtnNo; // this op processes m_tPtnNo in grid
+    i8   m_i_Node; // this op processes m_i_Node in grid
+
+    // -- -- -- -- -- --
   
     Job*           m_pPipelineJob;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to
@@ -31,9 +37,6 @@ namespace Pipelines
     bool           m_bAppendRight;   // append to right queue?
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
-    
-    i8             m_i_Node;         // node no
-    i8             m_tPtnNo;         // partition no (in grid)
     
     ePX            m_eTopologyX;     // cross topology
     i8             m_iNextStage;     // next stage in the cross topology

@@ -23,6 +23,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
   
   m_sPipelineNm = pPipeline->szPipelineNm();
   m_sStageNm    = pStageSpec->szStageNm();
+  m_i_Stage     = pStageSpec->i_StageSpec();
   
   m_pStageSpec  = pStageSpec;
   m_pPipeline   = pPipeline;

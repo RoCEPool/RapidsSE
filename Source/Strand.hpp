@@ -9,16 +9,18 @@ namespace Pipelines
   {
   private:
     s32  m_sPipelineNm; // pipeline name
-    s32  m_sStageNm;    // stage name
-    s32  m_sStrandNm;   // strand name
-  
-    StageSpec* m_pStageSpec;  // this is a strand of which stage
+    s32  m_sStageNm;    // stage name within pipeline
+    s32  m_sStrandNm;   // name of this strand
+    i8   m_i_Strand;    // [strand] in stage
+
+    StageSpec* m_pStageSpec;  // specification of this stage strand
     Stage*     m_pStage;      // which stage of pipeline
     Pipeline*  m_pPipeline;   // which pipeline
 
-    tPN        m_tPtnNo;      // which partition in grid
-    i8         m_i_Node;      // which node in grid
-    i8         m_i_Strand;    // which strand of stage
+    tPN  m_tPtnNo; // this strand processes m_tPtnNo in grid
+    i8   m_i_Node; // this strand processes m_i_Node in grid
+ 
+    // -- -- -- -- -- --
 
     // must be last
     Footer m_xFooter;

@@ -57,25 +57,12 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   m_sStageNm    = pStrand->pStage()->szStageNm();
   m_sStrandNm   = pStrand->szStrandNm();
   m_sOpNm       = pOpSpec->szOpNm();
+  m_i_Op        = pOpSpec->i_OpSpec();
   
   m_pOpSpec   = pOpSpec;
   m_pStrand   = pStrand;
   m_pStage    = pStrand->pStage();
   m_pPipeline = pStrand->pPipeline();
-
-  m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
-  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
-  
-  m_pPipelineJob  = m_pPipeline->pJob();
-  m_pOpJob        = nullptr;
-  
-  m_bPulsedLimit  = false;
-  m_iWorkQuanta   = 1;
-  m_iWorkDone     = 0;
-
-  m_bAppendRight  = pOpSpec->bAppendRight();
-  m_pQueueLeft    = new OperandQueue;
-  m_pQueueRight   = new OperandQueue;
 
   if (m_pStage->pStageSpec()->bNodeTopo()) {
     m_tPtnNo = C_UNKNOWN;
@@ -86,6 +73,22 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
     m_i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
   }
   
+  // -- -- -- -- -- --
+
+  m_pPipelineJob  = m_pPipeline->pJob();
+  m_pOpJob        = nullptr;
+  
+  m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
+  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
+  
+  m_bPulsedLimit  = false;
+  m_iWorkQuanta   = 1;
+  m_iWorkDone     = 0;
+
+  m_bAppendRight  = pOpSpec->bAppendRight();
+  m_pQueueLeft    = new OperandQueue;
+  m_pQueueRight   = new OperandQueue;
+
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
   m_iNextOp    = C_UNKNOWN;

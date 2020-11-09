@@ -10,11 +10,11 @@ namespace PipelineSpecs
   private:
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name
-  
     i8   m_i_StageSpec; // this stage spec no
+
+    PipelineSpec* m_pPipelineSpec; // which pipeline spec
     
     Job*          m_pJob;          // which job
-    PipelineSpec* m_pPipelineSpec; // which pipeline spec
 
     ePO  m_eTopology;      // stage topoplogy
     bool m_bNodeTopo;      // is node-level topology (or partition)?
