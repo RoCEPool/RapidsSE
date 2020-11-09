@@ -34,6 +34,8 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
   m_bCancelled    = false;
     
   _checkInitialised_(CN_PIPELINE);
+  
+  vCreateStages();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }

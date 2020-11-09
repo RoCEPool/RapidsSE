@@ -36,6 +36,8 @@ Strand::Strand(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
 
   _checkInitialised_(CN_STRAND);
   
+  vCreateOps();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
 }
 
