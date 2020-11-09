@@ -380,8 +380,8 @@ bool Dynamo::bCollectStage(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_Stage = m_pPipelineSpec->nItems();
-  m_pStageSpec = new StageSpec(m_pTkn->szChars(),i_Stage,m_pPipelineSpec);
+  i8 i_StageSpec = m_pPipelineSpec->nItems();
+  m_pStageSpec = new StageSpec(m_pTkn->szChars(),i_StageSpec,m_pPipelineSpec);
   m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -497,7 +497,8 @@ bool Dynamo::bCollectOp(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),m_pStageSpec);
+  i8 i_OpSpec = m_pStageSpec->nItems();
+  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),i_OpSpec,m_pStageSpec);
   m_pStageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -719,7 +720,7 @@ bool Dynamo::bParseOnNode(void)
     i8 i_Node = sLocus.szStz()->iToI8();
     if ( i_Node > AM::pGrid()->nConnectedNodes() )
       return false;
-    m_pStageSpec->vNode(i_Node);
+    m_pStageSpec->vSpecificNode(i_Node);
     return true;
   }
   
@@ -744,11 +745,11 @@ bool Dynamo::bParseOnPartition(void)
     vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
 #endif
     m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
-    i8 i_Ptn = sLocus.szStz()->iToI8();
-    if (i_Ptn >= AM::pGrid()->nPartitionsInGrid())
+    tPN tPtnNo = sLocus.szStz()->iToI8();
+    if (tPtnNo >= AM::pGrid()->nPartitionsInGrid())
       return false;
     
-    m_pStageSpec->vPtnNo(i_Ptn);
+    m_pStageSpec->vSpecificPtnNo(tPtnNo);
     return true;
   }
   

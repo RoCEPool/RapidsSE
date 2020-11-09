@@ -8,10 +8,9 @@ namespace PipelineSpecs
   class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
   {
   private:
+    s32  m_sPipelineNm; // pipeline name
   
-    s32  m_sPipelineNm;
-  
-    Job* m_pJob;
+    Job* m_pJob; // which job
     
     // must be last
     Footer m_xFooter;
@@ -25,6 +24,7 @@ namespace PipelineSpecs
   
     void vAddStageSpec(StageSpec* pStageSpec);
     StageSpec* pFindStageSpec(Stz* szFindNm, i8& i_Stage);
+    Job* pJob(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
 

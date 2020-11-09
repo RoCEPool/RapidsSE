@@ -18,11 +18,17 @@ __aFooterFunction(Strand)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Strand::Strand(StageSpec* pStageSpec, tPN tPtnNo, i8 i_Node, i8 i_Strand)
+Strand::Strand(StageSpec* pStageSpec, Stage* pStage,
+               tPN tPtnNo, i8 i_Node, i8 i_Strand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   
+  m_sPipelineNm = pStage->pPipeline()->szPipelineNm();
+  m_sStageNm    = pStage->szStageNm();
+
   m_pStageSpec = pStageSpec;
+  m_pStage     = pStage;
+  m_pPipeline  = pStage->pPipeline();
   
   // determine the node,tablePtn coordinates of this strand
 //  if (m_pStageSpec->bNodeTopo()) {
@@ -100,6 +106,16 @@ i8 Strand::i_Node(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeline for this strand                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Strand::pPipeline(void)
+{
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  
+  return m_pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get partition in grid this strand needs to run on                          */
 /*----------------------------------------------------------------------------*/
 i8 Strand::tPtnNo(void)
@@ -107,6 +123,16 @@ i8 Strand::tPtnNo(void)
   _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
   
   return m_tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage for this strand                                                  */
+/*----------------------------------------------------------------------------*/
+Stage* Strand::pStage(void)
+{
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  
+  return m_pStage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,6 +168,16 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
     }
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage spec for this strand                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Strand::szStrandNm(void)
+{
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  
+  return m_sStrandNm;
 }
 
 /*----------------------------------------------------------------------------*/

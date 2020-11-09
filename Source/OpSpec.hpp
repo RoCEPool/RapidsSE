@@ -8,15 +8,22 @@ namespace PipelineSpecs
   class OpSpec : public Object
   {
   private:
-    s32        m_sOpNm;
-    i8         m_i_OpSpec;
-    StageSpec* m_pStageSpec;
+    s32  m_sPipelineNm; // pipeline name
+    s32  m_sStageNm;    // stage name
+    s32  m_sOpNm;       // op name
   
-    bool       m_bAppendRight;
-    eXK        m_eXmitKind;
+    i8   m_i_StageSpec; // of stage spec no
+    i8   m_i_OpSpec;    // this op spec no
+
+    Job*          m_pJob;          // which job
+    PipelineSpec* m_pPipelineSpec; // which pipeline spec
+    StageSpec*    m_pStageSpec;    // which stage spec
+
+    bool   m_bAppendRight; // append to right queue of next operator
+    eXK    m_eXmitKind;    // {normal, hashed, robin, local robin} if xmit op
     
-    TagSet     m_oOpSpecTagSet;
-    TagSet     m_oTopologyTagSet;
+    TagSet m_oOpSpecTagSet;
+    TagSet m_oTopologyTagSet;
     
     // must be last
     Footer m_xFooter;
@@ -25,7 +32,7 @@ namespace PipelineSpecs
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OpSpec(Stz* szOpNm, StageSpec* pStageSpec);
+    OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec);
    ~OpSpec(void) noexcept(false);
   
     void vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken);

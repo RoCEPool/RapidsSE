@@ -21,9 +21,11 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
-  m_sStageNm   = pStageSpec->szStageNm();
-  m_pStageSpec = pStageSpec;
-  m_pPipeline  = pPipeline;
+  m_sPipelineNm = pPipeline->szPipelineNm();
+  m_sStageNm    = pStageSpec->szStageNm();
+  
+  m_pStageSpec  = pStageSpec;
+  m_pPipeline   = pPipeline;
 
   _checkInitialised_(CN_STAGE);
 
@@ -159,6 +161,16 @@ i8 Stage::nOpsOnNode(i8 iNode)
   }
 
   return nOps;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get piepline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Stage::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -299,7 +311,8 @@ void Stage::vCreateStrands(void)
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
         i_Strand = 0;
-        pStrand = new Strand(m_pStageSpec, tPtnNo, i_Node, i_Strand);
+        pStrand = new Strand(m_pStageSpec, this,
+                             tPtnNo, i_Node, i_Strand);
         vAdd(pStrand);
       }
       break;
@@ -309,7 +322,8 @@ void Stage::vCreateStrands(void)
       tPtnNo = C_UNKNOWN;
       i_Node = m_pPipeline->iOriginatingNode();
       i_Strand = 0;
-      pStrand = new Strand(m_pStageSpec, tPtnNo, i_Node, i_Strand);
+      pStrand = new Strand(m_pStageSpec, this,
+                           tPtnNo, i_Node, i_Strand);
       vAdd(pStrand);
       break;
         
@@ -326,7 +340,8 @@ void Stage::vCreateStrands(void)
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
         i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
         i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
-        pStrand = new Strand(m_pStageSpec, tPtnNo, i_Node, i_Strand);
+        pStrand = new Strand(m_pStageSpec, this,
+                             tPtnNo, i_Node, i_Strand);
         vAdd(pStrand);
       }
       break;
@@ -337,7 +352,8 @@ void Stage::vCreateStrands(void)
         i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
         if (i_Node == m_pPipeline->iOriginatingNode()) {
           i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
-          pStrand = new Strand(m_pStageSpec, tPtnNo, i_Node, i_Strand);
+          pStrand = new Strand(m_pStageSpec, this,
+                               tPtnNo, i_Node, i_Strand);
           vAdd(pStrand);
         }
       }
@@ -345,10 +361,11 @@ void Stage::vCreateStrands(void)
       
     case PO_SPECIFIC_PARTITION:
       RASSERT(! m_pStageSpec->bNodeTopo());
-      tPtnNo = m_pStageSpec->tPtnNo();
+      tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
       i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
-      pStrand = new Strand(m_pStageSpec, tPtnNo, i_Node, i_Strand);
+      pStrand = new Strand(m_pStageSpec, this, 
+                           tPtnNo, i_Node, i_Strand);
       vAdd(pStrand);
       break;
       
@@ -377,7 +394,7 @@ void Stage::vCreateStrands(void)
 //        pStrand->vAdd(pOp);
 //      }
 
-      Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
+      Op* pOp = new Op(pOpSpec,pStrand);
       pStrand->vAdd(pOp);
 
     }

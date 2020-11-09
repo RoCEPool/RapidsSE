@@ -4,7 +4,6 @@
 
 #include "PipelineSpecs.h"
 
-
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -33,6 +32,7 @@ PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
+  
   m_pJob = pJob;
     
   _checkInitialised_(CN_PIPELINESPEC);
@@ -88,6 +88,16 @@ StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm, i8& i_Stage)
   }
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job                                                                    */
+/*----------------------------------------------------------------------------*/
+Job* PipelineSpec::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  return m_pJob;
 }
 
 /*----------------------------------------------------------------------------*/

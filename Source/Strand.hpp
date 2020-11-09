@@ -8,11 +8,16 @@ namespace Pipelines
   class Strand : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
   {
   private:
-    s32        m_sStrandNm;   // synthesised name of this strand
-    StageSpec* m_pStageSpec;  // this is a strand of which stage
+    s32  m_sPipelineNm; // pipeline name
+    s32  m_sStageNm;    // stage name
+    s32  m_sStrandNm;   // strand name
   
-    tPN        m_tPtnNo;       // which partition in grid
-    i8         m_i_Node;       // which node in grid
+    StageSpec* m_pStageSpec;  // this is a strand of which stage
+    Stage*     m_pStage;      // which stage of pipeline
+    Pipeline*  m_pPipeline;   // which pipeline
+
+    tPN        m_tPtnNo;      // which partition in grid
+    i8         m_i_Node;      // which node in grid
     i8         m_i_Strand;    // which strand of stage
 
     // must be last
@@ -22,16 +27,23 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Strand(StageSpec* pStageSpec, tPN tPtnNo, i8 i_Node, i8 i_Strand);
+    Strand(StageSpec* pStageSpec, Stage* pStage,
+           tPN tPtnNo, i8 i_Node, i8 i_Strand);
    ~Strand(void) noexcept(false);
   
     void   vDump(void);
   
     i8     i_Node(void);
+  
+    Pipeline* pPipeline(void);
     tPN    tPtnNo(void);
   
+    Stage* pStage(void);
     StageSpec* pStageSpec(void);
     void   vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
+  
+    Stz* szStrandNm(void);
+
     void   vSynthesiseName(void);
 
     Footer* aFooter(void);

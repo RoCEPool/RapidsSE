@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op.hpp -- Operator                                                         */
+/* Op.hpp -- Operator of Strand of Stage of Pipeline                          */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,11 @@ namespace Pipelines
   class Op : public Focal
   {
   private:
-    s32            m_sOpNm;          // name of the operator
+    s32  m_sPipelineNm; // pipeline name
+    s32  m_sStageNm;    // stage name
+    s32  m_sStrandNm;   // synthesised name of this strand
+    s32  m_sOpNm;       // name of the operator
+  
     OpSpec*        m_pOpSpec;        // specification of this operator
     Strand*        m_pStrand;        // which strand of stage
     Stage*         m_pStage;         // which stage of pipeline
@@ -50,7 +54,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Strand* pStrand, Stage* pStage, Pipeline* pPipeline);
+    Op(OpSpec* pOpSpec, Strand* pStrand);
    ~Op(void) noexcept(false);
   
     void vDump(i8 i_Op);
