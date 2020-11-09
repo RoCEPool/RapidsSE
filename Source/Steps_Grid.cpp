@@ -280,8 +280,8 @@ void Step::vGridPtnNoToTablePtn(void)
   
   tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
-  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
-  
+  i8 i_TablePtn = PtnMap::i_PtnNoToStrand(tPtnNo);
+
   m_pDataStack->vPushInt(i_TablePtn);                     //! DISCUSS WITH ALKA
   
   EXIT();
