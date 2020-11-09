@@ -8,7 +8,10 @@ namespace Pipelines
   class Strand : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
   {
   private:
-    s32        m_sStrandNm;   // synthesised name of this strand
+    s32  m_sPipelineNm; // pipeline name
+    s32  m_sStageNm;    // stage name
+    s32  m_sStrandNm;   // strand name
+  
     StageSpec* m_pStageSpec;  // this is a strand of which stage
     Stage*     m_pStage;      // which stage of pipeline
     Pipeline*  m_pPipeline;   // which pipeline
@@ -35,6 +38,9 @@ namespace Pipelines
   
     StageSpec* pStageSpec(void);
     void   vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
+  
+    Stz* szStrandNm(void);
+
     void   vSynthesiseName(void);
 
     Footer* aFooter(void);

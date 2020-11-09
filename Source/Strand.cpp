@@ -23,6 +23,9 @@ Strand::Strand(StageSpec* pStageSpec, Stage* pStage, Pipeline* pPipeline,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   
+  m_sPipelineNm = pPipeline->szPipelineNm();
+  m_sStageNm    = pStage->szStageNm();
+
   m_pStageSpec = pStageSpec;
   m_pStage     = pStage;
   m_pPipeline  = pPipeline;
@@ -145,6 +148,16 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
     }
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage spec for this strand                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Strand::szStrandNm(void)
+{
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  
+  return m_sStrandNm;
 }
 
 /*----------------------------------------------------------------------------*/

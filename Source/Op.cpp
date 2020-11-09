@@ -52,7 +52,11 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand, Stage* pStage, Pipeline* pPipeline)
   
   RASSERT(pOpSpec);
   
-  m_sOpNm     = pOpSpec->szOpNm();
+  m_sPipelineNm = pPipeline->szPipelineNm();
+  m_sStageNm    = pStage->szStageNm();
+  m_sStrandNm   = pStrand->szStrandNm();
+  m_sOpNm       = pOpSpec->szOpNm();
+  
   m_pOpSpec   = pOpSpec;
   m_pStrand   = pStrand;
   m_pStage    = pStage;

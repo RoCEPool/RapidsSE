@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stage.hpp -- Pipe Stage                                                    */
+/* Stage.hpp -- Stage of Pipeline                                             */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,9 @@ namespace Pipelines
   class Stage : public VectorNL_t<CN_STAGE,Strand,C_MAX_STRANDS>
   {
   private:
-    s32         m_sStageNm;   // stage name
+    s32  m_sPipelineNm; // pipeline name
+    s32  m_sStageNm;    // stage name
+  
     StageSpec*  m_pStageSpec; // specification of this stage
     Pipeline*   m_pPipeline;  // which pipeline
   

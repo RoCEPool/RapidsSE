@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Pipeline.hpp -- Operator Set Pipeline                                      */
+/* Pipeline.hpp -- Pipeline                                                   */
 /*============================================================================*/
 #pragma once
 
@@ -9,6 +9,7 @@ namespace Pipelines
   {
   private:
     s32           m_sPipelineNm;
+  
     PipelineSpec* m_pPipelineSpec;
   
     Job*          m_pJob;
