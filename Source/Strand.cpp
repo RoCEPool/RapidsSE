@@ -18,8 +18,8 @@ __aFooterFunction(Strand)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Strand::Strand(StageSpec* pStageSpec, Stage* pStage,
-               tPN tPtnNo, i8 i_Node, i8 i_Strand)
+Strand::Strand(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
+               tPN tPtnNo, i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   

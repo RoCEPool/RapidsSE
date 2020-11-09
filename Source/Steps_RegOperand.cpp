@@ -209,7 +209,7 @@ void Step::vRegOperandCsvToCrwH(void)
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
   Loader* pLoader = *m_pLogicUnit->m_xpLoader;
   Op* pOp = m_pTask->m_pJob->m_pOp;
-  Job* pPipelineJob = pOp->pPipeline()->pJob();
+  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
   
   pLoader->bCsvToCrw((Stz*)pCsvBuffer->ayDataArea(),
                      pCsvBuffer->nDataBytes(),

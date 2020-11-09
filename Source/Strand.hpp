@@ -29,8 +29,8 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Strand(StageSpec* pStageSpec, Stage* pStage,
-           tPN tPtnNo, i8 i_Node, i8 i_Strand);
+    Strand(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
+           tPN tPtnNo, i8 i_Node);
    ~Strand(void) noexcept(false);
   
     void   vDump(void);
