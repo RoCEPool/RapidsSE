@@ -31,9 +31,12 @@
 : ZK_CANCELLEDMARKER_handler \handler
 
   //"ZK_CANCELLEDMARKER_handler" .verbose
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  false
+  Pipein[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +105,13 @@
 : ZK_ERROREDMARKER_handler \handler
 
   //"ZK_ERROREDMARKER_handler" .verbose
-  PipeIn[].pipeOut
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
   true
 ;
 
@@ -123,7 +132,13 @@
 : ZK_EXITEDMARKER_handler \handler
 
   //"ZK_EXITEDMARKER_handler" .verbose
-  PipeIn[].pipeOut
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
   true
 ;
 
