@@ -297,7 +297,6 @@ void Stage::vCreateStrands(void)
   i8 i_Node;
   i8 i_Strand;
 
-  OpSpec* pOpSpec;
   Strand* pStrand;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create StageNde's and StagePtn's depending on the toplogy of the stage
@@ -312,7 +311,6 @@ void Stage::vCreateStrands(void)
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-        //pStrand->vCreateOps();
         vAdd(pStrand);
       }
       break;
@@ -323,7 +321,6 @@ void Stage::vCreateStrands(void)
       tPtnNo = C_UNKNOWN;
       i_Node = m_pPipeline->i_Origin();
       pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-      //pStrand->vCreateOps();
       vAdd(pStrand);
       break;
         
@@ -341,7 +338,6 @@ void Stage::vCreateStrands(void)
         i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
         i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-        //pStrand->vCreateOps();
         vAdd(pStrand);
       }
       break;
@@ -353,7 +349,6 @@ void Stage::vCreateStrands(void)
         if (i_Node == m_pPipeline->i_Origin()) {
           i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
           pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-          //pStrand->vCreateOps();
           vAdd(pStrand);
         }
       }
@@ -365,7 +360,6 @@ void Stage::vCreateStrands(void)
       i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
       i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
       pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-      //pStrand->vCreateOps();
       vAdd(pStrand);
       break;
       
@@ -373,23 +367,6 @@ void Stage::vCreateStrands(void)
       RASSERT(0);
   }
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the opVec and StageNde's and stagePtn's from the opSpec
-  
-//  // add the operator to the stages of the stageNdeVec
-//  for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
-//    pStrand = pGet(i_Strand);
-//
-//    for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
-//      pOpSpec = m_pStageSpec->pGet(i_OpSpec);
-//
-//      Op* pOp = new Op(pOpSpec,pStrand);
-//      pStrand->vAdd(pOp);
-//    }
-//
-//    pStrand->vCreateOps();
-//
-//  }
 }
 
 /*============================================================================*/

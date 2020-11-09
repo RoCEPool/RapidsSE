@@ -35,7 +35,6 @@ namespace Pipelines
            tPN tPtnNo, i8 i_Node);
    ~Strand(void) noexcept(false);
   
-    void vCreateOps();
     void vDump(void);
   
     i8   i_Node(void);
@@ -47,8 +46,10 @@ namespace Pipelines
     StageSpec* pStageSpec(void);
     void vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
     Stz* szStrandNm(void);
-    void vSynthesiseName(void);
 
+  private:
+    void vCreateOps();
+    void vSynthesiseName(void);
     Footer* aFooter(void);
   };
   

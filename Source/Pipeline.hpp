@@ -46,12 +46,14 @@ namespace Pipelines
     Job*     pPipelineJob(void);
     Stz*     szPipelineNm(void);
     PipelineSpec* pPipelineSpec(void);
-    void     vCreateStages();
     bool     bPulsed(void);
     void     vPulsed(bool bPulsed);
     bool     bPulsedLimit(void);
     void     vSetupJob(void);
     void     vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
+
+  private:
+    void     vCreateStages();
 
     Footer* aFooter(void);
   };
