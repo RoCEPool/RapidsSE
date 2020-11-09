@@ -159,7 +159,7 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
   if (m_pStageSpec->bNodeTopo())
     i_OnNode = m_i_Node;
   else
-    i_OnNode = PtnMap::i_PtnNoToNode(m_tPtnNo);
+    i_OnNode = AM::pPtnMap()->i_PtnNoToNode(m_tPtnNo);
   
   if (i_OnNode == i_ThisNode) {
     // for each operator in the stage ptn

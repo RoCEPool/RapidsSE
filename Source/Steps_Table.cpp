@@ -458,7 +458,7 @@ void Step::vTableListPartition(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   for (;;) {
-    i8 i_Node     = PtnMap::i_PtnNoToNode(tPtnNo);
+    i8 i_Node     = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
     i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
 
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
