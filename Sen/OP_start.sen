@@ -27,12 +27,60 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELLEDMARKER ...                                         */
 /*----------------------------------------------------------------------------*/
-: ZK_CANCELLEDMARKER_handler \handler
+: start_CancelledMarker \handler
 
   //"ZK_CANCELLEDMARKER_handler" .verbose
   PipeIn[].pipeOut
   Op.ackPipelineJob
   false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CRWBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: start_CrwBuffer \handler
+
+  //"ZK_CRWBUFFER_handler" .verbose
+  PipeIn[].delete
+
+  // start operator should never get a CRWBUFFER
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CSVBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: start_CsvBuffer \handler
+
+  //"ZK_CSVBUFFER_handler" .verbose
+  PipeIn[].delete
+
+  // start operator should never get a CSVBUFFER
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ENTBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: start_EntBuffer \handler
+
+  //"ZK_ENTBUFFER_handler" .verbose
+  PipeIn[].delete
+
+  // start operator should never get an ENTBUFFER
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +139,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_RSBBUFFER ...                                               */
+/*----------------------------------------------------------------------------*/
+: start_RsbBuffer \handler
+
+  //"ZK_RSBBUFFER" .verbose
+  PipeIn[].delete
+
+  // start operator should never get an RSBBUFFER
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTEDMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : start_StartedMarker \handler
@@ -98,6 +162,22 @@
   //"Operand:- ZK_STARTEDMARKER" .verbose
   PipeIn[].delete
   Operand[].newPulseMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMDEF ...                                               */
+/*----------------------------------------------------------------------------*/
+: start_StreamDef \handler
+
+  //"ZK_STREAMDEF" .verbose
+  PipeIn[].delete
+
+  // start operator should never get a STREAMDEF
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
   Operand[].pipeOut
 
   true
@@ -112,11 +192,17 @@
 
   op__topology
 
-  find: start_CancelMarker  ZK_CANCELMARKER  op[].handler!
-  find: start_ErroredMarker ZK_ERROREDMARKER  op[].handler!
-  find: start_ExitedMarker  ZK_EXITEDMARKER  op[].handler!
-  find: start_PulsedMarker  ZK_PULSEDMARKER  op[].handler!
-  find: start_StartedMarker ZK_STARTEDMARKER op[].handler!
+  find: start_CancelMarker    ZK_CANCELMARKER    op[].handler!
+  find: start_CancelledMarker ZK_CANCELLEDMARKER op[].handler!
+  find: start_CrwBuffer       ZK_CRWBUFFER       op[].handler!
+  find: start_CsvBuffer       ZK_CSVBUFFER       op[].handler!
+  find: start_EntBuffer       ZK_ENTBUFFER       op[].handler!
+  find: start_ErroredMarker   ZK_ERROREDMARKER   op[].handler!
+  find: start_ExitedMarker    ZK_EXITEDMARKER    op[].handler!
+  find: start_PulsedMarker    ZK_PULSEDMARKER    op[].handler!
+  find: start_RsbBuffer       ZK_RSBBUFFER       op[].handler!
+  find: start_StartedMarker   ZK_STARTEDMARKER   op[].handler!
+  find: start_StreamDef       ZK_STREAMDEF       op[].handler!
 
   op__loop
 
