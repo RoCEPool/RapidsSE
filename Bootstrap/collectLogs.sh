@@ -16,6 +16,8 @@ readonly SCRIPT_NAME=$(basename "$0")
 # Default modes of operation
 CONFIG_FILE="${DIR}/cluster.config"
 
+DEBUG=0
+
 ###############################################################################
 ### Includes                                                                ###
 ###############################################################################
@@ -97,7 +99,7 @@ function processArgs() {
 
   # If --config was specified then so must the config file.
   if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then
-    printError "${errmsg}" "No config file specified"
+    printError "No config file specified"
     printUsageAndExit
   fi
 
@@ -116,7 +118,7 @@ function processArgs() {
 function collectLogs() {
 
   local timestamp
-  timestamp="$(date +%FT%T)"
+  timestamp="$(date +%Y%m%dT%H%M%S)"
 
   # Make the output filename  
   local outputFile="logs-${timestamp}.tar.gz"
@@ -125,6 +127,8 @@ function collectLogs() {
   local tempDir
   tempDir="$(mktemp -d)"
   
+  debugPrint "Collecting logfiles to path: ${tempDir}"
+
   # Make a working directory. We will tar this one up so when it is extracted
   # all of the logs go into a nicely named directory.
   local workingDir="${tempDir}/logs-${timestamp}"
@@ -135,9 +139,47 @@ function collectLogs() {
   cp "${CONFIG_FILE}" "${workingDir}"
   
   local nodeName
+  local remoteCmd
+
+  remoteCmd="'"
+  remoteCmd+="echo -e \"Machine Info:\n\"; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: hostname -f\"; "
+  remoteCmd+="hostname -f; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Contents of: /etc/redhat-release\"; "
+  remoteCmd+="cat /etc/redhat-release; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: uname -a\"; "
+  remoteCmd+="uname -a; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: lscpu\"; "
+  remoteCmd+="lscpu; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: vmstat -s -S M -w\"; "
+  remoteCmd+="vmstat -s -S M -w; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Contents of: /proc/meminfo\"; "
+  remoteCmd+="cat /proc/meminfo; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: lsblk\"; "
+  remoteCmd+="lsblk; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: df -h\"; "
+  remoteCmd+="df -h; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: top -b -n 1\"; "
+  remoteCmd+="top -b -n 1; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: ifconfig\"; "
+  remoteCmd+="ifconfig || /usr/sbin/ifconfig; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Output of: netstat -antp\"; "
+  remoteCmd+="netstat -antp; "
+  remoteCmd+="'"
 
   # Copy logs for each node
-  for nodeName in "${NODELIST[@]}"
+  for nodeName in "${NODE_LIST[@]}"
   do
     local host
     local installDir
@@ -151,18 +193,20 @@ function collectLogs() {
 
     # Copy some files
     echo "Copying logs from ${nodeName} [host ${host}]"
-    scp    "${host}:${installDir}/se.log"         "${outputDir}" 1>/dev/null || true
-    scp    "${host}:${installDir}/version"        "${outputDir}" 1>/dev/null || true
-    scp    "${host}:${installDir}/cluster.config" "${outputDir}" 1>/dev/null || true
-    scp -r "${host}:${installDir}/tmp"            "${outputDir}" 1>/dev/null || true
+    scp    "${host}:${installDir}/se.log"         "${outputDir}" &>/dev/null || true
+    scp    "${host}:${installDir}/version"        "${outputDir}" &>/dev/null || true
+    scp    "${host}:${installDir}/cluster.config" "${outputDir}" &>/dev/null || true
+    scp -r "${host}:${installDir}/tmp"            "${outputDir}" &>/dev/null || true
+    ssh    "${host}" bash -c "${remoteCmd}"    &> "${outputDir}/machine.txt" || true
   done
 
   # Tar up the collected log files.
   
-  tar cvzf "${outputFile}" "${workingDir}"
+  tar cvzf "${outputFile}" -C "${tempDir}" . 1>/dev/null
 
   # Remove the temporary directory and all contents
   rm -rf "${tempDir:?}" || true
+  debugPrint "Cleaned up temporary logfile path: ${tempDir}"
   
   echo ""
   echo "Copied all logs to the file: ${outputFile}"
