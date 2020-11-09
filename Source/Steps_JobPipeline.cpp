@@ -45,7 +45,7 @@ void Step::vJob_PipelineBegin(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // popluate the op vector of the pipeline
-  pPipeline->vPopulateOpVec(m_pLogicUnit->m_xpDynamo->pPipelineSpec());
+  pPipeline->vCreateStages();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline

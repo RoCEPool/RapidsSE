@@ -46,7 +46,7 @@ namespace Pipelines
     Job*     pPipelineJob(void);
     Stz*     szPipelineNm(void);
     PipelineSpec* pPipelineSpec(void);
-    void     vPopulateOpVec(PipelineSpec* pPipelineSpec);
+    void     vCreateStages();
     bool     bPulsed(void);
     void     vPulsed(bool bPulsed);
     bool     bPulsedLimit(void);
