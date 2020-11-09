@@ -28,16 +28,19 @@ void OpSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
+OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
+  m_pStageSpec    = pStageSpec;
+  m_pPipelineSpec = m_pStageSpec->pPipelineSpec();
+  
   m_sOpNm        = szOpNm;
-  m_pStageSpec   = pStageSpec;
+  m_i_OpSpec     = i_OpSpec;
+  m_i_StageSpec  = m_pStageSpec->i_StageSpec();
   
   m_bAppendRight = false;
-  m_i_OpSpec     = C_UNKNOWN;
   m_eXmitKind    = XK_NORMAL;
 
   //m_oOpSpecTagSet

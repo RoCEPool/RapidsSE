@@ -380,8 +380,8 @@ bool Dynamo::bCollectStage(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_Stage = m_pPipelineSpec->nItems();
-  m_pStageSpec = new StageSpec(m_pTkn->szChars(),i_Stage,m_pPipelineSpec);
+  i8 i_StageSpec = m_pPipelineSpec->nItems();
+  m_pStageSpec = new StageSpec(m_pTkn->szChars(),i_StageSpec,m_pPipelineSpec);
   m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -497,7 +497,8 @@ bool Dynamo::bCollectOp(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),m_pStageSpec);
+  i8 i_OpSpec = m_pStageSpec->nItems();
+  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),i_OpSpec,m_pStageSpec);
   m_pStageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

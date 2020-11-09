@@ -18,11 +18,14 @@ __aFooterFunction(Strand)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Strand::Strand(StageSpec* pStageSpec, tPN tPtnNo, i8 i_Node, i8 i_Strand)
+Strand::Strand(StageSpec* pStageSpec, Stage* pStage, Pipeline* pPipeline,
+               tPN tPtnNo, i8 i_Node, i8 i_Strand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
   
   m_pStageSpec = pStageSpec;
+  m_pStage     = pStage;
+  m_pPipeline  = pPipeline;
   
   // determine the node,tablePtn coordinates of this strand
 //  if (m_pStageSpec->bNodeTopo()) {

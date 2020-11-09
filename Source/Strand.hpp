@@ -10,9 +10,11 @@ namespace Pipelines
   private:
     s32        m_sStrandNm;   // synthesised name of this strand
     StageSpec* m_pStageSpec;  // this is a strand of which stage
-  
-    tPN        m_tPtnNo;       // which partition in grid
-    i8         m_i_Node;       // which node in grid
+    Stage*     m_pStage;      // which stage of pipeline
+    Pipeline*  m_pPipeline;   // which pipeline
+
+    tPN        m_tPtnNo;      // which partition in grid
+    i8         m_i_Node;      // which node in grid
     i8         m_i_Strand;    // which strand of stage
 
     // must be last
@@ -22,7 +24,8 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Strand(StageSpec* pStageSpec, tPN tPtnNo, i8 i_Node, i8 i_Strand);
+    Strand(StageSpec* pStageSpec, Stage* pStage, Pipeline* pPipeline,
+           tPN tPtnNo, i8 i_Node, i8 i_Strand);
    ~Strand(void) noexcept(false);
   
     void   vDump(void);

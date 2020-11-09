@@ -138,6 +138,16 @@ bool StageSpec::bNodeTopo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get i_Stage                                                                */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* StageSpec::pPipelineSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_pPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get partition                                                              */
 /*----------------------------------------------------------------------------*/
 tPN StageSpec::tPtnNo(void)
@@ -166,14 +176,14 @@ OpSpec* StageSpec::pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 i_Op)
   
   OpSpec* pOpSpec;
   
-  pOpSpec = new OpSpec("consumeOp"_Stz,this);
+  pOpSpec = new OpSpec("consumeOp"_Stz,0,this);
   
   vInsert(pOpSpec);
   
-  // rework the m_i_OpSpec
-  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
-    OpSpec* pOpSpec = pGet(i_Op);
-    pOpSpec->v_OpSpec(i_Op);
+  // renumber the m_i_OpSpec
+  for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
+    OpSpec* pOpSpec = pGet(i_OpSpec);
+    pOpSpec->v_OpSpec(i_OpSpec);
   }
   
   return pOpSpec;

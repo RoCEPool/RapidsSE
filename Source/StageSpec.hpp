@@ -8,9 +8,10 @@ namespace PipelineSpecs
   class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
   {
   private:
-    s32           m_sStageNm;       // stage name
-    i8            m_i_StageSpec;    // stage no
-    PipelineSpec* m_pPipelineSpec;  // which pipeline spec
+    PipelineSpec* m_pPipelineSpec;  // to which pipeline spec
+  
+    s32  m_sStageNm;       // stage name
+    i8   m_i_StageSpec;    // stage no
   
     ePO  m_eTopology;  // stage topoplogy
     bool m_bNodeTopo;  // is node-level topology (or partition)?
@@ -35,6 +36,7 @@ namespace PipelineSpecs
     void vNode(i8 i_Node);
     i8   iNode(void);
     bool bNodeTopo(void);
+    PipelineSpec* pPipelineSpec(void);
     tPN  tPtnNo(void);
     void vPtnNo(tPN tPtnNo);
     OpSpec* pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 i_Op);
