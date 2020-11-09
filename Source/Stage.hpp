@@ -30,6 +30,7 @@ namespace Pipelines
     Strand* pGetPartitionStrand(i8 i_Ptn);
     Strand* pGetNodeStrand(i8 i_Node);
     i8      nOpsOnNode(i8 iNode);
+    Pipeline* pPipeline(void);
     Op*     pPipeOutOp(ePX eTopologyX, i8 i_Node, tPN tPtnNo, i8 i_Op);
     Stz*    szStageNm(void);
     StageSpec* pStageSpec(void);

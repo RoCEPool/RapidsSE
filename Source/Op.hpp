@@ -54,7 +54,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Strand* pStrand, Stage* pStage, Pipeline* pPipeline);
+    Op(OpSpec* pOpSpec, Strand* pStrand);
    ~Op(void) noexcept(false);
   
     void vDump(i8 i_Op);

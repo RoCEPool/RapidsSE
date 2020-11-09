@@ -45,27 +45,28 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(OpSpec* pOpSpec, Strand* pStrand, Stage* pStage, Pipeline* pPipeline)
-: Focal(CN_OP,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->pJob()))
+Op::Op(OpSpec* pOpSpec, Strand* pStrand)
+: Focal(CN_OP,AM::iNextOpId()
+, AM::iJobUniqueId(pStrand->pPipeline()->pJob()))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   RASSERT(pOpSpec);
   
-  m_sPipelineNm = pPipeline->szPipelineNm();
-  m_sStageNm    = pStage->szStageNm();
+  m_sPipelineNm = pStrand->pPipeline()->szPipelineNm();
+  m_sStageNm    = pStrand->pStage()->szStageNm();
   m_sStrandNm   = pStrand->szStrandNm();
   m_sOpNm       = pOpSpec->szOpNm();
   
   m_pOpSpec   = pOpSpec;
   m_pStrand   = pStrand;
-  m_pStage    = pStage;
-  m_pPipeline = pPipeline;
+  m_pStage    = pStrand->pStage();
+  m_pPipeline = pStrand->pPipeline();
 
   m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
   m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
   
-  m_pPipelineJob  = pPipeline->pJob();
+  m_pPipelineJob  = m_pPipeline->pJob();
   m_pOpJob        = nullptr;
   
   m_bPulsedLimit  = false;
@@ -76,7 +77,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand, Stage* pStage, Pipeline* pPipeline)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  if (pStage->pStageSpec()->bNodeTopo()) {
+  if (m_pStage->pStageSpec()->bNodeTopo()) {
     m_tPtnNo = C_UNKNOWN;
     m_i_Node = pStrand->i_Node();
   }

@@ -164,6 +164,16 @@ i8 Stage::nOpsOnNode(i8 iNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get piepline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Stage::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
 Op* Stage::pPipeOutOp(ePX eTopologyX, i8 i_Node, tPN tPtnNo, i8 i_Op)
@@ -301,7 +311,7 @@ void Stage::vCreateStrands(void)
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
         i_Strand = 0;
-        pStrand = new Strand(m_pStageSpec, this, m_pPipeline,
+        pStrand = new Strand(m_pStageSpec, this,
                              tPtnNo, i_Node, i_Strand);
         vAdd(pStrand);
       }
@@ -312,7 +322,7 @@ void Stage::vCreateStrands(void)
       tPtnNo = C_UNKNOWN;
       i_Node = m_pPipeline->iOriginatingNode();
       i_Strand = 0;
-      pStrand = new Strand(m_pStageSpec, this, m_pPipeline,
+      pStrand = new Strand(m_pStageSpec, this,
                            tPtnNo, i_Node, i_Strand);
       vAdd(pStrand);
       break;
@@ -330,7 +340,7 @@ void Stage::vCreateStrands(void)
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
         i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
         i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
-        pStrand = new Strand(m_pStageSpec, this, m_pPipeline,
+        pStrand = new Strand(m_pStageSpec, this,
                              tPtnNo, i_Node, i_Strand);
         vAdd(pStrand);
       }
@@ -342,7 +352,7 @@ void Stage::vCreateStrands(void)
         i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
         if (i_Node == m_pPipeline->iOriginatingNode()) {
           i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
-          pStrand = new Strand(m_pStageSpec, this, m_pPipeline,
+          pStrand = new Strand(m_pStageSpec, this,
                                tPtnNo, i_Node, i_Strand);
           vAdd(pStrand);
         }
@@ -354,7 +364,7 @@ void Stage::vCreateStrands(void)
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
       i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
-      pStrand = new Strand(m_pStageSpec, this, m_pPipeline,
+      pStrand = new Strand(m_pStageSpec, this, 
                            tPtnNo, i_Node, i_Strand);
       vAdd(pStrand);
       break;
@@ -384,7 +394,7 @@ void Stage::vCreateStrands(void)
 //        pStrand->vAdd(pOp);
 //      }
 
-      Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
+      Op* pOp = new Op(pOpSpec,pStrand);
       pStrand->vAdd(pOp);
 
     }
