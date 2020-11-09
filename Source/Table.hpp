@@ -40,7 +40,7 @@ namespace MetaData
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
     
     i8      iPtnNoToTablePtn(tPN tPtnNo);
-    static tPN  tTablePtnToPtnNo(i8 i_TablePtn);
+    tPN     tTablePtnToPtnNo(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);

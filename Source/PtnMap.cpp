@@ -64,6 +64,18 @@ i8 PtnMap::i_PtnNoToStrand(tPN tPtnNo)
   return i_Strand;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert i_Strand to partition number (in grid)                             */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tStrandToPtnNo(i8 i_Strand)
+{
+  _static_
+  
+  tPN tPtnNo = (i_Strand * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  
+  return tPtnNo;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

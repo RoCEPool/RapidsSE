@@ -162,7 +162,7 @@ void Step::vGridTablePtnToPtnNo(void)
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+  tPN tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
   
   m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
   
