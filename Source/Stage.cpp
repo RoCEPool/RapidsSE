@@ -349,7 +349,7 @@ void Stage::vCreateStrands(void)
       
     case PO_SPECIFIC_PARTITION:
       RASSERT(! m_pStageSpec->bNodeTopo());
-      tPtnNo = m_pStageSpec->tPtnNo();
+      tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
       i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
       pStrand = new Strand(m_pStageSpec, this, m_pPipeline,

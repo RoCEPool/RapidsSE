@@ -720,7 +720,7 @@ bool Dynamo::bParseOnNode(void)
     i8 i_Node = sLocus.szStz()->iToI8();
     if ( i_Node > AM::pGrid()->nConnectedNodes() )
       return false;
-    m_pStageSpec->vNode(i_Node);
+    m_pStageSpec->vSpecificNode(i_Node);
     return true;
   }
   
@@ -745,11 +745,11 @@ bool Dynamo::bParseOnPartition(void)
     vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
 #endif
     m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
-    i8 i_Ptn = sLocus.szStz()->iToI8();
-    if (i_Ptn >= AM::pGrid()->nPartitionsInGrid())
+    tPN tPtnNo = sLocus.szStz()->iToI8();
+    if (tPtnNo >= AM::pGrid()->nPartitionsInGrid())
       return false;
     
-    m_pStageSpec->vPtnNo(i_Ptn);
+    m_pStageSpec->vSpecificPtnNo(tPtnNo);
     return true;
   }
   

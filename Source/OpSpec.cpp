@@ -4,7 +4,6 @@
 
 #include "PipelineSpecs.h"
 
-
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -33,15 +32,19 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
+  m_sPipelineNm   = pStageSpec->pPipelineSpec()->szPipelineNm();
+  m_sStageNm      = pStageSpec->szStageNm();
+  m_sOpNm         = szOpNm;
+  
+  m_i_StageSpec   = pStageSpec->i_StageSpec();
+  m_i_OpSpec      = i_OpSpec;
+  
+  m_pJob          = pStageSpec->pPipelineSpec()->pJob();
+  m_pPipelineSpec = pStageSpec->pPipelineSpec();
   m_pStageSpec    = pStageSpec;
-  m_pPipelineSpec = m_pStageSpec->pPipelineSpec();
-  
-  m_sOpNm        = szOpNm;
-  m_i_OpSpec     = i_OpSpec;
-  m_i_StageSpec  = m_pStageSpec->i_StageSpec();
-  
-  m_bAppendRight = false;
-  m_eXmitKind    = XK_NORMAL;
+
+  m_bAppendRight  = false;
+  m_eXmitKind     = XK_NORMAL;
 
   //m_oOpSpecTagSet
   //m_oTopologyTagSet

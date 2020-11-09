@@ -8,16 +8,19 @@ namespace PipelineSpecs
   class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
   {
   private:
-    PipelineSpec* m_pPipelineSpec;  // to which pipeline spec
+    s32  m_sPipelineNm; // pipeline name
+    s32  m_sStageNm;    // stage name
   
-    s32  m_sStageNm;       // stage name
-    i8   m_i_StageSpec;    // stage no
-  
-    ePO  m_eTopology;  // stage topoplogy
-    bool m_bNodeTopo;  // is node-level topology (or partition)?
-    i8   m_i_Node;     // stage node
-    tPN  m_tPtnNo;     // stage ptn
-    //i8  m_nThreads;  // threads
+    i8   m_i_StageSpec; // this stage spec no
+    
+    Job*          m_pJob;          // which job
+    PipelineSpec* m_pPipelineSpec; // which pipeline spec
+
+    ePO  m_eTopology;      // stage topoplogy
+    bool m_bNodeTopo;      // is node-level topology (or partition)?
+    i8   m_i_SpecificNode; // run on specific node
+    tPN  m_tSpecificPtnNo; // run for specific ptn
+    //i8  m_nThreads;      // threads
     
     // must be last
     Footer m_xFooter;
@@ -33,13 +36,13 @@ namespace PipelineSpecs
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
     Stz* szStageNm(void);
-    void vNode(i8 i_Node);
-    i8   iNode(void);
     bool bNodeTopo(void);
     PipelineSpec* pPipelineSpec(void);
-    tPN  tPtnNo(void);
-    void vPtnNo(tPN tPtnNo);
     OpSpec* pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 i_Op);
+    void vSpecificNode(i8 i_SpecificNode);
+    i8   iSpecificNode(void);
+    tPN  tSpecificPtnNo(void);
+    void vSpecificPtnNo(tPN tSpecificPtnNo);
     //void vThreads(i8 iThreads);
     //i8   nThreads(void);
     ePO  eTopology(void);

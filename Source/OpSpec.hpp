@@ -8,15 +8,19 @@ namespace PipelineSpecs
   class OpSpec : public Object
   {
   private:
-    StageSpec*    m_pStageSpec;     // to which stage spec
-    PipelineSpec* m_pPipelineSpec;  // of which pipeline spec
+    s32  m_sPipelineNm; // pipeline name
+    s32  m_sStageNm;    // stage name
+    s32  m_sOpNm;       // op name
   
-    s32    m_sOpNm;
-    i8     m_i_OpSpec;
-    i8     m_i_StageSpec;
+    i8   m_i_StageSpec; // of stage spec no
+    i8   m_i_OpSpec;    // this op spec no
 
-    bool   m_bAppendRight;
-    eXK    m_eXmitKind;
+    Job*          m_pJob;          // which job
+    PipelineSpec* m_pPipelineSpec; // which pipeline spec
+    StageSpec*    m_pStageSpec;    // which stage spec
+
+    bool   m_bAppendRight; // append to right queue of next operator
+    eXK    m_eXmitKind;    // {normal, hashed, robin, local robin} if xmit op
     
     TagSet m_oOpSpecTagSet;
     TagSet m_oTopologyTagSet;

@@ -4,7 +4,6 @@
 
 #include "PipelineSpecs.h"
 
-
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -32,15 +31,19 @@ StageSpec::StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sStageNm      = szStageNm;
-  m_i_StageSpec   = i_StageSpec;
-  m_pPipelineSpec = pPipelineSpec;
+  m_sPipelineNm    = pPipelineSpec->szPipelineNm();
+  m_sStageNm       = szStageNm;
   
-  m_eTopology     = PO_NONE;
-  m_bNodeTopo     = true;
-  m_i_Node        = C_UNKNOWN;
-  m_tPtnNo        = C_UNKNOWN;
-  //m_nThreads    = 1;
+  m_i_StageSpec    = i_StageSpec;
+  
+  m_pJob           = pPipelineSpec->pJob();
+  m_pPipelineSpec  = pPipelineSpec;
+
+  m_eTopology      = PO_NONE;
+  m_bNodeTopo      = true;
+  m_i_SpecificNode = C_UNKNOWN;
+  m_tSpecificPtnNo = C_UNKNOWN;
+  //m_nThreads     = 1;
   
    _checkInitialised_(CN_STAGESPEC);
   
@@ -108,26 +111,6 @@ Stz* StageSpec::szStageNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get node                                                                   */
-/*----------------------------------------------------------------------------*/
-i8 StageSpec::iNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_i_Node;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set node                                                                   */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vNode(i8 i_Node)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  m_i_Node = i_Node;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get bNodeTopo ?                                                            */
 /*----------------------------------------------------------------------------*/
 bool StageSpec::bNodeTopo(void)
@@ -145,26 +128,6 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   return m_pPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition                                                              */
-/*----------------------------------------------------------------------------*/
-tPN StageSpec::tPtnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition                                                              */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vPtnNo(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  m_tPtnNo = tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +150,46 @@ OpSpec* StageSpec::pPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 i_Op)
   }
   
   return pOpSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get specific node                                                          */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iSpecificNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_i_SpecificNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set specific node                                                          */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vSpecificNode(i8 i_SpecificNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_i_SpecificNode = i_SpecificNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get specific partition                                                     */
+/*----------------------------------------------------------------------------*/
+tPN StageSpec::tSpecificPtnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_tSpecificPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set specific partition                                                     */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vSpecificPtnNo(tPN tSpecificPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_tSpecificPtnNo = tSpecificPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,9 +288,9 @@ void StageSpec::vPrint(void)
                                       break;
     case PO_ORIGIN:                   vTrace("on origin"_Stz);
                                       break;
-    case PO_SPECIFIC_NODE:            vTrace("on node %s"_Stz,m_i_Node);
+    case PO_SPECIFIC_NODE:            vTrace("on node %s"_Stz,m_i_SpecificNode);
                                       break;
-    case PO_SPECIFIC_PARTITION:       vTrace("on partition %s"_Stz,m_tPtnNo);
+    case PO_SPECIFIC_PARTITION:       vTrace("on partition %s"_Stz,m_tSpecificPtnNo);
                                       break;
     default:
       ;
