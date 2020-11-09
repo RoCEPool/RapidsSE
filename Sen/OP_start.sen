@@ -33,7 +33,7 @@
   PipeIn[].delete
 
   // now pipeout an exit marker
-  Operand[].newExitMarker
+  Operand[].newCancelMarker
   Operand[].pipeOut
 
   true
