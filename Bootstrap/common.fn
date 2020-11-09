@@ -95,7 +95,7 @@ function errorExit() {
 ##  $@ : The arguments to print
 
 function debugPrint() {
-  if [ "${DEBUG}" -eq 1 ]; then
+  if [ -n "${DEBUG}" ] && [ "${DEBUG}" -eq 1 ]; then
     echo -e "$*"
   fi
 }
