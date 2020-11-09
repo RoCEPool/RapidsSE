@@ -320,6 +320,21 @@
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* handler for unexpected operand ...                                         */
+/*----------------------------------------------------------------------------*/
+: INVALID_OPERAND_handler \handler
+
+  PipeIn[].delete
+
+  // operand incorrectly received
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
+  true
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
