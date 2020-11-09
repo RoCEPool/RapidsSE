@@ -25,6 +25,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELLEDMARKER ...                                         */
+/*----------------------------------------------------------------------------*/
+: ZK_CANCELLEDMARKER_handler \handler
+
+  //"ZK_CANCELLEDMARKER_handler" .verbose
+  PipeIn[].pipeOut
+  Op.ackPipelineJob
+  false
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_ERROREDMARKER ...                                           */
 /*----------------------------------------------------------------------------*/
 : start_ErroredMarker \handler
