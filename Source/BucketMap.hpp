@@ -10,7 +10,7 @@ namespace Partitioning
   private:
     Lock m_okLock;
   
-    i8   m_iaInPartition[C_MAX_BUCKETS]; // which partition is a bucket in
+    tPN m_taToWhichPtn[C_MAX_BUCKETS]; // which partition is a bucket in
   
     // must be last
     Footer m_xFooter;
@@ -22,7 +22,7 @@ namespace Partitioning
     BucketMap(i8 nPartitions);
    ~BucketMap(void) noexcept(false);
   
-    i8 i_WhichPartition(i8 i_Bkt);
+    tPN tWhichPtnNo(i8 i_Bkt);
   
   private:
     Footer* aFooter(void);

@@ -51,19 +51,15 @@ BucketMap::BucketMap(i8 nPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  if (nPartitions) {
-    // assign buckets to partitions in a round-robin fashion
-    i8 i_Ptn = 0;
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      m_iaInPartition[i_Bkt] = i_Ptn;
-      i_Ptn = (++i_Ptn) % nPartitions;
-    }
+  RASSERT(nPartitions);
+  
+  // assign buckets to partitions in a round-robin fashion
+  tPN tPtnNo = 0;
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    m_taToWhichPtn[i_Bkt] = tPtnNo;
+    tPtnNo = (++tPtnNo) % nPartitions;
   }
-  // ray : 28 May 2020 : added this to get define table running
-  else {
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
-      m_iaInPartition[i_Bkt] = 0;
-  }
+ 
   _checkInitialised_(CN_BUCKETMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
@@ -85,13 +81,13 @@ BucketMap::~BucketMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get which partition a bucket is currently mapped to                        */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap::i_WhichPartition(i8 i_Bkt)
+tPN BucketMap::tWhichPtnNo(i8 i_Bkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  i8 i_Ptn = m_iaInPartition[i_Bkt];
+  tPN tPtnNo = m_taToWhichPtn[i_Bkt];
   
-  return i_Ptn;
+  return tPtnNo;
 }
 
 
