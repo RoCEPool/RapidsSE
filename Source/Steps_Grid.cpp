@@ -162,7 +162,7 @@ void Step::vGridTablePtnToPtnNo(void)
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  tPN tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
+  tPN tPtnNo = PtnMap::tStrandToLglPtnNo(i_TablePtn);
   
   m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
   
@@ -280,7 +280,7 @@ void Step::vGridPtnNoToTablePtn(void)
   
   tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
-  i8 i_TablePtn = PtnMap::i_PtnNoToStrand(tPtnNo);
+  i8 i_TablePtn = PtnMap::i_LglPtnNoToStrand(tPtnNo);
 
   m_pDataStack->vPushInt(i_TablePtn);                     //! DISCUSS WITH ALKA
   

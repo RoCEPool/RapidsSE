@@ -27,7 +27,7 @@ BucketMap::BucketMap(i8 nPartitions)
   // assign buckets to logical partitions in a round-robin fashion
   tPN tPtnNo = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    m_taLglPtn[i_Bkt] = tPtnNo;
+    m_taInLglPtn[i_Bkt] = tPtnNo;
     tPtnNo = (++tPtnNo) % nPartitions;
   }
  
@@ -56,7 +56,7 @@ tPN BucketMap::tWhichLglPtnNo(i8 i_Bkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  tPN tPtnNo = m_taLglPtn[i_Bkt];
+  tPN tPtnNo = m_taInLglPtn[i_Bkt];
   
   return tPtnNo;
 }

@@ -372,7 +372,7 @@ i8 Session::i_TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return PtnMap::i_PtnNoToStrand(m_tPtnNo);
+  return PtnMap::i_LglPtnNoToStrand(m_tPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/

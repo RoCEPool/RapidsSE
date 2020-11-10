@@ -1607,7 +1607,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     case XK_ROBIN : {
       m_iRobin++;
       i_TablePtn = m_iRobin % AM::pGrid()->nTablePtns();
-      tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
+      tPtnNo = PtnMap::tStrandToLglPtnNo(i_TablePtn);
       
       // xmitNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
@@ -1784,7 +1784,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     case XK_LOCALROBIN : {
       m_iLocalRobin++;
       i_TablePtn = m_iLocalRobin % AM::pGrid()->nTablePtns();
-      tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
+      tPtnNo = PtnMap::tStrandToLglPtnNo(i_TablePtn);
       
       // xmitNode is this node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);

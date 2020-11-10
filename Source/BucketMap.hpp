@@ -10,7 +10,7 @@ namespace Partitioning
   private:
     Lock m_okLock;
   
-    tPN m_taLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
+    tPN m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
   
     // must be last
     Footer m_xFooter;

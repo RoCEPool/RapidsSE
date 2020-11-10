@@ -23,13 +23,13 @@ PtnMap::PtnMap(i8 nPartitions)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   for (i8 i = 0; i < C_MAX_PTNS; i++)
-    m_iaToWhichNode[i] = C_UNKNOWN;
+    m_iaInNode[i] = C_UNKNOWN;
 
   _checkInitialised_(CN_PTNMAP);
   
   RASSERT(nPartitions);
   for (tPN tPtnNo = 0; tPtnNo < nPartitions; tPtnNo++)
-    m_iaToWhichNode[tPtnNo] = i_PtnNoToInitialNode(tPtnNo);
+    m_iaInNode[tPtnNo] = i_LglPtnNoToInitialNode(tPtnNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 }
@@ -44,9 +44,13 @@ PtnMap::~PtnMap(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert grid-wide partition number to strand on its node                   */
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_PtnNoToStrand(tPN tPtnNo)
+
+/*----------------------------------------------------------------------------*/
+/* convert logical partition number (in grid) to strand on its node           */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::i_LglPtnNoToStrand(tPN tPtnNo)
 {
   _static_
   
@@ -56,9 +60,9 @@ i8 PtnMap::i_PtnNoToStrand(tPN tPtnNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert i_Strand to partition number (in grid)                             */
+/* convert i_Strand to logical partition number (in grid)                     */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tStrandToPtnNo(i8 i_Strand)
+tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
 {
   _static_
   
@@ -79,9 +83,9 @@ i8 PtnMap::i_WhichNode(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Node = m_iaToWhichNode[tPtnNo];
+  i8 i_Node = m_iaInNode[tPtnNo];
     
-  RASSERT(i_Node == i_PtnNoToInitialNode(tPtnNo));
+  RASSERT(i_Node == i_LglPtnNoToInitialNode(tPtnNo));
   
   return i_Node;
 }
@@ -93,7 +97,7 @@ i8 PtnMap::i_WhichNode(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* convert grid partition number to initial node it is to be mapped to        */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_PtnNoToInitialNode(tPN tPtnNo)
+i8 PtnMap::i_LglPtnNoToInitialNode(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
