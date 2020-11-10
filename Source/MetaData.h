@@ -14,6 +14,9 @@ namespace MetaData
 
 //------------------------------------------------------------------------------
 
+#include "BucketMap.hpp"
+#include "PtnMap.hpp"
+
 #include "StreamDef.hpp"
 
 #include "IndexDef.hpp"

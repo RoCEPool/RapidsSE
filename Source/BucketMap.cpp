@@ -2,13 +2,13 @@
 /* BucketMap.cpp -- Bucket (to logical partition) Map                         */
 /*============================================================================*/
 
-#include "Partitioning.h"
+#include "MetaData.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Partitioning,BucketMap,CN_BUCKETMAP)
+__pCastFunction(MetaData,BucketMap,CN_BUCKETMAP)
 __aNewFunction(BucketMap,CN_BUCKETMAP)
 __vDeleteFunction(BucketMap,CN_BUCKETMAP)
 __aFooterFunction(BucketMap);

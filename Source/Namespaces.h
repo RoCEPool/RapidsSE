@@ -82,12 +82,13 @@ namespace Logging           { class Log;             class LogEntry;          }
 namespace LogicalPlans      {                                                 }
 namespace MiddleEnd         {                                                 }
 namespace MetaData          { class Table;           class IdxColVec;
-                              class Index;                                    }
+                              class Index;
+                              class BucketMap;       class PtnMap;            }
 namespace Metrics           {                                                 }
 namespace Oblique           { class AM;                                       }
 namespace Operands          { class Operand;                                  }
 namespace Parser            {                                                 }
-namespace Partitioning      { class BucketMap;       class PtnMap;
+namespace Partitioning      {
                               class PtnStream;       class TablePtn;          }
 namespace Persistence       { class CarryOver;                                }
 namespace Pipelines         { class Xmits;           class Op;

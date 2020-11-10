@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Partitioning
+namespace MetaData
 {
   class PtnMap : public Object
   {

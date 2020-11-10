@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Partitioning,PtnMap,CN_PTNMAP)
+__pCastFunction(MetaData,PtnMap,CN_PTNMAP)
 __aNewFunction(PtnMap,CN_PTNMAP)
 __vDeleteFunction(PtnMap,CN_PTNMAP)
 __aFooterFunction(PtnMap)
