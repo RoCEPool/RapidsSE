@@ -456,7 +456,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
     case   ZK_CRWBUFFER:
     case   ZK_CSVBUFFER:
-    case   ZK_DATAPULSE:
     case   ZK_ENTBUFFER:
     case   ZK_RSBBUFFER:
     case   ZK_SRTBUFFER:
@@ -478,7 +477,16 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
+ */
+    case   ZK_DATAPULSE:
+      // should have received a ZK_STARTMARKER
+      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
+        vTrace("%s arrived without a prior ZK_STARTMARKER\n"_Stz, aZK[i_OperandKind]);
+        return false;
+      }
+     break;
       
+      /*
     case   ZK_EOSMARKER:
       // should not have received a ZK_EOSMARKER
       if ( m_iOperandCount[ZK_EOSMARKER]) {
@@ -491,7 +499,13 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         vTrace("%s arrived without a prior ZK_STARTMARKER\n"_Stz, aZK[i_OperandKind]);
         return false;
       }
-      
+ 
+      // should have received a ZK_STARTEDMARKER
+      if ( ! m_iOperandCount[ZK_STARTEDMARKER]) {
+        vTrace("%s arrived without a prior ZK_STARTEDMARKER\n"_Stz, aZK[i_OperandKind]);
+        return false;
+      }
+ 
       // should have received a ZK_STREAMDEF
       if ( ! m_iOperandCount[ZK_STREAMDEF]) {
         vTrace("%s arrived without a prior ZK_STREAMDEF\n"_Stz, aZK[i_OperandKind]);
@@ -560,22 +574,15 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
+ */
     case   ZK_PULSEDMARKER:
+      // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s arrived without a prior ZK_STARTMARKER\n"_Stz, aZK[i_OperandKind]);
         return false;
       }
-      if ( ! m_iOperandCount[ZK_STREAMDEF]) {
-        vTrace("%s arrived without a prior ZK_STREAMDEF\n"_Stz, aZK[i_OperandKind]);
-        return false;
-      }
-      if ( ! m_iOperandCount[ZK_DATAPULSE]) {
-        vTrace("%s arrived without a prior ZK_DATAPULSE\n"_Stz, aZK[i_OperandKind]);
-        return false;
-      }
       break;
-    */
+  
     case   ZK_STARTMARKER:
       // should not have received a ZK_STARTMARKER already
       if (m_iOperandCount[i_OperandKind]) {
