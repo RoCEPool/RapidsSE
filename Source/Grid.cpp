@@ -162,7 +162,7 @@ void Grid::vDumpPartitioning(void)
   if (nPartitionsInGrid()) {
     for (tPN tPtnNo = 0; tPtnNo < nPartitionsInGrid(); tPtnNo++)
       vTrace("Partition: %lld; Node: %lld\n"_Stz, tPtnNo,
-             AM::pPtnMap()->i_PtnNoToNode(tPtnNo));
+             AM::pPtnMap()->i_WhichNode(tPtnNo));
     vTrace("\n"_Stz);
   }
 }
@@ -244,7 +244,7 @@ i8 Grid::nPartitionsInGrid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  i8 nPartitions = m_nTablePtns * m_nConnectedNodes;
+  i8 nPartitions = m_nTablePtns * m_nDefinedNodes;
 
   return nPartitions;
 }

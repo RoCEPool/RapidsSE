@@ -155,7 +155,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      i8 iNode_exe = AM::pPtnMap()->i_PtnNoToNode(pStrand->tPtnNo());
+      i8 iNode_exe = AM::pPtnMap()->i_WhichNode(pStrand->tPtnNo());
       if (iNode_exe == iNode) {
         nOps += pStrand->nItems();
       }
@@ -338,7 +338,7 @@ void Stage::vCreateStrands(void)
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
         i_Strand = PtnMap::i_PtnNoToStrand(tPtnNo);
-        i_Node = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+        i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
         vAdd(pStrand);
       }
@@ -347,7 +347,7 @@ void Stage::vCreateStrands(void)
     case PO_ALL_PARTITIONS_ON_ORIGIN:
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
-        i_Node = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+        i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if (i_Node == m_pPipeline->i_Origin()) {
           i_Strand = PtnMap::i_PtnNoToStrand(tPtnNo);
           pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
@@ -359,7 +359,7 @@ void Stage::vCreateStrands(void)
     case PO_SPECIFIC_PARTITION:
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
-      i_Node = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+      i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
       i_Strand = PtnMap::i_PtnNoToStrand(tPtnNo);
       pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
       vAdd(pStrand);

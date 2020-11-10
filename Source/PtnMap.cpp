@@ -25,10 +25,10 @@ PtnMap::PtnMap(i8 nPartitions)
   for (i8 i = 0; i < C_MAX_PTNS; i++)
     m_iaInNode[i] = C_UNKNOWN;
 
-
   _checkInitialised_(CN_PTNMAP);
   
-  for (tPN tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++)
+  RASSERT(nPartitions);
+  for (tPN tPtnNo = 0; tPtnNo < nPartitions; tPtnNo++)
     m_iaInNode[tPtnNo] = i_PtnNoToNode(tPtnNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
@@ -73,6 +73,24 @@ tPN PtnMap::tStrandToPtnNo(i8 i_Strand)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get which node a grid partition is mapped to                               */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::i_WhichNode(tPN tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  
+  i8 i_Node = m_iaInNode[tPtnNo];
+    
+  RASSERT(i_Node == i_PtnNoToNode(tPtnNo));
+  
+  return i_Node;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to which node its on                    */
 /*----------------------------------------------------------------------------*/
 i8 PtnMap::i_PtnNoToNode(tPN tPtnNo)
@@ -80,18 +98,6 @@ i8 PtnMap::i_PtnNoToNode(tPN tPtnNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
   i8 i_Node = tPtnNo % AM::nDefinedNodes();
-  
-  return i_Node;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get which partition a bucket is currently mapped to                        */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichNode(i8 i_Ptn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  
-  i8 i_Node = m_iaInNode[i_Ptn];
   
   return i_Node;
 }

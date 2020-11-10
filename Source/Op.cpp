@@ -44,7 +44,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   }
   else {
     m_tPtnNo = pStrand->tPtnNo();
-    m_i_Node = AM::pPtnMap()->i_PtnNoToNode(m_tPtnNo);
+    m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
     RASSERT(pStrand->i_Node() == m_i_Node);
   }
   
@@ -558,7 +558,7 @@ void Op::vPtnNo(tPN tPtnNo)
   m_tPtnNo = tPtnNo;
 
   // set the node tis partition belongs to 
-  m_i_Node = AM::pPtnMap()->i_PtnNoToNode(m_tPtnNo);
+  m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1027,7 +1027,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 i_Node = AM::pPtnMap()->i_PtnNoToNode(m_tPtnNo);
+      i8 i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
       vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Node);
       break;
     }
@@ -1327,7 +1327,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
       
       // xmitNode is the partition node
-      m_iXmitNode = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       ASSERT(m_iXmitNode == m_pPipeline->i_Origin());
    
       if ( m_iXmitNode == m_pPipeline->i_Origin()) {
@@ -1382,7 +1382,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
         
         // xmitNode is the partition node
     
-        m_iXmitNode = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+        m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if ( m_iXmitNode == m_pPipeline->i_Origin()) {
  #ifdef WITH_NO_XMIT_OPT
           if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
@@ -1460,7 +1460,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       tPtnNo = pDataBuffer->tPtnNo();
       
       // xmitNode is the partition node
-      m_iXmitNode = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
 #ifdef WITH_NO_XMIT_OPT
       if ( m_iXmitNode == i_ThisNode) {
@@ -1504,7 +1504,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
       
       // xmitNode is this node
-      m_iXmitNode = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       RASSERT(m_iXmitNode == AM::pGrid()->iThisNode());
       
       ASSERT( ! bSet );
@@ -1520,7 +1520,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // xmitNode is the partition node
-        m_iXmitNode = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+        m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         ASSERT( ! bSet );
 #ifdef WITH_NO_XMIT_OPT
         if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
@@ -1568,7 +1568,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       tPtnNo = m_iRobin % AM::pGrid()->nPartitionsInGrid();
       
       // xmitNode is the partition node
-      m_iXmitNode = AM::pPtnMap()->i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
       ASSERT( ! bSet );
       vSend(pOperand, bSet, m_iXmitNode, tPtnNo);
@@ -1652,7 +1652,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
       ASSERT(0);
   }
   
-  m_iXmitNode = AM::pPtnMap()->i_PtnNoToNode(tSendPtn);
+  m_iXmitNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
   vSend(pOperand, bSet, m_iXmitNode, tSendPtn);
   
   // delete the operand
