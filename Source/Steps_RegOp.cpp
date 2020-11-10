@@ -14,6 +14,8 @@ void Step::vAddSteps_RegOp(void)
   vAddStep("op[].handler!"_Stz,    &Step::vRegOpHandlerStore);
   vAddStep("op[].handlerAll!"_Stz, &Step::vRegOpHandlerAllStore);
   vAddStep("op[].init"_Stz,        &Step::vRegOpInit);
+  vAddStep("op[].isOperandValid"_Stz,  &Step::vRegOpIsOperandValid);
+  vAddStep("op[].incOperandCount"_Stz, &Step::vRegOpIncOperandCount);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,6 +91,39 @@ void Step::vRegOpInit(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* op[].isOperandValid -- check if operand is valid                           */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpIsOperandValid(void)
+{
+  ENTRY();
+  
+  bool bValid = true;
+  
+  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+  
+  // skip consumeOp operand validation
+  if ( ! m_pLogicUnit->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
+    bValid = m_pLogicUnit->m_xpOp->bIsOperandValid(i_OperandKind);
+  
+  m_pDataStack->vPushInt(bValid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op[].IncOperandCount -- inc operand count                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpIncOperandCount(void)
+{
+  ENTRY();
+  
+  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+  
+  m_pLogicUnit->m_xpOp->vIncOperandCount(i_OperandKind);
+  
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

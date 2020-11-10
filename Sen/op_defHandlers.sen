@@ -37,6 +37,8 @@
   EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
   Operand[].newErrorMarker
   Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/

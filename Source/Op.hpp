@@ -21,7 +21,7 @@ namespace Pipelines
   
     i8   m_tPtnNo; // this op processes m_tPtnNo in grid
     i8   m_i_Node; // this op processes m_i_Node in grid
-
+    
     // -- -- -- -- -- --
   
     Job*           m_pPipelineJob;   // pipeline job this operator belongs to
@@ -49,6 +49,7 @@ namespace Pipelines
     Op*            m_pDownstreamOp;  // downstream op
   
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
+    i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived
     
     // must be last
     Footer m_xFooter;
@@ -81,6 +82,7 @@ namespace Pipelines
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
+    bool bIsOperandValid(i8 i_OperandKind);
     void vJobPipeline(Job* pJob);
     i8   iNextOp(void);
     Op*  pNextOp(void);
@@ -91,6 +93,7 @@ namespace Pipelines
     void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
+    void vIncOperandCount(i8 i_OperandKind);
     Job* pOpJob(void);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);

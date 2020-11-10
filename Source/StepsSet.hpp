@@ -1189,6 +1189,8 @@ public:
   void vRegOpHandlerStore(void);
   void vRegOpHandlerAllStore(void);
   void vRegOpInit(void);
+  void vRegOpIsOperandValid(void);
+  void vRegOpIncOperandCount(void);
 
   // operand
   void vRegOperandAddColumnDef(void);

@@ -124,7 +124,6 @@ void Step::vRegXmitsHandlePulse(void)
   Xmits* pXmits = _pXmits(*m_pLogicUnit->m_xpXmits);
   
   pXmits->vIncPulse();
-  
   m_pDataStack->vPushInt(pXmits->bPulseDone());
   
   EXIT();
