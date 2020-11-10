@@ -156,8 +156,8 @@ bool Xmits::bPulseDone(void)
     vTrace("Warning: ConsumeOp ZK_DATAPULSE received %lld; expected %lld\n"_Stz,
            m_iPulseMarkers, m_iXmits);
   
-  if (m_iPulseMarkers == m_iXmits) {
-    //m_iPulseMarkers = 0;
+  //if (m_iPulseMarkers == m_iXmits) {
+  if (m_iPulseMarkers == 0) {
     return true;
   }
   else
@@ -176,7 +176,6 @@ bool Xmits::bPulsedDone(void)
            m_iPulsedMarkers, m_iXmits);
   
   if (m_iPulsedMarkers == m_iXmits) {
-    //m_iPulsedMarkers = 0;
     return true;
   }
   else
