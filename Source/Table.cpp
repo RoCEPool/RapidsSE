@@ -259,6 +259,15 @@ void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
   nBuffersTotal += nBuffers;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the bucket map for this table                                          */
+/*----------------------------------------------------------------------------*/
+BucketMap* Table::pBucketMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pBucketMap;
+}
 
 /*----------------------------------------------------------------------------*/
 /* create ptn stream def                                                      */

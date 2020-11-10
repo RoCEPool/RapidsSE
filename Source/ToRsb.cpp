@@ -16,7 +16,8 @@ __aFooterFunction(ToRsb)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
+ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
+             Format* pFmt, bool bPtnHash)
 : Object(CN_TORSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
@@ -25,6 +26,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash)
   m_nPtns        = AM::nPartitionsInGrid();
 
   m_pStreamDef = pStreamDef;
+  m_pBucketMap = pBucketMap;
   m_pFmt       = pFmt;
   m_bPtnHash   = bPtnHash;
   

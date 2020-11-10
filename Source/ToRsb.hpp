@@ -16,6 +16,7 @@ namespace Load
     i8         m_nPtns;
 
     StreamDef* m_pStreamDef;
+    BucketMap* m_pBucketMap;
     Format*    m_pFmt;
     bool       m_bPtnHash;
 
@@ -37,7 +38,8 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToRsb(StreamDef* pStreamDef, Format* pFmt, bool bPtnHash);
+  ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
+        Format* pFmt, bool bPtnHash);
    ~ToRsb(void) noexcept(false);
   
     bool bConvertCrw(CrwBuffer* pCrwBuffer);

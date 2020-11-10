@@ -59,9 +59,10 @@ void Step::vToRsbRegCreate(void)
   ENTRY();
   
   StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
-  
+  BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
+
   bool bPtnHash = true;
-  ToRsb* pToRsb = new ToRsb(pStreamDef,AM::pFmt(),bPtnHash);
+  ToRsb* pToRsb = new ToRsb(pStreamDef,pBucketMap,AM::pFmt(),bPtnHash);
       
   m_pLogicUnit->m_xpToRsb = pToRsb;
   
