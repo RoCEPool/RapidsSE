@@ -827,7 +827,7 @@ L_Integer:
     
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnLib::vRunning(&iHash,iInteger);
+    PtnMap::vRunning(&iHash,iInteger);
   
   goto L_PostField;                                            // end of integer
 
@@ -1203,7 +1203,7 @@ L_EndOfRecord:
 
   // set partition hash
   if (m_bPtnHash) {
-    i_Ptn = PtnLib::tPtnNo(iHash,m_nPtns);
+    i_Ptn = PtnMap::tPtnNo(iHash,m_nPtns);
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     m_pRowSlab->vDeposit(i_Ptn);
     iHash = 0;

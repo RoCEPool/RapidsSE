@@ -25,6 +25,9 @@ namespace MetaData
     static i8  i_LglPtnNoToStrand(tPN tPtnNo);
     static tPN tStrandToLglPtnNo(i8 i_Strand);
 
+    static tPN  tPtnNo(i8 iRunningHash, i8 nPartitionsInGrid);
+    static void vRunning(i8* aiRunningHash, i8 iVal);
+
     i8 i_WhichNode(tPN tPtnNo);
   
   private:

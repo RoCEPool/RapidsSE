@@ -128,7 +128,7 @@ void vLib_PTN_CALC(void* pLU)
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
   aRluCommon->m_i_Ptn =
-    PtnLib::tPtnNo(aRluCommon->m_iHash,aRluCommon->m_nPtns);
+    PtnMap::tPtnNo(aRluCommon->m_iHash,aRluCommon->m_nPtns);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ void vLib_PTN_RUNNING(void* pLU, i8 iTopA)
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
-  PtnLib::vRunning(&aRluCommon->m_iHash,iTopA);
+  PtnMap::vRunning(&aRluCommon->m_iHash,iTopA);
 }
 
 /*----------------------------------------------------------------------------*/

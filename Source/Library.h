@@ -23,7 +23,6 @@ namespace Library
 
 #include "Compress.hpp"
 #include "IvlLib.hpp"
-#include "PtnLib.hpp"
 #include "RndLib.hpp"
 #include "TspLib.hpp"
 
