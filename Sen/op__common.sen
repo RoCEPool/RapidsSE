@@ -370,7 +370,12 @@
       debug::flag@ if "(Revised) Calling handler for OoO operand" . then
       PipeIn[].kind to iOperandKind
 
-      iOperandKind dup op[].handler@ op__handle
+      iOperandKind op[].isOperandValid not if
+        find: INVALID_OPERAND_handler op__handle
+      else
+        iOperandKind op[].IncOperandCount
+        iOperandKind dup op[].handler@ op__handle
+      then
 
       PipeIn[].isNull assert
 
@@ -384,8 +389,12 @@
         false LogicUnit[].callAgain!
         true LogicUnit[].calledAgain!
 
-        iOperandKind LogicUnit[].handler@ op__handle
-
+        iOperandKind op[].isOperandValid not if
+          find: INVALID_OPERAND_handler op__handle
+        else
+          iOperandKind op[].IncOperandCount
+          iOperandKind LogicUnit[].handler@ op__handle
+        then
       else
  
         iOperandYield 1 + to iOperandYield
@@ -404,9 +413,16 @@
         debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
         PipeIn[].kind to iOperandKind
 
+        iOperandKind op[].isOperandValid not if
+          iOperandKind
+            find: INVALID_OPERAND_handler op__handle
+        else
+          iOperandKind op[].IncOperandCount
+
           iOperandKind dup op[].handler@
               dup LogicUnit[].handler!
             op__handle
+        then
 
         // assert Operand is null
         PipeIn[].isNull assert
