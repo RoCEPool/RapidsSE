@@ -1,46 +1,17 @@
 /*============================================================================*/
-/* BucketMap.cpp -- Bucket (to partition) Map                                 */
+/* BucketMap.cpp -- Bucket (to logical partition) Map                         */
 /*============================================================================*/
 
 #include "Partitioning.h"
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-BucketMap* Partitioning::_pBucketMap(void* aAddr)
-{
-  BucketMap* pBucketMap = reinterpret_cast<BucketMap*>(aAddr);
-  
-  RASSERT_TYPE(pBucketMap,CN_BUCKETMAP);
-  
-  return pBucketMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* BucketMap::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_BUCKETMAP);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void BucketMap::operator delete(void* pBufferAddress)
-{
-  Object* pObject = reinterpret_cast<Object*>(pBufferAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(Partitioning,BucketMap,CN_BUCKETMAP)
+__aNewFunction(BucketMap,CN_BUCKETMAP)
+__vDeleteFunction(BucketMap,CN_BUCKETMAP)
+__aFooterFunction(BucketMap);
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -53,10 +24,10 @@ BucketMap::BucketMap(i8 nPartitions)
   
   RASSERT(nPartitions);
   
-  // assign buckets to partitions in a round-robin fashion
+  // assign buckets to logical partitions in a round-robin fashion
   tPN tPtnNo = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    m_taToWhichPtn[i_Bkt] = tPtnNo;
+    m_taLglPtn[i_Bkt] = tPtnNo;
     tPtnNo = (++tPtnNo) % nPartitions;
   }
  
@@ -79,23 +50,16 @@ BucketMap::~BucketMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get which partition a bucket is currently mapped to                        */
+/* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-tPN BucketMap::tWhichPtnNo(i8 i_Bkt)
+tPN BucketMap::tWhichLglPtnNo(i8 i_Bkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  tPN tPtnNo = m_taToWhichPtn[i_Bkt];
+  tPN tPtnNo = m_taLglPtn[i_Bkt];
   
   return tPtnNo;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(BucketMap);
-
 
 /*============================================================================*/
 /* end                                                                        */

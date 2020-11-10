@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* BucketMap.hpp -- Bucket (to partition) Map                                 */
+/* BucketMap.hpp -- Bucket (to logical partition) Map                         */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@ namespace Partitioning
   private:
     Lock m_okLock;
   
-    tPN m_taToWhichPtn[C_MAX_BUCKETS]; // which partition is a bucket in
+    tPN m_taLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
   
     // must be last
     Footer m_xFooter;
@@ -22,7 +22,7 @@ namespace Partitioning
     BucketMap(i8 nPartitions);
    ~BucketMap(void) noexcept(false);
   
-    tPN tWhichPtnNo(i8 i_Bkt);
+    tPN tWhichLglPtnNo(i8 i_Bkt);
   
   private:
     Footer* aFooter(void);
