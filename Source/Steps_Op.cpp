@@ -197,7 +197,7 @@ void Step::vOpTopologyStore(void)
 {
   ENTRY();
   
-  m_pTask->m_pJob->m_pOp->vTopologyX((ePX)m_pDataStack->iPopInt(__func__));
+  m_pTask->m_pJob->m_pOp->vCrossTopo((ePX)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

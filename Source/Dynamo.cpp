@@ -808,19 +808,19 @@ bool Dynamo::bPhase2_staging(void)
       StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
       
       if (pStageSpecFound) {
-        ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpecFound);
+        ePX eCrossTopo = eTopoloyX(pStageSpec, pStageSpecFound);
         
 #ifdef WITH_TRACE_DYNAMO
         vTrace("  op %s is a stage %lld %s\n"_Stz,
                pOpSpec->szOpNm(),
                i_FoundStage,
-               aPX[eTopologyX]);
+               aPX[eCrossTopo]);
 #endif
         
-        if (eTopologyX == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
+        if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
           // add parameter to the prev sink op
           OpSpec* pPrevOpSpec = pStageSpec->pGet(i_Op-1);
-          vReplaceTopologyParams(pPrevOpSpec, eTopologyX, i_FoundStage, 0);
+          vReplaceTopologyParams(pPrevOpSpec, eCrossTopo, i_FoundStage, 0);
 
           // remove the last (stage) OpSpec from the OpSpecVec
           RASSERT(i_Op == pStageSpec->nItems()-1);
@@ -829,15 +829,15 @@ bool Dynamo::bPhase2_staging(void)
         }
         else {
           pOpSpec->vAddEnamePair(C_TAG_XMITKIND,(i8)pOpSpec->eXmitKind(),TN_INTEGER);
-          vReplaceWithXmit(pOpSpec, eTopologyX, i_FoundStage);
-          OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eTopologyX, i_FoundStage, i_Op+1);
-          vAddConsumeParams(pConsumeOpSpec, eTopologyX);
+          vReplaceWithXmit(pOpSpec, eCrossTopo, i_FoundStage);
+          OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op+1);
+          vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
 
         }
       }
       else {
-        ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpec);
-        vAddTopologyParams(pOpSpec, eTopologyX, i_Stage, i_Op+1);
+        ePX eCrossTopo = eTopoloyX(pStageSpec, pStageSpec);
+        vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
       }
     }
   }
@@ -848,12 +848,12 @@ bool Dynamo::bPhase2_staging(void)
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
+void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddTopologyEnamePair(C_TAG_TOPOLOGY,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vAddTopologyEnamePair(C_TAG_TOPOLOGY,(i8)eCrossTopo,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
   pOpSpec->vAddTopologyEnamePair(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
@@ -866,14 +866,14 @@ void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 
 /*----------------------------------------------------------------------------*/
 /* add the Xmits parameter                                             */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
+void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   i8 iXmits = C_UNKNOWN;
   
   // add argument to the consumeOp depending on the topology
-  switch (eTopologyX) {
+  switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
       iXmits = AM::pGrid()->nConnectedNodes();
       break;
@@ -915,12 +915,12 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eTopologyX)
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vReplaceTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op)
+void Dynamo::vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vReplaceTopologyEnamePair(C_TAG_TOPOLOGY,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vReplaceTopologyEnamePair(C_TAG_TOPOLOGY,(i8)eCrossTopo,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
   pOpSpec->vReplaceTopologyEnamePair(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
@@ -933,13 +933,13 @@ void Dynamo::vReplaceTopologyParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage,
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
+void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   pOpSpec->vOpNm("xmit"_Stz);
   
-  vAddTopologyParams(pOpSpec, eTopologyX, i_Stage, 0);
+  vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, 0);
 }
 
 

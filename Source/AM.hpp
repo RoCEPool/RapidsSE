@@ -257,6 +257,7 @@ namespace Oblique
     
     static Stz* szJobName(Job* pJob);
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
     static i8   nOperandsArg(void);
     static void vOperandsArg(i8 nOperands);
@@ -272,6 +273,7 @@ namespace Oblique
     static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);
     static void vPrintGlobals(void);
     static void vPromptCall(void);
+    static PtnMap* pPtnMap(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iRdTimePoint(void);

@@ -162,7 +162,7 @@ void Step::vGridTablePtnToPtnNo(void)
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+  tPN tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
   
   m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
   
@@ -264,7 +264,7 @@ void Step::vGridToNode(void)
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
   
-  i8 i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
+  i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
   
   m_pDataStack->vPushInt(i_Node);
   
@@ -280,8 +280,8 @@ void Step::vGridPtnNoToTablePtn(void)
   
   tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
-  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
-  
+  i8 i_TablePtn = PtnMap::i_PtnNoToStrand(tPtnNo);
+
   m_pDataStack->vPushInt(i_TablePtn);                     //! DISCUSS WITH ALKA
   
   EXIT();

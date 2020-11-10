@@ -18,7 +18,9 @@ namespace Pipelines
     Pipeline*  m_pPipeline;   // which pipeline
 
     tPN  m_tPtnNo; // this strand processes m_tPtnNo in grid
+                   //   will be C_UNKNOWN for stage with node topology
     i8   m_i_Node; // this strand processes m_i_Node in grid
+                   //   is PtnMap::i_PtnNoToNode(m_tPtnNo);
  
     // -- -- -- -- -- --
 
@@ -33,21 +35,21 @@ namespace Pipelines
            tPN tPtnNo, i8 i_Node);
    ~Strand(void) noexcept(false);
   
-    void   vDump(void);
+    void vDump(void);
   
-    i8     i_Node(void);
+    i8   i_Node(void);
   
     Pipeline* pPipeline(void);
-    tPN    tPtnNo(void);
+    tPN  tPtnNo(void);
   
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
-    void   vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
-  
+    void vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
     Stz* szStrandNm(void);
 
-    void   vSynthesiseName(void);
-
+  private:
+    void vCreateOps();
+    void vSynthesiseName(void);
     Footer* aFooter(void);
   };
   

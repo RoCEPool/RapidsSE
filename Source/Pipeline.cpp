@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Pipeline.cpp -- Operator Set Pipeline                                      */
+/* Pipeline.cpp -- Pipeline                                                   */
 /*============================================================================*/
 
 #include "Pipelines.h"
@@ -34,6 +34,8 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
   m_bCancelled    = false;
     
   _checkInitialised_(CN_PIPELINE);
+  
+  vCreateStages();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -93,6 +95,25 @@ bool Pipeline::bCancelled(void)
     vDebugPoint();
   
   return m_bCancelled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create the stages of this pipeline                                         */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vCreateStages(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  i8 nStages = m_pPipelineSpec->nItems();
+  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
+    
+    // get the stageSpec
+    StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(i_StageSpec);
+    
+    // add a stage from the stageSpec to the stageVec
+    Stage* pStage = new Stage(pStageSpec, this);
+    vAdd(pStage);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,25 +231,6 @@ PipelineSpec* Pipeline::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   return m_pPipelineSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Populate the OpVec from the PipeLineSpec                                   */
-/*----------------------------------------------------------------------------*/
-void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  // Buld the stageVec from the stageSpecVec
-  for (i8 i_StageSpec = 0; i_StageSpec < pPipelineSpec->nItems(); i_StageSpec++ ) {
-    
-    // get the stageSpec
-    StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_StageSpec);
-    
-    // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(pStageSpec, this);
-    vAdd(pStage);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

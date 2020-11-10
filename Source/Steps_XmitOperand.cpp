@@ -46,7 +46,7 @@ void Step::vXmitOperandPipeOut(void)
   Stage* pStage = pPipelineJob->m_pPipeline->pGet(pXmitOperand->m_iNextStage);
   
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(pXmitOperand->m_eTopologyX,
+  Op* pOp = pStage->pPipeOutOp(pXmitOperand->m_eCrossTopo,
                                pXmitOperand->m_i_Node,
                                pXmitOperand->m_tPtnNo,
                                pXmitOperand->m_iNextOp);

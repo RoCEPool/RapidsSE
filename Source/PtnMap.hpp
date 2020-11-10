@@ -22,12 +22,13 @@ namespace Partitioning
     PtnMap(i8 nPartitions);
    ~PtnMap(void) noexcept(false);
   
-    static i8 i_PtnNoToNode(tPN tPtnNo);
-    static i8 i_PtnNoToStrand(tPN tPtnNo);
+    static i8  i_PtnNoToStrand(tPN tPtnNo);
+    static tPN tStrandToPtnNo(i8 i_Strand);
 
-    i8 i_WhichNode(i8 i_Ptn);
+    i8 i_WhichNode(tPN tPtnNo);
   
   private:
+    i8 i_PtnNoToNode(tPN tPtnNo);
     Footer* aFooter(void);
   };
   

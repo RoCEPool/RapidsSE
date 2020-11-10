@@ -380,6 +380,13 @@ void AM::vPrintAttachMap(void) {
 void AM::vPrintStartupInfo(void) {
   gxArgs.vPrintStartupInfo();
 }
+
+PtnMap* AM::pPtnMap(void) {
+  return gpAttachMap->m_pPtnMap;
+}
+
+
+
 i8 AM::nRndSkipLevel(void) {
   
   i8 nLvlLevels = AM::nLvlLevels();

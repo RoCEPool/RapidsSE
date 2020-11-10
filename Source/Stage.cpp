@@ -1,8 +1,10 @@
 /*============================================================================*/
-/* Stage.cpp -- Pipe Stage                                                    */
+/* Stage.cpp -- Stage of Pipeline                                             */
 /*============================================================================*/
 
 #include "Pipelines.h"
+
+extern AttachMap gxAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -12,7 +14,6 @@ __pCastFunction(Pipelines,Stage,CN_STAGE)
 __aNewFunction(Stage,CN_STAGE)
 __vDeleteFunction(Stage,CN_STAGE)
 __aFooterFunction(Stage)
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -154,7 +155,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       }
     }
     else {
-      i8 iNode_exe = PtnMap::i_PtnNoToNode(pStrand->tPtnNo());
+      i8 iNode_exe = AM::pPtnMap()->i_WhichNode(pStrand->tPtnNo());
       if (iNode_exe == iNode) {
         nOps += pStrand->nItems();
       }
@@ -177,13 +178,13 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eTopologyX, i8 i_Node, tPN tPtnNo, i8 i_Op)
+Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
 {
   Op* pOp = nullptr;
   Strand* pNdeStrand = nullptr;
   Strand* pPtnStrand = nullptr;
   
-  switch (eTopologyX) {
+  switch (eCrossTopo) {
       
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_NODES_TO_ALL_NODES:
@@ -298,7 +299,6 @@ void Stage::vCreateStrands(void)
   i8 i_Node;
   i8 i_Strand;
 
-  OpSpec* pOpSpec;
   Strand* pStrand;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create StageNde's and StagePtn's depending on the toplogy of the stage
@@ -309,9 +309,9 @@ void Stage::vCreateStrands(void)
       
     case PO_ALL_NODES:
       RASSERT(m_pStageSpec->bNodeTopo());
+      i_Strand = 0;
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
-        i_Strand = 0;
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
         vAdd(pStrand);
       }
@@ -319,9 +319,9 @@ void Stage::vCreateStrands(void)
       
     case PO_ORIGIN:
       RASSERT(m_pStageSpec->bNodeTopo());
+      i_Strand = 0;
       tPtnNo = C_UNKNOWN;
       i_Node = m_pPipeline->i_Origin();
-      i_Strand = 0;
       pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
       vAdd(pStrand);
       break;
@@ -337,8 +337,8 @@ void Stage::vCreateStrands(void)
     case PO_ALL_PARTITIONS:
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
-        i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
-        i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
+        i_Strand = PtnMap::i_PtnNoToStrand(tPtnNo);
+        i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
         vAdd(pStrand);
       }
@@ -347,9 +347,9 @@ void Stage::vCreateStrands(void)
     case PO_ALL_PARTITIONS_ON_ORIGIN:
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
-        i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
+        i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if (i_Node == m_pPipeline->i_Origin()) {
-          i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
+          i_Strand = PtnMap::i_PtnNoToStrand(tPtnNo);
           pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
           vAdd(pStrand);
         }
@@ -359,8 +359,8 @@ void Stage::vCreateStrands(void)
     case PO_SPECIFIC_PARTITION:
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
-      i_Node = PtnMap::i_PtnNoToNode(tPtnNo);
-      i_Strand = Table::iPtnNoToTablePtn(tPtnNo);
+      i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      i_Strand = PtnMap::i_PtnNoToStrand(tPtnNo);
       pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
       vAdd(pStrand);
       break;
@@ -369,32 +369,6 @@ void Stage::vCreateStrands(void)
       RASSERT(0);
   }
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the opVec and StageNde's and stagePtn's from the opSpec
-  
-  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
-    pOpSpec = m_pStageSpec->pGet(i_OpSpec);
-    
-    // add the operator to the stages of the stageNdeVec
-    for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
-      pStrand = pGet(i_Strand);
-      
-//      if (m_pStageSpec->bNodeTopo()) {
-//        Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
-//        pOp->vNode(pStrand->i_Node());
-//        pStrand->vAdd(pOp);
-//      }
-//      else {
-//        Op* pOp = new Op(pOpSpec,pStrand,this,m_pPipeline);
-//        pOp->vPtnNo(pStrand->tPtnNo());
-//        pStrand->vAdd(pOp);
-//      }
-
-      Op* pOp = new Op(pOpSpec,pStrand);
-      pStrand->vAdd(pOp);
-
-    }
-  }
 }
 
 /*============================================================================*/

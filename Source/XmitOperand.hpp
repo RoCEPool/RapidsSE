@@ -14,7 +14,7 @@ namespace Jobs
     i8         m_iPipelineJobId;  // pipeline job id
     i8         m_i_Node;          // node id
     tPN        m_tPtnNo;          // partition (in grid)
-    ePX        m_eTopologyX;      // cross topology
+    ePX        m_eCrossTopo;      // cross topology
     i8         m_iNextStage;      // next stage
     i8         m_iNextOp;         // nextOp in the nextStage
     

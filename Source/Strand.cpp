@@ -4,7 +4,6 @@
 
 #include "Pipelines.h"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -13,7 +12,6 @@ __pCastFunction(Pipelines,Strand,CN_STRAND)
 __aNewFunction(Strand,CN_STRAND)
 __vDeleteFunction(Strand,CN_STRAND)
 __aFooterFunction(Strand)
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -30,27 +28,15 @@ Strand::Strand(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
   m_pStage     = pStage;
   m_pPipeline  = pStage->pPipeline();
   
-  // determine the node,tablePtn coordinates of this strand
-//  if (m_pStageSpec->bNodeTopo()) {
-//    // node only
-//    m_tPtnNo     = tPtnNo;
-//    m_i_Node     = i_Node;
-//    m_i_Strand   = i_Strand;
-//  }
-//  else {
-//    // node,tablePtn
-//    m_tPtnNo     = tPtnNo;
-//    m_i_Node     = i_Node;
-//    m_i_Strand   = i_Strand;
-//  }
-
-  m_tPtnNo   = tPtnNo;
-  m_i_Node   = i_Node;
-  m_i_Strand = i_Strand;
+  m_tPtnNo     = tPtnNo;
+  m_i_Node     = i_Node;
+  m_i_Strand   = i_Strand;
   
   vSynthesiseName();
 
   _checkInitialised_(CN_STRAND);
+  
+  vCreateOps();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
 }
@@ -66,6 +52,23 @@ Strand::~Strand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create the ops for this strand                                             */
+/*----------------------------------------------------------------------------*/
+void Strand::vCreateOps(void)
+{
+  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  
+  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
+    
+    OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
+  
+    Op* pOp = new Op(pOpSpec,this);
+    vAdd(pOp);
+  }
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
@@ -156,7 +159,7 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
   if (m_pStageSpec->bNodeTopo())
     i_OnNode = m_i_Node;
   else
-    i_OnNode = PtnMap::i_PtnNoToNode(m_tPtnNo);
+    i_OnNode = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
   
   if (i_OnNode == i_ThisNode) {
     // for each operator in the stage ptn

@@ -22,12 +22,15 @@ PtnMap::PtnMap(i8 nPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNS; i_Ptn++) {
-    m_iaInNode[i_Ptn] = C_UNKNOWN;
-  }
+  for (i8 i = 0; i < C_MAX_PTNS; i++)
+    m_iaInNode[i] = C_UNKNOWN;
 
   _checkInitialised_(CN_PTNMAP);
   
+  RASSERT(nPartitions);
+  for (tPN tPtnNo = 0; tPtnNo < nPartitions; tPtnNo++)
+    m_iaInNode[tPtnNo] = i_PtnNoToNode(tPtnNo);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 }
 
@@ -38,18 +41,6 @@ PtnMap::~PtnMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert grid-wide partition number to which node its on                    */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_PtnNoToNode(tPN tPtnNo)
-{
-  _static_
-  
-  i8 i_Node = tPtnNo % AM::nDefinedNodes();
-  
-  return i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,19 +55,49 @@ i8 PtnMap::i_PtnNoToStrand(tPN tPtnNo)
   return i_Strand;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert i_Strand to partition number (in grid)                             */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tStrandToPtnNo(i8 i_Strand)
+{
+  _static_
+  
+  tPN tPtnNo = (i_Strand * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  
+  return tPtnNo;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get which partition a bucket is currently mapped to                        */
+/* get which node a grid partition is mapped to                               */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichNode(i8 i_Ptn)
+i8 PtnMap::i_WhichNode(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Node = m_iaInNode[i_Ptn];
+  i8 i_Node = m_iaInNode[tPtnNo];
+    
+  RASSERT(i_Node == i_PtnNoToNode(tPtnNo));
+  
+  return i_Node;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert grid-wide partition number to which node its on                    */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::i_PtnNoToNode(tPN tPtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 i_Node = tPtnNo % AM::nDefinedNodes();
   
   return i_Node;
 }

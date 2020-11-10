@@ -42,11 +42,7 @@ void Step::vJob_PipelineBegin(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT( ! pJob_Pipeline->pBufferQueue() );
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // popluate the op vector of the pipeline
-  pPipeline->vPopulateOpVec(m_pLogicUnit->m_xpDynamo->pPipelineSpec());
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::bVerbose()) {

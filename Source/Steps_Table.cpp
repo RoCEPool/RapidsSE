@@ -299,7 +299,7 @@ void Step::vTableTablePtnFetch(void)
   Job* pJob = m_pTask->m_pJob;
   
   tPN tPtnNo = pJob->m_pOp->tPtnNo();
-  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);
@@ -320,7 +320,7 @@ void Step::vTableTablePtnZero(void)
   
   tPN tPtnNo = 0;
   
-  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn);
@@ -455,10 +455,11 @@ void Step::vTableListPartition(void)
   
   tPN tPtnNo = m_pDataStack->iPopAsInt(__func__);
 
-  
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
+
   for (;;) {
-    i8 i_Node     = PtnMap::i_PtnNoToNode(tPtnNo);
-    i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
+    i8 i_Node     = AM::pPtnMap()->i_WhichNode(tPtnNo);
+    i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
 
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
                     tPtnNo,i_Node,i_TablePtn);

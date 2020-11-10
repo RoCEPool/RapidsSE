@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* Op.cpp -- Operator                                                         */
+/* Op.cpp -- Operator of Strand of Stage of Pipeline                          */
 /*============================================================================*/
 
 #include "Pipelines.h"
-
 
 Atomic gixOp;
 
@@ -11,36 +10,10 @@ Atomic gixOp;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Op* Pipelines::_pOp(void* aAddr)
-{
-  Op* pOp = reinterpret_cast<Op*>(aAddr);
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new                                                                        */
-/*----------------------------------------------------------------------------*/
-void* Op::operator new(size_t)
-{
-  Op* pOp =
-  static_cast<Op*>(HeapMem::pAllocate(CN_OP));
-  
-  return pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
-/*----------------------------------------------------------------------------*/
-void Op::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  HeapMem::vFree(pObject);
-}
+__pCastFunction(Pipelines,Op,CN_OP)
+__aNewFunction(Op,CN_OP)
+__vDeleteFunction(Op,CN_OP)
+__aFooterFunction(Op);
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -66,11 +39,13 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
 
   if (m_pStage->pStageSpec()->bNodeTopo()) {
     m_tPtnNo = C_UNKNOWN;
+    RASSERT(pStrand->tPtnNo() == m_tPtnNo);
     m_i_Node = pStrand->i_Node();
   }
   else {
     m_tPtnNo = pStrand->tPtnNo();
-    m_i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
+    m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
+    RASSERT(pStrand->i_Node() == m_i_Node);
   }
   
   bool m_bDataBuffer  = false;
@@ -95,7 +70,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  m_eTopologyX = PX_NONE;
+  m_eCrossTopo = PX_NONE;
   m_iNextStage = C_UNKNOWN;
   m_iNextOp    = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
@@ -301,6 +276,26 @@ bool Op::bAppendRight(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_bAppendRight;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+ePX Op::eCrossTopo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vCrossTopo(ePX eCrossTopo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_eCrossTopo = eCrossTopo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,7 +829,7 @@ void Op::vPtnNo(tPN tPtnNo)
   m_tPtnNo = tPtnNo;
 
   // set the node tis partition belongs to 
-  m_i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
+  m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -936,7 +931,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     Stage* pStage = m_pPipeline->pGet(m_iNextStage);
   
     // get the op to forward to depending on the cross topology
-    Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+    Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                  m_i_Node,
                                  m_tPtnNo,
                                  m_iNextOp);
@@ -1268,7 +1263,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
     eXmitKind = XK_ROBIN;
   
-  switch(m_eTopologyX) {
+  switch(m_eCrossTopo) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_NODES_TO_ORIGIN:
@@ -1303,7 +1298,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 i_Node = PtnMap::i_PtnNoToNode(m_tPtnNo);
+      i8 i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
       vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Node);
       break;
     }
@@ -1461,26 +1456,6 @@ TagSet* Op::pTopologyTagSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-ePX Op::eTopologyX(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_eTopologyX;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vTopologyX(ePX eTopologyX)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_eTopologyX = eTopologyX;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set work quanta                                                            */
 /*----------------------------------------------------------------------------*/
 void Op::vWorkQuanta(i8 iWorkQuanta)
@@ -1529,11 +1504,6 @@ void Op::vXmitNode(i8 iXmitNode)
   
   m_iXmitNode = iXmitNode;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Op);
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -1625,10 +1595,10 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     case XK_ROBIN : {
       m_iRobin++;
       i_TablePtn = m_iRobin % AM::pGrid()->nTablePtns();
-      tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
       
       // xmitNode is the partition node
-      m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       ASSERT(m_iXmitNode == m_pPipeline->i_Origin());
    
       if ( m_iXmitNode == m_pPipeline->i_Origin()) {
@@ -1641,7 +1611,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
           Stage* pStage = m_pPipeline->pGet(m_iNextStage);
 
           // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                        m_iXmitNode,
                                        i_Ptn,
                                        m_iNextOp);
@@ -1683,7 +1653,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
         
         // xmitNode is the partition node
     
-        m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
+        m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if ( m_iXmitNode == m_pPipeline->i_Origin()) {
  #ifdef WITH_NO_XMIT_OPT
           if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
@@ -1693,7 +1663,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
             Stage* pStage = m_pPipeline->pGet(m_iNextStage);
             
             // get the op to forward to depending on the cross topology
-            Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+            Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                          m_iXmitNode,
                                          i_Ptn,
                                          m_iNextOp);
@@ -1761,7 +1731,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       tPtnNo = pDataBuffer->tPtnNo();
       
       // xmitNode is the partition node
-      m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
 #ifdef WITH_NO_XMIT_OPT
       if ( m_iXmitNode == i_ThisNode) {
@@ -1770,7 +1740,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
         Stage* pStage = m_pPipeline->pGet(m_iNextStage);
         
         // get the op to forward to depending on the cross topology
-        Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+        Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                      m_iXmitNode,
                                      tPtnNo,
                                      m_iNextOp);
@@ -1802,10 +1772,10 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     case XK_LOCALROBIN : {
       m_iLocalRobin++;
       i_TablePtn = m_iLocalRobin % AM::pGrid()->nTablePtns();
-      tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      tPtnNo = PtnMap::tStrandToPtnNo(i_TablePtn);
       
       // xmitNode is this node
-      m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       RASSERT(m_iXmitNode == AM::pGrid()->iThisNode());
       
       ASSERT( ! bSet );
@@ -1821,7 +1791,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // xmitNode is the partition node
-        m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
+        m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         ASSERT( ! bSet );
 #ifdef WITH_NO_XMIT_OPT
         if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
@@ -1831,7 +1801,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
           Stage* pStage = m_pPipeline->pGet(m_iNextStage);
           
           // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                        m_iXmitNode,
                                        tPtnNo,
                                        m_iNextOp);
@@ -1869,7 +1839,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       tPtnNo = m_iRobin % AM::pGrid()->nPartitionsInGrid();
       
       // xmitNode is the partition node
-      m_iXmitNode = PtnMap::i_PtnNoToNode(tPtnNo);
+      m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
       ASSERT( ! bSet );
       vSend(pOperand, bSet, m_iXmitNode, tPtnNo);
@@ -1953,7 +1923,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
       ASSERT(0);
   }
   
-  m_iXmitNode = PtnMap::i_PtnNoToNode(tSendPtn);
+  m_iXmitNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
   vSend(pOperand, bSet, m_iXmitNode, tSendPtn);
   
   // delete the operand
