@@ -7,8 +7,8 @@ namespace MetaData
 {
   // {i_Node,i_TablePtn} pair
   struct NodeTablePtn {
-    i4  m_i_Node;
-    i4  m_i_TablePtn;
+    i4  m_i_Node;     // node
+    i4  m_i_TablePtn; // table partition
   };
 
   class PtnMap : public Object
