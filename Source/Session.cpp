@@ -106,7 +106,7 @@ Session::Session(void)
   
   m_iPid = Process::iGetPid();
 
-  m_tPtnNo      = C_UNKNOWN;
+  m_i_Strand      = C_UNKNOWN;
   
   //m_oDicStack;
   m_pSsnJob     = nullptr;
@@ -203,11 +203,10 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Session* pSession = _pSession(pObject);
   
-  vTrace("pid %lld %s partition %lld tablePtn %lld"_Stz,
+  vTrace("pid %lld %s strand %lld"_Stz,
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
-         pSession->m_tPtnNo,
-         pSession->i_TablePtn());
+         pSession->i_Strand());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,21 +325,21 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 /*----------------------------------------------------------------------------*/
 /* which partition                                                            */
 /*----------------------------------------------------------------------------*/
-tPN Session::tPtnNo(void)
+i8 Session::i_Strand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return m_tPtnNo;
+  return m_i_Strand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set partition                                                              */
 /*----------------------------------------------------------------------------*/
-void Session::vPtnNo(tPN tPtnNo)
+void Session::vStrand(i8 i_Strand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_tPtnNo = tPtnNo;
+  m_i_Strand = i_Strand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -363,16 +362,6 @@ void Session::vReport(void)
   vTrace("Session %llx job %llx\n"_Stz,
          this,
          m_pSsnJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* which table partition                                                      */
-/*----------------------------------------------------------------------------*/
-i8 Session::i_TablePtn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return PtnMap::i_LglPtnNoToStrand(m_tPtnNo);
 }
 
 /*----------------------------------------------------------------------------*/

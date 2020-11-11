@@ -30,16 +30,17 @@ namespace MetaData
    ~PtnMap(void) noexcept(false);
   
     static tPN  tHashToPtnNo(i8 iHash, i8 nPartitionsInGrid);
-    static i8   i_LglPtnNoToStrand(tPN tPtnNo);
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStrandToLglPtnNo(i8 i_Strand);
 
 
     i8 i_WhichNode(tPN tPtnNo);
+    i8 i_WhichStrand(tPN tPtnNo);
     i8 i_WhichTablePtn(tPN tPtnNo);
 
   private:
     i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
+    i8 i_LglPtnNoToInitialStrand(tPN tPtnNo);
     Footer* aFooter(void);
   };
   

@@ -46,7 +46,7 @@ namespace Sessions
     
     i8       m_iPid;             // process which created this session
   
-    tPN      m_tPtnNo;           // which partition this session processes
+    i8       m_i_Strand;         // which partition this session processes
     DicStack m_oDicStack;        // dictionary stack
     Stack*   m_pJobStack;        // stack of jobs
 
@@ -81,13 +81,12 @@ namespace Sessions
     void      vEndTx(void);
     void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
-    tPN       tPtnNo(void);
-    void      vPtnNo(tPN tPtnNo);
+    i8        i_Strand(void);
+    void      vStrand(i8 i_Strand);
     DicStack* pPathStack(void);
       
     void      vReport(void);
     
-    i8        i_TablePtn(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   

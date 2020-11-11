@@ -55,6 +55,7 @@ namespace Grids
     i8   nPartitionsInGrid(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
+    i8   nStrandsPerNode(void);
     i8   nTablePtns(void);
     i8   iThisNode(void);
     Node* pThisNode(void);

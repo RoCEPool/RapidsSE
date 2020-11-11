@@ -286,6 +286,16 @@ void Grid::vStartNode(i8 iStartNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of strands per node                                             */
+/*----------------------------------------------------------------------------*/
+i8 Grid::nStrandsPerNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_nTablePtns;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of partitions per table in the grid                             */
 /*----------------------------------------------------------------------------*/
 i8 Grid::nTablePtns(void)

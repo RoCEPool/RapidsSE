@@ -298,16 +298,13 @@ void Stage::vCreateStrands(void)
   tPN tPtnNo;
   i8 i_Node;
   i8 i_Strand;
-
   Strand* pStrand;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create StageNde's and StagePtn's depending on the toplogy of the stage
   
   switch (m_pStageSpec->eTopology()) {
             
-    // node topologies
+    //                      -- node topologies --                             //
       
-    case PO_ALL_NODES:
+    case PO_ALL_NODES: // create a strand for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Strand = 0;
       tPtnNo = C_UNKNOWN;
@@ -317,7 +314,7 @@ void Stage::vCreateStrands(void)
       }
       break;
       
-    case PO_ORIGIN:
+    case PO_ORIGIN: // create a strand for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Strand = 0;
       tPtnNo = C_UNKNOWN;
@@ -326,41 +323,40 @@ void Stage::vCreateStrands(void)
       vAdd(pStrand);
       break;
         
-    case PO_SPECIFIC_NODE:
+    case PO_SPECIFIC_NODE: // create a strand for a specific node only
       RASSERT(m_pStageSpec->bNodeTopo());
       RASSERT(0);
       break;
         
-      
-    // partition topologies
+    //                    -- partition topologies --                          //
 
-    case PO_ALL_PARTITIONS:
+    case PO_ALL_PARTITIONS: // create a strand for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        i_Strand = PtnMap::i_LglPtnNoToStrand(tPtnNo);
+        i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
         vAdd(pStrand);
       }
       break;
       
-    case PO_ALL_PARTITIONS_ON_ORIGIN:
+    case PO_ALL_PARTITIONS_ON_ORIGIN: // create a strand for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if (i_Node == m_pPipeline->i_Origin()) {
-          i_Strand = PtnMap::i_LglPtnNoToStrand(tPtnNo);
+          i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
           pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
           vAdd(pStrand);
         }
       }
       break;
       
-    case PO_SPECIFIC_PARTITION:
+    case PO_SPECIFIC_PARTITION: // create a strand for a specific partition
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      i_Strand = PtnMap::i_LglPtnNoToStrand(tPtnNo);
+      i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
       pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
       vAdd(pStrand);
       break;
