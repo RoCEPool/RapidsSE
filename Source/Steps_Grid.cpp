@@ -15,7 +15,7 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
-  vAddStep("grid::ptnNoToTablePtn"_Stz,   &Step::vGridPtnNoToTablePtn);
+
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
   vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
   vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
@@ -267,22 +267,6 @@ void Step::vGridToNode(void)
   i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
   
   m_pDataStack->vPushInt(i_Node);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::ptnNoToTablePtn -- convert ptnNo to tablePtn                         */
-/*----------------------------------------------------------------------------*/
-void Step::vGridPtnNoToTablePtn(void)
-{
-  ENTRY();
-  
-  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
-  
-  i8 i_TablePtn = PtnMap::i_LglPtnNoToStrand(tPtnNo);
-
-  m_pDataStack->vPushInt(i_TablePtn);                     //! DISCUSS WITH ALKA
   
   EXIT();
 }

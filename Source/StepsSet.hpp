@@ -427,7 +427,6 @@ public:
   void vGridIncConnectedNodes(void);
   void vGridNode(void);
   void vGridPartitions(void);
-  void vGridPtnNoToTablePtn(void);
   void vGridShow(void);
   void vGridStartedStore(void);
   void vGridStartedFetch(void);
