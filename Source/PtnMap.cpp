@@ -52,6 +52,18 @@ PtnMap::~PtnMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* convert hash to logical partition number                                   */
+/*----------------------------------------------------------------------------*/
+tPN PtnMap::tHashToPtnNo(i8 iHash, i8 nPartitionsInGrid)
+{
+  _static_
+  
+  i8 tPtnNo = iHash % nPartitionsInGrid;
+
+  return tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert logical partition number (in grid) to strand on its node           */
 /*----------------------------------------------------------------------------*/
 i8 PtnMap::i_LglPtnNoToStrand(tPN tPtnNo)
@@ -61,6 +73,16 @@ i8 PtnMap::i_LglPtnNoToStrand(tPN tPtnNo)
   i8 i_Strand = tPtnNo / AM::nDefinedNodes();
   
   return i_Strand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update running hash                                                        */
+/*----------------------------------------------------------------------------*/
+void PtnMap::vRunningHash(i8* aiHash, i8 iMixIn)
+{
+  _static_
+  
+  * aiHash += HshLib::iHash((byte*)&iMixIn,sizeof(w8));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,29 +96,6 @@ tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
   
   return tPtnNo;
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-tPN PtnMap::tPtnNo(i8 iRunningHash, i8 nPartitionsInGrid)
-{
-  _static_
-  
-  i8 tPtnNo = iRunningHash % nPartitionsInGrid;
-
-  return tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void PtnMap::vRunning(i8* aiRunningHash, i8 iVal)
-{
-  _static_
-  
-  * aiRunningHash += HshLib::iHash((byte*)&iVal,sizeof(w8));
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
