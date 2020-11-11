@@ -29,10 +29,10 @@ namespace MetaData
     PtnMap(i8 nPartitions);
    ~PtnMap(void) noexcept(false);
   
+    static i8   iHashToBucketId(i8 iHash);
     static tPN  tHashToPtnNo(i8 iHash, i8 nPartitionsInGrid);
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStrandToLglPtnNo(i8 i_Strand);
-
 
     i8 i_WhichNode(tPN tPtnNo);
     i8 i_WhichStrand(tPN tPtnNo);

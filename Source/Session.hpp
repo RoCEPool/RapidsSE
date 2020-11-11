@@ -10,55 +10,55 @@ namespace Sessions
   class Session : public Focal
   {
   public:
-    i8    m_i_Session;   // session index
-    i8    m_i_NextFree;  // next state in free chain
-  
-    eSK   m_eSession;    // session kind
+    i8    m_i_Session;     // session index
+    i8    m_i_NextFree;    // next state in free chain
     
-    eAC   m_eApiFun;     // current / last api function called
-    i8    m_iApiLoc;     // last reported location in api function
-    eEC   m_eApiError;   // last error code in api function
-    eCN   m_eJobClass;   // current / last job
-    i8    m_iJobLoc;     // last reported location in job
-    i8    m_iSenLoc;     // last reported location in SEN
-    
-    bool  m_bRunning;    // api call still running?
-    bool  m_bSignalled;  // calling thread has been signalled?
-    bool  m_bExiting;    // is session exiting ?
-
-    void* m_aStackBase;  // stack base of thread which made api call
-    void* m_aStackPtr;   // stack addr of thread which made api call
-    
-    
-    Timer m_oTimer;      // call timer
-    i8    m_qTotalUsec;  // total-quanity time in microseconds
-    
-    i8    m_nBegun;      // number of __begun received
-    i8    m_nCancelled;  // number of __cancelled received
-    i8    m_nEnded;      // number of __ended received
-    i8    m_nExecuted;   // number of __executed received
-    
-    i8    m_nApiCalls;   // number of api calls so far
-    i8    m_nApiErrors;  // number of api call in error so far
-    i8    m_nJobNew;     // number of jobs new'ed so far
-    i8    m_nJobDelete;  // number of jobs deleted so far
-    
-    
-    i8       m_iPid;             // process which created this session
-  
-    i8       m_i_Strand;         // which partition this session processes
-    DicStack m_oDicStack;        // dictionary stack
-    Stack*   m_pJobStack;        // stack of jobs
-
-    TagSet   m_oSsnTagSet;       // session level tags
-
-    Job*     m_pSsnJob;          // job session currently executing
-    Tx*      m_pTx;              // current transaction
-  
-    s4K      m_sToDo;            // prompt to do
+    eSK   m_eSession;      // session kind
       
-    Mutex    m_oSsnMutex;        //
-    ReqTuple m_xReqTuple;        // request information
+    eAC   m_eApiFun;       // current / last api function called
+    i8    m_iApiLoc;       // last reported location in api function
+    eEC   m_eApiError;     // last error code in api function
+    eCN   m_eJobClass;     // current / last job
+    i8    m_iJobLoc;       // last reported location in job
+    i8    m_iSenLoc;       // last reported location in SEN
+      
+    bool  m_bRunning;      // api call still running?
+    bool  m_bSignalled;    // calling thread has been signalled?
+    bool  m_bExiting;      // is session exiting ?
+  
+    void* m_aStackBase;    // stack base of thread which made api call
+    void* m_aStackPtr;     // stack addr of thread which made api call
+      
+      
+    Timer m_oTimer;        // call timer
+    i8    m_qTotalUsec;    // total-quanity time in microseconds
+      
+    i8    m_nBegun;        // number of __begun received
+    i8    m_nCancelled;    // number of __cancelled received
+    i8    m_nEnded;        // number of __ended received
+    i8    m_nExecuted;     // number of __executed received
+      
+    i8    m_nApiCalls;     // number of api calls so far
+    i8    m_nApiErrors;    // number of api call in error so far
+    i8    m_nJobNew;       // number of jobs new'ed so far
+    i8    m_nJobDelete;    // number of jobs deleted so far
+      
+    
+    i8       m_iPid;       // process which created this session
+  
+    i8       m_i_Strand;   // which partition this session processes
+    DicStack m_oDicStack;  // dictionary stack
+    Stack*   m_pJobStack;  // stack of jobs
+
+    TagSet   m_oSsnTagSet; // session level tags
+
+    Job*     m_pSsnJob;    // job session currently executing
+    Tx*      m_pTx;        // current transaction
+  
+    s4K      m_sToDo;      // prompt to do
+      
+    Mutex    m_oSsnMutex;  //
+    ReqTuple m_xReqTuple;  // request information
     
 
   private:
