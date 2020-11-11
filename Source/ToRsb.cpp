@@ -262,8 +262,9 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   Column* pCol = nullptr;
 
   i8 iHash = 0;
-  i8 i_Ptn = 0;
-  
+  tPN tPtnNo = 0;
+  i8 iBucketId = 0;
+
   i8 i_Fld = 0;
   bool bSawFldSep = false;
   
@@ -1205,9 +1206,17 @@ L_EndOfRecord:
 
   // set partition hash
   if (m_bPtnHash) {
-    i_Ptn = PtnMap::tHashToPtnNo(iHash,m_nPtns);
+    
+    
+    tPtnNo = PtnMap::tHashToPtnNo(iHash,m_nPtns);
+    
+    // partition mapping experiment by Ray 12 Nov 2020
+    //iBucketId = PtnMap::iHashToBucketId(iHash);
+    //tPtnNo = m_pBucketMap->tWhichLglPtnNo(iBucketId);
+
+    
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
-    m_pRowSlab->vDeposit(i_Ptn);
+    m_pRowSlab->vDeposit(tPtnNo);
     iHash = 0;
   }
   

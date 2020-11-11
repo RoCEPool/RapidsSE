@@ -22,7 +22,7 @@ namespace MetaData
     BucketMap(i8 nPartitions);
    ~BucketMap(void) noexcept(false);
   
-    tPN tWhichLglPtnNo(i8 i_Bkt);
+    tPN tWhichLglPtnNo(i8 iBucketId);
   
   private:
     Footer* aFooter(void);

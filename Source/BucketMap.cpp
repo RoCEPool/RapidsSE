@@ -52,11 +52,11 @@ BucketMap::~BucketMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-tPN BucketMap::tWhichLglPtnNo(i8 i_Bkt)
+tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  tPN tPtnNo = m_taInLglPtn[i_Bkt];
+  tPN tPtnNo = m_taInLglPtn[iBucketId];
   
   return tPtnNo;
 }
