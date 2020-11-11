@@ -34,7 +34,7 @@ Table::Table(Stz* szTableNm)
   m_sTableNm   = szTableNm;
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
-  m_pBucketMap = new BucketMap(AM::nBuckets());
+  m_pBucketMap = new BucketMap(AM::nPartitionsInGrid());
   //m_pPtnMap    = new PtnMap(AM::nPartitionsInGrid());
   m_bIsLoading = false;
   m_bDefinitionOnly = false;
