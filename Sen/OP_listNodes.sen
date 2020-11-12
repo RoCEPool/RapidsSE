@@ -20,7 +20,7 @@ cmdSyntax: lsNodes :: lsNodes ;
 : lsNodes _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
-    <streamDef>   = __listContents
+    <streamDef>   = __listNodes
     <params>      = 0
   }
 ;

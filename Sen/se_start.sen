@@ -1863,6 +1863,20 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LISTNODES
+  sPath
+  "
+  define table __listNodes (
+    node          INTEGER NOT NULL ,
+    nodeName      VARCHAR NOT NULL ,
+    ipAdd         VARCHAR NOT NULL ,
+    portNo        INTEGER NOT NULL ,
+    state         VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LISTPARTITIONS
   sPath
   "
