@@ -890,13 +890,14 @@
   procedure add node
     parameters $NodeNm $IpAddr $PortNo
   begin
-  stage stageA on origin :
 
-    start | periodic once
-          | addNode $NodeNm $IpAddr $PortNo
-          | output
-          | sink
-          | stageA
+    stage stageA on origin :
+
+      start | periodic once
+            | addNode $NodeNm $IpAddr $PortNo
+            | output
+            | sink
+            | stageA
 
   end ;
   "
@@ -909,9 +910,14 @@
   procedure remove node
     parameters $NodeNm
   begin
-  stage stageA on origin :
 
-    start | periodic once | output | sink | stageA
+    stage stageA on origin :
+
+      start | periodic once
+            | removeNode $NodeNm
+            | output
+            | sink
+            | stageA
 
   end ;
   "

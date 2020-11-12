@@ -172,6 +172,7 @@ assert::stack_0
         "OP_recv.sen"                 include
         "OP_recurring.sen"            include
         "OP_reload.sen"               include
+        "OP_removeNode.sen"           include
         "OP_report.sen"               include
         "OP_rowCount.sen"             include
 
