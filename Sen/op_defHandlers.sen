@@ -72,6 +72,32 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: ZK_DATAPULSE_handler \handler
+
+  //"ZK_DATAPULSE_handler" .verbose
+  PipeIn[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DESTROYMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: ZK_DESTROYMARKER_handler \handler
+
+  //"ZK_DESTROYMARKER_handler" .verbose
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_ENTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : ZK_ENTBUFFER_handler \handler
@@ -200,16 +226,6 @@
 : ZK_PROGRESSUNITS_handler \handler
 
   //"ZK_PROGRESSUNITS" .verbose
-  PipeIn[].pipeOut
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
-/*----------------------------------------------------------------------------*/
-: ZK_DATAPULSE_handler \handler
-
-  //"ZK_DATAPULSE_handler" .verbose
   PipeIn[].pipeOut
   true
 ;

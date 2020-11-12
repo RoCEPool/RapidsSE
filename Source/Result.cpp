@@ -319,6 +319,12 @@ void Result::vProcessBufferQueue(void)
             break;
           }
             
+          case OM_DESTROYMARKER: {
+            //vTrace("Pipeline Job: DESTROYMARKER\n"_Stz);
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
           case OM_EOSMARKER: {
             //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);

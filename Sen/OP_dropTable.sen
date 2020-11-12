@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: dropTable_DataMarker
+: dropTable_DataPulse
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove table
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: dropTable_DataMarker ZK_DATAPULSE op[].handler!
+  find: dropTable_DataPulse ZK_DATAPULSE op[].handler!
 
   op__loop
 
