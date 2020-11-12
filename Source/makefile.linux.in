@@ -1,0 +1,47 @@
+# Linux-specific makefile variables and rules.
+#
+# The intent is not to change a variable in the main makefile but to define
+# variables such that the main makefile will include them for a given setting.
+# E.g. if we need to add something to the CPPFLAGS variable then we define a
+# variable here called LINUX_CPPFLAGS. The main makefile should have the common 
+# settings for this variable and will then include $(LINUX_CPPFLAGS) as well as
+# $(MACOS_CPPFLAGS), etc. Only one of these variables will be non-empty.
+
+# Note that the assignments of some variables is sensitive to how it is done. e.g.:
+#    =  will recursively expand any variables on the rhs when it is used.
+#   :=  will expand any variables when the variable is defined.'
+# Refer to the below url for details:
+#  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+
+
+# First check for gcc version 5 or later. This is needed by ANTLR.
+GCC_VERSION_GTE5 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 5 | bc)
+ifeq ($(GCC_VERSION_GTE5), 0)
+  define ERR
+gcc version 5 or later is required. You have v$(shell gcc -dumpversion).
+
+To install gcc 5 on Centos7 run the following commands:
+  sudo yum install libuuid-devel centos-release-scl devtoolset-7-gcc*
+
+Then from the Source directory run the following command to build rapidsse:
+  scl enable devtoolset-7 'make -j 8'
+
+
+  endef
+  $(error $(ERR))
+endif
+
+LINUX_CPPFLAGS := -DWITH_LINUX
+LINUX_CPPFLAGS_DEBUG := -DWITH_LINUX
+
+LINUX_TARGET_PATH = $(CURRENT_PATH)/../Linux/bin
+
+# The name of the extension on a dynamic library / shared object
+LINUX_LIBRARY_EXT := so
+
+# Any additional linux-specific libraries to link in?
+LINUX_LIBS := -lrt
+
+# Any linux-specific library search paths to include?
+LINUX_LIB_DIRS := -L../ThirdParty/tcc/lib/linux/centos7 -L../ThirdParty/antlr/lib/linux/centos7
+

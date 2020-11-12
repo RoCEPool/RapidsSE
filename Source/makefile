@@ -1,33 +1,34 @@
-# First check for gcc version 5 or later.
-GCC_VERSION_GTE5 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 5 | bc)
-ifeq ($(GCC_VERSION_GTE5), 0)
-  define ERR
-gcc version 5 or later is required. You have v$(shell gcc -dumpversion).
+# Makefile for building RapidsSE source code.
 
-To install gcc 5 on Centos7 run the following commands:
-  sudo yum install libuuid-devel centos-release-scl devtoolset-7-gcc*
+# Explicitly define the shell to be used for this makefile. 
+SHELL := /bin/bash
 
-Then from the Source directory run the following command to build rapidsse:
-  scl enable devtoolset-7 'make -j 8'
+# Let's work out what OS we are on and include any platform-specific
+# variables and rules.
+UNAME_S := $(shell uname -s)
 
-
-  endef
-  $(error $(ERR))
+ifeq ($(UNAME_S),Linux)
+  include makefile.linux.in
+else ifeq($(UNAME_S),DARWIN)
+  include makefile.darwin.in
+else
+  $(error This makefile does not handle this operating system: $(UNAME_S))
 endif
 
+
 #Variables
+CURRENT_MAKEFILE := $(lastword $(MAKEFILE_LIST))
 CPP = g++
-CPPFLAGS = -std=c++11 -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wextra -O3
-#CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wno-unused -g
+CPPFLAGS = -std=c++11 -DWITH_MUNGED_SEN -Wall -Wextra -O3 $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS)
 LIBFLAGS = -shared
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
 
 #Target Files
-CURRENT=${PWD}
-TARGET_PATH = $(CURRENT)/../Linux/bin
+CURRENT_PATH=${PWD}
+TARGET_PATH = $(strip $(LINUX_TARGET_PATH) $(DARWIN_TARGET_PATH))
 TARGET_EXE = $(TARGET_PATH)/rapidsse
-TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.so
+TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWIN_LIBRARY_EXT))
 SHOCO = shoco.o
 
 #Source Files
@@ -50,19 +51,18 @@ OBJECTS += $(S_SOURCES:.s=.o)
 DEPFILES = $(SOURCES:.cpp=.d)
 
 #Include directories
-INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated -I ../ThirdParty/tcc/include
+INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated -I ../ThirdParty/tcc/include -I ../ThirdParty/tcc/src
 
 #Libraries
-#THIRDPARTY_LIBS = -llz4 -lbz2 -lantlr4-runtime
-LIBS = -lrt -lpthread -ltcc -ldl -lantlr4-runtime
+LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
 RAPIDS_LIBS = -lRapidsSE
-LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L../ThirdParty/tcc/lib/linux/centos7 -L../ThirdParty/antlr/lib/linux/centos7  -L$(TARGET_PATH)
+LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
-#all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
+# The default target
 all : post-build
 
 post-build : main-build
-	
+
 main-build : pre-build
 	@$(MAKE) -e --no-print-directory target
 
@@ -71,9 +71,8 @@ pre-build : version
 target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 #Debug builds
-debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wno-unused -g
+debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -g $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 debug : all
-#debug: $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 $(SHOCO): ../ThirdParty/shoco/shoco.c  
 	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
@@ -102,8 +101,9 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@
 
 # Generate the Version.h file. Force it to run every time.
+# The script will determine if it needs to update the Version.h file.
 version : FORCE
-	./generateVersion.sh
+	@./generateVersion.sh
 
 # Necessary to make the version rule above run every time.
 FORCE : 
