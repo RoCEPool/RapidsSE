@@ -16,7 +16,7 @@ void Step::vAddSteps_RegXmits(void)
   vAddStep("Xmits[].handleEos"_Stz,      &Step::vRegXmitsHandleEos);
   vAddStep("Xmits[].handleError"_Stz,    &Step::vRegXmitsHandleError);
   vAddStep("Xmits[].handleExit"_Stz,     &Step::vRegXmitsHandleExit);
-  vAddStep("Xmits[].handlePulse"_Stz,    &Step::vRegXmitsHandlePulse);
+  vAddStep("Xmits[].handleDataPulse"_Stz,&Step::vRegXmitsHandleDataPulse);
   vAddStep("Xmits[].handlePulsed"_Stz,   &Step::vRegXmitsHandlePulsed);
   vAddStep("Xmits[].handleStart"_Stz,    &Step::vRegXmitsHandleStart);
   vAddStep("Xmits[].handleStreamDef"_Stz,&Step::vRegXmitsHandleStreamDef);
@@ -132,16 +132,16 @@ void Step::vRegXmitsHandleExit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Xmits[].handlePulse -- handle consume of pulse marker                      */
+/* Xmits[].handleDataPulse -- handle consume of data pulse                    */
 /*----------------------------------------------------------------------------*/
-void Step::vRegXmitsHandlePulse(void)
+void Step::vRegXmitsHandleDataPulse(void)
 {
   ENTRY();
   
   Xmits* pXmits = _pXmits(*m_pLogicUnit->m_xpXmits);
   
-  pXmits->vIncPulse();
-  m_pDataStack->vPushInt(pXmits->bPulseDone());
+  pXmits->vIncDataPulse();
+  m_pDataStack->vPushInt(pXmits->bDataPulseDone());
   
   EXIT();
 }

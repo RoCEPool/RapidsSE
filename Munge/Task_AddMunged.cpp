@@ -7466,7 +7466,7 @@ void Task::vAddMunged(Forth* pForth)
     ": consumeOp_DataPulse \\handler\n"
     "\n"
     "  //\"Operand:- ZK_DATAPULSE\" .verbose\n"
-    "  xmits[].handlePulse if\n"
+    "  xmits[].handleDataPulse if\n"
     "    PipeIn[].pipeOut\n"
     "  else\n"
     "    PipeIn[].delete\n"

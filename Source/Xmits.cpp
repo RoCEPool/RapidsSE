@@ -51,10 +51,10 @@ Xmits::Xmits(i8 iXmits)
   m_iXmits  = iXmits;
   
   m_iCancelMarkers  = 0;
+  m_iDataPulses     = 0;
   m_iDestroyMarkers = 0;
   m_iExitMarkers    = 0;
   m_iEosMarkers     = 0;
-  m_iPulseMarkers   = 0;
   m_iPulsedMarkers  = 0;
   m_iStartMarkers   = 0;
   m_iStreamDefs     = 0;
@@ -83,6 +83,25 @@ bool Xmits::bCancelDone(void)
   
   if (m_iCancelMarkers == m_iXmits) {
     //m_iCancelMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* data pulse done ?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Xmits::bDataPulseDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
+  
+  if (m_iDataPulses > m_iXmits)
+    vTrace("Warning: ConsumeOp ZK_DATAPULSE received %lld; expected %lld\n"_Stz,
+           m_iDataPulses, m_iXmits);
+  
+  if (m_iDataPulses == m_iXmits) {
+    //if (m_iPulseMarkers == 0) {
     return true;
   }
   else
@@ -165,25 +184,6 @@ bool Xmits::bExitDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pulse done ?                                                               */
-/*----------------------------------------------------------------------------*/
-bool Xmits::bPulseDone(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
-  
-  if (m_iPulseMarkers > m_iXmits)
-    vTrace("Warning: ConsumeOp ZK_DATAPULSE received %lld; expected %lld\n"_Stz,
-           m_iPulseMarkers, m_iXmits);
-  
-  if (m_iPulseMarkers == m_iXmits) {
-  //if (m_iPulseMarkers == 0) {
-    return true;
-  }
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pulsed done ?                                                              */
 /*----------------------------------------------------------------------------*/
 bool Xmits::bPulsedDone(void)
@@ -248,6 +248,16 @@ void Xmits::vIncCancel(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inc data pulse                                                             */
+/*----------------------------------------------------------------------------*/
+void Xmits::vIncDataPulse(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
+  
+  m_iDataPulses++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc destroy                                                                 */
 /*----------------------------------------------------------------------------*/
 void Xmits::vIncDestroy(void)
@@ -285,16 +295,6 @@ void Xmits::vIncExit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iExitMarkers++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc pulse                                                                  */
-/*----------------------------------------------------------------------------*/
-void Xmits::vIncPulse(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
-  
-  m_iPulseMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

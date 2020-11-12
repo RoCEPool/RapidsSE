@@ -55,7 +55,7 @@
 : consumeOp_DataPulse \handler
 
   //"Operand:- ZK_DATAPULSE" .verbose
-  xmits[].handlePulse if
+  xmits[].handleDataPulse if
     PipeIn[].pipeOut
   else
     PipeIn[].delete

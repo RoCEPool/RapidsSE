@@ -1159,7 +1159,7 @@ public:
   void vRegXmitsHandleEos(void);
   void vRegXmitsHandleError(void);
   void vRegXmitsHandleExit(void);
-  void vRegXmitsHandlePulse(void);
+  void vRegXmitsHandleDataPulse(void);
   void vRegXmitsHandlePulsed(void);
   void vRegXmitsHandleStart(void);
   void vRegXmitsHandleStreamDef(void);
