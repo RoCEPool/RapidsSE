@@ -33,7 +33,6 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_pRowSlab   = nullptr;
   m_pRsbBuffer = nullptr;
 
-  m_bOrdCsv    = pFmt->bIsOrdCsv();
   m_cRecEnd    = '\n'; // 0x0a
   m_cFldSep    = ',';
 
@@ -197,9 +196,1056 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   }
 
 /*----------------------------------------------------------------------------*/
-/* fast inline conversion of a chunk                                          */
+/* fast inline conversion of a csv chunk (using user specified formatting)    */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
+bool ToRsb::bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  
+  char *azRecordStart;
+  char *azFieldStart;
+  
+  ColPix xColPix;
+  eDM ePixDatum;
+  i8 nPixLength;
+  i8 nPixScale;
+  i8 nPixPrecision;
+
+  i8 iBoolean;
+  
+  Dte xDate;
+  u8 uYear;
+  u8 uMonth;
+  u8 uDay;
+  bool bLeapYear;
+
+  i8 iDecimal;
+  
+  i8 iInteger;
+  u8 uNumber;
+  bool bNegative;
+  i8 nDigits;
+
+  Ivl xInterval;
+  i8 nShift;
+
+  d8 dFloat;
+  d8 dUnsigned;
+  char xBuffer[256];
+  char* acBufDst;
+  i8 nExpDigits;
+
+  Tme xTime;
+  u8 uHour;
+  u8 uMinute;
+  u8 uSecond;
+  u8 uMicrosecond;
+  
+  Tsp xTimestamp;
+
+  char* azVchHead;
+  char* acVchDst;
+  i8 nChars;
+  bool bSawEnclosedLeading;
+  bool bSawEnclosedTrailing;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 0) begin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  char* azCsvSrc = azCsvChunk;
+  char cSrcChr = *azCsvSrc;
+
+  ColPix* aColPix = m_pRowSlab->axaColPix();
+  
+  Column* pCol = nullptr;
+
+  i8 iHash = 0;
+  tPN tPtnNo = 0;
+  tPN tPtnNo_byBkt = 0;
+  i8 iBucketId = 0;
+
+  i8 i_Fld = 0;
+  bool bSawFldSep = false;
+  
+  eEC eError = EC_NONE;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // determine field seperator
+
+  if (m_bFirst) {
+    m_bFirst = false;
+    
+    for (char* acTest = azCsvSrc; *acTest; acTest++) {
+      if (',' == *acTest) {
+        m_cFldSep = ',';
+        break;
+      }
+      if ('|' == *acTest) {
+        m_cFldSep = '|';
+        break;
+      }
+    }
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) while more csv data in chunk
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_TestMoreRecords:
+    
+  // skip leading whitespace
+//  while (bWHITE_SPACE())
+//    vADV_SRCCHR();
+//
+  // test for more csv to be parsed
+  if (! bMORE_DATA())
+    goto L_EndOfCsvChunk;
+  
+  azRecordStart = azCsvSrc;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) new rsb
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // alloc a new rsb, new another rsbBufer if necessary
+  if (! m_pRowSlab->bNewRow()) {    // ? inline ?
+    vNewRsbBuffer();
+    bool b = m_pRowSlab->bNewRow();
+    ASSERT(b);
+  }
+  
+  
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // 3) while more fields of current record
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+L_TestMoreFields:
+  
+  ASSERT(EC_NONE == eError);
+
+  if (! bMORE_FIELDS())
+    goto L_EndOfRecord;
+
+  azFieldStart = azCsvSrc;
+
+  
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // 4) decode and convert field i_Fld
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  
+  xColPix       = aColPix[i_Fld];
+  ePixDatum     = (eDM) xColPix.m_uDatum;
+  nPixLength    = xColPix.m_uLength;
+  nPixScale     = xColPix.m_uScale;
+  nPixPrecision = nPixLength - nPixScale;
+
+  bSawFldSep = false;
+
+  // debug
+  //pCol = m_pStreamDef->pGetColumn(i_Fld);
+
+  switch (ePixDatum) {
+    case DM_BOL : goto L_Boolean;
+    case DM_DTE : goto L_Date;
+    case DM_BCD : goto L_Decimal;
+    case DM_FLT : goto L_Float;
+    case DM_INT : goto L_Integer;
+    case DM_IVL : goto L_Interval;
+    case DM_TME : goto L_Time;
+    case DM_TSP : goto L_Timestamp;
+    case DM_VCH : goto L_Varchar;
+    default:
+      RASSERT(0);
+  }
+  
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.a) boolean field : true | false | uNumber
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Boolean:
+  
+  vSKIP_WHITE_SPACE();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // boolean portion
+  
+  // collect characters representing a boolean
+  if ('t' == cSrcChr || 'T' == cSrcChr) {
+    // true case
+    iBoolean = true;
+    vADV_SRCCHR(); // skip 't'
+  }
+  else
+  if ('f' == cSrcChr || 'F' == cSrcChr) {
+    // false case
+    iBoolean = false;
+    vADV_SRCCHR(); // skip 'f'
+  }
+  else
+  if (bIS_DIGIT()) {
+    // numeric case
+    uNumber = 0;
+    for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uNumber);
+      nDigits++;
+    }
+    if (nDigits > 19) {
+      eError = EC_CSV_BOOLEAN_TOO_LARGE;
+      goto L_FieldError;
+    }
+  
+    if (uNumber > 0)
+      iBoolean = true;
+    else
+      iBoolean = false;
+  }
+  else {
+    // unrecognisable boolean
+    eError = EC_CSV_BOOLEAN_INVALID;
+    goto L_FieldError;
+  }
+
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all boolean portions collected
+  
+  m_pRowSlab->vDeposit(iBoolean);
+
+  goto L_PostField;                                            // end of boolean
+    
+    
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.b) date field : year - month - day // year range is ????
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Date:
+  
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // year portion
+  
+  // collect digits for year
+  uYear = 0;
+  for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uYear);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 4) {
+    eError = EC_CSV_YEAR_TOO_LARGE;
+    goto L_FieldError;
+  }
+
+  // adjust a 2-digit year
+  if (uYear <= 99)
+    uYear += 2000;
+
+  // skip over separator
+  if ('-' != cSrcChr) {
+    eError = EC_CSV_DATE_SEP_MISSING;
+    goto L_FieldError;
+  }
+  vADV_SRCCHR(); // skip '-'
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // month portion
+    
+  // collect digits for month
+  uMonth = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uMonth);
+    nDigits++;
+  }
+
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_MONTH_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_MONTH_TOO_LARGE;
+    goto L_FieldError;
+  }
+
+  // skip over separator
+  if ('-' != cSrcChr) {
+    eError = EC_CSV_DATE_SEP_MISSING;
+    goto L_FieldError;
+  }
+  vADV_SRCCHR(); // skip '-'
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // day portion
+          
+  // collect digits for day
+  uDay = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uDay);
+    nDigits++;
+  }
+
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_DAY_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_DAY_TOO_LARGE;
+    goto L_FieldError;
+  }
+
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all date portions collected
+
+  // validate the year
+  if (uYear < C_YEAR_MIN) {
+    eError = EC_CSV_YEAR_TOO_SMALL;
+    goto L_FieldError;
+  }
+  if (uYear > C_YEAR_MAX) {
+    eError = EC_CSV_YEAR_TOO_LARGE;
+    goto L_FieldError;
+  }
+
+  // validate the month
+  if (uMonth < 1 || uMonth > 12) {
+    eError = EC_CSV_MONTH_INVALID;
+    goto L_FieldError;
+  }
+  
+  // validate day wrt possible leap year
+  
+  // determine if a leap year
+  if (uYear % 4 == 0) {
+    if ((uYear % 100 == 0) && (uYear % 400 != 0))
+      bLeapYear = false;
+    else
+      bLeapYear = true;
+  }
+  else {
+    bLeapYear = false;
+  }
+
+  // validate days per month
+  if (uDay < 1) {
+    eError = EC_CSV_DAY_INVALID;
+    goto L_FieldError;
+  }
+  
+  if (bLeapYear) {
+    if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
+      eError = EC_CSV_DAY_NOT_LEAPYEAR;
+      goto L_FieldError;
+    }
+  }
+  else {
+    if (uDay > (u8)iDaysPerMonth[uMonth]) {
+      eError = EC_CSV_DAY_INVALID;
+      goto L_FieldError;
+    }
+  }
+
+  // compute final field value
+  xDate.m_uYearDelta = uYear - C_YEAR_BASE;
+  xDate.m_uMonth     = uMonth;
+  xDate.m_uDay       = uDay;
+  xDate.m_uSpare     = 0;
+  
+  // deposit the date
+  m_pRowSlab->vDeposit(xDate);
+
+  goto L_PostField;                                               // end of date
+
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Decimal:
+  
+  /*
+      note: decimals are scaled (numerically shifted left x 10) by nPixScale
+   */
+
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional leading sign
+
+  // collect sign
+  if ('-' == cSrcChr) {
+    bNegative = true;
+    vADV_SRCCHR(); // skip '-'
+  }
+  else
+  if ('+' == cSrcChr) {
+    bNegative = false;
+    vADV_SRCCHR(); // skip '+'
+  }
+  else {
+    bNegative = false;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unsigned number portion
+
+  // ignore leading 0's
+  while ('0' == cSrcChr)
+    vADV_SRCCHR(); // skip '0'
+    
+  // collect digits for leading number
+  uNumber = 0;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uNumber);
+    nDigits++;
+    nPixPrecision--;
+    if (nPixPrecision < 0)
+      goto L_FieldError;
+  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional fraction portion
+  
+  // collect further digits for trailing fraction
+  if ('.' == cSrcChr) {
+    
+    vADV_SRCCHR(); // skip '.'
+    
+    for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uNumber);
+      nDigits++;
+      nPixScale--;
+    }
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_DECIMAL_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 19) {
+    eError = EC_CSV_DECIMAL_TOO_LARGE;
+    goto L_FieldError;
+  }
+  // correct for scale by x 10 till correctly scaled
+  while (nPixScale--)
+    uNumber *= 10;
+  
+  // round up if there any more digits
+  if (bIS_DIGIT()) {
+    if (cSrcChr - '0' >= 5)
+      uNumber += 1;
+    while (bIS_DIGIT())
+      vADV_SRCCHR(); // skip remaining digits
+  }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all decimal portions collected
+  
+  // have we exceeded the max ?
+  if (uNumber > (u8)C_I8_MAX) {
+    eError = EC_CSV_DECIMAL_TOO_LARGE;
+    goto L_FieldError;
+  }
+  
+  // compute final field value
+  iDecimal = bNegative ? - uNumber : uNumber;
+  
+  // have we gone below the negative min ?
+  if (iDecimal < C_I8_MIN) {
+    eError = EC_CSV_DECIMAL_TOO_SMALL;
+    goto L_FieldError;
+  }
+  
+  // deposit the decimal
+  m_pRowSlab->vDeposit(iDecimal);
+
+  goto L_PostField;                                            // end of decimal
+
+    
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.d) float field : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Float:
+    
+  /*
+      note: this function uses atof from stdlib.h to convert the field text
+            into a d8 floaing point double
+   */
+  
+  vSKIP_WHITE_SPACE();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional leading sign
+
+  // collect sign
+  if ('-' == cSrcChr) {
+    bNegative = true;
+    vADV_SRCCHR(); // skip '-'
+  }
+  else
+  if ('+' == cSrcChr ) {
+    bNegative = false;
+    vADV_SRCCHR(); // skip '+'
+  }
+  else {
+    bNegative = false;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unsigned number portion
+
+  // collect digits for leading number
+  acBufDst = xBuffer;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+    *acBufDst++ = cSrcChr;
+    nDigits++;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional fraction portion
+  
+  // collect digits for middle fraction
+  if ('.' == cSrcChr) {
+    *acBufDst++ = cSrcChr;
+    vADV_SRCCHR(); // skip '.'
+    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+      *acBufDst++ = cSrcChr;
+      nDigits++;
+    }
+  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional exponent portion
+  
+  // collect digits for trailing exponent
+  if ('e' == cSrcChr || 'E' == cSrcChr) {
+    
+    *acBufDst++ = cSrcChr;
+    vADV_SRCCHR(); // skip 'e'
+
+    // test for +/-
+    if ('+' == cSrcChr || '-' == cSrcChr) {
+      *acBufDst++ = cSrcChr;
+      vADV_SRCCHR(); // skip +/-
+    }
+        
+    // collect exponent digits
+    for  (nExpDigits = 0; nExpDigits < 3 && bIS_DIGIT(); vADV_SRCCHR()) {
+      *acBufDst++ = cSrcChr;
+      nExpDigits++;
+    }
+    
+    // should have seen some exponent digits
+    if (! nExpDigits) {
+      eError = EC_CSV_EXPONENT_MISSING;
+      goto L_FieldError;
+    }
+  }
+
+  // terminate
+  *acBufDst++ = '\0';
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_FLOAT_INVALID;
+    goto L_FieldError;
+  }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all float portions collected
+  
+  // compute final result
+  dUnsigned = atof(xBuffer); // SHOULD BE USING strtod() AND TESTING FOR ERROR
+  dFloat = bNegative ? - dUnsigned : dUnsigned;
+  
+  // deposit the float
+  
+  m_pRowSlab->vDeposit(dFloat);
+
+  goto L_PostField;                                              // end of float
+
+    
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.e) integer : [+|-] uNumber
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Integer:
+  
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional leading sign
+  
+  // collect sign
+  if ('-' == cSrcChr) {
+    bNegative = true;
+    vADV_SRCCHR(); // skip '-'
+  }
+  else
+  if ('+' == cSrcChr) {
+    bNegative = false;
+    vADV_SRCCHR(); // skip '+'
+  }
+  else {
+    bNegative = false;
+  }
+    
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unsigned number portion
+  
+  // collect digits for number
+  uNumber = 0;
+  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uNumber);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_INTEGER_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 19) {
+    eError = EC_CSV_INTEGER_TOO_LARGE;
+    goto L_FieldError;
+  }
+
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all integer portions collected
+
+  if (uNumber > (u8)C_I8_MAX) {
+    eError = EC_CSV_INTEGER_TOO_LARGE;
+    goto L_FieldError;
+  }
+  
+  // compute final field value
+  iInteger = bNegative ? - uNumber : uNumber;
+  
+  // deposit the integer
+  m_pRowSlab->vDeposit(iInteger);
+    
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,iInteger);
+  
+  goto L_PostField;                                            // end of integer
+
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.f) interval field : seconds [ . microseconds ]
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Interval:
+  
+  vSKIP_WHITE_SPACE();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unsigned seconds portion
+  
+  // collect digits for leading seconds
+  uSecond = 0;
+  for  (nDigits = 0; nDigits < 9 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uSecond);
+    nDigits++;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional microseconds portion
+  
+  // collect further digits for trailing microseconds
+  uMicrosecond = 0;
+  nShift = C_IVL_USEC_SHIFT;
+  if ('.' == cSrcChr) {
+    vADV_SRCCHR(); // skip '.'
+    for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uMicrosecond);
+      nDigits++;
+      nShift /= 10;
+    }
+  }
+  
+  // adjust to microseconds
+  uMicrosecond *= nShift;
+
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_INTERVAL_INVALID;
+    goto L_FieldError;
+  }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all interval portions collected
+
+  // have we exceeded the max for second?
+  if (uSecond > (u8)C_IVL_SEC_MAX) {
+    eError = EC_CSV_INTERVAL_SECS_TOO_LARGE;
+    goto L_FieldError;
+  }
+  
+  // have we exceeded the max for microsecond?
+  if (uMicrosecond > (u8)C_IVL_USEC_MAX) {
+    eError = EC_CSV_INTERVAL_USECS_TOO_LARGE;
+    goto L_FieldError;
+  }
+  
+  // compute final field value
+  xInterval.m_uSecond = uSecond;
+  xInterval.m_uMicro  = uMicrosecond;
+  
+  // deposit the interval
+  m_pRowSlab->vDeposit(xInterval);
+
+  goto L_PostField;                                           // end of interval
+
+    
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Time:
+  
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // hour portion
+
+  // collect digits for hour
+  uHour = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uHour);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_HOUR_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_HOUR_TOO_LARGE;
+    goto L_FieldError;
+  }
+
+  // skip over separator
+  if (':' != cSrcChr) {
+    eError = EC_CSV_TIME_SEP_MISSING;
+    goto L_FieldError;
+  }
+  vADV_SRCCHR(); // skip ':'
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // minute portion
+
+  // collect digits for minute
+  uMinute = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uMinute);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_MINUTE_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_MINUTE_TOO_LARGE;
+    goto L_FieldError;
+  }
+  // skip over separator
+  if (':' != cSrcChr) {
+    eError = EC_CSV_TIME_SEP_MISSING;
+    goto L_FieldError;
+  }
+  vADV_SRCCHR(); // skip ':'
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // second portion
+
+  // collect digits for second
+  uSecond = 0;
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uSecond);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_SECOND_INVALID;
+    goto L_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_SECOND_TOO_LARGE;
+    goto L_FieldError;
+  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional microsecond portion
+  
+  // a dot without any futher digits is ok
+  uMicrosecond = 0;
+  if ('.' == cSrcChr) {
+    
+    vADV_SRCCHR(); // skip '.'
+
+    for (nShift = C_IVL_USEC_SHIFT; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uMicrosecond);
+      nShift /= 10;
+    }
+
+    uMicrosecond = uMicrosecond * nShift;
+  }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all time portions collected
+
+  if (uHour > 23) {
+    eError = EC_CSV_HOUR_TOO_LARGE;
+    goto L_FieldError;
+  }
+  
+  if (uMinute > 59) {
+    eError = EC_CSV_MINUTE_TOO_LARGE;
+    goto L_FieldError;
+  }
+  
+  if (uSecond > 59) {
+    eError = EC_CSV_SECOND_TOO_LARGE;
+    goto L_FieldError;
+  }
+  
+  // compute final field value
+  xTime.m_uHour   = uHour;
+  xTime.m_uMinute = uMinute;
+  xTime.m_uSecond = uSecond;
+  xTime.m_uMicro  = uMicrosecond;
+  xTime.m_uSpare  = 0;
+
+  // deposit the time
+  m_pRowSlab->vDeposit(xTime);
+
+  goto L_PostField;                                               // end of time
+
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.h) timestamp field :
+  //        year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Timestamp:
+  {
+    Tsp xTsp;
+    SN_Tsp snTsp;
+
+    vSKIP_WHITE_SPACE();
+    
+    xTsp = snTsp.i(&azCsvSrc,m_pFmt);
+    cSrcChr = *azCsvSrc;
+    m_pRowSlab->vDeposit(xTsp);
+  }
+  
+  goto L_PostField;
+
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  // 4.i) varchar field :
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+L_Varchar:
+  
+  // ** do not skip white space **
+
+  nChars = 0;
+  bSawEnclosedTrailing = false;
+  bSawEnclosedLeading  = false;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+
+  // allocate string space in slab
+  azVchHead = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchHead;
+  
+  if (! m_pFmt->m_cEnclosedBy_Leading)
+    bSawEnclosedLeading = false;
+
+  // find first non-space character
+  while (' ' == cSrcChr)
+    vADV_SRCCHR(); // skip ' '
+
+  azCsvSrc = azFieldStart;
+
+  while (cSrcChr) {
+        
+    // test for field separator (because its not enclosed)
+    if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+      break;
+    
+    if (nChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    
+    vADV_SRCCHR(); // next char
+  }
+
+  // terminate
+  *acVchDst++ = '\0';
+
+  // its not an enclosed varchar so we consider it to be valid
+  if (nChars >= nPixLength)
+    nChars = nPixLength;
+
+  // if this an enclosed varchar we should have expected to
+  // see the trailing enclosedBy
+  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+    eError = EC_CSV_VARCHAR_INVALID;
+    goto L_FieldError;
+  }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all varchar portions collected
+  
+  m_pRowSlab->vDepositString_end(nChars+1);
+
+  goto L_PostField;                                            // end of varchar
+
+  
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // 5) processing at end of field
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+L_PostField:
+    
+  // advance over any trailing chars till field separator or record terminator
+  while (cSrcChr) {
+    
+    if (cSrcChr == m_cFldSep) {
+      bSawFldSep = true;
+      vADV_SRCCHR(); // skip m_cFldSep
+      break;
+    }
+    
+    if (cSrcChr == m_cRecEnd)
+      break;
+    
+    vADV_SRCCHR(); // skip any
+  }
+
+  // move to next field
+  i_Fld++;
+  goto L_TestMoreFields;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 6) encountered a field error
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_FieldError:
+
+  /*
+     know:
+   
+           i_Fld
+           eError
+           azCsvSrc
+           azRecordStart;
+           azFieldStart;
+           m_pStreamDef
+           azCsvChunk
+   
+             this node
+             time
+   
+     don't know:
+   
+           origin
+           file
+           offset
+   
+   */
+  
+  // discard partial row in row slab
+  m_pRowSlab->vDiscardInvalidRow();
+
+  // skip to end of record
+  while (cSrcChr) {
+    
+    if (cSrcChr == m_cRecEnd)
+      break;
+    
+    vADV_SRCCHR(); // skip any
+  }
+  
+  // increment invalid records
+  AM::vIncRowsInvalid(m_pPipelineJob);
+  m_nRecords++;
+  
+  // clear error
+  eError = EC_NONE;
+
+  // begin new record
+  i_Fld = 0;
+
+  // skip
+  if (cSrcChr)
+    vADV_SRCCHR(); // skip m_cRecEnd
+
+  goto L_TestMoreRecords;
+
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 7) end of record
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EndOfRecord:
+  
+  ASSERT(! bMORE_FIELDS());
+  
+#ifdef WITH_DEBUG_VERSION
+  if (m_bTrace) {
+    if (! bSawFldSep)
+      vTrace("\n"_Stz);
+    vTrace("-- recSep -- \n"_Stz);
+  }
+#endif
+
+  // set partition hash
+  if (m_bPtnHash) {
+    
+    
+    tPtnNo = PtnMap::tHashToPtnNo(iHash,m_nPtns);
+    
+    // partition mapping experiment by Ray 12 Nov 2020
+//    iBucketId = PtnMap::iHashToBucketId(iHash);
+//    tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
+//    tPtnNo = tPtnNo_byBkt;
+    
+    //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
+    m_pRowSlab->vDeposit(tPtnNo);
+    iHash = 0;
+  }
+  
+  // increment records processed
+  AM::vIncRowsProcessed(m_pPipelineJob);
+  m_nRecords++;
+
+  // begin new record
+  i_Fld = 0;
+  
+  if (cSrcChr)
+    vADV_SRCCHR(); // skip m_cRecEnd
+
+  goto L_TestMoreRecords;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 8) reached end of azCsvChunk
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EndOfCsvChunk:
+    
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* fast inline conversion of a csv chunk (using standard csv format rules)    */
+/*----------------------------------------------------------------------------*/
+bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   

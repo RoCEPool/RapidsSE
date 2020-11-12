@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Format.hpp -- set of formatting characters                                 */
+/* Format.hpp -- set of formatting characters and rules                       */
 /*============================================================================*/
 #pragma once
 
@@ -32,7 +32,7 @@ namespace Chunks
     Format(void);
    ~Format(void) noexcept(false);
   
-    bool bIsOrdCsv(void);
+    bool bIsStdCsv(void);
     void vReset(void);
     void vSet(Format* pFmt);
     bool bSetFormat(TagSet* pFmtTagSet);
@@ -43,7 +43,7 @@ namespace Chunks
     Footer* aFooter(void);
   };
   
-  Format* _pFormatters(void* aAddr);
+  Format* _pFormat(void* aAddr);
 }
 
 /*============================================================================*/

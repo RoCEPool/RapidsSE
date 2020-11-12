@@ -23,7 +23,6 @@ namespace Load
     RowSlab*   m_pRowSlab;
     RsbBuffer* m_pRsbBuffer;
 
-    bool       m_bOrdCsv;
     char       m_cRecEnd;
     char       m_cFldSep;
 
@@ -38,12 +37,13 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-  ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
-        Format* pFmt, bool bPtnHash);
+    ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
+          Format* pFmt, bool bPtnHash);
    ~ToRsb(void) noexcept(false);
   
     bool bConvertCrw(CrwBuffer* pCrwBuffer);
-    bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
+    bool bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
+    bool bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
 
     RsbBuffer* pDanglingRsbBuffer(void);
     RsbBuffer* pFullRsbBuffer(void);
