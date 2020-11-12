@@ -878,6 +878,45 @@
 /*----------------------------------------------------------------------------*/
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
+: start::defineProcedures5
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add node
+  sPath
+  "
+  procedure add node
+    parameters $NodeNm $IpAddr $PortNo
+  begin
+  stage stageA on origin :
+
+    start | periodic once | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove node
+  sPath
+  "
+  procedure remove node
+    parameters $NodeNm
+  begin
+  stage stageA on origin :
+
+    start | periodic once | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
 : start::defineProc_SteadyState
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
@@ -2083,6 +2122,7 @@
   start::defineProcedures2
   start::defineProcedures3
   start::defineProcedures4
+  start::defineProcedures5
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
   start::defineProc_Query
