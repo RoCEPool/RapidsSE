@@ -5,9 +5,9 @@
 " OP_dropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: dropTable_DataPulse
+: dropTable_StartMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove table
@@ -16,15 +16,28 @@
     PipeIn[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
-    true
-    exit
+  else
+    PipeIn[].pipeOut
   then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DESTROYMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: dropTable_DestroyMarker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
   <tableNm> table::dropTable
 
-  PipeIn[].pipeOut
+  // delete the DESTROYMARKER
+  PipeIn[].delete
+
+  // pipeout an EOSMARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut
 
   true
 ;
@@ -38,7 +51,8 @@
 
   op__topology
 
-  find: dropTable_DataPulse ZK_DATAPULSE op[].handler!
+  find: dropTable_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: dropTable_DestroyMarker ZK_DESTROYMARKER op[].handler!
 
   op__loop
 

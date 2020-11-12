@@ -12,6 +12,7 @@ void Step::vAddSteps_RegXmits(void)
   vAddStep("Xmits[]"_Stz,                &Step::vRegXmitsGet);
   vAddStep("Xmits[].delete"_Stz,         &Step::vRegXmitsDelete);
   vAddStep("Xmits[].handleCancel"_Stz,   &Step::vRegXmitsHandleCancel);
+  vAddStep("Xmits[].handleDestroy"_Stz,  &Step::vRegXmitsHandleDestroy);
   vAddStep("Xmits[].handleEos"_Stz,      &Step::vRegXmitsHandleEos);
   vAddStep("Xmits[].handleError"_Stz,    &Step::vRegXmitsHandleError);
   vAddStep("Xmits[].handleExit"_Stz,     &Step::vRegXmitsHandleExit);
@@ -62,6 +63,22 @@ void Step::vRegXmitsHandleCancel(void)
   pXmits->vIncExit();
   
   m_pDataStack->vPushInt(pXmits->bExitDone());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Xmits[].handleDestroy -- handle consume of destory marker                  */
+/*----------------------------------------------------------------------------*/
+void Step::vRegXmitsHandleDestroy(void)
+{
+  ENTRY();
+  
+  Xmits* pXmits = _pXmits(*m_pLogicUnit->m_xpXmits);
+  
+  pXmits->vIncDestroy();
+  
+  m_pDataStack->vPushInt(pXmits->bDestroyDone());
   
   EXIT();
 }

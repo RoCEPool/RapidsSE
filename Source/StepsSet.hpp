@@ -1155,6 +1155,7 @@ public:
   void vRegXmitsDelete(void);
   void vRegXmitsGet(void);
   void vRegXmitsHandleCancel(void);
+  void vRegXmitsHandleDestroy(void);
   void vRegXmitsHandleEos(void);
   void vRegXmitsHandleError(void);
   void vRegXmitsHandleExit(void);
@@ -1215,6 +1216,7 @@ public:
   void vRegOperandNewCancelMarker(void);
   void vRegOperandNewCsvBuffer(void);
   void vRegOperandNewDataPulse(void);
+  void vRegOperandNewDestroyMarker(void);
   void vRegOperandNewEosMarker(void);
   void vRegOperandNewErrorMarker(void);
   void vRegOperandNewErroredMarker(void);

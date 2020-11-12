@@ -96,6 +96,7 @@ bool Xmits::bDestroyDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
+  if (m_iDestroyMarkers > m_iXmits)
   vTrace("Warning: ConsumeOp received ZK_DESTROYMARKER %lld; expected %lld\n"_Stz,
          m_iDestroyMarkers, m_iXmits);
   

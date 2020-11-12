@@ -18,6 +18,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_DESTROYMARKER ...                                           */
+/*----------------------------------------------------------------------------*/
+: xmit_DestroyMarker \handler
+
+  //"ZK_DESTROYMARKER" .verbose
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
 : xmit_StartMarker \handler
@@ -53,9 +64,10 @@
 
   op__topology
 
-  find: xmit_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: xmit_RsbBuffer   ZK_RSBBUFFER   op[].handler!
-  find: xmit_StartMarker ZK_STARTMARKER op[].handler!
+  find: xmit_DestroyMarker ZK_DESTROYMARKER op[].handler!
+  find: xmit_EosMarker     ZK_EOSMARKER     op[].handler!
+  find: xmit_RsbBuffer     ZK_RSBBUFFER     op[].handler!
+  find: xmit_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop
 

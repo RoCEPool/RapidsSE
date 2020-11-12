@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: truncateTable_DataMarker \handler
+: truncateTable_DataPulse \handler
 
 
   //"Operand:- ZK_DATAPULSE" .verbose
@@ -15,9 +15,9 @@
   // truncate the buffers of the tablePtn
   tablePtn[].truncate
 
-  PipeIn[].pipeOut
+  PipeIn[].pipeout
 
-  Operand[].newEosMarker
+  Operand[].newDestroyMarker
   Operand[].pipeOut
 
   true
@@ -30,7 +30,7 @@
 
   //"Operand:- ZK_STARTMARKER" .verbose
 
-  // check if we can scan the table
+  // check if we can truncate the table
   <tableNm> op__table if
     Table[].tablePtn@ to tablePtn[]
     PipeIn[].pipeOut
@@ -49,8 +49,8 @@
 
   op__topology
 
-  find: truncateTable_DataMarker ZK_DATAPULSE op[].handler!
   find: truncateTable_StartMarker ZK_STARTMARKER op[].handler!
+  find: truncateTable_DataPulse ZK_DATAPULSE op[].handler!
 
   op__loop
 

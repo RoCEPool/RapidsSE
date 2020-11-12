@@ -32,6 +32,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].newCancelMarker"_Stz,&Step::vRegOperandNewCancelMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vRegOperandNewCsvBuffer);
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vRegOperandNewDataPulse);
+  vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vRegOperandNewDestroyMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vRegOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vRegOperandNewErrorMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vRegOperandNewErroredMarker);
@@ -555,6 +556,20 @@ void Step::vRegOperandNewDataPulse(void)
   ASSERT (m_pLogicUnit->m_xpOperandA.bIsNull());
   
   m_pLogicUnit->m_xpOperandA = new Marker(OM_DATAPULSE);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newDestroyMarker -- new a destry marker                          */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandNewDestroyMarker(void)
+{
+  ENTRY();
+  
+  ASSERT (m_pLogicUnit->m_xpOperandA.bIsNull());
+  
+  m_pLogicUnit->m_xpOperandA = new Marker(OM_DESTROYMARKER);
   
   EXIT();
 }
