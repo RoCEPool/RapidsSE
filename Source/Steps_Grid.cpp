@@ -96,32 +96,28 @@ void Step::vGridListNodes(void)
   StreamSet* pStreamSet  = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   i8 i_Node = m_pDataStack->iPopAsInt(__func__);
-  for (;;) {
-
-    Node* pNode = AM::pGrid()->pGetNode(i_Node);
+  for (Node_I oNode_I(i_Node); oNode_I.bCont(); oNode_I.vNext()) {
 
     Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
-                                      pNode->iNodeNo(),
-                                      pNode->szNodeNm(),
-                                      pNode->szIPAddr(),
-                                      pNode->iPortNo(),
-                                      aNS[pNode->eState()],
+                                      (*oNode_I)->iNodeNo(),
+                                      (*oNode_I)->szNodeNm(),
+                                      (*oNode_I)->szIPAddr(),
+                                      (*oNode_I)->iPortNo(),
+                                      aNS[(*oNode_I)->eState()],
                                       C_VARGS_END);
   
     if (! pRow) {
       // call again
-      m_pDataStack->vPushInt(i_Node);
+      m_pDataStack->vPushInt(oNode_I.i_Node());
       break;
     }
     
-    if (++i_Node >= AM::nDefinedNodes()) {
-      // done
-      m_pDataStack->vPushInt(false);
-      break;
-    }
   }
   
+  // done (dont call again)
+  m_pDataStack->vPushInt(0);
+
   EXIT();
 }
 

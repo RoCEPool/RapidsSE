@@ -15,6 +15,7 @@ namespace Grids
 //------------------------------------------------------------------------------
 
 #include "Node.hpp"
+#include "Node_I.hpp"
 #include "Grid.hpp"
 
 #include "SP_Grid.hpp"
