@@ -9,6 +9,28 @@
 /*----------------------------------------------------------------------------*/
 : lsNodes_action
 
+  0 locals| iCursor |
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // pipeout the streamDef
+  streamDef[].pipeOut
+
+  begin
+    streamSetTable[] StreamSet[].new
+    iCursor grid::listNodes to iCursor
+  
+    iCursor while
+      StreamSet[].pipeOut
+  repeat
+
+  // pipeout the infoset
+  StreamSet[].pipeOut
+
   true
 ;
 

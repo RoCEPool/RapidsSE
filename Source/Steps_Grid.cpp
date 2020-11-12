@@ -13,6 +13,7 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::definedNodes"_Stz,      &Step::vGridDefinedNodes);
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
+  vAddStep("grid::listNodes"_Stz,         &Step::vGridListNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
 
@@ -79,6 +80,47 @@ void Step::vGridIncConnectedNodes(void)
   ENTRY();
   
   AM::pGrid()->vIncConnectedNodes();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::listNodes -- list nodes in this grid                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vGridListNodes(void)
+{
+  ENTRY();
+  
+  Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  StreamDef* pStreamDef  = pStreamSetTable->pStreamDef();
+  StreamSet* pStreamSet  = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+
+  i8 i_Node = m_pDataStack->iPopAsInt(__func__);
+  for (;;) {
+
+    Node* pNode = AM::pGrid()->pGetNode(i_Node);
+
+    Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      pNode->iNodeNo(),
+                                      pNode->szNodeNm(),
+                                      pNode->szIPAddr(),
+                                      pNode->iPortNo(),
+                                      aNS[pNode->eState()],
+                                      C_VARGS_END);
+  
+    if (! pRow) {
+      // call again
+      m_pDataStack->vPushInt(i_Node);
+      break;
+    }
+    
+    if (++i_Node >= AM::nDefinedNodes()) {
+      // done
+      m_pDataStack->vPushInt(false);
+      break;
+    }
+  }
   
   EXIT();
 }
