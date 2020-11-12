@@ -139,6 +139,7 @@ assert::stack_0
         "OP_listColumns.sen"          include
         "OP_listIndexes.sen"          include
         "OP_listIndexColumns.sen"     include
+        "OP_listNodes.sen"            include
         "OP_listPartitionColumns.sen" include
         "OP_listPartitions.sen"       include
         "OP_listParts.sen"            include
