@@ -23,7 +23,6 @@ namespace Load
     RowSlab*   m_pRowSlab;
     RsbBuffer* m_pRsbBuffer;
 
-    bool       m_bOrdCsv;
     char       m_cRecEnd;
     char       m_cFldSep;
 

@@ -33,7 +33,6 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_pRowSlab   = nullptr;
   m_pRsbBuffer = nullptr;
 
-  m_bOrdCsv    = pFmt->bIsOrdCsv();
   m_cRecEnd    = '\n'; // 0x0a
   m_cFldSep    = ',';
 
