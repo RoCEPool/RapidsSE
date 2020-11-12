@@ -423,8 +423,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return true;
-  
   switch(i_OperandKind) {
 
     case ZK_CANCELMARKER:

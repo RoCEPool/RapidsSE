@@ -100,8 +100,8 @@ bool Xmits::bDataPulseDone(void)
     vTrace("Warning: ConsumeOp ZK_DATAPULSE received %lld; expected %lld\n"_Stz,
            m_iDataPulses, m_iXmits);
   
-  if (m_iDataPulses == m_iXmits) {
-    //if (m_iPulseMarkers == 0) {
+  //if (m_iDataPulses == m_iXmits) {
+  if (m_iDataPulses == 0) {
     return true;
   }
   else

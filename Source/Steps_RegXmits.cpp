@@ -140,8 +140,8 @@ void Step::vRegXmitsHandleDataPulse(void)
   
   Xmits* pXmits = _pXmits(*m_pLogicUnit->m_xpXmits);
   
-  pXmits->vIncDataPulse();
   m_pDataStack->vPushInt(pXmits->bDataPulseDone());
+  pXmits->vIncDataPulse();
   
   EXIT();
 }
