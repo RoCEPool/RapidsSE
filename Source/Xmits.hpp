@@ -11,6 +11,7 @@ namespace Pipelines
     i8             m_iXmits;   // consume xmits
     
     i8             m_iCancelMarkers;  // cancel markers received by consumeOp
+    i8             m_iDestroyMarkers; // destroy markers received by consumeOp
     i8             m_iExitMarkers;    // exit markers received by consumeOp
     i8             m_iEosMarkers;     // eos / error markers received by consumeOp
     i8             m_iPulseMarkers;   // pulse markers received by consumeOp
@@ -29,6 +30,7 @@ namespace Pipelines
     ~Xmits(void) noexcept(false);
     
     bool bCancelDone(void);
+    bool bDestroyDone(void);
     bool bEosDone(void);
     bool bErrorDone(void);
     bool bExitDone(void);
@@ -38,6 +40,7 @@ namespace Pipelines
     bool bStreamDefDone(void);
     
     void vIncCancel(void);
+    void vIncDestroy(void);
     void vIncEos(void);
     void vIncError(void);
     void vIncExit(void);

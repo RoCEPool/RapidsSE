@@ -50,13 +50,14 @@ Xmits::Xmits(i8 iXmits)
 
   m_iXmits  = iXmits;
   
-  m_iCancelMarkers = 0;
-  m_iExitMarkers   = 0;
-  m_iEosMarkers    = 0;
-  m_iPulseMarkers  = 0;
-  m_iPulsedMarkers = 0;
-  m_iStartMarkers  = 0;
-  m_iStreamDefs    = 0;
+  m_iCancelMarkers  = 0;
+  m_iDestroyMarkers = 0;
+  m_iExitMarkers    = 0;
+  m_iEosMarkers     = 0;
+  m_iPulseMarkers   = 0;
+  m_iPulsedMarkers  = 0;
+  m_iStartMarkers   = 0;
+  m_iStreamDefs     = 0;
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
 }
@@ -82,6 +83,23 @@ bool Xmits::bCancelDone(void)
   
   if (m_iCancelMarkers == m_iXmits) {
     //m_iCancelMarkers = 0;
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy done ?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Xmits::bDestroyDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
+  
+  vTrace("Warning: ConsumeOp received ZK_DESTROYMARKER %lld; expected %lld\n"_Stz,
+         m_iDestroyMarkers, m_iXmits);
+  
+  if (m_iDestroyMarkers == m_iXmits) {
     return true;
   }
   else
@@ -226,6 +244,16 @@ void Xmits::vIncCancel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
   
   m_iCancelMarkers++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc destroy                                                                 */
+/*----------------------------------------------------------------------------*/
+void Xmits::vIncDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
+  
+  m_iDestroyMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/
