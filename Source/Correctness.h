@@ -30,6 +30,8 @@ namespace Correctness
 
 #include "Correct.hpp"
 
+#include "Fault.hpp"
+
 #include "MemLib.hpp"
 
 #include "AssertMacros.h"
