@@ -115,6 +115,7 @@ void Step::vRegPipeinKind(void)
        
          case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
          case OM_DATAPULSE:       eOperand = ZK_DATAPULSE;       break;
+         case OM_DESTROYMARKER:   eOperand = ZK_DESTROYMARKER;   break;
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
          case OM_ERROREDMARKER:   eOperand = ZK_ERROREDMARKER;   break;
