@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: TruncateIndex_DataMarker \handler
+: TruncateIndex_DataPulse \handler
 
 
   //"Operand:- ZK_DATAPULSE" .verbose
@@ -16,7 +16,7 @@
   // truncate the buffers of the tablePtn
   index[] tablePtn[].truncateIndex
 
-  Operand[].newEosMarker
+  Operand[].newDestroyMarker
   Operand[].pipeOut
 
   true
@@ -48,7 +48,7 @@
 
   op__topology
 
-  find: TruncateIndex_DataMarker ZK_DATAPULSE op[].handler!
+  find: TruncateIndex_DataPulse ZK_DATAPULSE op[].handler!
   find: TruncateIndex_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

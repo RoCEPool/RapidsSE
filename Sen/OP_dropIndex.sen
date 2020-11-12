@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: dropIndex_DataMarker
+: dropIndex_StartMarker
 
   // check if we can drop the index
   <indexNm> <tableNm> check::validIndexAssembly not if
@@ -15,16 +15,28 @@
     PipeIn[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
-    true
-    exit
+  else
+    PipeIn[].pipeOut
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  true
+;
 
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: dropIndex_DestroyMarker
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
   <indexNm> <tableNm> index::dropIndex
 
-  PipeIn[].pipeOut
+  // delete the DESTROYMARKER
+  PipeIn[].delete
+
+  // pipeout an EOSMARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut
 
   true
 ;
@@ -38,7 +50,8 @@
 
   op__topology
 
-  find: dropIndex_DataMarker ZK_DATAPULSE op[].handler!
+  find: dropIndex_StartMarker   ZK_STARTMARKER op[].handler!
+  find: dropIndex_DestroyMarker ZK_DESTROYMARKER op[].handler!
 
   op__loop
 
