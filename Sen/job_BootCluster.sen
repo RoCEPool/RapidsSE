@@ -21,23 +21,47 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: grid::connected ( -- t|f )
+//: grid::connected ( -- t|f )
+//
+//  grid::definedNodes 0
+//  do
+//    I grid::node node.isConnected not if
+//      args.verbose if
+//        I "Node no %v not connected" .printf
+//      then
+//      unloop
+//      false
+//      exit
+//    then
+//  loop
+//
+//  "All nodes connected" .verbose
+//
+//  true
+//;
+/*----------------------------------------------------------------------------*/
+: grid::isConnected ( -- t|f )
 
-  grid::definedNodes 0
-  do
-    I grid::node node.isConnected not if
-      args.verbose if
-        I "Node no %v not connected" .printf
-      then
-      unloop
-      false
-      exit
-    then
-  loop
+  true locals| allConnected |
 
-  "All nodes connected" .verbose
+  node_I[].new
 
-  true
+  begin
+
+    node_I[].node node.isConnected to allConnected
+    node_I[].next
+
+    allConnected node_i[].more and while
+    
+  repeat
+
+  node_I[].delete
+
+  allConnected if
+    "All nodes connected" .verbose
+  then
+
+  allConnected
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +70,8 @@
 : grid::pause ( -- )
 
   begin
-    grid::connected not
+    //grid::connected not
+    grid::isConnected not
   while
     100 thread::sleepMsec
   repeat

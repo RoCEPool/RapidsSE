@@ -80,6 +80,8 @@ void Step::vNode_INode(void)
   
   Node* pNode = m_pLogicUnit->m_xpNode_I->pNode();
 
+  m_pDataStack->vPushPtr(pNode);
+
   EXIT();
 }
 
