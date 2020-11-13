@@ -73,26 +73,45 @@
 /*----------------------------------------------------------------------------*/
 /* one iteration of connector behavior                                        */
 /*----------------------------------------------------------------------------*/
+//: _connectorTake ( -- )
+//
+//  0 locals| pNode |
+//
+//  // "_connectorTake" .
+//
+//  grid::definedNodes 0
+//  do
+//
+//    // get node I
+//    I grid::node to pNode
+//
+//    // connect to the node
+//    pNode node.sendSocket@ not if
+//      pNode .attemptConnectNode
+//    then
+//
+//  loop
+//;
+/*----------------------------------------------------------------------------*/
 : _connectorTake ( -- )
 
   0 locals| pNode |
 
-  // "_connectorTake" .
+  node_I[].new
 
-  grid::definedNodes 0
-  do
+  begin
 
-    // get node I
-    I grid::node to pNode
+    node_I[].node to pNode
 
-    // connect to the node
     pNode node.sendSocket@ not if
       pNode .attemptConnectNode
     then
 
-  loop
+    node_I[].next
+    node_i[].more while
+  repeat
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  node_I[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
