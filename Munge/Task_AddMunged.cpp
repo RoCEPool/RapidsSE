@@ -16701,7 +16701,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  1 Counter0[] + to Counter0[]\n"
     "\n"
-    "  Counter0[] grid::definedNodes == if\n"
+    "  Counter0[] grid::connectedNodes == if\n"
     "    // get the index def\n"
     "    Pipein[] to indexDef[]\n"
     "    nullptr to Pipein[]\n"
