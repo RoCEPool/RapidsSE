@@ -28,16 +28,32 @@
   1 task::acks!
 
   // send the job to each connected node in the grid
-  grid::definedNodes 0 do
+//  grid::definedNodes 0 do
+//
+//    I grid::node node.sendSocket@ if
+//      I pJob job.forward
+//    then
+//
+//  loop
 
-    I grid::node node.sendSocket@ if
-      I pJob job.forward
+  0 locals| pNode |
+
+  node_I[].new
+
+  begin
+
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.no pJob job.forward
     then
 
-  loop
+    node_I[].next
+    node_i[].more while
+  repeat
 
+  node_I[].delete
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* send job__begun back to originating node                                   */
@@ -70,7 +86,6 @@
 
   job[] "Job__Cancelled::send" find execute
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
