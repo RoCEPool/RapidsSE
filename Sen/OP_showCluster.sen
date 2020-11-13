@@ -23,17 +23,37 @@
   // create an infoSet operand
   streamSetTable[] streamSet[].new
 
-  grid::definedNodes 0 do
+//  grid::definedNodes 0 do
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // insert a row in the infoSet for the defined node
+//    I streamSetTable[] streamSet[].addShowCluster  not if
+//      StreamSet[].pipeOut
+//      streamSetTable[] streamSet[].new
+//      I streamSetTable[] StreamSet[].addShowCluster assert
+//    then
+//
+//  loop
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a row in the infoSet for the defined node
-    I streamSetTable[] streamSet[].addShowCluster  not if
+  0 locals| pNode |
+
+  node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.no streamSetTable[] streamSet[].addShowCluster  not if
       StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
-      I streamSetTable[] StreamSet[].addShowCluster assert
+      pNode node.no streamSetTable[] StreamSet[].addShowCluster assert
     then
 
-  loop
+    node_I[].next
+    node_i[].more while
+  repeat
+
+  node_I[].delete
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeout the infoset
