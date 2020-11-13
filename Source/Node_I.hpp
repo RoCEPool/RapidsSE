@@ -22,13 +22,13 @@ namespace Grids
     Node_I(i8 i_Node);
    ~Node_I(void) noexcept(false);
     
-    
     operator Node*(void);   // auto conversion
     Node* operator *(void); // dereference
 
-    bool bCont(void);
-    void vNext(void);
-    i8   i_Node(void);
+    bool  bMore(void);
+    void  vNext(void);
+    i8    i_Node(void);
+    Node* pNode(void);
 
   private:
     Footer* aFooter(void);

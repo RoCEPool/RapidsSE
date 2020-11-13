@@ -968,6 +968,13 @@ public:
   void vNodeStateFetch(void);
   void vNodeStatus(void);
 
+  // node iterator
+  void vNode_IDelete(void);
+  void vNode_IMore(void);
+  void vNode_INext(void);
+  void vNode_INode(void);
+  void vNode_INew(void);
+
   // now
   void vNowAsOf(void);
   void vNowDateStr(void);

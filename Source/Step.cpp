@@ -115,6 +115,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Metrics();
 
   Step::vAddSteps_Node();
+  Step::vAddSteps_Node_I();
   Step::vAddSteps_Now();
 
   Step::vAddSteps_Object();

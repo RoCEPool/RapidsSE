@@ -96,6 +96,7 @@ namespace Steps
     static void vAddSteps_Metrics(void);
 
     static void vAddSteps_Node(void);
+    static void vAddSteps_Node_I(void);
     static void vAddSteps_Now(void);
 
     static void vAddSteps_Object(void);

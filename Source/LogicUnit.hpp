@@ -113,6 +113,8 @@ namespace Expressions
     REG<Object>      m_xpRegister2; // general purpose reg 2[]
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
+    REG<Node_I>      m_xpNode_I;    // node iterator
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
   

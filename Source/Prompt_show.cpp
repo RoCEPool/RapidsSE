@@ -42,7 +42,7 @@ bool Prompt::bPrompt_show(SePrompt* pPrompt)
   if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
     
     SP_Node spNode;
-    for (Node_I oNode_I; oNode_I.bCont(); oNode_I.vNext())
+    for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
       vTrace("  %s\n"_Stz,spNode.sz(oNode_I));
     
     vTrace("\n"_Stz);

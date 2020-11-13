@@ -80,9 +80,9 @@ Node* Node_I::operator *(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* continue?                                                                  */
+/* more?                                                                      */
 /*----------------------------------------------------------------------------*/
-bool Node_I::bCont(void)
+bool Node_I::bMore(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 
@@ -110,6 +110,18 @@ i8 Node_I::i_Node(void)
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 
   return m_i_Node;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current pNode                                                          */
+/*----------------------------------------------------------------------------*/
+Node* Node_I::pNode(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+
+  Node* pNode = AM::pGrid()->pGetNode(m_i_Node);
+  
+  return pNode;
 }
 
 /*============================================================================*/

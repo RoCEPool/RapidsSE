@@ -96,7 +96,7 @@ void Step::vGridListNodes(void)
   StreamSet* pStreamSet  = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   i8 i_Node = m_pDataStack->iPopAsInt(__func__);
-  for (Node_I oNode_I(i_Node); oNode_I.bCont(); oNode_I.vNext()) {
+  for (Node_I oNode_I(i_Node); oNode_I.bMore(); oNode_I.vNext()) {
 
     Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
@@ -161,7 +161,7 @@ void Step::vGridShow(void)
   vTrace("  %lld partitions per table\n"_Stz,AM::pGrid()->nTablePtns());
   vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitionsInGrid());
   
-    for (Node_I oNode_I; oNode_I.bCont(); oNode_I.vNext())
+    for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
       vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
              (*oNode_I)->iNodeNo(),
              (*oNode_I)->szNodeNm(),

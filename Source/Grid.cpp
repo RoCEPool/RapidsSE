@@ -154,7 +154,7 @@ i8 Grid::nDefinedNodes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
 //  vTrace("/nnDefinedNode()\n"_Stz);
-//  
+//
 //  vThreadCallStackDump();
   
   return m_nDefinedNodes;
@@ -192,7 +192,7 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (Node_I oNode_I; oNode_I.bCont(); oNode_I.vNext()) {
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && pNode->szNodeNm()->bSame(sName))
       return pNode;
