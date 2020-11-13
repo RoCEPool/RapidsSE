@@ -45,14 +45,23 @@ Table::Table(Stz* szTableNm)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
-    
-    tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
-    TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
-    
-    m_pTablePtnVec->vAdd(pTablePtn);
-  }
   
+  // HACK : Don't do this for DEFINE TABLES (which occur before cluster
+  //        has started). Experimentally allows new, but non-active nodes to be
+  //        added after the cluster has started
+  //        This must be fixed properly. Ray 14 Nov 2020
+  if (AM::pGrid()->bHasStarted()) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+      
+      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+      
+      m_pTablePtnVec->vAdd(pTablePtn);
+    }
+  }
+  else {
+    vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   _checkInitialised_(CN_TABLE);
@@ -661,10 +670,16 @@ void Table::vStreamDef(StreamDef* pStreamDef)
   
   m_pStreamDef = pStreamDef;
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
-    TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
-    ReadApi* pReadApi = pTablePtn->pReadApi();
-    pReadApi->vStreamDef(pStreamDef);
+  // HACK : Don't do this for DEFINE TABLES (which occur before cluster
+  //        has started). Experimentally allows new, but non-active nodes to be
+  //        added after the cluster has started
+  //        This must be fixed properly. Ray 14 Nov 2020
+  if (AM::pGrid()->bHasStarted()) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
+      TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
+      ReadApi* pReadApi = pTablePtn->pReadApi();
+      pReadApi->vStreamDef(pStreamDef);
+    }
   }
 }
 
