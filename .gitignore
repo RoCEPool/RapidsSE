@@ -8,5 +8,5 @@ nohupSE-*.out
 nohupSE*.out
 startCluster.log
 Linux/
-macos/
+darwin/
 tmp

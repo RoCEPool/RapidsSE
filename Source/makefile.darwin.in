@@ -1,0 +1,29 @@
+# MacOS (Darwin) specific makefile variables and rules.
+#
+# The intent is not to change a variable in the main makefile but to define
+# variables such that the main makefile will include them for a given setting.
+# E.g. if we need to add something to the CPPFLAGS variable then we define a
+# variable here called DARWIN_CPPFLAGS. The main makefile should have the common 
+# settings for this variable and will then include $(DARWIN_CPPFLAGS) as well as
+# $(LINUX_CPPFLAGS), etc. Only one of these variables will be non-empty.
+
+# Note that the assignments of some variables is sensitive to how it is done. e.g.:
+#    =  will recursively expand any variables on the rhs when it is used.
+#   :=  will expand any variables when the variable is defined.'
+# Refer to the below url for details:
+#  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+
+DARWIN_CPPFLAGS := 
+DARWIN_CPPFLAGS_DEBUG := 
+
+DARWIN_TARGET_PATH = $(CURRENT_PATH)/../darwin/bin
+
+# The name of the extension on a dynamic library / shared object
+DARWIN_LIBRARY_EXT := dylib
+
+# Any additional darwin-specific libraries to link in?
+DARWIN_LIBS :=
+
+# Any darwin-specific library search paths to include?
+DARWIN_LIB_DIRS := -L../ThirdParty/tcc/lib/macos -L../ThirdParty/antlr/lib/macos
+
