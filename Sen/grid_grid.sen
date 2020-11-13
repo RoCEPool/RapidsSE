@@ -53,22 +53,47 @@
 /*----------------------------------------------------------------------------*/
 /* form the node list: {--node name ip port}*                                 */
 /*----------------------------------------------------------------------------*/
+//: .formNodeList ( -- sNodeList )
+//
+//  0 locals| pNode |
+//
+//  ""
+//
+//  grid::definedNodes 0 do
+//
+//    I grid::node to pNode
+//    pNode node.port
+//    pNode node.IP
+//    pNode node.name
+//    " --node %v %v %v" str.format
+//    str.cat
+//
+//  loop
+//;
+/*----------------------------------------------------------------------------*/
 : .formNodeList ( -- sNodeList )
 
   0 locals| pNode |
 
-  ""
+  node_I[].new
 
-  grid::definedNodes 0 do
+  "" // initial empty string
 
-    I grid::node to pNode
+  begin
+
+    node_I[].node to pNode
+
     pNode node.port
     pNode node.IP
     pNode node.name
     " --node %v %v %v" str.format
     str.cat
 
-  loop
+    node_I[].next
+    node_i[].more while
+  repeat
+
+  node_I[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
