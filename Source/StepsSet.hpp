@@ -953,6 +953,7 @@ public:
   // node (of grid)
   void vNodeForget(void);
   void vNodeIP(void);
+  void vNodeIsThisNode(void);
   void vNodeName(void);
   void vNodeNew(void);
   void vNodeNo(void);

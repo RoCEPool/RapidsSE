@@ -13,6 +13,7 @@ void Step::vAddSteps_Node(void)
   
   vAddStep("node.forget"_Stz,      &Step::vNodeForget);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
+  vAddStep("node.isThisNode"_Stz,  &Step::vNodeIsThisNode);
   vAddStep("node.name"_Stz,        &Step::vNodeName);
   vAddStep("node.no"_Stz,          &Step::vNodeNo);
   vAddStep("node.partitions"_Stz,  &Step::vNodePartitions);
@@ -92,6 +93,7 @@ void Step::vNodeForget(void)
   
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */
 /*----------------------------------------------------------------------------*/
@@ -106,6 +108,25 @@ void Step::vNodeIP(void)
   sIP = pNode->szIPAddr();
   m_pDataStack->vPushStr(sIP);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.isThisNode -- is given node this node                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeIsThisNode(void)
+{
+  ENTRY();
+
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+
+  Grid* pGrid = AM::pGrid();
+  
+  if (pGrid->pThisNode() == pNode)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
   EXIT();
 }
 

@@ -125,6 +125,39 @@
 /*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
 /*----------------------------------------------------------------------------*/
+//: grid::spawnOtherNodes1 ( -- )
+//
+//  // test for single node grid
+//  grid::definedNodes 1 == if exit then
+//
+//  0 locals| sNodeList |
+//  0 locals| sShellCommand |
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // form the node list
+//
+//  .formNodeList to sNodeList
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // spawn all other nodes
+//
+//  grid::definedNodes 0 do
+//
+//    // all but this node
+//    I grid::thisNode@ != if
+//
+//      // spawn/start node I
+//      false  I grid::node node.name  sNodeList  .spawnNamedNode
+//
+//    then
+//
+//  loop
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  grid::StartNode@ "Cluster Start node: %v" str.format .
+//;
+/*----------------------------------------------------------------------------*/
 : grid::spawnOtherNodes ( -- )
 
   // test for single node grid
@@ -141,21 +174,26 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn all other nodes
 
-  grid::definedNodes 0 do
 
-    // all but this node
-    I grid::thisNode@ != if
+  0 locals| pNode |
 
-      // spawn/start node I
-      false  I grid::node node.name  sNodeList  .spawnNamedNode
+  node_I[].new
+
+  begin
+
+    node_I[].node to pNode
+
+    pNode node.isThisNode not if
+
+      false  pNode node.name  sNodeList  .spawnNamedNode
 
     then
 
-  loop
+    node_I[].next
+    node_i[].more while
+  repeat
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  grid::StartNode@ "Cluster Start node: %v" str.format .
+  node_I[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
