@@ -28,12 +28,29 @@
   grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // send job__execute to all nodes
-  grid::definedNodes 0
-  do
-    I grid::node node.isConnected if
-      I pJob__Execute job.forward
+//  grid::definedNodes 0
+//  do
+//    I grid::node node.isConnected if
+//      I pJob__Execute job.forward
+//    then
+//  loop
+
+  0 locals| pNode |
+
+  node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.isConnected if
+      pNode node.no pJob__Execute job.forward
     then
-  loop
+
+    node_I[].next
+    node_i[].more while
+  repeat
+
+  node_I[].delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
