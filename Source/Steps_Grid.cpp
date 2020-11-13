@@ -161,18 +161,17 @@ void Step::vGridShow(void)
   vTrace("  %lld partitions per table\n"_Stz,AM::pGrid()->nTablePtns());
   vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitionsInGrid());
   
-  for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
-    Node* pNode = AM::pGrid()->pGetNode(i_Node);
-    vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
-           pNode->iNodeNo(),
-           pNode->szNodeNm(),
-           pNode->szIPAddr(),
-           pNode->iPortNo(),
-           pNode->pRecvSocket(),
-           pNode->pSendSocket(),
+    for (Node_I oNode_I; oNode_I.bCont(); oNode_I.vNext())
+      vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
+             (*oNode_I)->iNodeNo(),
+             (*oNode_I)->szNodeNm(),
+             (*oNode_I)->szIPAddr(),
+             (*oNode_I)->iPortNo(),
+             (*oNode_I)->pRecvSocket(),
+             (*oNode_I)->pSendSocket(),
 
-           pNode->pSendSocket() ? "connected" : "not connected");
-  }
+             (*oNode_I)->pSendSocket() ? "connected" : "not connected");
+  
   
   vTrace("\n"_Stz);
 

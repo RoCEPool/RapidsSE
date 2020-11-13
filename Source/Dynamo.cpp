@@ -864,7 +864,7 @@ void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 
 }
 
 /*----------------------------------------------------------------------------*/
-/* add the Xmits parameter                                             */
+/* add the Xmits parameter                                                    */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 {

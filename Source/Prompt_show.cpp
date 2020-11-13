@@ -42,10 +42,8 @@ bool Prompt::bPrompt_show(SePrompt* pPrompt)
   if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
     
     SP_Node spNode;
-    for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
-      Node* pNode = AM::pGrid()->pGetNode(i_Node);
-      vTrace("  %s\n"_Stz,spNode.sz(pNode));
-    }
+    for (Node_I oNode_I; oNode_I.bCont(); oNode_I.vNext())
+      vTrace("  %s\n"_Stz,spNode.sz(oNode_I));
     
     vTrace("\n"_Stz);
     return true;

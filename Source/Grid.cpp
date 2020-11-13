@@ -184,8 +184,8 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (i8 i_Node = 0; i_Node < m_nDefinedNodes; i_Node++) {
-    Node* pNode = m_pNodes[i_Node];
+  for (Node_I oNode_I; oNode_I.bCont(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
     if (pNode && pNode->szNodeNm()->bSame(sName))
       return pNode;
   }

@@ -1584,7 +1584,7 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
-  for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
+  for (i8 i_Node = 0; i_Node < gxArgs.m_nNodes; i_Node++) {
     Node* pNode = new Node(i_Node,
                            gxArgs.m_xNodes[i_Node].m_sNodeName,
                            gxArgs.m_xNodes[i_Node].m_sIPAddress,
