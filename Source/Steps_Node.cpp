@@ -37,8 +37,6 @@ void Step::vNodeNew(void)
   
   i8 nNodes = AM::nDefinedNodes();
   
-  Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
-
   Job* pJob = AM::pThisTLSJob();
   TagSet* pJobTags = pJob->pJobTags();
   
@@ -49,7 +47,7 @@ void Step::vNodeNew(void)
   
   m_pDataStack->vPopStr(sNodeNm,__func__);
 
-  Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
+  Node* pNode = new Node(nNodes,
                          sNodeNm,
                          pJobTags->szValue("IPADDR"_Stz),
                          pJobTags->szValue("PORTNO"_Stz)->iToI8());

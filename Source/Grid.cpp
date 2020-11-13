@@ -139,6 +139,10 @@ i8 Grid::nConnectedNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
+//  vTrace("/nnConnectedNodes()\n"_Stz);
+//
+//  vThreadCallStackDump();
+
   return m_nConnectedNodes;
 }
 
@@ -148,6 +152,10 @@ i8 Grid::nConnectedNodes(void)
 i8 Grid::nDefinedNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+//  vTrace("/nnDefinedNode()\n"_Stz);
+//  
+//  vThreadCallStackDump();
   
   return m_nDefinedNodes;
 }
