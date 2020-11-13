@@ -32,19 +32,48 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+//: grid::connected ( -- t|f )
+//
+//  grid::definedNodes 0
+//  do
+//    I grid::node node.isConnected not if
+//      args.verbose if
+//        I "Node no %v not connected" .printf
+//      then
+//      unloop
+//      false
+//      exit
+//    then
+//  loop
+//
+//  "All nodes connected" .verbose
+//
+//  true
+//;
+/*----------------------------------------------------------------------------*/
 : grid::connected ( -- t|f )
 
-  grid::definedNodes 0
-  do
-    I grid::node node.isConnected not if
+  0 locals| pNode |
+
+  node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.isConnected not if
       args.verbose if
-        I "Node no %v not connected" .printf
+        pNode node.no "Node no %v not connected" .printf
+        node_I[].delete
+        false
+        exit
       then
-      unloop
-      false
-      exit
     then
-  loop
+
+    node_I[].next
+    node_i[].more while
+  repeat
+
+  node_I[].delete
 
   "All nodes connected" .verbose
 

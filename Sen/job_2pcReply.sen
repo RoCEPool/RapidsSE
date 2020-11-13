@@ -41,7 +41,6 @@
   node_I[].new
 
   begin
-
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
