@@ -1572,7 +1572,7 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pFocalObjects = new FocalObjects;
   gpAttachMap->m_pQueues = new Queues;
     
-  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0,gxArgs.m_nBootNodes);
+  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
   
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
   
@@ -1588,7 +1588,7 @@ void Engine::vStartSystem(void)
     ASSERT(AM::pGrid()->nNodes() == i_Node);
     Node* pNode = new Node(i_Node,
                            gxArgs.m_xBootNode[i_Node].m_sNodeName,
-                           AM::nPtnsPerTable(),
+                           AM::nDegOfPar(),
                            gxArgs.m_xBootNode[i_Node].m_sIPAddress,
                            gxArgs.m_xBootNode[i_Node].m_iPortNo);
     AM::pGrid()->vPutNode(pNode);

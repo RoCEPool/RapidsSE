@@ -32,7 +32,7 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(Stz* szGridNm, i8 iConnectCode, i8 nBootNodes);
+    Grid(Stz* szGridNm, i8 iConnectCode);
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

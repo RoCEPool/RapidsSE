@@ -42,7 +42,7 @@ void Grid::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(Stz* szGridNm, i8 iConnectCode, i8 nBootNodes)
+Grid::Grid(Stz* szGridNm, i8 iConnectCode)
 : Object(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
