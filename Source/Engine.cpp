@@ -1588,6 +1588,7 @@ void Engine::vStartSystem(void)
     ASSERT(AM::pGrid()->nNodes() == i_Node);
     Node* pNode = new Node(i_Node,
                            gxArgs.m_xBootNode[i_Node].m_sNodeName,
+                           AM::nTablePtns(),
                            gxArgs.m_xBootNode[i_Node].m_sIPAddress,
                            gxArgs.m_xBootNode[i_Node].m_iPortNo);
     AM::pGrid()->vPutNode(pNode);

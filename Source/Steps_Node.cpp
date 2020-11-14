@@ -47,9 +47,11 @@ void Step::vNodeNew(void)
   m_pDataStack->vPopStr(sNodeNm,__func__);
 
   i8 nNodes = AM::pGrid()->nNodes();
-  
+  i8 nDegOfPar = AM::nTablePtns();
+
   Node* pNode = new Node(nNodes,
                          sNodeNm,
+                         nDegOfPar,
                          pJobTags->szValue("IPADDR"_Stz),
                          pJobTags->szValue("PORTNO"_Stz)->iToI8());
 

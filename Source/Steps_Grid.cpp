@@ -102,6 +102,7 @@ void Step::vGridListNodes(void)
                                       C_VARGS_BEGIN,
                                       (*oNode_I)->iNodeNo(),
                                       (*oNode_I)->szNodeNm(),
+                                      (*oNode_I)->nDegOfPar(),
                                       (*oNode_I)->szIPAddr(),
                                       (*oNode_I)->iPortNo(),
                                       aNS[(*oNode_I)->eState()],

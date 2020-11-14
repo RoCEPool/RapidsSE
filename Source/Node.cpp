@@ -51,7 +51,7 @@ void Node::operator delete(void* pNodeAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Stz* szNodeNm, Stz* szIpAddr, i8 iPortNo)
+Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
@@ -60,6 +60,7 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, Stz* szIpAddr, i8 iPortNo)
   
   m_iNodeNo   = iNodeNo;
   m_sNodeNm   = szNodeNm;
+  m_nDegOfPar = nDegOfPar;
   m_sIPAddr   = szIpAddr;
   m_iPortNo   = iPortNo;
   
@@ -128,6 +129,16 @@ Article* Node::pArticle(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   return m_pArticle;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get degree of parallelism                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Node::nDegOfPar(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_nDegOfPar;
 }
 
 /*----------------------------------------------------------------------------*/
