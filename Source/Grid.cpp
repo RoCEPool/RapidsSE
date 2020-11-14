@@ -166,8 +166,8 @@ void Grid::vDumpPartitioning(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  if (nPartitionsInGrid()) {
-    for (tPN tPtnNo = 0; tPtnNo < nPartitionsInGrid(); tPtnNo++)
+  if (AM::nPartitionsInGrid()) {
+    for (tPN tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++)
       vTrace("Partition: %lld; Node: %lld\n"_Stz, tPtnNo,
              AM::pPtnMap()->i_WhichNode(tPtnNo));
     vTrace("\n"_Stz);
@@ -242,18 +242,6 @@ void Grid::vIncConnectedNodes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_nConnectedNodes++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total number of nodes in the connected grid                            */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nPartitionsInGrid(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  i8 nPartitions = AM::nTablePtns() * m_nBootNodes;
-
-  return nPartitions;
 }
 
 /*----------------------------------------------------------------------------*/

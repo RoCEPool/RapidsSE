@@ -1797,7 +1797,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL: {
       
-      ASSERT(pNextStage->nItems() == AM::pGrid()->nPartitionsInGrid());
+      ASSERT(pNextStage->nItems() == AM::nPartitionsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // xmitNode is the partition node
@@ -1846,7 +1846,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       m_iRobin++;
-      tPtnNo = m_iRobin % AM::pGrid()->nPartitionsInGrid();
+      tPtnNo = m_iRobin % AM::nPartitionsInGrid();
       
       // xmitNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
@@ -1926,7 +1926,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
       
     case XK_ROBIN:
       m_iRobin++;
-      tSendPtn = m_iRobin % AM::pGrid()->nPartitionsInGrid();
+      tSendPtn = m_iRobin % AM::nPartitionsInGrid();
       break;
       
     default:

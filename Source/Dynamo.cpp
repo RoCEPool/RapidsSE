@@ -746,7 +746,7 @@ bool Dynamo::bParseOnPartition(void)
 #endif
     m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
     tPN tPtnNo = sLocus.szStz()->iToI8();
-    if (tPtnNo >= AM::pGrid()->nPartitionsInGrid())
+    if (tPtnNo >= AM::nPartitionsInGrid())
       return false;
     
     m_pStageSpec->vSpecificPtnNo(tPtnNo);
@@ -892,7 +892,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
      
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iXmits = AM::pGrid()->nPartitionsInGrid();
+      iXmits = AM::nPartitionsInGrid();
       break;
       
     case PX_ORIGIN_TO_ORIGIN:

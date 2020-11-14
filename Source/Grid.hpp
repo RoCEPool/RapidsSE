@@ -49,7 +49,6 @@ namespace Grids
     void vIncConnectedNodes(void);
     void vInit(i8 nNodes);
     void vRemoveNode(Node* pNode);
-    i8   nPartitionsInGrid(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
     i8   nStrandsPerNode(void);

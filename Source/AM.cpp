@@ -120,7 +120,9 @@ i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
 i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 
-i8   AM::nPartitionsInGrid(void)    { return gpAttachMap->m_pGrid->nPartitionsInGrid();   }
+i8   AM::nPartitionsInGrid(void) {
+  return AM::nTablePtns() * gpAttachMap->m_pGrid->nBootNodes();
+}
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }

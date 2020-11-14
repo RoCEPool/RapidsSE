@@ -332,7 +332,7 @@ void Stage::vCreateStrands(void)
 
     case PO_ALL_PARTITIONS: // create a strand for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
+      for (tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
@@ -342,7 +342,7 @@ void Stage::vCreateStrands(void)
       
     case PO_ALL_PARTITIONS_ON_ORIGIN: // create a strand for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
-      for (tPtnNo = 0; tPtnNo < AM::pGrid()->nPartitionsInGrid(); tPtnNo++) {
+      for (tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if (i_Node == m_pPipeline->i_Origin()) {
           i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
