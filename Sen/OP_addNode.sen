@@ -5,6 +5,18 @@
 " OP_addNode.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: addNode_DataPulse \handler
+ 
+  "addNode_DataMarker" .
+
+  <portNo> >int <ipAddr> <nodeNm> node::new locals| pNewNode |
+   
+  ZK_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for add node                               (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : addNode_req \operator
@@ -16,6 +28,8 @@
   <portNo> .
 
   op__topology
+
+  find: addNode_DataPulse ZK_DATAPULSE op[].handler!
 
   op__loop
 

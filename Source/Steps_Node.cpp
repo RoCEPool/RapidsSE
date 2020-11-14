@@ -43,17 +43,21 @@ void Step::vNodeNew(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
-  
   m_pDataStack->vPopStr(sNodeNm,__func__);
+  
+  s32 sIpAddr;
+  m_pDataStack->vPopStr(sIpAddr,__func__);
+  
+  i8 iPortNo = m_pDataStack->iPopInt(__func__);
 
   i8 nNodes = AM::pGrid()->nNodes();
-  i8 nDegOfPar = AM::nPtnsPerTable();
+  i8 nDegOfPar = AM::nDegOfPar();
 
   Node* pNode = new Node(nNodes,
                          sNodeNm,
                          nDegOfPar,
-                         pJobTags->szValue("IPADDR"_Stz),
-                         pJobTags->szValue("PORTNO"_Stz)->iToI8());
+                         sIpAddr,
+                         iPortNo);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
