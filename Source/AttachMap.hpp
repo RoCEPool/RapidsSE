@@ -26,6 +26,7 @@ namespace StorageEngine
     s256  m_sLogTxtFile;
     
     struct {
+      i8     m_nBootNodes;     // number nodes supplied via SE -node
       bool   m_bDebugIndex;    // debug index
       bool   m_bDebugMode;     // debug mode
       bool   m_bDeveloper;     // developer mode
@@ -40,7 +41,6 @@ namespace StorageEngine
       i8     m_nMaxReadyLP;
       bool   m_bMetadata;
       bool   m_bMunged;
-      i8     m_nNodes;
       i8     m_nOperands;
       bool   m_bProgress;
       s32    m_sRegionName;

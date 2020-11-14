@@ -69,21 +69,21 @@ Grid::~Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void Grid::vInit(i8 nDefinedNodes, i8 nTablePtns)
+void Grid::vInit(i8 nBootNodes, i8 nTablePtns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_nTablePtns      = nTablePtns;
-  
-  m_nDefinedNodes   = nDefinedNodes;
-  m_nConnectedNodes = 0;
-  
+    
   m_iThisNode       = C_UNKNOWN;
   m_pThisNode       = nullptr;
+  
   m_iStartNode      = C_UNKNOWN;
   m_bHasStarted     = false;
       
   // initialize the node array
+  m_nBootNodes      = nBootNodes;
+  m_nConnectedNodes = 0;
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
     m_pNodes[i_Node] = nullptr;
   }
@@ -118,8 +118,8 @@ void Grid::vAddNode(Node* pNode)
   
   m_pNodes[i_Node] = pNode;
   
-  if (i_Node >= m_nDefinedNodes)
-    m_nDefinedNodes++;
+  if (i_Node >= m_nBootNodes)
+    m_nBootNodes++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +149,7 @@ i8 Grid::nConnectedNodes(void)
 /*----------------------------------------------------------------------------*/
 /* get number of defined nodes in the grid                                    */
 /*----------------------------------------------------------------------------*/
-i8 Grid::nDefinedNodes(void)
+i8 Grid::nBootNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
@@ -157,7 +157,7 @@ i8 Grid::nDefinedNodes(void)
 //
 //  vThreadCallStackDump();
   
-  return m_nDefinedNodes;
+  return m_nBootNodes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +208,7 @@ Node* Grid::pGetNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  RASSERT(i_Node >= 0 and i_Node < m_nDefinedNodes);
+  RASSERT(i_Node >= 0 and i_Node < m_nBootNodes);
   
   Node* pNode = m_pNodes[i_Node];
   
@@ -252,7 +252,7 @@ i8 Grid::nPartitionsInGrid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  i8 nPartitions = m_nTablePtns * m_nDefinedNodes;
+  i8 nPartitions = m_nTablePtns * m_nBootNodes;
 
   return nPartitions;
 }
@@ -270,7 +270,7 @@ void Grid::vRemoveNode(Node* pNode)
   
   m_pNodes[i_Node] = nullptr;
   
-  m_nDefinedNodes--;
+  m_nBootNodes--;
 }
 
 /*----------------------------------------------------------------------------*/

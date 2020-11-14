@@ -86,7 +86,7 @@ bool Node_I::bMore(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 
-  if (m_i_Node < AM::nDefinedNodes())
+  if (m_i_Node < AM::nBootNodes())
     return true;
   else
     return false;

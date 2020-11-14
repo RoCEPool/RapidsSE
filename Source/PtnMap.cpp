@@ -96,7 +96,7 @@ tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
 {
   _static_
   
-  tPN tPtnNo = (i_Strand * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  tPN tPtnNo = (i_Strand * AM::nBootNodes()) + AM::iThisNodeNo();
   
   return tPtnNo;
 }
@@ -158,7 +158,7 @@ i8 PtnMap::i_LglPtnNoToInitialNode(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_Node = tPtnNo % AM::nDefinedNodes();
+  i8 i_Node = tPtnNo % AM::nBootNodes();
   
   return i_Node;
 }
@@ -170,7 +170,7 @@ i8 PtnMap::i_LglPtnNoToInitialStrand(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_Strand = tPtnNo / AM::nDefinedNodes();
+  i8 i_Strand = tPtnNo / AM::nBootNodes();
   
   return i_Strand;
 }

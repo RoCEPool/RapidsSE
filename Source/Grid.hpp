@@ -15,16 +15,14 @@ namespace Grids
   
     i8     m_nTablePtns;       // no of table partitions on each node
   
-    i8     m_nDefinedNodes;    // total number of nodes in the grid
-    i8     m_nConnectedNodes;  // number of connected nodes in the grid
-
     i8     m_iThisNode;        // this node number
     Node*  m_pThisNode;        // this node pointer
   
     bool   m_bHasStarted;      // has the cluster started ?
-
     i8     m_iStartNode;       // node that started the cluster
 
+    i8     m_nBootNodes;       // number of nodes supplied via SE -node
+    i8     m_nConnectedNodes;  // number of connected nodes in the grid
     Node*  m_pNodes[C_MAX_NODES]; // array of nodes
   
     // must be last
@@ -34,15 +32,15 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(i8 nDefinedNodes, i8 nTablePtns);
+    Grid(i8 nBootNodes, i8 nTablePtns);
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vAddNode(Node* pNode);
     Article* pArticle(void);
+    i8   nBootNodes(void);
     i8   nConnectedNodes(void);
-    i8   nDefinedNodes(void);
     void vDumpPartitioning(void);
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);

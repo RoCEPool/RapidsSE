@@ -46,7 +46,7 @@ Args::Args(void)
   m_iLiftNo = 0;
   
   // node configuration
-  m_nNodes = 0;
+  m_nBootNodes = 0;
   
   m_sCommand = ""_Stz;
   m_sInitial = ""_Stz;
@@ -221,7 +221,7 @@ bool Args::bParse(i8 argc, s256 argv[])
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   
-  i8 i_Node = 0;
+  i8 i_BootNode = 0;
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
@@ -464,12 +464,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
-      m_xNodes[i_Node].m_sNodeName  = (Stz*)argv[++i_Arg];;
-      m_xNodes[i_Node].m_sIPAddress = (Stz*)argv[++i_Arg];
-      m_xNodes[i_Node].m_iPortNo    = argv[++i_Arg].iToI8();
-      i_Node++;
+      m_xBootNode[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xBootNode[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xBootNode[i_BootNode].m_iPortNo    = argv[++i_Arg].iToI8();
+      i_BootNode++;
       
-      if (m_nNodes > C_MAX_NODES) {
+      if (m_nBootNodes > C_MAX_NODES) {
         vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
         return false;
       }
@@ -840,24 +840,24 @@ bool Args::bParse(i8 argc, s256 argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // if --node was defined just set the m_nNodes
-  if (i_Node) {
+  // if --node was defined just set the m_nBootNodes
+  if (i_BootNode) {
     
     // set no. of nodes
-    m_nNodes = i_Node;
+    m_nBootNodes = i_BootNode;
     
     // some basic cluster validations
     
     // there should be at aleast 2 nodes ina cluster
-    // if (m_nNodes < 2) {
+    // if (m_nBootNodes < 2) {
     //   vWarn("Minimum two nodes should be there in a cluster\n"_Stz);
     //   return false;
     // }
     
     // the current node should have been specfied in the --node
     bool bFound = false;
-    for (i8 i_Test = 0; i_Test < m_nNodes; i_Test++) {
-      if (m_xNodes[i_Test].m_sNodeName.bSame(m_sNodeName)) {
+    for (i8 i_Test = 0; i_Test < m_nBootNodes; i_Test++) {
+      if (m_xBootNode[i_Test].m_sNodeName.bSame(m_sNodeName)) {
         bFound = true;
         m_iThisNode = i_Test;
         break;
@@ -872,10 +872,10 @@ bool Args::bParse(i8 argc, s256 argv[])
     
   } else {
     // add a single node
-    // m_nNodes = 1;
-    // m_xNodes[0].m_sNodeName = m_sNodeName;
-    // m_xNodes[0].m_sIPAddress = ""_Stz;
-    // m_xNodes[0].m_iPortNo =  -1;
+    // m_nBootNodes = 1;
+    // m_xBootNode[0].m_sNodeName = m_sNodeName;
+    // m_xBootNode[0].m_sIPAddress = ""_Stz;
+    // m_xBootNode[0].m_iPortNo =  -1;
 //    if ( m_bStart ) {
 //      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.azChar());
 //      return false;
@@ -887,7 +887,7 @@ bool Args::bParse(i8 argc, s256 argv[])
     m_sRegionName.vCat(m_sRegionPrefix,"_"_Stz,m_sNodeName.azChar(),nullptr);
   }
   else {
-    if (m_bStart && m_nNodes > 1) {
+    if (m_bStart && m_nBootNodes > 1) {
       vWarn("--region not allowed with --start in a cluster\n"_Stz);
       return false;
     }
@@ -972,11 +972,11 @@ void Args::vPrintStartupInfo(void)
   MagLib::vByteMag(m_iRegionSize,sSizeMag);
   vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
   
-  for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
+  for (i8 i_Index = 0; i_Index < m_nBootNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,
-      m_xNodes[i_Index].m_sNodeName.azChar(),
-      m_xNodes[i_Index].m_sIPAddress.azChar(),
-      m_xNodes[i_Index].m_iPortNo);
+      m_xBootNode[i_Index].m_sNodeName.azChar(),
+      m_xBootNode[i_Index].m_sIPAddress.azChar(),
+      m_xBootNode[i_Index].m_iPortNo);
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nTablePtns);
@@ -999,11 +999,11 @@ void Args::vPrintStartupInfo(void)
   
   if (m_bDeveloper) vTrace("  --developer\n"_Stz);
   
-  for (i8 i_Node = 0; i_Node < m_nNodes; i_Node++)
+  for (i8 i_Node = 0; i_Node < m_nBootNodes; i_Node++)
     vTrace("  --node %s ip %s port %lld\n"_Stz,
-           m_xNodes[i_Node].m_sNodeName.szStz(),
-           m_xNodes[i_Node].m_sIPAddress.szStz(),
-           m_xNodes[i_Node].m_iPortNo);
+           m_xBootNode[i_Node].m_sNodeName.szStz(),
+           m_xBootNode[i_Node].m_sIPAddress.szStz(),
+           m_xBootNode[i_Node].m_iPortNo);
     
 
   
@@ -1043,14 +1043,14 @@ void Args::vSanityCheck(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
-  if (m_nNodes > C_MAX_NODES) {
-    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_nNodes,C_MAX_NODES);
+  if (m_nBootNodes > C_MAX_NODES) {
+    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_nBootNodes,C_MAX_NODES);
     Process::vExitFailure();
   }
   
   i8 iRequiredThreads =
     1                 // 1 thread for socket answer
-    + m_nNodes        // n threads for socket receiver
+    + m_nBootNodes        // n threads for socket receiver
     + m_nSubLoaders   // a threaad per subloader
     + 1               // a thread for table loader
     + 1               // 1 for the pot

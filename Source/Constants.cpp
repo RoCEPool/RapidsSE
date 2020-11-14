@@ -64,7 +64,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.metadata"_Stz,          gxArgs.m_bMetadata);
   Constants::vAddConstant("args.munged"_Stz,            gxArgs.m_bMunged);
   Constants::vAddConstant("args.nodeName"_Stz,          gxArgs.m_sNodeName);
-  Constants::vAddConstant("args.nodes"_Stz,             gxArgs.m_nNodes);
+  Constants::vAddConstant("args.nodes"_Stz,             gxArgs.m_nBootNodes);
   Constants::vAddConstant("args.operands"_Stz,          gxArgs.m_nOperands);
   Constants::vAddConstant("args.partitionsPerNode"_Stz, gxArgs.m_nTablePtns);
   Constants::vAddConstant("args.periodicSleep"_Stz,     gxArgs.m_nPeriodicSleep);

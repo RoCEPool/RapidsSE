@@ -442,26 +442,26 @@ void Engine::vCheckGrid(void)
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Checking GridTest Configuration\n*\n"_Stz,giProgressPoint++);
   
-   for (i8 i_Node = 0; i_Node < gxArgs.m_nNodes; i_Node++) {
+   for (i8 i_Node = 0; i_Node < gxArgs.m_nBootNodes; i_Node++) {
      
      if (AM::bVerboseProgress())
        vInfo("Checking %s %s %lld\n"_Stz,
-             gxArgs.m_xNodes[i_Node].m_sNodeName.szStz(),
-             gxArgs.m_xNodes[i_Node].m_sIPAddress.szStz(),
-             gxArgs.m_xNodes[i_Node].m_iPortNo
+             gxArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
+             gxArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
+             gxArgs.m_xBootNode[i_Node].m_iPortNo
              );
      
-     if (! gxArgs.m_xNodes[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
+     if (! gxArgs.m_xBootNode[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
        Process::vUnrecoverableError("Invalid loopback IP for grid test"_Stz,
-                                    gxArgs.m_xNodes[i_Node].m_sIPAddress);
+                                    gxArgs.m_xBootNode[i_Node].m_sIPAddress);
      
      if (AM::bVerboseProgress())
        vInfo("Loopback %s for %s is valid\n"_Stz,
-             gxArgs.m_xNodes[i_Node].m_sIPAddress.szStz(),
-             gxArgs.m_xNodes[i_Node].m_sNodeName.szStz());
+             gxArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
+             gxArgs.m_xBootNode[i_Node].m_sNodeName.szStz());
 
      if (gxArgs.m_bGridTest)
-       vTestPort(gxArgs.m_xNodes[i_Node].m_iPortNo);
+       vTestPort(gxArgs.m_xBootNode[i_Node].m_iPortNo);
    }
 
 }
@@ -477,7 +477,7 @@ void Engine::vCheckNodes(void)
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
 
-  if (gxArgs.m_nNodes < 1)
+  if (gxArgs.m_nBootNodes < 1)
     Process::vUnrecoverableError("No nodelist was supplied (via --node)"_Stz,
                                  gxArgs.m_sNodeName.szStz());
 
@@ -487,7 +487,7 @@ void Engine::vCheckNodes(void)
 
   vInfo("This is node %lld of %lld nodes\n"_Stz,
         gxArgs.m_iThisNode,
-        gxArgs.m_nNodes);
+        gxArgs.m_nBootNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -506,7 +506,7 @@ void Engine::vCheckPort(void)
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Testing Listening Port\n*\n"_Stz,giProgressPoint++);
   
-  iPort = gxArgs.m_xNodes[gxArgs.m_iThisNode].m_iPortNo;
+  iPort = gxArgs.m_xBootNode[gxArgs.m_iThisNode].m_iPortNo;
   
   vTestPort(iPort);
   
@@ -760,11 +760,11 @@ void Engine::vKillPrev(void)
   s32 sRegionNm;
   int iFD;
   
-  for (i8 i_Node = 0; i_Node < gxArgs.m_nNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < gxArgs.m_nBootNodes; i_Node++) {
     
     sRegionNm.vSprint("%s_%s"_Stz,
                         gxArgs.m_sRegionPrefix.azChar(),
-                        gxArgs.m_xNodes[i_Node].m_sNodeName.azChar());
+                        gxArgs.m_xBootNode[i_Node].m_sNodeName.azChar());
     
     if (! Region::bTest(sRegionNm) )
       continue;
@@ -1572,7 +1572,7 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pFocalObjects = new FocalObjects;
   gpAttachMap->m_pQueues = new Queues;
     
-  gpAttachMap->m_pGrid = new Grid(gxArgs.m_nNodes, gxArgs.m_nTablePtns);
+  gpAttachMap->m_pGrid = new Grid(gxArgs.m_nBootNodes, gxArgs.m_nTablePtns);
   
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
   
@@ -1584,11 +1584,11 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
-  for (i8 i_Node = 0; i_Node < gxArgs.m_nNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < gxArgs.m_nBootNodes; i_Node++) {
     Node* pNode = new Node(i_Node,
-                           gxArgs.m_xNodes[i_Node].m_sNodeName,
-                           gxArgs.m_xNodes[i_Node].m_sIPAddress,
-                           gxArgs.m_xNodes[i_Node].m_iPortNo);
+                           gxArgs.m_xBootNode[i_Node].m_sNodeName,
+                           gxArgs.m_xBootNode[i_Node].m_sIPAddress,
+                           gxArgs.m_xBootNode[i_Node].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
     AM::pGrid()->vAddNode(pNode);
     

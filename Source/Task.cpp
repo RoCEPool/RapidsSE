@@ -963,7 +963,7 @@ void Task::vThread(Threads::Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(Stz* aMark)
 {
-//  if (AM::nDefinedNodes() > 1) {
+//  if (AM::nBootNodes() > 1) {
 //    i8 iPause = Random::iInteger(999,99999);
 //    PsxThd::vSleepUsec(iPause,CN_TASK);
 //  }

@@ -90,7 +90,7 @@ JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pQueues->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
-i8   AM::nDefinedNodes(void)  { return gpAttachMap->m_pGrid->nDefinedNodes(); }
+i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
 Article* AM::pLexiconArticle(void) { return gpAttachMap->m_pLexiconArticle;    }
 void AM::vProcessExit(void)   { Process::vExitFailure();                      }
 bool AM::bProgress(void)      { return gpAttachMap->Arg.m_bProgress;              }
@@ -705,7 +705,7 @@ Stz* AM::szSummary(s256& sSummary)
   Now spNow;
   
   sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
-                   AM::nDefinedNodes(),
+                   AM::nBootNodes(),
                    AM::nTablePtns(),
                    AM::nThreads(),
                    AM::szBuild(),
@@ -724,7 +724,7 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
   
   sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
                    szNote,
-                   AM::nDefinedNodes(),
+                   AM::nBootNodes(),
                    AM::nTablePtns(),
                    AM::nThreads()
                    );

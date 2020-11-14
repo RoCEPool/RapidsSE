@@ -316,7 +316,7 @@ void Step::vInfoSetChunkFile(void)
              m_pLogicUnit->m_iCounter2,
              C_MAX_SEEKOFFSETS,
              
-             AM::nDefinedNodes(),
+             AM::nBootNodes(),
              AM::nPartitionsInGrid());
       
       // set the chunk location

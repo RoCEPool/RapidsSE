@@ -36,7 +36,7 @@ void Step::vNodeNew(void)
 {
   ENTRY();
   
-  i8 nNodes = AM::nDefinedNodes();
+  i8 nNodes = AM::nBootNodes();
   
   Job* pJob = AM::pThisTLSJob();
   TagSet* pJobTags = pJob->pJobTags();

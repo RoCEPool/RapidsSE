@@ -242,6 +242,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
+  Arg.m_nBootNodes       = pArgs->m_nBootNodes;
   Arg.m_bDebugIndex      = pArgs->m_bDebugIndex;
   Arg.m_bDebugMode       = pArgs->m_bDebugMode;
   Arg.m_bDeveloper       = pArgs->m_bDeveloper;
@@ -256,14 +257,13 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_nMaxReadyLP      = pArgs->m_nMaxReadyLP;
   Arg.m_bMetadata        = pArgs->m_bMetadata;
   Arg.m_bMunged          = pArgs->m_bMunged;
-  Arg.m_nNodes           = pArgs->m_nNodes;
   Arg.m_nOperands        = pArgs->m_nOperands;
   Arg.m_bProgress        = pArgs->m_bProgress;
   Arg.m_sRegionName      = pArgs->m_sRegionName;
   Arg.m_iRegionSize      = pArgs->m_iRegionSize;
   Arg.m_bRLUDiary        = pArgs->m_bRLUDiary;
   Arg.m_bRLUTimer        = pArgs->m_bRLUTimer;
-  Arg.m_nTablePtns    = pArgs->m_nTablePtns;
+  Arg.m_nTablePtns       = pArgs->m_nTablePtns;
   Arg.m_nSubIngesters    = pArgs->m_nSubIngesters;
   Arg.m_nSubInserters    = 0;
   Arg.m_nSubLoaders      = pArgs->m_nSubLoaders;

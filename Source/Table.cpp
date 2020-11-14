@@ -205,7 +205,7 @@ i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
 {
   _static_
   
-  i8 i_TablePtn = tPtnNo / AM::nDefinedNodes();
+  i8 i_TablePtn = tPtnNo / AM::nBootNodes();
   
   return i_TablePtn;
 }
@@ -217,7 +217,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 {
   _static_
   
-  tPN tPtnNo = (i_TablePtn * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  tPN tPtnNo = (i_TablePtn * AM::nBootNodes()) + AM::iThisNodeNo();
   
   return tPtnNo;
 }

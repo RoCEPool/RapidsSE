@@ -28,14 +28,14 @@ namespace Arguments
   
     i8    m_iLiftNo;
     
-    // grid configuration
-    i8    m_nNodes;
+    // grid configuration at boot
+    i8    m_nBootNodes;
     struct {
       s32 m_sNodeName;     // name of node
       s32 m_sIPAddress;    // ip address of node
       i8  m_iPortNo;       // port number
-    } m_xNodes[C_MAX_NODES];
-    i8   m_iThisNode;      // this node no in the m_xNode list         //! FIX
+    } m_xBootNode[C_MAX_NODES];
+    i8   m_iThisNode;      // this node no in the m_xBootNode list       //! FIX
 
     TagSet m_oArgTagSet;  // arguments tag set
   

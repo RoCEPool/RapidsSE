@@ -50,7 +50,7 @@ void Step::vGridDefinedNodes(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::pGrid()->nDefinedNodes());
+  m_pDataStack->vPushInt(AM::pGrid()->nBootNodes());
   
   EXIT();
 }
@@ -157,7 +157,7 @@ void Step::vGridShow(void)
   ENTRY();
   
   vTrace("Grid::\n"_Stz);
-  vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nDefinedNodes());
+  vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nBootNodes());
   vTrace("  %lld partitions per table\n"_Stz,AM::pGrid()->nTablePtns());
   vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitionsInGrid());
   
