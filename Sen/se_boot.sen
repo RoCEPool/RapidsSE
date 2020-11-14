@@ -185,6 +185,7 @@ assert::stack_0
         "OP_sizeTable.sen"            include
         "OP_snapshot.sen"             include
         "OP_space.sen"                include
+        "OP_spawnNode.sen"            include
         "OP_sql.sen"                  include
         "OP_start.sen"                include
         "OP_stats.sen"                include

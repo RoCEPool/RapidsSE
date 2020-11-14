@@ -930,6 +930,26 @@
   end ;
   "
   api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn node
+  sPath
+  "
+  procedure spawn node
+    parameters $NodeNm
+  begin
+
+    stage stageA on origin :
+
+      start | periodic once
+            | spawnNode $NodeNm
+            | output
+            | sink
+            | stageA
+
+  end ;
+  "
+  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/
