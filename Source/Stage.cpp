@@ -308,7 +308,7 @@ void Stage::vCreateStrands(void)
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Strand = 0;
       tPtnNo = C_UNKNOWN;
-      for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
+      for (i_Node = 0; i_Node < AM::pGrid()->nBootNodes(); i_Node++) {
         pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
         vAdd(pStrand);
       }
