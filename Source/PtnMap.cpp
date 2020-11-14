@@ -16,12 +16,15 @@ __aFooterFunction(PtnMap)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PtnMap::PtnMap(i8 nPartitions)
+PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
 : Object(CN_PTNMAP)
 , m_okLock(LK_PARTITION,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
+  m_nPtnsInGrid   = nBootNodes * nDegOfPar;
+  m_nPtnsPerTable = nDegOfPar;
+
   for (i8 i = 0; i < C_MAX_PTNS; i++) {
     m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
     m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
@@ -29,8 +32,8 @@ PtnMap::PtnMap(i8 nPartitions)
   
   _checkInitialised_(CN_PTNMAP);
   
-  RASSERT(nPartitions);
-  for (tPN tPtnNo = 0; tPtnNo < nPartitions; tPtnNo++) {
+  RASSERT(m_nPtnsInGrid);
+  for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
     
     m_xaInNodeTablePtn[tPtnNo].m_i_Node =
       (i4)i_LglPtnNoToInitialNode(tPtnNo);
@@ -119,6 +122,25 @@ void PtnMap::vDumpPartitioning(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get number of partitions in grid                                           */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::nPtnsInGrid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  
+  return m_nPtnsInGrid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partitions per table                                         */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::nPtnsPerTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  
+  return m_nPtnsPerTable;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get which node a logical partition is mapped to                            */

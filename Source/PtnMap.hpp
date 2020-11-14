@@ -16,6 +16,9 @@ namespace MetaData
   private:
     Lock m_okLock;
   
+    i8 m_nPtnsInGrid;
+    i8 m_nPtnsPerTable;
+
     // which {node,tablePtn} a logical partition is in
     NodeTablePtn m_xaInNodeTablePtn[C_MAX_PTNS];
   
@@ -26,7 +29,7 @@ namespace MetaData
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PtnMap(i8 nPartitions);
+    PtnMap(i8 nBootNodes, i8 nDegOfPar);
    ~PtnMap(void) noexcept(false);
   
     static i8   iHashToBucketId(i8 iHash);
@@ -36,6 +39,8 @@ namespace MetaData
 
     void vDumpPartitioning(void);
 
+    i8 nPtnsInGrid(void);
+    i8 nPtnsPerTable(void);
     i8 i_WhichNode(tPN tPtnNo);
     i8 i_WhichStrand(tPN tPtnNo);
     i8 i_WhichTablePtn(tPN tPtnNo);

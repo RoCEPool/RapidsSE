@@ -1572,15 +1572,15 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pFocalObjects = new FocalObjects;
   gpAttachMap->m_pQueues = new Queues;
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grid and nodes
+  
   gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
   
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
   
   AM::pLexiconArticle()->vAppend(pGridArticle);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grid and nodes
-  
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
@@ -1608,6 +1608,7 @@ void Engine::vStartSystem(void)
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
   gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
   gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
@@ -1634,7 +1635,9 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Creating Partition Map\n"_Stz);
 
-  gpAttachMap->m_pPtnMap = new PtnMap(AM::nPtnsInGrid());
+  gpAttachMap->m_pPtnMap =
+    new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
+               gpAttachMap->Arg.m_nDegOfPar);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

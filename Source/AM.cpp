@@ -35,8 +35,11 @@ i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
 i8   AM::nSubIngesters(void)  { return gpAttachMap->Arg.m_nSubIngesters;      }
 i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
 i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
-i8   AM::nPtnsPerTable(void)     { return gpAttachMap->Arg.m_nPtnsPerTable;         }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
+
+i8   AM::nPtnsPerTable(void) {
+  return gpAttachMap->m_pPtnMap->nPtnsPerTable();
+}
 
 TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->Arg.m_oDbgTagSet;       }
 
@@ -122,7 +125,7 @@ i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 
 i8   AM::nPtnsInGrid(void) {
-  return AM::nPtnsPerTable() * gpAttachMap->m_pGrid->nBootNodes();
+  return gpAttachMap->m_pPtnMap->nPtnsInGrid();
 }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
