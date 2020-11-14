@@ -1604,7 +1604,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       m_iRobin++;
-      i_TablePtn = m_iRobin % AM::nTablePtns();
+      i_TablePtn = m_iRobin % AM::nPtnsPerTable();
       tPtnNo = PtnMap::tStrandToLglPtnNo(i_TablePtn);
       
       // xmitNode is the partition node
@@ -1655,7 +1655,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL: {
       
-      ASSERT(pNextStage->nItems() == AM::nTablePtns());
+      ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
       for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
         
         Strand* pStrand = pNextStage->pGet(i_Strand);
@@ -1781,7 +1781,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_LOCALROBIN : {
       m_iLocalRobin++;
-      i_TablePtn = m_iLocalRobin % AM::nTablePtns();
+      i_TablePtn = m_iLocalRobin % AM::nPtnsPerTable();
       tPtnNo = PtnMap::tStrandToLglPtnNo(i_TablePtn);
       
       // xmitNode is this node
@@ -1797,7 +1797,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL: {
       
-      ASSERT(pNextStage->nItems() == AM::nPartitionsInGrid());
+      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // xmitNode is the partition node
@@ -1846,7 +1846,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       m_iRobin++;
-      tPtnNo = m_iRobin % AM::nPartitionsInGrid();
+      tPtnNo = m_iRobin % AM::nPtnsInGrid();
       
       // xmitNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
@@ -1926,7 +1926,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
       
     case XK_ROBIN:
       m_iRobin++;
-      tSendPtn = m_iRobin % AM::nPartitionsInGrid();
+      tSendPtn = m_iRobin % AM::nPtnsInGrid();
       break;
       
     default:

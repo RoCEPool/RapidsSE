@@ -102,7 +102,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   
   m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
-  m_xRluCommon.m_nPtns  = AM::nPartitionsInGrid();
+  m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
   
 #ifdef WITH_CHECK_INITIALISED
@@ -1242,7 +1242,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   }
   
   aRluCommon->m_i_TablePtn = AM::pTaskJob()->m_pOp->tPtnNo();
-  aRluCommon->m_nPtns  = AM::nPartitionsInGrid();
+  aRluCommon->m_nPtns  = AM::nPtnsInGrid();
   aRluCommon->m_iHash  = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

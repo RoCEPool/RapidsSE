@@ -23,7 +23,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
   m_pPipelineJob = AM::pPipelineJob();
-  m_nPtns        = AM::nPartitionsInGrid();
+  m_nPtns        = AM::nPtnsInGrid();
 
   m_pStreamDef = pStreamDef;
   m_pBucketMap = pBucketMap;

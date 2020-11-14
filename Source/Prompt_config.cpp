@@ -37,7 +37,7 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
          sShmSize.azChar(),
          sFreeSpace.azChar(),
          gxArgs.m_nBootNodes,
-         gxArgs.m_nTablePtns,
+         gxArgs.m_nPtnsPerTable,
          gxArgs.m_nThreads,
          gxArgs.m_nSubIngesters,
          gxArgs.m_nSubLoaders,

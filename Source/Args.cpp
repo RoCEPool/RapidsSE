@@ -43,7 +43,7 @@ Args::Args(void)
 #else
   m_sSenDir       = "../Sen/"_Stz;
 #endif
-  m_nTablePtns    = 4;
+  m_nPtnsPerTable    = 4;
 
   m_iLiftNo = 0;
   
@@ -206,7 +206,7 @@ void Args::vEnvironmentVariables(void)
 
   sVarName = "SE_PARTITIONS"_Stz;
   if (Env::bGet(sVarName,sPartitions))
-    m_nTablePtns = sPartitions.iToI8();
+    m_nPtnsPerTable = sPartitions.iToI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -527,13 +527,13 @@ bool Args::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--partitionsPerNode"_Stz)) {
-      m_nTablePtns = argv[++i_Arg].iToI8();
-      if (m_nTablePtns > C_MAX_TABLEPTNS) {
+      m_nPtnsPerTable = argv[++i_Arg].iToI8();
+      if (m_nPtnsPerTable > C_MAX_TABLEPTNS) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
           C_MAX_TABLEPTNS);
         return false;
       }
-      m_nDegOfPar = m_nTablePtns;
+      m_nDegOfPar = m_nPtnsPerTable;
       
       continue;
     }
@@ -993,7 +993,7 @@ void Args::vPrintStartupInfo(void)
       m_xBootNode[i_Index].m_iPortNo);
   }
   
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_nTablePtns);
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_nPtnsPerTable);
   vTrace("  --threads %lld\n"_Stz,m_nThreads);
 
   if (m_nDummyThreads) {

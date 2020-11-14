@@ -70,11 +70,11 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 /*----------------------------------------------------------------------------*/
 /* convert hash to logical partition number                                   */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tHashToPtnNo(i8 iHash, i8 nPartitionsInGrid)
+tPN PtnMap::tHashToPtnNo(i8 iHash, i8 nPtnsInGrid)
 {
   _static_
   
-  i8 tPtnNo = iHash % nPartitionsInGrid;
+  i8 tPtnNo = iHash % nPtnsInGrid;
 
   return tPtnNo;
 }
@@ -112,8 +112,8 @@ void PtnMap::vDumpPartitioning(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  if (AM::nPartitionsInGrid()) {
-    for (tPN tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++)
+  if (AM::nPtnsInGrid()) {
+    for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
       vTrace("Partition: %lld; Node: %lld\n"_Stz,tPtnNo,i_WhichNode(tPtnNo));
     vTrace("\n"_Stz);
   }

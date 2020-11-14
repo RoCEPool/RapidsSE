@@ -289,9 +289,9 @@ void Step::vPlannerParseWhereN(void)
   //
   //  i8 nPhrases = pPlanner->nPhrases();
   //  if (nPhrases)
-  //    nLastBuffers = pPlanner->nPhrases() * gxArgs.m_nTablePtns;
+  //    nLastBuffers = pPlanner->nPhrases() * gxArgs.m_nPtnsPerTable;
   //  else
-  //    nLastBuffers = gxArgs.m_nTablePtns;
+  //    nLastBuffers = gxArgs.m_nPtnsPerTable;
   //
   //  m_pTask->m_pSession->vLastBuffers(nLastBuffers);
   
@@ -605,9 +605,9 @@ void Step::vPlannerParseWhere(void)
 //  
 //  i8 nPhrases = pPlanner->nPhrases();
 //  if (nPhrases)
-//    nLastBuffers = pPlanner->nPhrases() * gxArgs.m_nTablePtns;
+//    nLastBuffers = pPlanner->nPhrases() * gxArgs.m_nPtnsPerTable;
 //  else
-//    nLastBuffers = gxArgs.m_nTablePtns;
+//    nLastBuffers = gxArgs.m_nPtnsPerTable;
 //  
 //  m_pTask->m_pSession->vLastBuffers(nLastBuffers);
   

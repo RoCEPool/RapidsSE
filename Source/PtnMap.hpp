@@ -30,7 +30,7 @@ namespace MetaData
    ~PtnMap(void) noexcept(false);
   
     static i8   iHashToBucketId(i8 iHash);
-    static tPN  tHashToPtnNo(i8 iHash, i8 nPartitionsInGrid);
+    static tPN  tHashToPtnNo(i8 iHash, i8 nPtnsInGrid);
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStrandToLglPtnNo(i8 i_Strand);
 

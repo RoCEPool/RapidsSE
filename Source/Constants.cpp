@@ -66,7 +66,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.nodeName"_Stz,          gxArgs.m_sNodeName);
   Constants::vAddConstant("args.nodes"_Stz,             gxArgs.m_nBootNodes);
   Constants::vAddConstant("args.operands"_Stz,          gxArgs.m_nOperands);
-  Constants::vAddConstant("args.partitionsPerNode"_Stz, gxArgs.m_nTablePtns);
+  Constants::vAddConstant("args.partitionsPerNode"_Stz, gxArgs.m_nPtnsPerTable);
   Constants::vAddConstant("args.periodicSleep"_Stz,     gxArgs.m_nPeriodicSleep);
   Constants::vAddConstant("args.progress"_Stz,          gxArgs.m_bProgress);
   Constants::vAddConstant("args.prompt"_Stz,            gxArgs.m_bPrompt);
@@ -84,7 +84,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.subIngesters"_Stz,      gxArgs.m_nSubIngesters);
   Constants::vAddConstant("args.subLoaders"_Stz,        gxArgs.m_nSubLoaders);
   Constants::vAddConstant("args.supervisorSleep"_Stz,   gxArgs.m_nSupervisorSleep);
-  Constants::vAddConstant("args.tablePtns"_Stz,         gxArgs.m_nTablePtns);
+  Constants::vAddConstant("args.tablePtns"_Stz,         gxArgs.m_nPtnsPerTable);
   Constants::vAddConstant("args.threads"_Stz,           gxArgs.m_nThreads);
   Constants::vAddConstant("args.touch"_Stz,             gxArgs.m_bTouch);
   Constants::vAddConstant("args.tracepoint"_Stz,        gxArgs.m_bTracepoint);

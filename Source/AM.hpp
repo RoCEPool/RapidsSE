@@ -52,7 +52,7 @@ namespace Oblique
     static i8   nSubIngesters(void);
     static i8   nSubInserters(void);
     static i8   nSubLoaders(void);
-    static i8   nTablePtns(void);
+    static i8   nPtnsPerTable(void);
     static i8   nThreads(void);
 
     static TagSet* pDbgTagSet(void);
@@ -109,7 +109,7 @@ namespace Oblique
     static i8   iPid(void);
     static void vProcessExit(void);
     static bool bProgress(void);
-    static i8   nPartitionsInGrid(void);
+    static i8   nPtnsInGrid(void);
     static Queues* pQueues(void);
     static ResourceTracker* pResourceTracker(void);
     static Article* pRootArticle(void);

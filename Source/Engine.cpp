@@ -1588,7 +1588,7 @@ void Engine::vStartSystem(void)
     ASSERT(AM::pGrid()->nNodes() == i_Node);
     Node* pNode = new Node(i_Node,
                            gxArgs.m_xBootNode[i_Node].m_sNodeName,
-                           AM::nTablePtns(),
+                           AM::nPtnsPerTable(),
                            gxArgs.m_xBootNode[i_Node].m_sIPAddress,
                            gxArgs.m_xBootNode[i_Node].m_iPortNo);
     AM::pGrid()->vPutNode(pNode);
@@ -1634,7 +1634,7 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Creating Partition Map\n"_Stz);
 
-  gpAttachMap->m_pPtnMap = new PtnMap(AM::nPartitionsInGrid());
+  gpAttachMap->m_pPtnMap = new PtnMap(AM::nPtnsInGrid());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

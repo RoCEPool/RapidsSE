@@ -35,7 +35,7 @@ i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
 i8   AM::nSubIngesters(void)  { return gpAttachMap->Arg.m_nSubIngesters;      }
 i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
 i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
-i8   AM::nTablePtns(void)     { return gpAttachMap->Arg.m_nTablePtns;         }
+i8   AM::nPtnsPerTable(void)     { return gpAttachMap->Arg.m_nPtnsPerTable;         }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->Arg.m_oDbgTagSet;       }
@@ -121,8 +121,8 @@ i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
 i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 
-i8   AM::nPartitionsInGrid(void) {
-  return AM::nTablePtns() * gpAttachMap->m_pGrid->nBootNodes();
+i8   AM::nPtnsInGrid(void) {
+  return AM::nPtnsPerTable() * gpAttachMap->m_pGrid->nBootNodes();
 }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
@@ -709,7 +709,7 @@ Stz* AM::szSummary(s256& sSummary)
   
   sSummary.vSprint("%lldN%lldP%lldT %s %s"_Stz,
                    AM::nBootNodes(),
-                   AM::nTablePtns(),
+                   AM::nPtnsPerTable(),
                    AM::nThreads(),
                    AM::szBuild(),
                    spNow.sz()
@@ -728,7 +728,7 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
   sSummary.vSprint("%s_%lldN%lldP%lldT"_Stz,
                    szNote,
                    AM::nBootNodes(),
-                   AM::nTablePtns(),
+                   AM::nPtnsPerTable(),
                    AM::nThreads()
                    );
   

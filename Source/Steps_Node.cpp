@@ -47,7 +47,7 @@ void Step::vNodeNew(void)
   m_pDataStack->vPopStr(sNodeNm,__func__);
 
   i8 nNodes = AM::pGrid()->nNodes();
-  i8 nDegOfPar = AM::nTablePtns();
+  i8 nDegOfPar = AM::nPtnsPerTable();
 
   Node* pNode = new Node(nNodes,
                          sNodeNm,
@@ -171,7 +171,7 @@ void Step::vNodePartitions(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::nTablePtns());
+  m_pDataStack->vPushInt(AM::nPtnsPerTable());
   
   EXIT();
 }

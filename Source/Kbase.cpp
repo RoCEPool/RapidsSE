@@ -1187,7 +1187,7 @@ void Kbase::vAprioriFacts(void)
   
   Fact* pGrid         = pElm("_grid_"_Stz,         pReference);
                           vAtr("_nodes_"_Stz,AM::nBootNodes(), pGrid);
-                          vAtr("_partitions_"_Stz,AM::nPartitionsInGrid(),pGrid);
+                          vAtr("_partitions_"_Stz,AM::nPtnsInGrid(),pGrid);
 
   
   // /contents/reference/tables
@@ -1528,7 +1528,7 @@ void Kbase::vAprioriFacts(void)
   
   Fact* pGrid         = pElm("_grid_"_Stz,         pIntention);
                           vAtr("_nodes_"_Stz,AM::nBootNodes(), pGrid);
-                          vAtr("_partitions_"_Stz,AM::nPartitionsInGrid(),pGrid);
+                          vAtr("_partitions_"_Stz,AM::nPtnsInGrid(),pGrid);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
