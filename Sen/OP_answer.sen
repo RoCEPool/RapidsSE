@@ -69,6 +69,9 @@
   // set the receive socket in the answered node
   pSocket pAnsweredNode node.recvSocket!
 
+  // node is active
+  NS_ACTIVE pAnsweredNode node.state!
+
   // delete the infoset
   infoSet[].delete
 
