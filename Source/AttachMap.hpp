@@ -27,6 +27,7 @@ namespace StorageEngine
     
     struct {
       i8     m_nBootNodes;     // number nodes supplied via SE -node
+      i8     m_iConnectCode;  // connect code (not yet used)
       bool   m_bDebugIndex;    // debug index
       bool   m_bDebugMode;     // debug mode
       i8     m_nDegOfPar;      // degree of parallelism

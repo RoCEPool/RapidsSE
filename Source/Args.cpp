@@ -300,12 +300,6 @@ bool Args::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--RLUdiary"_Stz)) {
-      m_bRLUDiary = true;
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--dontFree"_Stz)) {
       m_bDontFree = true;
       continue;
@@ -601,6 +595,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     //  m_bRestart = true;
     //  continue;
     //}
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--RLUdiary"_Stz)) {
+      m_bRLUDiary = true;
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--RLUTimer"_Stz)) {
