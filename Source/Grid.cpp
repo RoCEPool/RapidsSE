@@ -59,7 +59,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode, i8 nBootNodes)
   m_bHasStarted     = false;
       
   // initialize the node array
-  m_nBootNodes      = nBootNodes;
+  m_nBootNodes      = 0;
   m_nConnectedNodes = 0;
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
     m_pNodes[i_Node] = nullptr;
@@ -95,21 +95,6 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add node                                                                   */
-/*----------------------------------------------------------------------------*/
-void Grid::vAddNode(Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  i8 i_Node = pNode->iNodeNo();
-  
-  m_pNodes[i_Node] = pNode;
-  
-  if (i_Node >= m_nBootNodes)
-    m_nBootNodes++;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get article                                                                */
@@ -210,13 +195,38 @@ void Grid::vHasStarted(bool bHasStarted)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of connected nodes                                              */
+/* increment number of put nodes                                              */
+/*----------------------------------------------------------------------------*/
+void Grid::vIncBootNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_nBootNodes++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of connected nodes                                        */
 /*----------------------------------------------------------------------------*/
 void Grid::vIncConnectedNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_nConnectedNodes++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* put node                                                                   */
+/*----------------------------------------------------------------------------*/
+void Grid::vPutNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  i8 i_Node = pNode->iNodeNo();
+  
+  m_pNodes[i_Node] = pNode;
+  
+//  if (i_Node >= m_nBootNodes)
+//    m_nBootNodes++;
 }
 
 /*----------------------------------------------------------------------------*/

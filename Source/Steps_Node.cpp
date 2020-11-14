@@ -36,8 +36,6 @@ void Step::vNodeNew(void)
 {
   ENTRY();
   
-  i8 nNodes = AM::nBootNodes();
-  
   Job* pJob = AM::pThisTLSJob();
   TagSet* pJobTags = pJob->pJobTags();
   
@@ -48,6 +46,8 @@ void Step::vNodeNew(void)
   
   m_pDataStack->vPopStr(sNodeNm,__func__);
 
+  i8 nNodes = AM::nBootNodes();
+  
   Node* pNode = new Node(nNodes,
                          sNodeNm,
                          pJobTags->szValue("IPADDR"_Stz),
@@ -55,7 +55,7 @@ void Step::vNodeNew(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  AM::pGrid()->vAddNode(pNode);
+  AM::pGrid()->vPutNode(pNode);
   
   m_pDataStack->vPushPtr(pNode);
 

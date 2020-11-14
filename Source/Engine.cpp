@@ -1589,9 +1589,9 @@ void Engine::vStartSystem(void)
                            gxArgs.m_xBootNode[i_Node].m_sNodeName,
                            gxArgs.m_xBootNode[i_Node].m_sIPAddress,
                            gxArgs.m_xBootNode[i_Node].m_iPortNo);
-    ASSERT(CN_NODE == pNode->eClass());
-    AM::pGrid()->vAddNode(pNode);
-    
+    AM::pGrid()->vPutNode(pNode);
+    AM::pGrid()->vIncBootNodes();
+
     Article* pNodeArticle = pNode->pArticle();
     
     pGridArticle->vAppend(pNodeArticle);

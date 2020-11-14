@@ -36,7 +36,6 @@ namespace Grids
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    void vAddNode(Node* pNode);
     Article* pArticle(void);
     i8   nBootNodes(void);
     i8   nConnectedNodes(void);
@@ -45,7 +44,9 @@ namespace Grids
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
+    void vIncBootNodes(void);
     void vIncConnectedNodes(void);
+    void vPutNode(Node* pNode);
     void vRemoveNode(Node* pNode);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
