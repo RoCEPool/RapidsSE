@@ -19,6 +19,7 @@ extern SizeHeap      gxaSizeHeap[];
 // Arg
 bool AM::bDebugIndex(void)    { return gpAttachMap->Arg.m_bDebugIndex;        }
 bool AM::bDebugMode(void)     { return gpAttachMap->Arg.m_bDebugMode;         }
+i8   AM::nDegOfPar(void)      { return gpAttachMap->Arg.m_nDegOfPar;          }
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }

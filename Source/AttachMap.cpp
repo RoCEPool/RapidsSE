@@ -245,6 +245,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_nBootNodes       = pArgs->m_nBootNodes;
   Arg.m_bDebugIndex      = pArgs->m_bDebugIndex;
   Arg.m_bDebugMode       = pArgs->m_bDebugMode;
+  Arg.m_nDegOfPar        = pArgs->m_nDegOfPar;
   Arg.m_bDeveloper       = pArgs->m_bDeveloper;
   Arg.m_nDummyLoop       = pArgs->m_nDummyLoop;
   Arg.m_nDummySleep      = pArgs->m_nDummySleep;

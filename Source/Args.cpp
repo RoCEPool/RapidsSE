@@ -28,6 +28,7 @@ Args::Args(void)
 #endif
   
   m_iConnectCode  = C_UNKNOWN;
+  m_nDegOfPar     = 4;
   m_sGridName     = "SEgrid"_Stz;
   m_sNodeName     = "node"_Stz;
   m_aRegionAddr   = (void*)C_ADR_REGION;
@@ -42,7 +43,7 @@ Args::Args(void)
 #else
   m_sSenDir       = "../Sen/"_Stz;
 #endif
-  m_nTablePtns        = 4;
+  m_nTablePtns    = 4;
 
   m_iLiftNo = 0;
   
@@ -532,6 +533,7 @@ bool Args::bParse(i8 argc, s256 argv[])
           C_MAX_TABLEPTNS);
         return false;
       }
+      m_nDegOfPar = m_nTablePtns;
       
       continue;
     }

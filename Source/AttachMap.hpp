@@ -29,6 +29,7 @@ namespace StorageEngine
       i8     m_nBootNodes;     // number nodes supplied via SE -node
       bool   m_bDebugIndex;    // debug index
       bool   m_bDebugMode;     // debug mode
+      i8     m_nDegOfPar;      // degree of parallelism
       bool   m_bDeveloper;     // developer mode
       i8     m_nDummyLoop;     // loop count for dummy threads
       i8     m_nDummySleep;    // sleep period for dummy threads
