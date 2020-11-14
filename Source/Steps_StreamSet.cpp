@@ -186,7 +186,7 @@ void Step::vStreamSetAddGridSanity(void)
   
   // get partitions per table for this node
   bool bPartitions = false;
-  i8 nTablePtns = pGrid->nTablePtns();
+  i8 nTablePtns = AM::nTablePtns();
   if (pNodeInfo->m_waColVal[2] == nTablePtns)
     bPartitions = true;
   

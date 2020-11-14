@@ -883,11 +883,11 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iXmits = AM::pGrid()->nTablePtns();
+      iXmits = AM::nTablePtns();
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iXmits = AM::pGrid()->nTablePtns();
+      iXmits = AM::nTablePtns();
       break;
      
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:

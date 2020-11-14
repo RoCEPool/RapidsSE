@@ -1572,7 +1572,7 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pFocalObjects = new FocalObjects;
   gpAttachMap->m_pQueues = new Queues;
     
-  gpAttachMap->m_pGrid = new Grid(gxArgs.m_nBootNodes, gxArgs.m_nTablePtns);
+  gpAttachMap->m_pGrid = new Grid(gxArgs.m_nBootNodes);
   
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
   

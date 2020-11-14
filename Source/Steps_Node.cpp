@@ -169,7 +169,7 @@ void Step::vNodePartitions(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::pGrid()->nTablePtns());
+  m_pDataStack->vPushInt(AM::nTablePtns());
   
   EXIT();
 }

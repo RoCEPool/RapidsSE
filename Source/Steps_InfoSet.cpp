@@ -82,7 +82,7 @@ void Step::vInfoSetAddNodeInfo(void)
                                     C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     AM::iRegionSize(),
-                                    pGrid->nTablePtns(),
+                                    AM::nTablePtns(),
                                     C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);

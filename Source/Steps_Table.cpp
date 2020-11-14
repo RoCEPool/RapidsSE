@@ -225,7 +225,7 @@ void Step::vTableDump(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::pGrid()->nTablePtns(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
     vTrace("Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->vDump();
@@ -593,7 +593,7 @@ void Step::vTableVisualize(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::pGrid()->nTablePtns(); i_TablePtn++) {
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nTablePtns(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
     vTrace("Table Partition %lld\n"_Stz, i_TablePtn);
     pTablePtn->vVisualizeTable();

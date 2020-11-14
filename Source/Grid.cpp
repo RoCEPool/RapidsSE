@@ -42,7 +42,7 @@ void Grid::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(i8 nNodes, i8 nTablePtns)
+Grid::Grid(i8 nBootNodes)
 : Object(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
@@ -51,7 +51,7 @@ Grid::Grid(i8 nNodes, i8 nTablePtns)
   
   m_pArticle = new Article(m_sGridNm,this,nullptr);
   
-  vInit(nNodes, nTablePtns);
+  vInit(nBootNodes);
   
   _checkInitialised_(CN_GRID);
   
@@ -69,12 +69,10 @@ Grid::~Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void Grid::vInit(i8 nBootNodes, i8 nTablePtns)
+void Grid::vInit(i8 nBootNodes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_nTablePtns      = nTablePtns;
-    
+      
   m_iThisNode       = C_UNKNOWN;
   m_pThisNode       = nullptr;
   
@@ -252,7 +250,7 @@ i8 Grid::nPartitionsInGrid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  i8 nPartitions = m_nTablePtns * m_nBootNodes;
+  i8 nPartitions = AM::nTablePtns() * m_nBootNodes;
 
   return nPartitions;
 }
@@ -300,17 +298,7 @@ i8 Grid::nStrandsPerNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_nTablePtns;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of partitions per table in the grid                             */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nTablePtns(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_nTablePtns;
+  return AM::nTablePtns();
 }
 
 /*----------------------------------------------------------------------------*/

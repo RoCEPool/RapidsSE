@@ -335,8 +335,7 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeNm()->azChar());
   vTrace("  --region %s\n"_Stz,Arg.m_sRegionName.azChar());
   vTrace("  --size %lld\n"_Stz,Arg.m_iRegionSize);
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->nTablePtns());
-
+  vTrace("  --partitionsPerNode %lld\n"_Stz,AM::nTablePtns());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,9 +12,7 @@ namespace Grids
     Article* m_pArticle;
   
     s32    m_sGridNm;
-  
-    i8     m_nTablePtns;       // no of table partitions on each node
-  
+    
     i8     m_iThisNode;        // this node number
     Node*  m_pThisNode;        // this node pointer
   
@@ -32,7 +30,7 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(i8 nBootNodes, i8 nTablePtns);
+    Grid(i8 nBootNodes);
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -48,13 +46,12 @@ namespace Grids
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
     void vIncConnectedNodes(void);
-    void vInit(i8 nNodes, i8 nTablePtns);
+    void vInit(i8 nNodes);
     void vRemoveNode(Node* pNode);
     i8   nPartitionsInGrid(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
     i8   nStrandsPerNode(void);
-    i8   nTablePtns(void);
     i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNode(i8 iNode);
