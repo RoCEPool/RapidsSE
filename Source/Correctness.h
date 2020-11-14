@@ -21,6 +21,12 @@ namespace Correctness
 //------------------------------------------------------------------------------
 
 
+#include "Hack.hpp"
+
+#define PASTE3(a,b,c) a##b##c
+#define GLOBALNM(_fun,_class,_line) PASTE3(_fun,_class,_line)
+#define HACK(_class,_text) Hack GLOBALNM(Hack,_class,__LINE__)(_text,__FILE__,__LINE__)
+
 #include "eFK.h"
 #include "Exception.hpp"
 

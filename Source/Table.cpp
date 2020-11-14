@@ -22,6 +22,8 @@ __aFooterFunction(Table)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+HACK(Table,"define table partitioning");
+
 Table::Table(Stz* szTableNm)
 : Object(CN_TABLE)
 {
@@ -664,6 +666,8 @@ StreamDef* Table::pStreamDef(void)
 /*----------------------------------------------------------------------------*/
 /* set StreamDef                                                              */
 /*----------------------------------------------------------------------------*/
+HACK(Table,"define table partitioning");
+
 void Table::vStreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
