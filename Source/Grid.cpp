@@ -61,6 +61,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode, i8 nBootNodes)
   // initialize the node array
   m_nBootNodes      = 0;
   m_nConnectedNodes = 0;
+  m_nNodes          = 0;
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
     m_pNodes[i_Node] = nullptr;
   }
@@ -215,6 +216,16 @@ void Grid::vIncConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of nodes in the node array                                      */
+/*----------------------------------------------------------------------------*/
+i8 Grid::nNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_nNodes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* put node                                                                   */
 /*----------------------------------------------------------------------------*/
 void Grid::vPutNode(Node* pNode)
@@ -224,6 +235,8 @@ void Grid::vPutNode(Node* pNode)
   i8 i_Node = pNode->iNodeNo();
   
   m_pNodes[i_Node] = pNode;
+  
+  m_nNodes++;
   
 //  if (i_Node >= m_nBootNodes)
 //    m_nBootNodes++;

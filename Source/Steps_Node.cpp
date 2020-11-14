@@ -46,7 +46,7 @@ void Step::vNodeNew(void)
   
   m_pDataStack->vPopStr(sNodeNm,__func__);
 
-  i8 nNodes = AM::nBootNodes();
+  i8 nNodes = AM::pGrid()->nNodes();
   
   Node* pNode = new Node(nNodes,
                          sNodeNm,

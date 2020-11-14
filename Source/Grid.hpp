@@ -22,6 +22,7 @@ namespace Grids
 
     i8     m_nBootNodes;       // number of nodes supplied via SE -node
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
+    i8     m_nNodes;           // number of nodes in array
     Node*  m_pNodes[C_MAX_NODES]; // array of nodes
   
     // must be last
@@ -46,6 +47,7 @@ namespace Grids
     Node* pGetNode(i8 i_Node);
     void vIncBootNodes(void);
     void vIncConnectedNodes(void);
+    i8   nNodes(void);
     void vPutNode(Node* pNode);
     void vRemoveNode(Node* pNode);
     void vStartNode(i8 iStartNode);
