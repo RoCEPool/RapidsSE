@@ -1569,7 +1569,7 @@ void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eX
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
   
-  ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
+  ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
   
   for (i8 i_Node = 0; i_Node < pNextStage->nItems(); i_Node++) {
     vSend(pOperand, bSet, i_Node, C_UNKNOWN);

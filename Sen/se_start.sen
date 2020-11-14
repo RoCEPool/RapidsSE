@@ -893,11 +893,19 @@
 
     stage stageA on origin :
 
-      start | periodic once
-            | addNode $NodeNm $IpAddr $PortNo
-            | output
-            | sink
-            | stageA
+      start
+        | periodic once
+        | stageB
+
+    stage stageB on all nodes :
+
+      addNode $NodeNm $IpAddr $PortNo
+        | stageC
+
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
 
   end ;
   "
