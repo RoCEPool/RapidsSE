@@ -40,7 +40,6 @@ namespace Grids
     Article* pArticle(void);
     i8   nBootNodes(void);
     i8   nConnectedNodes(void);
-    void vDumpPartitioning(void);
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);

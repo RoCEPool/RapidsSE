@@ -132,20 +132,6 @@ Article* Grid::pArticle(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of connected nodes                                              */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nConnectedNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-//  vTrace("/nnConnectedNodes()\n"_Stz);
-//
-//  vThreadCallStackDump();
-
-  return m_nConnectedNodes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of defined nodes in the grid                                    */
 /*----------------------------------------------------------------------------*/
 i8 Grid::nBootNodes(void)
@@ -160,28 +146,17 @@ i8 Grid::nBootNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
+/* get number of connected nodes                                              */
 /*----------------------------------------------------------------------------*/
-void Grid::vDumpPartitioning(void)
+i8 Grid::nConnectedNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  if (AM::nPartitionsInGrid()) {
-    for (tPN tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++)
-      vTrace("Partition: %lld; Node: %lld\n"_Stz, tPtnNo,
-             AM::pPtnMap()->i_WhichNode(tPtnNo));
-    vTrace("\n"_Stz);
-  }
-}
+//  vTrace("/nnConnectedNodes()\n"_Stz);
+//
+//  vThreadCallStackDump();
 
-/*----------------------------------------------------------------------------*/
-/* return grid name                                                           */
-/*----------------------------------------------------------------------------*/
-Stz* Grid::szGridNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_sGridNm;
+  return m_nConnectedNodes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,6 +187,16 @@ Node* Grid::pGetNode(i8 i_Node)
   Node* pNode = m_pNodes[i_Node];
   
   return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return grid name                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Grid::szGridNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_sGridNm;
 }
 
 /*----------------------------------------------------------------------------*/

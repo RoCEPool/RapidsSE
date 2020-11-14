@@ -1700,7 +1700,7 @@ void Engine::vStartSystem(void)
   
   if (AM::bVerboseProgress()) {
     vInfo("Engine Instance %s started\n"_Stz,gxArgs.m_sRegionName.azChar());
-    AM::pGrid()->vDumpPartitioning();
+    gpAttachMap->m_pPtnMap->vDumpPartitioning();
   }
   
   s32 sResident_magn;

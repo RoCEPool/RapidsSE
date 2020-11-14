@@ -106,6 +106,21 @@ tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dump grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void PtnMap::vDumpPartitioning(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  
+  if (AM::nPartitionsInGrid()) {
+    for (tPN tPtnNo = 0; tPtnNo < AM::nPartitionsInGrid(); tPtnNo++)
+      vTrace("Partition: %lld; Node: %lld\n"_Stz,tPtnNo,i_WhichNode(tPtnNo));
+    vTrace("\n"_Stz);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get which node a logical partition is mapped to                            */
 /*----------------------------------------------------------------------------*/
 i8 PtnMap::i_WhichNode(tPN tPtnNo)
