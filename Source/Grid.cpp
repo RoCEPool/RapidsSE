@@ -160,7 +160,8 @@ Node* Grid::pGetNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  RASSERT(i_Node >= 0 and i_Node < m_nBootNodes);
+  RASSERT(i_Node >= 0 and
+          (i_Node < m_nBootNodes or i_Node < m_nConnectedNodes));
   
   Node* pNode = m_pNodes[i_Node];
   

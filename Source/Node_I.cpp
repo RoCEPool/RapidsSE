@@ -16,14 +16,17 @@ __aFooterFunction(Node_I);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node_I::Node_I(void)
+Node_I::Node_I(i8 iStipulate)
 : Object(CN_NODE_I)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   
+  m_iStipulate = iStipulate;
   m_i_Node = 0;
   
   _checkInitialised_(CN_NODE_I);
+  
+  vFirst();
   
   _postcondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 }
@@ -31,14 +34,17 @@ Node_I::Node_I(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node_I::Node_I(i8 i_Node)
+Node_I::Node_I(i8 i_Node,i8 iStipulate)
 : Object(CN_NODE_I)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
   
+  m_iStipulate = iStipulate;
   m_i_Node = i_Node;
   
   _checkInitialised_(CN_NODE_I);
+  
+  vFirst();
   
   _postcondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 }
@@ -80,16 +86,38 @@ Node* Node_I::operator *(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* first node                                                                 */
+/*----------------------------------------------------------------------------*/
+void Node_I::vFirst(void)
+{
+  _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* more?                                                                      */
 /*----------------------------------------------------------------------------*/
 bool Node_I::bMore(void)
 {
   _precondition_(_MAGIC_,CN_NODE_I,_FOOTER_);
 
-  if (m_i_Node < AM::nBootNodes())
-    return true;
-  else
-    return false;
+  if (m_iStipulate == C_ALL) {
+    
+    if (m_i_Node < AM::nConnectedNodes())
+      return true;
+    else
+      return false;
+    
+  }
+  else {
+    
+    if (m_i_Node < AM::nBootNodes())
+      return true;
+    else
+      return false;
+    
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

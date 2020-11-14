@@ -18,8 +18,8 @@
   pJob job.createBufferQueue
 
   // set the no of acks expected by originator job
-  //   to be the number of connected nodes in the grid
-  grid::connectedNodes pJob job.acksRemaining!
+  //   to be the number of defined nodes in the grid
+  grid::definedNodes pJob job.acksRemaining!
 
   // grab this task's lock
   task[] task.grabLock

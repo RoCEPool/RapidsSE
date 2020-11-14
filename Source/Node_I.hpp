@@ -9,6 +9,7 @@ namespace Grids
   {
   private:
   
+    i8 m_iStipulate;
     i8 m_i_Node;
 
     // must be last
@@ -18,13 +19,14 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Node_I(void);
-    Node_I(i8 i_Node);
+    Node_I(i8 iStipulate=0);
+    Node_I(i8 i_Node,i8 iStipulate=0);
    ~Node_I(void) noexcept(false);
     
     operator Node*(void);   // auto conversion
     Node* operator *(void); // dereference
 
+    void  vFirst(void);
     bool  bMore(void);
     void  vNext(void);
     i8    i_Node(void);

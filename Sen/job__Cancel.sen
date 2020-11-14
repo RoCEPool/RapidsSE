@@ -27,7 +27,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
-  grid::connectedNodes pJobOriginator job.acksRemaining!
+  grid::definedNodes pJobOriginator job.acksRemaining!
 
   // send job__cancel to all nodes
 //  grid::definedNodes 0

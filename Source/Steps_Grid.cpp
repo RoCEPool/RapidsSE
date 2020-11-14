@@ -96,7 +96,7 @@ void Step::vGridListNodes(void)
   StreamSet* pStreamSet  = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   i8 i_Node = m_pDataStack->iPopAsInt(__func__);
-  for (Node_I oNode_I(i_Node); oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I(i_Node,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
 
     Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
