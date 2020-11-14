@@ -11,7 +11,8 @@ namespace Grids
   
     Article* m_pArticle;
   
-    s32    m_sGridNm;
+    s32    m_sGridNm;          // name of this grid
+    i8     m_iConnectCode;     // connect code for this grid (not yet used)
     
     i8     m_iThisNode;        // this node number
     Node*  m_pThisNode;        // this node pointer
@@ -30,7 +31,7 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(i8 nBootNodes);
+    Grid(Stz* szGridNm, i8 iConnectCode, i8 nBootNodes);
    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

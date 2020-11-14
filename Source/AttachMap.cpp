@@ -257,6 +257,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_nMaxReadyLP      = pArgs->m_nMaxReadyLP;
   Arg.m_bMetadata        = pArgs->m_bMetadata;
   Arg.m_bMunged          = pArgs->m_bMunged;
+  Arg.m_sGridName        = pArgs->m_sGridName;
   Arg.m_nOperands        = pArgs->m_nOperands;
   Arg.m_bProgress        = pArgs->m_bProgress;
   Arg.m_sRegionName      = pArgs->m_sRegionName;

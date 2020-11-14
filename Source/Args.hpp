@@ -18,6 +18,8 @@ namespace Arguments
   
     // configuration of this node
     s256  m_sCommandsDir;  // commands dir
+    i8    m_iConnectCode;  // connect code (not yet used)
+    s32   m_sGridName;     // name of the grid
     s32   m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
     s32   m_sRegionName;   // name of shared memory region

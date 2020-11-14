@@ -42,12 +42,13 @@ void Grid::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(i8 nBootNodes)
+Grid::Grid(Stz* szGridNm, i8 iConnectCode, i8 nBootNodes)
 : Object(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_sGridNm = "SEgrid"_Stz;
+  m_sGridNm = szGridNm; //"SEgrid"_Stz;
+  m_iConnectCode = iConnectCode;
   
   m_pArticle = new Article(m_sGridNm,this,nullptr);
   

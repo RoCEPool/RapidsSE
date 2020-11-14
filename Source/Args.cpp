@@ -20,14 +20,15 @@ Args::Args(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
-  
-  
   // configuration
 #ifdef WITH_APPLE
   m_sCommandsDir  = "../../../../Commands"_Stz;
 #else
   m_sCommandsDir  = "../../Commands"_Stz;
 #endif
+  
+  m_iConnectCode  = C_UNKNOWN;
+  m_sGridName     = "SEgrid"_Stz;
   m_sNodeName     = "node"_Stz;
   m_aRegionAddr   = (void*)C_ADR_REGION;
   m_sRegionName   = ""_Stz;
@@ -274,6 +275,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--connectCode"_Stz)) {
+      m_iConnectCode = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--debugIndex"_Stz)) {
       m_bDebugIndex = true;
       continue;
@@ -331,6 +338,12 @@ bool Args::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--freeCB"_Stz)) {
       m_bFreeCB = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--gridName"_Stz)) {
+      m_sGridName = (Stz*)argv[++i_Arg];
       continue;
     }
     
@@ -453,11 +466,10 @@ bool Args::bParse(i8 argc, s256 argv[])
       vWarn("--munged specified but SE not compiled WITH_MUNGED_SEN\n"_Stz);
       return false;
 #endif
-      
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--name"_Stz)) {
+    if (szArg->bSame("--name"_Stz) || argv[i_Arg].bSame("--nodeName"_Stz)) {
       m_sNodeName = (Stz*)argv[++i_Arg];
       continue;
     }
