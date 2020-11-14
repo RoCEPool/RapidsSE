@@ -46,11 +46,9 @@ namespace Grids
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
     void vIncConnectedNodes(void);
-    void vInit(i8 nNodes);
     void vRemoveNode(Node* pNode);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
-    i8   nStrandsPerNode(void);
     i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNode(i8 iNode);

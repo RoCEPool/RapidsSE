@@ -52,28 +52,6 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode, i8 nBootNodes)
   
   m_pArticle = new Article(m_sGridNm,this,nullptr);
   
-  vInit(nBootNodes);
-  
-  _checkInitialised_(CN_GRID);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-Grid::~Grid(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* init                                                                       */
-/*----------------------------------------------------------------------------*/
-void Grid::vInit(i8 nBootNodes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-      
   m_iThisNode       = C_UNKNOWN;
   m_pThisNode       = nullptr;
   
@@ -86,6 +64,18 @@ void Grid::vInit(i8 nBootNodes)
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
     m_pNodes[i_Node] = nullptr;
   }
+
+  _checkInitialised_(CN_GRID);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Grid::~Grid(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,16 +253,6 @@ void Grid::vStartNode(i8 iStartNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_iStartNode = iStartNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of strands per node                                             */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nStrandsPerNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return AM::nTablePtns();
 }
 
 /*----------------------------------------------------------------------------*/
