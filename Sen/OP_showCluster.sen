@@ -23,7 +23,7 @@
   // create an infoSet operand
   streamSetTable[] streamSet[].new
 
-//  grid::definedNodes 0 do
+//  grid::bootNodes 0 do
 //
 //    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //    // insert a row in the infoSet for the defined node

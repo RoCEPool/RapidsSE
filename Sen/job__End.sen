@@ -27,10 +27,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
-  grid::definedNodes pJobOriginator job.acksRemaining!
+  grid::bootNodes pJobOriginator job.acksRemaining!
 
   // send Job__End to all nodes
-//  grid::definedNodes 0
+//  grid::bootNodes 0
 //  do
 //    I grid::node node.isConnected if
 //      //I grid::thisNodeName@ "(%v) (%v) Job__End::distribute" .printf

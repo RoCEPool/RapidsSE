@@ -19,7 +19,7 @@
 
   // set the no of acks expected by originator job
   //   to be the number of defined nodes in the grid
-  grid::definedNodes pJob job.acksRemaining!
+  grid::bootNodes pJob job.acksRemaining!
 
   // grab this task's lock
   task[] task.grabLock
@@ -28,7 +28,7 @@
   1 task::acks!
 
   // send the job to each connected node in the grid
-//  grid::definedNodes 0 do
+//  grid::bootNodes 0 do
 //
 //    I grid::node node.sendSocket@ if
 //      I pJob job.forward

@@ -59,7 +59,7 @@
 //
 //  ""
 //
-//  grid::definedNodes 0 do
+//  grid::bootNodes 0 do
 //
 //    I grid::node to pNode
 //    pNode node.port
@@ -128,7 +128,7 @@
 //: grid::spawnOtherNodes1 ( -- )
 //
 //  // test for single node grid
-//  grid::definedNodes 1 == if exit then
+//  grid::bootNodes 1 == if exit then
 //
 //  0 locals| sNodeList |
 //  0 locals| sShellCommand |
@@ -141,7 +141,7 @@
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // spawn all other nodes
 //
-//  grid::definedNodes 0 do
+//  grid::bootNodes 0 do
 //
 //    // all but this node
 //    I grid::thisNode@ != if
@@ -161,7 +161,7 @@
 : grid::spawnOtherNodes ( -- )
 
   // test for single node grid
-  grid::definedNodes 1 == if exit then
+  grid::bootNodes 1 == if exit then
 
   0 locals| sNodeList |
   0 locals| sShellCommand |

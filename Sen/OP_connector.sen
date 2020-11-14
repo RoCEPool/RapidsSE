@@ -79,7 +79,7 @@
 //
 //  // "_connectorTake" .
 //
-//  grid::definedNodes 0
+//  grid::bootNodes 0
 //  do
 //
 //    // get node I

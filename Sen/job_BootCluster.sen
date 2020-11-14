@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 //: grid::connected ( -- t|f )
 //
-//  grid::definedNodes 0
+//  grid::bootNodes 0
 //  do
 //    I grid::node node.isConnected not if
 //      args.verbose if

@@ -13,7 +13,7 @@
 
   1 Counter0[] + to Counter0[]
 
-  Counter0[] grid::definedNodes == if
+  Counter0[] grid::bootNodes == if
     // get the index def
     Pipein[] to indexDef[]
     nullptr to Pipein[]

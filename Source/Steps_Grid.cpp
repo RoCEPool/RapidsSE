@@ -9,14 +9,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Grid(void)
 {
+  vAddStep("grid::bootNodes"_Stz,         &Step::vGridBootNodes);
   vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
-  vAddStep("grid::definedNodes"_Stz,      &Step::vGridDefinedNodes);
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
   vAddStep("grid::listNodes"_Stz,         &Step::vGridListNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
-
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
   vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
   vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
@@ -30,6 +29,18 @@ void Step::vAddSteps_Grid(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grid::bootNodes -- get number of nodes in the grid                         */
+/*----------------------------------------------------------------------------*/
+void Step::vGridBootNodes(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::nBootNodes());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* grid::connectedNodes -- get number of connected nodes in the grid          */
 /*----------------------------------------------------------------------------*/
 void Step::vGridConnectedNodes(void)
@@ -39,18 +50,6 @@ void Step::vGridConnectedNodes(void)
   i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
 
   m_pDataStack->vPushInt(nConnectedNodes);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::definedNodes -- get number of nodes in the grid                      */
-/*----------------------------------------------------------------------------*/
-void Step::vGridDefinedNodes(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(AM::pGrid()->nBootNodes());
   
   EXIT();
 }

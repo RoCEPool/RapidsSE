@@ -421,8 +421,8 @@ public:
   void vSeriesName(void);
 
   // grid
+  void vGridBootNodes(void);
   void vGridConnectedNodes(void);
-  void vGridDefinedNodes(void);
   void vGridFindNode(void);
   void vGridIncConnectedNodes(void);
   void vGridListNodes(void);
