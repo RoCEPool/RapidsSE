@@ -62,6 +62,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
       
   // initialize the node array
   m_nBootNodes      = 0;
+  m_nDefinedNodes   = 0;
   m_nConnectedNodes = 0;
   m_nNodes          = 0;
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
@@ -135,6 +136,20 @@ i8 Grid::nConnectedNodes(void)
 //  vThreadCallStackDump();
 
   return m_nConnectedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of defined nodes                                                */
+/*----------------------------------------------------------------------------*/
+i8 Grid::nDefinedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+//  vTrace("/nnConnectedNodes()\n"_Stz);
+//
+//  vThreadCallStackDump();
+
+  return m_nDefinedNodes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,6 +231,16 @@ void Grid::vIncConnectedNodes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_nConnectedNodes++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of defined nodes                                          */
+/*----------------------------------------------------------------------------*/
+void Grid::vIncDefinedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_nDefinedNodes++;
 }
 
 /*----------------------------------------------------------------------------*/

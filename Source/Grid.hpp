@@ -21,6 +21,7 @@ namespace Grids
     i8     m_iStartNode;       // node that started the cluster
 
     i8     m_nBootNodes;       // number of nodes supplied via SE -node
+    i8     m_nDefinedNodes;    // number of nodes in the nodes array
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
     i8     m_nNodes;           // number of nodes in array
     Node*  m_pNodes[C_MAX_NODES]; // array of nodes
@@ -39,6 +40,7 @@ namespace Grids
   
     Article* pArticle(void);
     i8   nBootNodes(void);
+    i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
@@ -46,6 +48,7 @@ namespace Grids
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
     void vIncBootNodes(void);
+    void vIncDefinedNodes(void);
     void vIncConnectedNodes(void);
     i8   nNodes(void);
     void vPutNode(Node* pNode);

@@ -76,8 +76,9 @@ namespace Oblique
     static i8   iEpoch(void);
     static Format* pFmt(void);
     static Grid* pGrid(void);
-    static i8   nConnectedNodes(void);
     static i8   nBootNodes(void);
+    static i8   nConnectedNodes(void);
+    static i8   nDefinedNodes(void);
     static i8   nNodes(void);
     static JobList* pDemonJobs(void);
     static bool bHasStarted(void);
