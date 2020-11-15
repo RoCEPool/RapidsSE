@@ -27072,6 +27072,8 @@ void Task::vAddMunged(Forth* pForth)
     " \n"
     "  \"adjustPtns_DataPulse\" .\n"
     "   \n"
+    "  ptnMap::adjust\n"
+    "\n"
     "  ZK_DATAPULSE_handler\n"
     " ;\n"
     "\n"

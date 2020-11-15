@@ -1107,6 +1107,9 @@ public:
   void vPromptNew(void);
   void vPromptSession(void);
 
+  // ptnMap
+  void vPtnMapAdjust(void);
+
   // ptnStream
   void vPtnStreamBufferNo(void);
   void vPtnStreamClose(void);

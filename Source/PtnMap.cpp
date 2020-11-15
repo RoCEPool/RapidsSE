@@ -22,8 +22,8 @@ PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  m_nPtnsInGrid   = nBootNodes * nDegOfPar;
-  m_nPtnsPerTable = nDegOfPar;
+  m_nPtnsInGrid   = 0;
+  m_nPtnsPerTable = 0;
 
   for (i8 i = 0; i < C_MAX_PTNS; i++) {
     m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
@@ -32,15 +32,7 @@ PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
   
   _checkInitialised_(CN_PTNMAP);
   
-  RASSERT(m_nPtnsInGrid);
-  for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
-    
-    m_xaInNodeTablePtn[tPtnNo].m_i_Node =
-      (i4)i_LglPtnNoToInitialNode(tPtnNo);
-    
-    m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
-      (i4)i_LglPtnNoToInitialStrand(tPtnNo);
-  }
+  vPartition(nBootNodes,nDegOfPar);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 }
@@ -107,6 +99,17 @@ tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* adjust partitioning                                                        */
+/*----------------------------------------------------------------------------*/
+void PtnMap::vAdjustPartitioning(i8 nConnectedNodes, i8 nDegOfPar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  
+  vPartition(nConnectedNodes,nDegOfPar);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
@@ -210,6 +213,33 @@ i8 PtnMap::i_LglPtnNoToInitialStrand(tPN tPtnNo)
   i8 i_Strand = tPtnNo / AM::nBootNodes();
   
   return i_Strand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+  
+  m_nPtnsInGrid   = nNodes * nDegOfPar;
+  m_nPtnsPerTable = nDegOfPar;
+
+  for (i8 i = 0; i < C_MAX_PTNS; i++) {
+    m_xaInNodeTablePtn[i].m_i_Node = C_UNKNOWN;
+    m_xaInNodeTablePtn[i].m_i_TablePtn = C_UNKNOWN;
+  }
+    
+  RASSERT(m_nPtnsInGrid);
+  for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
+    
+    m_xaInNodeTablePtn[tPtnNo].m_i_Node =
+      (i4)i_LglPtnNoToInitialNode(tPtnNo);
+    
+    m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
+      (i4)i_LglPtnNoToInitialStrand(tPtnNo);
+  }
+  
 }
 
 /*============================================================================*/

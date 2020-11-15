@@ -11,6 +11,8 @@
  
   "adjustPtns_DataPulse" .
    
+  ptnMap::adjust
+
   ZK_DATAPULSE_handler
 ;
 
