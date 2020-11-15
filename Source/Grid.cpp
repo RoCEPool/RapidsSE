@@ -159,7 +159,7 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && pNode->szNodeNm()->bSame(sName))
       return pNode;
@@ -176,7 +176,9 @@ Node* Grid::pGetNode(i8 i_Node)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   RASSERT(i_Node >= 0 and
-          (i_Node < m_nBootNodes or i_Node < m_nConnectedNodes));
+          (i_Node < m_nBootNodes or
+           i_Node < m_nConnectedNodes or
+           i_Node < m_nDefinedNodes));
   
   Node* pNode = m_pNodes[i_Node];
   

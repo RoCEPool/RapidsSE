@@ -1593,6 +1593,7 @@ void Engine::vStartSystem(void)
                            gxArgs.m_xBootNode[i_Node].m_iPortNo);
     AM::pGrid()->vPutNode(pNode);
     AM::pGrid()->vIncBootNodes();
+    AM::pGrid()->vIncDefinedNodes();
 
     Article* pNodeArticle = pNode->pArticle();
     
