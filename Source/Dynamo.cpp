@@ -875,7 +875,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
   // add argument to the consumeOp depending on the topology
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iXmits = AM::pGrid()->nConnectedNodes();
+      iXmits = AM::pGrid()->nBootNodes();
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
