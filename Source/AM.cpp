@@ -95,6 +95,7 @@ JobList* AM::pParticipatingJobs(void) {
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
+i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 Article* AM::pLexiconArticle(void) { return gpAttachMap->m_pLexiconArticle;    }
 void AM::vProcessExit(void)   { Process::vExitFailure();                      }
 bool AM::bProgress(void)      { return gpAttachMap->Arg.m_bProgress;              }

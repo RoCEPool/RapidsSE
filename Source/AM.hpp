@@ -78,6 +78,7 @@ namespace Oblique
     static Grid* pGrid(void);
     static i8   nConnectedNodes(void);
     static i8   nBootNodes(void);
+    static i8   nNodes(void);
     static JobList* pDemonJobs(void);
     static bool bHasStarted(void);
     static HeapMem* pHeapMem(void);

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : addNode_DataPulse \handler
  
-  "addNode_DataMarker" .
+  "addNode_DataPulse" .
 
   <portNo> >int <ipAddr> <nodeNm> node::new locals| pNewNode |
    

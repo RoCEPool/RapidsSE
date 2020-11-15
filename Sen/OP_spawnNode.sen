@@ -5,6 +5,18 @@
 " OP_spawnNode.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: spawnNode_DataPulse \handler
+ 
+  "addNode_DataPulse" .
+
+  false <nodeNm> .formNodeList .spawnNamedNode
+   
+  ZK_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for spawn node                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : spawnNode_req \operator
@@ -14,6 +26,8 @@
   <nodeNm> .
 
   op__topology
+
+  find: spawnNode_DataPulse ZK_DATAPULSE op[].handler!
 
   op__loop
 

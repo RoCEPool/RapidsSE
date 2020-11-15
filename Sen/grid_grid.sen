@@ -23,7 +23,9 @@
     " --addNode" str.cat
   then
 
-  " --name "  str.cat sNodeName str.cat sNodeList str.cat
+  " --name "  str.cat sNodeName str.cat
+
+  sNodeList str.cat
 
   " --size "              str.cat args.regionSize        >str   str.cat
   " --regionPrefix "      str.cat args.regionPrefix             str.cat
@@ -75,7 +77,7 @@
 
   0 locals| pNode |
 
-  node_I[].new
+  C_ALL node_I[].new
 
   "" // initial empty string
 
@@ -94,6 +96,8 @@
   repeat
 
   node_I[].delete
+
+  CN_STZVAL assert::class
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +181,7 @@
 
   0 locals| pNode |
 
-  node_I[].new
+  0 node_I[].new
 
   begin
 

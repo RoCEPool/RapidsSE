@@ -37,7 +37,7 @@
 
   0 locals| pNode |
 
-  node_I[].new
+  0 node_I[].new
 
   begin
     node_I[].node to pNode

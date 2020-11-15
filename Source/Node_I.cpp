@@ -103,7 +103,7 @@ bool Node_I::bMore(void)
 
   if (m_iStipulate == C_ALL) {
     
-    if (m_i_Node < AM::nConnectedNodes())
+    if (m_i_Node < AM::nNodes())
       return true;
     else
       return false;

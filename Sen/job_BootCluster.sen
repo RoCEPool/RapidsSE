@@ -44,7 +44,7 @@
 
   true locals| allConnected |
 
-  node_I[].new
+  0 node_I[].new
 
   begin
 

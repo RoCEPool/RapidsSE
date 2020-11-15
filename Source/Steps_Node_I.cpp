@@ -52,7 +52,9 @@ void Step::vNode_INew(void)
 {
   ENTRY();
   
-  Node_I* pNode_I = new Node_I;
+  i8 iStipulate = m_pDataStack->iPopInt(__func__);
+  
+  Node_I* pNode_I = new Node_I(0,iStipulate);
       
   m_pLogicUnit->m_xpNode_I = pNode_I;
 

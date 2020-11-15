@@ -143,6 +143,8 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_128KB"_Stz, C_128KB);
   vAddConstant("C_256KB"_Stz, C_256KB);
   vAddConstant("C_512KB"_Stz, C_512KB);
+  
+  vAddConstant("C_ALL"_Stz, C_ALL);
 
   vAddConstant("C_MAX_INDEXES"_Stz,       C_MAX_INDEXES);
   vAddConstant("C_MAX_TABLEPTNS"_Stz,         C_MAX_TABLEPTNS);
