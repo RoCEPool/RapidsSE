@@ -49,6 +49,7 @@ void Constants::vAddConstantsArgs(void)
 {
   // Args
   Constants::vAddConstant("args.addNode"_Stz,           gxArgs.m_bAddNode);
+  Constants::vAddConstant("args.bootNodes"_Stz,         gxArgs.m_nBootNodes);
   Constants::vAddConstant("args.condCode"_Stz,          gxArgs.m_iCondCode);
   Constants::vAddConstant("args.config"_Stz,            gxArgs.m_bConfig);
   Constants::vAddConstant("args.developer"_Stz,         gxArgs.m_bDeveloper);
@@ -64,7 +65,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.metadata"_Stz,          gxArgs.m_bMetadata);
   Constants::vAddConstant("args.munged"_Stz,            gxArgs.m_bMunged);
   Constants::vAddConstant("args.nodeName"_Stz,          gxArgs.m_sNodeName);
-  Constants::vAddConstant("args.nodes"_Stz,             gxArgs.m_nBootNodes);
   Constants::vAddConstant("args.operands"_Stz,          gxArgs.m_nOperands);
   Constants::vAddConstant("args.partitionsPerNode"_Stz, gxArgs.m_nPtnsPerTable);
   Constants::vAddConstant("args.periodicSleep"_Stz,     gxArgs.m_nPeriodicSleep);

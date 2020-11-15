@@ -27,7 +27,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
-  grid::bootNodes pJobOriginator job.acksRemaining!
+  grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // send job__cancel to all nodes
 //  grid::bootNodes 0
@@ -39,7 +39,7 @@
 
   0 locals| pNode |
 
-  0 node_I[].new
+  C_ALL node_I[].new
 
   begin
     node_I[].node to pNode

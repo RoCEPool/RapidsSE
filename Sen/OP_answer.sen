@@ -72,6 +72,8 @@
   // node is active
   NS_ACTIVE pAnsweredNode node.state!
 
+  //grid::incConnectedNodes
+
   // delete the infoset
   infoSet[].delete
 

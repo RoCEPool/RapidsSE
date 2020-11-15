@@ -19,7 +19,7 @@
 
   // set the no of acks expected by originator job
   //   to be the number of defined nodes in the grid
-  grid::bootNodes pJob job.acksRemaining!
+  grid::connectedNodes pJob job.acksRemaining!
 
   // grab this task's lock
   task[] task.grabLock
@@ -38,13 +38,15 @@
 
   0 locals| pNode |
 
-  0 node_I[].new
+  C_ALL node_I[].new
 
   begin
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
       pNode node.no pJob job.forward
+    else
+"++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
 
     node_I[].next

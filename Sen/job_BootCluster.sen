@@ -44,7 +44,7 @@
 
   true locals| allConnected |
 
-  0 node_I[].new
+  C_ALL node_I[].new
 
   begin
 
