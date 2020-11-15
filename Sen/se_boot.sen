@@ -83,6 +83,7 @@ assert::stack_0
         // -- -- -- -- -- -- -- -- -- --
 
         "OP_addNode.sen"              include
+        "OP_adjustPartitions.sen"     include
         "OP_analyzeIndex.sen"         include
         "OP_analyzeTable.sen"         include
         "OP_answer.sen"               include

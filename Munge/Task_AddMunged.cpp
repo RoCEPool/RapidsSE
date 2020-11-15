@@ -4634,6 +4634,33 @@ void Task::vAddMunged(Forth* pForth)
     "  api::addProcedure\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // adjust partitions\n"
+    "  sPath\n"
+    "  \"\n"
+    "  procedure adjust partitions\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "\n"
+    "      start\n"
+    "        | periodic once\n"
+    "        | stageB\n"
+    "\n"
+    "    stage stageB on all nodes :\n"
+    "\n"
+    "      adjustPtns\n"
+    "        | stageC\n"
+    "\n"
+    "    stage stageC on origin :\n"
+    "      output\n"
+    "        | sink\n"
+    "        | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // remove node\n"
     "  sPath\n"
     "  \"\n"
@@ -23913,6 +23940,7 @@ void Task::vAddMunged(Forth* pForth)
     "        // -- -- -- -- -- -- -- -- -- --\n"
     "\n"
     "        \"OP_addNode.sen\"              include\n"
+    "        \"OP_adjustPartitions.sen\"     include\n"
     "        \"OP_analyzeIndex.sen\"         include\n"
     "        \"OP_analyzeTable.sen\"         include\n"
     "        \"OP_answer.sen\"               include\n"
@@ -27027,9 +27055,67 @@ void Task::vAddMunged(Forth* pForth)
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [196] se_word.sen
+  // munge of [196] OP_adjustPartitions.sen
 
   gszaMungedText[196] =
+    "\" munged OP_adjustPartitions.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_adjustPartitions.sen -- Operator Adjust Partitions                      */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_adjustPartitions.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_DATAPULSE ...                                               */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": adjustPtns_DataPulse \\handler\n"
+    " \n"
+    "  \"adjustPtns_DataPulse\" .\n"
+    "   \n"
+    "  ZK_DATAPULSE_handler\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for add node                               (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : adjustPtns_req \\operator\n"
+    " \n"
+    "  LogReqEntry SEED_REQ\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: adjustPtns_DataPulse ZK_DATAPULSE op[].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  LogReqExit\n"
+    "  job::deleteThis\n"
+    "  DONE_REQ_OP\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: adjustPtns :: adjustPtns ;\n"
+    "\n"
+    ": adjustPtns _cmdTags tagCopy: op_tags\n"
+    "  tags{ <cmdDesc> = \"--desc for op--\" }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 196 CONSTANT OP_adjustPartitions.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [197] se_word.sen
+
+  gszaMungedText[197] =
     "\" munged se_word.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_word.sen -- additional word related words                               */\n"
@@ -27197,13 +27283,13 @@ void Task::vAddMunged(Forth* pForth)
     ""_Stz
   ;
 
-  szSubScriptDef = " 196 CONSTANT se_word.sen "_Stz;
+  szSubScriptDef = " 197 CONSTANT se_word.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [197] OP_toPtnRsb.sen
+  // munge of [198] OP_toPtnRsb.sen
 
-  gszaMungedText[197] =
+  gszaMungedText[198] =
     "\" munged OP_toPtnRsb.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toPtnRsb.sen -- Convert rsb buffers to partitioned row slab buffers     */\n"
@@ -27318,13 +27404,13 @@ void Task::vAddMunged(Forth* pForth)
     ""_Stz
   ;
 
-  szSubScriptDef = " 197 CONSTANT OP_toPtnRsb.sen "_Stz;
+  szSubScriptDef = " 198 CONSTANT OP_toPtnRsb.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [198] se_core.sen
+  // munge of [199] se_core.sen
 
-  gszaMungedText[198] =
+  gszaMungedText[199] =
     "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
@@ -27876,13 +27962,13 @@ void Task::vAddMunged(Forth* pForth)
     ""_Stz
   ;
 
-  szSubScriptDef = " 198 CONSTANT se_core.sen "_Stz;
+  szSubScriptDef = " 199 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [199] se_vortex.sen
+  // munge of [200] se_vortex.sen
 
-  gszaMungedText[199] =
+  gszaMungedText[200] =
     "\" munged se_vortex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_vortex.sen -- parse the .hpp files                                      */\n"
@@ -27972,13 +28058,13 @@ void Task::vAddMunged(Forth* pForth)
     ""_Stz
   ;
 
-  szSubScriptDef = " 199 CONSTANT se_vortex.sen "_Stz;
+  szSubScriptDef = " 200 CONSTANT se_vortex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [200] OP_receiver.sen
+  // munge of [201] OP_receiver.sen
 
-  gszaMungedText[200] =
+  gszaMungedText[201] =
     "\" munged OP_receiver.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_receiver.sen -- Operator receiver                                       */\n"
@@ -28140,13 +28226,13 @@ void Task::vAddMunged(Forth* pForth)
     ""_Stz
   ;
 
-  szSubScriptDef = " 200 CONSTANT OP_receiver.sen "_Stz;
+  szSubScriptDef = " 201 CONSTANT OP_receiver.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [201] job__End.sen
+  // munge of [202] job__End.sen
 
-  gszaMungedText[201] =
+  gszaMungedText[202] =
     "\" munged job__End.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__End.sen -- generic job related words                                  */\n"
@@ -28259,7 +28345,7 @@ void Task::vAddMunged(Forth* pForth)
     ""_Stz
   ;
 
-  szSubScriptDef = " 201 CONSTANT job__End.sen "_Stz;
+  szSubScriptDef = " 202 CONSTANT job__End.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 
