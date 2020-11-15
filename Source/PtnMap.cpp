@@ -91,7 +91,7 @@ tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
 {
   _static_
   
-  tPN tPtnNo = (i_Strand * AM::nBootNodes()) + AM::iThisNodeNo();
+  tPN tPtnNo = (i_Strand * AM::nConnectedNodes()) + AM::iThisNodeNo();
   
   return tPtnNo;
 }
@@ -154,7 +154,7 @@ i8 PtnMap::i_WhichNode(tPN tPtnNo)
   
   i8 i_Node = m_xaInNodeTablePtn[tPtnNo].m_i_Node;
     
-  RASSERT(i_Node == i_LglPtnNoToInitialNode(tPtnNo));
+  //RASSERT(i_Node == i_LglPtnNoToInitialNode(tPtnNo));
   
   return i_Node;
 }
@@ -168,7 +168,7 @@ i8 PtnMap::i_WhichStrand(tPN tPtnNo)
   
   i8 i_Strand = m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn;
    
-  RASSERT(i_Strand == i_LglPtnNoToInitialStrand(tPtnNo));
+  //RASSERT(i_Strand == i_LglPtnNoToInitialStrand(tPtnNo));
 
   return i_Strand;
 }
@@ -234,10 +234,12 @@ void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
   for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
     
     m_xaInNodeTablePtn[tPtnNo].m_i_Node =
-      (i4)i_LglPtnNoToInitialNode(tPtnNo);
+      //(i4)i_LglPtnNoToInitialNode(tPtnNo);
+      (i4)tPtnNo % nNodes;
     
     m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
-      (i4)i_LglPtnNoToInitialStrand(tPtnNo);
+      //(i4)i_LglPtnNoToInitialStrand(tPtnNo);
+      (i4)tPtnNo / nNodes;
   }
   
 }

@@ -74,6 +74,10 @@
 
   //grid::incConnectedNodes
 
+  3 Row[].getIntColumn grid::started@ not and if
+    true grid::started!
+  then
+
   // delete the infoset
   infoSet[].delete
 

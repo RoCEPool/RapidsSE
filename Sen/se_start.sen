@@ -2110,7 +2110,9 @@
   define table __nodeInfo (
     nodeName       VARCHAR NOT NULL ,
     regionSize     INTEGER NOT NULL ,
-    partitionCount INTEGER NOT NULL
+    partitionCount INTEGER NOT NULL ,
+    started        INTEGER NOT NULL
+
   ) ;
   "
   api::executeRequest
