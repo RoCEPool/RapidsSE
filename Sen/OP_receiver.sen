@@ -67,10 +67,15 @@
     // recv operand
 
     pReceivedObject object.class@ CN_XMITOPERAND == if
-      pSocket socket.recvObject discard to pOperand
-      pOperand pReceivedObject xmitOperand.operand!
-      pReceivedObject xmitOperand.pipeOut
-    else
+      pSocket socket.recvObject true == if
+        to pOperand
+        pOperand pReceivedObject xmitOperand.operand!
+        pReceivedObject xmitOperand.pipeOut
+     else
+       nullptr pReceivedObject xmitOperand.operand!
+       pReceivedObject xmitOperand.pipeOut
+     then
+  else
 
       // -- -- -- -- -- -- -- --
       // examine job

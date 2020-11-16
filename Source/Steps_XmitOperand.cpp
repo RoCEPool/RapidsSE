@@ -53,7 +53,8 @@ void Step::vXmitOperandPipeOut(void)
   
   //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
   // append to left queue
-  pOp->vAppendLeft(pXmitOperand->m_pOperand,m_pTask);
+  if (pXmitOperand->m_pOperand)
+    pOp->vAppendLeft(pXmitOperand->m_pOperand,m_pTask);
   
   // now delete the pXmitOperand
   delete pXmitOperand;
