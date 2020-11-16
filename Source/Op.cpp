@@ -490,6 +490,13 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       
+      // should not have received ZK_EOSMARKER's > ZK_DATAPULSE's
+      if ( m_iOperandCount[ZK_EOSMARKER] > m_iOperandCount[ZK_DATAPULSE]) {
+        vTrace("%s: %s arrived after ZK_EOSMARKER and no new ZK_DATAPULSE\n"_Stz,
+               szOpNm(), aZK[i_OperandKind]);
+        return false;
+      }
+      
       break;
 
     case   ZK_DATAPULSE:
@@ -499,6 +506,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
+      
       // should not have received a ZK_PULSEDMARKER
       if ( m_iOperandCount[ZK_PULSEDMARKER]) {
         vTrace("%s: %s arrived after ZK_PULSEDMARKER\n"_Stz,
