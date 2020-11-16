@@ -70,9 +70,12 @@ pre-build : version
 
 target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
-#Debug builds
+# Debug builds
 debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -g $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 debug : all
+
+# Explicit release builds (the default)
+release : all
 
 $(SHOCO): ../ThirdParty/shoco/shoco.c  
 	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
