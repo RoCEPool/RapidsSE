@@ -448,13 +448,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       break;
       
     case ZK_CANCELLEDMARKER:
-      // should have received a ZK_ERROREDMARKER
-      if ( ! m_iOperandCount[ZK_ERROREDMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_ERROREDMARKER\n"_Stz,
-               szOpNm(), aZK[i_OperandKind]);
-        return false;
-      }
-      
       // should have received a ZK_CANCELMARKER
       if ( ! m_iOperandCount[ZK_CANCELMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_CANCELMARKER\n"_Stz,
