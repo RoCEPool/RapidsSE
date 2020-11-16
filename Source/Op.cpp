@@ -448,6 +448,13 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       break;
       
     case ZK_CANCELLEDMARKER:
+      // Only StartOP receives an ZK_CANCELLEDMARKER
+      if ( ! m_sOpNm.bSame("start"_Stz) ) {
+        vTrace("%s: incorrectly received a %s\n"_Stz,
+               szOpNm(), aZK[i_OperandKind]);
+        return false;
+      }
+      
       // should have received a ZK_CANCELMARKER
       if ( ! m_iOperandCount[ZK_CANCELMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_CANCELMARKER\n"_Stz,
@@ -538,20 +545,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       break;
 
     case   ZK_ERRORMARKER:
-      
-      // should have received a ZK_STARTMARKER
-//      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-//        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
-//               szOpNm(), aZK[i_OperandKind]);
-//        return false;
-//      }
-      
-      // should not have received a ZK_ERRORMARKER already
-//      if (m_iOperandCount[i_OperandKind]) {
-//        vTrace("%s: multiple ZK_ERRORMARKER arrived\n"_Stz, szOpNm());
-//        return false;
-//      }
-      
       // should not have received a ZK_ERRORREDMARKER
       if ( m_iOperandCount[ZK_ERROREDMARKER]) {
         vTrace("%s: %s arrived after ZK_ERRORMARKER\n"_Stz, szOpNm());
@@ -560,33 +553,19 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       break;
       
     case   ZK_ERROREDMARKER:
-      // should have received a ZK_STARTMARKER
-//      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-//        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
-//               szOpNm(), aZK[i_OperandKind]);
-//        return false;
-//      }
-      
-      // Only StartOP/SinkOP receives a ZK_ERROREDMARKER
-      if ( ! m_sOpNm.bSame("start"_Stz) &&
-           ! m_sOpNm.bSame("sink"_Stz)) {
+      // Only StartOP receives an ZK_ERROREDMARKER
+      if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
-      // should have received a ZK_ERRORMARKER
+      // should have received an ZK_ERRORMARKER
       if (m_iOperandCount[ZK_ERRORMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_ERRORMARKER\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
-      
-      // should not have received an ZK_ERROREDMARKER already
-//      if (m_iOperandCount[i_OperandKind]) {
-//        vTrace("%s: multiple ZK_ERROREDMARKER arrived\n"_Stz, szOpNm());
-//        return false;
-//      }
       break;
 
     case ZK_EXITMARKER:
@@ -612,13 +591,13 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       break;
       
     case   ZK_EXITEDMARKER:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+      // Only StartOP receives an ZK_EXITEDMARKER
+      if ( ! m_sOpNm.bSame("start"_Stz) ) {
+        vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
-      // should not have received a ZK_EXITEDMARKER already
+      // should not have received an ZK_EXITEDMARKER already
       if (m_iOperandCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_EXITEDMARKER arrived\n"_Stz, szOpNm());
         return false;
@@ -655,6 +634,12 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
     
+      // Only StartOP/SinkOP receives an ZK_STARTEDMARKER
+      if ( ! m_sOpNm.bSame("start"_Stz) ) {
+        vTrace("%s: incorrectly received a %s\n"_Stz,
+               szOpNm(), aZK[i_OperandKind]);
+        return false;
+      }
       break;
 
     case   ZK_STREAMDEF:
