@@ -248,10 +248,9 @@ void Step::vSocketRecvObject(void)
   
   bool bLowMem = gpBufferPool->bLowMemory();
   if (bLowMem) {
-    AM::vPoolAnalyze();
-    //vSocketRecvObject_LowMem();
-    //return;
-    RASSERT(0);
+    //AM::vPoolAnalyze();
+    vSocketRecvObject_LowMem();
+    return;
   }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
@@ -261,12 +260,10 @@ void Step::vSocketRecvObject(void)
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receiver the object header
+  // receive the object header
   
   char caObjectHeader[sizeof(Object) + C_1K];
-  
   Header* aHeader = (Header*) & caObjectHeader[0];
-  
   i8 nObjectBytes = sizeof(Object);
   SysCall oSysCall;
 
@@ -376,7 +373,7 @@ void Step::vSocketRecvObject(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive rest of a row buffer
+  // receive an operand
   
   void* aBody;
   i8 nRemainingBytes;
@@ -594,18 +591,11 @@ void Step::vSocketRecvObject(void)
     }
 
     default:
+      vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
       RASSERT(0);
   }
   
-  
   //////////////////////////////////////////////////////////////////////////////
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // unknown object
-  
-  vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
-  m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -617,22 +607,19 @@ void Step::vSocketRecvObject_LowMem(void)
 {
   ENTRY();
   
-  i8 nFreeBuffer = gpBufferPool->nFreeCount();
-  
-  bool bDiscardOperand = false;
-  
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   void* aLowBuff = pSocket->m_aLowBuff;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receiver the object header
+  // receive the object header
   
   char caObjectHeader[sizeof(Object)+C_1K];
+  Header* aHeader = (Header*) & caObjectHeader[0];
   i8 nObjectBytes = sizeof(Object);
   SysCall oSysCall;
   
-  bool bResult = pSocket->bRecvBytes(caObjectHeader,nObjectBytes, oSysCall);
+  bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes, oSysCall);
   if (! bResult) {
     m_pDataStack->vPushInt(false);
     EXIT();
@@ -646,65 +633,10 @@ void Step::vSocketRecvObject_LowMem(void)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
-  RASSERT(_bIsValidJob(eClass) || _bIsValidOperand(eClass));
+  RASSERT(_bIsValidJob(eClass) ||
+          _bIsValidOperand(eClass) ||
+          eClass == CN_XMITOPERAND);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handle the specific case of job_writeBuffer under low memory condition
-  
-//  if (CN_JOB_WRITEBUFFER == eClass) {
-//
-//    vTrace("Received Job_WriteBuffer under low mem\n"_Stz);
-//    
-//    MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
-//    
-//    void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
-//    i8 nRemainingBytes = sizeof(Job_WriteBuffer) - sizeof(Object);
-//    
-//    bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
-//    if (! bResult) {
-//      m_pDataStack->vPushInt(false);
-//      EXIT();
-//      return;
-//    }
-//    
-//    Job_WriteBuffer* pJob_WriteBuffer =
-//      static_cast<Job_WriteBuffer*>(aLowBuff);
-//
-//    pJob_WriteBuffer->m_i_Focal = C_UNKNOWN;
-//
-//    bDiscardOperand = pJob_WriteBuffer->m_pOperand ? true : false;
-//
-//    pJob_WriteBuffer->m_bLowMem = true;
-//    
-//    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_WRITEBUFFER));
-//    MemLib::vCopy(pJob,pJob_WriteBuffer,sizeof(Job_WriteBuffer),CN_JOB_WRITEBUFFER);
-//    
-//    pJob_WriteBuffer = static_cast<Job_WriteBuffer*>(pJob);
-//    
-//    if (-1 != pJob_WriteBuffer->m_nWriteBehindBuffers) {
-//      
-//      pJob_WriteBuffer->m_pOperand = nullptr;
-//    }
-//    else {
-//      //pJob_WriteBuffer = nullptr;
-//      //vTrace("Discarded Job_WriteBuffer under low mem\n"_Stz);
-//      pJob_WriteBuffer->m_pOperand = nullptr;
-//    }
-//
-//    if (bDiscardOperand) {
-//
-//      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntBuffer),oSysCall);
-//      vTrace("Discarded EntBuffer under low mem\n"_Stz);
-//    }
-//    
-//    m_pDataStack->vPushPtr(pJob_WriteBuffer);
-//    m_pDataStack->vPushInt(true);
-//    EXIT();
-//    return;
-//
-//  }
-
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
   
@@ -741,24 +673,87 @@ void Step::vSocketRecvObject_LowMem(void)
     return;
   }
   
+  if (eClass == CN_XMITOPERAND) {
+    
+    vTrace("Received XmitOperand under low mem\n"_Stz);
+    
+    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(HeapMem::pAllocate(eClass));
+    
+    MemLib::vCopy(pXmitOperand,pObject,sizeof(Object),eClass);
+    
+    void* aBody = aAdd<void*>(pXmitOperand,sizeof(Object));
+    i8 nRemainingBytes = nObjectSize - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    if (! bResult) {
+      m_pDataStack->vPushInt(false);
+      EXIT();
+      return;
+    }
+    
+    m_pDataStack->vPushPtr(pXmitOperand);
+    m_pDataStack->vPushInt(true);
+    EXIT();
+    return;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive rest of row buffer
+  // receive an operand
+  
   void* aBody;
   i8 nRemainingBytes;
-  CrwBuffer* pCrwBuffer;
-  Marker* pMarker;
-  StreamDef* pStreamDef;
   
   switch(eClass) {
       
-    case CN_CRWBUFFER:
-    
-      pCrwBuffer = new CrwBuffer;
+    case CN_CRWBUFFER: {
       
-      MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
+      vTrace("Received CRWBUFFER under low mem\n"_Stz);
       
-      aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
+      // copy the object header into the LowBuffer
+      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_CRWBUFFER);
+      
+      // recv rest of the buffer into LowBuffer
+      void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
       nRemainingBytes = gxaSizeHeap[CN_CRWBUFFER].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+      
+      // whether able to recv or not, return false
+      m_pDataStack->vPushInt(false);
+      EXIT();
+      return;
+    }
+      
+    case CN_CSVBUFFER: {
+      
+      vTrace("Received CSVBUFFER under low mem\n"_Stz);
+      
+      // copy the object header into the LowBuffer
+      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_CSVBUFFER);
+      
+      // recv rest of the buffer into LowBuffer
+      void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_CSVBUFFER].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      m_pDataStack->vPushInt(false);
+      EXIT();
+      return;
+    }
+      
+    case CN_INDEXDEF: {
+      IndexDef* pIndexDef = new IndexDef();
+      
+      MemLib::vCopy(pIndexDef,pObject,sizeof(Object),CN_INDEXDEF);
+      
+      aBody = aAdd<void*>(pIndexDef,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_INDEXDEF].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -767,21 +762,74 @@ void Step::vSocketRecvObject_LowMem(void)
         return;
       }
       
-      pCrwBuffer->vIsPermanent(false);
-      
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      // restore the nub of the crwbuffer
-      pCrwBuffer->vRestoreNub();
-      
-      m_pDataStack->vPushPtr(pCrwBuffer);
+      m_pDataStack->vPushPtr(pIndexDef);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;
-     
-    case CN_MARKER:
-      pMarker = new Marker();
+    }
+      
+    case CN_INFOSET: {
+      
+      vTrace("Received INFOSET under low mem\n"_Stz);
+      
+      // copy the object header into the LowBuffer
+      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_INFOSET);
+      
+      // recv rest of the object into LowBuffer
+      void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_INFOSET].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+      
+      m_pDataStack->vPushInt(false);
+      EXIT();
+      return;
+    }
+      
+    case CN_RSBBUFFER: {
+      
+      vTrace("Received RSBBUFFER under low mem\n"_Stz);
+      
+      // copy the object header into the LowBuffer
+      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_RSBBUFFER);
+      
+      // recv rest of the buffer into LowBuffer
+      void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_RSBBUFFER].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+
+      m_pDataStack->vPushInt(false);
+      EXIT();
+      return;
+    }
+      
+    case CN_STREAMSET: {
+      StreamSet* pStreamSet = new StreamSet;
+      
+      MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
+      
+      aBody = aAdd<void*>(pStreamSet,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_STREAMSET].m_nClassSize - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      m_pDataStack->vPushPtr(pStreamSet);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
+      
+    case CN_MARKER: {
+      Marker* pMarker = new Marker();
       
       MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
       
@@ -795,16 +843,31 @@ void Step::vSocketRecvObject_LowMem(void)
         return;
       }
       
-      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-      
       m_pDataStack->vPushPtr(pMarker);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;
+    }
       
-    case CN_STREAMDEF:
-      pStreamDef = new StreamDef();
+    case CN_PROFILE: {
+      vTrace("Received RSBBUFFER under low mem\n"_Stz);
+      
+      // copy the object header into the LowBuffer
+      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_PROFILE);
+      
+      void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[CN_PROFILE].m_nClassSize - sizeof(Object);
+      
+      // recv rest of the object into LowBuffer
+      bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+     
+      m_pDataStack->vPushInt(false);
+      EXIT();
+      return;
+    }
+      
+    case CN_STREAMDEF: {
+      StreamDef* pStreamDef = new StreamDef();
       
       MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
       
@@ -825,16 +888,14 @@ void Step::vSocketRecvObject_LowMem(void)
       m_pDataStack->vPushInt(true);
       EXIT();
       return;
+    }
       
     default:
+      vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
       RASSERT(0);
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // unknown object
-  
-  vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
-  m_pDataStack->vPushInt(false);
+  //////////////////////////////////////////////////////////////////////////////
   
   EXIT();
 }

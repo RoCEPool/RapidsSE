@@ -392,7 +392,7 @@ bool Heap::bExtendHeap(void)
   if ( ! pHeapBuffer )
     return false;
   
-  // add that freee buffer into this buffer list
+  // add that free buffer into this buffer list
   if ( ! m_pFirstBuffer ) {
     // set as first buffer in list
     ASSERT( ! m_pLastBuffer ); // should also be null
