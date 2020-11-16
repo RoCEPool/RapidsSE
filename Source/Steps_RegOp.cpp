@@ -106,6 +106,9 @@ void Step::vRegOpIsOperandValid(void)
   if ( ! m_pLogicUnit->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
     bValid = m_pLogicUnit->m_xpOp->bIsOperandValid(i_OperandKind);
   
+  if ( ! bValid )
+    RASSERT(0);
+  
   m_pDataStack->vPushInt(bValid);
   
   EXIT();
