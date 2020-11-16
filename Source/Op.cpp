@@ -476,13 +476,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
     case   ZK_ENTBUFFER:
     case   ZK_RSBBUFFER:
     case   ZK_SRTBUFFER:
-      // should have received a ZK_STARTMARKER
-      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
-        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
-               szOpNm(), aZK[i_OperandKind]);
-        return false;
-      }
-      
       // should have received a ZK_DATAPULSE
       if ( ! m_iOperandCount[ZK_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior ZK_DATAPULSE\n"_Stz,
