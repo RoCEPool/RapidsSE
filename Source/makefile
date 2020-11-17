@@ -9,7 +9,7 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
   include makefile.linux.in
-else ifeq($(UNAME_S),DARWIN)
+else ifeq ($(UNAME_S),DARWIN)
   include makefile.darwin.in
 else
   $(error This makefile does not handle this operating system: $(UNAME_S))

@@ -95,7 +95,7 @@ OUTPUT=$(cat "${START_CLUSTER_OUTPUT_FILE}" 2>/dev/null)
 if [ "${START_CLUSTER_EXIT_STATUS}" -eq 124 ]
 then
     >&2 echo "ERROR: The _bootCluster command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the _bootCluster command:" 1>&2
-  cat "${OUTPUT}"
+  echo "${OUTPUT}"
 
   >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2
   cat "${NOHUP_FILE}"
@@ -105,7 +105,7 @@ then
 elif [ "${START_CLUSTER_EXIT_STATUS}" -ne 0 ]
 then
   >&2 echo "ERROR: Could not run the _bootCluster command on RapidsSE. Here is the output of the _bootCluster command:" 1>&2
-  cat "${OUTPUT}"
+  echo "${OUTPUT}"
 
   >&2 echo "And here is the output of RapidsSE's nohup file:" 1>&2
   cat "${NOHUP_FILE}"
