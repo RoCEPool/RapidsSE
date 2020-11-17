@@ -9,6 +9,25 @@
 # This script file is called by Bamboo after it has checked out the repository.
 
 ###############################################################################
+### Environment Variables                                                   ###
+###############################################################################
+
+# If these environment variables are defined and are non-null then they will
+# alter how this script executes.
+#
+# NO_BUILD              Do not build the software.
+# TARGETS               The array of targets to build and test. Currently only
+#                       supporting "debug" and "release".
+# NO_SINGLE_NODE_TESTS  Do not run the single node tests.
+# NO_MULTI_NODE_TESTS   Do not run the multi-node tests.
+# NO_COMPRESS           Do not compress the large binary artifacts afterwards.
+
+# e.g. NO_BUILD=1 NO_COMPRESS=1 ./runBamboo.sh
+#
+# e.g. TARGET="debug" ./runBamboo.sh
+
+
+###############################################################################
 ### Constants                                                               ###
 ###############################################################################
 
@@ -24,9 +43,13 @@ readonly DEBUG=0
 
 readonly NUM_CPUS="$(nproc)"
 
+# The default build targets to compile and test.
+readonly DEFAULT_TARGETS=("debug" "release")
+
 ###############################################################################
 ### Significant Global Variables                                            ###
 ###############################################################################
+
 
 ###############################################################################
 ### Functions                                                               ###
@@ -103,7 +126,7 @@ function compressLargeFiles() {
     cd "${BIN_DIR}" 
     local sharedObj
 
-    sharedObj="$(ls lib*.so)"
+    sharedObj="$(ls lib*.so 2>/dev/null)"
 
     if [ -f "${sharedObj}" ]; then
       tar cvzf "${sharedObj}.tar.gz" "${sharedObj}" &>/dev/null
@@ -373,7 +396,15 @@ trap onExit EXIT
 # First, kill any rogue SE and SETH instances owned by the current user.
 killRogueInstances
 
-for target in debug release
+#shellcheck disable=2206
+TEST_TARGETS=(${TARGETS:-})
+
+if [ "${#TEST_TARGETS[@]}" -eq 0 ]; then
+  # Use the default targets
+  TEST_TARGETS=("${DEFAULT_TARGETS[@]}")
+fi
+
+for target in "${TEST_TARGETS[@]}"
 do
   # Build RapidsSE for a given target type
   buildSE "${target}"
