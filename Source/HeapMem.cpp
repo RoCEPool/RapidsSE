@@ -96,6 +96,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
         break;
 
       case HT_TRANSIENT_LARGE:
+        //vTrace("HT_TRANSIENT_LARGE: %s\n"_Stz,aCN[eAllocClass]);
         pObject = pHeapMem->Transient.m_pLarge->pAllocObject(eAllocClass);
         break;
 
