@@ -50,6 +50,7 @@ namespace Grids
     void vNodeNo(i8 iNodeNo);
     i8   iPortNo(void);
   
+    void vDsv(void);
     eNS  eState(void);
     void vState(eNS eState);
 

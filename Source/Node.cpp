@@ -192,6 +192,22 @@ i8 Node::iPortNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print distributed state vector                                             */
+/*----------------------------------------------------------------------------*/
+void Node::vDsv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+
+  vTrace("  [%lld] Node %s : degOfPar %d IPAddr %s portNo %lld %s\n"_Stz,
+         m_iNodeNo,
+         m_sNodeNm.szStz(),
+         m_nDegOfPar,
+         m_sIPAddr.szStz(),
+         m_iPortNo,
+         aNS[m_eState]);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get node state                                                             */
 /*----------------------------------------------------------------------------*/
 eNS Node::eState(void)

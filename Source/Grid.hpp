@@ -42,6 +42,7 @@ namespace Grids
     i8   nBootNodes(void);
     i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
+    void vDsv(void);
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
