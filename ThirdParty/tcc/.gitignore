@@ -3,3 +3,12 @@ src/config.mak
 src/libtcc.a
 src/libtcc1.a
 src/tcc
+src/tcc-doc.html
+src/tcc.1
+src/tcc.pod
+share/doc/tcc-doc.html
+share/man/man1/tcc.1
+lib/tcc
+lib/libtcc.a
+bin/tcc
+
