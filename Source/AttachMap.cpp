@@ -11,37 +11,10 @@ extern BufferPool* gpBufferPool;
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-AttachMap* StorageEngine::_pAttachMap(void* aAddr)
-{
-  AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(aAddr);
-  
-  RASSERT_TYPE(pAttachMap,CN_ATTACHMAP);
-  
-  return pAttachMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* AttachMap::operator new(size_t)
-{
-  AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocAttachMapBuffer();
-  
-  return pPoolCheck<void*>(pAttachMap);
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void AttachMap::operator delete(void* pAttachMapAddress)
-{
-  AttachMap* pAttachMap = static_cast<AttachMap*>(pAttachMapAddress);
-  
-  gpBufferPool->vFree((PoolBuffer*)pAttachMap);
-}
+__pCastFunction(StorageEngine,AttachMap,CN_ATTACHMAP)
+__aNewFunction(AttachMap,CN_ATTACHMAP)
+__vDeleteFunction(AttachMap,CN_ATTACHMAP)
+__aFooterFunction(AttachMap)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -386,20 +359,6 @@ void AttachMap::vFocalOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* AttachMap::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
-  
-  return &m_xFooter;
 }
 
 /*============================================================================*/
