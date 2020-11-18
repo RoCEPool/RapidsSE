@@ -770,8 +770,8 @@
   // load                                                          TO BE REMOVED
   sPath
   "
-  //procedure oldLoad
-  procedure oldLoad_REMOVE
+  procedure oldLoad
+  //procedure oldLoad_REMOVE
     parameters $table $file
   begin
 
@@ -800,8 +800,8 @@
   // load
   sPath
   "
-  //procedure oldLoad_sameAsLoad
-  procedure oldLoad
+  procedure oldLoad_sameAsLoad
+  //procedure oldLoad
     parameters $table $file
   begin
 
