@@ -47,14 +47,14 @@ endif
 all : $(LIBDIR)/$(LIBANTLR) $(INCDIR)
 
 $(LIBDIR)/$(LIBANTLR) :
-	mkdir -p $(LIBDIR)
-	mkdir -p $(SRCDIR)
-	unzip -o $(SRCZIP) -d $(SRCDIR)
+	@mkdir -p $(LIBDIR)
+	@mkdir -p $(SRCDIR)
+	@unzip -o $(SRCZIP) -d $(SRCDIR)
 	cd $(SRCDIR) && cmake -DCMAKE_BUILD_TYPE=Release CMakeLists.txt
-	cd $(SRCDIR) && make -e --no-print-directory 
+	+cd $(SRCDIR) && $(MAKE) -e --no-print-directory 
 	cp $(SRCDIR)/dist/$(LIBANTLR) $(LIBDIR)
 	cd $(SRCDIR)/runtime/src && find . -name '*.h' | cpio -pdm $(INCDIR)
-	rm -rf $(SRCDIR)
+	@rm -rf $(SRCDIR)
 
 # Empty rules
 $(INCDIR) :
