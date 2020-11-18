@@ -67,7 +67,7 @@ TxSet::TxSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_pTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
-  m_tOldestPsp = AM::iNextTxId();
+  m_tOldestPsp = C_UNKNOWN; // AM::iNextTxId();
   
   _checkInitialised_(CN_TXSET);
   

@@ -96,6 +96,8 @@ AttachMap::AttachMap(void)
     new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
   m_xHeapMem.Persistent.m_pLarge  =
     new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
+  
+  m_pTxSet = new TxSet;
 
   _checkInitialised_(CN_ATTACHMAP);
   
