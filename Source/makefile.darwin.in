@@ -25,5 +25,5 @@ DARWIN_LIBRARY_EXT := dylib
 DARWIN_LIBS :=
 
 # Any darwin-specific library search paths to include?
-DARWIN_LIB_DIRS := -L../ThirdParty/tcc/lib/macos -L../ThirdParty/antlr/lib/macos
+DARWIN_LIB_DIRS := 
 
