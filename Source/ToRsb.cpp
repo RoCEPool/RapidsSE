@@ -250,7 +250,7 @@ bool ToRsb::bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bSawEnclosedTrailing;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 0) begin
+  // 0) begin                                                                USR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   char* azCsvSrc = azCsvChunk;
@@ -290,7 +290,7 @@ bool ToRsb::bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) while more csv data in chunk
+  // 1) while more csv data in chunk                                         USR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
@@ -306,7 +306,7 @@ L_TestMoreRecords:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) new rsb
+  // 2) new rsb                                                              USR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // alloc a new rsb, new another rsbBufer if necessary
@@ -318,7 +318,7 @@ L_TestMoreRecords:
   
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 3) while more fields of current record
+  // 3) while more fields of current record                                  USR
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
@@ -331,7 +331,7 @@ L_TestMoreFields:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 4) decode and convert field i_Fld
+  // 4) decode and convert field i_Fld                                       USR
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
   xColPix       = aColPix[i_Fld];
@@ -361,7 +361,7 @@ L_TestMoreFields:
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.a) boolean field : true | false | uNumber
+  // 4.a) boolean field : true | false | uNumber                             USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   
@@ -415,7 +415,7 @@ L_Boolean:
     
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.b) date field : year - month - day // year range is ????
+  // 4.b) date field : year - month - day // year range is ????              USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
@@ -563,7 +563,7 @@ L_Date:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]
+  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]                      USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
@@ -668,7 +668,7 @@ L_Decimal:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.d) float field : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]
+  // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]      USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
     
@@ -771,7 +771,7 @@ L_Float:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.e) integer : [+|-] uNumber
+  // 4.e) integer : [+|-] uNumber                                            USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
@@ -836,7 +836,7 @@ L_Integer:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.f) interval field : seconds [ . microseconds ]
+  // 4.f) interval field : seconds [ . microseconds ]                        USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   
@@ -902,7 +902,7 @@ L_Interval:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]
+  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]         USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   
@@ -1030,7 +1030,7 @@ L_Time:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.h) timestamp field :
+  // 4.h) timestamp field :                                                  USR
   //        year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
@@ -1049,7 +1049,7 @@ L_Timestamp:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.i) varchar field :
+  // 4.i) varchar field :                                                    USR
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
   
@@ -1109,7 +1109,7 @@ L_Varchar:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 5) processing at end of field
+  // 5) processing at end of field                                           USR
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
     
@@ -1134,7 +1134,7 @@ L_PostField:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) encountered a field error
+  // 6) encountered a field error                                            USR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
@@ -1190,7 +1190,7 @@ L_FieldError:
 
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 7) end of record
+  // 7) end of record                                                        USR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfRecord:
   
@@ -1234,7 +1234,7 @@ L_EndOfRecord:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 8) reached end of azCsvChunk
+  // 8) reached end of azCsvChunk                                            USR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfCsvChunk:
     
@@ -1297,7 +1297,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bSawEnclosedTrailing;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 0) begin
+  // 0) begin                                                                STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   char* azCsvSrc = azCsvChunk;
@@ -1337,7 +1337,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) while more csv data in chunk
+  // 1) while more csv data in chunk                                         STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
@@ -1353,7 +1353,7 @@ L_TestMoreRecords:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) new rsb
+  // 2) new rsb                                                              STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // alloc a new rsb, new another rsbBufer if necessary
@@ -1365,7 +1365,7 @@ L_TestMoreRecords:
   
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 3) while more fields of current record
+  // 3) while more fields of current record                                  STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
@@ -1378,7 +1378,7 @@ L_TestMoreFields:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 4) decode and convert field i_Fld
+  // 4) decode and convert field i_Fld                                       STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
   xColPix       = aColPix[i_Fld];
@@ -1408,7 +1408,7 @@ L_TestMoreFields:
   
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.a) boolean field : true | false | uNumber
+  // 4.a) boolean field : true | false | uNumber                             STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   
@@ -1462,7 +1462,7 @@ L_Boolean:
     
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.b) date field : year - month - day // year range is ????
+  // 4.b) date field : year - month - day // year range is ????              STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
@@ -1610,7 +1610,7 @@ L_Date:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]
+  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]                      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
@@ -1715,7 +1715,7 @@ L_Decimal:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.d) float field : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]
+  // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
     
@@ -1818,7 +1818,7 @@ L_Float:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.e) integer : [+|-] uNumber
+  // 4.e) integer : [+|-] uNumber                                            STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
@@ -1883,7 +1883,7 @@ L_Integer:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.f) interval field : seconds [ . microseconds ]
+  // 4.f) interval field : seconds [ . microseconds ]                        STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   
@@ -1949,7 +1949,7 @@ L_Interval:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]
+  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]         STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   
@@ -2077,7 +2077,7 @@ L_Time:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.h) timestamp field :
+  // 4.h) timestamp field :                                                  STD
   //        year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
@@ -2096,7 +2096,7 @@ L_Timestamp:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.i) varchar field :
+  // 4.i) varchar field :                                                    STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
   
@@ -2156,7 +2156,7 @@ L_Varchar:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 5) processing at end of field
+  // 5) processing at end of field                                           STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
     
@@ -2181,7 +2181,7 @@ L_PostField:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) encountered a field error
+  // 6) encountered a field error                                            STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
@@ -2237,7 +2237,7 @@ L_FieldError:
 
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 7) end of record
+  // 7) end of record                                                        STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfRecord:
   
@@ -2281,7 +2281,7 @@ L_EndOfRecord:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 8) reached end of azCsvChunk
+  // 8) reached end of azCsvChunk                                            STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndOfCsvChunk:
     
