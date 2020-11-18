@@ -1288,6 +1288,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 nPixLength;
   i8 nPixScale;
   i8 nPixPrecision;
+  bool bPixNullable;
 
   i8 iBoolean;
   
@@ -1417,7 +1418,8 @@ L_STD_TestMoreFields:
   nPixLength    = xColPix.m_uLength;
   nPixScale     = xColPix.m_uScale;
   nPixPrecision = nPixLength - nPixScale;
-
+  bPixNullable  = xColPix.m_bNullable;
+  
   bSawFldSep = false;
 
   // debug
@@ -1547,7 +1549,50 @@ L_STD_Boolean:
     
     goto L_STD_Boolean_Deposit;
   }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
 
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_BOOLEAN_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_BOOLEAN_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    iBoolean = C_DATUM_NULL;
+    goto L_STD_Boolean_Deposit;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unrecognisable boolean portion
   
