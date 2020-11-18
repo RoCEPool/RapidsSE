@@ -1339,7 +1339,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data in chunk                                         STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_TestMoreRecords:
+L_STD_TestMoreRecords:
     
   // skip leading whitespace
 //  while (bWHITE_SPACE())
@@ -1347,7 +1347,7 @@ L_TestMoreRecords:
 //
   // test for more csv to be parsed
   if (! bMORE_DATA())
-    goto L_EndOfCsvChunk;
+    goto L_STD_EndOfCsvChunk;
   
   azRecordStart = azCsvSrc;
   
@@ -1367,12 +1367,12 @@ L_TestMoreRecords:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 3) while more fields of current record                                  STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-L_TestMoreFields:
+L_STD_TestMoreFields:
   
   ASSERT(EC_NONE == eError);
 
   if (! bMORE_FIELDS())
-    goto L_EndOfRecord;
+    goto L_STD_EndOfRecord;
 
   azFieldStart = azCsvSrc;
 
@@ -1393,15 +1393,15 @@ L_TestMoreFields:
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
   switch (ePixDatum) {
-    case DM_BOL : goto L_Boolean;
-    case DM_DTE : goto L_Date;
-    case DM_BCD : goto L_Decimal;
-    case DM_FLT : goto L_Float;
-    case DM_INT : goto L_Integer;
-    case DM_IVL : goto L_Interval;
-    case DM_TME : goto L_Time;
-    case DM_TSP : goto L_Timestamp;
-    case DM_VCH : goto L_Varchar;
+    case DM_BOL : goto L_STD_Boolean;
+    case DM_DTE : goto L_STD_Date;
+    case DM_BCD : goto L_STD_Decimal;
+    case DM_FLT : goto L_STD_Float;
+    case DM_INT : goto L_STD_Integer;
+    case DM_IVL : goto L_STD_Interval;
+    case DM_TME : goto L_STD_Time;
+    case DM_TSP : goto L_STD_Timestamp;
+    case DM_VCH : goto L_STD_Varchar;
     default:
       RASSERT(0);
   }
@@ -1410,7 +1410,7 @@ L_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.a) boolean field : true | false | uNumber                             STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Boolean:
+L_STD_Boolean:
   
   vSKIP_WHITE_SPACE();
 
@@ -1439,7 +1439,7 @@ L_Boolean:
     }
     if (nDigits > 19) {
       eError = EC_CSV_BOOLEAN_TOO_LARGE;
-      goto L_FieldError;
+      goto L_STD_FieldError;
     }
   
     if (uNumber > 0)
@@ -1450,7 +1450,7 @@ L_Boolean:
   else {
     // unrecognisable boolean
     eError = EC_CSV_BOOLEAN_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1458,13 +1458,13 @@ L_Boolean:
   
   m_pRowSlab->vDeposit(iBoolean);
 
-  goto L_PostField;                                            // end of boolean
+  goto L_STD_PostField;                                        // end of boolean
     
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.b) date field : year - month - day // year range is ????              STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Date:
+L_STD_Date:
   
   vSKIP_WHITE_SPACE();
   
@@ -1481,11 +1481,11 @@ L_Date:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_YEAR_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 4) {
     eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // adjust a 2-digit year
@@ -1495,7 +1495,7 @@ L_Date:
   // skip over separator
   if ('-' != cSrcChr) {
     eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   vADV_SRCCHR(); // skip '-'
   
@@ -1512,17 +1512,17 @@ L_Date:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_MONTH_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 2) {
     eError = EC_CSV_MONTH_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // skip over separator
   if ('-' != cSrcChr) {
     eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   vADV_SRCCHR(); // skip '-'
   
@@ -1539,11 +1539,11 @@ L_Date:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_DAY_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 2) {
     eError = EC_CSV_DAY_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1552,17 +1552,17 @@ L_Date:
   // validate the year
   if (uYear < C_YEAR_MIN) {
     eError = EC_CSV_YEAR_TOO_SMALL;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (uYear > C_YEAR_MAX) {
     eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // validate the month
   if (uMonth < 1 || uMonth > 12) {
     eError = EC_CSV_MONTH_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // validate day wrt possible leap year
@@ -1581,19 +1581,19 @@ L_Date:
   // validate days per month
   if (uDay < 1) {
     eError = EC_CSV_DAY_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   if (bLeapYear) {
     if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
       eError = EC_CSV_DAY_NOT_LEAPYEAR;
-      goto L_FieldError;
+      goto L_STD_FieldError;
     }
   }
   else {
     if (uDay > (u8)iDaysPerMonth[uMonth]) {
       eError = EC_CSV_DAY_INVALID;
-      goto L_FieldError;
+      goto L_STD_FieldError;
     }
   }
 
@@ -1606,13 +1606,13 @@ L_Date:
   // deposit the date
   m_pRowSlab->vDeposit(xDate);
 
-  goto L_PostField;                                               // end of date
+  goto L_STD_PostField;                                           // end of date
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.c) decimal field : [+|-] uNumber [ . uFraction ]                      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Decimal:
+L_STD_Decimal:
   
   /*
       note: decimals are scaled (numerically shifted left x 10) by nPixScale
@@ -1651,7 +1651,7 @@ L_Decimal:
     nDigits++;
     nPixPrecision--;
     if (nPixPrecision < 0)
-      goto L_FieldError;
+      goto L_STD_FieldError;
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1672,11 +1672,11 @@ L_Decimal:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_DECIMAL_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 19) {
     eError = EC_CSV_DECIMAL_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   // correct for scale by x 10 till correctly scaled
   while (nPixScale--)
@@ -1696,7 +1696,7 @@ L_Decimal:
   // have we exceeded the max ?
   if (uNumber > (u8)C_I8_MAX) {
     eError = EC_CSV_DECIMAL_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // compute final field value
@@ -1705,19 +1705,19 @@ L_Decimal:
   // have we gone below the negative min ?
   if (iDecimal < C_I8_MIN) {
     eError = EC_CSV_DECIMAL_TOO_SMALL;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // deposit the decimal
   m_pRowSlab->vDeposit(iDecimal);
 
-  goto L_PostField;                                            // end of decimal
+  goto L_STD_PostField;                                        // end of decimal
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Float:
+L_STD_Float:
     
   /*
       note: this function uses atof from stdlib.h to convert the field text
@@ -1790,7 +1790,7 @@ L_Float:
     // should have seen some exponent digits
     if (! nExpDigits) {
       eError = EC_CSV_EXPONENT_MISSING;
-      goto L_FieldError;
+      goto L_STD_FieldError;
     }
   }
 
@@ -1800,7 +1800,7 @@ L_Float:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_FLOAT_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1814,13 +1814,13 @@ L_Float:
   
   m_pRowSlab->vDeposit(dFloat);
 
-  goto L_PostField;                                              // end of float
+  goto L_STD_PostField;                                          // end of float
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.e) integer : [+|-] uNumber                                            STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Integer:
+L_STD_Integer:
   
   vSKIP_WHITE_SPACE();
   
@@ -1854,11 +1854,11 @@ L_Integer:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_INTEGER_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 19) {
     eError = EC_CSV_INTEGER_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1866,7 +1866,7 @@ L_Integer:
 
   if (uNumber > (u8)C_I8_MAX) {
     eError = EC_CSV_INTEGER_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // compute final field value
@@ -1879,13 +1879,13 @@ L_Integer:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iHash,iInteger);
   
-  goto L_PostField;                                            // end of integer
+  goto L_STD_PostField;                                        // end of integer
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.f) interval field : seconds [ . microseconds ]                        STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Interval:
+L_STD_Interval:
   
   vSKIP_WHITE_SPACE();
 
@@ -1920,7 +1920,7 @@ L_Interval:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_INTERVAL_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1929,13 +1929,13 @@ L_Interval:
   // have we exceeded the max for second?
   if (uSecond > (u8)C_IVL_SEC_MAX) {
     eError = EC_CSV_INTERVAL_SECS_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // have we exceeded the max for microsecond?
   if (uMicrosecond > (u8)C_IVL_USEC_MAX) {
     eError = EC_CSV_INTERVAL_USECS_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // compute final field value
@@ -1945,13 +1945,13 @@ L_Interval:
   // deposit the interval
   m_pRowSlab->vDeposit(xInterval);
 
-  goto L_PostField;                                           // end of interval
+  goto L_STD_PostField;                                       // end of interval
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.g) time field : hour ':' minute ':' second [ . microseconds ]         STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Time:
+L_STD_Time:
   
   vSKIP_WHITE_SPACE();
   
@@ -1968,17 +1968,17 @@ L_Time:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_HOUR_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 2) {
     eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // skip over separator
   if (':' != cSrcChr) {
     eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   vADV_SRCCHR(); // skip ':'
   
@@ -1995,16 +1995,16 @@ L_Time:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_MINUTE_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 2) {
     eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   // skip over separator
   if (':' != cSrcChr) {
     eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   vADV_SRCCHR(); // skip ':'
 
@@ -2021,11 +2021,11 @@ L_Time:
   // should have seen some digits
   if (! nDigits) {
     eError = EC_CSV_SECOND_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   if (nDigits > 2) {
     eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2050,17 +2050,17 @@ L_Time:
 
   if (uHour > 23) {
     eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   if (uMinute > 59) {
     eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   if (uSecond > 59) {
     eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // compute final field value
@@ -2073,14 +2073,14 @@ L_Time:
   // deposit the time
   m_pRowSlab->vDeposit(xTime);
 
-  goto L_PostField;                                               // end of time
+  goto L_STD_PostField;                                           // end of time
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.h) timestamp field :                                                  STD
   //        year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Timestamp:
+L_STD_Timestamp:
   {
     Tsp xTsp;
     SN_Tsp snTsp;
@@ -2092,13 +2092,13 @@ L_Timestamp:
     m_pRowSlab->vDeposit(xTsp);
   }
   
-  goto L_PostField;
+  goto L_STD_PostField;
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.i) varchar field :                                                    STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_Varchar:
+L_STD_Varchar:
   
   // ** do not skip white space **
 
@@ -2144,7 +2144,7 @@ L_Varchar:
   // see the trailing enclosedBy
   if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
     eError = EC_CSV_VARCHAR_INVALID;
-    goto L_FieldError;
+    goto L_STD_FieldError;
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -2152,13 +2152,13 @@ L_Varchar:
   
   m_pRowSlab->vDepositString_end(nChars+1);
 
-  goto L_PostField;                                            // end of varchar
+  goto L_STD_PostField;                                        // end of varchar
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 5) processing at end of field                                           STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-L_PostField:
+L_STD_PostField:
     
   // advance over any trailing chars till field separator or record terminator
   while (cSrcChr) {
@@ -2177,13 +2177,13 @@ L_PostField:
 
   // move to next field
   i_Fld++;
-  goto L_TestMoreFields;
+  goto L_STD_TestMoreFields;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 6) encountered a field error                                            STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_FieldError:
+L_STD_FieldError:
 
   /*
      know:
@@ -2233,13 +2233,13 @@ L_FieldError:
   if (cSrcChr)
     vADV_SRCCHR(); // skip m_cRecEnd
 
-  goto L_TestMoreRecords;
+  goto L_STD_TestMoreRecords;
 
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 7) end of record                                                        STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EndOfRecord:
+L_STD_EndOfRecord:
   
   ASSERT(! bMORE_FIELDS());
   
@@ -2277,13 +2277,13 @@ L_EndOfRecord:
   if (cSrcChr)
     vADV_SRCCHR(); // skip m_cRecEnd
 
-  goto L_TestMoreRecords;
+  goto L_STD_TestMoreRecords;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 8) reached end of azCsvChunk                                            STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EndOfCsvChunk:
+L_STD_EndOfCsvChunk:
     
   return true;
 }
