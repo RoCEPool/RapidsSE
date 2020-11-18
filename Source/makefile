@@ -32,13 +32,13 @@ TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWI
 SHOCO := shoco.o
 
 # Source Files
-SOURCES = $(wildcard *.cpp)
+SOURCES := $(shell find . -name "*.cpp")
 SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/antlr/generated/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
-S_SOURCES = $(wildcard *.s)
+S_SOURCES := $(shell find . -name "*.s")
 
 # Man pages
 MAN_PAGES=../Documents/se.man
