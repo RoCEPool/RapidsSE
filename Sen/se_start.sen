@@ -497,34 +497,6 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // load
-  sPath
-  "
-  procedure oldLoad
-    parameters $table $file
-  begin
-
-  stage stageA on origin :
-    start | periodic once | chunk $file | stageB
-
-  stage stageB on all partitions on origin :
-    rdCsvChunk $file |
-    toCrwH $table    |
-    //  dump crwBuffer 1 |
-    stageC Hashed
-
-  stage stageC on all partitions :
-    insert $table | stageD
-
-  stage stageD on origin :
-    //sink | stageA
-    progress 'Load' | toStatDemon | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // partitionScan
   sPath
   "
@@ -785,6 +757,43 @@
   "
   api::addProcedure
 
+  // --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - ---
+  // load                                                          TO BE REMOVED
+  sPath
+  "
+  procedure oldLoad
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+    start | periodic once | chunk $file | stageB
+
+  stage stageB on all partitions on origin :
+    rdCsvChunk $file |
+    toCrwH $table    |
+    //  dump crwBuffer 1 |
+    stageC Hashed
+
+  stage stageC on all partitions :
+    insert $table | stageD
+
+  stage stageD on origin :
+    //sink | stageA
+    progress 'Load' | toStatDemon | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+: start::defineProcedures5
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    locals| sPath |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
   sPath
@@ -872,13 +881,12 @@
 // cyclicRdFile "/Users/Shared/tpch/SF1/nation.csv" 3 ;
 // cyclicRdFile "/Users/Shared/tpch/SF1/supplier.csv" 3 ;
 // cyclicRdFile "/Users/Shared/tpch/SF1/part.csv" 3 ;
-
 ;
 
 /*----------------------------------------------------------------------------*/
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
-: start::defineProcedures5
+: start::defineProcedures6
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
     locals| sPath |
@@ -2205,6 +2213,7 @@
   start::defineProcedures3
   start::defineProcedures4
   start::defineProcedures5
+  start::defineProcedures6
   start::defineProc_SteadyState
   start::defineProc_UnloadReload
   start::defineProc_Query
