@@ -57,10 +57,10 @@
   then
 
   // set the send socket in the node
+  grid::incConnectedNodes
   pSocket pNode node.sendSocket!
 
-  grid::incConnectedNodes
-
+ 
   // print connection message
   args.verbose if
     pNode node.no grid::thisNode@ "Node %v connected to node %v" .printf

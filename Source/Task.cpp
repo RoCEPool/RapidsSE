@@ -379,6 +379,8 @@ void Task::vCaught(Exception xException)
   m_pLogicUnit->vContentDump();
 
   m_pForth->vContentDump();
+  
+  AM::pGrid()->vDsv();
 
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

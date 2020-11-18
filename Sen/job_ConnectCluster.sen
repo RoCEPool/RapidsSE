@@ -75,7 +75,12 @@
 
   node_I[].delete
 
-  "All nodes connected" .verbose
+  grid::connectedNodes not if
+    "All nodes not fully connected yet" .
+    false exit
+  then
+
+  "All nodes connected" .
 
   true
 ;
