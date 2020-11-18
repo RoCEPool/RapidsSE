@@ -16,10 +16,10 @@ $(LIBTCC) :
 	mkdir -p $(BINDIR)
 	mkdir -p $(LIBDIR)
 	cd src && ./configure --prefix=./.. --libdir=./../lib --bindir=./../bin
-	cd src && make -e --no-print-directory && make install
+	+cd src && $(MAKE) -e --no-print-directory && $(MAKE) install
 
 clean :
-	cd src && make clean
-	rm    $(LIBDIR)/*.a
-	rm -r $(LIBDIR)/tcc
-	rm    $(BINDIR)/tcc
+	cd src && $(MAKE) clean
+	rm -f  $(LIBDIR)/*.a
+	rm -rf $(LIBDIR)/tcc
+	rm -f  $(BINDIR)/tcc
