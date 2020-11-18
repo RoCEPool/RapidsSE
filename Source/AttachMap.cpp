@@ -12,9 +12,18 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(StorageEngine,AttachMap,CN_ATTACHMAP)
-__aNewFunction(AttachMap,CN_ATTACHMAP)
 __vDeleteFunction(AttachMap,CN_ATTACHMAP)
 __aFooterFunction(AttachMap)
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* AttachMap::operator new(size_t)
+{
+  AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocAttachMapBuffer();
+  
+  return pPoolCheck<void*>(pAttachMap);
+}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
