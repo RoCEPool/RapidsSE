@@ -16,7 +16,7 @@ else
 endif
 
 
-#Variables
+# Variables
 CURRENT_MAKEFILE := $(lastword $(MAKEFILE_LIST))
 CPP = g++
 CPPFLAGS = -std=c++11 -DWITH_MUNGED_SEN -Wall -Wextra -O3 $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS)
@@ -24,14 +24,14 @@ LIBFLAGS = -shared
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
 
-#Target Files
-CURRENT_PATH=${PWD}
+# Target Files
+CURRENT_PATH := ${PWD}
 TARGET_PATH = $(strip $(LINUX_TARGET_PATH) $(DARWIN_TARGET_PATH))
 TARGET_EXE = $(TARGET_PATH)/rapidsse
 TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWIN_LIBRARY_EXT))
-SHOCO = shoco.o
+SHOCO := shoco.o
 
-#Source Files
+# Source Files
 SOURCES = $(wildcard *.cpp)
 SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
@@ -40,25 +40,34 @@ SOURCES += $(wildcard ../ThirdParty/antlr/generated/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
 S_SOURCES = $(wildcard *.s)
 
-#Man pages
+# Man pages
 MAN_PAGES=../Documents/se.man
 
-#Object Files for library
+# Object Files for library
 OBJECTS = $(SOURCES:.cpp=.o)
 OBJECTS += $(S_SOURCES:.s=.o)
 
-#Dependency Files for library
+# Dependency Files for library
 DEPFILES = $(SOURCES:.cpp=.d)
 
-#Include directories
+# Include directories
 INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated -I ../ThirdParty/tcc/include -I ../ThirdParty/tcc/src
 
-#Libraries
+# Linker libraries
 LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
 RAPIDS_LIBS = -lRapidsSE
-LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) -L../ThirdParty/tcc/lib -L../ThirdParty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
-# The default target
+# ThirdParty compiled library targets
+ANTLR_LIB := ../ThirdParty/antlr/lib/libantlr4-runtime.a
+TCC_LIB := ../ThirdParty/tcc/lib/libtcc.a
+COMPILED_LIBS := $(ANTLR_LIB) $(TCC_LIB)
+
+###############################################################################
+### Build Rules																														  ###
+###############################################################################
+
+# The default target (because it is first)
 all : post-build
 
 post-build : main-build
@@ -66,7 +75,7 @@ post-build : main-build
 main-build : pre-build
 	@$(MAKE) -e --no-print-directory target
 
-pre-build : version
+pre-build : version thirdparty
 
 target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
@@ -81,12 +90,12 @@ $(SHOCO): ../ThirdParty/shoco/shoco.c
 	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
 
 #Library target
-$(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
+$(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(DIR_GUARD)
 	$(CPP) $(LIBFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 
 #Main target
-$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
+$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO) $(COMPILED_LIBS)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
@@ -108,12 +117,35 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 version : FORCE
 	@./generateVersion.sh
 
-# Necessary to make the version rule above run every time.
+# Generic rule to make any thirdparty libraries that are built from source
+# and then linked against by RapidsSE. Add the dependencies here and then
+# add a corresponding rule with a recipe for how to build it.
+thirdparty : $(COMPILED_LIBS)
+
+# Rule for building ANTLR
+$(ANTLR_LIB) : 
+	+@cd ../ThirdParty/antlr && $(MAKE)
+
+# Rule for building TCC
+$(TCC_LIB) : 
+	+@cd ../ThirdParty/tcc && $(MAKE)
+
+# Necessary to make some of the above rules run every time.
 FORCE : 
 
-#To remove generated files
-clean:
+
+# Removes all generated files, including RapidsSE and 3rd-party compiled libs
+distclean : clean
+	@echo ""
+	@echo "Removing 3rd-party generated libraries..."
+	@echo ""
+	+@cd ../ThirdParty/antlr && $(MAKE) clean
+	+@cd ../ThirdParty/tcc && $(MAKE) clean
+
+#To remove RapidsSE-generated files only
+clean :
 	rm -f $(TARGET_EXE) $(TARGET_LIBRARY) $(OBJECTS) *.d
 
-#To print 
+# Makefile debugging rule to print makefile variables.
+# e.g. make print-ANTLR_LIB
 print-% : ; @echo $* = $($*)

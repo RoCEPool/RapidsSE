@@ -44,9 +44,12 @@ Then from the Source directory run the following command to build rapidsse:
   endif
 endif
 
-all : $(LIBDIR)/$(LIBANTLR) $(INCDIR)
+all : $(LIBDIR)/$(LIBANTLR)
 
-$(LIBDIR)/$(LIBANTLR) :
+$(LIBDIR)/$(LIBANTLR) : 
+	@echo ""
+	@echo "Compiling 3rd-party library: ANTLR"
+	@echo ""
 	@mkdir -p $(LIBDIR)
 	@mkdir -p $(SRCDIR)
 	@unzip -o $(SRCZIP) -d $(SRCDIR)

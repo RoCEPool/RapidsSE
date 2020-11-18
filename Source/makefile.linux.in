@@ -43,5 +43,5 @@ LINUX_LIBRARY_EXT := so
 LINUX_LIBS := -lrt
 
 # Any linux-specific library search paths to include?
-LINUX_LIB_DIRS := -L../ThirdParty/tcc/lib/linux/centos7 -L../ThirdParty/antlr/lib/linux/centos7
+LINUX_LIB_DIRS := 
 

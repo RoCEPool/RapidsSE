@@ -13,6 +13,9 @@ LIBTCC1 := $(LIBDIR)/tcc/libtcc1.a
 all : $(LIBTCC) 
 
 $(LIBTCC) :
+	@echo ""
+	@echo "Compiling 3rd-party library: TCC"
+	@echo ""
 	mkdir -p $(BINDIR)
 	mkdir -p $(LIBDIR)
 	cd src && ./configure --prefix=./.. --libdir=./../lib --bindir=./../bin
