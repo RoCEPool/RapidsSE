@@ -186,9 +186,21 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cRecEnd)
 
+#define bNON_DATA_CHAR() \
+  ( (cSrcChr == ' ')  || \
+    (cSrcChr == '\n') || \
+    (cSrcChr == '\r') || \
+    (cSrcChr == '\f') || \
+    (cSrcChr == '\t') )
+
+#define vSKIP_NON_DATA() \
+  while (cSrcChr && bNON_DATA_CHAR()) { \
+    vADV_SRCCHR(); \
+  }
+
 #define bWHITE_SPACE() \
-  (cSrcChr == ' ')  || (cSrcChr == '\n') || \
-  (cSrcChr == '\r') || (cSrcChr == '\f') || (cSrcChr == '\t')
+  ( (cSrcChr == ' ')  || \
+    (cSrcChr == '\t') )
 
 #define vSKIP_WHITE_SPACE() \
   while (cSrcChr && bWHITE_SPACE()) { \
@@ -295,7 +307,7 @@ bool ToRsb::bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 L_USR_TestMoreRecords:
     
   // skip leading whitespace
-//  while (bWHITE_SPACE())
+//  while (bNON_DATA_CHAR())
 //    vADV_SRCCHR();
 //
   // test for more csv to be parsed
@@ -365,7 +377,7 @@ L_USR_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_USR_Boolean:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // boolean portion
@@ -375,6 +387,25 @@ L_USR_Boolean:
     // true case
     iBoolean = true;
     vADV_SRCCHR(); // skip 't'
+    
+    if (! ('r' == cSrcChr || 'R' == cSrcChr)) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_USR_FieldError;
+    }
+    vADV_SRCCHR(); // skip 'r'
+    
+    if (! ('u' == cSrcChr || 'U' == cSrcChr)) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_USR_FieldError;
+    }
+    vADV_SRCCHR(); // skip 'u'
+  
+    if (! ('e' == cSrcChr || 'E' == cSrcChr)) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_USR_FieldError;
+    }
+    vADV_SRCCHR(); // skip 'e'
+    
   }
   else
   if ('f' == cSrcChr || 'F' == cSrcChr) {
@@ -419,7 +450,7 @@ L_USR_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_USR_Date:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
@@ -571,7 +602,7 @@ L_USR_Decimal:
       note: decimals are scaled (numerically shifted left x 10) by nPixScale
    */
 
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -677,7 +708,7 @@ L_USR_Float:
             into a d8 floaing point double
    */
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -775,7 +806,7 @@ L_USR_Float:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_USR_Integer:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -840,7 +871,7 @@ L_USR_Integer:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_USR_Interval:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
@@ -906,7 +937,7 @@ L_USR_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_USR_Time:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
@@ -1031,14 +1062,14 @@ L_USR_Time:
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.h) timestamp field :                                                  USR
-  //        year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
+  //    year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_USR_Timestamp:
   {
     Tsp xTsp;
     SN_Tsp snTsp;
 
-    vSKIP_WHITE_SPACE();
+    vSKIP_NON_DATA();
     
     xTsp = snTsp.i(&azCsvSrc,m_pFmt);
     cSrcChr = *azCsvSrc;
@@ -1342,7 +1373,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 L_STD_TestMoreRecords:
     
   // skip leading whitespace
-//  while (bWHITE_SPACE())
+//  while (bNON_DATA_CHAR())
 //    vADV_SRCCHR();
 //
   // test for more csv to be parsed
@@ -1412,24 +1443,91 @@ L_STD_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Boolean:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // boolean portion
+  // possible true portion
   
   // collect characters representing a boolean
   if ('t' == cSrcChr || 'T' == cSrcChr) {
     // true case
     iBoolean = true;
     vADV_SRCCHR(); // skip 't'
+    
+    if ('r' == cSrcChr || 'R' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'r'
+      if ('u' == cSrcChr || 'U' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'u'
+        if ('e' == cSrcChr || 'E' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'e'
+        }
+        else { // not expected 'e'
+          eError = EC_CSV_BOOLEAN_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'u'
+        eError = EC_CSV_BOOLEAN_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    goto L_STD_Boolean_Deposit;
   }
-  else
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible false portion
+  
   if ('f' == cSrcChr || 'F' == cSrcChr) {
     // false case
     iBoolean = false;
     vADV_SRCCHR(); // skip 'f'
+    
+    if ('a' == cSrcChr || 'A' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'a'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'l'
+        if ('s' == cSrcChr || 'S' == cSrcChr) {
+          vADV_SRCCHR(); // skip 's'
+          if ('e' == cSrcChr || 'E' == cSrcChr) {
+            vADV_SRCCHR(); // skip 'e'
+          }
+          else { // not expected 'e'
+            eError = EC_CSV_BOOLEAN_INVALID;
+            goto L_STD_FieldError;
+          }
+        }
+        else { // not expected 's'
+          eError = EC_CSV_BOOLEAN_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_BOOLEAN_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    goto L_STD_Boolean_Deposit;
   }
-  else
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible digit portion
+
   if (bIS_DIGIT()) {
     // numeric case
     uNumber = 0;
@@ -1446,15 +1544,20 @@ L_STD_Boolean:
       iBoolean = true;
     else
       iBoolean = false;
-  }
-  else {
-    // unrecognisable boolean
-    eError = EC_CSV_BOOLEAN_INVALID;
-    goto L_STD_FieldError;
+    
+    goto L_STD_Boolean_Deposit;
   }
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // unrecognisable boolean portion
+  
+  eError = EC_CSV_BOOLEAN_INVALID;
+  goto L_STD_FieldError;
+  
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all boolean portions collected
+  
+  L_STD_Boolean_Deposit:
   
   m_pRowSlab->vDeposit(iBoolean);
 
@@ -1466,7 +1569,7 @@ L_STD_Boolean:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Date:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
@@ -1618,7 +1721,7 @@ L_STD_Decimal:
       note: decimals are scaled (numerically shifted left x 10) by nPixScale
    */
 
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1724,7 +1827,7 @@ L_STD_Float:
             into a d8 floaing point double
    */
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1822,7 +1925,7 @@ L_STD_Float:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Integer:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1887,7 +1990,7 @@ L_STD_Integer:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Interval:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
@@ -1953,7 +2056,7 @@ L_STD_Interval:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Time:
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
@@ -2078,14 +2181,14 @@ L_STD_Time:
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.h) timestamp field :                                                  STD
-  //        year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
+  //    year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Timestamp:
   {
     Tsp xTsp;
     SN_Tsp snTsp;
 
-    vSKIP_WHITE_SPACE();
+    vSKIP_NON_DATA();
     
     xTsp = snTsp.i(&azCsvSrc,m_pFmt);
     cSrcChr = *azCsvSrc;
