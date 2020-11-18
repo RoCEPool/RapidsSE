@@ -15,6 +15,10 @@ namespace CompactBuffers
   
     RowCompactor* m_pRowCompactor;
   
+  private:
+  
+    tXN m_tTxnNo; // transaction number
+  
     // must be last
     Footer m_xFooter;
   
@@ -40,6 +44,9 @@ namespace CompactBuffers
     void       vStreamDef(StreamDef* pStreamDef);
     void       vTable(Table* pTable);
     Table*     pTable(void);
+
+    tXN        tTxnNo(void);
+    void       vTxnNo(tXN tTxnNo);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
