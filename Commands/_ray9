@@ -4,20 +4,18 @@
 
 bc;
 
-create table decTbl (
-  dec_col1  DECIMAL(10,3) NOT NULL,
-  vch_col2  VARCHAR(32) NOT NULL,
+create table fltTbl (
+  flt_col1  FLOAT       NOT NULL,
+  vch_col1  VARCHAR(32) NOT NULL,
   int_col3  INTEGER     NOT NULL,
   int_col4  INTEGER     NOT NULL,
   ivl_col5  DECIMAL(10,2) NOT NULL,
-  dec_col6  DECIMAL,
-  tsp_col7  TIMESTAMP   NOT NULL,
-  bol_col8  BOOLEAN     NOT NULL
+  flt_col6  FLOAT
 );
 
-Load decTbl "../DATA/Datums/decimal.csv" ;
+Load fltTbl "../DATA/Datums/float.csv" ;
 
-tableScan decTbl;
+tableScan fltTbl;
 
 /*============================================================================*/
 /* end                                                                        */

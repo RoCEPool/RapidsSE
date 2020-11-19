@@ -1925,6 +1925,48 @@ L_STD_Float:
   vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_FLOAT_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_FLOAT_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_FLOAT_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_FLOAT_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_FLOAT_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    goto L_STD_FloatNull;
+  }
+   
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
   // collect sign
@@ -2001,6 +2043,13 @@ L_STD_Float:
     goto L_STD_FieldError;
   }
   
+  vSKIP_WHITE_SPACE();
+
+  if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+    eError = EC_CSV_FLOAT_INVALID;
+    goto L_STD_FieldError;
+  }
+
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all float portions collected
   
@@ -2009,12 +2058,14 @@ L_STD_Float:
   dFloat = bNegative ? - dUnsigned : dUnsigned;
   
   // deposit the float
-  
   m_pRowSlab->vDeposit(dFloat);
 
+  goto L_STD_PostField;
+
+L_STD_FloatNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                          // end of float
 
-    
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.e) integer : [+|-] uNumber                                            STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
