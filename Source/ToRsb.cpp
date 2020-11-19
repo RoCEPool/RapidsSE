@@ -1478,7 +1478,7 @@ L_STD_Boolean:
       goto L_STD_FieldError;
     }
 
-    goto L_STD_Boolean_Deposit;
+    goto L_STD_BooleanDeposit;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1521,7 +1521,7 @@ L_STD_Boolean:
       goto L_STD_FieldError;
     }
     
-    goto L_STD_Boolean_Deposit;
+    goto L_STD_BooleanDeposit;
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1544,7 +1544,7 @@ L_STD_Boolean:
     else
       iBoolean = false;
     
-    goto L_STD_Boolean_Deposit;
+    goto L_STD_BooleanDeposit;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1587,7 +1587,7 @@ L_STD_Boolean:
     }
     
     iBoolean = C_DATUM_NULL;
-    goto L_STD_Boolean_Deposit;
+    goto L_STD_BooleanNull;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1599,13 +1599,14 @@ L_STD_Boolean:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all boolean portions collected
   
-L_STD_Boolean_Deposit:
-  
+L_STD_BooleanDeposit:
   m_pRowSlab->vDeposit(iBoolean);
-
+  goto L_STD_PostField;
+    
+L_STD_BooleanNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of boolean
-    
-    
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.b) date field : year - month - day // year range is ????              STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1613,6 +1614,49 @@ L_STD_Date:
   
   vSKIP_NON_DATA();
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_YEAR_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_YEAR_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_YEAR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_YEAR_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_YEAR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    goto L_STD_DateNull;
+  }
+  
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
   
@@ -1750,10 +1794,12 @@ L_STD_Date:
   
   // deposit the date
   m_pRowSlab->vDeposit(xDate);
+  goto L_STD_PostField;
 
+L_STD_DateNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                           // end of date
 
-  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.c) decimal field : [+|-] uNumber [ . uFraction ]                      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1804,8 +1850,7 @@ L_STD_Decimal:
       goto L_STD_FieldError;
     }
     
-    iDecimal = C_DATUM_NULL;
-    goto L_STD_DecimalDeposit;
+    goto L_STD_DecimalNull;
   }
    
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1908,10 +1953,12 @@ L_STD_Decimal:
   // deposit the decimal
 L_STD_DecimalDeposit:
   m_pRowSlab->vDeposit(iDecimal);
+  goto L_STD_PostField;
 
+L_STD_DecimalNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of decimal
 
-    
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -2059,7 +2106,6 @@ L_STD_Float:
   
   // deposit the float
   m_pRowSlab->vDeposit(dFloat);
-
   goto L_STD_PostField;
 
 L_STD_FloatNull:
@@ -2112,8 +2158,7 @@ L_STD_Integer:
       goto L_STD_FieldError;
     }
     
-    iInteger = C_DATUM_NULL;
-    goto L_STD_IntegerDeposit;
+    goto L_STD_IntegerNull;
   }
    
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2180,7 +2225,6 @@ L_STD_Integer:
   iInteger = bNegative ? - uNumber : uNumber;
   
   // deposit the integer
-L_STD_IntegerDeposit:
   m_pRowSlab->vDeposit(iInteger);
     
   // compute running hash of partitioning column
@@ -2188,8 +2232,17 @@ L_STD_IntegerDeposit:
     PtnMap::vRunningHash(&iHash,iInteger);
   
   goto L_STD_PostField;                                        // end of integer
-
   
+L_STD_IntegerNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
+    
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+  
+  goto L_STD_PostField;                                        // end of integer
+
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.f) interval field : seconds [ . microseconds ]                        STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -2262,6 +2315,48 @@ L_STD_Interval:
 L_STD_Time:
   
   vSKIP_NON_DATA();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_HOUR_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_HOUR_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_HOUR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_HOUR_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_HOUR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    goto L_STD_TimeNull;
+  }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
@@ -2380,10 +2475,12 @@ L_STD_Time:
 
   // deposit the time
   m_pRowSlab->vDeposit(xTime);
+  goto L_STD_PostField;
 
+L_STD_TimeNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                           // end of time
 
-  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.h) timestamp field :                                                  STD
   //    year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
