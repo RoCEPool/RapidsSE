@@ -2540,18 +2540,326 @@ L_STD_TimeNull:
   //    year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Timestamp:
-  {
-    Tsp xTsp;
-    SN_Tsp snTsp;
+  
+  vSKIP_NON_DATA();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
 
-    vSKIP_NON_DATA();
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_YEAR_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_YEAR_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_YEAR_INVALID;
+      goto L_STD_FieldError;
+    }
     
-    xTsp = snTsp.i(&azCsvSrc,m_pFmt);
-    cSrcChr = *azCsvSrc;
-    m_pRowSlab->vDeposit(xTsp);
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_YEAR_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_YEAR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    goto L_STD_TimestampNull;
   }
   
+  uYear = 0;
+  uMonth = 0;
+  uDay = 0;
+  uHour = 0;
+  uMinute = 0;
+  uSecond = 0;
+  uMicrosecond = 0;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // year portion
+  
+  // collect digits for year
+  for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uYear);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  if (nDigits > 4) {
+    eError = EC_CSV_YEAR_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+
+  // adjust a 2-digit year
+  if (uYear <= 99)
+    uYear += 2000;
+
+  // skip over separator
+  if ('-' != cSrcChr) {
+    eError = EC_CSV_DATE_SEP_MISSING;
+    goto L_STD_FieldError;
+  }
+  vADV_SRCCHR(); // skip '-'
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // month portion
+    
+  // collect digits for month
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uMonth);
+    nDigits++;
+  }
+
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_MONTH_INVALID;
+    goto L_STD_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_MONTH_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+
+  // skip over separator
+  if ('-' != cSrcChr) {
+    eError = EC_CSV_DATE_SEP_MISSING;
+    goto L_STD_FieldError;
+  }
+  vADV_SRCCHR(); // skip '-'
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // day portion
+          
+  // collect digits for day
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uDay);
+    nDigits++;
+  }
+
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_DAY_INVALID;
+    goto L_STD_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_DAY_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // ' ' or 'T' separator
+  if (' ' == cSrcChr || 'T' == cSrcChr || 't' == cSrcChr)
+    vADV_SRCCHR();
+  
+  if (! bIS_DIGIT())
+    goto L_STD_SkipTime;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // hour portion
+
+  // collect digits for hour
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uHour);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_HOUR_INVALID;
+    goto L_STD_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_HOUR_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+
+  // skip over separator
+  if (':' != cSrcChr) {
+    eError = EC_CSV_TIME_SEP_MISSING;
+    goto L_STD_FieldError;
+  }
+  vADV_SRCCHR(); // skip ':'
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // minute portion
+
+  // collect digits for minute
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uMinute);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_MINUTE_INVALID;
+    goto L_STD_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_MINUTE_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+  // skip over separator
+  if (':' != cSrcChr) {
+    eError = EC_CSV_TIME_SEP_MISSING;
+    goto L_STD_FieldError;
+  }
+  vADV_SRCCHR(); // skip ':'
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // second portion
+
+  // collect digits for second
+  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
+    vCOLLECT(uSecond);
+    nDigits++;
+  }
+  
+  // should have seen some digits
+  if (! nDigits) {
+    eError = EC_CSV_SECOND_INVALID;
+    goto L_STD_FieldError;
+  }
+  if (nDigits > 2) {
+    eError = EC_CSV_SECOND_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional microsecond portion
+  
+  // a dot without any futher digits is ok
+  if ('.' == cSrcChr) {
+    
+    vADV_SRCCHR(); // skip '.'
+
+    for (nShift = C_IVL_USEC_SHIFT; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
+      vCOLLECT(uMicrosecond);
+      nShift /= 10;
+    }
+
+    uMicrosecond = uMicrosecond * nShift;
+  }
+
+L_STD_SkipTime:
+  
+  vSKIP_WHITE_SPACE();
+  
+  if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all date portions collected
+
+  // validate the year
+  if (uYear < C_YEAR_MIN) {
+    eError = EC_CSV_YEAR_TOO_SMALL;
+    goto L_STD_FieldError;
+  }
+  if (uYear > C_YEAR_MAX) {
+    eError = EC_CSV_YEAR_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+
+  // validate the month
+  if (uMonth < 1 || uMonth > 12) {
+    eError = EC_CSV_MONTH_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // validate day wrt possible leap year
+  
+  // determine if a leap year
+  if (uYear % 4 == 0) {
+    if ((uYear % 100 == 0) && (uYear % 400 != 0))
+      bLeapYear = false;
+    else
+      bLeapYear = true;
+  }
+  else {
+    bLeapYear = false;
+  }
+
+  // validate days per month
+  if (uDay < 1) {
+    eError = EC_CSV_DAY_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  if (bLeapYear) {
+    if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
+      eError = EC_CSV_DAY_NOT_LEAPYEAR;
+      goto L_STD_FieldError;
+    }
+  }
+  else {
+    if (uDay > (u8)iDaysPerMonth[uMonth]) {
+      eError = EC_CSV_DAY_INVALID;
+      goto L_STD_FieldError;
+    }
+  }
+
+  // compute final field value
+  xTimestamp.m_uYearDelta = uYear - C_YEAR_BASE;
+  xTimestamp.m_uMonth     = uMonth;
+  xTimestamp.m_uDay       = uDay;
+  xTimestamp.m_uSpare     = 0;
+
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all time portions collected
+
+  if (uHour > 23) {
+    eError = EC_CSV_HOUR_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+  
+  if (uMinute > 59) {
+    eError = EC_CSV_MINUTE_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+  
+  if (uSecond > 59) {
+    eError = EC_CSV_SECOND_TOO_LARGE;
+    goto L_STD_FieldError;
+  }
+  
+  // compute final field value
+  xTimestamp.m_uHour   = uHour;
+  xTimestamp.m_uMinute = uMinute;
+  xTimestamp.m_uSecond = uSecond;
+  xTimestamp.m_uMicro  = uMicrosecond;
+  xTimestamp.m_uSpare  = 0;
+
+  // deposit the time
+  m_pRowSlab->vDeposit(xTimestamp);
   goto L_STD_PostField;
+
+L_STD_TimestampNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  goto L_STD_PostField;                                      // end of timestamp
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -2610,10 +2918,12 @@ L_STD_Varchar:
   // all varchar portions collected
   
   m_pRowSlab->vDepositString_end(nChars+1);
+  goto L_STD_PostField;
 
+L_STD_VarcharNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of varchar
 
-  
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 5) processing at end of field                                           STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
