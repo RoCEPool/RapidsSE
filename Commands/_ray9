@@ -4,20 +4,20 @@
 
 bc;
 
-create table bolTbl (
-  bol_col1   BOOLEAN     NOT NULL,
-  vch_col2   VARCHAR(32) NOT NULL,
-  int_col3   INTEGER     NOT NULL,
-  int_col4   INTEGER     NOT NULL,
-  dec_col5   DECIMAL(10,2) NOT NULL,
-  flt_col6   FLOAT       NOT NULL,
-  tsp_col7   TIMESTAMP   NOT NULL,
-  bol_col8   BOOLEAN
+create table decTbl (
+  dec_col1  DECIMAL(10,3) NOT NULL,
+  vch_col2  VARCHAR(32) NOT NULL,
+  int_col3  INTEGER     NOT NULL,
+  int_col4  INTEGER     NOT NULL,
+  ivl_col5  DECIMAL(10,2) NOT NULL,
+  dec_col6  DECIMAL,
+  tsp_col7  TIMESTAMP   NOT NULL,
+  bol_col8  BOOLEAN     NOT NULL
 );
 
-Load bolTbl "../DATA/Datums/boolean.csv";
+Load decTbl "../DATA/Datums/decimal.csv" ;
 
-tableScan bolTbl;
+tableScan decTbl;
 
 /*============================================================================*/
 /* end                                                                        */

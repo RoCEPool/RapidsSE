@@ -1334,24 +1334,19 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // 0) begin                                                                STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  char* azCsvSrc = azCsvChunk;
-  char cSrcChr = *azCsvSrc;
-
-  ColPix* aColPix = m_pRowSlab->axaColPix();
-  
-  i8 nCols = m_pStreamDef->nColumns(C_ALL);
-
-  Column* pCol = nullptr;
-
+  i8 iBucketId = 0;
+  i8 i_Fld = 0;
   i8 iHash = 0;
   tPN tPtnNo = 0;
   tPN tPtnNo_byBkt = 0;
-  i8 iBucketId = 0;
-
-  i8 i_Fld = 0;
   bool bSawFldSep = false;
-  
+  Column* pCol = nullptr;
   eEC eError = EC_NONE;
+
+  char* azCsvSrc = azCsvChunk;
+  char cSrcChr = *azCsvSrc;
+  ColPix* aColPix = m_pRowSlab->axaColPix();
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // determine field seperator
@@ -1376,11 +1371,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_STD_TestMoreRecords:
     
-  // skip leading whitespace
-//  while (bNON_DATA_CHAR())
-//    vADV_SRCCHR();
-//
-  
+  // skip leading non-data chars
   vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
   
   // test for more csv to be parsed
@@ -1608,7 +1599,7 @@ L_STD_Boolean:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all boolean portions collected
   
-  L_STD_Boolean_Deposit:
+L_STD_Boolean_Deposit:
   
   m_pRowSlab->vDeposit(iBoolean);
 
@@ -1775,6 +1766,49 @@ L_STD_Decimal:
   vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_DECIMAL_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_DECIMAL_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_DECIMAL_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_DECIMAL_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_DECIMAL_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    iDecimal = C_DATUM_NULL;
+    goto L_STD_DecimalDeposit;
+  }
+   
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
   // collect sign
@@ -1844,6 +1878,13 @@ L_STD_Decimal:
       vADV_SRCCHR(); // skip remaining digits
   }
   
+  vSKIP_WHITE_SPACE();
+  
+  if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+    eError = EC_CSV_DECIMAL_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all decimal portions collected
   
@@ -1862,7 +1903,10 @@ L_STD_Decimal:
     goto L_STD_FieldError;
   }
   
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  
   // deposit the decimal
+L_STD_DecimalDeposit:
   m_pRowSlab->vDeposit(iDecimal);
 
   goto L_STD_PostField;                                        // end of decimal
