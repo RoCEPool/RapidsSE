@@ -41,8 +41,12 @@
   // define the apriori infoset tables
   start::defineInfoSets
 
-  // !!! This point onwards the SE execution model has been fully booted
-  // and we can now spawn jobs !!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //
+  // This point onwards the SE execution model has been fully booted
+  // and we can now spawn jobs
+  //
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // spawn supervisor demon
   //"" false supervisorDemonStr api::spawnDemon not if

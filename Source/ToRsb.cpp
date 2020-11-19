@@ -270,6 +270,8 @@ bool ToRsb::bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   ColPix* aColPix = m_pRowSlab->axaColPix();
   
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  
   Column* pCol = nullptr;
 
   i8 iHash = 0;
@@ -1337,6 +1339,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   ColPix* aColPix = m_pRowSlab->axaColPix();
   
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+
   Column* pCol = nullptr;
 
   i8 iHash = 0;
@@ -1367,7 +1371,6 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
     }
   }
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data in chunk                                         STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1377,6 +1380,9 @@ L_STD_TestMoreRecords:
 //  while (bNON_DATA_CHAR())
 //    vADV_SRCCHR();
 //
+  
+  vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
+  
   // test for more csv to be parsed
   if (! bMORE_DATA())
     goto L_STD_EndOfCsvChunk;
@@ -2398,6 +2404,10 @@ L_STD_EndOfRecord:
     vTrace("-- recSep -- \n"_Stz);
   }
 #endif
+  
+  if (i_Fld != nCols) {
+    vDebugPoint();
+  }
 
   // set partition hash
   if (m_bPtnHash) {
