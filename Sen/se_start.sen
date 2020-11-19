@@ -19,21 +19,21 @@
   "start_run" .verbose
 
   // define the apriori procedures
-  start::defineProcedures1
-  start::defineProcedures2
-  start::defineProcedures3
-  start::defineProcedures4
-  start::defineProcedures4b
-  start::defineProcedures5
-  start::defineProcedures6
-  start::defineProc_SteadyState
-  start::defineProc_UnloadReload
-  start::defineProc_Query
-  start::defineProc_DynCompiler
-  start::defineProc_TPCH
-  start::defineProc_TPCH_ASM
-  start::defineProc_TPCH_ASM_I
-  start::defineProc_Planner
+  start::defProc_Create
+  start::defProc_Drop
+  start::defProc_Scan
+  start::defProc_Load
+  start::defProc_OldLoad
+  start::defProc_File
+  start::defProc_Elasticity
+  start::defProc_SteadyState
+  start::defProc_UnloadReload
+  start::defProc_Query
+  start::defProc_DynCompiler
+  start::defProc_TPCH
+  start::defProc_TPCH_ASM
+  start::defProc_TPCH_ASM_I
+  start::defProc_Planner
 
   // define the apriori system tables
   start::defineTables

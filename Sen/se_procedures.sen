@@ -8,9 +8,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProcedures1" .verbose
+"  start::defProc_Create" .verbose
 
-: start::defineProcedures1
+: start::defProc_Create
 
  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -268,9 +268,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProcedures2" .verbose
+"  start::defProc_Drop" .verbose
 
-: start::defineProcedures2
+: start::defProc_Drop
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -435,9 +435,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProcedures3" .verbose
+"  start::defProc_Scan" .verbose
 
-: start::defineProcedures3
+: start::defProc_Scan
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -617,9 +617,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProcedures4" .verbose
+"  start::defProc_Load" .verbose
 
-: start::defineProcedures4
+: start::defProc_Load
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -775,9 +775,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProcedures4b" .verbose
+"  start::start::defProc_OldLoad" .verbose
 
-: start::defineProcedures4b
+: start::defProc_OldLoad
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -879,9 +879,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProcedures5" .verbose
+"  start::defProc_File" .verbose
 
-: start::defineProcedures5
+: start::defProc_File
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
     locals| sPath |
@@ -979,9 +979,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProcedures6" .verbose
+"  start::defProc_Elasticity" .verbose
 
-: start::defineProcedures6
+: start::defProc_Elasticity
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
     locals| sPath |
@@ -1086,9 +1086,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_SteadyState" .verbose
+"  start::defProc_SteadyState" .verbose
 
-: start::defineProc_SteadyState
+: start::defProc_SteadyState
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1212,9 +1212,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_UnloadReload" .verbose
+"  start::defProc_UnloadReload" .verbose
 
-: start::defineProc_UnloadReload
+: start::defProc_UnloadReload
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1299,9 +1299,9 @@
 /* define procedures for Query tests                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_Query" .verbose
+"  start::defProc_Query" .verbose
 
-: start::defineProc_Query
+: start::defProc_Query
 
   "<path>= /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1422,9 +1422,9 @@
 /* define procedures for dynamic compiler                                     */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_DynCompiler" .verbose
+"  start::defProc_DynCompiler" .verbose
 
-: start::defineProc_DynCompiler
+: start::defProc_DynCompiler
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1459,9 +1459,9 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_TPCH" .verbose
+"  start::defProc_TPCH" .verbose
 
-: start::defineProc_TPCH
+: start::defProc_TPCH
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1586,9 +1586,9 @@
 /* define procedures (TPCH ASM Compiled)                                      */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_TPCH_ASM" .verbose
+"  start::defProc_TPCH_ASM" .verbose
 
-: start::defineProc_TPCH_ASM
+: start::defProc_TPCH_ASM
 
 "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1744,9 +1744,9 @@
 /* define procedures (TPCH ASM Interpretive)                                  */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_TPCH_ASM_I" .verbose
+"  start::defProc_TPCH_ASM_I" .verbose
 
-: start::defineProc_TPCH_ASM_I
+: start::defProc_TPCH_ASM_I
 
 "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -1903,9 +1903,9 @@
 /* define procedures (Planner experiments)                                    */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineProc_Planner" .verbose
+"  start::defProc_Planner" .verbose
 
-: start::defineProc_Planner
+: start::defProc_Planner
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
