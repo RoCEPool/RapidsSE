@@ -1951,7 +1951,6 @@ L_STD_Decimal:
   // ==== ==== ==== ==== ==== ==== ==== ====
   
   // deposit the decimal
-L_STD_DecimalDeposit:
   m_pRowSlab->vDeposit(iDecimal);
   goto L_STD_PostField;
 
@@ -2251,6 +2250,49 @@ L_STD_Interval:
   vSKIP_NON_DATA();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_INTERVAL_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_INTERVAL_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_INTERVAL_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_INTERVAL_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_INTERVAL_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    goto L_STD_IntervalNull;
+  }
+  
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
   
   // collect digits for leading seconds
@@ -2284,6 +2326,15 @@ L_STD_Interval:
     goto L_STD_FieldError;
   }
   
+  // skip any whitespace after the field value
+  vSKIP_WHITE_SPACE();
+  
+  // test for no noise
+  if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+    eError = EC_CSV_INTERVAL_INVALID;
+    goto L_STD_FieldError;
+  }
+
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all interval portions collected
 
@@ -2305,7 +2356,10 @@ L_STD_Interval:
   
   // deposit the interval
   m_pRowSlab->vDeposit(xInterval);
+  goto L_STD_PostField;
 
+L_STD_IntervalNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                       // end of interval
 
     
