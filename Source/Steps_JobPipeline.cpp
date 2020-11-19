@@ -102,9 +102,20 @@ void Step::vJob_PipelineCompile(void)
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
   }
   else {
-    m_pDataStack->vPushInt(EC_NONE);
-    if (AM::bVerbose()) {
-      m_pLogicUnit->m_xpDynamo->vShow();
+    
+    if (! AM::bPassesLowMem(m_pTask->m_pJob)) {
+      PipelineSpec* pPipelineSpec = m_pLogicUnit->m_xpDynamo->pPipelineSpec();
+      delete pPipelineSpec;
+      
+      delete *m_pLogicUnit->m_xpDynamo;
+      m_pLogicUnit->m_xpDynamo = nullptr;
+      m_pDataStack->vPushInt(EC_LOW_MEMORY);
+    }
+    else {
+      m_pDataStack->vPushInt(EC_NONE);
+      if (AM::bVerbose()) {
+        m_pLogicUnit->m_xpDynamo->vShow();
+      }
     }
   }
   

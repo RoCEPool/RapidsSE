@@ -107,10 +107,9 @@ eEC Api::ePrepareJob(Session*  pSession,
   
   if ( ! AM::bParseCmd(pCmdTknVec,pExtraTagSet) )
     return EC_INVALID_COMMAND;
-      
-      
-  if (! AM::bPassesLowMem())
-    return EC_LOW_MEMORY;
+  
+  //if (! AM::bPassesLowMem())
+  //  return EC_LOW_MEMORY;
   
   if (pLitTknVec)
     pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple, pLitTknVec);
@@ -168,7 +167,6 @@ eEC Api::ePrepareJob(Session*  pSession,
   //vTrace("sCmd: %s\n %lld\n"_Stz,sCmd.szStz(),sCmd.nSize());
 
   pSession->m_pSsnJob->pJobTags()->vInsert(C_TAG_CMD,sCmd);
-  
   
   ASSERT(! pSession->m_pSsnJob->pTask());
   

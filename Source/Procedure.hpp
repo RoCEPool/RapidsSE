@@ -16,6 +16,7 @@ namespace DynamoCompiler
 
   private:
     static void  vParseParameters(Word* pProcWord, TokenVec* pTokenVec);
+    static void  vParseTagSets(Word* pProcWord, TokenVec* pTokenVec);
   };
 }
 

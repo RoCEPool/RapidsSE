@@ -1460,13 +1460,21 @@ void AM::vOperandsInc(void)
 /*----------------------------------------------------------------------------*/
 /* passes the low-memory condition?                                           */
 /*----------------------------------------------------------------------------*/
-bool AM::bPassesLowMem(void)
+bool AM::bPassesLowMem(Job* pJob)
 {
   _static_
 
+  if (! gpBufferPool->bLowMemory())
+    return true;
+  
+  if (pJob->bHasTag(C_TAG_LOWMEMORY))
+    return true;
+  
+  return false;
+  
   //! ALKA: while cleaning up JobClass all jobs had m_eFlags
   //! as JF_LOWMEM hence returning true
-  return true;
+  //return true;
   
 //  if (aJobCLass->m_eFlags != JF_LOWMEM)
 //    return true;

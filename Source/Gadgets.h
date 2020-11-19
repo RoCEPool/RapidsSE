@@ -45,6 +45,7 @@ static Stz* C_TAG_HOST       = "<host>"_Stz;
 static Stz* C_TAG_JOBKIND    = "<jobKind>"_Stz;
 static Stz* C_TAG_JOBNM      = "<jobNm>"_Stz;
 static Stz* C_TAG_LIFE       = "<life>"_Stz;
+static Stz* C_TAG_LOWMEMORY  = "<lowMemory>"_Stz;
 static Stz* C_TAG_NEXTOP     = "<nextOp>"_Stz;
 static Stz* C_TAG_NEXTSTAGE  = "<nextStage>"_Stz;
 static Stz* C_TAG_NODE       = "<node>"_Stz;

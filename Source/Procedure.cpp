@@ -25,7 +25,8 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   vTrace("vAddProcedure: adding %s\n"_Stz,sProcNm.szStz());
 #endif
   
-  if (! ( pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+  if (! ( pTokenVec->pGet(2)->bSame("tags"_Stz) ||
+          pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
           pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
     
     sProcNm.vConcat("__"_Stz);
@@ -43,8 +44,9 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
     //pTokenVec->vDumpTokens();
   }
 
-  if (! ( pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
-         pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
+  if (! ( pTokenVec->pGet(2)->bSame("tags"_Stz) ||
+          pTokenVec->pGet(2)->bSame("parameters"_Stz) ||
+          pTokenVec->pGet(2)->bSame("begin"_Stz) ) ) {
     
     sProcNm.vConcat("__"_Stz);
     sProcNm.vConcat(pTokenVec->pGet(2)->szChars());
@@ -61,10 +63,6 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
     
     //pTokenVec->vDumpTokens();
   }
-  
-  
-  s4K sProcText;
-  pTokenVec->vVecToString(sProcText,0,false);
 
   
   Dic* pRootDic = AM::pRootDic();
@@ -85,8 +83,12 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   if (! pProcWord->pWrdTagSet())
     pProcWord->vWrdTagSet(new TagSet);
 
+  vParseTagSets(pProcWord,pTokenVec);
   vParseParameters(pProcWord,pTokenVec);
 
+  s4K sProcText;
+  pTokenVec->vVecToString(sProcText,0,false);
+  
   pProcWord->pWrdTagSet()->vInsert("procText"_Stz,sProcText);
 }
 
@@ -369,6 +371,17 @@ bool Procedure::bTranslateProcedure(String* pToPipelineStmt,
   pPrdTxtVec->vInsertToken(i_InsTkn++,sOriginalCmd.szStz(),TN_NAME);
   pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the <lowMemory> tag into the modified text vector
+  
+  if (pWrdTagSet->bHasName(C_TAG_LOWMEMORY)) {
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,C_TAG_LOWMEMORY,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"1"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  }
+  
   if (iJotDebug())
     pPrdTxtVec->vListTokens();
 
@@ -428,6 +441,55 @@ void Procedure::vParseParameters(Word* pProcWord, TokenVec* pTokenVec)
     pTagSet->vInsert(pTkn->szChars());
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse tagSets of procedure                                                 */
+/*----------------------------------------------------------------------------*/
+void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
+{
+  _static_
+  
+  i8 nTokens = pTokenVec->nTokens();
+  
+  Token* pTkn = nullptr;
+  
+  i8 i_Tkn = 0;
+  for (; i_Tkn < nTokens; i_Tkn++) {
+    pTkn = pTokenVec->pGet(i_Tkn);
+    if (pTkn->bSame("tags"_Stz))
+      break;
+  }
+  
+  i8 i_Cut = i_Tkn;
+  
+  if (i_Tkn == nTokens)
+    return;
+  
+  TagSet* pTagSet = pProcWord->pWrdTagSet(true);
+  
+  for (i_Tkn++; i_Tkn < nTokens; i_Tkn++) {
+    pTkn = pTokenVec->pGet(i_Tkn);
+    
+    if (pTkn->bSame("parameters"_Stz) ||
+        pTkn->bSame("begin"_Stz))
+      break;
+    
+#ifdef WITH_TRACE_PROCEDURE
+    vTrace("%s: adding tag %s\n"_Stz,pProcWord->szWordNm(),pTkn->szChars());
+#endif
+    pTagSet->vInsert(pTkn->szChars());
+  }
+  
+  // remove the tags clause from the token vector
+  for (;;) {
+    pTokenVec->vRemoveToken(i_Cut);
+    Token* pTest = pTokenVec->pGet(i_Cut);
+    if (pTest->bSame("parameters"_Stz) ||
+        pTkn->bSame("begin"_Stz))
+      break;
+  }
+  
 }
 
 /*============================================================================*/
