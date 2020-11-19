@@ -39,7 +39,7 @@ lsidxcol fltTbl flt_idx2;
 rows:
 ('flt_col6', 'FLOAT', 19, 0, true, false)
 
-oldLoad fltTbl "../DATA/Datums/float.csv" ;
+Load fltTbl "../DATA/Datums/float.csv" ;
 failure contains: '15 invalid'
 
 // check no of rows

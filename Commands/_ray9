@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* _ray9 : testing removal of old load 19 Nov 2020                            */
+/*============================================================================*/
+
+bc;
+
+create table VchTbl (
+  int_col1  INTEGER NOT NULL,
+  vch_col2  VARCHAR(10)  NOT NULL,
+  vch_col3  VARCHAR(32)  NOT NULL,
+  int_col4  INTEGER NOT NULL,
+  vch_col5  VARCHAR
+);
+
+//oldLoad VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
+Load VchTbl "../DATA/Datums/varchar.csv" ;
+
+tableScan VchTbl;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
