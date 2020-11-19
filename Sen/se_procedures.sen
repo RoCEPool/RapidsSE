@@ -1,0 +1,1941 @@
+/*============================================================================*/
+/* se_procedures.sen -- define procedures                                     */
+/*============================================================================*/
+
+" se_procedures.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProcedures1" .verbose
+
+: start::defineProcedures1
+
+ "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create catalog
+  sPath
+  "
+  procedure create catalog
+    parameters $catalogNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    createCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create index
+  sPath
+  "
+  procedure create index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodic once | syntaxIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on all partitions :
+    populateIndex $indexNm | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create unique index
+  sPath
+  "
+  procedure create unique index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodic once | syntaxUniqueIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on all partitions :
+    populateIndex $indexNm | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create index
+  sPath
+  "
+  procedure create index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodic once | syntaxIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on origin :
+     eatSome | stageD
+
+  stage stageD on all partitions :
+    populateIndex $indexNm | stageE
+
+  stage stageE on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create unique index
+  sPath
+  "
+  procedure create unique index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodic once | syntaxUniqueIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on origin :
+    eatSome | stageD
+
+  stage stageD on all partitions :
+    populateIndex $indexNm | stageE
+
+  stage stageE on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+*/
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create schema
+  sPath
+  "
+  procedure create schema
+    parameters $schemaNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    createSchema $schemaNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table
+  sPath
+  "
+  procedure create table
+    parameters $tableNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodic once | syntaxTable $tableNm $etc | stageB
+
+  stage stageB on all nodes :
+    createTable | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create tenant
+  sPath
+  "
+  procedure create tenant
+    parameters $tenantNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    createTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table as
+  sPath
+  "
+  procedure ctas
+    parameters $table1 $table2
+  begin
+
+    stage stageA on origin :
+      start | periodic once | emitStreamDef $Table1 | stageB
+
+    stage stageB on all nodes :
+      createTable $table2 | stageC
+
+    stage stageC on all partitions :
+      scan $table1 | dupCrw | insert $table2 | stageD
+
+    stage stageD on origin :
+      sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // define table
+  sPath
+  "
+  procedureLocal define table
+    parameters $tableNm $etc
+  begin
+
+  stage stageA on origin :
+    start | periodic once | syntaxTable $tableNm $etc |
+      defineTable $tableNm | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete
+  sPath
+  "
+  procedure delete
+    parameters $table $predicate
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    delete $table $predicate | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProcedures2" .verbose
+
+: start::defineProcedures2
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact index
+  sPath
+  "
+  procedure compact index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      compactIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop catalog
+  sPath
+  "
+  procedure drop catalog
+    parameters $catalogNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    dropCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop index
+  sPath
+  "
+  procedure drop index
+    parameters $tableNm $indexNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    truncateIndex $tableNm $indexNm | stageC
+
+  stage stageC on all nodes :
+    dropIndex $tableNm $indexNm | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop schema
+  sPath
+  "
+  procedure drop schema
+    parameters $schemaNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    dropSchema $schemaNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop table
+  sPath
+  "
+  procedure drop table
+    parameters $tableNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    truncateTable $tableNm | stageC
+
+  stage stageC on all nodes :
+    dropTable $tableNm | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop tenant
+  sPath
+  "
+  procedure drop tenant
+    parameters $tenantNm
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    dropTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify index
+  sPath
+  "
+  procedure verify index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      verifyIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProcedures3" .verbose
+
+: start::defineProcedures3
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // count
+  sPath
+  "
+  procedure count
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    rowCount $table | stageC
+
+  stage stageC on origin :
+    totalCount | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // export
+  sPath
+  "
+  procedure export
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | toCsv | stageC
+
+  stage stageC on origin :
+    wrFile $File | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gridSanity
+  sPath
+  "
+  procedure gridSanity
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all nodes :
+    nodeInfo | stageC
+
+  stage stageC on origin :
+    gridSanity | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // partitionScan
+  sPath
+  "
+  procedure partitionScan
+    parameters $table $partition
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on partition $partition :
+    scan $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // predicateFetch
+  sPath
+  "
+  procedure predicateFetch
+    parameters $table $predicate
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    fetch $table $predicate | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // select table
+  sPath
+  "
+  procedure select table
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tableScan
+  sPath
+  "
+  procedure tableScan
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // truncate
+  sPath
+  "
+  procedure truncate
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    truncateTable $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProcedures4" .verbose
+
+: start::defineProcedures4
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load
+  sPath
+  "
+  procedure load
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+
+    start              |
+
+    periodic once    |
+
+    chunk $file        | // read chunks of file, produce (seekOffset) =>
+    // dump seekOffsets 1 |
+
+    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
+    // dump csvBuffer 0   |
+
+    stageB robin
+
+
+  stage stageB on all partitions on origin :
+
+    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+    // dump rsbBuffer 1   |
+
+    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rsbBuffer 1   |
+
+    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    //dump rsbBuffer 1   |
+
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rsbBuffer 1   |
+
+    stageC hashed
+
+  stage stageC on all partitions :
+
+    //eatSome |
+
+    insert $table | // (crwBuffer) inserted into table
+
+    stageD
+
+  stage stageD on origin :
+
+    progress 'Load'    |
+
+    toStatDemon        |
+
+    sink               |
+
+    stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dfload
+  sPath
+  "
+  procedure dfload
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+
+    start              |
+ 
+    periodic once    |
+
+    stageB
+
+  stage stageB on all nodes :
+
+    chunk $file        | // read chunks of file, produce (seekOffset) =>
+    // dump seekOffsets 1 |
+
+    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
+    // dump csvBuffer 0   |
+
+    stageC localRobin
+
+  stage stageC on all partitions :
+
+    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+    // dump rsbBuffer 1   |
+
+    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rsbBuffer 1   |
+
+    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    //dump rsbBuffer 1   |
+
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rsbBuffer 1   |
+
+    stageD hashed
+
+  stage stageD on all partitions :
+
+    //eatSome |
+
+    insert $table | // (crwBuffer) inserted into table
+
+    stageE
+
+  stage stageE on origin :
+
+    progress 'Load'    |
+
+    toStatDemon        |
+
+    sink               |
+
+    stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dload
+  sPath
+  "
+  procedure dload
+    parameters $table
+  begin
+
+    stage stageA on origin :
+        start
+      | periodic once
+      | eachPath 
+      |   toDfload $table
+      | callPipeline
+      | waitPipeline
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProcedures4b" .verbose
+
+: start::defineProcedures4b
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  
+  // --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - ---
+  // load                                                          TO BE REMOVED
+  sPath
+  "
+  procedure oldLoad
+  //procedure oldLoad_REMOVE
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+    start | periodic once | chunk $file | stageB
+
+  stage stageB on all partitions on origin :
+    rdCsvChunk $file |
+    toCrwH $table    |
+    //  dump crwBuffer 1 |
+    stageC Hashed
+
+  stage stageC on all partitions :
+    insert $table | stageD
+
+  stage stageD on origin :
+    //sink | stageA
+    progress 'Load' | toStatDemon | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load
+  sPath
+  "
+  procedure oldLoad_sameAsLoad
+  //procedure oldLoad
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+
+    start              |
+
+    periodic once    |
+
+    chunk $file        | // read chunks of file, produce (seekOffset) =>
+    // dump seekOffsets 1 |
+
+    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
+    // dump csvBuffer 0   |
+
+    stageB robin
+
+
+  stage stageB on all partitions on origin :
+
+    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+    // dump rsbBuffer 1   |
+
+    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rsbBuffer 1   |
+
+    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    //dump rsbBuffer 1   |
+
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rsbBuffer 1   |
+
+    stageC hashed
+
+  stage stageC on all partitions :
+
+    //eatSome |
+
+    insert $table | // (crwBuffer) inserted into table
+
+    stageD
+
+  stage stageD on origin :
+
+    progress 'Load'    |
+
+    toStatDemon        |
+
+    sink               |
+
+    stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProcedures5" .verbose
+
+: start::defineProcedures5
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy file
+  sPath
+  "
+  procedure copyFile
+    parameters $FileIn $FileOut
+  begin
+
+  stage stageA on origin :
+    start | periodic once | catFile $FileIn | wrFile $FileOut | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // copyFile "/Users/Shared/tpch/SF1/nation.csv" "/Users/Shared/tpch/SF1/nation_COPY.csv" ;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list file
+  sPath
+  "
+  procedure listFile
+    parameters $File
+  begin
+
+    stage stageA on origin :
+      start | periodic once | catFile $File | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // listFile "/Users/Shared/tpch/SF1/nation.csv" ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // xyz file
+  sPath
+  "
+  procedure xyzFile
+    parameters $Table $File $Ntimes
+  begin
+
+    stage stageA on origin :
+      start
+        | periodic once
+//        | catFile $File
+        | rdCsvCyclic $File $NTimes
+        | toRsb $Table
+        | toPtnRsb
+        | toNstRsb
+        | stageB hashed
+
+    stage stageB on all partitions :
+      noop
+        | stageC
+
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // xyzFile nation "/Users/Shared/tpch/SF1/nation.csv" 3 ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cycle read file
+  sPath
+  "
+  procedure cyclicRdFile
+    parameters $FileIn $NTimes
+  begin
+
+    stage stageA on origin :
+      start | periodic once |
+        rdCsvCyclic $FileIn $NTimes | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+// cyclicRdFile "/Users/Shared/tpch/SF1/nation.csv" 3 ;
+// cyclicRdFile "/Users/Shared/tpch/SF1/supplier.csv" 3 ;
+// cyclicRdFile "/Users/Shared/tpch/SF1/part.csv" 3 ;
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProcedures6" .verbose
+
+: start::defineProcedures6
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add node
+  sPath
+  "
+  procedure add node
+    parameters $NodeNm $IpAddr $PortNo
+  begin
+
+    stage stageA on origin :
+
+      start
+        | periodic once
+        | stageB
+
+    stage stageB on all nodes :
+
+      addNode $NodeNm $IpAddr $PortNo
+        | stageC
+
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // adjust partitions
+  sPath
+  "
+  procedure adjust partitions
+  begin
+
+    stage stageA on origin :
+
+      start
+        | periodic once
+        | stageB
+
+    stage stageB on all nodes :
+
+      adjustPtns
+        | stageC
+
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove node
+  sPath
+  "
+  procedure remove node
+    parameters $NodeNm
+  begin
+
+    stage stageA on origin :
+
+      start | periodic once
+            | removeNode $NodeNm
+            | output
+            | sink
+            | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn node
+  sPath
+  "
+  procedure spawn node
+    parameters $NodeNm
+  begin
+
+    stage stageA on origin :
+
+      start | periodic once
+            | spawnNode $NodeNm
+            | output
+            | sink
+            | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_SteadyState" .verbose
+
+: start::defineProc_SteadyState
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // steady state test 1
+  sPath
+  "
+  procedure steadyState_1
+    parameters $Table $File $NTimes
+  begin
+
+    stage stageA on origin :
+      start
+        | periodic once
+        //|  rdCsvCyclic $File $NTimes
+        | catFile $File
+        | toRsb $Table
+        | toPtnRsb
+        | stageB hashed
+
+    stage stageB on all partitions :
+      noop
+      //insdel $Table
+        | stageC
+
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
+
+  end ;
+
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // steady state test 2
+  sPath
+  "
+  procedure steadyState_2
+    parameters $Table $File $NTimes
+  begin
+
+    stage stageA on origin :
+      start
+        | periodic once
+        //|  rdCsvCyclic $File $NTimes
+        | catFile $File
+        | toRsb $Table
+        | toPtnRsb
+        | stageB hashed
+
+    stage stageB on all partitions :
+      //noop
+      insdel $Table
+        | stageC
+
+    stage stageC on origin :
+      output
+        | sink
+        | stageA
+
+  end ;
+
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // steady state test 3
+  sPath
+  "
+  procedure steadyState_3
+   parameters $Table $File $NTimes
+  begin
+
+   stage stageA on origin :
+
+     start |
+
+     periodic once |
+
+     rdCsvCyclic $File $NTimes |
+
+     stageB robin
+
+
+   stage stageB on all partitions on origin  :
+
+     toRsb $Table |
+
+     toPtnRsb |
+
+     //toNstRsb |
+
+     //toHshCrw |
+
+     stageC hashed
+
+
+   stage stageC on all partitions :
+
+     insdel $Table |
+
+     stageD
+
+
+   stage stageD on origin :
+
+     //output |
+
+     sink |
+
+     stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_UnloadReload" .verbose
+
+: start::defineProc_UnloadReload
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // unload
+  sPath
+  "
+  procedure unload
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | stageC
+
+  stage stageC on origin :
+    wrFile $File | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // /time unload LineItem "/tmp/lineitem.crw" ;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reload
+  sPath
+  "
+  procedure reload
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | periodic once | rdCrwFile $File | stageB
+
+  stage stageB on all partitions :
+    insert $Table | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // /time reload LineItem "/tmp/lineitem.crw" ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reorder table
+  sPath
+  "
+  procedure reorder
+    parameters $table1 $table2 $predicate
+  begin
+
+  stage stageA on origin :
+    start | periodic once | emitStreamDef $Table1 | stageB
+
+  stage stageB on all nodes :
+    createTable $table2 | stageC
+
+  stage stageC on all partitions :
+    fetch $table1 $predicate | insert $table2 | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures for Query tests                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_Query" .verbose
+
+: start::defineProc_Query
+
+  "<path>= /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 3b prelim
+  sPath
+  "
+  procedure Query_3b
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 300 1
+    | stageC hashed
+
+  stage stageC on all partitions :
+    sql 301 1
+    | stageD
+
+  stage stageD on origin :
+    sql 302 1
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 3b prelim
+  sPath
+  "
+  procedure Query_3b_I
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 300 0
+    | stageC hashed
+
+  stage stageC on all partitions :
+    sql 301 0
+    | stageD
+
+  stage stageD on origin :
+    sql 302 0
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 4b prelim
+  sPath
+  "
+  procedure Query_4b
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 400 1
+    | stageC
+
+  stage stageC on origin :
+    sql 401 1
+    | output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 4b prelim
+  sPath
+  "
+  procedure Query_4b_I
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 400 0
+    | stageC
+
+  stage stageC on origin :
+    sql 401 0
+    | output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures for dynamic compiler                                     */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_DynCompiler" .verbose
+
+: start::defineProc_DynCompiler
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // q 3 prelim
+  sPath
+  "
+  procedure dynCompiler
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 100001 1
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_TPCH" .verbose
+
+: start::defineProc_TPCH
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - iterating index on l_shipdate
+  sPath
+  "
+  procedure Query1
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    scan $Table
+    | sql 100 1
+    //| sql 101
+    | stageC
+
+  stage stageC on origin :
+    sql 103 1
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - iterating index on l_shipdate
+  sPath
+  "
+  procedure Query1_I
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    scan $Table
+    | sql 100 0
+    //| sql 101
+    | stageC
+
+  stage stageC on origin :
+    sql 103 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - converting loaded CRW data into RSB
+  sPath
+  "
+  procedure Query6
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 600 1 $Table $Index
+    | stageC
+
+  stage stageC on origin :
+    sql 601 1
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - converting loaded CRW data into RSB
+  sPath
+  "
+  procedure Query6_I
+    parameters $Table $Index
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    sql 600 0 $Table $Index
+    | stageC
+
+  stage stageC on origin :
+    sql 601 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures (TPCH ASM Compiled)                                      */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_TPCH_ASM" .verbose
+
+: start::defineProc_TPCH_ASM
+
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - compiled
+  sPath
+  "
+  procedure Query1_ASM
+    parameters $Table $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    scan $Table
+    | EOAsm $QueryText_stageB 1
+    | stageC
+
+  stage stageC on origin :
+    EOAsm $QueryText_stageC 1
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 3 -- compiled
+  sPath
+  "
+  procedure Query3_ASM
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions : //300
+    EOAsm $QueryText_stageB 1
+    | stageC hashed
+
+  stage stageC on all partitions : //301
+    EOAsm $QueryText_stageC 1
+    | stageD
+
+  stage stageD on origin : //302
+    EOAsm $QueryText_stageD 1
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 4 -- compiled
+  sPath
+  "
+  procedure Query4_ASM
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 1
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 1
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 1
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 4 -- compiled
+  sPath
+  "
+  procedure Query4_ASM
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 1
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 1
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 1
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - compiled
+  sPath
+  "
+  procedure Query6_ASM
+    parameters $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 1
+    | stageC
+
+  stage stageC on origin :
+    EOAsm $QueryText_stageC 1
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures (TPCH ASM Interpretive)                                  */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_TPCH_ASM_I" .verbose
+
+: start::defineProc_TPCH_ASM_I
+
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - interpretive
+  sPath
+  "
+  procedure Query1_ASM_I
+  parameters $Table $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+  start
+  | periodic once
+  | stageB
+
+  stage stageB on all partitions :
+  scan $Table
+  | EOAsm $QueryText_stageB 0
+  | stageC
+
+  stage stageC on origin :
+  EOAsm $QueryText_stageC 0
+  | output
+  //| toStatDemon
+  | sink
+  | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 3 -- interpretive
+  sPath
+  "
+  procedure Query3_ASM_I
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 0
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 0
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 0
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 4 -- interpretive
+  sPath
+  "
+  procedure Query4_ASM_I
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 0
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 0
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 0
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 4 -- interpretive
+  sPath
+  "
+  procedure Query4_ASM
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 0
+    | stageC hashed
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 0
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 0
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - interpretive
+  sPath
+  "
+  procedure Query6_ASM_I
+    parameters $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 0
+    | stageC
+
+  stage stageC on origin :
+    EOAsm $QueryText_stageC 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures (Planner experiments)                                    */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineProc_Planner" .verbose
+
+: start::defineProc_Planner
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Smt 0 - select l_extendedprice from lineitem;
+  sPath
+  "
+  procedure Smt0
+    parameters $Table $QueryText_stageB
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    scan $Table
+    | EOAsm $QueryText_stageB 0
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
