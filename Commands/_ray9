@@ -4,18 +4,16 @@
 
 bc;
 
-create table fltTbl (
-  flt_col1  FLOAT       NOT NULL,
-  vch_col1  VARCHAR(32) NOT NULL,
-  int_col3  INTEGER     NOT NULL,
-  int_col4  INTEGER     NOT NULL,
-  ivl_col5  DECIMAL(10,2) NOT NULL,
-  flt_col6  FLOAT
+create table IntTbl (
+  int_col1  INTEGER NOT NULL,
+  vch_col2  VARCHAR(32) NOT NULL,
+  vch_col3  VARCHAR(32) NOT NULL,
+  int_col4  INTEGER
 );
 
-Load fltTbl "../DATA/Datums/float.csv" ;
+Load IntTbl "../DATA/Datums/integer.csv" ;
 
-tableScan fltTbl;
+tableScan IntTbl;
 
 /*============================================================================*/
 /* end                                                                        */

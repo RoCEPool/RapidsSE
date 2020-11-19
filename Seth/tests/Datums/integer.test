@@ -38,7 +38,7 @@ lsidxcol IntTbl int_idx2;
 rows:
   ('int_col4', 'INTEGER', 19, 0, true, false)
 
-oldLoad IntTbl "../DATA/Datums/integer.csv" ;
+Load IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows

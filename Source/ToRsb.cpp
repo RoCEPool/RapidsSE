@@ -2074,6 +2074,49 @@ L_STD_Integer:
   vSKIP_NON_DATA();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_INTEGER_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_INTEGER_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_INTEGER_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_INTEGER_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_INTEGER_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    iInteger = C_DATUM_NULL;
+    goto L_STD_IntegerDeposit;
+  }
+   
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
   
   // collect sign
@@ -2110,6 +2153,21 @@ L_STD_Integer:
     goto L_STD_FieldError;
   }
 
+  // ignore any . digits
+  if ('.' == cSrcChr) {
+    vADV_SRCCHR(); // skip '.'
+    while (bIS_DIGIT()) {
+      vADV_SRCCHR(); // skip digit
+    }
+  }
+
+  vSKIP_WHITE_SPACE();
+  
+  if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+    eError = EC_CSV_INTEGER_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all integer portions collected
 
@@ -2122,6 +2180,7 @@ L_STD_Integer:
   iInteger = bNegative ? - uNumber : uNumber;
   
   // deposit the integer
+L_STD_IntegerDeposit:
   m_pRowSlab->vDeposit(iInteger);
     
   // compute running hash of partitioning column
