@@ -366,6 +366,7 @@
   sPath
   "
   procedure drop table
+    tags <lowMemory>
     parameters $tableNm
   begin
 
