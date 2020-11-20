@@ -1339,6 +1339,9 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
+  SP_String spStr;
+  SP_String spChr;
+
   // uncomment the following depending on which points you want to trace
   i8 baTrace = 0
 //     | C_L_STD_Begin
@@ -1367,7 +1370,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (baTrace & C_L_STD_Begin)
-    vTrace("L_STD_Begin:\n"_Stz);
+    vTrace("L_STD_Begin: >>%s<<\n"_Stz,
+           spStr.szInspect(azCsvChunk,64,false));
 
   i8 iBucketId = 0;
   i8 i_Fld = 0;
@@ -1407,7 +1411,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 L_STD_TestMoreRecords:
     
   if (baTrace & C_L_STD_TestMoreRecords)
-    vTrace("L_STD_TestMoreRecords:\n"_Stz);
+    vTrace("L_STD_TestMoreRecords: >>%s<<\n"_Stz,
+           spStr.szInspect(azCsvSrc,64,false));
 
   // skip leading non-data chars
   vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
@@ -1467,25 +1472,10 @@ L_STD_TestMoreFields:
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
   if (baTrace & C_L_STD_TestMoreFields) {
-    vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s >>"_Stz,
-           m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum]);
-    if ('\n' == cSrcChr)
-      vTrace("\\n"_Stz);
-    else
-      vTrace("%c"_Stz,cSrcChr);
-    vTrace("<< :: >>"_Stz);
-  
-    for (i8 i_Offset = 0; i_Offset < 32; i_Offset++) {
-      char cChr = *(azFieldStart + i_Offset);
-      if (! cChr)
-        break;
-      if ('\n' == cChr) {
-        vTrace("\\n"_Stz);
-        break;
-      }
-      vTrace("%c"_Stz,cChr);
-    }
-    vTrace("<<\n"_Stz);
+    vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s srcChr >>%s<< csvSrc >>%s<<\n"_Stz,
+           m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum],
+           spChr.szChar(cSrcChr),
+           spStr.szInspect(azCsvSrc));
   }
   
   // debug
