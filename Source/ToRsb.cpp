@@ -37,6 +37,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_cFldSep    = ',';
 
   m_nRecords   = 0;
+  m_nErrors    = 0;
   m_bFirst     = true;
   m_bTrace     = false;
   
@@ -182,35 +183,37 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bIS_DIGIT()      (cSrcChr >= '0' && cSrcChr <= '9')
 
-#define bMORE_DATA()     (bool)(cSrcChr)
+#define bMORE_CSV()      (bool)(cSrcChr)
 
 #define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cRecEnd)
 
+#define vRESET_FIELD() \
+  { \
+     azCsvSrc = azFieldStart; \
+     cSrcChr = *azCsvSrc; \
+  }
+
+
+#define bWHITE_SPACE() \
+( (cSrcChr == ' ')  || \
+  (cSrcChr == '\t') )
+
+#define bCTL_CHAR() \
+( (cSrcChr == '\n') || \
+  (cSrcChr == '\r') || \
+  (cSrcChr == '\f') )
+
 #define bNON_DATA_CHAR() \
-  ( (cSrcChr == ' ')  || \
-    (cSrcChr == '\n') || \
-    (cSrcChr == '\r') || \
-    (cSrcChr == '\f') || \
-    (cSrcChr == '\t') )
+  ( bWHITE_SPACE() || bCTL_CHAR() )
 
 #define vSKIP_NON_DATA() \
   while (cSrcChr && bNON_DATA_CHAR()) { \
     vADV_SRCCHR(); \
   }
 
-#define bWHITE_SPACE() \
-  ( (cSrcChr == ' ')  || \
-    (cSrcChr == '\t') )
-
 #define vSKIP_WHITE_SPACE() \
   while (cSrcChr && bWHITE_SPACE()) { \
     vADV_SRCCHR(); \
-  }
-
-#define vRESET_FIELD() \
-  { \
-     azCsvSrc = azFieldStart; \
-     cSrcChr = *azCsvSrc; \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +322,7 @@ L_USR_TestMoreRecords:
 //    vADV_SRCCHR();
 //
   // test for more csv to be parsed
-  if (! bMORE_DATA())
+  if (! bMORE_CSV())
     goto L_USR_EndOfCsvChunk;
   
   azRecordStart = azCsvSrc;
@@ -1340,6 +1343,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // 0) begin                                                                STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vTrace("L_STD_Begin:\n"_Stz);
+
   i8 iBucketId = 0;
   i8 i_Fld = 0;
   i8 iHash = 0;
@@ -1348,6 +1353,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bSawFldSep = false;
   Column* pCol = nullptr;
   eEC eError = EC_NONE;
+  i8 iTrace = 0;
 
   char* azCsvSrc = azCsvChunk;
   char cSrcChr = *azCsvSrc;
@@ -1377,16 +1383,21 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_STD_TestMoreRecords:
     
+  if (iTrace)
+    vTrace("L_STD_TestMoreRecords:\n"_Stz);
+
   // skip leading non-data chars
   vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
   
   // test for more csv to be parsed
-  if (! bMORE_DATA())
+  if (! bMORE_CSV())
     goto L_STD_EndOfCsvChunk;
   
+  // begin new record
   azRecordStart = azCsvSrc;
   
-  
+  i_Fld = 0;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) new rsb                                                              STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1406,9 +1417,13 @@ L_STD_TestMoreFields:
   
   ASSERT(EC_NONE == eError);
 
-  if (! bMORE_FIELDS())
+  //if (! bMORE_FIELDS())
+  if (i_Fld >= nCols) {
+    if (iTrace)
+      vTrace("L_STD_TestMoreFields: end-of-fields\n"_Stz);
     goto L_STD_EndOfRecord;
-
+  }
+  
   azFieldStart = azCsvSrc;
 
   
@@ -1428,6 +1443,32 @@ L_STD_TestMoreFields:
   // debug
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
+  if (iTrace) {
+    vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s >>"_Stz,
+           m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum]);
+    if ('\n' == cSrcChr)
+      vTrace("\\n"_Stz);
+    else
+      vTrace("%c"_Stz,cSrcChr);
+    vTrace("<< :: >>"_Stz);
+  
+    for (i8 i_Offset = 0; i_Offset < 32; i_Offset++) {
+      char cChr = *(azFieldStart + i_Offset);
+      if (! cChr)
+        break;
+      if ('\n' == cChr) {
+        vTrace("\\n"_Stz);
+        break;
+      }
+      vTrace("%c"_Stz,cChr);
+    }
+    vTrace("<<\n"_Stz);
+  }
+  
+  // debug
+  if (11 == m_nRecords)
+    vDebugPoint();
+  
   switch (ePixDatum) {
     case DM_BOL : goto L_STD_Boolean;
     case DM_DTE : goto L_STD_Date;
@@ -1448,8 +1489,54 @@ L_STD_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Boolean:
   
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Boolean:\n"_Stz);
+  
+  vSKIP_WHITE_SPACE();
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_BooleanNull;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          eError = EC_CSV_BOOLEAN_INVALID;
+          goto L_STD_FieldError;
+        }
+      }
+      else { // not expected 'l'
+        eError = EC_CSV_BOOLEAN_INVALID;
+        goto L_STD_FieldError;
+      }
+    }
+    else { // not expected 'u'
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    vSKIP_WHITE_SPACE();
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+
+    goto L_STD_BooleanNull;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible true portion
   
@@ -1554,49 +1641,6 @@ L_STD_Boolean:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible null portion
-
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vADV_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vADV_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vADV_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vADV_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          eError = EC_CSV_BOOLEAN_INVALID;
-          goto L_STD_FieldError;
-        }
-      }
-      else { // not expected 'l'
-        eError = EC_CSV_BOOLEAN_INVALID;
-        goto L_STD_FieldError;
-      }
-    }
-    else { // not expected 'u'
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
-    }
-
-    if (! bPixNullable) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
-    }
-    
-    iBoolean = C_DATUM_NULL;
-    goto L_STD_BooleanNull;
-  }
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // unrecognisable boolean portion
   
   eError = EC_CSV_BOOLEAN_INVALID;
@@ -1610,6 +1654,11 @@ L_STD_BooleanDeposit:
   goto L_STD_PostField;
     
 L_STD_BooleanNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_BOOLEAN_INVALID;
+    goto L_STD_FieldError;
+  }
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of boolean
 
@@ -1618,8 +1667,17 @@ L_STD_BooleanNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Date:
   
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Date:\n"_Stz);
   
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_DateNull;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
@@ -1654,11 +1712,6 @@ L_STD_Date:
       goto L_STD_FieldError;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_YEAR_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_DateNull;
   }
   
@@ -1803,6 +1856,12 @@ L_STD_Date:
   goto L_STD_PostField;
 
 L_STD_DateNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                           // end of date
 
@@ -1815,8 +1874,17 @@ L_STD_Decimal:
       note: decimals are scaled (numerically shifted left x 10) by nPixScale
    */
 
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Decimal:\n"_Stz);
   
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_DecimalNull;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
@@ -1851,11 +1919,6 @@ L_STD_Decimal:
       goto L_STD_FieldError;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_DECIMAL_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_DecimalNull;
   }
    
@@ -1961,6 +2024,12 @@ L_STD_Decimal:
   goto L_STD_PostField;
 
 L_STD_DecimalNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_DECIMAL_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of decimal
 
@@ -1974,7 +2043,16 @@ L_STD_Float:
             into a d8 floaing point double
    */
   
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Float:\n"_Stz);
+  
+  vSKIP_WHITE_SPACE();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_FloatNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -2010,11 +2088,6 @@ L_STD_Float:
       goto L_STD_FieldError;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_FLOAT_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_FloatNull;
   }
    
@@ -2114,6 +2187,12 @@ L_STD_Float:
   goto L_STD_PostField;
 
 L_STD_FloatNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_FLOAT_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                          // end of float
 
@@ -2122,8 +2201,17 @@ L_STD_FloatNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Integer:
   
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Integer:\n"_Stz);
   
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_IntegerNull;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
@@ -2158,11 +2246,6 @@ L_STD_Integer:
       goto L_STD_FieldError;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_INTEGER_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_IntegerNull;
   }
    
@@ -2239,6 +2322,12 @@ L_STD_Integer:
   goto L_STD_PostField;                                        // end of integer
   
 L_STD_IntegerNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_INTEGER_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
     
   // compute running hash of partitioning column
@@ -2253,7 +2342,16 @@ L_STD_IntegerNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Interval:
   
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Interval:\n"_Stz);
+  
+  vSKIP_WHITE_SPACE();
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_IntervalNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -2289,11 +2387,6 @@ L_STD_Interval:
       goto L_STD_FieldError;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_INTERVAL_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_IntervalNull;
   }
   
@@ -2365,6 +2458,12 @@ L_STD_Interval:
   goto L_STD_PostField;
 
 L_STD_IntervalNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_INTERVAL_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                       // end of interval
 
@@ -2374,8 +2473,17 @@ L_STD_IntervalNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Time:
   
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Time:\n"_Stz);
   
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_TimeNull;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
@@ -2410,11 +2518,6 @@ L_STD_Time:
       goto L_STD_FieldError;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_HOUR_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_TimeNull;
   }
   
@@ -2538,6 +2641,12 @@ L_STD_Time:
   goto L_STD_PostField;
 
 L_STD_TimeNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_HOUR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                           // end of time
 
@@ -2547,8 +2656,17 @@ L_STD_TimeNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Timestamp:
   
-  vSKIP_NON_DATA();
+  if (iTrace)
+    vTrace("L_STD_Timestamp:\n"_Stz);
   
+  vSKIP_WHITE_SPACE();
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
+
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_TimestampNull;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
@@ -2583,11 +2701,6 @@ L_STD_Timestamp:
       goto L_STD_FieldError;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_YEAR_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_TimestampNull;
   }
   
@@ -2864,6 +2977,12 @@ L_STD_SkipTime:
   goto L_STD_PostField;
 
 L_STD_TimestampNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                      // end of timestamp
 
@@ -2871,80 +2990,22 @@ L_STD_TimestampNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.i) varchar field :                                                    STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  
-#if 0
-  
 L_STD_Varchar:
   
   // ** do not skip white space **
 
+  if (iTrace)
+    vTrace("L_STD_Varchar:\n"_Stz);
+  
   nChars = 0;
   bSawEnclosedTrailing = false;
   bSawEnclosedLeading  = false;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible empty portion
 
-  // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
-  
-  if (! m_pFmt->m_cEnclosedBy_Leading)
-    bSawEnclosedLeading = false;
-
-  // find first non-space character
-  while (' ' == cSrcChr)
-    vADV_SRCCHR(); // skip ' '
-
-  azCsvSrc = azFieldStart;
-
-  while (cSrcChr) {
-        
-    // test for field separator (because its not enclosed)
-    if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
-      break;
-    
-    if (nChars++ < nPixLength)
-      *acVchDst++ = cSrcChr;
-    
-    vADV_SRCCHR(); // next char
-  }
-
-  // terminate
-  *acVchDst++ = '\0';
-
-  // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
-
-  // if this an enclosed varchar we should have expected to
-  // see the trailing enclosedBy
-  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    eError = EC_CSV_VARCHAR_INVALID;
-    goto L_STD_FieldError;
-  }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all varchar portions collected
-  
-  m_pRowSlab->vDepositString_end(nChars+1);
-  goto L_STD_PostField;
-
-L_STD_VarcharNull:
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
-  goto L_STD_PostField;                                        // end of varchar
-
-  
-#else
-  
-  // ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
- 
-L_STD_Varchar:
-  
-  // ** do not skip white space **
-
-  nChars = 0;
-  bSawEnclosedTrailing = false;
-  bSawEnclosedLeading  = false;
+  if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+    goto L_STD_VarcharNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -2978,11 +3039,6 @@ L_STD_Varchar:
       goto L_STD_VarcharWhich;
     }
 
-    if (! bPixNullable) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
-    }
-    
     goto L_STD_VarcharNull;
   }
   
@@ -3020,6 +3076,9 @@ L_STD_VarcharWhich:
 
 L_STD_VarcharUnquoted:
 
+  if (iTrace)
+    vTrace("L_STD_VarcharUnquoted:\n"_Stz);
+  
   // allocate string space in slab
   azVchHead = m_pRowSlab->azDepositString_begin();
   acVchDst  = azVchHead;
@@ -3031,7 +3090,13 @@ L_STD_VarcharUnquoted:
       break;
     
     if ('\\' == cSrcChr) {
+      vADV_SRCCHR(); // skip '\\'
+      
+      if (nChars++ < nPixLength)
+        *acVchDst++ = cSrcChr;
+
       vADV_SRCCHR(); // next char
+
       continue;
     }
         
@@ -3057,6 +3122,9 @@ L_STD_VarcharUnquoted:
 
 L_STD_VarcharSingleQuoted:
 
+  if (iTrace)
+    vTrace("L_STD_VarcharSingleQuoted:\n"_Stz);
+  
   // allocate string space in slab
   azVchHead = m_pRowSlab->azDepositString_begin();
   acVchDst  = azVchHead;
@@ -3104,7 +3172,13 @@ L_STD_VarcharSingleQuoted:
     }
     
     if ('\\' == cSrcChr) {
+      vADV_SRCCHR(); // skip '\\'
+      
+      if (nChars++ < nPixLength)
+        *acVchDst++ = cSrcChr;
+
       vADV_SRCCHR(); // next char
+
       continue;
     }
     
@@ -3143,6 +3217,9 @@ L_STD_VarcharSingleQuoted:
 
 L_STD_VarcharDoubleQuoted:
 
+  if (iTrace)
+    vTrace("L_STD_VarcharDoubleQuoted:\n"_Stz);
+  
   // allocate string space in slab
   azVchHead = m_pRowSlab->azDepositString_begin();
   acVchDst  = azVchHead;
@@ -3189,11 +3266,17 @@ L_STD_VarcharDoubleQuoted:
 
     }
     
-    if ('"' == cSrcChr) {
+    if ('\\' == cSrcChr) {
+      vADV_SRCCHR(); // skip '\\'
+      
+      if (nChars++ < nPixLength)
+        *acVchDst++ = cSrcChr;
+
       vADV_SRCCHR(); // next char
+
       continue;
     }
-    
+
     // test for record end
     if (cSrcChr == m_cRecEnd) {
       eError = EC_CSV_VARCHAR_INVALID;
@@ -3232,18 +3315,24 @@ L_STD_VarcharDeposit:
   goto L_STD_PostField;
 
 L_STD_VarcharNull:
+  
+  if (! bPixNullable) {
+    eError = EC_CSV_VARCHAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of varchar
 
-#endif
-  
-  
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 5) processing at end of field                                           STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_STD_PostField:
     
+  if (iTrace)
+    vTrace("L_STD_PostField:\n"_Stz);
+
   // advance over any trailing chars till field separator or record terminator
   while (cSrcChr) {
     
@@ -3291,8 +3380,19 @@ L_STD_FieldError:
    
    */
   
+  if (iTrace)
+    vTrace("L_STD_FieldError: %lld %s\n"_Stz,eError,aEC[eError]);
+  
   // discard partial row in row slab
   m_pRowSlab->vDiscardInvalidRow();
+
+  // increment invalid records
+  m_nErrors++;
+  AM::vIncRowsInvalid(m_pPipelineJob);
+  m_nRecords++;
+  
+  // clear error
+  eError = EC_NONE;
 
   // skip to end of record
   while (cSrcChr) {
@@ -3302,16 +3402,6 @@ L_STD_FieldError:
     
     vADV_SRCCHR(); // skip any
   }
-  
-  // increment invalid records
-  AM::vIncRowsInvalid(m_pPipelineJob);
-  m_nRecords++;
-  
-  // clear error
-  eError = EC_NONE;
-
-  // begin new record
-  i_Fld = 0;
 
   // skip
   if (cSrcChr)
@@ -3325,6 +3415,9 @@ L_STD_FieldError:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_STD_EndOfRecord:
   
+  if (iTrace)
+    vTrace("L_STD_EndOfRecord:\n"_Stz);
+  
   ASSERT(! bMORE_FIELDS());
   
 #ifdef WITH_DEBUG_VERSION
@@ -3335,14 +3428,11 @@ L_STD_EndOfRecord:
   }
 #endif
   
-  if (i_Fld != nCols) {
-    vDebugPoint();
-  }
+  ASSERT(i_Fld == nCols);
 
   // set partition hash
   if (m_bPtnHash) {
-    
-    
+        
     tPtnNo = PtnMap::tHashToPtnNo(iHash,m_nPtns);
     
     // partition mapping experiment by Ray 12 Nov 2020
@@ -3360,7 +3450,6 @@ L_STD_EndOfRecord:
   m_nRecords++;
 
   // begin new record
-  i_Fld = 0;
   
   if (cSrcChr)
     vADV_SRCCHR(); // skip m_cRecEnd
@@ -3373,6 +3462,9 @@ L_STD_EndOfRecord:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_STD_EndOfCsvChunk:
     
+  if (iTrace)
+    vTrace("L_STD_EndOfCsvChunk:\n"_Stz);
+
   return true;
 }
 
