@@ -1339,11 +1339,35 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
+  // uncomment the following depending on which points you want to trace
+  i8 baTrace = 0
+//     | C_L_STD_Begin
+//     | C_L_STD_TestMoreRecords
+//     | C_L_STD_TestMoreFields
+//     | C_L_STD_Boolean
+//     | C_L_STD_Date
+//     | C_L_STD_Decimal
+//     | C_L_STD_Float
+//     | C_L_STD_Integer
+//     | C_L_STD_Interval
+//     | C_L_STD_Time
+//     | C_L_STD_Timestamp
+//     | C_L_STD_Varchar
+//     | C_L_STD_VarcharUnquoted
+//     | C_L_STD_VarcharSingleQuoted
+//     | C_L_STD_VarcharDoubleQuoted
+//     | C_L_STD_PostField
+//     | C_L_STD_FieldError
+//     | C_L_STD_EndOfRecord
+//     | C_L_STD_EndOfCsvChunk
+  ;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin                                                                STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTrace("L_STD_Begin:\n"_Stz);
+  if (baTrace & C_L_STD_Begin)
+    vTrace("L_STD_Begin:\n"_Stz);
 
   i8 iBucketId = 0;
   i8 i_Fld = 0;
@@ -1353,7 +1377,6 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bSawFldSep = false;
   Column* pCol = nullptr;
   eEC eError = EC_NONE;
-  i8 iTrace = 0;
 
   char* azCsvSrc = azCsvChunk;
   char cSrcChr = *azCsvSrc;
@@ -1383,7 +1406,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_STD_TestMoreRecords:
     
-  if (iTrace)
+  if (baTrace & C_L_STD_TestMoreRecords)
     vTrace("L_STD_TestMoreRecords:\n"_Stz);
 
   // skip leading non-data chars
@@ -1419,7 +1442,7 @@ L_STD_TestMoreFields:
 
   //if (! bMORE_FIELDS())
   if (i_Fld >= nCols) {
-    if (iTrace)
+    if (baTrace & C_L_STD_TestMoreFields)
       vTrace("L_STD_TestMoreFields: end-of-fields\n"_Stz);
     goto L_STD_EndOfRecord;
   }
@@ -1443,7 +1466,7 @@ L_STD_TestMoreFields:
   // debug
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
-  if (iTrace) {
+  if (baTrace & C_L_STD_TestMoreFields) {
     vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s >>"_Stz,
            m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum]);
     if ('\n' == cSrcChr)
@@ -1489,7 +1512,7 @@ L_STD_TestMoreFields:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Boolean:
   
-  if (iTrace)
+  if (baTrace & C_L_STD_Boolean)
     vTrace("L_STD_Boolean:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -1667,7 +1690,7 @@ L_STD_BooleanNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Date:
   
-  if (iTrace)
+  if (baTrace & C_L_STD_Date)
     vTrace("L_STD_Date:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -1874,7 +1897,7 @@ L_STD_Decimal:
       note: decimals are scaled (numerically shifted left x 10) by nPixScale
    */
 
-  if (iTrace)
+  if (baTrace & C_L_STD_Decimal)
     vTrace("L_STD_Decimal:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -2043,7 +2066,7 @@ L_STD_Float:
             into a d8 floaing point double
    */
   
-  if (iTrace)
+  if (baTrace & C_L_STD_Float)
     vTrace("L_STD_Float:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -2201,7 +2224,7 @@ L_STD_FloatNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Integer:
   
-  if (iTrace)
+  if (baTrace & C_L_STD_Integer)
     vTrace("L_STD_Integer:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -2342,7 +2365,7 @@ L_STD_IntegerNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Interval:
   
-  if (iTrace)
+  if (baTrace & C_L_STD_Interval)
     vTrace("L_STD_Interval:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -2473,7 +2496,7 @@ L_STD_IntervalNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Time:
   
-  if (iTrace)
+  if (baTrace & C_L_STD_Time)
     vTrace("L_STD_Time:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -2656,7 +2679,7 @@ L_STD_TimeNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_STD_Timestamp:
   
-  if (iTrace)
+  if (baTrace & C_L_STD_Timestamp)
     vTrace("L_STD_Timestamp:\n"_Stz);
   
   vSKIP_WHITE_SPACE();
@@ -2994,7 +3017,7 @@ L_STD_Varchar:
   
   // ** do not skip white space **
 
-  if (iTrace)
+  if (baTrace & C_L_STD_Varchar)
     vTrace("L_STD_Varchar:\n"_Stz);
   
   nChars = 0;
@@ -3076,7 +3099,7 @@ L_STD_VarcharWhich:
 
 L_STD_VarcharUnquoted:
 
-  if (iTrace)
+  if (baTrace & C_L_STD_VarcharUnquoted)
     vTrace("L_STD_VarcharUnquoted:\n"_Stz);
   
   // allocate string space in slab
@@ -3122,7 +3145,7 @@ L_STD_VarcharUnquoted:
 
 L_STD_VarcharSingleQuoted:
 
-  if (iTrace)
+  if (baTrace & C_L_STD_VarcharSingleQuoted)
     vTrace("L_STD_VarcharSingleQuoted:\n"_Stz);
   
   // allocate string space in slab
@@ -3217,7 +3240,7 @@ L_STD_VarcharSingleQuoted:
 
 L_STD_VarcharDoubleQuoted:
 
-  if (iTrace)
+  if (baTrace & C_L_STD_VarcharDoubleQuoted)
     vTrace("L_STD_VarcharDoubleQuoted:\n"_Stz);
   
   // allocate string space in slab
@@ -3330,7 +3353,7 @@ L_STD_VarcharNull:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_STD_PostField:
     
-  if (iTrace)
+  if (baTrace & C_L_STD_PostField)
     vTrace("L_STD_PostField:\n"_Stz);
 
   // advance over any trailing chars till field separator or record terminator
@@ -3380,7 +3403,7 @@ L_STD_FieldError:
    
    */
   
-  if (iTrace)
+  if (baTrace & C_L_STD_FieldError)
     vTrace("L_STD_FieldError: %lld %s\n"_Stz,eError,aEC[eError]);
   
   // discard partial row in row slab
@@ -3415,7 +3438,7 @@ L_STD_FieldError:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_STD_EndOfRecord:
   
-  if (iTrace)
+  if (baTrace & C_L_STD_EndOfRecord)
     vTrace("L_STD_EndOfRecord:\n"_Stz);
   
   ASSERT(! bMORE_FIELDS());
@@ -3462,7 +3485,7 @@ L_STD_EndOfRecord:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_STD_EndOfCsvChunk:
     
-  if (iTrace)
+  if (baTrace & C_L_STD_EndOfCsvChunk)
     vTrace("L_STD_EndOfCsvChunk:\n"_Stz);
 
   return true;
