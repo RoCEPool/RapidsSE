@@ -761,7 +761,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);
-  bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
+  bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
     oLock.vGrabWrite();
@@ -1466,6 +1466,8 @@ bool AM::bPassesLowMem(Job* pJob)
 
   if (! gpBufferPool->bLowMemory())
     return true;
+  
+  pJob->pJobTags()->vContentDump();
   
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
     return true;
