@@ -19,7 +19,7 @@ create table nulTbl (
 );
 success
 
-oldLoad nulTbl "../DATA/Datums/nulls.csv" ;
+Load nulTbl "../DATA/Datums/nulls.csv" ;
 success
 
 // check no of rows

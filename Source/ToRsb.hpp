@@ -27,6 +27,7 @@ namespace Load
     char       m_cFldSep;
 
     i8         m_nRecords;
+    i8         m_nErrors;
     bool       m_bFirst;
     bool       m_bTrace;
   
