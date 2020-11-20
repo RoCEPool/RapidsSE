@@ -53,19 +53,20 @@
 : tpl_liteOp_procedure0
 
 "
-procedure /liteOp/
-begin
+  procedure /liteOp/
+    tags <lowMemory>
+  begin
 
-  stage stageA on origin :
-    start | periodic once | stageB
+    stage stageA on origin :
+      start | periodic once | stageB
 
-  stage stageB on all nodes :
-    /liteOp/ | stageC
+    stage stageB on all nodes :
+      /liteOp/ | stageC
 
-  stage stageC on origin :
-    output | sink | stageA
+    stage stageC on origin :
+      output | sink | stageA
 
-end
+  end
 "
 ;
     
@@ -76,6 +77,7 @@ end
 
 "
   procedure /liteOp/
+    tags <lowMemory>
     parameters $param
   begin
 
@@ -99,6 +101,7 @@ end
 
 "
   procedure /liteOp/
+    tags <lowMemory>
     parameters $param0 $param1
   begin
 

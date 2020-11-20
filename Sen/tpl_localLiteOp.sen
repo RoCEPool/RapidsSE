@@ -54,6 +54,7 @@
 
 "
   procedureLocal /localLiteOp/
+    tags <lowMemory>
   begin
 
   stage stageA on origin :
@@ -71,6 +72,7 @@
 
 "
   procedureLocal /localLiteOp/
+    tags <lowMemory>
     parameters $param
   begin
 
@@ -89,6 +91,7 @@
 
   "
     procedureLocal /localLiteOp/
+      tags <lowMemory>
       parameters $param0 $param1
     begin
 
