@@ -8,7 +8,7 @@ ROOT_DIR="${DIR}/../.."
 
 PIDFILE="${ROOT_DIR}/se.pid"
 
-EXE_DIR="${ROOT_DIR}/Linux/bin"
+EXE_DIR="${ROOT_DIR}/bin"
 EXE="${EXE_DIR}/rapidsse"
 STOP_PARAMS="--name NODE0 --stop --commands ${ROOT_DIR}/Commands --appendTrace"
 

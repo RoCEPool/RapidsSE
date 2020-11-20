@@ -9,7 +9,7 @@ ROOT_DIR="${DIR}/../.."
 NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
 PIDFILE="${ROOT_DIR}/se.pid"
 
-EXE_PATH="${ROOT_DIR}/Linux/bin"
+EXE_PATH="${ROOT_DIR}/bin"
 EXE="${EXE_PATH}/rapidsse"
 START_PARAMS="--name NODE0  --prompt --metadata --commands ${ROOT_DIR}/Commands --appendTrace"
 

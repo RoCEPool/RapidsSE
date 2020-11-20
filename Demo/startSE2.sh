@@ -34,7 +34,7 @@ do
   NODES+=("--node NODE${i} ${HOST_PREFIX}${i}${HOST_SUFFIX} ${PORT} ")
 done
 
-EXE_PATH="${ROOT_DIR}/Linux/bin"
+EXE_PATH="${ROOT_DIR}/bin"
 EXE="${EXE_PATH}/rapidsse"
 
 START_PARAMS="--partitionsPerNode ${PARTITIONS} --threads ${THREADS} --size ${SIZE} --name ${NODE_NAME} ${NODES[*]} --start --munged --script --metadata --commands ${ROOT_DIR}/Commands"

@@ -33,7 +33,7 @@
 
 readonly DIR="$(dirname "$0")"
 readonly PROJ_ROOT="${DIR}/../.."
-readonly BIN_DIR="${PROJ_ROOT}/Linux/bin"
+readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/Source"
 
 readonly RELATIVE_BAMBOO_DIR="Seth/bamboo"  # Relative to the project root

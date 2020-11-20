@@ -16,7 +16,7 @@ fi
 
 NODE_NAME=$1
 
-EXE_DIR="${ROOT_DIR}/Linux/bin"
+EXE_DIR="${ROOT_DIR}/bin"
 EXE="${EXE_DIR}/rapidsse"
 STOP_PARAMS="--name ${NODE_NAME} --stop --commands ${ROOT_DIR}/Commands --appendTrace"
 

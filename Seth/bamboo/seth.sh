@@ -16,7 +16,7 @@ SETH_TIMEOUT="1800"
 
 #SE_PATH="../OS X/Build/Products/Debug/SE"
 NODE="NODE0"
-SE_DIR="${ROOT_DIR}/Linux/bin"
+SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"
 SE_NOHUP_FILE="${ROOT_DIR}/nohupSE.out"
 SE_ARGS="--name ${NODE} --node ${NODE} 127.0.0.1 5541 --munged --commands ./Commands --appendTrace"  # in addition to --metadata and --script

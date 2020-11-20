@@ -3,6 +3,12 @@
 # Explicitly define the shell to be used for this makefile. 
 SHELL := /bin/bash
 
+# Get the directory of this makefile
+#  Ref : https://stackoverflow.com/questions/18136918/how-to-get-current-relative-directory-of-your-makefile
+CURRENT_MAKEFILE := $(lastword $(MAKEFILE_LIST))
+MAKEFILE_PATH := $(abspath $(CURRENT_MAKEFILE))
+CURRENT_PATH := $(notdir $(patsubst %/,%,$(dir $(MAKEFILE_PATH))))
+
 # Let's work out what OS we are on and include any platform-specific
 # variables and rules.
 UNAME_S := $(shell uname -s)
@@ -17,7 +23,6 @@ endif
 
 
 # Variables
-CURRENT_MAKEFILE := $(lastword $(MAKEFILE_LIST))
 CPP = g++
 CPPFLAGS = -std=c++11 -DWITH_MUNGED_SEN -Wall -Wextra -O3 $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS)
 LIBFLAGS = -shared
@@ -25,8 +30,7 @@ PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
 
 # Target Files
-CURRENT_PATH := ${PWD}
-TARGET_PATH = $(strip $(LINUX_TARGET_PATH) $(DARWIN_TARGET_PATH))
+TARGET_PATH = ../bin
 TARGET_EXE = $(TARGET_PATH)/rapidsse
 TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWIN_LIBRARY_EXT))
 SHOCO := shoco.o
@@ -37,7 +41,7 @@ SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/antlr/generated/*.cpp)
-SOURCES := $(filter-out main.cpp, $(SOURCES))
+SOURCES := $(filter-out ./main/main.cpp, $(SOURCES))
 S_SOURCES := $(shell find . -name "*.s")
 
 # Man pages
@@ -51,7 +55,9 @@ OBJECTS += $(S_SOURCES:.s=.o)
 DEPFILES = $(SOURCES:.cpp=.d)
 
 # Include directories
-INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated -I ../ThirdParty/tcc/include -I ../ThirdParty/tcc/src
+SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
+THIRDPARTY_INCLUDES := -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated -I ../ThirdParty/tcc/include -I ../ThirdParty/tcc/src
+INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
 LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
@@ -80,10 +86,12 @@ pre-build : version thirdparty
 target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 # Debug builds
+Debug : debug
 debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -g $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 debug : all
 
 # Explicit release builds (the default)
+Release : release
 release : all
 
 $(SHOCO): ../ThirdParty/shoco/shoco.c  
@@ -97,9 +105,9 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 #Main target
 $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO) $(COMPILED_LIBS)
 	$(DIR_GUARD)
-	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
+	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  ./main/main.cpp -o ./main/main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
-	$(CPP) main.o $(SHOCO) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	$(CPP) ./main/main.o $(SHOCO) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d
