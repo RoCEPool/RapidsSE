@@ -11,17 +11,17 @@ fi
 
 
 # Copy binaries
-mkdir -p "${LAYOUT_DIR}/Linux/bin"
-cp "${ROOT_DIR}/Linux/bin/rapidsse"       "${LAYOUT_DIR}/Linux/bin"
-cp "${ROOT_DIR}/Linux/bin/libRapidsSE.so" "${LAYOUT_DIR}/Linux/bin"
-cp "${ROOT_DIR}/Linux/bin/se.man"         "${LAYOUT_DIR}/Linux/bin"
+mkdir -p "${LAYOUT_DIR}/bin"
+cp "${ROOT_DIR}/bin/rapidsse"       "${LAYOUT_DIR}/bin"
+cp "${ROOT_DIR}/bin/libRapidsSE.so" "${LAYOUT_DIR}/bin"
+cp "${ROOT_DIR}/bin/se.man"         "${LAYOUT_DIR}/bin"
 
 # Commands directory
 mkdir -p "${LAYOUT_DIR}/Commands"
 cp -r "${ROOT_DIR}/Commands" "${LAYOUT_DIR}"
 
 # tcc thirdparty library
-TCC_DIR="ThirdParty/tcc/lib/linux/centos7/tcc"
+TCC_DIR="ThirdParty/tcc/lib/tcc"
 mkdir -p "${LAYOUT_DIR}/${TCC_DIR}"
 mkdir -p "${LAYOUT_DIR}/${TCC_DIR}/include"
 cp "${ROOT_DIR}/${TCC_DIR}/libtcc1.a"     "${LAYOUT_DIR}/${TCC_DIR}"

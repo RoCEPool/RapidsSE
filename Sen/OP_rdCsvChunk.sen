@@ -27,8 +27,20 @@
    else
 
       row[].get InfoSet[].rdCsvChunk to Operand[]
-      Operand[].pipeOut
-      InfoSet[].nextRow to row[]
+
+      // check for LOW MEMORY
+      Operand[].isNull if
+        EC_LOW_MEMORY
+        op.pipelineJob@ ERROR_JOB
+        InfoSet[].delete
+        Operand[].newErrorMarker
+        Operand[].pipeout
+        true
+        exit
+      else
+        Operand[].pipeOut
+        InfoSet[].nextRow to row[]
+      then
 
     then
 

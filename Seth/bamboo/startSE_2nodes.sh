@@ -7,7 +7,7 @@
 DIR=$(dirname "$0")
 ROOT_DIR="${DIR}/../.."
 
-EXE_PATH="${ROOT_DIR}/Linux/bin"
+EXE_PATH="${ROOT_DIR}/bin"
 EXE="${EXE_PATH}/rapidsse"
 
 START_CLUSTER_OUTPUT_FILE="${ROOT_DIR}/startCluster.log"

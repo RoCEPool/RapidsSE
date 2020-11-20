@@ -16,8 +16,6 @@
 DARWIN_CPPFLAGS := 
 DARWIN_CPPFLAGS_DEBUG := 
 
-DARWIN_TARGET_PATH = $(CURRENT_PATH)/../darwin/bin
-
 # The name of the extension on a dynamic library / shared object
 DARWIN_LIBRARY_EXT := dylib
 

@@ -1,0 +1,5 @@
+This folder should be used for holding your IDE's project files and folders. 
+By default, all files and folders in this directory are ignored and should
+not be checked in to source control.
+
+This file also exists to prevent git from pruning an otherwise empty folder.

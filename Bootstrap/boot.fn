@@ -23,7 +23,7 @@ source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
 ### Constants                                                               ###
 ###############################################################################
 
-readonly EXE_DIR="${ROOT_DIR}/Linux/bin"
+readonly EXE_DIR="${ROOT_DIR}/bin"
 readonly EXE="${EXE_DIR}/rapidsse"
 
 readonly NOHUP_FILE="${ROOT_DIR}/se.log"

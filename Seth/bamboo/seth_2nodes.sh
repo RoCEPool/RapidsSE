@@ -22,7 +22,7 @@ SETH_MIN_RUNTIME="0"
 declare -a NODES
 NODES=("NODE0" "NODE1")
 
-SE_DIR="${ROOT_DIR}/Linux/bin"
+SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"
 SE_ARGS="--name ${NODES[0]} --munged --commands ${ROOT_DIR}/Commands --appendTrace"  # in addition to --metadata and --script
 

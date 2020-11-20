@@ -6,7 +6,7 @@
 DIR=$(dirname "$0")
 ROOT_DIR="${DIR}/../.."
 
-EXE_DIR="${ROOT_DIR}/Linux/bin"
+EXE_DIR="${ROOT_DIR}/bin"
 EXE="${EXE_DIR}/rapidsse"
 
 EXIT_SLEEP_TIME=0.2   # How long to sleep (in seconds) between checking if the pid has exited.

@@ -624,6 +624,10 @@ void Step::vInfoSetRdCsvChunk(void)
   
   ASSERT(*m_pLogicUnit->m_xpInfoSet);
 
+  CsvBuffer* pCsvBuffer = nullptr;
+  char* azInto;
+  i8 nBytesRead;
+  
   File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
   
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
@@ -633,20 +637,26 @@ void Step::vInfoSetRdCsvChunk(void)
   
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   
-  CsvBuffer* pCsvBuffer = new CsvBuffer;
-  char* azInto = (char*)pCsvBuffer->ayDataArea();
+  // check for LOW MEMORY
+  if (gpBufferPool->bLowMemory()) {
+    goto L_Exit;
+  }
+  
+  pCsvBuffer = new CsvBuffer;
+  azInto = (char*)pCsvBuffer->ayDataArea();
 
   pFile->vSeek(iOffset);
   pCsvBuffer->vTake(nBytes);
-  i8 nBytesRead = pFile->nReadBytes(azInto,nBytes);
+  nBytesRead = pFile->nReadBytes(azInto,nBytes);
   ASSERT(nBytesRead == nBytes);
   azInto[nBytes] = '\0';
   
   //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);
-  
+
+L_Exit:
   // return the CsvBuffer
   m_pDataStack->vPushPtr(pCsvBuffer);
-  
+ 
   EXIT();
 }
 
