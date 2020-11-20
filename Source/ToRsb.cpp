@@ -207,6 +207,12 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vADV_SRCCHR(); \
   }
 
+#define vRESET_FIELD() \
+  { \
+     azCsvSrc = azFieldStart; \
+     cSrcChr = *azCsvSrc; \
+  }
+
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using user specified formatting)    */
 /*----------------------------------------------------------------------------*/
@@ -2865,6 +2871,9 @@ L_STD_TimestampNull:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.i) varchar field :                                                    STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  
+#if 0
+  
 L_STD_Varchar:
   
   // ** do not skip white space **
@@ -2924,6 +2933,312 @@ L_STD_VarcharNull:
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of varchar
 
+  
+#else
+  
+  // ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
+ 
+L_STD_Varchar:
+  
+  // ** do not skip white space **
+
+  nChars = 0;
+  bSawEnclosedTrailing = false;
+  bSawEnclosedLeading  = false;
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible null portion
+
+  if ('n' == cSrcChr || 'N' == cSrcChr) {
+    vADV_SRCCHR(); // skip 'n'
+    if ('u' == cSrcChr || 'U' == cSrcChr) {
+      vADV_SRCCHR(); // skip 'u'
+      if ('l' == cSrcChr || 'L' == cSrcChr) {
+        vADV_SRCCHR(); // skip 'L'
+        if ('l' == cSrcChr || 'L' == cSrcChr) {
+          vADV_SRCCHR(); // skip 'L'
+        }
+        else { // not expected 'l'
+          vRESET_FIELD();
+          goto L_STD_VarcharWhich;
+        }
+      }
+      else { // not expected 'l'
+        vRESET_FIELD();
+        goto L_STD_VarcharWhich;
+      }
+    }
+    else { // not expected 'u'
+      vRESET_FIELD();
+      goto L_STD_VarcharWhich;
+    }
+    
+    if (! (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)) {
+      vRESET_FIELD();
+      goto L_STD_VarcharWhich;
+    }
+
+    if (! bPixNullable) {
+      eError = EC_CSV_BOOLEAN_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    goto L_STD_VarcharNull;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // .. which type of varchar
+  
+L_STD_VarcharWhich:
+  
+  while (cSrcChr) {
+
+    // consume leading spaces
+    if (' ' == cSrcChr) {
+      vADV_SRCCHR(); // next char
+      continue;
+    }
+    
+    if ('\'' == cSrcChr) {
+      //vRESET_FIELD();
+      goto L_STD_VarcharSingleQuoted;
+    }
+    
+    if ('"' == cSrcChr) {
+      //vRESET_FIELD();
+      goto L_STD_VarcharDoubleQuoted;
+    }
+    
+    vRESET_FIELD();
+    goto L_STD_VarcharUnquoted;
+  }
+  
+  NEVER_REACH;
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // ..original processing
+
+L_STD_VarcharUnquoted:
+
+  // allocate string space in slab
+  azVchHead = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchHead;
+  
+  while (cSrcChr) {
+        
+    // test for field separator (because its not enclosed)
+    if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
+      break;
+    
+    if ('\\' == cSrcChr) {
+      vADV_SRCCHR(); // next char
+      continue;
+    }
+        
+    if (nChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    
+    vADV_SRCCHR(); // next char
+  }
+
+  // terminate
+  *acVchDst++ = '\0';
+
+  // its not an enclosed varchar so we consider it to be valid
+  if (nChars >= nPixLength)
+    nChars = nPixLength;
+  
+  goto L_STD_VarcharDeposit;
+  
+  
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // single quote delimited string processing
+
+L_STD_VarcharSingleQuoted:
+
+  // allocate string space in slab
+  azVchHead = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchHead;
+  
+  // >> *'...
+  //     ^
+  RASSERT('\'' == cSrcChr);
+
+  vADV_SRCCHR(); // skip '\''
+
+  while (cSrcChr) {
+      
+    // voodoo
+    if ('\'' == cSrcChr) {
+      
+      // >> *'.*'
+      //        ^
+      
+      if (1 == nChars) {
+        // handle specific case >> *''
+        if (nChars++ < nPixLength)
+          *acVchDst++ = cSrcChr;
+        break;
+      }
+      
+      // >> *'.*'.*
+      //        ^
+
+      vADV_SRCCHR(); // skip '\''
+      
+      if ('\'' == cSrcChr) {
+        // >> *'.*''
+        //         ^
+        if (nChars++ < nPixLength)
+          *acVchDst++ = '\'';
+        vADV_SRCCHR(); // next char
+      }
+      
+      else {
+        // >> *'.*'.
+        //         ^
+        break;
+      }
+
+    }
+    
+    if ('\\' == cSrcChr) {
+      vADV_SRCCHR(); // next char
+      continue;
+    }
+    
+    // test for record end
+    if (cSrcChr == m_cRecEnd) {
+      eError = EC_CSV_VARCHAR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    // concat char (if it fits)
+    if (nChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    
+    vADV_SRCCHR(); // next char
+  }
+
+  // terminate
+  *acVchDst++ = '\0';
+
+  // its not an enclosed varchar so we consider it to be valid
+  if (nChars >= nPixLength)
+    nChars = nPixLength;
+
+  // if this an enclosed varchar we should have expected to
+  // see the trailing enclosedBy
+  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+    eError = EC_CSV_VARCHAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  goto L_STD_VarcharDeposit;
+  
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // double quote delimited string processing
+
+L_STD_VarcharDoubleQuoted:
+
+  // allocate string space in slab
+  azVchHead = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchHead;
+  
+  // >> *".*
+  //     ^
+  RASSERT('"' == cSrcChr);
+
+  vADV_SRCCHR(); // skip '"'
+
+  while (cSrcChr) {
+      
+    // voodoo
+    if ('"' == cSrcChr) {
+      
+      // >> *".*"
+      //        ^
+      
+      if (1 == nChars) {
+        // handle specific case >> *""
+        if (nChars++ < nPixLength)
+          *acVchDst++ = cSrcChr;
+        break;
+      }
+      
+      // >> *".*".*
+      //        ^
+
+      vADV_SRCCHR(); // skip '"'
+      
+      if ('"' == cSrcChr) {
+        // >> *".*"".*
+        //         ^
+        if (nChars++ < nPixLength)
+          *acVchDst++ = '"';
+        vADV_SRCCHR(); // next char
+      }
+      
+      else {
+        // >> *".*".
+        //         ^
+        break;
+      }
+
+    }
+    
+    if ('"' == cSrcChr) {
+      vADV_SRCCHR(); // next char
+      continue;
+    }
+    
+    // test for record end
+    if (cSrcChr == m_cRecEnd) {
+      eError = EC_CSV_VARCHAR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+    // concat char (if it fits)
+    if (nChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    
+    vADV_SRCCHR(); // next char
+  }
+
+  // terminate
+  *acVchDst++ = '\0';
+
+  // its not an enclosed varchar so we consider it to be valid
+  if (nChars >= nPixLength)
+    nChars = nPixLength;
+
+  // if this an enclosed varchar we should have expected to
+  // see the trailing enclosedBy
+  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+    eError = EC_CSV_VARCHAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  goto L_STD_VarcharDeposit;
+  
+  // ==== ==== ==== ==== ==== ==== ==== ====
+  // all varchar portions collected
+  
+L_STD_VarcharDeposit:
+
+  m_pRowSlab->vDepositString_end(nChars+1);
+  goto L_STD_PostField;
+
+L_STD_VarcharNull:
+  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  goto L_STD_PostField;                                        // end of varchar
+
+#endif
+  
+  
+  
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 5) processing at end of field                                           STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

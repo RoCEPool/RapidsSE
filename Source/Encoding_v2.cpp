@@ -286,7 +286,10 @@ void Encoding_v2::vInitialEncodingRsb(Rsb* aRsb)
 
     eDM eDatum = xrColEnc.m_pCol->eDatum();
         
-    if (DM_VCH == eDatum) {
+    if (C_DATUM_NULL == aRsb->iVal(i_Col)) {
+      wColVal = aRsb->iVal(i_Col);
+    }
+    else if (DM_VCH == eDatum) {
       wColVal = aRsb->szVal(i_Col);
     }
     else {
