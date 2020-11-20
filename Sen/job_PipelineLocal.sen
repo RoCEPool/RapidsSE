@@ -16,8 +16,8 @@
   // compile the pipeline command
   <cmd> job_Pipeline::compile dup
   EC_NONE != if
-    "got error" .
-    job::error! !!logError exit
+    //"got error" .
+    job::error! !!logError DONE_REQ
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

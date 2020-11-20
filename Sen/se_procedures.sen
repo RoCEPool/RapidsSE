@@ -300,6 +300,7 @@
   sPath
   "
   procedure drop catalog
+    tags <lowMemory>
     parameters $catalogNm
   begin
 
@@ -321,6 +322,7 @@
   sPath
   "
   procedure drop index
+    tags <lowMemory>
     parameters $tableNm $indexNm
   begin
 
@@ -345,6 +347,7 @@
   sPath
   "
   procedure drop schema
+    tags <lowMemory>
     parameters $schemaNm
   begin
 
@@ -391,6 +394,7 @@
   sPath
   "
   procedure drop tenant
+    tags <lowMemory>
     parameters $tenantNm
   begin
 
@@ -491,8 +495,8 @@
   sPath
   "
   procedure gridSanity
+    tags <lowMemory>
   begin
-
   stage stageA on origin :
     start | periodic once | stageB
 
@@ -596,6 +600,7 @@
   sPath
   "
   procedure truncate
+    tags <lowMemory>
     parameters $table
   begin
 

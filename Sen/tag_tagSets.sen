@@ -40,6 +40,7 @@
   tags{
     <localJob> = 1
     <jobKind>  = JK_LOCAL
+    <lowMemory> = 1
   }
 ;
         
@@ -71,6 +72,7 @@
 : liteOp_tags tagCopy: operator_tags
   tags{
     <liteOp> = 1
+    <lowMemory> = 1
   }
 ;
 
@@ -80,6 +82,7 @@
 : localLiteOp_tags tagCopy: operator_tags
   tags{
     <localLiteOp> = 1
+    <lowMemory> = 1
   }
 ;
 

@@ -486,7 +486,7 @@ void Procedure::vParseTagSets(Word* pProcWord, TokenVec* pTokenVec)
     pTokenVec->vRemoveToken(i_Cut);
     Token* pTest = pTokenVec->pGet(i_Cut);
     if (pTest->bSame("parameters"_Stz) ||
-        pTkn->bSame("begin"_Stz))
+        pTest->bSame("begin"_Stz))
       break;
   }
   
