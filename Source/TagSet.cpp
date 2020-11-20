@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TagSet.cpp -- ename-value set                                            */
+/* TagSet.cpp -- name-value tag set                                           */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -187,8 +187,8 @@ void TagSet::vContentDump(void)
   
   if (m_nEnames) {
     vTrace("\n"_Stz);
-    vTrace("Ename Set\n"_Stz);
-    vTrace("---------\n"_Stz);
+    vTrace("Tag Set\n"_Stz);
+    vTrace("-------\n"_Stz);
     
     vDumpSet();
   }

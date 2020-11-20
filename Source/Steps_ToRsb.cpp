@@ -58,11 +58,22 @@ void Step::vToRsbRegCreate(void)
 {
   ENTRY();
   
+  Job* pJob = m_pTask->pJob();
+  
+  TagSet* pJobTags = pJob->pJobTags();
+  
+  //pJobTags->vContentDump();
+
+  Format* pFmt = new Format;
+  pFmt->vSet(pFmt);
+  
+  bool b = pFmt->bSetFormat(pJobTags);
+
   StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
   BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
 
   bool bPtnHash = true;
-  ToRsb* pToRsb = new ToRsb(pStreamDef,pBucketMap,AM::pFmt(),bPtnHash);
+  ToRsb* pToRsb = new ToRsb(pStreamDef,pBucketMap,pFmt,bPtnHash);
       
   m_pLogicUnit->m_xpToRsb = pToRsb;
   

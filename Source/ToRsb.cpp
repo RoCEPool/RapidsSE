@@ -46,6 +46,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   vNewRsbBuffer();
+
+  m_pFmt->vShow();
   
   //s48K sDef;
   //m_pStreamDef->vAsString(sDef);
@@ -60,6 +62,8 @@ ToRsb::~ToRsb(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   delete m_pRsbBuffer;
+  
+  delete m_pFmt;
 }
 
 /*----------------------------------------------------------------------------*/
