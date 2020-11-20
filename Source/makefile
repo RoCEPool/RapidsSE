@@ -36,12 +36,14 @@ TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWI
 SHOCO := shoco.o
 
 # Source Files
+MAIN_CPP := $(shell find . -name "main.cpp")
+MAIN_O  := $(MAIN_CPP:.cpp=.o)
 SOURCES := $(shell find . -name "*.cpp")
 SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/antlr/generated/*.cpp)
-SOURCES := $(filter-out ./main/main.cpp, $(SOURCES))
+SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
 S_SOURCES := $(shell find . -name "*.s")
 
 # Man pages
@@ -105,9 +107,9 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 #Main target
 $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO) $(COMPILED_LIBS)
 	$(DIR_GUARD)
-	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  ./main/main.cpp -o ./main/main.o
+	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  $(MAIN_CPP) -o $(MAIN_O)
 	cp $(MAN_PAGES) $(TARGET_PATH)
-	$(CPP) ./main/main.o $(SHOCO) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	$(CPP) $(MAIN_O) $(SHOCO) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d
