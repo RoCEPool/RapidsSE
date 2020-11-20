@@ -675,7 +675,7 @@ void Step::vSocketRecvObject_LowMem(void)
   
   if (eClass == CN_XMITOPERAND) {
     
-    vTrace("Received XmitOperand under low mem\n"_Stz);
+    //vTrace("Received XmitOperand under low mem\n"_Stz);
     
     XmitOperand* pXmitOperand = static_cast<XmitOperand*>(HeapMem::pAllocate(eClass));
     
@@ -773,18 +773,22 @@ void Step::vSocketRecvObject_LowMem(void)
       
     case CN_INFOSET: {
       
-      vTrace("Received INFOSET under low mem\n"_Stz);
+      InfoSet* pInfoSet = new InfoSet;
       
-      // copy the object header into the LowBuffer
-      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_INFOSET);
+      MemLib::vCopy(pInfoSet,pObject,sizeof(Object),CN_INFOSET);
       
-      // recv rest of the object into LowBuffer
-      void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+      aBody = aAdd<void*>(pInfoSet,sizeof(Object));
       nRemainingBytes = gxaSizeHeap[CN_INFOSET].m_nClassSize - sizeof(Object);
       
-      bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
       
-      m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushPtr(pInfoSet);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
