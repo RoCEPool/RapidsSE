@@ -368,7 +368,7 @@ void Task::vCaught(Exception xException)
   AM::vWriteLog();
   
   // dump api state
-  AM::vDumpApi();
+  //AM::vDumpApi();
 
   vContentDump();
   
