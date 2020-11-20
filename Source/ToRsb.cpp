@@ -269,7 +269,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   Tsp xTimestamp;
 
-  char* azVchHead;
+  char* azVchBegin;
   char* acVchDst;
   i8 nChars;
   bool bSawEnclosedLeading;
@@ -280,9 +280,9 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 baTrace = 0
-//     | C_L_STD_Begin
-//     | C_L_STD_TestMoreRecords
-//     | C_L_STD_TestMoreFields
+     | C_L_STD_Begin
+     | C_L_STD_TestMoreRecords
+     | C_L_STD_TestMoreFields
 //     | C_L_STD_Boolean
 //     | C_L_STD_Date
 //     | C_L_STD_Decimal
@@ -291,15 +291,15 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 //     | C_L_STD_Interval
 //     | C_L_STD_Time
 //     | C_L_STD_Timestamp
-//     | C_L_STD_Varchar
-//     | C_L_STD_VarcharUnquoted
-//     | C_L_STD_VarcharSingleQuoted
-//     | C_L_STD_VarcharDoubleQuoted
-//     | C_L_STD_VarcharUserEnclosed
-//     | C_L_STD_PostField
-//     | C_L_STD_FieldError
-//     | C_L_STD_EndOfRecord
-//     | C_L_STD_EndOfCsvChunk
+     | C_L_STD_Varchar
+     | C_L_STD_VarcharUnquoted
+     | C_L_STD_VarcharSingleQuoted
+     | C_L_STD_VarcharDoubleQuoted
+     | C_L_STD_VarcharUserEnclosed
+     | C_L_STD_PostField
+     | C_L_STD_FieldError
+     | C_L_STD_EndOfRecord
+     | C_L_STD_EndOfCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -348,8 +348,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 L_STD_TestMoreRecords:
     
   if (baTrace & C_L_STD_TestMoreRecords)
-    vTrace("L_STD_TestMoreRecords: >>%s<<\n"_Stz,
-           spStr.szInspect(azCsvSrc,64,false));
+    vTrace("\nL_STD_TestMoreRecords: >>%s<<\n"_Stz,
+           spStr.szInspect(azCsvSrc,128,true));
 
   // skip leading non-data chars
   vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
@@ -2029,8 +2029,8 @@ L_STD_VarcharUnquoted:
     vTrace("L_STD_VarcharUnquoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
   
   while (cSrcChr) {
         
@@ -2075,8 +2075,8 @@ L_STD_VarcharSingleQuoted:
     vTrace("L_STD_VarcharSingleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
   
   // >> *'...
   //     ^
@@ -2170,8 +2170,8 @@ L_STD_VarcharDoubleQuoted:
     vTrace("L_STD_VarcharDoubleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
   
   // >> *".*
   //     ^
@@ -2264,8 +2264,8 @@ L_STD_VarcharUserEnclosed:
     vTrace("L_STD_VarcharUserEnclosed:\n"_Stz);
   
   // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
   
   // >> *{.*
   //     ^
@@ -2325,6 +2325,9 @@ L_STD_VarcharUserEnclosed:
 L_STD_VarcharDeposit:
 
   m_pRowSlab->vDepositString_end(nChars+1);
+  
+  vTrace("L_STD_VarcharDeposit: %s\n"_Stz,azVchBegin);
+  
   goto L_STD_PostField;
 
 L_STD_VarcharNull:
