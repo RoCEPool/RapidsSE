@@ -79,7 +79,7 @@ create index idx on T1 (col_id) ;
 success
 
 // oldLoad table T1
-oldLoad T1 "../DATA/Load/emptyString2.csv" <enclosed_by_leading> = "{" <enclosed_by_trailing> = "}";
+Load T1 "../DATA/Load/emptyString2.csv" <enclosed_by_leading> = "{" <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows
