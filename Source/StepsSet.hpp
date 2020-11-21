@@ -122,6 +122,7 @@ public:
 
   // attachmap
   void vAttachMapOperandsFetch(void);
+  void vAttachMapIsLowMemory(void);
   void vAttachMapRegionSizeFetch(void);
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);

@@ -10,9 +10,11 @@
 void Step::vAddSteps_AttachMap(void)
 {
   vAddStep("attachmap::operands@"_Stz,    &Step::vAttachMapOperandsFetch);
+  vAddStep("attachmap::isLowMemory"_Stz,  &Step::vAttachMapIsLowMemory);
   vAddStep("attachmap::regionSize@"_Stz,  &Step::vAttachMapRegionSizeFetch);
   vAddStep("attachmap::tenants@"_Stz,     &Step::vAttachMapTenantsFetch);
   vAddStep("attachmap::tenants!"_Stz,     &Step::vAttachMapTenantsStore);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,6 +37,16 @@ void Step::vAttachMapRegionSizeFetch(void)
   ENTRY();
   
   m_pDataStack->vPushInt(AM::iRegionSize());
+}
+
+/*----------------------------------------------------------------------------*/
+/* attachmap::isLowMemory -- is SE low on memory                              */
+/*----------------------------------------------------------------------------*/
+void Step::vAttachMapIsLowMemory(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(gpBufferPool->bLowMemory());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -637,11 +637,6 @@ void Step::vInfoSetRdCsvChunk(void)
   
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   
-  // check for LOW MEMORY
-  if (gpBufferPool->bLowMemory()) {
-    goto L_Exit;
-  }
-  
   pCsvBuffer = new CsvBuffer;
   azInto = (char*)pCsvBuffer->ayDataArea();
 
@@ -653,7 +648,6 @@ void Step::vInfoSetRdCsvChunk(void)
   
   //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);
 
-L_Exit:
   // return the CsvBuffer
   m_pDataStack->vPushPtr(pCsvBuffer);
  

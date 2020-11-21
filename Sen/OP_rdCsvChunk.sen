@@ -26,10 +26,8 @@
  
    else
 
-      row[].get InfoSet[].rdCsvChunk to Operand[]
-
-      // check for LOW MEMORY
-      Operand[].isNull if
+      // check for low memory
+      attachMap::isLowMemory if
         EC_LOW_MEMORY
         op.pipelineJob@ ERROR_JOB
         InfoSet[].delete
@@ -37,10 +35,11 @@
         Operand[].pipeout
         true
         exit
-      else
-        Operand[].pipeOut
-        InfoSet[].nextRow to row[]
       then
+
+      row[].get InfoSet[].rdCsvChunk to Operand[]
+      Operand[].pipeOut
+      InfoSet[].nextRow to row[]
 
     then
 
