@@ -27,6 +27,17 @@
 /*----------------------------------------------------------------------------*/
 : toPtnRsb_RsbBuffer \handler
 
+  // check for low memory
+  attachMap::isLowMemory if
+    EC_LOW_MEMORY
+    op.pipelineJob@ ERROR_JOB
+    PipeIn[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
   PipeIn[] ToPtnRsb[].convert
   nullptr to Pipein[]
 
