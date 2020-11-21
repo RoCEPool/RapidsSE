@@ -45,7 +45,20 @@
       task::yield
 
       begin
+        // check for low memory
+        attachMap::isLowMemory if
+          EC_LOW_MEMORY
+          op.pipelineJob@ ERROR_JOB
+          file0[].get file.close
+          <fileNm> "File %v closed" .printf
+          Operand[].newErrorMarker
+          Operand[].pipeout
+          true
+          exit
+        then
+
         rdCsvCyclic_catCsv
+
       while repeat
 
       0 file0[] file.seek

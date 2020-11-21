@@ -7,13 +7,23 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: BufferGen_DataMarker \handler
+: BufferGen_DataPulse \handler
 
   "Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   <nBuffers> 0 do
     I "buffer# %v" .printf
+
+    // check for low memory
+    attachMap::isLowMemory if
+      EC_LOW_MEMORY
+      op.pipelineJob@ ERROR_JOB
+      Operand[].newErrorMarker
+      Operand[].pipeout
+      true
+      exit
+    then
 
     csvBuffer::new to Operand[]
     Operand[].pipeOut
@@ -35,7 +45,7 @@
 
   op__topology
 
-  find: BufferGen_DataMarker ZK_DATAPULSE op[].handler!
+  find: BufferGen_DataPulse ZK_DATAPULSE op[].handler!
 
   op__loop
 
