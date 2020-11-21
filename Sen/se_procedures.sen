@@ -450,6 +450,7 @@
   sPath
   "
   procedure count
+    tags <lowMemory>
     parameters $table
   begin
 
