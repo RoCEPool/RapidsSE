@@ -14,7 +14,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/spaces.csv" ;
+Load T1 "../DATA/Load/spaces.csv" ;
 success
 
 // predicateFetch rows
@@ -24,9 +24,9 @@ rows: 4
 tableScan T1;
 rows:
   (1,'   3 leading',3)
-  (2,'   ''3 leading''',3)
-  (3,'   ''3 leading,2 trailing''  ' ,3)
-  (4,'''   3 leading,2 trailing  ''',3)
+  (2,'3 leading',3)
+  (3,'3 leading,2 trailing' ,3)
+  (4,'   3 leading,2 trailing  ',3)
 
 // drop the table
 drop table T1;
@@ -44,7 +44,8 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/spaces_enclosedBy.csv" <enclosed_by_leading> =  "'" ;
+Load T1 "../DATA/Load/spaces_enclosedBy.csv"
+  <enclosed_by_leading> =  "'" ;
 success
 
 // predicateFetch rows
@@ -74,7 +75,8 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/spaces_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
+Load T1 "../DATA/Load/spaces_enclosedByCurly.csv"
+  <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows
