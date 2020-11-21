@@ -35,7 +35,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // oldLoad data into the table with default formatter settings
-oldLoad rdp "../DATA/Load/rdp.csv" <enclosed_by_leading> =  "'";
+Load rdp "../DATA/Load/rdp.csv" <enclosed_by_leading> =  "'";
 success
 
 // unable to select 3000 because of min/max's
@@ -129,7 +129,7 @@ rows:
 
 predicateFetch rdp "rdp_testno 1081 =";
 rows:
-  (1081,'test 1081', true,null, -8,null, -8.0e0,null, -8,null, TIMESTAMP '1908-01-01 00:00:00',null, 'quick brown fox',null)
+  (1081,'test 1081', true,null, -8,null, -8.0e0,null, -8,null, TIMESTAMP '1908-01-01 00:00:00',null, 'quick brown fox','N')
 
 
 // ignore last column because of escape chars

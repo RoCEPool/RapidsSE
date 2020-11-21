@@ -280,9 +280,9 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 baTrace = 0
-     | C_L_STD_Begin
-     | C_L_STD_TestMoreRecords
-     | C_L_STD_TestMoreFields
+//     | C_L_STD_Begin
+//     | C_L_STD_TestMoreRecords
+//     | C_L_STD_TestMoreFields
 //     | C_L_STD_Boolean
 //     | C_L_STD_Date
 //     | C_L_STD_Decimal
@@ -291,15 +291,15 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 //     | C_L_STD_Interval
 //     | C_L_STD_Time
 //     | C_L_STD_Timestamp
-     | C_L_STD_Varchar
-     | C_L_STD_VarcharUnquoted
-     | C_L_STD_VarcharSingleQuoted
-     | C_L_STD_VarcharDoubleQuoted
-     | C_L_STD_VarcharUserEnclosed
-     | C_L_STD_PostField
-     | C_L_STD_FieldError
-     | C_L_STD_EndOfRecord
-     | C_L_STD_EndOfCsvChunk
+//     | C_L_STD_Varchar
+//     | C_L_STD_VarcharUnquoted
+//     | C_L_STD_VarcharSingleQuoted
+//     | C_L_STD_VarcharDoubleQuoted
+//     | C_L_STD_VarcharUserEnclosed
+//     | C_L_STD_PostField
+//     | C_L_STD_FieldError
+//     | C_L_STD_EndOfRecord
+//     | C_L_STD_EndOfCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -940,12 +940,15 @@ L_STD_Decimal:
   // unsigned number portion
 
   // ignore leading 0's
-  while ('0' == cSrcChr)
+  nDigits = 0;
+  while ('0' == cSrcChr) {
     vADV_SRCCHR(); // skip '0'
-    
+    nDigits++;
+  }
+  
   // collect digits for leading number
   uNumber = 0;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+  for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uNumber);
     nDigits++;
     nPixPrecision--;
