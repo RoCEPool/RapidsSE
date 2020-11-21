@@ -271,7 +271,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   char* azVchBegin;
   char* acVchDst;
-  i8 nChars;
+  i8 nFieldChars;
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
@@ -488,6 +488,22 @@ L_STD_Boolean:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_BooleanNull;
+      }
+    }
+  
+    eError = EC_CSV_BOOLEAN_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible true portion
   
   // collect characters representing a boolean
@@ -665,7 +681,22 @@ L_STD_Date:
     goto L_STD_DateNull;
   }
   
-
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_DateNull;
+      }
+    }
+  
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
   
@@ -873,6 +904,22 @@ L_STD_Decimal:
   }
    
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_DecimalNull;
+      }
+    }
+  
+    eError = EC_CSV_DECIMAL_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
   // collect sign
@@ -1042,6 +1089,22 @@ L_STD_Float:
   }
    
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_FloatNull;
+      }
+    }
+  
+    eError = EC_CSV_FLOAT_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
   // collect sign
@@ -1200,6 +1263,22 @@ L_STD_Integer:
   }
    
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_IntegerNull;
+      }
+    }
+  
+    eError = EC_CSV_INTEGER_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
   
   // collect sign
@@ -1340,6 +1419,22 @@ L_STD_Interval:
     goto L_STD_IntervalNull;
   }
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_BooleanNull;
+      }
+    }
+  
+    eError = EC_CSV_INTERVAL_INVALID;
+    goto L_STD_FieldError;
+  }
+  
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
@@ -1471,6 +1566,23 @@ L_STD_Time:
     goto L_STD_TimeNull;
   }
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_TimeNull;
+      }
+    }
+  
+    eError = EC_CSV_HOUR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
 
@@ -1662,6 +1774,22 @@ L_STD_Timestamp:
   uSecond = 0;
   uMicrosecond = 0;
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_TimestampNull;
+      }
+    }
+  
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
   
@@ -1947,7 +2075,7 @@ L_STD_Varchar:
   if (baTrace & C_L_STD_Varchar)
     vTrace("L_STD_Varchar:\n"_Stz);
   
-  nChars = 0;
+  nFieldChars = 0;
   bSawEnclosedTrailing = false;
   bSawEnclosedLeading  = false;
 
@@ -1993,6 +2121,22 @@ L_STD_Varchar:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_VarcharNull;
+      }
+    }
+  
+    vRESET_FIELD();
+    goto L_STD_VarcharWhich;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // .. which type of varchar
   
 L_STD_VarcharWhich:
@@ -2021,7 +2165,7 @@ L_STD_VarcharWhich:
   NEVER_REACH;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // ..original processing
+  // uqs: string is not delimited
 
 L_STD_VarcharUnquoted:
 
@@ -2041,15 +2185,24 @@ L_STD_VarcharUnquoted:
     if ('\\' == cSrcChr) {
       vADV_SRCCHR(); // skip '\\'
       
-      if (nChars++ < nPixLength)
-        *acVchDst++ = cSrcChr;
-
+      if (nFieldChars++ < nPixLength) {
+        if ('n' == cSrcChr)
+          *acVchDst++ = '\n';
+        else
+        if ('r' == cSrcChr)
+          *acVchDst++ = '\r';
+        else
+        if ('t' == cSrcChr)
+          *acVchDst++ = '\t';
+        else
+          *acVchDst++ = cSrcChr;
+      }
       vADV_SRCCHR(); // next char
 
       continue;
     }
         
-    if (nChars++ < nPixLength)
+    if (nFieldChars++ < nPixLength)
       *acVchDst++ = cSrcChr;
     
     vADV_SRCCHR(); // next char
@@ -2059,15 +2212,15 @@ L_STD_VarcharUnquoted:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
+  if (nFieldChars >= nPixLength)
+    nFieldChars = nPixLength;
   
   goto L_STD_VarcharDeposit;
   
   
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // string is delimited by single quotes
+  // sqs: string is delimited by single quotes
 
 L_STD_VarcharSingleQuoted:
 
@@ -2082,20 +2235,24 @@ L_STD_VarcharSingleQuoted:
   //     ^
   RASSERT('\'' == cSrcChr);
 
-  vADV_SRCCHR(); // skip '\''
+  vADV_SRCCHR(); // accept leading '\'' of sqs; do not deposit the quote
 
   while (cSrcChr) {
       
-    // voodoo
+    // ' voodoo
     if ('\'' == cSrcChr) {
+      
+      // we have encountered a quote (somewhere after leading quote)
       
       // >> *'.*'
       //        ^
       
-      if (1 == nChars) {
+      if (0 == nFieldChars) {
         // handle specific case >> *''
-        if (nChars++ < nPixLength)
-          *acVchDst++ = cSrcChr;
+        //   this is the quouted empty string
+        //   nb. corner cases:  ''n' is not supported
+        //                      '',' is not supported
+        vADV_SRCCHR(); // accept trailing '\'' of sqs; do not deposit the quote
         break;
       }
       
@@ -2105,31 +2262,46 @@ L_STD_VarcharSingleQuoted:
       vADV_SRCCHR(); // skip '\''
       
       if ('\'' == cSrcChr) {
+        // handle specific case of two quotes '' meaning one escaped quote
         // >> *'.*''
         //         ^
-        if (nChars++ < nPixLength)
+        if (nFieldChars++ < nPixLength)
           *acVchDst++ = '\'';
-        vADV_SRCCHR(); // next char
+        vADV_SRCCHR(); // // accept escaped quote; next char
       }
       
       else {
+        // encountered terminating quote
         // >> *'.*'.
         //         ^
-        break;
+        goto C_L_STD_VarcharSingleQuotedTerminate;
       }
 
-    }
+    } // end of if ' voodoo
+    
+    // [still in while (cSrcChr)]
     
     if ('\\' == cSrcChr) {
       vADV_SRCCHR(); // skip '\\'
       
-      if (nChars++ < nPixLength)
-        *acVchDst++ = cSrcChr;
-
+      if (nFieldChars++ < nPixLength) {
+        if ('n' == cSrcChr)
+          *acVchDst++ = '\n';
+        else
+        if ('r' == cSrcChr)
+          *acVchDst++ = '\r';
+        else
+        if ('t' == cSrcChr)
+          *acVchDst++ = '\t';
+        else
+          *acVchDst++ = cSrcChr;
+      }
       vADV_SRCCHR(); // next char
 
-      continue;
+      continue; // while (cSrcChr)
     }
+    
+    // [still in while (cSrcChr)]
     
     // test for record end
     if (cSrcChr == m_cRecEnd) {
@@ -2137,19 +2309,22 @@ L_STD_VarcharSingleQuoted:
       goto L_STD_FieldError;
     }
     
-    // concat char (if it fits)
-    if (nChars++ < nPixLength)
-      *acVchDst++ = cSrcChr;
+    // [still in while (cSrcChr)]
     
-    vADV_SRCCHR(); // next char
+    // deposit source char (if it fits)
+    if (nFieldChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    vADV_SRCCHR(); // deposited char; get next char
   }
 
+C_L_STD_VarcharSingleQuotedTerminate:
+  
   // terminate
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
+  if (nFieldChars >= nPixLength)
+    nFieldChars = nPixLength;
 
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
@@ -2173,86 +2348,108 @@ L_STD_VarcharDoubleQuoted:
   azVchBegin = m_pRowSlab->azDepositString_begin();
   acVchDst  = azVchBegin;
   
-  // >> *".*
-  //     ^
-  RASSERT('"' == cSrcChr);
+    // >> *"...
+    //     ^
+    RASSERT('\"' == cSrcChr);
 
-  vADV_SRCCHR(); // skip '"'
+    vADV_SRCCHR(); // accept leading '\"' of sqs; do not deposit the quote
 
-  while (cSrcChr) {
-      
-    // voodoo
-    if ('"' == cSrcChr) {
-      
-      // >> *".*"
-      //        ^
-      
-      if (1 == nChars) {
-        // handle specific case >> *""
-        if (nChars++ < nPixLength)
-          *acVchDst++ = cSrcChr;
-        break;
-      }
-      
-      // >> *".*".*
-      //        ^
+    while (cSrcChr) {
+        
+      // " voodoo
+      if ('\"' == cSrcChr) {
+        
+        // we have encountered a quote (somewhere after leading quote)
+        
+        // >> *".*"
+        //        ^
+        
+        if (0 == nFieldChars) {
+          // handle specific case >> *""
+          //   this is the quouted empty string
+          //   nb. corner cases:  ""n" is not supported
+          //                      ""," is not supported
+          vADV_SRCCHR(); // accept trailing '\"' of sqs; do not deposit the quote
+          break;
+        }
+        
+        // >> *".*".*
+        //        ^
 
-      vADV_SRCCHR(); // skip '"'
+        vADV_SRCCHR(); // skip '\"'
+        
+        if ('\"' == cSrcChr) {
+          // handle specific case of two quotes "" meaning one escaped quote
+          // >> *".*""
+          //         ^
+          if (nFieldChars++ < nPixLength)
+            *acVchDst++ = '\"';
+          vADV_SRCCHR(); // accept escaped quote; next char
+        }
+        
+        else {
+          // encountered terminating quote
+          // >> *".*".
+          //         ^
+          goto C_L_STD_VarcharDoubleQuotedTerminate;
+        }
+
+      } // end of if " voodoo
       
-      if ('"' == cSrcChr) {
-        // >> *".*"".*
-        //         ^
-        if (nChars++ < nPixLength)
-          *acVchDst++ = '"';
+      // [still in while (cSrcChr)]
+      
+      if ('\\' == cSrcChr) {
+        vADV_SRCCHR(); // skip '\\'
+        
+        if (nFieldChars++ < nPixLength) {
+          if ('n' == cSrcChr)
+            *acVchDst++ = '\n';
+          else
+          if ('r' == cSrcChr)
+            *acVchDst++ = '\r';
+          else
+          if ('t' == cSrcChr)
+            *acVchDst++ = '\t';
+          else
+            *acVchDst++ = cSrcChr;
+        }
         vADV_SRCCHR(); // next char
-      }
-      
-      else {
-        // >> *".*".
-        //         ^
-        break;
-      }
 
-    }
-    
-    if ('\\' == cSrcChr) {
-      vADV_SRCCHR(); // skip '\\'
+        continue; // while (cSrcChr)
+      }
       
-      if (nChars++ < nPixLength)
+      // [still in while (cSrcChr)]
+      
+      // test for record end
+      if (cSrcChr == m_cRecEnd) {
+        eError = EC_CSV_VARCHAR_INVALID;
+        goto L_STD_FieldError;
+      }
+      
+      // [still in while (cSrcChr)]
+      
+      // deposit source char (if it fits)
+      if (nFieldChars++ < nPixLength)
         *acVchDst++ = cSrcChr;
-
-      vADV_SRCCHR(); // next char
-
-      continue;
+      vADV_SRCCHR(); // deposited char; get next char
     }
 
-    // test for record end
-    if (cSrcChr == m_cRecEnd) {
+  C_L_STD_VarcharDoubleQuotedTerminate:
+    
+    // terminate
+    *acVchDst++ = '\0';
+
+    // its not an enclosed varchar so we consider it to be valid
+    if (nFieldChars >= nPixLength)
+      nFieldChars = nPixLength;
+
+    // if this an enclosed varchar we should have expected to
+    // see the trailing enclosedBy
+    if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
       eError = EC_CSV_VARCHAR_INVALID;
       goto L_STD_FieldError;
     }
     
-    // concat char (if it fits)
-    if (nChars++ < nPixLength)
-      *acVchDst++ = cSrcChr;
-    
-    vADV_SRCCHR(); // next char
-  }
-
-  // terminate
-  *acVchDst++ = '\0';
-
-  // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
-
-  // if this an enclosed varchar we should have expected to
-  // see the trailing enclosedBy
-  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    eError = EC_CSV_VARCHAR_INVALID;
-    goto L_STD_FieldError;
-  }
-  
   goto L_STD_VarcharDeposit;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2275,16 +2472,24 @@ L_STD_VarcharUserEnclosed:
 
   while (cSrcChr) {
       
-    // voodoo
     if (cSrcChr == m_pFmt->m_cEnclosedBy_Trailing)
       break;
     
     if ('\\' == cSrcChr) {
       vADV_SRCCHR(); // skip '\\'
       
-      if (nChars++ < nPixLength)
-        *acVchDst++ = cSrcChr;
-
+      if (nFieldChars++ < nPixLength) {
+        if ('n' == cSrcChr)
+          *acVchDst++ = '\n';
+        else
+        if ('r' == cSrcChr)
+          *acVchDst++ = '\r';
+        else
+        if ('t' == cSrcChr)
+          *acVchDst++ = '\t';
+        else
+          *acVchDst++ = cSrcChr;
+      }
       vADV_SRCCHR(); // next char
 
       continue;
@@ -2297,7 +2502,7 @@ L_STD_VarcharUserEnclosed:
     }
     
     // concat char (if it fits)
-    if (nChars++ < nPixLength)
+    if (nFieldChars++ < nPixLength)
       *acVchDst++ = cSrcChr;
     
     vADV_SRCCHR(); // next char
@@ -2307,8 +2512,8 @@ L_STD_VarcharUserEnclosed:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
+  if (nFieldChars >= nPixLength)
+    nFieldChars = nPixLength;
 
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
@@ -2324,9 +2529,10 @@ L_STD_VarcharUserEnclosed:
   
 L_STD_VarcharDeposit:
 
-  m_pRowSlab->vDepositString_end(nChars+1);
+  m_pRowSlab->vDepositString_end(nFieldChars+1);
   
-  vTrace("L_STD_VarcharDeposit: %s\n"_Stz,azVchBegin);
+  if (baTrace & C_L_STD_Varchar)
+    vTrace("L_STD_VarcharDeposit: %s\n"_Stz,azVchBegin);
   
   goto L_STD_PostField;
 
@@ -2337,6 +2543,8 @@ L_STD_VarcharNull:
     goto L_STD_FieldError;
   }
   
+  if (baTrace & C_L_STD_Varchar)
+    vTrace("L_STD_VarcharDeposit: null\n"_Stz);
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of varchar
 
@@ -2349,6 +2557,8 @@ L_STD_PostField:
   if (baTrace & C_L_STD_PostField)
     vTrace("L_STD_PostField:\n"_Stz);
 
+  // I DONT THINK THIS A GOOD IDEA
+  
   // advance over any trailing chars till field separator or record terminator
   while (cSrcChr) {
     
