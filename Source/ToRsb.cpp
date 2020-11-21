@@ -33,8 +33,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_pRowSlab   = nullptr;
   m_pRsbBuffer = nullptr;
 
-  m_cRecEnd    = '\n'; // 0x0a
-  m_cFldSep    = ',';
+  m_cRecEnd    = (RE_NL == m_pFmt->m_eRecordEnd) ? '\n': '\n'; // 0x0a
+  m_cFldSep    = m_pFmt->m_cFieldDelimiter;
 
   m_nRecords   = 0;
   m_nErrors    = 0;
@@ -46,6 +46,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   vNewRsbBuffer();
+
+  m_pFmt->vShow();
   
   //s48K sDef;
   //m_pStreamDef->vAsString(sDef);
@@ -60,6 +62,8 @@ ToRsb::~ToRsb(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   delete m_pRsbBuffer;
+  
+  delete m_pFmt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,1074 +221,6 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   }
 
 /*----------------------------------------------------------------------------*/
-/* fast inline conversion of a csv chunk (using user specified formatting)    */
-/*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
-  
-  char *azRecordStart;
-  char *azFieldStart;
-  
-  ColPix xColPix;
-  eDM ePixDatum;
-  i8 nPixLength;
-  i8 nPixScale;
-  i8 nPixPrecision;
-
-  i8 iBoolean;
-  
-  Dte xDate;
-  u8 uYear;
-  u8 uMonth;
-  u8 uDay;
-  bool bLeapYear;
-
-  i8 iDecimal;
-  
-  i8 iInteger;
-  u8 uNumber;
-  bool bNegative;
-  i8 nDigits;
-
-  Ivl xInterval;
-  i8 nShift;
-
-  d8 dFloat;
-  d8 dUnsigned;
-  char xBuffer[256];
-  char* acBufDst;
-  i8 nExpDigits;
-
-  Tme xTime;
-  u8 uHour;
-  u8 uMinute;
-  u8 uSecond;
-  u8 uMicrosecond;
-  
-  Tsp xTimestamp;
-
-  char* azVchHead;
-  char* acVchDst;
-  i8 nChars;
-  bool bSawEnclosedLeading;
-  bool bSawEnclosedTrailing;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 0) begin                                                                USR
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  char* azCsvSrc = azCsvChunk;
-  char cSrcChr = *azCsvSrc;
-
-  ColPix* aColPix = m_pRowSlab->axaColPix();
-  
-  i8 nCols = m_pStreamDef->nColumns(C_ALL);
-  
-  Column* pCol = nullptr;
-
-  i8 iHash = 0;
-  tPN tPtnNo = 0;
-  tPN tPtnNo_byBkt = 0;
-  i8 iBucketId = 0;
-
-  i8 i_Fld = 0;
-  bool bSawFldSep = false;
-  
-  eEC eError = EC_NONE;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // determine field seperator
-
-  if (m_bFirst) {
-    m_bFirst = false;
-    
-    for (char* acTest = azCsvSrc; *acTest; acTest++) {
-      if (',' == *acTest) {
-        m_cFldSep = ',';
-        break;
-      }
-      if ('|' == *acTest) {
-        m_cFldSep = '|';
-        break;
-      }
-    }
-  }
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) while more csv data in chunk                                         USR
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_USR_TestMoreRecords:
-    
-  // skip leading whitespace
-//  while (bNON_DATA_CHAR())
-//    vADV_SRCCHR();
-//
-  // test for more csv to be parsed
-  if (! bMORE_CSV())
-    goto L_USR_EndOfCsvChunk;
-  
-  azRecordStart = azCsvSrc;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) new rsb                                                              USR
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // alloc a new rsb, new another rsbBufer if necessary
-  if (! m_pRowSlab->bNewRow()) {    // ? inline ?
-    vNewRsbBuffer();
-    bool b = m_pRowSlab->bNewRow();
-    ASSERT(b);
-  }
-  
-  
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 3) while more fields of current record                                  USR
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-L_USR_TestMoreFields:
-  
-  ASSERT(EC_NONE == eError);
-
-  if (! bMORE_FIELDS())
-    goto L_USR_EndOfRecord;
-
-  azFieldStart = azCsvSrc;
-
-  
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 4) decode and convert field i_Fld                                       USR
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  
-  xColPix       = aColPix[i_Fld];
-  ePixDatum     = (eDM) xColPix.m_uDatum;
-  nPixLength    = xColPix.m_uLength;
-  nPixScale     = xColPix.m_uScale;
-  nPixPrecision = nPixLength - nPixScale;
-
-  bSawFldSep = false;
-
-  // debug
-  //pCol = m_pStreamDef->pGetColumn(i_Fld);
-
-  switch (ePixDatum) {
-    case DM_BOL : goto L_USR_Boolean;
-    case DM_DTE : goto L_USR_Date;
-    case DM_BCD : goto L_USR_Decimal;
-    case DM_FLT : goto L_USR_Float;
-    case DM_INT : goto L_USR_Integer;
-    case DM_IVL : goto L_USR_Interval;
-    case DM_TME : goto L_USR_Time;
-    case DM_TSP : goto L_USR_Timestamp;
-    case DM_VCH : goto L_USR_Varchar;
-    default:
-      RASSERT(0);
-  }
-  
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.a) boolean field : true | false | uNumber                             USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Boolean:
-  
-  vSKIP_NON_DATA();
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // boolean portion
-  
-  // collect characters representing a boolean
-  if ('t' == cSrcChr || 'T' == cSrcChr) {
-    // true case
-    iBoolean = true;
-    vADV_SRCCHR(); // skip 't'
-    
-    if (! ('r' == cSrcChr || 'R' == cSrcChr)) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_USR_FieldError;
-    }
-    vADV_SRCCHR(); // skip 'r'
-    
-    if (! ('u' == cSrcChr || 'U' == cSrcChr)) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_USR_FieldError;
-    }
-    vADV_SRCCHR(); // skip 'u'
-  
-    if (! ('e' == cSrcChr || 'E' == cSrcChr)) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_USR_FieldError;
-    }
-    vADV_SRCCHR(); // skip 'e'
-    
-  }
-  else
-  if ('f' == cSrcChr || 'F' == cSrcChr) {
-    // false case
-    iBoolean = false;
-    vADV_SRCCHR(); // skip 'f'
-  }
-  else
-  if (bIS_DIGIT()) {
-    // numeric case
-    uNumber = 0;
-    for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-      vCOLLECT(uNumber);
-      nDigits++;
-    }
-    if (nDigits > 19) {
-      eError = EC_CSV_BOOLEAN_TOO_LARGE;
-      goto L_USR_FieldError;
-    }
-  
-    if (uNumber > 0)
-      iBoolean = true;
-    else
-      iBoolean = false;
-  }
-  else {
-    // unrecognisable boolean
-    eError = EC_CSV_BOOLEAN_INVALID;
-    goto L_USR_FieldError;
-  }
-
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all boolean portions collected
-  
-  m_pRowSlab->vDeposit(iBoolean);
-
-  goto L_USR_PostField;                                        // end of boolean
-    
-    
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.b) date field : year - month - day // year range is ????              USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Date:
-  
-  vSKIP_NON_DATA();
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // year portion
-  
-  // collect digits for year
-  uYear = 0;
-  for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uYear);
-    nDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 4) {
-    eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-
-  // adjust a 2-digit year
-  if (uYear <= 99)
-    uYear += 2000;
-
-  // skip over separator
-  if ('-' != cSrcChr) {
-    eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_USR_FieldError;
-  }
-  vADV_SRCCHR(); // skip '-'
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // month portion
-    
-  // collect digits for month
-  uMonth = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uMonth);
-    nDigits++;
-  }
-
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_MONTH_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 2) {
-    eError = EC_CSV_MONTH_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-
-  // skip over separator
-  if ('-' != cSrcChr) {
-    eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_USR_FieldError;
-  }
-  vADV_SRCCHR(); // skip '-'
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // day portion
-          
-  // collect digits for day
-  uDay = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uDay);
-    nDigits++;
-  }
-
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_DAY_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 2) {
-    eError = EC_CSV_DAY_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all date portions collected
-
-  // validate the year
-  if (uYear < C_YEAR_MIN) {
-    eError = EC_CSV_YEAR_TOO_SMALL;
-    goto L_USR_FieldError;
-  }
-  if (uYear > C_YEAR_MAX) {
-    eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-
-  // validate the month
-  if (uMonth < 1 || uMonth > 12) {
-    eError = EC_CSV_MONTH_INVALID;
-    goto L_USR_FieldError;
-  }
-  
-  // validate day wrt possible leap year
-  
-  // determine if a leap year
-  if (uYear % 4 == 0) {
-    if ((uYear % 100 == 0) && (uYear % 400 != 0))
-      bLeapYear = false;
-    else
-      bLeapYear = true;
-  }
-  else {
-    bLeapYear = false;
-  }
-
-  // validate days per month
-  if (uDay < 1) {
-    eError = EC_CSV_DAY_INVALID;
-    goto L_USR_FieldError;
-  }
-  
-  if (bLeapYear) {
-    if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
-      eError = EC_CSV_DAY_NOT_LEAPYEAR;
-      goto L_USR_FieldError;
-    }
-  }
-  else {
-    if (uDay > (u8)iDaysPerMonth[uMonth]) {
-      eError = EC_CSV_DAY_INVALID;
-      goto L_USR_FieldError;
-    }
-  }
-
-  // compute final field value
-  xDate.m_uYearDelta = uYear - C_YEAR_BASE;
-  xDate.m_uMonth     = uMonth;
-  xDate.m_uDay       = uDay;
-  xDate.m_uSpare     = 0;
-  
-  // deposit the date
-  m_pRowSlab->vDeposit(xDate);
-
-  goto L_USR_PostField;                                           // end of date
-
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]                      USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Decimal:
-  
-  /*
-      note: decimals are scaled (numerically shifted left x 10) by nPixScale
-   */
-
-  vSKIP_NON_DATA();
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional leading sign
-
-  // collect sign
-  if ('-' == cSrcChr) {
-    bNegative = true;
-    vADV_SRCCHR(); // skip '-'
-  }
-  else
-  if ('+' == cSrcChr) {
-    bNegative = false;
-    vADV_SRCCHR(); // skip '+'
-  }
-  else {
-    bNegative = false;
-  }
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned number portion
-
-  // ignore leading 0's
-  while ('0' == cSrcChr)
-    vADV_SRCCHR(); // skip '0'
-    
-  // collect digits for leading number
-  uNumber = 0;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uNumber);
-    nDigits++;
-    nPixPrecision--;
-    if (nPixPrecision < 0)
-      goto L_USR_FieldError;
-  }
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional fraction portion
-  
-  // collect further digits for trailing fraction
-  if ('.' == cSrcChr) {
-    
-    vADV_SRCCHR(); // skip '.'
-    
-    for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-      vCOLLECT(uNumber);
-      nDigits++;
-      nPixScale--;
-    }
-  }
-  
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_DECIMAL_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 19) {
-    eError = EC_CSV_DECIMAL_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  // correct for scale by x 10 till correctly scaled
-  while (nPixScale--)
-    uNumber *= 10;
-  
-  // round up if there any more digits
-  if (bIS_DIGIT()) {
-    if (cSrcChr - '0' >= 5)
-      uNumber += 1;
-    while (bIS_DIGIT())
-      vADV_SRCCHR(); // skip remaining digits
-  }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all decimal portions collected
-  
-  // have we exceeded the max ?
-  if (uNumber > (u8)C_I8_MAX) {
-    eError = EC_CSV_DECIMAL_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  
-  // compute final field value
-  iDecimal = bNegative ? - uNumber : uNumber;
-  
-  // have we gone below the negative min ?
-  if (iDecimal < C_I8_MIN) {
-    eError = EC_CSV_DECIMAL_TOO_SMALL;
-    goto L_USR_FieldError;
-  }
-  
-  // deposit the decimal
-  m_pRowSlab->vDeposit(iDecimal);
-
-  goto L_USR_PostField;                                        // end of decimal
-
-    
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]      USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Float:
-    
-  /*
-      note: this function uses atof from stdlib.h to convert the field text
-            into a d8 floaing point double
-   */
-  
-  vSKIP_NON_DATA();
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional leading sign
-
-  // collect sign
-  if ('-' == cSrcChr) {
-    bNegative = true;
-    vADV_SRCCHR(); // skip '-'
-  }
-  else
-  if ('+' == cSrcChr ) {
-    bNegative = false;
-    vADV_SRCCHR(); // skip '+'
-  }
-  else {
-    bNegative = false;
-  }
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned number portion
-
-  // collect digits for leading number
-  acBufDst = xBuffer;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-    *acBufDst++ = cSrcChr;
-    nDigits++;
-  }
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional fraction portion
-  
-  // collect digits for middle fraction
-  if ('.' == cSrcChr) {
-    *acBufDst++ = cSrcChr;
-    vADV_SRCCHR(); // skip '.'
-    for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-      *acBufDst++ = cSrcChr;
-      nDigits++;
-    }
-  }
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional exponent portion
-  
-  // collect digits for trailing exponent
-  if ('e' == cSrcChr || 'E' == cSrcChr) {
-    
-    *acBufDst++ = cSrcChr;
-    vADV_SRCCHR(); // skip 'e'
-
-    // test for +/-
-    if ('+' == cSrcChr || '-' == cSrcChr) {
-      *acBufDst++ = cSrcChr;
-      vADV_SRCCHR(); // skip +/-
-    }
-        
-    // collect exponent digits
-    for  (nExpDigits = 0; nExpDigits < 3 && bIS_DIGIT(); vADV_SRCCHR()) {
-      *acBufDst++ = cSrcChr;
-      nExpDigits++;
-    }
-    
-    // should have seen some exponent digits
-    if (! nExpDigits) {
-      eError = EC_CSV_EXPONENT_MISSING;
-      goto L_USR_FieldError;
-    }
-  }
-
-  // terminate
-  *acBufDst++ = '\0';
-  
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_FLOAT_INVALID;
-    goto L_USR_FieldError;
-  }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all float portions collected
-  
-  // compute final result
-  dUnsigned = atof(xBuffer); // SHOULD BE USING strtod() AND TESTING FOR ERROR
-  dFloat = bNegative ? - dUnsigned : dUnsigned;
-  
-  // deposit the float
-  
-  m_pRowSlab->vDeposit(dFloat);
-
-  goto L_USR_PostField;                                          // end of float
-
-    
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.e) integer : [+|-] uNumber                                            USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Integer:
-  
-  vSKIP_NON_DATA();
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional leading sign
-  
-  // collect sign
-  if ('-' == cSrcChr) {
-    bNegative = true;
-    vADV_SRCCHR(); // skip '-'
-  }
-  else
-  if ('+' == cSrcChr) {
-    bNegative = false;
-    vADV_SRCCHR(); // skip '+'
-  }
-  else {
-    bNegative = false;
-  }
-    
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned number portion
-  
-  // collect digits for number
-  uNumber = 0;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uNumber);
-    nDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_INTEGER_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 19) {
-    eError = EC_CSV_INTEGER_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all integer portions collected
-
-  if (uNumber > (u8)C_I8_MAX) {
-    eError = EC_CSV_INTEGER_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  
-  // compute final field value
-  iInteger = bNegative ? - uNumber : uNumber;
-  
-  // deposit the integer
-  m_pRowSlab->vDeposit(iInteger);
-    
-  // compute running hash of partitioning column
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,iInteger);
-  
-  goto L_USR_PostField;                                        // end of integer
-
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.f) interval field : seconds [ . microseconds ]                        USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Interval:
-  
-  vSKIP_NON_DATA();
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned seconds portion
-  
-  // collect digits for leading seconds
-  uSecond = 0;
-  for  (nDigits = 0; nDigits < 9 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uSecond);
-    nDigits++;
-  }
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional microseconds portion
-  
-  // collect further digits for trailing microseconds
-  uMicrosecond = 0;
-  nShift = C_IVL_USEC_SHIFT;
-  if ('.' == cSrcChr) {
-    vADV_SRCCHR(); // skip '.'
-    for ( ; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
-      vCOLLECT(uMicrosecond);
-      nDigits++;
-      nShift /= 10;
-    }
-  }
-  
-  // adjust to microseconds
-  uMicrosecond *= nShift;
-
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_INTERVAL_INVALID;
-    goto L_USR_FieldError;
-  }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all interval portions collected
-
-  // have we exceeded the max for second?
-  if (uSecond > (u8)C_IVL_SEC_MAX) {
-    eError = EC_CSV_INTERVAL_SECS_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  
-  // have we exceeded the max for microsecond?
-  if (uMicrosecond > (u8)C_IVL_USEC_MAX) {
-    eError = EC_CSV_INTERVAL_USECS_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  
-  // compute final field value
-  xInterval.m_uSecond = uSecond;
-  xInterval.m_uMicro  = uMicrosecond;
-  
-  // deposit the interval
-  m_pRowSlab->vDeposit(xInterval);
-
-  goto L_USR_PostField;                                       // end of interval
-
-    
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]         USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Time:
-  
-  vSKIP_NON_DATA();
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // hour portion
-
-  // collect digits for hour
-  uHour = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uHour);
-    nDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_HOUR_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 2) {
-    eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-
-  // skip over separator
-  if (':' != cSrcChr) {
-    eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_USR_FieldError;
-  }
-  vADV_SRCCHR(); // skip ':'
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // minute portion
-
-  // collect digits for minute
-  uMinute = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uMinute);
-    nDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_MINUTE_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 2) {
-    eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  // skip over separator
-  if (':' != cSrcChr) {
-    eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_USR_FieldError;
-  }
-  vADV_SRCCHR(); // skip ':'
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // second portion
-
-  // collect digits for second
-  uSecond = 0;
-  for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
-    vCOLLECT(uSecond);
-    nDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nDigits) {
-    eError = EC_CSV_SECOND_INVALID;
-    goto L_USR_FieldError;
-  }
-  if (nDigits > 2) {
-    eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional microsecond portion
-  
-  // a dot without any futher digits is ok
-  uMicrosecond = 0;
-  if ('.' == cSrcChr) {
-    
-    vADV_SRCCHR(); // skip '.'
-
-    for (nShift = C_IVL_USEC_SHIFT; nShift > 1 && bIS_DIGIT(); vADV_SRCCHR()) {
-      vCOLLECT(uMicrosecond);
-      nShift /= 10;
-    }
-
-    uMicrosecond = uMicrosecond * nShift;
-  }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all time portions collected
-
-  if (uHour > 23) {
-    eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  
-  if (uMinute > 59) {
-    eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  
-  if (uSecond > 59) {
-    eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_USR_FieldError;
-  }
-  
-  // compute final field value
-  xTime.m_uHour   = uHour;
-  xTime.m_uMinute = uMinute;
-  xTime.m_uSecond = uSecond;
-  xTime.m_uMicro  = uMicrosecond;
-  xTime.m_uSpare  = 0;
-
-  // deposit the time
-  m_pRowSlab->vDeposit(xTime);
-
-  goto L_USR_PostField;                                           // end of time
-
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.h) timestamp field :                                                  USR
-  //    year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Timestamp:
-  {
-    Tsp xTsp;
-    SN_Tsp snTsp;
-
-    vSKIP_NON_DATA();
-    
-    xTsp = snTsp.i(&azCsvSrc,m_pFmt);
-    cSrcChr = *azCsvSrc;
-    m_pRowSlab->vDeposit(xTsp);
-  }
-  
-  goto L_USR_PostField;
-
-  
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.i) varchar field :                                                    USR
-  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-L_USR_Varchar:
-  
-  // ** do not skip white space **
-
-  nChars = 0;
-  bSawEnclosedTrailing = false;
-  bSawEnclosedLeading  = false;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-
-  // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
-  
-  if (! m_pFmt->m_cEnclosedBy_Leading)
-    bSawEnclosedLeading = false;
-
-  // find first non-space character
-  while (' ' == cSrcChr)
-    vADV_SRCCHR(); // skip ' '
-
-  azCsvSrc = azFieldStart;
-
-  while (cSrcChr) {
-        
-    // test for field separator (because its not enclosed)
-    if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
-      break;
-    
-    if (nChars++ < nPixLength)
-      *acVchDst++ = cSrcChr;
-    
-    vADV_SRCCHR(); // next char
-  }
-
-  // terminate
-  *acVchDst++ = '\0';
-
-  // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
-
-  // if this an enclosed varchar we should have expected to
-  // see the trailing enclosedBy
-  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    eError = EC_CSV_VARCHAR_INVALID;
-    goto L_USR_FieldError;
-  }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all varchar portions collected
-  
-  m_pRowSlab->vDepositString_end(nChars+1);
-
-  goto L_USR_PostField;                                        // end of varchar
-
-  
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 5) processing at end of field                                           USR
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-L_USR_PostField:
-    
-  // advance over any trailing chars till field separator or record terminator
-  while (cSrcChr) {
-    
-    if (cSrcChr == m_cFldSep) {
-      bSawFldSep = true;
-      vADV_SRCCHR(); // skip m_cFldSep
-      break;
-    }
-    
-    if (cSrcChr == m_cRecEnd)
-      break;
-    
-    vADV_SRCCHR(); // skip any
-  }
-
-  // move to next field
-  i_Fld++;
-  goto L_USR_TestMoreFields;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) encountered a field error                                            USR
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_USR_FieldError:
-
-  /*
-     know:
-   
-           i_Fld
-           eError
-           azCsvSrc
-           azRecordStart;
-           azFieldStart;
-           m_pStreamDef
-           azCsvChunk
-   
-             this node
-             time
-   
-     don't know:
-   
-           origin
-           file
-           offset
-   
-   */
-  
-  // discard partial row in row slab
-  m_pRowSlab->vDiscardInvalidRow();
-
-  // skip to end of record
-  while (cSrcChr) {
-    
-    if (cSrcChr == m_cRecEnd)
-      break;
-    
-    vADV_SRCCHR(); // skip any
-  }
-  
-  // increment invalid records
-  AM::vIncRowsInvalid(m_pPipelineJob);
-  m_nRecords++;
-  
-  // clear error
-  eError = EC_NONE;
-
-  // begin new record
-  i_Fld = 0;
-
-  // skip
-  if (cSrcChr)
-    vADV_SRCCHR(); // skip m_cRecEnd
-
-  goto L_USR_TestMoreRecords;
-
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 7) end of record                                                        USR
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_USR_EndOfRecord:
-  
-  ASSERT(! bMORE_FIELDS());
-  
-#ifdef WITH_DEBUG_VERSION
-  if (m_bTrace) {
-    if (! bSawFldSep)
-      vTrace("\n"_Stz);
-    vTrace("-- recSep -- \n"_Stz);
-  }
-#endif
-
-  // set partition hash
-  if (m_bPtnHash) {
-    
-    
-    tPtnNo = PtnMap::tHashToPtnNo(iHash,m_nPtns);
-    
-    // partition mapping experiment by Ray 12 Nov 2020
-//    iBucketId = PtnMap::iHashToBucketId(iHash);
-//    tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
-//    tPtnNo = tPtnNo_byBkt;
-    
-    //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
-    m_pRowSlab->vDeposit(tPtnNo);
-    iHash = 0;
-  }
-  
-  // increment records processed
-  AM::vIncRowsProcessed(m_pPipelineJob);
-  m_nRecords++;
-
-  // begin new record
-  i_Fld = 0;
-  
-  if (cSrcChr)
-    vADV_SRCCHR(); // skip m_cRecEnd
-
-  goto L_USR_TestMoreRecords;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 8) reached end of azCsvChunk                                            USR
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_USR_EndOfCsvChunk:
-    
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
 /*----------------------------------------------------------------------------*/
 bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
@@ -1333,12 +269,15 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   Tsp xTimestamp;
 
-  char* azVchHead;
+  char* azVchBegin;
   char* acVchDst;
-  i8 nChars;
+  i8 nFieldChars;
   bool bSawEnclosedLeading;
   bool bSawEnclosedTrailing;
   
+  SP_String spStr;
+  SP_String spChr;
+
   // uncomment the following depending on which points you want to trace
   i8 baTrace = 0
 //     | C_L_STD_Begin
@@ -1356,6 +295,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 //     | C_L_STD_VarcharUnquoted
 //     | C_L_STD_VarcharSingleQuoted
 //     | C_L_STD_VarcharDoubleQuoted
+//     | C_L_STD_VarcharUserEnclosed
 //     | C_L_STD_PostField
 //     | C_L_STD_FieldError
 //     | C_L_STD_EndOfRecord
@@ -1367,7 +307,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (baTrace & C_L_STD_Begin)
-    vTrace("L_STD_Begin:\n"_Stz);
+    vTrace("L_STD_Begin: >>%s<<\n"_Stz,
+           spStr.szInspect(azCsvChunk,64,false));
 
   i8 iBucketId = 0;
   i8 i_Fld = 0;
@@ -1407,7 +348,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 L_STD_TestMoreRecords:
     
   if (baTrace & C_L_STD_TestMoreRecords)
-    vTrace("L_STD_TestMoreRecords:\n"_Stz);
+    vTrace("\nL_STD_TestMoreRecords: >>%s<<\n"_Stz,
+           spStr.szInspect(azCsvSrc,128,true));
 
   // skip leading non-data chars
   vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
@@ -1467,25 +409,10 @@ L_STD_TestMoreFields:
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
   if (baTrace & C_L_STD_TestMoreFields) {
-    vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s >>"_Stz,
-           m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum]);
-    if ('\n' == cSrcChr)
-      vTrace("\\n"_Stz);
-    else
-      vTrace("%c"_Stz,cSrcChr);
-    vTrace("<< :: >>"_Stz);
-  
-    for (i8 i_Offset = 0; i_Offset < 32; i_Offset++) {
-      char cChr = *(azFieldStart + i_Offset);
-      if (! cChr)
-        break;
-      if ('\n' == cChr) {
-        vTrace("\\n"_Stz);
-        break;
-      }
-      vTrace("%c"_Stz,cChr);
-    }
-    vTrace("<<\n"_Stz);
+    vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s srcChr >>%s<< csvSrc >>%s<<\n"_Stz,
+           m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum],
+           spChr.szChar(cSrcChr),
+           spStr.szInspect(azCsvSrc));
   }
   
   // debug
@@ -1558,6 +485,22 @@ L_STD_Boolean:
     }
 
     goto L_STD_BooleanNull;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_BooleanNull;
+      }
+    }
+  
+    eError = EC_CSV_BOOLEAN_INVALID;
+    goto L_STD_FieldError;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1738,7 +681,22 @@ L_STD_Date:
     goto L_STD_DateNull;
   }
   
-
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_DateNull;
+      }
+    }
+  
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
   
@@ -1946,6 +904,22 @@ L_STD_Decimal:
   }
    
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_DecimalNull;
+      }
+    }
+  
+    eError = EC_CSV_DECIMAL_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
   // collect sign
@@ -1966,12 +940,15 @@ L_STD_Decimal:
   // unsigned number portion
 
   // ignore leading 0's
-  while ('0' == cSrcChr)
+  nDigits = 0;
+  while ('0' == cSrcChr) {
     vADV_SRCCHR(); // skip '0'
-    
+    nDigits++;
+  }
+  
   // collect digits for leading number
   uNumber = 0;
-  for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+  for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uNumber);
     nDigits++;
     nPixPrecision--;
@@ -2114,6 +1091,22 @@ L_STD_Float:
     goto L_STD_FloatNull;
   }
    
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_FloatNull;
+      }
+    }
+  
+    eError = EC_CSV_FLOAT_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
@@ -2273,6 +1266,22 @@ L_STD_Integer:
   }
    
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_IntegerNull;
+      }
+    }
+  
+    eError = EC_CSV_INTEGER_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
   
   // collect sign
@@ -2413,6 +1422,22 @@ L_STD_Interval:
     goto L_STD_IntervalNull;
   }
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_BooleanNull;
+      }
+    }
+  
+    eError = EC_CSV_INTERVAL_INVALID;
+    goto L_STD_FieldError;
+  }
+  
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
@@ -2544,6 +1569,23 @@ L_STD_Time:
     goto L_STD_TimeNull;
   }
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_TimeNull;
+      }
+    }
+  
+    eError = EC_CSV_HOUR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
 
@@ -2735,6 +1777,22 @@ L_STD_Timestamp:
   uSecond = 0;
   uMicrosecond = 0;
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_TimestampNull;
+      }
+    }
+  
+    eError = EC_CSV_YEAR_INVALID;
+    goto L_STD_FieldError;
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
   
@@ -3020,7 +2078,7 @@ L_STD_Varchar:
   if (baTrace & C_L_STD_Varchar)
     vTrace("L_STD_Varchar:\n"_Stz);
   
-  nChars = 0;
+  nFieldChars = 0;
   bSawEnclosedTrailing = false;
   bSawEnclosedLeading  = false;
 
@@ -3066,6 +2124,22 @@ L_STD_Varchar:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible \N portion
+  
+  if ('\\' == cSrcChr) {
+    vADV_SRCCHR(); // accept '\\'
+    if ('N' == cSrcChr) {
+      vADV_SRCCHR(); // accept 'N'
+      if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
+        goto L_STD_VarcharNull;
+      }
+    }
+  
+    vRESET_FIELD();
+    goto L_STD_VarcharWhich;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // .. which type of varchar
   
 L_STD_VarcharWhich:
@@ -3078,15 +2152,14 @@ L_STD_VarcharWhich:
       continue;
     }
     
-    if ('\'' == cSrcChr) {
-      //vRESET_FIELD();
+    if ('\'' == cSrcChr)
       goto L_STD_VarcharSingleQuoted;
-    }
     
-    if ('"' == cSrcChr) {
-      //vRESET_FIELD();
+    if ('"' == cSrcChr)
       goto L_STD_VarcharDoubleQuoted;
-    }
+    
+    if (m_pFmt->m_cEnclosedBy_Leading == cSrcChr)
+      goto L_STD_VarcharUserEnclosed;
     
     vRESET_FIELD();
     goto L_STD_VarcharUnquoted;
@@ -3095,7 +2168,7 @@ L_STD_VarcharWhich:
   NEVER_REACH;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // ..original processing
+  // uqs: string is not delimited
 
 L_STD_VarcharUnquoted:
 
@@ -3103,8 +2176,8 @@ L_STD_VarcharUnquoted:
     vTrace("L_STD_VarcharUnquoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
   
   while (cSrcChr) {
         
@@ -3115,15 +2188,24 @@ L_STD_VarcharUnquoted:
     if ('\\' == cSrcChr) {
       vADV_SRCCHR(); // skip '\\'
       
-      if (nChars++ < nPixLength)
-        *acVchDst++ = cSrcChr;
-
+      if (nFieldChars++ < nPixLength) {
+        if ('n' == cSrcChr)
+          *acVchDst++ = '\n';
+        else
+        if ('r' == cSrcChr)
+          *acVchDst++ = '\r';
+        else
+        if ('t' == cSrcChr)
+          *acVchDst++ = '\t';
+        else
+          *acVchDst++ = cSrcChr;
+      }
       vADV_SRCCHR(); // next char
 
       continue;
     }
         
-    if (nChars++ < nPixLength)
+    if (nFieldChars++ < nPixLength)
       *acVchDst++ = cSrcChr;
     
     vADV_SRCCHR(); // next char
@@ -3133,15 +2215,15 @@ L_STD_VarcharUnquoted:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
+  if (nFieldChars >= nPixLength)
+    nFieldChars = nPixLength;
   
   goto L_STD_VarcharDeposit;
   
   
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // single quote delimited string processing
+  // sqs: string is delimited by single quotes
 
 L_STD_VarcharSingleQuoted:
 
@@ -3149,27 +2231,31 @@ L_STD_VarcharSingleQuoted:
     vTrace("L_STD_VarcharSingleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
   
   // >> *'...
   //     ^
   RASSERT('\'' == cSrcChr);
 
-  vADV_SRCCHR(); // skip '\''
+  vADV_SRCCHR(); // accept leading '\'' of sqs; do not deposit the quote
 
   while (cSrcChr) {
       
-    // voodoo
+    // ' voodoo
     if ('\'' == cSrcChr) {
+      
+      // we have encountered a quote (somewhere after leading quote)
       
       // >> *'.*'
       //        ^
       
-      if (1 == nChars) {
+      if (0 == nFieldChars) {
         // handle specific case >> *''
-        if (nChars++ < nPixLength)
-          *acVchDst++ = cSrcChr;
+        //   this is the quouted empty string
+        //   nb. corner cases:  ''n' is not supported
+        //                      '',' is not supported
+        vADV_SRCCHR(); // accept trailing '\'' of sqs; do not deposit the quote
         break;
       }
       
@@ -3179,31 +2265,46 @@ L_STD_VarcharSingleQuoted:
       vADV_SRCCHR(); // skip '\''
       
       if ('\'' == cSrcChr) {
+        // handle specific case of two quotes '' meaning one escaped quote
         // >> *'.*''
         //         ^
-        if (nChars++ < nPixLength)
+        if (nFieldChars++ < nPixLength)
           *acVchDst++ = '\'';
-        vADV_SRCCHR(); // next char
+        vADV_SRCCHR(); // // accept escaped quote; next char
       }
       
       else {
+        // encountered terminating quote
         // >> *'.*'.
         //         ^
-        break;
+        goto C_L_STD_VarcharSingleQuotedTerminate;
       }
 
-    }
+    } // end of if ' voodoo
+    
+    // [still in while (cSrcChr)]
     
     if ('\\' == cSrcChr) {
       vADV_SRCCHR(); // skip '\\'
       
-      if (nChars++ < nPixLength)
-        *acVchDst++ = cSrcChr;
-
+      if (nFieldChars++ < nPixLength) {
+        if ('n' == cSrcChr)
+          *acVchDst++ = '\n';
+        else
+        if ('r' == cSrcChr)
+          *acVchDst++ = '\r';
+        else
+        if ('t' == cSrcChr)
+          *acVchDst++ = '\t';
+        else
+          *acVchDst++ = cSrcChr;
+      }
       vADV_SRCCHR(); // next char
 
-      continue;
+      continue; // while (cSrcChr)
     }
+    
+    // [still in while (cSrcChr)]
     
     // test for record end
     if (cSrcChr == m_cRecEnd) {
@@ -3211,19 +2312,22 @@ L_STD_VarcharSingleQuoted:
       goto L_STD_FieldError;
     }
     
-    // concat char (if it fits)
-    if (nChars++ < nPixLength)
-      *acVchDst++ = cSrcChr;
+    // [still in while (cSrcChr)]
     
-    vADV_SRCCHR(); // next char
+    // deposit source char (if it fits)
+    if (nFieldChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    vADV_SRCCHR(); // deposited char; get next char
   }
 
+C_L_STD_VarcharSingleQuotedTerminate:
+  
   // terminate
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
+  if (nFieldChars >= nPixLength)
+    nFieldChars = nPixLength;
 
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
@@ -3236,65 +2340,159 @@ L_STD_VarcharSingleQuoted:
   
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // double quote delimited string processing
-
+  // string is delimited by double quotes
+  
 L_STD_VarcharDoubleQuoted:
 
   if (baTrace & C_L_STD_VarcharDoubleQuoted)
     vTrace("L_STD_VarcharDoubleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchHead = m_pRowSlab->azDepositString_begin();
-  acVchDst  = azVchHead;
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
   
-  // >> *".*
-  //     ^
-  RASSERT('"' == cSrcChr);
+    // >> *"...
+    //     ^
+    RASSERT('\"' == cSrcChr);
 
-  vADV_SRCCHR(); // skip '"'
+    vADV_SRCCHR(); // accept leading '\"' of sqs; do not deposit the quote
+
+    while (cSrcChr) {
+        
+      // " voodoo
+      if ('\"' == cSrcChr) {
+        
+        // we have encountered a quote (somewhere after leading quote)
+        
+        // >> *".*"
+        //        ^
+        
+        if (0 == nFieldChars) {
+          // handle specific case >> *""
+          //   this is the quouted empty string
+          //   nb. corner cases:  ""n" is not supported
+          //                      ""," is not supported
+          vADV_SRCCHR(); // accept trailing '\"' of sqs; do not deposit the quote
+          break;
+        }
+        
+        // >> *".*".*
+        //        ^
+
+        vADV_SRCCHR(); // skip '\"'
+        
+        if ('\"' == cSrcChr) {
+          // handle specific case of two quotes "" meaning one escaped quote
+          // >> *".*""
+          //         ^
+          if (nFieldChars++ < nPixLength)
+            *acVchDst++ = '\"';
+          vADV_SRCCHR(); // accept escaped quote; next char
+        }
+        
+        else {
+          // encountered terminating quote
+          // >> *".*".
+          //         ^
+          goto C_L_STD_VarcharDoubleQuotedTerminate;
+        }
+
+      } // end of if " voodoo
+      
+      // [still in while (cSrcChr)]
+      
+      if ('\\' == cSrcChr) {
+        vADV_SRCCHR(); // skip '\\'
+        
+        if (nFieldChars++ < nPixLength) {
+          if ('n' == cSrcChr)
+            *acVchDst++ = '\n';
+          else
+          if ('r' == cSrcChr)
+            *acVchDst++ = '\r';
+          else
+          if ('t' == cSrcChr)
+            *acVchDst++ = '\t';
+          else
+            *acVchDst++ = cSrcChr;
+        }
+        vADV_SRCCHR(); // next char
+
+        continue; // while (cSrcChr)
+      }
+      
+      // [still in while (cSrcChr)]
+      
+      // test for record end
+      if (cSrcChr == m_cRecEnd) {
+        eError = EC_CSV_VARCHAR_INVALID;
+        goto L_STD_FieldError;
+      }
+      
+      // [still in while (cSrcChr)]
+      
+      // deposit source char (if it fits)
+      if (nFieldChars++ < nPixLength)
+        *acVchDst++ = cSrcChr;
+      vADV_SRCCHR(); // deposited char; get next char
+    }
+
+  C_L_STD_VarcharDoubleQuotedTerminate:
+    
+    // terminate
+    *acVchDst++ = '\0';
+
+    // its not an enclosed varchar so we consider it to be valid
+    if (nFieldChars >= nPixLength)
+      nFieldChars = nPixLength;
+
+    // if this an enclosed varchar we should have expected to
+    // see the trailing enclosedBy
+    if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+      eError = EC_CSV_VARCHAR_INVALID;
+      goto L_STD_FieldError;
+    }
+    
+  goto L_STD_VarcharDeposit;
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // string is delimited by user specific
+  
+L_STD_VarcharUserEnclosed:
+
+  if (baTrace & C_L_STD_VarcharUserEnclosed)
+    vTrace("L_STD_VarcharUserEnclosed:\n"_Stz);
+  
+  // allocate string space in slab
+  azVchBegin = m_pRowSlab->azDepositString_begin();
+  acVchDst  = azVchBegin;
+  
+  // >> *{.*
+  //     ^
+  RASSERT(cSrcChr == m_pFmt->m_cEnclosedBy_Leading);
+
+  vADV_SRCCHR(); // skip '{'
 
   while (cSrcChr) {
       
-    // voodoo
-    if ('"' == cSrcChr) {
-      
-      // >> *".*"
-      //        ^
-      
-      if (1 == nChars) {
-        // handle specific case >> *""
-        if (nChars++ < nPixLength)
-          *acVchDst++ = cSrcChr;
-        break;
-      }
-      
-      // >> *".*".*
-      //        ^
-
-      vADV_SRCCHR(); // skip '"'
-      
-      if ('"' == cSrcChr) {
-        // >> *".*"".*
-        //         ^
-        if (nChars++ < nPixLength)
-          *acVchDst++ = '"';
-        vADV_SRCCHR(); // next char
-      }
-      
-      else {
-        // >> *".*".
-        //         ^
-        break;
-      }
-
-    }
+    if (cSrcChr == m_pFmt->m_cEnclosedBy_Trailing)
+      break;
     
     if ('\\' == cSrcChr) {
       vADV_SRCCHR(); // skip '\\'
       
-      if (nChars++ < nPixLength)
-        *acVchDst++ = cSrcChr;
-
+      if (nFieldChars++ < nPixLength) {
+        if ('n' == cSrcChr)
+          *acVchDst++ = '\n';
+        else
+        if ('r' == cSrcChr)
+          *acVchDst++ = '\r';
+        else
+        if ('t' == cSrcChr)
+          *acVchDst++ = '\t';
+        else
+          *acVchDst++ = cSrcChr;
+      }
       vADV_SRCCHR(); // next char
 
       continue;
@@ -3307,7 +2505,7 @@ L_STD_VarcharDoubleQuoted:
     }
     
     // concat char (if it fits)
-    if (nChars++ < nPixLength)
+    if (nFieldChars++ < nPixLength)
       *acVchDst++ = cSrcChr;
     
     vADV_SRCCHR(); // next char
@@ -3317,8 +2515,8 @@ L_STD_VarcharDoubleQuoted:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nChars >= nPixLength)
-    nChars = nPixLength;
+  if (nFieldChars >= nPixLength)
+    nFieldChars = nPixLength;
 
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
@@ -3328,13 +2526,17 @@ L_STD_VarcharDoubleQuoted:
   }
   
   goto L_STD_VarcharDeposit;
-  
+    
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all varchar portions collected
   
 L_STD_VarcharDeposit:
 
-  m_pRowSlab->vDepositString_end(nChars+1);
+  m_pRowSlab->vDepositString_end(nFieldChars+1);
+  
+  if (baTrace & C_L_STD_Varchar)
+    vTrace("L_STD_VarcharDeposit: %s\n"_Stz,azVchBegin);
+  
   goto L_STD_PostField;
 
 L_STD_VarcharNull:
@@ -3344,6 +2546,8 @@ L_STD_VarcharNull:
     goto L_STD_FieldError;
   }
   
+  if (baTrace & C_L_STD_Varchar)
+    vTrace("L_STD_VarcharDeposit: null\n"_Stz);
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of varchar
 
@@ -3356,6 +2560,8 @@ L_STD_PostField:
   if (baTrace & C_L_STD_PostField)
     vTrace("L_STD_PostField:\n"_Stz);
 
+  // I DONT THINK THIS A GOOD IDEA
+  
   // advance over any trailing chars till field separator or record terminator
   while (cSrcChr) {
     

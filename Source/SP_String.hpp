@@ -16,6 +16,8 @@ namespace Gadgets
     SP_String(void);
     ~SP_String(void) noexcept(false);
   
+    Stz* szChar(char cChar);
+    Stz* szInspect(char* azString, i8 nAfter=32, bool bQuitNL=true);
     Stz* szRight(Stz* szString, i8 iLength);
     Stz* szSample(Stz* szString, Stz* szCursor,
                   i8 iAfter=32, i8 iBefore=8);

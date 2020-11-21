@@ -43,7 +43,6 @@ namespace Load
    ~ToRsb(void) noexcept(false);
   
     bool bConvertCrw(CrwBuffer* pCrwBuffer);
-    bool bConvertUsrCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
     bool bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
 
     RsbBuffer* pDanglingRsbBuffer(void);
@@ -75,10 +74,11 @@ namespace Load
   static const i8 C_L_STD_VarcharUnquoted     = 1 << 12;
   static const i8 C_L_STD_VarcharSingleQuoted = 1 << 13;
   static const i8 C_L_STD_VarcharDoubleQuoted = 1 << 14;
-  static const i8 C_L_STD_PostField           = 1 << 15;
-  static const i8 C_L_STD_FieldError          = 1 << 16;
-  static const i8 C_L_STD_EndOfRecord         = 1 << 17;
-  static const i8 C_L_STD_EndOfCsvChunk       = 1 << 18;
+  static const i8 C_L_STD_VarcharUserEnclosed = 1 << 15;
+  static const i8 C_L_STD_PostField           = 1 << 16;
+  static const i8 C_L_STD_FieldError          = 1 << 17;
+  static const i8 C_L_STD_EndOfRecord         = 1 << 18;
+  static const i8 C_L_STD_EndOfCsvChunk       = 1 << 19;
 }
 
 /*============================================================================*/

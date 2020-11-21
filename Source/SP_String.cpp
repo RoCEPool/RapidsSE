@@ -30,6 +30,111 @@ SP_String::~SP_String(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* sprint a inspect of string and return Stz* to result                       */
+/*----------------------------------------------------------------------------*/
+Stz* SP_String::szChar(char cChr)
+{
+  _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
+  
+  char* azResult = m_caResult;
+
+  if (!cChr) {
+    *azResult++ = '\\';
+    *azResult++ = '0';
+  }
+  else if (' ' == cChr || isgraph(cChr)) {
+    *azResult++ = cChr;
+  }
+  else if ('\f' == cChr) {
+    *azResult++ = '\\';
+    *azResult++ = 'f';
+  }
+  else if ('\n' == cChr) {
+    *azResult++ = '\\';
+    *azResult++ = 'n';
+  }
+  else if ('\r' == cChr) {
+    *azResult++ = '\\';
+    *azResult++ = 'r';
+  }
+  else if ('\t' == cChr) {
+    *azResult++ = '\\';
+    *azResult++ = 't';
+  }
+  else {
+    *azResult++ = '\\';
+    *azResult++ = '?';
+  }
+    
+  *azResult = '\0';
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint a inspect of string and return Stz* to result                       */
+/*----------------------------------------------------------------------------*/
+Stz* SP_String::szInspect(char* azString, i8 nAfter, bool bQuitNL)
+{
+  _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
+  
+  char cChr = 0;
+  char* azResult = m_caResult;
+  
+  for (i8 nChars = 0; nChars < nAfter; nChars++) {
+    
+    cChr = *((char*)azString + nChars);
+    
+    if (!cChr)
+      break;
+    
+    if (' ' == cChr || isgraph(cChr)) {
+      *azResult++ = cChr;
+      continue;
+    }
+    
+    if ('\f' == cChr) {
+      *azResult++ = '\\';
+      *azResult++ = 'f';
+      continue;
+    }
+    
+    if ('\n' == cChr) {
+      *azResult++ = '\\';
+      *azResult++ = 'n';
+      if (bQuitNL)
+        break;
+      continue;
+    }
+    
+    if ('\r' == cChr) {
+      *azResult++ = '\\';
+      *azResult++ = 'r';
+      continue;
+    }
+
+    if ('\t' == cChr) {
+      *azResult++ = '\\';
+      *azResult++ = 't';
+      continue;
+    }
+
+    *azResult++ = '\\';
+    *azResult++ = '?';
+  }
+  
+  if (cChr) {
+    *azResult++ = '.';
+    *azResult++ = '.';
+    *azResult++ = '.';
+  }
+  
+  *azResult = '\0';
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint String and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
 Stz* SP_String::szRight(Stz* szString, i8 iLength)

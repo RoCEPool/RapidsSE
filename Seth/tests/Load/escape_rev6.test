@@ -13,7 +13,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult escape
-oldLoad T1 "../DATA/Load/escape_defaults.csv";
+Load T1 "../DATA/Load/escape_defaults.csv";
 success
 
 // predicateFetch rows
@@ -23,7 +23,7 @@ rows: 9
 tableScan T1 ;
 rows:
   (1, null)
-  (2, '''N''')
+  (2, 'N')
   (3, 'N not on its own')
   (4, '\N not on its own')
   (5, *)
@@ -48,7 +48,8 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult escape
-oldLoad T1 "../DATA/Load/escape_enclosed.csv" <enclosed_by_leading> =  "'";
+Load T1 "../DATA/Load/escape_enclosed.csv"
+  <enclosed_by_leading> =  "'";
 success
 
 // predicateFetch rows
@@ -58,7 +59,7 @@ rows: 9
 tableScan T1 ;
 rows:
   (1, null)
-  (2, null)
+  (2, 'N')
   (3, 'N not on its own')
   (4, '\N not on its own')
   (5, *)
@@ -83,7 +84,8 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult escape
-oldLoad T1 "../DATA/Load/escape_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
+Load T1 "../DATA/Load/escape_enclosedByCurly.csv"
+  <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows
@@ -93,7 +95,7 @@ rows: 10
 tableScan T1 ;
 rows:
   (1, null)
-  (2, null)
+  (2, 'N')
   (3, 'N not on its own')
   (4, '\N not on its own')
   (5, *)

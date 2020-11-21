@@ -19,7 +19,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/enclosedBy1.csv" ;
+Load T1 "../DATA/Load/enclosedBy1.csv" ;
 failure contains: '5 invalid'
 
 // predicateFetch rows
@@ -56,7 +56,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad table T1 with <enclosed_by_leading> =  '
-oldLoad T1 "../DATA/Load/enclosedBy2.csv" <enclosed_by_leading> = "'" ;
+Load T1 "../DATA/Load/enclosedBy2.csv" <enclosed_by_leading> = "'" ;
 failure contains: '1 invalid'
 
 // predicateFetch rows
@@ -75,6 +75,7 @@ rows:
 drop table T1;
 success
 
+/*
 // create table table
 create table T1 (
 col_id      INTEGER,
@@ -127,6 +128,7 @@ rows:
 // drop the table
 drop table T1;
 success
+*/
 
 CLEANUP {
   

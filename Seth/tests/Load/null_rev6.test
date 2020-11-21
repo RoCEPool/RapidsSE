@@ -14,7 +14,7 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/null.csv" ;
+Load T1 "../DATA/Load/null.csv" ;
 success
 
 // predicateFetch rows
@@ -26,46 +26,9 @@ rows:
   (NULL,null,NULL)
   (null,null,NULL)
   (null,null,null)
-  (1,'''null''',3)
+  (1,'null',3)
   (2,' null',3)
-  (3,'''N''',null)
-  (4,'N is not a null', 3)
-  (5,'''\N''',null)
-  (6,'The word null', 3)
-  (7,'''The word null''', 3)
-  (8,'''null is not null''',3)
-
-// drop the table
-drop table T1;
-success
-
-create table T1 (
-  col_id       INTEGER,
-  col_vch      VARCHAR(25),
-  col_int      INTEGER
-);
-success
-
-// create an index
-create index idx on T1 (col_id);
-success
-
-// oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/null_enclosedBy.csv" <enclosed_by_leading> =  "'" ;
-success
-
-// predicateFetch rows
-tableScan T1;
-rows: 11
-
-tableScan T1;
-rows:
-  (NULL,null,NULL)
-  (null,null,NULL)
-  (null,null,null)
-  (1,null,3)
-  (2,' null',3)
-  (3,null,null)
+  (3,'N',null)
   (4,'N is not a null', 3)
   (5,'\N',null)
   (6,'The word null', 3)
@@ -88,7 +51,8 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/null_enclosedByCurly.csv" <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
+Load T1 "../DATA/Load/null_enclosedBy.csv"
+  <enclosed_by_leading> =  "'" ;
 success
 
 // predicateFetch rows
@@ -100,9 +64,48 @@ rows:
   (NULL,null,NULL)
   (null,null,NULL)
   (null,null,null)
-  (1,null,3)
+  (1,'null',3)
   (2,' null',3)
-  (3,null,null)
+  (3,'N',null)
+  (4,'N is not a null', 3)
+  (5,'\N',null)
+  (6,'The word null', 3)
+  (7,'The word null', 3)
+  (8,'null is not null',3)
+
+// drop the table
+drop table T1;
+success
+
+create table T1 (
+  col_id       INTEGER,
+  col_vch      VARCHAR(25),
+  col_int      INTEGER
+);
+success
+
+// create an index
+create index idx on T1 (col_id);
+success
+
+// oldLoad T1 with deafult enclosedBy
+Load T1 "../DATA/Load/null_enclosedByCurly.csv"
+  <enclosed_by_leading> =  "{"
+   <enclosed_by_trailing> = "}";
+success
+
+// predicateFetch rows
+tableScan T1;
+rows: 11
+
+tableScan T1;
+rows:
+  (NULL,null,NULL)
+  (null,null,NULL)
+  (null,null,null)
+  (1,'null',3)
+  (2,' null',3)
+  (3,'N',null)
   (4,'N is not a null', 3)
   (5,'\N',null)
   (6,'The word null', 3)

@@ -263,67 +263,67 @@ create table RETURNS (
 success
 
 // oldLoad data into the tables
-oldLoad TABLE1 "../DATA/Load/tbl1data.csv" ;
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 success
 
-oldLoad TABLE2 "../DATA/Load/tbl2data.csv" ;
+Load TABLE2 "../DATA/Load/tbl2data.csv" ;
 success
 
-oldLoad TABLE3 "../DATA/Load/tbl3data.csv" ;
+Load TABLE3 "../DATA/Load/tbl3data.csv" ;
 success
 
-oldLoad TABLE4 "../DATA/Load/tbl4data.csv" ;
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 success
 
-oldLoad TABLE5 "../DATA/Load/tbl5data.csv" ;
+Load TABLE5 "../DATA/Load/tbl5data.csv" ;
 success
 
-oldLoad TABLE6 "../DATA/Load/tbl6data.csv" ;
+Load TABLE6 "../DATA/Load/tbl6data.csv" ;
 success
 
-oldLoad TABLE7 "../DATA/Load/tbl7data.csv" ;
+Load TABLE7 "../DATA/Load/tbl7data.csv" ;
 success
 
-oldLoad TABLE8 "../DATA/Load/tbl8data.csv" ;
+Load TABLE8 "../DATA/Load/tbl8data.csv" ;
 success
 
-oldLoad TABLE9 "../DATA/Load/tbl9data.csv" ;
+Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 success
 
-oldLoad ORDERS "../DATA/Load/orders.csv" ;
+Load ORDERS "../DATA/Load/orders.csv" ;
 success
 
-oldLoad LINEITEM "../DATA/Load/lineitem.csv" ;
+Load LINEITEM "../DATA/Load/lineitem.csv" ;
 success
 
-oldLoad CUSTOMERH "../DATA/Load/customer.csv" ;
+Load CUSTOMERH "../DATA/Load/customer.csv" ;
 success
 
-oldLoad PARTSUPP "../DATA/Load/partsupp.csv" <record_ends> = "\r\n";
+Load PARTSUPP "../DATA/Load/partsupp.csv" <record_ends> = "\r\n";
 success
 
-oldLoad PART "../DATA/Load/part.csv" ;
+Load PART "../DATA/Load/part.csv" ;
 success
 
-oldLoad SHIPPING "../DATA/Load/shipping.csv" ;
+Load SHIPPING "../DATA/Load/shipping.csv" ;
 success
 
-oldLoad SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
+Load SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
 success
 
-oldLoad SUPPLIER "../DATA/Load/supplier.csv" ;
+Load SUPPLIER "../DATA/Load/supplier.csv" ;
 success
 
-oldLoad MANUFACTURER "../DATA/Load/manufacturer.csv";
+Load MANUFACTURER "../DATA/Load/manufacturer.csv";
 success
 
-oldLoad NATION "../DATA/Load/nation.csv" <record_ends> = "\r\n";;
+Load NATION "../DATA/Load/nation.csv" <record_ends> = "\r\n";;
 success
 
-oldLoad REGION "../DATA/Load/region.csv" ;
+Load REGION "../DATA/Load/region.csv" ;
 success
 
-oldLoad RETURNS "../DATA/Load/returns.csv";
+Load RETURNS "../DATA/Load/returns.csv";
 success
 
 // tests row limits
@@ -336,17 +336,20 @@ success
 //predicateFetch limitRow;
 //rows: 0
 
-oldLoad limitRow "../DATA/Load/largeRow2.csv";
-failure contains: '1 invalid'
+Load limitRow "../DATA/Load/largeRow2.csv";
+//failure contains: '1 invalid'
+success;
 
 tableScan limitRow;
-rows: 0
+rows: 1
 
-oldLoad limitRow "../DATA/Load/largeRow3.csv";
-failure contains: '1 invalid'
+Load limitRow "../DATA/Load/largeRow3.csv";
+//failure contains: '1 invalid'
+success;
 
 tableScan limitRow;
-rows: 0
+rows: 2
+
 /*
 oldLoad limitRow "../DATA/Load/15KRow.csv";
 
