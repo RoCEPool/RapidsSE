@@ -13,7 +13,7 @@ namespace Load
   private:
   
     Job*       m_pPipelineJob;
-    i8         m_nPtns;
+    i8         m_nPtnsInGrid;
 
     StreamDef* m_pStreamDef;
     BucketMap* m_pBucketMap;
@@ -24,6 +24,7 @@ namespace Load
     RsbBuffer* m_pRsbBuffer;
 
     char       m_cRecEnd;
+    char       m_cRecEnd2nd;
     char       m_cFldSep;
 
     i8         m_nRecords;

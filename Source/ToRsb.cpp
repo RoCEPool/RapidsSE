@@ -23,7 +23,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
   m_pPipelineJob = AM::pPipelineJob();
-  m_nPtns        = AM::nPtnsInGrid();
+  m_nPtnsInGrid  = AM::nPtnsInGrid();
 
   m_pStreamDef = pStreamDef;
   m_pBucketMap = pBucketMap;
@@ -33,8 +33,15 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_pRowSlab   = nullptr;
   m_pRsbBuffer = nullptr;
 
-  m_cRecEnd    = (RE_NL == m_pFmt->m_eRecordEnd) ? '\n': '\n'; // 0x0a
   m_cFldSep    = m_pFmt->m_cFieldDelimiter;
+  
+  switch (m_pFmt->m_eRecordEnd) {
+    case RE_CR:   m_cRecEnd = '\r'; m_cRecEnd2nd = '\0'; break;
+    case RE_CRNL: m_cRecEnd = '\r'; m_cRecEnd2nd = '\n'; break;
+    case RE_NL:   m_cRecEnd = '\n'; m_cRecEnd2nd = '\0'; break;
+    default:
+      NEVER_REACH;
+  }
 
   m_nRecords   = 0;
   m_nErrors    = 0;
@@ -280,26 +287,26 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 baTrace = 0
-//     | C_L_STD_Begin
-//     | C_L_STD_TestMoreRecords
-//     | C_L_STD_TestMoreFields
-//     | C_L_STD_Boolean
-//     | C_L_STD_Date
-//     | C_L_STD_Decimal
-//     | C_L_STD_Float
-//     | C_L_STD_Integer
-//     | C_L_STD_Interval
-//     | C_L_STD_Time
-//     | C_L_STD_Timestamp
-//     | C_L_STD_Varchar
-//     | C_L_STD_VarcharUnquoted
-//     | C_L_STD_VarcharSingleQuoted
-//     | C_L_STD_VarcharDoubleQuoted
-//     | C_L_STD_VarcharUserEnclosed
-//     | C_L_STD_PostField
-//     | C_L_STD_FieldError
-//     | C_L_STD_EndOfRecord
-//     | C_L_STD_EndOfCsvChunk
+     | C_L_STD_Begin
+     | C_L_STD_TestMoreRecords
+     | C_L_STD_TestMoreFields
+     | C_L_STD_Boolean
+     | C_L_STD_Date
+     | C_L_STD_Decimal
+     | C_L_STD_Float
+     | C_L_STD_Integer
+     | C_L_STD_Interval
+     | C_L_STD_Time
+     | C_L_STD_Timestamp
+     | C_L_STD_Varchar
+     | C_L_STD_VarcharUnquoted
+     | C_L_STD_VarcharSingleQuoted
+     | C_L_STD_VarcharDoubleQuoted
+     | C_L_STD_VarcharUserEnclosed
+     | C_L_STD_PostField
+     | C_L_STD_FieldError
+     | C_L_STD_EndOfRecord
+     | C_L_STD_EndOfCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2662,7 +2669,7 @@ L_STD_EndOfRecord:
   // set partition hash
   if (m_bPtnHash) {
         
-    tPtnNo = PtnMap::tHashToPtnNo(iHash,m_nPtns);
+    tPtnNo = PtnMap::tHashToPtnNo(iHash,m_nPtnsInGrid);
     
     // partition mapping experiment by Ray 12 Nov 2020
 //    iBucketId = PtnMap::iHashToBucketId(iHash);
