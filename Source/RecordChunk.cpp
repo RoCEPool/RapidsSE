@@ -77,7 +77,7 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
   char* aRecordStart;
   
   // which record end are we looking for?
-  switch (m_pFmt->m_eRecordEnd) {
+  switch (m_pFmt->m_eLineEnd) {
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case RE_NL: // advance to next [<terminator>]\n

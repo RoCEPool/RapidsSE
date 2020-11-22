@@ -15,8 +15,8 @@ namespace Chunks
     char m_cEnclosedBy_Trailing; // enclosed by
     char m_cEscapeChar;          // escape char
     char m_cFieldDelimiter;      // field delimiter
+    eRE  m_eLineEnd;             // line end sequence
     char m_cRecordTerminator;    // record terminator
-    eRE  m_eRecordEnd;           // record end sequence
     eDC  m_eDateComponent[3];    // date component order
     char m_cDateSeparator;       // date separater
   

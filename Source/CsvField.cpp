@@ -142,7 +142,7 @@ bool CsvField::bValidFieldEnd(char* aSrc, Format* pFmt)
       return false;
 
     // test we see the CsvValue end after the CsvValue termintor
-    bool bValidEnd = bValidRecordEnd(aSrc+1,pFmt);
+    bool bValidEnd = bValidLineEnd(aSrc+1,pFmt);
 
     return bValidEnd;
   }
@@ -150,7 +150,7 @@ bool CsvField::bValidFieldEnd(char* aSrc, Format* pFmt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit CsvValue ends
 
-  bool bValidEnd = bValidRecordEnd(aSrc,pFmt);
+  bool bValidEnd = bValidLineEnd(aSrc,pFmt);
 
   return bValidEnd;
 }
@@ -158,9 +158,9 @@ bool CsvField::bValidFieldEnd(char* aSrc, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* test for valid record end                                                  */
 /*----------------------------------------------------------------------------*/
-bool CsvField::bValidRecordEnd(char* aSrc, Format* pFmt)
+bool CsvField::bValidLineEnd(char* aSrc, Format* pFmt)
 {
-  switch (pFmt->m_eRecordEnd) {
+  switch (pFmt->m_eLineEnd) {
 
     case RE_NL: // test for \n
       if (C_NL == *aSrc)

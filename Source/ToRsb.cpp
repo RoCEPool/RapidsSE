@@ -36,7 +36,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   
   m_cFieldDelimiter    = pFmt->m_cFieldDelimiter;
   
-  switch (pFmt->m_eRecordEnd) {
+  switch (pFmt->m_eLineEnd) {
     case RE_CR:   m_cRecordEnd = '\r'; m_cRecordEnd2nd = '\0'; break;
     case RE_CRNL: m_cRecordEnd = '\r'; m_cRecordEnd2nd = '\n'; break;
     case RE_NL:   m_cRecordEnd = '\n'; m_cRecordEnd2nd = '\0'; break;

@@ -465,7 +465,7 @@ bool CsvValue::bValidFieldEnd(char* aSrc, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 bool CsvValue::bValidRecordEnd(char* aSrc, Format* pFmt)
 {
-  switch (pFmt->m_eRecordEnd) {
+  switch (pFmt->m_eLineEnd) {
       
     case RE_NL: // test for \n
       if (C_NL == *aSrc)
