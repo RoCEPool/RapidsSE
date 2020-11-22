@@ -354,6 +354,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
     vTrace("L_STD_InitialState: \n"
            "  errors %lld records %lld\n"
            "  escape %02llx=%s fldSep %02llx=%s recEnd %02llx=%s recEnd2nd %02llx=%s\n"
+           "  encloseBy_leading %02llx=%s encloseBy_trailing %02llx=%s\n"
            "\n"_Stz
            
            ,m_nErrors
@@ -364,6 +365,11 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
            ,(i8)m_cRecEnd, StrLib::szCharToStr(m_cRecEnd)
            ,(i8)m_cRecEnd2nd, StrLib::szCharToStr(m_cRecEnd2nd)
            
+           ,m_pFmt->m_cEnclosedBy_Leading,
+              StrLib::szCharToStr(m_pFmt->m_cEnclosedBy_Leading)
+           ,m_pFmt->m_cEnclosedBy_Trailing,
+              StrLib::szCharToStr(m_pFmt->m_cEnclosedBy_Trailing)
+
            );
   }
 
