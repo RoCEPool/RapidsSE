@@ -107,7 +107,9 @@ create index idx on vch (vch_testno);
 success
 
 // oldLoad data into the table with \0 as <enclosed_by_leading> = 
-Load vch "../DATA/Load/vch_no_enclosed.csv" <enclosed_by_leading> =  "\0";
+Load vch "../DATA/Load/vch_no_enclosed.csv"
+  <enclosed_by_leading> =  "\0"
+;
 success
 
 tableScan vch;

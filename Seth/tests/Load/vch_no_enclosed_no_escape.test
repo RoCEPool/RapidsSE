@@ -18,7 +18,8 @@ success;
 
 // oldLoad data into the table with default formatter settings
 oldLoad vch "../DATA/Load/vch_no_enclosed_no_escape.csv"
-  <enclosed_by_leading> = "\0" <escape_char> = "\0" ;
+  <enclosed_by_leading> = "\0"
+  <escape_char> = "\0" ;
 success
 
 //predicateFetch vch;

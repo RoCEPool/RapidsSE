@@ -19,7 +19,10 @@ create table T1 (
 success
 
 // oldLoad data into the table with enclosed_by as 3 characters
-oldLoad T1 "../DATA/Load/enclosedByBraces.csv" <enclosed_by_leading> = "{" <enclosed_by_trailing> = "}";
+oldLoad T1 "../DATA/Load/enclosedByBraces.csv"
+  <enclosed_by_leading> = "{"
+  <enclosed_by_trailing> = "}"
+;
 success
 
 tableScan T1;
