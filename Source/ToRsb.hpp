@@ -62,23 +62,23 @@ namespace Load
 
   ToRsb* _pToRsb(void* aAddr);
 
-  static const i8 C_STD_BeginCsvChunk   = 1;
-  static const i8 C_STD_InitialState    = 1 <<  1;
-  static const i8 C_STD_TestMoreRecords = 1 <<  2;
-  static const i8 C_STD_TestMoreFields  = 1 <<  3;
-  static const i8 C_STD_Boolean         = 1 <<  4;
-  static const i8 C_STD_Date            = 1 <<  5;
-  static const i8 C_STD_Decimal         = 1 <<  6;
-  static const i8 C_STD_Float           = 1 <<  7;
-  static const i8 C_STD_Integer         = 1 <<  8;
-  static const i8 C_STD_Interval        = 1 <<  9;
-  static const i8 C_STD_Time            = 1 << 10;
-  static const i8 C_STD_Timestamp       = 1 << 11;
-  static const i8 C_STD_Varchar         = 1 << 12;
-  static const i8 C_STD_PostField       = 1 << 13;
-  static const i8 C_STD_FieldError      = 1 << 14;
-  static const i8 C_STD_EndRecord       = 1 << 15;
-  static const i8 C_STD_EndCsvChunk     = 1 << 16;
+  static const i8 C_BIT_BeginCsvChunk   = 1;
+  static const i8 C_BIT_InitialState    = 1 <<  1;
+  static const i8 C_BIT_TestMoreRecords = 1 <<  2;
+  static const i8 C_BIT_TestMoreFields  = 1 <<  3;
+  static const i8 C_BIT_Boolean         = 1 <<  4;
+  static const i8 C_BIT_Date            = 1 <<  5;
+  static const i8 C_BIT_Decimal         = 1 <<  6;
+  static const i8 C_BIT_Float           = 1 <<  7;
+  static const i8 C_BIT_Integer         = 1 <<  8;
+  static const i8 C_BIT_Interval        = 1 <<  9;
+  static const i8 C_BIT_Time            = 1 << 10;
+  static const i8 C_BIT_Timestamp       = 1 << 11;
+  static const i8 C_BIT_Varchar         = 1 << 12;
+  static const i8 C_BIT_PostField       = 1 << 13;
+  static const i8 C_BIT_FieldError      = 1 << 14;
+  static const i8 C_BIT_EndRecord       = 1 << 15;
+  static const i8 C_BIT_EndCsvChunk     = 1 << 16;
 }
 
 /*============================================================================*/
