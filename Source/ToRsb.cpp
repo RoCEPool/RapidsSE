@@ -287,7 +287,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 baTrace = 0
-     | C_L_STD_Begin
+     | C_L_STD_BeginCsvChunk
      | C_L_STD_TestMoreRecords
      | C_L_STD_TestMoreFields
      | C_L_STD_Boolean
@@ -299,21 +299,17 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
      | C_L_STD_Time
      | C_L_STD_Timestamp
      | C_L_STD_Varchar
-     | C_L_STD_VarcharUnquoted
-     | C_L_STD_VarcharSingleQuoted
-     | C_L_STD_VarcharDoubleQuoted
-     | C_L_STD_VarcharUserEnclosed
      | C_L_STD_PostField
      | C_L_STD_FieldError
-     | C_L_STD_EndOfRecord
-     | C_L_STD_EndOfCsvChunk
+     | C_L_STD_EndRecord
+     | C_L_STD_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) begin                                                                STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (baTrace & C_L_STD_Begin)
+  if (baTrace & C_L_STD_BeginCsvChunk)
     vTrace("L_STD_Begin: >>%s<<\n"_Stz,
            spStr.szInspect(azCsvChunk,64,false));
 
@@ -332,7 +328,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // determine field seperator
+  // determine field separator
 
   if (m_bFirst) {
     m_bFirst = false;
@@ -363,7 +359,7 @@ L_STD_TestMoreRecords:
   
   // test for more csv to be parsed
   if (! bMORE_CSV())
-    goto L_STD_EndOfCsvChunk;
+    goto L_STD_EndCsvChunk;
   
   // begin new record
   azRecordStart = azCsvSrc;
@@ -393,7 +389,7 @@ L_STD_TestMoreFields:
   if (i_Fld >= nCols) {
     if (baTrace & C_L_STD_TestMoreFields)
       vTrace("L_STD_TestMoreFields: end-of-fields\n"_Stz);
-    goto L_STD_EndOfRecord;
+    goto L_STD_EndRecord;
   }
   
   azFieldStart = azCsvSrc;
@@ -2179,7 +2175,7 @@ L_STD_VarcharWhich:
 
 L_STD_VarcharUnquoted:
 
-  if (baTrace & C_L_STD_VarcharUnquoted)
+  if (baTrace & C_L_STD_Varchar)
     vTrace("L_STD_VarcharUnquoted:\n"_Stz);
   
   // allocate string space in slab
@@ -2234,7 +2230,7 @@ L_STD_VarcharUnquoted:
 
 L_STD_VarcharSingleQuoted:
 
-  if (baTrace & C_L_STD_VarcharSingleQuoted)
+  if (baTrace & C_L_STD_Varchar)
     vTrace("L_STD_VarcharSingleQuoted:\n"_Stz);
   
   // allocate string space in slab
@@ -2351,7 +2347,7 @@ C_L_STD_VarcharSingleQuotedTerminate:
   
 L_STD_VarcharDoubleQuoted:
 
-  if (baTrace & C_L_STD_VarcharDoubleQuoted)
+  if (baTrace & C_L_STD_Varchar)
     vTrace("L_STD_VarcharDoubleQuoted:\n"_Stz);
   
   // allocate string space in slab
@@ -2467,7 +2463,7 @@ L_STD_VarcharDoubleQuoted:
   
 L_STD_VarcharUserEnclosed:
 
-  if (baTrace & C_L_STD_VarcharUserEnclosed)
+  if (baTrace & C_L_STD_Varchar)
     vTrace("L_STD_VarcharUserEnclosed:\n"_Stz);
   
   // allocate string space in slab
@@ -2649,9 +2645,9 @@ L_STD_FieldError:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 7) end of record                                                        STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_STD_EndOfRecord:
+L_STD_EndRecord:
   
-  if (baTrace & C_L_STD_EndOfRecord)
+  if (baTrace & C_L_STD_EndRecord)
     vTrace("L_STD_EndOfRecord:\n"_Stz);
   
   ASSERT(! bMORE_FIELDS());
@@ -2696,9 +2692,9 @@ L_STD_EndOfRecord:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 8) reached end of azCsvChunk                                            STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_STD_EndOfCsvChunk:
+L_STD_EndCsvChunk:
     
-  if (baTrace & C_L_STD_EndOfCsvChunk)
+  if (baTrace & C_L_STD_EndCsvChunk)
     vTrace("L_STD_EndOfCsvChunk:\n"_Stz);
 
   return true;

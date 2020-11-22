@@ -60,7 +60,7 @@ namespace Load
 
   ToRsb* _pToRsb(void* aAddr);
 
-  static const i8 C_L_STD_Begin               = 1;
+  static const i8 C_L_STD_BeginCsvChunk       = 1;
   static const i8 C_L_STD_TestMoreRecords     = 1 << 1;
   static const i8 C_L_STD_TestMoreFields      = 1 << 2;
   static const i8 C_L_STD_Boolean             = 1 << 3;
@@ -72,14 +72,10 @@ namespace Load
   static const i8 C_L_STD_Time                = 1 << 9;
   static const i8 C_L_STD_Timestamp           = 1 << 10;
   static const i8 C_L_STD_Varchar             = 1 << 11;
-  static const i8 C_L_STD_VarcharUnquoted     = 1 << 12;
-  static const i8 C_L_STD_VarcharSingleQuoted = 1 << 13;
-  static const i8 C_L_STD_VarcharDoubleQuoted = 1 << 14;
-  static const i8 C_L_STD_VarcharUserEnclosed = 1 << 15;
-  static const i8 C_L_STD_PostField           = 1 << 16;
-  static const i8 C_L_STD_FieldError          = 1 << 17;
-  static const i8 C_L_STD_EndOfRecord         = 1 << 18;
-  static const i8 C_L_STD_EndOfCsvChunk       = 1 << 19;
+  static const i8 C_L_STD_PostField           = 1 << 12;
+  static const i8 C_L_STD_FieldError          = 1 << 13;
+  static const i8 C_L_STD_EndRecord           = 1 << 14;
+  static const i8 C_L_STD_EndCsvChunk         = 1 << 15;
 }
 
 /*============================================================================*/
