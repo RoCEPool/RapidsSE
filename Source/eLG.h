@@ -5,27 +5,27 @@
 
 enum eLG // entry kind
 {
-  /* 0 */ LE_NONE=0,
+  /* 0 */ LG_NONE=0,
   
-  /* 1 */ LE_DDL,
-  /* 2 */ LE_FYI,
-  /* 3 */ LE_JOB,
-  /* 4 */ LE_LCK,
-  /* 5 */ LE_LOG,
-  /* 6 */ LE_OPR,
-  /* 7 */ LE_MGT,
-  /* 8 */ LE_PRM,
-  /* 9 */ LE_QUE,
-  /*10 */ LE_REQ,
-  /*11 */ LE_RES,
-  /*12 */ LE_SSN,
-  /*13 */ LE_SVC,
-  /*14 */ LE_SYS,
-  /*15 */ LE_THD,
-  /*16 */ LE_TSK,
-  /*17 */ LE_TXN,
+  /* 1 */ LG_DDL,
+  /* 2 */ LG_FYI,
+  /* 3 */ LG_JOB,
+  /* 4 */ LG_LCK,
+  /* 5 */ LG_LOG,
+  /* 6 */ LG_OPR,
+  /* 7 */ LG_MGT,
+  /* 8 */ LG_PRM,
+  /* 9 */ LG_QUE,
+  /*10 */ LG_REQ,
+  /*11 */ LG_RES,
+  /*12 */ LG_SSN,
+  /*13 */ LG_SVC,
+  /*14 */ LG_SYS,
+  /*15 */ LG_THD,
+  /*16 */ LG_TSK,
+  /*17 */ LG_TXN,
   
-  /*18 */ LE_ENUMS
+  /*18 */ LG_ENUMS
 };
 
 static Stz* aLG[]
