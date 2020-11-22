@@ -30,9 +30,6 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_pFmt       = pFmt;
   m_bPtnHash   = bPtnHash;
   
-  m_pRowSlab   = nullptr;
-  m_pRsbBuffer = nullptr;
-
   m_cFldSep    = m_pFmt->m_cFieldDelimiter;
   
   switch (m_pFmt->m_eRecordEnd) {
@@ -43,11 +40,16 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
       NEVER_REACH;
   }
 
+  m_cEscape    = m_pFmt->m_cEscapeChar;
+  
   m_nRecords   = 0;
   m_nErrors    = 0;
   m_bFirst     = true;
   m_bTrace     = false;
   
+  m_pRowSlab   = nullptr;
+  m_pRsbBuffer = nullptr;
+
   //m_pFmt->vShow();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
@@ -493,8 +495,8 @@ L_STD_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -687,8 +689,8 @@ L_STD_Date:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -909,8 +911,8 @@ L_STD_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -1097,8 +1099,8 @@ L_STD_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -1271,8 +1273,8 @@ L_STD_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -1428,8 +1430,8 @@ L_STD_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -1575,8 +1577,8 @@ L_STD_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -1783,8 +1785,8 @@ L_STD_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -2129,8 +2131,8 @@ L_STD_Varchar:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
-  if ('\\' == cSrcChr) {
-    vADV_SRCCHR(); // accept '\\'
+  if (cSrcChr == m_cEscape) {
+    vADV_SRCCHR(); // accept m_cEscape
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
       if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd) {
@@ -2188,8 +2190,8 @@ L_STD_VarcharUnquoted:
     if (cSrcChr == m_cFldSep || cSrcChr == m_cRecEnd)
       break;
     
-    if ('\\' == cSrcChr) {
-      vADV_SRCCHR(); // skip '\\'
+    if (cSrcChr == m_cEscape) {
+      vADV_SRCCHR(); // skip m_cEscape
       
       if (nFieldChars++ < nPixLength) {
         if ('n' == cSrcChr)
@@ -2287,8 +2289,8 @@ L_STD_VarcharSingleQuoted:
     
     // [still in while (cSrcChr)]
     
-    if ('\\' == cSrcChr) {
-      vADV_SRCCHR(); // skip '\\'
+    if (cSrcChr == m_cEscape) {
+      vADV_SRCCHR(); // skip m_cEscape
       
       if (nFieldChars++ < nPixLength) {
         if ('n' == cSrcChr)
@@ -2404,8 +2406,8 @@ L_STD_VarcharDoubleQuoted:
       
       // [still in while (cSrcChr)]
       
-      if ('\\' == cSrcChr) {
-        vADV_SRCCHR(); // skip '\\'
+      if (cSrcChr == m_cEscape) {
+        vADV_SRCCHR(); // skip m_cEscape
         
         if (nFieldChars++ < nPixLength) {
           if ('n' == cSrcChr)
@@ -2481,8 +2483,8 @@ L_STD_VarcharUserEnclosed:
     if (cSrcChr == m_pFmt->m_cEnclosedBy_Trailing)
       break;
     
-    if ('\\' == cSrcChr) {
-      vADV_SRCCHR(); // skip '\\'
+    if (cSrcChr == m_cEscape) {
+      vADV_SRCCHR(); // skip m_cEscape
       
       if (nFieldChars++ < nPixLength) {
         if ('n' == cSrcChr)

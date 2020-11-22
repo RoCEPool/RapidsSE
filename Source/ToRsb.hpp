@@ -20,18 +20,20 @@ namespace Load
     Format*    m_pFmt;
     bool       m_bPtnHash;
 
-    RowSlab*   m_pRowSlab;
-    RsbBuffer* m_pRsbBuffer;
 
     char       m_cRecEnd;
     char       m_cRecEnd2nd;
     char       m_cFldSep;
+    char       m_cEscape;
 
     i8         m_nRecords;
     i8         m_nErrors;
     bool       m_bFirst;
     bool       m_bTrace;
-  
+
+    RowSlab*   m_pRowSlab;
+    RsbBuffer* m_pRsbBuffer;
+
     // must be last
     Footer m_xFooter;
 
