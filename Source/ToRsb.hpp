@@ -17,13 +17,14 @@ namespace Load
 
     StreamDef* m_pStreamDef;
     BucketMap* m_pBucketMap;
-    Format*    m_pFmt;
     bool       m_bPtnHash;
 
-    char       m_cEscape;
-    char       m_cFldSep;
-    char       m_cRecEnd;
-    char       m_cRecEnd2nd;
+    char       m_cEnclosedBy_Leading;
+    char       m_cEnclosedBy_Trailing;
+    char       m_cEscapeChar;
+    char       m_cFieldDelimiter;
+    char       m_cRecordEnd;
+    char       m_cRecordEnd2nd;
 
     i8         m_nRecords;
     i8         m_nErrors;

@@ -77,6 +77,8 @@ void Step::vToRsbRegCreate(void)
       
   m_pLogicUnit->m_xpToRsb = pToRsb;
   
+  delete pFmt;
+  
   EXIT();
 }
 
