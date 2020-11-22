@@ -32,6 +32,7 @@ namespace Strings
     static bool  bBackward(char** ps, char* pBegin, const char c);
     static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
+    static Stz*  szCharToStr(char cArg);
     static void  vClick(char* aArg);
     static bool  bClip(char* aArg, i8 iLen);
     static void  vComma(char* psDst, i8 iArg);
