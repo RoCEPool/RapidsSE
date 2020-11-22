@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* eLE.h -- Log Entry Kind                                                    */
+/* eLG.h -- Log Entry Kind                                                    */
 /*============================================================================*/
 #pragma once
 
-enum eLE // entry kind
+enum eLG // entry kind
 {
   /* 0 */ LE_NONE=0,
   
@@ -28,7 +28,7 @@ enum eLE // entry kind
   /*18 */ LE_ENUMS
 };
 
-static Stz* aLE[]
+static Stz* aLG[]
 {
   /* 0 */ "NONE"_Stz,
   

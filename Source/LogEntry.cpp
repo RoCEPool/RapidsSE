@@ -261,7 +261,7 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
                     m_caNode,
                     spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
 
-                    aLE[m_eKind]
+                    aLG[m_eKind]
                   );
 }
 

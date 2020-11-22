@@ -59,7 +59,7 @@ namespace Logging
   
     char m_caNote[C_MAX_LOG_NOTE]; // comment
   
-    eLE  m_eKind;      // log entry kind.  one of the following
+    eLG  m_eKind;      // log entry kind.  one of the following
     union {
       _LogEntryDdl m_xDdl;  // when m_eKind == LE_DDL
       _LogEntryFyi m_xFyi;  // when m_eKind == LE_FYI

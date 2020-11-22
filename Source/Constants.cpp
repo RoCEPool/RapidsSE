@@ -527,7 +527,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_EA"_Stz,   EG_EA);
   vAddConstant("EG_EC"_Stz,   EG_EC);
   vAddConstant("EG_ED"_Stz,   EG_ED);
-  vAddConstant("EG_EK"_Stz,   EG_EK);
   vAddConstant("EG_EO"_Stz,   EG_EO);
   vAddConstant("EG_EP"_Stz,   EG_EP);
   vAddConstant("EG_FA"_Stz,   EG_FA);
@@ -550,6 +549,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_KK"_Stz,   EG_KK);
   vAddConstant("EG_LA"_Stz,   EG_LA);
   vAddConstant("EG_LH"_Stz,   EG_LH);
+  vAddConstant("EG_LG"_Stz,   EG_LG);
   vAddConstant("EG_LK"_Stz,   EG_LK);
   vAddConstant("EG_MA"_Stz,   EG_MA);
   vAddConstant("EG_MC"_Stz,   EG_MC);
