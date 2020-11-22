@@ -121,7 +121,7 @@ bool LoadCursor::bFindRecordEnd(char** aazRecordEnd)
   switch (m_pFmt->m_eLineEnd) {
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_NL: // advance to next [<terminator>]\n
+    case LE_NL: // advance to next [<terminator>]\n
       
       // debug
       aRecordStart = *aazRecordEnd;
@@ -155,7 +155,7 @@ bool LoadCursor::bFindRecordEnd(char** aazRecordEnd)
       break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_CR: // advance to next [<terminator>]\r
+    case LE_CR: // advance to next [<terminator>]\r
       
       // debug
       aRecordStart = *aazRecordEnd;
@@ -189,7 +189,7 @@ bool LoadCursor::bFindRecordEnd(char** aazRecordEnd)
       break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_CRNL: // advance to next [terminator>]\r\n
+    case LE_CRNL: // advance to next [terminator>]\r\n
       
       // debug
       aRecordStart = *aazRecordEnd;

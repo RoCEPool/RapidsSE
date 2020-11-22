@@ -72,6 +72,7 @@ namespace Enums
 #include "eKK.h"
 
 #include "eLA.h"
+#include "eLE.h"
 #include "eLG.h"
 #include "eLH.h"
 #include "eLK.h"
@@ -110,7 +111,6 @@ namespace Enums
 #include "eQN.h"
 
 #include "eRA.h"
-#include "eRE.h"
 #include "eRG.h"
 #include "eRO.h"
 #include "eRS.h"

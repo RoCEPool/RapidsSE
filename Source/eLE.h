@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* eRE.h -- Record Ends                                                       */
+/* eLE.h -- Line End                                                          */
 /*============================================================================*/
 #pragma once
 
-enum eRE // record ends
+enum eLE // line end
 {
-  /* 0 */ RE_NL,     // record finally ends with \n
-  /* 1 */ RE_CR,     // record finally ends with \r
-  /* 2 */ RE_CRNL    // record finally ends with \r\n
+  /* 0 */ LE_NL,     // line ends with \n
+  /* 1 */ LE_CR,     // line ends with \r
+  /* 2 */ LE_CRNL    // line ends with \r\n
 };
 
-static Stz* aRE[]
+static Stz* aLE[]
 {
   /* 0 */ "NL"_Stz,
   /* 1 */ "CR"_Stz,

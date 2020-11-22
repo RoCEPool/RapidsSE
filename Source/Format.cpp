@@ -34,7 +34,7 @@ Format::Format(void)
   //m_cEnclosedBy_Trailing = '}';
   m_cEscapeChar          = D_ESCAPE_CHAR;          //  '\\';
   m_cFieldDelimiter      = D_FIELD_DELIMITER;      //  ',';
-  m_eLineEnd             = RE_NL;
+  m_eLineEnd             = LE_NL;
   m_cRecordTerminator    = D_RECORD_TERMINATOR;    //  '\0';
   
   m_eDateComponent[0]    = DC_YYYY;  // default is YYYY-MM-DD
@@ -76,7 +76,7 @@ bool Format::bIsStdCsv(void)
   if (',' != m_cFieldDelimiter)
     return false;
   
-  if (RE_NL != m_eLineEnd)
+  if (LE_NL != m_eLineEnd)
     return false;
   
   if ('\0' != m_cRecordTerminator)
@@ -186,11 +186,11 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
         return false;
       }
       else if (cRecordEnds == '\n') {
-        m_eLineEnd = RE_NL;
+        m_eLineEnd = LE_NL;
       }
       else if (cRecordEnds == '\r') {
         m_bDefault = false;
-        m_eLineEnd = RE_CR;
+        m_eLineEnd = LE_CR;
       }
       else {
         vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
@@ -202,7 +202,7 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
       
       if (sTagValue.bSame("\r\n"_Stz)) {
         m_bDefault = false;
-        m_eLineEnd = RE_CRNL;
+        m_eLineEnd = LE_CRNL;
       }
       else {
         vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
@@ -330,7 +330,7 @@ void Format::vShow(void)
   vTrace("record_terminator %c\n"_Stz,
          m_cRecordTerminator ? m_cRecordTerminator : '0');
   
-  vTrace("record_end %s\n"_Stz, aRE[m_eLineEnd]);
+  vTrace("record_end %s\n"_Stz, aLE[m_eLineEnd]);
   
   vTrace("date component 0 %s\n"_Stz,
          aDC[m_eDateComponent[0]]);

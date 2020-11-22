@@ -201,7 +201,7 @@ void AttachMap::vPrintAttachMap(void)
         gpAttachMap->m_oFormatters.m_cFieldDelimiter ? gpAttachMap->m_oFormatters.m_cFieldDelimiter : '0');
   vInfo("Record_terminator    : %c\n"_Stz,
         gpAttachMap->m_oFormatters.m_cRecordTerminator ? gpAttachMap->m_oFormatters.m_cRecordTerminator : '0');
-  vInfo("Record_end           : %s\n"_Stz, aRE[gpAttachMap->m_oFormatters.m_eLineEnd]);
+  vInfo("Record_end           : %s\n"_Stz, aLE[gpAttachMap->m_oFormatters.m_eLineEnd]);
   
   vInfo("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[0]]);
   vInfo("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[1]]);

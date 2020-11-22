@@ -23,8 +23,8 @@ namespace Load
     char       m_cEnclosedBy_Trailing;
     char       m_cEscapeChar;
     char       m_cFieldDelimiter;
-    char       m_cRecordEnd;
-    char       m_cRecordEnd2nd;
+    char       m_cLineEnd;
+    char       m_cLineEnd2nd;
 
     i8         m_nRecords;
     i8         m_nErrors;

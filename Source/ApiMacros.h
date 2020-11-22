@@ -210,7 +210,7 @@ EndDefine
   bool bPoolValid = gpBufferPool->bVerifyBoundaries(); \
   if (! bPoolValid)  { \
     vTrace("Pool base %p and limit %p are not valid\n"    \
-           "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz, \
+           "JAVA MAY HAVE LE_MAPPED MEMORY SEGMENTS!!!\n"_Stz, \
            gpBufferPool->pBase(), gpBufferPool->pLimit() );  \
     return EC_VALIDATION_FAILURE; \
   } \

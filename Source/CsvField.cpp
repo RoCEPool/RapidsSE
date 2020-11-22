@@ -162,19 +162,19 @@ bool CsvField::bValidLineEnd(char* aSrc, Format* pFmt)
 {
   switch (pFmt->m_eLineEnd) {
 
-    case RE_NL: // test for \n
+    case LE_NL: // test for \n
       if (C_NL == *aSrc)
         return true;
       else
         return false;
 
-    case RE_CR: // test for \r
+    case LE_CR: // test for \r
       if (C_CR == *aSrc)
         return true;
       else
         return false;
 
-    case RE_CRNL: // test for \r\n
+    case LE_CRNL: // test for \r\n
       if (C_CR == *aSrc && C_NL == *(aSrc+1))
         return true;
       else
