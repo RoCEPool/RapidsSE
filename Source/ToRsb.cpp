@@ -200,6 +200,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cLineEnd)
 
+#define bFIELD_END()     (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+
 #define vFIELD_ERROR(e) \
 { \
   eError = e; \
@@ -504,7 +506,7 @@ L_STD_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_BooleanNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -533,7 +535,7 @@ L_STD_Boolean:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
     }
 
@@ -547,7 +549,7 @@ L_STD_Boolean:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_BooleanNull;
       }
     }
@@ -582,7 +584,7 @@ L_STD_Boolean:
 
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
     }
 
@@ -622,7 +624,7 @@ L_STD_Boolean:
 
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
 
     }
@@ -690,7 +692,7 @@ L_STD_Date:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_DateNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -719,7 +721,7 @@ L_STD_Date:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_YEAR_INVALID);
     }
 
@@ -733,7 +735,7 @@ L_STD_Date:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_DateNull;
       }
     }
@@ -924,7 +926,7 @@ L_STD_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_DecimalNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -953,7 +955,7 @@ L_STD_Decimal:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
     }
 
@@ -967,7 +969,7 @@ L_STD_Decimal:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_DecimalNull;
       }
     }
@@ -1048,7 +1050,7 @@ L_STD_Decimal:
   
   vSKIP_WHITE_SPACE();
   
-  if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+  if (! (bFIELD_END())) {
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   }
   
@@ -1102,7 +1104,7 @@ L_STD_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_FloatNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1131,7 +1133,7 @@ L_STD_Float:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
     }
 
@@ -1145,7 +1147,7 @@ L_STD_Float:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_FloatNull;
       }
     }
@@ -1230,7 +1232,7 @@ L_STD_Float:
   
   vSKIP_WHITE_SPACE();
 
-  if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+  if (! (bFIELD_END())) {
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   }
 
@@ -1268,7 +1270,7 @@ L_STD_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_IntegerNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1297,7 +1299,7 @@ L_STD_Integer:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
     }
 
@@ -1311,7 +1313,7 @@ L_STD_Integer:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_IntegerNull;
       }
     }
@@ -1364,7 +1366,7 @@ L_STD_Integer:
 
   vSKIP_WHITE_SPACE();
   
-  if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+  if (! (bFIELD_END())) {
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   }
   
@@ -1415,7 +1417,7 @@ L_STD_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_IntervalNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1444,7 +1446,7 @@ L_STD_Interval:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
     }
 
@@ -1458,7 +1460,7 @@ L_STD_Interval:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_BooleanNull;
       }
     }
@@ -1504,7 +1506,7 @@ L_STD_Interval:
   vSKIP_WHITE_SPACE();
   
   // test for no noise
-  if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+  if (! (bFIELD_END())) {
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   }
 
@@ -1552,7 +1554,7 @@ L_STD_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_TimeNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1581,7 +1583,7 @@ L_STD_Time:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_HOUR_INVALID);
     }
 
@@ -1595,7 +1597,7 @@ L_STD_Time:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_TimeNull;
       }
     }
@@ -1736,7 +1738,7 @@ L_STD_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_TimestampNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1765,7 +1767,7 @@ L_STD_Timestamp:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_YEAR_INVALID);
     }
 
@@ -1787,7 +1789,7 @@ L_STD_Timestamp:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_TimestampNull;
       }
     }
@@ -2014,7 +2016,7 @@ L_STD_SkipTime:
   
   vSKIP_WHITE_SPACE();
   
-  if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+  if (! (bFIELD_END())) {
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   
@@ -2122,7 +2124,7 @@ L_STD_Varchar:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+  if (bFIELD_END())
     goto L_STD_VarcharNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2152,7 +2154,7 @@ L_STD_Varchar:
       goto L_STD_VarcharWhich;
     }
     
-    if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
+    if (! (bFIELD_END())) {
       vRESET_FIELD();
       goto L_STD_VarcharWhich;
     }
@@ -2167,7 +2169,7 @@ L_STD_Varchar:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd) {
+      if (bFIELD_END()) {
         goto L_STD_VarcharNull;
       }
     }
@@ -2219,7 +2221,7 @@ L_STD_VarcharUnquoted:
   while (cSrcChr) {
         
     // test for field separator (because its not enclosed)
-    if (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+    if (bFIELD_END())
       break;
     
     if (cSrcChr == m_cEscapeChar) {
@@ -2600,10 +2602,10 @@ L_STD_PostField:
       vADV_SRCCHR(); // skip m_cFieldDelimiter
       break;
     }
-    
+
     if (cSrcChr == m_cLineEnd)
       break;
-    
+
     vADV_SRCCHR(); // skip any
   }
 
