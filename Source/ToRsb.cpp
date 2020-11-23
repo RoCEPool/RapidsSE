@@ -53,6 +53,8 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
     default:
       NEVER_REACH;
   }
+  m_cQuoteDouble         = '"';
+  m_cQuoteSingle         = '\'';
   m_cRecordTerminator    = pFmt->m_cRecordTerminator;
   
   m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
@@ -2185,10 +2187,10 @@ L_STD_VarcharWhich:
       continue;
     }
     
-    if ('\'' == cSrcChr)
+    if (m_cQuoteSingle == cSrcChr)
       goto L_STD_VarcharSingleQuoted;
     
-    if ('"' == cSrcChr)
+    if (m_cQuoteDouble == cSrcChr)
       goto L_STD_VarcharDoubleQuoted;
     
     if (m_cEnclosedBy_Leading == cSrcChr)
@@ -2269,14 +2271,14 @@ L_STD_VarcharSingleQuoted:
   
   // >> *'...
   //     ^
-  RASSERT('\'' == cSrcChr);
+  RASSERT(m_cQuoteSingle == cSrcChr);
 
-  vADV_SRCCHR(); // accept leading '\'' of sqs; do not deposit the quote
+  vADV_SRCCHR(); // accept leading m_cQuoteSingle of sqs; do not deposit the quote
 
   while (cSrcChr) {
       
     // ' voodoo
-    if ('\'' == cSrcChr) {
+    if (m_cQuoteSingle == cSrcChr) {
       
       // we have encountered a quote (somewhere after leading quote)
       
@@ -2288,21 +2290,21 @@ L_STD_VarcharSingleQuoted:
         //   this is the quouted empty string
         //   nb. corner cases:  ''n' is not supported
         //                      '',' is not supported
-        vADV_SRCCHR(); // accept trailing '\'' of sqs; do not deposit the quote
+        vADV_SRCCHR(); // accept trailing m_cQuoteSingle of sqs; do not deposit the quote
         break;
       }
       
       // >> *'.*'.*
       //        ^
 
-      vADV_SRCCHR(); // skip '\''
+      vADV_SRCCHR(); // skip m_cQuoteSingle
       
-      if ('\'' == cSrcChr) {
+      if (m_cQuoteSingle == cSrcChr) {
         // handle specific case of two quotes '' meaning one escaped quote
         // >> *'.*''
         //         ^
         if (nFieldChars++ < nPixLength)
-          *acVchDst++ = '\'';
+          *acVchDst++ = m_cQuoteSingle;
         vADV_SRCCHR(); // // accept escaped quote; next char
       }
       
@@ -2386,14 +2388,14 @@ L_STD_VarcharDoubleQuoted:
   
     // >> *"...
     //     ^
-    RASSERT('\"' == cSrcChr);
+    RASSERT(m_cQuoteDouble == cSrcChr);
 
     vADV_SRCCHR(); // accept leading '\"' of sqs; do not deposit the quote
 
     while (cSrcChr) {
         
       // " voodoo
-      if ('\"' == cSrcChr) {
+      if (m_cQuoteDouble == cSrcChr) {
         
         // we have encountered a quote (somewhere after leading quote)
         
@@ -2414,7 +2416,7 @@ L_STD_VarcharDoubleQuoted:
 
         vADV_SRCCHR(); // skip '\"'
         
-        if ('\"' == cSrcChr) {
+        if (m_cQuoteDouble == cSrcChr) {
           // handle specific case of two quotes "" meaning one escaped quote
           // >> *".*""
           //         ^

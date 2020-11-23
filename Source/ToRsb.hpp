@@ -35,6 +35,8 @@ namespace Load
     char m_cFieldDelimiter;
     char m_cLineEnd;
     char m_cLineEnd2nd;
+    char m_cQuoteDouble;
+    char m_cQuoteSingle;
     char m_cRecordTerminator;    // record terminator
 
     i8   m_bAllowNonPrintable;   // allow non-printable
