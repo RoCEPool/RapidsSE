@@ -38,7 +38,6 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_EA: return aEA[i_Enum];
     case EG_EC: return aEC[i_Enum];
     case EG_ED: return aED[i_Enum];
-    case EG_EK: return aLE[i_Enum];
     case EG_EO: return aEO[i_Enum];
     case EG_EP: return aEP[i_Enum];
 
@@ -68,6 +67,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_KK: return aKK[i_Enum];
 
     case EG_LA: return aLA[i_Enum];
+    case EG_LG: return aLG[i_Enum];
     case EG_LH: return aLH[i_Enum];
     case EG_LK: return aLK[i_Enum];
       
@@ -103,7 +103,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_QN: return aQN[i_Enum];
 
     case EG_RA: return aRA[i_Enum];
-    case EG_RE: return aRE[i_Enum];
+    case EG_RE: return aLE[i_Enum];
     case EG_RG: return aRG[i_Enum];
     case EG_RO: return aRO[i_Enum];
     case EG_RS: return aRS[i_Enum];

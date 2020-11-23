@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
 {
-  pLogEntry->m_eKind = LE_THD;
+  pLogEntry->m_eKind = LG_THD;
   pLogEntry->m_cPrefix = 'H';
 
   if (pThread->m_pTask && pThread->pTask()->pJob()) {

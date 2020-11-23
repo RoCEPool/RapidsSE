@@ -333,7 +333,7 @@ void Log::vHow(i8 iReqId, i8 iDetail, LogEntry* pLogEntry)
     return;
   
   if (iDetail != C_UNKNOWN) {
-    if (LE_JOB != pLogEntry->m_eKind)
+    if (LG_JOB != pLogEntry->m_eKind)
       return;
   }
   

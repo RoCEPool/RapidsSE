@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
 {
-  pLogEntry->m_eKind   = LE_LCK;
+  pLogEntry->m_eKind   = LG_LCK;
   pLogEntry->m_cPrefix = 'L';
   pLogEntry->m_iAct    = pLock->iStepNo();
   //pLogEntry->m_xReqTuple.vSet(pLock->aReqTuple());

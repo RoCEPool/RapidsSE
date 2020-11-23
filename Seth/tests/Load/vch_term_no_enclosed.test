@@ -15,7 +15,9 @@ create index idx on vch (vch_testno);
 success;
 
 // oldLoad data into the table with default formatter settings
-oldLoad vch "../DATA/Load/vch_term_no_enclosed.csv" <record_terminator> = ";" <escape_char> = "\0" ;
+oldLoad vch "../DATA/Load/vch_term_no_enclosed.csv"
+  <record_terminator> = ";"
+  <escape_char> = "\0" ;
 success
 
 //tableScan vch;

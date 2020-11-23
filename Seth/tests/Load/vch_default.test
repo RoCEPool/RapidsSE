@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success
 
 // oldLoad data into the table with default formatter settings
-oldLoad vch "../DATA/Load/vch_no_enclosed.csv" ;
+Load vch "../DATA/Load/vch_no_enclosed.csv" ;
 success
 
 tableScan vch;
@@ -23,44 +23,44 @@ rows: 17
 
 predicateFetch vch "vch_testno 201 =";
 rows:
-  ( 201, '''quick brown fox''', *)
+  ( 201, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 202 =";
 rows:
-  ( 202, '''quick brown fox''s''', *)
+  ( 202, 'quick brown fox''s', *)
 
 predicateFetch vch "vch_testno 203 =";
 rows:
-  ( 203, '''quick brown fox''''s''', *)
+  ( 203, 'quick brown fox''s', *)
 
 predicateFetch vch "vch_testno 204 =";
 rows:
-  ( 204, '''quick brow\n foxs''', *)
+  ( 204, 'quick brow\n foxs', *)
 
 predicateFetch vch "vch_testno 205 =";
 rows:
-  ( 205, '''quick brown fox
-s''', *)
+  ( 205, 'quick brown fox
+s', *)
 
 predicateFetch vch "vch_testno 206 =";
 rows:
-  ( 206, '''quick brown fox''', *)
+  ( 206, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 207 =";
 rows:
-  ( 207, '   ''quick brown fox''   ', *)
+  ( 207, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 208 =";
 rows:
-  ( 208, '''''', *)
+  ( 208, '', *)
 
 predicateFetch vch "vch_testno 209 =";
 rows:
-  ( 209, '''null''', *)
+  ( 209, 'null', *)
 
 predicateFetch vch "vch_testno 210 =";
 rows:
-  ( 210, '''N''', *)
+  ( 210, 'N', *)
 
 predicateFetch vch "vch_testno 211 =";
 rows:
@@ -107,7 +107,9 @@ create index idx on vch (vch_testno);
 success
 
 // oldLoad data into the table with \0 as <enclosed_by_leading> = 
-oldLoad vch "../DATA/Load/vch_no_enclosed.csv" <enclosed_by_leading> =  "\0";
+Load vch "../DATA/Load/vch_no_enclosed.csv"
+  <enclosed_by_leading> =  "\0"
+;
 success
 
 tableScan vch;
@@ -115,44 +117,44 @@ rows: 17
 
 predicateFetch vch "vch_testno 201 =";
 rows:
-  ( 201, '''quick brown fox''', *)
+  ( 201, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 202 =";
 rows:
-  ( 202, '''quick brown fox''s''', *)
+  ( 202, 'quick brown fox''s', *)
 
 predicateFetch vch "vch_testno 203 =";
 rows:
-  ( 203, '''quick brown fox''''s''', *)
+  ( 203, 'quick brown fox''s', *)
 
 predicateFetch vch "vch_testno 204 =";
 rows:
-  ( 204, '''quick brow\n foxs''', *)
+  ( 204, 'quick brow\n foxs', *)
 
 predicateFetch vch "vch_testno 205 =";
 rows:
-  ( 205, '''quick brown fox
-s''', *)
+  ( 205, 'quick brown fox
+s', *)
 
 predicateFetch vch "vch_testno 206 =";
 rows:
-  ( 206, '''quick brown fox''', *)
+  ( 206, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 207 =";
 rows:
-  ( 207, '   ''quick brown fox''   ', *)
+  ( 207, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 208 =";
 rows:
-  ( 208, '''''', *)
+  ( 208, '', *)
 
 predicateFetch vch "vch_testno 209 =";
 rows:
-  ( 209, '''null''', *)
+  ( 209, 'null', *)
 
 predicateFetch vch "vch_testno 210 =";
 rows:
-  ( 210, '''N''', *)
+  ( 210, 'N', *)
 
 predicateFetch vch "vch_testno 211 =";
 rows:

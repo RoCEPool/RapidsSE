@@ -85,7 +85,8 @@ success
 
 // oldLoad T1 with deafult escape
 Load T1 "../DATA/Load/escape_enclosedByCurly.csv"
-  <enclosed_by_leading> =  "{" <enclosed_by_trailing> = "}";
+  <enclosed_by_leading> =  "{"
+  <enclosed_by_trailing> = "}";
 success
 
 // predicateFetch rows

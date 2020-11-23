@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 {
-  pLogEntry->m_eKind   = LE_TSK;
+  pLogEntry->m_eKind   = LG_TSK;
   pLogEntry->m_cPrefix = 'F';
   pLogEntry->m_iAct    = pTask->iStepNo();
   //pLogEntry->m_xReqTuple.vSet(pTask->aReqTuple());

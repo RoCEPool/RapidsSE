@@ -8,18 +8,16 @@ namespace Chunks
   class Format : public Object
   {
   public:
-    bool m_bDefault;             // default formatters
-    bool m_bAllowNonPrintable;   // allow non-printable
-  
+    eDC  m_eDateComponent[3];    // date component order
+    char m_cDateSeparator;       // date separater
     char m_cEnclosedBy_Leading;  // enclosed by
     char m_cEnclosedBy_Trailing; // enclosed by
     char m_cEscapeChar;          // escape char
     char m_cFieldDelimiter;      // field delimiter
+    eLE  m_eLineEnd;             // line end sequence
     char m_cRecordTerminator;    // record terminator
-    eRE  m_eRecordEnd;           // record end sequence
-    eDC  m_eDateComponent[3];    // date component order
-    char m_cDateSeparator;       // date separater
   
+    bool m_bAllowNonPrintable;   // allow non-printable
     i8   m_nMaxErrors;           // maximum number of allowable errors
   
     // must be last

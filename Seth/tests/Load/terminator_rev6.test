@@ -13,7 +13,10 @@ create index idx on T1 (col_id);
 success
 
 // oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../Seth/tests/oldLoad/terminatorVch_rev6.csv" record_terminator "|" record_ends "\n";
+oldLoad T1 "../Seth/tests/oldLoad/terminatorVch_rev6.csv"
+  record_terminator "|"
+  record_ends "\n"
+;
 success
 
 // predicateFetch rows

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryOp::vSet(LogEntry* pLogEntry, Op* pOp, eOA eOpAct)
 {
-  pLogEntry->m_eKind = LE_OPR;
+  pLogEntry->m_eKind = LG_OPR;
   pLogEntry->m_cPrefix = 'O';
 
   m_iOpId  = pOp->m_iFocalId;

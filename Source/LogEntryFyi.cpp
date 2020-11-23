@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryFyi::vSet(LogEntry* pLogEntry)
 {  
-  pLogEntry->m_eKind = LE_FYI;
+  pLogEntry->m_eKind = LG_FYI;
   
   pLogEntry->m_cPrefix = 'F';
 }

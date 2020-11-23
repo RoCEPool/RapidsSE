@@ -15,7 +15,9 @@ create index idx on vch (vch_testno);
 success;
 
 // oldLoad data into the table with default formatter settings
-oldLoad vch "../DATA/Load/vch_enclosedBy.csv" <enclosed_by_leading> =  "'";
+Load vch "../DATA/Load/vch_enclosedBy.csv"
+  <enclosed_by_leading> =  "'"
+;
 success
 
 tableScan vch;
@@ -60,11 +62,11 @@ rows:
 
 predicateFetch vch "vch_testno 110 =";
 rows:
-  ( 110, null, *)
+  ( 110, 'null', *)
 
 predicateFetch vch "vch_testno 111 =";
 rows:
-  ( 111, null, *)
+  ( 111, 'N', *)
 
 predicateFetch vch "vch_testno 112 =";
 rows:

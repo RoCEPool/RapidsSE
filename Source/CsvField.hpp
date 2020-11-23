@@ -12,7 +12,7 @@ namespace Records
                             char** aazCrs, Format* pFmt);
   
     static bool bValidFieldEnd(char* aSrc, Format* pFmt);
-    static bool bValidRecordEnd(char* aSrc, Format* pFmt);
+    static bool bValidLineEnd(char* aSrc, Format* pFmt);
   };
 }
 
