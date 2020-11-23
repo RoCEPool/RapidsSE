@@ -790,31 +790,31 @@
   
   // --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - ---
   // load                                                          TO BE REMOVED
-  sPath
-  "
-  procedure oldLoad_REMOVE
-    parameters $table $file
-  begin
-
-  stage stageA on origin :
-    start | periodic once | chunk $file | stageB
-
-  stage stageB on all partitions on origin :
-    rdCsvChunk $file |
-    toCrwH $table    |
-    //  dump crwBuffer 1 |
-    stageC Hashed
-
-  stage stageC on all partitions :
-    insert $table | stageD
-
-  stage stageD on origin :
-    //sink | stageA
-    progress 'Load' | toStatDemon | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
+//  sPath
+//  "
+//  procedure oldLoad_REMOVE
+//    parameters $table $file
+//  begin
+//
+//  stage stageA on origin :
+//    start | periodic once | chunk $file | stageB
+//
+//  stage stageB on all partitions on origin :
+//    rdCsvChunk $file |
+//    toCrwH $table    |
+//    //  dump crwBuffer 1 |
+//    stageC Hashed
+//
+//  stage stageC on all partitions :
+//    insert $table | stageD
+//
+//  stage stageD on origin :
+//    //sink | stageA
+//    progress 'Load' | toStatDemon | sink | stageA
+//
+//  end ;
+//  "
+//  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/

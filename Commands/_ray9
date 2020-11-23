@@ -4,19 +4,16 @@
 
 bc;
 
-create table tspTbl (
-  tsp_col1   TIMESTAMP   NOT NULL,
-  vch_col2   VARCHAR(32) NOT NULL,
-  int_col3   INTEGER     NOT NULL,
-  int_col4   INTEGER     NOT NULL,
-  ivl_col5   DECIMAL(10,2) NOT NULL,
-  flt_col6   FLOAT       NOT NULL,
-  tsp_col7   TIMESTAMP
+create table IntTbl (
+  int_col1  INTEGER NOT NULL,
+  vch_col2  VARCHAR(32) NOT NULL,
+  vch_col3  VARCHAR(32) NOT NULL,
+  int_col4  INTEGER
 );
 
-Load tspTbl "../DATA/Datums/timestamp.csv" ;
+load IntTbl "../DATA/Datums/integer.csv" ;
 
-tableScan tspTbl;
+tableScan IntTbl;
 
 /*============================================================================*/
 /* end                                                                        */
