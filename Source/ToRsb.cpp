@@ -296,23 +296,23 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-     | C_BIT_InitialState
-     | C_BIT_BeginCsvChunk
-     | C_BIT_TestMoreRecords
-     | C_BIT_TestMoreFields
-     | C_BIT_Boolean
-     | C_BIT_Date
-     | C_BIT_Decimal
-     | C_BIT_Float
-     | C_BIT_Integer
-     | C_BIT_Interval
-     | C_BIT_Time
-     | C_BIT_Timestamp
-     | C_BIT_Varchar
-     | C_BIT_PostField
-     | C_BIT_FieldError
-     | C_BIT_EndRecord
-     | C_BIT_EndCsvChunk
+//     | C_BIT_InitialState
+//     | C_BIT_BeginCsvChunk
+//     | C_BIT_TestMoreRecords
+//     | C_BIT_TestMoreFields
+//     | C_BIT_Boolean
+//     | C_BIT_Date
+//     | C_BIT_Decimal
+//     | C_BIT_Float
+//     | C_BIT_Integer
+//     | C_BIT_Interval
+//     | C_BIT_Time
+//     | C_BIT_Timestamp
+//     | C_BIT_Varchar
+//     | C_BIT_PostField
+//     | C_BIT_FieldError
+//     | C_BIT_EndRecord
+//     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
