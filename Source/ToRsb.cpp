@@ -296,23 +296,23 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-//     | C_BIT_InitialState
-//     | C_BIT_BeginCsvChunk
-//     | C_BIT_TestMoreRecords
-//     | C_BIT_TestMoreFields
-//     | C_BIT_Boolean
-//     | C_BIT_Date
-//     | C_BIT_Decimal
-//     | C_BIT_Float
-//     | C_BIT_Integer
-//     | C_BIT_Interval
-//     | C_BIT_Time
-//     | C_BIT_Timestamp
-//     | C_BIT_Varchar
-//     | C_BIT_PostField
-//     | C_BIT_FieldError
-//     | C_BIT_EndRecord
-//     | C_BIT_EndCsvChunk
+     | C_BIT_InitialState
+     | C_BIT_BeginCsvChunk
+     | C_BIT_TestMoreRecords
+     | C_BIT_TestMoreFields
+     | C_BIT_Boolean
+     | C_BIT_Date
+     | C_BIT_Decimal
+     | C_BIT_Float
+     | C_BIT_Integer
+     | C_BIT_Interval
+     | C_BIT_Time
+     | C_BIT_Timestamp
+     | C_BIT_Varchar
+     | C_BIT_PostField
+     | C_BIT_FieldError
+     | C_BIT_EndRecord
+     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -515,25 +515,21 @@ L_STD_Boolean:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_BOOLEAN_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_BOOLEAN_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
     }
 
     goto L_STD_BooleanNull;
@@ -551,8 +547,7 @@ L_STD_Boolean:
       }
     }
   
-    eError = EC_CSV_BOOLEAN_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -572,21 +567,18 @@ L_STD_Boolean:
           vADV_SRCCHR(); // skip 'e'
         }
         else { // not expected 'e'
-          eError = EC_CSV_BOOLEAN_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
         }
       }
       else { // not expected 'u'
-        eError = EC_CSV_BOOLEAN_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
       }
     }
 
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
     }
 
     goto L_STD_BooleanDeposit;
@@ -610,26 +602,24 @@ L_STD_Boolean:
             vADV_SRCCHR(); // skip 'e'
           }
           else { // not expected 'e'
-            eError = EC_CSV_BOOLEAN_INVALID;
-            goto L_STD_FieldError;
+            vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
           }
         }
         else { // not expected 's'
-          eError = EC_CSV_BOOLEAN_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_BOOLEAN_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+
       }
     }
 
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_BOOLEAN_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+
     }
     
     goto L_STD_BooleanDeposit;
@@ -646,8 +636,7 @@ L_STD_Boolean:
       nDigits++;
     }
     if (nDigits > 19) {
-      eError = EC_CSV_BOOLEAN_TOO_LARGE;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_BOOLEAN_TOO_LARGE);
     }
   
     if (uNumber > 0)
@@ -661,8 +650,7 @@ L_STD_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unrecognisable boolean portion
   
-  eError = EC_CSV_BOOLEAN_INVALID;
-  goto L_STD_FieldError;
+  vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all boolean portions collected
@@ -674,8 +662,7 @@ L_STD_BooleanDeposit:
 L_STD_BooleanNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_BOOLEAN_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   }
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of boolean
@@ -713,25 +700,21 @@ L_STD_Date:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_YEAR_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_YEAR_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_YEAR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_YEAR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
     }
 
     goto L_STD_DateNull;
@@ -749,8 +732,7 @@ L_STD_Date:
       }
     }
   
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -786,12 +768,10 @@ L_STD_Date_year:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   if (nDigits > 4) {
-    eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
   }
 
   // adjust a 2-digit year
@@ -800,8 +780,7 @@ L_STD_Date_year:
 
   // skip over separator
   if (m_cDateSeparator != cSrcChr) {
-    eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
   }
   vADV_SRCCHR(); // skip separator
   
@@ -820,18 +799,15 @@ L_STD_Date_year:
 
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_MONTH_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_MONTH_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
   }
 
   // skip over separator
   if (cSrcChr == m_cDateSeparator) {
-    eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
   }
   vADV_SRCCHR(); // skip separator
   
@@ -850,12 +826,10 @@ L_STD_Date_year:
 
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_DAY_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DAY_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_DAY_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
   }
 
   goto L_STD_Date_components;
@@ -867,18 +841,15 @@ L_STD_Date_year:
   
   // validate the year
   if (uYear < C_YEAR_MIN) {
-    eError = EC_CSV_YEAR_TOO_SMALL;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
   }
   if (uYear > C_YEAR_MAX) {
-    eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
   }
 
   // validate the month
   if (uMonth < 1 || uMonth > 12) {
-    eError = EC_CSV_MONTH_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
   }
   
   // validate day wrt possible leap year
@@ -896,20 +867,17 @@ L_STD_Date_year:
 
   // validate days per month
   if (uDay < 1) {
-    eError = EC_CSV_DAY_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DAY_INVALID);
   }
   
   if (bLeapYear) {
     if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
-      eError = EC_CSV_DAY_NOT_LEAPYEAR;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
     }
   }
   else {
     if (uDay > (u8)iDaysPerMonth[uMonth]) {
-      eError = EC_CSV_DAY_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_DAY_INVALID);
     }
   }
 
@@ -926,9 +894,8 @@ L_STD_Date_year:
 L_STD_DateNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_STD_FieldError;
-  }
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                           // end of date
@@ -966,25 +933,21 @@ L_STD_Decimal:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_DECIMAL_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_DECIMAL_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_DECIMAL_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_DECIMAL_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
     }
 
     goto L_STD_DecimalNull;
@@ -1002,8 +965,7 @@ L_STD_Decimal:
       }
     }
   
-    eError = EC_CSV_DECIMAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1060,12 +1022,10 @@ L_STD_Decimal:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_DECIMAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   }
   if (nDigits > 19) {
-    eError = EC_CSV_DECIMAL_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
   }
   // correct for scale by x 10 till correctly scaled
   while (nPixScale--)
@@ -1082,8 +1042,7 @@ L_STD_Decimal:
   vSKIP_WHITE_SPACE();
   
   if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-    eError = EC_CSV_DECIMAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1091,8 +1050,7 @@ L_STD_Decimal:
   
   // have we exceeded the max ?
   if (uNumber > (u8)C_I8_MAX) {
-    eError = EC_CSV_DECIMAL_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
   }
   
   // compute final field value
@@ -1100,8 +1058,7 @@ L_STD_Decimal:
   
   // have we gone below the negative min ?
   if (iDecimal < C_I8_MIN) {
-    eError = EC_CSV_DECIMAL_TOO_SMALL;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DECIMAL_TOO_SMALL);
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1113,8 +1070,7 @@ L_STD_Decimal:
 L_STD_DecimalNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_DECIMAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
@@ -1154,25 +1110,21 @@ L_STD_Float:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_FLOAT_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_FLOAT_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_FLOAT_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_FLOAT_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
     }
 
     goto L_STD_FloatNull;
@@ -1190,8 +1142,7 @@ L_STD_Float:
       }
     }
   
-    eError = EC_CSV_FLOAT_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1257,8 +1208,7 @@ L_STD_Float:
     
     // should have seen some exponent digits
     if (! nExpDigits) {
-      eError = EC_CSV_EXPONENT_MISSING;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_EXPONENT_MISSING);
     }
   }
 
@@ -1267,15 +1217,13 @@ L_STD_Float:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_FLOAT_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   }
   
   vSKIP_WHITE_SPACE();
 
   if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-    eError = EC_CSV_FLOAT_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1292,8 +1240,7 @@ L_STD_Float:
 L_STD_FloatNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_FLOAT_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
@@ -1328,25 +1275,21 @@ L_STD_Integer:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_INTEGER_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_INTEGER_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_INTEGER_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_INTEGER_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
     }
 
     goto L_STD_IntegerNull;
@@ -1364,8 +1307,7 @@ L_STD_Integer:
       }
     }
   
-    eError = EC_CSV_INTEGER_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1397,12 +1339,10 @@ L_STD_Integer:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_INTEGER_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   }
   if (nDigits > 19) {
-    eError = EC_CSV_INTEGER_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
   }
 
   // ignore any . digits
@@ -1416,16 +1356,14 @@ L_STD_Integer:
   vSKIP_WHITE_SPACE();
   
   if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-    eError = EC_CSV_INTEGER_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all integer portions collected
 
   if (uNumber > (u8)C_I8_MAX) {
-    eError = EC_CSV_INTEGER_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
   }
   
   // compute final field value
@@ -1443,8 +1381,7 @@ L_STD_Integer:
 L_STD_IntegerNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_INTEGER_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
@@ -1485,25 +1422,21 @@ L_STD_Interval:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_INTERVAL_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_INTERVAL_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_INTERVAL_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_INTERVAL_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
     }
 
     goto L_STD_IntervalNull;
@@ -1521,8 +1454,7 @@ L_STD_Interval:
       }
     }
   
-    eError = EC_CSV_INTERVAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   }
   
 
@@ -1556,8 +1488,7 @@ L_STD_Interval:
 
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_INTERVAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   }
   
   // skip any whitespace after the field value
@@ -1565,8 +1496,7 @@ L_STD_Interval:
   
   // test for no noise
   if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-    eError = EC_CSV_INTERVAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1574,14 +1504,12 @@ L_STD_Interval:
 
   // have we exceeded the max for second?
   if (uSecond > (u8)C_IVL_SEC_MAX) {
-    eError = EC_CSV_INTERVAL_SECS_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
   }
   
   // have we exceeded the max for microsecond?
   if (uMicrosecond > (u8)C_IVL_USEC_MAX) {
-    eError = EC_CSV_INTERVAL_USECS_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTERVAL_USECS_TOO_LARGE);
   }
   
   // compute final field value
@@ -1595,8 +1523,7 @@ L_STD_Interval:
 L_STD_IntervalNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_INTERVAL_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
@@ -1632,25 +1559,21 @@ L_STD_Time:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_HOUR_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_HOUR_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_HOUR_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_HOUR_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_HOUR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_HOUR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
     }
 
     goto L_STD_TimeNull;
@@ -1668,8 +1591,7 @@ L_STD_Time:
       }
     }
   
-    eError = EC_CSV_HOUR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
   }
   
 
@@ -1685,18 +1607,15 @@ L_STD_Time:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_HOUR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   }
 
   // skip over separator
   if (':' != cSrcChr) {
-    eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   }
   vADV_SRCCHR(); // skip ':'
   
@@ -1712,17 +1631,14 @@ L_STD_Time:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_MINUTE_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   }
   // skip over separator
   if (':' != cSrcChr) {
-    eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   }
   vADV_SRCCHR(); // skip ':'
 
@@ -1738,12 +1654,10 @@ L_STD_Time:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_SECOND_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_SECOND_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1767,18 +1681,15 @@ L_STD_Time:
   // all time portions collected
 
   if (uHour > 23) {
-    eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   }
   
   if (uMinute > 59) {
-    eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   }
   
   if (uSecond > 59) {
-    eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
   }
   
   // compute final field value
@@ -1795,8 +1706,7 @@ L_STD_Time:
 L_STD_TimeNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_HOUR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
@@ -1832,25 +1742,21 @@ L_STD_Timestamp:
           vADV_SRCCHR(); // skip 'L'
         }
         else { // not expected 'l'
-          eError = EC_CSV_YEAR_INVALID;
-          goto L_STD_FieldError;
+          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
         }
       }
       else { // not expected 'l'
-        eError = EC_CSV_YEAR_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
       }
     }
     else { // not expected 'u'
-      eError = EC_CSV_YEAR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
     }
     
     vSKIP_WHITE_SPACE();
     
     if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-      eError = EC_CSV_YEAR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
     }
 
     goto L_STD_TimestampNull;
@@ -1876,8 +1782,7 @@ L_STD_Timestamp:
       }
     }
   
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   
     // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2183,8 +2088,7 @@ L_STD_SkipTime:
 L_STD_TimestampNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
@@ -2431,8 +2335,7 @@ L_STD_VarcharSingleQuoted:
     
     // test for record end
     if (cSrcChr == m_cLineEnd) {
-      eError = EC_CSV_VARCHAR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
     }
     
     // [still in while (cSrcChr)]
@@ -2455,8 +2358,7 @@ C_BIT_VarcharSingleQuotedTerminate:
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
   if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    eError = EC_CSV_VARCHAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   }
   
   goto L_STD_VarcharDeposit;
@@ -2548,8 +2450,7 @@ L_STD_VarcharDoubleQuoted:
       
       // test for record end
       if (cSrcChr == m_cLineEnd) {
-        eError = EC_CSV_VARCHAR_INVALID;
-        goto L_STD_FieldError;
+        vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
       }
       
       // [still in while (cSrcChr)]
@@ -2572,8 +2473,7 @@ L_STD_VarcharDoubleQuoted:
     // if this an enclosed varchar we should have expected to
     // see the trailing enclosedBy
     if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-      eError = EC_CSV_VARCHAR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
     }
     
   goto L_STD_VarcharDeposit;
@@ -2623,8 +2523,7 @@ L_STD_VarcharUserEnclosed:
 
     // test for record end
     if (cSrcChr == m_cLineEnd) {
-      eError = EC_CSV_VARCHAR_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
     }
     
     // concat char (if it fits)
@@ -2644,8 +2543,7 @@ L_STD_VarcharUserEnclosed:
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
   if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    eError = EC_CSV_VARCHAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   }
   
   goto L_STD_VarcharDeposit;
@@ -2665,8 +2563,7 @@ L_STD_VarcharDeposit:
 L_STD_VarcharNull:
   
   if (! bPixNullable) {
-    eError = EC_CSV_VARCHAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   }
   
   if (iTraceBits & C_BIT_Varchar)
