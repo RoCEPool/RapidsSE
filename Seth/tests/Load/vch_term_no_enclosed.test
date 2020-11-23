@@ -25,44 +25,44 @@ success
 
 predicateFetch vch "vch_testno 601 =";
 rows:
-  ( 601, '''quick brown fox''', *)
+  ( 601, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 602 =";
 rows:
-  ( 602, '''quick brown fox\''', *)
+  ( 602, 'quick brown fox\', *)
 
 predicateFetch vch "vch_testno 603 =";
 rows:
-  ( 603, '''quick brown fox''''s''', *)
+  ( 603, 'quick brown fox''s', *)
 
 predicateFetch vch "vch_testno 604 =";
 rows:
-  ( 604, '''quick brow\\n foxs''', *)
+  ( 604, 'quick brow\\n foxs', *)
 
 predicateFetch vch "vch_testno 605 =";
 rows:
-  ( 605, '''quick brown fox
-s''', *);
+  ( 605, 'quick brown fox
+s', *);
 
 predicateFetch vch "vch_testno 606 =";
 rows:
-( 606, '''quick brown fox''', *);
+( 606, 'quick brown fox', *);
 
 predicateFetch vch "vch_testno 607 =";
 rows:
-  ( 607, '   ''quick brown fox''   ', *)
+  ( 607, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 608 =";
 rows:
-  ( 608, '''''', *)
+  ( 608, '', *)
 
 predicateFetch vch "vch_testno 609 =";
 rows:
-  ( 609, '''null''', *)
+  ( 609, 'null', *)
 
 predicateFetch vch "vch_testno 610 =";
 rows:
-  ( 610, '''\N''', *)
+  ( 610, '\N', *)
 
 predicateFetch vch "vch_testno 611 =";
 rows:

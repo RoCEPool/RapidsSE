@@ -267,7 +267,16 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define vSKIP_RECORD_END() \
   { \
-    vADV_SRCCHR(); \
+    if (cSrcChr && cSrcChr == m_cRecordTerminator) \
+      vADV_SRCCHR(); \
+    if (cSrcChr && cSrcChr == m_cLineEnd && \
+        m_cLineEnd2nd && c2ndChr == m_cLineEnd2nd) { \
+      vADV_SRCCHR(); \
+      vADV_SRCCHR(); \
+    } \
+    if (cSrcChr && cSrcChr == m_cLineEnd && ! m_cLineEnd2nd) { \
+      vADV_SRCCHR(); \
+    } \
   }
 
 
@@ -2750,8 +2759,7 @@ L_STD_EndRecord:
 
   // begin new record
   
-  if (cSrcChr)
-    vSKIP_RECORD_END();
+  vSKIP_RECORD_END();
   
   goto L_STD_TestMoreRecords;                                // end of endRecord
   
