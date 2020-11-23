@@ -28,7 +28,7 @@ set -Eeo pipefail
 readonly ROOT_DIR="${DIR}/../.."
 readonly LAYOUT_DIR="${DIR}/../layout"
 readonly OUTPUT_DIR="${DIR}/../output"
-readonly SOURCE_DIR="${ROOT_DIR}/Source"
+readonly SOURCE_DIR="${ROOT_DIR}/src"
 
 readonly MAKESELF_DIR=$(find "${ROOT_DIR}/ThirdParty/" -type d -name "makeself*")
 

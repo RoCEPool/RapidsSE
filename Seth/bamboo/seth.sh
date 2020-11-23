@@ -14,7 +14,6 @@ TESTLIST_FILE="${DIR}/allTestsBamboo"
 # Defaulting to 15 minutes.
 SETH_TIMEOUT="1800"
 
-#SE_PATH="../OS X/Build/Products/Debug/SE"
 NODE="NODE0"
 SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"

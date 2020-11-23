@@ -2,9 +2,11 @@
 
 # Get the relative path to this file.
 DIR=$(dirname "$0")
+ROOT_DIR="${DIR}/.."
 CLASSPATH=".:*:${DIR}:${DIR}/*"
 
-SE_PATH="../OS X/Build/Products/Debug/SE"
+SE_DIR="${ROOT_DIR}/bin"
+SE_PATH="${SE_DIR}/rapidsse"
 SE_ARGS="--name NODE0 --sen ../Sen --commands ../Commands --appendTrace"  # in addition to --metadata and --script
 
 # Additional arguments for SETH. Enable as required.

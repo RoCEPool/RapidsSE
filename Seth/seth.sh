@@ -2,13 +2,18 @@
 
 # Get the relative path to this file.
 DIR=$(dirname "$0")
+ROOT_DIR="${DIR}/.."
 CLASSPATH=".:*:${DIR}:${DIR}/*"
 
 # This is the colleciton of tests that are actually run by bamboo.
 TESTLIST_FILE="${DIR}/bamboo/allTestsBamboo"
 
-SE_PATH="../OS X/Build/Products/Debug/SE"
+SE_DIR="${ROOT_DIR}/bin"
+SE_PATH="${SE_DIR}/rapidsse"
 SE_ARGS="--name NODE0 --sen ../Sen --commands ../Commands --appendTrace"  # in addition to --metadata and --script
+
+ANTLR_PATH="${ROOT_DIR}/ThirdParty/antlr/lib"
+export LD_LIBRARY_PATH="${SE_DIR}":"${ANTLR_PATH}":$LD_LIBRARY_PATH
 
 # Additional arguments for SETH. Enable as required.
 #SETH_ARGS="--clean --logtests"   # log all test executions to a file

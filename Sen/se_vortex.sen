@@ -5,7 +5,7 @@
 "-se_vortex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* process all files in the ../Source dir                                     */
+/* process all files in the ../src dir                                        */
 /*----------------------------------------------------------------------------*/
 : vortex_ProcessDir ( pSeSourceDir -- )
 
@@ -59,7 +59,7 @@
   dir::getCurrent locals| pOrigDir |
 
   // change to source director
-  "../Source" dir::changeCurrent
+  "../src" dir::changeCurrent
   //"../Vortex" dir::changeCurrent
   dir::getCurrent "Current working directory now: %v" fmt.print
   "SMA.hpp" vortex::new vortex.processHpp
