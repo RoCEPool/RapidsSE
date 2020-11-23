@@ -13,7 +13,7 @@ success
 create index idx on T1 (col_id);
 success
 
-// oldLoad T1 with deafult enclosedBy
+// load T1 with deafult enclosedBy
 Load T1 "../DATA/Load/null.csv" ;
 success
 
@@ -50,7 +50,7 @@ success
 create index idx on T1 (col_id);
 success
 
-// oldLoad T1 with deafult enclosedBy
+// load T1 with deafult enclosedBy
 Load T1 "../DATA/Load/null_enclosedBy.csv"
   <enclosed_by_leading> =  "'" ;
 success
@@ -88,7 +88,7 @@ success
 create index idx on T1 (col_id);
 success
 
-// oldLoad T1 with deafult enclosedBy
+// load T1 with deafult enclosedBy
 Load T1 "../DATA/Load/null_enclosedByCurly.csv"
   <enclosed_by_leading> =  "{"
   <enclosed_by_trailing> = "}";

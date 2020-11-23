@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* regressionData -- Regression data oldLoad tests                               */
+/* regressionData -- Regression data load tests                               */
 /*----------------------------------------------------------------------------*/
 
 // create the tables
@@ -262,7 +262,7 @@ create table RETURNS (
 );
 success
 
-// oldLoad data into the tables
+// load data into the tables
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 success
 
@@ -332,7 +332,7 @@ success
 create table limitRow (col0 VARCHAR(20000));
 success
 
-//oldLoad limitRow "../Seth/tests/oldLoad/largeRow1.csv";
+//load limitRow "../Seth/tests/load/largeRow1.csv";
 //success
 
 //predicateFetch limitRow;
@@ -353,12 +353,12 @@ tableScan limitRow;
 rows: 2
 
 /*
-oldLoad limitRow "../DATA/Load/15KRow.csv";
+load limitRow "../DATA/Load/15KRow.csv";
 
 predicateFetch limitRow;
 rows: 1
 
-oldLoad limitRow "../DATA/Load/16KRow.csv";
+load limitRow "../DATA/Load/16KRow.csv";
 
 predicateFetch limitRow;
 rows: 2

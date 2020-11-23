@@ -13,8 +13,8 @@ success
 create index idx on T1 (col_id);
 success
 
-// oldLoad T1 with deafult enclosedBy
-oldLoad T1 "../DATA/Load/emptyString1.csv" ;
+// load T1 with deafult enclosedBy
+load T1 "../DATA/Load/emptyString1.csv" ;
 success
 
 // predicateFetch rows
@@ -44,10 +44,10 @@ success
 create index idx on T1 (col_id);
 success
 
-// oldLoad table T1 with <enclosed_by_leading> =  '
-//oldLoad T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'" ;
+// load table T1 with <enclosed_by_leading> =  '
+//load T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'" ;
 
-oldLoad T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'";
+load T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'";
 success
 
 // predicateFetch rows
@@ -78,7 +78,7 @@ success
 create index idx on T1 (col_id) ;
 success
 
-// oldLoad table T1
+// load table T1
 Load T1 "../DATA/Load/emptyString2.csv"
   <enclosed_by_leading> = "{"
   <enclosed_by_trailing> = "}"
@@ -106,7 +106,7 @@ success
 tableScan T1;
 rows: 0
 
-oldLoad T1 "/tmp/T1.csv";
+load T1 "/tmp/T1.csv";
 success
 
 tableScan T1;

@@ -11,8 +11,8 @@ create table terminator_cr (
 );
 success
 
-// oldLoad data into the table with default formatter settings
-oldLoad terminator_cr "../DATA/Load/terminatorSmallNull_cr.csv"
+// load data into the table with default formatter settings
+load terminator_cr "../DATA/Load/terminatorSmallNull_cr.csv"
   record_ends "\n"
 ;
 failure contains: '1 invalid'

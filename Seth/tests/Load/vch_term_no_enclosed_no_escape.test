@@ -14,7 +14,7 @@ success
 create index idx on vch (vch_testno);
 success;
 
-// oldLoad data into the table with default formatter settings
+// load data into the table with default formatter settings
 Load vch "../DATA/Load/vch_term_no_enclosed_no_escape.csv"
   <record_terminator> = ";"
   <enclosed_by_leading> =  "\0"

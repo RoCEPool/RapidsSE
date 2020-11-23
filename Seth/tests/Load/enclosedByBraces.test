@@ -18,8 +18,8 @@ create table T1 (
 );
 success
 
-// oldLoad data into the table with enclosed_by as 3 characters
-oldLoad T1 "../DATA/Load/enclosedByBraces.csv"
+// load data into the table with enclosed_by as 3 characters
+load T1 "../DATA/Load/enclosedByBraces.csv"
   <enclosed_by_leading> = "{"
   <enclosed_by_trailing> = "}"
 ;
@@ -43,7 +43,7 @@ success
 tableScan T1;
 rows: 0
 /*
-oldLoad T1 "/tmp/T1.csv" <<enclosed_by_leading> "'" <enclosed_by_trailing> = "'" ;
+load T1 "/tmp/T1.csv" <<enclosed_by_leading> "'" <enclosed_by_trailing> = "'" ;
 success
 
 tableScan T1;
