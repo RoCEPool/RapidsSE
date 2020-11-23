@@ -393,7 +393,9 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
     m_pStreamDef->vAsString(sDef);
     vTrace("%s\n"_Stz,sDef.szStz());
   }
-
+  //                                                                end of begin
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) while more csv data in chunk                                         STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -415,17 +417,20 @@ L_STD_TestMoreRecords:
   
   i_Fld = 0;
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) new rsb                                                              STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // alloc a new rsb, new another rsbBufer if necessary
+  // alloc a new rsb, new another rsbBuffer if necessary
   if (! m_pRowSlab->bNewRow()) {    // ? inline ?
     vNewRsbBuffer();
     bool b = m_pRowSlab->bNewRow();
     ASSERT(b);
   }
   
+  //                                                      end of testMoreRecords
+
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 3) while more fields of current record                                  STD
@@ -434,7 +439,6 @@ L_STD_TestMoreFields:
   
   ASSERT(EC_NONE == eError);
 
-  //if (! bMORE_FIELDS())
   if (i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
       vTrace("L_STD_TestMoreFields: end-of-fields\n"_Stz);
@@ -484,7 +488,8 @@ L_STD_TestMoreFields:
     default:
       RASSERT(0);
   }
-  
+  //                                                       end of testMoreFields
+
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.a) boolean field : true | false | uNumber                             STD
@@ -667,6 +672,7 @@ L_STD_BooleanNull:
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of boolean
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.b) date field : year - month - day // year range is ????              STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -900,6 +906,7 @@ L_STD_DateNull:
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                           // end of date
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.c) decimal field : [+|-] uNumber [ . uFraction ]                      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1076,6 +1083,7 @@ L_STD_DecimalNull:
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                        // end of decimal
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]      STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1246,6 +1254,7 @@ L_STD_FloatNull:
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                          // end of float
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.e) integer : [+|-] uNumber                                            STD
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1712,6 +1721,7 @@ L_STD_TimeNull:
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_STD_PostField;                                           // end of time
 
+  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 4.h) timestamp field :                                                  STD
   //    year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
@@ -2599,7 +2609,7 @@ L_STD_PostField:
 
   // move to next field
   i_Fld++;
-  goto L_STD_TestMoreFields;
+  goto L_STD_TestMoreFields;                                 // end of postField
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2665,8 +2675,8 @@ L_STD_FieldError:
   if (cSrcChr)
     vADV_SRCCHR(); // skip m_cLineEnd
 
-  goto L_STD_TestMoreRecords;
-
+  goto L_STD_TestMoreRecords;                               // end of fieldError
+  
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 7) end of record                                                        STD
@@ -2675,9 +2685,7 @@ L_STD_EndRecord:
   
   if (iTraceBits & C_BIT_EndRecord)
     vTrace("L_STD_EndOfRecord:\n"_Stz);
-  
-  ASSERT(! bMORE_FIELDS());
-    
+      
   ASSERT(i_Fld == nCols);
 
   // set partition hash
@@ -2704,7 +2712,7 @@ L_STD_EndRecord:
   if (cSrcChr)
     vADV_SRCCHR(); // skip m_cLineEnd
 
-  goto L_STD_TestMoreRecords;
+  goto L_STD_TestMoreRecords;                                // end of endRecord
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
