@@ -35,26 +35,54 @@ TARGET_EXE = $(TARGET_PATH)/rapidsse
 TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWIN_LIBRARY_EXT))
 SHOCO := shoco.o
 
+# Man pages
+MAN_PAGES=../Documents/se.man
+
 # Source Files
-MAIN_CPP := $(shell find . -name "main.cpp")
-MAIN_O  := $(MAIN_CPP:.cpp=.o)
-SOURCES := $(shell find . -name "*.cpp")
+SRC_DIR := .
+MAIN_CPP := $(shell find $(SRC_DIR) -name "main.cpp")
+SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/antlr/generated/*.cpp)
 SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
-S_SOURCES := $(shell find . -name "*.s")
+S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
 
-# Man pages
-MAN_PAGES=../Documents/se.man
+# Object directories
+# We separate debug & release so that swapping between builds doesn't mean
+# a complete rebuild.
+BASE_OBJ_DIR := ../build/obj
+DEBUG_OBJ_DIR := $(BASE_OBJ_DIR)/debug/src
+RELEASE_OBJ_DIR := $(BASE_OBJ_DIR)/release/src
+
+# Where do we put our object files? Set the OBJ_DIR variable appropriately.
+ifndef OBJ_DIR
+  ifeq ($(MAKECMDGOALS),debug)
+    OBJ_DIR := $(DEBUG_OBJ_DIR)
+
+  else ifeq ($(MAKECMDGOALS),release)
+    OBJ_DIR := $(RELEASE_OBJ_DIR)
+
+  else ifeq ($(MAKECMDGOALS),)        # no goal specified (use default)
+    OBJ_DIR := $(RELEASE_OBJ_DIR)
+
+  else
+    OBJ_DIR := $(BASE_OBJ_DIR)/src
+  endif
+
+  # Make OBJ_DIR available to sub-makes.
+  export OBJ_DIR
+endif
 
 # Object Files for library
-OBJECTS = $(SOURCES:.cpp=.o)
-OBJECTS += $(S_SOURCES:.s=.o)
+OBJECTS := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJECTS += $(patsubst $(SRC_DIR)/%.s,   $(OBJ_DIR)/%.obj, $(S_SOURCES))
+MAIN_O  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAIN_CPP))
+
 
 # Dependency Files for library
-DEPFILES = $(SOURCES:.cpp=.d)
+DEPFILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
@@ -81,45 +109,56 @@ all : post-build
 post-build : main-build
 
 main-build : pre-build
-	@$(MAKE) -e --no-print-directory target
+	@$(MAKE) -e target
 
 pre-build : version thirdparty
 
 target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 # Debug builds
-Debug : debug
 debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -g $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 debug : all
 
 # Explicit release builds (the default)
-Release : release
 release : all
 
 $(SHOCO): ../ThirdParty/shoco/shoco.c  
 	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
 
-#Library target
+# Library target
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(DIR_GUARD)
+	@echo ""
+	@echo "Linking the rapidsse dynamic library..."
+	@echo ""
 	$(CPP) $(LIBFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 
-#Main target
+# Main target
 $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO) $(COMPILED_LIBS)
 	$(DIR_GUARD)
+	@echo ""
+	@echo "Compiling the rapidsse executable..."
+	@echo ""
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  $(MAIN_CPP) -o $(MAIN_O)
 	cp $(MAN_PAGES) $(TARGET_PATH)
+	@echo ""
+	@echo "Linking the rapidsse executable..."
+	@echo ""
 	$(CPP) $(MAIN_O) $(SHOCO) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
 
-#To obtain object files
-%.o: %.cpp %.d
+# Compile source .cpp files into object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
+	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
-%.o: %.s %.d
+# Compile assembly files into objects
+$(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
+	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
-#To generate dependency files
-%.d: %.cpp 
+# To generate dependency files for files from the source directory
+$(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
+	$(DIR_GUARD)
 	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@
 
 # Generate the Version.h file. Force it to run every time.
@@ -154,8 +193,17 @@ distclean : clean
 
 #To remove RapidsSE-generated files only
 clean :
-	rm -f $(TARGET_EXE) $(TARGET_LIBRARY) $(OBJECTS) *.d
+	rm -f $(TARGET_EXE) $(TARGET_LIBRARY)
+	rm -rf $(BASE_OBJ_DIR)
 
 # Makefile debugging rule to print makefile variables.
 # e.g. make print-ANTLR_LIB
 print-% : ; @echo $* = $($*)
+
+# Don't delete object and dependency files after building. 
+# Specifying no targets here means that make will preserve all targets,
+# including objects and dependency files.
+.SECONDARY :
+
+# List of make targets that don't correlate to files in the filesystem.
+.PHONY : clean distclean FORCE thirdparty version target release debug post-build main-build pre-build all
