@@ -21,7 +21,6 @@ void EnvCheck::vCheckManifest(void)
   vCheckDir("../tmp"_Stz,       C_EXIST_EXISTS,C_ACCESS_READWRITE);
 
   vCheckFile("_bootCluster"_Stz,C_EXIST_EXISTS,C_ACCESS_READ);
-  vCheckFile("_procedures"_Stz, C_EXIST_EXISTS,C_ACCESS_READ);
 }
 
 /*----------------------------------------------------------------------------*/
