@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success;
 
 // oldLoad data into the table with default formatter settings
-oldLoad vch "../DATA/Load/vch_term_no_enclosed_no_escape.csv"
+Load vch "../DATA/Load/vch_term_no_enclosed_no_escape.csv"
   <record_terminator> = ";"
   <enclosed_by_leading> =  "\0"
   <escape_char> = "\0" ;
@@ -26,39 +26,39 @@ success
 
 predicateFetch vch "vch_testno 701 =";
 rows:
-  ( 701, '''quick brown fox''', *)
+  ( 701, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 702 =";
 rows:
-  ( 702, '''quick brown fox''''s''', *)
+  ( 702, 'quick brown fox''s', *)
 
 predicateFetch vch "vch_testno 703 =";
 rows:
-  ( 703, '''quick brow\\n foxs''', *)
+  ( 703, 'quick brow\\n foxs', *)
 
 predicateFetch vch "vch_testno 704 =";
 rows:
-  ( 704, '''quick brown fox\ns''', *)
+  ( 704, 'quick brown fox\ns', *)
 
 predicateFetch vch "vch_testno 705 =";
 rows:
-  ( 705, '''quick brown fox''', *)
+  ( 705, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 706 =";
 rows:
-  ( 706, '   ''quick brown fox''   ', *)
+  ( 706, 'quick brown fox', *)
 
 predicateFetch vch "vch_testno 707 =";
 rows:
-  ( 707, '''''', *)
+  ( 707, '', *)
 
 predicateFetch vch "vch_testno 708 =";
 rows:
-  ( 708, '''null''', *)
+  ( 708, 'null', *)
 
 predicateFetch vch "vch_testno 709 =";
 rows:
-  ( 709, '''\N''', *)
+  ( 709, '\N', *)
 
 predicateFetch vch "vch_testno 710 =";
 rows:
