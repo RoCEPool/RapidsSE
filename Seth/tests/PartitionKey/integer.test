@@ -20,7 +20,7 @@ lspartcol dataTable;
 rows:
   ('key','INTEGER',19,0,false,true)
 
-// oldLoad data into the table
+// load data into the table
 oldLoad dataTable "../DATA/PartitionKey/data.csv";
 success
 

@@ -66,7 +66,7 @@ lsidxcol orders orders_idx2;
 rows:
 ("O_ORDERKEY", "INTEGER", 19, 0, false, false)
 
-// oldLoad the table
+// load the table
 //oldLoad orders "/TPCH/SF1/orders.tbl" <field_delimiter> = "|";
 load orders "/TPCH/SF1/orders.tbl";
 success

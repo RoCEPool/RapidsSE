@@ -128,7 +128,7 @@ rows: 0
 predicateFetch intTbl "int_col1 14 =";
 rows: 0
 
-// oldLoad from exported file
+// load from exported file
 oldLoad IntTbl "/tmp/integer.csv" ;
 success
 

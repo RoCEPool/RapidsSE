@@ -31,7 +31,7 @@ rows:
   ('S_SUPPKEY', 'INTEGER', 19, 0, false, true)
 
 -----------------------------------------------------------------------
-// oldLoad the table
+// load the table
 //oldLoad supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
 load supplier "/TPCH/SF1/supplier.tbl";
 success

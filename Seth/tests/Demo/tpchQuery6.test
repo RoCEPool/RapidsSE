@@ -145,7 +145,7 @@ where
 rows: 0
 
 //------------------------------------------------------------------------------
-// oldLoad lineitem
+// load lineitem
 load lineitem "/TPCH/SF1/lineitem.tbl";
 success
 

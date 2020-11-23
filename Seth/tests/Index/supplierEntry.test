@@ -14,7 +14,7 @@ S_COMMENT       VARCHAR(101) NOT NULL
 );
 success
 
-// oldLoad the table
+// load the table
 oldLoad supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
 success
 

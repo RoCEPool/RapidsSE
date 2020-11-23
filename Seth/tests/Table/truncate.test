@@ -56,7 +56,7 @@ success
 tableScan lineitem;
 rows: 0
 
-// oldLoad the table
+// load the table
 oldLoad lineitem "../DATA/Regression/lineitem.csv";
 success
 

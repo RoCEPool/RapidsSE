@@ -26,7 +26,7 @@ lsidxcol nation nation_idx1;
 rows:
   ("N_NATIONKEY", "INTEGER", 19, 0, false, true)
 
-// oldLoad the table
+// load the table
 //oldLoad nation "/TPCH/SF1/nation.tbl" <field_delimiter> = "|";
 load nation "/TPCH/SF1/nation.tbl";
 success
