@@ -23,8 +23,8 @@ lsidxcol T1 idx;
 rows:
   ('col0', 'INTEGER', 19, 0, false, true)
 
-// (3) now oldLoad some data into the table
-oldLoad T1 "../Seth/tests/Insert/insert.csv" ;
+// (3) now load some data into the table
+load T1 "../Seth/tests/Insert/insert.csv" ;
 success
 
 // check no of rows

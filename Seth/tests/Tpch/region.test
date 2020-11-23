@@ -12,7 +12,7 @@ success
 
 -----------------------------------------------------------------------
 // load the table
-//oldLoad region "/TPCH/SF1/region.tbl" <field_delimiter> = "|";
+//load region "/TPCH/SF1/region.tbl" <field_delimiter> = "|";
 load region "/TPCH/SF1/region.tbl";
 success
 

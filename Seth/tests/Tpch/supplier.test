@@ -32,7 +32,7 @@ rows:
 
 -----------------------------------------------------------------------
 // load the table
-//oldLoad supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
+//load supplier "/TPCH/SF1/supplier.tbl" <field_delimiter> = "|";
 load supplier "/TPCH/SF1/supplier.tbl";
 success
 

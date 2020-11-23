@@ -28,7 +28,7 @@ rows:
   ("PS_SUPPKEY", "INTEGER", 19, 0, false, false)
 
 // load the table
-//oldLoad partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
+//load partsupp "/TPCH/SF1/partsupp.tbl" <field_delimiter> = "|";
 load partsupp "/TPCH/SF1/partsupp.tbl";
 success
 

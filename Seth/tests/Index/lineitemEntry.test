@@ -40,7 +40,7 @@ rows:
   ("l_SHIPDATE", "TIMESTAMP", 0, 0, false, false)
 
 // load the table
-oldLoad lineitem "/TPCH/SF1/lineitem.tbl" <field_delimiter> = "|";
+load lineitem "/TPCH/SF1/lineitem.tbl" <field_delimiter> = "|";
 success
 
 //predicateFetch lineitem;

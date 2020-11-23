@@ -21,7 +21,7 @@ rows:
   ('key','INTEGER',19,0,false,true)
 
 // load data into the table
-oldLoad dataTable "../DATA/PartitionKey/data.csv";
+load dataTable "../DATA/PartitionKey/data.csv";
 success
 
 // select rows from the table

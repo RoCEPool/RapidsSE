@@ -24,7 +24,7 @@ create index idx1 on boolTable (key1);
 success;
 
 // load data into the table
-oldLoad boolTable "../DATA/PartitionKey/bool.csv";
+load boolTable "../DATA/PartitionKey/bool.csv";
 success
 
 // analyze table
