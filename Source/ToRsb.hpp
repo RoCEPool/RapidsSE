@@ -11,28 +11,34 @@ namespace Load
   class ToRsb : public Object
   {
   private:
-  
     Job*       m_pPipelineJob;
-    i8         m_nPtnsInGrid;
 
     StreamDef* m_pStreamDef;
     BucketMap* m_pBucketMap;
     bool       m_bPtnHash;
+    i8         m_nPtnsInGrid;
 
-    char       m_cEnclosedBy_Leading;
-    char       m_cEnclosedBy_Trailing;
-    char       m_cEscapeChar;
-    char       m_cFieldDelimiter;
-    char       m_cLineEnd;
-    char       m_cLineEnd2nd;
-
-    i8         m_nRecords;
     i8         m_nErrors;
     bool       m_bFirst;
-    bool       m_bTrace;
+    i8         m_nRecords;
 
     RowSlab*   m_pRowSlab;
     RsbBuffer* m_pRsbBuffer;
+  
+    //--
+  
+    eDC  m_eDateComponent[3];    // date component order
+    char m_cDateSeparator;       // date separater
+    char m_cEnclosedBy_Leading;
+    char m_cEnclosedBy_Trailing;
+    char m_cEscapeChar;
+    char m_cFieldDelimiter;
+    char m_cLineEnd;
+    char m_cLineEnd2nd;
+    char m_cRecordTerminator;    // record terminator
+
+    i8   m_bAllowNonPrintable;   // allow non-printable
+    i8   m_nMaxErrors;           // maximum number of allowable errors
 
     // must be last
     Footer m_xFooter;

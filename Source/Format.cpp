@@ -21,26 +21,22 @@ Format::Format(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
 
-  m_bDefault             = true;
   m_bAllowNonPrintable   = false;
 
   //
   // these are the default values
   //
   
-  m_cEnclosedBy_Leading  = D_ENCLOSED_BY_LEADING;  //  '\0';
-  m_cEnclosedBy_Trailing = D_ENCLOSED_BY_TRAILING; //  '\0';
-  //m_cEnclosedBy_Leading  = '{';
-  //m_cEnclosedBy_Trailing = '}';
-  m_cEscapeChar          = D_ESCAPE_CHAR;          //  '\\';
-  m_cFieldDelimiter      = D_FIELD_DELIMITER;      //  ',';
-  m_eLineEnd             = LE_NL;
-  m_cRecordTerminator    = D_RECORD_TERMINATOR;    //  '\0';
-  
   m_eDateComponent[0]    = DC_YYYY;  // default is YYYY-MM-DD
   m_eDateComponent[1]    = DC_MM;
   m_eDateComponent[2]    = DC_DD;
   m_cDateSeparator       = '-';
+  m_cEnclosedBy_Leading  = D_ENCLOSED_BY_LEADING;  //  '\0';
+  m_cEnclosedBy_Trailing = D_ENCLOSED_BY_TRAILING; //  '\0';
+  m_cEscapeChar          = D_ESCAPE_CHAR;          //  '\\';
+  m_cFieldDelimiter      = D_FIELD_DELIMITER;      //  ',';
+  m_eLineEnd             = LE_NL;
+  m_cRecordTerminator    = D_RECORD_TERMINATOR;    //  '\0';
   
   m_nMaxErrors           = 0;
   
@@ -64,6 +60,18 @@ bool Format::bIsStdCsv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
+  if (DC_YYYY != m_eDateComponent[0])
+    return false;
+  
+  if (DC_MM != m_eDateComponent[1])
+    return false;
+  
+  if (DC_DD != m_eDateComponent[2])
+    return false;
+  
+  if ('-' != m_cDateSeparator)
+    return false;
+  
   if ('\0' != m_cEnclosedBy_Leading)
     return false;
   
@@ -82,18 +90,6 @@ bool Format::bIsStdCsv(void)
   if ('\0' != m_cRecordTerminator)
     return false;
   
-  if ('-' != m_cDateSeparator)
-    return false;
-  
-  if (DC_YYYY != m_eDateComponent[0])
-    return false;
-  
-  if (DC_MM != m_eDateComponent[1])
-    return false;
-  
-  if (DC_DD != m_eDateComponent[2])
-    return false;
-  
   return true;
 }
 
@@ -103,24 +99,19 @@ bool Format::bIsStdCsv(void)
 void Format::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
-
-  m_bDefault = true;
   
   m_bAllowNonPrintable   = AM::pFmt()->m_bAllowNonPrintable;
+  m_eDateComponent[0]    = AM::pFmt()->m_eDateComponent[0];
+  m_eDateComponent[1]    = AM::pFmt()->m_eDateComponent[1];
+  m_eDateComponent[2]    = AM::pFmt()->m_eDateComponent[2];
+  m_cDateSeparator       = AM::pFmt()->m_cDateSeparator;
   m_cEnclosedBy_Leading  = AM::pFmt()->m_cEnclosedBy_Leading;
   m_cEnclosedBy_Trailing = AM::pFmt()->m_cEnclosedBy_Trailing;
-  
-  m_cEscapeChar       = AM::pFmt()->m_cEscapeChar;
-  m_cFieldDelimiter   = AM::pFmt()->m_cFieldDelimiter;
-  m_cRecordTerminator = AM::pFmt()->m_cRecordTerminator;
-  m_eLineEnd        = AM::pFmt()->m_eLineEnd;
-  
-  m_eDateComponent[0] = AM::pFmt()->m_eDateComponent[0];
-  m_eDateComponent[1] = AM::pFmt()->m_eDateComponent[1];
-  m_eDateComponent[2] = AM::pFmt()->m_eDateComponent[2];
-  
-  m_cDateSeparator    = AM::pFmt()->m_cDateSeparator;
-  m_nMaxErrors        = AM::pFmt()->m_nMaxErrors;
+  m_cEscapeChar          = AM::pFmt()->m_cEscapeChar;
+  m_cFieldDelimiter      = AM::pFmt()->m_cFieldDelimiter;
+  m_cRecordTerminator    = AM::pFmt()->m_cRecordTerminator;
+  m_eLineEnd             = AM::pFmt()->m_eLineEnd;
+  m_nMaxErrors           = AM::pFmt()->m_nMaxErrors;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,23 +121,18 @@ void Format::vSet(Format* pFmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
-  m_bDefault = false;
-  
   m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
+  m_eDateComponent[0]    = pFmt->m_eDateComponent[0];
+  m_eDateComponent[1]    = pFmt->m_eDateComponent[1];
+  m_eDateComponent[2]    = pFmt->m_eDateComponent[2];
+  m_cDateSeparator       = pFmt->m_cDateSeparator;
   m_cEnclosedBy_Leading  = pFmt->m_cEnclosedBy_Leading;
   m_cEnclosedBy_Trailing = pFmt->m_cEnclosedBy_Trailing;
-  
-  m_cEscapeChar       = pFmt->m_cEscapeChar;
-  m_cFieldDelimiter   = pFmt->m_cFieldDelimiter;
-  m_cRecordTerminator = pFmt->m_cRecordTerminator;
-  m_eLineEnd        = pFmt->m_eLineEnd;
-  
-  m_eDateComponent[0] = pFmt->m_eDateComponent[0];
-  m_eDateComponent[1] = pFmt->m_eDateComponent[1];
-  m_eDateComponent[2] = pFmt->m_eDateComponent[2];
-  
-  m_cDateSeparator    = pFmt->m_cDateSeparator;
-  m_nMaxErrors        = pFmt->m_nMaxErrors;
+  m_cEscapeChar          = pFmt->m_cEscapeChar;
+  m_cFieldDelimiter      = pFmt->m_cFieldDelimiter;
+  m_cRecordTerminator    = pFmt->m_cRecordTerminator;
+  m_eLineEnd             = pFmt->m_eLineEnd;
+  m_nMaxErrors           = pFmt->m_nMaxErrors;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,8 +154,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
     m_cRecordTerminator = *sTagValue.azChar();
     if (m_cRecordTerminator == '0')
       m_cRecordTerminator = '\0';
-
-    m_bDefault = false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -189,7 +173,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
         m_eLineEnd = LE_NL;
       }
       else if (cRecordEnds == '\r') {
-        m_bDefault = false;
         m_eLineEnd = LE_CR;
       }
       else {
@@ -201,7 +184,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
     else if (sTagValue.nLength() == 2) {
       
       if (sTagValue.bSame("\r\n"_Stz)) {
-        m_bDefault = false;
         m_eLineEnd = LE_CRNL;
       }
       else {
@@ -226,7 +208,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
       m_cFieldDelimiter = *sTagValue.azChar();
     if (m_cFieldDelimiter == '0')
       m_cFieldDelimiter = '\0';
-    m_bDefault = false;
   }
 
   // - - - - - - - - - - - - - - - - - - - - -
@@ -237,9 +218,7 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
     m_cEnclosedBy_Leading = *sTagValue.azChar();
     if (m_cEnclosedBy_Leading == '0')
       m_cEnclosedBy_Leading = '\0';
-    
-    m_bDefault = false;
-    
+        
     // default set trailing same as leading
     m_cEnclosedBy_Trailing =
     m_cEnclosedBy_Leading;
@@ -259,8 +238,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
     m_cEnclosedBy_Trailing = *sTagValue.azChar();
     if (m_cEnclosedBy_Trailing == '0')
       m_cEnclosedBy_Trailing = '\0';
-    
-    m_bDefault = false;
   }
   //
   //    DATE_FORMAT='YYYY.MM.DD’
@@ -277,7 +254,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
       return false;
     }
-    m_bDefault = false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -288,8 +264,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
     m_cEscapeChar = *sTagValue.azChar();
     if (m_cEscapeChar == '0')
       m_cEscapeChar = '\0';
-    
-    m_bDefault = false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -299,8 +273,6 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
     iTagValue = pFmtTagSet->iValue(i_Tag);
     
     m_nMaxErrors = iTagValue;
-    
-    m_bDefault = false;
   }
         
   return true;
@@ -314,6 +286,18 @@ bool Format::bSetFormat(TagSet* pFmtTagSet)
 void Format::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
+  
+  vTrace("date component 0 %s\n"_Stz,
+         aDC[m_eDateComponent[0]]);
+  
+  vTrace("date component 1 %s\n"_Stz,
+         aDC[m_eDateComponent[1]]);
+  
+  vTrace("date component 2 %s\n"_Stz,
+         aDC[m_eDateComponent[2]]);
+  
+  vTrace("date_separator %c\n"_Stz,
+         m_cDateSeparator ? m_cDateSeparator : '0');
   
   vTrace("enclosed_by_Leading %c\n"_Stz,
          m_cEnclosedBy_Leading ? m_cEnclosedBy_Leading : '0');
@@ -331,18 +315,6 @@ void Format::vShow(void)
          m_cRecordTerminator ? m_cRecordTerminator : '0');
   
   vTrace("record_end %s\n"_Stz, aLE[m_eLineEnd]);
-  
-  vTrace("date component 0 %s\n"_Stz,
-         aDC[m_eDateComponent[0]]);
-  
-  vTrace("date component 1 %s\n"_Stz,
-         aDC[m_eDateComponent[1]]);
-  
-  vTrace("date component 2 %s\n"_Stz,
-         aDC[m_eDateComponent[2]]);
-  
-  vTrace("date_separator %c\n"_Stz,
-         m_cDateSeparator ? m_cDateSeparator : '0');
   
   vTrace("max_errors %lld\n"_Stz,
          m_nMaxErrors);

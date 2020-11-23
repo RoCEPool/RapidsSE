@@ -23,19 +23,29 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
   m_pPipelineJob = AM::pPipelineJob();
-  m_nPtnsInGrid  = AM::nPtnsInGrid();
 
-  m_pStreamDef = pStreamDef;
-  m_pBucketMap = pBucketMap;
-  m_bPtnHash   = bPtnHash;
+  m_pStreamDef  = pStreamDef;
+  m_pBucketMap  = pBucketMap;
+  m_bPtnHash    = bPtnHash;
+  m_nPtnsInGrid = AM::nPtnsInGrid();
+
+  m_nRecords = 0;
+  m_nErrors  = 0;
+  m_bFirst   = true;
   
+  m_pRowSlab   = nullptr;
+  m_pRsbBuffer = nullptr;
+
+  //--
+  
+  m_eDateComponent[0]    = pFmt->m_eDateComponent[0];
+  m_eDateComponent[1]    = pFmt->m_eDateComponent[1];
+  m_eDateComponent[2]    = pFmt->m_eDateComponent[2];
+  m_cDateSeparator       = pFmt->m_cDateSeparator;
   m_cEnclosedBy_Leading  = pFmt->m_cEnclosedBy_Leading;
   m_cEnclosedBy_Trailing = pFmt->m_cEnclosedBy_Trailing;
-
-  m_cEscapeChar = pFmt->m_cEscapeChar;
-  
-  m_cFieldDelimiter    = pFmt->m_cFieldDelimiter;
-  
+  m_cEscapeChar          = pFmt->m_cEscapeChar;
+  m_cFieldDelimiter      = pFmt->m_cFieldDelimiter;
   switch (pFmt->m_eLineEnd) {
     case LE_CR:   m_cLineEnd = '\r'; m_cLineEnd2nd = '\0'; break;
     case LE_CRNL: m_cLineEnd = '\r'; m_cLineEnd2nd = '\n'; break;
@@ -43,24 +53,14 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
     default:
       NEVER_REACH;
   }
-
-  m_nRecords   = 0;
-  m_nErrors    = 0;
-  m_bFirst     = true;
-  m_bTrace     = false;
+  m_cRecordTerminator    = pFmt->m_cRecordTerminator;
   
-  m_pRowSlab   = nullptr;
-  m_pRsbBuffer = nullptr;
-
-  //pFmt->vShow();
+  m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
+  m_nMaxErrors           = pFmt->m_nMaxErrors;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   vNewRsbBuffer();
-
-  //s48K sDef;
-  //m_pStreamDef->vAsString(sDef);
-  //vTrace("%s\n"_Stz,sDef.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -369,6 +369,10 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
               StrLib::szCharToStr(m_cEnclosedBy_Trailing)
 
            );
+    
+    s48K sDef;
+    m_pStreamDef->vAsString(sDef);
+    vTrace("%s\n"_Stz,sDef.szStz());
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2677,15 +2681,7 @@ L_STD_EndRecord:
     vTrace("L_STD_EndOfRecord:\n"_Stz);
   
   ASSERT(! bMORE_FIELDS());
-  
-#ifdef WITH_DEBUG_VERSION
-  if (m_bTrace) {
-    if (! bSawFldSep)
-      vTrace("\n"_Stz);
-    vTrace("-- recSep -- \n"_Stz);
-  }
-#endif
-  
+    
   ASSERT(i_Fld == nCols);
 
   // set partition hash
