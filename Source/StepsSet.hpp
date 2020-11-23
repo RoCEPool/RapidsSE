@@ -1866,15 +1866,8 @@ public:
   void vWriteBehindHandleDangling(void);
   void vWriteBehindset(void);
 
-  // write hash
-  void vWriteHashCreate(void);
-  void vWriteHashDelete(void);
-  void vWriteHashCrwBufferFetch(void);
-  void vWriteHashCrwBufferStore(void);
-  void vWriteHashFullCrwBufferFetch(void);
-
   // XmitOperand
-void vXmitOperandOperandStore(void);
+  void vXmitOperandOperandStore(void);
   void vXmitOperandPipeOut(void);
 
   // zero
