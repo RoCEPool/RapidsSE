@@ -193,9 +193,22 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define bIS_DIGIT() \
   (cSrcChr >= '0' && cSrcChr <= '9')
 
+//#define bRECORD_END() \
+//(    cSrcChr == m_cRecordTerminator \
+//                                    \
+//  || ( cSrcChr == m_cLineEnd       \
+//       && ( (! m_cLineEnd2nd)  || (c2ndChr == m_cLineEnd2nd) ) \
+//     ) \
+//)
+
 #define bFIELD_END() \
-  (    cSrcChr == m_cFieldDelimiter \
-    || cSrcChr == m_cLineEnd \
+  (    cSrcChr == m_cFieldDelimiter   \
+                                      \
+    || cSrcChr == m_cRecordTerminator \
+                                      \
+    || ( cSrcChr == m_cLineEnd       \
+         && ( (! m_cLineEnd2nd)  || (c2ndChr == m_cLineEnd2nd) ) \
+       ) \
   )
 
 #define bMORE_CSV() \
@@ -251,6 +264,12 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   while (cSrcChr && bWHITE_SPACE()) { \
     vADV_SRCCHR(); \
   }
+
+#define vSKIP_RECORD_END() \
+  { \
+    vADV_SRCCHR(); \
+  }
+
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
@@ -2732,8 +2751,8 @@ L_STD_EndRecord:
   // begin new record
   
   if (cSrcChr)
-    vADV_SRCCHR(); // skip m_cLineEnd
-
+    vSKIP_RECORD_END();
+  
   goto L_STD_TestMoreRecords;                                // end of endRecord
   
   
