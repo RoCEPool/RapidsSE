@@ -207,7 +207,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 //--
 
 #define vADV_SRCCHR() \
-  (cSrcChr = *++azCsvSrc) \
+  (cSrcChr = c2ndChr , c2ndChr = *++azCsvSrc) \
 
 #define vCOLLECT(i) \
   i = (i * 10) + (cSrcChr - '0')
@@ -223,6 +223,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   { \
      azCsvSrc = azFieldStart; \
      cSrcChr = *azCsvSrc; \
+     c2ndChr = *++azCsvSrc; \
   }
 
 //--
@@ -236,7 +237,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     (cSrcChr == '\r') )
 
 #define bNON_DATA_CHAR() \
-  ( bWHITE_SPACE() || bCTL_CHAR() )
+  ( bWHITE_SPACE() || \
+    bCTL_CHAR() )
 
 //--
 
@@ -308,26 +310,27 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   SP_String spStr;
   SP_String spChr;
+  SP_String sp2nd;
 
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-//     | C_BIT_InitialState
-//     | C_BIT_BeginCsvChunk
-//     | C_BIT_TestMoreRecords
-//     | C_BIT_TestMoreFields
-//     | C_BIT_Boolean
-//     | C_BIT_Date
-//     | C_BIT_Decimal
-//     | C_BIT_Float
-//     | C_BIT_Integer
-//     | C_BIT_Interval
-//     | C_BIT_Time
-//     | C_BIT_Timestamp
-//     | C_BIT_Varchar
-//     | C_BIT_PostField
-//     | C_BIT_FieldError
-//     | C_BIT_EndRecord
-//     | C_BIT_EndCsvChunk
+     | C_BIT_InitialState
+     | C_BIT_BeginCsvChunk
+     | C_BIT_TestMoreRecords
+     | C_BIT_TestMoreFields
+     | C_BIT_Boolean
+     | C_BIT_Date
+     | C_BIT_Decimal
+     | C_BIT_Float
+     | C_BIT_Integer
+     | C_BIT_Interval
+     | C_BIT_Time
+     | C_BIT_Timestamp
+     | C_BIT_Varchar
+     | C_BIT_PostField
+     | C_BIT_FieldError
+     | C_BIT_EndRecord
+     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -349,7 +352,9 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 i_ErrorCodeLine = -1;
   
   char* azCsvSrc = azCsvChunk;
-  char cSrcChr = *azCsvSrc;
+  char cSrcChr = *azCsvSrc++;
+  char c2ndChr = *azCsvSrc;
+
   ColPix* aColPix = m_pRowSlab->axaColPix();
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
 
@@ -460,7 +465,7 @@ L_STD_TestMoreFields:
     goto L_STD_EndRecord;
   }
   
-  azFieldStart = azCsvSrc;
+  azFieldStart = azCsvSrc - 1;
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -480,9 +485,11 @@ L_STD_TestMoreFields:
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
   if (iTraceBits & C_BIT_TestMoreFields) {
-    vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s srcChr >>%s<< csvSrc >>%s<<\n"_Stz,
+    vTrace("L_STD_TestMoreFields: err %lld rec %lld fld %lld %s "
+           "srcChr >>%s<< 2ndChr >>%s<< csvSrc >>%s<<\n"_Stz,
            m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum],
            spChr.szChar(cSrcChr),
+           sp2nd.szChar(c2ndChr),
            spStr.szInspect(azCsvSrc));
   }
   
