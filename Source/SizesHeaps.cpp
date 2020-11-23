@@ -140,7 +140,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'J' - ('A' - 1),            HT_INVALID           }, // CN__J__
   { sizeof(Job),                HT_TRANSIENT_MEDIUM  }, // CN_JOB
-  { sizeof(Job__Find),          HT_TRANSIENT_LARGE   }, // CN_JOB__FIND
+  { sizeof(Job__Find),          HT_TRANSIENT_MEDIUM  }, // CN_JOB__FIND
   { sizeof(JobList),            HT_TRANSIENT_TINY    }, // CN_JOBLIST
 
   { 'K' - ('A' - 1),            HT_INVALID           }, // CN__K__
