@@ -25,7 +25,7 @@ lsidx orders;
 rows:
 ('orders_idx1', false, false)
 
-oldLoad orders "../DATA/tpch/orders10k.csv" ;
+load orders "../DATA/tpch/orders10k.csv" ;
 success
 
 // check no of rows

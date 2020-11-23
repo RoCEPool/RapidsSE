@@ -33,7 +33,6 @@ DIR_GUARD=@mkdir -p $(@D)
 TARGET_PATH = ../bin
 TARGET_EXE = $(TARGET_PATH)/rapidsse
 TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWIN_LIBRARY_EXT))
-SHOCO := shoco.o
 
 # Man pages
 MAN_PAGES=../Documents/se.man
@@ -41,6 +40,7 @@ MAN_PAGES=../Documents/se.man
 # Source Files
 SRC_DIR := .
 MAIN_CPP := $(shell find $(SRC_DIR) -name "main.cpp")
+SHOCO_C := ../ThirdParty/shoco/shoco.c
 SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
@@ -51,27 +51,32 @@ S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
 
 # Object directories
 # We separate debug & release so that swapping between builds doesn't mean
-# a complete rebuild.
+# a complete rebuild of all object files.
 BASE_OBJ_DIR := ../build/obj
 DEBUG_OBJ_DIR := $(BASE_OBJ_DIR)/debug/src
 RELEASE_OBJ_DIR := $(BASE_OBJ_DIR)/release/src
 
 # Where do we put our object files? Set the OBJ_DIR variable appropriately.
-ifndef OBJ_DIR
+ifndef BUILD_CONFIG
   ifeq ($(MAKECMDGOALS),debug)
+    BUILD_CONFIG := debug
     OBJ_DIR := $(DEBUG_OBJ_DIR)
 
   else ifeq ($(MAKECMDGOALS),release)
+    BUILD_CONFIG := release
     OBJ_DIR := $(RELEASE_OBJ_DIR)
 
   else ifeq ($(MAKECMDGOALS),)        # no goal specified (use default)
+    BUILD_CONFIG := release
     OBJ_DIR := $(RELEASE_OBJ_DIR)
 
   else
+    BUILD_CONFIG := 
     OBJ_DIR := $(BASE_OBJ_DIR)/src
   endif
 
-  # Make OBJ_DIR available to sub-makes.
+  # Make BUILD_CONFIG and OBJ_DIR available to sub-makes.
+  export BUILD_CONFIG
   export OBJ_DIR
 endif
 
@@ -79,7 +84,7 @@ endif
 OBJECTS := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 OBJECTS += $(patsubst $(SRC_DIR)/%.s,   $(OBJ_DIR)/%.obj, $(S_SOURCES))
 MAIN_O  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAIN_CPP))
-
+SHOCO_O := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SHOCO_C)) 
 
 # Dependency Files for library
 DEPFILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
@@ -99,6 +104,12 @@ ANTLR_LIB := ../ThirdParty/antlr/lib/libantlr4-runtime.a
 TCC_LIB := ../ThirdParty/tcc/lib/libtcc.a
 COMPILED_LIBS := $(ANTLR_LIB) $(TCC_LIB)
 
+# A callable function for defining the file that describes whether a target
+# was built as debug or release.
+targetConfigFile = $(shell echo -n "$$(dirname $1)/.$$(basename $1).lastBuildConfig")
+
+
+
 ###############################################################################
 ### Build Rules																														  ###
 ###############################################################################
@@ -111,9 +122,9 @@ post-build : main-build
 main-build : pre-build
 	@$(MAKE) -e target
 
-pre-build : version thirdparty
+pre-build : version thirdparty buildConfigCheck
 
-target : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
+target : $(SHOCO_O) $(TARGET_EXE) $(TARGET_LIBRARY)
 
 # Debug builds
 debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -g $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
@@ -122,19 +133,21 @@ debug : all
 # Explicit release builds (the default)
 release : all
 
-$(SHOCO): ../ThirdParty/shoco/shoco.c  
-	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
+$(SHOCO_O): $(SHOCO_C)
+	$(DIR_GUARD)
+	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) $< -o $@ 
 
-# Library target
+# RapidsSE dynamic library
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(DIR_GUARD)
 	@echo ""
 	@echo "Linking the rapidsse dynamic library..."
 	@echo ""
 	$(CPP) $(LIBFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
+	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_LIBRARY))
 
-# Main target
-$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO) $(COMPILED_LIBS)
+# RapidsSE executable
+$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO_O) $(COMPILED_LIBS)
 	$(DIR_GUARD)
 	@echo ""
 	@echo "Compiling the rapidsse executable..."
@@ -144,7 +157,8 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO) $(COMPILED_LIBS)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
 	@echo ""
-	$(CPP) $(MAIN_O) $(SHOCO) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	$(CPP) $(MAIN_O) $(SHOCO_O) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
 # Compile source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
@@ -165,6 +179,16 @@ $(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
 # The script will determine if it needs to update the Version.h file.
 version : FORCE
 	@./generateVersion.sh
+
+# Since we write out a debug/release binary in the same location regardless
+# of whether it is a debug or release configuration, we need to handle the
+# case where someone does a make debug and then a make release. Because the
+# binaries already exist the release version won't be rebuilt. So we check
+# for the presence of a file that was written out with the binary that tells
+# us whether it was written as a debug or release.
+buildConfigCheck : FORCE
+	@./checkBuildConfig.sh $(TARGET_LIBRARY) $(call targetConfigFile, $(TARGET_LIBRARY)) $(BUILD_CONFIG)
+	@./checkBuildConfig.sh $(TARGET_EXE) $(call targetConfigFile, $(TARGET_EXE)) $(BUILD_CONFIG)
 
 # Generic rule to make any thirdparty libraries that are built from source
 # and then linked against by RapidsSE. Add the dependencies here and then
@@ -193,7 +217,10 @@ distclean : clean
 
 #To remove RapidsSE-generated files only
 clean :
-	rm -f $(TARGET_EXE) $(TARGET_LIBRARY)
+	rm -f $(TARGET_EXE) 
+	rm -f $(TARGET_LIBRARY) 
+	rm -f $(call targetConfigFile, $(TARGET_EXE)) 
+	rm -f $(call targetConfigFile, $(TARGET_LIBRARY))
 	rm -rf $(BASE_OBJ_DIR)
 
 # Makefile debugging rule to print makefile variables.
@@ -206,4 +233,4 @@ print-% : ; @echo $* = $($*)
 .SECONDARY :
 
 # List of make targets that don't correlate to files in the filesystem.
-.PHONY : clean distclean FORCE thirdparty version target release debug post-build main-build pre-build all
+.PHONY : clean distclean FORCE thirdparty version buildConfigCheck target release debug post-build main-build pre-build all

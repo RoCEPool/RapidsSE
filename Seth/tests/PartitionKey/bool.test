@@ -23,8 +23,8 @@ rows:
 create index idx1 on boolTable (key1);
 success;
 
-// oldLoad data into the table
-oldLoad boolTable "../DATA/PartitionKey/bool.csv";
+// load data into the table
+load boolTable "../DATA/PartitionKey/bool.csv";
 success
 
 // analyze table

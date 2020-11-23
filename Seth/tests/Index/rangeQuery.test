@@ -28,8 +28,8 @@ success
 create index idx4 on T1 (jA,jB,jC,jD);
 success
 
-// (6) oldLoad the table
-oldLoad T1 "../DATA/Index/rangeQuery.csv";
+// (6) load the table
+load T1 "../DATA/Index/rangeQuery.csv";
 success
 
 // (7) create an index on one column after oldLoad

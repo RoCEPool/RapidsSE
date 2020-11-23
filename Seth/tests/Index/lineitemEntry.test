@@ -39,8 +39,8 @@ lsidxcol lineitem lineitem_idx1;
 rows:
   ("l_SHIPDATE", "TIMESTAMP", 0, 0, false, false)
 
-// oldLoad the table
-oldLoad lineitem "/TPCH/SF1/lineitem.tbl" <field_delimiter> = "|";
+// load the table
+load lineitem "/TPCH/SF1/lineitem.tbl" <field_delimiter> = "|";
 success
 
 //predicateFetch lineitem;

@@ -50,7 +50,7 @@ lsidxcol j10 keyIdx;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
 
-oldLoad j10 "../Seth/tests/Examples/j10.csv";
+load j10 "../Seth/tests/Examples/j10.csv";
 success
 
 

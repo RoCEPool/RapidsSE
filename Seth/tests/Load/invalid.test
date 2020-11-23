@@ -1,25 +1,25 @@
 /*----------------------------------------------------------------------------*/
-/* invalid -- invalid oldLoad tests                                              */
+/* invalid -- invalid load tests                                              */
 /*----------------------------------------------------------------------------*/
 
 // track memory
 //trackMemory;
 //success
 
-// incomplete oldLoad command
-oldLoad;
+// incomplete load command
+load;
 failure contains: 'invalid command'
 
-// incomplete oldLoad command
-oldLoad T1;
+// incomplete load command
+load T1;
 failure contains: 'invalid command'
 
-// incomplete oldLoad command
-oldLoad "../DATA/Load/null.csv";
+// incomplete load command
+load "../DATA/Load/null.csv";
 failure contains: 'invalid command'
 
-// oldLoad non-existent table T1
-oldLoad T1 "../DATA/Load/null.csv" ;
+// load non-existent table T1
+load T1 "../DATA/Load/null.csv" ;
 failure contains: 'no such table'
 
 create table T1 (
@@ -33,8 +33,8 @@ success
 create index idx on T1 (col_id);
 success
 
-// oldLoad T1 with invalid file
-oldLoad T1 "no-such-file" ;
+// load T1 with invalid file
+load T1 "no-such-file" ;
 failure contains: 'invalid file'
 
 // drop the table

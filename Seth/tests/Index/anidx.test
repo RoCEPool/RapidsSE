@@ -55,7 +55,7 @@ failure contains: "no such table"
 anidx IntTbl int_idx1;
 rows: 4
 
-oldLoad IntTbl "../DATA/Datums/integer.csv" ;
+load IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows

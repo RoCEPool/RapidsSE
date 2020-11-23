@@ -41,8 +41,8 @@ lsidxcol customer customer_idx2;
 rows:
   ("C_NATIONKEY", "INTEGER", 19, 0, false, false)
 
-// oldLoad the table
-//oldLoad customer "/TPCH/SF1/customer.tbl"  <field_delimiter> = "|";
+// load the table
+//load customer "/TPCH/SF1/customer.tbl"  <field_delimiter> = "|";
 load customer "/TPCH/SF1/customer.tbl";
 success
 

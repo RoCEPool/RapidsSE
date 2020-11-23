@@ -14,7 +14,7 @@ success
 create index idx on vch (vch_testno);
 success
 
-// oldLoad data into the table with default formatter settings
+// load data into the table with default formatter settings
 Load vch "../DATA/Load/vch_no_enclosed.csv" ;
 success
 
@@ -106,7 +106,7 @@ success
 create index idx on vch (vch_testno);
 success
 
-// oldLoad data into the table with \0 as <enclosed_by_leading> = 
+// load data into the table with \0 as <enclosed_by_leading> = 
 Load vch "../DATA/Load/vch_no_enclosed.csv"
   <enclosed_by_leading> =  "\0"
 ;

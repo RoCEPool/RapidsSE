@@ -60,8 +60,8 @@ lsidxcol lineitem lineitem_idx3;
 rows:
   ("L_SUPPKEY", "INTEGER", 19, 0, false, false)
 
-// oldLoad the table
-//oldLoad lineitem "/TPCH/SF1/lineitem.tbl" <field_delimiter> = "|";
+// load the table
+//load lineitem "/TPCH/SF1/lineitem.tbl" <field_delimiter> = "|";
 load lineitem "/TPCH/SF1/lineitem.tbl";
 success
 
