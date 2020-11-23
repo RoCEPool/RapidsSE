@@ -289,7 +289,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-//     | C_BIT_InitialState
+     | C_BIT_InitialState
 //     | C_BIT_BeginCsvChunk
 //     | C_BIT_TestMoreRecords
 //     | C_BIT_TestMoreFields
@@ -352,23 +352,32 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // trace the initial state
   if (iTraceBits & C_BIT_InitialState) {
     vTrace("L_STD_InitialState: \n"
-           "  errors %lld records %lld\n"
-           "  escape %02llx=%s fldSep %02llx=%s recEnd %02llx=%s recEnd2nd %02llx=%s\n"
-           "  enclosedBy_leading %02llx=%s enclosedBy_trailing %02llx=%s\n"
+           
+           "  dateComponent[0]    %s\n"
+           "  dateComponent[1]    %s\n"
+           "  dateComponent[2]    %s\n"
+           "  dateSeparator       0x%02llx=%s\n"
+           "  enclosedBy_leading  0x%02llx=%s\n"
+           "  enclosedBy_trailing 0x%02llx=%s\n"
+           "  escapeChar          0x%02llx=%s\n"
+           "  fieldDelimiter      0x%02llx=%s\n"
+           "  lineEnd             0x%02llx=%s\n"
+           "  lineEnd2nd          0x%02llx=%s\n"
+           "  recordTerminator    0x%02llx=%s\n"
+
            "\n"_Stz
-           
-           ,m_nErrors
-           ,m_nRecords
-           
-           ,(i8)m_cEscapeChar, StrLib::szCharToStr(m_cEscapeChar)
-           ,(i8)m_cFieldDelimiter, StrLib::szCharToStr(m_cFieldDelimiter)
-           ,(i8)m_cLineEnd, StrLib::szCharToStr(m_cLineEnd)
-           ,(i8)m_cLineEnd2nd, StrLib::szCharToStr(m_cLineEnd2nd)
-           
-           ,m_cEnclosedBy_Leading,
-              StrLib::szCharToStr(m_cEnclosedBy_Leading)
-           ,m_cEnclosedBy_Trailing,
-              StrLib::szCharToStr(m_cEnclosedBy_Trailing)
+                      
+           ,aDC[m_eDateComponent[0]]
+           ,aDC[m_eDateComponent[1]]
+           ,aDC[m_eDateComponent[2]]
+           ,(i8)m_cDateSeparator,StrLib::szCharToStr(m_cDateSeparator)
+           ,(i8)m_cEnclosedBy_Leading,StrLib::szCharToStr(m_cEnclosedBy_Leading)
+           ,(i8)m_cEnclosedBy_Trailing,StrLib::szCharToStr(m_cEnclosedBy_Trailing)
+           ,(i8)m_cEscapeChar,StrLib::szCharToStr(m_cEscapeChar)
+           ,(i8)m_cFieldDelimiter,StrLib::szCharToStr(m_cFieldDelimiter)
+           ,(i8)m_cLineEnd,StrLib::szCharToStr(m_cLineEnd)
+           ,(i8)m_cLineEnd2nd,StrLib::szCharToStr(m_cLineEnd2nd)
+           ,(i8)m_cRecordTerminator,StrLib::szCharToStr(m_cRecordTerminator)
 
            );
     
