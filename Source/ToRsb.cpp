@@ -342,23 +342,23 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-     | C_BIT_InitialState
-     | C_BIT_BeginCsvChunk
-     | C_BIT_TestMoreRecords
-     | C_BIT_TestMoreFields
-     | C_BIT_Boolean
-     | C_BIT_Date
-     | C_BIT_Decimal
-     | C_BIT_Float
-     | C_BIT_Integer
-     | C_BIT_Interval
-     | C_BIT_Time
-     | C_BIT_Timestamp
-     | C_BIT_Varchar
-     | C_BIT_PostField
-     | C_BIT_FieldError
-     | C_BIT_EndRecord
-     | C_BIT_EndCsvChunk
+//     | C_BIT_InitialState
+//     | C_BIT_BeginCsvChunk
+//     | C_BIT_TestMoreRecords
+//     | C_BIT_TestMoreFields
+//     | C_BIT_Boolean
+//     | C_BIT_Date
+//     | C_BIT_Decimal
+//     | C_BIT_Float
+//     | C_BIT_Integer
+//     | C_BIT_Interval
+//     | C_BIT_Time
+//     | C_BIT_Timestamp
+//     | C_BIT_Varchar
+//     | C_BIT_PostField
+//     | C_BIT_FieldError
+//     | C_BIT_EndRecord
+//     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -803,6 +803,14 @@ L_STD_Date_components:
   if (i_DateComponent > 2)
     goto L_STD_Date_collected;
   
+  // skip over separator
+  if (i_DateComponent > 0) {
+    if (cSrcChr != m_cDateSeparator) {
+      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
+    }
+    vADV_SRCCHR(); // skip separator
+  }
+
   switch (m_eDateComponent[i_DateComponent]) {
     case DC_YYYY : goto L_STD_Date_year;
     case DC_MM   : goto L_STD_Date_month;
@@ -833,12 +841,6 @@ L_STD_Date_year:
   // adjust a 2-digit year
   if (uYear <= 99)
     uYear += 2000;
-
-  // skip over separator
-  if (m_cDateSeparator != cSrcChr) {
-    vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-  }
-  vADV_SRCCHR(); // skip separator
   
   goto L_STD_Date_components;
 
@@ -860,12 +862,6 @@ L_STD_Date_year:
   if (nDigits > 2) {
     vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
   }
-
-  // skip over separator
-  if (cSrcChr == m_cDateSeparator) {
-    vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-  }
-  vADV_SRCCHR(); // skip separator
   
   goto L_STD_Date_components;
 
