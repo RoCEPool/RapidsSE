@@ -190,24 +190,34 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define vADV_SRCCHR()    (cSrcChr = *++azCsvSrc)
+#define bIS_DIGIT() \
+  (cSrcChr >= '0' && cSrcChr <= '9')
 
-#define vCOLLECT(i)      i = (i * 10) + (cSrcChr - '0')
+#define bFIELD_END() \
+  (    cSrcChr == m_cFieldDelimiter \
+    || cSrcChr == m_cLineEnd \
+  )
 
-#define bIS_DIGIT()      (cSrcChr >= '0' && cSrcChr <= '9')
+#define bMORE_CSV() \
+  (bool)(cSrcChr)
 
-#define bMORE_CSV()      (bool)(cSrcChr)
+#define bMORE_FIELDS() \
+  (bool)(cSrcChr && cSrcChr != m_cLineEnd)
 
-#define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cLineEnd)
+//--
 
-#define bFIELD_END()     (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)
+#define vADV_SRCCHR() \
+  (cSrcChr = *++azCsvSrc) \
+
+#define vCOLLECT(i) \
+  i = (i * 10) + (cSrcChr - '0')
 
 #define vFIELD_ERROR(e) \
-{ \
-  eError = e; \
-  i_ErrorCodeLine = __LINE__; \
-  goto L_STD_FieldError; \
-}
+  { \
+    eError = e; \
+    i_ErrorCodeLine = __LINE__; \
+    goto L_STD_FieldError; \
+  }
 
 #define vRESET_FIELD() \
   { \
@@ -215,17 +225,20 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
      cSrcChr = *azCsvSrc; \
   }
 
+//--
+
 #define bWHITE_SPACE() \
-( (cSrcChr == ' ')  || \
-  (cSrcChr == '\t') )
+  ( (cSrcChr == ' ' ) || \
+    (cSrcChr == '\t') )
 
 #define bCTL_CHAR() \
-( (cSrcChr == '\n') || \
-  (cSrcChr == '\r') || \
-  (cSrcChr == '\f') )
+  ( (cSrcChr == '\n') || \
+    (cSrcChr == '\r') )
 
 #define bNON_DATA_CHAR() \
   ( bWHITE_SPACE() || bCTL_CHAR() )
+
+//--
 
 #define vSKIP_NON_DATA() \
   while (cSrcChr && bNON_DATA_CHAR()) { \
