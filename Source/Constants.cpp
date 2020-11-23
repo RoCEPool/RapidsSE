@@ -302,7 +302,6 @@ void Constants::vAddConstantsCpp(void)
   
   /*    */ vAddConstant("CN_LEXICON"_Stz,      CN_LEXICON);
   /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
-  /*    */ vAddConstant("CN_LOADER"_Stz,       CN_LOADER);
   /*    */ vAddConstant("CN_LOCAL"_Stz,        CN_LOCAL);
   /* 47 */ vAddConstant("CN_LOCALSCHAIN"_Stz,     CN_LOCALSCHAIN);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
@@ -327,7 +326,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_READAPI"_Stz,      CN_READAPI);
   /*    */ vAddConstant("CN_RECORD"_Stz,       CN_RECORD);
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
-  /*    */ vAddConstant("CN_LOADCURSOR"_Stz,   CN_LOADCURSOR);
   /*    */ vAddConstant("CN_RESPONSE"_Stz,     CN_RESPONSE);
   /*    */ vAddConstant("CN_RESPONSEVEC"_Stz,  CN_RESPONSEVEC);
   /*    */ vAddConstant("CN_RESULT"_Stz,       CN_RESULT);

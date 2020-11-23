@@ -16,7 +16,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
-  vAddStep("Operand[].csvToCrwH"_Stz,      &Step::vRegOperandCsvToCrwH);
   vAddStep("Operand[].csvToRsb"_Stz,       &Step::vRegOperandCsvToRsb);
   vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vRegOperandCrwDuplicate);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
@@ -196,25 +195,6 @@ void Step::vRegOperandCsvData(void)
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
   char* data = (char*)pCsvBuffer->ayDataArea();
   m_pDataStack->vPushStz((Stz*)data);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].csvToCrwH -- convert csv operand to CrwH                         */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandCsvToCrwH(void)
-{
-  ENTRY();
-  
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
-  Loader* pLoader = *m_pLogicUnit->m_xpLoader;
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
-  
-  pLoader->bCsvToCrw((Stz*)pCsvBuffer->ayDataArea(),
-                     pCsvBuffer->nDataBytes(),
-                     pPipelineJob);
   
   EXIT();
 }

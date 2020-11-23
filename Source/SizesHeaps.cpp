@@ -49,7 +49,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ConstSet),           HT_TRANSIENT_MEDIUM  }, // CN_CONSTSET
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_CRWBUFFER
-  { sizeof(CrwHash),            HT_TRANSIENT_LARGE   }, // CN_CRWHASH
   { sizeof(CsvBuffer),          HT_TRANSIENT_LARGE   }, // CN_CSVBUFFER
   { sizeof(CsvMeta),            HT_TRANSIENT_TINY    }, // CN_CSVMETA
 
@@ -153,9 +152,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lexicon),            HT_TRANSIENT_TINY    }, // CN_LEXICON
   { sizeof(Licence),            HT_TRANSIENT_TINY    }, // CN_LICENCE
   { sizeof(Limits),             HT_TRANSIENT_TINY    }, // CN_LIMITS
-  { sizeof(LoadCursor),         HT_TRANSIENT_LARGE   }, // CN_LOADCURSOR
   { sizeof(LoadChunk),          HT_TRANSIENT_LARGE   }, // CN_LOADCHUNK
-  { sizeof(Loader),             HT_TRANSIENT_LARGE   }, // CN_LOADER
   { sizeof(Local),              HT_INVALID           }, // CN_LOCAL
   { sizeof(LocalChain),         HT_TRANSIENT_LARGE   }, // CN_LOCALSCHAIN
   { sizeof(Lock),               HT_INVALID           }, // CN_LOCK

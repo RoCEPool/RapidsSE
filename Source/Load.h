@@ -14,10 +14,6 @@ namespace Load
 
 //------------------------------------------------------------------------------
 
-#include "LoadCursor.hpp"
-#include "CrwHash.hpp"
-#include "Loader.hpp"
-
 #include "ToRsb.hpp"
 #include "ToNstRsb.hpp"
 #include "ToPtnRsb.hpp"

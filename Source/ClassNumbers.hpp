@@ -53,7 +53,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CONSTSET,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
-  /* */ CN_CRWHASH,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
 
@@ -158,8 +157,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LOADCHUNK,
-  /* */ CN_LOADCURSOR,
-  /* */ CN_LOADER,
   /* */ CN_LOCAL,
   /* */ CN_LOCALSCHAIN,
   /* */ CN_LOCK,
@@ -407,7 +404,6 @@ static Stz* aCN[]
   /* */ "CONSTSET"_Stz,            // CN_CONSTSET
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
-  /* */ "CRWHASH"_Stz,             // CN_CRWHASH
   /* */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   /* */ "CSVMETA"_Stz,             // CN_CSVMETA
 
@@ -512,8 +508,6 @@ static Stz* aCN[]
   /* */ "LICENCE"_Stz,             // CN_LICENCE
   /* */ "LIMITS"_Stz,              // CN_LIMITS
   /* */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
-  /* */ "LOADCURSOR"_Stz,          // CN_LOADCURSOR
-  /* */ "LOADER"_Stz,              // CN_LOADER
   /* */ "LOCAL"_Stz,               // CN_LOCAL
   /* */ "LOCALSCHAIN"_Stz,         // CN_LOCALSCHAIN
   /* */ "LOCK"_Stz,                // CN_LOCK
