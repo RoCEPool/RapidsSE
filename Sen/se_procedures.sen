@@ -792,8 +792,7 @@
   // load                                                          TO BE REMOVED
   sPath
   "
-  procedure oldLoad
-  //procedure oldLoad_REMOVE
+  procedure oldLoad_REMOVE
     parameters $table $file
   begin
 
@@ -812,69 +811,6 @@
   stage stageD on origin :
     //sink | stageA
     progress 'Load' | toStatDemon | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // load
-  sPath
-  "
-  procedure oldLoad_sameAsLoad
-  //procedure oldLoad
-    parameters $table $file
-  begin
-
-  stage stageA on origin :
-
-    start              |
-
-    periodic once    |
-
-    chunk $file        | // read chunks of file, produce (seekOffset) =>
-    // dump seekOffsets 1 |
-
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
-
-    stageB robin
-
-
-  stage stageB on all partitions on origin :
-
-    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
-    // dump rsbBuffer 1   |
-
-    toPtnRsb           | // (rsbBuffer)  => (rsbBuffer 'ptn)
-    // dump rsbBuffer 1   |
-
-    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
-    //dump rsbBuffer 1   |
-
-    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
-    //dump rsbBuffer 1   |
-
-    stageC hashed
-
-  stage stageC on all partitions :
-
-    //eatSome |
-
-    insert $table | // (crwBuffer) inserted into table
-
-    stageD
-
-  stage stageD on origin :
-
-    progress 'Load'    |
-
-    toStatDemon        |
-
-    sink               |
-
-    stageA
 
   end ;
   "
