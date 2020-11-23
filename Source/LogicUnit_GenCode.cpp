@@ -241,6 +241,16 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* aFileName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate iterating index on l_shipdate & project into RSB (Query 1)        */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery100(void)

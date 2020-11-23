@@ -922,6 +922,7 @@ public:
   void vLogicUnitDynFun(void);
   void vLogicUnitDynFunArgs(void);
   void vLogicUnitGenAsm(void);
+  void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenCode(void);
   void vLogicUnitDevFetch(void);
   void vLogicUnitDevStore(void);

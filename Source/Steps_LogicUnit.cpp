@@ -25,6 +25,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
+  vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
     
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
@@ -281,6 +282,28 @@ void Step::vLogicUnitGenAsm(void)
   bool bResult = m_pLogicUnit->bGenerateAsm(sText);
   
   m_pDataStack->vPushInt(bResult);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genAsmTxt -- generate asm text into file                       */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenAsmTxt(void)
+{
+  ENTRY();
+  
+  s256 sFileName;
+  m_pDataStack->vPopStr(sFileName, __func__);
+  
+  File* pFile = new File(nullptr);
+  
+  i8 iQueryNo = m_pDataStack->iPopInt(__func__);
+  
+  //bool b = pFile->bOpenRead(sFileName.szStz());
+  //RASSERT(b);
+  
+  m_pLogicUnit->vGenerateAsmTxt(iQueryNo, sFileName);
   
   EXIT();
 }

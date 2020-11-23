@@ -11125,6 +11125,7 @@ void Task::vAddMunged(Forth* pForth)
     "  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote\n"
     "  Pipein[].pipeout\n"
     "\n"
+    "  <queryNo> <fileName> LogicUnit[].genAsmTxt\n"
     "  true\n"
     " ;\n"
     "\n"
