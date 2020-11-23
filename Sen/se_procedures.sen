@@ -1920,7 +1920,7 @@
   sPath
   "
   procedure Smt0
-    parameters $Table $QueryText_stageB
+    parameters $Table
   begin
 
   stage stageA on origin :
@@ -1928,12 +1928,16 @@
     | periodic once
     | stageB
 
-  stage stageB on all partitions :
-    scan $Table
-    | EOAsm $QueryText_stageB 0
+  stage stageB on all nodes :
+    genAsmTxt 0 asm0.txt
     | stageC
 
-  stage stageC on origin :
+  stage stageC on all partitions :
+    scan $Table
+    | EOAsm asm0.txt 0
+    | stageD
+
+  stage stageD on origin :
     output
     | sink
     | stageA

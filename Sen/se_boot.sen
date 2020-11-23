@@ -127,6 +127,7 @@ assert::stack_0
 
         "OP_fetch.sen"                include
 
+        "OP_genAsmTxt.sen"            include
         "OP_genCsv.sen"               include
         "OP_gridSanity.sen"           include
  

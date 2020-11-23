@@ -36,7 +36,7 @@ create table LineItem                      // SF * 6,000,000 rows
 // 10K ROWS
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
 /time load lineitem "/DATA/TPCH/lineitem10.csv";
-/time Smt0 lineitem "../EO_text/QRY_Smt0.txt";
+/time Smt0 lineitem;
 
 //drop table lineitem;
 //memoryLeaks;
