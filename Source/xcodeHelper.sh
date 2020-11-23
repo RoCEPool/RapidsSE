@@ -92,6 +92,11 @@ function checkForMakeClean() {
 # Do a "make clean" if necessary.
 checkForMakeClean
 
+# Set the MacOS minimum deployment target. This should be set via the 
+# CPPFLAGS set in the makefile.darwin.in file, so it is probably
+# unnecessary here.
+#export MACOSX_DEPLOYMENT_TARGET="10.12"
+
 # Spawn the same number of concurrent build jobs as there are processors 
 # in the system.
 concurrentJobs="$(nproc)"
