@@ -371,7 +371,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   i8 iBucketId = 0;
   i8 i_Fld = 0;
-  i8 iHash = 0;
+  i8 iPtnKeyHash = 0;
   tPN tPtnNo = 0;
   tPN tPtnNo_byBkt = 0;
   bool bSawFldSep = false;
@@ -716,7 +716,7 @@ L_STD_BooleanDeposit:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,iBoolean);
+    PtnMap::vRunningHash(&iPtnKeyHash,iBoolean);
 
   goto L_STD_PostField;
     
@@ -730,7 +730,7 @@ L_STD_BooleanNull:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
   goto L_STD_PostField;                                        // end of boolean
 
@@ -956,7 +956,7 @@ L_STD_Date_year:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,xDate);
+    PtnMap::vRunningHash(&iPtnKeyHash,xDate);
 
   goto L_STD_PostField;
 
@@ -970,7 +970,7 @@ L_STD_DateNull:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
   goto L_STD_PostField;                                           // end of date
 
@@ -1141,7 +1141,7 @@ L_STD_Decimal:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,iDecimal);
+    PtnMap::vRunningHash(&iPtnKeyHash,iDecimal);
 
   goto L_STD_PostField;
 
@@ -1155,7 +1155,7 @@ L_STD_DecimalNull:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
   goto L_STD_PostField;                                        // end of decimal
 
@@ -1459,7 +1459,7 @@ L_STD_Integer:
     
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,iInteger);
+    PtnMap::vRunningHash(&iPtnKeyHash,iInteger);
   
   goto L_STD_PostField;
   
@@ -1473,7 +1473,7 @@ L_STD_IntegerNull:
     
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
   goto L_STD_PostField;                                        // end of integer
 
@@ -1606,7 +1606,7 @@ L_STD_Interval:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,xInterval);
+    PtnMap::vRunningHash(&iPtnKeyHash,xInterval);
   
   goto L_STD_PostField;
 
@@ -1620,7 +1620,7 @@ L_STD_IntervalNull:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
   goto L_STD_PostField;                                       // end of interval
 
@@ -1799,7 +1799,7 @@ L_STD_Time:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,xTime);
+    PtnMap::vRunningHash(&iPtnKeyHash,xTime);
 
   goto L_STD_PostField;
 
@@ -1813,7 +1813,7 @@ L_STD_TimeNull:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
   goto L_STD_PostField;                                           // end of time
 
@@ -2192,7 +2192,7 @@ L_STD_SkipTime:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,xTimestamp);
+    PtnMap::vRunningHash(&iPtnKeyHash,xTimestamp);
 
   goto L_STD_PostField;
 
@@ -2206,7 +2206,7 @@ L_STD_TimestampNull:
   
   // compute running hash of partitioning column
   if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
   goto L_STD_PostField;                                      // end of timestamp
 
@@ -2799,7 +2799,7 @@ L_STD_EndRecord:
   // set partition hash
   if (m_bPtnHash) {
         
-    tPtnNo = PtnMap::tHashToPtnNo(iHash,m_nPtnsInGrid);
+    tPtnNo = PtnMap::tHashToPtnNo(iPtnKeyHash,m_nPtnsInGrid);
     
     // partition mapping experiment by Ray 12 Nov 2020
 //    iBucketId = PtnMap::iHashToBucketId(iHash);
@@ -2808,7 +2808,7 @@ L_STD_EndRecord:
     
     //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     m_pRowSlab->vDeposit(tPtnNo);
-    iHash = 0;
+    iPtnKeyHash = 0;
   }
   
   // increment records processed

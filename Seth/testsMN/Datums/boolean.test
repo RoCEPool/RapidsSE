@@ -54,22 +54,22 @@ partitionScan bolTbl 0;
 rows: 0
 
 partitionScan bolTbl 1;
-rows: 88
+rows: 0
 
 partitionScan bolTbl 2;
 rows: 0
 
 partitionScan bolTbl 3;
-rows: 13
+rows: 0
 
 partitionScan bolTbl 4;
-rows: 0
+rows: 87
 
 partitionScan bolTbl 5;
-rows: 0
+rows: 13
 
 partitionScan bolTbl 6;
-rows: 0
+rows: 1
 
 partitionScan bolTbl 7;
 rows: 0
