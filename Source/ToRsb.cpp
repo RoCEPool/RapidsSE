@@ -200,12 +200,18 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bMORE_FIELDS()   (bool)(cSrcChr && cSrcChr != m_cLineEnd)
 
+#define vFIELD_ERROR(e) \
+{ \
+  eError = e; \
+  i_ErrorCodeLine = __LINE__; \
+  goto L_STD_FieldError; \
+}
+
 #define vRESET_FIELD() \
   { \
      azCsvSrc = azFieldStart; \
      cSrcChr = *azCsvSrc; \
   }
-
 
 #define bWHITE_SPACE() \
 ( (cSrcChr == ' ')  || \
@@ -253,6 +259,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   u8 uMonth;
   u8 uDay;
   bool bLeapYear;
+  i8 i_DateComponent;
 
   i8 iDecimal;
   
@@ -290,22 +297,22 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
      | C_BIT_InitialState
-//     | C_BIT_BeginCsvChunk
-//     | C_BIT_TestMoreRecords
-//     | C_BIT_TestMoreFields
-//     | C_BIT_Boolean
-//     | C_BIT_Date
-//     | C_BIT_Decimal
-//     | C_BIT_Float
-//     | C_BIT_Integer
-//     | C_BIT_Interval
-//     | C_BIT_Time
-//     | C_BIT_Timestamp
-//     | C_BIT_Varchar
-//     | C_BIT_PostField
-//     | C_BIT_FieldError
-//     | C_BIT_EndRecord
-//     | C_BIT_EndCsvChunk
+     | C_BIT_BeginCsvChunk
+     | C_BIT_TestMoreRecords
+     | C_BIT_TestMoreFields
+     | C_BIT_Boolean
+     | C_BIT_Date
+     | C_BIT_Decimal
+     | C_BIT_Float
+     | C_BIT_Integer
+     | C_BIT_Interval
+     | C_BIT_Time
+     | C_BIT_Timestamp
+     | C_BIT_Varchar
+     | C_BIT_PostField
+     | C_BIT_FieldError
+     | C_BIT_EndRecord
+     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -324,7 +331,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   bool bSawFldSep = false;
   Column* pCol = nullptr;
   eEC eError = EC_NONE;
-
+  i8 i_ErrorCodeLine = -1;
+  
   char* azCsvSrc = azCsvChunk;
   char cSrcChr = *azCsvSrc;
   ColPix* aColPix = m_pRowSlab->axaColPix();
@@ -680,6 +688,10 @@ L_STD_Date:
   if (iTraceBits & C_BIT_Date)
     vTrace("L_STD_Date:\n"_Stz);
   
+  uYear = 0;
+  uMonth = 0;
+  uDay = 0;
+
   vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -742,10 +754,31 @@ L_STD_Date:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // date components
+  
+  i_DateComponent = -1;
+  
+L_STD_Date_components:
+  
+  i_DateComponent++;
+  
+  if (i_DateComponent > 2)
+    goto L_STD_Date_collected;
+  
+  switch (m_eDateComponent[i_DateComponent]) {
+    case DC_YYYY : goto L_STD_Date_year;
+    case DC_MM   : goto L_STD_Date_month;
+    case DC_DD   : goto L_STD_Date_day;
+    default:
+      NEVER_REACH;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
   
+L_STD_Date_year:
+
   // collect digits for year
-  uYear = 0;
   for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uYear);
     nDigits++;
@@ -766,17 +799,20 @@ L_STD_Date:
     uYear += 2000;
 
   // skip over separator
-  if ('-' != cSrcChr) {
+  if (m_cDateSeparator != cSrcChr) {
     eError = EC_CSV_DATE_SEP_MISSING;
     goto L_STD_FieldError;
   }
-  vADV_SRCCHR(); // skip '-'
+  vADV_SRCCHR(); // skip separator
   
+  goto L_STD_Date_components;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month portion
     
+  L_STD_Date_month:
+  
   // collect digits for month
-  uMonth = 0;
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uMonth);
     nDigits++;
@@ -793,17 +829,20 @@ L_STD_Date:
   }
 
   // skip over separator
-  if ('-' != cSrcChr) {
+  if (cSrcChr == m_cDateSeparator) {
     eError = EC_CSV_DATE_SEP_MISSING;
     goto L_STD_FieldError;
   }
-  vADV_SRCCHR(); // skip '-'
+  vADV_SRCCHR(); // skip separator
   
+  goto L_STD_Date_components;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day portion
           
+  L_STD_Date_day:
+  
   // collect digits for day
-  uDay = 0;
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uDay);
     nDigits++;
@@ -819,9 +858,13 @@ L_STD_Date:
     goto L_STD_FieldError;
   }
 
+  goto L_STD_Date_components;
+  
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all date portions collected
 
+  L_STD_Date_collected:
+  
   // validate the year
   if (uYear < C_YEAR_MIN) {
     eError = EC_CSV_YEAR_TOO_SMALL;
@@ -969,12 +1012,12 @@ L_STD_Decimal:
   // collect sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRCCHR(); // skip '-'
+    vADV_SRCCHR(); // skip negative sign
   }
   else
   if ('+' == cSrcChr) {
     bNegative = false;
-    vADV_SRCCHR(); // skip '+'
+    vADV_SRCCHR(); // skip positive sign
   }
   else {
     bNegative = false;
@@ -1157,12 +1200,12 @@ L_STD_Float:
   // collect sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRCCHR(); // skip '-'
+    vADV_SRCCHR(); // skip negative sign
   }
   else
   if ('+' == cSrcChr ) {
     bNegative = false;
-    vADV_SRCCHR(); // skip '+'
+    vADV_SRCCHR(); // skip positive sign
   }
   else {
     bNegative = false;
@@ -1203,7 +1246,7 @@ L_STD_Float:
     // test for +/-
     if ('+' == cSrcChr || '-' == cSrcChr) {
       *acBufDst++ = cSrcChr;
-      vADV_SRCCHR(); // skip +/-
+      vADV_SRCCHR(); // skip sign
     }
         
     // collect exponent digits
@@ -1331,12 +1374,12 @@ L_STD_Integer:
   // collect sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRCCHR(); // skip '-'
+    vADV_SRCCHR(); // skip negative sign
   }
   else
   if ('+' == cSrcChr) {
     bNegative = false;
-    vADV_SRCCHR(); // skip '+'
+    vADV_SRCCHR(); // skip positive sign
   }
   else {
     bNegative = false;
@@ -1837,8 +1880,45 @@ L_STD_Timestamp:
     goto L_STD_FieldError;
   }
   
+    // ---- ---- ---- ---- ---- ---- ---- ----
+    // date components
+    
+    i_DateComponent = -1;
+    
+L_STD_Timestamp_components:
+    
+    if (iTraceBits & C_BIT_Timestamp)
+      vTrace("L_STD_Timestamp_components:\n"_Stz);
+  
+    i_DateComponent++;
+    
+    if (i_DateComponent > 2)
+      goto L_STD_Timestamp_collected;
+  
+  // skip over separator
+  if (i_DateComponent > 0) {
+    if (cSrcChr != m_cDateSeparator) {
+      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
+    }
+    vADV_SRCCHR(); // skip separator
+  }
+
+  switch (m_eDateComponent[i_DateComponent]) {
+    case DC_YYYY : goto L_STD_Timestamp_year;
+    case DC_MM   : goto L_STD_Timestamp_month;
+    case DC_DD   : goto L_STD_Timestamp_day;
+    default:
+      NEVER_REACH;
+  }
+    
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year portion
+  
+L_STD_Timestamp_year:
+  
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_year:\n"_Stz);
   
   // collect digits for year
   for (nDigits = 0; nDigits < 4 && bIS_DIGIT(); vADV_SRCCHR()) {
@@ -1848,28 +1928,26 @@ L_STD_Timestamp:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   if (nDigits > 4) {
-    eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
   }
 
   // adjust a 2-digit year
   if (uYear <= 99)
     uYear += 2000;
-
-  // skip over separator
-  if ('-' != cSrcChr) {
-    eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_STD_FieldError;
-  }
-  vADV_SRCCHR(); // skip '-'
+  
+  goto L_STD_Timestamp_components;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month portion
     
+L_STD_Timestamp_month:
+  
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_month:\n"_Stz);
+  
   // collect digits for month
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uMonth);
@@ -1878,24 +1956,22 @@ L_STD_Timestamp:
 
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_MONTH_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_MONTH_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
   }
 
-  // skip over separator
-  if ('-' != cSrcChr) {
-    eError = EC_CSV_DATE_SEP_MISSING;
-    goto L_STD_FieldError;
-  }
-  vADV_SRCCHR(); // skip '-'
+  goto L_STD_Timestamp_components;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day portion
           
+L_STD_Timestamp_day:
+  
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_day:\n"_Stz);
+  
   // collect digits for day
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uDay);
@@ -1904,13 +1980,19 @@ L_STD_Timestamp:
 
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_DAY_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DAY_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_DAY_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
   }
+
+  goto L_STD_Timestamp_components;
+  
+  
+L_STD_Timestamp_collected:
+
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_collected:\n"_Stz);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // ' ' or 'T' separator
@@ -1923,6 +2005,9 @@ L_STD_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour portion
 
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_hour:\n"_Stz);
+  
   // collect digits for hour
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uHour);
@@ -1931,24 +2016,24 @@ L_STD_Timestamp:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_HOUR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   }
 
   // skip over separator
   if (':' != cSrcChr) {
-    eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   }
   vADV_SRCCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute portion
 
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_minute:\n"_Stz);
+  
   // collect digits for minute
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uMinute);
@@ -1957,23 +2042,23 @@ L_STD_Timestamp:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_MINUTE_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   }
   // skip over separator
   if (':' != cSrcChr) {
-    eError = EC_CSV_TIME_SEP_MISSING;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   }
   vADV_SRCCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second portion
 
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_second:\n"_Stz);
+  
   // collect digits for second
   for (nDigits = 0; nDigits < 2 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uSecond);
@@ -1982,16 +2067,17 @@ L_STD_Timestamp:
   
   // should have seen some digits
   if (! nDigits) {
-    eError = EC_CSV_SECOND_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_SECOND_INVALID);
   }
   if (nDigits > 2) {
-    eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
+  
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_STD_Timestamp_microsecond:\n"_Stz);
   
   // a dot without any futher digits is ok
   if ('.' == cSrcChr) {
@@ -2006,13 +2092,15 @@ L_STD_Timestamp:
     uMicrosecond = uMicrosecond * nShift;
   }
 
+  while (bIS_DIGIT())
+    vADV_SRCCHR(); // skip digit
+
 L_STD_SkipTime:
   
   vSKIP_WHITE_SPACE();
   
   if (! (cSrcChr == m_cFieldDelimiter || cSrcChr == m_cLineEnd)) {
-    eError = EC_CSV_YEAR_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -2020,18 +2108,15 @@ L_STD_SkipTime:
 
   // validate the year
   if (uYear < C_YEAR_MIN) {
-    eError = EC_CSV_YEAR_TOO_SMALL;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
   }
   if (uYear > C_YEAR_MAX) {
-    eError = EC_CSV_YEAR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
   }
 
   // validate the month
   if (uMonth < 1 || uMonth > 12) {
-    eError = EC_CSV_MONTH_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
   }
   
   // validate day wrt possible leap year
@@ -2049,20 +2134,17 @@ L_STD_SkipTime:
 
   // validate days per month
   if (uDay < 1) {
-    eError = EC_CSV_DAY_INVALID;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_DAY_INVALID);
   }
   
   if (bLeapYear) {
     if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
-      eError = EC_CSV_DAY_NOT_LEAPYEAR;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
     }
   }
   else {
     if (uDay > (u8)iDaysPerMonth[uMonth]) {
-      eError = EC_CSV_DAY_INVALID;
-      goto L_STD_FieldError;
+      vFIELD_ERROR(EC_CSV_DAY_INVALID);
     }
   }
 
@@ -2076,18 +2158,15 @@ L_STD_SkipTime:
   // all time portions collected
 
   if (uHour > 23) {
-    eError = EC_CSV_HOUR_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   }
   
   if (uMinute > 59) {
-    eError = EC_CSV_MINUTE_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   }
   
   if (uSecond > 59) {
-    eError = EC_CSV_SECOND_TOO_LARGE;
-    goto L_STD_FieldError;
+    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
   }
   
   // compute final field value
@@ -2653,9 +2732,18 @@ L_STD_FieldError:
    
    */
   
-  if (iTraceBits & C_BIT_FieldError)
-    vTrace("L_STD_FieldError: %lld %s\n"_Stz,eError,aEC[eError]);
-  
+  if (iTraceBits & C_BIT_FieldError) {
+    vTrace("L_STD_FieldError: %lld %s : errorCodeLine %lld\n"_Stz,
+           eError,aEC[eError],i_ErrorCodeLine);
+    vTrace("                 : err %lld rec %lld fld %lld %s srcChr >>%s<< csvSrc >>%s<<\n"_Stz,
+           m_nErrors,
+           m_nRecords,
+           i_Fld,
+           aDM[ePixDatum],
+           spChr.szChar(cSrcChr),
+           spStr.szInspect(azCsvSrc));
+
+  }
   // discard partial row in row slab
   m_pRowSlab->vDiscardInvalidRow();
 
