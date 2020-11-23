@@ -13,8 +13,8 @@
 # Refer to the below url for details:
 #  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 
-DARWIN_CPPFLAGS := 
-DARWIN_CPPFLAGS_DEBUG := 
+DARWIN_CPPFLAGS := -mmacosx-version-min=10.12
+DARWIN_CPPFLAGS_DEBUG := -mmacosx-version-min=10.12
 
 # The name of the extension on a dynamic library / shared object
 DARWIN_LIBRARY_EXT := dylib
