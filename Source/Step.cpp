@@ -102,7 +102,6 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Kbase();
   
-  Step::vAddSteps_Loader();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
   Step::vAddSteps_LockTracker();
