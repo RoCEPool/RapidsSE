@@ -62,7 +62,7 @@ rows:
 
 predicateFetch vch "vch_testno 810 =";
 rows:
-  ( 810, null, *)
+  ( 810, 'null', *)
 
 predicateFetch vch "vch_testno 811 =";
 rows:
