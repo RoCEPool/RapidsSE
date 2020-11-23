@@ -201,7 +201,6 @@ assert::stack_0
         "OP_tableSizes.sen"           include
         "OP_toCrwH.sen"               include
         "OP_toCrwHash.sen"            include
-        "OP_toCrwHfast.sen"           include
         "OP_toCsv.sen"                include
         "OP_toDemon.sen"              include
         "OP_toDfload.sen"             include

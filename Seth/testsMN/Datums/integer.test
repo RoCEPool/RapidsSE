@@ -57,22 +57,22 @@ partitionScan IntTbl 0;
 rows: 10
 
 partitionScan IntTbl 1;
-rows: 15
-
-partitionScan IntTbl 2;
-rows: 12
-
-partitionScan IntTbl 3;
-rows: 7
-
-partitionScan IntTbl 4;
 rows: 13
 
+partitionScan IntTbl 2;
+rows: 13
+
+partitionScan IntTbl 3;
+rows: 17
+
+partitionScan IntTbl 4;
+rows: 15
+
 partitionScan IntTbl 5;
-rows: 16
+rows: 6
 
 partitionScan IntTbl 6;
-rows: 17
+rows: 16
 
 partitionScan IntTbl 7;
 rows: 11
