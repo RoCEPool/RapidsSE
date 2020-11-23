@@ -711,7 +711,13 @@ L_STD_Boolean:
   // all boolean portions collected
   
 L_STD_BooleanDeposit:
+  
   m_pRowSlab->vDeposit(iBoolean);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,iBoolean);
+
   goto L_STD_PostField;
     
 L_STD_BooleanNull:
@@ -719,7 +725,13 @@ L_STD_BooleanNull:
   if (! bPixNullable) {
     vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   }
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+
   goto L_STD_PostField;                                        // end of boolean
 
   
@@ -941,6 +953,11 @@ L_STD_Date_year:
   
   // deposit the date
   m_pRowSlab->vDeposit(xDate);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,xDate);
+
   goto L_STD_PostField;
 
 L_STD_DateNull:
@@ -950,6 +967,11 @@ L_STD_DateNull:
    }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+
   goto L_STD_PostField;                                           // end of date
 
   
@@ -1113,11 +1135,14 @@ L_STD_Decimal:
   if (iDecimal < C_I8_MIN) {
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_SMALL);
   }
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  
+    
   // deposit the decimal
   m_pRowSlab->vDeposit(iDecimal);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,iDecimal);
+
   goto L_STD_PostField;
 
 L_STD_DecimalNull:
@@ -1127,6 +1152,11 @@ L_STD_DecimalNull:
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+  
   goto L_STD_PostField;                                        // end of decimal
 
   
@@ -1431,7 +1461,7 @@ L_STD_Integer:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iHash,iInteger);
   
-  goto L_STD_PostField;                                        // end of integer
+  goto L_STD_PostField;
   
 L_STD_IntegerNull:
   
@@ -1573,6 +1603,11 @@ L_STD_Interval:
   
   // deposit the interval
   m_pRowSlab->vDeposit(xInterval);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,xInterval);
+  
   goto L_STD_PostField;
 
 L_STD_IntervalNull:
@@ -1582,6 +1617,11 @@ L_STD_IntervalNull:
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+
   goto L_STD_PostField;                                       // end of interval
 
     
@@ -1756,6 +1796,11 @@ L_STD_Time:
 
   // deposit the time
   m_pRowSlab->vDeposit(xTime);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,xTime);
+
   goto L_STD_PostField;
 
 L_STD_TimeNull:
@@ -1765,6 +1810,11 @@ L_STD_TimeNull:
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+
   goto L_STD_PostField;                                           // end of time
 
   
@@ -2139,6 +2189,11 @@ L_STD_SkipTime:
 
   // deposit the time
   m_pRowSlab->vDeposit(xTimestamp);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,xTimestamp);
+
   goto L_STD_PostField;
 
 L_STD_TimestampNull:
@@ -2148,6 +2203,11 @@ L_STD_TimestampNull:
   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
+  // compute running hash of partitioning column
+  if (xColPix.m_bPtnKey)
+    PtnMap::vRunningHash(&iHash,C_DATUM_NULL);
+
   goto L_STD_PostField;                                      // end of timestamp
 
   
@@ -2624,7 +2684,9 @@ L_STD_VarcharNull:
   
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_STD_VarcharDeposit: null\n"_Stz);
+  
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
   goto L_STD_PostField;                                        // end of varchar
 
   
