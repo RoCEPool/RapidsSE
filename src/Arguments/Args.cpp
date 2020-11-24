@@ -39,9 +39,9 @@ Args::Args(void)
   m_bRLUTimer     = false;
   
 #ifdef WITH_APPLE
-  m_sSenDir       = "../Sen/"_Stz;
+  m_sSenDir       = "../sen/"_Stz;
 #else
-  m_sSenDir       = "../Sen/"_Stz;
+  m_sSenDir       = "../sen/"_Stz;
 #endif
   m_nPtnsPerTable    = 4;
 

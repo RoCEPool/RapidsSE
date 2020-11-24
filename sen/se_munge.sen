@@ -257,11 +257,11 @@
 
   "munging" .
 
-  // save original dir and change to ../Sen
+  // save original dir and change to ../sen
   dir::getCurrent locals| sOrigDir |
   sOrigDir "Original working directory: %v" .printf
 
-  "../Sen" dir::changeCurrent
+  "../sen" dir::changeCurrent
   dir::getCurrent "Working directory now: %v" .printf
 
   // open sen directory

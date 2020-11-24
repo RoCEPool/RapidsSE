@@ -945,7 +945,7 @@ void Engine::vMungeCheck(void)
 {
   // get the time of the Sen files in the Sen folder
   Dir* pDir = new Dir(nullptr);
-  bool bResult = pDir->bOpen("../Sen"_Stz);
+  bool bResult = pDir->bOpen("../sen"_Stz);
   ASSERT(bResult);
   
   s256 sEntryNm;
@@ -966,7 +966,7 @@ void Engine::vMungeCheck(void)
       continue;
     
     // create the complete filepath
-    sFilePath = "../Sen/"_Stz;
+    sFilePath = "../sen/"_Stz;
     sFilePath.vConcat(sEntryNm);
     
     // get the last modification time of the file

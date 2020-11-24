@@ -55,7 +55,7 @@
   // create a directory accessor
   dir::new locals| pSeSourceDir |
 
-  // save original dir and change to ../Sen
+  // save original dir and change to ../sen
   dir::getCurrent locals| pOrigDir |
 
   // change to source director
