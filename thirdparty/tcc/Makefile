@@ -8,7 +8,8 @@ BINDIR := $(CURRENT_PATH)/bin
 LIBDIR := $(CURRENT_PATH)/lib
 LIBTCC := $(LIBDIR)/libtcc.a
 LIBTCC1 := $(LIBDIR)/tcc/libtcc1.a
-
+CPPFLAGS := 
+unexport
 
 all : $(LIBTCC) 
 
@@ -19,7 +20,7 @@ $(LIBTCC) :
 	mkdir -p $(BINDIR)
 	mkdir -p $(LIBDIR)
 	cd src && ./configure --prefix=./.. --libdir=./../lib --bindir=./../bin
-	+cd src && $(MAKE) -e --no-print-directory && $(MAKE) install
+	+cd src && $(MAKE) --no-print-directory && $(MAKE) install
 
 clean :
 	cd src && $(MAKE) clean
