@@ -23,7 +23,7 @@ create index idx on terminator(pcol1);
 success
 
 // load data into the table with default formatter settings
-load terminator "../Seth/tests/load/terminator.csv"
+load terminator "../seth/tests/load/terminator.csv"
   field_delimiter "|"
   record_terminator "|";
 success

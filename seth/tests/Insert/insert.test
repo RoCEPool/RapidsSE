@@ -24,7 +24,7 @@ rows:
   ('col0', 'INTEGER', 19, 0, false, true)
 
 // (3) now load some data into the table
-load T1 "../Seth/tests/Insert/insert.csv" ;
+load T1 "../seth/tests/Insert/insert.csv" ;
 success
 
 // check no of rows

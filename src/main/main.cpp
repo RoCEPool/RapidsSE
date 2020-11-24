@@ -211,11 +211,11 @@ int main(int argc, char* argv[])
  
     se> _bootCluster
  
- c) For debug, in ../Seth run (for example, to run all tests):
+ c) For debug, in ../seth run (for example, to run all tests):
  
     $ ./seth.sh
  
- d) For debug, in ../Seth run (for example, to run a specific set of tests):
+ d) For debug, in ../seth run (for example, to run a specific set of tests):
  
     $ ./sethTest.sh tests/Tpch/customer.test
  
@@ -239,11 +239,11 @@ int main(int argc, char* argv[])
  
     se> _bootCluster;
  
- c) For release, in ../Seth run (for example, to run all tests):
+ c) For release, in ../seth run (for example, to run all tests):
  
     $ ./sethRel.sh
  
- d) For release, in ../Seth run (for example, to run a specific set of tests):
+ d) For release, in ../seth run (for example, to run a specific set of tests):
  
     $ ./sethTestRel.sh tests/Tpch/customer.test
  

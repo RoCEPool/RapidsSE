@@ -332,7 +332,7 @@ success
 create table limitRow (col0 VARCHAR(20000));
 success
 
-//load limitRow "../Seth/tests/load/largeRow1.csv";
+//load limitRow "../seth/tests/load/largeRow1.csv";
 //success
 
 //predicateFetch limitRow;

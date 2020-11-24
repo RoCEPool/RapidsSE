@@ -36,7 +36,7 @@ readonly PROJ_ROOT="${DIR}/../.."
 readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/src"
 
-readonly RELATIVE_BAMBOO_DIR="Seth/bamboo"  # Relative to the project root
+readonly RELATIVE_BAMBOO_DIR="seth/bamboo"  # Relative to the project root
 
 # Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0

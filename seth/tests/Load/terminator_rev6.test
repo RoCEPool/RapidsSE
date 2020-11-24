@@ -13,7 +13,7 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-load T1 "../Seth/tests/load/terminatorVch_rev6.csv"
+load T1 "../seth/tests/load/terminatorVch_rev6.csv"
   record_terminator "|"
   record_ends "\n"
 ;

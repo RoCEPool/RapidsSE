@@ -14,7 +14,7 @@ create index idx_0 on table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic1.csv',node = 'node1', enclosed_by="'";
+ESCAPE CONNECTOR se 'load table1' WITH file = '../seth/tests/Connector/Load/basic1.csv',node = 'node1', enclosed_by="'";
 failure contains: 'Success'
 
 Select * from table1;
@@ -40,7 +40,7 @@ create index idx_0 on table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic2.csv',
+ESCAPE CONNECTOR se 'load table1' WITH file = '../seth/tests/Connector/Load/basic2.csv',
 terminator = '\n', enclosed_by = "''", node = 'node1';
 failure contains: 'Success'
 
@@ -71,7 +71,7 @@ create index idx_0 on table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic3.csv', delimiter = '\t',
+ESCAPE CONNECTOR se 'load table1' WITH file = '../seth/tests/Connector/Load/basic3.csv', delimiter = '\t',
   terminator = '|\n',
   enclosed_by = '""',
   escape_char = '^',
@@ -104,7 +104,7 @@ create index idx_0 on table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic4.csv', node = 'node1';
+ESCAPE CONNECTOR se 'load table1' WITH file = '../seth/tests/Connector/Load/basic4.csv', node = 'node1';
 failure contains: 'Warning'
 
 Select * from table1;
