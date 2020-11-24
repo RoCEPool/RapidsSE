@@ -300,9 +300,6 @@ void Step::vLogicUnitGenAsmTxt(void)
   
   i8 iQueryNo = m_pDataStack->iPopInt(__func__);
   
-  //bool b = pFile->bOpenRead(sFileName.szStz());
-  //RASSERT(b);
-  
   m_pLogicUnit->vGenerateAsmTxt(iQueryNo, sFileName);
   
   EXIT();

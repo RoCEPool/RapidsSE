@@ -1825,12 +1825,12 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 asm0.txt
+    genAsmTxt 0 ../eo_text/asm0.txt
     | stageC
 
   stage stageC on all partitions :
     scan $Table
-    | EOAsm asm0.txt 0
+    | EOAsm ../eo_text/asm0.txt 0
     | stageD
 
   stage stageD on origin :
