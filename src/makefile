@@ -195,13 +195,11 @@ thirdparty : $(COMPILED_LIBS)
 # Rule for building ANTLR
 antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
-	unexport CPPFLAGS
 	+@cd ../thirdparty/antlr && $(MAKE)
 
 # Rule for building TCC
 tcc : $(TCC_LIB)
 $(TCC_LIB) : 
-	unexport CPPFLAGS
 	+@cd ../thirdparty/tcc && $(MAKE)
 
 # Necessary to make some of the above rules run every time.
