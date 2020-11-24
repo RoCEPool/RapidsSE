@@ -7,15 +7,15 @@ fi
 
 # Files to be checked
 declare -a FILES
-FILES+=("../../Bootstrap/setup.sh")
-FILES+=("../../Bootstrap/setup.fn")
-FILES+=("../../Bootstrap/envCheck.fn")
-FILES+=("../../Bootstrap/common.fn")
-FILES+=("../../Bootstrap/boot.fn")
-FILES+=("../../Bootstrap/startSE.sh")
-FILES+=("../../Bootstrap/stopSE.sh")
-FILES+=("../../Bootstrap/prompt.sh")
-FILES+=("../../Bootstrap/generateData.sh")
-FILES+=("../../Bootstrap/collectLogs.sh")
+FILES+=("../../bootstrap/setup.sh")
+FILES+=("../../bootstrap/setup.fn")
+FILES+=("../../bootstrap/envCheck.fn")
+FILES+=("../../bootstrap/common.fn")
+FILES+=("../../bootstrap/boot.fn")
+FILES+=("../../bootstrap/startSE.sh")
+FILES+=("../../bootstrap/stopSE.sh")
+FILES+=("../../bootstrap/prompt.sh")
+FILES+=("../../bootstrap/generateData.sh")
+FILES+=("../../bootstrap/collectLogs.sh")
 
-shellcheck -s bash -P ../../Bootstrap "${FILES[@]}"
+shellcheck -s bash -P ../../bootstrap "${FILES[@]}"
