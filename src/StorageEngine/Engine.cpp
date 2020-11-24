@@ -984,7 +984,7 @@ void Engine::vMungeCheck(void)
   delete pDir;
   
   // get the time of the Munged file
-  bResult = File::bModTime("../Munge/Task_AddMunged.cpp"_Stz, tMungedTime);
+  bResult = File::bModTime("../munge/Task_AddMunged.cpp"_Stz, tMungedTime);
   ASSERT(bResult);
   
   // is the last modified sen file time after the last munge ?

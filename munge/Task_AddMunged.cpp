@@ -7303,7 +7303,7 @@ void Task::vAddMunged(Forth* pForth)
     "  \".\" pSenDir dir.open assert\n"
     "\n"
     "  // open cpp file\n"
-    "  \"../Munge/Task_AddMunged.cpp\" OPEN_WRITE pCppFile file.open assert\n"
+    "  \"../munge/Task_AddMunged.cpp\" OPEN_WRITE pCppFile file.open assert\n"
     "\n"
     "  pCppFile munge_WriteCppHeader\n"
     "\n"
