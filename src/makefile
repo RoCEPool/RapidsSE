@@ -196,17 +196,15 @@ buildConfigCheck : FORCE
 thirdparty : $(COMPILED_LIBS)
 
 # Rule for building ANTLR
+antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
-	export CPPFLAGS=""
-	export LIBFLAGS=""
-	export PICFLAGS=""
+	unexport CPPFLAGS
 	+@cd ../thirdparty/antlr && $(MAKE)
 
 # Rule for building TCC
+tcc : $(TCC_LIB)
 $(TCC_LIB) : 
-	export CPPFLAGS=""
-	export LIBFLAGS=""
-	export PICFLAGS=""
+	unexport CPPFLAGS
 	+@cd ../thirdparty/tcc && $(MAKE)
 
 # Necessary to make some of the above rules run every time.
@@ -239,4 +237,4 @@ print-% : ; @echo $* = $($*)
 .SECONDARY :
 
 # List of make targets that don't correlate to files in the filesystem.
-.PHONY : clean distclean FORCE thirdparty version buildConfigCheck target release debug post-build main-build pre-build all
+.PHONY : clean distclean FORCE thirdparty antlr tcc version buildConfigCheck target release debug post-build main-build pre-build all
