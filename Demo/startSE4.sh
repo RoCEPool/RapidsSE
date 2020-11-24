@@ -37,7 +37,7 @@ done
 EXE_PATH="${ROOT_DIR}/bin"
 EXE="${EXE_PATH}/rapidsse"
 
-START_PARAMS="--partitionsPerNode ${PARTITIONS} --threads ${THREADS} --size ${SIZE} --name ${NODE_NAME} ${NODES[*]} --start --munged --script --metadata --commands ${ROOT_DIR}/Commands"
+START_PARAMS="--partitionsPerNode ${PARTITIONS} --threads ${THREADS} --size ${SIZE} --name ${NODE_NAME} ${NODES[*]} --start --munged --script --metadata --commands ${ROOT_DIR}/commands"
 
 #set the library path for the rapidsSE library
 export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH

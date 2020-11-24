@@ -416,7 +416,7 @@ void Engine::vChangeDirectory(void)
   // ** WARNING! WARNING! WARNING! WARNING! WARNING! **
   // **************************************************
   // The TinyC implementation currently relies on the current working
-  // directory being the Commands directory as it uses relative paths
+  // directory being the commands directory as it uses relative paths
   // from the cwd to set the header and library search paths when 
   // compiling dynamic code. If you change this value you may need to
   // change these paths in LogicCompiler::bCompile().

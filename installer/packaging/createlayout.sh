@@ -16,9 +16,9 @@ cp "${ROOT_DIR}/bin/rapidsse"       "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/libRapidsSE.so" "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/se.man"         "${LAYOUT_DIR}/bin"
 
-# Commands directory
-mkdir -p "${LAYOUT_DIR}/Commands"
-cp -r "${ROOT_DIR}/Commands" "${LAYOUT_DIR}"
+# commands directory
+mkdir -p "${LAYOUT_DIR}/commands"
+cp -r "${ROOT_DIR}/commands" "${LAYOUT_DIR}"
 
 # tcc thirdparty library
 TCC_DIR="ThirdParty/tcc/lib/tcc"

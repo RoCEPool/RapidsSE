@@ -34,9 +34,9 @@
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
 
   user::name "ray" str.same if
-    " --commands /Users/ray/rapidsse/Commands"  str.cat
+    " --commands /Users/ray/rapidsse/commands"  str.cat
   else
-    " --commands /Users/alka/rapidsse/Commands" str.cat
+    " --commands /Users/alka/rapidsse/commands" str.cat
   then
 
   args.tracepoint  if " --tracepoint"  str.cat then

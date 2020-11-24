@@ -11,7 +11,7 @@ PIDFILE="${ROOT_DIR}/se.pid"
 
 EXE_PATH="${ROOT_DIR}/bin"
 EXE="${EXE_PATH}/rapidsse"
-START_PARAMS="--name NODE0  --prompt --metadata --commands ${ROOT_DIR}/Commands --appendTrace"
+START_PARAMS="--name NODE0  --prompt --metadata --commands ${ROOT_DIR}/commands --appendTrace"
 
 #set the library path for the rapidsSE library
 export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH

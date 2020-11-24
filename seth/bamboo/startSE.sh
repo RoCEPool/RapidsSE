@@ -11,8 +11,8 @@ PIDFILE="${ROOT_DIR}/se.pid"
 
 EXE_PATH="${ROOT_DIR}/bin"
 EXE="${EXE_PATH}/rapidsse"
-START_PARAMS="--name NODE0 --node NODE0 127.0.0.1 5541 --size 4GB --start --munged --script --metadata --commands ${ROOT_DIR}/Commands"
-START_CLUSTER_PARAMS="--name NODE0 --munged --script --commands ${ROOT_DIR}/Commands --command _connectCluster --appendTrace"
+START_PARAMS="--name NODE0 --node NODE0 127.0.0.1 5541 --size 4GB --start --munged --script --metadata --commands ${ROOT_DIR}/commands"
+START_CLUSTER_PARAMS="--name NODE0 --munged --script --commands ${ROOT_DIR}/commands --command _connectCluster --appendTrace"
 
 START_CLUSTER_OUTPUT_FILE="${ROOT_DIR}/startCluster.log"
 

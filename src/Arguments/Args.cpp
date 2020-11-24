@@ -22,9 +22,9 @@ Args::Args(void)
   
   // configuration
 #ifdef WITH_APPLE
-  m_sCommandsDir  = "../../../../Commands"_Stz;
+  m_sCommandsDir  = "../../commands"_Stz;
 #else
-  m_sCommandsDir  = "../../Commands"_Stz;
+  m_sCommandsDir  = "../commands"_Stz;
 #endif
   
   m_iConnectCode  = C_UNKNOWN;

@@ -24,7 +24,7 @@ NODES=("NODE0" "NODE1")
 i=0
 for NODE in "${NODES[@]}"
 do
-  STOP_PARAMS_ARR+=("--name ${NODE} --stop --commands ${ROOT_DIR}/Commands --appendTrace")
+  STOP_PARAMS_ARR+=("--name ${NODE} --stop --commands ${ROOT_DIR}/commands --appendTrace")
   PIDFILE_ARR+=("${ROOT_DIR}/se-${NODE}.pid")
   i=$((i+1))
 done

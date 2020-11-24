@@ -14,7 +14,7 @@ ROOT_DIR="${DIR}/.."
 
 EXE_PATH="${ROOT_DIR}/bin"
 EXE="${EXE_PATH}/rapidsse"
-START_PARAMS="--name ${NODE_NAME} --metadata --commands ${ROOT_DIR}/Commands --prompt --appendTrace"
+START_PARAMS="--name ${NODE_NAME} --metadata --commands ${ROOT_DIR}/commands --prompt --appendTrace"
 
 #set the library path for the rapidsSE library
 export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH

@@ -304,8 +304,8 @@ function startCurrentNode() {
   startCmd+=("--munged")
   startCmd+=("--script")
   startCmd+=("--metadata")
-  startCmd+=("--Commands")
-  startCmd+=("${ROOT_DIR}/Commands")
+  startCmd+=("--commands")
+  startCmd+=("${ROOT_DIR}/commands")
   startCmd+=("${paramsArray[@]}")
 
 
@@ -419,7 +419,7 @@ function localClusterInit() {
   cmd+=("--munged")
   cmd+=("--script")
   cmd+=("--commands")
-  cmd+=("${ROOT_DIR}/Commands")
+  cmd+=("${ROOT_DIR}/commands")
   cmd+=("--command")
   cmd+=("${connectCmd}")
   cmd+=("--appendTrace")
@@ -810,8 +810,8 @@ function stopCurrentNode() {
     stopCmd+=("--name")
     stopCmd+=("${CURRENT_NODE_NAME}")
     stopCmd+=("--stop")
-    stopCmd+=("--Commands")
-    stopCmd+=("${ROOT_DIR}/Commands")
+    stopCmd+=("--commands")
+    stopCmd+=("${ROOT_DIR}/commands")
     stopCmd+=("--appendTrace")
 
 

@@ -245,7 +245,7 @@ function runSeth() {
   echo "Running SETH tests again RapidsSE for ${target}."
   echo ""
 
-  # Start from the project root directory so that SE can change to ./Commands successfully.
+  # Start from the project root directory so that SE can change to ./commands successfully.
   (
     cd "${PROJ_ROOT}"
     ./"${RELATIVE_BAMBOO_DIR}"/seth.sh --resultname "results-${target}.xml" --testsuffix " (${target})"
@@ -327,7 +327,7 @@ function runSeth2Nodes() {
   echo "Running SETH tests again RapidsSE for ${target}."
   echo ""
 
-  # Start from the project root directory so that SE can change to ./Commands successfully.
+  # Start from the project root directory so that SE can change to ./commands successfully.
   (
     cd "${PROJ_ROOT}"
     ./"${RELATIVE_BAMBOO_DIR}"/seth_2nodes.sh --resultname "results-${target}.xml" --testsuffix " (${target})"

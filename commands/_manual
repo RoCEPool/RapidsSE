@@ -18,8 +18,8 @@ print "change directory to ../";
 cd ../;
 ls;
 
-print "change directory back to Commands...";
-cd Commands;
+print "change directory back to commands...";
+cd commands;
 
 print "cf ..";
 cf ..;

@@ -18,7 +18,7 @@ NODE_NAME=$1
 
 EXE_DIR="${ROOT_DIR}/bin"
 EXE="${EXE_DIR}/rapidsse"
-STOP_PARAMS="--name ${NODE_NAME} --stop --commands ${ROOT_DIR}/Commands --appendTrace"
+STOP_PARAMS="--name ${NODE_NAME} --stop --commands ${ROOT_DIR}/commands --appendTrace"
 
 EXIT_SLEEP_TIME=0.2   # How long to sleep (in seconds) between checking if the pid has exited.
 EXIT_GIVE_UP_TIME=5   # After this time (in seconds) just kill the pid.

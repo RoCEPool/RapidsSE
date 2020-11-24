@@ -7,7 +7,7 @@ CLASSPATH=".:*:${DIR}:${DIR}/*"
 
 SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"
-SE_ARGS="--name NODE0 --sen ../Sen --commands ../Commands --appendTrace"  # in addition to --metadata and --script
+SE_ARGS="--name NODE0 --sen ../Sen --commands ../commands --appendTrace"  # in addition to --metadata and --script
 
 # Additional arguments for SETH. Enable as required.
 #SETH_ARGS="--clean --logtests"   # log all test executions to a file

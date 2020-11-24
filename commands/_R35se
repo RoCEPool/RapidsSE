@@ -60,9 +60,9 @@ cd xyz;
 
 print "";
 print "=====================================================================";
-print "change directory back to Commands...";
+print "change directory back to commands...";
 print "=====================================================================";
-cd Commands;
+cd commands;
 
 print "";
 print "=====================================================================";

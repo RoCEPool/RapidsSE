@@ -132,8 +132,8 @@ function startPrompt() {
   promptCmd+=("${CURRENT_NODE_NAME}")
   promptCmd+=("--prompt")
   promptCmd+=("--metadata")
-  promptCmd+=("--Commands")
-  promptCmd+=("${ROOT_DIR}/Commands")
+  promptCmd+=("--commands")
+  promptCmd+=("${ROOT_DIR}/commands")
   promptCmd+=("--appendTrace")
 
   # Set the library path so the RapidsSE library can be found and loaded
