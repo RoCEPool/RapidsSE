@@ -9,6 +9,7 @@ LIBDIR := $(CURRENT_PATH)/lib
 LIBTCC := $(LIBDIR)/libtcc.a
 LIBTCC1 := $(LIBDIR)/tcc/libtcc1.a
 CPPFLAGS := 
+unexport
 
 all : $(LIBTCC) 
 
