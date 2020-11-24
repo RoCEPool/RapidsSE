@@ -99,7 +99,7 @@ checkForMakeClean
 
 # Spawn the same number of concurrent build jobs as there are processors 
 # in the system.
-concurrentJobs="$(nproc)"
+concurrentJobs="$(sysctl -n hw.ncpu)"
 
 # XCode will set an environment variable, $CONFIGURATION, to either Debug
 # or Release (both capitalised). If this is set then use it appropriately.

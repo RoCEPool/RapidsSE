@@ -197,10 +197,16 @@ thirdparty : $(COMPILED_LIBS)
 
 # Rule for building ANTLR
 $(ANTLR_LIB) : 
+	export CPPFLAGS=""
+	export LIBFLAGS=""
+	export PICFLAGS=""
 	+@cd ../thirdparty/antlr && $(MAKE)
 
 # Rule for building TCC
 $(TCC_LIB) : 
+	export CPPFLAGS=""
+	export LIBFLAGS=""
+	export PICFLAGS=""
 	+@cd ../thirdparty/tcc && $(MAKE)
 
 # Necessary to make some of the above rules run every time.
