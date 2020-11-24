@@ -147,12 +147,9 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_LIBRARY))
 
 # RapidsSE executable
-$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO_O) $(COMPILED_LIBS)
+$(TARGET_EXE): $(TARGET_LIBRARY) $(MAIN_O) $(SHOCO_O) $(COMPILED_LIBS)
 	$(DIR_GUARD)
 	@echo ""
-	@echo "Compiling the rapidsse executable..."
-	@echo ""
-	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  $(MAIN_CPP) -o $(MAIN_O)
 	cp $(MAN_PAGES) $(TARGET_PATH)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
