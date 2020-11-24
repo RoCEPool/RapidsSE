@@ -48,8 +48,8 @@ cp "${ROOT_DIR}/src/Expressions/RLU_interface.h"  "${LAYOUT_DIR}/src/Expressions
 cp "${ROOT_DIR}/src/Expressions/RluCommon.h"      "${LAYOUT_DIR}/src/Expressions"
 cp "${ROOT_DIR}/src/eNums/eEO.h"                  "${LAYOUT_DIR}/src/eNums"
 
-# EO_Text
-cp -r "${ROOT_DIR}/EO_Text"               "${LAYOUT_DIR}/EO_Text"
+# eo_rtText
+cp -r "${ROOT_DIR}/eo_text"               "${LAYOUT_DIR}/eo_text"
 
 # Bootstrap
 cp "${ROOT_DIR}/bootstrap/setup.sh"              "${LAYOUT_DIR}"
