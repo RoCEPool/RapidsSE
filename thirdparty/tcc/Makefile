@@ -20,7 +20,7 @@ $(LIBTCC) :
 	mkdir -p $(BINDIR)
 	mkdir -p $(LIBDIR)
 	cd src && ./configure --prefix=./.. --libdir=./../lib --bindir=./../bin
-	+cd src && $(MAKE) --no-print-directory && $(MAKE) install
+	+cd src && $(MAKE) && $(MAKE) install
 
 clean :
 	cd src && $(MAKE) clean
