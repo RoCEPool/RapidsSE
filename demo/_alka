@@ -106,7 +106,7 @@ Q6    1N-1P  2162     75207429.08,76033
  SF10
  ----
  
- §file: ../Demo/_alka @line 40 Section 0.24) Query 1... :
+ §file: ../demo/_alka @line 40 Section 0.24) Query 1... :
  
  metadata: (L_RETURNFLAG VARCHAR,L_LINESTATUS VARCHAR,sum_qty DECIMAL,sum_base_price DECIMAL,sum_disc_price DECIMAL,sum_charge DECIMAL,avg_qty DECIMAL,avg_price DECIMAL,avg_disc DECIMAL,count_order INTEGER)
  row: ('A','F',377507003.00,566048981675.28,537743114580.79,559260020207.31,25.50,38237.17,0.05,14803631)
@@ -119,7 +119,7 @@ Q6    1N-1P  2162     75207429.08,76033
  
  -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
  
- §file: ../Demo/_alka @line 80 Section 0.34) Query 3 ... :
+ §file: ../demo/_alka @line 80 Section 0.34) Query 3 ... :
  
  metadata: (l_orderkey INTEGER,revenue DECIMAL,o_orderdate DATE,o_shippriority INTEGER)
  row: (52974151,415367.10,1995-02-05,0)
@@ -137,7 +137,7 @@ Q6    1N-1P  2162     75207429.08,76033
  
  
  -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
- §file: ../Demo/_alka @line 54 Section 0.28) Query 4... :
+ §file: ../demo/_alka @line 54 Section 0.28) Query 4... :
  
  metadata: (o_orderpriority VARCHAR,order_count INTEGER)
  row: ('1-URGENT',105213)
@@ -150,7 +150,7 @@ Q6    1N-1P  2162     75207429.08,76033
  
  
  -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
- §file: ../Demo/_alka @line 47 Section 0.26) Query 6... :
+ §file: ../demo/_alka @line 47 Section 0.26) Query 6... :
  
  metadata: (revenue DECIMAL)
  row: (752424863.12)

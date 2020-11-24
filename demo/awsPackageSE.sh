@@ -19,7 +19,7 @@ VERSION="version.txt"
     git rev-parse --short HEAD > version.txt
   fi
   
-  tar cvzf "${OUTPUT_FILE}" Linux commands Demo dbgen Source/LogicUnit.cpp Source/*.h "${VERSION}"
+  tar cvzf "${OUTPUT_FILE}" Linux commands demo dbgen Source/LogicUnit.cpp Source/*.h "${VERSION}"
   
   rm -f "${VERSION}" &>/dev/null
 )
