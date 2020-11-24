@@ -21,7 +21,7 @@ mkdir -p "${LAYOUT_DIR}/commands"
 cp -r "${ROOT_DIR}/commands" "${LAYOUT_DIR}"
 
 # tcc thirdparty library
-TCC_DIR="ThirdParty/tcc/lib/tcc"
+TCC_DIR="thirdparty/tcc/lib/tcc"
 mkdir -p "${LAYOUT_DIR}/${TCC_DIR}"
 mkdir -p "${LAYOUT_DIR}/${TCC_DIR}/include"
 cp "${ROOT_DIR}/${TCC_DIR}/libtcc1.a"     "${LAYOUT_DIR}/${TCC_DIR}"

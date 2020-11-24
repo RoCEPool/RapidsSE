@@ -40,12 +40,12 @@ MAN_PAGES=../Documents/se.man
 # Source Files
 SRC_DIR := .
 MAIN_CPP := $(shell find $(SRC_DIR) -name "main.cpp")
-SHOCO_C := ../ThirdParty/shoco/shoco.c
+SHOCO_C := ../thirdparty/shoco/shoco.c
 SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 SOURCES += $(wildcard ../munge/*.cpp)
-SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
-SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
-SOURCES += $(wildcard ../ThirdParty/antlr/generated/*.cpp)
+SOURCES += $(wildcard ../thirdparty/xxhash/*.cpp)
+SOURCES += $(wildcard ../thirdparty/mersenne/*.cpp)
+SOURCES += $(wildcard ../thirdparty/antlr/generated/*.cpp)
 SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
 S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
 
@@ -91,17 +91,17 @@ DEPFILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
-THIRDPARTY_INCLUDES := -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne -I../ThirdParty/antlr/include -I../ThirdParty/antlr/generated -I ../ThirdParty/tcc/include -I ../ThirdParty/tcc/src
+THIRDPARTY_INCLUDES := -I../thirdparty -I../thirdparty/lz4 -I../thirdparty/bzip2 -I ../thirdparty/xxhash -I ../thirdparty/shoco -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include -I ../thirdparty/tcc/src
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
 LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
 RAPIDS_LIBS = -lRapidsSE
-LIB_DIRS = -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) -L../ThirdParty/tcc/lib -L../ThirdParty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIB_DIRS = -L../thirdparty/bzip2 -L../thirdparty/lz4 -L$(TARGET_PATH) -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
-ANTLR_LIB := ../ThirdParty/antlr/lib/libantlr4-runtime.a
-TCC_LIB := ../ThirdParty/tcc/lib/libtcc.a
+ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
+TCC_LIB := ../thirdparty/tcc/lib/libtcc.a
 COMPILED_LIBS := $(ANTLR_LIB) $(TCC_LIB)
 
 # A callable function for defining the file that describes whether a target
@@ -197,11 +197,11 @@ thirdparty : $(COMPILED_LIBS)
 
 # Rule for building ANTLR
 $(ANTLR_LIB) : 
-	+@cd ../ThirdParty/antlr && $(MAKE)
+	+@cd ../thirdparty/antlr && $(MAKE)
 
 # Rule for building TCC
 $(TCC_LIB) : 
-	+@cd ../ThirdParty/tcc && $(MAKE)
+	+@cd ../thirdparty/tcc && $(MAKE)
 
 # Necessary to make some of the above rules run every time.
 FORCE : 
@@ -212,8 +212,8 @@ distclean : clean
 	@echo ""
 	@echo "Removing 3rd-party generated libraries..."
 	@echo ""
-	+@cd ../ThirdParty/antlr && $(MAKE) clean
-	+@cd ../ThirdParty/tcc && $(MAKE) clean
+	+@cd ../thirdparty/antlr && $(MAKE) clean
+	+@cd ../thirdparty/tcc && $(MAKE) clean
 
 #To remove RapidsSE-generated files only
 clean :

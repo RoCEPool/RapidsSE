@@ -12,7 +12,7 @@ SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"
 SE_ARGS="--name NODE0 --sen ../sen --commands ../commands --appendTrace"  # in addition to --metadata and --script
 
-ANTLR_PATH="${ROOT_DIR}/ThirdParty/antlr/lib"
+ANTLR_PATH="${ROOT_DIR}/thirdparty/antlr/lib"
 export LD_LIBRARY_PATH="${SE_DIR}":"${ANTLR_PATH}":$LD_LIBRARY_PATH
 
 # Additional arguments for SETH. Enable as required.

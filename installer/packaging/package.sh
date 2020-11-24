@@ -30,7 +30,7 @@ readonly LAYOUT_DIR="${DIR}/../layout"
 readonly OUTPUT_DIR="${DIR}/../output"
 readonly SOURCE_DIR="${ROOT_DIR}/src"
 
-readonly MAKESELF_DIR=$(find "${ROOT_DIR}/ThirdParty/" -type d -name "makeself*")
+readonly MAKESELF_DIR=$(find "${ROOT_DIR}/thirdparty/" -type d -name "makeself*")
 
 readonly GIT_CHECK_MODIFIED_FILES_CMD="git status -uno --porcelain"
 readonly GIT_DESCRIBE_CMD="git describe --long"
