@@ -86,12 +86,9 @@ ifndef BUILD_CONFIG
     BUILD_CONFIG := release
     OBJ_DIR := $(RELEASE_OBJ_DIR)
 
-  else ifeq ($(MAKECMDGOALS),)        # no goal specified (use default)
-    BUILD_CONFIG := release
-    OBJ_DIR := $(RELEASE_OBJ_DIR)
-
   else
-    BUILD_CONFIG := 
+    # All other goals (all, clean, etc).
+    BUILD_CONFIG := release
     OBJ_DIR := $(RELEASE_OBJ_DIR)
   endif
 

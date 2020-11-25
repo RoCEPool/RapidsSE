@@ -9,3 +9,4 @@ nohupSE*.out
 startCluster.log
 tmp
 bin
+.idea/

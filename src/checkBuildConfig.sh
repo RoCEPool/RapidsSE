@@ -15,7 +15,7 @@ LAST_CONFIG_PATH="$2"
 CURRENT_BUILD_CONFIG="$3"
 
 if [ "$#" -ne 3 ]; then
-  >&2 echo "Usage: ./$0 <binaryPath> <lastConfigPath> <currentBuildConfig>"
+  >&2 echo "Usage: $0 <binaryPath> <lastConfigPath> <currentBuildConfig>"
   exit 1
 fi
 
