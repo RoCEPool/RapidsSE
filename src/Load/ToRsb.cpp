@@ -287,6 +287,9 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
+  // change this to some no longer strib function
+  ASSERT(StrLib::nSize(azCsvChunk) < C_1MB);
+  
   char *azRecordStart;
   char *azFieldStart;
   
@@ -605,9 +608,8 @@ L_Boolean:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-    }
 
     goto L_BooleanNull;
   }
@@ -619,9 +621,8 @@ L_Boolean:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_BooleanNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
@@ -654,9 +655,8 @@ L_Boolean:
 
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-    }
 
     goto L_BooleanDeposit;
   }
@@ -694,10 +694,8 @@ L_Boolean:
 
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-
-    }
     
     goto L_BooleanDeposit;
   }
@@ -712,9 +710,8 @@ L_Boolean:
       vCOLLECT(uNumber);
       nDigits++;
     }
-    if (nDigits > 19) {
+    if (nDigits > 19)
       vFIELD_ERROR(EC_CSV_BOOLEAN_TOO_LARGE);
-    }
   
     if (uNumber > 0)
       iBoolean = true;
@@ -744,9 +741,8 @@ L_BooleanDeposit:
     
 L_BooleanNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-  }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
@@ -803,9 +799,8 @@ L_Date:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-    }
 
     goto L_DateNull;
   }
@@ -817,9 +812,8 @@ L_Date:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_DateNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
@@ -839,9 +833,8 @@ L_Date_components:
   
   // skip over separator
   if (i_DateComponent > 0) {
-    if (cSrcChr != m_cDateSeparator) {
+    if (cSrcChr != m_cDateSeparator)
       vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    }
     vADV_SRCCHR(); // skip separator
   }
 
@@ -865,12 +858,11 @@ L_Date_year:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-  }
-  if (nDigits > 4) {
+
+  if (nDigits > 4)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-  }
 
   // adjust a 2-digit year
   if (uYear <= 99)
@@ -890,12 +882,11 @@ L_Date_year:
   }
 
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_MONTH_INVALID);
-  }
-  if (nDigits > 2) {
+
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
-  }
   
   goto L_Date_components;
 
@@ -911,12 +902,11 @@ L_Date_year:
   }
 
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
-  if (nDigits > 2) {
+  
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
-  }
 
   goto L_Date_components;
   
@@ -926,17 +916,15 @@ L_Date_year:
 L_Date_collected:
   
   // validate the year
-  if (uYear < C_YEAR_MIN) {
+  if (uYear < C_YEAR_MIN)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
-  }
-  if (uYear > C_YEAR_MAX) {
+
+  if (uYear > C_YEAR_MAX)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-  }
 
   // validate the month
-  if (uMonth < 1 || uMonth > 12) {
+  if (uMonth < 1 || uMonth > 12)
     vFIELD_ERROR(EC_CSV_MONTH_INVALID);
-  }
   
   // validate day wrt possible leap year
   
@@ -952,19 +940,16 @@ L_Date_collected:
   }
 
   // validate days per month
-  if (uDay < 1) {
+  if (uDay < 1)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
   
   if (bLeapYear) {
-    if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
+    if (uDay > (u8)iDaysPerMonthLeap[uMonth])
       vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
-    }
   }
   else {
-    if (uDay > (u8)iDaysPerMonth[uMonth]) {
+    if (uDay > (u8)iDaysPerMonth[uMonth])
       vFIELD_ERROR(EC_CSV_DAY_INVALID);
-    }
   }
 
   // compute final field value
@@ -984,9 +969,8 @@ L_Date_collected:
 
 L_DateNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-   }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
@@ -1043,9 +1027,8 @@ L_Decimal:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-    }
 
     goto L_DecimalNull;
   }
@@ -1057,9 +1040,8 @@ L_Decimal:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_DecimalNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
@@ -1118,12 +1100,12 @@ L_Decimal:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-  }
-  if (nDigits > 19) {
+
+  if (nDigits > 19)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
-  }
+
   // correct for scale by x 10 till correctly scaled
   while (nPixFracDigits--)
     uNumber *= 10;
@@ -1138,25 +1120,22 @@ L_Decimal:
   
   vSKIP_WHITE_SPACE();
   
-  if (! (bFIELD_END())) {
+  if (! (bFIELD_END()))
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-  }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all decimal portions collected
   
   // have we exceeded the max ?
-  if (uNumber > (u8)C_I8_MAX) {
+  if (uNumber > (u8)C_I8_MAX)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
-  }
   
   // compute final field value
   iDecimal = bNegative ? - uNumber : uNumber;
   
   // have we gone below the negative min ?
-  if (iDecimal < C_I8_MIN) {
+  if (iDecimal < C_I8_MIN)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_SMALL);
-  }
     
   // deposit the decimal
   m_pRowSlab->vDeposit(iDecimal);
@@ -1169,9 +1148,8 @@ L_Decimal:
 
 L_DecimalNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-  }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
@@ -1229,9 +1207,8 @@ L_Float:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-    }
 
     goto L_FloatNull;
   }
@@ -1243,9 +1220,8 @@ L_Float:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_FloatNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
@@ -1313,24 +1289,21 @@ L_Float:
     }
     
     // should have seen some exponent digits
-    if (! nExpDigits) {
+    if (! nExpDigits)
       vFIELD_ERROR(EC_CSV_EXPONENT_MISSING);
-    }
   }
 
   // terminate
   *acFltDst++ = '\0';
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-  }
   
   vSKIP_WHITE_SPACE();
 
-  if (! (bFIELD_END())) {
+  if (! (bFIELD_END()))
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-  }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all float portions collected
@@ -1345,9 +1318,8 @@ L_Float:
 
 L_FloatNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-  }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   goto L_PostField;                                          // end of float
@@ -1412,9 +1384,8 @@ L_Integer:
     vSKIP_WHITE_SPACE();
     
     // should be at a valid field end
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-    }
 
     // recognised a null in an integer field
     goto L_IntegerNull;
@@ -1427,9 +1398,8 @@ L_Integer:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_IntegerNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
@@ -1463,13 +1433,12 @@ L_Integer:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-  }
+  
   // should not have seen too many digits
-  if (nDigits > C_MAX_INTEGER_DIGITS) {
+  if (nDigits > C_MAX_INTEGER_DIGITS)
     vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
-  }
 
   // ignore any . digits
   if (cSrcChr == C_DECIMAL_POINT) {
@@ -1484,16 +1453,14 @@ L_Integer:
   vSKIP_WHITE_SPACE();
   
   // should be at a valid field end
-  if (! (bFIELD_END())) {
+  if (! (bFIELD_END()))
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-  }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all integer portions collected
 
-  if (uNumber > (u8)C_I8_MAX) {
+  if (uNumber > (u8)C_I8_MAX)
     vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
-  }
   
   // compute final field value
   iInteger = bNegative ? - uNumber : uNumber;
@@ -1513,9 +1480,8 @@ L_Integer:
   
 L_IntegerNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-  }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
     
@@ -1568,9 +1534,8 @@ L_Interval:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-    }
 
     goto L_IntervalNull;
   }
@@ -1582,9 +1547,8 @@ L_Interval:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_BooleanNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
@@ -1620,30 +1584,26 @@ L_Interval:
   uMicrosecond *= nShift;
 
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-  }
   
   // skip any whitespace after the field value
   vSKIP_WHITE_SPACE();
   
   // test for no noise
-  if (! (bFIELD_END())) {
+  if (! (bFIELD_END()))
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-  }
 
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all interval portions collected
 
   // have we exceeded the max for second?
-  if (uSecond > (u8)C_IVL_SEC_MAX) {
+  if (uSecond > (u8)C_IVL_SEC_MAX)
     vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
-  }
   
   // have we exceeded the max for microsecond?
-  if (uMicrosecond > (u8)C_IVL_USEC_MAX) {
+  if (uMicrosecond > (u8)C_IVL_USEC_MAX)
     vFIELD_ERROR(EC_CSV_INTERVAL_USECS_TOO_LARGE);
-  }
   
   // compute final field value
   xInterval.m_uSecond = uSecond;
@@ -1660,9 +1620,8 @@ L_Interval:
 
 L_IntervalNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-  }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
@@ -1715,9 +1674,8 @@ L_Time:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-    }
 
     goto L_TimeNull;
   }
@@ -1729,9 +1687,8 @@ L_Time:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_TimeNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_HOUR_INVALID);
@@ -1749,17 +1706,15 @@ L_Time:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-  }
-  if (nDigits > 2) {
+
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  }
 
   // skip over separator
-  if (':' != cSrcChr) {
+  if (':' != cSrcChr)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  }
   vADV_SRCCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1773,16 +1728,16 @@ L_Time:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
-  }
-  if (nDigits > 2) {
+  
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-  }
+
   // skip over separator
-  if (':' != cSrcChr) {
+  if (':' != cSrcChr)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  }
+
   vADV_SRCCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1796,12 +1751,11 @@ L_Time:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_SECOND_INVALID);
-  }
-  if (nDigits > 2) {
+
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
-  }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
@@ -1823,17 +1777,14 @@ L_Time:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all time portions collected
 
-  if (uHour > 23) {
+  if (uHour > 23)
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  }
   
-  if (uMinute > 59) {
+  if (uMinute > 59)
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-  }
   
-  if (uSecond > 59) {
+  if (uSecond > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
-  }
   
   // compute final field value
   xTime.m_uHour   = uHour;
@@ -1853,9 +1804,8 @@ L_Time:
 
 L_TimeNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-  }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
@@ -1909,9 +1859,8 @@ L_Timestamp:
     
     vSKIP_WHITE_SPACE();
     
-    if (! (bFIELD_END())) {
+    if (! (bFIELD_END()))
       vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-    }
 
     goto L_TimestampNull;
   }
@@ -1931,9 +1880,8 @@ L_Timestamp:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_TimestampNull;
-      }
     }
   
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
@@ -1956,9 +1904,8 @@ L_Timestamp_components:
   
   // skip over separator
   if (i_DateComponent > 0) {
-    if (cSrcChr != m_cDateSeparator) {
+    if (cSrcChr != m_cDateSeparator)
       vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    }
     vADV_SRCCHR(); // skip separator
   }
 
@@ -1986,12 +1933,11 @@ L_Timestamp_year:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-  }
-  if (nDigits > 4) {
+
+  if (nDigits > 4)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-  }
 
   // adjust a 2-digit year
   if (uYear <= 99)
@@ -2014,12 +1960,11 @@ L_Timestamp_month:
   }
 
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_MONTH_INVALID);
-  }
-  if (nDigits > 2) {
+
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
-  }
 
   goto L_Timestamp_components;
   
@@ -2038,12 +1983,11 @@ L_Timestamp_day:
   }
 
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
-  if (nDigits > 2) {
+  
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
-  }
 
   goto L_Timestamp_components;
   
@@ -2074,17 +2018,15 @@ L_Timestamp_collected:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-  }
-  if (nDigits > 2) {
+
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  }
 
   // skip over separator
-  if (':' != cSrcChr) {
+  if (':' != cSrcChr)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  }
   vADV_SRCCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2100,16 +2042,16 @@ L_Timestamp_collected:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
-  }
-  if (nDigits > 2) {
+
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-  }
+
   // skip over separator
-  if (':' != cSrcChr) {
+  if (':' != cSrcChr)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  }
+
   vADV_SRCCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2125,12 +2067,11 @@ L_Timestamp_collected:
   }
   
   // should have seen some digits
-  if (! nDigits) {
+  if (! nDigits)
     vFIELD_ERROR(EC_CSV_SECOND_INVALID);
-  }
-  if (nDigits > 2) {
+
+  if (nDigits > 2)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
-  }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
@@ -2158,25 +2099,22 @@ L_SkipTime:
   
   vSKIP_WHITE_SPACE();
   
-  if (! (bFIELD_END())) {
+  if (! (bFIELD_END()))
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-  }
   
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all date portions collected
 
   // validate the year
-  if (uYear < C_YEAR_MIN) {
+  if (uYear < C_YEAR_MIN)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
-  }
-  if (uYear > C_YEAR_MAX) {
+
+  if (uYear > C_YEAR_MAX)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-  }
 
   // validate the month
-  if (uMonth < 1 || uMonth > 12) {
+  if (uMonth < 1 || uMonth > 12)
     vFIELD_ERROR(EC_CSV_MONTH_INVALID);
-  }
   
   // validate day wrt possible leap year
   
@@ -2192,19 +2130,16 @@ L_SkipTime:
   }
 
   // validate days per month
-  if (uDay < 1) {
+  if (uDay < 1)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
   
   if (bLeapYear) {
-    if (uDay > (u8)iDaysPerMonthLeap[uMonth]) {
+    if (uDay > (u8)iDaysPerMonthLeap[uMonth])
       vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
-    }
   }
   else {
-    if (uDay > (u8)iDaysPerMonth[uMonth]) {
+    if (uDay > (u8)iDaysPerMonth[uMonth])
       vFIELD_ERROR(EC_CSV_DAY_INVALID);
-    }
   }
 
   // compute final field value
@@ -2216,17 +2151,14 @@ L_SkipTime:
   // ==== ==== ==== ==== ==== ==== ==== ====
   // all time portions collected
 
-  if (uHour > 23) {
+  if (uHour > 23)
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  }
   
-  if (uMinute > 59) {
+  if (uMinute > 59)
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-  }
   
-  if (uSecond > 59) {
+  if (uSecond > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
-  }
   
   // compute final field value
   xTimestamp.m_uHour   = uHour;
@@ -2246,9 +2178,8 @@ L_SkipTime:
 
 L_TimestampNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-  }
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
@@ -2319,9 +2250,8 @@ L_Varchar:
     vADV_SRCCHR(); // accept m_cEscapeChar
     if ('N' == cSrcChr) {
       vADV_SRCCHR(); // accept 'N'
-      if (bFIELD_END()) {
+      if (bFIELD_END())
         goto L_VarcharNull;
-      }
     }
   
     vRESET_FIELD();
@@ -2706,9 +2636,8 @@ L_VarcharDeposit:
 
 L_VarcharNull:
   
-  if (! bPixNullable) {
+  if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
-  }
   
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_VarcharDeposit: null\n"_Stz);
@@ -2851,7 +2780,7 @@ L_EndRecord:
   // skip record end and line end
   vSKIP_RECORD_LINE_END();
   
-  goto L_TestMoreRecords;                                // end of endRecord
+  goto L_TestMoreRecords;                                    // end of endRecord
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
