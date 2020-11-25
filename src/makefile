@@ -42,10 +42,11 @@ SRC_DIR := .
 MAIN_CPP := $(shell find $(SRC_DIR) -name "main.cpp")
 SHOCO_C := ../thirdparty/shoco/shoco.c
 SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
-SOURCES += $(wildcard ../munge/*.cpp)
-SOURCES += $(wildcard ../thirdparty/xxhash/*.cpp)
-SOURCES += $(wildcard ../thirdparty/mersenne/*.cpp)
-SOURCES += $(wildcard ../thirdparty/antlr/generated/*.cpp)
+SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
+SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
+SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/mersenne/*.cpp)
+SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/antlr/generated/*.cpp)
+
 SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
 S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
 
@@ -72,7 +73,7 @@ ifndef BUILD_CONFIG
 
   else
     BUILD_CONFIG := 
-    OBJ_DIR := $(BASE_OBJ_DIR)/src
+    OBJ_DIR := $(RELEASE_OBJ_DIR)
   endif
 
   # Make BUILD_CONFIG and OBJ_DIR available to sub-makes.
@@ -87,7 +88,8 @@ MAIN_O  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAIN_CPP))
 SHOCO_O := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SHOCO_C)) 
 
 # Dependency Files for library
-DEPFILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
+DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
+DEPFILES += $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(MAIN_CPP))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
@@ -167,10 +169,41 @@ $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
-# To generate dependency files for files from the source directory
+# Include all of the generated dependency rules from all .d files.
+# The '-' means ignore the exit status of the command.
+ifeq (1, $(words $(findstring $(MAKECMDGOALS), target)))
+  # Only include these dependency files when we are building 'target'
+  # otherwise a make clean somehow ends up generating the dependency files.
+  -include $(DEPFILES)
+endif
+
+# The rule to generate dependency files (*.d) for cpp files from the source directory.
+# The sed script in here is to make the dependency file (*.d) itself dependent
+# on changes to the source files. So if a source file is changed then the dependency
+# files that depend on that source need to be regenerated, which in turn will affect
+# other source files.
+#
+# e.g., if I change a header file then everything that depends on that header also
+# needs to be recompiled. We can fulfil this by making the dependency file depend
+# on the header too.
+#
+# e.g. foo.cpp depends on foo.hpp. But bar.cpp also depends on foo.hpp. So we generate
+# the dependency files foo.d and bar.d that include these rules. But if we now modify 
+# foo.hpp to #include baz.hpp then we also need to update the dependency files for
+# foo.cpp and bar.cpp so that they now also depend on baz.hpp.
+# 
+# Documentation on this can be found here:
+# https://www.gnu.org/software/make/manual/html_node/Automatic-Prerequisites.html
+
 $(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
 	$(DIR_GUARD)
-	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@
+	@echo "Generating dependency file: $@"
+	@set -e; \
+	rm -f $@; \
+	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@.$$$$; \
+	sed 's,^.*\.o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$;
+#	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; 
 
 # Generate the Version.h file. Force it to run every time.
 # The script will determine if it needs to update the Version.h file.
