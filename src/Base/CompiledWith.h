@@ -16,13 +16,13 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
 #ifdef __APPLE__
 #define WITH_APPLE EndDefine
-#define WITH_MUNGED_SEN EndDefine // use munged sen
+#define WITH_MUNGED_SEN EndDefine // use munged sen APPLE
 
 #endif
 
 #ifdef __LINUX__
 #define WITH_LINUX EndDefine
-#define WITH_MUNGED_SEN EndDefine // use munged sen
+#define WITH_MUNGED_SEN EndDefine // use munged sen LINUX
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

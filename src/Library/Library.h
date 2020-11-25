@@ -21,7 +21,7 @@ namespace Library
 
 #include "SP_Bits.hpp"
 
-#include "Compress.hpp"
+//#include "Compress.hpp"
 #include "IvlLib.hpp"
 #include "RndLib.hpp"
 #include "TspLib.hpp"

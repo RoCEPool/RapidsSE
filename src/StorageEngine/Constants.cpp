@@ -81,8 +81,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.start"_Stz,             gxArgs.m_bStart);
   Constants::vAddConstant("args.status"_Stz,            gxArgs.m_bStatus);
   Constants::vAddConstant("args.stop"_Stz,              gxArgs.m_bStop);
-  Constants::vAddConstant("args.subIngesters"_Stz,      gxArgs.m_nSubIngesters);
-  Constants::vAddConstant("args.subLoaders"_Stz,        gxArgs.m_nSubLoaders);
   Constants::vAddConstant("args.supervisorSleep"_Stz,   gxArgs.m_nSupervisorSleep);
   Constants::vAddConstant("args.tablePtns"_Stz,         gxArgs.m_nPtnsPerTable);
   Constants::vAddConstant("args.threads"_Stz,           gxArgs.m_nThreads);

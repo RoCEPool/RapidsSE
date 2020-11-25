@@ -92,8 +92,6 @@ namespace Arguments
     bool m_bRestart;         // restart if system already started
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
-    i8   m_nSubIngesters;    // number of subloaders
-    i8   m_nSubLoaders;      // number of subloaders
     i8   m_nSupervisorSleep; // sleep period for supervisor job
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create

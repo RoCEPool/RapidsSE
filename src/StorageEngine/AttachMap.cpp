@@ -167,8 +167,6 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.szStz());
   vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
-  vInfo("SubIngesters : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubIngesters);
-  vInfo("SubLoaders   : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubLoaders);
   vInfo("Operands     : %lld \n"_Stz,   gpAttachMap->Arg.m_nOperands);
 
   vInfo("\n"_Stz);
@@ -251,9 +249,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_bRLUDiary        = pArgs->m_bRLUDiary;
   Arg.m_bRLUTimer        = pArgs->m_bRLUTimer;
   Arg.m_nPtnsPerTable    = pArgs->m_nPtnsPerTable;
-  Arg.m_nSubIngesters    = pArgs->m_nSubIngesters;
   Arg.m_nSubInserters    = 0;
-  Arg.m_nSubLoaders      = pArgs->m_nSubLoaders;
   Arg.m_nThreads         = pArgs->m_nThreads;
   Arg.m_bTracepoint      = pArgs->m_bTracepoint;
   Arg.m_bVerbose         = pArgs->m_bVerbose;

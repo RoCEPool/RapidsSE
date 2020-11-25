@@ -30,7 +30,6 @@
   " --size "              str.cat args.regionSize        >str   str.cat
   " --regionPrefix "      str.cat args.regionPrefix             str.cat
   " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
-  " --subLoaders "        str.cat args.subLoaders        >str   str.cat
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
 
   user::name "ray" str.same if

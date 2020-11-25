@@ -102,8 +102,6 @@ Args::Args(void)
   m_bRestart         = true;
   m_bRLUDiary        = false;
   m_bRLUTimer        = false;
-  m_nSubIngesters    = 4;
-  m_nSubLoaders      = 4;
   m_nSupervisorSleep = 10;
   m_iThisNode        = C_UNKNOWN;
   m_nThreads         = 12;
@@ -729,31 +727,7 @@ bool Args::bParse(i8 argc, s256 argv[])
       m_bStop = true;
       continue;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--subIngesters"_Stz)) {
-      m_nSubIngesters = argv[++i_Arg].iToI8();
-      if (m_nThreads > C_MAX_THREADS) {
-        vWarn("Maximum number of subIngesters allowed is %lld\n"_Stz,
-              C_MAX_THREADS);
-        return false;
-      }
-      
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--subloaders"_Stz)) {
-      m_nSubLoaders = argv[++i_Arg].iToI8();
-      if (m_nThreads > C_MAX_THREADS) {
-        vWarn("Maximum number of subloaders allowed is %lld\n"_Stz,
-              C_MAX_THREADS);
-        return false;
-      }
-      
-      continue;
-    }
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--supervisorSleep"_Stz)) {
       m_nSupervisorSleep = argv[++i_Arg].iToI8();
@@ -1065,7 +1039,6 @@ void Args::vSanityCheck(void)
   i8 iRequiredThreads =
     1                 // 1 thread for socket answer
     + m_nBootNodes        // n threads for socket receiver
-    + m_nSubLoaders   // a threaad per subloader
     + 1               // a thread for table loader
     + 1               // 1 for the pot
   ;

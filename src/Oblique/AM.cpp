@@ -32,9 +32,7 @@ Stz* AM::szRegionName(void)   { return gpAttachMap->Arg.m_sRegionName.szStz();}
 bool AM::bRLUDiary(void)      { return gpAttachMap->Arg.m_bRLUDiary;          }
 bool AM::bRLUTimer(void)      { return gpAttachMap->Arg.m_bRLUTimer;          }
 i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
-i8   AM::nSubIngesters(void)  { return gpAttachMap->Arg.m_nSubIngesters;      }
 i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
-i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 i8   AM::nPtnsPerTable(void) {
