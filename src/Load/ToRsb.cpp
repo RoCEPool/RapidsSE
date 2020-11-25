@@ -193,6 +193,9 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define bEND_CSV_CHUNK() \
   ( ! (bool)(cSrcChr) )
 
+#define bIS_DECIMAL_POINT() \
+  (cSrcChr == C_DECIMAL_POINT)
+
 #define bIS_DIGIT() \
   (cSrcChr >= '0' && cSrcChr <= '9')
 
@@ -639,52 +642,9 @@ L_Boolean:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-//    }
-//
-//    vSKIP_WHITE_SPACE();
-//
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-//
-//    goto L_BooleanNull;
-//  }
   
   vIF_NULL_PORTION(L_BooleanNull,EC_CSV_BOOLEAN_INVALID);
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_BooleanNull;
-//    }
-//
-//    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-//  }
-  
+    
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible true portion
   
@@ -832,52 +792,9 @@ L_Date:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//    }
-//
-//    vSKIP_WHITE_SPACE();
-//
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//
-//    goto L_DateNull;
-//  }
   
-  vIF_NULL_PORTION(L_DateNull,EC_CSV_YEAR_INVALID);
+  vIF_NULL_PORTION(L_DateNull,EC_CSV_DATE_INVALID);
   
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_DateNull;
-//    }
-//
-//    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//  }
-
   // ---- ---- ---- ---- ---- ---- ---- ----
   // date components
   
@@ -906,7 +823,7 @@ L_Date_components:
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // year portion
+  // year component
   
 L_Date_year:
 
@@ -930,7 +847,7 @@ L_Date_year:
   goto L_Date_components;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // month portion
+  // month component
     
   L_Date_month:
   
@@ -950,7 +867,7 @@ L_Date_year:
   goto L_Date_components;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // day portion
+  // day component
           
   L_Date_day:
   
@@ -1062,52 +979,9 @@ L_Decimal:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-//    }
-//
-//    vSKIP_WHITE_SPACE();
-//
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-//
-//    goto L_DecimalNull;
-//  }
    
   vIF_NULL_PORTION(L_DecimalNull,EC_CSV_DECIMAL_INVALID);
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_DecimalNull;
-//    }
-//
-//    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-//  }
-  
+    
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
@@ -1245,52 +1119,9 @@ L_Float:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-//    }
-//
-//    vSKIP_WHITE_SPACE();
-//
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-//
-//    goto L_FloatNull;
-//  }
    
   vIF_NULL_PORTION(L_FloatNull,EC_CSV_FLOAT_INVALID);
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_FloatNull;
-//    }
-//
-//    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-//  }
-  
+    
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
@@ -1322,7 +1153,7 @@ L_Float:
   // optional fraction portion
   
   // collect digits for middle fraction
-  if ('.' == cSrcChr) {
+  if (bIS_DECIMAL_POINT()) {
     *acFltDst++ = cSrcChr;
     vNEXT_SRCCHR(); // skip '.'
     for ( ; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_SRCCHR()) {
@@ -1422,55 +1253,9 @@ L_Integer:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-//    }
-//
-//    // skip any trailing white space
-//    vSKIP_WHITE_SPACE();
-//
-//    // should be at a valid field end
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-//
-//    // recognised a null in an integer field
-//    goto L_IntegerNull;
-//  }
    
   vIF_NULL_PORTION(L_IntegerNull,EC_CSV_INTEGER_INVALID);
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_IntegerNull;
-//    }
-//
-//    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-//  }
-  
+    
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
   
@@ -1507,7 +1292,7 @@ L_Integer:
     vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
 
   // ignore any . digits
-  if (cSrcChr == C_DECIMAL_POINT) {
+  if (bIS_DECIMAL_POINT()) {
     vNEXT_SRCCHR(); // skip '.'
     while (bIS_DIGIT()) {
       vNEXT_SRCCHR(); // skip digit
@@ -1576,53 +1361,9 @@ L_Interval:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-//    }
-//
-//    vSKIP_WHITE_SPACE();
-//
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-//
-//    goto L_IntervalNull;
-//  }
   
   vIF_NULL_PORTION(L_IntervalNull,EC_CSV_INTERVAL_INVALID);
   
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_BooleanNull;
-//    }
-//
-//    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-//  }
-  
-
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
   
@@ -1639,7 +1380,7 @@ L_Interval:
   // collect further digits for trailing microseconds
   uMicrosecondComponent = 0;
   nMicrosecondShift = C_IVL_USEC_SHIFT;
-  if ('.' == cSrcChr) {
+  if (bIS_DECIMAL_POINT()) {
     vNEXT_SRCCHR(); // skip '.'
     for ( ; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_SRCCHR()) {
       vCOLLECT(uMicrosecondComponent);
@@ -1718,55 +1459,11 @@ L_Time:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-//    }
-//
-//    vSKIP_WHITE_SPACE();
-//
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-//
-//    goto L_TimeNull;
-//  }
   
-  vIF_NULL_PORTION(L_TimeNull,EC_CSV_HOUR_INVALID);
+  vIF_NULL_PORTION(L_TimeNull,EC_CSV_TIME_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_TimeNull;
-//    }
-//
-//    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-//  }
-  
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // hour portion
+  // hour component
 
   // collect digits for hour
   uHourComponent = 0;
@@ -1788,7 +1485,7 @@ L_Time:
   vNEXT_SRCCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // minute portion
+  // minute component
 
   // collect digits for minute
   uMinuteComponent = 0;
@@ -1811,7 +1508,7 @@ L_Time:
   vNEXT_SRCCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // second portion
+  // second component
 
   // collect digits for second
   uSecondComponent = 0;
@@ -1905,52 +1602,9 @@ L_Timestamp:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
-
-//  if ('n' == cSrcChr || 'N' == cSrcChr) {
-//    vNEXT_SRCCHR(); // skip 'n'
-//    if ('u' == cSrcChr || 'U' == cSrcChr) {
-//      vNEXT_SRCCHR(); // skip 'u'
-//      if ('l' == cSrcChr || 'L' == cSrcChr) {
-//        vNEXT_SRCCHR(); // skip 'L'
-//        if ('l' == cSrcChr || 'L' == cSrcChr) {
-//          vNEXT_SRCCHR(); // skip 'L'
-//        }
-//        else { // not expected 'l'
-//          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//        }
-//      }
-//      else { // not expected 'l'
-//        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//      }
-//    }
-//    else { // not expected 'u'
-//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//    }
-//
-//    vSKIP_WHITE_SPACE();
-//
-//    if (! (bFIELD_END()))
-//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//
-//    goto L_TimestampNull;
-//  }
   
-  vIF_NULL_PORTION(L_TimestampNull,EC_CSV_YEAR_INVALID);
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible \N portion
-  
-//  if (cSrcChr == m_cEscapeChar) {
-//    vNEXT_SRCCHR(); // accept m_cEscapeChar
-//    if ('N' == cSrcChr) {
-//      vNEXT_SRCCHR(); // accept 'N'
-//      if (bFIELD_END())
-//        goto L_TimestampNull;
-//    }
-//  
-//    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-//  }
-  
+  vIF_NULL_PORTION(L_TimestampNull,EC_CSV_TIMESTAMP_INVALID);
+    
   // ---- ---- ---- ---- ---- ---- ---- ----
   // timestamp components
     
@@ -1991,7 +1645,7 @@ L_Timestamp_components:
     
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // year portion
+  // year component
   
 L_Timestamp_year:
   
@@ -2018,7 +1672,7 @@ L_Timestamp_year:
   goto L_Timestamp_components;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // month portion
+  // month component
     
 L_Timestamp_month:
   
@@ -2041,7 +1695,7 @@ L_Timestamp_month:
   goto L_Timestamp_components;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // day portion
+  // day component
           
 L_Timestamp_day:
   
@@ -2078,7 +1732,7 @@ L_Timestamp_collected:
     goto L_SkipTime;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // hour portion
+  // hour component
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_hour:\n"_Stz);
@@ -2102,7 +1756,7 @@ L_Timestamp_collected:
   vNEXT_SRCCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // minute portion
+  // minute component
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_minute:\n"_Stz);
@@ -2127,7 +1781,7 @@ L_Timestamp_collected:
   vNEXT_SRCCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // second portion
+  // second component
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_second:\n"_Stz);
@@ -2146,13 +1800,13 @@ L_Timestamp_collected:
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional microsecond portion
+  // optional microsecond component
   
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_microsecond:\n"_Stz);
   
   // a dot without any futher digits is ok
-  if (cSrcChr == C_DECIMAL_POINT) {
+  if (bIS_DECIMAL_POINT()) {
     
     vNEXT_SRCCHR(); // skip '.'
 
