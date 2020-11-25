@@ -228,12 +228,12 @@ thirdparty : $(COMPILED_LIBS)
 # Rule for building ANTLR
 antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
-	+@cd ../thirdparty/antlr && $(MAKE)
+	+@cd ../thirdparty/antlr && env -i$(MAKE)
 
 # Rule for building TCC
 tcc : $(TCC_LIB)
 $(TCC_LIB) : 
-	+@cd ../thirdparty/tcc && $(MAKE)
+	+@cd ../thirdparty/tcc && env -i $(MAKE)
 
 # Necessary to make some of the above rules run every time.
 FORCE : 
@@ -244,8 +244,8 @@ distclean : clean
 	@echo ""
 	@echo "Removing 3rd-party generated libraries..."
 	@echo ""
-	+@cd ../thirdparty/antlr && $(MAKE) clean
-	+@cd ../thirdparty/tcc && $(MAKE) clean
+	+@cd ../thirdparty/antlr && env -i $(MAKE) clean
+	+@cd ../thirdparty/tcc && env -i $(MAKE) clean
 
 #To remove RapidsSE-generated files only
 clean :
