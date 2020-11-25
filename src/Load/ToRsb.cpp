@@ -265,7 +265,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vADV_SRCCHR(); \
   }
 
-#define vSKIP_RECORD_END() \
+#define vSKIP_RECORD_LINE_END() \
   { \
     if (cSrcChr && cSrcChr == m_cRecordTerminator) \
       vADV_SRCCHR(); \
@@ -333,12 +333,12 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char* azVchBegin;
   char* acVchDst;
   i8 nFieldChars;
-  bool bSawEnclosedLeading;
-  bool bSawEnclosedTrailing;
   
   SP_String spStr;
   SP_String spChr;
   SP_String sp2nd;
+  
+  Rsb* aRsb;
 
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
@@ -397,7 +397,6 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 iPtnKeyHash = 0;
   tPN tPtnNo = 0;
   tPN tPtnNo_byBkt = 0;
-  bool bSawFldSep = false;
   Column* pCol = nullptr;
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
@@ -494,9 +493,9 @@ L_TestMoreRecords:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // alloc a new rsb, new another rsbBuffer if necessary
-  if (! m_pRowSlab->bNewRow()) {    // ? inline ?
+  if (! m_pRowSlab->bNewRow(&aRsb)) {    // ? inline ?
     vNewRsbBuffer();
-    bool b = m_pRowSlab->bNewRow();
+    bool b = m_pRowSlab->bNewRow(&aRsb);
     ASSERT(b);
   }
   
@@ -530,8 +529,6 @@ L_TestMoreFields:
   nPixPrecision = nPixLength - nPixScale;
   bPixNullable  = xColPix.m_bNullable;
   
-  bSawFldSep = false;
-
   // debug
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
@@ -2271,8 +2268,6 @@ L_Varchar:
     vTrace("L_Varchar:\n"_Stz);
   
   nFieldChars = 0;
-  bSawEnclosedTrailing = false;
-  bSawEnclosedLeading  = false;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
@@ -2519,12 +2514,6 @@ C_BIT_VarcharSingleQuotedTerminate:
   // its not an enclosed varchar so we consider it to be valid
   if (nFieldChars >= nPixLength)
     nFieldChars = nPixLength;
-
-  // if this an enclosed varchar we should have expected to
-  // see the trailing enclosedBy
-  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
-  }
   
   goto L_VarcharDeposit;
   
@@ -2541,105 +2530,99 @@ L_VarcharDoubleQuoted:
   azVchBegin = m_pRowSlab->azDepositString_begin();
   acVchDst  = azVchBegin;
   
-    // >> *"...
-    //     ^
-    RASSERT(m_cQuoteDouble == cSrcChr);
+  // >> *"...
+  //     ^
+  RASSERT(m_cQuoteDouble == cSrcChr);
 
-    vADV_SRCCHR(); // accept leading '\"' of sqs; do not deposit the quote
+  vADV_SRCCHR(); // accept leading '\"' of sqs; do not deposit the quote
 
-    while (cSrcChr) {
-        
-      // " voodoo
+  while (cSrcChr) {
+      
+    // " voodoo
+    if (m_cQuoteDouble == cSrcChr) {
+      
+      // we have encountered a quote (somewhere after leading quote)
+      
+      // >> *".*"
+      //        ^
+      
+      if (0 == nFieldChars) {
+        // handle specific case >> *""
+        //   this is the quouted empty string
+        //   nb. corner cases:  ""n" is not supported
+        //                      ""," is not supported
+        vADV_SRCCHR(); // accept trailing '\"' of sqs; do not deposit the quote
+        break;
+      }
+      
+      // >> *".*".*
+      //        ^
+
+      vADV_SRCCHR(); // skip '\"'
+      
       if (m_cQuoteDouble == cSrcChr) {
-        
-        // we have encountered a quote (somewhere after leading quote)
-        
-        // >> *".*"
-        //        ^
-        
-        if (0 == nFieldChars) {
-          // handle specific case >> *""
-          //   this is the quouted empty string
-          //   nb. corner cases:  ""n" is not supported
-          //                      ""," is not supported
-          vADV_SRCCHR(); // accept trailing '\"' of sqs; do not deposit the quote
-          break;
-        }
-        
-        // >> *".*".*
-        //        ^
-
-        vADV_SRCCHR(); // skip '\"'
-        
-        if (m_cQuoteDouble == cSrcChr) {
-          // handle specific case of two quotes "" meaning one escaped quote
-          // >> *".*""
-          //         ^
-          if (nFieldChars++ < nPixLength)
-            *acVchDst++ = '\"';
-          vADV_SRCCHR(); // accept escaped quote; next char
-        }
-        
-        else {
-          // encountered terminating quote
-          // >> *".*".
-          //         ^
-          goto C_BIT_VarcharDoubleQuotedTerminate;
-        }
-
-      } // end of if " voodoo
-      
-      // [still in while (cSrcChr)]
-      
-      if (cSrcChr == m_cEscapeChar) {
-        vADV_SRCCHR(); // skip m_cEscapeChar
-        
-        if (nFieldChars++ < nPixLength) {
-          if ('n' == cSrcChr)
-            *acVchDst++ = '\n';
-          else
-          if ('r' == cSrcChr)
-            *acVchDst++ = '\r';
-          else
-          if ('t' == cSrcChr)
-            *acVchDst++ = '\t';
-          else
-            *acVchDst++ = cSrcChr;
-        }
-        vADV_SRCCHR(); // next char
-
-        continue; // while (cSrcChr)
+        // handle specific case of two quotes "" meaning one escaped quote
+        // >> *".*""
+        //         ^
+        if (nFieldChars++ < nPixLength)
+          *acVchDst++ = '\"';
+        vADV_SRCCHR(); // accept escaped quote; next char
       }
       
-      // [still in while (cSrcChr)]
-      
-      // test for record end
-      if (cSrcChr == m_cLineEnd) {
-        vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
+      else {
+        // encountered terminating quote
+        // >> *".*".
+        //         ^
+        goto C_BIT_VarcharDoubleQuotedTerminate;
       }
-      
-      // [still in while (cSrcChr)]
-      
-      // deposit source char (if it fits)
-      if (nFieldChars++ < nPixLength)
-        *acVchDst++ = cSrcChr;
-      vADV_SRCCHR(); // deposited char; get next char
-    }
 
-  C_BIT_VarcharDoubleQuotedTerminate:
+    } // end of if " voodoo
     
-    // terminate
-    *acVchDst++ = '\0';
+    // [still in while (cSrcChr)]
+    
+    if (cSrcChr == m_cEscapeChar) {
+      vADV_SRCCHR(); // skip m_cEscapeChar
+      
+      if (nFieldChars++ < nPixLength) {
+        if ('n' == cSrcChr)
+          *acVchDst++ = '\n';
+        else
+        if ('r' == cSrcChr)
+          *acVchDst++ = '\r';
+        else
+        if ('t' == cSrcChr)
+          *acVchDst++ = '\t';
+        else
+          *acVchDst++ = cSrcChr;
+      }
+      vADV_SRCCHR(); // next char
 
-    // its not an enclosed varchar so we consider it to be valid
-    if (nFieldChars >= nPixLength)
-      nFieldChars = nPixLength;
-
-    // if this an enclosed varchar we should have expected to
-    // see the trailing enclosedBy
-    if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
+      continue; // while (cSrcChr)
+    }
+    
+    // [still in while (cSrcChr)]
+    
+    // test for record end
+    if (cSrcChr == m_cLineEnd) {
       vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
     }
+    
+    // [still in while (cSrcChr)]
+    
+    // deposit source char (if it fits)
+    if (nFieldChars++ < nPixLength)
+      *acVchDst++ = cSrcChr;
+    vADV_SRCCHR(); // deposited char; get next char
+  }
+
+C_BIT_VarcharDoubleQuotedTerminate:
+  
+  // terminate
+  *acVchDst++ = '\0';
+
+  // its not an enclosed varchar so we consider it to be valid
+  if (nFieldChars >= nPixLength)
+    nFieldChars = nPixLength;
     
   goto L_VarcharDeposit;
   
@@ -2704,12 +2687,6 @@ L_VarcharUserEnclosed:
   // its not an enclosed varchar so we consider it to be valid
   if (nFieldChars >= nPixLength)
     nFieldChars = nPixLength;
-
-  // if this an enclosed varchar we should have expected to
-  // see the trailing enclosedBy
-  if (bSawEnclosedLeading && ! bSawEnclosedTrailing) {
-    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
-  }
   
   goto L_VarcharDeposit;
     
@@ -2753,7 +2730,6 @@ L_PostField:
   while (cSrcChr) {
     
     if (cSrcChr == m_cFieldDelimiter) {
-      bSawFldSep = true;
       vADV_SRCCHR(); // skip m_cFieldDelimiter
       break;
     }
@@ -2860,13 +2836,18 @@ L_EndRecord:
     iPtnKeyHash = 0;
   }
   
+  if (iTraceBits & C_BIT_EndRecord) {
+    SP_RowPix spRowPix(nCols,aColPix);
+    
+    vTrace("[%lld] %s\n"_Stz,m_nRecords,spRowPix.sz(aRsb));
+  }
+
   // increment records processed
   AM::vIncRowsProcessed(m_pPipelineJob);
   m_nRecords++;
 
-  // begin new record
-  
-  vSKIP_RECORD_END();
+  // skip record end and line end
+  vSKIP_RECORD_LINE_END();
   
   goto L_TestMoreRecords;                                // end of endRecord
   
