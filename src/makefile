@@ -1,4 +1,23 @@
 # Makefile for building RapidsSE source code.
+#
+# A quick primer on some syntax:
+#   A '+' before a command causes that command to execute using the
+#   job controller of the current make instance. e.g. so sub-makes
+#   conform to the maximum number of concurrent jobs.
+#
+#   A '-' before a command indicates that make should ignore the
+#   exit status that the command returns.
+#
+#   A '@' before a command means that the command will not be echoed
+#   to stdout. Any output from the command will appear, but not the
+#   command invocation itself.
+#   
+#   Within a rule:
+#     '$@' refers to the filename of the target of the rule.
+#     '$<' refers to the first prerequisite of that rule.
+#     '$?' refers to the space-separated name of all prerequisites of
+#          the rule that are newer than the rule target.
+#     '$^' refers to the space-separated name of all prerequisites.
 
 # Explicitly define the shell to be used for this makefile. 
 SHELL := /bin/bash
@@ -40,7 +59,7 @@ MAN_PAGES=../Documents/se.man
 # Source Files
 SRC_DIR := .
 MAIN_CPP := $(shell find $(SRC_DIR) -name "main.cpp")
-SHOCO_C := ../thirdparty/shoco/shoco.c
+SHOCO_C := ../thirdparty/shoco/shoco.c  # Not currently used
 SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
@@ -228,12 +247,13 @@ thirdparty : $(COMPILED_LIBS)
 # Rule for building ANTLR
 antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
-	+@cd ../thirdparty/antlr && $(MAKE)
+	+@cd ../thirdparty/antlr && env -u CPPFLAGS $(MAKE)
 
 # Rule for building TCC
 tcc : $(TCC_LIB)
 $(TCC_LIB) : 
-	+@cd ../thirdparty/tcc && $(MAKE)
+	env
+	+@cd ../thirdparty/tcc && env -u CPPFLAGS $(MAKE)
 
 # Necessary to make some of the above rules run every time.
 FORCE : 
@@ -244,7 +264,7 @@ distclean : clean
 	@echo ""
 	@echo "Removing 3rd-party generated libraries..."
 	@echo ""
-	+@cd ../thirdparty/antlr && $(MAKE) clean
+	+@cd ../thirdparty/antlr && (MAKE) clean
 	+@cd ../thirdparty/tcc && $(MAKE) clean
 
 #To remove RapidsSE-generated files only
