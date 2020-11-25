@@ -211,8 +211,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
        ) \
   )
 
-#define bMORE_CSV() \
-  (bool)(cSrcChr)
+#define bEND_CSV_CHUNK() \
+  ( ! (bool)(cSrcChr) )
 
 #define bMORE_FIELDS() \
   (bool)(cSrcChr && cSrcChr != m_cLineEnd)
@@ -293,8 +293,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   ColPix xColPix;
   eDM ePixDatum;
   i8 nPixLength;
-  i8 nPixScale;
-  i8 nPixPrecision;
+  i8 nPixFracDigits;
+  i8 nPixWholeDigits;
   bool bPixNullable;
 
   i8 iBoolean;
@@ -479,7 +479,7 @@ L_TestMoreRecords:
   vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
   
   // test for more csv to be parsed
-  if (! bMORE_CSV())
+  if (bEND_CSV_CHUNK())
     goto L_EndCsvChunk;
   
   // begin new record
@@ -522,12 +522,14 @@ L_TestMoreFields:
   // 4) decode and convert field i_Fld                                       STD
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
-  xColPix       = aColPix[i_Fld];
-  ePixDatum     = (eDM) xColPix.m_uDatum;   // DM_BOL .. DM_VCH
-  nPixLength    = xColPix.m_uLength;        // total number of digits or chars
-  nPixScale     = xColPix.m_uScale;         // max number digits to right of .
-  nPixPrecision = nPixLength - nPixScale;
-  bPixNullable  = xColPix.m_bNullable;
+  xColPix         = aColPix[i_Fld];
+  
+  ePixDatum       = (eDM) xColPix.m_uDatum;   // DM_BOL .. DM_VCH
+  nPixLength      = xColPix.m_uLength;        // total number of digits or chars
+  nPixWholeDigits = xColPix.m_uLength         // max number digits to left of .
+                      - xColPix.m_uScale;
+  nPixFracDigits  = xColPix.m_uScale;         // max number digits to right of .
+  bPixNullable    = xColPix.m_bNullable;      // can field be a null?
   
   // debug
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
@@ -1001,7 +1003,7 @@ L_DateNull:
 L_Decimal:
   
   /*
-      note: decimals are scaled (numerically shifted left x 10) by nPixScale
+      note: decimals are scaled (numerically shifted left x 10) by nPixFracDigits
    */
 
   if (iTraceBits & C_BIT_Decimal)
@@ -1095,8 +1097,8 @@ L_Decimal:
   for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
     vCOLLECT(uNumber);
     nDigits++;
-    nPixPrecision--;
-    if (nPixPrecision < 0)
+    nPixWholeDigits--;
+    if (nPixWholeDigits < 0)
       goto L_FieldError;
   }
 
@@ -1108,10 +1110,10 @@ L_Decimal:
     
     vADV_SRCCHR(); // skip '.'
     
-    for ( ; nPixScale && nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
+    for ( ; nPixFracDigits && nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
       vCOLLECT(uNumber);
       nDigits++;
-      nPixScale--;
+      nPixFracDigits--;
     }
   }
   
@@ -1123,7 +1125,7 @@ L_Decimal:
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
   }
   // correct for scale by x 10 till correctly scaled
-  while (nPixScale--)
+  while (nPixFracDigits--)
     uNumber *= 10;
   
   // round up if there any more digits
