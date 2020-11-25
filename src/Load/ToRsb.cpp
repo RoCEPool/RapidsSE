@@ -318,8 +318,8 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   d8 dFloat;
   d8 dUnsigned;
-  char xBuffer[256];
-  char* acBufDst;
+  char caBuffer_atof[256];
+  char* acFltDst;
   i8 nExpDigits;
 
   Tme xTime;
@@ -1270,9 +1270,9 @@ L_Float:
   // unsigned number portion
 
   // collect digits for leading number
-  acBufDst = xBuffer;
+  acFltDst = caBuffer_atof;
   for (nDigits = 0; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-    *acBufDst++ = cSrcChr;
+    *acFltDst++ = cSrcChr;
     nDigits++;
   }
   
@@ -1281,10 +1281,10 @@ L_Float:
   
   // collect digits for middle fraction
   if ('.' == cSrcChr) {
-    *acBufDst++ = cSrcChr;
+    *acFltDst++ = cSrcChr;
     vADV_SRCCHR(); // skip '.'
     for ( ; nDigits < 19 && bIS_DIGIT(); vADV_SRCCHR()) {
-      *acBufDst++ = cSrcChr;
+      *acFltDst++ = cSrcChr;
       nDigits++;
     }
   }
@@ -1295,18 +1295,18 @@ L_Float:
   // collect digits for trailing exponent
   if ('e' == cSrcChr || 'E' == cSrcChr) {
     
-    *acBufDst++ = cSrcChr;
+    *acFltDst++ = cSrcChr;
     vADV_SRCCHR(); // skip 'e'
 
     // test for +/-
-    if ('+' == cSrcChr || '-' == cSrcChr) {
-      *acBufDst++ = cSrcChr;
+    if (cSrcChr == C_MINUS_SIGN || cSrcChr == C_PLUS_SIGN) {
+      *acFltDst++ = cSrcChr;
       vADV_SRCCHR(); // skip sign
     }
         
     // collect exponent digits
     for  (nExpDigits = 0; nExpDigits < 3 && bIS_DIGIT(); vADV_SRCCHR()) {
-      *acBufDst++ = cSrcChr;
+      *acFltDst++ = cSrcChr;
       nExpDigits++;
     }
     
@@ -1317,7 +1317,7 @@ L_Float:
   }
 
   // terminate
-  *acBufDst++ = '\0';
+  *acFltDst++ = '\0';
   
   // should have seen some digits
   if (! nDigits) {
@@ -1334,7 +1334,7 @@ L_Float:
   // all float portions collected
   
   // compute final result
-  dUnsigned = atof(xBuffer); // SHOULD BE USING strtod() AND TESTING FOR ERROR
+  dUnsigned = atof(caBuffer_atof); // SHOULD BE USING strtod() AND TESTING FOR ERROR
   dFloat = bNegative ? - dUnsigned : dUnsigned;
   
   // deposit the float
@@ -2573,7 +2573,7 @@ L_VarcharDoubleQuoted:
         // encountered terminating quote
         // >> *".*".
         //         ^
-        goto C_BIT_VarcharDoubleQuotedTerminate;
+        goto L_VarcharDoubleQuotedTerminate;
       }
 
     } // end of if " voodoo
@@ -2615,7 +2615,7 @@ L_VarcharDoubleQuoted:
     vADV_SRCCHR(); // deposited char; get next char
   }
 
-C_BIT_VarcharDoubleQuotedTerminate:
+L_VarcharDoubleQuotedTerminate:
   
   // terminate
   *acVchDst++ = '\0';
