@@ -32,7 +32,6 @@ Stz* AM::szRegionName(void)   { return gpAttachMap->Arg.m_sRegionName.szStz();}
 bool AM::bRLUDiary(void)      { return gpAttachMap->Arg.m_bRLUDiary;          }
 bool AM::bRLUTimer(void)      { return gpAttachMap->Arg.m_bRLUTimer;          }
 i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
-i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 i8   AM::nPtnsPerTable(void) {
@@ -289,9 +288,6 @@ void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
 }
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
-}
-void AM::vSubInserters(i8 nSubInserters) {
-  gpAttachMap->Arg.m_nSubInserters = nSubInserters;
 }
 void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
   gpAttachMap->m_pTakenBuffers = pTakenBuffers;

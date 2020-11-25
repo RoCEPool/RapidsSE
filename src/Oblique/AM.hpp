@@ -49,7 +49,6 @@ namespace Oblique
     static bool bRLUDiary(void);
     static bool bRLUTimer(void);
     static bool bSethScript(void);
-    static i8   nSubInserters(void);
     static i8   nPtnsPerTable(void);
     static i8   nThreads(void);
 
@@ -146,7 +145,6 @@ namespace Oblique
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(StepTiming* pStepTiming);
-    static void vSubInserters(i8 nSubInserters);
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);

@@ -51,7 +51,6 @@ namespace StorageEngine
       bool   m_bRLUDiary;      
       bool   m_bRLUTimer;
       i8     m_nPtnsPerTable;
-      i8     m_nSubInserters;
       i8     m_nThreads;       // number of general threads
       bool   m_bTracepoint;
       bool   m_bVerbose;

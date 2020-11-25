@@ -13,9 +13,11 @@
   ""
 
   executable::isDebug if
-    "../OS\\ X/Build/Products/Debug/SE" str.cat
+    //"../OS\\ X/Build/Products/Debug/SE" str.cat
+    "../bin/rapidsse" str.cat
   else
-    "../OS\\ X/Build/Products/Release/SE" str.cat
+    //"../OS\\ X/Build/Products/Release/SE" str.cat
+    "../bin/rapidsse" str.cat
   then
 
   " --start" str.cat

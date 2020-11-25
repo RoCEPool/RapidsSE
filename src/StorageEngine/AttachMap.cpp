@@ -249,7 +249,6 @@ void AttachMap::vRecordArguments(Args* pArgs)
   Arg.m_bRLUDiary        = pArgs->m_bRLUDiary;
   Arg.m_bRLUTimer        = pArgs->m_bRLUTimer;
   Arg.m_nPtnsPerTable    = pArgs->m_nPtnsPerTable;
-  Arg.m_nSubInserters    = 0;
   Arg.m_nThreads         = pArgs->m_nThreads;
   Arg.m_bTracepoint      = pArgs->m_bTracepoint;
   Arg.m_bVerbose         = pArgs->m_bVerbose;
