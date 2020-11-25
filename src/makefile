@@ -126,7 +126,7 @@ main-build : pre-build
 
 pre-build : version thirdparty buildConfigCheck
 
-target : $(SHOCO_O) $(TARGET_EXE) $(TARGET_LIBRARY)
+target : $(TARGET_EXE) $(TARGET_LIBRARY)
 
 # Debug builds
 debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -g $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
@@ -135,9 +135,9 @@ debug : all
 # Explicit release builds (the default)
 release : all
 
-$(SHOCO_O): $(SHOCO_C)
-	$(DIR_GUARD)
-	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) $< -o $@ 
+#$(SHOCO_O): $(SHOCO_C)
+#	$(DIR_GUARD)
+#	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) $< -o $@ 
 
 # RapidsSE dynamic library
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
@@ -149,14 +149,14 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_LIBRARY))
 
 # RapidsSE executable
-$(TARGET_EXE): $(TARGET_LIBRARY) $(MAIN_O) $(SHOCO_O) $(COMPILED_LIBS)
+$(TARGET_EXE): $(TARGET_LIBRARY) $(MAIN_O) $(COMPILED_LIBS)
 	$(DIR_GUARD)
 	@echo ""
 	cp $(MAN_PAGES) $(TARGET_PATH)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
 	@echo ""
-	$(CPP) $(MAIN_O) $(SHOCO_O) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	$(CPP) $(MAIN_O) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
 # Compile source .cpp files into object files
