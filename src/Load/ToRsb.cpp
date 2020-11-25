@@ -368,6 +368,29 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   if (iTraceBits & C_BIT_BeginCsvChunk)
     vTrace("L_STD_Begin: csvChunk >>%s<<\n"_Stz,
            spStr.szInspect(azCsvChunk,64,false));
+  
+  /*
+   
+     CSV chunk : is 0 or more lines, terminated by \0
+     line      : is 0 or more data bytes followed by <ENDLINE>
+     data byte : is any byte in the range 0x01 to 0xFF, except for <ENDLINE>
+     <ENDLINE> : is either 1) \n
+                           2) \r
+                           3) \r\n
+   
+     +------------------------+
+     |        CSV Chunk       |
+     +------------------------+
+     | ..line 0.. <ENDLINE>   |
+     | ..line 1.. <ENDLINE>   |
+     | ..line 2.. <ENDLINE>   |
+     |        ...             |
+     | ..line n.. <ENDLINE>\0 |
+     +------------------------+
+   
+     n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
+   
+   */
 
   i8 iBucketId = 0;
   i8 i_Fld = 0;
@@ -467,7 +490,7 @@ L_STD_TestMoreRecords:
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) new rsb                                                              STD
+  // 2) allot a new rsb                                                      STD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // alloc a new rsb, new another rsbBuffer if necessary
@@ -501,9 +524,9 @@ L_STD_TestMoreFields:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
   xColPix       = aColPix[i_Fld];
-  ePixDatum     = (eDM) xColPix.m_uDatum;
-  nPixLength    = xColPix.m_uLength;
-  nPixScale     = xColPix.m_uScale;
+  ePixDatum     = (eDM) xColPix.m_uDatum;   // DM_BOL .. DM_VCH
+  nPixLength    = xColPix.m_uLength;        // total number of digits or chars
+  nPixScale     = xColPix.m_uScale;         // max number digits to right of .
   nPixPrecision = nPixLength - nPixScale;
   bPixNullable  = xColPix.m_bNullable;
   
@@ -1339,10 +1362,25 @@ L_STD_Integer:
   if (iTraceBits & C_BIT_Integer)
     vTrace("L_STD_Integer:\n"_Stz);
   
+  /*
+         null,  null,  null  ,null  ,,  ,null\n
+         \N,  \N,  \N  ,\N  ,,  ,\N\n
+
+         1234,  1234,  1234  ,1234  ,1234\n
+         -123,  -123,  -123  ,-123  ,-123\n
+         +123,  +123,  +123  ,+123  ,+123\n
+         -1.2,  -1.2,  -1.2  ,-1.2  ,-1.2\n
+         +1.2,  +1.2,  +1.2  ,+1.2  ,+1.2\n
+   */
+  
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // skip any leading white space
+  
   vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
+  // possible empty field
 
   if (bFIELD_END())
     goto L_STD_IntegerNull;
@@ -1371,12 +1409,15 @@ L_STD_Integer:
       vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
     }
     
+    // skip any trailing white space
     vSKIP_WHITE_SPACE();
     
+    // should be at a valid field end
     if (! (bFIELD_END())) {
       vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
     }
 
+    // recognised a null in an integer field
     goto L_STD_IntegerNull;
   }
    
@@ -1401,12 +1442,12 @@ L_STD_Integer:
   // collect sign
   if ('-' == cSrcChr) {
     bNegative = true;
-    vADV_SRCCHR(); // skip negative sign
+    vADV_SRCCHR(); // accept negative sign
   }
   else
   if ('+' == cSrcChr) {
     bNegative = false;
-    vADV_SRCCHR(); // skip positive sign
+    vADV_SRCCHR(); // accept positive sign
   }
   else {
     bNegative = false;
@@ -1426,6 +1467,7 @@ L_STD_Integer:
   if (! nDigits) {
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   }
+  // should not have seen too many digits
   if (nDigits > 19) {
     vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
   }
@@ -1438,8 +1480,11 @@ L_STD_Integer:
     }
   }
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // skip any trailing whitespace
   vSKIP_WHITE_SPACE();
   
+  // should be at a valid field end
   if (! (bFIELD_END())) {
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   }
@@ -1454,7 +1499,9 @@ L_STD_Integer:
   // compute final field value
   iInteger = bNegative ? - uNumber : uNumber;
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // deposit the integer
+  
   m_pRowSlab->vDeposit(iInteger);
     
   // compute running hash of partitioning column
@@ -1462,6 +1509,8 @@ L_STD_Integer:
     PtnMap::vRunningHash(&iPtnKeyHash,iInteger);
   
   goto L_STD_PostField;
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   
 L_STD_IntegerNull:
   
