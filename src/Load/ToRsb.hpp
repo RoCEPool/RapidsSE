@@ -70,6 +70,11 @@ namespace Load
 
   ToRsb* _pToRsb(void* aAddr);
 
+  static const i8 C_MAX_INTEGER_DIGITS  = 19;
+  static const char C_MINUS_SIGN        = '-';
+  static const char C_PLUS_SIGN         = '+';
+  static const char C_DECIMAL_POINT     = '.';
+
   static const i8 C_BIT_BeginCsvChunk   = 1;
   static const i8 C_BIT_InitialState    = 1 <<  1;
   static const i8 C_BIT_TestMoreRecords = 1 <<  2;
