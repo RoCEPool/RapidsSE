@@ -295,6 +295,38 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     } \
   }
 
+//--
+
+#define vIF_NULL_PORTION(_goto,_errorCode) \
+  if ('n' == cSrcChr || 'N' == cSrcChr) { \
+    vNEXT_SRCCHR(); \
+    if ('u' == cSrcChr || 'U' == cSrcChr) { \
+      vNEXT_SRCCHR(); \
+      if ('l' == cSrcChr || 'L' == cSrcChr) { \
+        vNEXT_SRCCHR(); \
+        if ('l' == cSrcChr || 'L' == cSrcChr) { \
+          vNEXT_SRCCHR(); \
+        } \
+        else { \
+          vFIELD_ERROR(_errorCode); \
+        } \
+      } \
+      else { \
+        vFIELD_ERROR(_errorCode); \
+      } \
+    } \
+    else { \
+      vFIELD_ERROR(_errorCode); \
+    } \
+    \
+    vSKIP_WHITE_SPACE(); \
+    \
+    if (! (bFIELD_END())) \
+      vFIELD_ERROR(_errorCode); \
+    \
+    goto _goto; \
+  }
+
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
@@ -339,7 +371,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 nMicrosecondShift;
 
   d8 dFloatValue;
-  d8 dUnsigned;
+  d8 dUnsignedFloat;
   i8 nExponentDigits;
   char caBuffer_atof[256];
   char* acFltDst;
@@ -360,8 +392,6 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   SP_String spChr;
   SP_String sp2nd;
   
-  Rsb* aRsb;
-
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
 //     | C_BIT_InitialState
@@ -417,6 +447,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char* azCsvSrc = azCsvChunk;
   char cSrcChr = *azCsvSrc++;
   char c2ndChr = *azCsvSrc;
+
+  Rsb* aRsb = nullptr;
 
   i8 iBucketId = 0;
   i8 i_Fld = 0;
@@ -536,9 +568,7 @@ L_TestMoreFields:
   azFieldStart = azCsvSrc - 1;
 
   
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 2) decode and convert field i_Fld
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // decode and convert field i_Fld
   
   xColPix         = aColPix[i_Fld];
   
@@ -600,34 +630,36 @@ L_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-
-    goto L_BooleanNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//    }
+//    
+//    vSKIP_WHITE_SPACE();
+//    
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//
+//    goto L_BooleanNull;
+//  }
+  
+  vIF_NULL_PORTION(L_BooleanNull,EC_CSV_BOOLEAN_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
@@ -791,34 +823,36 @@ L_Date:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-
-    goto L_DateNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//    }
+//
+//    vSKIP_WHITE_SPACE();
+//
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//
+//    goto L_DateNull;
+//  }
+  
+  vIF_NULL_PORTION(L_DateNull,EC_CSV_YEAR_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
@@ -1019,35 +1053,37 @@ L_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-
-    goto L_DecimalNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
+//    }
+//
+//    vSKIP_WHITE_SPACE();
+//
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
+//
+//    goto L_DecimalNull;
+//  }
    
+  vIF_NULL_PORTION(L_DecimalNull,EC_CSV_DECIMAL_INVALID);
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
@@ -1200,35 +1236,37 @@ L_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
-
-    goto L_FloatNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
+//    }
+//
+//    vSKIP_WHITE_SPACE();
+//
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
+//
+//    goto L_FloatNull;
+//  }
    
+  vIF_NULL_PORTION(L_FloatNull,EC_CSV_FLOAT_INVALID);
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
@@ -1325,8 +1363,8 @@ L_Float:
   // all float portions collected
   
   // compute final result
-  dUnsigned = atof(caBuffer_atof); // SHOULD BE USING strtod() AND TESTING FOR ERROR
-  dFloatValue = bIsNegative ? - dUnsigned : dUnsigned;
+  dUnsignedFloat = atof(caBuffer_atof); // SHOULD BE USING strtod() AND TESTING FOR ERROR
+  dFloatValue = bIsNegative ? - dUnsignedFloat : dUnsignedFloat;
   
   // deposit the float
   m_pRowSlab->vDeposit(dFloatValue);
@@ -1375,38 +1413,40 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-    }
-    
-    // skip any trailing white space
-    vSKIP_WHITE_SPACE();
-    
-    // should be at a valid field end
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-
-    // recognised a null in an integer field
-    goto L_IntegerNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//    }
+//
+//    // skip any trailing white space
+//    vSKIP_WHITE_SPACE();
+//
+//    // should be at a valid field end
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//
+//    // recognised a null in an integer field
+//    goto L_IntegerNull;
+//  }
    
+  vIF_NULL_PORTION(L_IntegerNull,EC_CSV_INTEGER_INVALID);
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
@@ -1527,34 +1567,36 @@ L_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-
-    goto L_IntervalNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+//    }
+//
+//    vSKIP_WHITE_SPACE();
+//
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+//
+//    goto L_IntervalNull;
+//  }
+  
+  vIF_NULL_PORTION(L_IntervalNull,EC_CSV_INTERVAL_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
@@ -1667,34 +1709,36 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-
-    goto L_TimeNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_HOUR_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_HOUR_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
+//    }
+//
+//    vSKIP_WHITE_SPACE();
+//
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_HOUR_INVALID);
+//
+//    goto L_TimeNull;
+//  }
+  
+  vIF_NULL_PORTION(L_TimeNull,EC_CSV_HOUR_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
@@ -1852,43 +1896,37 @@ L_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
 
-  if ('n' == cSrcChr || 'N' == cSrcChr) {
-    vNEXT_SRCCHR(); // skip 'n'
-    if ('u' == cSrcChr || 'U' == cSrcChr) {
-      vNEXT_SRCCHR(); // skip 'u'
-      if ('l' == cSrcChr || 'L' == cSrcChr) {
-        vNEXT_SRCCHR(); // skip 'L'
-        if ('l' == cSrcChr || 'L' == cSrcChr) {
-          vNEXT_SRCCHR(); // skip 'L'
-        }
-        else { // not expected 'l'
-          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-      }
-    }
-    else { // not expected 'u'
-      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-    }
-    
-    vSKIP_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
-      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-
-    goto L_TimestampNull;
-  }
+//  if ('n' == cSrcChr || 'N' == cSrcChr) {
+//    vNEXT_SRCCHR(); // skip 'n'
+//    if ('u' == cSrcChr || 'U' == cSrcChr) {
+//      vNEXT_SRCCHR(); // skip 'u'
+//      if ('l' == cSrcChr || 'L' == cSrcChr) {
+//        vNEXT_SRCCHR(); // skip 'L'
+//        if ('l' == cSrcChr || 'L' == cSrcChr) {
+//          vNEXT_SRCCHR(); // skip 'L'
+//        }
+//        else { // not expected 'l'
+//          vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//      }
+//    }
+//    else { // not expected 'u'
+//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//    }
+//
+//    vSKIP_WHITE_SPACE();
+//
+//    if (! (bFIELD_END()))
+//      vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//
+//    goto L_TimestampNull;
+//  }
   
-  uYearComponent = 0;
-  uMonthComponent = 0;
-  uDayComponent = 0;
-  uHourComponent = 0;
-  uMinuteComponent = 0;
-  uSecondComponent = 0;
-  uMicrosecondComponent = 0;
-
+  vIF_NULL_PORTION(L_TimestampNull,EC_CSV_YEAR_INVALID);
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
@@ -1903,20 +1941,28 @@ L_Timestamp:
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   }
   
-    // ---- ---- ---- ---- ---- ---- ---- ----
-    // date components
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // timestamp components
     
-    i_DateComponent = -1;
+  uYearComponent = 0;
+  uMonthComponent = 0;
+  uDayComponent = 0;
+  uHourComponent = 0;
+  uMinuteComponent = 0;
+  uSecondComponent = 0;
+  uMicrosecondComponent = 0;
+
+  i_DateComponent = -1;
     
 L_Timestamp_components:
     
-    if (iTraceBits & C_BIT_Timestamp)
-      vTrace("L_Timestamp_components:\n"_Stz);
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_Timestamp_components:\n"_Stz);
+
+  i_DateComponent++;
   
-    i_DateComponent++;
-    
-    if (i_DateComponent > 2)
-      goto L_Timestamp_collected;
+  if (i_DateComponent > 2)
+    goto L_Timestamp_collected;
   
   // skip over separator
   if (i_DateComponent > 0) {
@@ -2257,7 +2303,7 @@ L_Varchar:
 
     goto L_VarcharNull;
   }
-  
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible \N portion
   
