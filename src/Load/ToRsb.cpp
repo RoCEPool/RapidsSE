@@ -283,7 +283,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
+bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -365,7 +365,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 0) begin                                                                STD
+  // 0) begin
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (iTraceBits & C_BIT_BeginCsvChunk)
@@ -470,7 +470,7 @@ bool ToRsb::bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) while more csv data in chunk                                         STD
+  // 1) while more csv data in chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
@@ -492,10 +492,10 @@ L_TestMoreRecords:
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) allot a new rsb                                                      STD
+  // 2) allot a new rsb
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // alloc a new rsb, new another rsbBuffer if necessary
+  // allot a new rsb, new another rsbBuffer if necessary
   if (! m_pRowSlab->bNewRow(&aRsb)) {    // ? inline ?
     vNewRsbBuffer();
     bool b = m_pRowSlab->bNewRow(&aRsb);
@@ -506,7 +506,7 @@ L_TestMoreRecords:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 3) while more fields of current record                                  STD
+  // 3) while more fields of current record
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_TestMoreFields:
   
@@ -522,7 +522,7 @@ L_TestMoreFields:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 4) decode and convert field i_Fld                                       STD
+  // 4) decode and convert field i_Fld
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   
   xColPix         = aColPix[i_Fld];
@@ -567,7 +567,7 @@ L_TestMoreFields:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.a) boolean field : true | false | uNumber                             STD
+  // 4.a) boolean field : true | false | uNumber
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Boolean:
   
@@ -754,7 +754,7 @@ L_BooleanNull:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.b) date field : year - month - day // year range is ????              STD
+  // 4.b) date field : year - month - day // year range is ????
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Date:
   
@@ -982,7 +982,7 @@ L_DateNull:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]                      STD
+  // 4.c) decimal field : [+|-] uNumber [ . uFraction ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Decimal:
   
@@ -1161,7 +1161,7 @@ L_DecimalNull:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]      STD
+  // 4.d) float : [+|-] uNumber [ . uFraction ] [ e|E [+|-] uExponent ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Float:
     
@@ -1326,7 +1326,7 @@ L_FloatNull:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.e) integer : [+|-] uNumber                                            STD
+  // 4.e) integer : [+|-] uNumber
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Integer:
   
@@ -1493,7 +1493,7 @@ L_IntegerNull:
 
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.f) interval field : seconds [ . microseconds ]                        STD
+  // 4.f) interval field : seconds [ . microseconds ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Interval:
   
@@ -1633,7 +1633,7 @@ L_IntervalNull:
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]         STD
+  // 4.g) time field : hour ':' minute ':' second [ . microseconds ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Time:
   
@@ -1713,7 +1713,7 @@ L_Time:
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
 
   // skip over separator
-  if (':' != cSrcChr)
+  if (cSrcChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vADV_SRCCHR(); // skip ':'
   
@@ -1735,7 +1735,7 @@ L_Time:
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over separator
-  if (':' != cSrcChr)
+  if (cSrcChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
 
   vADV_SRCCHR(); // skip ':'
@@ -1817,7 +1817,7 @@ L_TimeNull:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.h) timestamp field :                                                  STD
+  // 4.h) timestamp field :
   //    year - month - day [ ' ' hour ':' minute ':' second [ . microseconds ] ]
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Timestamp:
@@ -2025,7 +2025,7 @@ L_Timestamp_collected:
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
 
   // skip over separator
-  if (':' != cSrcChr)
+  if (cSrcChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vADV_SRCCHR(); // skip ':'
   
@@ -2049,7 +2049,7 @@ L_Timestamp_collected:
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over separator
-  if (':' != cSrcChr)
+  if (cSrcChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
 
   vADV_SRCCHR(); // skip ':'
@@ -2191,7 +2191,7 @@ L_TimestampNull:
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-  // 4.i) varchar field :                                                    STD
+  // 4.i) varchar field :
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_Varchar:
   
@@ -2648,7 +2648,7 @@ L_VarcharNull:
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // 5) processing at end of field                                           STD
+  // 5) processing at end of field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_PostField:
     
@@ -2677,7 +2677,7 @@ L_PostField:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) encountered a field error                                            STD
+  // 6) encountered a field error
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
@@ -2743,7 +2743,7 @@ L_FieldError:
   
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 7) end of record                                                        STD
+  // 7) end of record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndRecord:
   
@@ -2784,7 +2784,7 @@ L_EndRecord:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 8) reached end of azCsvChunk                                            STD
+  // 8) reached end of azCsvChunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EndCsvChunk:
     

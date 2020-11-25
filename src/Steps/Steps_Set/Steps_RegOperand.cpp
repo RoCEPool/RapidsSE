@@ -213,7 +213,7 @@ void Step::vRegOperandCsvToRsb(void)
 
   ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
-  bool b = pToRsb->bConvertStdCsv(azCsvChunk,pCsvMeta);
+  bool b = pToRsb->bConvertCsv(azCsvChunk,pCsvMeta);
 
   EXIT();
 }

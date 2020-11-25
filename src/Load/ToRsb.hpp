@@ -54,7 +54,7 @@ namespace Load
    ~ToRsb(void) noexcept(false);
   
     bool bConvertCrw(CrwBuffer* pCrwBuffer);
-    bool bConvertStdCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
+    bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
 
     RsbBuffer* pDanglingRsbBuffer(void);
     RsbBuffer* pFullRsbBuffer(void);
@@ -74,6 +74,7 @@ namespace Load
   static const char C_MINUS_SIGN        = '-';
   static const char C_PLUS_SIGN         = '+';
   static const char C_DECIMAL_POINT     = '.';
+  static const char C_TIME_SEPARATOR    = ':';
 
   static const i8 C_BIT_BeginCsvChunk   = 1;
   static const i8 C_BIT_InitialState    = 1 <<  1;
