@@ -1,14 +1,9 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// BEGIN : QRY_Smt1 (select l_extendedprice from lineitem)
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Routine QRY_Smt0
+Routine QRY_0
 
   // initialization
   EO_INIT
   EO_ENTER
-
-  // set sql query no (debug)
-  EO_SQL 1
+  EO_SQL 0
 
   // check for ZK_STARTMARKER
   EO_DUP
@@ -44,105 +39,71 @@ Routine QRY_Smt0
   EO_PRINTF "**NO_HANDLER : 0**\n"
   EO_NEVERREACH
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_STARTMARKER handler
+
+  // STARTMARKER_HANDLER
 Label STARTMARKER_HANDLER
   EO_PRINTF "**STARTMARKER_HANDLER : 0**\n"
   EO_POP
-  EO_JMP QRY_SMT1_DONE
+  EO_JMP QRY_DONE
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_DATAPULSE handler
+
+  // DATAPULSE_HANDLER
 Label DATAPULSE_HANDLER
   EO_PRINTF "**DATAPULSE_HANDLER : 0**\n"
   EO_POP
-  EO_JMP QRY_SMT1_DONE
+  EO_JMP QRY_DONE
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_STREAMDEF handler
+
+  // STREAMDEF_HANDLER
 Label STREAMDEF_HANDLER
   EO_PRINTF "**STREAMDEF_HANDLER : 0**\n"
   EO_POP
-
   EO_REG_STREAMDEFOUT_NEW
 
-  // add column l_extendedprice
   EO_PUSH_COLUMN_SCALE 2
   EO_PUSH_COLUMN_LENGTH 15
   EO_PUSH_COLUMN_TYPE CT_DECIMAL
   EO_REG_STREAMDEFOUT_ADDCOLUMN "l_extendedprice"
 
   EO_POT_USE_STREAMDEFOUT 0
-  EO_JMP QRY_SMT1_DONE
+  EO_JMP QRY_DONE
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_EOSMARKER handler
+
+  // EOSMARKER_HANDLER
 Label EOSMARKER_HANDLER
   EO_PRINTF "**EOSMARKER_HANDLER : 0**\n"
   EO_POP
-  EO_JMP QRY_SMT1_DONE
+  EO_JMP QRY_DONE
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ZK_CRWBUFFER handler
+
+  // CRWBUFFER_HANDLER
 Label CRWBUFFER_HANDLER
   EO_PRINTF "**CRWBUFFER_HANDLER : 0**\n"
   EO_POP
-
   EO_CRW_SRC_BEGIN
-
-  // NEXT_CRW_SRC:
+  
+// NEXT_CRW_SRC
 Label NEXT_CRW_SRC
   EO_CRW_SRC_NEXT
-  EO_JMP_FALSE QRY_SMT1_DONE
-
-  // call PROCESS_CRWROW subroutine
-  EO_CALL SUBROUTINE_PROCESS_CRWROW
-
+  EO_JMP_FALSE QRY_DONE
+  // call PROJECT_COLUMNS subroutine
+  EO_CALL PROJECT_COLUMNS
   EO_JMP NEXT_CRW_SRC
-  EO_JMP QRY_SMT1_DONE
+  EO_JMP QRY_DONE
 
 
-Label QRY_SMT1_DONE
-  EO_EXIT
-  EO_RETURN
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// END MAIN: QRY_SMT1
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// BEGIN SUBROUTINE: SUBROUTINE_PROCESS_CRWROW
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Label SUBROUTINE_PROCESS_CRWROW
-  EO_CALL SUBROUTINE_PROJECT_COLUMNS
-  EO_RETURN
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// END SUBROUTINE: SUBROUTINE_PROCESS_CRWROW
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// BEGIN SUBROUTINE: SUBROUTINE_PROJECT_COLUMNS
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Label SUBROUTINE_PROJECT_COLUMNS
-
+  // Project columns
+Label PROJECT_COLUMNS
   EO_SET_ITEMS 1
+  EO_RSB_DST_NEW
   EO_SET_COLUMN 5
   EO_COL_SRC_PUSHSET
-  EO_RSB_DST_NEW
+  EO_RSB_DST_POPCOLI 0
+  EO_RETURN
+  EO_RETURN
   EO_RSB_DST_POPCOLI 0
 
+Label QRY_DONE
+  // QRY_DONE
+  EO_EXIT
   EO_RETURN
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// END SUBROUTINE: SUBROUTINE_PROJECT_COLUMNS
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-

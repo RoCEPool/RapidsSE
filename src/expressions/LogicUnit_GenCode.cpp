@@ -76,6 +76,7 @@ EndDefine
 #define ASM_STREAMDEF_HANDLER_BEGIN(aCrs, aTemp) \
   StrLib::vAppendString(&aCrs, (char*)"  // STREAMDEF_HANDLER\n"_Stz); \
   \
+  StrLib::vAppendString(&aCrs, (char*)"Label STREAMDEF_HANDLER\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_PRINTF \"**STREAMDEF_HANDLER : 0**\\n\"\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_POP\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_REG_STREAMDEFOUT_NEW\n"_Stz); \
@@ -91,7 +92,7 @@ EndDefine
   StrLib::vAppendString(&aCrs, aTemp); \
   StrLib::vSprint(aTemp, "  EO_PUSH_COLUMN_TYPE CT_%s\n"_Stz,aCT[eCT]); \
   StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vSprint(aTemp, "  EO_REG_STREAMDEFOUT_ADDCOLUMN %s\n"_Stz,sColumnNm); \
+  StrLib::vSprint(aTemp, "  EO_REG_STREAMDEFOUT_ADDCOLUMN \"%s\"\n"_Stz,sColumnNm); \
   StrLib::vAppendString(&aCrs, aTemp); \
 EndDefine
 
@@ -99,7 +100,7 @@ EndDefine
 // END STREAMDEF_HANDLER
 //----------------------------------------------------------------------------
 #define ASM_STREAMDEF_HANDLER_END(aCrs, aTemp) \
-  StrLib::vAppendString(&aCrs, (char*)"\n  EO_POT_USE_STREAMDEFOUT\n"_Stz); \
+  StrLib::vAppendString(&aCrs, (char*)"\n  EO_POT_USE_STREAMDEFOUT 0\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_JMP QRY_DONE\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"\n\n"_Stz); \
 EndDefine
@@ -109,19 +110,21 @@ EndDefine
 //----------------------------------------------------------------------------
 #define ASM_CRWBUFFER_HANDLER(aCrs, aTemp, aProcessRoutine) \
   StrLib::vAppendString(&aCrs, (char*)"  // CRWBUFFER_HANDLER\n"_Stz); \
+  StrLib::vAppendString(&aCrs, (char*)"Label CRWBUFFER_HANDLER\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_PRINTF \"**CRWBUFFER_HANDLER : 0**\\n\"\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_POP\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_CRW_SRC_BEGIN\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  // NEXT_CRW_SRC\n"_Stz); \
+  StrLib::vAppendString(&aCrs, (char*)"  \n// NEXT_CRW_SRC\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"Label NEXT_CRW_SRC\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_CRW_SRC_NEXT\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_FALSE QRY_SMT1_DONE\n"_Stz); \
-  StrLib::vSprint(aTemp, "// call %s subroutine\n"_Stz, aProcessRoutine); \
+  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_FALSE QRY_DONE\n"_Stz); \
+  StrLib::vSprint(aTemp, "  // call %s subroutine\n"_Stz, aProcessRoutine); \
   StrLib::vAppendString(&aCrs, aTemp); \
   StrLib::vSprint(aTemp, "  EO_CALL %s\n"_Stz, aProcessRoutine); \
   StrLib::vAppendString(&aCrs, aTemp); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_JMP NEXT_CRW_SRC\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_JMP QRY_DONE\n"_Stz); \
+  StrLib::vAppendString(&aCrs, (char*)"\n\n"_Stz); \
 EndDefine
 
 //----------------------------------------------------------------------------
@@ -144,6 +147,7 @@ EndDefine
   StrLib::vAppendString(&aCrs, (char*)"  EO_COL_SRC_PUSHSET\n"_Stz); \
   StrLib::vSprint(aTemp, "  EO_RSB_DST_POPCOLI %lld\n"_Stz, iDstColumn); \
   StrLib::vAppendString(&aCrs, aTemp); \
+  StrLib::vAppendString(&aCrs, (char*)"  EO_RETURN\n"_Stz); \
 EndDefine
 
 //----------------------------------------------------------------------------
@@ -151,13 +155,14 @@ EndDefine
 //----------------------------------------------------------------------------
 #define ASM_PROJECT_COLUMNS_END(aCrs) \
   StrLib::vAppendString(&aCrs, (char*)"  EO_RETURN\n"_Stz); \
+  StrLib::vAppendString(&aCrs, aTemp); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // QRY_DONE
 //----------------------------------------------------------------------------
 #define ASM_QRY_DONE(aCrs) \
-  StrLib::vAppendString(&aCrs, (char*)"Label QRY_SMT1_DONE\n"_Stz); \
+  StrLib::vAppendString(&aCrs, (char*)"\nLabel QRY_DONE\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  // QRY_DONE\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_EXIT\n"_Stz); \
   StrLib::vAppendString(&aCrs, (char*)"  EO_RETURN\n"_Stz); \
@@ -235,6 +240,8 @@ void LogicUnit::vCollectOpcode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  //vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
+  
   if (m_pTkn->bSame("Label"_Stz)) {
     vAcceptToken();
     vDefineLabel(m_pTkn->szChars());
@@ -244,7 +251,7 @@ void LogicUnit::vCollectOpcode(void)
   TagSet* pJobTags = AM::pPipelineJob()->pJobTags();
   
   for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
-        
+    
     if (m_pTkn->bSame(aEO[i_OpCode])) {
       
       switch((i8)(EoArgs[i_OpCode].m_eArgument)) {
@@ -406,13 +413,13 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  s32 sTemp;
+  s256 sTemp;
   char* aTemp = sTemp.azChar();
   
   s32 sHandler;
   char* aHandler = sHandler.azChar();
   
-  s16KB sString = ""_Stz;
+  s24KB sString = ""_Stz;
   char* aCrs = sString.azChar();
   
   File* pFile = new File(nullptr);

@@ -14,9 +14,10 @@
 : GenAsmTxt_StartMarker \handler
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
-  Pipein[].pipeout
 
   <queryNo> >int <fileName> LogicUnit[].genAsmTxt
+
+  Pipein[].pipeout
   true
 ;
 
