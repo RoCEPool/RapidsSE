@@ -215,7 +215,7 @@ void LogicCompiler::vExtract(void)
   
   File* pFile = new File(nullptr);
   
-  bool b = pFile->bOpenRead("../src/Expressions/LogicUnit.cpp"_Stz);
+  bool b = pFile->bOpenRead("../src/expressions/LogicUnit.cpp"_Stz);
   RASSERT(b);
   
   char* azCrs = gcaEoFragments;
@@ -776,12 +776,12 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n             SI_DEST, SI_DEST_ANT, SI_DEST_KEY, SI_DEST_PST };"
   "\n"
   "\n  #include \"../src/eNums/EnumGroups.h\""
-  "\n  #include \"../src/Entries/Ent_int.h\""
-  "\n  #include \"../src/Expressions/InflateSet.h\""
-  "\n  #include \"../src/Expressions/LIB_interface.h\""
-  "\n  #include \"../src/Expressions/DEV_interface.h\""
-  "\n  #include \"../src/Expressions/RLU_interface.h\""
-  "\n  #include \"../src/Expressions/RluCommon.h\""
+  "\n  #include \"../src/entries/Ent_int.h\""
+  "\n  #include \"../src/expressions/InflateSet.h\""
+  "\n  #include \"../src/expressions/LIB_interface.h\""
+  "\n  #include \"../src/expressions/DEV_interface.h\""
+  "\n  #include \"../src/expressions/RLU_interface.h\""
+  "\n  #include \"../src/expressions/RluCommon.h\""
   "\n  #include \"../src/eNums/eEO.h\""
   "\n"
   "\n  #define ArgNil() "
