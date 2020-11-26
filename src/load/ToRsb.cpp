@@ -298,6 +298,12 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vNEXT_CSVCHR(); \
   }
 
+#define vSKIP_LEADING_WHITE_SPACE() \
+  vSKIP_WHITE_SPACE()
+
+#define vSKIP_TRAILING_WHITE_SPACE() \
+  vSKIP_WHITE_SPACE()
+
 #define vSKIP_RECORD_LINE_END() \
   { \
     if (cCurChr && cCurChr == m_cRecordTerminator) \
@@ -340,7 +346,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
       vFIELD_ERROR(_errorCode); \
     } \
     \
-    vSKIP_WHITE_SPACE(); \
+    vSKIP_TRAILING_WHITE_SPACE(); \
     \
     if (! (bFIELD_END())) \
       vFIELD_ERROR(_errorCode); \
@@ -351,8 +357,8 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   if (cCurChr == m_cEscapeChar) { \
     vNEXT_CSVCHR(); \
     if ('N' == cCurChr) { \
-      vNEXT_CSVCHR(); \
-      if (bFIELD_END()) \
+      vSKIP_TRAILING_WHITE_SPACE(); \
+    if (bFIELD_END()) \
         goto _label; \
     } \
     vFIELD_ERROR(_errorCode);\
@@ -651,7 +657,7 @@ L_Boolean:
   if (iTraceBits & C_BIT_Boolean)
     vTrace("L_Boolean:\n"_Stz);
     
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -795,7 +801,7 @@ L_Date:
   uMonthComponent = 0;
   uDayComponent   = 0;
 
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -976,7 +982,7 @@ L_Decimal:
   if (iTraceBits & C_BIT_Decimal)
     vTrace("L_Decimal:\n"_Stz);
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -1098,7 +1104,7 @@ L_Float:
   if (iTraceBits & C_BIT_Float)
     vTrace("L_Float:\n"_Stz);
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -1214,7 +1220,7 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // skip any leading white space
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -1304,7 +1310,7 @@ L_Interval:
   if (iTraceBits & C_BIT_Interval)
     vTrace("L_Interval:\n"_Stz);
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -1401,7 +1407,7 @@ L_Time:
   uSecondComponent = 0;
   uMicrosecondComponent = 0;
 
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -1535,7 +1541,7 @@ L_Timestamp:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp:\n"_Stz);
   
-  vSKIP_WHITE_SPACE();
+  vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
