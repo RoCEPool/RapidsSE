@@ -241,7 +241,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 //--
 
 #define vNEXT_CSVCHR() \
-  (cPrvChr = cCurChr, cCurChr = cNxtChr , cNxtChr = *++azCsvSrc)
+  (cPrvChr = cCurChr, cCurChr = cNxtChr , cNxtChr = *++azCsvCrs)
 
 #define vCOLLECT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
@@ -269,9 +269,9 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define vRESET_FIELD() \
   { \
-     azCsvSrc = azFieldStart; \
-     cCurChr = *azCsvSrc; \
-     cNxtChr = *++azCsvSrc; \
+     azCsvCrs = azFieldStart; \
+     cCurChr = *azCsvCrs; \
+     cNxtChr = *++azCsvCrs; \
   }
 
 //--
@@ -349,8 +349,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     } \
     \
     vSKIP_TRAILING_WHITE_SPACE(); \
-    \
-    if (! (bFIELD_END())) \
+    if (bNOISY_FIELD_END()) \
       vFIELD_ERROR(_errorCode); \
     \
     goto _label; \
@@ -427,9 +426,10 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char* acVchDst;
   i8 nVchChars;
   
-  SP_String spStr;
-  SP_String spChr;
-  SP_String sp2nd;
+  SP_String spCsv;
+  SP_String spPrv;
+  SP_String spCur;
+  SP_String spNxt;
   
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
@@ -458,7 +458,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   if (iTraceBits & C_BIT_BeginCsvChunk)
     vTrace("L_Begin: csvChunk >>%s<<\n"_Stz,
-           spStr.szInspect(azCsvChunk,64,false));
+           spCsv.szInspect(azCsvChunk,64,false));
   
   /*
    
@@ -483,10 +483,10 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
    
    */
 
-  char* azCsvSrc = azCsvChunk;
+  char* azCsvCrs = azCsvChunk;
   char cPrvChr = '\0';
-  char cCurChr = *azCsvSrc++;
-  char cNxtChr = *azCsvSrc;
+  char cCurChr = *azCsvCrs++;
+  char cNxtChr = *azCsvCrs;
 
   Rsb* aRsb = nullptr;
 
@@ -508,7 +508,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   if (m_bFirst) {
     m_bFirst = false;
     
-    for (char* acTest = azCsvSrc; *acTest; acTest++) {
+    for (char* acTest = azCsvCrs; *acTest; acTest++) {
       if (',' == *acTest) {
         m_cFieldDelimiter = ',';
         break;
@@ -567,7 +567,7 @@ L_TestMoreRecords:
     
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
-           spStr.szInspect(azCsvSrc,128,true));
+           spCsv.szInspect(azCsvCrs,128,true));
 
   // skip leading non-data chars
   vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
@@ -577,7 +577,7 @@ L_TestMoreRecords:
     goto L_EndCsvChunk;
   
   // begin new record
-  azRecordStart = azCsvSrc;
+  azRecordStart = azCsvCrs;
   
   // allot a new rsb, new another rsbBuffer if necessary
   if (! m_pRowSlab->bNewRow(&aRsb)) {    // ? inline ?
@@ -605,7 +605,7 @@ L_TestMoreFields:
     goto L_EndRecord;
   }
   
-  azFieldStart = azCsvSrc - 1;
+  azFieldStart = azCsvCrs - 1;
 
   
   // decode and convert field i_Fld
@@ -624,11 +624,12 @@ L_TestMoreFields:
 
   if (iTraceBits & C_BIT_TestMoreFields) {
     vTrace("L_TestMoreFields: err %lld rec %lld fld %lld %s "
-           "srcChr >>%s<< 2ndChr >>%s<< csvSrc >>%s<<\n"_Stz,
+           "prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
            m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum],
-           spChr.szChar(cCurChr),
-           sp2nd.szChar(cNxtChr),
-           spStr.szInspect(azCsvSrc));
+           spPrv.szChar(cPrvChr),
+           spCur.szChar(cCurChr),
+           spNxt.szChar(cNxtChr),
+           spCsv.szInspect(azCsvCrs));
   }
   
   // debug
@@ -755,8 +756,7 @@ L_Boolean:
       iBooleanValue = false;
     
     vSKIP_TRAILING_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
+    if (bNOISY_FIELD_END())
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
 
     goto L_BooleanDeposit;
@@ -2351,24 +2351,17 @@ L_VarcharNull:
 L_PostField:
     
   if (iTraceBits & C_BIT_PostField)
-    vTrace("L_PostField:\n"_Stz);
+    vTrace("L_PostField: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,
+           spPrv.szChar(cPrvChr),
+           spCur.szChar(cCurChr),
+           spNxt.szChar(cNxtChr),
+           spCsv.szInspect(azCsvCrs));
 
-  // I DONT THINK THIS A GOOD IDEA
+  RASSERT(bFIELD_END());
   
-  // advance over any trailing chars till field separator or record terminator
-  while (cCurChr) {
-    
-    if (cCurChr == m_cFieldDelimiter) {
-      vNEXT_CSVCHR(); // skip m_cFieldDelimiter
-      break;
-    }
-
-    if (cCurChr == m_cLineEnd)
-      break;
-
-    vNEXT_CSVCHR(); // skip any
-  }
-
+  if (cCurChr == m_cFieldDelimiter)
+    vNEXT_CSVCHR(); // accept field delimiter
+  
   // move to next field
   goto L_TestMoreFields;                                     // end of postField
   
@@ -2383,7 +2376,7 @@ L_FieldError:
    
            i_Fld
            eError
-           azCsvSrc
+           azCsvCrs
            azRecordStart;
            azFieldStart;
            m_pStreamDef
@@ -2403,13 +2396,13 @@ L_FieldError:
   if (iTraceBits & C_BIT_FieldError) {
     vTrace("L_FieldError: %lld %s : errorCodeLine %lld\n"_Stz,
            eError,aEC[eError],i_ErrorCodeLine);
-    vTrace("                 : err %lld rec %lld fld %lld %s srcChr >>%s<< csvSrc >>%s<<\n"_Stz,
+    vTrace("                 : err %lld rec %lld fld %lld %s csvCrs >>%s<< csvSrc >>%s<<\n"_Stz,
            m_nErrors,
            m_nRecords,
            i_Fld,
            aDM[ePixDatum],
-           spChr.szChar(cCurChr),
-           spStr.szInspect(azCsvSrc));
+           spCur.szChar(cCurChr),
+           spCsv.szInspect(azCsvCrs));
 
   }
   // discard partial row in row slab
