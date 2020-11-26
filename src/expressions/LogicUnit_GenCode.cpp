@@ -7,165 +7,169 @@
 //----------------------------------------------------------------------------
 // INITIALIZATION
 //----------------------------------------------------------------------------
-#define ASM_INIT(aCrs, aTemp, iQueryNo) \
-  StrLib::vSprint(aTemp, "Routine QRY_%lld\n"_Stz,iQueryNo); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vAppendString(&aCrs, (char*)"\n  // initialization\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_INIT\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_ENTER\n"_Stz); \
-  StrLib::vSprint(aTemp, "  EO_SQL %lld\n"_Stz,iQueryNo); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"\n  // check for ZK_STARTMARKER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_DUP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_INTEGER ZK_STARTMARKER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_EQUAL\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_TRUE STARTMARKER_HANDLER\n"_Stz); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"\n  // check for ZK_DATAPULSE\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_DUP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_INTEGER ZK_DATAPULSE\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_EQUAL\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_TRUE DATAPULSE_HANDLER\n"_Stz); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"\n  // check for ZK_STREAMDEF\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_DUP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_INTEGER  ZK_STREAMDEF\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_EQUAL\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_TRUE STREAMDEF_HANDLER\n"_Stz); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"\n  // check for ZK_CRWBUFFER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_DUP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_INTEGER ZK_CRWBUFFER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_EQUAL\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_TRUE CRWBUFFER_HANDLER\n"_Stz); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"\n  // check for ZK_EOSMARKER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_DUP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_INTEGER  ZK_EOSMARKER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_EQUAL\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_TRUE EOSMARKER_HANDLER\n"_Stz); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"\n  // Never reach\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_PRINTF \"**NO_HANDLER : 0**\\n\"\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_NEVERREACH\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"\n\n"_Stz); \
+#define ASM_INIT(sString, aTemp, iQueryNo) \
+  aTemp = (char*) \
+  "\nRoutine QRY_%lld\n"    \
+  "\n  // initialization"   \
+  "\n  EO_INIT"             \
+  "\n  EO_ENTER"            \
+  "\n  EO_SQL %lld"         \
+  "\n" \
+  "\n  // check for ZK_STARTMARKER"     \
+  "\n  EO_DUP"                          \
+  "\n  EO_INTEGER ZK_STARTMARKER"       \
+  "\n  EO_EQUAL"                        \
+  "\n  EO_JMP_TRUE STARTMARKER_HANDLER" \
+  "\n" \
+  "\n  // check for ZK_DATAPULSE"     \
+  "\n  EO_DUP"                        \
+  "\n  EO_INTEGER ZK_DATAPULSE"       \
+  "\n  EO_EQUAL"                      \
+  "\n  EO_JMP_TRUE DATAPULSE_HANDLER" \
+  "\n" \
+  "\n  // check for ZK_STREAMDEF"     \
+  "\n  EO_DUP"                        \
+  "\n  EO_INTEGER  ZK_STREAMDEF"      \
+  "\n  EO_EQUAL"                      \
+  "\n  EO_JMP_TRUE STREAMDEF_HANDLER" \
+  "\n" \
+  "\n  // check for ZK_CRWBUFFER"     \
+  "\n  EO_DUP"                        \
+  "\n  EO_INTEGER ZK_CRWBUFFER"       \
+  "\n  EO_EQUAL"                      \
+  "\n  EO_JMP_TRUE CRWBUFFER_HANDLER" \
+  "\n" \
+  "\n  // check for ZK_EOSMARKER"     \
+  "\n  EO_DUP"                        \
+  "\n  EO_INTEGER  ZK_EOSMARKER"      \
+  "\n  EO_EQUAL"                      \
+  "\n  EO_JMP_TRUE EOSMARKER_HANDLER" \
+  "\n" \
+  "\n  // Never reach"                      \
+  "\n  EO_PRINTF \"**NO_HANDLER : 0**\\n\"" \
+  "\n  EO_NEVERREACH"                       \
+  "\n\n"; \
+  sString.vSprint((Stz*)aTemp, iQueryNo, iQueryNo); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // DEAFULT HANDLER
 //----------------------------------------------------------------------------
-#define ASM_DEFAULT_HANDLER(aCrs, aTemp, aMarker) \
-  StrLib::vSprint(aTemp, "  // %s\n"_Stz,aMarker); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  \
-  StrLib::vSprint(aTemp, "Label %s\n"_Stz,aMarker); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  \
-  StrLib::vSprint(aTemp, "  EO_PRINTF \"**%s : 0**\\n\"\n"_Stz,aMarker); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_POP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP QRY_DONE\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"\n\n"_Stz); \
+#define ASM_DEFAULT_HANDLER(sString, aTemp, aMarker) \
+  aTemp = (char*) \
+  "\n  // %s"                       \
+  "\nLabel %s"                      \
+  "\n  EO_PRINTF \"**%s : 0**\\n\"" \
+  "\n  EO_POP"                      \
+  "\n  EO_JMP QRY_DONE"             \
+  "\n\n";                           \
+  sString.vSprint((Stz*)aTemp, aMarker, aMarker, aMarker); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // BEGIN STREAMDEF_HANDLER
 //----------------------------------------------------------------------------
-#define ASM_STREAMDEF_HANDLER_BEGIN(aCrs, aTemp) \
-  StrLib::vAppendString(&aCrs, (char*)"  // STREAMDEF_HANDLER\n"_Stz); \
-  \
-  StrLib::vAppendString(&aCrs, (char*)"Label STREAMDEF_HANDLER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_PRINTF \"**STREAMDEF_HANDLER : 0**\\n\"\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_POP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_REG_STREAMDEFOUT_NEW\n"_Stz); \
+#define ASM_STREAMDEF_HANDLER_BEGIN(sString, aTemp) \
+  aTemp = (char*) \
+  "\n// STREAMDEF_HANDLER"                         \
+  "\nLabel STREAMDEF_HANDLER"                      \
+  "\n  EO_PRINTF \"**STREAMDEF_HANDLER : 0**\\n\"" \
+  "\n  EO_POP"                                     \
+  "\n  EO_REG_STREAMDEFOUT_NEW\n";                 \
+  sString.vSprint((Stz*)aTemp); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // ADD COLUMN TO STREAMDEF
 //----------------------------------------------------------------------------
-#define ASM_STREAMDEF_ADD_COLUMN(aCrs, aTemp, iScale, iLength, eCT, sColumnNm) \
-  StrLib::vSprint(aTemp, "\n  EO_PUSH_COLUMN_SCALE %lld\n"_Stz,iScale); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vSprint(aTemp, "  EO_PUSH_COLUMN_LENGTH %lld\n"_Stz,iLength); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vSprint(aTemp, "  EO_PUSH_COLUMN_TYPE CT_%s\n"_Stz,aCT[eCT]); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vSprint(aTemp, "  EO_REG_STREAMDEFOUT_ADDCOLUMN \"%s\"\n"_Stz,sColumnNm); \
-  StrLib::vAppendString(&aCrs, aTemp); \
+#define ASM_STREAMDEF_ADD_COLUMN(sString, aTemp, iScale, iLength, eCT, sColumnNm) \
+  aTemp = (char*) \
+  "\n  EO_PUSH_COLUMN_SCALE %lld"               \
+  "\n  EO_PUSH_COLUMN_LENGTH %lld"              \
+  "\n  EO_PUSH_COLUMN_TYPE CT_%s"               \
+  "\n  EO_REG_STREAMDEFOUT_ADDCOLUMN \"%s\"";   \
+  "\n"; \
+  sString.vSprint((Stz*)aTemp, iScale, iLength, aCT[eCT], sColumnNm); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // END STREAMDEF_HANDLER
 //----------------------------------------------------------------------------
-#define ASM_STREAMDEF_HANDLER_END(aCrs, aTemp) \
-  StrLib::vAppendString(&aCrs, (char*)"\n  EO_POT_USE_STREAMDEFOUT 0\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP QRY_DONE\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"\n\n"_Stz); \
+#define ASM_STREAMDEF_HANDLER_END(sString, aTemp) \
+  aTemp = (char*) \
+  "\n  EO_POT_USE_STREAMDEFOUT 0" \
+  "\n  EO_JMP QRY_DONE"           \
+  "\n\n"; \
+  sString.vSprint((Stz*)aTemp); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // CRWBUFFER_HANDLER
 //----------------------------------------------------------------------------
-#define ASM_CRWBUFFER_HANDLER(aCrs, aTemp, aProcessRoutine) \
-  StrLib::vAppendString(&aCrs, (char*)"  // CRWBUFFER_HANDLER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"Label CRWBUFFER_HANDLER\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_PRINTF \"**CRWBUFFER_HANDLER : 0**\\n\"\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_POP\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_CRW_SRC_BEGIN\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  \n// NEXT_CRW_SRC\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"Label NEXT_CRW_SRC\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_CRW_SRC_NEXT\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP_FALSE QRY_DONE\n"_Stz); \
-  StrLib::vSprint(aTemp, "  // call %s subroutine\n"_Stz, aProcessRoutine); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vSprint(aTemp, "  EO_CALL %s\n"_Stz, aProcessRoutine); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP NEXT_CRW_SRC\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_JMP QRY_DONE\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"\n\n"_Stz); \
+#define ASM_CRWBUFFER_HANDLER(sString, aTemp, aProcessRoutine) \
+  aTemp = (char*) \
+  "\n  // CRWBUFFER_HANDLER"                       \
+  "\nLabel CRWBUFFER_HANDLER"                      \
+  "\n  EO_PRINTF \"**CRWBUFFER_HANDLER : 0**\\n\"" \
+  "\n  EO_POP"                                     \
+  "\n  EO_CRW_SRC_BEGIN"                           \
+  "\n" \
+  "\n  // NEXT_CRW_SRC"             \
+  "\nLabel NEXT_CRW_SRC"            \
+  "\n  EO_CRW_SRC_NEXT"             \
+  "\n  EO_JMP_FALSE QRY_DONE"       \
+  "\n" \
+  "\n  // call %s subroutine"_Stz \
+  "\n  EO_CALL %s"_Stz            \
+  "\n  EO_JMP NEXT_CRW_SRC"       \
+  "\n  EO_JMP QRY_DONE"           \
+  "\n\n"; \
+  sString.vSprint((Stz*)aTemp, aProcessRoutine, aProcessRoutine); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // BEGIN PROJECT_COLUMNS
 //----------------------------------------------------------------------------
-#define ASM_PROJECT_COLUMNS_BEGIN(aCrs, aTemp, iColumns) \
-  StrLib::vAppendString(&aCrs, (char*)"  // Project columns\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"Label PROJECT_COLUMNS\n"_Stz); \
-  StrLib::vSprint(aTemp, "  EO_SET_ITEMS %lld\n"_Stz, iColumns); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_RSB_DST_NEW\n"_Stz); \
+#define ASM_PROJECT_COLUMNS_BEGIN(sString, aTemp, iColumns) \
+  aTemp = (char*) \
+  "\n  // Project columns"  \
+  "\nLabel PROJECT_COLUMNS" \
+  "\n  EO_SET_ITEMS %lld"   \
+  "\n  EO_RSB_DST_NEW";     \
+  sString.vSprint((Stz*)aTemp, iColumns); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // PROJECT_COLUMNS
 //----------------------------------------------------------------------------
-#define ASM_PROJECT_COLUMNS(aCrs, aTemp, iSrcColumn, iDstColumn) \
-  StrLib::vSprint(aTemp, "  EO_SET_COLUMN %lld\n"_Stz, iSrcColumn); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_COL_SRC_PUSHSET\n"_Stz); \
-  StrLib::vSprint(aTemp, "  EO_RSB_DST_POPCOLI %lld\n"_Stz, iDstColumn); \
-  StrLib::vAppendString(&aCrs, aTemp); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_RETURN\n"_Stz); \
+#define ASM_PROJECT_COLUMNS(sString, aTemp, iSrcColumn, iDstColumn) \
+  aTemp = (char*) \
+  "\n  EO_SET_COLUMN %lld"      \
+  "\n  EO_COL_SRC_PUSHSET"      \
+  "\n  EO_RSB_DST_POPCOLI %lld"; \
+  sString.vSprint((Stz*)aTemp, iSrcColumn, iDstColumn); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // END PROJECT_COLUMNS
 //----------------------------------------------------------------------------
-#define ASM_PROJECT_COLUMNS_END(aCrs) \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_RETURN\n"_Stz); \
-  StrLib::vAppendString(&aCrs, aTemp); \
+#define ASM_PROJECT_COLUMNS_END(sString, aTemp) \
+  aTemp = (char*) \
+  "\n  EO_RETURN"; \
+  sString.vSprint((Stz*)aTemp); \
 EndDefine
 
 //----------------------------------------------------------------------------
 // QRY_DONE
 //----------------------------------------------------------------------------
-#define ASM_QRY_DONE(aCrs) \
-  StrLib::vAppendString(&aCrs, (char*)"\nLabel QRY_DONE\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  // QRY_DONE\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_EXIT\n"_Stz); \
-  StrLib::vAppendString(&aCrs, (char*)"  EO_RETURN\n"_Stz); \
+#define ASM_QRY_DONE(sString, aTemp) \
+  aTemp = (char*) \
+  "\n" \
+  "\n  // QRY_DONE"    \
+  "\nLabel QRY_DONE"   \
+  "\n  EO_EXIT"        \
+  "\n  EO_RETURN";     \
+  sString.vSprint((Stz*)aTemp); \
 EndDefine
 
 /*----------------------------------------------------------------------------*/
@@ -413,11 +417,11 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  s256 sTemp;
+  s4K sTemp;
   char* aTemp = sTemp.azChar();
   
-  s32 sHandler;
-  char* aHandler = sHandler.azChar();
+  //s32 sHandler;
+  //char* aHandler = sHandler.azChar();
   
   s24KB sString = ""_Stz;
   char* aCrs = sString.azChar();
@@ -428,44 +432,52 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
   RASSERT(b);
   
   // append the INIT code to sString
-  ASM_INIT(aCrs, aTemp, iQueryNo);
+  ASM_INIT(sString, aTemp, iQueryNo);
+  pFile->vPrint("%s"_Stz,sString.azChar());
   
   // append a default handler for the STARTMARKER
-  sHandler = "STARTMARKER_HANDLER"_Stz;
-  ASM_DEFAULT_HANDLER(aCrs, aTemp, aHandler);
+  ASM_DEFAULT_HANDLER(sString, aTemp, "STARTMARKER_HANDLER"_Stz);
+  pFile->vPrint("%s"_Stz,sString.azChar());
   
   // append a default handler for the DATAPULSE
-  sHandler = "DATAPULSE_HANDLER"_Stz;
-  ASM_DEFAULT_HANDLER(aCrs, aTemp, aHandler);
-  
+  ASM_DEFAULT_HANDLER(sString, aTemp, "DATAPULSE_HANDLER"_Stz);
+  pFile->vPrint("%s"_Stz,sString.azChar());
+ 
   // begin a StreamDef handler
-  ASM_STREAMDEF_HANDLER_BEGIN(aCrs, aTemp);
-  
+  ASM_STREAMDEF_HANDLER_BEGIN(sString, aTemp);
+  pFile->vPrint("%s"_Stz,sString.azChar());
+
   // add a column to the streamDef
-  ASM_STREAMDEF_ADD_COLUMN(aCrs, aTemp, 2, 15, CT_DECIMAL, "l_extendedprice"_Stz);
+  ASM_STREAMDEF_ADD_COLUMN(sString, aTemp, 2, 15, CT_DECIMAL, "l_extendedprice"_Stz);
+  pFile->vPrint("%s"_Stz,sString.azChar());
   
   // end a StreamDef handler
-  ASM_STREAMDEF_HANDLER_END(aCrs, aTemp);
-  
+  ASM_STREAMDEF_HANDLER_END(sString, aTemp);
+  pFile->vPrint("%s"_Stz,sString.azChar());
+ 
   // append a default handler for the EOSMARKER
-  sHandler = "EOSMARKER_HANDLER"_Stz;
-  ASM_DEFAULT_HANDLER(aCrs, aTemp, aHandler);
+  ASM_DEFAULT_HANDLER(sString, aTemp, "EOSMARKER_HANDLER"_Stz);
+  pFile->vPrint("%s"_Stz,sString.azChar());
   
   // append a handler for iterating a CRWBUFFER and
   //   to execute PROJECT_COLUMNS for each row
-  sHandler = "CRWBUFFER_HANDLER"_Stz;
-  ASM_CRWBUFFER_HANDLER(aCrs, aTemp, "PROJECT_COLUMNS"_Stz);
-  
+  ASM_CRWBUFFER_HANDLER(sString, aTemp, "PROJECT_COLUMNS"_Stz);
+  pFile->vPrint("%s"_Stz,sString.azChar());
+ 
   // add the columns to be projected to PROJECT_COLUMNS
-  ASM_PROJECT_COLUMNS_BEGIN(aCrs, aTemp, 1);
-  ASM_PROJECT_COLUMNS(aCrs, aTemp, 5, 0);
-  ASM_PROJECT_COLUMNS_END(aCrs);
-  
-  // Finally query done
-  ASM_QRY_DONE(aCrs);
-  
+  ASM_PROJECT_COLUMNS_BEGIN(sString, aTemp, 1);
   pFile->vPrint("%s"_Stz,sString.azChar());
   
+  ASM_PROJECT_COLUMNS(sString, aTemp, 5, 0);
+  pFile->vPrint("%s"_Stz,sString.azChar());
+
+  ASM_PROJECT_COLUMNS_END(sString, aTemp);
+  pFile->vPrint("%s"_Stz,sString.azChar());
+  
+  // Finally query done
+  ASM_QRY_DONE(sString, aTemp);
+  pFile->vPrint("%s"_Stz,sString.azChar());
+
   pFile->vClose();
   delete pFile;
   
