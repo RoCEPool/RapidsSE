@@ -337,7 +337,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 //--
 
-#define vIF_NULL_PORTION(_label,_errorCode) \
+#define vIF_NULL_FORM(_label,_errorCode) \
   \
   if (bFIELD_END()) \
     goto _label; \
@@ -510,10 +510,10 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 iPtnKeyHash = 0;
   tPN tPtnNo = 0;
   tPN tPtnNo_byBkt = 0;
-  Column* pCol = nullptr;
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
   
+  Column* pCol = nullptr;
   ColPix* aColPix = m_pRowSlab->axaColPix();
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
 
@@ -576,7 +576,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) while more records in chunk
+  // 1) test more records in csv chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
@@ -702,16 +702,15 @@ L_Boolean:
   vSKIP_LEADING_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible null portion
+  // possible null form
   
-  vIF_NULL_PORTION(L_BooleanNull,EC_CSV_BOOLEAN_INVALID);
+  vIF_NULL_FORM(L_BooleanNull,EC_CSV_BOOLEAN_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible true portion
+  // possible true form
   
-  // collect characters representing a boolean
   if ('t' == cCurChr || 'T' == cCurChr) {
-    // true case
+
     iBooleanValue = true;
     vNEXT_CSVCHR(); // skip 't'
     
@@ -731,18 +730,14 @@ L_Boolean:
       }
     }
 
-    vSKIP_TRAILING_WHITE_SPACE();
-    if (bNOISY_FIELD_END())
-      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-
-    goto L_BooleanDeposit;
+    goto L_BooleanRecognised;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible false portion
+  // possible false form
   
   if ('f' == cCurChr || 'F' == cCurChr) {
-    // false case
+
     iBooleanValue = false;
     vNEXT_CSVCHR(); // skip 'f'
     
@@ -769,18 +764,14 @@ L_Boolean:
       }
     }
 
-    vSKIP_TRAILING_WHITE_SPACE();
-    if (bNOISY_FIELD_END())
-      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-    
-    goto L_BooleanDeposit;
+    goto L_BooleanRecognised;
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible digit portion
+  // possible numeric form
 
   if (bIS_DIGIT()) {
-    // numeric case
+
     uWholeNumber = 0;
     for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       vCOLLECT(uWholeNumber);
@@ -794,26 +785,35 @@ L_Boolean:
     else
       iBooleanValue = false;
     
-    vSKIP_TRAILING_WHITE_SPACE();
-    if (bNOISY_FIELD_END())
-      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-
-    goto L_BooleanDeposit;
+    goto L_BooleanRecognised;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unrecognisable boolean portion
+  // unrecognisable boolean form
   
   vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all boolean portions collected
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  // boolean field recogised
+
+L_BooleanRecognised:
+
+  vSKIP_TRAILING_WHITE_SPACE();
+  if (bNOISY_FIELD_END())
+    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+
+  goto L_BooleanValue;
   
-L_BooleanDeposit:
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit boolean value into row
   
+L_BooleanValue:
+
   m_pRowSlab->vDeposit(iBooleanValue);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,iBooleanValue);
 
@@ -821,12 +821,17 @@ L_BooleanDeposit:
     
 L_BooleanNull:
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit null value for column into row
+
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
@@ -846,7 +851,7 @@ L_Date:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
-  vIF_NULL_PORTION(L_DateNull,EC_CSV_DATE_INVALID);
+  vIF_NULL_FORM(L_DateNull,EC_CSV_DATE_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // date components
@@ -905,7 +910,7 @@ L_Date_year:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month component
     
-  L_Date_month:
+L_Date_month:
   
   // collect digits for month
   for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
@@ -925,7 +930,7 @@ L_Date_year:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day component
           
-  L_Date_day:
+L_Date_day:
   
   // collect digits for day
   for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
@@ -994,10 +999,14 @@ L_Date_collected:
   xDateValue.m_uDay       = uDayComponent;
   xDateValue.m_uSpare     = 0;
   
-  // deposit the date
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit date value into row
+  
   m_pRowSlab->vDeposit(xDateValue);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xDateValue);
 
@@ -1005,12 +1014,15 @@ L_Date_collected:
 
 L_DateNull:
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit null value for column into row
+  
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  // compute running hash of partitioning column
+  // compute running hash of column partitioning
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
@@ -1034,7 +1046,7 @@ L_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
    
-  vIF_NULL_PORTION(L_DecimalNull,EC_CSV_DECIMAL_INVALID);
+  vIF_NULL_FORM(L_DecimalNull,EC_CSV_DECIMAL_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1096,12 +1108,16 @@ L_Decimal:
       vNEXT_CSVCHR(); // skip remaining digits
   }
   
+  goto L_DecimalRecognised;
+  
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  // decimal field recogised
+  
+L_DecimalRecognised:
+  
   vSKIP_TRAILING_WHITE_SPACE();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all decimal portions collected
   
   // have we exceeded the max ?
   if (uScaledNumber > (u8)C_I8_MAX)
@@ -1113,11 +1129,19 @@ L_Decimal:
   // have we gone below the negative min ?
   if (iDecimalValue < C_I8_MIN)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_SMALL);
-    
-  // deposit the decimal
+  
+  goto L_DecimalValue;
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit decimal value into row
+  
+L_DecimalValue:
+  
   m_pRowSlab->vDeposit(iDecimalValue);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,iDecimalValue);
 
@@ -1128,9 +1152,14 @@ L_DecimalNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit null value for column into row
+
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
@@ -1155,7 +1184,7 @@ L_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
    
-  vIF_NULL_PORTION(L_FloatNull,EC_CSV_FLOAT_INVALID);
+  vIF_NULL_FORM(L_FloatNull,EC_CSV_FLOAT_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1222,15 +1251,19 @@ L_Float:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
 
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all float portions collected
-  
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  // float field recogised
+
   // compute final result
   dUnsignedFloat = atof(caBuffer_atof); // SHOULD BE USING strtod() AND TESTING FOR ERROR
+  
   dFloatValue = bIsNegative ? - dUnsignedFloat : dUnsignedFloat;
   
-  // deposit the float
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit float value into row
+  
   m_pRowSlab->vDeposit(dFloatValue);
+  
   goto L_PostField;
 
 L_FloatNull:
@@ -1238,7 +1271,11 @@ L_FloatNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit null value for column into row
+
   m_pRowSlab->vDeposit(C_DATUM_NULL);
+  
   goto L_PostField;                                              // end of float
 
   
@@ -1266,7 +1303,7 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
    
-  vIF_NULL_PORTION(L_IntegerNull,EC_CSV_INTEGER_INVALID);
+  vIF_NULL_FORM(L_IntegerNull,EC_CSV_INTEGER_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1305,36 +1342,43 @@ L_Integer:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all integer portions collected
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  // integer field recogised
 
   if (uWholeNumber > (u8)C_I8_MAX)
     vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // compute final field value
+  
   iIntegerValue = bIsNegative ? - uWholeNumber : uWholeNumber;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // deposit the integer
+  // deposit integer value into row
   
   m_pRowSlab->vDeposit(iIntegerValue);
     
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,iIntegerValue);
   
   goto L_PostField;
+    
+L_IntegerNull:
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  
-L_IntegerNull:
+  // deposit null value for column into row
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
     
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
@@ -1354,7 +1398,7 @@ L_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
-  vIF_NULL_PORTION(L_IntervalNull,EC_CSV_INTERVAL_INVALID);
+  vIF_NULL_FORM(L_IntervalNull,EC_CSV_INTERVAL_INVALID);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // interval components
@@ -1397,8 +1441,8 @@ L_Interval:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
 
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all interval portions collected
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  //                                                  interval field recognised
 
   // have we exceeded the max for second?
   if (uSecondComponent > (u8)C_IVL_SEC_MAX)
@@ -1408,14 +1452,20 @@ L_Interval:
   if (uMicrosecondComponent > (u8)C_IVL_USEC_MAX)
     vFIELD_ERROR(EC_CSV_INTERVAL_USECS_TOO_LARGE);
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // compute final field value
+  
   xIntervalValue.m_uSecond = uSecondComponent;
   xIntervalValue.m_uMicro  = uMicrosecondComponent;
   
-  // deposit the interval
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit interval value into row
+  
   m_pRowSlab->vDeposit(xIntervalValue);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xIntervalValue);
   
@@ -1423,12 +1473,17 @@ L_Interval:
 
 L_IntervalNull:
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit null value for column into row
+  
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
@@ -1448,7 +1503,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
-  vIF_NULL_PORTION(L_TimeNull,EC_CSV_TIME_INVALID);
+  vIF_NULL_FORM(L_TimeNull,EC_CSV_TIME_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // time components
@@ -1534,8 +1589,8 @@ L_Time:
     uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
   }
   
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all time portions collected
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  //                                                      time field recognised
 
   // skip any whitespace after the field value
   vSKIP_TRAILING_WHITE_SPACE();
@@ -1551,17 +1606,23 @@ L_Time:
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // compute final field value
+  
   xTimeValue.m_uHour   = uHourComponent;
   xTimeValue.m_uMinute = uMinuteComponent;
   xTimeValue.m_uSecond = uSecondComponent;
   xTimeValue.m_uMicro  = uMicrosecondComponent;
   xTimeValue.m_uSpare  = 0;
 
-  // deposit the time
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit time value for column into row
+  
   m_pRowSlab->vDeposit(xTimeValue);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xTimeValue);
 
@@ -1569,12 +1630,17 @@ L_Time:
 
 L_TimeNull:
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit null value for column into row
+
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_HOUR_INVALID);
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
@@ -1595,7 +1661,7 @@ L_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
-  vIF_NULL_PORTION(L_TimestampNull,EC_CSV_TIMESTAMP_INVALID);
+  vIF_NULL_FORM(L_TimestampNull,EC_CSV_TIMESTAMP_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // timestamp components
@@ -1865,8 +1931,8 @@ L_SkipTime:
   xTimestampValue.m_uMonth     = uMonthComponent;
   xTimestampValue.m_uDay       = uDayComponent;
 
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all time portions collected
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  //                                                 timestamp field recognised
 
   // skip any whitespace after the field value
   vSKIP_TRAILING_WHITE_SPACE();
@@ -1889,10 +1955,14 @@ L_SkipTime:
   xTimestampValue.m_uMicro  = uMicrosecondComponent;
   xTimestampValue.m_uSpare  = 0;
 
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // deposit the timestamp
+  
   m_pRowSlab->vDeposit(xTimestampValue);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xTimestampValue);
 
@@ -1900,12 +1970,17 @@ L_SkipTime:
 
 L_TimestampNull:
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // deposit null value for column into row
+
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  // compute running hash of partitioning column
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // compute running hash of column partitioning
+  
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
