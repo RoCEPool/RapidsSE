@@ -43,8 +43,13 @@ endif
 
 # Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -DWITH_MUNGED_SEN -Wall -Wextra -O3 $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS)
-LIBFLAGS = -shared
+
+CPPFLAGS = -std=c++11 -DWITH_MUNGED_SEN -Wall -Wextra -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS))
+CPPFLAGS_DEBUG = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -Og -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
+
+LDFLAGS = -shared -O3 $(strip $(LINUX_LDFLAGS) $(DARWIN_LDFLAGS))
+LDFLAGS_DEBUG = -shared -Og -g3 $(strip $(LINUX_LDFLAGS_DEBUG) $(DARWIN_LDFLAGS_DEBUG))
+
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
 
@@ -145,7 +150,8 @@ pre-build : version thirdparty buildConfigCheck
 target : $(TARGET_EXE) $(TARGET_LIBRARY)
 
 # Debug builds
-debug : export CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_MUNGED_SEN -Wall -Wno-unused -g $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
+debug : export CPPFLAGS = $(CPPFLAGS_DEBUG)
+debug : export LDFLAGS = $(LDFLAGS_DEBUG)
 debug : all
 
 # Explicit release builds (the default)
@@ -161,7 +167,7 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	@echo ""
 	@echo "Linking the rapidsse dynamic library..."
 	@echo ""
-	$(CPP) $(LIBFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
+	$(CPP) $(LDFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_LIBRARY))
 
 # RapidsSE executable
@@ -244,13 +250,13 @@ thirdparty : $(COMPILED_LIBS)
 # Rule for building ANTLR
 antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
-	+@cd ../thirdparty/antlr && env -u CPPFLAGS $(MAKE)
+	+@cd ../thirdparty/antlr && env -u CPPFLAGS -u LDFLAGS $(MAKE)
 
 # Rule for building TCC
 tcc : $(TCC_LIB)
 $(TCC_LIB) : 
 	env
-	+@cd ../thirdparty/tcc && env -u CPPFLAGS $(MAKE)
+	+@cd ../thirdparty/tcc && env -u CPPFLAGS -u LDFLAGS $(MAKE)
 
 # Necessary to make some of the above rules run every time.
 FORCE : 
