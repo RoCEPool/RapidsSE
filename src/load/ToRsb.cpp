@@ -433,23 +433,23 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-     | C_BIT_InitialState
-     | C_BIT_BeginCsvChunk
-     | C_BIT_TestMoreRecords
-     | C_BIT_TestMoreFields
-     | C_BIT_Boolean
-     | C_BIT_Date
-     | C_BIT_Decimal
-     | C_BIT_Float
-     | C_BIT_Integer
-     | C_BIT_Interval
-     | C_BIT_Time
-     | C_BIT_Timestamp
-     | C_BIT_Varchar
-     | C_BIT_PostField
-     | C_BIT_FieldError
-     | C_BIT_EndRecord
-     | C_BIT_EndCsvChunk
+//     | C_BIT_InitialState
+//     | C_BIT_BeginCsvChunk
+//     | C_BIT_TestMoreRecords
+//     | C_BIT_TestMoreFields
+//     | C_BIT_Boolean
+//     | C_BIT_Date
+//     | C_BIT_Decimal
+//     | C_BIT_Float
+//     | C_BIT_Integer
+//     | C_BIT_Interval
+//     | C_BIT_Time
+//     | C_BIT_Timestamp
+//     | C_BIT_Varchar
+//     | C_BIT_PostField
+//     | C_BIT_FieldError
+//     | C_BIT_EndRecord
+//     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -692,8 +692,7 @@ L_Boolean:
     }
 
     vSKIP_TRAILING_WHITE_SPACE();
-    
-    if (! (bFIELD_END()))
+    if (bNOISY_FIELD_END())
       vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
 
     goto L_BooleanDeposit;
@@ -911,8 +910,7 @@ L_Date_year:
 L_Date_collected:
   
   vSKIP_TRAILING_WHITE_SPACE();
-  
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_DATE_INVALID);
 
   // validate the year
@@ -1061,8 +1059,7 @@ L_Decimal:
   }
   
   vSKIP_TRAILING_WHITE_SPACE();
-
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1184,8 +1181,7 @@ L_Float:
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   
   vSKIP_TRAILING_WHITE_SPACE();
-
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1272,9 +1268,7 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // skip any trailing whitespace
   vSKIP_TRAILING_WHITE_SPACE();
-
-  // should be at a valid field end
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
   
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1362,9 +1356,7 @@ L_Interval:
   
   // skip any whitespace after the field value
   vSKIP_TRAILING_WHITE_SPACE();
-
-  // test for no noise
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
 
   // ==== ==== ==== ==== ==== ==== ==== ====
@@ -1506,9 +1498,7 @@ L_Time:
 
   // skip any whitespace after the field value
   vSKIP_TRAILING_WHITE_SPACE();
-
-  // test for no noise
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIME_INVALID);
   
   if (uHourComponent > 23)
@@ -1839,9 +1829,7 @@ L_SkipTime:
 
   // skip any whitespace after the field value
   vSKIP_TRAILING_WHITE_SPACE();
-
-  // test for no noise
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
   if (uHourComponent > 23)
@@ -2142,9 +2130,7 @@ C_BIT_VarcharSingleQuotedTerminate:
     nVchChars = nPixLength;
   
   vSKIP_TRAILING_WHITE_SPACE();
-  
-  // test for no noise
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_VarcharDeposit;
@@ -2258,9 +2244,7 @@ L_VarcharDoubleQuotedTerminate:
     nVchChars = nPixLength;
     
   vSKIP_TRAILING_WHITE_SPACE();
-  
-  // test for no noise
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_VarcharDeposit;
@@ -2331,9 +2315,7 @@ L_VarcharUserEnclosed:
     nVchChars = nPixLength;
   
   vSKIP_TRAILING_WHITE_SPACE();
-  
-  // test for no noise
-  if (! (bFIELD_END()))
+  if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   
   goto L_VarcharDeposit;
