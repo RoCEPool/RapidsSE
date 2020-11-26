@@ -238,7 +238,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 //--
 
-#define vNEXT_SRCCHR() \
+#define vNEXT_CSVCHR() \
   (cPrvChr = cCurChr, cCurChr = cNxtChr , cNxtChr = *++azCsvSrc)
 
 #define vCOLLECT(uComponent) \
@@ -247,12 +247,12 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define vDETECT_SIGN() \
   if (cCurChr == C_MINUS_SIGN) { \
     bIsNegative = true; \
-    vNEXT_SRCCHR(); \
+    vNEXT_CSVCHR(); \
   } \
   else \
   if (cCurChr == C_PLUS_SIGN) { \
     bIsNegative = false; \
-    vNEXT_SRCCHR(); \
+    vNEXT_CSVCHR(); \
   } \
   else { \
     bIsNegative = false; \
@@ -290,39 +290,43 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define vSKIP_NON_DATA() \
   while (cCurChr && bNON_DATA_CHAR()) { \
-    vNEXT_SRCCHR(); \
+    vNEXT_CSVCHR(); \
   }
 
 #define vSKIP_WHITE_SPACE() \
   while (cCurChr && bWHITE_SPACE()) { \
-    vNEXT_SRCCHR(); \
+    vNEXT_CSVCHR(); \
   }
 
 #define vSKIP_RECORD_LINE_END() \
   { \
     if (cCurChr && cCurChr == m_cRecordTerminator) \
-      vNEXT_SRCCHR(); \
+      vNEXT_CSVCHR(); \
     if (cCurChr && cCurChr == m_cLineEnd && \
         m_cLineEnd2nd && cNxtChr == m_cLineEnd2nd) { \
-      vNEXT_SRCCHR(); \
-      vNEXT_SRCCHR(); \
+      vNEXT_CSVCHR(); \
+      vNEXT_CSVCHR(); \
     } \
     if (cCurChr && cCurChr == m_cLineEnd && ! m_cLineEnd2nd) { \
-      vNEXT_SRCCHR(); \
+      vNEXT_CSVCHR(); \
     } \
   }
 
 //--
 
 #define vIF_NULL_PORTION(_label,_errorCode) \
+  \
+  if (bFIELD_END()) \
+    goto _label; \
+  \
   if ('n' == cCurChr || 'N' == cCurChr) { \
-    vNEXT_SRCCHR(); \
+    vNEXT_CSVCHR(); \
     if ('u' == cCurChr || 'U' == cCurChr) { \
-      vNEXT_SRCCHR(); \
+      vNEXT_CSVCHR(); \
       if ('l' == cCurChr || 'L' == cCurChr) { \
-        vNEXT_SRCCHR(); \
+        vNEXT_CSVCHR(); \
         if ('l' == cCurChr || 'L' == cCurChr) { \
-          vNEXT_SRCCHR(); \
+          vNEXT_CSVCHR(); \
         } \
         else { \
           vFIELD_ERROR(_errorCode); \
@@ -345,9 +349,9 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   } \
   \
   if (cCurChr == m_cEscapeChar) { \
-    vNEXT_SRCCHR(); \
+    vNEXT_CSVCHR(); \
     if ('N' == cCurChr) { \
-      vNEXT_SRCCHR(); \
+      vNEXT_CSVCHR(); \
       if (bFIELD_END()) \
         goto _label; \
     } \
@@ -650,12 +654,6 @@ L_Boolean:
   vSKIP_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
-
-  if (bFIELD_END())
-    goto L_BooleanNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
   vIF_NULL_PORTION(L_BooleanNull,EC_CSV_BOOLEAN_INVALID);
@@ -667,14 +665,14 @@ L_Boolean:
   if ('t' == cCurChr || 'T' == cCurChr) {
     // true case
     iBooleanValue = true;
-    vNEXT_SRCCHR(); // skip 't'
+    vNEXT_CSVCHR(); // skip 't'
     
     if ('r' == cCurChr || 'R' == cCurChr) {
-      vNEXT_SRCCHR(); // skip 'r'
+      vNEXT_CSVCHR(); // skip 'r'
       if ('u' == cCurChr || 'U' == cCurChr) {
-        vNEXT_SRCCHR(); // skip 'u'
+        vNEXT_CSVCHR(); // skip 'u'
         if ('e' == cCurChr || 'E' == cCurChr) {
-          vNEXT_SRCCHR(); // skip 'e'
+          vNEXT_CSVCHR(); // skip 'e'
         }
         else { // not expected 'e'
           vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
@@ -699,16 +697,16 @@ L_Boolean:
   if ('f' == cCurChr || 'F' == cCurChr) {
     // false case
     iBooleanValue = false;
-    vNEXT_SRCCHR(); // skip 'f'
+    vNEXT_CSVCHR(); // skip 'f'
     
     if ('a' == cCurChr || 'A' == cCurChr) {
-      vNEXT_SRCCHR(); // skip 'a'
+      vNEXT_CSVCHR(); // skip 'a'
       if ('l' == cCurChr || 'L' == cCurChr) {
-        vNEXT_SRCCHR(); // skip 'l'
+        vNEXT_CSVCHR(); // skip 'l'
         if ('s' == cCurChr || 'S' == cCurChr) {
-          vNEXT_SRCCHR(); // skip 's'
+          vNEXT_CSVCHR(); // skip 's'
           if ('e' == cCurChr || 'E' == cCurChr) {
-            vNEXT_SRCCHR(); // skip 'e'
+            vNEXT_CSVCHR(); // skip 'e'
           }
           else { // not expected 'e'
             vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
@@ -738,7 +736,7 @@ L_Boolean:
   if (bIS_DIGIT()) {
     // numeric case
     uWholeNumber = 0;
-    for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+    for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       vCOLLECT(uWholeNumber);
       nWholeDigits++;
     }
@@ -800,12 +798,6 @@ L_Date:
   vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
-
-  if (bFIELD_END())
-    goto L_DateNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
   vIF_NULL_PORTION(L_DateNull,EC_CSV_DATE_INVALID);
@@ -826,7 +818,7 @@ L_Date_components:
   if (i_DateComponent > 0) {
     if (! bIS_DATE_SEPARATOR())
       vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    vNEXT_SRCCHR(); // skip separator
+    vNEXT_CSVCHR(); // skip separator
   }
 
   switch (m_eDateComponent[i_DateComponent]) {
@@ -843,7 +835,7 @@ L_Date_components:
 L_Date_year:
 
   // collect digits for year
-  for (nWholeDigits = 0; nWholeDigits < 4 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 4 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uYearComponent);
     nWholeDigits++;
   }
@@ -867,7 +859,7 @@ L_Date_year:
   L_Date_month:
   
   // collect digits for month
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uMonthComponent);
     nWholeDigits++;
   }
@@ -887,7 +879,7 @@ L_Date_year:
   L_Date_day:
   
   // collect digits for day
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uDayComponent);
     nWholeDigits++;
   }
@@ -987,12 +979,6 @@ L_Decimal:
   vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
-
-  if (bFIELD_END())
-    goto L_DecimalNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
    
   vIF_NULL_PORTION(L_DecimalNull,EC_CSV_DECIMAL_INVALID);
@@ -1008,13 +994,13 @@ L_Decimal:
   // ignore leading 0's
   nDecimalDigits = 0;
   while ('0' == cCurChr) {
-    vNEXT_SRCCHR(); // skip '0'
+    vNEXT_CSVCHR(); // skip '0'
     nDecimalDigits++;
   }
   
   // collect digits for leading number
   uUnscaledNumber = 0;
-  for ( ; nDecimalDigits < 19 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for ( ; nDecimalDigits < 19 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uUnscaledNumber);
     nDecimalDigits++;
     nPixWholeDigits--;
@@ -1028,9 +1014,9 @@ L_Decimal:
   // collect further digits for trailing fraction
   if (cCurChr == C_DECIMAL_POINT) {
     
-    vNEXT_SRCCHR(); // skip '.'
+    vNEXT_CSVCHR(); // skip '.'
     
-    for ( ; nPixFracDigits && nDecimalDigits < 19 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+    for ( ; nPixFracDigits && nDecimalDigits < 19 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       vCOLLECT(uUnscaledNumber);
       nDecimalDigits++;
       nPixFracDigits--;
@@ -1054,7 +1040,7 @@ L_Decimal:
     if (cCurChr - '0' >= 5)
       uScaledNumber += 1;
     while (bIS_DIGIT())
-      vNEXT_SRCCHR(); // skip remaining digits
+      vNEXT_CSVCHR(); // skip remaining digits
   }
   
   vSKIP_WHITE_SPACE();
@@ -1115,12 +1101,6 @@ L_Float:
   vSKIP_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
-
-  if (bFIELD_END())
-    goto L_FloatNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
    
   vIF_NULL_PORTION(L_FloatNull,EC_CSV_FLOAT_INVALID);
@@ -1135,7 +1115,7 @@ L_Float:
 
   // collect digits for leading number
   acFltDst = caBuffer_atof;
-  for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     *acFltDst++ = cCurChr;
     nWholeDigits++;
   }
@@ -1146,8 +1126,8 @@ L_Float:
   // collect digits for middle fraction
   if (bIS_DECIMAL_POINT()) {
     *acFltDst++ = cCurChr;
-    vNEXT_SRCCHR(); // skip '.'
-    for ( ; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+    vNEXT_CSVCHR(); // skip '.'
+    for ( ; nWholeDigits < 19 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       *acFltDst++ = cCurChr;
       nWholeDigits++;
     }
@@ -1160,16 +1140,16 @@ L_Float:
   if ('e' == cCurChr || 'E' == cCurChr) {
     
     *acFltDst++ = cCurChr;
-    vNEXT_SRCCHR(); // skip 'e'
+    vNEXT_CSVCHR(); // skip 'e'
 
     // test for +/-
     if (cCurChr == C_MINUS_SIGN || cCurChr == C_PLUS_SIGN) {
       *acFltDst++ = cCurChr;
-      vNEXT_SRCCHR(); // skip sign
+      vNEXT_CSVCHR(); // skip sign
     }
         
     // collect exponent digits
-    for  (nExponentDigits = 0; nExponentDigits < 3 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+    for  (nExponentDigits = 0; nExponentDigits < 3 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       *acFltDst++ = cCurChr;
       nExponentDigits++;
     }
@@ -1237,12 +1217,6 @@ L_Integer:
   vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty field
-
-  if (bFIELD_END())
-    goto L_IntegerNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
    
   vIF_NULL_PORTION(L_IntegerNull,EC_CSV_INTEGER_INVALID);
@@ -1257,7 +1231,7 @@ L_Integer:
   
   // collect digits for number
   uWholeNumber = 0;
-  for (nWholeDigits = 0; bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uWholeNumber);
     nWholeDigits++;
   }
@@ -1272,9 +1246,9 @@ L_Integer:
 
   // ignore any . digits
   if (bIS_DECIMAL_POINT()) {
-    vNEXT_SRCCHR(); // skip '.'
+    vNEXT_CSVCHR(); // skip '.'
     while (bIS_DIGIT()) {
-      vNEXT_SRCCHR(); // skip digit
+      vNEXT_CSVCHR(); // skip digit
     }
   }
 
@@ -1333,12 +1307,6 @@ L_Interval:
   vSKIP_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
-
-  if (bFIELD_END())
-    goto L_IntervalNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
   vIF_NULL_PORTION(L_IntervalNull,EC_CSV_INTERVAL_INVALID);
@@ -1348,7 +1316,7 @@ L_Interval:
   
   // collect digits for leading seconds
   uSecondComponent = 0;
-  for  (nWholeDigits = 0; nWholeDigits < 9 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for  (nWholeDigits = 0; nWholeDigits < 9 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uSecondComponent);
     nWholeDigits++;
   }
@@ -1360,8 +1328,8 @@ L_Interval:
   uMicrosecondComponent = 0;
   nMicrosecondShift = C_IVL_USEC_SHIFT;
   if (bIS_DECIMAL_POINT()) {
-    vNEXT_SRCCHR(); // skip '.'
-    for ( ; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+    vNEXT_CSVCHR(); // skip '.'
+    for ( ; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       vCOLLECT(uMicrosecondComponent);
       nWholeDigits++;
       nMicrosecondShift /= 10;
@@ -1436,12 +1404,6 @@ L_Time:
   vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
-
-  if (bFIELD_END())
-    goto L_TimeNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
   vIF_NULL_PORTION(L_TimeNull,EC_CSV_TIME_INVALID);
@@ -1450,7 +1412,7 @@ L_Time:
   // hour component
 
   // collect digits for hour
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uHourComponent);
     nWholeDigits++;
   }
@@ -1465,13 +1427,13 @@ L_Time:
   // skip over separator
   if (! bIS_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vNEXT_SRCCHR(); // skip ':'
+  vNEXT_CSVCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
   // collect digits for minute
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uMinuteComponent);
     nWholeDigits++;
   }
@@ -1487,14 +1449,14 @@ L_Time:
   if (! bIS_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
 
-  vNEXT_SRCCHR(); // skip ':'
+  vNEXT_CSVCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
   // collect digits for second
 
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uSecondComponent);
     nWholeDigits++;
   }
@@ -1512,9 +1474,9 @@ L_Time:
   // a dot without any futher digits is ok
   if ('.' == cCurChr) {
     
-    vNEXT_SRCCHR(); // skip '.'
+    vNEXT_CSVCHR(); // skip '.'
 
-    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       vCOLLECT(uMicrosecondComponent);
       nMicrosecondShift /= 10;
     }
@@ -1576,12 +1538,6 @@ L_Timestamp:
   vSKIP_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible empty portion
-
-  if (bFIELD_END())
-    goto L_TimestampNull;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
   
   vIF_NULL_PORTION(L_TimestampNull,EC_CSV_TIMESTAMP_INVALID);
@@ -1613,7 +1569,7 @@ L_Timestamp_components:
   if (i_DateComponent > 0) {
     if (cCurChr != m_cDateSeparator)
       vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    vNEXT_SRCCHR(); // skip separator
+    vNEXT_CSVCHR(); // skip separator
   }
 
   switch (m_eDateComponent[i_DateComponent]) {
@@ -1634,7 +1590,7 @@ L_Timestamp_year:
     vTrace("L_Timestamp_year:\n"_Stz);
   
   // collect digits for year
-  for (nWholeDigits = 0; nWholeDigits < 4 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 4 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uYearComponent);
     nWholeDigits++;
   }
@@ -1661,7 +1617,7 @@ L_Timestamp_month:
     vTrace("L_Timestamp_month:\n"_Stz);
   
   // collect digits for month
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uMonthComponent);
     nWholeDigits++;
   }
@@ -1684,7 +1640,7 @@ L_Timestamp_day:
     vTrace("L_Timestamp_day:\n"_Stz);
   
   // collect digits for day
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uDayComponent);
     nWholeDigits++;
   }
@@ -1707,7 +1663,7 @@ L_Timestamp_collected:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // ' ' or 'T' separator
   if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr)
-    vNEXT_SRCCHR();
+    vNEXT_CSVCHR();
   
   if (! bIS_DIGIT())
     goto L_SkipTime;
@@ -1719,7 +1675,7 @@ L_Timestamp_collected:
     vTrace("L_Timestamp_hour:\n"_Stz);
   
   // collect digits for hour
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uHourComponent);
     nWholeDigits++;
   }
@@ -1734,7 +1690,7 @@ L_Timestamp_collected:
   // skip over separator
   if (cCurChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vNEXT_SRCCHR(); // skip ':'
+  vNEXT_CSVCHR(); // skip ':'
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
@@ -1743,7 +1699,7 @@ L_Timestamp_collected:
     vTrace("L_Timestamp_minute:\n"_Stz);
   
   // collect digits for minute
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uMinuteComponent);
     nWholeDigits++;
   }
@@ -1759,7 +1715,7 @@ L_Timestamp_collected:
   if (cCurChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
 
-  vNEXT_SRCCHR(); // skip ':'
+  vNEXT_CSVCHR(); // skip ':'
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
@@ -1768,7 +1724,7 @@ L_Timestamp_collected:
     vTrace("L_Timestamp_second:\n"_Stz);
   
   // collect digits for second
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uSecondComponent);
     nWholeDigits++;
   }
@@ -1789,9 +1745,9 @@ L_Timestamp_collected:
   // a dot without any futher digits is ok
   if (bIS_DECIMAL_POINT()) {
     
-    vNEXT_SRCCHR(); // skip '.'
+    vNEXT_CSVCHR(); // skip '.'
 
-    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_SRCCHR()) {
+    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_CSVCHR()) {
       vCOLLECT(uMicrosecondComponent);
       nMicrosecondShift /= 10;
     }
@@ -1800,7 +1756,7 @@ L_Timestamp_collected:
   }
 
   while (bIS_DIGIT())
-    vNEXT_SRCCHR(); // skip digit
+    vNEXT_CSVCHR(); // skip digit
 
 L_SkipTime:
   
@@ -1918,13 +1874,13 @@ L_Varchar:
   // possible null portion
 
   if ('n' == cCurChr || 'N' == cCurChr) {
-    vNEXT_SRCCHR(); // skip 'n'
+    vNEXT_CSVCHR(); // skip 'n'
     if ('u' == cCurChr || 'U' == cCurChr) {
-      vNEXT_SRCCHR(); // skip 'u'
+      vNEXT_CSVCHR(); // skip 'u'
       if ('l' == cCurChr || 'L' == cCurChr) {
-        vNEXT_SRCCHR(); // skip 'L'
+        vNEXT_CSVCHR(); // skip 'L'
         if ('l' == cCurChr || 'L' == cCurChr) {
-          vNEXT_SRCCHR(); // skip 'L'
+          vNEXT_CSVCHR(); // skip 'L'
         }
         else { // not expected 'l'
           vRESET_FIELD();
@@ -1953,9 +1909,9 @@ L_Varchar:
   // possible \N portion
   
   if (cCurChr == m_cEscapeChar) {
-    vNEXT_SRCCHR(); // accept m_cEscapeChar
+    vNEXT_CSVCHR(); // accept m_cEscapeChar
     if ('N' == cCurChr) {
-      vNEXT_SRCCHR(); // accept 'N'
+      vNEXT_CSVCHR(); // accept 'N'
       if (bFIELD_END())
         goto L_VarcharNull;
     }
@@ -1973,7 +1929,7 @@ L_VarcharWhich:
 
     // consume leading spaces
     if (bIS_SPACE()) {
-      vNEXT_SRCCHR(); // next char
+      vNEXT_CSVCHR(); // next char
       continue;
     }
     
@@ -2012,7 +1968,7 @@ L_VarcharUnquoted:
       break;
     
     if (cCurChr == m_cEscapeChar) {
-      vNEXT_SRCCHR(); // skip m_cEscapeChar
+      vNEXT_CSVCHR(); // skip m_cEscapeChar
       
       if (nVchChars++ < nPixLength) {
         if ('n' == cCurChr)
@@ -2026,7 +1982,7 @@ L_VarcharUnquoted:
         else
           *acVchDst++ = cCurChr;
       }
-      vNEXT_SRCCHR(); // next char
+      vNEXT_CSVCHR(); // next char
 
       continue;
     }
@@ -2034,7 +1990,7 @@ L_VarcharUnquoted:
     if (nVchChars++ < nPixLength)
       *acVchDst++ = cCurChr;
     
-    vNEXT_SRCCHR(); // next char
+    vNEXT_CSVCHR(); // next char
   }
 
   // terminate
@@ -2064,7 +2020,7 @@ L_VarcharSingleQuoted:
   //     ^
   RASSERT(m_cQuoteSingle == cCurChr);
 
-  vNEXT_SRCCHR(); // accept leading m_cQuoteSingle of sqs; do not deposit the quote
+  vNEXT_CSVCHR(); // accept leading m_cQuoteSingle of sqs; do not deposit the quote
 
   while (! bIS_NULL()) {
 
@@ -2081,14 +2037,14 @@ L_VarcharSingleQuoted:
         //   this is the quouted empty string
         //   nb. corner cases:  ''n' is not supported
         //                      '',' is not supported
-        vNEXT_SRCCHR(); // accept trailing m_cQuoteSingle of sqs; do not deposit the quote
+        vNEXT_CSVCHR(); // accept trailing m_cQuoteSingle of sqs; do not deposit the quote
         break;
       }
       
       // >> *'.*'.*
       //        ^
 
-      vNEXT_SRCCHR(); // skip m_cQuoteSingle
+      vNEXT_CSVCHR(); // skip m_cQuoteSingle
       
       if (m_cQuoteSingle == cCurChr) {
         // handle specific case of two quotes '' meaning one escaped quote
@@ -2096,7 +2052,7 @@ L_VarcharSingleQuoted:
         //         ^
         if (nVchChars++ < nPixLength)
           *acVchDst++ = m_cQuoteSingle;
-        vNEXT_SRCCHR(); // // accept escaped quote; next char
+        vNEXT_CSVCHR(); // // accept escaped quote; next char
       }
       
       else {
@@ -2111,7 +2067,7 @@ L_VarcharSingleQuoted:
     // [still in while (cCurChr)]
     
     if (cCurChr == m_cEscapeChar) {
-      vNEXT_SRCCHR(); // skip m_cEscapeChar
+      vNEXT_CSVCHR(); // skip m_cEscapeChar
       
       if (nVchChars++ < nPixLength) {
         if ('n' == cCurChr)
@@ -2125,7 +2081,7 @@ L_VarcharSingleQuoted:
         else
           *acVchDst++ = cCurChr;
       }
-      vNEXT_SRCCHR(); // next char
+      vNEXT_CSVCHR(); // next char
 
       continue; // while (cCurChr)
     }
@@ -2142,7 +2098,7 @@ L_VarcharSingleQuoted:
     // deposit source char (if it fits)
     if (nVchChars++ < nPixLength)
       *acVchDst++ = cCurChr;
-    vNEXT_SRCCHR(); // deposited char; get next char
+    vNEXT_CSVCHR(); // deposited char; get next char
   }
 
 C_BIT_VarcharSingleQuotedTerminate:
@@ -2174,7 +2130,7 @@ L_VarcharDoubleQuoted:
   //     ^
   RASSERT(m_cQuoteDouble == cCurChr);
 
-  vNEXT_SRCCHR(); // accept leading '\"' of sqs; do not deposit the quote
+  vNEXT_CSVCHR(); // accept leading '\"' of sqs; do not deposit the quote
 
   while (! bIS_NULL()) {
 
@@ -2191,14 +2147,14 @@ L_VarcharDoubleQuoted:
         //   this is the quouted empty string
         //   nb. corner cases:  ""n" is not supported
         //                      ""," is not supported
-        vNEXT_SRCCHR(); // accept trailing '\"' of sqs; do not deposit the quote
+        vNEXT_CSVCHR(); // accept trailing '\"' of sqs; do not deposit the quote
         break;
       }
       
       // >> *".*".*
       //        ^
 
-      vNEXT_SRCCHR(); // skip '\"'
+      vNEXT_CSVCHR(); // skip '\"'
       
       if (m_cQuoteDouble == cCurChr) {
         // handle specific case of two quotes "" meaning one escaped quote
@@ -2206,7 +2162,7 @@ L_VarcharDoubleQuoted:
         //         ^
         if (nVchChars++ < nPixLength)
           *acVchDst++ = '\"';
-        vNEXT_SRCCHR(); // accept escaped quote; next char
+        vNEXT_CSVCHR(); // accept escaped quote; next char
       }
       
       else {
@@ -2221,7 +2177,7 @@ L_VarcharDoubleQuoted:
     // [still in while (cCurChr)]
     
     if (cCurChr == m_cEscapeChar) {
-      vNEXT_SRCCHR(); // skip m_cEscapeChar
+      vNEXT_CSVCHR(); // skip m_cEscapeChar
       
       if (nVchChars++ < nPixLength) {
         if ('n' == cCurChr)
@@ -2235,7 +2191,7 @@ L_VarcharDoubleQuoted:
         else
           *acVchDst++ = cCurChr;
       }
-      vNEXT_SRCCHR(); // next char
+      vNEXT_CSVCHR(); // next char
 
       continue; // while (cCurChr)
     }
@@ -2252,7 +2208,7 @@ L_VarcharDoubleQuoted:
     // deposit source char (if it fits)
     if (nVchChars++ < nPixLength)
       *acVchDst++ = cCurChr;
-    vNEXT_SRCCHR(); // deposited char; get next char
+    vNEXT_CSVCHR(); // deposited char; get next char
   }
 
 L_VarcharDoubleQuotedTerminate:
@@ -2283,7 +2239,7 @@ L_VarcharUserEnclosed:
   //     ^
   RASSERT(cCurChr == m_cEnclosedBy_Leading);
 
-  vNEXT_SRCCHR(); // skip '{'
+  vNEXT_CSVCHR(); // skip '{'
 
   while (! bIS_NULL()) {
 
@@ -2291,7 +2247,7 @@ L_VarcharUserEnclosed:
       break;
     
     if (cCurChr == m_cEscapeChar) {
-      vNEXT_SRCCHR(); // skip m_cEscapeChar
+      vNEXT_CSVCHR(); // skip m_cEscapeChar
       
       if (nVchChars++ < nPixLength) {
         if ('n' == cCurChr)
@@ -2305,7 +2261,7 @@ L_VarcharUserEnclosed:
         else
           *acVchDst++ = cCurChr;
       }
-      vNEXT_SRCCHR(); // next char
+      vNEXT_CSVCHR(); // next char
 
       continue;
     }
@@ -2319,7 +2275,7 @@ L_VarcharUserEnclosed:
     if (nVchChars++ < nPixLength)
       *acVchDst++ = cCurChr;
     
-    vNEXT_SRCCHR(); // next char
+    vNEXT_CSVCHR(); // next char
   }
 
   // terminate
@@ -2370,14 +2326,14 @@ L_PostField:
   while (cCurChr) {
     
     if (cCurChr == m_cFieldDelimiter) {
-      vNEXT_SRCCHR(); // skip m_cFieldDelimiter
+      vNEXT_CSVCHR(); // skip m_cFieldDelimiter
       break;
     }
 
     if (cCurChr == m_cLineEnd)
       break;
 
-    vNEXT_SRCCHR(); // skip any
+    vNEXT_CSVCHR(); // skip any
   }
 
   // move to next field
@@ -2440,12 +2396,12 @@ L_FieldError:
     if (cCurChr == m_cLineEnd)
       break;
     
-    vNEXT_SRCCHR(); // skip any
+    vNEXT_CSVCHR(); // skip any
   }
 
   // skip
   if (cCurChr)
-    vNEXT_SRCCHR(); // skip m_cLineEnd
+    vNEXT_CSVCHR(); // skip m_cLineEnd
 
   goto L_TestMoreRecords;                                   // end of fieldError
   
