@@ -34,6 +34,9 @@ endif
 LINUX_CPPFLAGS := -DWITH_LINUX
 LINUX_CPPFLAGS_DEBUG := -DWITH_LINUX
 
+LINUX_LDFLAGS :=
+LINUX_LDFLAGS_DEBUG :=
+
 # The name of the extension on a dynamic library / shared object
 LINUX_LIBRARY_EXT := so
 

@@ -16,6 +16,9 @@
 DARWIN_CPPFLAGS := -mmacosx-version-min=10.12
 DARWIN_CPPFLAGS_DEBUG := -mmacosx-version-min=10.12
 
+DARWIN_LDFLAGS :=
+DARWIN_LDFLAGS_DEBUG :=
+
 # The name of the extension on a dynamic library / shared object
 DARWIN_LIBRARY_EXT := dylib
 
