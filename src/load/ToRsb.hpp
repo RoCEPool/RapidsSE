@@ -20,7 +20,7 @@ namespace Load
 
     i8         m_nErrors;
     bool       m_bFirst;
-    i8         m_nRecords;
+    i8         m_i_Rec;
 
     RowSlab*   m_pRowSlab;
     RsbBuffer* m_pRsbBuffer;

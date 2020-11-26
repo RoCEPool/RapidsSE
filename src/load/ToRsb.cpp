@@ -29,9 +29,9 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_bPtnHash    = bPtnHash;
   m_nPtnsInGrid = AM::nPtnsInGrid();
 
-  m_nRecords = 0;
-  m_nErrors  = 0;
-  m_bFirst   = true;
+  m_nErrors = 0;
+  m_i_Rec   = -1;
+  m_bFirst  = true;
   
   m_pRowSlab   = nullptr;
   m_pRsbBuffer = nullptr;
@@ -238,6 +238,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define bMORE_FIELDS() \
   (bool)(cCurChr && cCurChr != m_cLineEnd)
 
+
 //--
 
 #define vNEXT_CSVCHR() \
@@ -306,10 +307,24 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define vSKIP_TRAILING_WHITE_SPACE() \
   vSKIP_WHITE_SPACE()
 
+#define vSKIP_LINE_END() \
+  { \
+    if (cCurChr && cCurChr == m_cLineEnd && \
+        m_cLineEnd2nd && cNxtChr == m_cLineEnd2nd) { \
+      vNEXT_CSVCHR(); \
+      vNEXT_CSVCHR(); \
+    } \
+    else \
+    if (cCurChr && cCurChr == m_cLineEnd && ! m_cLineEnd2nd) { \
+      vNEXT_CSVCHR(); \
+    } \
+  }
+
 #define vSKIP_RECORD_LINE_END() \
   { \
     if (cCurChr && cCurChr == m_cRecordTerminator) \
       vNEXT_CSVCHR(); \
+    vSKIP_WHITE_SPACE(); \
     if (cCurChr && cCurChr == m_cLineEnd && \
         m_cLineEnd2nd && cNxtChr == m_cLineEnd2nd) { \
       vNEXT_CSVCHR(); \
@@ -433,23 +448,23 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-//     | C_BIT_InitialState
-//     | C_BIT_BeginCsvChunk
-//     | C_BIT_TestMoreRecords
-//     | C_BIT_TestMoreFields
-//     | C_BIT_Boolean
-//     | C_BIT_Date
-//     | C_BIT_Decimal
-//     | C_BIT_Float
-//     | C_BIT_Integer
-//     | C_BIT_Interval
-//     | C_BIT_Time
-//     | C_BIT_Timestamp
-//     | C_BIT_Varchar
-//     | C_BIT_PostField
-//     | C_BIT_FieldError
-//     | C_BIT_EndRecord
-//     | C_BIT_EndCsvChunk
+     | C_BIT_InitialState
+     | C_BIT_BeginCsvChunk
+     | C_BIT_TestMoreRecords
+     | C_BIT_TestMoreFields
+     | C_BIT_Boolean
+     | C_BIT_Date
+     | C_BIT_Decimal
+     | C_BIT_Float
+     | C_BIT_Integer
+     | C_BIT_Interval
+     | C_BIT_Time
+     | C_BIT_Timestamp
+     | C_BIT_Varchar
+     | C_BIT_PostField
+     | C_BIT_FieldError
+     | C_BIT_EndRecord
+     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -561,24 +576,53 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) while more csv data in chunk
+  // 1) while more records in chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
            spCsv.szInspect(azCsvCrs,128,true));
+      
+  ASSERT(EC_NONE == eError);
 
-  // skip leading non-data chars
-  vSKIP_NON_DATA(); // ray added Thu 19 Nov 2020
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // skip blank lines
   
-  // test for more csv to be parsed
+  azFieldStart = azCsvCrs - 1;
+
+  while (cCurChr) {
+    
+    if (bIS_SPACE()) {
+      vNEXT_CSVCHR();
+      continue;
+    }
+    
+    if (bLINE_END()) {
+      vSKIP_LINE_END();
+      azFieldStart = azCsvCrs - 1;
+      continue;
+    }
+    
+    vRESET_FIELD();
+    break;
+  }
+  
   if (bEND_CSV_CHUNK())
     goto L_EndCsvChunk;
   
-  // begin new record
-  azRecordStart = azCsvCrs;
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // begin record processing
+  
+  m_i_Rec++;
+  
+  // record where the records starts
+  azRecordStart = azCsvCrs;
+
+  // reset field cursor
+  i_Fld = -1;
+
   // allot a new rsb, new another rsbBuffer if necessary
   if (! m_pRowSlab->bNewRow(&aRsb)) {    // ? inline ?
     vNewRsbBuffer();
@@ -586,9 +630,6 @@ L_TestMoreRecords:
     ASSERT(b);
   }
  
-  // reset field cursor
-  i_Fld = -1;
-
   //                                                      end of testMoreRecords
 
   
@@ -599,14 +640,15 @@ L_TestMoreFields:
   
   ASSERT(EC_NONE == eError);
 
+  // all fields for current record processed?
   if (++i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
       vTrace("L_TestMoreFields: end-of-fields\n"_Stz);
     goto L_EndRecord;
   }
   
+  // record where the field starts
   azFieldStart = azCsvCrs - 1;
-
   
   // decode and convert field i_Fld
   
@@ -625,17 +667,14 @@ L_TestMoreFields:
   if (iTraceBits & C_BIT_TestMoreFields) {
     vTrace("L_TestMoreFields: err %lld rec %lld fld %lld %s "
            "prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
-           m_nErrors,m_nRecords,i_Fld,aDM[ePixDatum],
+           m_nErrors,m_i_Rec,i_Fld,aDM[ePixDatum],
            spPrv.szChar(cPrvChr),
            spCur.szChar(cCurChr),
            spNxt.szChar(cNxtChr),
            spCsv.szInspect(azCsvCrs));
   }
   
-  // debug
-  if (11 == m_nRecords)
-    vDebugPoint();
-  
+  // process field by type
   switch (ePixDatum) {
     case DM_BOL : goto L_Boolean;
     case DM_DTE : goto L_Date;
@@ -802,10 +841,6 @@ L_Date:
   if (iTraceBits & C_BIT_Date)
     vTrace("L_Date:\n"_Stz);
   
-  uYearComponent  = 0;
-  uMonthComponent = 0;
-  uDayComponent   = 0;
-
   vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -817,7 +852,10 @@ L_Date:
   // date components
   
   i_DateComponent = -1;
-  
+  uYearComponent  = 0;
+  uMonthComponent = 0;
+  uDayComponent   = 0;
+
 L_Date_components:
   
   i_DateComponent++;
@@ -1125,7 +1163,7 @@ L_Float:
   vDETECT_SIGN();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned number portion
+  // unsigned whole portion
 
   // collect digits for leading number
   acFltDst = caBuffer_atof;
@@ -1223,10 +1261,6 @@ L_Integer:
          +1.2,  +1.2,  +1.2  ,+1.2  ,+1.2\n
    */
   
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // skip any leading white space
-  
   vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1240,7 +1274,7 @@ L_Integer:
   vDETECT_SIGN();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // unsigned number portion
+  // unsigned whole portion
   
   // collect digits for number
   uWholeNumber = 0;
@@ -1321,12 +1355,18 @@ L_Interval:
   // possible null portion
   
   vIF_NULL_PORTION(L_IntervalNull,EC_CSV_INTERVAL_INVALID);
-  
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // interval components
+
+  uSecondComponent = 0;
+  uMicrosecondComponent = 0;
+  nMicrosecondShift = C_IVL_USEC_SHIFT;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds portion
   
   // collect digits for leading seconds
-  uSecondComponent = 0;
   for  (nWholeDigits = 0; nWholeDigits < 9 && bIS_DIGIT(); vNEXT_CSVCHR()) {
     vCOLLECT(uSecondComponent);
     nWholeDigits++;
@@ -1336,8 +1376,6 @@ L_Interval:
   // optional microseconds portion
   
   // collect further digits for trailing microseconds
-  uMicrosecondComponent = 0;
-  nMicrosecondShift = C_IVL_USEC_SHIFT;
   if (bIS_DECIMAL_POINT()) {
     vNEXT_CSVCHR(); // skip '.'
     for ( ; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_CSVCHR()) {
@@ -1405,11 +1443,6 @@ L_Time:
   if (iTraceBits & C_BIT_Time)
     vTrace("L_Time:\n"_Stz);
   
-  uHourComponent   = 0;
-  uMinuteComponent = 0;
-  uSecondComponent = 0;
-  uMicrosecondComponent = 0;
-
   vSKIP_LEADING_WHITE_SPACE();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1417,6 +1450,14 @@ L_Time:
   
   vIF_NULL_PORTION(L_TimeNull,EC_CSV_TIME_INVALID);
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // time components
+  
+  uHourComponent   = 0;
+  uMinuteComponent = 0;
+  uSecondComponent = 0;
+  uMicrosecondComponent = 0;
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
@@ -1562,13 +1603,13 @@ L_Timestamp:
   uYearComponent   = 0;
   uMonthComponent  = 0;
   uDayComponent    = 0;
+  
+  i_DateComponent  = -1;
   uHourComponent   = 0;
   uMinuteComponent = 0;
   uSecondComponent = 0;
   uMicrosecondComponent = 0;
 
-  i_DateComponent = -1;
-    
 L_Timestamp_components:
     
   if (iTraceBits & C_BIT_Timestamp)
@@ -1819,7 +1860,7 @@ L_SkipTime:
       vFIELD_ERROR(EC_CSV_DAY_INVALID);
   }
 
-  // compute final field value
+  // compute final date component values
   xTimestampValue.m_uYearDelta = uYearComponent - C_YEAR_BASE;
   xTimestampValue.m_uMonth     = uMonthComponent;
   xTimestampValue.m_uDay       = uDayComponent;
@@ -1841,14 +1882,14 @@ L_SkipTime:
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
   
-  // compute final field value
+  // compute final time component values
   xTimestampValue.m_uHour   = uHourComponent;
   xTimestampValue.m_uMinute = uMinuteComponent;
   xTimestampValue.m_uSecond = uSecondComponent;
   xTimestampValue.m_uMicro  = uMicrosecondComponent;
   xTimestampValue.m_uSpare  = 0;
 
-  // deposit the time
+  // deposit the timestamp
   m_pRowSlab->vDeposit(xTimestampValue);
   
   // compute running hash of partitioning column
@@ -2393,12 +2434,14 @@ L_FieldError:
    
    */
   
+  m_nErrors++;
+  
   if (iTraceBits & C_BIT_FieldError) {
     vTrace("L_FieldError: %lld %s : errorCodeLine %lld\n"_Stz,
            eError,aEC[eError],i_ErrorCodeLine);
     vTrace("                 : err %lld rec %lld fld %lld %s csvCrs >>%s<< csvSrc >>%s<<\n"_Stz,
            m_nErrors,
-           m_nRecords,
+           m_i_Rec,
            i_Fld,
            aDM[ePixDatum],
            spCur.szChar(cCurChr),
@@ -2409,10 +2452,9 @@ L_FieldError:
   m_pRowSlab->vDiscardInvalidRow();
 
   // increment invalid records
-  m_nErrors++;
   AM::vIncRowsInvalid(m_pPipelineJob);
-  m_nRecords++;
-  
+  m_i_Rec++;
+
   // clear error
   eError = EC_NONE;
 
@@ -2442,33 +2484,32 @@ L_EndRecord:
       
   ASSERT(i_Fld == nCols);
 
+  // skip record terminator, opt white space and line end
+  vSKIP_RECORD_LINE_END();
+  
   // set partition hash
   if (m_bPtnHash) {
         
     tPtnNo = PtnMap::tHashToPtnNo(iPtnKeyHash,m_nPtnsInGrid);
     
     // partition mapping experiment by Ray 12 Nov 2020
-//    iBucketId = PtnMap::iHashToBucketId(iHash);
-//    tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
-//    tPtnNo = tPtnNo_byBkt;
+    //iBucketId = PtnMap::iHashToBucketId(iHash);
+    //tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
+    //tPtnNo = tPtnNo_byBkt;
     
-    //vTrace("Ptn %02lld Hash %lld\n"_Stz,i_Ptn,iHash);
     m_pRowSlab->vDeposit(tPtnNo);
     iPtnKeyHash = 0;
   }
   
   if (iTraceBits & C_BIT_EndRecord) {
     SP_RowPix spRowPix(nCols,aColPix);
-    
-    vTrace("[%lld] %s\n"_Stz,m_nRecords,spRowPix.sz(aRsb));
+    vTrace("[%lld : %lld] %s\n"_Stz,
+           m_i_Rec,m_bPtnHash ? tPtnNo : C_UNKNOWN,spRowPix.sz(aRsb));
   }
 
   // increment records processed
   AM::vIncRowsProcessed(m_pPipelineJob);
-  m_nRecords++;
 
-  // skip record end and line end
-  vSKIP_RECORD_LINE_END();
   
   goto L_TestMoreRecords;                                    // end of endRecord
   
@@ -2480,6 +2521,8 @@ L_EndCsvChunk:
     
   if (iTraceBits & C_BIT_EndCsvChunk)
     vTrace("L_EndOfCsvChunk:\n"_Stz);
+  
+  RASSERT(bEND_CSV_CHUNK());
 
   return true;
 }
