@@ -902,6 +902,26 @@ L_Date:
   if (iTraceBits & C_BIT_Date)
     vTrace("L_Date:\n"_Stz);
   
+  
+  /*
+      
+     +----------------------------------------------------+
+     |                     Date Field                     |
+     +----------------------------------------------------+
+     | [<WHITE_SPACE>] <DATE> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading                  trailing              |
+     +----------------------------------------------------+
+   
+     <DATE> :   null     // null form
+                 | \N       // null form
+                 | <EMPTY>  // null form
+                 | <COMPONENT> <DATE_SEP> <COMPONENT> <DATE_SEP> <COMPONENT>
+   
+     
+     <COMPONENT> :  <YEAR> | <MONTH> | <DAY>
+   */
+
+
   vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----

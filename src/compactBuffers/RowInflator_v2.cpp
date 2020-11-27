@@ -712,7 +712,7 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
   
   byte* ayDstByte = (byte*) & pRow->m_waColVal[0].m_iWrd;
     
-  char* acStrArea = (char*)pRow->m_xStzWsp.ayArea();
+  char* acStrArea = (char*)pRow->szStzArea();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
