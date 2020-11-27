@@ -191,7 +191,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 
 #define bEND_CSV_CHUNK() \
-  ( ! (bool)(cCurChr) )
+  (! (bool)(cCurChr))
 
 #define bIS_DECIMAL_POINT() \
   (cCurChr == C_DECIMAL_POINT)
@@ -667,7 +667,9 @@ L_TestMoreFields:
   if (iTraceBits & C_BIT_TestMoreFields) {
     vTrace("L_TestMoreFields: err %lld rec %lld fld %lld %s "
            "prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
+           
            m_nErrors,m_i_Rec,i_Fld,aDM[ePixDatum],
+           
            spPrv.szChar(cPrvChr),
            spCur.szChar(cCurChr),
            spNxt.szChar(cNxtChr),
@@ -2421,7 +2423,7 @@ L_PostField:
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 5) encountered a field error
+  // 5) encountered an error while processing a field
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
 
@@ -2447,42 +2449,46 @@ L_FieldError:
    
    */
   
+  // increment total number of errors encountered
   m_nErrors++;
   
   if (iTraceBits & C_BIT_FieldError) {
-    vTrace("L_FieldError: %lld %s : errorCodeLine %lld\n"_Stz,
-           eError,aEC[eError],i_ErrorCodeLine);
-    vTrace("                 : err %lld rec %lld fld %lld %s csvCrs >>%s<< csvSrc >>%s<<\n"_Stz,
+    vTrace("L_FieldError: %lld %s :\n"
+           "  errorCodeLine %lld err %lld rec %lld fld %lld %s\n"
+           "  prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
+           
+           eError,
+           aEC[eError],
+           
+           i_ErrorCodeLine,
            m_nErrors,
            m_i_Rec,
            i_Fld,
            aDM[ePixDatum],
+           
+           spPrv.szChar(cPrvChr),
            spCur.szChar(cCurChr),
+           spNxt.szChar(cNxtChr),
            spCsv.szInspect(azCsvCrs));
-
   }
-  // discard partial row in row slab
-  m_pRowSlab->vDiscardInvalidRow();
-
+  
   // increment invalid records
   AM::vIncRowsInvalid(m_pPipelineJob);
   m_i_Rec++;
-
-  // clear error
+  
+  // clear error code
   eError = EC_NONE;
 
-  // skip to end of record
-  while (cCurChr) {
-    
-    if (cCurChr == m_cLineEnd)
-      break;
-    
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // resynch csv cursor to first char after next record end
+  
+  // consume up to and include end of line
+  while (! bLINE_END())
     vNEXT_CSVCHR(); // skip any
-  }
-
-  // skip
-  if (cCurChr)
-    vNEXT_CSVCHR(); // skip m_cLineEnd
+  vSKIP_LINE_END();
+  
+  // discard partial row in row slab
+  m_pRowSlab->vDiscardInvalidRow();
 
   goto L_TestMoreRecords;                                   // end of fieldError
   
