@@ -52,7 +52,7 @@ void RowSingle::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
-: Object(CN_ROWSINGLE)
+: RowWsp(CN_ROWSINGLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   

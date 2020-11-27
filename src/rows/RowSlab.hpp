@@ -6,6 +6,7 @@
 namespace Rows
 {
   static const i8 C_ROWSLAB_WSP    = C_SIZE_LARGE_OBJECT - C_16KB;
+  static const i8 C_ROWSOLO_WSP    = C_MAX_RECORD;
   static const i8 C_SLAB_CELLS     = C_ROWSLAB_WSP / C_BYTES_PER_WORD;
   static const i8 C_FIRST_LGL_CELL = C_SLAB_CELLS - 1;
 

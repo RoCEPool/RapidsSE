@@ -5,7 +5,7 @@
 
 namespace Rows
 {
-  class RowSingle : public Object
+  class RowSingle : public RowWsp<C_ROWSOLO_WSP>
   {
   public:
     // - - - - - - - - - - - - - - - - - -
@@ -26,6 +26,9 @@ namespace Rows
     t8  m_tPerspective;   // transaction perspective
     i8  m_iHash;          // hash of partition column values
     Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
+ 
+    SingleWord m__PadToCacheLine[6]; // padding to cache line
+
     Wsp_t<C_MAX_RECORD> m_xStzWsp;    // sz workspace
 
     // - - - - - - - - - - - - - - - - - -
