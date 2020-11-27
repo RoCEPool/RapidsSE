@@ -42,11 +42,11 @@ rows:
 ('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
 
 Load tspTbl "../DATA/Datums/timestamp.csv" ;
-failure contains: '26 invalid'
+failure contains: '27 invalid'
 
 // check no of rows
 tableScan tspTbl;
-rows: 101
+rows: 100
 
 // dump index tsp_idx1
 dumpidx tspTbl tsp_idx1;
