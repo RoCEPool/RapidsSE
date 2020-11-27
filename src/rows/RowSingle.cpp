@@ -74,10 +74,10 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_waColVal[i_Col].m_iWrd = 0;
-  m_xWsp.vZero(CN_ROWSINGLE);
+  m_xStzWsp.vZero(CN_ROWSINGLE);
   
 #else
-  // m_xWsp
+  // m_xStzWsp
 #endif
   
   _checkInitialised_(CN_ROWSINGLE);
@@ -130,7 +130,7 @@ void RowSingle::vAllotSetVarchar(i8 i_Col, Stz* szVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
       
-  char* acDstString = (char*)m_xWsp.ayLatter();
+  char* acDstString = (char*)m_xStzWsp.ayLatter();
   
   char* acSrcString = (char*)szVal;
   
@@ -138,7 +138,7 @@ void RowSingle::vAllotSetVarchar(i8 i_Col, Stz* szVal)
   
   m_waColVal[i_Col].m_iWrd = (i8)acDstString;
   
-  m_xWsp.vTake(nSrcLength + 1);
+  m_xStzWsp.vTake(nSrcLength + 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,7 +258,7 @@ void RowSingle::vResetValues(void)
     m_waColVal[i_Col].m_iWrd = 0;
 #endif
   
-  m_xWsp.vInit();
+  m_xStzWsp.vInit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +319,7 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
       return;
     }
     
-    char* acDstString = (char*)m_xWsp.ayLatter();
+    char* acDstString = (char*)m_xStzWsp.ayLatter();
     
     char* acSrcString = (char*)pDatum->azChar();
     
@@ -327,7 +327,7 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
     
     m_waColVal[i_Col].m_iWrd = (i8)acDstString;
     
-    m_xWsp.vTake(nSrcLength + 1);
+    m_xStzWsp.vTake(nSrcLength + 1);
     
     if (pCol->bIsPtnKey())
       m_iHash += iHashColumn(pCol);

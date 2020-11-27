@@ -755,6 +755,23 @@ L_Boolean:
   if (iTraceBits & C_BIT_Boolean)
     vTrace("L_Boolean:\n"_Stz);
     
+  /*
+      
+     +----------------------------------------------------+
+     |                     Boolean Field                  |
+     +----------------------------------------------------+
+     | [<WHITE_SPACE>]<BOOLEAN>[<WHITE_SPACE>]<FIELD_END> |
+     +----------------------------------------------------+
+   
+     <BOOLEAN> :   null
+                 | \N
+                 | true
+                 | false
+                 | <EMPTY>
+  
+   */
+
+  
   vSKIP_LEADING_WHITE_SPACE();
 
   // ---- ---- ---- ---- ---- ---- ---- ----

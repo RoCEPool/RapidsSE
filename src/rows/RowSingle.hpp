@@ -26,7 +26,7 @@ namespace Rows
     t8  m_tPerspective;   // transaction perspective
     i8  m_iHash;          // hash of partition column values
     Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
-    Wsp_t<C_MAX_RECORD> m_xWsp;    // sz workspace
+    Wsp_t<C_MAX_RECORD> m_xStzWsp;    // sz workspace
 
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
