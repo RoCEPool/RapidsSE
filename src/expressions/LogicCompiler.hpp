@@ -42,6 +42,7 @@ namespace Expressions
 
     static eAM  eFindAM(Stz* szEOname);
     static eEO  eFindEO(Stz* szEOname);
+    static Stz* szGetMacro(eAM eMacro);
 
     i8 iCall(void);
     i8 iCompile(LogicUnit* pLogicUnit, void* aDynArg);
@@ -58,7 +59,7 @@ namespace Expressions
 
     void vAddFragment(i8 i_CodeFrom, i8 i_CodeTill);
     bool bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
-  
+
     void vRtnSource(void);
     void vSbrDeclaration(void);
     void vSbrSource(void);

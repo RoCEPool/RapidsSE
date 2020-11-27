@@ -3,20 +3,20 @@
 /*============================================================================*/
 
 //----------------------------------------------------------------------------
-// DEAFULT HANDLER
+// DEFAULT HANDLER
 //----------------------------------------------------------------------------
-macro AM_DEFAULT_HANDLER (sString aTemp,aMarker)
+macro AM_DEFAULT_HANDLER
   // %s
   Label %s
   EO_PRINTF "**%s : 0**\n"
   EO_POP
-  EO_JMP QRY_DONE"
+  EO_JMP QRY_DONE
 endMacro
 
 //----------------------------------------------------------------------------
 // BEGIN STREAMDEF_HANDLER
 //----------------------------------------------------------------------------
-macro AM_STREAMDEF_HANDLER_BEGIN (sString,aTemp)
+macro AM_STREAMDEF_HANDLER_BEGIN
   // STREAMDEF_HANDLER
   Label STREAMDEF_HANDLER
   EO_PRINTF "**STREAMDEF_HANDLER : 0**\n"

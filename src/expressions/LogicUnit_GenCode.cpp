@@ -430,7 +430,9 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
   
   bool b = pFile->bOpenWrite(sFileName);
   RASSERT(b);
-  
+  // append the INIT code to sString
+  pFile->vPrint("%s"_Stz, LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER));
+  /*
   // append the INIT code to sString
   ASM_INIT(sString, aTemp, iQueryNo);
   pFile->vPrint("%s"_Stz,sString.azChar());
@@ -477,6 +479,7 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
   // Finally query done
   ASM_QRY_DONE(sString, aTemp);
   pFile->vPrint("%s"_Stz,sString.azChar());
+*/
 
   pFile->vClose();
   delete pFile;
