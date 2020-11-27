@@ -264,7 +264,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define vCOLLECT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
 
-#define vCOLLECT_DIGITS(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
+#define vWHOLE_NUMBER(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
   \
   _uComponent = 0; \
   \
@@ -281,7 +281,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   if (nWholeDigits > _maxDigits) \
     vFIELD_ERROR(_errorCode2)
 
-#define vDETECT_SIGN() \
+#define vSIGN_OPT() \
   if (cCurChr == C_MINUS_SIGN) { \
     bIsNegative = true; \
     vACCEPT_CHAR(); \
@@ -321,10 +321,10 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vACCEPT_CHAR(); \
   }
 
-#define vSKIP_LEADING_WHITE_SPACE() \
+#define vSKIP_WHITE_SPACE_LEADING() \
   vSKIP_WHITE_SPACE()
 
-#define vSKIP_TRAILING_WHITE_SPACE() \
+#define vSKIP_WHITE_SPACE_TRAILING() \
   vSKIP_WHITE_SPACE()
 
 #define vSKIP_LINE_END() \
@@ -383,7 +383,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
       vFIELD_ERROR(_errorCode); \
     } \
     \
-    vSKIP_TRAILING_WHITE_SPACE(); \
+    vSKIP_WHITE_SPACE_TRAILING(); \
     if (bNOISY_FIELD_END()) \
       vFIELD_ERROR(_errorCode); \
     \
@@ -393,7 +393,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   if (cCurChr == m_cEscapeChar) { \
     vACCEPT_CHAR(); \
     if ('N' == cCurChr) { \
-      vSKIP_TRAILING_WHITE_SPACE(); \
+      vSKIP_WHITE_SPACE_TRAILING(); \
     if (bAT_FIELD_END()) \
         goto _label; \
     } \
@@ -761,18 +761,20 @@ L_Boolean:
      |                      Boolean Field                    |
      +-------------------------------------------------------+
      | [<WHITE_SPACE>] <BOOLEAN> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading                  trailing                 |
      +-------------------------------------------------------+
    
-     <BOOLEAN> :   null
-                 | \N
-                 | true
-                 | false
-                 | <EMPTY>
+     <BOOLEAN> :   null     // null form
+                 | \N       // null form
+                 | <EMPTY>  // null form
+                 | true     // true form
+                 | false    // false
+                 | <WHOLE_NUMBER>  // number form
   
    */
 
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -844,7 +846,7 @@ L_Boolean:
 
   if (bIS_DIGIT()) {
   
-    vCOLLECT_DIGITS(uWholeNumber,C_MAX_INTEGER_DIGITS,
+    vWHOLE_NUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
                     EC_CSV_BOOLEAN_INVALID,EC_CSV_BOOLEAN_TOO_LARGE);
     
     if (uWholeNumber > 0)
@@ -865,7 +867,7 @@ L_Boolean:
   
 L_BooleanRecognised:
 
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   
@@ -900,7 +902,7 @@ L_Date:
   if (iTraceBits & C_BIT_Date)
     vTrace("L_Date:\n"_Stz);
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -940,7 +942,7 @@ L_Date_nextComponent:
   
 L_Date_year:
 
-  vCOLLECT_DIGITS(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
+  vWHOLE_NUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
   // adjust a 2-digit year
   if (uYearComponent <= 99)
@@ -960,7 +962,7 @@ L_Date_year:
     
 L_Date_month:
   
-  vCOLLECT_DIGITS(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+  vWHOLE_NUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
   
   // validate the month
   if (uMonthComponent < 1 || uMonthComponent > 12)
@@ -973,7 +975,7 @@ L_Date_month:
           
 L_Date_day:
   
-  vCOLLECT_DIGITS(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
+  vWHOLE_NUMBER(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
 
   goto L_Date_nextComponent;
   
@@ -1011,7 +1013,7 @@ L_Date_componentsCollected:
   // === === === === === === === === === === === === === === === === === === ===
   //                                                            recognised date
 
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_DATE_INVALID);
 
@@ -1056,7 +1058,7 @@ L_Decimal:
   if (iTraceBits & C_BIT_Decimal)
     vTrace("L_Decimal:\n"_Stz);
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1066,7 +1068,7 @@ L_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
-  vDETECT_SIGN();
+  vSIGN_OPT();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned number portion
@@ -1125,7 +1127,7 @@ L_Decimal:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognized decimal
     
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   
@@ -1172,7 +1174,7 @@ L_Float:
   if (iTraceBits & C_BIT_Float)
     vTrace("L_Float:\n"_Stz);
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1182,7 +1184,7 @@ L_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
-  vDETECT_SIGN();
+  vSIGN_OPT();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
@@ -1243,7 +1245,7 @@ L_Float:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                           recognised float
 
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
 
@@ -1283,12 +1285,13 @@ L_Integer:
      |                      Integer Field                    |
      +-------------------------------------------------------+
      | [<WHITE_SPACE>] <INTEGER> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading                  trailing                 |
      +-------------------------------------------------------+
    
-     <INTEGER> :   null
-                 | \N
+     <INTEGER> :   null     // null form
+                 | \N       // null form
+                 | <EMPTY>  // null form
                  | [<SIGN>] <WHOLE_NUMBER> [.<FRAC_NUMBER>]
-                 | <EMPTY>
   
    */
 
@@ -1303,23 +1306,23 @@ L_Integer:
          +1.2,  +1.2,  +1.2  ,+1.2  ,+1.2\n
    */
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible null portion
+  // possible null form
    
   vIF_NULL_FORM(L_IntegerNull,EC_CSV_INTEGER_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
   
-  vDETECT_SIGN();
+  vSIGN_OPT();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
   
-  vCOLLECT_DIGITS(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                  EC_CSV_INTEGER_INVALID,EC_CSV_INTEGER_TOO_LARGE);
+  vWHOLE_NUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
+                EC_CSV_INTEGER_INVALID,EC_CSV_INTEGER_TOO_LARGE);
 
   // ignore any . digits
   if (bIS_DECIMAL_POINT()) {
@@ -1336,7 +1339,7 @@ L_Integer:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognised integer
 
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
 
@@ -1374,7 +1377,7 @@ L_Interval:
   if (iTraceBits & C_BIT_Interval)
     vTrace("L_Interval:\n"_Stz);
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1432,7 +1435,7 @@ L_Interval:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recogised interval
 
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
 
@@ -1471,7 +1474,7 @@ L_Time:
   if (iTraceBits & C_BIT_Time)
     vTrace("L_Time:\n"_Stz);
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1489,7 +1492,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
-  vCOLLECT_DIGITS(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+  vWHOLE_NUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
   
   // skip over mandatory time separator
   if (! bAT_TIME_SEPARATOR())
@@ -1503,7 +1506,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
-  vCOLLECT_DIGITS(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+  vWHOLE_NUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   if (uMinuteComponent > 59)
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
@@ -1516,7 +1519,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
-  vCOLLECT_DIGITS(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+  vWHOLE_NUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
 
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
@@ -1544,7 +1547,7 @@ L_Time:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                            recognised time
 
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIME_INVALID);
   
@@ -1589,7 +1592,7 @@ L_Timestamp:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp:\n"_Stz);
   
-  vSKIP_LEADING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1640,7 +1643,7 @@ L_Timestamp_year:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_year:\n"_Stz);
   
-  vCOLLECT_DIGITS(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
+  vWHOLE_NUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
   // adjust a 2-digit year
   if (uYearComponent <= 99)
@@ -1663,7 +1666,7 @@ L_Timestamp_month:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_month:\n"_Stz);
   
-  vCOLLECT_DIGITS(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+  vWHOLE_NUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
 
   // validate the month
   if (uMonthComponent < 1 || uMonthComponent > 12)
@@ -1679,7 +1682,7 @@ L_Timestamp_day:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_day:\n"_Stz);
   
-  vCOLLECT_DIGITS(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
+  vWHOLE_NUMBER(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
 
   goto L_Timestamp_nextComponent;
   
@@ -1732,7 +1735,7 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_hour:\n"_Stz);
   
-  vCOLLECT_DIGITS(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+  vWHOLE_NUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
@@ -1748,7 +1751,7 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_minute:\n"_Stz);
   
-  vCOLLECT_DIGITS(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+  vWHOLE_NUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
@@ -1764,7 +1767,7 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_second:\n"_Stz);
   
-  vCOLLECT_DIGITS(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+  vWHOLE_NUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
   
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
@@ -1803,7 +1806,7 @@ L_Timestamp_noTimeComponents:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                       recognised timestamp
 
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
@@ -2103,7 +2106,7 @@ L_Varchar_singleQuotedTerminate:
   if (nVchChars >= nPixLength)
     nVchChars = nPixLength;
   
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
@@ -2219,7 +2222,7 @@ L_Varchar_doubleQuotedTerminate:
   if (nVchChars >= nPixLength)
     nVchChars = nPixLength;
     
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
@@ -2292,7 +2295,7 @@ L_Varchar_userEnclosed:
   if (nVchChars >= nPixLength)
     nVchChars = nPixLength;
   
-  vSKIP_TRAILING_WHITE_SPACE();
+  vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   
