@@ -1423,43 +1423,24 @@ L_Time:
 
   vCOLLECT_DIGITS(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
   
-//  // collect digits for hour
-//  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-//    vCOLLECT(uHourComponent);
-//    nWholeDigits++;
-//  }
-//
-//  // should have seen some digits
-//  if (! nWholeDigits)
-//    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-//
-//  // no more than two digits
-//  if (nWholeDigits > 2)
-//    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-
-  // skip over separator
+  // skip over mandatory time separator
   if (! bAT_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
   
+  if (uHourComponent > 23)
+    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
+  
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
-  // collect digits for minute
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uMinuteComponent);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
-  
-  // no more than two digits
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+  vCOLLECT_DIGITS(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
-  // skip over separator
+  if (uMinuteComponent > 59)
+    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+  
+  // skip over mandatory time separator
   if (! bAT_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
@@ -1467,18 +1448,9 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
-  // collect digits for second
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uSecondComponent);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_SECOND_INVALID);
+  vCOLLECT_DIGITS(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
 
-  // no more than two digits
-  if (nWholeDigits > 2)
+  if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1497,15 +1469,6 @@ L_Time:
 
     uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
   }
-  
-  if (uHourComponent > 23)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  
-  if (uMinuteComponent > 59)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-  
-  if (uSecondComponent > 59)
-    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                            recognised time
@@ -1575,10 +1538,10 @@ L_Timestamp:
   uSecondComponent = 0;
   uMicrosecondComponent = 0;
 
-L_Timestamp_components:
+L_Timestamp_nextComponent:
     
   if (iTraceBits & C_BIT_Timestamp)
-    vTrace("L_Timestamp_components:\n"_Stz);
+    vTrace("L_Timestamp_nextComponent:\n"_Stz);
 
   if (++i_DateComponent > 2)
     goto L_Timestamp_dateCollected;
@@ -1606,25 +1569,20 @@ L_Timestamp_year:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_year:\n"_Stz);
   
-  // collect digits for year
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uYearComponent);
-    nWholeDigits++;
-  }
+  vCOLLECT_DIGITS(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
-  // should have seen some digits for year
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-
-  // no more than 4
-  if (nWholeDigits > 4)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-
   // adjust a 2-digit year
   if (uYearComponent <= 99)
     uYearComponent += 2000;
   
-  goto L_Timestamp_components;
+  // validate the year
+  if (uYearComponent < C_YEAR_MIN)
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
+
+  if (uYearComponent > C_YEAR_MAX)
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
+
+  goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month component
@@ -1634,21 +1592,13 @@ L_Timestamp_month:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_month:\n"_Stz);
   
-  // collect digits for month
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uMonthComponent);
-    nWholeDigits++;
-  }
+  vCOLLECT_DIGITS(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
 
-  // should have seen some digits for month
-  if (! nWholeDigits)
+  // validate the month
+  if (uMonthComponent < 1 || uMonthComponent > 12)
     vFIELD_ERROR(EC_CSV_MONTH_INVALID);
-
-  // no more than 2
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
-
-  goto L_Timestamp_components;
+  
+  goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day component
@@ -1658,21 +1608,9 @@ L_Timestamp_day:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_day:\n"_Stz);
   
-  // collect digits for day
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uDayComponent);
-    nWholeDigits++;
-  }
+  vCOLLECT_DIGITS(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
 
-  // should have seen some digits for day
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  
-  // no more than 2
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
-
-  goto L_Timestamp_components;
+  goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
 
@@ -1683,17 +1621,6 @@ L_Timestamp_dateCollected:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // validate the date
-  
-  // validate the year
-  if (uYearComponent < C_YEAR_MIN)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
-
-  if (uYearComponent > C_YEAR_MAX)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-
-  // validate the month
-  if (uMonthComponent < 1 || uMonthComponent > 12)
-    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
   
   // validate day wrt possible leap year
   
