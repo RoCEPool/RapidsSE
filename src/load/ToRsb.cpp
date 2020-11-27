@@ -1468,6 +1468,9 @@ L_Time:
     }
 
     uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
+    
+    while (bIS_DIGIT())
+      vACCEPT_CHAR(); // skip digit
   }
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
@@ -1621,9 +1624,7 @@ L_Timestamp_dateCollected:
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // validate the date
-  
-  // validate day wrt possible leap year
-  
+    
   // determine if a leap year
   if (uYearComponent % 4 == 0) {
     if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
@@ -1663,24 +1664,15 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_hour:\n"_Stz);
   
-  // collect digits for hour
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uHourComponent);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits for hour
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
+  vCOLLECT_DIGITS(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
-  // no more than 2
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-
-  // skip over separator
+  // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
+  
+  if (uHourComponent > 23)
+    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
@@ -1688,44 +1680,25 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_minute:\n"_Stz);
   
-  // collect digits for minute
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uMinuteComponent);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits for minute
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
+  vCOLLECT_DIGITS(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
-  // no more than 2
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-
-  // skip over separator
+  // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-
   vACCEPT_CHAR(); // skip ':'
 
+  if (uMinuteComponent > 59)
+    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_second:\n"_Stz);
   
-  // collect digits for second
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uSecondComponent);
-    nWholeDigits++;
-  }
+  vCOLLECT_DIGITS(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
   
-  // should have seen some digits for second
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_SECOND_INVALID);
-
-  // no more than 2
-  if (nWholeDigits > 2)
+  if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1745,21 +1718,11 @@ L_Timestamp_dateCollected:
     }
 
     uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
+    
+    while (bIS_DIGIT())
+      vACCEPT_CHAR(); // skip digit
   }
-
-  while (bIS_DIGIT())
-    vACCEPT_CHAR(); // skip digit
   
-  // validate the time components
-  if (uHourComponent > 23)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  
-  if (uMinuteComponent > 59)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-  
-  if (uSecondComponent > 59)
-    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
-
   // ---- ---- ---- ---- ---- ---- ---- ----
   
 L_Timestamp_noTimeComponents:
@@ -1778,14 +1741,12 @@ L_Timestamp_noTimeComponents:
 
   // compute final timestamp value from components
   xTimestampValue.m_uYearDelta = uYearComponent - C_YEAR_BASE;
-  xTimestampValue.m_uMonth     = uMonthComponent;
-  xTimestampValue.m_uDay       = uDayComponent;
-
+  xTimestampValue.m_uMonth  = uMonthComponent;
+  xTimestampValue.m_uDay    = uDayComponent;
   xTimestampValue.m_uHour   = uHourComponent;
   xTimestampValue.m_uMinute = uMinuteComponent;
   xTimestampValue.m_uSecond = uSecondComponent;
   xTimestampValue.m_uMicro  = uMicrosecondComponent;
-  
   xTimestampValue.m_uSpare  = 0;
 
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
