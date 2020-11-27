@@ -504,15 +504,15 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
                            2) \r
                            3) \r\n
    
-     +------------------------+
-     |        CSV Chunk       |
-     +------------------------+
-     | ..line 0.. <ENDLINE>   |
-     | ..line 1.. <ENDLINE>   |
-     | ..line 2.. <ENDLINE>   |
-     |        ...             |
-     | ..line n.. <ENDLINE>\0 |
-     +------------------------+
+     +-------------------------+
+     |   Lines in CSV Chunk    |
+     +-------------------------+
+     | ..line 0.. <END_LINE>   |
+     | ..line 1.. <END_LINE>   |
+     | ..line 2.. <END_LINE>   |
+     |         ...             |
+     | ..line n.. <END_LINE>\0 |
+     +-------------------------+
    
      n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
    
@@ -603,6 +603,28 @@ L_TestMoreRecords:
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
            spCsv.szInspect(azCsvCrs,128,true));
+  
+  
+  
+  /*
+      
+     +-------------------------------------------+
+     |        Records in Lines in CSV Chunk      |
+     +-------------------------------------------+
+     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>   | line[0] with record
+     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>   | line[1] with record
+     |                   ...                     |
+     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>   | line[n-2] with record
+     | [<WHITESPACE>]<ENDLINE>                   | line[n-1] blank line
+     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>\0 | line[n] with record
+     +------------------------------------------+
+   
+     n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
+   
+     there may be any number of blank lines at any place in a CSV Chunk.
+   
+   */
+
       
   ASSERT(EC_NONE == eError);
 
@@ -666,6 +688,20 @@ L_TestMoreFields:
     goto L_EndRecord;
   }
   
+  
+  /*
+      
+     +----------------------------------------------------------+
+     |         Fields in Records in Lines in CSV Chunk          |
+     +----------------------------------------------------------+
+     | <FIELD><FIELD_SEPARATOR>...[<FIELD_SEPARATOR>][<RT]<EL>  |
+     | <FIELD><FIELD_SEPARATOR>...[<FIELD_SEPARATOR>][<RT]<EL>  |
+     |                       ...                                |
+     | <FIELD><FIELD_SEPARATOR>...[<FIELD_SEPARATOR>][<RT]<EL>\0|
+     +----------------------------------------------------------+
+   
+   */
+
   // record where the field starts
   azFieldStart = azCsvCrs - 1;
   

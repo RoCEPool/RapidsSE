@@ -17,27 +17,23 @@ __aFooterFunction(RowSlab)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowSlab::RowSlab(void)
-: Object(CN_ROWSLAB)
+: RowWsp(CN_ROWSLAB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWSLAB);
   m_caModel[sizeof(m_caModel) - 1] = '\0';
   
-  StrLib::vSprint(m_caModel,"RapidsSE %s FORMAT %s"_Stz,
+  StrLib::vSprint(m_caModel,"RapidsSE %s SeFormat %s"_Stz,
                   RAPIDSSE_VERSION_STRING,
                   RAPIDSSE_FORMAT_STRING);
   
-  m_iVersion = RAPIDSSE_VERSION_NUMBER;
-  m_iFormat  = RAPIDSSE_FORMAT_NUMBER;
-  m_nBytes   = sizeof(RowSlab);
-  m_nTrimmed = 0;
-  m_i_Trim   = 0;
+  m_iSeVersion = RAPIDSSE_VERSION_NUMBER;
+  m_iSeFormat  = RAPIDSSE_FORMAT_NUMBER;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_nItems    = 0;
-  m_i_RowLgl  = C_UNKNOWN;
+  m_i_RowCrs  = C_UNKNOWN;
   m_amCellCrs = nullptr;
   
   // m_oStreamPix
@@ -120,7 +116,7 @@ m8* RowSlab::amCell0(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  Rsb* aRsb = aRsbAdr(m_i_RowLgl);
+  Rsb* aRsb = aRsbAdr(m_i_RowCrs);
   
   return (m8*)aRsb->amCell0();
 }
@@ -222,7 +218,7 @@ void RowSlab::vDiscardInvalidRow(void)
   
   // undo the row number increments of vNewRow()
   m_nItems--;
-  m_i_RowLgl--;
+  m_i_RowCrs--;
   
   // return tail bytes allotted for cells of current row in vNewRow()
   i8 nCellBytes = nRowProperBytes();
@@ -318,13 +314,13 @@ bool RowSlab::bNewRow(Rsb** paRow)
   
   m_nItems++;
 
-  m_i_RowLgl++;
+  m_i_RowCrs++;
   
-  Rsb* aRsb = aRsbAdr(m_i_RowLgl);
+  Rsb* aRsb = aRsbAdr(m_i_RowCrs);
   
   *paRow = aRsb;
   
-  m_amCellCrs = amCell0(m_i_RowLgl);
+  m_amCellCrs = amCell0(m_i_RowCrs);
   
   i8 nCellBytes = nRowProperBytes();
   m_xWsp.vTakeTail(nCellBytes);
@@ -461,7 +457,7 @@ void RowSlab::vPositionOnCell(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  m_amCellCrs = amCell0(m_i_RowLgl) + i_Col;
+  m_amCellCrs = amCell0(m_i_RowCrs) + i_Col;
 
 }
 
@@ -497,7 +493,7 @@ void RowSlab::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   m_nItems    = 0;
-  m_i_RowLgl  = C_UNKNOWN;
+  m_i_RowCrs  = C_UNKNOWN;
   m_amCellCrs = nullptr;
 
   m_xWsp.vReset();
@@ -553,7 +549,7 @@ void RowSlab::vSetRow(i8 iRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  m_i_RowLgl = iRow;
+  m_i_RowCrs = iRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -573,7 +569,7 @@ void RowSlab::vSlabReport(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
  
-  s32 sSlab_magn;  MagLib::vByteMag(C_WSP_ROWSLAB, sSlab_magn);
+  s32 sSlab_magn;  MagLib::vByteMag(C_ROWSLAB_WSP, sSlab_magn);
   s32 sUsed_magn;  MagLib::vByteMag(m_xWsp.nUsed(),sUsed_magn);
   s32 sFree_magn;  MagLib::vByteMag(m_xWsp.nFree(),sFree_magn);
 
@@ -583,7 +579,7 @@ void RowSlab::vSlabReport(void)
          sSlab_magn.szStz(),
          sUsed_magn.szStz(),
          sFree_magn.szStz(),
-         (m_xWsp.nFree() * 100) / C_WSP_ROWSLAB,
+         (m_xWsp.nFree() * 100) / C_ROWSLAB_WSP,
          
          nRows(),
          m_xWsp.nUsed() / nRows()

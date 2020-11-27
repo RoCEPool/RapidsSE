@@ -5,43 +5,75 @@
 
 namespace Rows
 {
-  static const i8 C_WSP_ROWSLAB    = C_SIZE_LARGE_OBJECT - C_16KB;
-  static const i8 C_SLAB_CELLS     = C_WSP_ROWSLAB / C_BYTES_PER_WORD;
+  static const i8 C_ROWSLAB_WSP    = C_SIZE_LARGE_OBJECT - C_16KB;
+  static const i8 C_SLAB_CELLS     = C_ROWSLAB_WSP / C_BYTES_PER_WORD;
   static const i8 C_FIRST_LGL_CELL = C_SLAB_CELLS - 1;
 
   static const i8 C_CELL_BOUNDARY  = C_SLAB_CELLS;
 
   static const i8 C_NML_STR_SPACE  = C_8KB;
 
-  class RowSlab : public Object
+
+
+
+  template<int WSP_SIZE>
+  class RowWsp : public Object
+  {
+  protected:
+  
+    i8 m_nItems;  // number of items in this row wsp
+
+    SingleWord m__PadToCacheLine[5]; // padding to cache line
+
+    WspConverge_t<WSP_SIZE> m_xWsp; // workspace of row(s)
+
+  public:
+    RowWsp(eCN eClass);
+  
+    // must be last
+    Footer m_xFooter;
+  };
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template<int WSP_SIZE>
+RowWsp<WSP_SIZE>::RowWsp(eCN eClass)
+: Object(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+
+  m_nItems = 0;
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+
+// /////////////////////////////////////////////////////////////////////////////
+
+
+namespace Rows
+{
+  class RowSlab : public RowWsp<C_ROWSLAB_WSP>
   {
     friend class Rsb;
 
   private:
 
-    char m_caModel[32]; // model string
-    i8   m_iVersion;    //
-    i8   m_iFormat;
-    i8   m_nBytes;      // size in bytes of this row slab
+    char m_caModel[32]; // row slab model string
+    i8   m_iSeVersion;  // se version number
+    i8   m_iSeFormat;   // se format number
   
-    i8   m_nTrimmed;    // how many bytes trimmed  NOT USED YET
-    i8   m_i_Trim;      // where trim occurred     NOT USED YET
-
-    i8   m_nItems;      // number of items in this row-slab
-    i8   m_i_RowLgl;    // current logical row number
-  
-    m8*  m_amCellCrs;   // current working cell
-
     StreamPix m_oStreamPix; // condensed stream def
- 
+  
+    i8   m_i_RowCrs;    // current logical row number
+    m8*  m_amCellCrs;   // current working cell
     i8   m_nRowStringBytes; // number string bytes for current row
 
-    SingleWord m__PadToCacheLine[6]; // padding to cache line
-
     NmlStr m_oNmlStr;   // normalised string set
-    
-    WspConverge_t<C_WSP_ROWSLAB> m_xWsp; // workspace
-  
+      
     // must be last
     Footer m_xFooter;
   
