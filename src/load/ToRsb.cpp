@@ -190,37 +190,11 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define bEND_CSV_CHUNK() \
-  (! (bool)(cCurChr))
-
-#define bIS_DECIMAL_POINT() \
-  (cCurChr == C_DECIMAL_POINT)
-
-#define bIS_DIGIT() \
-  (cCurChr >= '0' && cCurChr <= '9')
-
-#define bIS_SPACE() \
-  (' ' == cCurChr)
-
-#define bIS_NULL() \
-  ('\0' == cCurChr)
-
 #define bAT_DATE_SEPARATOR() \
   (cCurChr == m_cDateSeparator)
 
-#define bAT_TIME_SEPARATOR() \
-  (cCurChr == C_TIME_SEPARATOR)
-
 #define bAT_FIELD_DELIMITER() \
   (cCurChr == m_cFieldDelimiter)
-
-#define bAT_RECORD_TERMINATOR() \
-  (cCurChr == m_cRecordTerminator)
-                                      \
-#define bAT_LINE_END() \
-  (cCurChr == m_cLineEnd \
-   && ( (! m_cLineEnd2nd) || (cNxtChr == m_cLineEnd2nd) ) \
-  )
 
 #define bAT_FIELD_END() \
   (    cCurChr == m_cFieldDelimiter   \
@@ -232,16 +206,42 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
        ) \
   )
 
+#define bAT_LINE_END() \
+  (cCurChr == m_cLineEnd \
+   && ( (! m_cLineEnd2nd) || (cNxtChr == m_cLineEnd2nd) ) \
+  )
+
+#define bAT_RECORD_TERMINATOR() \
+  (cCurChr == m_cRecordTerminator)
+                                      \
+#define bAT_TIME_SEPARATOR() \
+  (cCurChr == C_TIME_SEPARATOR)
+
+#define bEND_CSV_CHUNK() \
+  (! (bool)(cCurChr))
+
+#define bIS_DECIMAL_POINT() \
+  (cCurChr == C_DECIMAL_POINT)
+
+#define bIS_DIGIT() \
+  (cCurChr >= '0' && cCurChr <= '9')
+
+#define bIS_LINE_CTL_CHAR() \
+  ( (cCurChr == '\n') || \
+    (cCurChr == '\r') )
+
+#define bIS_NULL() \
+  ('\0' == cCurChr)
+
+#define bIS_SPACE() \
+  (' ' == cCurChr)
+
 #define bNOISY_FIELD_END() \
   (! bAT_FIELD_END())
 
 #define bIS_WHITE_SPACE() \
   ( (cCurChr == ' ' ) || \
     (cCurChr == '\t') )
-
-#define bIS_LINE_CTL_CHAR() \
-  ( (cCurChr == '\n') || \
-    (cCurChr == '\r') )
 
 #define bIS_NON_DATA_CHAR() \
   ( bIS_WHITE_SPACE() || \
@@ -268,7 +268,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   \
   nWholeDigits = 0; \
   while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
-    vACCEPT_CHAR()) { \
+    vACCEPT_CHAR(); \
     vCOLLECT(_uComponent); \
     nWholeDigits++; \
   } \
@@ -463,23 +463,23 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-//     | C_BIT_InitialState
-//     | C_BIT_BeginCsvChunk
-//     | C_BIT_TestMoreRecords
-//     | C_BIT_TestMoreFields
-//     | C_BIT_Boolean
-//     | C_BIT_Date
-//     | C_BIT_Decimal
-//     | C_BIT_Float
-//     | C_BIT_Integer
-//     | C_BIT_Interval
-//     | C_BIT_Time
-//     | C_BIT_Timestamp
-//     | C_BIT_Varchar
-//     | C_BIT_PostField
-//     | C_BIT_FieldError
-//     | C_BIT_EndRecord
-//     | C_BIT_EndCsvChunk
+     | C_BIT_InitialState
+     | C_BIT_BeginCsvChunk
+     | C_BIT_TestMoreRecords
+     | C_BIT_TestMoreFields
+     | C_BIT_Boolean
+     | C_BIT_Date
+     | C_BIT_Decimal
+     | C_BIT_Float
+     | C_BIT_Integer
+     | C_BIT_Interval
+     | C_BIT_Time
+     | C_BIT_Timestamp
+     | C_BIT_Varchar
+     | C_BIT_PostField
+     | C_BIT_FieldError
+     | C_BIT_EndRecord
+     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -786,14 +786,16 @@ L_Boolean:
 
   if (bIS_DIGIT()) {
 
-    uWholeNumber = 0;
-    for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
-      vCOLLECT(uWholeNumber);
-      nWholeDigits++;
-    }
-    if (nWholeDigits > C_MAX_INTEGER_DIGITS)
-      vFIELD_ERROR(EC_CSV_BOOLEAN_TOO_LARGE);
+//    uWholeNumber = 0;
+//    for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
+//      vCOLLECT(uWholeNumber);
+//      nWholeDigits++;
+//    }
+//    if (nWholeDigits > C_MAX_INTEGER_DIGITS)
+//      vFIELD_ERROR(EC_CSV_BOOLEAN_TOO_LARGE);
   
+    VCOLLECT_DIGITS(uWholeNumber,C_MAX_INTEGER_DIGITS,EC_CSV_BOOLEAN_TOO_LARGE);
+    
     if (uWholeNumber > 0)
       iBooleanValue = true;
     else
@@ -1053,15 +1055,9 @@ L_Decimal:
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned number portion
-
-  // ignore leading 0's
-  nDecimalDigits = 0;
-  while ('0' == cCurChr) {
-    vACCEPT_CHAR(); // skip '0'
-    nDecimalDigits++;
-  }
   
   // collect digits for leading number
+  nDecimalDigits = 0;
   uUnscaledNumber = 0;
   for ( ; nDecimalDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uUnscaledNumber);
@@ -1789,7 +1785,7 @@ L_Timestamp_dateCollected:
     vTrace("L_Timestamp_hour:\n"_Stz);
   
   // collect digits for hour
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uHourComponent);
     nWholeDigits++;
   }
