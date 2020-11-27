@@ -36,9 +36,11 @@ namespace Expressions
    ~LogicCompiler(void) noexcept(false);
   
     static void vExtract(void);
-    static bool bExtractAll(File* pFile, char** aazCrs);
-    static void vExtractFragment(File* pFile, char** aazCrs);
+    static void vExtractAsm(void);
+    static bool bExtractAll(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
+    static void vExtractFragment(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
 
+    static eAM  eFindAM(Stz* szEOname);
     static eEO  eFindEO(Stz* szEOname);
 
     i8 iCall(void);

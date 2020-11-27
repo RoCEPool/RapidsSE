@@ -903,6 +903,7 @@ public:
   void vLogicCompilerCompile(void);
   void vLogicCompilerDelete(void);
   void vLogicCompilerExtract(void);
+  void vLogicCompilerExtractAsm(void);
   void vLogicCompilerNew(void);
 
   // logic unit

@@ -15,6 +15,9 @@ extern i8 giaVectorSet[];
 char gcaEoFragments[C_128K];
 Stz* gszaEoFragments[EO_ENUMS];
 
+char gcaAmMacros[C_128K];
+Stz* gszaAmMacros[AM_ENUMS];
+
 #include "DEV_interface.h"
 #include "LIB_interface.h"
 #include "RLU_interface.h"
@@ -225,7 +228,7 @@ void LogicCompiler::vExtract(void)
     
     if (sTok.bSame("//+ExtractBegin"_Stz)) {
       vTrace("Found +ExtractBegin\n"_Stz);
-      while (bExtractAll(pFile,&azCrs))
+      while (bExtractAll(pFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
         {;}
     }
   }
@@ -246,15 +249,15 @@ void LogicCompiler::vExtract(void)
 /*----------------------------------------------------------------------------*/
 /* extract all EO_ fragments                                                  */
 /*----------------------------------------------------------------------------*/
-bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs)
+bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker)
 {
   _static_
   
   s4K sTok;
   while (pFile->bNextLiteTok(sTok)) {
-    if (sTok.bSame("case"_Stz)) {
+    if (sTok.bSame(startMarker)) {
       bool b = pFile->bNextLiteTok(sTok);
-      vExtractFragment(pFile,aazCrs);
+      vExtractFragment(pFile,aazCrs,startMarker,endMarker);
       return true;
     }
   }
@@ -263,34 +266,96 @@ bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an EO_ fragment                                                    */
+/* extract the AM_ macro fragments from AsmMacro.txt                          */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs)
+void LogicCompiler::vExtractAsm(void)
 {
   _static_
-  
+
+  vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
+
+  File* pFile = new File(nullptr);
+
+  bool b = pFile->bOpenRead("../src/expressions/AsmMacros.txt"_Stz);
+  RASSERT(b);
+
+  char* azCrs = gcaAmMacros;
+
+  s4K sTok;
+  while (pFile->bNextLiteTok(sTok)) {
+
+    vTrace("Found macro\n"_Stz);
+    while (bExtractAll(pFile,&azCrs,"macro"_Stz, "endMacro"_Stz))
+    {;}
+  }
+
+
+  if (AM::bVerbose()) {
+    //vTrace("Macros:: %s\n"_Stz,gcaAmMacros);
+    for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++) {
+      vTrace("Macro:: %s\n%s\n"_Stz,aAM[i_AM],gszaAmMacros[i_AM]);
+    }
+  }
+
+  pFile->vClose();
+
+  delete pFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an EO_ fragment                                                    */
+/*----------------------------------------------------------------------------*/
+void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker) {
+  _static_
+
   s4K sTok;
   bool b = pFile->bNextLiteTok(sTok);
-  
-  StrLib::vStrip(sTok.azChar(),':');
-  
-  i8 i_EO = eFindEO(sTok);
-  
-  if (AM::bVerbose())
-    vTrace("Fragment %s [%lld]\n"_Stz,sTok.szStz(),i_EO);
 
-  gszaEoFragments[i_EO] = (Stz*)*aazCrs;
-  
+  StrLib::vStrip(sTok.azChar(), ':');
+
+  if (startMarker->bSame("case"_Stz)) {
+    i8 i_EO = eFindEO(sTok);
+
+    if (AM::bVerbose())
+      vTrace("Fragment %s [%lld]\n"_Stz, sTok.szStz(), i_EO);
+
+    gszaEoFragments[i_EO] = (Stz*)*aazCrs;
+  }
+  else {
+    RASSERT(startMarker->bSame("macro"_Stz));
+    i8 i_AM = eFindAM(sTok);
+
+    if (AM::bVerbose())
+      vTrace("Macro %s [%lld]\n"_Stz, sTok.szStz(), i_AM);
+
+    gszaAmMacros[i_AM] = (Stz *) *aazCrs;
+  }
+
+
   for (;;) {
     b = pFile->bNextLiteTok(sTok);
-    if (!b || sTok.bSame("break;//+endCase"_Stz))
+    if (!b || sTok.bSame(endMarker))
       break;
-    
+
     StrLib::vAppendString(aazCrs,sTok.azChar());
   }
-  
+
   StrLib::vAppendChar(aazCrs,'\n');
   StrLib::vAppendChar(aazCrs,'\0');
+}
+
+/*----------------------------------------------------------------------------*/
+/* find eAM by name                                                           */
+/*----------------------------------------------------------------------------*/
+eAM LogicCompiler::eFindAM(Stz* szEOname)
+{
+  _static_
+
+  for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++)
+    if (StrLib::bSame(aAM[i_AM]->azChar(), szEOname->azChar()))
+      return (eAM)i_AM;
+
+  return AM_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

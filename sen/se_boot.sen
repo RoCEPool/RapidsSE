@@ -340,6 +340,9 @@ makeDefaultFolders
 "Extracting EO_ fragments" .verbose
 LogicCompiler[].extract
 
+"Extracting AM_ ASM Macros" .verbose
+LogicCompiler[].extractAsm
+
 assert::stack_0
 
 "end of se_boot.sen" .verbose
