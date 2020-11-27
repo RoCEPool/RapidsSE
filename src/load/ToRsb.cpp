@@ -448,23 +448,23 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
-     | C_BIT_InitialState
-     | C_BIT_BeginCsvChunk
-     | C_BIT_TestMoreRecords
-     | C_BIT_TestMoreFields
-     | C_BIT_Boolean
-     | C_BIT_Date
-     | C_BIT_Decimal
-     | C_BIT_Float
-     | C_BIT_Integer
-     | C_BIT_Interval
-     | C_BIT_Time
-     | C_BIT_Timestamp
-     | C_BIT_Varchar
-     | C_BIT_PostField
-     | C_BIT_FieldError
-     | C_BIT_EndRecord
-     | C_BIT_EndCsvChunk
+//     | C_BIT_InitialState
+//     | C_BIT_BeginCsvChunk
+//     | C_BIT_TestMoreRecords
+//     | C_BIT_TestMoreFields
+//     | C_BIT_Boolean
+//     | C_BIT_Date
+//     | C_BIT_Decimal
+//     | C_BIT_Float
+//     | C_BIT_Integer
+//     | C_BIT_Interval
+//     | C_BIT_Time
+//     | C_BIT_Timestamp
+//     | C_BIT_Varchar
+//     | C_BIT_PostField
+//     | C_BIT_FieldError
+//     | C_BIT_EndRecord
+//     | C_BIT_EndCsvChunk
   ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -633,9 +633,9 @@ L_TestMoreRecords:
   //                                                      end of testMoreRecords
 
   
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) while more fields of current record
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreFields:
   
   ASSERT(EC_NONE == eError);
@@ -690,7 +690,6 @@ L_TestMoreFields:
   }
   //                                                       end of testMoreFields
 
-  
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // 2.a) boolean field : true | false | uWholeNumber
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -760,7 +759,6 @@ L_Boolean:
       }
       else { // not expected 'l'
         vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-
       }
     }
 
@@ -777,7 +775,7 @@ L_Boolean:
       vCOLLECT(uWholeNumber);
       nWholeDigits++;
     }
-    if (nWholeDigits > 19)
+    if (nWholeDigits > C_MAX_INTEGER_DIGITS)
       vFIELD_ERROR(EC_CSV_BOOLEAN_TOO_LARGE);
   
     if (uWholeNumber > 0)
@@ -795,7 +793,7 @@ L_Boolean:
   
   // === === === === === === === === === === === === === === === === === === ===
   //                                                          recognised boolean
-
+  
 L_BooleanRecognised:
 
   vSKIP_TRAILING_WHITE_SPACE();
@@ -805,8 +803,6 @@ L_BooleanRecognised:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit boolean
   
-L_BooleanValue:
-
   m_pRowSlab->vDeposit(iBooleanValue);
   
   if (xColPix.m_bPtnKey)
@@ -852,10 +848,8 @@ L_Date:
 
 L_Date_components:
   
-  i_DateComponent++;
-  
-  if (i_DateComponent > 2)
-    goto L_Date_collected;
+  if (++i_DateComponent > 2)
+    goto L_Date_componentsCollected;
   
   // skip over separator
   if (i_DateComponent > 0) {
@@ -883,10 +877,11 @@ L_Date_year:
     nWholeDigits++;
   }
   
-  // should have seen some digits
+  // should have seen some digits for year
   if (! nWholeDigits)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
 
+  // no more than 4
   if (nWholeDigits > 4)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
 
@@ -911,6 +906,7 @@ L_Date_month:
   if (! nWholeDigits)
     vFIELD_ERROR(EC_CSV_MONTH_INVALID);
 
+  // no more than 4
   if (nWholeDigits > 2)
     vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
   
@@ -931,6 +927,7 @@ L_Date_day:
   if (! nWholeDigits)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
   
+  // no more than 4
   if (nWholeDigits > 2)
     vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
 
@@ -939,7 +936,7 @@ L_Date_day:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // all date components collected
   
-L_Date_collected:
+L_Date_componentsCollected:
   
   // validate the year
   if (uYearComponent < C_YEAR_MIN)
@@ -985,8 +982,7 @@ L_Date_collected:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_DATE_INVALID);
 
-
-  // compute final field value
+  // compute final field value from components
   xDateValue.m_uYearDelta = uYearComponent - C_YEAR_BASE;
   xDateValue.m_uMonth     = uMonthComponent;
   xDateValue.m_uDay       = uDayComponent;
@@ -1078,15 +1074,9 @@ L_Decimal:
   if (! nDecimalDigits)
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
 
-  if (nDecimalDigits > 19)
+  // not too many
+  if (nDecimalDigits > C_MAX_INTEGER_DIGITS)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
-  
-  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-  //                                                         recognized decimal
-    
-  vSKIP_TRAILING_WHITE_SPACE();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   
   // correct for scale by x 10 till correctly scaled
   uScaledNumber = uUnscaledNumber;
@@ -1104,6 +1094,13 @@ L_Decimal:
   // have we exceeded the max ?
   if (uScaledNumber > (u8)C_I8_MAX)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
+
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  //                                                         recognized decimal
+    
+  vSKIP_TRAILING_WHITE_SPACE();
+  if (bNOISY_FIELD_END())
+    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   
   // compute final field value
   iDecimalValue = bIsNegative ? - uScaledNumber : uScaledNumber;
@@ -1302,6 +1299,9 @@ L_Integer:
     }
   }
 
+  // too big?
+  if (uWholeNumber > (u8)C_I8_MAX)
+    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognised integer
@@ -1310,10 +1310,6 @@ L_Integer:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
 
-  // too big?
-  if (uWholeNumber > (u8)C_I8_MAX)
-    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
-  
   // compute final field value
   iIntegerValue = bIsNegative ? - uWholeNumber : uWholeNumber;
   
@@ -1391,13 +1387,6 @@ L_Interval:
   if (! nWholeDigits)
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   
-  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-  //                                                         recogised interval
-
-  vSKIP_TRAILING_WHITE_SPACE();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
-
   // have we exceeded the max for second?
   if (uSecondComponent > (u8)C_IVL_SEC_MAX)
     vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
@@ -1406,6 +1395,13 @@ L_Interval:
   if (uMicrosecondComponent > (u8)C_IVL_USEC_MAX)
     vFIELD_ERROR(EC_CSV_INTERVAL_USECS_TOO_LARGE);
   
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  //                                                         recogised interval
+
+  vSKIP_TRAILING_WHITE_SPACE();
+  if (bNOISY_FIELD_END())
+    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+
   // compute final field value
   xIntervalValue.m_uSecond = uSecondComponent;
   xIntervalValue.m_uMicro  = uMicrosecondComponent;
@@ -1534,13 +1530,6 @@ L_Time:
     uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
   }
   
-  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-  //                                                           time  recognised
-
-  vSKIP_TRAILING_WHITE_SPACE();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_TIME_INVALID);
-  
   if (uHourComponent > 23)
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   
@@ -1549,6 +1538,13 @@ L_Time:
   
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+  
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  //                                                            recognised time
+
+  vSKIP_TRAILING_WHITE_SPACE();
+  if (bNOISY_FIELD_END())
+    vFIELD_ERROR(EC_CSV_TIME_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // compute final field value
@@ -1616,10 +1612,8 @@ L_Timestamp_components:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_components:\n"_Stz);
 
-  i_DateComponent++;
-  
-  if (i_DateComponent > 2)
-    goto L_Timestamp_collected;
+  if (++i_DateComponent > 2)
+    goto L_Timestamp_dateCollected;
   
   // skip over separator
   if (i_DateComponent > 0) {
@@ -1636,7 +1630,6 @@ L_Timestamp_components:
       NEVER_REACH;
   }
     
-
   // ---- ---- ---- ---- ---- ---- ---- ----
   // year component
   
@@ -1651,10 +1644,11 @@ L_Timestamp_year:
     nWholeDigits++;
   }
   
-  // should have seen some digits
+  // should have seen some digits for year
   if (! nWholeDigits)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
 
+  // no more than 4
   if (nWholeDigits > 4)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
 
@@ -1678,10 +1672,11 @@ L_Timestamp_month:
     nWholeDigits++;
   }
 
-  // should have seen some digits
+  // should have seen some digits for month
   if (! nWholeDigits)
     vFIELD_ERROR(EC_CSV_MONTH_INVALID);
 
+  // no more than 2
   if (nWholeDigits > 2)
     vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
 
@@ -1701,10 +1696,11 @@ L_Timestamp_day:
     nWholeDigits++;
   }
 
-  // should have seen some digits
+  // should have seen some digits for day
   if (! nWholeDigits)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
   
+  // no more than 2
   if (nWholeDigits > 2)
     vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
 
@@ -1712,119 +1708,14 @@ L_Timestamp_day:
   
   // ---- ---- ---- ---- ---- ---- ---- ----
 
-L_Timestamp_collected:
+L_Timestamp_dateCollected:
 
   if (iTraceBits & C_BIT_Timestamp)
-    vTrace("L_Timestamp_collected:\n"_Stz);
+    vTrace("L_Timestamp_dateCollected:\n"_Stz);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // ' ' or 'T' separator
-  if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr)
-    vNEXT_CSVCHR();
+  // validate the date
   
-  if (! bIS_DIGIT())
-    goto L_SkipTime;
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // hour component
-
-  if (iTraceBits & C_BIT_Timestamp)
-    vTrace("L_Timestamp_hour:\n"_Stz);
-  
-  // collect digits for hour
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
-    vCOLLECT(uHourComponent);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
-
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-
-  // skip over separator
-  if (cCurChr != C_TIME_SEPARATOR)
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vNEXT_CSVCHR(); // skip ':'
-  
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // minute component
-
-  if (iTraceBits & C_BIT_Timestamp)
-    vTrace("L_Timestamp_minute:\n"_Stz);
-  
-  // collect digits for minute
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
-    vCOLLECT(uMinuteComponent);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
-
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-
-  // skip over separator
-  if (cCurChr != C_TIME_SEPARATOR)
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-
-  vNEXT_CSVCHR(); // skip ':'
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // second component
-
-  if (iTraceBits & C_BIT_Timestamp)
-    vTrace("L_Timestamp_second:\n"_Stz);
-  
-  // collect digits for second
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
-    vCOLLECT(uSecondComponent);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_SECOND_INVALID);
-
-  if (nWholeDigits > 2)
-    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
-
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // optional microsecond component
-  
-  if (iTraceBits & C_BIT_Timestamp)
-    vTrace("L_Timestamp_microsecond:\n"_Stz);
-  
-  // a dot without any futher digits is ok
-  if (bIS_DECIMAL_POINT()) {
-    
-    vNEXT_CSVCHR(); // skip '.'
-
-    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_CSVCHR()) {
-      vCOLLECT(uMicrosecondComponent);
-      nMicrosecondShift /= 10;
-    }
-
-    uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
-  }
-
-  while (bIS_DIGIT())
-    vNEXT_CSVCHR(); // skip digit
-
-L_SkipTime:
-  
-  vSKIP_WHITE_SPACE();
-  
-  if (! (bFIELD_END()))
-    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-  
-  // ==== ==== ==== ==== ==== ==== ==== ====
-  // all date portions collected
-
   // validate the year
   if (uYearComponent < C_YEAR_MIN)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
@@ -1862,19 +1753,109 @@ L_SkipTime:
       vFIELD_ERROR(EC_CSV_DAY_INVALID);
   }
 
-  // compute final date component values
-  xTimestampValue.m_uYearDelta = uYearComponent - C_YEAR_BASE;
-  xTimestampValue.m_uMonth     = uMonthComponent;
-  xTimestampValue.m_uDay       = uDayComponent;
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // ' ' or 'T' separator
+  
+  if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr)
+    vNEXT_CSVCHR();
+  
+  if (! bIS_DIGIT())
+    goto L_Timestamp_noTimeComponents;
 
-  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-  //                                                       recognised timestamp
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // hour component
 
-  // skip any whitespace after the field value
-  vSKIP_TRAILING_WHITE_SPACE();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_Timestamp_hour:\n"_Stz);
+  
+  // collect digits for hour
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
+    vCOLLECT(uHourComponent);
+    nWholeDigits++;
+  }
+  
+  // should have seen some digits for hour
+  if (! nWholeDigits)
+    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
 
+  // no more than 2
+  if (nWholeDigits > 2)
+    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
+
+  // skip over separator
+  if (cCurChr != C_TIME_SEPARATOR)
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+  vNEXT_CSVCHR(); // skip ':'
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // minute component
+
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_Timestamp_minute:\n"_Stz);
+  
+  // collect digits for minute
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
+    vCOLLECT(uMinuteComponent);
+    nWholeDigits++;
+  }
+  
+  // should have seen some digits for minute
+  if (! nWholeDigits)
+    vFIELD_ERROR(EC_CSV_MINUTE_INVALID);
+
+  // no more than 2
+  if (nWholeDigits > 2)
+    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+
+  // skip over separator
+  if (cCurChr != C_TIME_SEPARATOR)
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+
+  vNEXT_CSVCHR(); // skip ':'
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // second component
+
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_Timestamp_second:\n"_Stz);
+  
+  // collect digits for second
+  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vNEXT_CSVCHR()) {
+    vCOLLECT(uSecondComponent);
+    nWholeDigits++;
+  }
+  
+  // should have seen some digits for second
+  if (! nWholeDigits)
+    vFIELD_ERROR(EC_CSV_SECOND_INVALID);
+
+  // no more than 2
+  if (nWholeDigits > 2)
+    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // optional microsecond component
+  
+  if (iTraceBits & C_BIT_Timestamp)
+    vTrace("L_Timestamp_microsecond:\n"_Stz);
+  
+  // a dot without any futher digits is ok
+  if (bIS_DECIMAL_POINT()) {
+    
+    vNEXT_CSVCHR(); // skip '.'
+
+    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vNEXT_CSVCHR()) {
+      vCOLLECT(uMicrosecondComponent);
+      nMicrosecondShift /= 10;
+    }
+
+    uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
+  }
+
+  while (bIS_DIGIT())
+    vNEXT_CSVCHR(); // skip digit
+  
+  // validate the time components
   if (uHourComponent > 23)
     vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   
@@ -1883,12 +1864,33 @@ L_SkipTime:
   
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
   
-  // compute final time component values
+L_Timestamp_noTimeComponents:
+  
+  vSKIP_WHITE_SPACE();
+  
+  if (! (bFIELD_END()))
+    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+  
+  // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+  //                                                       recognised timestamp
+
+  vSKIP_TRAILING_WHITE_SPACE();
+  if (bNOISY_FIELD_END())
+    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
+
+  // compute final timestamp value from components
+  xTimestampValue.m_uYearDelta = uYearComponent - C_YEAR_BASE;
+  xTimestampValue.m_uMonth     = uMonthComponent;
+  xTimestampValue.m_uDay       = uDayComponent;
+
   xTimestampValue.m_uHour   = uHourComponent;
   xTimestampValue.m_uMinute = uMinuteComponent;
   xTimestampValue.m_uSecond = uSecondComponent;
   xTimestampValue.m_uMicro  = uMicrosecondComponent;
+  
   xTimestampValue.m_uSpare  = 0;
 
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
@@ -1946,22 +1948,22 @@ L_Varchar:
         }
         else { // not expected 'l'
           vRESET_FIELD();
-          goto L_VarcharWhich;
+          goto L_Varchar_which;
         }
       }
       else { // not expected 'l'
         vRESET_FIELD();
-        goto L_VarcharWhich;
+        goto L_Varchar_which;
       }
     }
     else { // not expected 'u'
       vRESET_FIELD();
-      goto L_VarcharWhich;
+      goto L_Varchar_which;
     }
     
     if (! (bFIELD_END())) {
       vRESET_FIELD();
-      goto L_VarcharWhich;
+      goto L_Varchar_which;
     }
 
     goto L_VarcharNull;
@@ -1979,13 +1981,13 @@ L_Varchar:
     }
   
     vRESET_FIELD();
-    goto L_VarcharWhich;
+    goto L_Varchar_which;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // .. which type of varchar
   
-L_VarcharWhich:
+L_Varchar_which:
   
   while (cCurChr) {
 
@@ -1996,16 +1998,16 @@ L_VarcharWhich:
     }
     
     if (m_cQuoteSingle == cCurChr)
-      goto L_VarcharSingleQuoted;
+      goto L_Varchar_singleQuoted;
     
     if (m_cQuoteDouble == cCurChr)
-      goto L_VarcharDoubleQuoted;
+      goto L_Varchar_doubleQuoted;
     
     if (m_cEnclosedBy_Leading == cCurChr)
-      goto L_VarcharUserEnclosed;
+      goto L_Varchar_userEnclosed;
     
     vRESET_FIELD();
-    goto L_VarcharUnquoted;
+    goto L_Varchar_unquoted;
   }
   
   NEVER_REACH;
@@ -2014,10 +2016,10 @@ L_VarcharWhich:
   // 3.i.nqs) string is a non-quoted string                         nqs varchar
   // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 
-L_VarcharUnquoted:
+L_Varchar_unquoted:
 
   if (iTraceBits & C_BIT_Varchar)
-    vTrace("L_VarcharUnquoted:\n"_Stz);
+    vTrace("L_Varchar_unquoted:\n"_Stz);
   
   // allocate string space in slab
   azVchValue = m_pRowSlab->azDepositString_begin();
@@ -2072,10 +2074,10 @@ L_VarcharUnquoted:
   // 3.i.sqs) string is delimited by single quotes                  sqs varchar
   // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 
-L_VarcharSingleQuoted:
+L_Varchar_singleQuoted:
 
   if (iTraceBits & C_BIT_Varchar)
-    vTrace("L_VarcharSingleQuoted:\n"_Stz);
+    vTrace("L_Varchar_singleQuoted:\n"_Stz);
   
   // allocate string space in slab
   azVchValue = m_pRowSlab->azDepositString_begin();
@@ -2124,7 +2126,7 @@ L_VarcharSingleQuoted:
         // encountered terminating quote
         // >> *'.*'.
         //         ^
-        goto L_VarcharSingleQuotedTerminate;
+        goto L_Varchar_singleQuotedTerminate;
       }
 
     } // end of if ' voodoo
@@ -2168,7 +2170,7 @@ L_VarcharSingleQuoted:
 
   // === === === === === === === === === === === === === === === === === === ===
   //                                                      recognised sqs varchar
-L_VarcharSingleQuotedTerminate:
+L_Varchar_singleQuotedTerminate:
   
   // terminate
   *acVchDst++ = '\0';
@@ -2188,10 +2190,10 @@ L_VarcharSingleQuotedTerminate:
   // 3.i.dqs) string is delimited by double quotes                  dqs varchar
   // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
   
-L_VarcharDoubleQuoted:
+L_Varchar_doubleQuoted:
 
   if (iTraceBits & C_BIT_Varchar)
-    vTrace("L_VarcharDoubleQuoted:\n"_Stz);
+    vTrace("L_Varchar_doubleQuoted:\n"_Stz);
   
   // allocate string space in slab
   azVchValue = m_pRowSlab->azDepositString_begin();
@@ -2240,7 +2242,7 @@ L_VarcharDoubleQuoted:
         // encountered terminating quote
         // >> *".*".
         //         ^
-        goto L_VarcharDoubleQuotedTerminate;
+        goto L_Varchar_doubleQuotedTerminate;
       }
 
     } // end of if " voodoo
@@ -2284,7 +2286,7 @@ L_VarcharDoubleQuoted:
 
   // === === === === === === === === === === === === === === === === === === ===
   //                                                       recogised dqs varchar
-L_VarcharDoubleQuotedTerminate:
+L_Varchar_doubleQuotedTerminate:
   
   // terminate
   *acVchDst++ = '\0';
@@ -2303,10 +2305,10 @@ L_VarcharDoubleQuotedTerminate:
   // 3.i.ues) string is enclosed by user specific                   ues varchar
   // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
   
-L_VarcharUserEnclosed:
+L_Varchar_userEnclosed:
 
   if (iTraceBits & C_BIT_Varchar)
-    vTrace("L_VarcharUserEnclosed:\n"_Stz);
+    vTrace("L_Varchar_userEnclosed:\n"_Stz);
   
   // allocate string space in slab
   azVchValue = m_pRowSlab->azDepositString_begin();
