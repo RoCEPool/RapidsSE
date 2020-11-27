@@ -249,11 +249,32 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 //--
 
+#define vFIELD_ERROR(_errorCode) \
+  { \
+    eError = _errorCode; \
+    i_ErrorCodeLine = __LINE__; \
+    goto L_FieldError; \
+  }
+
+//--
+
 #define vACCEPT_CHAR() \
   (cPrvChr = cCurChr, cCurChr = cNxtChr , cNxtChr = *++azCsvCrs)
 
 #define vCOLLECT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
+
+#define VCOLLECT_DIGITS(_uComponent,_maxDigits,_errorCode) \
+  \
+  nWholeDigits = 0; \
+  while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
+    vACCEPT_CHAR()) { \
+    vCOLLECT(_uComponent); \
+    nWholeDigits++; \
+  } \
+  \
+  if (nWholeDigits > _maxDigits) \
+    vFIELD_ERROR(_errorCode)
 
 #define vDETECT_SIGN() \
   if (cCurChr == C_MINUS_SIGN) { \
@@ -267,15 +288,6 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
   } \
   else { \
     bIsNegative = false; \
-  }
-
-//--
-
-#define vFIELD_ERROR(e) \
-  { \
-    eError = e; \
-    i_ErrorCodeLine = __LINE__; \
-    goto L_FieldError; \
   }
 
 //--
@@ -850,7 +862,7 @@ L_Date:
   uMonthComponent = 0;
   uDayComponent   = 0;
 
-L_Date_components:
+L_Date_nextComponent:
   
   if (++i_DateComponent > 2)
     goto L_Date_componentsCollected;
@@ -876,7 +888,7 @@ L_Date_components:
 L_Date_year:
 
   // collect digits for year
-  for (nWholeDigits = 0; nWholeDigits < 4 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uYearComponent);
     nWholeDigits++;
   }
@@ -893,7 +905,7 @@ L_Date_year:
   if (uYearComponent <= 99)
     uYearComponent += 2000;
   
-  goto L_Date_components;
+  goto L_Date_nextComponent;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // month component
@@ -901,7 +913,7 @@ L_Date_year:
 L_Date_month:
   
   // collect digits for month
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uMonthComponent);
     nWholeDigits++;
   }
@@ -914,7 +926,7 @@ L_Date_month:
   if (nWholeDigits > 2)
     vFIELD_ERROR(EC_CSV_MONTH_TOO_LARGE);
   
-  goto L_Date_components;
+  goto L_Date_nextComponent;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // day component
@@ -922,7 +934,7 @@ L_Date_month:
 L_Date_day:
   
   // collect digits for day
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uDayComponent);
     nWholeDigits++;
   }
@@ -935,7 +947,7 @@ L_Date_day:
   if (nWholeDigits > 2)
     vFIELD_ERROR(EC_CSV_DAY_TOO_LARGE);
 
-  goto L_Date_components;
+  goto L_Date_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // all date components collected
@@ -1366,10 +1378,14 @@ L_Interval:
   // unsigned seconds component
   
   // collect digits for leading seconds
-  for  (nWholeDigits = 0; nWholeDigits < 9 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for  (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uSecondComponent);
     nWholeDigits++;
   }
+  
+  // no more than 9
+  if (nWholeDigits > 9)
+    vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microseconds component
@@ -1377,7 +1393,7 @@ L_Interval:
   // collect further digits for trailing microseconds
   if (bIS_DECIMAL_POINT()) {
     vACCEPT_CHAR(); // skip '.'
-    for ( ; nMicrosecondShift > 1 && bIS_DIGIT(); vACCEPT_CHAR()) {
+    for (nWholeDigits = 0; nMicrosecondShift > 1 && bIS_DIGIT(); vACCEPT_CHAR()) {
       vCOLLECT(uMicrosecondComponent);
       nWholeDigits++;
       nMicrosecondShift /= 10;
@@ -1460,7 +1476,7 @@ L_Time:
   // hour component
 
   // collect digits for hour
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uHourComponent);
     nWholeDigits++;
   }
@@ -1482,7 +1498,7 @@ L_Time:
   // minute component
 
   // collect digits for minute
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uMinuteComponent);
     nWholeDigits++;
   }
@@ -1504,7 +1520,7 @@ L_Time:
   // second component
 
   // collect digits for second
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uSecondComponent);
     nWholeDigits++;
   }
@@ -1643,7 +1659,7 @@ L_Timestamp_year:
     vTrace("L_Timestamp_year:\n"_Stz);
   
   // collect digits for year
-  for (nWholeDigits = 0; nWholeDigits < 4 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uYearComponent);
     nWholeDigits++;
   }
@@ -1671,7 +1687,7 @@ L_Timestamp_month:
     vTrace("L_Timestamp_month:\n"_Stz);
   
   // collect digits for month
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uMonthComponent);
     nWholeDigits++;
   }
@@ -1695,7 +1711,7 @@ L_Timestamp_day:
     vTrace("L_Timestamp_day:\n"_Stz);
   
   // collect digits for day
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uDayComponent);
     nWholeDigits++;
   }
@@ -1798,7 +1814,7 @@ L_Timestamp_dateCollected:
     vTrace("L_Timestamp_minute:\n"_Stz);
   
   // collect digits for minute
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uMinuteComponent);
     nWholeDigits++;
   }
@@ -1824,7 +1840,7 @@ L_Timestamp_dateCollected:
     vTrace("L_Timestamp_second:\n"_Stz);
   
   // collect digits for second
-  for (nWholeDigits = 0; nWholeDigits < 2 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
     vCOLLECT(uSecondComponent);
     nWholeDigits++;
   }
