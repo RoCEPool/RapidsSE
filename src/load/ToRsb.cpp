@@ -264,17 +264,22 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define vCOLLECT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
 
-#define VCOLLECT_DIGITS(_uComponent,_maxDigits,_errorCode) \
+#define VCOLLECT_DIGITS(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
+  \
+  _uComponent = 0; \
   \
   nWholeDigits = 0; \
   while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
-    vACCEPT_CHAR(); \
     vCOLLECT(_uComponent); \
     nWholeDigits++; \
+   vACCEPT_CHAR(); \
   } \
   \
+  if (! nWholeDigits) \
+    vFIELD_ERROR(_errorCode1) \
+  \
   if (nWholeDigits > _maxDigits) \
-    vFIELD_ERROR(_errorCode)
+    vFIELD_ERROR(_errorCode2)
 
 #define vDETECT_SIGN() \
   if (cCurChr == C_MINUS_SIGN) { \
@@ -785,16 +790,9 @@ L_Boolean:
   // possible numeric form of boolean
 
   if (bIS_DIGIT()) {
-
-//    uWholeNumber = 0;
-//    for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
-//      vCOLLECT(uWholeNumber);
-//      nWholeDigits++;
-//    }
-//    if (nWholeDigits > C_MAX_INTEGER_DIGITS)
-//      vFIELD_ERROR(EC_CSV_BOOLEAN_TOO_LARGE);
   
-    VCOLLECT_DIGITS(uWholeNumber,C_MAX_INTEGER_DIGITS,EC_CSV_BOOLEAN_TOO_LARGE);
+    VCOLLECT_DIGITS(uWholeNumber,C_MAX_INTEGER_DIGITS,
+                    EC_CSV_BOOLEAN_INVALID,EC_CSV_BOOLEAN_TOO_LARGE);
     
     if (uWholeNumber > 0)
       iBooleanValue = true;
@@ -1288,20 +1286,8 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
   
-  // collect digits for number
-  uWholeNumber = 0;
-  for (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uWholeNumber);
-    nWholeDigits++;
-  }
-  
-  // should have seen some digits
-  if (! nWholeDigits)
-    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
-  
-  // should not have seen too many digits
-  if (nWholeDigits > C_MAX_INTEGER_DIGITS)
-    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
+  VCOLLECT_DIGITS(uWholeNumber,C_MAX_INTEGER_DIGITS,
+                  EC_CSV_INTEGER_INVALID,EC_CSV_INTEGER_TOO_LARGE);
 
   // ignore any . digits
   if (bIS_DECIMAL_POINT()) {
