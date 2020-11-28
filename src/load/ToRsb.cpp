@@ -648,21 +648,24 @@ L_TestMoreRecords:
     break;
   }
   
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // have we processed the chunk?
+  
   if (bCHUNK_END())
     goto L_ChunkEnd;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
-  // begin record processing
+  // have found next record
   
   m_i_Rec++;
   
-  // record where the records starts
+  // mark where the records starts
   azRecordStart = azCsvCrs;
 
   // reset field cursor
   i_Fld = -1;
 
-  // allot a new rsb, new another rsbBuffer if necessary
+  // allot a new rsb (new another rsbBuffer if necessary)
   if (! m_pRowSlab->bNewRow(&aRsb)) {    // ? inline ?
     vNewRsbBuffer();
     bool b = m_pRowSlab->bNewRow(&aRsb);
@@ -700,7 +703,7 @@ L_TestMoreFields:
    
    */
 
-  // record where the field starts
+  // mark where the field starts
   azFieldStart = azCsvCrs - 1;
   
   // decode and convert field i_Fld

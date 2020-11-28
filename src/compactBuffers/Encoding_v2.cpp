@@ -93,13 +93,13 @@ i8 Encoding_v2::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 /* encode inflated row                                                        */
 /*----------------------------------------------------------------------------*/
-void Encoding_v2::vEncodeIrw(Row* pIrw)
+void Encoding_v2::vEncodeIrw(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
   
   vReset();
   
-  vInitialEncodingIrw(pIrw);
+  vInitialEncodingIrw(pRow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +222,7 @@ void Encoding_v2::vSplitOver(void)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding_v2::vInitialEncodingIrw(Row* pIrw)
+void Encoding_v2::vInitialEncodingIrw(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
   
@@ -232,7 +232,7 @@ void Encoding_v2::vInitialEncodingIrw(Row* pIrw)
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    Dtm wColVal = pIrw->wColDtm(i_Col);
+    Dtm wColVal = pRow->wColDtm(i_Col);
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
@@ -250,7 +250,7 @@ void Encoding_v2::vInitialEncodingIrw(Row* pIrw)
       case DM_VCH:
         // get the stz from the row
         if ( ! wColVal.bIsNull() )
-          wColVal.m_szVch = pIrw->szColVal_ofs(i_Col);
+          wColVal.m_szVch = pRow->szColVal_ofs(i_Col);
         vEncodeVch(xrColEnc,wColVal);
         break;
         

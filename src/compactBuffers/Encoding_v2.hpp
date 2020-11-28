@@ -56,7 +56,7 @@ namespace CompactBuffers
   
     i8   nBytesNeeded(void);
   
-    void vEncodeIrw(Row* pIrw);
+    void vEncodeIrw(Row* pRow);
     void vEncodeRsb(Rsb* aRsb);
     void vEncodeSrw(RowSingle* pSrw);
   
@@ -67,7 +67,7 @@ namespace CompactBuffers
 
   private:
     // encoding (structural order)
-    void vInitialEncodingIrw(Row* pIrw);
+    void vInitialEncodingIrw(Row* pRow);
     void vInitialEncodingRsb(Rsb* aRsb);
     void vInitialEncodingSrw(RowSingle* pSrw);
  

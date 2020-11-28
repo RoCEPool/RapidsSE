@@ -206,16 +206,16 @@ bool RowCompactor::bCompactTail(Stz* szTailStr)
 /*----------------------------------------------------------------------------*/
 /* add given row from irw buffer into current crw buffer                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddIrwAsCrw(Row* pIrw)
+bool RowCompactor::bAddIrwAsCrw(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // 1) initially encode head of inflated row into m_pEncoding_v1
-  vEncodeHeadForIrw(pIrw);
+  vEncodeHeadForIrw(pRow);
   
   // 2) encode tails into m_pEncoding_v1
   //  if (! m_pStreamDef->m_nFixedSized)
-    vEncodeTailsForIrw(pIrw);
+    vEncodeTailsForIrw(pRow);
   
   // 3) split encoded head between crw head and crw overflow
   m_pEncoding_v2->vSplitOver();
@@ -467,11 +467,11 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHeadForIrw(Row* pIrw)
+void RowCompactor::vEncodeHeadForIrw(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding_v2->vEncodeIrw(pIrw);
+  m_pEncoding_v2->vEncodeIrw(pRow);
 
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -499,7 +499,7 @@ void RowCompactor::vEncodeHeadForSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
+void RowCompactor::vEncodeTailsForIrw(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -518,14 +518,14 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     
     // -- vch column --
     
-    Dtm* aColVal = pIrw->aColDtm(i_Col);
+    Dtm* aColVal = pRow->aColDtm(i_Col);
     
     if (aColVal->bIsNull())
       continue;
     
     // -- non-null vch column --
     
-    Stz* azStr = pIrw->szColVal_ofs(i_Col);
+    Stz* azStr = pRow->szColVal_ofs(i_Col);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
     

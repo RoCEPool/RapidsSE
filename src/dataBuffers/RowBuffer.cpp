@@ -117,7 +117,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       ASSERT(nCopyBytes + 1 == nSrcLength);
       
       // set offset of tail string
-      pRow->vColVal_int(i_Col,iToOffset(acDstString));
+      pRow->vColVal_ofs(i_Col,iToOffset(acDstString));
       
       continue;
     }

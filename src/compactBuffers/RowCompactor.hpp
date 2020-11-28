@@ -52,14 +52,14 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - -
     // Row Packing
   
-    bool bAddIrwAsCrw(Row* pIrw);
+    bool bAddIrwAsCrw(Row* pRow);
     bool bAddRsbAsCrw(Rsb* aRsb);
     bool bAddSrwAsCrw(RowSingle* pSrw);
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
-    void vEncodeHeadForIrw(Row* pIrw);
+    void vEncodeHeadForIrw(Row* pRow);
     void vEncodeHeadForSrw(RowSingle* pSrw);
-    void vEncodeTailsForIrw(Row* pIrw);
+    void vEncodeTailsForIrw(Row* pRow);
     void vEncodeTailsForRsb(Rsb* aRsb);
     void vEncodeTailsForSrw(RowSingle* pSrw);
 

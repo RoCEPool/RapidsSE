@@ -79,8 +79,10 @@ void Step::vRowIsNull(void)
 void Step::vRowSet(void)
 {
   ENTRY();
-  
-  m_pLogicUnit->m_xpRow = _pRow(m_pDataStack->pPopPtr(__func__));
+
+  Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
+
+  m_pLogicUnit->m_xpRow = _pRow(pRow);
   
   EXIT();
 }

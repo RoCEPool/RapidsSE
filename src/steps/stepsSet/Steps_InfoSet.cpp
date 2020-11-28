@@ -203,7 +203,7 @@ void Step::vInfoSetAddRowVargs(void)
         nSize = sStr.nSize();
         szTail = (Stz*)pInfoSet->ayAllotTail(nSize);
         StrLib::vCopy(szTail->azChar(),sStr.azChar());
-        aRow->vColVal_int(i_Arg,pInfoSet->iToOffset(szTail));
+        aRow->vColVal_ofs(i_Arg,pInfoSet->iToOffset(szTail));
         break;
         
       default:
