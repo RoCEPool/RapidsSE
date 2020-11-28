@@ -220,7 +220,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vShow(StreamDef* pStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   i8 nRows = nItems();
   

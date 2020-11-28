@@ -5,10 +5,10 @@
 
 namespace Rows
 {
-  class Rsb
+  class Rsb : public Object
   {
   private:
-    i8 m_iDummy;    // Neccessary for GCC v5
+
     m8 m_maCells[]; // C++ flexible member array must be last
 
   public:
