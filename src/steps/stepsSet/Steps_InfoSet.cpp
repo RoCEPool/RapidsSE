@@ -195,7 +195,7 @@ void Step::vInfoSetAddRowVargs(void)
         
       case DM_INT:
         iInt = m_pDataStack->iPopInt(__func__);
-        aRow->m_waColVal[i_Arg].m_iWrd = iInt;
+        aRow->vColVal(i_Arg,iInt);
         break;
         
       case DM_VCH:
@@ -203,7 +203,7 @@ void Step::vInfoSetAddRowVargs(void)
         nSize = sStr.nSize();
         szTail = (Stz*)pInfoSet->ayAllotTail(nSize);
         StrLib::vCopy(szTail->azChar(),sStr.azChar());
-        aRow->m_waColVal[i_Arg].m_iWrd = pInfoSet->iToOffset(szTail);
+        aRow->vColVal(i_Arg,pInfoSet->iToOffset(szTail));
         break;
         
       default:
@@ -301,8 +301,8 @@ void Step::vInfoSetChunkFile(void)
       if (pRow) {
         nRows++;
         
-        pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
-        pRow->m_waColVal[1].m_iWrd = nChunkBytes;
+        pRow->vColVal(0,i_ChunkLoc);
+        pRow->vColVal(1,nChunkBytes);
       }
 
       s32 sFileSize;
@@ -359,8 +359,8 @@ void Step::vInfoSetChunkFile(void)
     if (pRow) {
       nRows++;
       
-      pRow->m_waColVal[0].m_iWrd = i_ChunkLoc;
-      pRow->m_waColVal[1].m_iWrd = nChunkBytes;
+      pRow->vColVal(0,i_ChunkLoc);
+      pRow->vColVal(1,nChunkBytes);
       
       // advance to start of next chunk
       i_ChunkLoc = i_EndChunkLoc + 1;
@@ -409,12 +409,12 @@ void Step::vInfoSetColValFetch(void)
   switch (eDatum) {
       
     case DM_INT:
-      iInt = aRow->m_waColVal[i_Col].m_iWrd;
+      iInt = aRow->iColVal(i_Col);
       m_pDataStack->vPushInt(iInt);
       break;
       
     case DM_VCH:
-      wDtm = aRow->m_waColVal[i_Col];
+      wDtm = aRow->wColVal(i_Col);
       sStr = aRow->szStzGet_row(i_Col);
       m_pDataStack->vPushStz(sStr);
       break;
@@ -632,8 +632,8 @@ void Step::vInfoSetRdCsvChunk(void)
   
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
   
-  i8 iOffset = pRow->m_waColVal[0];
-  i8 nBytes = pRow->m_waColVal[1];
+  i8 iOffset = pRow->iColVal(0);
+  i8 nBytes = pRow->iColVal(1);
   
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   

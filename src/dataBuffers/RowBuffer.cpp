@@ -103,7 +103,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       
       // check for null
       if (pRowSingle->bIsColNull(i_Col)) {
-        pRow->m_waColVal[i_Col].vSetNull();
+        pRow->vSetColNull(i_Col);
         continue;
       }
       
@@ -117,7 +117,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       ASSERT(nCopyBytes + 1 == nSrcLength);
       
       // set offset of tail string
-      pRow->m_waColVal[i_Col].m_iWrd = iToOffset(acDstString);
+      pRow->vColVal(i_Col,iToOffset(acDstString));
       
       continue;
     }
@@ -125,7 +125,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    pRow->m_waColVal[i_Col].m_iWrd = pRowSingle->iColVal(i_Col);
+    pRow->vColVal(i_Col,pRowSingle->iColVal(i_Col));
   }
   
   //pRow->vDump(pStreamDef);

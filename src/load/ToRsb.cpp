@@ -769,7 +769,7 @@ L_Boolean:
                  | \N       // null form
                  | <EMPTY>  // null form
                  | true     // true form
-                 | false    // false
+                 | false    // false form
                  | <WHOLE_NUMBER>  // number form
   
    */
@@ -1093,7 +1093,7 @@ L_Decimal:
      <DECIMAL> :   null     // null form
                  | \N       // null form
                  | <EMPTY>  // null form
-                 | <WHOLE_NUMBER> [ . <FRAC_NUMBER> ]
+                 | <WHOLE_NUMBER> [ . <FRACTION> ]
 
    */
 
@@ -1331,7 +1331,7 @@ L_Integer:
      <INTEGER> :   null     // null form
                  | \N       // null form
                  | <EMPTY>  // null form
-                 | [<SIGN>] <WHOLE_NUMBER> [ . <FRAC_NUMBER> ]
+                 | [ <SIGN> ] <WHOLE_NUMBER> [ . <FRACTION> ]
   
    */
 
@@ -1430,7 +1430,7 @@ L_Interval:
      <INTERVAL> :   null     // null form
                   | \N       // null form
                   | <EMPTY>  // null form
-                  | <WHOLE_NUMBER> [ . <FRAC_NUMBER> ]
+                  | <WHOLE_NUMBER> [ . <FRACTION> ]
 
    */
 

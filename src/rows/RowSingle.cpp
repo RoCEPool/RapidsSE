@@ -261,12 +261,12 @@ void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
 
   if (DM_VCH == pIntoCol->eDatum()) {
     
-    if (pRow->m_waColVal[i_FromCol].bIsNull()) {
+    if (pRow->bIsColNull(i_FromCol)) {
       m_awaColVal[i_IntoCol].vSetNull();
       return;
     }
     
-    char* acSrcString = (char*)pRow->m_waColVal[i_FromCol].m_azStr;
+    char* acSrcString = (char*)pRow->szColVal(i_FromCol);
     vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
     
     return;
@@ -275,7 +275,7 @@ void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
 
-  m_awaColVal[i_IntoCol].m_iWrd = pRow->m_waColVal[i_FromCol].m_iWrd;
+  m_awaColVal[i_IntoCol].m_iWrd = pRow->iColVal(i_FromCol);
 }
 
 /*----------------------------------------------------------------------------*/

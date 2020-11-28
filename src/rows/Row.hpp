@@ -7,8 +7,7 @@ namespace Rows
 {
   class Row : public Object
   {
-  public:
-  //private:
+  private:
     Dtm m_waColVal[1];
     
   public:
@@ -25,11 +24,15 @@ namespace Rows
     Dtm* aColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);
+    void vColVal(i8 i_Col, i8 iVal);
     d8   dColVal(i8 i_Col);
+    void vColVal(i8 i_Col, d8 dVal);
     Stz* szColVal(i8 i_Col);
     Dtm  wColVal(i8 i_Col);
 
     bool bIsColNull(i8 i_Col);
+  
+    void vSetColNull(i8 i_Col);
 
     Stz* szStzGet_row(i8 i_Col);
   };

@@ -35,10 +35,11 @@ void Step::vRowGetIntColumn(void)
 {
   ENTRY();
   
-  i8 iColumn = m_pDataStack->iPopInt(__func__);
+  i8 i_Col = m_pDataStack->iPopInt(__func__);
   
   Row* pRow = *m_pLogicUnit->m_xpRow;
-  m_pDataStack->vPushInt(pRow->m_waColVal[iColumn]);
+  
+  m_pDataStack->vPushInt(pRow->iColVal(i_Col));
   
   EXIT();
 }

@@ -518,7 +518,7 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     
     // -- vch column --
     
-    Dtm* aColVal = & pIrw->m_waColVal[i_Col];
+    Dtm* aColVal = pIrw->aColDtm(i_Col);
     
     if (aColVal->bIsNull())
       continue;
@@ -785,7 +785,7 @@ void RowCompactor::vAnalyzeSamples(void)
       
       //pOuterRow->vDump(m_pStreamDef);
       
-      if (pOuterIrw->m_waColVal[i_Col].bIsNull())
+      if (pOuterIrw->bIsColNull(i_Col))
         continue;
       
       Stz* azOuterStr = pOuterIrw->szStzGet_row(i_Col);
@@ -797,7 +797,7 @@ void RowCompactor::vAnalyzeSamples(void)
            pInnerIrw;
            pInnerIrw = m_pIrwSamples->aNextRow(pInnerIrw,nRowHeadSize)) {
         
-        if (pInnerIrw->m_waColVal[i_Col].bIsNull())
+        if (pInnerIrw->bIsColNull(i_Col))
           continue;
         
         vCreateSampleTail(pCol,pOuterIrw,pInnerIrw);
