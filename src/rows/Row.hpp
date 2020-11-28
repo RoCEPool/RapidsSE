@@ -30,6 +30,7 @@ namespace Rows
     d8   dColVal_flt(i8 i_Col);
     void vColVal_flt(i8 i_Col, d8 dVal);
     Stz* szColVal_ofs(i8 i_Col);
+    void vColVal_ofs(i8 i_Col, i8 iOfs);
     Stz* szColVal_vch(i8 i_Col);
 
     bool bIsColNull(i8 i_Col);
