@@ -23,9 +23,6 @@ namespace Rows
     // - - - - - - - - - - - - - - - - - -
     // data
   
-    t8  m_tPerspective;   // transaction perspective
-    i8  m_iHash;          // hash of partition column values
-  
   private:
  
     Dtm* m_awaColVal; // dynamically allotted column value array
@@ -53,7 +50,6 @@ namespace Rows
     void vCopy(Row* pRow);
     void vDontDecodeVch(void);
     byte* ayDstByte(void);
-    i8   iHashColumn(Column* pCol);
     bool bIsColNull(i8 i_Col);
     void vResetValues(void);
     void vSet(i8 iArgsBegin, ...);

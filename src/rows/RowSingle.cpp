@@ -61,14 +61,11 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
   
   m_bGetAll     = true;
   
-  m_tPerspective = C_UNKNOWN;
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
   m_iLastCol    = C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - -
-
-  m_iHash = 0;
   
   m_awaColVal = (Dtm*)m_xWsp.ayAllotTail(m_nColumns * sizeof(Dtm));
   
@@ -285,24 +282,6 @@ byte* RowSingle::ayDstByte(void)
 /*----------------------------------------------------------------------------*/
 /* hash a partion key column into running hash                                */
 /*----------------------------------------------------------------------------*/
-i8 RowSingle::iHashColumn(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  i8 i_Col = pCol->iColumnNo();
-  
-  i8 iHash;
-  if (DM_VCH == pCol->eDatum())
-    iHash = HshLib::iHash((byte*)m_awaColVal[i_Col].m_iWrd,sizeof(w8));
-  else
-    iHash = HshLib::iHash((byte*)&m_awaColVal[i_Col].m_iWrd,sizeof(w8));
-  
-  return iHash;
-}
-
-/*----------------------------------------------------------------------------*/
-/* hash a partion key column into running hash                                */
-/*----------------------------------------------------------------------------*/
 bool RowSingle::bIsColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
@@ -318,9 +297,7 @@ bool RowSingle::bIsColNull(i8 i_Col)
 void RowSingle::vResetValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  m_iHash = 0;
-  
+    
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
     m_awaColVal[i_Col].m_iWrd = 0;
@@ -358,8 +335,6 @@ void RowSingle::vSet(i8 iVArgsBegin, ...)
       m_awaColVal[i_Col].m_iWrd = iVal;
     }
     
-    if (pCol->bIsPtnKey())
-      m_iHash += iHashColumn(pCol);
   }
   
   i8 iVArgsEnd = va_arg(xVarArgs,i8);
@@ -406,10 +381,7 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
     m_awaColVal[i_Col].m_iWrd = (i8)acDstString;
     
     m_xWsp.vTakeHead(nSrcLength + 1);
-    
-    if (pCol->bIsPtnKey())
-      m_iHash += iHashColumn(pCol);
-    
+        
     return;
   }
   
@@ -417,9 +389,6 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
   // all others
   
   m_awaColVal[i_Col].m_iWrd = pDatum->iInt();
-  
-  if (pCol->bIsPtnKey())
-    m_iHash += iHashColumn(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
