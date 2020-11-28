@@ -507,11 +507,11 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
      +-------------------------+
      |   Lines in CSV Chunk    |
      +-------------------------+
-     | ..line 0.. <END_LINE>   |
-     | ..line 1.. <END_LINE>   |
-     | ..line 2.. <END_LINE>   |
+     | ..line 0.. <LINE_END>   |
+     | ..line 1.. <LINE_END>   |
+     | ..line 2.. <LINE_END>   |
      |         ...             |
-     | ..line n.. <END_LINE>\0 |
+     | ..line n.. <LINE_END>\0 |
      +-------------------------+
    
      n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
@@ -608,16 +608,16 @@ L_TestMoreRecords:
   
   /*
       
-     +-------------------------------------------+
-     |        Records in Lines in CSV Chunk      |
-     +-------------------------------------------+
-     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>   | line[0] with record
-     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>   | line[1] with record
-     |                   ...                     |
-     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>   | line[n-2] with record
-     | [<WHITESPACE>]<ENDLINE>                   | line[n-1] blank line
-     | <RECORD>[<RECORD_TERMINATOR>]<END_LINE>\0 | line[n] with record
-     +------------------------------------------+
+     +------------------------------------+
+     |  Records in Lines in CSV Chunk     |
+     +------------------------------------+
+     | <RECORD>[<RECORD_END>]<LINE_END>   | line[0] with record
+     | <RECORD>[<RECORD_END>]<LINE_END>   | line[1] with record
+     |                   ...              |
+     | <RECORD>[<RECORD_END>]<LINE_END>   | line[n-2] with record
+     | [<WHITESPACE>]<ENDLINE>            | line[n-1] blank line
+     | <RECORD>[<RECORD_END>]<LINE_END>\0 | line[n] with record
+     +------------------------------------+
    
      n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
    
@@ -685,7 +685,7 @@ L_TestMoreFields:
   if (++i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
       vTrace("L_TestMoreFields: end-of-fields\n"_Stz);
-    goto L_EndRecord;
+    goto L_RecordEndLineEnd;
   }
   
   
@@ -879,7 +879,7 @@ L_BooleanRecognised:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,iBooleanValue);
 
-  goto L_PostField;
+  goto L_FieldEnd;
     
 L_BooleanNull:
   
@@ -891,7 +891,7 @@ L_BooleanNull:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
-  goto L_PostField;                                            // end of boolean
+  goto L_FieldEnd;                                            // end of boolean
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1053,7 +1053,7 @@ L_Date_componentsCollected:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xDateValue);
 
-  goto L_PostField;
+  goto L_FieldEnd;
 
 L_DateNull:
     
@@ -1065,7 +1065,7 @@ L_DateNull:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
-  goto L_PostField;                                               // end of date
+  goto L_FieldEnd;                                               // end of date
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1185,7 +1185,7 @@ L_Decimal:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,iDecimalValue);
 
-  goto L_PostField;
+  goto L_FieldEnd;
 
 L_DecimalNull:
   
@@ -1197,7 +1197,7 @@ L_DecimalNull:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  goto L_PostField;                                            // end of decimal
+  goto L_FieldEnd;                                            // end of decimal
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1298,7 +1298,7 @@ L_Float:
   
   m_pRowSlab->vDeposit(dFloatValue);
   
-  goto L_PostField;
+  goto L_FieldEnd;
 
 L_FloatNull:
   
@@ -1307,7 +1307,7 @@ L_FloatNull:
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  goto L_PostField;                                              // end of float
+  goto L_FieldEnd;                                              // end of float
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1393,7 +1393,7 @@ L_Integer:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,iIntegerValue);
   
-  goto L_PostField;
+  goto L_FieldEnd;
     
 L_IntegerNull:
   
@@ -1405,7 +1405,7 @@ L_IntegerNull:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  goto L_PostField;                                            // end of integer
+  goto L_FieldEnd;                                            // end of integer
 
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1508,7 +1508,7 @@ L_Interval:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xIntervalValue);
   
-  goto L_PostField;
+  goto L_FieldEnd;
 
 L_IntervalNull:
   
@@ -1520,7 +1520,7 @@ L_IntervalNull:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
-  goto L_PostField;                                           // end of interval
+  goto L_FieldEnd;                                           // end of interval
 
     
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1625,7 +1625,7 @@ L_Time:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xTimeValue);
 
-  goto L_PostField;
+  goto L_FieldEnd;
 
 L_TimeNull:
   
@@ -1637,7 +1637,7 @@ L_TimeNull:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
-  goto L_PostField;                                               // end of time
+  goto L_FieldEnd;                                               // end of time
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1909,7 +1909,7 @@ L_Timestamp_noTimeComponents:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,xTimestampValue);
 
-  goto L_PostField;
+  goto L_FieldEnd;
 
 L_TimestampNull:
   
@@ -1921,7 +1921,7 @@ L_TimestampNull:
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
-  goto L_PostField;                                          // end of timestamp
+  goto L_FieldEnd;                                          // end of timestamp
 
   
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -2392,7 +2392,7 @@ L_VarcharDeposit:
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_VarcharDeposit: %s\n"_Stz,azVchValue);
   
-  goto L_PostField;
+  goto L_FieldEnd;
 
 L_VarcharNull:
   
@@ -2404,16 +2404,16 @@ L_VarcharNull:
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   
-  goto L_PostField;                                            // end of varchar
+  goto L_FieldEnd;                                            // end of varchar
 
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // 4) processing at end of field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-L_PostField:
+L_FieldEnd:
     
   if (iTraceBits & C_BIT_PostField)
-    vTrace("L_PostField: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,
+    vTrace("L_FieldEnd: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,
            spPrv.szChar(cPrvChr),
            spCur.szChar(cCurChr),
            spNxt.szChar(cNxtChr),
@@ -2442,7 +2442,31 @@ L_PostField:
   // 5) encountered an error while processing a field
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_FieldError:
+  
+  /*
+   
+  +--------------------------------------------------------------+
+  |                          Field Error                         |
+  +--------------------------------------------------------------+
+  | [<WHITE_SPACE>] <VALUE> [<WHITE_SPACE>] <FE> ... [<RE>] <LE> |
+  |  ^feA           ^feB     ^feC           ^feD      ^feE       |
+  +--------------------------------------------------------------+
+   
+   An error can be detected as follows :
+   
+     feA :
+   
+     feB :
+   
+     feC :
+   
+     feD :
+   
+     feE :
 
+   */
+
+  
   /*
      know:
    
@@ -2510,20 +2534,26 @@ L_FieldError:
   
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) end of record
+  // 6) end of record and line
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EndRecord:
+L_RecordEndLineEnd:
   
   if (iTraceBits & C_BIT_EndRecord)
     vTrace("L_EndOfRecord:\n"_Stz);
   
   /*
    
-   +------------------------------------------------------+
-   |                        Record End                    |
-   +------------------------------------------------------+
-   | ... <FIELD> [ <FIELD_END> ] [< REC_END> ] <LINE_END> |
-   +------------------------------------------------------+
+   +---------------------------------------------------------+
+   |                    Record End Line End                  |
+   +---------------------------------------------------------+
+   | ... <FIELD> [ <FIELD_END> ] [ <RECORD_END> ] <LINE_END> |
+   +---------------------------------------------------------+
+   
+   <RECORD_END> : <char>
+   
+   <LINE_END>   :   \n'
+                  | '\r'
+                  | '\r' '\n'
 
    */
 

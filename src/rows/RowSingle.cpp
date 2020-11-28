@@ -74,7 +74,7 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
-    m_waColVal[i_Col].m_iWrd = 0;
+    m_awaColVal[i_Col].m_iWrd = 0;
   m_xStzWsp.vZero(CN_ROWSINGLE);
   
 #else
@@ -113,14 +113,14 @@ void RowSingle::vAdjustAddresses(RowSingle* pCopiedFromRow)
     if (DM_VCH != pCol->eDatum())
       continue;
 
-    if (m_waColVal[i_Col].bIsNull())
+    if (m_awaColVal[i_Col].bIsNull())
       continue;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    i8 nDeltaBytes = nDifference(m_waColVal[i_Col].m_szVch,pCopiedFromRow);
+    i8 nDeltaBytes = nDifference(m_awaColVal[i_Col].m_szVch,pCopiedFromRow);
     
-    m_waColVal[i_Col].m_szVch = aAdd<Stz*>(this,nDeltaBytes);
+    m_awaColVal[i_Col].m_szVch = aAdd<Stz*>(this,nDeltaBytes);
   }
 }
 
@@ -137,7 +137,7 @@ void RowSingle::vAllotSetVarchar(i8 i_Col, Stz* szVal)
   
   i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
   
-  m_waColVal[i_Col].m_iWrd = (i8)acDstString;
+  m_awaColVal[i_Col].m_iWrd = (i8)acDstString;
   
   m_xWsp.vTakeHead(nSrcLength + 1);
 }
@@ -149,7 +149,7 @@ Dtm* RowSingle::aColDtm(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  Dtm* aDtm = & m_waColVal[i_Col];
+  Dtm* aDtm = & m_awaColVal[i_Col];
   
   return aDtm;
 }
@@ -162,7 +162,7 @@ char* RowSingle::azColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  char* azVal = m_waColVal[i_Col].m_azStr;
+  char* azVal = m_awaColVal[i_Col].m_azStr;
   
   return azVal;
 }
@@ -174,7 +174,7 @@ i8 RowSingle::iColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  i8 iVal = m_waColVal[i_Col].m_iWrd;
+  i8 iVal = m_awaColVal[i_Col].m_iWrd;
   
   return iVal;
 }
@@ -186,7 +186,7 @@ d8 RowSingle::dColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  d8 dVal = m_waColVal[i_Col].m_dWrd;
+  d8 dVal = m_awaColVal[i_Col].m_dWrd;
   
   return dVal;
 }
@@ -198,7 +198,7 @@ Stz* RowSingle::szColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  Stz* szVal = m_waColVal[i_Col].m_szVch;
+  Stz* szVal = m_awaColVal[i_Col].m_szVch;
   
   return szVal;
 }
@@ -210,7 +210,7 @@ Dtm RowSingle::wColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  Dtm wDtm = m_waColVal[i_Col];
+  Dtm wDtm = m_awaColVal[i_Col];
   
   return wDtm;
 }
@@ -231,7 +231,7 @@ void RowSingle::vCopy(Row* pRow)
     if (DM_VCH == pCol->eDatum()) {
       
       if (pRow->m_waColVal[i_Col].bIsNull()) {
-        m_waColVal[i_Col].vSetNull();
+        m_awaColVal[i_Col].vSetNull();
         continue;
       }
       
@@ -244,7 +244,7 @@ void RowSingle::vCopy(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    m_waColVal[i_Col].m_iWrd = pRow->m_waColVal[i_Col].m_iWrd;
+    m_awaColVal[i_Col].m_iWrd = pRow->m_waColVal[i_Col].m_iWrd;
   }
 }
 
@@ -255,27 +255,27 @@ void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_)
     
-    Column* pIntoCol = m_pStreamDef->pGetColumn(i_IntoCol);
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // vch
+  Column* pIntoCol = m_pStreamDef->pGetColumn(i_IntoCol);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // vch
+
+  if (DM_VCH == pIntoCol->eDatum()) {
     
-    if (DM_VCH == pIntoCol->eDatum()) {
-      
-      if (pRow->m_waColVal[i_FromCol].bIsNull()) {
-        m_waColVal[i_IntoCol].vSetNull();
-        return;
-      }
-      
-      char* acSrcString = (char*)pRow->m_waColVal[i_FromCol].m_azStr;
-      vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
-      
+    if (pRow->m_waColVal[i_FromCol].bIsNull()) {
+      m_awaColVal[i_IntoCol].vSetNull();
       return;
     }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // all others
+    char* acSrcString = (char*)pRow->m_waColVal[i_FromCol].m_azStr;
+    vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
     
-    m_waColVal[i_IntoCol].m_iWrd = pRow->m_waColVal[i_FromCol].m_iWrd;
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // all others
+
+  m_awaColVal[i_IntoCol].m_iWrd = pRow->m_waColVal[i_FromCol].m_iWrd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +307,7 @@ byte* RowSingle::ayDstByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  byte* ayDst = (byte*) & m_waColVal[0].m_iWrd;
+  byte* ayDst = (byte*) & m_awaColVal[0].m_iWrd;
   
   return ayDst;
 }
@@ -323,9 +323,9 @@ i8 RowSingle::iHashColumn(Column* pCol)
   
   i8 iHash;
   if (DM_VCH == pCol->eDatum())
-    iHash = HshLib::iHash((byte*)m_waColVal[i_Col].m_iWrd,sizeof(w8));
+    iHash = HshLib::iHash((byte*)m_awaColVal[i_Col].m_iWrd,sizeof(w8));
   else
-    iHash = HshLib::iHash((byte*)&m_waColVal[i_Col].m_iWrd,sizeof(w8));
+    iHash = HshLib::iHash((byte*)&m_awaColVal[i_Col].m_iWrd,sizeof(w8));
   
   return iHash;
 }
@@ -337,7 +337,7 @@ bool RowSingle::bIsColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  bool bIsNull = m_waColVal[i_Col].bIsNull();
+  bool bIsNull = m_awaColVal[i_Col].bIsNull();
   
   return bIsNull;
 }
@@ -353,7 +353,7 @@ void RowSingle::vResetValues(void)
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
-    m_waColVal[i_Col].m_iWrd = 0;
+    m_awaColVal[i_Col].m_iWrd = 0;
 #endif
   
   m_xWsp.vInit();
@@ -381,11 +381,11 @@ void RowSingle::vSet(i8 iVArgsBegin, ...)
       if (szVal)
         vAllotSetVarchar(i_Col,szVal);
       else
-        m_waColVal[i_Col].vSetNull();
+        m_awaColVal[i_Col].vSetNull();
     }
     else {
       i8 iVal = va_arg(xVarArgs,i8);
-      m_waColVal[i_Col].m_iWrd = iVal;
+      m_awaColVal[i_Col].m_iWrd = iVal;
     }
     
     if (pCol->bIsPtnKey())
@@ -405,7 +405,7 @@ void RowSingle::vSetNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  m_waColVal[i_Col].m_iWrd = C_DATUM_NULL;
+  m_awaColVal[i_Col].m_iWrd = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,7 +423,7 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
   if (DM_VCH == pCol->eDatum()) {
     
     if (pDatum->bIsNull()) {
-      m_waColVal[i_Col].vSetNull();
+      m_awaColVal[i_Col].vSetNull();
       return;
     }
     
@@ -433,7 +433,7 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
     
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
     
-    m_waColVal[i_Col].m_iWrd = (i8)acDstString;
+    m_awaColVal[i_Col].m_iWrd = (i8)acDstString;
     
     m_xWsp.vTakeHead(nSrcLength + 1);
     
@@ -446,7 +446,7 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  m_waColVal[i_Col].m_iWrd = pDatum->iInt();
+  m_awaColVal[i_Col].m_iWrd = pDatum->iInt();
   
   if (pCol->bIsPtnKey())
     m_iHash += iHashColumn(pCol);
@@ -491,11 +491,11 @@ i8 RowSingle::nSizeVch(void)
     
     if (DM_VCH == pCol->eDatum()) {
       
-      if (m_waColVal[i_Col].bIsNull()) {
+      if (m_awaColVal[i_Col].bIsNull()) {
         continue;
       }
       
-      char* acSrcString = (char*)m_waColVal[i_Col].m_szVch;
+      char* acSrcString = (char*)m_awaColVal[i_Col].m_szVch;
       
       nSizeVch += StrLib::nSize(acSrcString);
       

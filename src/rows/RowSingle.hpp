@@ -27,9 +27,8 @@ namespace Rows
     i8  m_iHash;          // hash of partition column values
   
   private:
-    Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
  
-    Dtm* m_awaColVal; // dynamicall alloted column value array
+    Dtm* m_awaColVal; // dynamically allotted column value array
   
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
