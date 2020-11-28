@@ -904,6 +904,8 @@ L_Date:
   
   
   /*
+   
+     refer: https://en.wikipedia.org/wiki/ISO_8601
       
      +----------------------------------------------------+
      |                     Date Field                     |
@@ -1311,7 +1313,7 @@ L_Integer:
      <INTEGER> :   null     // null form
                  | \N       // null form
                  | <EMPTY>  // null form
-                 | [<SIGN>] <WHOLE_NUMBER> [.<FRAC_NUMBER>]
+                 | [<SIGN>] <WHOLE_NUMBER> [ . <FRAC_NUMBER> ]
   
    */
 
@@ -1396,6 +1398,26 @@ L_Interval:
   
   if (iTraceBits & C_BIT_Interval)
     vTrace("L_Interval:\n"_Stz);
+  
+  
+  /*
+   
+     refer: https://en.wikipedia.org/wiki/ISO_8601
+      
+     +--------------------------------------------------------+
+     |                      Interval Field                    |
+     +--------------------------------------------------------+
+     | [<WHITE_SPACE>] <INTERVAL> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading                  trailing                  |
+     +--------------------------------------------------------+
+   
+     <INTERVAL> :   null     // null form
+                  | \N       // null form
+                  | <EMPTY>  // null form
+                  | <WHOLE_NUMBER> [ . <FRAC_NUMBER> ]
+
+   */
+
   
   vSKIP_WHITE_SPACE_LEADING();
 
@@ -1611,6 +1633,30 @@ L_Timestamp:
   
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp:\n"_Stz);
+  
+  
+  /*
+   
+     refer: https://en.wikipedia.org/wiki/ISO_8601
+      
+     +---------------------------------------------------------+
+     |                       Timestamp Field                   |
+     +---------------------------------------------------------+
+     | [<WHITE_SPACE>] <TIMESTAMP> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading                  trailing                   |
+     +---------------------------------------------------------+
+   
+     <TIMESTAMP> :   null     // null form
+                   | \N       // null form
+                   | <EMPTY>  // null form
+                   | <COMPONENT> <DATE_SEP> <COMPONENT> <DATE_SEP> <COMPONENT>
+                      <TIME_MARK> <HOUR> <TIME_SEP>
+                                  <MINUTE> <TIME_SEP>
+                                  <SECOND>
+
+     <COMPONENT> :  <YEAR> | <MONTH> | <DAY>
+   */
+
   
   vSKIP_WHITE_SPACE_LEADING();
   

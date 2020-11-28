@@ -30,7 +30,6 @@ namespace Rows
     SingleWord m__PadToCacheLine[6]; // padding to cache line
 
   private:
-    Wsp_t<C_MAX_RECORD> m_xStzWsp;    // sz workspace
 
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
