@@ -38,7 +38,7 @@ RowCompactor::RowCompactor(void)
   m_pIrwSamples   = nullptr;
   m_bCollecting   = false;
   
-  m_pIrwSampleSlab = nullptr;
+  m_pSampleSlab = nullptr;
   
   m_nTotalBuffers = 0;
   m_nTotalCrws    = 0;
@@ -70,7 +70,7 @@ RowCompactor::~RowCompactor(void) noexcept(false)
   vTrace("\n"_Stz);
 #endif
   
-  delete m_pIrwSampleSlab;
+  delete m_pSampleSlab;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,9 +96,9 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_pIrwSamples = new IrwBuffer;
   m_bCollecting = bCollectSamples;
   
-  ASSERT(!m_pIrwSampleSlab);
-  m_pIrwSampleSlab = new RowSlab;
-  m_pIrwSampleSlab->vInitPix(m_pStreamDef,false);
+  ASSERT(!m_pSampleSlab);
+  m_pSampleSlab = new RowSlab;
+  m_pSampleSlab->vInitPix(m_pStreamDef,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,10 +130,10 @@ void RowCompactor::vCompactEnd(void)
   m_pCrwNub    = nullptr;
   m_pStreamDef = nullptr;
   
-  delete m_pIrwSampleSlab;
-  m_pIrwSampleSlab = nullptr;
+  delete m_pSampleSlab;
+  m_pSampleSlab = nullptr;
   
-  //m_pIrwSampleSlab->vDumpAllRows();
+  //m_pSampleSlab->vDumpAllRows();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -704,7 +704,7 @@ bool RowCompactor::bCollectSample(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  bool b = RowUte::bAddSingleToSlab(m_pIrwSampleSlab,pSrw,m_pStreamDef);
+  bool b = RowUte::bAddSingleToSlab(m_pSampleSlab,pSrw,m_pStreamDef);
   
   
   if (m_pIrwSamples->nItems() >= C_SAMPLE_ROWS) {
