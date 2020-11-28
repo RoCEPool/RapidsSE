@@ -779,28 +779,28 @@ void RowCompactor::vAnalyzeSamples(void)
     
     i8 nRowHeadSize = Row::nSizeBytes(m_pStreamDef);
     
-    for (Row* pOuterIrw = m_pIrwSamples->aFirstRow();
-         pOuterIrw;
-         pOuterIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize)) {
+    for (Row* pOuterRow = m_pIrwSamples->aFirstRow();
+         pOuterRow;
+         pOuterRow = m_pIrwSamples->aNextRow(pOuterRow,nRowHeadSize)) {
       
       //pOuterRow->vDump(m_pStreamDef);
       
-      if (pOuterIrw->bIsColNull(i_Col))
+      if (pOuterRow->bIsColNull(i_Col))
         continue;
       
-      Stz* azOuterStr = pOuterIrw->szColVal_ofs(i_Col);
+      Stz* azOuterStr = pOuterRow->szColVal_ofs(i_Col);
       i8 nLength = StrLib::nLength((char*)azOuterStr);
       if (nLength < 8)
         continue;
       
-      for (Row* pInnerIrw = m_pIrwSamples->aNextRow(pOuterIrw,nRowHeadSize);
-           pInnerIrw;
-           pInnerIrw = m_pIrwSamples->aNextRow(pInnerIrw,nRowHeadSize)) {
+      for (Row* pInnerRow = m_pIrwSamples->aNextRow(pOuterRow,nRowHeadSize);
+           pInnerRow;
+           pInnerRow = m_pIrwSamples->aNextRow(pInnerRow,nRowHeadSize)) {
         
-        if (pInnerIrw->bIsColNull(i_Col))
+        if (pInnerRow->bIsColNull(i_Col))
           continue;
         
-        vCreateSampleTail(pCol,pOuterIrw,pInnerIrw);
+        vCreateSampleTail(pCol,pOuterRow,pInnerRow);
         
       }
     }
@@ -812,8 +812,8 @@ void RowCompactor::vAnalyzeSamples(void)
 /* potentially create a tail for duplicate vch samples                        */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCreateSampleTail(Column* pCol,
-                                     Row* pOuterIrwSample,
-                                     Row* pInnerIrwSample)
+                                     Row* pOuterRowSample,
+                                     Row* pInnerRowSample)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -828,8 +828,8 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) does the inner vch equal the outer vch?
   
-  char* azInnerStr = (char*)pInnerIrwSample->szColVal_ofs(i_Col);
-  char* azOuterStr = (char*)pOuterIrwSample->szColVal_ofs(i_Col);
+  char* azInnerStr = (char*)pInnerRowSample->szColVal_ofs(i_Col);
+  char* azOuterStr = (char*)pOuterRowSample->szColVal_ofs(i_Col);
   if (! StrLib::bEqualTo(azInnerStr,azOuterStr) )
     return;
   
@@ -840,7 +840,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
 //  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
 //    return;
   
-  Stz* szTailToFind = pOuterIrwSample->szColVal_ofs(i_Col);
+  Stz* szTailToFind = pOuterRowSample->szColVal_ofs(i_Col);
   if (C_UNKNOWN != m_pCrwNub->iFindTail(szTailToFind))
     return;
 
