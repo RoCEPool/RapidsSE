@@ -47,7 +47,6 @@ void RowSingle::operator delete(void* aAddr)
   HeapMem::vFree(pRowSingle);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -70,6 +69,8 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
   // - - - - - - - - - - - - - - - - - -
 
   m_iHash = 0;
+  
+  m_awaColVal = (Dtm*)m_xWsp.ayAllotTail(m_nColumns * sizeof(Dtm));
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)

@@ -29,7 +29,8 @@ namespace Rows
   private:
     Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
  
-
+    Dtm* m_awaColVal; // dynamicall alloted column value array
+  
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
     Footer m_xFooter;
