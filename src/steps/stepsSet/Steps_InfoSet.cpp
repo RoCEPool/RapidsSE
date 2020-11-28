@@ -195,7 +195,7 @@ void Step::vInfoSetAddRowVargs(void)
         
       case DM_INT:
         iInt = m_pDataStack->iPopInt(__func__);
-        aRow->vColVal(i_Arg,iInt);
+        aRow->vColVal_int(i_Arg,iInt);
         break;
         
       case DM_VCH:
@@ -203,7 +203,7 @@ void Step::vInfoSetAddRowVargs(void)
         nSize = sStr.nSize();
         szTail = (Stz*)pInfoSet->ayAllotTail(nSize);
         StrLib::vCopy(szTail->azChar(),sStr.azChar());
-        aRow->vColVal(i_Arg,pInfoSet->iToOffset(szTail));
+        aRow->vColVal_int(i_Arg,pInfoSet->iToOffset(szTail));
         break;
         
       default:
@@ -301,8 +301,8 @@ void Step::vInfoSetChunkFile(void)
       if (pRow) {
         nRows++;
         
-        pRow->vColVal(0,i_ChunkLoc);
-        pRow->vColVal(1,nChunkBytes);
+        pRow->vColVal_int(0,i_ChunkLoc);
+        pRow->vColVal_int(1,nChunkBytes);
       }
 
       s32 sFileSize;
@@ -359,8 +359,8 @@ void Step::vInfoSetChunkFile(void)
     if (pRow) {
       nRows++;
       
-      pRow->vColVal(0,i_ChunkLoc);
-      pRow->vColVal(1,nChunkBytes);
+      pRow->vColVal_int(0,i_ChunkLoc);
+      pRow->vColVal_int(1,nChunkBytes);
       
       // advance to start of next chunk
       i_ChunkLoc = i_EndChunkLoc + 1;
@@ -414,7 +414,7 @@ void Step::vInfoSetColValFetch(void)
       break;
       
     case DM_VCH:
-      wDtm = aRow->wColVal(i_Col);
+      wDtm = aRow->wColDtm(i_Col);
       sStr = aRow->szColVal_ofs(i_Col);
       m_pDataStack->vPushStz(sStr);
       break;

@@ -604,8 +604,6 @@ L_TestMoreRecords:
     vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
            spCsv.szInspect(azCsvCrs,128,true));
   
-  
-  
   /*
       
      +---------------------------------------+
@@ -615,7 +613,7 @@ L_TestMoreRecords:
      | <RECORD> [<RECORD_END>] <LINE_END>    | line[1] with record
      |                   ...                 |
      | <RECORD> [<RECORD_END>] <LINE_END>    | line[n-2] with record
-     | [<WHITESPACE>] <ENDLINE>              | line[n-1] blank line
+     | [<WHITESPACE>] <LINE_END>             | line[n-1] blank line
      | <RECORD> [<RECORD_END>] <LINE_END> \0 | line[n] with record
      +---------------------------------------+
    
@@ -687,7 +685,6 @@ L_TestMoreFields:
       vTrace("L_TestMoreFields: end-of-fields\n"_Stz);
     goto L_RecordEndLineEnd;
   }
-  
   
   /*
       
@@ -774,7 +771,6 @@ L_Boolean:
   
    */
 
-  
   vSKIP_WHITE_SPACE_LEADING();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -902,7 +898,6 @@ L_Date:
   
   if (iTraceBits & C_BIT_Date)
     vTrace("L_Date:\n"_Stz);
-  
   
   /*
    
@@ -1417,7 +1412,6 @@ L_Interval:
   if (iTraceBits & C_BIT_Interval)
     vTrace("L_Interval:\n"_Stz);
   
-  
   /*
          
      +--------------------------------------------------------+
@@ -1667,7 +1661,6 @@ L_Timestamp:
   
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp:\n"_Stz);
-  
   
   /*
    
@@ -1956,6 +1949,25 @@ L_Varchar:
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_Varchar:\n"_Stz);
   
+  /*
+         
+     +-------------------------------------------------------+
+     |                       Varchar Field                   |
+     +-------------------------------------------------------+
+     | [<WHITE_SPACE>] <VARCHAR> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading                  trailing                 |
+     +-------------------------------------------------------+
+   
+     <VARCHAR> :   null     // null form
+                 | \N       // null form
+                 | <EMPTY>  // null form
+                 | ' ... "  // single quote form
+                 | " ... "  // double quote form
+                 | { ... }  // user specified form
+                 | ...      // unquoted form
+   
+   */
+
   nVchChars = 0;
 
   // ---- ---- ---- ---- ---- ---- ---- ----

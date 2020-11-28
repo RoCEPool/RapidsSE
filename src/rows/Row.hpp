@@ -22,14 +22,15 @@ namespace Rows
     void vDump(StreamDef* pStreamDef);
   
     Dtm* aColDtm(i8 i_Col);
-    char* azColVal(i8 i_Col);
+    Dtm  wColDtm(i8 i_Col);
+  
+    char* azColVal_str(i8 i_Col);
     i8   iColVal_int(i8 i_Col);
     void vColVal_int(i8 i_Col, i8 iVal);
-    d8   dColVal(i8 i_Col);
-    void vColVal(i8 i_Col, d8 dVal);
+    d8   dColVal_flt(i8 i_Col);
+    void vColVal_flt(i8 i_Col, d8 dVal);
     Stz* szColVal_ofs(i8 i_Col);
     Stz* szColVal_vch(i8 i_Col);
-    Dtm  wColVal(i8 i_Col);
 
     bool bIsColNull(i8 i_Col);
   

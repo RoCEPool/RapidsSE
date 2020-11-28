@@ -125,14 +125,14 @@ Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
          return nullptr;
        
        StrLib::vCopy((char*)ayTail, szVal->azChar());
-       ayRow->vColVal(i_Col,iToOffset(ayTail));
+       ayRow->vColVal_int(i_Col,iToOffset(ayTail));
      }
      else
        ayRow->vSetColNull(i_Col);
      }
      else {
        i8 iVal = va_arg(xVarArgs,i8);
-       ayRow->vColVal(i_Col,iVal);
+       ayRow->vColVal_int(i_Col,iVal);
      }
    }
    

@@ -117,7 +117,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       ASSERT(nCopyBytes + 1 == nSrcLength);
       
       // set offset of tail string
-      pRow->vColVal(i_Col,iToOffset(acDstString));
+      pRow->vColVal_int(i_Col,iToOffset(acDstString));
       
       continue;
     }
@@ -125,7 +125,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    pRow->vColVal(i_Col,pRowSingle->iColVal(i_Col));
+    pRow->vColVal_int(i_Col,pRowSingle->iColVal(i_Col));
   }
   
   //pRow->vDump(pStreamDef);

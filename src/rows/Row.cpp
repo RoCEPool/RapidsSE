@@ -120,11 +120,22 @@ Dtm* Row::aColDtm(i8 i_Col)
   return aDtm;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+Dtm Row::wColDtm(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  Dtm wDtm = m_waColVal[i_Col];
+  
+  return wDtm;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-char* Row::azColVal(i8 i_Col)
+char* Row::azColVal_str(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -158,7 +169,7 @@ void Row::vColVal_int(i8 i_Col, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-d8 Row::dColVal(i8 i_Col)
+d8 Row::dColVal_flt(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -170,7 +181,7 @@ d8 Row::dColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* set column value                                                           */
 /*----------------------------------------------------------------------------*/
-void Row::vColVal(i8 i_Col, d8 dVal)
+void Row::vColVal_flt(i8 i_Col, d8 dVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -212,18 +223,6 @@ Stz* Row::szColVal_vch(i8 i_Col)
   Stz* szVal = m_waColVal[i_Col].m_szVch;
   
   return szVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column value                                                           */
-/*----------------------------------------------------------------------------*/
-Dtm Row::wColVal(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-  
-  Dtm wDtm = m_waColVal[i_Col];
-  
-  return wDtm;
 }
 
 /*----------------------------------------------------------------------------*/
