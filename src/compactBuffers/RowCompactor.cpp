@@ -715,11 +715,12 @@ bool RowCompactor::bCollectSample(RowSingle* pSrw)
     return false;
   }
   
-  if ( ! m_pIrwSamples->bCopyRow(pSrw) ) {
+  if ( ! m_pIrwSamples->aAllotRow(pSrw) ) {
   
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples full\n"_Stz);
 #endif
+    
     m_bCollecting = false;
     return false;
   }

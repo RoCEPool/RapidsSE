@@ -62,21 +62,6 @@ IrwBuffer::~IrwBuffer(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy row into buffer from single row                                       */
-/*----------------------------------------------------------------------------*/
-bool IrwBuffer::bCopyRow(RowSingle* pRowSingle)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
-  
-  Row* pRow = aAllotRow(pRowSingle);
-  
-  if ( ! pRow )
-    return false;
-  else
-    return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

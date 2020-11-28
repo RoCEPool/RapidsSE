@@ -18,9 +18,7 @@ namespace DataBuffers
   
     IrwBuffer(void);
    ~IrwBuffer(void) noexcept(false);
-    
-    bool bCopyRow(RowSingle* pRowSingle);
-    
+        
   private:
     Footer* aFooter(void);
   };
