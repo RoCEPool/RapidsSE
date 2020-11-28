@@ -427,10 +427,7 @@ void Step::vSocketRecvObject(void)
       
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-      
-      // restore the nub of the crwbuffer
-      //pIrwBuffer->vRestoreNub();
-      
+            
       m_pDataStack->vPushPtr(pCsvBuffer);
       m_pDataStack->vPushInt(true);
       EXIT();

@@ -57,11 +57,11 @@ i8 Encoding::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 /* encode inflated row                                                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeIrw(Row* pRow)
+void Encoding::vEncodeRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  m_pEncoding_v2->vEncodeIrw(pRow);
+  m_pEncoding_v2->vEncodeRow(pRow);
 }
 
 /*----------------------------------------------------------------------------*/

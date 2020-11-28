@@ -23,7 +23,7 @@ namespace CompactBuffers
   
     i8   nBytesNeeded(void);
   
-    void vEncodeIrw(Row* pRow);
+    void vEncodeRow(Row* pRow);
     void vEncodeRsb(Rsb* aRsb);
     void vEncodeSrw(RowSingle* pSrw);
   

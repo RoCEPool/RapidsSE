@@ -52,14 +52,14 @@ namespace CompactBuffers
     // - - - - - - - - - - - - - - - - - - - - -
     // Row Packing
   
-    bool bAddIrwAsCrw(Row* pRow);
+    bool bAddRowAsCrw(Row* pRow);
     bool bAddRsbAsCrw(Rsb* aRsb);
     bool bAddSrwAsCrw(RowSingle* pSrw);
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
-    void vEncodeHeadForIrw(Row* pRow);
+    void vEncodeHeadForRow(Row* pRow);
     void vEncodeHeadForSrw(RowSingle* pSrw);
-    void vEncodeTailsForIrw(Row* pRow);
+    void vEncodeTailsForRow(Row* pRow);
     void vEncodeTailsForRsb(Rsb* aRsb);
     void vEncodeTailsForSrw(RowSingle* pSrw);
 
@@ -71,8 +71,8 @@ namespace CompactBuffers
     void vPackSamples(void);
     void vAnalyzeSamples(void);
     void vCreateSampleTail(Column* pCol,
-                           Row* pOuterIrwSample,
-                           Row* pInnerIrwSample);
+                           Row* pOuterRowSample,
+                           Row* pInnerRowSample);
   private:
     Footer* aFooter(void);
   };

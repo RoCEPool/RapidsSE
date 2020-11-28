@@ -204,18 +204,18 @@ bool RowCompactor::bCompactTail(Stz* szTailStr)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add given row from irw buffer into current crw buffer                      */
+/* add given row from row buffer into current crw buffer                      */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddIrwAsCrw(Row* pRow)
+bool RowCompactor::bAddRowAsCrw(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // 1) initially encode head of inflated row into m_pEncoding_v1
-  vEncodeHeadForIrw(pRow);
+  vEncodeHeadForRow(pRow);
   
   // 2) encode tails into m_pEncoding_v1
   //  if (! m_pStreamDef->m_nFixedSized)
-    vEncodeTailsForIrw(pRow);
+    vEncodeTailsForRow(pRow);
   
   // 3) split encoded head between crw head and crw overflow
   m_pEncoding_v2->vSplitOver();
@@ -467,11 +467,11 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
 /*----------------------------------------------------------------------------*/
 /* encode the head                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHeadForIrw(Row* pRow)
+void RowCompactor::vEncodeHeadForRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding_v2->vEncodeIrw(pRow);
+  m_pEncoding_v2->vEncodeRow(pRow);
 
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -499,7 +499,7 @@ void RowCompactor::vEncodeHeadForSrw(RowSingle* pSrw)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTailsForIrw(Row* pRow)
+void RowCompactor::vEncodeTailsForRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -752,7 +752,7 @@ void RowCompactor::vPackSamples(void)
 #ifdef WITH_ENCODING_TRACE
     vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
 #endif
-    bool bPacked = bAddIrwAsCrw(pSampleRow);
+    bool bPacked = bAddRowAsCrw(pSampleRow);
     RASSERT(bPacked);
     
     pSampleRow = m_pIrwSamples->aNextRow(pSampleRow, nRowSize);
