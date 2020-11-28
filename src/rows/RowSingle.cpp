@@ -249,36 +249,6 @@ void RowSingle::vCopy(Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append column value to row                                                 */
-/*----------------------------------------------------------------------------*/
-void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_)
-    
-  Column* pIntoCol = m_pStreamDef->pGetColumn(i_IntoCol);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // vch
-
-  if (DM_VCH == pIntoCol->eDatum()) {
-    
-    if (pRow->bIsColNull(i_FromCol)) {
-      m_awaColVal[i_IntoCol].vSetNull();
-      return;
-    }
-    
-    char* acSrcString = (char*)pRow->szColVal_vch(i_FromCol);
-    vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
-    
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all others
-
-  m_awaColVal[i_IntoCol].m_iWrd = pRow->iColVal_int(i_FromCol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* don't decode vch                                                           */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vDontDecodeVch(void)

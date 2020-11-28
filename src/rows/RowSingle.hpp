@@ -51,7 +51,6 @@ namespace Rows
     Stz* szColVal(i8 i_Col);
     Dtm  wColVal(i8 i_Col);
     void vCopy(Row* pRow);
-    void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);
     byte* ayDstByte(void);
     i8   iHashColumn(Column* pCol);

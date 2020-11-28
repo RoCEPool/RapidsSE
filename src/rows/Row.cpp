@@ -224,18 +224,6 @@ void Row::vColVal_ofs(i8 i_Col, i8 iOfs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column value                                                           */
-/*----------------------------------------------------------------------------*/
-Stz* Row::szColVal_vch(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-  
-  Stz* szVal = m_waColVal[i_Col].m_szVch;
-  
-  return szVal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is column a null value?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Row::bIsColNull(i8 i_Col)
