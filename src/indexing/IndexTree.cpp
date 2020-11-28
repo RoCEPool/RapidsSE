@@ -842,7 +842,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
   if (KE_INT == eKeyKind()) {
     
     Column* pCol = pIndexDef->pGetColumn(0);
-    i8 iVal = hRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
+    i8 iVal = hRow->iColVal(pCol->iColumnNo());
     pEntWrk->aEnt()->vKind(KE_INT);
     pEntWrk->aEnt()->vIntElm0(iVal);
     
@@ -919,7 +919,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
   if (KE_INT == eKeyKind()) {
     
     Column* pCol = pIndexDef->pGetColumn(0);
-    i8 iVal = hRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
+    i8 iVal = hRow->iColVal(pCol->iColumnNo());
     pEntWrk->aEnt()->vKind(KE_INT);
     pEntWrk->aEnt()->vIntElm0(iVal);
     

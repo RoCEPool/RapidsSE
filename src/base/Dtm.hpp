@@ -25,6 +25,7 @@ namespace Library
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
       i8    m_iWrd;
+      d8    m_dWrd;
       char* m_azStr;
       byte  m_yaByte[C_BYTES_PER_WORD];
     };

@@ -652,7 +652,7 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
     
     // -- vch column --
     
-    Dtm* aColVal = & pSrw->m_waColVal[i_Col];
+    Dtm* aColVal = pSrw->aColDtm(i_Col);
     
     if (aColVal->bIsNull())
       continue;

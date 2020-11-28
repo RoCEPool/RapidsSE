@@ -25,11 +25,10 @@ namespace Rows
   
     t8  m_tPerspective;   // transaction perspective
     i8  m_iHash;          // hash of partition column values
+  
+  private:
     Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
  
-    SingleWord m__PadToCacheLine[6]; // padding to cache line
-
-  private:
 
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
@@ -45,12 +44,21 @@ namespace Rows
   
     void vAdjustAddresses(RowSingle* pCopiedFromRow);
     void vAllotSetVarchar(i8 i_Col,Stz* szVal);
+    Dtm* aColDtm(i8 i_Col);
+    char* azColVal(i8 i_Col);
+    i8   iColVal(i8 i_Col);
+    d8   dColVal(i8 i_Col);
+    Stz* szColVal(i8 i_Col);
+    Dtm  wColVal(i8 i_Col);
     void vCopy(Row* pRow);
     void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);
+    byte* ayDstByte(void);
     i8   iHashColumn(Column* pCol);
+    bool bIsColNull(i8 i_Col);
     void vResetValues(void);
     void vSet(i8 iArgsBegin, ...);
+    void vSetNull(i8 i_Col);
     void vSetValue(Datum* pDatum, Column* pCol);
     i8   nSizeBytes(void);
     i8   nSizeRow(void);

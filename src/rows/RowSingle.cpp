@@ -142,6 +142,79 @@ void RowSingle::vAllotSetVarchar(i8 i_Col, Stz* szVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of column datum                                                */
+/*----------------------------------------------------------------------------*/
+Dtm* RowSingle::aColDtm(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  Dtm* aDtm = & m_waColVal[i_Col];
+  
+  return aDtm;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+char* RowSingle::azColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  char* azVal = m_waColVal[i_Col].m_azStr;
+  
+  return azVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+i8 RowSingle::iColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  i8 iVal = m_waColVal[i_Col].m_iWrd;
+  
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+d8 RowSingle::dColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  d8 dVal = m_waColVal[i_Col].m_dWrd;
+  
+  return dVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* RowSingle::szColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  Stz* szVal = m_waColVal[i_Col].m_szVch;
+  
+  return szVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+Dtm RowSingle::wColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  Dtm wDtm = m_waColVal[i_Col];
+  
+  return wDtm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vCopy(Row* pRow)
@@ -229,6 +302,18 @@ void RowSingle::vDontDecodeVch(void)
 /*----------------------------------------------------------------------------*/
 /* hash a partion key column into running hash                                */
 /*----------------------------------------------------------------------------*/
+byte* RowSingle::ayDstByte(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  byte* ayDst = (byte*) & m_waColVal[0].m_iWrd;
+  
+  return ayDst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash a partion key column into running hash                                */
+/*----------------------------------------------------------------------------*/
 i8 RowSingle::iHashColumn(Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
@@ -242,6 +327,18 @@ i8 RowSingle::iHashColumn(Column* pCol)
     iHash = HshLib::iHash((byte*)&m_waColVal[i_Col].m_iWrd,sizeof(w8));
   
   return iHash;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash a partion key column into running hash                                */
+/*----------------------------------------------------------------------------*/
+bool RowSingle::bIsColNull(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  bool bIsNull = m_waColVal[i_Col].bIsNull();
+  
+  return bIsNull;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,6 +395,16 @@ void RowSingle::vSet(i8 iVArgsBegin, ...)
   ASSERT(C_VARGS_END == iVArgsEnd);
 
   va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column value to be null                                                */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vSetNull(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  m_waColVal[i_Col].m_iWrd = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

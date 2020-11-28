@@ -1080,6 +1080,23 @@ L_Decimal:
   if (iTraceBits & C_BIT_Decimal)
     vTrace("L_Decimal:\n"_Stz);
   
+  /*
+         
+     +-------------------------------------------------------+
+     |                      Decimal Field                    |
+     +-------------------------------------------------------+
+     | [<WHITE_SPACE>] <DECIMAL> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading                  trailing                 |
+     +-------------------------------------------------------+
+   
+     <DECIMAL> :   null     // null form
+                 | \N       // null form
+                 | <EMPTY>  // null form
+                 | <WHOLE_NUMBER> [ . <FRAC_NUMBER> ]
+
+   */
+
+  
   vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1401,9 +1418,7 @@ L_Interval:
   
   
   /*
-   
-     refer: https://en.wikipedia.org/wiki/ISO_8601
-      
+         
      +--------------------------------------------------------+
      |                      Interval Field                    |
      +--------------------------------------------------------+
@@ -2403,6 +2418,16 @@ L_PostField:
            spCur.szChar(cCurChr),
            spNxt.szChar(cNxtChr),
            spCsv.szInspect(azCsvCrs));
+  
+  /*
+   
+   +------------------------------------------------------------+
+   |                        Field End                           |
+   +------------------------------------------------------------+
+   | <FIELD> <FIELD_END> ... <FIELD> [ <FIELD_END> ] <LINE_END> |
+   +------------------------------------------------------------+
+
+   */
 
   RASSERT(bAT_FIELD_END());
   

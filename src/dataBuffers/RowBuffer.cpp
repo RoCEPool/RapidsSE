@@ -102,13 +102,13 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
     if (DM_VCH == pCol->eDatum()) {
       
       // check for null
-      if (pRowSingle->m_waColVal[i_Col].bIsNull()) {
+      if (pRowSingle->bIsColNull(i_Col)) {
         pRow->m_waColVal[i_Col].vSetNull();
         continue;
       }
       
       // get src string
-      char* acSrcString = (char*)pRowSingle->m_waColVal[i_Col].m_szVch;
+      char* acSrcString = (char*)pRowSingle->szColVal(i_Col);
       i8 nSrcLength = StrLib::nSize(acSrcString);
       
       // allocate a string from the tail
@@ -125,7 +125,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    pRow->m_waColVal[i_Col].m_iWrd = pRowSingle->m_waColVal[i_Col].m_iWrd;
+    pRow->m_waColVal[i_Col].m_iWrd = pRowSingle->iColVal(i_Col);
   }
   
   //pRow->vDump(pStreamDef);

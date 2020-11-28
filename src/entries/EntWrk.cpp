@@ -106,7 +106,7 @@ void EntWrk::vAppendElement(RowSingle* pRow, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iValue = pRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
+  i8 iValue = pRow->iColVal(pCol->iColumnNo());
   
   if (Null::bIsNull(iValue)) {
 //    byte* ayDst = (byte*)ayElmNext();
