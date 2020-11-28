@@ -19,7 +19,7 @@ namespace Correctness       { class Cell;            class Focal;
                               class Header;          class Object;
                               class Statistics;                               }
 namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
-                              class RsbBuffer;                                }
+                              class RowBuffer;       class RsbBuffer;         }
 namespace DataOperators     {                                                 }
 namespace Datums            { class Datum_h;
                               template <i8 SPACE> class Datum_t;              }
@@ -67,7 +67,7 @@ namespace GoldenGate        {                                                 }
 namespace Grids             { class Grid;            class Node;              }
 namespace Host              {                                                 }
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
-namespace InfoData          {                                                 }
+namespace InfoData          { class InfoSetBase;                              }
 namespace Interface         { class SessionArray;                             }
 namespace Jobs              { class Job;             
                               class JobList;         class Job_CreateTable;
