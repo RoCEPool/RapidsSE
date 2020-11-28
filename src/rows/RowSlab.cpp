@@ -118,7 +118,7 @@ m8* RowSlab::amCell0(i8 i_Row)
 
   Rsb* aRsb = aRsbAdr(m_i_RowCrs);
   
-  return (m8*)aRsb->amCell0();
+  return (m8*)aRsb->amCell0_rsb();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,24 +152,24 @@ void RowSlab::vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     if (DM_VCH == eDatum) {
        // vch datum
 
-      if (C_DATUM_NULL == aRsbSrc->iVal(i_Col)) {
+      if (C_DATUM_NULL == aRsbSrc->iVal_rsb(i_Col)) {
         vDeposit(C_DATUM_NULL);
       }
       else {
-        szSrcStz = aRsbSrc->szVal(i_Col);
+        szSrcStz = aRsbSrc->szVal_rsb(i_Col);
         vDeposit(szSrcStz);
       }
     }
     else {
       // all others
      
-      iVal = aRsbSrc->iVal(i_Col);
+      iVal = aRsbSrc->iVal_rsb(i_Col);
       vDeposit(iVal);
     }
   }
 
   if (bSrcHasPtnHash && bCopyPtnHash) {
-    iVal = aRsbSrc->iVal(i_Col);
+    iVal = aRsbSrc->iVal_rsb(i_Col);
     vDeposit(iVal);
   }
   
@@ -193,18 +193,18 @@ i8 RowSlab::iColumn(Rsb* aRsb, i8 i_Col)
   if (DM_VCH == eDatum) {
     // vch datum
     
-    if (C_DATUM_NULL == aRsb->iVal(i_Col)) {
+    if (C_DATUM_NULL == aRsb->iVal_rsb(i_Col)) {
       return C_DATUM_NULL;
     }
     else {
-      szSrcStz = aRsb->szVal(i_Col);
+      szSrcStz = aRsb->szVal_rsb(i_Col);
       return (i8)szSrcStz;
     }
   }
   else {
     // all others
     
-    iVal = aRsb->iVal(i_Col);
+    iVal = aRsb->iVal_rsb(i_Col);
     return iVal;
   }
 }
@@ -392,10 +392,10 @@ void RowSlab::vNormaliseStrings(void)
       
       Rsb* aOuterRsb = aRsbAdr(i_OuterRow);
       
-      if (C_DATUM_NULL == aOuterRsb->iVal(i_Col))
+      if (C_DATUM_NULL == aOuterRsb->iVal_rsb(i_Col))
         continue;
 
-      Stz* szOuterStz = aOuterRsb->szVal(i_Col);
+      Stz* szOuterStz = aOuterRsb->szVal_rsb(i_Col);
       //vTrace("Outer: %s\n"_Stz,szOuterStz);
       
       i8 nLength = szOuterStz->nLength();
@@ -410,10 +410,10 @@ void RowSlab::vNormaliseStrings(void)
         
         Rsb* aInnerRsb = aRsbAdr(i_InnerRow);
 
-        if (C_DATUM_NULL == aInnerRsb->iVal(i_Col))
+        if (C_DATUM_NULL == aInnerRsb->iVal_rsb(i_Col))
           continue;
 
-        Stz* szInnerStz = aInnerRsb->szVal(i_Col);
+        Stz* szInnerStz = aInnerRsb->szVal_rsb(i_Col);
         //vTrace("Inner: %s\n"_Stz,szInnerStz);
 
         if (! szInnerStz->bEqual(szOuterStz))
@@ -480,7 +480,7 @@ i8 RowSlab::iPtnOfRsb(Rsb* aRsb)
 
   i8 i_HshCol = m_oStreamPix.m_nCols - 1;
     
-  i8 i_Ptn = aRsb->iVal(i_HshCol);
+  i8 i_Ptn = aRsb->iVal_rsb(i_HshCol);
   
   return i_Ptn;
 }

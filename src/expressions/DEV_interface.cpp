@@ -1048,7 +1048,7 @@ i8 iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
     
-  i8 iRes = pDevRsb->m_aRsb->iVal(iArg);
+  i8 iRes = pDevRsb->m_aRsb->iVal_rsb(iArg);
 
   return iRes;
 }
@@ -1062,7 +1062,7 @@ Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  Stz* szSrc = pDevRsb->m_aRsb->szVal(iArg);
+  Stz* szSrc = pDevRsb->m_aRsb->szVal_rsb(iArg);
 
   return szSrc;
 }

@@ -868,7 +868,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Rsb* aRsb)
     
     IndexDef* pIndexDef = m_pIndex->pIndexDef();
     Column* pCol = pIndexDef->pGetColumn(0);
-    i8 iVal = aRsb->iVal(pCol->iColumnNo());
+    i8 iVal = aRsb->iVal_rsb(pCol->iColumnNo());
     pEntWrk->aEnt()->vKind(KE_INT);
     pEntWrk->aEnt()->vIntElm0(iVal);
     

@@ -16,11 +16,11 @@ namespace Rows
 
 #include "Ref.hpp"
 
+#include "Row.hpp"
 #include "Rsb.hpp"
 #include "NmlStr.hpp"
 #include "RowSlab.hpp"
 
-#include "Row.hpp"
 #include "RowSingle.hpp"
 
 #include "RowGenerator.hpp"
