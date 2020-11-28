@@ -19,6 +19,7 @@ namespace DataBuffers
     void* operator new(size_t);
     void  operator delete(void*);
   
+    RowBuffer(void);
     RowBuffer(eCN eClassNo);
    ~RowBuffer(void) noexcept(false);
   

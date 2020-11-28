@@ -19,6 +19,19 @@ RowBuffer* DataBuffers::_pRowBuffer(void* aAddress)
   return pRowBuffer;
 }
 
+__aNewFunction(RowBuffer,CN_ROWBUFFER)
+__vDeleteFunction(RowBuffer,CN_ROWBUFFER)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowBuffer::RowBuffer(void)
+: DataBuffer(CN_ROWBUFFER, false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
+  
+}
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

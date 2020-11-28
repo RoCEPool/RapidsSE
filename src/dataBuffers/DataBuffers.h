@@ -23,7 +23,6 @@ typedef       HV <RowSingle,   StreamDef>                      HV_Row;
 #include "RowBuffer.hpp"
 #include "CsvMeta.hpp"
 #include "CsvBuffer.hpp"
-#include "IrwBuffer.hpp"
 
 #include "RsbBuffer.hpp"
 

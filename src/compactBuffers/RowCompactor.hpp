@@ -21,7 +21,7 @@ namespace CompactBuffers
 
     // - - - - - - - - - - - -
     
-    IrwBuffer* m_pRowSamples;  // the set of sample rows
+    RowBuffer* m_pRowSamples;  // the set of sample rows
     bool       m_bCollecting;  // has sample set been encoded?
   
     RowSlab*   m_pSampleSlab;

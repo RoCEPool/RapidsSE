@@ -138,7 +138,6 @@ enum eCN : u2 // Class Number
   /* */ CN_INTVAL,
   /* */ CN_IOCHUNK,
   /* */ CN_IOCOPY,
-  /* */ CN_IRWBUFFER,
   /* */ CN_IVLVAL,
 
   /* */ CN__J__,
@@ -490,7 +489,6 @@ static Stz* aCN[]
   /* */ "INTVAL"_Stz,              // CN_INTVAL
   /* */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /* */ "IOCOPY"_Stz,              // CN_IOCOPY
-  /* */ "IRWBUFFER"_Stz,           // CN_IRWBUFFER
   /* */ "IVLVAL"_Stz,              // CN_IVLVAL
 
   /* */ "_J__"_Stz,                // CN__J__

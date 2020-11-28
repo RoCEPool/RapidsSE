@@ -99,7 +99,7 @@ void Encoding_v2::vEncodeRow(Row* pRow)
   
   vReset();
   
-  vInitialEncodingIrw(pRow);
+  vInitialEncodingRow(pRow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +222,7 @@ void Encoding_v2::vSplitOver(void)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding_v2::vInitialEncodingIrw(Row* pRow)
+void Encoding_v2::vInitialEncodingRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
   

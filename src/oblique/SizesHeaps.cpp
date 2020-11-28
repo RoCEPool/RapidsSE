@@ -134,7 +134,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IntVal),             HT_INVALID           }, // CN_INTVAL
   { sizeof(IoChunk),            HT_TRANSIENT_LARGE   }, // CN_IOCHUNK
   { sizeof(IoCopy),             HT_TRANSIENT_TINY    }, // CN_IOCOPY
-  { sizeof(IrwBuffer),          HT_TRANSIENT_LARGE   }, // CN_IRWBUFFER
   { sizeof(IvlVal),             HT_INVALID           }, // CN_IVLVAL
 
   { 'J' - ('A' - 1),            HT_INVALID           }, // CN__J__

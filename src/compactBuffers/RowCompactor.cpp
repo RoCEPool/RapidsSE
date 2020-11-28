@@ -93,7 +93,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
 
-  m_pRowSamples = new IrwBuffer;
+  m_pRowSamples = new RowBuffer;
   m_bCollecting = bCollectSamples;
   
   ASSERT(!m_pSampleSlab);
