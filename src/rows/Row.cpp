@@ -42,7 +42,7 @@ void* Row::operator new(size_t, void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Row::Row(void)
-  :Object(CN_ROW)
+: Object(CN_ROW)
 {
   
 }
@@ -73,7 +73,6 @@ i8 Row::nSizeBytes(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 void Row::vDump(StreamDef* pStreamDef)
 {
-  
   vTrace("ROW: %p"_Stz, this);
   
   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(C_ALL); i_Col++) {
@@ -89,7 +88,7 @@ void Row::vDump(StreamDef* pStreamDef)
         continue;
       }
       
-      Stz* acSrcString = szStzGet(i_Col);
+      Stz* acSrcString = szStzGet_row(i_Col);
       
       vTrace(" %s "_Stz, acSrcString);
       
@@ -112,7 +111,7 @@ void Row::vDump(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* get string column                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* Row::szStzGet(i8 i_Col)
+Stz* Row::szStzGet_row(i8 i_Col)
 {
   // get the poolBuffer from the row address
   PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);

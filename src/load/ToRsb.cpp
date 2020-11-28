@@ -504,15 +504,15 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
                            2) \r
                            3) \r\n
    
-     +-------------------------+
-     |   Lines in CSV Chunk    |
-     +-------------------------+
-     | ..line 0.. <LINE_END>   |
-     | ..line 1.. <LINE_END>   |
-     | ..line 2.. <LINE_END>   |
-     |         ...             |
-     | ..line n.. <LINE_END>\0 |
-     +-------------------------+
+     +---------------------+
+     | Lines in CSV Chunk  |
+     +---------------------+
+     | <LINE> <LINE_END>   |
+     | <LINE> <LINE_END>   |
+     | <LINE> <LINE_END>   |
+     |         ...         |
+     | <LINE> <LINE_END>\0 |
+     +---------------------+
    
      n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
    
@@ -608,16 +608,16 @@ L_TestMoreRecords:
   
   /*
       
-     +------------------------------------+
-     |  Records in Lines in CSV Chunk     |
-     +------------------------------------+
-     | <RECORD>[<RECORD_END>]<LINE_END>   | line[0] with record
-     | <RECORD>[<RECORD_END>]<LINE_END>   | line[1] with record
-     |                   ...              |
-     | <RECORD>[<RECORD_END>]<LINE_END>   | line[n-2] with record
-     | [<WHITESPACE>]<ENDLINE>            | line[n-1] blank line
-     | <RECORD>[<RECORD_END>]<LINE_END>\0 | line[n] with record
-     +------------------------------------+
+     +---------------------------------------+
+     |  Records in Lines in CSV Chunk        |
+     +---------------------------------------+
+     | <RECORD> [<RECORD_END>] <LINE_END>    | line[0] with record
+     | <RECORD> [<RECORD_END>] <LINE_END>    | line[1] with record
+     |                   ...                 |
+     | <RECORD> [<RECORD_END>] <LINE_END>    | line[n-2] with record
+     | [<WHITESPACE>] <ENDLINE>              | line[n-1] blank line
+     | <RECORD> [<RECORD_END>] <LINE_END> \0 | line[n] with record
+     +---------------------------------------+
    
      n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
    
@@ -691,14 +691,14 @@ L_TestMoreFields:
   
   /*
       
-     +----------------------------------------------------------+
-     |         Fields in Records in Lines in CSV Chunk          |
-     +----------------------------------------------------------+
-     | <FIELD><FIELD_SEPARATOR>...[<FIELD_SEPARATOR>][<RT]<EL>  |
-     | <FIELD><FIELD_SEPARATOR>...[<FIELD_SEPARATOR>][<RT]<EL>  |
-     |                       ...                                |
-     | <FIELD><FIELD_SEPARATOR>...[<FIELD_SEPARATOR>][<RT]<EL>\0|
-     +----------------------------------------------------------+
+     +---------------------------------------------------------------+
+     |              Fields in Records in Lines in CSV Chunk          |
+     +---------------------------------------------------------------+
+     | <FIELD> <FIELD_SEPARATOR>...[<FIELD_SEPARATOR>] [<RT] <EL>    |
+     | <FIELD> <FIELD_SEPARATOR>...[<FIELD_SEPARATOR>] [<RT] <EL>    |
+     |                       ...                                     |
+     | <FIELD> <FIELD_SEPARATOR>...[<FIELD_SEPARATOR>] [<RT] <EL> \0 |
+     +---------------------------------------------------------------+
    
    */
 

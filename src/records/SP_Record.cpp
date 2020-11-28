@@ -403,7 +403,7 @@ Stz* SP_Record::sz(Row* aRow)
         continue;
       }
       
-      Stz* acSrcString = aRow->szStzGet(i_Col);
+      Stz* acSrcString = aRow->szStzGet_row(i_Col);
       vAddCol(pCol, (i8)acSrcString);
       continue;
     }
