@@ -244,7 +244,7 @@ void RowSingle::vCopy(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    m_awaColVal[i_Col].m_iWrd = pRow->iColVal(i_Col);
+    m_awaColVal[i_Col].m_iWrd = pRow->iColVal_int(i_Col);
   }
 }
 
@@ -275,7 +275,7 @@ void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
 
-  m_awaColVal[i_IntoCol].m_iWrd = pRow->iColVal(i_FromCol);
+  m_awaColVal[i_IntoCol].m_iWrd = pRow->iColVal_int(i_FromCol);
 }
 
 /*----------------------------------------------------------------------------*/

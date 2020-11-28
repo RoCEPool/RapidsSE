@@ -407,7 +407,7 @@ Stz* SP_Record::sz(Row* aRow)
       vAddCol(pCol, (i8)acSrcString);
       continue;
     }
-    vAddCol(pCol, aRow->iColVal(i_Col));
+    vAddCol(pCol, aRow->iColVal_int(i_Col));
   }
   
   return (Stz*) &m_caRecord[0];

@@ -1532,6 +1532,24 @@ L_Time:
   if (iTraceBits & C_BIT_Time)
     vTrace("L_Time:\n"_Stz);
   
+  /*
+   
+     refer: https://en.wikipedia.org/wiki/ISO_8601
+      
+     +----------------------------------------------------+
+     |                       Time Field                   |
+     +----------------------------------------------------+
+     | [<WHITE_SPACE>] <TIME> [<WHITE_SPACE>] <FIELD_END> |
+     |     leading               trailing                 |
+     +----------------------------------------------------+
+   
+     <TIME> :   null     // null form
+              | \N       // null form
+              | <EMPTY>  // null form
+              | <HOUR> <TIME_SEP> <MINUTE> <TIME_SEP> <SECOND>
+   
+   */
+
   vSKIP_WHITE_SPACE_LEADING();
   
   // ---- ---- ---- ---- ---- ---- ---- ----

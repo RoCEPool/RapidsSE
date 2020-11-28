@@ -39,7 +39,7 @@ void Step::vRowGetIntColumn(void)
   
   Row* pRow = *m_pLogicUnit->m_xpRow;
   
-  m_pDataStack->vPushInt(pRow->iColVal(i_Col));
+  m_pDataStack->vPushInt(pRow->iColVal_int(i_Col));
   
   EXIT();
 }

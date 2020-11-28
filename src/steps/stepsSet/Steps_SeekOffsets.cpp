@@ -29,8 +29,8 @@ void Step::vSeekOffsetsOperandDump(void)
          pRow;
          pRow = pInfoSet->aNextRow(pRow)) {
       
-      i8 iOffset = pRow->iColVal(0);
-      i8 nBytes  = pRow->iColVal(1);
+      i8 iOffset = pRow->iColVal_int(0);
+      i8 nBytes  = pRow->iColVal_int(1);
 
       vTrace("[%lld] Offset %lld Bytes %lld\n"_Stz,
              i_Ofs++,iOffset,nBytes);

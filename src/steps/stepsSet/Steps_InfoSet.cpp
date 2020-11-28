@@ -409,7 +409,7 @@ void Step::vInfoSetColValFetch(void)
   switch (eDatum) {
       
     case DM_INT:
-      iInt = aRow->iColVal(i_Col);
+      iInt = aRow->iColVal_int(i_Col);
       m_pDataStack->vPushInt(iInt);
       break;
       
@@ -632,8 +632,8 @@ void Step::vInfoSetRdCsvChunk(void)
   
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
   
-  i8 iOffset = pRow->iColVal(0);
-  i8 nBytes = pRow->iColVal(1);
+  i8 iOffset = pRow->iColVal_int(0);
+  i8 nBytes = pRow->iColVal_int(1);
   
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   

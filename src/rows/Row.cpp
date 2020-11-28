@@ -136,7 +136,7 @@ char* Row::azColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Row::iColVal(i8 i_Col)
+i8 Row::iColVal_int(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -148,7 +148,7 @@ i8 Row::iColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* set column value                                                           */
 /*----------------------------------------------------------------------------*/
-void Row::vColVal(i8 i_Col, i8 iVal)
+void Row::vColVal_int(i8 i_Col, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   

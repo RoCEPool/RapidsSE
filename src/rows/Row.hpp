@@ -23,8 +23,8 @@ namespace Rows
   
     Dtm* aColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);
-    i8   iColVal(i8 i_Col);
-    void vColVal(i8 i_Col, i8 iVal);
+    i8   iColVal_int(i8 i_Col);
+    void vColVal_int(i8 i_Col, i8 iVal);
     d8   dColVal(i8 i_Col);
     void vColVal(i8 i_Col, d8 dVal);
     Stz* szColVal_ofs(i8 i_Col);

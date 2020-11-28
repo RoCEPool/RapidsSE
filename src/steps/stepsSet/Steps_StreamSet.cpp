@@ -181,13 +181,13 @@ void Step::vStreamSetAddGridSanity(void)
   // get regionSize on this node
   bool bRegionSize = false;
   i8 iRegionSize = AM::iRegionSize();
-  if (pNodeInfo->iColVal(1) == iRegionSize)
+  if (pNodeInfo->iColVal_int(1) == iRegionSize)
     bRegionSize = true;
   
   // get partitions per table for this node
   bool bPartitions = false;
   i8 nPtnsPerTable = AM::nPtnsPerTable();
-  if (pNodeInfo->iColVal(2) == nPtnsPerTable)
+  if (pNodeInfo->iColVal_int(2) == nPtnsPerTable)
     bPartitions = true;
   
   // check if the regionSize and partitions match
@@ -866,8 +866,8 @@ void Step::vStreamSetReadChunk(void)
   
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
   
-  i8 iOffset = pRow->iColVal(0);
-  i8 nBytes  = pRow->iColVal(1);
+  i8 iOffset = pRow->iColVal_int(0);
+  i8 nBytes  = pRow->iColVal_int(1);
   
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   
