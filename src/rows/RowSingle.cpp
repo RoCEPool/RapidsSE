@@ -235,7 +235,7 @@ void RowSingle::vCopy(Row* pRow)
         continue;
       }
       
-      char* acSrcString = (char*)pRow->szStzGet_row(i_Col);
+      char* acSrcString = (char*)pRow->szColVal_ofs(i_Col);
       vAllotSetVarchar(i_Col, (Stz*)acSrcString);
       
       continue;
@@ -266,7 +266,7 @@ void RowSingle::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
       return;
     }
     
-    char* acSrcString = (char*)pRow->szColVal(i_FromCol);
+    char* acSrcString = (char*)pRow->szColVal_vch(i_FromCol);
     vAllotSetVarchar(i_IntoCol, (Stz*)acSrcString);
     
     return;

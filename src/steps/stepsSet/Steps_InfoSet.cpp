@@ -415,7 +415,7 @@ void Step::vInfoSetColValFetch(void)
       
     case DM_VCH:
       wDtm = aRow->wColVal(i_Col);
-      sStr = aRow->szStzGet_row(i_Col);
+      sStr = aRow->szColVal_ofs(i_Col);
       m_pDataStack->vPushStz(sStr);
       break;
       

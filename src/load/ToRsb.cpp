@@ -217,7 +217,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 #define bAT_TIME_SEPARATOR() \
   (cCurChr == C_TIME_SEPARATOR)
 
-#define bEND_CSV_CHUNK() \
+#define bCHUNK_END() \
   (! (bool)(cCurChr))
 
 #define bIS_DECIMAL_POINT() \
@@ -504,16 +504,16 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
                            2) \r
                            3) \r\n
    
-     +---------------------+
-     | Lines in CSV Chunk  |
-     +---------------------+
-     | <LINE> <LINE_END>   |
-     | <LINE> <LINE_END>   |
-     | <LINE> <LINE_END>   |
-     |         ...         |
-     | <LINE> <LINE_END>\0 |
-     +---------------------+
-   
+   +----------------------+
+   |  Lines in CSV Chunk  |
+   +----------------------+
+   | <LINE> <LINE_END>    |
+   | <LINE> <LINE_END>    |
+   | <LINE> <LINE_END>    |
+   |         ...          |
+   | <LINE> <LINE_END> \0 |
+   +----------------------+
+
      n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
    
    */
@@ -650,8 +650,8 @@ L_TestMoreRecords:
     break;
   }
   
-  if (bEND_CSV_CHUNK())
-    goto L_EndCsvChunk;
+  if (bCHUNK_END())
+    goto L_ChunkEnd;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // begin record processing
@@ -1671,6 +1671,9 @@ L_Timestamp:
                                   <SECOND>
 
      <COMPONENT> :  <YEAR> | <MONTH> | <DAY>
+   
+     <TIME_MARK> : 'T' | 't' | ' '
+   
    */
 
   
@@ -2594,12 +2597,28 @@ L_RecordEndLineEnd:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 7) reached end of azCsvChunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EndCsvChunk:
+L_ChunkEnd:
     
   if (iTraceBits & C_BIT_EndCsvChunk)
     vTrace("L_EndOfCsvChunk:\n"_Stz);
   
-  RASSERT(bEND_CSV_CHUNK());
+  /*
+      
+     +----------------------+
+     |  Lines in CSV Chunk  |
+     +----------------------+
+     | <LINE> <LINE_END>    |
+     | <LINE> <LINE_END>    |
+     | <LINE> <LINE_END>    |
+     |         ...          |
+     | <LINE> <LINE_END> \0 |
+     +----------------------+
+   
+     n.b. The \0 is guarenteed by the rdCsvChunk operator [check]
+   
+   */
+
+  RASSERT(bCHUNK_END());
 
   return true;
 }

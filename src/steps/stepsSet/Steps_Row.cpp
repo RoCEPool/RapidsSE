@@ -55,7 +55,7 @@ void Step::vRowGetVchColumn(void)
   
   Row* pRow = *m_pLogicUnit->m_xpRow;
   
-  s256 sColumn = pRow->szStzGet_row(iColumn);
+  s256 sColumn = pRow->szColVal_ofs(iColumn);
   m_pDataStack->vPushStr(sColumn);
   
   EXIT();

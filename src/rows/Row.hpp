@@ -27,14 +27,14 @@ namespace Rows
     void vColVal(i8 i_Col, i8 iVal);
     d8   dColVal(i8 i_Col);
     void vColVal(i8 i_Col, d8 dVal);
-    Stz* szColVal(i8 i_Col);
+    Stz* szColVal_ofs(i8 i_Col);
+    Stz* szColVal_vch(i8 i_Col);
     Dtm  wColVal(i8 i_Col);
 
     bool bIsColNull(i8 i_Col);
   
     void vSetColNull(i8 i_Col);
 
-    Stz* szStzGet_row(i8 i_Col);
   };
   
   Row* _pRow(void* aAddr);

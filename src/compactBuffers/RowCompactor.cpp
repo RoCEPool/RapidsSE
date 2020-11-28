@@ -525,7 +525,7 @@ void RowCompactor::vEncodeTailsForIrw(Row* pIrw)
     
     // -- non-null vch column --
     
-    Stz* azStr = pIrw->szStzGet_row(i_Col);
+    Stz* azStr = pIrw->szColVal_ofs(i_Col);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
     
@@ -788,7 +788,7 @@ void RowCompactor::vAnalyzeSamples(void)
       if (pOuterIrw->bIsColNull(i_Col))
         continue;
       
-      Stz* azOuterStr = pOuterIrw->szStzGet_row(i_Col);
+      Stz* azOuterStr = pOuterIrw->szColVal_ofs(i_Col);
       i8 nLength = StrLib::nLength((char*)azOuterStr);
       if (nLength < 8)
         continue;
@@ -828,8 +828,8 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) does the inner vch equal the outer vch?
   
-  char* azInnerStr = (char*)pInnerIrwSample->szStzGet_row(i_Col);
-  char* azOuterStr = (char*)pOuterIrwSample->szStzGet_row(i_Col);
+  char* azInnerStr = (char*)pInnerIrwSample->szColVal_ofs(i_Col);
+  char* azOuterStr = (char*)pOuterIrwSample->szColVal_ofs(i_Col);
   if (! StrLib::bEqualTo(azInnerStr,azOuterStr) )
     return;
   
@@ -840,7 +840,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
 //  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
 //    return;
   
-  Stz* szTailToFind = pOuterIrwSample->szStzGet_row(i_Col);
+  Stz* szTailToFind = pOuterIrwSample->szColVal_ofs(i_Col);
   if (C_UNKNOWN != m_pCrwNub->iFindTail(szTailToFind))
     return;
 

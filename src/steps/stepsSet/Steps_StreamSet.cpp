@@ -197,7 +197,7 @@ void Step::vStreamSetAddGridSanity(void)
   
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
-                                  pNodeInfo->szStzGet_row(0),
+                                  pNodeInfo->szColVal_ofs(0),
                                   bHomogenous,
                                   C_VARGS_END);
   //ASSERT(pRow);

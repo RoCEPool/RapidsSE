@@ -250,7 +250,7 @@ void Encoding_v2::vInitialEncodingIrw(Row* pIrw)
       case DM_VCH:
         // get the stz from the row
         if ( ! wColVal.bIsNull() )
-          wColVal.m_szVch = pIrw->szStzGet_row(i_Col);
+          wColVal.m_szVch = pIrw->szColVal_ofs(i_Col);
         vEncodeVch(xrColEnc,wColVal);
         break;
         

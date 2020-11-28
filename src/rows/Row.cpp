@@ -88,7 +88,7 @@ void Row::vDump(StreamDef* pStreamDef)
         continue;
       }
       
-      Stz* acSrcString = szStzGet_row(i_Col);
+      Stz* acSrcString = szColVal_ofs(i_Col);
       
       vTrace(" %s "_Stz, acSrcString);
       
@@ -178,9 +178,34 @@ void Row::vColVal(i8 i_Col, d8 dVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get string column                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Row::szColVal_ofs(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  // get the poolBuffer from the row address
+  PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(pPoolBuffer);
+  
+  Object* pRowBuffer =
+  reinterpret_cast<Object*>(pHeapBuffer->aFirstChunk());
+  
+  // get the offset of the string
+  i8 i_Offset = m_waColVal[i_Col].m_iWrd;
+  
+  // get address of string within pool buffer
+  Stz* pStz = pAdd<Stz*>(pRowBuffer,i_Offset);
+  
+  return pStz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Row::szColVal(i8 i_Col)
+Stz* Row::szColVal_vch(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -221,31 +246,6 @@ void Row::vSetColNull(i8 i_Col)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   m_waColVal[i_Col].vSetNull();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get string column                                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Row::szStzGet_row(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-  
-  // get the poolBuffer from the row address
-  PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
-  
-  HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(pPoolBuffer);
-  
-  Object* pRowBuffer =
-  reinterpret_cast<Object*>(pHeapBuffer->aFirstChunk());
-  
-  // get the offset of the string
-  i8 i_Offset = m_waColVal[i_Col].m_iWrd;
-  
-  // get address of string within pool buffer
-  Stz* pStz = pAdd<Stz*>(pRowBuffer,i_Offset);
-  
-  return pStz;
 }
 
 /*============================================================================*/
