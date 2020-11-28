@@ -698,6 +698,7 @@ L_TestMoreFields:
      | <FIELD> <FIELD_SEPARATOR>...[<FIELD_SEPARATOR>] [<RT] <EL>    |
      |                       ...                                     |
      | <FIELD> <FIELD_SEPARATOR>...[<FIELD_SEPARATOR>] [<RT] <EL> \0 |
+     | ^i_Fld                                                        |
      +---------------------------------------------------------------+
    
    */
@@ -779,7 +780,7 @@ L_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
   
-  vIF_NULL_FORM(L_BooleanNull,EC_CSV_BOOLEAN_INVALID);
+  vIF_NULL_FORM(L_Boolean_setNull,EC_CSV_BOOLEAN_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible true form of boolean
@@ -805,7 +806,7 @@ L_Boolean:
       }
     }
 
-    goto L_BooleanRecognised;
+    goto L_Boolean_recognised;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -838,7 +839,7 @@ L_Boolean:
       }
     }
 
-    goto L_BooleanRecognised;
+    goto L_Boolean_recognised;
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -854,7 +855,7 @@ L_Boolean:
     else
       iBooleanValue = false;
     
-    goto L_BooleanRecognised;
+    goto L_Boolean_recognised;
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -865,7 +866,7 @@ L_Boolean:
   // === === === === === === === === === === === === === === === === === === ===
   //                                                          recognised boolean
   
-L_BooleanRecognised:
+L_Boolean_recognised:
 
   vSKIP_WHITE_SPACE_TRAILING();
   if (bNOISY_FIELD_END())
@@ -881,7 +882,7 @@ L_BooleanRecognised:
 
   goto L_FieldEnd;
     
-L_BooleanNull:
+L_Boolean_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
@@ -929,7 +930,7 @@ L_Date:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
   
-  vIF_NULL_FORM(L_DateNull,EC_CSV_DATE_INVALID);
+  vIF_NULL_FORM(L_Date_setNull,EC_CSV_DATE_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // date components
@@ -1055,7 +1056,7 @@ L_Date_componentsCollected:
 
   goto L_FieldEnd;
 
-L_DateNull:
+L_Date_setNull:
     
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
@@ -1102,7 +1103,7 @@ L_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
    
-  vIF_NULL_FORM(L_DecimalNull,EC_CSV_DECIMAL_INVALID);
+  vIF_NULL_FORM(L_Decimal_setNull,EC_CSV_DECIMAL_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1187,7 +1188,7 @@ L_Decimal:
 
   goto L_FieldEnd;
 
-L_DecimalNull:
+L_Decimal_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
@@ -1218,7 +1219,7 @@ L_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
    
-  vIF_NULL_FORM(L_FloatNull,EC_CSV_FLOAT_INVALID);
+  vIF_NULL_FORM(L_Float_setNull,EC_CSV_FLOAT_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1300,7 +1301,7 @@ L_Float:
   
   goto L_FieldEnd;
 
-L_FloatNull:
+L_Float_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
@@ -1350,7 +1351,7 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
    
-  vIF_NULL_FORM(L_IntegerNull,EC_CSV_INTEGER_INVALID);
+  vIF_NULL_FORM(L_Integer_setNull,EC_CSV_INTEGER_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
@@ -1395,7 +1396,7 @@ L_Integer:
   
   goto L_FieldEnd;
     
-L_IntegerNull:
+L_Integer_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
@@ -1439,7 +1440,7 @@ L_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
   
-  vIF_NULL_FORM(L_IntervalNull,EC_CSV_INTERVAL_INVALID);
+  vIF_NULL_FORM(L_Interval_setNull,EC_CSV_INTERVAL_INVALID);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // interval components
@@ -1510,7 +1511,7 @@ L_Interval:
   
   goto L_FieldEnd;
 
-L_IntervalNull:
+L_Interval_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
@@ -1536,7 +1537,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
   
-  vIF_NULL_FORM(L_TimeNull,EC_CSV_TIME_INVALID);
+  vIF_NULL_FORM(L_Time_setNull,EC_CSV_TIME_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // time components
@@ -1627,7 +1628,7 @@ L_Time:
 
   goto L_FieldEnd;
 
-L_TimeNull:
+L_Time_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_HOUR_INVALID);
@@ -1678,7 +1679,7 @@ L_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
   
-  vIF_NULL_FORM(L_TimestampNull,EC_CSV_TIMESTAMP_INVALID);
+  vIF_NULL_FORM(L_Timestamp_setNull,EC_CSV_TIMESTAMP_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
   // timestamp components
@@ -1911,7 +1912,7 @@ L_Timestamp_noTimeComponents:
 
   goto L_FieldEnd;
 
-L_TimestampNull:
+L_Timestamp_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
@@ -1940,7 +1941,7 @@ L_Varchar:
   // possible empty portion
 
   if (bAT_FIELD_END())
-    goto L_VarcharNull;
+    goto L_Varchar_setNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null portion
@@ -1974,7 +1975,7 @@ L_Varchar:
       goto L_Varchar_which;
     }
 
-    goto L_VarcharNull;
+    goto L_Varchar_setNull;
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1985,7 +1986,7 @@ L_Varchar:
     if ('N' == cCurChr) {
       vACCEPT_CHAR(); // accept 'N'
       if (bAT_FIELD_END())
-        goto L_VarcharNull;
+        goto L_Varchar_setNull;
     }
   
     vRESET_FIELD();
@@ -2075,7 +2076,7 @@ L_Varchar_unquoted:
   if (nVchChars >= nPixLength)
     nVchChars = nPixLength;
   
-  goto L_VarcharDeposit;
+  goto L_Varchar_depositValue;
   
   
   // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
@@ -2191,7 +2192,7 @@ L_Varchar_singleQuotedTerminate:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
-  goto L_VarcharDeposit;
+  goto L_Varchar_depositValue;
   
   
   // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
@@ -2307,7 +2308,7 @@ L_Varchar_doubleQuotedTerminate:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
-  goto L_VarcharDeposit;
+  goto L_Varchar_depositValue;
   
   // ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
   // 3.i.ues) string is enclosed by user specific                   ues varchar
@@ -2380,27 +2381,27 @@ L_Varchar_userEnclosed:
   if (bNOISY_FIELD_END())
     vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   
-  goto L_VarcharDeposit;
+  goto L_Varchar_depositValue;
     
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit varchar
   
-L_VarcharDeposit:
+L_Varchar_depositValue:
 
   m_pRowSlab->vDepositString_end(nVchChars+1);
   
   if (iTraceBits & C_BIT_Varchar)
-    vTrace("L_VarcharDeposit: %s\n"_Stz,azVchValue);
+    vTrace("L_Varchar_depositValue: %s\n"_Stz,azVchValue);
   
   goto L_FieldEnd;
 
-L_VarcharNull:
+L_Varchar_setNull:
   
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   
   if (iTraceBits & C_BIT_Varchar)
-    vTrace("L_VarcharDeposit: null\n"_Stz);
+    vTrace("L_Varchar_depositValue: null\n"_Stz);
   
   m_pRowSlab->vDeposit(C_DATUM_NULL);
   

@@ -109,10 +109,98 @@ void Row::vDump(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get address of column datum                                                */
+/*----------------------------------------------------------------------------*/
+Dtm* Row::aColDtm(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  Dtm* aDtm = & m_waColVal[i_Col];
+  
+  return aDtm;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+char* Row::azColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  char* azVal = m_waColVal[i_Col].m_azStr;
+  
+  return azVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Row::iColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  i8 iVal = m_waColVal[i_Col].m_iWrd;
+  
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+d8 Row::dColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  d8 dVal = m_waColVal[i_Col].m_dWrd;
+  
+  return dVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Row::szColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  Stz* szVal = m_waColVal[i_Col].m_szVch;
+  
+  return szVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+Dtm Row::wColVal(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  Dtm wDtm = m_waColVal[i_Col];
+  
+  return wDtm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is column a null value?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Row::bIsColNull(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  bool bNull = m_waColVal[i_Col].bIsNull();
+  
+  return bNull;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get string column                                                          */
 /*----------------------------------------------------------------------------*/
 Stz* Row::szStzGet_row(i8 i_Col)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
   // get the poolBuffer from the row address
   PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
   

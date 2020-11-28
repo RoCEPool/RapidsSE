@@ -398,7 +398,7 @@ Stz* SP_Record::sz(Row* aRow)
 
     if (DM_VCH == pCol->eDatum()) {
       
-      if (aRow->m_waColVal[i_Col].bIsNull()) {
+      if (aRow->bIsColNull(i_Col)) {
         vAddCol(pCol, C_DATUM_NULL);
         continue;
       }
@@ -407,7 +407,7 @@ Stz* SP_Record::sz(Row* aRow)
       vAddCol(pCol, (i8)acSrcString);
       continue;
     }
-    vAddCol(pCol, aRow->m_waColVal[i_Col]);
+    vAddCol(pCol, aRow->iColVal(i_Col));
   }
   
   return (Stz*) &m_caRecord[0];

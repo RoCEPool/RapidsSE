@@ -232,7 +232,7 @@ void Encoding_v2::vInitialEncodingIrw(Row* pIrw)
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    Dtm wColVal = pIrw->m_waColVal[i_Col];
+    Dtm wColVal = pIrw->wColVal(i_Col);
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value

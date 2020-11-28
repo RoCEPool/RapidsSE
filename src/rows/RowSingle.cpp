@@ -230,7 +230,7 @@ void RowSingle::vCopy(Row* pRow)
     
     if (DM_VCH == pCol->eDatum()) {
       
-      if (pRow->m_waColVal[i_Col].bIsNull()) {
+      if (pRow->bIsColNull(i_Col)) {
         m_awaColVal[i_Col].vSetNull();
         continue;
       }
@@ -244,7 +244,7 @@ void RowSingle::vCopy(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    m_awaColVal[i_Col].m_iWrd = pRow->m_waColVal[i_Col].m_iWrd;
+    m_awaColVal[i_Col].m_iWrd = pRow->iColVal(i_Col);
   }
 }
 
