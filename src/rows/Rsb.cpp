@@ -16,7 +16,6 @@ Rsb* Rows::_aRsb(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Rsb::Rsb(void)
-: Object(CN_ROW)
 {
 }
 
