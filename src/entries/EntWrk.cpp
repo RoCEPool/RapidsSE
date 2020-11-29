@@ -140,7 +140,7 @@ void EntWrk::vAppendElement(Row* aRow, Column* pColumn)
   
   i8 i_Col = pColumn->iColumnNo();
   
-  if (aRow->bIsNull_rsb(i_Col)) {
+  if (aRow->bIsColNull(i_Col)) {
     vAppendNull();
     return;
   }
@@ -163,7 +163,7 @@ void EntWrk::vAppendElement(Row* aRow, StreamPix* pStreamPix, i8 i_Col)
   
   eDM eDatum = (eDM)pStreamPix->m_xaColPix[i_Col].m_uDatum;
     
-  if (aRow->bIsNull_rsb(i_Col)) {
+  if (aRow->bIsColNull(i_Col)) {
     vAppendNull();
     return;
   }

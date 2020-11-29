@@ -103,7 +103,7 @@ void SP_RowPix::vAppendFlt(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  d8 dVal = aRow->dVal_rsb(i_Col);
+  d8 dVal = aRow->dColVal_flt(i_Col);
   
   SP_Flt spFlt;
   StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(dVal));
@@ -188,7 +188,7 @@ void SP_RowPix::vPutRow(Row* aRow, bool bNewLine)
     if (i_Col)
       StrLib::vAppendChar(&m_azCursor,',');
 
-    if (aRow->bIsNull_rsb(i_Col)) {
+    if (aRow->bIsColNull(i_Col)) {
       StrLib::vAppendString(&m_azCursor,(char*)"NULL"_Stz);
       continue;
     }

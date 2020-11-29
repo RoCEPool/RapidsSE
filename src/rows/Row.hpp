@@ -57,36 +57,36 @@ namespace Rows
   /*----------------------------------------------------------------------------*/
   /* get i8 integer                                                             */
   /*----------------------------------------------------------------------------*/
-  inline bool bIsNull_rsb(i8 i_Col)
-  {
-    ASSERT(i_Col >= 0);
-      
-    bool bIsNull = bIsColNull(i_Col);
-  
-    return bIsNull;
-  }
+//  inline bool bIsNull_rsb(i8 i_Col)
+//  {
+//    ASSERT(i_Col >= 0);
+//
+//    bool bIsNull = bIsColNull(i_Col);
+//
+//    return bIsNull;
+//  }
 
   /*----------------------------------------------------------------------------*/
   /* get d8 float                                                               */
   /*----------------------------------------------------------------------------*/
-  inline d8 dVal_rsb(i8 i_Col)
-  {
-    ASSERT(i_Col >= 0);
-            
-    d8 dVal = dColVal_flt(i_Col);
-
-    return dVal;
-  }
+//  inline d8 dVal_rsb(i8 i_Col)
+//  {
+//    ASSERT(i_Col >= 0);
+//
+//    d8 dVal = dColVal_flt(i_Col);
+//
+//    return dVal;
+//  }
 
   /*----------------------------------------------------------------------------*/
   /* set d8 float                                                               */
   /*----------------------------------------------------------------------------*/
-  inline void vVal_rsb(i8 i_Col, d8 dVal)
-  {
-    ASSERT(i_Col >= 0);
-    
-  vColVal_flt(i_Col,dVal);
-   }
+//  inline void vVal_rsb(i8 i_Col, d8 dVal)
+//  {
+//    ASSERT(i_Col >= 0);
+//    
+//  vColVal_flt(i_Col,dVal);
+//   }
     
   /*----------------------------------------------------------------------------*/
   /* get i8 integer                                                             */
