@@ -90,9 +90,9 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    if (! m_pRowSlab->bNewRow()) {
+    if (! m_pRowSlab->bAllotRow()) {
       vNewRsbBuffer();
-      bool b = m_pRowSlab->bNewRow();
+      bool b = m_pRowSlab->bAllotRow();
       ASSERT(b);
     }
     
@@ -666,9 +666,9 @@ L_TestMoreRecords:
   i_Fld = -1;
 
   // allot a new rsb (new another rsbBuffer if necessary)
-  if (! m_pRowSlab->bNewRow(&aRow)) {    // ? inline ?
+  if (! m_pRowSlab->bAllotRow(&aRow)) {    // ? inline ?
     vNewRsbBuffer();
-    bool b = m_pRowSlab->bNewRow(&aRow);
+    bool b = m_pRowSlab->bAllotRow(&aRow);
     ASSERT(b);
   }
  

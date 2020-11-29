@@ -126,13 +126,13 @@ void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
-  bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+  bool bNewed = pDstRsbBuffer->pRowSlab()->bAllotRow();
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
-    bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+    bNewed = pDstRsbBuffer->pRowSlab()->bAllotRow();
     ASSERT(bNewed);
   }
   

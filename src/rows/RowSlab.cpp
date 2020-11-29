@@ -63,6 +63,58 @@ RowSlab::~RowSlab(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+bool RowSlab::bAllotRow(Row** paRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+
+  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
+  
+  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize + /* m_iDummy */ (i8)sizeof(i8))
+    return false;
+  
+  m_nItems++;
+
+  m_i_RowCrs++;
+  
+  m_aRowCur = aRowAdr(m_i_RowCrs);
+  
+  *paRow = m_aRowCur;
+  
+  m_i_ColCrs  = 0;
+  
+  i8 nCellBytes = nRowProperBytes();
+  m_xWsp.vTakeTail(nCellBytes);
+  
+  m_nRowStringBytes = 0;
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+bool RowSlab::bAllotRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    
+  Row* aRow;
+  
+  bool b = bAllotRow(&aRow);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
 /*----------------------------------------------------------------------------*/
 i8 RowSlab::nCols(void)
@@ -287,54 +339,6 @@ void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
         
   pStreamDef->vToStreamPix(&m_oStreamPix,bPtnHash);
-}
-
-/*----------------------------------------------------------------------------*/
-/* start of new row                                                           */
-/*----------------------------------------------------------------------------*/
-bool RowSlab::bNewRow(Row** paRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
-  
-  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize + /* m_iDummy */ (i8)sizeof(i8))
-    return false;
-  
-  m_nItems++;
-
-  m_i_RowCrs++;
-  
-  m_aRowCur = aRowAdr(m_i_RowCrs);
-  
-  *paRow = m_aRowCur;
-  
-  m_i_ColCrs  = 0;
-  
-  i8 nCellBytes = nRowProperBytes();
-  m_xWsp.vTakeTail(nCellBytes);
-  
-  m_nRowStringBytes = 0;
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* start of new row                                                           */
-/*----------------------------------------------------------------------------*/
-bool RowSlab::bNewRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-    
-  Row* aRow;
-  
-  bool b = bNewRow(&aRow);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/

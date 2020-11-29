@@ -86,6 +86,8 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
+    bool  bAllotRow(Row** paRsb);
+    bool  bAllotRow(void);
     ColPix* axaColPix(void);
     i8    i_Cell0(i8 i_Row);
      i8    nCols(void);
@@ -100,8 +102,6 @@ namespace Rows
     i8    nExtraCols(void);
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
-    bool  bNewRow(Row** paRsb);
-    bool  bNewRow(void);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
     i8    iPtnOfRsb(Row* aRow);

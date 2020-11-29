@@ -18,7 +18,7 @@ bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
   
   // begin a new slab row, return false if no space
   
-  if (! pRowSlab->bNewRow())
+  if (! pRowSlab->bAllotRow())
     return false;
 
   

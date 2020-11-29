@@ -134,14 +134,14 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowSlab** ppRowSlab,bool* pbNewBuffer)
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
-  bool bNewed = pDstRowSlab->bNewRow(&aDstRow);
+  bool bNewed = pDstRowSlab->bAllotRow(&aDstRow);
   if (! bNewed) {
     *pbNewBuffer = true;
     pDstRsbBuffer = new RsbBuffer;
     pDstRowSlab = pDstRsbBuffer->pRowSlab();
     pDstRowSlab->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);
-    bNewed = pDstRsbBuffer->pRowSlab()->bNewRow(&aDstRow);
+    bNewed = pDstRsbBuffer->pRowSlab()->bAllotRow(&aDstRow);
     ASSERT(bNewed);
   }
   
