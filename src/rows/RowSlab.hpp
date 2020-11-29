@@ -146,7 +146,8 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-    *(d8*)m_amCellCrs = dVal;
+    //*(d8*)m_amCellCrs = dVal;
+    m_aRowCur->vColVal_flt(m_i_ColCrs,dVal);
     
     vAdvanceCursor();
 
@@ -160,8 +161,9 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    *(i8*)m_amCellCrs = iVal;
-  
+    //*(i8*)m_amCellCrs = iVal;
+    m_aRowCur->vColVal_int(m_i_ColCrs,iVal);
+
     vAdvanceCursor();
   
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -193,8 +195,10 @@ namespace Rows
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
     i8 i_Ofs = - nDifference(azStz,m_amCellCrs);
-    *(i8*)m_amCellCrs = i_Ofs;
   
+    //*(i8*)m_amCellCrs = i_Ofs;
+    m_aRowCur->vColVal_ofs(m_i_ColCrs,i_Ofs);
+
     vAdvanceCursor();
 
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);

@@ -35,7 +35,6 @@ namespace Rows
 
     bool bIsColNull(i8 i_Col);
   
-  private:
     void vColVal_int(i8 i_Col, i8 iVal);
     void vColVal_flt(i8 i_Col, d8 dVal);
     void vColVal_ofs(i8 i_Col, i8 iOfs);
