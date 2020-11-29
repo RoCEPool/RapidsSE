@@ -60,7 +60,6 @@ namespace CompactBuffers
     void vEncodeHeadForRow(Row* pRow);
     void vEncodeHeadForSrw(RowSingle* pSrw);
     void vEncodeTailsForRow(Row* pRow);
-    void vEncodeTailsForRsb(Row* aRow);
     void vEncodeTailsForSrw(RowSingle* pSrw);
 
     // - - - - - - - - - - - - - - - - - - - - -
