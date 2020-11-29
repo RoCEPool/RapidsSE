@@ -61,12 +61,10 @@ namespace Expressions
     REG<IndexTree>   m_xpIndexTree;
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;
-    REG<JoinRsb>     m_xpJoinRsb;
     REG<Kbase>       m_xpKbase;
     REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
     REG<Planner>     m_xpPlanner;
-    REG<ProjectRsb>  m_xpProjectRsb;
     REG<PtnStream>   m_xpPtnStream;
     REG<Row>         m_xpRow;
     REG<RowOnce>     m_xpRowOnce;
