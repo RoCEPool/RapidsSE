@@ -956,7 +956,7 @@ i8 iDev_RSB_NEW(void* aLU, void* aRSB)
   bool bNewBuffer;
   
   pDevRsb->m_aRow =
-    pLogicUnit->m_xpPot->aNewDstRsb(pLogicUnit->m_xRluCommon.m_i_Ptn,
+    pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
                                    &pDevRsb->m_pRowSlab, &bNewBuffer);
   
   return bNewBuffer ? 1 : 0;
