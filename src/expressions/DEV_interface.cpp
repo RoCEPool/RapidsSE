@@ -1048,7 +1048,7 @@ i8 iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
     
-  i8 iRes = pDevRsb->m_aRow->iVal_rsb(iArg);
+  i8 iRes = pDevRsb->m_aRow->iColVal_int(iArg);
 
   return iRes;
 }

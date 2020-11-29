@@ -67,7 +67,7 @@ void SP_RowPix::vAppendBcd(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  i8 iVal = aRow->iVal_rsb(i_Col);
+  i8 iVal = aRow->iColVal_int(i_Col);
 
   SP_Bcd spBcd;
   StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal,xColPix.m_uScale));
@@ -79,7 +79,7 @@ void SP_RowPix::vAppendBol(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  i8 iVal = aRow->iVal_rsb(i_Col);
+  i8 iVal = aRow->iColVal_int(i_Col);
   
   SP_Bol spBol;
   StrLib::vAppendString(&m_azCursor,(char*)spBol.sz(iVal));
@@ -91,7 +91,7 @@ void SP_RowPix::vAppendDte(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  i8 iVal = aRow->iVal_rsb(i_Col);
+  i8 iVal = aRow->iColVal_int(i_Col);
     
   SP_Dte spDte;
   StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(iVal));
@@ -115,7 +115,7 @@ void SP_RowPix::vAppendInt(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRow->iVal_rsb(i_Col);
+  i8 iVal = aRow->iColVal_int(i_Col);
   
   if (CX_PTNHASH == xColPix.m_uKind)
     StrLib::vAppendChar(&m_azCursor,'#');
@@ -130,7 +130,7 @@ void SP_RowPix::vAppendIvl(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRow->iVal_rsb(i_Col);
+  i8 iVal = aRow->iColVal_int(i_Col);
   
   SP_Ivl spIvl;
   StrLib::vAppendString(&m_azCursor,(char*)spIvl.sz(iVal));
@@ -142,7 +142,7 @@ void SP_RowPix::vAppendTme(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRow->iVal_rsb(i_Col);
+  i8 iVal = aRow->iColVal_int(i_Col);
   
   SP_Tme spTme;
   StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(iVal));
@@ -154,7 +154,7 @@ void SP_RowPix::vAppendTsp(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRow->iVal_rsb(i_Col);
+  i8 iVal = aRow->iColVal_int(i_Col);
   
   SP_Tsp spTsp;
   StrLib::vAppendString(&m_azCursor,(char*)spTsp.sz(iVal));
@@ -193,7 +193,7 @@ void SP_RowPix::vPutRow(Row* aRow, bool bNewLine)
       continue;
     }
     
-    i8 iVal = aRow->iVal_rsb(i_Col);
+    i8 iVal = aRow->iColVal_int(i_Col);
     
     ColPix xColPix = m_axaColPix[i_Col];
     eDM eDatum = (eDM)xColPix.m_uDatum;

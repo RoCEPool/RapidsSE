@@ -150,7 +150,7 @@ void EntWrk::vAppendElement(Row* aRow, Column* pColumn)
       vAppendStz(szSrc);
   }
   else {
-    vAppendInt(aRow->iVal_rsb(i_Col));
+    vAppendInt(aRow->iColVal_int(i_Col));
   }
 }
 
@@ -173,7 +173,7 @@ void EntWrk::vAppendElement(Row* aRow, StreamPix* pStreamPix, i8 i_Col)
     vAppendStz(szSrc);
   }
   else {
-    vAppendInt(aRow->iVal_rsb(i_Col));
+    vAppendInt(aRow->iColVal_int(i_Col));
   }
 }
 

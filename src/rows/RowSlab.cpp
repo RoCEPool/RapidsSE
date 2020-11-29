@@ -152,7 +152,7 @@ void RowSlab::vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     if (DM_VCH == eDatum) {
        // vch datum
 
-      if (C_DATUM_NULL == aRowSrc->iVal_rsb(i_Col)) {
+      if (C_DATUM_NULL == aRowSrc->iColVal_int(i_Col)) {
         vDeposit(C_DATUM_NULL);
       }
       else {
@@ -163,13 +163,13 @@ void RowSlab::vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     else {
       // all others
      
-      iVal = aRowSrc->iVal_rsb(i_Col);
+      iVal = aRowSrc->iColVal_int(i_Col);
       vDeposit(iVal);
     }
   }
 
   if (bSrcHasPtnHash && bCopyPtnHash) {
-    iVal = aRowSrc->iVal_rsb(i_Col);
+    iVal = aRowSrc->iColVal_int(i_Col);
     vDeposit(iVal);
   }
   
@@ -193,7 +193,7 @@ i8 RowSlab::iColumn(Row* aRow, i8 i_Col)
   if (DM_VCH == eDatum) {
     // vch datum
     
-    if (C_DATUM_NULL == aRow->iVal_rsb(i_Col)) {
+    if (C_DATUM_NULL == aRow->iColVal_int(i_Col)) {
       return C_DATUM_NULL;
     }
     else {
@@ -204,7 +204,7 @@ i8 RowSlab::iColumn(Row* aRow, i8 i_Col)
   else {
     // all others
     
-    iVal = aRow->iVal_rsb(i_Col);
+    iVal = aRow->iColVal_int(i_Col);
     return iVal;
   }
 }
@@ -392,7 +392,7 @@ void RowSlab::vNormaliseStrings(void)
       
       Row* aOuterRsb = aRowAdr(i_OuterRow);
       
-      if (C_DATUM_NULL == aOuterRsb->iVal_rsb(i_Col))
+      if (C_DATUM_NULL == aOuterRsb->iColVal_int(i_Col))
         continue;
 
       Stz* szOuterStz = aOuterRsb->szVal_rsb(i_Col);
@@ -410,7 +410,7 @@ void RowSlab::vNormaliseStrings(void)
         
         Row* aInnerRsb = aRowAdr(i_InnerRow);
 
-        if (C_DATUM_NULL == aInnerRsb->iVal_rsb(i_Col))
+        if (C_DATUM_NULL == aInnerRsb->iColVal_int(i_Col))
           continue;
 
         Stz* szInnerStz = aInnerRsb->szVal_rsb(i_Col);
@@ -480,7 +480,7 @@ i8 RowSlab::iPtnOfRsb(Row* aRow)
 
   i8 i_HshCol = m_oStreamPix.m_nCols - 1;
     
-  i8 i_Ptn = aRow->iVal_rsb(i_HshCol);
+  i8 i_Ptn = aRow->iColVal_int(i_HshCol);
   
   return i_Ptn;
 }
