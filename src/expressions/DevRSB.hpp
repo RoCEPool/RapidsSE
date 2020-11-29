@@ -12,7 +12,7 @@ namespace Expressions
     s256       m_sTableNm;
     i8         m_i_Row;
     i8         m_nRows;
-    Row*       m_aRsb;
+    Row*       m_aRow;
     RowSlab*   m_pRowSlab;
     StreamDef* m_pStreamDef;
   

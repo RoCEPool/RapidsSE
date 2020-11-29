@@ -24,7 +24,7 @@ DevRSB::DevRSB(void)
   m_sTableNm   = ""_Stz;
   m_i_Row      = C_UNKNOWN;
   m_nRows      = C_UNKNOWN;
-  m_aRsb       = nullptr;
+  m_aRow       = nullptr;
   m_pRowSlab   = nullptr;
   m_pStreamDef = nullptr;
 

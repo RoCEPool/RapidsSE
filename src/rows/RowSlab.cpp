@@ -134,7 +134,7 @@ void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
 /*----------------------------------------------------------------------------*/
 /* copy given source rsb into this current row of this row slab               */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vCopyRsb(Row* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
+void RowSlab::vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
@@ -152,24 +152,24 @@ void RowSlab::vCopyRsb(Row* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     if (DM_VCH == eDatum) {
        // vch datum
 
-      if (C_DATUM_NULL == aRsbSrc->iVal_rsb(i_Col)) {
+      if (C_DATUM_NULL == aRowSrc->iVal_rsb(i_Col)) {
         vDeposit(C_DATUM_NULL);
       }
       else {
-        szSrcStz = aRsbSrc->szVal_rsb(i_Col);
+        szSrcStz = aRowSrc->szVal_rsb(i_Col);
         vDeposit(szSrcStz);
       }
     }
     else {
       // all others
      
-      iVal = aRsbSrc->iVal_rsb(i_Col);
+      iVal = aRowSrc->iVal_rsb(i_Col);
       vDeposit(iVal);
     }
   }
 
   if (bSrcHasPtnHash && bCopyPtnHash) {
-    iVal = aRsbSrc->iVal_rsb(i_Col);
+    iVal = aRowSrc->iVal_rsb(i_Col);
     vDeposit(iVal);
   }
   

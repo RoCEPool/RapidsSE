@@ -91,7 +91,7 @@ namespace Rows
     i8    nCols(void);
     i8    iColumn(Row* aRow, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
-    void  vCopyRsb(Row* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    void  vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
     void  vDiscardInvalidRow(void);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
