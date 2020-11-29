@@ -58,7 +58,7 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
   i8 nRows = pRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Rsb* aRsbSrc = pRowSlab->aRsbAdr(i_Row);
+    Row* aRsbSrc = pRowSlab->aRsbAdr(i_Row);
     
     i_Ptn = pRowSlab->iPtnOfRsb(aRsbSrc);
     
@@ -96,7 +96,7 @@ RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* copy source rsb into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc)
+void ToPtnRsb::vCopyRsb(i8 i_Ptn, Row* aRsbSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     

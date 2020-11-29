@@ -105,13 +105,13 @@ void Encoding_v2::vEncodeRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* encode inflated row                                                        */
 /*----------------------------------------------------------------------------*/
-void Encoding_v2::vEncodeRsb(Rsb* aRsb)
+void Encoding_v2::vEncodeRsb(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
   
   vReset();
   
-  vInitialEncodingRsb(aRsb);
+  vInitialEncodingRsb(aRow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +272,7 @@ void Encoding_v2::vInitialEncodingRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* encode the columns of given row and compute their initial offsets          */
 /*----------------------------------------------------------------------------*/
-void Encoding_v2::vInitialEncodingRsb(Rsb* aRsb)
+void Encoding_v2::vInitialEncodingRsb(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
 
@@ -286,14 +286,14 @@ void Encoding_v2::vInitialEncodingRsb(Rsb* aRsb)
 
     eDM eDatum = xrColEnc.m_pCol->eDatum();
         
-    if (C_DATUM_NULL == aRsb->iVal_rsb(i_Col)) {
-      wColVal = aRsb->iVal_rsb(i_Col);
+    if (C_DATUM_NULL == aRow->iVal_rsb(i_Col)) {
+      wColVal = aRow->iVal_rsb(i_Col);
     }
     else if (DM_VCH == eDatum) {
-      wColVal = aRsb->szVal_rsb(i_Col);
+      wColVal = aRow->szVal_rsb(i_Col);
     }
     else {
-      wColVal = aRsb->iVal_rsb(i_Col);
+      wColVal = aRow->iVal_rsb(i_Col);
     }
 
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -31,7 +31,7 @@ namespace Load
     RsbBuffer* pDangling(i8 i_Ptn);
   
   private:
-    void vCopyRsb(i8 i_Ptn, Rsb* aRsbSrc);
+    void vCopyRsb(i8 i_Ptn, Row* aRsbSrc);
     void vNewDstRsb(i8 i_Ptn);
 
     Footer* aFooter(void);

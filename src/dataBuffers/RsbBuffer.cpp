@@ -71,8 +71,8 @@ void RsbBuffer::vPrintRows(void)
   i8 nRsb = m_oRowSlab.nRows();
   
   for (i8 i_Rsb = 0; i_Rsb < nRsb; i_Rsb++) {
-    Rsb* aRsb = m_oRowSlab.aRsbAdr(i_Rsb);
-    Stz* szRsb = spRowPix.sz(aRsb);
+    Row* aRow = m_oRowSlab.aRsbAdr(i_Rsb);
+    Stz* szRsb = spRowPix.sz(aRow);
     vTrace("row: (%s)\n"_Stz,szRsb);
   }
 }
@@ -95,9 +95,9 @@ CsvBuffer* RsbBuffer::pToCsvBuffer(void)
   i8 nRows = m_oRowSlab.nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Rsb* aRsb = m_oRowSlab.aRsbAdr(i_Row);
+    Row* aRow = m_oRowSlab.aRsbAdr(i_Row);
     
-    Stz* szRow = spRowPix.sz(aRsb,true);
+    Stz* szRow = spRowPix.sz(aRow,true);
 
     nSize = szRow->nSize();
     

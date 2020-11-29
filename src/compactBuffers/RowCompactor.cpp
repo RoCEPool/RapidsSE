@@ -139,7 +139,7 @@ void RowCompactor::vCompactEnd(void)
 /*----------------------------------------------------------------------------*/
 /* compact given single row into current crw buffer                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRsb(Rsb* aRsb)
+bool RowCompactor::bCompactRsb(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
  
@@ -147,7 +147,7 @@ bool RowCompactor::bCompactRsb(Rsb* aRsb)
   
   //m_pCrwNub->vDumpTails();
   
-  bool bResult = bAddRsbAsCrw(aRsb);
+  bool bResult = bAddRsbAsCrw(aRow);
   
 //  if (nRows > 1060 && nRows < 1070) {
 //    m_pCrwBuffer->vPrintRows(m_pStreamDef);
@@ -244,17 +244,17 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* add given input row into current crw buffer                                */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddRsbAsCrw(Rsb* aRsb)
+bool RowCompactor::bAddRsbAsCrw(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
   ASSERT(! m_bCollecting);
   
   // 1) initially encode head of inflated row into m_pEncoding_v1
-  m_pEncoding_v2->vEncodeRsb(aRsb);
+  m_pEncoding_v2->vEncodeRsb(aRow);
 
   // 2) encode tails into m_pEncoding_v1
-  vEncodeTailsForRsb(aRsb);
+  vEncodeTailsForRsb(aRow);
 
   // 3) split encoded head between crw head and crw overflow
   m_pEncoding_v2->vSplitOver();
@@ -563,7 +563,7 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
+void RowCompactor::vEncodeTailsForRsb(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -582,12 +582,12 @@ void RowCompactor::vEncodeTailsForRsb(Rsb* aRsb)
     
     // -- vch column --
     
-    if (aRsb->bIsNull_rsb(i_Col))
+    if (aRow->bIsNull_rsb(i_Col))
       continue;
     
     // -- non-null vch column --
     
-    Stz* szStr = aRsb->szVal_rsb(i_Col);
+    Stz* szStr = aRow->szVal_rsb(i_Col);
     if (StrLib::nLength((char*)szStr) < 8)
       continue;
     

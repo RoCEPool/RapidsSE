@@ -59,7 +59,7 @@ namespace Rows
 {
   class RowSlab : public RowWsp<C_ROWSLAB_WSP>
   {
-    friend class Rsb;
+    friend class Row;
 
   private:
 
@@ -89,34 +89,34 @@ namespace Rows
     i8    i_Cell0(i8 i_Row);
     m8*   amCell0(i8 i_Row);
     i8    nCols(void);
-    i8    iColumn(Rsb* aRsb, i8 iColumn);
+    i8    iColumn(Row* aRow, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
-    void  vCopyRsb(Rsb* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    void  vCopyRsb(Row* aRsbSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
     void  vDiscardInvalidRow(void);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
     void  vDumpRow(i8 i_Row);
-    void  vDumpRow(i8 i_Row, Rsb* aRsb);
+    void  vDumpRow(i8 i_Row, Row* aRow);
     i8    nExtraCols(void);
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
-    bool  bNewRow(Rsb** paRsb);
+    bool  bNewRow(Row** paRsb);
     bool  bNewRow(void);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
-    i8    iPtnOfRsb(Rsb* aRsb);
+    i8    iPtnOfRsb(Row* aRow);
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     void  vReset(void);
     i8    nRowProperBytes(void);
-    Rsb*  aRsbAdr(i8 i_Row);
-    Rsb*  aRsbByOfs(i8 iOfs);
+    Row*  aRsbAdr(i8 i_Row);
+    Row*  aRsbByOfs(i8 iOfs);
     void  vSetRow(i8 iRow);
-    i8    iOfsOfRsb(Rsb* aRsb);
+    i8    iOfsOfRsb(Row* aRow);
     i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
-    void  vZeroRsb(Rsb* aRsb);
+    void  vZeroRsb(Row* aRow);
 
   private:
     m8*     amSlabCellVec(void);

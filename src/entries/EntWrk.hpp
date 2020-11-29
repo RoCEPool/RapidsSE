@@ -35,10 +35,10 @@ namespace Entries
   
     void  vAppendDatum(Datum* pDatum, Column* pCol);
     void  vAppendElement(RowSingle* pRow, Column* pCol);
-    void  vAppendElement(Rsb* aRsb, Column* pCol);
-    void  vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col);
-    void  vAppendElementInt(Rsb* aRsb, i8 iInt);
-    void  vAppendElementStz(Rsb* aRsb, Stz* szStr);
+    void  vAppendElement(Row* aRow, Column* pCol);
+    void  vAppendElement(Row* aRow, StreamPix* pStreamPix, i8 i_Col);
+    void  vAppendElementInt(Row* aRow, i8 iInt);
+    void  vAppendElementStz(Row* aRow, Stz* szStr);
     void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);
     void  vAppendNull(void);

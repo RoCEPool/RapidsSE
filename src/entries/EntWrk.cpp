@@ -134,53 +134,53 @@ void EntWrk::vAppendElement(RowSingle* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElement(Rsb* aRsb, Column* pColumn)
+void EntWrk::vAppendElement(Row* aRow, Column* pColumn)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 i_Col = pColumn->iColumnNo();
   
-  if (aRsb->bIsNull_rsb(i_Col)) {
+  if (aRow->bIsNull_rsb(i_Col)) {
     vAppendNull();
     return;
   }
   
   if (DM_VCH == pColumn->eDatum()) {
-      Stz* szSrc = aRsb->szVal_rsb(i_Col);
+      Stz* szSrc = aRow->szVal_rsb(i_Col);
       vAppendStz(szSrc);
   }
   else {
-    vAppendInt(aRsb->iVal_rsb(i_Col));
+    vAppendInt(aRow->iVal_rsb(i_Col));
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElement(Rsb* aRsb, StreamPix* pStreamPix, i8 i_Col)
+void EntWrk::vAppendElement(Row* aRow, StreamPix* pStreamPix, i8 i_Col)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   eDM eDatum = (eDM)pStreamPix->m_xaColPix[i_Col].m_uDatum;
     
-  if (aRsb->bIsNull_rsb(i_Col)) {
+  if (aRow->bIsNull_rsb(i_Col)) {
     vAppendNull();
     return;
   }
   
   if (DM_VCH == eDatum) {
-    Stz* szSrc = aRsb->szVal_rsb(i_Col);
+    Stz* szSrc = aRow->szVal_rsb(i_Col);
     vAppendStz(szSrc);
   }
   else {
-    vAppendInt(aRsb->iVal_rsb(i_Col));
+    vAppendInt(aRow->iVal_rsb(i_Col));
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElementInt(Rsb* aRsb, i8 iInt)
+void EntWrk::vAppendElementInt(Row* aRow, i8 iInt)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -190,7 +190,7 @@ void EntWrk::vAppendElementInt(Rsb* aRsb, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElementStz(Rsb* aRsb, Stz* szStr)
+void EntWrk::vAppendElementStz(Row* aRow, Stz* szStr)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   

@@ -46,11 +46,11 @@ SP_RowPix::~SP_RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_RowPix::sz(Rsb* aRsb, bool bNewLine)
+Stz* SP_RowPix::sz(Row* aRow, bool bNewLine)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vPutRow(aRsb,bNewLine);
+  vPutRow(aRow,bNewLine);
   
   return (Stz*) m_caRecord;
 }
@@ -63,11 +63,11 @@ Stz* SP_RowPix::sz(Rsb* aRsb, bool bNewLine)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendBcd(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendBcd(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  i8 iVal = aRsb->iVal_rsb(i_Col);
+  i8 iVal = aRow->iVal_rsb(i_Col);
 
   SP_Bcd spBcd;
   StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal,xColPix.m_uScale));
@@ -75,11 +75,11 @@ void SP_RowPix::vAppendBcd(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendBol(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendBol(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  i8 iVal = aRsb->iVal_rsb(i_Col);
+  i8 iVal = aRow->iVal_rsb(i_Col);
   
   SP_Bol spBol;
   StrLib::vAppendString(&m_azCursor,(char*)spBol.sz(iVal));
@@ -87,11 +87,11 @@ void SP_RowPix::vAppendBol(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendDte(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendDte(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  i8 iVal = aRsb->iVal_rsb(i_Col);
+  i8 iVal = aRow->iVal_rsb(i_Col);
     
   SP_Dte spDte;
   StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(iVal));
@@ -99,11 +99,11 @@ void SP_RowPix::vAppendDte(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendFlt(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendFlt(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 
-  d8 dVal = aRsb->dVal_rsb(i_Col);
+  d8 dVal = aRow->dVal_rsb(i_Col);
   
   SP_Flt spFlt;
   StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(dVal));
@@ -111,11 +111,11 @@ void SP_RowPix::vAppendFlt(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendInt(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendInt(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRsb->iVal_rsb(i_Col);
+  i8 iVal = aRow->iVal_rsb(i_Col);
   
   if (CX_PTNHASH == xColPix.m_uKind)
     StrLib::vAppendChar(&m_azCursor,'#');
@@ -126,11 +126,11 @@ void SP_RowPix::vAppendInt(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendIvl(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendIvl(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRsb->iVal_rsb(i_Col);
+  i8 iVal = aRow->iVal_rsb(i_Col);
   
   SP_Ivl spIvl;
   StrLib::vAppendString(&m_azCursor,(char*)spIvl.sz(iVal));
@@ -138,11 +138,11 @@ void SP_RowPix::vAppendIvl(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendTme(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendTme(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRsb->iVal_rsb(i_Col);
+  i8 iVal = aRow->iVal_rsb(i_Col);
   
   SP_Tme spTme;
   StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(iVal));
@@ -150,11 +150,11 @@ void SP_RowPix::vAppendTme(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendTsp(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendTsp(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  i8 iVal = aRsb->iVal_rsb(i_Col);
+  i8 iVal = aRow->iVal_rsb(i_Col);
   
   SP_Tsp spTsp;
   StrLib::vAppendString(&m_azCursor,(char*)spTsp.sz(iVal));
@@ -162,11 +162,11 @@ void SP_RowPix::vAppendTsp(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vAppendVch(Rsb* aRsb, i8 i_Col, ColPix xColPix)
+void SP_RowPix::vAppendVch(Row* aRow, i8 i_Col, ColPix xColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  Stz* szVal = aRsb->szVal_rsb(i_Col);
+  Stz* szVal = aRow->szVal_rsb(i_Col);
   
   SP_Vch spVch;
   StrLib::vAppendChar(&m_azCursor,'\'');
@@ -177,7 +177,7 @@ void SP_RowPix::vAppendVch(Rsb* aRsb, i8 i_Col, ColPix xColPix)
 /*----------------------------------------------------------------------------*/
 /* put row into record                                                        */
 /*----------------------------------------------------------------------------*/
-void SP_RowPix::vPutRow(Rsb* aRsb, bool bNewLine)
+void SP_RowPix::vPutRow(Row* aRow, bool bNewLine)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
@@ -188,26 +188,26 @@ void SP_RowPix::vPutRow(Rsb* aRsb, bool bNewLine)
     if (i_Col)
       StrLib::vAppendChar(&m_azCursor,',');
 
-    if (aRsb->bIsNull_rsb(i_Col)) {
+    if (aRow->bIsNull_rsb(i_Col)) {
       StrLib::vAppendString(&m_azCursor,(char*)"NULL"_Stz);
       continue;
     }
     
-    i8 iVal = aRsb->iVal_rsb(i_Col);
+    i8 iVal = aRow->iVal_rsb(i_Col);
     
     ColPix xColPix = m_axaColPix[i_Col];
     eDM eDatum = (eDM)xColPix.m_uDatum;
     
     switch (eDatum) {
-      case DM_BCD: vAppendBcd(aRsb,i_Col,xColPix); break;
-      case DM_BOL: vAppendBol(aRsb,i_Col,xColPix); break;
-      case DM_DTE: vAppendDte(aRsb,i_Col,xColPix); break;
-      case DM_FLT: vAppendFlt(aRsb,i_Col,xColPix); break;
-      case DM_INT: vAppendInt(aRsb,i_Col,xColPix); break;
-      case DM_IVL: vAppendIvl(aRsb,i_Col,xColPix); break;
-      case DM_TME: vAppendTme(aRsb,i_Col,xColPix); break;
-      case DM_TSP: vAppendTsp(aRsb,i_Col,xColPix); break;
-      case DM_VCH: vAppendVch(aRsb,i_Col,xColPix); break;
+      case DM_BCD: vAppendBcd(aRow,i_Col,xColPix); break;
+      case DM_BOL: vAppendBol(aRow,i_Col,xColPix); break;
+      case DM_DTE: vAppendDte(aRow,i_Col,xColPix); break;
+      case DM_FLT: vAppendFlt(aRow,i_Col,xColPix); break;
+      case DM_INT: vAppendInt(aRow,i_Col,xColPix); break;
+      case DM_IVL: vAppendIvl(aRow,i_Col,xColPix); break;
+      case DM_TME: vAppendTme(aRow,i_Col,xColPix); break;
+      case DM_TSP: vAppendTsp(aRow,i_Col,xColPix); break;
+      case DM_VCH: vAppendVch(aRow,i_Col,xColPix); break;
       default:
         NEVER_REACH;
     }

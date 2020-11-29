@@ -523,7 +523,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char cCurChr = *azCsvCrs++;
   char cNxtChr = *azCsvCrs;
 
-  Rsb* aRsb = nullptr;
+  Row* aRow = nullptr;
 
   i8 iBucketId = 0;
   i8 i_Fld = 0;
@@ -666,9 +666,9 @@ L_TestMoreRecords:
   i_Fld = -1;
 
   // allot a new rsb (new another rsbBuffer if necessary)
-  if (! m_pRowSlab->bNewRow(&aRsb)) {    // ? inline ?
+  if (! m_pRowSlab->bNewRow(&aRow)) {    // ? inline ?
     vNewRsbBuffer();
-    bool b = m_pRowSlab->bNewRow(&aRsb);
+    bool b = m_pRowSlab->bNewRow(&aRow);
     ASSERT(b);
   }
  
@@ -2617,7 +2617,7 @@ L_RecordEndLineEnd:
   if (iTraceBits & C_BIT_EndRecord) {
     SP_RowPix spRowPix(nCols,aColPix);
     vTrace("[%lld : %lld] %s\n"_Stz,
-           m_i_Rec,m_bPtnHash ? tPtnNo : C_UNKNOWN,spRowPix.sz(aRsb));
+           m_i_Rec,m_bPtnHash ? tPtnNo : C_UNKNOWN,spRowPix.sz(aRow));
   }
 
   // increment records processed

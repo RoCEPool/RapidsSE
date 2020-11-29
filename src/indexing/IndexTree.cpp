@@ -861,14 +861,14 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 /*----------------------------------------------------------------------------*/
 /* extract a key from given row into EntWrk                                   */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vExtractKey(EntWrk* pEntWrk, Rsb* aRsb)
+void IndexTree::vExtractKey(EntWrk* pEntWrk, Row* aRow)
 {
   
   if (KE_INT == eKeyKind()) {
     
     IndexDef* pIndexDef = m_pIndex->pIndexDef();
     Column* pCol = pIndexDef->pGetColumn(0);
-    i8 iVal = aRsb->iVal_rsb(pCol->iColumnNo());
+    i8 iVal = aRow->iVal_rsb(pCol->iColumnNo());
     pEntWrk->aEnt()->vKind(KE_INT);
     pEntWrk->aEnt()->vIntElm0(iVal);
     
@@ -883,7 +883,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Rsb* aRsb)
   for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
     
     // add the column value to the key
-    pEntWrk->vAppendElement(aRsb, m_pIndexDef->pGetColumn(i_Col));
+    pEntWrk->vAppendElement(aRow, m_pIndexDef->pGetColumn(i_Col));
   }
 }
 

@@ -537,7 +537,7 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 //    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 //    // get upsert row, re-encode it for this table, and extract key
 //
-//    Rsb* aRsb_upsert = pRowSlab->aRsbAdr(i_Row);
+//    Row* aRsb_upsert = pRowSlab->aRsbAdr(i_Row);
 //    pEncoding_upsert->vEncodeRsb(aRsb_upsert);
 //
 //    Stz* szRsb = spRowPix.sz(aRsb_upsert);
@@ -1069,7 +1069,7 @@ void TablePtn::vTruncateIndex(Index* pIndex)
 //  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->rxRef());
 //  // ... incomplete
 //  // Packing_v2::vPackCrw_v2(aCrw_insert,pEncoding_upsert);
-//  Rsb* aRsb = pRowSlab->aRsbAdr(i_Row);
+//  Row* aRow = pRowSlab->aRsbAdr(i_Row);
 //  
 //  
 //  // set perspective

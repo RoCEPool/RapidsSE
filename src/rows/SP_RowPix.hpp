@@ -21,20 +21,20 @@ namespace Rows
     SP_RowPix(i8 nCols, ColPix* axaColPix);
    ~SP_RowPix(void) noexcept(false);
     
-    Stz* sz(Rsb* aRsb, bool bNewLine = false);
+    Stz* sz(Row* aRow, bool bNewLine = false);
 
   private:
-    void vAppendBcd(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendBol(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendDte(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendFlt(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendInt(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendIvl(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendTme(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendTsp(Rsb* aRsb, i8 i_Col, ColPix xColPix);
-    void vAppendVch(Rsb* aRsb, i8 i_Col, ColPix xColPix);
+    void vAppendBcd(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendBol(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendDte(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendFlt(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendInt(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendIvl(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendTme(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendTsp(Row* aRow, i8 i_Col, ColPix xColPix);
+    void vAppendVch(Row* aRow, i8 i_Col, ColPix xColPix);
 
-    void vPutRow(Rsb* aRsb, bool bNewLine);
+    void vPutRow(Row* aRow, bool bNewLine);
     char* azRecord(void);
     void vReset(void);
 
