@@ -43,7 +43,7 @@ namespace CompactBuffers
     
     void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
-    bool bCompactRsb(Row* aRow);
+    bool bCompactRow(Row* aRow);
     bool bCompactSrw(RowSingle* pSrw);
     bool bCompactTail(Stz* szTailStr);
 

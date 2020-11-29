@@ -139,7 +139,7 @@ void RowCompactor::vCompactEnd(void)
 /*----------------------------------------------------------------------------*/
 /* compact given single row into current crw buffer                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRsb(Row* aRow)
+bool RowCompactor::bCompactRow(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
  
