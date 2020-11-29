@@ -35,6 +35,7 @@ RowSlab::RowSlab(void)
   
   m_i_RowCrs  = C_UNKNOWN;
   m_amCellCrs = nullptr;
+  m_i_ColCrs  = C_UNKNOWN;
   
   // m_oStreamPix
   
@@ -321,6 +322,7 @@ bool RowSlab::bNewRow(Row** paRow)
   *paRow = aRow;
   
   m_amCellCrs = amCell0(m_i_RowCrs);
+  m_i_ColCrs  = 0;
   
   i8 nCellBytes = nRowProperBytes();
   m_xWsp.vTakeTail(nCellBytes);
@@ -459,6 +461,7 @@ void RowSlab::vPositionOnCell(i8 i_Col)
   
   m_amCellCrs = amCell0(m_i_RowCrs) + i_Col;
 
+  m_i_ColCrs = i_Col;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -495,6 +498,7 @@ void RowSlab::vReset(void)
   m_nItems    = 0;
   m_i_RowCrs  = C_UNKNOWN;
   m_amCellCrs = nullptr;
+  m_i_ColCrs  = C_UNKNOWN;
 
   m_xWsp.vReset();
 }
