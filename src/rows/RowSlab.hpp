@@ -72,7 +72,6 @@ namespace Rows
     i8   m_i_RowCrs;    // current logical row number
     Row* m_aRowCur;     // current row
     i8   m_i_ColCrs;    // current working column
-    m8*  m_amCellCrs;   // current working cell
     i8   m_nRowStringBytes; // number string bytes for current row
 
     NmlStr m_oNmlStr;   // normalised string set
@@ -131,7 +130,6 @@ namespace Rows
   /*--------------------------------------------------------------------------*/
   inline void vAdvanceCursor(void)
   {
-    m_amCellCrs++;
     m_i_ColCrs++;
   };
 
@@ -146,7 +144,6 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-    //*(d8*)m_amCellCrs = dVal;
     m_aRowCur->vColVal_flt(m_i_ColCrs,dVal);
     
     vAdvanceCursor();
@@ -161,7 +158,6 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    //*(i8*)m_amCellCrs = iVal;
     m_aRowCur->vColVal_int(m_i_ColCrs,iVal);
 
     vAdvanceCursor();
@@ -194,11 +190,9 @@ namespace Rows
 
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
-    //i8 i_Ofs = - nDifference(azStz,m_amCellCrs);
     m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
     i8 i_Ofs = - nDifference(azStz,aColCell);
 
-    //*(i8*)m_amCellCrs = i_Ofs;
     m_aRowCur->vColVal_ofs(m_i_ColCrs,i_Ofs);
 
     vAdvanceCursor();
