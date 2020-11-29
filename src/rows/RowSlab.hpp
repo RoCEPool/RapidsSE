@@ -86,14 +86,14 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
-    bool  bAllotRow(Row** paRsb);
+    bool  bAllotRow(Row** paRow);
     bool  bAllotRow(void);
     ColPix* axaColPix(void);
     i8    i_Cell0(i8 i_Row);
      i8    nCols(void);
     i8    iColumn(Row* aRow, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
-    void  vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
     void  vDiscardInvalidRow(void);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
@@ -104,7 +104,7 @@ namespace Rows
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
-    i8    iPtnOfRsb(Row* aRow);
+    i8    iPtnOfRow(Row* aRow);
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     void  vReset(void);
@@ -112,11 +112,11 @@ namespace Rows
     Row*  aRowAdr(i8 i_Row);
     Row*  aRowByOfs(i8 iOfs);
     void  vSetRow(i8 iRow);
-    i8    iOfsOfRsb(Row* aRow);
+    i8    iOfsOfRow(Row* aRow);
     i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
-    void  vZeroRsb(Row* aRow);
+    void  vZeroRow(Row* aRow);
 
   private:
     m8*     amSlabCellVec(void);

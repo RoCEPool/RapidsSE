@@ -173,9 +173,9 @@ void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given source rsb into this current row of this row slab               */
+/* copy given source row into current row of this row slab                    */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
+void RowSlab::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
@@ -216,7 +216,7 @@ void RowSlab::vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
   
 //  Row* aRowDst = aRowAdr(nRows() - 1);
 //  SP_RowPix spPix(nCols,m_oStreamPix.m_xaColPix);
-//  vTrace("CopyRsb: %s\n"_Stz,spPix.sz(aRowDst));
+//  vTrace("CopyRow: %s\n"_Stz,spPix.sz(aRowDst));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,12 +383,12 @@ void RowSlab::vNormaliseStrings(void)
 
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
-      Row* aOuterRsb = aRowAdr(i_OuterRow);
+      Row* aOuterRow = aRowAdr(i_OuterRow);
       
-      if (C_DATUM_NULL == aOuterRsb->iColVal_int(i_Col))
+      if (C_DATUM_NULL == aOuterRow->iColVal_int(i_Col))
         continue;
 
-      Stz* szOuterStz = aOuterRsb->szVal_rsb(i_Col);
+      Stz* szOuterStz = aOuterRow->szVal_rsb(i_Col);
       //vTrace("Outer: %s\n"_Stz,szOuterStz);
       
       i8 nLength = szOuterStz->nLength();
@@ -401,12 +401,12 @@ void RowSlab::vNormaliseStrings(void)
 
         //vTrace("NormaliseStrings outer %lld inner %lld\n"_Stz,i_OuterRow,i_InnerRow);
         
-        Row* aInnerRsb = aRowAdr(i_InnerRow);
+        Row* aInnerRow = aRowAdr(i_InnerRow);
 
-        if (C_DATUM_NULL == aInnerRsb->iColVal_int(i_Col))
+        if (C_DATUM_NULL == aInnerRow->iColVal_int(i_Col))
           continue;
 
-        Stz* szInnerStz = aInnerRsb->szVal_rsb(i_Col);
+        Stz* szInnerStz = aInnerRow->szVal_rsb(i_Col);
         //vTrace("Inner: %s\n"_Stz,szInnerStz);
 
         if (! szInnerStz->bEqual(szOuterStz))
@@ -434,7 +434,7 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 /* get the offset of rsb                                                      */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::iOfsOfRsb(Row* aRow)
+i8 RowSlab::iOfsOfRow(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
@@ -466,7 +466,7 @@ bool RowSlab::bPtnHash(void)
 /*----------------------------------------------------------------------------*/
 /* get the partition of rsb                                                   */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::iPtnOfRsb(Row* aRow)
+i8 RowSlab::iPtnOfRow(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
@@ -592,7 +592,7 @@ StreamPix* RowSlab::aStreamPix(void)
 /*----------------------------------------------------------------------------*/
 /* mem zero the given rsb                                                     */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vZeroRsb(Row *aRow)
+void RowSlab::vZeroRow(Row *aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 

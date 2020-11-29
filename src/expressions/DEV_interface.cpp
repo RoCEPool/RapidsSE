@@ -1076,7 +1076,7 @@ i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  i8 iRes = pDevRsb->m_pRowSlab->iOfsOfRsb(pDevRsb->m_aRow);
+  i8 iRes = pDevRsb->m_pRowSlab->iOfsOfRow(pDevRsb->m_aRow);
 
   return iRes;
 }
@@ -1176,7 +1176,7 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_pRowSlab->vZeroRsb(pDevRsb->m_aRow);
+  pDevRsb->m_pRowSlab->vZeroRow(pDevRsb->m_aRow);
 }
 
 

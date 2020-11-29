@@ -60,7 +60,7 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
     
     Row* aRowSrc = pRowSlab->aRowAdr(i_Row);
     
-    i_Ptn = pRowSlab->iPtnOfRsb(aRowSrc);
+    i_Ptn = pRowSlab->iPtnOfRow(aRowSrc);
     
     vCopyRsb(i_Ptn,aRowSrc);
   }
@@ -106,7 +106,7 @@ void ToPtnRsb::vCopyRsb(i8 i_Ptn, Row* aRowSrc)
   // copy that
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
-  m_pIntoRowSlab->vCopyRsb(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
+  m_pIntoRowSlab->vCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/
