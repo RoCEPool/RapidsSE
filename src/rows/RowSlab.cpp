@@ -116,7 +116,7 @@ m8* RowSlab::amCell0(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  Row* aRow = aRsbAdr(m_i_RowCrs);
+  Row* aRow = aRowAdr(m_i_RowCrs);
   
   return (m8*)aRow->amCell0_rsb();
 }
@@ -173,9 +173,9 @@ void RowSlab::vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
     vDeposit(iVal);
   }
   
-//  Row* aRsbDst = aRsbAdr(nRows() - 1);
+//  Row* aRowDst = aRowAdr(nRows() - 1);
 //  SP_RowPix spPix(nCols,m_oStreamPix.m_xaColPix);
-//  vTrace("CopyRsb: %s\n"_Stz,spPix.sz(aRsbDst));
+//  vTrace("CopyRsb: %s\n"_Stz,spPix.sz(aRowDst));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +261,7 @@ void RowSlab::vDumpRow(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  Row* aRow = this->aRsbAdr(i_Row);
+  Row* aRow = this->aRowAdr(i_Row);
   vDumpRow(i_Row,aRow);
 }
 
@@ -316,7 +316,7 @@ bool RowSlab::bNewRow(Row** paRow)
 
   m_i_RowCrs++;
   
-  Row* aRow = aRsbAdr(m_i_RowCrs);
+  Row* aRow = aRowAdr(m_i_RowCrs);
   
   *paRow = aRow;
   
@@ -390,7 +390,7 @@ void RowSlab::vNormaliseStrings(void)
 
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
-      Row* aOuterRsb = aRsbAdr(i_OuterRow);
+      Row* aOuterRsb = aRowAdr(i_OuterRow);
       
       if (C_DATUM_NULL == aOuterRsb->iVal_rsb(i_Col))
         continue;
@@ -408,7 +408,7 @@ void RowSlab::vNormaliseStrings(void)
 
         //vTrace("NormaliseStrings outer %lld inner %lld\n"_Stz,i_OuterRow,i_InnerRow);
         
-        Row* aInnerRsb = aRsbAdr(i_InnerRow);
+        Row* aInnerRsb = aRowAdr(i_InnerRow);
 
         if (C_DATUM_NULL == aInnerRsb->iVal_rsb(i_Col))
           continue;
@@ -512,7 +512,7 @@ i8 RowSlab::nRowProperBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb                                                      */
 /*----------------------------------------------------------------------------*/
-Row* RowSlab::aRsbAdr(i8 i_Row)
+Row* RowSlab::aRowAdr(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
     
@@ -533,7 +533,7 @@ Row* RowSlab::aRsbAdr(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb by its offset                                        */
 /*----------------------------------------------------------------------------*/
-Row* RowSlab::aRsbByOfs(i8 iOfs)
+Row* RowSlab::aRowByOfs(i8 iOfs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   

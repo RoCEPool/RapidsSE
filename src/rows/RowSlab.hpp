@@ -109,8 +109,8 @@ namespace Rows
     bool  bPtnHash(void);
     void  vReset(void);
     i8    nRowProperBytes(void);
-    Row*  aRsbAdr(i8 i_Row);
-    Row*  aRsbByOfs(i8 iOfs);
+    Row*  aRowAdr(i8 i_Row);
+    Row*  aRowByOfs(i8 iOfs);
     void  vSetRow(i8 iRow);
     i8    iOfsOfRsb(Row* aRow);
     i8    nRows(void);

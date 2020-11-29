@@ -54,7 +54,7 @@ void Step::vIndexTreeAggregate(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
     // get the srcRsb
-    Row* aSrcRsb = pSrcRowSlab->aRsbAdr(i_Row);
+    Row* aSrcRsb = pSrcRowSlab->aRowAdr(i_Row);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - -
     // extract the key from the SrcRsb

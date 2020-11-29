@@ -974,7 +974,7 @@ i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
   i8 iRes;
   
   if (++pDevRsb->m_i_Row  < pDevRsb->m_nRows) {
-    pDevRsb->m_aRow = pDevRsb->m_pRowSlab->aRsbAdr(pDevRsb->m_i_Row );
+    pDevRsb->m_aRow = pDevRsb->m_pRowSlab->aRowAdr(pDevRsb->m_i_Row );
     iRes = 1;
   }
   else {
@@ -1103,7 +1103,7 @@ void vDev_RSB_SET(void* aLU, void* aRSB, i8 iRow)
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
   pDevRsb->m_pRowSlab->vSetRow(iRow);
-  pDevRsb->m_aRow = pDevRsb->m_pRowSlab->aRsbAdr(iRow);
+  pDevRsb->m_aRow = pDevRsb->m_pRowSlab->aRowAdr(iRow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1115,7 +1115,7 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_aRow = pDevRsb->m_pRowSlab->aRsbByOfs(iTop);
+  pDevRsb->m_aRow = pDevRsb->m_pRowSlab->aRowByOfs(iTop);
 }
 
 /*----------------------------------------------------------------------------*/

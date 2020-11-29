@@ -148,7 +148,7 @@ Row* Pot::aNewDstRsb(i8 i_Ptn, RowSlab** ppRowSlab,bool* pbNewBuffer)
   pDstRsbBuffer->vPtnNo(i_Ptn);
   
   //i8 iRow = pDstRowSlab->nRows() - 1;
-  //Row* aDstRsb = pDstRowSlab->aRsbAdr(iRow);
+  //Row* aDstRsb = pDstRowSlab->aRowAdr(iRow);
   
   * ppRowSlab = pDstRowSlab;
   
