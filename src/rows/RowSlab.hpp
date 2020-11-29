@@ -88,8 +88,7 @@ namespace Rows
         
     ColPix* axaColPix(void);
     i8    i_Cell0(i8 i_Row);
-    m8*   amCell0(i8 i_Row);
-    i8    nCols(void);
+     i8    nCols(void);
     i8    iColumn(Row* aRow, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);

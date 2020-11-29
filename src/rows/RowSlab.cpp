@@ -111,18 +111,6 @@ i8 RowSlab::i_Cell0(i8 i_Row)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get addr of cell[0] for given row                                          */
-/*----------------------------------------------------------------------------*/
-m8* RowSlab::amCell0(i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  Row* aRow = aRowAdr(m_i_RowCrs);
-  
-  return (m8*)aRow->amCell0_rsb();
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy given stream pix into the stream pix in this rsb                      */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
