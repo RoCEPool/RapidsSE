@@ -194,8 +194,10 @@ namespace Rows
 
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
-    i8 i_Ofs = - nDifference(azStz,m_amCellCrs);
-  
+    //i8 i_Ofs = - nDifference(azStz,m_amCellCrs);
+    m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
+    i8 i_Ofs = - nDifference(azStz,aColCell);
+
     //*(i8*)m_amCellCrs = i_Ofs;
     m_aRowCur->vColVal_ofs(m_i_ColCrs,i_Ofs);
 

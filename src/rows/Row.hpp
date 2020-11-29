@@ -26,6 +26,8 @@ namespace Rows
     static i8 nSizeBytes(StreamDef* pStreamDef);
     void vDump(StreamDef* pStreamDef);
   
+    m8*  aColCell(i8 i_Col);
+  
     Dtm* aColDtm(i8 i_Col);
     Dtm  wColDtm(i8 i_Col);
   
