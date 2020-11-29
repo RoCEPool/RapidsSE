@@ -70,8 +70,9 @@ namespace Rows
     StreamPix m_oStreamPix; // condensed stream def
   
     i8   m_i_RowCrs;    // current logical row number
-    m8*  m_amCellCrs;   // current working cell
+    Row* m_aRowCur;     // current row
     i8   m_i_ColCrs;    // current working column
+    m8*  m_amCellCrs;   // current working cell
     i8   m_nRowStringBytes; // number string bytes for current row
 
     NmlStr m_oNmlStr;   // normalised string set
