@@ -62,7 +62,7 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
     
     i_Ptn = pRowSlab->iPtnOfRow(aRowSrc);
     
-    vCopyRsb(i_Ptn,aRowSrc);
+    vCopyRow(i_Ptn,aRowSrc);
   }
 }
 
@@ -94,14 +94,14 @@ RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy source rsb into target partition row slab                             */
+/* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vCopyRsb(i8 i_Ptn, Row* aRowSrc)
+void ToPtnRsb::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
   // new a destination row in target partition row slab
-  vNewDstRsb(i_Ptn);
+  vNewDstRow(i_Ptn);
   
   // copy that
   bool bSrcHasPtnHash = true;
@@ -110,9 +110,9 @@ void ToPtnRsb::vCopyRsb(i8 i_Ptn, Row* aRowSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a destination rsb row in rsb slab in hash set                          */
+/* new a destination row in rsb slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
+void ToPtnRsb::vNewDstRow(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
