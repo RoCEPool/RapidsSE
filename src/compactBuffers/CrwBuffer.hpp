@@ -78,7 +78,7 @@ namespace CompactBuffers
     void vAppendClose(void);
     void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
     bool bAppendCrw(Crw* aCrwSrc);
-    bool bAppendRsb(Row* aRowSrc);
+    bool bAppendRow(Row* aRowSrc);
     bool bAppendSrw(RowSingle* pRowSingle);
 
   private:

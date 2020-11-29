@@ -145,7 +145,7 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
     
     Row* aRow = pRowSlab->aRowAdr(i_Row);
     
-    bool bAppended = m_pCrwBuffer->bAppendRsb(aRow);
+    bool bAppended = m_pCrwBuffer->bAppendRow(aRow);
     
     if (bAppended)
       continue;
@@ -157,7 +157,7 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
     m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
     vAddNst(pRsbBuffer);
 
-    bAppended = m_pCrwBuffer->bAppendRsb(aRow);
+    bAppended = m_pCrwBuffer->bAppendRow(aRow);
     ASSERT(bAppended);
   }
 }

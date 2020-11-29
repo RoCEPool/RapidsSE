@@ -244,7 +244,7 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
 /*----------------------------------------------------------------------------*/
 /* append an rsb into this crw buffer                                         */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendRsb(Row* aRowSrc)
+bool CrwBuffer::bAppendRow(Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
