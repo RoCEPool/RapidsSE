@@ -145,24 +145,6 @@ ColPix* RowSlab::axaColPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get i_cell of cell[0] for given row                                        */
-/*----------------------------------------------------------------------------*/
-i8 RowSlab::i_Cell0(i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  //i8 iCell0_row = (i_Row + 1) * (m_oStreamPix.m_nCols);
-  //i8 i_RowCell0 = C_CELL_BOUNDARY - iCell0_row;
-  
-  i8 iDummy_row = (i_Row + 1) * (m_oStreamPix.m_nCols + 1 /* dummy */ );
-  i8 i_Dummy = C_CELL_BOUNDARY - iDummy_row;
-  
-  i8 i_RowCell0 = i_Dummy++;
-  
-  return i_RowCell0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy given stream pix into the stream pix in this rsb                      */
 /*----------------------------------------------------------------------------*/
 void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
@@ -509,16 +491,17 @@ Row* RowSlab::aRowAdr(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
     
-  /*           v row[1]       v row[0]
-       -------*----+----+----*----+----+----*
-              | c0 : c1 : cN | c0 : c1 : cN |///boundary
-       -------*----+----+----*----+----+----*
+  /*          v row[1]            v row[0]
+       -------*----+----+----*----+----+---+----+----*
+              | Ob : c0 : c1 : cN | Ob :c0 : c1 : cN |///boundary
+       -------*----+----+----*----+----+---+----+----*
    */
   
-  i8 i_RowCell0 = i_Cell0(i_Row);
+  i8 i_RowCell = i_RowSlabCell(i_Row);
     
   m8* amCellVec = amSlabCellVec();
-  Row* aRow = (Row*) & amCellVec[i_RowCell0];
+  
+  Row* aRow = (Row*) & amCellVec[i_RowCell];
   
   return aRow;
 }
@@ -526,11 +509,11 @@ Row* RowSlab::aRowAdr(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb by its offset                                        */
 /*----------------------------------------------------------------------------*/
-Row* RowSlab::aRowByOfs(i8 iOfs)
+Row* RowSlab::aRowByOfs(i8 i_Ofs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  Row* aRow = aAdd<Row*>(m_xWsp.ayArea(),iOfs);
+  Row* aRow = aAdd<Row*>(m_xWsp.ayArea(),i_Ofs);
   
   return aRow;
 }
@@ -538,11 +521,11 @@ Row* RowSlab::aRowByOfs(i8 iOfs)
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb by its offset                                        */
 /*----------------------------------------------------------------------------*/
-void RowSlab::vSetRow(i8 iRow)
+void RowSlab::vSetRow(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  m_i_RowCrs = iRow;
+  m_i_RowCrs = i_Row;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,6 +587,20 @@ void RowSlab::vZeroRow(Row *aRow)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get slab cell for given row                                                */
+/*----------------------------------------------------------------------------*/
+i8 RowSlab::i_RowSlabCell(i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+  
+  i8 i_Cell_slab = (i_Row + 1) * (m_oStreamPix.m_nCols + 1 /* Object */ );
+  
+  i8 i_Cell_row  = C_CELL_BOUNDARY - i_Cell_slab;
+  
+  return i_Cell_row;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the cell vector for this slab                                          */

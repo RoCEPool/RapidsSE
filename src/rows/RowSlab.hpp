@@ -89,7 +89,6 @@ namespace Rows
     bool  bAllotRow(Row** paRow);
     bool  bAllotRow(void);
     ColPix* axaColPix(void);
-    i8    i_Cell0(i8 i_Row);
      i8    nCols(void);
     i8    iColumn(Row* aRow, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
@@ -119,7 +118,9 @@ namespace Rows
     void  vZeroRow(Row* aRow);
 
   private:
-    m8*     amSlabCellVec(void);
+    i8    i_RowSlabCell(i8 i_Row);
+    m8*   amSlabCellVec(void);
+  
     Footer* aFooter(void);
   
   public:
