@@ -22,7 +22,7 @@ namespace DataBuffers
    ~RsbBuffer(void) noexcept(false);
 
     RowSlab*   pRowSlab(void);
-    i8         nRsb(void);
+    i8         nRows(void);
     void       vPrintRows(void);
     CsvBuffer* pToCsvBuffer(void);
 

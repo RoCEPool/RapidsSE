@@ -45,17 +45,17 @@ RowSlab* RsbBuffer::pRowSlab(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of rsb's                                                        */
+/* get number of rows                                                         */
 /*----------------------------------------------------------------------------*/
-i8 RsbBuffer::nRsb(void)
+i8 RsbBuffer::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
   
   SP_RowPix spRowPix(m_oRowSlab.nCols(),m_oRowSlab.axaColPix());
 
-  i8 nRsb = m_oRowSlab.nRows();
+  i8 nRows = m_oRowSlab.nRows();
   
-  return nRsb;
+  return nRows;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,10 +68,10 @@ void RsbBuffer::vPrintRows(void)
   SP_RowPix spRowPix(m_oRowSlab.nCols() - m_oRowSlab.nExtraCols(),
                      m_oRowSlab.axaColPix());
 
-  i8 nRsb = m_oRowSlab.nRows();
+  i8 nRows = m_oRowSlab.nRows();
   
-  for (i8 i_Rsb = 0; i_Rsb < nRsb; i_Rsb++) {
-    Row* aRow = m_oRowSlab.aRowAdr(i_Rsb);
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    Row* aRow = m_oRowSlab.aRowAdr(i_Row);
     Stz* szRsb = spRowPix.sz(aRow);
     vTrace("row: (%s)\n"_Stz,szRsb);
   }

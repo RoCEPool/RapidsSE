@@ -387,7 +387,7 @@ void Result::vProcessBufferQueue(void)
 //          vTrace("[[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
 //                 spDataBuffer.sz(pRsbBuffer),
 //                 pRsbBuffer->nRsb());
-        m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRsb();
+        m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRows();
         vTrace("\n"_Stz);
         pRsbBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
