@@ -248,7 +248,7 @@ bool CrwBuffer::bAppendRow(Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  bool bAppended = m_pRowCompactor->bCompactRsb(aRowSrc);
+  bool bAppended = m_pRowCompactor->bCompactRow(aRowSrc);
   
   return bAppended;
 }
