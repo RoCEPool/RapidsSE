@@ -135,18 +135,6 @@ Dtm Row::wColDtm(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-char* Row::azColVal_str(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-  
-  char* azVal = m_waColVal[i_Col].m_azStr;
-  
-  return azVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column value                                                           */
-/*----------------------------------------------------------------------------*/
 i8 Row::iColVal_int(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);

@@ -29,7 +29,6 @@ namespace Rows
     Dtm* aColDtm(i8 i_Col);
     Dtm  wColDtm(i8 i_Col);
   
-    char* azColVal_str(i8 i_Col);
     i8   iColVal_int(i8 i_Col);
     d8   dColVal_flt(i8 i_Col);
     Stz* szColVal_ofs(i8 i_Col);
