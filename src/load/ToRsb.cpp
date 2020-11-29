@@ -1360,8 +1360,11 @@ L_Integer:
   // unsigned whole portion
   
   vWHOLE_NUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                EC_CSV_INTEGER_INVALID,EC_CSV_INTEGER_TOO_LARGE);
+                             EC_CSV_INTEGER_INVALID,
+                             EC_CSV_INTEGER_TOO_LARGE);
 
+  // -- vFACTION_opt() --
+  
   // ignore any . digits
   if (bIS_DECIMAL_POINT()) {
     vACCEPT_CHAR(); // skip '.'
