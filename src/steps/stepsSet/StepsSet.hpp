@@ -30,13 +30,6 @@ public:
   void vAddressFetch(void);
   void vAddressStore(void);
 
-  // aggregate
-  void vAggregateRsbAggregateCpy(void);
-  void vAggregateRsbAggregateGby(void);
-  void vAggregateRsbDelete(void);
-  void vAggregateRsbGet(void);
-  void vAggregateRsbNew(void);
-
   // agg timer
   void vAggTimerAdd(void);
   void vAggTimerDelete(void);

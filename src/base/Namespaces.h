@@ -48,7 +48,7 @@ namespace Esses             { template <int BYTES> class String_t;
                               typedef Bytes_t<C_32K>   b32K;  // note: K, not KB
                               typedef Bytes_t<C_256K>  b256K; // note: K, not KB
                                                                               }
-namespace Expressions       { class AggregateRsb;    class Expr;
+namespace Expressions       { class Expr;
                               class ExprVec;         class FilterRsb;
                               class JoinRsb;         class ProjectRsb; 
                               class LogicUnit;                                }

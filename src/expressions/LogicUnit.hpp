@@ -54,7 +54,6 @@ namespace Expressions
 
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
-    REG<AggregateRsb> m_xpAggregateRsb;
     REG<Fact>        m_xpFact;
     REG<Index>       m_xpIndex;
     REG<IndexDef>    m_xpIndexDef;
