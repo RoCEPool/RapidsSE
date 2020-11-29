@@ -139,7 +139,7 @@ void RowCompactor::vCompactEnd(void)
 /*----------------------------------------------------------------------------*/
 /* compact given single row into current crw buffer                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRow(Row* aRow)
+bool RowCompactor::bCompactRsb(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
  
@@ -147,7 +147,7 @@ bool RowCompactor::bCompactRow(Row* aRow)
   
   //m_pCrwNub->vDumpTails();
   
-  bool bResult = bAddRowAsCrw(aRow);
+  bool bResult = bAddRsbAsCrw(aRow);
   
 //  if (nRows > 1060 && nRows < 1070) {
 //    m_pCrwBuffer->vPrintRows(m_pStreamDef);
@@ -238,6 +238,48 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
   m_pCrwNub->vVerifyTails(C_UNKNOWN);
 #endif
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given input row into current crw buffer                                */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bAddRsbAsCrw(Row* aRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+
+  ASSERT(! m_bCollecting);
+  
+  // 1) initially encode head of inflated row into m_pEncoding_v1
+  m_pEncoding_v2->vEncodeRsb(aRow);
+
+  // 2) encode tails into m_pEncoding_v1
+  vEncodeTailsForRsb(aRow);
+
+  // 3) split encoded head between crw head and crw overflow
+  m_pEncoding_v2->vSplitOver();
+
+  // 4) allot a logical compact row (head & over)
+  if (! bAllotCrw()) {
+    m_nTotalBuffers++;
+    return false;
+  }
+
+  //SP_Encoding_v2 spEncoding_v2;
+  //vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
+
+  // 5) pack encoded row into a compact row
+  Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
+
+  m_aHeadLine = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify
+    
+  //#ifdef WITH_VERIFY_TAILS
+  //m_pCrwNub->vVerifyTails(C_UNKNOWN);
+  //#endif
+    
   return true;
 }
 
@@ -504,6 +546,74 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // found a matching tail
+    
+    // put tial into the encoding
+    aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = aTailLine;
+    
+    // morph the encoding
+    m_pEncoding_v2->vMorphEncoding(aColEnc);
+  }
+  
+#ifdef WITH_ENCODING_TRACE
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark up the encoding of a row with tails                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vEncodeTailsForRsb(Row* aRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    _ColEnc* aColEnc;
+    
+    aColEnc = & m_pEncoding_v2->xaColEnc[i_Col];
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for non-null vch column of minimum length
+    
+    if (DM_VCH != aColEnc->m_pCol->eDatum())
+      continue;
+    
+    // -- vch column --
+    
+    if (aRow->bIsNull_rsb(i_Col))
+      continue;
+    
+    // -- non-null vch column --
+    
+    Stz* szStr = aRow->szVal_rsb(i_Col);
+    if (StrLib::nLength((char*)szStr) < 8)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // attempt to find tail for non-null vch column of minimum length
+    
+    //TailStr xFindTail(szStr);
+    
+#ifdef WITH_ENCODING_TRACE
+    m_pCrwNub->vDumpTails();
+#endif
+    
+    i8 i_Tail;
+    //m_pCrwNub->vDumpStrings();
+    //vTrace("Looking for: %s\n"_Stz,szStr->azChar());
+    TailLine* aTailLine = m_pCrwNub->aFindTail(szStr, i_Tail);
+    //TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) szStr, i_Tail);
+    if (! aTailLine) {
+      //vTrace("Tail not found: %s\n"_Stz,szStr->azChar());
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
+    
+    //vTrace("Found tail %lld: %s\n"_Stz,i_Tail,szStr->azChar());
     
     // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
