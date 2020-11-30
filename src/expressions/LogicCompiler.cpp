@@ -722,10 +722,36 @@ bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 /*----------------------------------------------------------------------------*/
 /* add source code fragment for given rangeof eo codes                        */
 /*----------------------------------------------------------------------------*/
-Stz* LogicCompiler::szGetMacro(eAM eMacro) {
+Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICCOMPILER, _FOOTER_);
 
-  return gszaAmMacros[eMacro];
+  s32 sTag;
+  s4K sReplaced;
+  char* sMacro = (char*)gszaAmMacros[eMacro];
+
+  for (i8 i_Tag = 0; i_Tag < pTagSet->nEnames(); i_Tag++) {
+
+    // expects only strings in the tagsSet
+    switch (pTagSet->eToken(i_Tag)) {
+      case TN_INTEGER: {
+        i8 iValue = pTagSet->iValue(i_Tag);
+        s32 sValue;
+        StrLib::vToString(sValue.azChar(), iValue);
+        StrLib::bReplace(sReplaced.azChar(), sMacro,
+                         (char *) pTagSet->szName(i_Tag), sValue.azChar());
+        break;
+      }
+      case TN_STRING:
+        StrLib::bReplace(sReplaced.azChar(), sMacro,
+                         (char *) pTagSet->szName(i_Tag), (char *) pTagSet->szValue(i_Tag));
+        break;
+
+      default:
+        RASSERT(0);
+    }
+  }
+
+  return sReplaced;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -8,7 +8,9 @@ enum eAM // ASM Macros
   /*  0 */ AM_NONE=0,
 
   /*    */ AM_CRWBUFFER_HANDLER,
-  /*    */ AM_DEFAULT_HANDLER,
+  /*    */ AM_DEFAULT_DATAPULSE_HANDLER,
+  /*    */ AM_DEFAULT_EOSMARKER_HANDLER,
+  /*    */ AM_DEFAULT_STARTMARKER_HANDLER,
   /*    */ AM_INIT,
   /*    */ AM_PROJECT_COLUMNS,
   /*    */ AM_PROJECT_COLUMNS_BEGIN,
@@ -28,7 +30,9 @@ static Stz* aAM[]
 {
     /*  0 */ "AM_NONE"_Stz,
     /*    */ "AM_CRWBUFFER_HANDLER"_Stz,
-    /*    */ "AM_DEFAULT_HANDLER"_Stz,
+    /*    */ "AM_DEFAULT_DATAPULSE_HANDLER"_Stz,
+    /*    */ "AM_DEFAULT_EOSMARKER_HANDLER"_Stz,
+    /*    */ "AM_DEFAULT_STARTMARKER_HANDLER"_Stz,
     /*    */ "AM_INIT"_Stz,
     /*    */ "AM_PROJECT_COLUMNS"_Stz,
     /*    */ "AM_PROJECT_COLUMNS_BEGIN"_Stz,
