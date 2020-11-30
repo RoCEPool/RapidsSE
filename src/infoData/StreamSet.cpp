@@ -25,7 +25,7 @@ StreamSet* InfoData::_pStreamSet(void* aAddr)
 void* StreamSet::operator new(size_t)
 {
   StreamSet* pStreamSet =
-  static_cast<StreamSet*>(HeapMem::pAllocate(CN_STREAMSET));
+    static_cast<StreamSet*>(HeapMem::pAllocate(CN_STREAMSET));
   
   return pStreamSet;
 }

@@ -157,6 +157,9 @@ void RowInflator::vInflateSet_v2(i8** aaiDstk,
       if (uHigh == MC_STRING_x8)  // string x 8
         ayDataByte += STRx8(uLow);
       else
+      if (uHigh == MC_STRING_TAIL)  // string tail
+        ayDataByte += 2;
+      else
       if (uHigh == MC_OVERFLOW) { // overflow
         
         //OverLine* aOverLine = aHeadLine->aGetOver();

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* WspConvergent_t.cpp -- fixed-sized workspace                                 */
+/* WspConvergent_t.cpp -- fixed-sized workspace that converges from both ends */
 /*============================================================================*/
 
 #include "Alignment.h"
