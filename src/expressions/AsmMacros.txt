@@ -128,10 +128,10 @@ endMacro
 // ADD COLUMN TO STREAMDEF
 //----------------------------------------------------------------------------
 macro AM_STREAMDEF_ADD_COLUMN
-  EO_PUSH_COLUMN_SCALE <C_TAG_COLUMN_SCALE>
-  EO_PUSH_COLUMN_LENGTH <C_TAG_COLUMN_LENGTH>
-  EO_PUSH_COLUMN_TYPE <C_TAG_COLUMN_TYPE>
-  EO_REG_STREAMDEFOUT_ADDCOLUMN <C_TAG_COLUMN_NAME>
+  EO_PUSH_COLUMN_SCALE <columnScale>
+  EO_PUSH_COLUMN_LENGTH <columnLength>
+  EO_PUSH_COLUMN_TYPE <columnType>
+  EO_REG_STREAMDEFOUT_ADDCOLUMN <columnName>
  endMacro
 
 //----------------------------------------------------------------------------
@@ -157,7 +157,7 @@ macro AM_CRWBUFFER_HANDLER
   EO_CRW_SRC_NEXT             
   EO_JMP_FALSE QRY_DONE       
 
-  EO_CALL <C_TAG_CRW_PROCESS_ROUTINE>
+  EO_CALL <crwProcessRoutine>
   EO_JMP NEXT_CRW_SRC       
   EO_JMP QRY_DONE
 endMacro
@@ -169,7 +169,7 @@ endMacro
 macro AM_PROJECT_COLUMNS_BEGIN
   // Project columns
   Label PROJECT_COLUMNS
-  EO_SET_ITEMS <C_TAG_PROJECT_COLUMNS>
+  EO_SET_ITEMS <projectColumns>
   EO_RSB_DST_NEW
 endMacro
 
@@ -178,9 +178,9 @@ endMacro
 //----------------------------------------------------------------------------
 // AM_PROJECT_COLUMNS(iSrcColumn, iDstColumn)
 macro AM_PROJECT_COLUMNS
-  EO_SET_COLUMN <C_TAG_PROJECT_SRC_COLUMN >
+  EO_SET_COLUMN <projectSrcColumn>
   EO_COL_SRC_PUSHSET      
-  EO_RSB_DST_POPCOLI <C_TAG_PROJECT_DST_COLUMN>
+  EO_RSB_DST_POPCOLI <projectDstColumn>
 endMacro
 
 //----------------------------------------------------------------------------

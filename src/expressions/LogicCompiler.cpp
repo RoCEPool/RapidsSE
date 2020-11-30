@@ -727,7 +727,9 @@ Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet) {
 
   s32 sTag;
   s4K sReplaced;
-  char* sMacro = (char*)gszaAmMacros[eMacro];
+  s4K sDst;
+  bool bReplaced = false;
+  sDst = gszaAmMacros[eMacro];
 
   for (i8 i_Tag = 0; i_Tag < pTagSet->nEnames(); i_Tag++) {
 
@@ -737,21 +739,23 @@ Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet) {
         i8 iValue = pTagSet->iValue(i_Tag);
         s32 sValue;
         StrLib::vToString(sValue.azChar(), iValue);
-        StrLib::bReplace(sReplaced.azChar(), sMacro,
+        bReplaced = StrLib::bReplace(sReplaced.azChar(), sDst.azChar(),
                          (char *) pTagSet->szName(i_Tag), sValue.azChar());
         break;
       }
       case TN_STRING:
-        StrLib::bReplace(sReplaced.azChar(), sMacro,
+        bReplaced = StrLib::bReplace(sReplaced.azChar(), sDst.azChar(),
                          (char *) pTagSet->szName(i_Tag), (char *) pTagSet->szValue(i_Tag));
         break;
 
       default:
         RASSERT(0);
     }
+    sDst = sReplaced;
+    sReplaced = ""_Stz;
   }
 
-  return sReplaced;
+  return (Stz*)sDst;
 }
 
 /*----------------------------------------------------------------------------*/
