@@ -230,6 +230,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Routine),            HT_TRANSIENT_SMALL   }, // CN_ROUTINE
   { sizeof(Row),                HT_TRANSIENT_LARGE   }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_TRANSIENT_MEDIUM  }, // CN_ROWAGG
+  { sizeof(RowBox),             HT_TRANSIENT_MEDIUM  }, // CN_ROWBOX
   { sizeof(RowBuffer),          HT_TRANSIENT_LARGE   }, // CN_ROWBUFFER
   { sizeof(RowCompactor),       HT_TRANSIENT_SMALL   }, // CN_ROWCOMPACTOR
   { sizeof(RowOnce),            HT_TRANSIENT_TINY    }, // CN_ROWONCE
