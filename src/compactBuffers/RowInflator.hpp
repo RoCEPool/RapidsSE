@@ -1017,6 +1017,7 @@ namespace CompactBuffers
           acStrArea += nStrSize;
         }
         else {
+          vTrace("ieStrInflate : %lld\n"_Stz,(i8)ieStrInflate);
           RASSERT(0);
         }
         
