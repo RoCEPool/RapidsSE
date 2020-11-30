@@ -343,6 +343,7 @@ SizeHeap gxaSizeHeap[]
   { 'W' - ('A' - 1),            HT_INVALID           }, // CN__W__
   { sizeof(Wilderness),         HT_INVALID           }, // CN_WILDERNESS
   { sizeof(Word),               HT_TRANSIENT_TINY    }, // CN_WORD
+  { 0,                          HT_INVALID           }, // CN_WSPCONVERGENT_t
 
   { 'X' - ('A' - 1),            HT_INVALID           }, // CN__X__
   { sizeof(XmitOperand),        HT_TRANSIENT_TINY    }, // CN_XMITIOPERAND

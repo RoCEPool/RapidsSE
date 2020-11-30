@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* WspConvergent_t.hpp -- fixed-sized workspace that converges from both ends   */
+/* WspConvergent_t.hpp -- fixed-sized workspace that converges from both ends */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,15 @@
 namespace Alignment
 {
   template<int LENGTH>
-  class WspConvergent_t
+  class WspConvergent_t : Object
   {
   private:
     byte m_yaByteArea[LENGTH]; // fixed byte area
     i8   m_nUsedHead;          // bytes used in the area from the head
     i8   m_nUsedTail;          // bytes used in the area frim the tail
                                //  (must be after m_yaByteArea)
-  
+    i8   m_nItems;             // number of items in this wsp
+
   public:
     WspConvergent_t(void);
 
@@ -28,6 +29,9 @@ namespace Alignment
     void  vGiveHead(i8 nBytes);
     void  vGiveTail(i8 nBytes);
     void  vInit(void);
+    i8    nItems(void);
+    void  vItemsDec(void);
+    void  vItemsInc(void);
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
     i8    nLength(void);
@@ -51,17 +55,25 @@ namespace Alignment
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
 WspConvergent_t<LENGTH>::WspConvergent_t(void)
+: Object(CN_WSPCONVERGENT_t)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+  
   m_nUsedHead = 0;
   m_nUsedTail = 0;
+  m_nItems    = 0;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* init                                                                       */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vInit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   m_nUsedHead = 0;
   m_nUsedTail = 0;
 }
@@ -72,6 +84,8 @@ void WspConvergent_t<LENGTH>::vInit(void)
 template<int LENGTH>
 byte* WspConvergent_t<LENGTH>::ayAllotHead(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   byte* ayAllotted = ayLatterHead();
   
   vTakeHead(nBytes);
@@ -85,6 +99,8 @@ byte* WspConvergent_t<LENGTH>::ayAllotHead(i8 nBytes)
 template<int LENGTH>
 byte* WspConvergent_t<LENGTH>::ayAllotTail(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   byte* ayAllotted = ayLatterTail() - nBytes;
   
   vTakeTail(nBytes);
@@ -98,6 +114,8 @@ byte* WspConvergent_t<LENGTH>::ayAllotTail(i8 nBytes)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vAppendHead(void* aSrc, i8 nBytes, eCN eClassNo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   ASSERT(nUsed() + nBytes <= LENGTH);
   
   byte* ayDst = ayLatterHead();
@@ -113,6 +131,8 @@ void WspConvergent_t<LENGTH>::vAppendHead(void* aSrc, i8 nBytes, eCN eClassNo)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vAppendTail(void* aSrc, i8 nBytes, eCN eClassNo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   ASSERT(nUsed() + nBytes <= LENGTH);
   
   byte* ayDst = ayLatterTail() - nBytes + 1;
@@ -128,6 +148,8 @@ void WspConvergent_t<LENGTH>::vAppendTail(void* aSrc, i8 nBytes, eCN eClassNo)
 template<int LENGTH>
 byte* WspConvergent_t<LENGTH>::ayArea(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   byte* ayArea = m_yaByteArea;
   
   return ayArea;
@@ -139,6 +161,8 @@ byte* WspConvergent_t<LENGTH>::ayArea(void)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vFill(char cByte, eCN eClassNo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   byte* ayDst = ayArea();
   
   MemLib::vSet(ayDst,cByte,LENGTH,eClassNo);
@@ -150,6 +174,8 @@ void WspConvergent_t<LENGTH>::vFill(char cByte, eCN eClassNo)
 template<int LENGTH>
 i8 WspConvergent_t<LENGTH>::nFree(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   i8 nFree = LENGTH - m_nUsedHead - m_nUsedTail;
   ASSERT(nFree >= 0);
   
@@ -162,6 +188,8 @@ i8 WspConvergent_t<LENGTH>::nFree(void)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vGiveHead(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
 
   m_nUsedHead -= nBytes;
@@ -173,9 +201,44 @@ void WspConvergent_t<LENGTH>::vGiveHead(i8 nBytes)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vGiveTail(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
   
   m_nUsedTail -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of items                                                        */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+i8 WspConvergent_t<LENGTH>::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
+  return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dec number of items                                                        */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void WspConvergent_t<LENGTH>::vItemsDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
+  --m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc number of items                                                        */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void WspConvergent_t<LENGTH>::vItemsInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
+  ++m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,6 +247,8 @@ void WspConvergent_t<LENGTH>::vGiveTail(i8 nBytes)
 template<int LENGTH>
 byte* WspConvergent_t<LENGTH>::ayLatterHead(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   byte* ayNext = &ayArea()[m_nUsedHead];
   
   return ayNext;
@@ -195,6 +260,8 @@ byte* WspConvergent_t<LENGTH>::ayLatterHead(void)
 template<int LENGTH>
 byte* WspConvergent_t<LENGTH>::ayLatterTail(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   byte* ayNext = &ayArea()[LENGTH - nUsedTail() - 1];
   
   return ayNext;
@@ -206,6 +273,8 @@ byte* WspConvergent_t<LENGTH>::ayLatterTail(void)
 template<int LENGTH>
 i8 WspConvergent_t<LENGTH>::nLength(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   return LENGTH;
 }
 
@@ -215,6 +284,8 @@ i8 WspConvergent_t<LENGTH>::nLength(void)
 template<int LENGTH>
 i8 WspConvergent_t<LENGTH>::iOffset(byte* ayAllotted)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   i8 iOfs = nDifference(ayAllotted,m_yaByteArea);
   
   return iOfs;
@@ -226,6 +297,8 @@ i8 WspConvergent_t<LENGTH>::iOffset(byte* ayAllotted)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vReset(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   vUsedHead(0);
   vUsedTail(0);
 }
@@ -236,6 +309,8 @@ void WspConvergent_t<LENGTH>::vReset(void)
 template<int LENGTH>
 i8 WspConvergent_t<LENGTH>::nSize(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   return sizeof(WspConvergent_t<LENGTH>);
 }
 
@@ -245,6 +320,8 @@ i8 WspConvergent_t<LENGTH>::nSize(void)
 template<int LENGTH>
 Stz* WspConvergent_t<LENGTH>::szStz(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   char* aArea = (char*)m_yaByteArea;
   
  return reinterpret_cast<Stz*>(aArea);
@@ -256,6 +333,8 @@ Stz* WspConvergent_t<LENGTH>::szStz(void)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vTakeHead(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   m_nUsedHead += nBytes;
   
   if (m_nUsedHead  + m_nUsedTail > LENGTH) {
@@ -270,6 +349,8 @@ void WspConvergent_t<LENGTH>::vTakeHead(i8 nBytes)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vTakeTail(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   m_nUsedTail += nBytes;
   
   if (m_nUsedHead  + m_nUsedTail > LENGTH) {
@@ -284,6 +365,8 @@ void WspConvergent_t<LENGTH>::vTakeTail(i8 nBytes)
 template<int LENGTH>
 i8 WspConvergent_t<LENGTH>::nUsed(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   return m_nUsedHead + m_nUsedTail;
 }
 
@@ -293,6 +376,8 @@ i8 WspConvergent_t<LENGTH>::nUsed(void)
 template<int LENGTH>
 i8 WspConvergent_t<LENGTH>::nUsedHead(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   return m_nUsedHead;
 }
 
@@ -302,6 +387,8 @@ i8 WspConvergent_t<LENGTH>::nUsedHead(void)
 template<int LENGTH>
 i8 WspConvergent_t<LENGTH>::nUsedTail(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   return m_nUsedTail;
 }
 
@@ -311,6 +398,8 @@ i8 WspConvergent_t<LENGTH>::nUsedTail(void)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vUsedHead(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   m_nUsedHead = nBytes;
   
   ASSERT(m_nUsedHead + m_nUsedTail <= LENGTH);
@@ -322,6 +411,8 @@ void WspConvergent_t<LENGTH>::vUsedHead(i8 nBytes)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vUsedTail(i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   m_nUsedTail = nBytes;
   
   ASSERT(m_nUsedHead + m_nUsedTail <= LENGTH);
@@ -333,6 +424,8 @@ void WspConvergent_t<LENGTH>::vUsedTail(i8 nBytes)
 template<int LENGTH>
 void WspConvergent_t<LENGTH>::vZero(eCN eClassNo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WSPCONVERGENT_t);
+
   m_nUsedHead = 0;
   m_nUsedTail = 0;
   
