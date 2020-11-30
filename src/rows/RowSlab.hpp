@@ -24,7 +24,7 @@ namespace Rows
   
     i8 m_nItems;  // number of items in this row wsp
 
-    SingleWord m__PadToCacheLine[5]; // padding to cache line
+    SingleWord m__PadToCacheLine[4]; // padding to cache line
 
     WspConverge_t<WSP_SIZE> m_xWsp; // workspace of row(s)
 

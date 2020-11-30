@@ -51,11 +51,11 @@ void Step::vRowGetVchColumn(void)
 {
   ENTRY();
   
-  i8 iColumn = m_pDataStack->iPopInt(__func__);
+  i8 i_Col = m_pDataStack->iPopInt(__func__);
   
   Row* pRow = *m_pLogicUnit->m_xpRow;
   
-  s256 sColumn = pRow->szColVal_ofs(iColumn);
+  s256 sColumn = pRow->szColVal_ofs(i_Col);
   m_pDataStack->vPushStr(sColumn);
   
   EXIT();
