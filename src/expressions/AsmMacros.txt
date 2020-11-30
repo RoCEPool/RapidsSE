@@ -5,11 +5,11 @@
 // AM_INIT
 //----------------------------------------------------------------------------
 macro AM_INIT
-  Routine QRY_<QueryNo>
+  Routine QRY_<queryNo>
   // initialization   
   EO_INIT             
   EO_ENTER            
-  EO_SQL <QueryNo>
+  EO_SQL <queryNo>
 
   // check for ZK_STARTMARKER
   EO_DUP                          

@@ -42,7 +42,7 @@ namespace Expressions
 
     static eAM  eFindAM(Stz* szEOname);
     static eEO  eFindEO(Stz* szEOname);
-    static Stz* szGetMacro(eAM eMacro);
+    static Stz* szGetMacro(eAM eMacro, TagSet* pTagSet);
 
     i8 iCall(void);
     i8 iCompile(LogicUnit* pLogicUnit, void* aDynArg);

@@ -429,50 +429,44 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
   RASSERT(b);
 
   // append the INIT code
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT), iQueryNo, iQueryNo);
-
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+/*
   // append a default handler for the ZK_STARTMARKER
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER),
-                "ZK_STARTMARKER"_Stz,
-                "STARTMARKER"_Stz,
-                "ZK_STARTMARKER"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STARTMARKER_HANDLER, &oTagSet));
   
   // append a default handler for the ZK_DATAPULSE
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER),
-                "ZK_DATAPULSE"_Stz,
-                "DATAPULSE"_Stz,
-                "ZK_DATAPULSE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_DATAPULSE_HANDLER, &oTagSet));
  
   // begin a StreamDef handler
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_BEGIN));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_BEGIN, &oTagSet));
 
   // add a column to the streamDef
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN),
-                                          2, 15, "CT_DECIMAL"_Stz, "l_extendedprice"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+                                          //2, 15, "CT_DECIMAL"_Stz, "l_extendedprice"_Stz);
   
   // end a StreamDef handler
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_END));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_END, &oTagSet));
  
   // append a default handler for the EOSMARKER
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER),
-                "ZK_EOSMARKER"_Stz,
-                "EOSMARKER"_Stz,
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+                //"ZK_EOSMARKER"_Stz,
+                //"EOSMARKER"_Stz,
                 "ZK_EOSMARKER"_Stz);
 
   // append a handler for iterating a CRWBUFFER and
   //   to execute PROJECT_COLUMNS for each row
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_HANDLER),
-                                          "PROJECT_COLUMNS"_Stz,
-                                          "PROJECT_COLUMNS"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_HANDLER, &oTagSet));
+                                          //"PROJECT_COLUMNS"_Stz,
+                                          //"PROJECT_COLUMNS"_Stz);
  
   // add the columns to be projected to PROJECT_COLUMNS
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_BEGIN), 1);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS), 5, 0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_END));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_BEGIN, &oTagSet)); //1);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS, &oTagSet)); //, 5, 0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_END, &oTagSet));
   
   // Finally query done
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE));
-
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+*/
   pFile->vClose();
   delete pFile;
   
