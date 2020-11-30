@@ -90,9 +90,9 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    if (! m_pRowSlab->bNewRow()) {
+    if (! m_pRowSlab->bAllotRow()) {
       vNewRsbBuffer();
-      bool b = m_pRowSlab->bNewRow();
+      bool b = m_pRowSlab->bAllotRow();
       ASSERT(b);
     }
     
@@ -666,9 +666,9 @@ L_TestMoreRecords:
   i_Fld = -1;
 
   // allot a new rsb (new another rsbBuffer if necessary)
-  if (! m_pRowSlab->bNewRow(&aRow)) {    // ? inline ?
+  if (! m_pRowSlab->bAllotRow(&aRow)) {    // ? inline ?
     vNewRsbBuffer();
-    bool b = m_pRowSlab->bNewRow(&aRow);
+    bool b = m_pRowSlab->bAllotRow(&aRow);
     ASSERT(b);
   }
  
@@ -1360,8 +1360,11 @@ L_Integer:
   // unsigned whole portion
   
   vWHOLE_NUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                EC_CSV_INTEGER_INVALID,EC_CSV_INTEGER_TOO_LARGE);
+                             EC_CSV_INTEGER_INVALID,
+                             EC_CSV_INTEGER_TOO_LARGE);
 
+  // -- vFACTION_opt() --
+  
   // ignore any . digits
   if (bIS_DECIMAL_POINT()) {
     vACCEPT_CHAR(); // skip '.'

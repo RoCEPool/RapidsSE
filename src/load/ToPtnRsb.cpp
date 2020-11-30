@@ -60,9 +60,9 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
     
     Row* aRowSrc = pRowSlab->aRowAdr(i_Row);
     
-    i_Ptn = pRowSlab->iPtnOfRsb(aRowSrc);
+    i_Ptn = pRowSlab->iPtnOfRow(aRowSrc);
     
-    vCopyRsb(i_Ptn,aRowSrc);
+    vCopyRow(i_Ptn,aRowSrc);
   }
 }
 
@@ -94,25 +94,25 @@ RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy source rsb into target partition row slab                             */
+/* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vCopyRsb(i8 i_Ptn, Row* aRowSrc)
+void ToPtnRsb::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
   // new a destination row in target partition row slab
-  vNewDstRsb(i_Ptn);
+  vNewDstRow(i_Ptn);
   
   // copy that
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
-  m_pIntoRowSlab->vCopyRsb(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
+  m_pIntoRowSlab->vCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a destination rsb row in rsb slab in hash set                          */
+/* new a destination row in rsb slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
+void ToPtnRsb::vNewDstRow(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
@@ -126,13 +126,13 @@ void ToPtnRsb::vNewDstRsb(i8 i_Ptn)
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
-  bool bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+  bool bNewed = pDstRsbBuffer->pRowSlab()->bAllotRow();
   if (! bNewed) {
     pDstRsbBuffer = new RsbBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
-    bNewed = pDstRsbBuffer->pRowSlab()->bNewRow();
+    bNewed = pDstRsbBuffer->pRowSlab()->bAllotRow();
     ASSERT(bNewed);
   }
   

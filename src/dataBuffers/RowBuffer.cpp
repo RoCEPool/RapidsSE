@@ -124,14 +124,15 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       char* acSrcString = (char*)pRowSingle->szColVal(i_Col);
       i8 nSrcLength = StrLib::nSize(acSrcString);
       
+      // STRING_DEPOSIT
       // allocate a string from the tail
       Stz* acDstString = ayAllotTail(nSrcLength);
       i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
-      
       // set offset of tail string
       pRow->vColVal_ofs(i_Col,iToOffset(acDstString));
-      
+      // END STRING_DEPOSIT
+
       continue;
     }
     

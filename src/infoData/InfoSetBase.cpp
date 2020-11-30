@@ -115,25 +115,29 @@ Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
    
      Column* pCol = pStreamDef->pGetColumn(i_Col);
      
+     // STRING_DEPOSIT
      if (DM_VCH == pCol->eDatum()) {
-     Stz* szVal = va_arg(xVarArgs,Stz*);
-     if (szVal) {
-       ayTail = (Stz*)ayAllotTail(StrLib::nSize(szVal->azChar()));
-       
-       // return early if no more space for the string
-       if ( ! ayTail )
-         return nullptr;
-       
-       StrLib::vCopy((char*)ayTail, szVal->azChar());
-       ayRow->vColVal_ofs(i_Col,iToOffset(ayTail));
-     }
-     else
-       ayRow->vSetColNull(i_Col);
+       Stz* szVal = va_arg(xVarArgs,Stz*);
+       if (szVal) {
+         ayTail = (Stz*)ayAllotTail(StrLib::nSize(szVal->azChar()));
+         
+         // return early if no more space for the string
+         if ( ! ayTail )
+           return nullptr;
+         
+         StrLib::vCopy((char*)ayTail, szVal->azChar());
+         ayRow->vColVal_ofs(i_Col,iToOffset(ayTail));
+       }
+       else {
+         ayRow->vSetColNull(i_Col);
+       }
      }
      else {
        i8 iVal = va_arg(xVarArgs,i8);
        ayRow->vColVal_int(i_Col,iVal);
      }
+     // END STRING_DEPOSIT
+
    }
    
    i8 iVArgsEnd = va_arg(xVarArgs,i8);

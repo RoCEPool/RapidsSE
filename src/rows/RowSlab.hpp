@@ -24,7 +24,7 @@ namespace Rows
   
     i8 m_nItems;  // number of items in this row wsp
 
-    SingleWord m__PadToCacheLine[5]; // padding to cache line
+    SingleWord m__PadToCacheLine[4]; // padding to cache line
 
     WspConverge_t<WSP_SIZE> m_xWsp; // workspace of row(s)
 
@@ -70,7 +70,8 @@ namespace Rows
     StreamPix m_oStreamPix; // condensed stream def
   
     i8   m_i_RowCrs;    // current logical row number
-    m8*  m_amCellCrs;   // current working cell
+    Row* m_aRowCur;     // current row
+    i8   m_i_ColCrs;    // current working column
     i8   m_nRowStringBytes; // number string bytes for current row
 
     NmlStr m_oNmlStr;   // normalised string set
@@ -85,13 +86,13 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
+    bool  bAllotRow(Row** paRow);
+    bool  bAllotRow(void);
     ColPix* axaColPix(void);
-    i8    i_Cell0(i8 i_Row);
-    m8*   amCell0(i8 i_Row);
-    i8    nCols(void);
+     i8    nCols(void);
     i8    iColumn(Row* aRow, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
-    void  vCopyRsb(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
     void  vDiscardInvalidRow(void);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
@@ -100,11 +101,9 @@ namespace Rows
     i8    nExtraCols(void);
     i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
-    bool  bNewRow(Row** paRsb);
-    bool  bNewRow(void);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
-    i8    iPtnOfRsb(Row* aRow);
+    i8    iPtnOfRow(Row* aRow);
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     void  vReset(void);
@@ -112,70 +111,63 @@ namespace Rows
     Row*  aRowAdr(i8 i_Row);
     Row*  aRowByOfs(i8 iOfs);
     void  vSetRow(i8 iRow);
-    i8    iOfsOfRsb(Row* aRow);
+    i8    iOfsOfRow(Row* aRow);
     i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
-    void  vZeroRsb(Row* aRow);
+    void  vZeroRow(Row* aRow);
 
   private:
-    m8*     amSlabCellVec(void);
+    i8    i_RowSlabCell(i8 i_Row);
+    m8*   amSlabCellVec(void);
+  
     Footer* aFooter(void);
   
   public:
   
-  /*----------------------------------------------------------------------------*/
-  /* advance cursor                                                             */
-  /*----------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /* advance cursor                                                           */
+  /*--------------------------------------------------------------------------*/
   inline void vAdvanceCursor(void)
   {
-    m_amCellCrs++;
-  };
-
-  /*----------------------------------------------------------------------------*/
-  /* get address of current cell                                                */
-  /*----------------------------------------------------------------------------*/
-  inline m8* aCurrentCell(void)
-  {
-
-    return m_amCellCrs;
+    m_i_ColCrs++;
   };
 
 
-  /*----------------------------------------------------------------------------*/
-  /*----------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
   
-  /*----------------------------------------------------------------------------*/
-  /* deposit an d8 value into next cell                                         */
-  /*----------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /* deposit an d8 value into next cell                                       */
+  /*--------------------------------------------------------------------------*/
   inline void vDeposit(d8 dVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-    *(d8*)m_amCellCrs = dVal;
+    m_aRowCur->vColVal_flt(m_i_ColCrs,dVal);
     
     vAdvanceCursor();
 
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
 
-  /*----------------------------------------------------------------------------*/
-  /* deposit an i8 value into next cell                                         */
-  /*----------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /* deposit an i8 value into next cell                                       */
+  /*--------------------------------------------------------------------------*/
   inline void vDeposit(i8 iVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    *(i8*)m_amCellCrs = iVal;
-  
+    m_aRowCur->vColVal_int(m_i_ColCrs,iVal);
+
     vAdvanceCursor();
   
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
 
-  /*----------------------------------------------------------------------------*/
-  /* deposit an stz value into next cell                                        */
-  /*----------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /* deposit an stz value into next cell                                      */
+  /*--------------------------------------------------------------------------*/
   inline void vDeposit(Stz* szVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -189,18 +181,20 @@ namespace Rows
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   }
 
-  /*----------------------------------------------------------------------------*/
-  /* begin deposit of string                                                    */
-  /*----------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /* begin deposit of string                                                  */
+  /*--------------------------------------------------------------------------*/
   inline char* azDepositString_begin(void)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
     char* azStz = (char*)m_xWsp.ayLatterHead();
     
-    i8 i_Ofs = - nDifference(azStz,m_amCellCrs);
-    *(i8*)m_amCellCrs = i_Ofs;
-  
+    m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
+    i8 i_Ofs = - nDifference(azStz,aColCell);
+
+    m_aRowCur->vColVal_ofs(m_i_ColCrs,i_Ofs);
+
     vAdvanceCursor();
 
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -208,9 +202,9 @@ namespace Rows
     return azStz;
   }
 
-  /*----------------------------------------------------------------------------*/
-  /* take bytes for deposited string                                            */
-  /*----------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /* take bytes for deposited string                                          */
+  /*--------------------------------------------------------------------------*/
   inline void vDepositString_end(i8 nSize)
   {
      _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -228,6 +222,6 @@ namespace Rows
   RowSlab* _pRowSlab(void* aAddr);
 }
 
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
+/*==========================================================================*/
+/* end                                                                      */
+/*==========================================================================*/

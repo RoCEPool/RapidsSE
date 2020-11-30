@@ -631,6 +631,9 @@ namespace CompactBuffers
       if (uHigh == MC_STRING_x8)  // string x 8
         ayDataByte += STRx8(uLow);
       else
+      if (uHigh == MC_STRING_TAIL)  // string x 8
+        ayDataByte += 2;
+      else
       if (uHigh == MC_OVERFLOW) { // overflow
         
         // calculation to get overflow
@@ -1014,6 +1017,7 @@ namespace CompactBuffers
           acStrArea += nStrSize;
         }
         else {
+          vTrace("ieStrInflate : %lld\n"_Stz,(i8)ieStrInflate);
           RASSERT(0);
         }
         
