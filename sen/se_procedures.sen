@@ -1841,6 +1841,82 @@
   end ;
   "
   api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 20 -  [S1] select ps_suppkey from partsupp where ps_partKey in
+  //             [S0] ( select p_partkey from part where p_name like 'forest%' )
+  // changed to :[S0] ( select p_partkey from part where p_mfgr = 'Manufacturer#1' )
+  sPath
+  "
+  procedure Smt20_S0
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all nodes :
+    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
+    | stageC
+
+  stage stageC on all partitions :
+    EOAsm ../eo_text/asm20_s0.txt 0
+    | stageD
+
+  stage stageD on all nodes :
+    createTable
+    | stageE hashed
+
+  stage stageE on all partitions :
+    insert tempTable
+    | stageF
+
+  stage stageF on origin :
+    output
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  sPath
+  "
+  procedure Smt20
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | genAsmTxt 20 1 ../eo_text/asm20_s1_origin.txt
+    | EOAsm ../eo_text/asm20_s1_origin.txt   //callPipeline Smt20_S0
+    | waitPipeline
+    | stageB
+
+  stage stageB on all nodes :
+     genAsmTxt 20 1 ../eo_text/asm20_s1_all_partitions.txt
+     | stageC
+
+  stage stageC on all partitions :
+    EOAsm ../eo_text/asm20_s1_all_partitions.txt 0
+    | truncateTable tempTable
+    | stageD
+
+  stage stageD on all nodes :
+    dropTable tempTable
+    | stage E
+
+  stage stageE on origin :
+      output
+      | sink
+      | stageA
+
+    end ;
+    "
+    api::addProcedure
+
 ;
 
 /*============================================================================*/
