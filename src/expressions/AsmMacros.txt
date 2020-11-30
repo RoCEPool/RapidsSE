@@ -9,7 +9,7 @@ macro AM_INIT
   // initialization   
   EO_INIT             
   EO_ENTER            
-  EO_SQL <queryNo>
+  EO_SQL <subQueryNo>
 
   // check for ZK_STARTMARKER
   EO_DUP                          

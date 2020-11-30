@@ -214,7 +214,7 @@ namespace Expressions
     void vGenCode(i8 iTestNo);
   
     bool bGenerateAsm(Stz* sText);
-    void vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName);
+    void vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName);
     
     // TPCH Queries
     void vGenerateQuery100(void);

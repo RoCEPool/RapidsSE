@@ -97,6 +97,8 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
 // ASM Tags
 static Stz* C_TAG_QUERY_NO = "<queryNo>"_Stz;
+static Stz* C_TAG_SUBQUERY_NO = "<subQueryNo>"_Stz;
+
 static Stz* C_TAG_COLUMN_SCALE  = "<columnScale>"_Stz;
 static Stz* C_TAG_COLUMN_LENGTH = "<columnLength>"_Stz;
 static Stz* C_TAG_COLUMN_TYPE   = "<columnType>"_Stz;

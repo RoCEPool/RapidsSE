@@ -415,7 +415,7 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for given query into a file                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
+void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
@@ -428,6 +428,7 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
 
   // append the INIT code
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
   oTagSet.vReset();
 

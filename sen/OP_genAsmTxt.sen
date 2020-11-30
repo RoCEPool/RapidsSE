@@ -15,7 +15,7 @@
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
-  <queryNo> >int <fileName> LogicUnit[].genAsmTxt
+  <queryNo> >int <subQueryNo> >int <fileName> LogicUnit[].genAsmTxt
 
   Pipein[].pipeout
   true
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: GenAsmTxt :: GenAsmTxt <queryNo> <fileName> ;
+cmdSyntax: GenAsmTxt :: GenAsmTxt <queryNo> <subQueryNo> <fileName> ;
 
 : GenAsmTxt _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
