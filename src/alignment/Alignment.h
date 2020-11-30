@@ -24,6 +24,7 @@ namespace Alignment
 #include "SpaceUnit.hpp"
 
 #include "WspConverge_t.hpp"
+#include "WspConvergent_t.hpp"
 #include "Wsp_t.hpp"
 
 /*============================================================================*/

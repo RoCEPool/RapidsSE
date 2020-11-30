@@ -1006,9 +1006,19 @@ namespace CompactBuffers
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
         nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
+        
+        if (SI_ADDRESS == (eSI)ieStrInflate) {
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = ((char*)aTailLine) + C_U_1B + C_L_1B;
+          ayDstByte += 8;
+          ayDataByte += 2;
+        }
+        else
         if (SI_AREA_ADR == (eSI)ieStrInflate) {
           
-          memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
+          memcpy(acStrArea,
+                 ( (char*)aTailLine + C_U_1B + C_L_1B ),
+                 (size_t)nStrSize);
           
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = acStrArea;
