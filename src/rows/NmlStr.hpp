@@ -11,7 +11,7 @@ namespace Rows
   {
   private:
       
-    SingleWord m__PadToCacheLine[7]; // padding to cache line
+    SingleWord m__PadToCacheLine[3]; // padding to cache line
 
     Wsp_t<C_WSP_NMLSTR> m_xWsp; // workspace
   

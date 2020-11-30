@@ -57,7 +57,10 @@ RowWsp<WSP_SIZE>::RowWsp(eCN eClass)
 
 namespace Rows
 {
-  class RowSlab : public RowWsp<C_ROWSLAB_WSP>
+  class RowSlab :
+                  //public RowWsp<C_ROWSLAB_WSP>
+                  public Object,
+                  public WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>
   {
     friend class Row;
 
@@ -188,7 +191,7 @@ namespace Rows
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    char* azStz = (char*)m_xWsp.ayLatterHead();
+    char* azStz = (char*)ayLatterHead();
     
     m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
     i8 i_Ofs = - nDifference(azStz,aColCell);
@@ -209,7 +212,7 @@ namespace Rows
   {
      _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-    m_xWsp.vTakeHead(nSize);
+    vTakeHead(nSize);
     
     m_nRowStringBytes += nSize;
   

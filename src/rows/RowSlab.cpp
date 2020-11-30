@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowSlab.hpp -- Row Slab                                                    */
+/* RowSlab.cpp -- Row Slab                                                    */
 /*============================================================================*/
 
 #include "Rows.h"
@@ -17,7 +17,7 @@ __aFooterFunction(RowSlab)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowSlab::RowSlab(void)
-: RowWsp(CN_ROWSLAB)
+: Object(CN_ROWSLAB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
@@ -41,7 +41,7 @@ RowSlab::RowSlab(void)
   
   m_nRowStringBytes = 0;
   
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ROWSLAB);
+  //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ROWSLAB);
   
   // m_oNmlStr
 
@@ -72,31 +72,53 @@ RowSlab::~RowSlab(void) noexcept(false)
 bool RowSlab::bAllotRow(Row** paRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  i8 nBytesAvail = m_xWsp.nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
   
-  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize + /* m_iDummy */ (i8)sizeof(i8))
-    return false;
-  
-  m_nItems++;
-
-  m_i_RowCrs++;
-  
-  m_aRowCur = aRowAdr(m_i_RowCrs);
-  
-  *paRow = m_aRowCur;
-  
+  m_nRowStringBytes = 0;
   m_i_ColCrs  = 0;
   
   i8 nCellBytes = nRowProperBytes();
-  m_xWsp.vTakeTail(nCellBytes);
-  
-  m_nRowStringBytes = 0;
 
+  m_aRowCur = ayAllotTail(nCellBytes);
+  
+  if (! m_aRowCur) {
+    *paRow = nullptr;
+    return false;
+  }
+  
+  m_i_RowCrs++;
+  *paRow = m_aRowCur;
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool RowSlab::bAllotRow(Row** paRow)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//  i8 nBytesAvail = nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
+//
+//  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize + /* m_iDummy */ (i8)sizeof(i8))
+//    return false;
+//
+//  m_i_RowCrs++;
+//
+//  m_aRowCur = aRowAdr(m_i_RowCrs);
+//
+//  *paRow = m_aRowCur;
+//
+//  m_i_ColCrs  = 0;
+//
+//  i8 nCellBytes = nRowProperBytes();
+//  vTakeTail(nCellBytes);
+//
+//  m_nRowStringBytes = 0;
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
@@ -240,16 +262,17 @@ void RowSlab::vDiscardInvalidRow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   // undo the row number increments of vNewRow()
-  m_nItems--;
   m_i_RowCrs--;
   
   // return tail bytes allotted for cells of current row in vNewRow()
   i8 nCellBytes = nRowProperBytes();
-  m_xWsp.vGiveTail(nCellBytes);
+  vGiveTail(nCellBytes);
+  
+  vDecItems();
   
   // return head bytes allotted for strings deposited in vDepositString_end()
   if (m_nRowStringBytes) {
-    m_xWsp.vGiveHead(m_nRowStringBytes);
+    vGiveHead(m_nRowStringBytes);
     m_nRowStringBytes = 0;
   }
 }
@@ -308,9 +331,9 @@ i8 RowSlab::nFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  i8 nFree = m_xWsp.nFree();
+  i8 nFreeSp = nFreeBytes();
   
-  return nFree;
+  return nFreeSp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -420,7 +443,7 @@ i8 RowSlab::iOfsOfRow(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  i8 iOfs = m_xWsp.iOffset((byte*)aRow);
+  i8 iOfs = iOffset((byte*)aRow);
   
   return iOfs;
 }
@@ -466,12 +489,11 @@ void RowSlab::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  m_nItems    = 0;
   m_i_RowCrs  = C_UNKNOWN;
   m_aRowCur   = nullptr;
   m_i_ColCrs  = C_UNKNOWN;
 
-  m_xWsp.vReset();
+  vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -513,7 +535,7 @@ Row* RowSlab::aRowByOfs(i8 i_Ofs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  Row* aRow = aAdd<Row*>(m_xWsp.ayArea(),i_Ofs);
+  Row* aRow = aAdd<Row*>(ayArea(),i_Ofs);
   
   return aRow;
 }
@@ -535,7 +557,7 @@ i8 RowSlab::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  return m_nItems;
+  return nItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -546,8 +568,8 @@ void RowSlab::vSlabReport(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
  
   s32 sSlab_magn;  MagLib::vByteMag(C_ROWSLAB_WSP, sSlab_magn);
-  s32 sUsed_magn;  MagLib::vByteMag(m_xWsp.nUsed(),sUsed_magn);
-  s32 sFree_magn;  MagLib::vByteMag(m_xWsp.nFree(),sFree_magn);
+  s32 sUsed_magn;  MagLib::vByteMag(nUsed(),sUsed_magn);
+  s32 sFree_magn;  MagLib::vByteMag(nFree(),sFree_magn);
 
   vTrace("RowSlab space %s, used %s, free %s %lld%%; "
          "rows %lld, %lld(B) per row\n"_Stz,
@@ -555,10 +577,10 @@ void RowSlab::vSlabReport(void)
          sSlab_magn.szStz(),
          sUsed_magn.szStz(),
          sFree_magn.szStz(),
-         (m_xWsp.nFree() * 100) / C_ROWSLAB_WSP,
+         (nFree() * 100) / C_ROWSLAB_WSP,
          
          nRows(),
-         m_xWsp.nUsed() / nRows()
+         nUsed() / nRows()
          );
 }
 
@@ -609,7 +631,7 @@ m8* RowSlab::amSlabCellVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
-  m8* amCellArea = (m8*)m_xWsp.ayArea();
+  m8* amCellArea = (m8*)ayArea();
   
   return amCellArea;
 }
