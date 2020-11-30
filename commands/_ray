@@ -4,38 +4,22 @@
 
 bc;
 
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection createTable;
-print section "Create LineItem";
+create table bolTbl (
+  bol_col1   BOOLEAN     NOT NULL,
+  vch_col2   VARCHAR(32) NOT NULL,
+  int_col3   INTEGER     NOT NULL,
+  int_col4   INTEGER     NOT NULL,
+  dec_col5   DECIMAL(10,2) NOT NULL,
+  flt_col6   FLOAT       NOT NULL,
+  tsp_col7   TIMESTAMP   NOT NULL,
+  bol_col8   BOOLEAN
+);
 
-_lineItem
+create index bol_idx1 on bolTbl (bol_col1);
 
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection createIndex;
-print section "Create Index";
+create index bol_idx2 on bolTbl (bol_col8);
 
-_lineItemIndex
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection oldLoad;
-print section "oldLoad Table";
-
-/time oldLoad lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" <max_errors> =  100;
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection analyse1
-print section "Analyse Index (via anidx)";
-
-anidx lineItem lineitem_idx1;
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-logSection analyse2
-print section "Analyse Index (via analizeIndex)";
-
-analizeIndex lineItem lineitem_idx1;
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "**end of _lineItemRJH**";
+lsidx bolTbl;
 
 /*============================================================================*/
 /* end                                                                        */

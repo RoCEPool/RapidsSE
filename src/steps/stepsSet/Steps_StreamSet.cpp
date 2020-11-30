@@ -292,11 +292,11 @@ void Step::vStreamSetAddListIndex(void)
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->aAllotRow(pStreamDef,
-                                  C_VARGS_BEGIN,
-                                  pIndex->szIndexNm(),
-                                  (i8)pIndex->bIsUnique(),
-                                  (i8)pIndex->bIsPrimaryKey(),
-                                  C_VARGS_END);
+                                    C_VARGS_BEGIN,
+                                      pIndex->szIndexNm(),
+                                      (i8)pIndex->bIsUnique(),
+                                      (i8)pIndex->bIsPrimaryKey(),
+                                    C_VARGS_END);
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
   

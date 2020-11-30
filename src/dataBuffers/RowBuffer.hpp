@@ -10,8 +10,8 @@ namespace DataBuffers
   static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_1KB;
 
   class RowBuffer : public DataBuffer,
-                    public RowHeap_t<Row>
-                    //public WspConvergent_t<C_WSP_ROWBUFFER,Row,Stz>
+                    //public RowHeap_t<Row>
+                    public WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>
   {
   protected:
   

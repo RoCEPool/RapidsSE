@@ -74,12 +74,12 @@ Row* RowBuffer::aAllotRow(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // allot using bytes as we don't know the size of the item
-  Row* ayRow = ayAllotHead(nBytes);
+  Row* ayRow = ayAllotTail(nBytes);
   
   if (! ayRow)
     return nullptr;
   
-  vIncItems();
+  //vIncItems();
   
   Row* aRow = new(ayRow) Row();
   
@@ -126,7 +126,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
       
       // STRING_DEPOSIT
       // allocate a string from the tail
-      Stz* acDstString = ayAllotTail(nSrcLength);
+      Stz* acDstString = ayAllotHead(nSrcLength);
       i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
       // set offset of tail string

@@ -30,7 +30,7 @@ namespace Alignment
     byte* ayArea(void);
     void  vDecItems(void);
     void  vFill(char cByte, eCN eClassNo);
-    HEAD* aFirstItem(void); // ayFirsthead()
+    TAIL* aFirstItem(void); // ayFirstTail()
     i8    nFree(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
@@ -227,7 +227,7 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vFill(char cByte, eCN eClassNo)
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
 template<int SIZE, class HEAD, class TAIL>
-HEAD* WspConvergent_t<SIZE,HEAD,TAIL>::aFirstItem(void)
+TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aFirstItem(void)
 {
   if (! m_nTailItems)
     return nullptr;
@@ -236,7 +236,7 @@ HEAD* WspConvergent_t<SIZE,HEAD,TAIL>::aFirstItem(void)
   
   byte* ayFirst = &ayArea()[SIZE - m_nTailSize];
   
-  return ayFirst;
+  return (TAIL*)ayFirst;
 }
 
 /*----------------------------------------------------------------------------*/

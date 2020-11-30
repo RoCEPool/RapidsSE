@@ -100,7 +100,7 @@ Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
    Row* ayRow = RowBuffer::aAllotRow(Row::nSizeBytes(pStreamDef));
    m_nInfoRows++;
    
-   Stz* ayTail;
+   Stz* ayDst;
    
    if ( ! ayRow )
      return nullptr;
@@ -119,14 +119,14 @@ Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
      if (DM_VCH == pCol->eDatum()) {
        Stz* szVal = va_arg(xVarArgs,Stz*);
        if (szVal) {
-         ayTail = (Stz*)ayAllotTail(StrLib::nSize(szVal->azChar()));
+         ayDst = (Stz*)ayAllotHead(StrLib::nSize(szVal->azChar()));
          
          // return early if no more space for the string
-         if ( ! ayTail )
+         if ( ! ayDst )
            return nullptr;
          
-         StrLib::vCopy((char*)ayTail, szVal->azChar());
-         ayRow->vColVal_ofs(i_Col,iToOffset(ayTail));
+         StrLib::vCopy((char*)ayDst, szVal->azChar());
+         ayRow->vColVal_ofs(i_Col,iToOffset(ayDst));
        }
        else {
          ayRow->vSetColNull(i_Col);
