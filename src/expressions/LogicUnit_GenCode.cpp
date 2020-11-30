@@ -257,7 +257,9 @@ void LogicUnit::vCollectOpcode(void)
   for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
     
     if (m_pTkn->bSame(aEO[i_OpCode])) {
-      
+
+      vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
+
       switch((i8)(EoArgs[i_OpCode].m_eArgument)) {
           
         case EA_DATE:
@@ -430,56 +432,51 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
   
   bool b = pFile->bOpenWrite(sFileName);
   RASSERT(b);
-  // append the INIT code to sString
-  pFile->vPrint("%s"_Stz, LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER));
-  /*
-  // append the INIT code to sString
-  ASM_INIT(sString, aTemp, iQueryNo);
-  pFile->vPrint("%s"_Stz,sString.azChar());
+
+  // append the INIT code
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT), iQueryNo, iQueryNo);
+
+  // append a default handler for the ZK_STARTMARKER
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER),
+                "ZK_STARTMARKER"_Stz,
+                "STARTMARKER"_Stz,
+                "ZK_STARTMARKER"_Stz);
   
-  // append a default handler for the STARTMARKER
-  ASM_DEFAULT_HANDLER(sString, aTemp, "STARTMARKER_HANDLER"_Stz);
-  pFile->vPrint("%s"_Stz,sString.azChar());
-  
-  // append a default handler for the DATAPULSE
-  ASM_DEFAULT_HANDLER(sString, aTemp, "DATAPULSE_HANDLER"_Stz);
-  pFile->vPrint("%s"_Stz,sString.azChar());
+  // append a default handler for the ZK_DATAPULSE
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER),
+                "ZK_DATAPULSE"_Stz,
+                "DATAPULSE"_Stz,
+                "ZK_DATAPULSE"_Stz);
  
   // begin a StreamDef handler
-  ASM_STREAMDEF_HANDLER_BEGIN(sString, aTemp);
-  pFile->vPrint("%s"_Stz,sString.azChar());
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_BEGIN));
 
   // add a column to the streamDef
-  ASM_STREAMDEF_ADD_COLUMN(sString, aTemp, 2, 15, CT_DECIMAL, "l_extendedprice"_Stz);
-  pFile->vPrint("%s"_Stz,sString.azChar());
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN),
+                                          2, 15, "CT_DECIMAL"_Stz, "l_extendedprice"_Stz);
   
   // end a StreamDef handler
-  ASM_STREAMDEF_HANDLER_END(sString, aTemp);
-  pFile->vPrint("%s"_Stz,sString.azChar());
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_END));
  
   // append a default handler for the EOSMARKER
-  ASM_DEFAULT_HANDLER(sString, aTemp, "EOSMARKER_HANDLER"_Stz);
-  pFile->vPrint("%s"_Stz,sString.azChar());
-  
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER),
+                "ZK_EOSMARKER"_Stz,
+                "EOSMARKER"_Stz,
+                "ZK_EOSMARKER"_Stz);
+
   // append a handler for iterating a CRWBUFFER and
   //   to execute PROJECT_COLUMNS for each row
-  ASM_CRWBUFFER_HANDLER(sString, aTemp, "PROJECT_COLUMNS"_Stz);
-  pFile->vPrint("%s"_Stz,sString.azChar());
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_HANDLER),
+                                          "PROJECT_COLUMNS"_Stz,
+                                          "PROJECT_COLUMNS"_Stz);
  
   // add the columns to be projected to PROJECT_COLUMNS
-  ASM_PROJECT_COLUMNS_BEGIN(sString, aTemp, 1);
-  pFile->vPrint("%s"_Stz,sString.azChar());
-  
-  ASM_PROJECT_COLUMNS(sString, aTemp, 5, 0);
-  pFile->vPrint("%s"_Stz,sString.azChar());
-
-  ASM_PROJECT_COLUMNS_END(sString, aTemp);
-  pFile->vPrint("%s"_Stz,sString.azChar());
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_BEGIN), 1);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS), 5, 0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_END));
   
   // Finally query done
-  ASM_QRY_DONE(sString, aTemp);
-  pFile->vPrint("%s"_Stz,sString.azChar());
-*/
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE));
 
   pFile->vClose();
   delete pFile;

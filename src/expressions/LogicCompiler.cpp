@@ -308,6 +308,8 @@ void LogicCompiler::vExtractAsm(void)
 void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker) {
   _static_
 
+  i8 i_AM = C_UNKNOWN;
+
   s4K sTok;
   bool b = pFile->bNextLiteTok(sTok);
 
@@ -323,7 +325,7 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarke
   }
   else {
     RASSERT(startMarker->bSame("macro"_Stz));
-    i8 i_AM = eFindAM(sTok);
+    i_AM = eFindAM(sTok);
 
     if (AM::bVerbose())
       vTrace("Macro %s [%lld]\n"_Stz, sTok.szStz(), i_AM);
@@ -342,6 +344,9 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarke
 
   StrLib::vAppendChar(aazCrs,'\n');
   StrLib::vAppendChar(aazCrs,'\0');
+  if (AM::bVerbose())
+    if (i_AM != C_UNKNOWN)
+    vTrace("-- %s\n"_Stz, gszaAmMacros[i_AM]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -407,7 +412,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //#ifdef WITH_TRACE_LOGICUNIT
-  //vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
+  vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 //#endif
   
   vAcquire();
