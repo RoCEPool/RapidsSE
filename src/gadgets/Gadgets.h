@@ -95,6 +95,18 @@ static Stz* C_TAG_SEEDRCV  = "<seedRcv>"_Stz;
 static Stz* C_TAG_SEEDREQ  = "<seedReq>"_Stz;
 static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 
+// ASM Tags
+static Stz* C_TAG_QUERY_NO = "<queryNo>"_Stz;
+static Stz* C_TAG_COLUMN_SCALE  = "<columnScale>"_Stz;
+static Stz* C_TAG_COLUMN_LENGTH = "<columnLength>"_Stz;
+static Stz* C_TAG_COLUMN_TYPE   = "<columnType>"_Stz;
+static Stz* C_TAG_COLUMN_NAME   = "<columnName>"_Stz;
+
+static Stz* C_TAG_CRW_PROCESS_ROUTINE   = "<crwProcessRoutine>"_Stz;
+
+static Stz* C_TAG_PROJECT_COLUMNS      = "<projectColumns>"_Stz;
+static Stz* C_TAG_PROJECT_SRC_COLUMN   = "<projectSrcColumn>"_Stz;
+static Stz* C_TAG_PROJECT_DST_COLUMN   = "<projectDstColumn>"_Stz;
 //------------------------------------------------------------------------------
 
 #include "Birth.hpp"

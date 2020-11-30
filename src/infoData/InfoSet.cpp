@@ -25,7 +25,7 @@ InfoSet* InfoData::_pInfoSet(void* aAddr)
 void* InfoSet::operator new(size_t)
 {
   InfoSet* pInfoSet =
-  static_cast<InfoSet*>(HeapMem::pAllocate(CN_INFOSET));
+    static_cast<InfoSet*>(HeapMem::pAllocate(CN_INFOSET));
   
   return pInfoSet;
 }

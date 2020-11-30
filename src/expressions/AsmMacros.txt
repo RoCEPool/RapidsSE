@@ -1,13 +1,15 @@
 *============================================================================*
 * AsmMacros.txt -- ASM Macros                                                *
 *============================================================================*
-// AM_INIT(iQueryNo, iQueryNo)
+/----------------------------------------------------------------------------
+// AM_INIT
+//----------------------------------------------------------------------------
 macro AM_INIT
-  Routine QRY_%lld
+  Routine QRY_<QueryNo>
   // initialization   
   EO_INIT             
   EO_ENTER            
-  EO_SQL %lld         
+  EO_SQL <QueryNo>
 
   // check for ZK_STARTMARKER
   EO_DUP                          
@@ -46,13 +48,67 @@ macro AM_INIT
 endMacro
 
 //----------------------------------------------------------------------------
-// DEFAULT HANDLER
+// DEFAULT CRWBUFFER HANDLER
 //----------------------------------------------------------------------------
-// AM_DEFAULT_HANDLER(aMarker1, aMarker2, aMarker3)
-macro AM_DEFAULT_HANDLER
-  // %s
-  Label %s_HANDLER
-  EO_PRINTF "**%s**\n"
+macro AM_DEFAULT_CRWBUFFER_HANDLER
+  // CRWBUFFER HANDLER
+  Label CRWBUFFER_HANDLER
+  EO_PRINTF "**CRWBUFFER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_DONE
+endMacro
+
+//----------------------------------------------------------------------------
+// DEFAULT DATAPULSE HANDLER
+//----------------------------------------------------------------------------
+macro AM_DEFAULT_DATAPULSE_HANDLER
+  // DATAPULSE HANDLER
+  Label DATAPULSE_HANDLER
+  EO_PRINTF "**DATAPULSE_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_DONE
+endMacro
+
+//----------------------------------------------------------------------------
+// DEFAULT EOSMARKER HANDLER
+//----------------------------------------------------------------------------
+macro AM_DEFAULT_EOSMARKER_HANDLER
+  // EOSMARKER HANDLER
+  Label EOSMARKER_HANDLER
+  EO_PRINTF "**EOSMARKER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_DONE
+endMacro
+
+//----------------------------------------------------------------------------
+// DEFAULT RSBBUFFER HANDLER
+//----------------------------------------------------------------------------
+macro AM_DEFAULT_RSBBUFFER_HANDLER
+  // RSBBUFFER HANDLER
+  Label RSBBUFFER_HANDLER
+  EO_PRINTF "**RSBBUFFER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_DONE
+endMacro
+
+//----------------------------------------------------------------------------
+// DEFAULT STARTMARKER HANDLER
+//----------------------------------------------------------------------------
+macro AM_DEFAULT_STARTMARKER_HANDLER
+  // STARTMARKER HANDLER
+  Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_DONE
+endMacro
+
+//----------------------------------------------------------------------------
+// DEFAULT STREAMMDEF HANDLER
+//----------------------------------------------------------------------------
+macro AM_DEFAULT_STREAMMDEF_HANDLER
+  // STREAMMDEF HANDLER
+  Label STREAMMDEF_HANDLER
+  EO_PRINTF "**STREAMMDEF_HANDLER**\n"
   EO_POP
   EO_JMP QRY_DONE
 endMacro
@@ -60,7 +116,6 @@ endMacro
 //---------------------------------------------------------------------------
 // BEGIN STREAMDEF_HANDLER
 //----------------------------------------------------------------------------
-// AM_STREAMDEF_HANDLER_BEGIN
 macro AM_STREAMDEF_HANDLER_BEGIN
   // STREAMDEF_HANDLER
   Label STREAMDEF_HANDLER
@@ -72,18 +127,16 @@ endMacro
 //----------------------------------------------------------------------------
 // ADD COLUMN TO STREAMDEF
 //----------------------------------------------------------------------------
-// AM_STREAMDEF_ADD_COLUMN(iScale, iLength, eCT, sColumnNm)
 macro AM_STREAMDEF_ADD_COLUMN
-  EO_PUSH_COLUMN_SCALE %lld               
-  EO_PUSH_COLUMN_LENGTH %lld              
-  EO_PUSH_COLUMN_TYPE %s
-  EO_REG_STREAMDEFOUT_ADDCOLUMN %s
+  EO_PUSH_COLUMN_SCALE <C_TAG_COLUMN_SCALE>
+  EO_PUSH_COLUMN_LENGTH <C_TAG_COLUMN_LENGTH>
+  EO_PUSH_COLUMN_TYPE <C_TAG_COLUMN_TYPE>
+  EO_REG_STREAMDEFOUT_ADDCOLUMN <C_TAG_COLUMN_NAME>
  endMacro
 
 //----------------------------------------------------------------------------
 // END STREAMDEF_HANDLER
 //----------------------------------------------------------------------------
-// AM_STREAMDEF_HANDLER_END
 macro AM_STREAMDEF_HANDLER_END
   EO_POT_USE_STREAMDEFOUT 0 
   EO_JMP QRY_DONE
@@ -92,7 +145,6 @@ endMacro
 //----------------------------------------------------------------------------
 // CRWBUFFER_HANDLER
 //----------------------------------------------------------------------------
-// AM_CRWBUFFER_HANDLER(aProcessRoutine, aProcessRoutine)
 macro AM_CRWBUFFER_HANDLER
   // CRWBUFFER_HANDLER
   Label CRWBUFFER_HANDLER
@@ -105,7 +157,7 @@ macro AM_CRWBUFFER_HANDLER
   EO_CRW_SRC_NEXT             
   EO_JMP_FALSE QRY_DONE       
 
-  EO_CALL %s
+  EO_CALL <C_TAG_CRW_PROCESS_ROUTINE>
   EO_JMP NEXT_CRW_SRC       
   EO_JMP QRY_DONE
 endMacro
@@ -117,7 +169,7 @@ endMacro
 macro AM_PROJECT_COLUMNS_BEGIN
   // Project columns
   Label PROJECT_COLUMNS
-  EO_SET_ITEMS %lld   
+  EO_SET_ITEMS <C_TAG_PROJECT_COLUMNS>
   EO_RSB_DST_NEW
 endMacro
 
@@ -126,9 +178,9 @@ endMacro
 //----------------------------------------------------------------------------
 // AM_PROJECT_COLUMNS(iSrcColumn, iDstColumn)
 macro AM_PROJECT_COLUMNS
-  EO_SET_COLUMN %lld      
+  EO_SET_COLUMN <C_TAG_PROJECT_SRC_COLUMN >
   EO_COL_SRC_PUSHSET      
-  EO_RSB_DST_POPCOLI %lld
+  EO_RSB_DST_POPCOLI <C_TAG_PROJECT_DST_COLUMN>
 endMacro
 
 //----------------------------------------------------------------------------
