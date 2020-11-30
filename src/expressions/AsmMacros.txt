@@ -1,30 +1,155 @@
-/*============================================================================*/
-/* AsmMacros.txt -- ASM Macros                                                */
-/*============================================================================*/
+*============================================================================*
+* AsmMacros.txt -- ASM Macros                                                *
+*============================================================================*
+// AM_INIT(iQueryNo, iQueryNo)
+macro AM_INIT
+  Routine QRY_%lld
+  // initialization   
+  EO_INIT             
+  EO_ENTER            
+  EO_SQL %lld         
+
+  // check for ZK_STARTMARKER
+  EO_DUP                          
+  EO_INTEGER ZK_STARTMARKER       
+  EO_EQUAL                        
+  EO_JMP_TRUE STARTMARKER_HANDLER 
+
+  // check for ZK_DATAPULSE
+  EO_DUP                        
+  EO_INTEGER ZK_DATAPULSE       
+  EO_EQUAL                      
+  EO_JMP_TRUE DATAPULSE_HANDLER 
+
+  // check for ZK_STREAMDEF
+  EO_DUP                        
+  EO_INTEGER  ZK_STREAMDEF      
+  EO_EQUAL                      
+  EO_JMP_TRUE STREAMDEF_HANDLER 
+
+  // check for ZK_CRWBUFFER
+  EO_DUP                        
+  EO_INTEGER ZK_CRWBUFFER       
+  EO_EQUAL                      
+  EO_JMP_TRUE CRWBUFFER_HANDLER 
+
+  // check for ZK_EOSMARKER
+  EO_DUP                        
+  EO_INTEGER  ZK_EOSMARKER      
+  EO_EQUAL                      
+  EO_JMP_TRUE EOSMARKER_HANDLER 
+
+  // Never reach
+  EO_PRINTF "**NO_HANDLER**\n"
+  EO_NEVERREACH                       
+
+endMacro
 
 //----------------------------------------------------------------------------
 // DEFAULT HANDLER
 //----------------------------------------------------------------------------
+// AM_DEFAULT_HANDLER(aMarker1, aMarker2, aMarker3)
 macro AM_DEFAULT_HANDLER
   // %s
-  Label %s
-  EO_PRINTF "**%s : 0**\n"
+  Label %s_HANDLER
+  EO_PRINTF "**%s**\n"
   EO_POP
   EO_JMP QRY_DONE
 endMacro
 
-//----------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 // BEGIN STREAMDEF_HANDLER
 //----------------------------------------------------------------------------
+// AM_STREAMDEF_HANDLER_BEGIN
 macro AM_STREAMDEF_HANDLER_BEGIN
   // STREAMDEF_HANDLER
   Label STREAMDEF_HANDLER
-  EO_PRINTF "**STREAMDEF_HANDLER : 0**\n"
+  EO_PRINTF "**STREAMDEF_HANDLER**\n"
   EO_POP
   EO_REG_STREAMDEFOUT_NEW
+endMacro
+
+//----------------------------------------------------------------------------
+// ADD COLUMN TO STREAMDEF
+//----------------------------------------------------------------------------
+// AM_STREAMDEF_ADD_COLUMN(iScale, iLength, eCT, sColumnNm)
+macro AM_STREAMDEF_ADD_COLUMN
+  EO_PUSH_COLUMN_SCALE %lld               
+  EO_PUSH_COLUMN_LENGTH %lld              
+  EO_PUSH_COLUMN_TYPE %s
+  EO_REG_STREAMDEFOUT_ADDCOLUMN %s
+ endMacro
+
+//----------------------------------------------------------------------------
+// END STREAMDEF_HANDLER
+//----------------------------------------------------------------------------
+// AM_STREAMDEF_HANDLER_END
+macro AM_STREAMDEF_HANDLER_END
+  EO_POT_USE_STREAMDEFOUT 0 
+  EO_JMP QRY_DONE
+endMacro
+
+//----------------------------------------------------------------------------
+// CRWBUFFER_HANDLER
+//----------------------------------------------------------------------------
+// AM_CRWBUFFER_HANDLER(aProcessRoutine, aProcessRoutine)
+macro AM_CRWBUFFER_HANDLER
+  // CRWBUFFER_HANDLER
+  Label CRWBUFFER_HANDLER
+  EO_PRINTF "**CRWBUFFER_HANDLER**\n"
+  EO_POP                                     
+  EO_CRW_SRC_BEGIN                           
+
+  // NEXT_CRW_SRC
+  Label NEXT_CRW_SRC
+  EO_CRW_SRC_NEXT             
+  EO_JMP_FALSE QRY_DONE       
+
+  EO_CALL %s
+  EO_JMP NEXT_CRW_SRC       
+  EO_JMP QRY_DONE
+endMacro
+
+//----------------------------------------------------------------------------
+// BEGIN PROJECT_COLUMNS
+//----------------------------------------------------------------------------
+// AM_PROJECT_COLUMNS_BEGIN(iColumns)
+macro AM_PROJECT_COLUMNS_BEGIN
+  // Project columns
+  Label PROJECT_COLUMNS
+  EO_SET_ITEMS %lld   
+  EO_RSB_DST_NEW
+endMacro
+
+//----------------------------------------------------------------------------
+ PROJECT_COLUMNS
+//----------------------------------------------------------------------------
+// AM_PROJECT_COLUMNS(iSrcColumn, iDstColumn)
+macro AM_PROJECT_COLUMNS
+  EO_SET_COLUMN %lld      
+  EO_COL_SRC_PUSHSET      
+  EO_RSB_DST_POPCOLI %lld
+endMacro
+
+//----------------------------------------------------------------------------
+ END PROJECT_COLUMNS
+//----------------------------------------------------------------------------
+// AM_PROJECT_COLUMNS_END
+macro AM_PROJECT_COLUMNS_END
+  EO_RETURN
+endMacro
+
+//----------------------------------------------------------------------------
+// QRY_DONE
+//----------------------------------------------------------------------------
+// AM_QRY_DONE
+macro AM_QRY_DONE
+  // QRY_DONE
+  Label QRY_DONE
+  EO_EXIT        
+  EO_RETURN
 endMacro
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-break;//+endCase
