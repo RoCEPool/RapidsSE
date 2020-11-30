@@ -418,16 +418,11 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
 void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, Stz* sFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  s4K sTemp;
-  char* aTemp = sTemp.azChar();
-  
-  //s32 sHandler;
-  //char* aHandler = sHandler.azChar();
-  
-  s24KB sString = ""_Stz;
-  char* aCrs = sString.azChar();
-  
+
+  TagSet oTagSet;
+
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+
   File* pFile = new File(nullptr);
   
   bool b = pFile->bOpenWrite(sFileName);
