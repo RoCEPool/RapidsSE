@@ -65,6 +65,8 @@ RowSlab::~RowSlab(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
+HACK(RowSlab,"quick fix to check for enough space ");
+
 bool RowSlab::bAllotRow(Row** paRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -74,14 +76,22 @@ bool RowSlab::bAllotRow(Row** paRow)
   
   i8 nCellBytes = nRowProperBytes();
 
+  //if (nFreeBytes() < nCellBytes) { // hack Ray 1 dec 2020
+  if (nFreeBytes() < C_2KB) {
+    *paRow = nullptr;
+    return false;
+  }
+  
   m_aRowCur = ayAllotTail(nCellBytes);
   
-  new(m_aRowCur) Row;
   
   if (! m_aRowCur) {
     *paRow = nullptr;
     return false;
   }
+  
+  new(m_aRowCur) Row;
+
   
   m_i_RowCrs++;
   *paRow = m_aRowCur;

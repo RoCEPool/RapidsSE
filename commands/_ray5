@@ -4,19 +4,11 @@
 
 bc;
 
-create table PART (
-  p_partkey INTEGER NOT NULL,
-  p_name VARCHAR(55),
-  p_mfgr VARCHAR(25),
-  p_brand VARCHAR(10),
-  p_type VARCHAR(25),
-  p_size INTEGER,
-  p_container VARCHAR(10),
-  p_retailprice FLOAT,
-  p_comment VARCHAR(23)
-);
+_customer
 
-oldLoad PART "../DATA/Load/part.csv" ;
+/time /summary load customer "/Users/Shared/tpch/SF1/customer.csv"
+  
+  <note> = "SF1-Customer";
 
 /*============================================================================*/
 /* end                                                                        */
