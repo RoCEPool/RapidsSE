@@ -23,20 +23,17 @@ namespace DataBuffers
     RowBuffer(eCN eClassNo);
     RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
    ~RowBuffer(void) noexcept(false);
-  
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    //Row* aAllotRow(i8 nBytes);
+      
     Row* aAllotCopyRow(RowSingle* pRowSingle);
     
     Row* aFirstRow(void);
-    Row* aLastRow(i8 nRowBytes);
-    Row* aNextRow(Row* aPriorRow, i8 nRowBytes);
+    Row* aLastRow(void);
+    Row* aNextRow(Row* aPriorRow);
     void vPrintRows(StreamDef* pStreamDef);
     void vShow(StreamDef* pStreamDef);
     
   private:
-    i8   iToOffset(Stz* aItem);
+    i8   iToOffset(Stz* szStr);
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);

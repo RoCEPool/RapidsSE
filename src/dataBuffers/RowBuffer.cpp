@@ -63,42 +63,8 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump reference buffer                                                      */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  //RowBuffer* pRowBuffer = _pRowBuffer(pObject);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allot a ref set in this buffer (may return nulltpr)                        */
-/*----------------------------------------------------------------------------*/
-//Row* RowBuffer::aAllotRow(i8 nBytes)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//
-//  // allot using bytes as we don't know the size of the item
-//  Row* ayRow = ayAllotTail(nBytes);
-//
-//  new(ayRow) Row;
-//
-//  if (! ayRow)
-//    return nullptr;
-//  
-//  //vIncItems();
-//
-//  Row* aRow = new(ayRow) Row();
-//
-//  return aRow;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
@@ -170,6 +136,8 @@ Row* RowBuffer::aFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  RASSERT(m_oStreamPix.m_bInitialised);
+  
   Row* aRow = aFirstItem();
   
   return aRow;
@@ -178,16 +146,18 @@ Row* RowBuffer::aFirstRow(void)
 /*----------------------------------------------------------------------------*/
 /* return last ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::aLastRow(i8 nRowBytes)
+Row* RowBuffer::aLastRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  RASSERT(m_oStreamPix.m_bInitialised);
+
   Row* aRow = aFirstItem();
   Row* aLastRow = nullptr;
   
   while (aRow) {
     aLastRow = aRow;
-    aRow = aNextRow(aRow, nRowBytes);
+    aRow = aNextRow(aRow);
   };
   
   return aLastRow;
@@ -196,11 +166,13 @@ Row* RowBuffer::aLastRow(i8 nRowBytes)
 /*----------------------------------------------------------------------------*/
 /* return next ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::aNextRow(Row* aPriorRow, i8 nRowBytes)
+Row* RowBuffer::aNextRow(Row* aPriorRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Row* aRow = aAdjacentItem(aPriorRow, nRowBytes);
+  RASSERT(m_oStreamPix.m_bInitialised);
+
+  Row* aRow = aAdjacentItem(aPriorRow, m_nRowSizeProper);
   
   return aRow;
 }
@@ -220,7 +192,6 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   // get the first row
   Row* pRow = aFirstRow();
   HV_Row hvRowSingle(pStreamDef, C_ALL);
-  i8 nRowHeadSize = Row::nSizeBytes(pStreamDef);
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
     hvRowSingle->vCopy(pRow);
@@ -228,7 +199,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
     hvRec->vPrintRow();
     
     // get the next row
-    pRow = aNextRow(pRow, nRowHeadSize);
+    pRow = aNextRow(pRow);
   }
 }
 
@@ -251,13 +222,12 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   Row* pRow = aFirstRow();
   HV_Row hvRowSingle(pStreamDef, C_ALL);
-  i8 nRowHeadSize = pStreamDef->nColumns(C_ALL)* sizeof(i8);
   
   HV_Rec hvRec(pStreamDef,C_ALL);
   while (pRow) {
     hvRowSingle->vCopy(pRow);
     hvRec->vAppend(hvRowSingle);
-    pRow = aNextRow(pRow, nRowHeadSize);
+    pRow = aNextRow(pRow);
     hvRec->vPrintRow();
   }
   
@@ -268,9 +238,12 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within buffer for given item                 */
 /*----------------------------------------------------------------------------*/
-i8 RowBuffer::iToOffset(Stz* aItem)
+
+// I THINK THIS NEEDS TO GO
+
+i8 RowBuffer::iToOffset(Stz* szStr)
 {
-  i4 iOffset = static_cast<i4>(nDifference(aItem,this));
+  i4 iOffset = static_cast<i4>(nDifference(szStr,this));
   
   return iOffset;
 }

@@ -195,7 +195,7 @@ Row* InfoSetBase::aNextRow(Row* aPrevRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return RowBuffer::aNextRow(aPrevRow, m_nRowSize);
+  return RowBuffer::aNextRow(aPrevRow);
 }
 
 /*----------------------------------------------------------------------------*/
