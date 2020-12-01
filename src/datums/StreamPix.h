@@ -36,7 +36,8 @@ namespace Datums
     // calc number of bytes
     i8 nBytes(i8 nCols)
     {
-      i8 nBytes = (3 * (i8)sizeof(i8)) + (nCols * ((i8)sizeof(ColPix) + sizeof(bool)));
+      i8 nBytes = (  (    4 * (i8)sizeof(i8))
+                   + (nCols * (i8)sizeof(ColPix)) ) ;
     
       return nBytes;
     }
