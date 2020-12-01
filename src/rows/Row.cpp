@@ -44,7 +44,7 @@ void* Row::operator new(size_t, void* aAddress)
 Row::Row(void)
 : Object(CN_ROW)
 {
-  
+ 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void Row::vDump(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 m8* Row::aColCell(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m8* aCell = (m8*) & m_waColVal[i_Col];
   
@@ -125,7 +125,7 @@ m8* Row::aColCell(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 Dtm* Row::aColDtm(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   Dtm* aDtm = & m_waColVal[i_Col];
   
@@ -137,7 +137,7 @@ Dtm* Row::aColDtm(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 Dtm Row::wColDtm(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   Dtm wDtm = m_waColVal[i_Col];
   
@@ -149,7 +149,7 @@ Dtm Row::wColDtm(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 i8 Row::iColVal_int(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   i8 iVal = m_waColVal[i_Col].m_iWrd;
   
@@ -161,7 +161,7 @@ i8 Row::iColVal_int(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 void Row::vColVal_int(i8 i_Col, i8 iVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m_waColVal[i_Col].m_iWrd = iVal;
 }
@@ -171,7 +171,7 @@ void Row::vColVal_int(i8 i_Col, i8 iVal)
 /*----------------------------------------------------------------------------*/
 d8 Row::dColVal_flt(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   d8 dVal = m_waColVal[i_Col].m_dWrd;
   
@@ -183,7 +183,7 @@ d8 Row::dColVal_flt(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 void Row::vColVal_flt(i8 i_Col, d8 dVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m_waColVal[i_Col].m_dWrd = dVal;
 }
@@ -193,7 +193,7 @@ void Row::vColVal_flt(i8 i_Col, d8 dVal)
 /*----------------------------------------------------------------------------*/
 Stz* Row::szColVal_ofs(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   // get the poolBuffer from the row address
   PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
@@ -218,7 +218,7 @@ Stz* Row::szColVal_ofs(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 void Row::vColVal_ofs(i8 i_Col, i8 iOfs)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m_waColVal[i_Col].m_iWrd = iOfs;
 }
@@ -228,7 +228,7 @@ void Row::vColVal_ofs(i8 i_Col, i8 iOfs)
 /*----------------------------------------------------------------------------*/
 bool Row::bIsColNull(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   bool bNull = m_waColVal[i_Col].bIsNull();
   
@@ -240,7 +240,7 @@ bool Row::bIsColNull(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 void Row::vSetColNull(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m_waColVal[i_Col].vSetNull();
 }

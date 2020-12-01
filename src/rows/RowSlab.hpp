@@ -41,14 +41,18 @@ namespace Rows
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<int WSP_SIZE>
-RowWsp<WSP_SIZE>::RowWsp(eCN eClass)
-: Object(eClass)
+RowWsp<WSP_SIZE>::RowWsp(eCN eClassNo)
+: Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
   m_nItems = 0;
-
-  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
+#endif
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
 
@@ -145,13 +149,13 @@ namespace Rows
   /*--------------------------------------------------------------------------*/
   inline void vDeposit(d8 dVal)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   
     m_aRowCur->vColVal_flt(m_i_ColCrs,dVal);
     
     vAdvanceCursor();
 
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   }
 
   /*--------------------------------------------------------------------------*/
@@ -159,13 +163,13 @@ namespace Rows
   /*--------------------------------------------------------------------------*/
   inline void vDeposit(i8 iVal)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
 
     m_aRowCur->vColVal_int(m_i_ColCrs,iVal);
 
     vAdvanceCursor();
   
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   }
 
   /*--------------------------------------------------------------------------*/
@@ -173,7 +177,7 @@ namespace Rows
   /*--------------------------------------------------------------------------*/
   inline void vDeposit(Stz* szVal)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
 
     char* azTgt = azDepositString_begin();
     
@@ -181,7 +185,7 @@ namespace Rows
 
     vDepositString_end(nLen + 1);
 
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   }
 
   /*--------------------------------------------------------------------------*/
@@ -189,7 +193,7 @@ namespace Rows
   /*--------------------------------------------------------------------------*/
   inline char* azDepositString_begin(void)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
 
     char* azStz = (char*)ayLatterHead();
     
@@ -200,7 +204,7 @@ namespace Rows
 
     vAdvanceCursor();
 
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
 
     return azStz;
   }
@@ -210,13 +214,13 @@ namespace Rows
   /*--------------------------------------------------------------------------*/
   inline void vDepositString_end(i8 nSize)
   {
-     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
 
     vTakeHead(nSize);
     
     m_nRowStringBytes += nSize;
   
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
   }
 
 

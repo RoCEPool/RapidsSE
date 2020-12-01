@@ -70,10 +70,8 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
   m_awaColVal = (Dtm*)m_xWsp.ayAllotTail(m_nColumns * sizeof(Dtm));
   
 #ifdef WITH_CHECK_INITIALISED
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
     m_awaColVal[i_Col].m_iWrd = 0;
-  m_xStzWsp.vZero(CN_ROWSINGLE);
-  
 #else
   // m_xStzWsp
 #endif

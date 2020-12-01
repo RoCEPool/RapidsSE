@@ -76,6 +76,8 @@ Row* RowBuffer::aAllotRow(i8 nBytes)
   // allot using bytes as we don't know the size of the item
   Row* ayRow = ayAllotTail(nBytes);
   
+  new(ayRow) Row;
+  
   if (! ayRow)
     return nullptr;
   
@@ -103,6 +105,8 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
   
   Row* pRow = RowBuffer::aAllotRow(nHeadSize);
   
+  new(pRow) Row;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy single row into this buffer
   

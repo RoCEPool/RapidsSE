@@ -45,10 +45,6 @@ RowSlab::RowSlab(void)
   
   // m_oNmlStr
 
-#ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_ROWSLAB);
-#endif
-
   _checkInitialised_(CN_ROWSLAB);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
@@ -79,6 +75,8 @@ bool RowSlab::bAllotRow(Row** paRow)
   i8 nCellBytes = nRowProperBytes();
 
   m_aRowCur = ayAllotTail(nCellBytes);
+  
+  new(m_aRowCur) Row;
   
   if (! m_aRowCur) {
     *paRow = nullptr;

@@ -70,6 +70,10 @@ WspConvergent_t<SIZE,HEAD,TAIL>::WspConvergent_t(void)
   m_nTailItems = 0;
   m_nUsedTail  = 0;
   m_nTailSize  = C_UNKNOWN;
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_yaByteArea,SIZE,CN_NONE);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +89,10 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vInit(void)
   m_nTailItems = 0;
   m_nUsedTail  = 0;
   m_nTailSize  = C_UNKNOWN;
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_yaByteArea,SIZE,CN_NONE);
+#endif
 }
 
 

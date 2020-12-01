@@ -722,8 +722,9 @@ bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 /*----------------------------------------------------------------------------*/
 /* add source code fragment for given rangeof eo codes                        */
 /*----------------------------------------------------------------------------*/
-Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICCOMPILER, _FOOTER_);
+Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet)
+{
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_LOGICCOMPILER, _FOOTER_);
 
   s32 sTag;
   s4K sReplaced;

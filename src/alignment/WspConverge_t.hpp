@@ -6,11 +6,11 @@
 
 namespace Alignment
 {
-  template<int LENGTH>
+  template<int SIZE>
   class WspConverge_t
   {
   private:
-    byte m_yaByteArea[LENGTH]; // fixed byte area
+    byte m_yaByteArea[SIZE]; // fixed byte area
     i8   m_nUsedHead;          // bytes used in the area from the head
     i8   m_nUsedTail;          // bytes used in the area frim the tail
                                //  (must be after m_yaByteArea)
@@ -49,9 +49,14 @@ namespace Alignment
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-WspConverge_t<LENGTH>::WspConverge_t(void)
+template<int SIZE>
+WspConverge_t<SIZE>::WspConverge_t(void)
 {
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_yaByteArea,sizeof(m_yaByteArea),CN_NONE);
+#endif
+  
   m_nUsedHead = 0;
   m_nUsedTail = 0;
 }
@@ -59,8 +64,8 @@ WspConverge_t<LENGTH>::WspConverge_t(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vInit(void)
+template<int SIZE>
+void WspConverge_t<SIZE>::vInit(void)
 {
   m_nUsedHead = 0;
   m_nUsedTail = 0;
@@ -69,8 +74,8 @@ void WspConverge_t<LENGTH>::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* allot bytes from byte area                                                 */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-byte* WspConverge_t<LENGTH>::ayAllotHead(i8 nBytes)
+template<int SIZE>
+byte* WspConverge_t<SIZE>::ayAllotHead(i8 nBytes)
 {
   byte* ayAllotted = ayLatterHead();
   
@@ -82,8 +87,8 @@ byte* WspConverge_t<LENGTH>::ayAllotHead(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot bytes from byte area                                                 */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-byte* WspConverge_t<LENGTH>::ayAllotTail(i8 nBytes)
+template<int SIZE>
+byte* WspConverge_t<SIZE>::ayAllotTail(i8 nBytes)
 {
   byte* ayAllotted = ayLatterTail() - nBytes;
   
@@ -95,10 +100,10 @@ byte* WspConverge_t<LENGTH>::ayAllotTail(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append source bytes to byte area at head                                   */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vAppendHead(void* aSrc, i8 nBytes, eCN eClassNo)
+template<int SIZE>
+void WspConverge_t<SIZE>::vAppendHead(void* aSrc, i8 nBytes, eCN eClassNo)
 {
-  ASSERT(nUsed() + nBytes <= LENGTH);
+  ASSERT(nUsed() + nBytes <= SIZE);
   
   byte* ayDst = ayLatterHead();
 
@@ -110,10 +115,10 @@ void WspConverge_t<LENGTH>::vAppendHead(void* aSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* append source bytes to byte area at tail                                   */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vAppendTail(void* aSrc, i8 nBytes, eCN eClassNo)
+template<int SIZE>
+void WspConverge_t<SIZE>::vAppendTail(void* aSrc, i8 nBytes, eCN eClassNo)
 {
-  ASSERT(nUsed() + nBytes <= LENGTH);
+  ASSERT(nUsed() + nBytes <= SIZE);
   
   byte* ayDst = ayLatterTail() - nBytes + 1;
   
@@ -125,8 +130,8 @@ void WspConverge_t<LENGTH>::vAppendTail(void* aSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-byte* WspConverge_t<LENGTH>::ayArea(void)
+template<int SIZE>
+byte* WspConverge_t<SIZE>::ayArea(void)
 {
   byte* ayArea = m_yaByteArea;
   
@@ -136,21 +141,21 @@ byte* WspConverge_t<LENGTH>::ayArea(void)
 /*----------------------------------------------------------------------------*/
 /* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vFill(char cByte, eCN eClassNo)
+template<int SIZE>
+void WspConverge_t<SIZE>::vFill(char cByte, eCN eClassNo)
 {
   byte* ayDst = ayArea();
   
-  MemLib::vSet(ayDst,cByte,LENGTH,eClassNo);
+  MemLib::vSet(ayDst,cByte,SIZE,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes in byte area                                      */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::nFree(void)
+template<int SIZE>
+i8 WspConverge_t<SIZE>::nFree(void)
 {
-  i8 nFree = LENGTH - m_nUsedHead - m_nUsedTail;
+  i8 nFree = SIZE - m_nUsedHead - m_nUsedTail;
   ASSERT(nFree >= 0);
   
   return nFree;
@@ -159,10 +164,10 @@ i8 WspConverge_t<LENGTH>::nFree(void)
 /*----------------------------------------------------------------------------*/
 /* give chunk back to byte area at head                                       */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vGiveHead(i8 nBytes)
+template<int SIZE>
+void WspConverge_t<SIZE>::vGiveHead(i8 nBytes)
 {
-  ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
+  ASSERT(m_nUsedHead  + m_nUsedTail <= SIZE);
 
   m_nUsedHead -= nBytes;
 }
@@ -170,10 +175,10 @@ void WspConverge_t<LENGTH>::vGiveHead(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* give chunk back to byte area at tail                                       */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vGiveTail(i8 nBytes)
+template<int SIZE>
+void WspConverge_t<SIZE>::vGiveTail(i8 nBytes)
 {
-  ASSERT(m_nUsedHead  + m_nUsedTail <= LENGTH);
+  ASSERT(m_nUsedHead  + m_nUsedTail <= SIZE);
   
   m_nUsedTail -= nBytes;
 }
@@ -181,8 +186,8 @@ void WspConverge_t<LENGTH>::vGiveTail(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of next available chunk in byte areafrom head                  */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-byte* WspConverge_t<LENGTH>::ayLatterHead(void)
+template<int SIZE>
+byte* WspConverge_t<SIZE>::ayLatterHead(void)
 {
   byte* ayNext = &ayArea()[m_nUsedHead];
   
@@ -192,10 +197,10 @@ byte* WspConverge_t<LENGTH>::ayLatterHead(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next available chunk in byte areafrom head                  */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-byte* WspConverge_t<LENGTH>::ayLatterTail(void)
+template<int SIZE>
+byte* WspConverge_t<SIZE>::ayLatterTail(void)
 {
-  byte* ayNext = &ayArea()[LENGTH - nUsedTail() - 1];
+  byte* ayNext = &ayArea()[SIZE - nUsedTail() - 1];
   
   return ayNext;
 }
@@ -203,17 +208,17 @@ byte* WspConverge_t<LENGTH>::ayLatterTail(void)
 /*----------------------------------------------------------------------------*/
 /* get length of byte area                                                    */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::nLength(void)
+template<int SIZE>
+i8 WspConverge_t<SIZE>::nLength(void)
 {
-  return LENGTH;
+  return SIZE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get offset of an allotted                                                  */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::iOffset(byte* ayAllotted)
+template<int SIZE>
+i8 WspConverge_t<SIZE>::iOffset(byte* ayAllotted)
 {
   i8 iOfs = nDifference(ayAllotted,m_yaByteArea);
   
@@ -223,8 +228,8 @@ i8 WspConverge_t<LENGTH>::iOffset(byte* ayAllotted)
 /*----------------------------------------------------------------------------*/
 /* reset this wsp                                                             */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vReset(void)
+template<int SIZE>
+void WspConverge_t<SIZE>::vReset(void)
 {
   vUsedHead(0);
   vUsedTail(0);
@@ -233,17 +238,17 @@ void WspConverge_t<LENGTH>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get total size of this Wsp_t                                               */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::nSize(void)
+template<int SIZE>
+i8 WspConverge_t<SIZE>::nSize(void)
 {
-  return sizeof(WspConverge_t<LENGTH>);
+  return sizeof(WspConverge_t<SIZE>);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get byte area as Stz*                                                      */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-Stz* WspConverge_t<LENGTH>::szStz(void)
+template<int SIZE>
+Stz* WspConverge_t<SIZE>::szStz(void)
 {
   char* aArea = (char*)m_yaByteArea;
   
@@ -253,36 +258,36 @@ Stz* WspConverge_t<LENGTH>::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* take chunk from byte area from the head                                    */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vTakeHead(i8 nBytes)
+template<int SIZE>
+void WspConverge_t<SIZE>::vTakeHead(i8 nBytes)
 {
   m_nUsedHead += nBytes;
   
-  if (m_nUsedHead  + m_nUsedTail > LENGTH) {
+  if (m_nUsedHead  + m_nUsedTail > SIZE) {
     vDebugPoint();
   }
-  ASSERT(m_nUsedHead + m_nUsedTail <= LENGTH);
+  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
 }
 
 /*----------------------------------------------------------------------------*/
 /* take chunk from byte area from the tail                                    */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vTakeTail(i8 nBytes)
+template<int SIZE>
+void WspConverge_t<SIZE>::vTakeTail(i8 nBytes)
 {
   m_nUsedTail += nBytes;
   
-  if (m_nUsedHead  + m_nUsedTail > LENGTH) {
+  if (m_nUsedHead  + m_nUsedTail > SIZE) {
     vDebugPoint();
   }
-  ASSERT(m_nUsedHead + m_nUsedTail <= LENGTH);
+  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::nUsed(void)
+template<int SIZE>
+i8 WspConverge_t<SIZE>::nUsed(void)
 {
   return m_nUsedHead + m_nUsedTail;
 }
@@ -290,8 +295,8 @@ i8 WspConverge_t<LENGTH>::nUsed(void)
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::nUsedHead(void)
+template<int SIZE>
+i8 WspConverge_t<SIZE>::nUsedHead(void)
 {
   return m_nUsedHead;
 }
@@ -299,8 +304,8 @@ i8 WspConverge_t<LENGTH>::nUsedHead(void)
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 WspConverge_t<LENGTH>::nUsedTail(void)
+template<int SIZE>
+i8 WspConverge_t<SIZE>::nUsedTail(void)
 {
   return m_nUsedTail;
 }
@@ -308,37 +313,37 @@ i8 WspConverge_t<LENGTH>::nUsedTail(void)
 /*----------------------------------------------------------------------------*/
 /* set number of used bytes at head                                           */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vUsedHead(i8 nBytes)
+template<int SIZE>
+void WspConverge_t<SIZE>::vUsedHead(i8 nBytes)
 {
   m_nUsedHead = nBytes;
   
-  ASSERT(m_nUsedHead + m_nUsedTail <= LENGTH);
+  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set number of used bytes at tail                                           */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vUsedTail(i8 nBytes)
+template<int SIZE>
+void WspConverge_t<SIZE>::vUsedTail(i8 nBytes)
 {
   m_nUsedTail = nBytes;
   
-  ASSERT(m_nUsedHead + m_nUsedTail <= LENGTH);
+  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
 }
 
 /*----------------------------------------------------------------------------*/
 /* zero fill the byte                                                         */
 /*----------------------------------------------------------------------------*/
-template<int LENGTH>
-void WspConverge_t<LENGTH>::vZero(eCN eClassNo)
+template<int SIZE>
+void WspConverge_t<SIZE>::vZero(eCN eClassNo)
 {
   m_nUsedHead = 0;
   m_nUsedTail = 0;
   
   byte* ayDst = ayArea();
   
-  MemLib::vZero(ayDst,LENGTH,eClassNo);
+  MemLib::vZero(ayDst,SIZE,eClassNo);
 }
 
 /*============================================================================*/
