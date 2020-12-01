@@ -38,7 +38,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
-: RowBuffer(eClassNo)
+: RowBuffer(eClassNo,pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -68,7 +68,7 @@ Row* InfoSetBase::aAllotRow(void)
   Row* pRow = nullptr;
 
   if (nFreeBytes() >= m_nRowSize) {
-    pRow = RowBuffer::aAllotRow(m_nRowSize);
+    pRow = aAllotNewRow(m_nRowSize);
     m_nInfoRows++;
   }
 
@@ -97,7 +97,7 @@ Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
    _precondition_(_ADDRESS_,_MAGIC_);
    
    // allot a row
-   Row* ayRow = RowBuffer::aAllotRow(Row::nSizeBytes(pStreamDef));
+   Row* ayRow = aAllotNewRow(Row::nSizeBytes(pStreamDef));
    m_nInfoRows++;
    
    Stz* ayDst;

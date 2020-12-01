@@ -21,11 +21,12 @@ namespace DataBuffers
   
     RowBuffer(void);
     RowBuffer(eCN eClassNo);
+    RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
    ~RowBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    Row* aAllotRow(i8 nBytes);
+    //Row* aAllotRow(i8 nBytes);
     Row* aAllotRow(RowSingle* pRowSingle);
     
     Row* aFirstRow(void);

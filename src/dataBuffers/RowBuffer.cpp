@@ -43,6 +43,18 @@ RowBuffer::RowBuffer(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
+: DataBuffer(eClassNo, false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  
+  vResolveStreamPix(pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 RowBuffer::~RowBuffer(void) noexcept(false)
@@ -69,24 +81,24 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::aAllotRow(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  // allot using bytes as we don't know the size of the item
-  Row* ayRow = ayAllotTail(nBytes);
-  
-  new(ayRow) Row;
-  
-  if (! ayRow)
-    return nullptr;
-  
-  //vIncItems();
-  
-  Row* aRow = new(ayRow) Row();
-  
-  return aRow;
-}
+//Row* RowBuffer::aAllotRow(i8 nBytes)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  // allot using bytes as we don't know the size of the item
+//  Row* ayRow = ayAllotTail(nBytes);
+//
+//  new(ayRow) Row;
+//
+//  if (! ayRow)
+//    return nullptr;
+//  
+//  //vIncItems();
+//
+//  Row* aRow = new(ayRow) Row();
+//
+//  return aRow;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
@@ -103,7 +115,7 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
   if (nFreeBytes() < nHeadSize + nTailSize)
     return nullptr;
   
-  Row* pRow = RowBuffer::aAllotRow(nHeadSize);
+  Row* pRow = aAllotNewRow(nHeadSize);
   
   new(pRow) Row;
 
