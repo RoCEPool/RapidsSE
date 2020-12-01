@@ -321,7 +321,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vACCEPT_CHAR(); \
   }
 
-#define vSKIP_WHITE_SPACE_LEADING() \
+#define vWHITE_SPACE_leading() \
   vSKIP_WHITE_SPACE()
 
 #define vSKIP_WHITE_SPACE_TRAILING() \
@@ -774,7 +774,7 @@ L_Boolean:
   
    */
 
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -923,7 +923,7 @@ L_Date:
    */
 
 
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1096,7 +1096,7 @@ L_Decimal:
    */
 
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1212,7 +1212,7 @@ L_Float:
   if (iTraceBits & C_BIT_Float)
     vTrace("L_Float:\n"_Stz);
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1344,7 +1344,7 @@ L_Integer:
          +1.2,  +1.2,  +1.2  ,+1.2  ,+1.2\n
    */
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1435,7 +1435,7 @@ L_Interval:
    */
 
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1550,7 +1550,7 @@ L_Time:
    
    */
 
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1694,7 +1694,7 @@ L_Timestamp:
    */
 
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
