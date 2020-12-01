@@ -21,7 +21,7 @@ namespace InfoData
     ~InfoSetBase(void) noexcept(false);
     
     Row* aAllotRow(void);
-    Row* aAllotRow(RowSingle* pRowSingle);
+    //Row* aAllotRow(RowSingle* pRowSingle);
     Row* aAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
     Row* aFirstRow();
     i8   nInfoRows(void);

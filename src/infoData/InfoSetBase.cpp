@@ -78,15 +78,15 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
-Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Row* pRow = RowBuffer::aAllotRow(pRowSingle);
-  m_nInfoRows++;
-  
-  return pRow;
-}
+//Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//  
+//  Row* pRow = RowBuffer::aAllotCopyRow(pRowSingle);
+//  m_nInfoRows++;
+//  
+//  return pRow;
+//}
 
 
 /*----------------------------------------------------------------------------*/

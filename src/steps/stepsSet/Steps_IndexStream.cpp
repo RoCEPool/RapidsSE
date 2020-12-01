@@ -135,7 +135,7 @@ void Step::vIndexStreamRead(void)
   // get the rowOnce skipList
   RowOnce* pRowOnce = _pRowOnce(m_pDataStack->pPopPtr(__func__));
   
-  CrwBuffer* pCrwBuffer = pIndexStream->pRead(pRowOnce);
+  CrwBuffer* pCrwBuffer = pIndexStream->pRead_idxstm(pRowOnce);
 
   m_pDataStack->vPushPtr(pCrwBuffer);
 

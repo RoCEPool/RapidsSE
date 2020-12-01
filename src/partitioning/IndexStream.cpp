@@ -166,7 +166,7 @@ bool IndexStream::bOpen(void)
 /*----------------------------------------------------------------------------*/
 /* read next buffer                                                           */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* IndexStream::pRead(RowOnce* pRowOnce)
+CrwBuffer* IndexStream::pRead_idxstm(RowOnce* pRowOnce)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
   

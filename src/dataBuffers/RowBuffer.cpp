@@ -103,7 +103,7 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
+Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

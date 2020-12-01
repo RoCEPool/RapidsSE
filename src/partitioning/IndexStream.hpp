@@ -27,7 +27,7 @@ namespace Partitioning
     void vClose(void);
     bool bDelete(void);
     bool bOpen(void);
-    CrwBuffer* pRead(RowOnce* pRowOnce);
+    CrwBuffer* pRead_idxstm(RowOnce* pRowOnce);
     void vReset(void);
     void vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz* szUpperKey);
 

@@ -647,7 +647,7 @@ bool RowCompactor::bCollectSample(RowSingle* pSrw)
     return false;
   }
   
-  if ( ! m_pRowSamples->aAllotRow(pSrw) ) {
+  if ( ! m_pRowSamples->aAllotCopyRow(pSrw) ) {
   
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples full\n"_Stz);
