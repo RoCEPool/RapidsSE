@@ -68,7 +68,7 @@ Row* InfoSetBase::aAllotRow(void)
   Row* pRow = nullptr;
 
   if (nFreeBytes() >= m_nRowSize) {
-    pRow = aAllotNewRow(m_nRowSize);
+    pRow = aAllotNewRow();
     m_nInfoRows++;
   }
 
@@ -81,10 +81,10 @@ Row* InfoSetBase::aAllotRow(void)
 //Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_);
-//  
+//
 //  Row* pRow = RowBuffer::aAllotCopyRow(pRowSingle);
 //  m_nInfoRows++;
-//  
+//
 //  return pRow;
 //}
 
@@ -97,7 +97,7 @@ Row* InfoSetBase::aAllotRow(void)
    _precondition_(_ADDRESS_,_MAGIC_);
    
    // allot a row
-   Row* ayRow = aAllotNewRow(Row::nSizeBytes(pStreamDef));
+   Row* ayRow = aAllotNewRow();
    m_nInfoRows++;
    
    Stz* ayDst;

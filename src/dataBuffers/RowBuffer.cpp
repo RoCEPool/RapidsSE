@@ -112,10 +112,10 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
   i8 nHeadSize = Row::nSizeBytes(pStreamDef);
   i8 nTailSize = pRowSingle->nSizeVch();
   
-  if (nFreeBytes() < nHeadSize + nTailSize)
+  if (! bHasSpaceFor(nHeadSize + nTailSize))
     return nullptr;
   
-  Row* pRow = aAllotNewRow(nHeadSize);
+  Row* pRow = aAllotNewRow();
   
   new(pRow) Row;
 

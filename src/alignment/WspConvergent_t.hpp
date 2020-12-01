@@ -35,6 +35,7 @@ namespace Alignment
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
     void  vGiveTail(i8 nBytes);
+    bool  bHasSpaceFor(i8 nBytes);
     void  vInit(void);
     void  vIncItems(void);
     i8    nItems(void);
@@ -295,6 +296,18 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vGiveTail(i8 nBytes)
   ASSERT(m_nUsedHead  + m_nUsedTail <= SIZE);
   
   m_nUsedTail -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this workspace have enough free space for given size                  */
+/*----------------------------------------------------------------------------*/
+template<i8 SIZE, class HEAD, class TAIL>
+bool WspConvergent_t<SIZE,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
+{
+  if (nFreeBytes() >= nSizeBytes)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -27,7 +27,7 @@ namespace Rows
   
     void vResolveStreamPix(StreamDef* pStreamDef);
     
-    Row* aAllotNewRow(i8 nRowSizeProper);
+    Row* aAllotNewRow(void);
 //
 //    Row* aFirstRow(void);
 //    Row* aLastRow(i8 nRowBytes);
@@ -115,16 +115,13 @@ void RowBox_t<SIZE>::vResolveStreamPix(StreamDef* pStreamDef)
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
-Row* RowBox_t<SIZE>::aAllotNewRow(i8 nRowSizeProper)
+Row* RowBox_t<SIZE>::aAllotNewRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
   RASSERT(m_oStreamPix.m_bInitialised);
 
-  RASSERT(nRowSizeProper = m_nRowSizeProper);
-
-  // allot using bytes as we don't know the size of the item
-  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(nRowSizeProper);
+  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
 
   if (! aRow)
     return nullptr;
