@@ -19,8 +19,11 @@ namespace Rows
     void* operator new(size_t);
 
     RowBox_t(void);
-    //RowBox_t(eCN eClass, StreamDef* pStreamDef, bool bAddPtnHash);
+    RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash);
    ~RowBox_t(void) noexcept(false);
+  
+  
+    void vResolveStreamPix(StreamDef* pStreamDef);
     
 ////    Row* aAllotRow(i8 nTailSize);
 //
@@ -65,16 +68,15 @@ RowBox_t<SIZE>::RowBox_t(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//template <i8 SIZE>
-//RowBox_t<SIZE>::RowBox_t(eCN eClassNo, StreamDef* pStreamDef, bool bAddPtnHash)
-//: Object(eClassNo)
-//{
-//  _precondition_(_ADDRESS_);
-//
-//  pStreamDef->vToStreamPix(&m_oStreamPix,bAddPtnHash);
-//
-//  _postcondition_(_ADDRESS_);
-//}
+template <i8 SIZE>
+RowBox_t<SIZE>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
+{
+  //_precondition_(_ADDRESS_);
+
+  pStreamDef->vToStreamPix(&m_oStreamPix,bAddPtnHash);
+
+  //_postcondition_(_ADDRESS_);
+}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -85,6 +87,23 @@ RowBox_t<SIZE>::~RowBox_t(void) noexcept(false)
   //_precondition_(_ADDRESS_);
 
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* allot a ref set in this buffer (may return nulltpr)                        */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vResolveStreamPix(StreamDef* pStreamDef)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_);
+
+  pStreamDef->vToStreamPix(&m_oStreamPix,false);
+}
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */

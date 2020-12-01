@@ -8,9 +8,6 @@ namespace DataBuffers
   typedef       HV <Record,StreamDef>        HV_Rec;
   
   class RowBuffer : public DataBuffer,
-
-                    //public WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>
-
                     public RowBox_t<C_WSP_ROWBUFFER>
   {
   protected:
