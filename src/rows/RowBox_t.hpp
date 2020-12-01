@@ -11,8 +11,7 @@ namespace Rows
   {
   protected:
 
-    ColPix m_oColPix;
-    i8     m_nColumns;  // no cols in stream def
+    StreamPix m_oStreamPix;
 
     // must be last
     Footer m_xFooter;
@@ -24,8 +23,7 @@ namespace Rows
     RowBox_t(eCN eClass, StreamDef* pStreamDef, bool bAddPtnHash);
    ~RowBox_t(void) noexcept(false);
     
-    Row* aAllotRow(i8 nBytes);
-    Row* aAllotRow(RowSingle* pRowSingle);
+    Row* aAllotRow(i8 nTailSize);
     
     Row* aFirstRow(void);
     Row* aLastRow(i8 nRowBytes);
@@ -62,8 +60,6 @@ RowBox_t<SIZE>::RowBox_t(eCN eClassNo)
 : Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
-
-  m_nColumns = C_UNKNOWN;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
@@ -76,10 +72,8 @@ RowBox_t<SIZE>::RowBox_t(eCN eClassNo, StreamDef* pStreamDef, bool bAddPtnHash)
 : Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
-
-  m_nColumns = C_UNKNOWN;
   
-  pStreamDef->vToColPix(&m_oColPix,bAddPtnHash);
+  pStreamDef->vToStreamPix(&m_oStreamPix,bAddPtnHash);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
@@ -94,7 +88,24 @@ RowBox_t<SIZE>::~RowBox_t(void) noexcept(false)
 
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* allot a ref set in this buffer (may return nulltpr)                        */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Row* RowBox_t<SIZE>::aAllotRow(i8 nTailSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  // allot using bytes as we don't know the size of the item
+  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(nTailSize);
+  
+  if (! aRow)
+    return nullptr;
+  
+  new(aRow) Row();
+  
+  return aRow;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
