@@ -400,17 +400,17 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vFIELD_ERROR(_errorCode);\
   }
 
-#define vDEPOSIT_i8(_iValue) \
+#define vDEPOSIT_VALUE(_value) \
   \
-  m_pRowSlab->vDeposit(_iValue); \
+  m_pRowSlab->vDeposit(_value); \
   \
   if (xColPix.m_bPtnKey) \
-    PtnMap::vRunningHash(&iPtnKeyHash,_iValue);
+    PtnMap::vRunningHash(&iPtnKeyHash,_value);
 
-#define vDEPOSIT_NULL(_errorLabel) \
+#define vDEPOSIT_NULL(_errorCode) \
   \
   if (! bPixNullable) \
-    vFIELD_ERROR(_errorLabel); \
+    vFIELD_ERROR(_errorCode); \
   \
   m_pRowSlab->vDeposit(C_DATUM_NULL); \
   \
@@ -1407,23 +1407,27 @@ L_Integer:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit integer
   
-  m_pRowSlab->vDeposit(iIntegerValue);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,iIntegerValue);
+//  m_pRowSlab->vDeposit(iIntegerValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,iIntegerValue);
+  
+  vDEPOSIT_VALUE(iIntegerValue);
   
   goto L_FieldEnd;
     
 L_Integer_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//
+//  m_pRowSlab->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
-  
+  vDEPOSIT_NULL(EC_CSV_INTEGER_INVALID);
+
   goto L_FieldEnd;                                            // end of integer
 
 

@@ -49,7 +49,10 @@ namespace Rows
     RowSingle(StreamDef* pStreamDef, i8 iSubSet);
     ~RowSingle(void) noexcept(false);
   
+#ifndef _ROWBOX_BASED
     void vAllotSetVarchar(i8 i_Col,Stz* szVal);
+#endif
+  
     Dtm* aColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);

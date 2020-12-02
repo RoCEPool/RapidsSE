@@ -32,6 +32,7 @@ namespace Rows
     Row* aAllotNewRow(void);
   
   
+    Dtm* aColDtm(i8 i_Col);
     d8   dColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
@@ -144,6 +145,17 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* get datum value of given column                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Dtm* RowBox_t<SIZE>::aColDtm(i8 i_Col)
+{
+  Dtm* aDtm = m_aRow->aColDtm(i_Col);
+  
+  return aDtm;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get float value of given column                                            */
