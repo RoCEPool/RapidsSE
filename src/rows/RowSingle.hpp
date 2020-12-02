@@ -61,7 +61,7 @@ namespace Rows
     i8   iColVal(i8 i_Col);
     d8   dColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
-    void vCopy(Row* pRow);
+    void vCopyRow(Row* pRow);
     bool bIsColNull(i8 i_Col);
     void vResetValues(void);
     void vSetColNull(i8 i_Col);

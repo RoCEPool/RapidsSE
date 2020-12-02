@@ -325,7 +325,7 @@ Stz* RowSingle::szColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-void RowSingle::vCopy(Row* pRow)
+void RowSingle::vCopyRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -357,7 +357,7 @@ void RowSingle::vCopy(Row* pRow)
 
 #else // ???????????????????????????????????????????????????????????????????????
 
-void RowSingle::vCopy(Row* pRow)
+void RowSingle::vCopyRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -449,7 +449,7 @@ void RowSingle::vResetValues(void)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-void RowSingle::vSetColNull(i8 i_Col)                                       // DONE
+void RowSingle::vSetColNull(i8 i_Col)                                    // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -551,7 +551,7 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-i8 RowSingle::nSumVchSizes(void)
+i8 RowSingle::nSumVchSizes(void)                                         // done
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   

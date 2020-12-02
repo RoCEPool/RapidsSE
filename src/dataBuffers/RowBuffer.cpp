@@ -148,7 +148,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   HV_Row hvRowSingle(pStreamDef, C_ALL);
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
-    hvRowSingle->vCopy(pRow);
+    hvRowSingle->vCopyRow(pRow);
     hvRec->vAppend(hvRowSingle);
     hvRec->vPrintRow();
     
@@ -179,7 +179,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   HV_Rec hvRec(pStreamDef,C_ALL);
   while (pRow) {
-    hvRowSingle->vCopy(pRow);
+    hvRowSingle->vCopyRow(pRow);
     hvRec->vAppend(hvRowSingle);
     pRow = aNextRow(pRow);
     hvRec->vPrintRow();
