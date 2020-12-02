@@ -28,10 +28,11 @@ namespace Rows
     void vResolveStreamPix(StreamDef* pStreamDef);
     
     Row* aAllotNewRow(void);
-//
-//    Row* aFirstRow(void);
-//    Row* aLastRow(i8 nRowBytes);
-//    Row* aNextRow(Row* aPriorRow, i8 nRowBytes);
+
+    Row* aFirstRow(void);
+    Row* aLastRow(void);
+    Row* aNextRow(Row* aPriorRow);
+  
 //    void vPrintRows(StreamDef* pStreamDef);
 //    void vShow(StreamDef* pStreamDef);
     
@@ -130,6 +131,59 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 
   return aRow;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* return first ref set in this buffer                                        */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Row* RowBox_t<SIZE>::aFirstRow(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(m_oStreamPix.m_bInitialised);
+  
+  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aFirstItem();
+  
+  return aRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return last ref set in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Row* RowBox_t<SIZE>::aLastRow(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(m_oStreamPix.m_bInitialised);
+
+  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aFirstItem();
+  Row* aLastRow = nullptr;
+  
+  while (aRow) {
+    aLastRow = aRow;
+    aRow = aNextRow(aRow);
+  };
+  
+  return aLastRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next ref set in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Row* RowBox_t<SIZE>::aNextRow(Row* aPriorRow)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT(m_oStreamPix.m_bInitialised);
+
+  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aAdjacentItem(aPriorRow, m_nRowSizeProper);
+  
+  return aRow;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

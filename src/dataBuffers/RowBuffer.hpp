@@ -25,10 +25,7 @@ namespace DataBuffers
    ~RowBuffer(void) noexcept(false);
       
     Row* aAllotCopyRow(RowSingle* pRowSingle);
-    
-    Row* aFirstRow(void);
-    Row* aLastRow(void);
-    Row* aNextRow(Row* aPriorRow);
+      
     void vPrintRows(StreamDef* pStreamDef);
     void vShow(StreamDef* pStreamDef);
     

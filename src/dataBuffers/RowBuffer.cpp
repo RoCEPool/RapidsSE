@@ -132,54 +132,6 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return first ref set in this buffer                                        */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::aFirstRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(m_oStreamPix.m_bInitialised);
-  
-  Row* aRow = aFirstItem();
-  
-  return aRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return last ref set in this buffer                                         */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::aLastRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(m_oStreamPix.m_bInitialised);
-
-  Row* aRow = aFirstItem();
-  Row* aLastRow = nullptr;
-  
-  while (aRow) {
-    aLastRow = aRow;
-    aRow = aNextRow(aRow);
-  };
-  
-  return aLastRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return next ref set in this buffer                                         */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::aNextRow(Row* aPriorRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  RASSERT(m_oStreamPix.m_bInitialised);
-
-  Row* aRow = aAdjacentItem(aPriorRow, m_nRowSizeProper);
-  
-  return aRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(StreamDef* pStreamDef)
