@@ -529,36 +529,6 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Crw* aCrw, Rrf& xRowRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-
-  StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
-
-  EntWrk xEntWrk;
-  xEntWrk.vStreamDef(pStreamDef);
-  vExtractKey(&xEntWrk,aCrw);
-  xEntWrk.vRef(xRowRef);
-
-  m_okLock.vGrabWrite();                                           //! GRAB LOCK
-  
-  if (! m_pRootEntBuffer) {
-    EntBuffer* pRootBuffer = pNewRootBuffer();
-  }
-  
-  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
-  ASSERT(aInsertedEntry);
-  
-  //m_pRootEntBuffer->bVerify();
-  
-  m_okLock.vDropWrite();                                           //! DROP LOCK
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert an entry for given row into this index at level 0                   */
-/*----------------------------------------------------------------------------*/
 bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
