@@ -11,7 +11,6 @@ namespace Alignment
   private:
     byte m_yaByteArea[SIZE]; // allottable area
   
-    i8   m_nHeadItems;   // number of variable-size head items in this wsp
     i8   m_nUsedHead;    // bytes used in the area from the head
   
     i8   m_nTailItems;   // number of fixed-size items in this wsp
@@ -48,6 +47,8 @@ namespace Alignment
     void  vReset(void);
     i8    nSize(void);
     Stz*  szStz(void);
+    Stz*  szStzAllot_begin(void);
+    void  vStzAllot_end(i8 nSize);
     void  vTakeHead(i8 nBytes);
     void  vTakeTail(i8 nBytes);
     i8    nUsed(void);
@@ -65,7 +66,6 @@ namespace Alignment
 template<i8 SIZE, class HEAD, class TAIL>
 WspConvergent_t<SIZE,HEAD,TAIL>::WspConvergent_t(void)
 {
-  m_nHeadItems = 0;
   m_nUsedHead  = 0;
   
   m_nTailItems = 0;
@@ -84,8 +84,6 @@ template<i8 SIZE, class HEAD, class TAIL>
 void WspConvergent_t<SIZE,HEAD,TAIL>::vInit(void)
 {
   m_nUsedHead  = 0;
-  m_nHeadItems = 0;
-  m_nUsedHead  = 0;
   
   m_nTailItems = 0;
   m_nUsedTail  = 0;
@@ -99,7 +97,7 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vInit(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get item which is memory-wise the next item in the item area               */
+/* get item which is memory-wise the previous item in the tail area           */
 /*----------------------------------------------------------------------------*/
 template<i8 SIZE, class HEAD, class TAIL>
 TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aAdjacentItem(TAIL* aPriorItem,
@@ -107,8 +105,9 @@ TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aAdjacentItem(TAIL* aPriorItem,
 {
   TAIL* aAdjacent = nullptr;
     
+                                                     // -----------------
   aAdjacent = aAdd<TAIL*>(aPriorItem, - nSizeItem ); // note the -ve sign
-  
+                                                     // -----------------
   if ((char*)aAdjacent < (char*)ayLatterTail())
     return nullptr;
   
@@ -136,9 +135,7 @@ HEAD* WspConvergent_t<SIZE,HEAD,TAIL>::ayAllotHead(i8 nBytes)
   byte* ayAllottedHead = ayLatterHead() + 1;
   
   vTakeHead(nBytes);
-  
-  ++ m_nHeadItems;
-  
+    
   return (HEAD*)ayAllottedHead;
 }
 
@@ -409,6 +406,26 @@ Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStz(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin allot of stz (of unknown size) in head                               */
+/*----------------------------------------------------------------------------*/
+template<i8 SIZE, class HEAD, class TAIL>
+Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzAllot_begin(void)
+{
+  Stz* szStz = (Stz*)ayLatterHead();
+  
+  return szStz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end allot of stz in head (size now known)                                  */
+/*----------------------------------------------------------------------------*/
+template<i8 SIZE, class HEAD, class TAIL>
+void WspConvergent_t<SIZE,HEAD,TAIL>::vStzAllot_end(i8 nSize)
+{
+  vTakeHead(nSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* take chunk from byte area from the head                                    */
 /*----------------------------------------------------------------------------*/
 template<i8 SIZE, class HEAD, class TAIL>
@@ -495,7 +512,6 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vUsedTail(i8 nBytes)
 template<i8 SIZE, class HEAD, class TAIL>
 void WspConvergent_t<SIZE,HEAD,TAIL>::vZero(eCN eClassNo)
 {
-  m_nHeadItems = 0;
   m_nUsedHead  = 0;
   
   m_nTailItems = 0;
