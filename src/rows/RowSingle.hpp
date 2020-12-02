@@ -33,8 +33,9 @@ namespace Rows
   
   private:
  
+#ifndef _ROWBOX_BASED
     Dtm* m_awaColVal; // dynamically allotted column value array
-  
+#endif
 
   
     // - - - - - - - - - - - - - - - - - -
@@ -54,11 +55,11 @@ namespace Rows
 #endif
   
     Dtm* aColDtm(i8 i_Col);
+    Dtm  wColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);
     d8   dColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
-    Dtm  wColVal(i8 i_Col);
     void vCopy(Row* pRow);
     void vDontDecodeVch(void);
     byte* ayDstByte(void);

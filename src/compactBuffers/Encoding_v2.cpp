@@ -339,22 +339,22 @@ void Encoding_v2::vInitialEncodingSrw(RowSingle* pSrw)
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    Dtm wColVal = pSrw->wColVal(i_Col);
+    Dtm wColDtm = pSrw->wColDtm(i_Col);
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
     
     switch (xrColEnc.m_pCol->eDatum()) {
         
-      case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
-      case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;
-      case DM_DTE: vEncodeDte(xrColEnc,wColVal);  break;
-      case DM_FLT: vEncodeFlt(xrColEnc,wColVal);  break;
-      case DM_INT: vEncodeInt(xrColEnc,wColVal);  break;
-      case DM_IVL: vEncodeIvl(xrColEnc,wColVal);  break;
-      case DM_TME: vEncodeTme(xrColEnc,wColVal);  break;
-      case DM_TSP: vEncodeTsp(xrColEnc,wColVal);  break;
-      case DM_VCH: vEncodeVch(xrColEnc,wColVal);  break;
+      case DM_BCD: vEncodeBcd(xrColEnc,wColDtm);  break;
+      case DM_BOL: vEncodeBol(xrColEnc,wColDtm);  break;
+      case DM_DTE: vEncodeDte(xrColEnc,wColDtm);  break;
+      case DM_FLT: vEncodeFlt(xrColEnc,wColDtm);  break;
+      case DM_INT: vEncodeInt(xrColEnc,wColDtm);  break;
+      case DM_IVL: vEncodeIvl(xrColEnc,wColDtm);  break;
+      case DM_TME: vEncodeTme(xrColEnc,wColDtm);  break;
+      case DM_TSP: vEncodeTsp(xrColEnc,wColDtm);  break;
+      case DM_VCH: vEncodeVch(xrColEnc,wColDtm);  break;
         
       default:
         NEVER_REACH;

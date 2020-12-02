@@ -136,11 +136,11 @@ void RowSingle::vAllotSetVarchar(i8 i_Col, Stz* szVal)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-Dtm* RowSingle::aColDtm(i8 i_Col)
+Dtm* RowSingle::aColDtm(i8 i_Col)                                        // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  Dtm* aDtm = & m_awaColVal[i_Col];
+  Dtm* aDtm = RowBox_t<C_ROWSINGLE_WSP>::aColDtm(i_Col);
   
   return aDtm;
 }
@@ -163,11 +163,38 @@ Dtm* RowSingle::aColDtm(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
+Dtm RowSingle::wColDtm(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  Dtm* aDtm = RowBox_t<C_ROWSINGLE_WSP>::aColDtm(i_Col);
+
+  return * aDtm;;
+}
+
+#else // ???????????????????????????????????????????????????????????????????????
+
+Dtm RowSingle::wColDtm(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  Dtm wDtm = m_awaColVal[i_Col];
+
+  return wDtm;
+}
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* get column value                                                           */
+/*----------------------------------------------------------------------------*/
+#ifdef _ROWBOX_BASED
+
 char* RowSingle::azColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  char* azVal = m_awaColVal[i_Col].m_azStr;
+  char* azVal = (char*)szColVal(i_Col);
   
   return azVal;
 }
@@ -194,8 +221,8 @@ i8 RowSingle::iColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  i8 iVal = m_awaColVal[i_Col].m_iWrd;
-  
+  i8 iVal = RowBox_t<C_ROWSINGLE_WSP>::iColVal(i_Col);
+
   return iVal;
 }
 
@@ -221,7 +248,7 @@ d8 RowSingle::dColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  d8 dVal = m_awaColVal[i_Col].m_dWrd;
+  d8 dVal = RowBox_t<C_ROWSINGLE_WSP>::dColVal(i_Col);
   
   return dVal;
 }
@@ -248,7 +275,7 @@ Stz* RowSingle::szColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  Stz* szVal = m_awaColVal[i_Col].m_szVch;
+  Stz* szVal = RowBox_t<C_ROWSINGLE_WSP>::szColVal(i_Col);
   
   return szVal;
 }
@@ -262,33 +289,6 @@ Stz* RowSingle::szColVal(i8 i_Col)
   Stz* szVal = m_awaColVal[i_Col].m_szVch;
   
   return szVal;
-}
-
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* get column value                                                           */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWBOX_BASED
-
-Dtm RowSingle::wColVal(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  Dtm wDtm = m_awaColVal[i_Col];
-  
-  return wDtm;
-}
-
-#else // ???????????????????????????????????????????????????????????????????????
-
-Dtm RowSingle::wColVal(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  Dtm wDtm = m_awaColVal[i_Col];
-  
-  return wDtm;
 }
 
 #endif

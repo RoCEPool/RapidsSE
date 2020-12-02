@@ -891,22 +891,27 @@ L_Boolean_recognised:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit boolean
   
-  m_pRowSlab->vDeposit(iBooleanValue);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,iBooleanValue);
+//  m_pRowSlab->vDeposit(iBooleanValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,iBooleanValue);
+
+  vDEPOSIT_VALUE(iBooleanValue);
 
   goto L_FieldEnd;
     
 L_Boolean_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//
+//  m_pRowSlab->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+  vDEPOSIT_NULL(EC_CSV_BOOLEAN_INVALID);
+
 
   goto L_FieldEnd;                                            // end of boolean
 
