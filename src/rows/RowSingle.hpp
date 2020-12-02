@@ -39,7 +39,6 @@ namespace Rows
     RowSingle(StreamDef* pStreamDef, i8 iSubSet);
     ~RowSingle(void) noexcept(false);
   
-    void vAdjustAddresses(RowSingle* pCopiedFromRow);
     void vAllotSetVarchar(i8 i_Col,Stz* szVal);
     Dtm* aColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);

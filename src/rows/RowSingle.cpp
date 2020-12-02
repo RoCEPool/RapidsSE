@@ -94,30 +94,6 @@ RowSingle::~RowSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 
-/*----------------------------------------------------------------------------*/
-/* adjust addresses                                                           */
-/*----------------------------------------------------------------------------*/
-void RowSingle::vAdjustAddresses(RowSingle* pCopiedFromRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    
-    if (DM_VCH != pCol->eDatum())
-      continue;
-
-    if (m_awaColVal[i_Col].bIsNull())
-      continue;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    i8 nDeltaBytes = nDifference(m_awaColVal[i_Col].m_szVch,pCopiedFromRow);
-    
-    m_awaColVal[i_Col].m_szVch = aAdd<Stz*>(this,nDeltaBytes);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* set column value in row                                                    */
