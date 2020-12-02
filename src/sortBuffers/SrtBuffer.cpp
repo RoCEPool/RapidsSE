@@ -331,7 +331,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRow->vSetNull(i_Col);
+          hRow->vSetColNull(i_Col);
         }
       }
       hvRec->vAppend(hRow);
@@ -443,7 +443,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRow->vSetNull(i_Col);
+          hRow->vSetColNull(i_Col);
         }
       }
       hvRec->vAppend(hRow);

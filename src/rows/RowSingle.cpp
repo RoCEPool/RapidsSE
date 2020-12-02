@@ -390,53 +390,6 @@ void RowSingle::vCopy(Row* pRow)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* don't decode vch                                                           */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWBOX_BASED
-
-void RowSingle::vDontDecodeVch(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-
-  m_bGetAll = false;
-  
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    
-    if (DM_VCH == pCol->eDatum()) {
-      m_abGetCol[i_Col] = false;
-    }
-    else
-      m_abGetCol[i_Col] = true;
-    m_iLastCol = i_Col;
-  }
-}
-
-#else // ???????????????????????????????????????????????????????????????????????
-
-void RowSingle::vDontDecodeVch(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-
-  m_bGetAll = false;
-  
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    
-    if (DM_VCH == pCol->eDatum()) {
-      m_abGetCol[i_Col] = false;
-    }
-    else
-      m_abGetCol[i_Col] = true;
-    m_iLastCol = i_Col;
-  }
-}
-
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* is given column (of current row) null ?                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
@@ -492,88 +445,11 @@ void RowSingle::vResetValues(void)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* set all the column of this row single                                      */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWBOX_BASED
-
-void RowSingle::vSet(i8 iVArgsBegin, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,iVArgsBegin);
-
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    
-    if (DM_VCH == pCol->eDatum()) {
-      Stz* szVal = va_arg(xVarArgs,Stz*);
-      if (szVal)
-        vAllotSetVarchar(i_Col,szVal);
-      else
-        m_awaColVal[i_Col].vSetNull();
-    }
-    else {
-      i8 iVal = va_arg(xVarArgs,i8);
-      m_awaColVal[i_Col].m_iWrd = iVal;
-    }
-    
-  }
-  
-  i8 iVArgsEnd = va_arg(xVarArgs,i8);
-  ASSERT(C_VARGS_END == iVArgsEnd);
-
-  va_end(xVarArgs);
-}
-
-#else // ???????????????????????????????????????????????????????????????????????
-
-void RowSingle::vSet(i8 iVArgsBegin, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,iVArgsBegin);
-
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    
-    if (DM_VCH == pCol->eDatum()) {
-      Stz* szVal = va_arg(xVarArgs,Stz*);
-      if (szVal)
-        vAllotSetVarchar(i_Col,szVal);
-      else
-        m_awaColVal[i_Col].vSetNull();
-    }
-    else {
-      i8 iVal = va_arg(xVarArgs,i8);
-      m_awaColVal[i_Col].m_iWrd = iVal;
-    }
-    
-  }
-  
-  i8 iVArgsEnd = va_arg(xVarArgs,i8);
-  ASSERT(C_VARGS_END == iVArgsEnd);
-
-  va_end(xVarArgs);
-}
-
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* set column value to be null                                                */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-void RowSingle::vSetNull(i8 i_Col)                                       // DONE
+void RowSingle::vSetColNull(i8 i_Col)                                       // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -582,7 +458,7 @@ void RowSingle::vSetNull(i8 i_Col)                                       // DONE
 
 #else // ???????????????????????????????????????????????????????????????????????
 
-void RowSingle::vSetNull(i8 i_Col)
+void RowSingle::vSetColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   

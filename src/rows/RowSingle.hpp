@@ -62,15 +62,13 @@ namespace Rows
     d8   dColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
     void vCopy(Row* pRow);
-    void vDontDecodeVch(void);
     bool bIsColNull(i8 i_Col);
     void vResetValues(void);
-    void vSet(i8 iArgsBegin, ...);
-    void vSetNull(i8 i_Col);
+    void vSetColNull(i8 i_Col);
     void vSetValue(Datum* pDatum, Column* pCol);
     i8   nSumVchSizes(void);
-
     Stz* szStzArea(void);
+
   private:
     Footer* aFooter(void);
   };
