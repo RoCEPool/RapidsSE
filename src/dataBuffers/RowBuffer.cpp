@@ -73,12 +73,14 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  RASSERT(m_oStreamPix.m_bInitialised);
+
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   
-  i8 nHeadSize = Row::nSizeBytes(pStreamDef);
-  i8 nTailSize = pRowSingle->nSizeVch();
+  //i8 nHeadSize = Row::nSizeBytes(pStreamDef);
+  i8 nVchSize = pRowSingle->nSizeVch();
   
-  if (! bHasSpaceFor(nHeadSize + nTailSize))
+  if (! bHasSpaceFor(nVchSize + m_nRowSizeProper))
     return nullptr;
   
   Row* pRow = aAllotNewRow();
