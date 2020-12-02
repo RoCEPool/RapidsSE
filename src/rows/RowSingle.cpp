@@ -68,14 +68,12 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
   m_iLastCol    = C_UNKNOWN;
-  
-  m_aRow        = nullptr;
-  
+    
   // - - - - - - - - - - - - - - - - - -
   
 #ifdef _ROWBOX_BASED
   
-  m_aRow = aAllotNewRow();
+  Row* aRow = aAllotNewRow();
 
 #else
   

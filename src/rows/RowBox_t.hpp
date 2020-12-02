@@ -14,6 +14,8 @@ namespace Rows
   
     StreamPix m_oStreamPix;
   
+    Row* m_aRow;      // current row
+  
     // must be last
     Footer m_xFooter;
 
@@ -66,6 +68,8 @@ RowBox_t<SIZE>::RowBox_t(void)
   //_precondition_(_ADDRESS_);
   
   m_nRowSizeProper = 0;
+  
+  m_aRow = nullptr;
   
   //_postcondition_(_ADDRESS_);
 }
@@ -122,14 +126,14 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 
   RASSERT(m_oStreamPix.m_bInitialised);
 
-  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
+  m_aRow = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
 
-  if (! aRow)
+  if (! m_aRow)
     return nullptr;
 
-  new(aRow) Row();
+  new(m_aRow) Row();
 
-  return aRow;
+  return m_aRow;
 }
 
 

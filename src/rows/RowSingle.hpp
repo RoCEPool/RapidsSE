@@ -35,7 +35,7 @@ namespace Rows
  
     Dtm* m_awaColVal; // dynamically allotted column value array
   
-    Row* m_aRow;      // current row
+
   
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
