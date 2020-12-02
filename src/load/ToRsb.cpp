@@ -400,6 +400,23 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vFIELD_ERROR(_errorCode);\
   }
 
+#define vDEPOSIT_i8(_iValue) \
+  \
+  m_pRowSlab->vDeposit(_iValue); \
+  \
+  if (xColPix.m_bPtnKey) \
+    PtnMap::vRunningHash(&iPtnKeyHash,_iValue);
+
+#define vDEPOSIT_NULL(_errorLabel) \
+  \
+  if (! bPixNullable) \
+    vFIELD_ERROR(_errorLabel); \
+  \
+  m_pRowSlab->vDeposit(C_DATUM_NULL); \
+  \
+  if (xColPix.m_bPtnKey) \
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+
 
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */

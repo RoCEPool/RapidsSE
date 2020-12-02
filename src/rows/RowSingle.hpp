@@ -3,11 +3,17 @@
 /*============================================================================*/
 #pragma once
 
+//#define _ROWBOX_BASED 1
+
 namespace Rows
 {
-  class RowSingle : public RowWsp<C_ROWSOLO_WSP>
-                    //public Object,
-                    //public RowBox_t<C_ROWSOLO_WSP>
+  class RowSingle :
+#ifdef _ROWBOX_BASED
+                    public Object,
+                    public RowBox_t<C_ROWSINGLE_WSP>
+#else
+                    public RowWsp<C_ROWSINGLE_WSP>
+#endif
   {
   public:
     // - - - - - - - - - - - - - - - - - -
