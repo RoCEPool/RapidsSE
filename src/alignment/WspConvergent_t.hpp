@@ -46,9 +46,9 @@ namespace Alignment
     i8    iOffset(byte* ayAllotted);
     void  vReset(void);
     i8    nSize(void);
-    Stz*  szStz(void);
     Stz*  szStzAllot_begin(void);
     void  vStzAllot_end(i8 nSize);
+    Stz*  szStzArea(void);
     void  vTakeHead(i8 nBytes);
     void  vTakeTail(i8 nBytes);
     i8    nUsed(void);
@@ -398,7 +398,7 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::nSize(void)
 /* get byte area as Stz*                                                      */
 /*----------------------------------------------------------------------------*/
 template<i8 SIZE, class HEAD, class TAIL>
-Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStz(void)
+Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzArea(void)
 {
   char* aArea = (char*)m_yaByteArea;
   

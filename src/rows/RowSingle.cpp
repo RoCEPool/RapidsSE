@@ -437,7 +437,7 @@ byte* RowSingle::ayDstByte(void)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* hash a partion key column into running hash                                */
+/* is given column (of current row) null ?                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
@@ -445,7 +445,7 @@ bool RowSingle::bIsColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  bool bIsNull = m_awaColVal[i_Col].bIsNull();
+  bool bIsNull = RowBox_t<C_ROWSINGLE_WSP>::bIsColNull(i_Col);
   
   return bIsNull;
 }
@@ -803,7 +803,9 @@ Stz* RowSingle::szStzArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
-  return (Stz*)m_xWsp.ayArea();
+  Stz* szArea = RowBox_t<C_ROWSINGLE_WSP>::szStzArea();
+  
+  return szStzArea;
 }
 
 #else // ???????????????????????????????????????????????????????????????????????
