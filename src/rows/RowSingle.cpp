@@ -4,6 +4,7 @@
 
 #include "Rows.h"
 
+//#define _ROW_BASED 1
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -51,7 +52,11 @@ void RowSingle::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
+#ifdef _ROW_BASED
+: Object(CN_ROWSINGLE)
+#else
 : RowWsp(CN_ROWSINGLE)
+#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -64,6 +69,8 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
   m_iLastCol    = C_UNKNOWN;
+  
+  m_aRow        = nullptr;
   
   // - - - - - - - - - - - - - - - - - -
   
@@ -426,7 +433,7 @@ i8 RowSingle::nSizeVch(void)
 Stz* RowSingle::szStzArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-    
+
   return (Stz*)m_xWsp.ayArea();
 }
 

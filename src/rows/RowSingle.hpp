@@ -6,6 +6,8 @@
 namespace Rows
 {
   class RowSingle : public RowWsp<C_ROWSOLO_WSP>
+                    //public Object,
+                    //public RowBox_t<C_ROWSOLO_WSP>
   {
   public:
     // - - - - - - - - - - - - - - - - - -
@@ -26,6 +28,8 @@ namespace Rows
   private:
  
     Dtm* m_awaColVal; // dynamically allotted column value array
+  
+    Row* m_aRow;      // current row
   
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
