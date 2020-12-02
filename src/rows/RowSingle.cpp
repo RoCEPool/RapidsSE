@@ -132,6 +132,33 @@ void RowSingle::vAllotSetVarchar(i8 i_Col, Stz* szVal)
 #endif
 
 /*----------------------------------------------------------------------------*/
+/* get address of cell array                                                  */
+/*----------------------------------------------------------------------------*/
+#ifdef _ROWBOX_BASED
+
+byte* RowSingle::ayCellArray(void)                                       // DONE
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  byte* ayArray = (byte*) m_aRow->aCellArray();
+
+  return ayArray;
+}
+
+#else // ???????????????????????????????????????????????????????????????????????
+
+byte* RowSingle::ayCellArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  byte* ayArray = (byte*) & m_awaColVal[0].m_iWrd;
+
+  return ayArray;
+}
+
+#endif
+
+/*----------------------------------------------------------------------------*/
 /* get address of column datum                                                */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
@@ -163,7 +190,7 @@ Dtm* RowSingle::aColDtm(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-Dtm RowSingle::wColDtm(i8 i_Col)
+Dtm RowSingle::wColDtm(i8 i_Col)                                         // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -190,7 +217,7 @@ Dtm RowSingle::wColDtm(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-char* RowSingle::azColVal(i8 i_Col)
+char* RowSingle::azColVal(i8 i_Col)                                      // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -217,7 +244,7 @@ char* RowSingle::azColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-i8 RowSingle::iColVal(i8 i_Col)
+i8 RowSingle::iColVal(i8 i_Col)                                          // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -244,7 +271,7 @@ i8 RowSingle::iColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-d8 RowSingle::dColVal(i8 i_Col)
+d8 RowSingle::dColVal(i8 i_Col)                                          // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -271,7 +298,7 @@ d8 RowSingle::dColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-Stz* RowSingle::szColVal(i8 i_Col)
+Stz* RowSingle::szColVal(i8 i_Col)                                       // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -410,38 +437,11 @@ void RowSingle::vDontDecodeVch(void)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* hash a partion key column into running hash                                */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWBOX_BASED
-
-byte* RowSingle::ayDstByte(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  byte* ayDst = (byte*) & m_awaColVal[0].m_iWrd;
-  
-  return ayDst;
-}
-
-#else // ???????????????????????????????????????????????????????????????????????
-
-byte* RowSingle::ayDstByte(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  byte* ayDst = (byte*) & m_awaColVal[0].m_iWrd;
-  
-  return ayDst;
-}
-
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* is given column (of current row) null ?                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-bool RowSingle::bIsColNull(i8 i_Col)
+bool RowSingle::bIsColNull(i8 i_Col)                                     // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -468,16 +468,11 @@ bool RowSingle::bIsColNull(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-void RowSingle::vResetValues(void)
+void RowSingle::vResetValues(void)                                       // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
     
-#ifdef WITH_CHECK_INITIALISED
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
-    m_awaColVal[i_Col].m_iWrd = 0;
-#endif
-  
-  m_xWsp.vInit();
+  RowBox_t<C_ROWSINGLE_WSP>::vReset();
 }
 
 #else // ???????????????????????????????????????????????????????????????????????
@@ -578,11 +573,11 @@ void RowSingle::vSet(i8 iVArgsBegin, ...)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-void RowSingle::vSetNull(i8 i_Col)
+void RowSingle::vSetNull(i8 i_Col)                                       // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  m_awaColVal[i_Col].m_iWrd = C_DATUM_NULL;
+  RowBox_t<C_ROWSINGLE_WSP>::vColSetNull(i_Col);
 }
 
 #else // ???????????????????????????????????????????????????????????????????????
@@ -676,61 +671,11 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* get size of row (needed for MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem))  */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWBOX_BASED
-
-i8 RowSingle::nSizeBytes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  return sizeof(RowSingle);
-}
-
-#else // ???????????????????????????????????????????????????????????????????????
-
-i8 RowSingle::nSizeBytes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  return sizeof(RowSingle);
-}
-
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* get size of row data                                                       */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-i8 RowSingle::nSizeRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  i8 nSizeBytes = m_pStreamDef->nColumns(C_ALL) * sizeof(i8);
-  
-  return nSizeBytes;
-}
-
-#else // ???????????????????????????????????????????????????????????????????????
-
-i8 RowSingle::nSizeRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  i8 nSizeBytes = m_pStreamDef->nColumns(C_ALL) * sizeof(i8);
-  
-  return nSizeBytes;
-}
-
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* get size of row data                                                       */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWBOX_BASED
-
-i8 RowSingle::nSizeVch(void)
+i8 RowSingle::nSumVchSizes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -762,7 +707,7 @@ i8 RowSingle::nSizeVch(void)
 
 #else // ???????????????????????????????????????????????????????????????????????
 
-i8 RowSingle::nSizeVch(void)
+i8 RowSingle::nSumVchSizes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -799,13 +744,13 @@ i8 RowSingle::nSizeVch(void)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
-Stz* RowSingle::szStzArea(void)
+Stz* RowSingle::szStzArea(void)                                          // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
   Stz* szArea = RowBox_t<C_ROWSINGLE_WSP>::szStzArea();
   
-  return szStzArea;
+  return szArea;
 }
 
 #else // ???????????????????????????????????????????????????????????????????????

@@ -33,6 +33,7 @@ namespace Rows
   
   
     Dtm* aColDtm(i8 i_Col);
+    void vColSetNull(i8 i_Col);
     d8   dColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
@@ -155,6 +156,15 @@ Dtm* RowBox_t<SIZE>::aColDtm(i8 i_Col)
   Dtm* aDtm = m_aRow->aColDtm(i_Col);
   
   return aDtm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column value to be dull                                                */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vColSetNull(i8 i_Col)
+{
+  m_aRow->vSetColNull(i_Col);
 }
 
 /*----------------------------------------------------------------------------*/

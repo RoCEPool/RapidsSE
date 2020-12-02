@@ -54,6 +54,7 @@ namespace Rows
     void vAllotSetVarchar(i8 i_Col,Stz* szVal);
 #endif
   
+    byte* ayCellArray(void);
     Dtm* aColDtm(i8 i_Col);
     Dtm  wColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);
@@ -62,15 +63,12 @@ namespace Rows
     Stz* szColVal(i8 i_Col);
     void vCopy(Row* pRow);
     void vDontDecodeVch(void);
-    byte* ayDstByte(void);
     bool bIsColNull(i8 i_Col);
     void vResetValues(void);
     void vSet(i8 iArgsBegin, ...);
     void vSetNull(i8 i_Col);
     void vSetValue(Datum* pDatum, Column* pCol);
-    i8   nSizeBytes(void);
-    i8   nSizeRow(void);
-    i8   nSizeVch(void);
+    i8   nSumVchSizes(void);
 
     Stz* szStzArea(void);
   private:

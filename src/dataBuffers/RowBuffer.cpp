@@ -78,7 +78,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   
   //i8 nHeadSize = Row::nSizeBytes(pStreamDef);
-  i8 nVchSize = pRowSingle->nSizeVch();
+  i8 nVchSize = pRowSingle->nSumVchSizes();
   
   if (! bHasSpaceFor(nVchSize + m_nRowSizeProper))
     return nullptr;
