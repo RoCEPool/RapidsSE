@@ -30,6 +30,13 @@ namespace Rows
     void vResolveStreamPix(StreamDef* pStreamDef);
     
     Row* aAllotNewRow(void);
+  
+  
+    d8   dColVal(i8 i_Col);
+    i8   iColVal(i8 i_Col);
+    Stz* szColVal(i8 i_Col);
+
+    bool bIsColNull(i8 i_Col);
 
     Row* aFirstRow(void);
     Row* aLastRow(void);
@@ -135,6 +142,55 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 
   return m_aRow;
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get float value of given column                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+d8 RowBox_t<SIZE>::dColVal(i8 i_Col)
+{
+  d8 dVal = m_aRow->dColVal_flt(i_Col);
+  
+  return dVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get integer value of given column                                          */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::iColVal(i8 i_Col)
+{
+  i8 iVal = m_aRow->iColVal_int(i_Col);
+  
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stz value of given column                                              */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Stz* RowBox_t<SIZE>::szColVal(i8 i_Col)
+{
+  Stz* szVal = m_aRow->szColVal_ofs(i_Col);
+  
+  return szVal;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* is given column a null?                                                    */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+bool RowBox_t<SIZE>::bIsColNull(i8 i_Col)
+{
+  bool bIsNull = m_aRow->bIsColNull(i_Col);
+  
+  return bIsNull;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
