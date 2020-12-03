@@ -8,11 +8,6 @@ namespace CompactBuffers
   class RowInflator : private RowCoder
   {
   public:
-    //! NOTE: KEEP BOTH INFLATES UP-TO-DATE
-    //! Any change in any one of the functions needs to be made in the others.
-    //! Kept separate for performance reasons
-    //! Highly performance-critical functions
-
   
    static void vInflateColumn(RowSingle* pRowSingle,
                               HeadLine* aHeadLine,
@@ -34,13 +29,13 @@ namespace CompactBuffers
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */
   /*----------------------------------------------------------------------------*/
-  inline static void vInflate_v2(byte*& rayDstByte,
-                                 byte*& rayDataByte,
-                                 HeadLine* aHeadLine,
-                                 u1 uHigh,
-                                 u1 uLow,
-                                 eSI eStrInflate,
-                                 char*& racStrArea)
+  inline static void vInflate_CodedValue_into_Cell(byte*& rayDstByte,
+                                                   byte*& rayDataByte,
+                                                   HeadLine* aHeadLine,
+                                                   u1 uHigh,
+                                                   u1 uLow,
+                                                   eSI eStrInflate,
+                                                   char*& racStrArea)
   {
     _static_
     

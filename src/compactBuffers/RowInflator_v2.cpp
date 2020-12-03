@@ -151,7 +151,6 @@ void RowInflator::vInflateSet(i8** aaiDstk,
     //vTrace("Inflate %lld\n"_Stz,i_Col);
     
     //RASSERT(SI_ADDRESS == eStrInflate || SI_DEST_PST == eStrInflate);
-    //vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,eStrInflate,acStrArea);
     
     
     /////////////////////////////////////////////////////////////////////////////
@@ -692,10 +691,10 @@ void RowInflator::vInflateRowSingle(RowSingle* pRowSingle,
     u1 uLow  = uMetaCode & 0x0F;
 
 #ifdef _ROWBOX_BASED
-    vInflate_v2(ayCellArray,ayDataByte,aHeadLine,
+    vInflate_CodedValue_into_Cell(ayCellArray,ayDataByte,aHeadLine,
                   uHigh,uLow,SI_AREA_OFS,azStrArea);
 #else
-    vInflate_v2(ayCellArray,ayDataByte,aHeadLine,
+    vInflate_CodedValue_into_Cell(ayCellArray,ayDataByte,aHeadLine,
                   uHigh,uLow,SI_AREA_ADR,azStrArea);
 #endif
     
