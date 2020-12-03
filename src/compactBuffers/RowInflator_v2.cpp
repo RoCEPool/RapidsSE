@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateSet(i8** aaiDstk,
-                              HeadLine* aHeadLine,
-                              StreamDef* pStreamDef,
-                              eSI eStrInflate,
-                              i8* iaColSet)
+void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaiDstk,
+                                                    HeadLine* aHeadLine,
+                                                    i8* iaColSet,
+                                                    StreamDef* pStreamDef,
+                                                    eSI eStrInflate)
 {
   _static_
 
@@ -651,7 +651,7 @@ void RowInflator::vInflateSet(i8** aaiDstk,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColumn(RowSingle* pRow,
+void RowInflator::vInflate_OneColumn_into_RowSingle(RowSingle* pRow,
                                  HeadLine* aHeadLine,
                                  i8 i_ColToRetrieve)
 {
@@ -662,7 +662,7 @@ void RowInflator::vInflateColumn(RowSingle* pRow,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRowSingle(RowSingle* pRowSingle,
+void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
                                     HeadLine* aHeadLine)
 {
   _static_
@@ -691,11 +691,13 @@ void RowInflator::vInflateRowSingle(RowSingle* pRowSingle,
     u1 uLow  = uMetaCode & 0x0F;
 
 #ifdef _ROWBOX_BASED
-    vInflate_CodedValue_into_Cell(ayCellArray,ayDataByte,aHeadLine,
-                  uHigh,uLow,SI_AREA_OFS,azStrArea);
+    vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,
+                                  aHeadLine,ayDataByte,
+                                  uHigh,uLow,SI_AREA_OFS);
 #else
-    vInflate_CodedValue_into_Cell(ayCellArray,ayDataByte,aHeadLine,
-                  uHigh,uLow,SI_AREA_ADR,azStrArea);
+    vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,
+                                  aHeadLine,ayDataByte,
+                                  uHigh,uLow,SI_AREA_ADR);
 #endif
     
   }
@@ -706,7 +708,7 @@ void RowInflator::vInflateRowSingle(RowSingle* pRowSingle,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRowSlab(RowSlab* pRowSlab,
+void RowInflator::vInflate_AllColumns_into_RowSlab(RowSlab* pRowSlab,
                                   HeadLine* aHeadLine)
 {
   NEVER_REACH;

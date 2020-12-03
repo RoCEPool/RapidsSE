@@ -1222,11 +1222,12 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
       
-  RowInflator::vInflateSet(aaiDstk,
-                                //pLogicUnit->m_pDevAltIxt->m_aCrw,
-                                (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
-                                pLogicUnit->m_pDevAltRsb->m_pStreamDef,
-                                (eSI)ieStrInflate,iaColSet);
+  RowInflator::vInflate_ColumnSet_into_CellArray(
+    aaiDstk,
+    (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
+    iaColSet,
+    pLogicUnit->m_pDevAltRsb->m_pStreamDef,
+    (eSI)ieStrInflate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1239,10 +1240,12 @@ void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   
   LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
     
-  RowInflator::vInflateSet(aaiDstk,
-                                pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
-                                (eSI)ieStrInflate,iaColSet);
+  RowInflator::vInflate_ColumnSet_into_CellArray(
+    aaiDstk,
+    pLogicUnit->m_pDevSrcIxt->m_aCrw,
+    iaColSet,
+    pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
+    (eSI)ieStrInflate);
 }
 
 /*----------------------------------------------------------------------------*/

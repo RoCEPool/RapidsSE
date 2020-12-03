@@ -9,33 +9,34 @@ namespace CompactBuffers
   {
   public:
   
-   static void vInflateColumn(RowSingle* pRowSingle,
-                              HeadLine* aHeadLine,
-                              i8 i_ColToRetrieve);
+   static void vInflate_OneColumn_into_RowSingle(RowSingle* pRowSingle,
+                                                 HeadLine* aHeadLine,
+                                                 i8 i_ColToRetrieve);
   
-   static void vInflateSet(i8** aaiDstk,
-                           HeadLine* aHeadLine,
-                           StreamDef* pStreamDef,
-                           eSI eStrInflate,
-                           i8* iaColSet);
+   static void vInflate_ColumnSet_into_CellArray(i8** aaiDstk,
+                                                 HeadLine* aHeadLine,
+                                                 i8* iaColSet,
+                                                 StreamDef* pStreamDef,
+                                                 eSI eStrInflate);
   
-    static void vInflateRowSingle(RowSingle* pRowSingle,
-                                  HeadLine* aHeadLine);
-  
-    static void vInflateRowSlab(RowSlab* pRowSlab,
-                                HeadLine* aHeadLine);
+  static void vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
+                                                 HeadLine* aHeadLine);
+
+  static void vInflate_AllColumns_into_RowSlab(RowSlab* pRowSlab,
+                                               HeadLine* aHeadLine);
 
   
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */
   /*----------------------------------------------------------------------------*/
   inline static void vInflate_CodedValue_into_Cell(byte*& rayDstByte,
-                                                   byte*& rayDataByte,
+                                                   char*& racStrArea,
                                                    HeadLine* aHeadLine,
+                                                   byte*& rayDataByte,
                                                    u1 uHigh,
                                                    u1 uLow,
-                                                   eSI eStrInflate,
-                                                   char*& racStrArea)
+                                                   eSI eStrInflate
+                                                   )
   {
     _static_
     
@@ -605,7 +606,7 @@ namespace CompactBuffers
         goto L_Overflowed;
       }
       else {
-        vTrace("vInflateSet: Invalid uHigh=%lld\n"_Stz,(i8)uHigh);
+        vTrace("vInflate_ColumnSet_into_CellArray: Invalid uHigh=%lld\n"_Stz,(i8)uHigh);
         RASSERT(0);
       }
       
