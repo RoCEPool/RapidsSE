@@ -32,9 +32,9 @@ namespace Rows
     Row* aAllotNewRow(void);
   
   
-    Dtm* aColDtm(i8 i_Col);
     void vColDeposit(i8 i_Col, i8 iVal);
     void vColDeposit(i8 i_Col, Stz* szVal);
+    Dtm* aColDtm(i8 i_Col);
     void vColSetNull(i8 i_Col);
     d8   dColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);
@@ -148,6 +148,23 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* get datum value of given column                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vColDeposit(i8 i_Col, i8 iValue)
+{
+  m_aRow->vColVal_int(i_Col,iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get datum value of given column                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vColDeposit(i8 i_Col, Stz* szVal)
+{
+  WspConvergent_t<SIZE,Stz,Row>::vStzDeposit(szVal);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get datum value of given column                                            */
