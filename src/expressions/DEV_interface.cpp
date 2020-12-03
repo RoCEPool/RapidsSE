@@ -1251,6 +1251,8 @@ void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
+HACK(LogicUnit,"Alka : vInflate_Key_into_ElementArray is not right");
+
 void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
 {
   _static_
@@ -1259,7 +1261,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   HeadLine*  aHeadLine  = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
   StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRsb->m_pStreamDef;
   
-  RowInflator::vInflate_Key_into_CellArray
+  RowInflator::vInflate_Key_into_ElementArray
         (aaiDstk,aHeadLine,iaColSet,
          pStreamDef,nullptr,ieStrInflate);
   return;

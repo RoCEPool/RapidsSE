@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowInflator_v2.cpp -- Row Inflator (using Meta Code)                       */
+/* RowInflator.cpp -- Compact Row Inflator                                    */
 /*============================================================================*/
 
 #include "CompactBuffers.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaiDstk,
+void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
                                                     HeadLine* aHeadLine,
                                                     i8* iaColSet,
                                                     StreamDef* pStreamDef,
@@ -30,32 +30,11 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaiDstk,
   ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the set of columns to be retrieved
-  
-//  i8 nWhichCols = 0;
-//  i8 iWhichCol[C_MAX_COLUMNS];
-//
-//  i8 i_ColToRetrieve;
-//  for (;;) {
-//
-//    i_ColToRetrieve = *((*aaiDstk)--);
-//
-//    if (-1 == i_ColToRetrieve)
-//      break;
-//
-//    // must be in ascending order
-//    ASSERT(0 == nWhichCols ||
-//           i_ColToRetrieve > iWhichCol[nWhichCols-1]);
-//
-//    iWhichCol[nWhichCols++] = i_ColToRetrieve;
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
   char* acStrArea = nullptr;
   
-  i8* aiDstk_lcl = *aaiDstk;
+  i8* aiDstk_lcl = *aaCellArray;
   
   byte* ayDstByte = (byte*)++aiDstk_lcl;
   
@@ -644,7 +623,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaiDstk,
 
   aiDstk_lcl = (i8*)ayDstByte;
   
-  *aaiDstk = --aiDstk_lcl;
+  *aaCellArray = --aiDstk_lcl;
 
 }
 

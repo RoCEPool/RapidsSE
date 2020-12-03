@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowInflator.hpp -- Row Inflator Mark V                                     */
+/* RowInflator.hpp -- Compact Row Inflator                                    */
 /*============================================================================*/
 #pragma once
 
@@ -13,7 +13,7 @@ namespace CompactBuffers
                                                  HeadLine* aHeadLine,
                                                  i8 i_ColToRetrieve);
   
-   static void vInflate_ColumnSet_into_CellArray(i8** aaiDstk,
+   static void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
                                                  HeadLine* aHeadLine,
                                                  i8* iaColSet,
                                                  StreamDef* pStreamDef,
@@ -495,12 +495,12 @@ namespace CompactBuffers
   /* inflate column set                                                         */
   /*----------------------------------------------------------------------------*/
   public:
-  static inline void vInflate_Key_into_CellArray(i8** aaiDstk,
-                                                 HeadLine* aHeadLine,
-                                                 i8* iaColSet,
-                                                 StreamDef* pStreamDef,
-                                                 IndexDef* pIndexDef,
-                                                 i8 ieStrInflate)
+  static inline void vInflate_Key_into_ElementArray(i8** aaElementArray,
+                                                    HeadLine* aHeadLine,
+                                                    i8* iaColSet,
+                                                    StreamDef* pStreamDef,
+                                                    IndexDef* pIndexDef,
+                                                    i8 ieStrInflate)
   {
     _static_
     
@@ -516,7 +516,7 @@ namespace CompactBuffers
   
   char* acStrArea = nullptr;
   
-  i8* aiDstk_lcl = *aaiDstk;
+  i8* aiDstk_lcl = *aaElementArray;
   
   byte* ayDstByte = (byte*)++aiDstk_lcl;
   
@@ -1060,7 +1060,7 @@ namespace CompactBuffers
   
   aiDstk_lcl = (i8*)ayDstByte;
   
-  *aaiDstk = --aiDstk_lcl;
+  *aaElementArray = --aiDstk_lcl;
 
   }
   
