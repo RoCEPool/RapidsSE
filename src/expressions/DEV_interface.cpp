@@ -1259,8 +1259,9 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   HeadLine*  aHeadLine  = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
   StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRsb->m_pStreamDef;
   
-  RowInflator::vInflateKey(aaiDstk,aHeadLine,iaColSet,ieStrInflate,
-                           pStreamDef,nullptr);
+  RowInflator::vInflate_Key_into_CellArray
+        (aaiDstk,aHeadLine,iaColSet,
+         pStreamDef,nullptr,ieStrInflate);
   return;
   
   //--- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - ---

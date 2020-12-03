@@ -495,12 +495,12 @@ namespace CompactBuffers
   /* inflate column set                                                         */
   /*----------------------------------------------------------------------------*/
   public:
-  static inline void vInflateKey(i8** aaiDstk,
-                                 HeadLine* aHeadLine,
-                                 i8* iaColSet,
-                                 i8 ieStrInflate,
-                                 StreamDef* pStreamDef,
-                                 IndexDef* pIndexDef)
+  static inline void vInflate_Key_into_CellArray(i8** aaiDstk,
+                                                 HeadLine* aHeadLine,
+                                                 i8* iaColSet,
+                                                 StreamDef* pStreamDef,
+                                                 IndexDef* pIndexDef,
+                                                 i8 ieStrInflate)
   {
     _static_
     
