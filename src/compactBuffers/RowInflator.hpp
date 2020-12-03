@@ -30,21 +30,6 @@ namespace CompactBuffers
     static void vInflateRowSlab(RowSlab* pRowSlab,
                                 HeadLine* aHeadLine);
 
-  private:
-    
-  
-    // v2 meta code
-  
-    static void vInflateColumn_v2(RowSingle* pRow,
-                                  HeadLine* aHeadLine,
-                                  i8 i_ColToRetrieve);
-  
-    static void vInflateRow_single(RowSingle* pRowSingle,
-                                   HeadLine* aHeadLine);
-  
-    static void vInflateRow_slab(RowSlab* pRowSlab,
-                                 HeadLine* aHeadLine);
-
   
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */

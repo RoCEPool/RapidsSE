@@ -5,38 +5,6 @@
 #include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
-/* inflate headline into row                                                  */
-/*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColumn(RowSingle* pRow,
-                                 HeadLine* aHeadLine,
-                                 i8 i_ColToRetrieve)
-{
-  vInflateColumn_v2(pRow,aHeadLine,i_ColToRetrieve);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inflate headline into row                                                  */
-/*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRowSingle(RowSingle* pRowSingle,
-                                    HeadLine* aHeadLine)
-{
-  vInflateRow_single(pRowSingle,aHeadLine);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inflate headline into row                                                  */
-/*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRowSlab(RowSlab* pRowSlab,
-                                  HeadLine* aHeadLine)
-{
-  vInflateRow_slab(pRowSlab,aHeadLine);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateSet(i8** aaiDstk,
@@ -684,7 +652,9 @@ void RowInflator::vInflateSet(i8** aaiDstk,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve)
+void RowInflator::vInflateColumn(RowSingle* pRow,
+                                 HeadLine* aHeadLine,
+                                 i8 i_ColToRetrieve)
 {
   NEVER_REACH;
 }
@@ -693,7 +663,8 @@ void RowInflator::vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine, i8 i_C
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow_single(RowSingle* pRowSingle, HeadLine* aHeadLine)
+void RowInflator::vInflateRowSingle(RowSingle* pRowSingle,
+                                    HeadLine* aHeadLine)
 {
   _static_
   
@@ -736,7 +707,8 @@ void RowInflator::vInflateRow_single(RowSingle* pRowSingle, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow_slab(RowSlab* pRowSlab, HeadLine* aHeadLine)
+void RowInflator::vInflateRowSlab(RowSlab* pRowSlab,
+                                  HeadLine* aHeadLine)
 {
   NEVER_REACH;
 }
