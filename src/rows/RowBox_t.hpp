@@ -33,6 +33,8 @@ namespace Rows
   
   
     Dtm* aColDtm(i8 i_Col);
+    void vColDeposit(i8 i_Col, i8 iVal);
+    void vColDeposit(i8 i_Col, Stz* szVal);
     void vColSetNull(i8 i_Col);
     d8   dColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);

@@ -49,6 +49,7 @@ namespace Alignment
     Stz*  szStzAllot_begin(void);
     void  vStzAllot_end(i8 nSize);
     Stz*  szStzArea(void);
+    void  vStzDeposit(Stz* szValue);
     void  vTakeHead(i8 nBytes);
     void  vTakeTail(i8 nBytes);
     i8    nUsed(void);
@@ -423,6 +424,19 @@ template<i8 SIZE, class HEAD, class TAIL>
 void WspConvergent_t<SIZE,HEAD,TAIL>::vStzAllot_end(i8 nSize)
 {
   vTakeHead(nSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* deposit given stz                                                          */
+/*----------------------------------------------------------------------------*/
+template<i8 SIZE, class HEAD, class TAIL>
+void WspConvergent_t<SIZE,HEAD,TAIL>::vStzDeposit(Stz* szValue)
+{
+  i8 nSize = szValue->nSize();
+  
+  Stz* szAllottedStz = szStzAllot_begin();
+  szAllottedStz = szValue;
+  vStzAllot_end(nSize);
 }
 
 /*----------------------------------------------------------------------------*/
