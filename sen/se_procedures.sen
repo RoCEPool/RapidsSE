@@ -1840,6 +1840,40 @@
   "
   api::addProcedure
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Query 20 -
+//   [P0] ( insert into temptable select p_partkey from part where p_mfgr = 'Manufacturer#1' )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert into tempTable0 select p_partkey from part where p_mfgr = 'Manufacturer#1';
+  sPath
+"
+  procedure s0
+      begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all nodes :
+    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
+    | stageC
+
+  stage stageC on all partitions :
+    EOAsm2 ../eo_text/asm20_s0.txt 0 //select p_partkey from part where p_mfgr = 'Manufacturer#1';
+    | stageD
+
+  stage stageD on all partitions :
+    EOAsm2 ../eo_text/asm20_s0.txt 0 // insert into tempTable0
+    | stage E
+
+  stage stageE on origin:
+    sink | stageA
+
+      end ;
+  "
+api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 20 -  [S1] select ps_suppkey from partsupp where ps_partKey in

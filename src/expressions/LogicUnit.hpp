@@ -237,6 +237,8 @@ namespace Expressions
     void vGenerate100000(void);
     void vGenerate100001(void);
 
+    void vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     #include "RLU_interface.h"

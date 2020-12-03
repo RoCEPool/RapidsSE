@@ -421,12 +421,35 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-  TagSet oTagSet;
-
   File* pFile = new File(nullptr);
   
   bool b = pFile->bOpenWrite(sFileName);
   RASSERT(b);
+
+  switch (iQueryNo) {
+
+    case 0:
+      vGenerateAsmTxt_Smt0(iQueryNo, iSubQueryNo, pFile);
+      break;
+    case 20:
+      //vGenerateAsmTxt_Query20(iQueryNo, iSubQueryNo, pFile);
+      break;
+    default:
+      RASSERT(0);
+  }
+
+  pFile->vClose();
+  delete pFile;
+  
+}
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
 
   // append the INIT code
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
@@ -447,7 +470,7 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
   oTagSet.vAppend(C_TAG_COLUMN_NAME, "l_extendedprice"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
   oTagSet.vReset();
-  
+
   // end a StreamDef handler
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
 
@@ -486,13 +509,9 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
   oTagSet.vReset();
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_END, &oTagSet));
-  
+
   // Finally query done
   pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
-
-  pFile->vClose();
-  delete pFile;
-  
 }
 
 /*----------------------------------------------------------------------------*/
