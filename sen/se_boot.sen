@@ -226,13 +226,8 @@ assert::stack_0
 
         "OP_xmit.sen"                 include
 
-        "OP_EOAsm.sen"                include
-
 3 .put
-        "BM_genEnt.sen"               include
-        "BM_genCrw.sen"               include
-        "BM_inflateCrw.sen"           include
-        "BM_insIdx.sen"               include
+        "OP_EOAsm.sen"                include
 
 2 .put
         "test_dData.sen"              include

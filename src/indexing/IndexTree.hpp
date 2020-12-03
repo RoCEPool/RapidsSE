@@ -70,8 +70,6 @@ namespace Indexing
     bool       bVerifyIndex(void);
     void       vVisualize(void);
 
-    void       vExtractKey(EntWrk* pEntWrk, Crw* aCrw);
-    void       vExtractKey(EntWrk* pEntWrk, Row* pRow);
     void       vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row);
 
     Footer*   aFooter(void);
