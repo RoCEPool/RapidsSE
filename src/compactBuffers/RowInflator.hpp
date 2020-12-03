@@ -27,13 +27,10 @@ namespace CompactBuffers
   
     // v2 meta code
   
-    static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
-                               StreamDef* pStreamDef,
-                               eSI eStrInflate, i8* iaColSet);
     static void vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine,
                                   i8 i_ColToRetrieve);
-    static void vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow_v2(RowSlab* pRsbSlab, HeadLine* aHeadLine);
+    static void vInflateRow_single(RowSingle* pRowSingle, HeadLine* aHeadLine);
+    static void vInflateRow_slab(RowSlab* pRowSlab, HeadLine* aHeadLine);
 
   
   /*----------------------------------------------------------------------------*/

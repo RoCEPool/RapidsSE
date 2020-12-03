@@ -5,16 +5,6 @@
 #include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
-/* inflate set onto Dstk                                                      */
-/*----------------------------------------------------------------------------*/
-void RowInflator::vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
-                              StreamDef* pStreamDef,
-                              eSI eStrInflate, i8* iaColSet)
-{
-  vInflateSet_v2(aaiDstk,aHeadLine,pStreamDef,eStrInflate,iaColSet);
-}
-
-/*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
@@ -26,9 +16,9 @@ void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
+void RowInflator::vInflateRow(RowSingle* pRowSingle, HeadLine* aHeadLine)
 {
-  vInflateRow_v2(pRow,aHeadLine);
+  vInflateRow_single(pRowSingle,aHeadLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +26,7 @@ void RowInflator::vInflateRow(RowSingle* pRow, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
 {
-  vInflateRow_v2(pRowSlab,aHeadLine);
+  vInflateRow_slab(pRowSlab,aHeadLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,11 +36,11 @@ void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateSet_v2(i8** aaiDstk,
-                                 HeadLine* aHeadLine,
-                                 StreamDef* pStreamDef,
-                                 eSI eStrInflate,
-                                 i8* iaColSet)
+void RowInflator::vInflateSet(i8** aaiDstk,
+                              HeadLine* aHeadLine,
+                              StreamDef* pStreamDef,
+                              eSI eStrInflate,
+                              i8* iaColSet)
 {
   _static_
 
@@ -701,20 +691,20 @@ void RowInflator::vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine, i8 i_C
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
+void RowInflator::vInflateRow_single(RowSingle* pRowSingle, HeadLine* aHeadLine)
 {
   _static_
   
   u1* auMetaCode;
   byte* ayDataByte;
 
-  i8 nCols = pRow->m_nColumns;
+  i8 nCols = pRowSingle->m_nColumns;
 
   vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
 
-  byte* ayCellArray = pRow->ayCellArray();
+  byte* ayCellArray = pRowSingle->ayCellArray();
     
-  char* azStrArea = (char*)pRow->szStzArea();
+  char* azStrArea = (char*)pRowSingle->szStzArea();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -744,7 +734,7 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow_v2(RowSlab* pRowSlab, HeadLine* aHeadLine)
+void RowInflator::vInflateRow_slab(RowSlab* pRowSlab, HeadLine* aHeadLine)
 {
   NEVER_REACH;
 }
