@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _AsmQuery20 - TPCH query 20 (ASM)                                          */
+/*============================================================================*/
+print "Starting cluster..." ;
+
+bc;
+
+print "Cluster started" ;
+
+//trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "creating part...";
+
+create table part (
+	 P_PARTKEY           INTEGER NOT NULL,
+	 P_NAME              VARCHAR(55) NOT NULL,
+	 P_MFGR              CHAR(25) NOT NULL,
+	 P_BRAND             CHAR(10) NOT NULL,
+	 P_TYPE              VARCHAR(25) NOT NULL,
+	 P_SIZE              INTEGER NOT NULL,
+	 P_CONTAINER         CHAR(10) NOT NULL,
+	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+	 P_COMMENT           VARCHAR(23) NOT NULL
+);
+
+print "loading part...";
+/time load part "/DATA/TPCH/part_100.tbl";
+
+// create a temp table
+create table tempTable0 (p_partkey integer);

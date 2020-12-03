@@ -226,10 +226,9 @@ assert::stack_0
 
         "OP_xmit.sen"                 include
 
-3 .put
         "OP_EOAsm.sen"                include
+        "OP_EOAsm2.sen"               include
 
-2 .put
         "test_dData.sen"              include
         "test_encodingData.sen"       include
         "test_gGen.sen"               include

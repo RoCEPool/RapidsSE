@@ -60,7 +60,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_LGL_AND,          // logical and top two int's, push result
   /*    */ EO_LGL_OR,           // logical or top two int's, push result
   /*    */ EO_LGL_NOT,          // logical not top int, push result
-  
+
   // null test operators
   /*    */ EO_ISNULL,           // test if top is null, push result
   /*    */ EO_ISNOTNULL,        // test if top is not null, push result
@@ -95,6 +95,11 @@ enum eEO : u1 // expression operators
   /*    */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
   /*    */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
   /*    */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
+  /*    */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
+  /*    */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
+  /*    */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
+  /*    */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
+  /*    */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
   /*    */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
   /*    */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
   /*    */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
@@ -108,7 +113,11 @@ enum eEO : u1 // expression operators
   // table
   /*    */ EO_TABLENM_ALT_SET,    // set the alt table name
   /*    */ EO_TABLENM_SRC_SET,    // set the src table name
-  
+
+  // table ptn
+  /*    */ EO_TABLEPTN_DROPREAD,  // drop a tablePtn read lock
+  /*    */ EO_TABLEPTN_GRABREAD,  // grab a tablePtn read lock
+
   // stack operators
   /*    */ EO_INC,              // increment top, push result
   /*    */ EO_DEC,              // decrement top, push result
@@ -138,6 +147,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_DUMP,             // stack dump
   /*    */ EO_ENTER,            // diarise routine enter
   /*    */ EO_EXIT,             // diarise routine exit
+  /*    */ EO_HANDLER,          // set handler
   /*    */ EO_INIT,             // initialise the rlu common
   /*    */ EO_INTEGRITY,        // integrity check
   /*    */ EO_NEVERREACH,       // assert (never reach code)
@@ -293,7 +303,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_RSB_SRC_PUSHCOLS, // push src column (string)
   /*    */ EO_RSB_ALT_PUSHCOLI, // push alt column
 
-  // super fragments
+    // super fragments
   /*    */ EO_SUPER_Q100,       // super fragment Q100
   /*    */ EO_SUPER_Z001,       // super fragment
   /*    */ EO_SUPER_Z002,       // super fragment
@@ -363,7 +373,7 @@ static Stz* aEO[]
   /*    */ "EO_LGL_AND"_Stz,
   /*    */ "EO_LGL_OR"_Stz,
   /*    */ "EO_LGL_NOT"_Stz,
-  
+
   // null test operators
   /*    */ "EO_ISNULL"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
@@ -398,6 +408,11 @@ static Stz* aEO[]
   /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_REG_INDEXDEF_NEW"_Stz,
   /*    */ "EO_REG_INDEXTREE_NEW"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_OPEN"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_READ"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
@@ -411,7 +426,11 @@ static Stz* aEO[]
   // table
   /*    */ "EO_TABLENM_ALT_SET"_Stz,
   /*    */ "EO_TABLENM_SRC_SET"_Stz,
-  
+
+  // table ptn
+  /*    */ "EO_TABLEPTN_DROPREAD"_Stz,
+  /*    */ "EO_TABLEPTN_GRABREAD"_Stz,
+
   // stack operators
   /*    */ "EO_INC"_Stz,
   /*    */ "EO_DEC"_Stz,
@@ -441,6 +460,7 @@ static Stz* aEO[]
   /*    */ "EO_DUMP"_Stz,
   /*    */ "EO_ENTER"_Stz,
   /*    */ "EO_EXIT"_Stz,
+  /*    */ "EO_HANDLER"_Stz,
   /*    */ "EO_INIT"_Stz,
   /*    */ "EO_INTEGRITY"_Stz,
   /*    */ "EO_NEVERREACH"_Stz,
@@ -595,7 +615,11 @@ static Stz* aEO[]
   /*    */ "EO_RSB_SRC_PUSHCOLI"_Stz,
   /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
   /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
-  
+
+  // scan operators
+  /*    */ "EO_SCN_SRC_BEGIN"_Stz,
+  /*    */ "EO_SCN_SRC_NEXT"_Stz,
+
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
   /*    */ "EO_SUPER_Z001"_Stz,
@@ -707,6 +731,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
+  {EA_NONE,      0},  //EO_REG_PTNSTREAM_CLOSE
+  {EA_NONE,      0},  //EO_REG_PTNSTREAM_DELETE
+  {EA_NONE,      0},  //EO_REG_PTNSTREAM_NEW
+  {EA_NONE,      0},  //EO_REG_PTNSTREAM_OPEN
+  {EA_NONE,      0},  //EO_REG_PTNSTREAM_READ
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
@@ -720,7 +749,11 @@ static EoArg EoArgs[]
   // table
   { EA_STRING, -1 },  // EO_TABLENM_ALT_SET
   { EA_STRING, -1 },  // EO_TABLENM_SRC_SET
-  
+
+    // table
+  { EA_NONE, 0 },  // EO_TABLEPTN_DROPREAD
+  { EA_NONE, 0 },  // EO_TABLEPTN_GRABREAD
+
   // stack operators
   { EA_NONE,    0 },  // EO_INC
   { EA_NONE,    0 },  // EO_DEC
@@ -750,6 +783,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DUMP
   { EA_NONE,    0 },  // EO_ENTER
   { EA_NONE,    0 },  // EO_EXIT
+  { EA_STRING,  -1 }, // EO_HANDLER
   { EA_NONE,    0 },  // EO_INIT
   { EA_NONE,    0 },  // EO_INTEGRITY
   { EA_NONE,    0 },  // EO_NEVERREACH

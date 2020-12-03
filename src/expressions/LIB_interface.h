@@ -33,6 +33,7 @@ i8   iLib_STR_COMPARE(void* pLU, Stz* szTopA, Stz* szTopB);
 
 void vRlu_ENTER(void* aLU);
 void vRlu_EXIT(void* aLU);
+void vRlu_HANDLER(void* aLU, Stz* aHandler);
 void vRlu_QUERYFRAG(void* aLU, i8 iQueryFrag);
 
 void vRlu_TMR_AGG_ADD(void* pLU);

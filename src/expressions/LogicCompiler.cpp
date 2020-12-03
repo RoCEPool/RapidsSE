@@ -101,24 +101,34 @@ DynamicSymbol gxaDynamicSymbol[]
   { "szDev_RSB_PUSHCOLS"_Stz,     (const void *) szDev_RSB_PUSHCOLS     },
   { "iDev_RSB_PUSHOFS"_Stz,       (const void *) iDev_RSB_PUSHOFS       },
   { "vDev_RSB_RESET"_Stz,         (const void *) vDev_RSB_RESET         },
-  { "vDev_RSB_SET"_Stz,           (const void *) vDev_RSB_SET         },
+  { "vDev_RSB_SET"_Stz,           (const void *) vDev_RSB_SET           },
   { "vDev_RSB_SETBYOFS"_Stz,      (const void *) vDev_RSB_SETBYOFS      },
   { "vDev_RSB_TABLENM_SET"_Stz,   (const void *) vDev_RSB_TABLENM_SET   },
   { "iDev_RSB_TEST"_Stz,          (const void *) iDev_RSB_TEST          },
   { "iDev_RSB_TESTROW"_Stz,       (const void *) iDev_RSB_TESTROW       },
   { "vDev_RSB_ZERO"_Stz,          (const void *) vDev_RSB_ZERO          },
-  
+
+  { "vDev_TABLEPTN_DROPREAD"_Stz,   (const void *) vDev_TABLEPTN_DROPREAD   },
+  { "vDev_TABLEPTN_GRABREAD"_Stz,   (const void *) vDev_TABLEPTN_GRABREAD   },
+
   { "vDev_ALT_COL_PUSHSET"_Stz,   (const void *) vDev_ALT_COL_PUSHSET          },
   { "vDev_RSB_COL_PUSHSET"_Stz,   (const void *) vDev_RSB_COL_PUSHSET          },
   { "vDev_SRC_COL_PUSHSET"_Stz,   (const void *) vDev_SRC_COL_PUSHSET          },
   
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT       },
   
-  { "vDev_REG_EOSMARKER_NEW"_Stz,          (const void *) vDev_REG_EOSMARKER_NEW },
+  { "vDev_REG_EOSMARKER_NEW"_Stz,          (const void *) vDev_REG_EOSMARKER_NEW      },
   { "vDev_REG_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_REG_INDEXDEF_ADDCOLUMN },
-  { "vDev_REG_INDEXDEF_DELETE"_Stz,        (const void *) vDev_REG_INDEXDEF_DELETE },
-  { "vDev_REG_INDEXDEF_NEW"_Stz,           (const void *) vDev_REG_INDEXDEF_NEW },
-  { "vDev_REG_INDEXTREE_NEW"_Stz,          (const void *) vDev_REG_INDEXTREE_NEW },
+  { "vDev_REG_INDEXDEF_DELETE"_Stz,        (const void *) vDev_REG_INDEXDEF_DELETE    },
+  { "vDev_REG_INDEXDEF_NEW"_Stz,           (const void *) vDev_REG_INDEXDEF_NEW       },
+  { "vDev_REG_INDEXTREE_NEW"_Stz,          (const void *) vDev_REG_INDEXTREE_NEW      },
+
+  { "vDev_REG_PTNSTREAM_CLOSE"_Stz,        (const void *) vDev_REG_PTNSTREAM_CLOSE    },
+  { "vDev_REG_PTNSTREAM_DELETE"_Stz,       (const void *) vDev_REG_PTNSTREAM_DELETE   },
+  { "vDev_REG_PTNSTREAM_NEW"_Stz,          (const void *) vDev_REG_PTNSTREAM_NEW      },
+  { "vDev_REG_PTNSTREAM_OPEN"_Stz,         (const void *) vDev_REG_PTNSTREAM_OPEN     },
+  { "vDev_REG_PTNSTREAM_READ"_Stz,         (const void *) vDev_REG_PTNSTREAM_READ     },
+
   { "vDev_REG_STREAMDEFOUT_NEW"_Stz,       (const void *) vDev_REG_STREAMDEFOUT_NEW },
   { "vDev_REG_STREAMDEFOUT_ADDCOLUMN"_Stz, (const void *) vDev_REG_STREAMDEFOUT_ADDCOLUMN },
   { "vDev_REG_STREAMDEF_STREAMDEFOUT"_Stz, (const void *) vDev_REG_STREAMDEF_STREAMDEFOUT },
@@ -146,6 +156,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vRlu_ENDTMR"_Stz,            (const void *) vRlu_ENDTMR            },
   { "vRlu_ENTER"_Stz,             (const void *) vRlu_ENTER             },
   { "vRlu_EXIT"_Stz,              (const void *) vRlu_EXIT              },
+  { "vRlu_HANDLER"_Stz,           (const void *) vRlu_HANDLER           },
   { "vRlu_QUERYFRAG"_Stz,         (const void *) vRlu_QUERYFRAG         },
   { "vRlu_TMR_AGG_ADD"_Stz,       (const void *) vRlu_TMR_AGG_ADD       },
   { "iRlu_TMR_AGG_NSECS"_Stz,     (const void *) iRlu_TMR_AGG_NSECS     },
