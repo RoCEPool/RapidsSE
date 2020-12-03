@@ -728,8 +728,13 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
     u1 uHigh = uMetaCode >> 4;
     u1 uLow  = uMetaCode & 0x0F;
 
+#ifdef _ROWBOX_BASED
+    vInflate_v2(ayCellArray,ayDataByte,aHeadLine,
+                  uHigh,uLow,SI_AREA_OFS,azStrArea);
+#else
     vInflate_v2(ayCellArray,ayDataByte,aHeadLine,
                   uHigh,uLow,SI_AREA_ADR,azStrArea);
+#endif
     
   }
   // for each column

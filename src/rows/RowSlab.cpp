@@ -451,7 +451,7 @@ i8 RowSlab::iOfsOfRow(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  i8 iOfs = iOffset((byte*)aRow);
+  i8 iOfs = iToOffset((byte*)aRow);
   
   return iOfs;
 }

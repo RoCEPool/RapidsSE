@@ -49,7 +49,6 @@ namespace Rows
 //    void vPrintRows(StreamDef* pStreamDef);
 //    void vShow(StreamDef* pStreamDef);
     
-  private:
     i8   iToOffset(Stz* aItem);
   
     //Footer* aFooter(void);
@@ -163,7 +162,11 @@ void RowBox_t<SIZE>::vColDeposit(i8 i_Col, i8 iValue)
 template <i8 SIZE>
 void RowBox_t<SIZE>::vColDeposit(i8 i_Col, Stz* szVal)
 {
-  WspConvergent_t<SIZE,Stz,Row>::vStzDeposit(szVal);
+  Stz* szDeposited = WspConvergent_t<SIZE,Stz,Row>::szStzDeposit(szVal);
+  
+  i8 i_Ofs = WspConvergent_t<SIZE,Stz,Row>::iToOffset((byte*)szDeposited);
+  
+  m_aRow->vColVal_ofs(i_Col,i_Ofs);
 }
 
 /*----------------------------------------------------------------------------*/
