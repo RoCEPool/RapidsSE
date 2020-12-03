@@ -73,8 +73,10 @@ RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
   
 #ifdef _ROWBOX_BASED
   
-  Row* aRow = aAllotNewRow();
+  vResolveStreamPix(pStreamDef);
 
+  Row* aRow = aAllotNewRow();
+  
 #else
   
   m_awaColVal = (Dtm*)m_xWsp.ayAllotTail(m_nColumns * sizeof(Dtm));

@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-//#define _ROWBOX_BASED 1
-
 namespace Rows
 {
   class RowSingle :
