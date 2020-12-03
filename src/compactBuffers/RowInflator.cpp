@@ -8,10 +8,11 @@
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
+                                                    char*& racStrArea,
                                                     HeadLine* aHeadLine,
                                                     i8* iaColSet,
                                                     StreamDef* pStreamDef,
-                                                    eSI eStrInflate)
+                                                    eSI eStrInflateRule)
 {
   _static_
 
@@ -129,7 +130,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
 
     //vTrace("Inflate %lld\n"_Stz,i_Col);
     
-    //RASSERT(SI_ADDRESS == eStrInflate || SI_DEST_PST == eStrInflate);
+    //RASSERT(SI_ADDRESS == eStrInflateRule || SI_DEST_PST == eStrInflateRule);
     
     
     /////////////////////////////////////////////////////////////////////////////
@@ -360,7 +361,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrSize = STRx1(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_ADDRESS == eStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -368,7 +369,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == eStrInflate) {
+          if (SI_AREA_ADR == eStrInflateRule) {
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
             
@@ -378,7 +379,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == eStrInflate) {
+            if (SI_DEST_PST == eStrInflateRule) {
               memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
               
@@ -429,7 +430,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
       case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_ADDRESS == eStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -437,7 +438,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == eStrInflate) {
+          if (SI_AREA_ADR == eStrInflateRule) {
             
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
@@ -448,7 +449,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == eStrInflate) {
+            if (SI_DEST_PST == eStrInflateRule) {
               azDst = (char*)ayDstByte;
               memcpy(azDst,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
@@ -469,7 +470,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
       case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_ADDRESS == eStrInflateRule) {
           aacCellValue = (char**)ayDataByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -477,7 +478,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == eStrInflate) {
+          if (SI_AREA_ADR == eStrInflateRule) {
             
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
@@ -488,7 +489,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == eStrInflate) {
+            if (SI_DEST_PST == eStrInflateRule) {
               memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
               
@@ -508,7 +509,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
       case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_ADDRESS == eStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -516,7 +517,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == eStrInflate) {
+          if (SI_AREA_ADR == eStrInflateRule) {
             
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
@@ -527,7 +528,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == eStrInflate) {
+            if (SI_DEST_PST == eStrInflateRule) {
               memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
               
@@ -549,7 +550,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
         nStrSize = aTailLine->w8_1B(+ C_U_1B);
-        if (SI_AREA_ADR == eStrInflate) {
+        if (SI_AREA_ADR == eStrInflateRule) {
           
           memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
           
