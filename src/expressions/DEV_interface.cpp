@@ -1179,6 +1179,35 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
   pDevRsb->m_pRowSlab->vZeroRow(pDevRsb->m_aRow);
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop tablePtn read lock                                                    */
+/*----------------------------------------------------------------------------*/
+void vDev_TABLEPTN_DROPREAD(void* aLU)
+{
+  _static_
+
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+
+  TablePtn *pTablePtn = *pLogicUnit->m_xpTablePtn;
+  pTablePtn->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab tablePtn read lock                                                    */
+/*----------------------------------------------------------------------------*/
+void vDev_TABLEPTN_GRABREAD(void* aLU)
+{
+  _static_
+
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+
+  TablePtn *pTablePtn = *pLogicUnit->m_xpTablePtn;
+  pTablePtn->bGrabRead();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1983,6 +2012,70 @@ void vDev_REG_INDEXTREE_NEW(void* aLU)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
   pLogicUnit->m_xpIndexTree = new IndexTree(nullptr, *pLogicUnit->m_xpIndexDef, C_UNKNOWN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* close ptnStream[]                                                          */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_PTNSTREAM_CLOSE(void* aLU) {
+  _static_
+
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+
+  PtnStream *pPtnStream = *pLogicUnit->m_xpPtnStream;
+  pPtnStream->vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete ptnStream[]                                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_PTNSTREAM_DELETE(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  PtnStream* pPtnStream = *pLogicUnit->m_xpPtnStream;
+  delete pPtnStream;
+  pLogicUnit->m_xpPtnStream = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new ptnStream[]                                                            */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_PTNSTREAM_NEW(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  pLogicUnit->m_xpPtnStream = new PtnStream(*pLogicUnit->m_xpTablePtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* open ptnStream[]                                                           */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_PTNSTREAM_OPEN(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  PtnStream* pPtnStream = *pLogicUnit->m_xpPtnStream;
+  bool bOpened = pPtnStream->bOpen();
+}
+
+/*----------------------------------------------------------------------------*/
+/* read ptnStream[] into Operand[]                                            */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_PTNSTREAM_READ(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  PtnStream* pPtnStream = *pLogicUnit->m_xpPtnStream;
+  pLogicUnit->m_xpOperandA = pPtnStream->pRead();
 }
 
 /*----------------------------------------------------------------------------*/

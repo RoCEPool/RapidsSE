@@ -88,7 +88,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pDevSrcIxt = new DevIXT;
   m_pDevAltIxt = new DevIXT;
   m_pDevTmpIxt = new DevIXT;
-  
+
   m_pLogicTimer = nullptr;
 
   m_xRluCommon.m_pDevDstRsb = m_pDevDstRsb;
@@ -1485,7 +1485,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU2(EO_LGL_NOT,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // null test operators
       case EO_ISNULL: ArgNil(); // test if top is null, push result
@@ -1646,8 +1646,33 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_REG_INDEXTREE_NEW);
         vDev_REG_INDEXTREE_NEW(pLU);
         break;//+endCase
-      
-      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // move streamDef to streamDefOut[]
+
+      case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]
+        dLU0(EO_REG_PTNSTREAM_CLOSE);
+        vDev_REG_PTNSTREAM_CLOSE(pLU);
+        break;//+endCase
+
+      case EO_REG_PTNSTREAM_DELETE: ArgNil(); // delete ptnStream[]
+        dLU0(EO_REG_PTNSTREAM_DELETE);
+        vDev_REG_PTNSTREAM_DELETE(pLU);
+        break;//+endCase
+
+      case EO_REG_PTNSTREAM_NEW: ArgNil(); // new an ptnStream in ptnStream[]
+        dLU0(EO_REG_PTNSTREAM_NEW);
+        vDev_REG_PTNSTREAM_NEW(pLU);
+        break;//+endCase
+
+      case EO_REG_PTNSTREAM_OPEN: ArgNil(); // new an ptnStream in ptnStream[]
+        dLU0(EO_REG_PTNSTREAM_OPEN);
+        vDev_REG_PTNSTREAM_OPEN(pLU);
+        break;//+endCase
+
+      case EO_REG_PTNSTREAM_READ: ArgNil(); // read from ptnStream[]
+        dLU0(EO_REG_PTNSTREAM_READ);
+        vDev_REG_PTNSTREAM_READ(pLU);
+        break;//+endCase
+
+      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new an ptnStream in ptnStream[]
         dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
         break;//+endCase
@@ -1704,7 +1729,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_TABLENM_SRC_SET);
         vDev_RSB_TABLENM_SET(pLU,aRluCommon->m_pDevSrcRsb,(Stz*)iArg);
         break;//+endCase
-        
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // table ptn
+      case EO_TABLEPTN_DROPREAD: ArgNil(); // drop the tableptn read lock
+        dLU0(EO_TABLEPTN_DROPREAD);
+        vDev_TABLEPTN_DROPREAD(pLU);
+        break;//+endCase
+
+      case EO_TABLEPTN_GRABREAD: ArgNil(); // grab the tableptn read lock
+        dLU0(EO_TABLEPTN_GRABREAD);
+        vDev_TABLEPTN_GRABREAD(pLU);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // stack operators
       case EO_INC: ArgNil(); // increment top, push result
@@ -1869,7 +1906,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_EXIT);
         vRlu_EXIT(pLU);
         break;//+endCase
-        
+
+      case EO_HANDLER: GetStr(iArg); // set logicUnit handler
+        dLU0(EO_EXIT);
+        vRlu_HANDLER(pLU, (Stz*)iArg);
+        break;//+endCase
+
       case EO_INIT: ArgNil(); // initialise the rlu common
         dLU0(EO_INIT);
         aRluCommon = aRlu_INIT(pLU);
@@ -2775,7 +2817,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU2(EO_RSB_ALT_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_SUPER_Q100: ArgNil(); // super frag for Q100
         aiLocals = aRluCommon->m_iaLocals;

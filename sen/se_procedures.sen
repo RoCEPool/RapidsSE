@@ -1816,7 +1816,6 @@
   sPath
   "
   procedure Smt0
-    parameters $Table
   begin
 
   stage stageA on origin :
@@ -1829,8 +1828,7 @@
     | stageC
 
   stage stageC on all partitions :
-    scan $Table
-    | EOAsm ../eo_text/asm0_s0.txt 0
+    EOAsm2 ../eo_text/asm0_s0.txt 0
     | stageD
 
   stage stageD on origin :

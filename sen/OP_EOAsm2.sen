@@ -1,0 +1,323 @@
+/*============================================================================*/
+/* OP_EOAsm2.sen -- sql                                                        */
+/*============================================================================*/
+
+" OP_EOAsm2.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: EOAsm2_StartMarker \handler
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  // new the pot[]
+  Pot[].new
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  // generate asm from query text
+  Counter0[] <queryText> genAsm not if
+    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
+    PipeIn[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    true
+    exit
+  then
+
+  // execute plan generated STARTMARKER_handler
+  ZK_STARTMARKER Counter0[] executeAsmArgs
+
+  // do we have a table ?
+  logicUnit[].srcTable@ "" str.equal not if
+
+    // do we have an index ?
+    logicUnit[].srcIndex@ "" str.equal not if
+
+      // find the src table and src index
+      logicUnit[].srcTable@ logicUnit[].srcIndex@ op__table_index not if
+        true
+        exit
+      then
+
+      index[].indexTree to indexTree[]
+      indexTree[].asSrc
+
+    else
+      // find the src table
+      logicUnit[].srcTable@ op__table not if
+        true
+        exit
+      then
+
+    then
+
+    // set table streamDef as src streamDef
+    Table[].asSrcStreamDef
+    Table[].tablePtn@ to tablePtn[]
+
+  then
+
+  // do we have an alternate table ?
+  logicUnit[].altTable@ "" str.equal not if
+
+    // do we have an alternative index ?
+    logicUnit[].altIndex@ "" str.equal not if
+
+      // find the alt table and alt index
+      logicUnit[].altTable@ logicUnit[].altIndex@ op__table_index not if
+        true
+        exit
+      then
+
+      index[].indexTree to indexTree[]
+      indexTree[].asAlt
+
+    else
+
+      // find the src table
+      logicUnit[].srcTable@ op__table not if
+        true
+        exit
+      then
+
+    then
+
+    // set table streamDef as src streamDef
+    Table[].asAltStreamDef
+    Table[].tablePtn@ to tablePtn[]
+
+  then
+
+  ZK_STARTMARKER_handler
+
+  // pipeout streamDefout if any (q3)
+  //StreamDefOut[].isNull not if
+  //  StreamDefOut[].pipeout
+  //then
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_DATAPULSE ...                                                  BEGIN */
+/*----------------------------------------------------------------------------*/
+: EOAsm2_DataMarker \handler
+
+  //
+  // HACK:: till we get the ASM of query text's out of this operator
+
+  // If a streamDef is created in STARTMARKER
+  // we cannot pipe it out there as its possible
+  // that the next EOASM gets an error while handling its STARTMARKER
+  // and then it doesn't know how to handle the STREAMDEF
+  // eg 300 creates streamdef in startMarker handler
+  // sends it out
+  // 301 gets an error while ASM of 301 query text
+  // can't handle stream marker (from inside ASM code (no ASM))
+
+  // pipeout streamDefout if any (q3)
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
+
+  // END HACK
+  //
+
+  PipeIn[].isNull not if
+    ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
+    PipeIn[].pipeOut // ZK_DATAPULSE_handler
+  then
+
+  // execute plan DATAPULSE_HANDLER
+  ZK_DATAPULSE Counter0[] executeAsmArgs
+
+  //false LogicUnit[].calledAgain!
+
+  // pipeout streamDefout if any
+  //StreamDefOut[].isNull not if
+  //  StreamDefOut[].pipeout
+  //then
+/*
+  LogicUnit[].callAgain@ if
+    //"Completed test" .
+    Pot[].pipeoutAllCompletedPtns
+  else
+    //"not called again" .
+    //Pot[].pipeoutAllDanglingPtns
+    // force op loop to call EOAsm_EosMarker to end
+    "EOAsm_EosMarker" word::find LogicUnit[].handler!
+    true LogicUnit[].callAgain!
+  then
+*/
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: EOAsm2_CrwBuffer \handler
+
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  // read next buffer from ptn stream
+  ptnStream[] ptnStream.read to Operand[]
+
+  Operand[].isNotNull if
+    // read a next crw buffer
+
+    Operand[].asSrcCrwBuffer
+    ZK_CRWBUFFER Counter0[] executeAsmArgs
+    Operand[].delete
+
+    // call this handler again to process next buffer
+    true LogicUnit[].callAgain!
+
+  else
+    // no more crw buffers
+
+    // close and delete partition stream
+    ptnStream[] ptnStream.close
+    ptnStream[] ptnStream.delete
+    nullptr to ptnStream[]
+
+    // drop partition lock
+    tablePtn[] tablePtnDropRead
+
+    // pipe out all pot[]
+    //Pot[].pipeoutAllDanglingPtns
+    //Pot[].delete
+
+    // pipe out an eos marker
+    Operand[].newEosMarker
+
+    // force op loop to call EOAsm_EosMarker to end
+    "EOAsm_EosMarker" word::find LogicUnit[].handler!
+    true LogicUnit[].callAgain!
+  then
+
+  Pot[].pipeoutAllCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_RSBBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: EOAsm2_RsbBuffer \handler
+
+  0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
+
+  //Pipein[] "GOT RSBBUFFER %v" .printf
+  Operand[].pipeIn
+  Operand[].asSrcRowSlab
+  ZK_RSBBUFFER Counter0[] executeAsmArgs
+  Operand[].delete
+  Pot[].pipeoutAllCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: EOAsm2_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // Invoked from PULSEMARKER call again?
+  Operand[].isNull not if
+    //"PULSEMARKER created an EOSMARKER" .
+    // there should be no Pipein EOSMARKER
+    Pipein[].isNull assert
+    Operand[] to Pipein[]
+  then
+
+  // Invoked from PULSEMARKER call again?
+  // but PULSEMARKER did not create an EOS MARKER
+  Pipein[].isNull if
+    //"PULSEMARKER is null" .
+    true
+    exit
+  then
+
+  // handle EOSMARKER
+  ZK_EOSMARKER Counter0[] executeAsmArgs
+  Counter0[] cleanUpAsm
+
+  // pipe out all pot[]
+  Pot[].pipeoutAllDanglingPtns
+  Pot[].delete
+
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: EOAsm2_StreamDef \handler
+
+  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  Pipein[] to StreamDef[]
+  nullptr to Pipein[]
+
+  // execute plan STREAMDEF_handler
+  ZK_STREAMDEF Counter0[] executeAsmArgs
+
+  streamDef[].asSrcStreamDef
+
+  // pipeout streamDefout if any
+  StreamDefOut[].isNull not if
+    StreamDefOut[].pipeout
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: EOAsm2_req \operator
+
+  LogReqEntry SEED_REQ
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: EOAsm2_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: EOAsm2_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: EOAsm2_DataMarker  ZK_DATAPULSE op[].handler!
+  find: EOAsm2_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: EOAsm2_StartMarker ZK_STARTMARKER op[].handler!
+  find: EOAsm2_StreamDef   ZK_STREAMDEF   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: EOAsm2 :: EOAsm2 <queryText> <compiled> ;
+
+: EOAsm2 _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

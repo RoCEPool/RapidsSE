@@ -244,7 +244,7 @@ void LogicUnit::vCollectOpcode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  //vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
+  vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
   
   if (m_pTkn->bSame("Label"_Stz)) {
     vAcceptToken();
@@ -255,7 +255,9 @@ void LogicUnit::vCollectOpcode(void)
   TagSet* pJobTags = AM::pPipelineJob()->pJobTags();
   
   for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
-    
+
+    //vTrace("Opcode: %s; Arg: %s\n"_Stz, aEO[i_OpCode], aEA[EoArgs[i_OpCode].m_eArgument]);
+
     if (m_pTkn->bSame(aEO[i_OpCode])) {
 
       //vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
@@ -433,13 +435,10 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
   oTagSet.vReset();
 
   // append a default handler for the ZK_STARTMARKER
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
 
-  // append a default handler for the ZK_DATAPULSE
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_DATAPULSE_HANDLER, &oTagSet));
- 
-  // begin a StreamDef handler
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_BEGIN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
 
   // add a column to the streamDef
   oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
@@ -450,17 +449,32 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
   oTagSet.vReset();
   
   // end a StreamDef handler
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER_END, &oTagSet));
- 
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+
+  // append a default handler for the STREAMDEF
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
   // append a default handler for the EOSMARKER
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // append a datapulse handler
+  //   to begin crw tablePtn iteration
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // append a crwIterate routine
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
 
   // append a handler for iterating a CRWBUFFER and
   //   to execute PROJECT_COLUMNS for each row
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "PROJECT_COLUMNS"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_HANDLER, &oTagSet));
   oTagSet.vReset();
- 
+
+
   // add the columns to be projected to PROJECT_COLUMNS
   oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 1);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_BEGIN, &oTagSet));
