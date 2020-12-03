@@ -324,7 +324,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       
       // inflate the row
       if (aCrw) {
-        RowInflator::vInflateRow(hRow, aCrw);
+        RowInflator::vInflateRowSingle(hRow, aCrw);
       } else {
         // get no of columns
         i8 nColumns = pStreamDef->nColumns(iRowRef);
@@ -436,7 +436,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
 
       // inflate the row
       if (aCrw) {
-        RowInflator::vInflateRow(hRow, aCrw);
+        RowInflator::vInflateRowSingle(hRow, aCrw);
       } else {
         // get no of columns
         i8 nColumns = pStreamDef->nColumns(iRowRefs);

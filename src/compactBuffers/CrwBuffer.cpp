@@ -153,11 +153,11 @@ CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* convert/inflate compact row into row                                       */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vToRow(RowSingle* pRow, Crw* aCrw)
+void CrwBuffer::vToRow(RowSingle* pRowSingle, Crw* aCrw)
 {
   _static_
   
-  RowInflator::vInflateRow(pRow,aCrw);
+  RowInflator::vInflateRowSingle(pRowSingle,aCrw);
 }
 
 
@@ -376,7 +376,7 @@ void CrwBuffer::vGetRow(RowSingle* pRow, i8 i_Row)
   
   Crw* aCrw = (Crw*)aGetHead(i_Row);
   
-  RowInflator::vInflateRow(pRow,aCrw);
+  RowInflator::vInflateRowSingle(pRow,aCrw);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,7 +388,7 @@ void CrwBuffer::vGetRow(RowSlab* pRowSlab, i8 i_Row)
 
   Crw* aCrw = (Crw*)aGetHead(i_Row);
 
-  RowInflator::vInflateRow(pRowSlab,aCrw);
+  RowInflator::vInflateRowSlab(pRowSlab,aCrw);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -522,7 +522,7 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
       continue;
     
     // inflate compact row into row
-    RowInflator::vInflateRow(hRow,aCrw);
+    RowInflator::vInflateRowSingle(hRow,aCrw);
     
     hvRec->vAppend(hRow);
     hvRec->vPrintRow();
@@ -601,7 +601,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   Crw* aCompactRow = (Crw*)aGetHead(i_Row);
   
   // inflate compact row into row
-  RowInflator::vInflateRow(hRow,aCompactRow);
+  RowInflator::vInflateRowSingle(hRow,aCompactRow);
   
   // append the row to the record
   hvRec->vAppend(hRow);

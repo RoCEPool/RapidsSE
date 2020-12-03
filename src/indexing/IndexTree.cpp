@@ -467,7 +467,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
       aiDstk = ((i8*)xEntWrk.aKey()) - 1;
       aHeadLine = pCrwBuffer->aGetHead(i_Row);
 
-      RowInflator::vInflateSet(&aiDstk,aHeadLine,aiaColSet,SI_DEST_KEY,
+      RowInflator::vInflateKey(&aiDstk,aHeadLine,aiaColSet,SI_DEST_KEY,
                                pStreamDef,m_pIndexDef);
       xEntWrk.aEnt()->vKind(KE_INT);
     }

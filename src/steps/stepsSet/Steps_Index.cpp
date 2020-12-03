@@ -193,7 +193,7 @@ void Step::vIndexDeleteNext(void)
         
       Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
       
-      RowInflator::vInflateRow(hRow,aCrw);
+      RowInflator::vInflateRowSingle(hRow,aCrw);
       hvRec->vAppend(hRow);
       hvRec->vPrintRow();
       

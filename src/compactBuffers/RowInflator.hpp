@@ -14,72 +14,48 @@ namespace CompactBuffers
     //! Highly performance-critical functions
 
   
-    static void vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
-                                StreamDef* pStreamDef,
-                                eSI eStrInflate, i8* iaColSet);
-    static void vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
-                               i8 i_ColToRetrieve);
-    static void vInflateRow(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow(RowSlab* pRsbSlab, HeadLine* aHeadLine);
+   static void vInflateColumn(RowSingle* pRowSingle,
+                              HeadLine* aHeadLine,
+                              i8 i_ColToRetrieve);
+  
+   static void vInflateSet(i8** aaiDstk,
+                           HeadLine* aHeadLine,
+                           StreamDef* pStreamDef,
+                           eSI eStrInflate,
+                           i8* iaColSet);
+  
+    static void vInflateRowSingle(RowSingle* pRowSingle,
+                                  HeadLine* aHeadLine);
+  
+    static void vInflateRowSlab(RowSlab* pRowSlab,
+                                HeadLine* aHeadLine);
 
   private:
     
   
     // v2 meta code
   
-    static void vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine,
+    static void vInflateColumn_v2(RowSingle* pRow,
+                                  HeadLine* aHeadLine,
                                   i8 i_ColToRetrieve);
-    static void vInflateRow_single(RowSingle* pRowSingle, HeadLine* aHeadLine);
-    static void vInflateRow_slab(RowSlab* pRowSlab, HeadLine* aHeadLine);
+  
+    static void vInflateRow_single(RowSingle* pRowSingle,
+                                   HeadLine* aHeadLine);
+  
+    static void vInflateRow_slab(RowSlab* pRowSlab,
+                                 HeadLine* aHeadLine);
 
   
-  /*----------------------------------------------------------------------------*/
-  /* general v2 skip code                                                       */
-  /*----------------------------------------------------------------------------*/
-  inline static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte, HeadLine* aHeadLine)
-  {
-    _static_
-
-    L_Overflowed:
-    
-    if (uHigh <=  MC_STRING_x1) // numeric & date
-      rayDataByte += uLow;
-    else
-    if (uHigh >=  MC_NEGATIVE)  // small value
-      {;}
-    else
-    if (uHigh == MC_STRING_x1)  // string x 1
-      rayDataByte += STRx1(uLow);
-    else
-    if (uHigh == MC_STRING_x2)  // string x 2
-      rayDataByte += STRx2(uLow);
-    else
-    if (uHigh == MC_STRING_x4)  // string x 4
-      rayDataByte += STRx4(uLow);
-    else
-    if (uHigh == MC_STRING_x8)  // string x 8
-      rayDataByte += STRx8(uLow);
-    else
-    if (uHigh == MC_OVERFLOW) { // overflow
-      OverLine* aOverLine = aHeadLine->aGetOver();
-      u1 uMetaCode = *((u1*)aOverLine + C_U_1B);
-      METACODE_SPLIT(uMetaCode,uHigh,uLow);
-      rayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
-      goto L_Overflowed;
-    }
-    else {
-      RASSERT(0);
-    }
-
-  }
-
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */
   /*----------------------------------------------------------------------------*/
   inline static void vInflate_v2(byte*& rayDstByte,
-                                byte*& rayDataByte, HeadLine* aHeadLine,
-                                u1 uHigh, u1 uLow,
-                                eSI eStrInflate, char*& racStrArea)
+                                 byte*& rayDataByte,
+                                 HeadLine* aHeadLine,
+                                 u1 uHigh,
+                                 u1 uLow,
+                                 eSI eStrInflate,
+                                 char*& racStrArea)
   {
     _static_
     
@@ -538,8 +514,10 @@ namespace CompactBuffers
   /* inflate column set                                                         */
   /*----------------------------------------------------------------------------*/
   public:
-  static inline void vInflateSet(i8** aaiDstk, HeadLine*  aHeadLine,
-                                 i8* iaColSet, i8 ieStrInflate,
+  static inline void vInflateKey(i8** aaiDstk,
+                                 HeadLine* aHeadLine,
+                                 i8* iaColSet,
+                                 i8 ieStrInflate,
                                  StreamDef* pStreamDef,
                                  IndexDef* pIndexDef)
   {

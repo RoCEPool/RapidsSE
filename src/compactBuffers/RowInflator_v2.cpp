@@ -7,7 +7,8 @@
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
+void RowInflator::vInflateColumn(RowSingle* pRow,
+                                 HeadLine* aHeadLine,
                                  i8 i_ColToRetrieve)
 {
   vInflateColumn_v2(pRow,aHeadLine,i_ColToRetrieve);
@@ -16,7 +17,8 @@ void RowInflator::vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow(RowSingle* pRowSingle, HeadLine* aHeadLine)
+void RowInflator::vInflateRowSingle(RowSingle* pRowSingle,
+                                    HeadLine* aHeadLine)
 {
   vInflateRow_single(pRowSingle,aHeadLine);
 }
@@ -24,7 +26,8 @@ void RowInflator::vInflateRow(RowSingle* pRowSingle, HeadLine* aHeadLine)
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateRow(RowSlab* pRowSlab, HeadLine* aHeadLine)
+void RowInflator::vInflateRowSlab(RowSlab* pRowSlab,
+                                  HeadLine* aHeadLine)
 {
   vInflateRow_slab(pRowSlab,aHeadLine);
 }
@@ -125,7 +128,6 @@ void RowInflator::vInflateSet(i8** aaiDstk,
     // ignore column
     
     if (i_Col != i_ColToRetrieve) {
-      //vSkip_v2(uHigh,uLow,ayDataByte,aHeadLine);
       
     L_Overflowed:
       

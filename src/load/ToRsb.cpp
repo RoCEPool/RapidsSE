@@ -213,7 +213,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
 
 #define bAT_RECORD_TERMINATOR() \
   (cCurChr == m_cRecordTerminator)
-                                      \
+
 #define bAT_TIME_SEPARATOR() \
   (cCurChr == C_TIME_SEPARATOR)
 
@@ -1069,10 +1069,13 @@ L_Date_componentsCollected:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                               deposit date
   
-  m_pRowSlab->vDeposit(xDateValue);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,xDateValue);
+//  m_pRowSlab->vDeposit(xDateValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,xDateValue);
+  
+  vDEPOSIT_VALUE(xDateValue);
+
 
   goto L_FieldEnd;
 
@@ -1201,10 +1204,13 @@ L_Decimal:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit decimal
     
-  m_pRowSlab->vDeposit(iDecimalValue);
+//  m_pRowSlab->vDeposit(iDecimalValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,iDecimalValue);
   
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,iDecimalValue);
+  vDEPOSIT_VALUE(iDecimalValue);
+
 
   goto L_FieldEnd;
 
@@ -1530,11 +1536,13 @@ L_Interval:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                           deposit interval
   
-  m_pRowSlab->vDeposit(xIntervalValue);
+//  m_pRowSlab->vDeposit(xIntervalValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,xIntervalValue);
   
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,xIntervalValue);
-  
+  vDEPOSIT_VALUE(xIntervalValue);
+
   goto L_FieldEnd;
 
 L_Interval_setNull:
@@ -1665,10 +1673,12 @@ L_Time:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                               deposit time
   
-  m_pRowSlab->vDeposit(xTimeValue);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,xTimeValue);
+//  m_pRowSlab->vDeposit(xTimeValue);
+//    
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,xTimeValue);
+
+  vDEPOSIT_VALUE(xTimeValue);
 
   goto L_FieldEnd;
 
@@ -1951,10 +1961,14 @@ L_Timestamp_noTimeComponents:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                          deposit timestamp
   
-  m_pRowSlab->vDeposit(xTimestampValue);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,xTimestampValue);
+//  m_pRowSlab->vDeposit(xTimestampValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,xTimestampValue);
+  
+  
+  vDEPOSIT_VALUE(xTimestampValue);
+
 
   goto L_FieldEnd;
 
