@@ -501,7 +501,7 @@ void Step::vSocketRecvObject(void)
     }
       
     case CN_STREAMSET: {
-      StreamSet* pStreamSet = new StreamSet;
+      StreamSet* pStreamSet = new StreamSet(pSocket);
       
       MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
       
@@ -809,7 +809,7 @@ void Step::vSocketRecvObject_LowMem(void)
     }
       
     case CN_STREAMSET: {
-      StreamSet* pStreamSet = new StreamSet;
+      StreamSet* pStreamSet = new StreamSet(pSocket);
       
       MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
       

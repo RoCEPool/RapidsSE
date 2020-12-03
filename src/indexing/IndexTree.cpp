@@ -462,7 +462,6 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
     xRowRef.vItem(i_Row);
     xEntWrk.vRef(xRowRef);
     
-    //vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
     if (KE_INT == m_pIndexDef->eKeyKind()) {
 
       aiDstk = ((i8*)xEntWrk.aKey()) - 1;
@@ -480,28 +479,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
     ASSERT(aInsertedEntry);
   }
 }
-/*----------------------------------------------------------------------------*/
-//void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-//
-//  //pEntBuffer->vShow();
-//
-//  Rrf xRowRef;
-//  xRowRef.vBuffer(pCrwBuffer->iBufferNo());
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // iterate thru the buffer till no more entries
-//  for (i8 i_Row = 0; i_Row < pCrwBuffer->nRowCount(); i_Row++) {
-//
-//    xRowRef.vItem(i_Row);
-//
-//    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xRowRef);
-//
-//    //bVerify();
-//    ASSERT(bInserted);
-//  }
-//}
+
 
 /*----------------------------------------------------------------------------*/
 /* insert a given entry into this index tree starting at leaf / height 0      */
@@ -517,36 +495,6 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
   }
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootEntBuffer);
-  ASSERT(aInsertedEntry);
-  
-  //m_pRootEntBuffer->bVerify();
-  
-  m_okLock.vDropWrite();                                           //! DROP LOCK
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert an entry for given row into this index at level 0                   */
-/*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Crw* aCrw, Rrf& xRowRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-
-  StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
-
-  EntWrk xEntWrk;
-  xEntWrk.vStreamDef(pStreamDef);
-  vExtractKey(&xEntWrk,aCrw);
-  xEntWrk.vRef(xRowRef);
-
-  m_okLock.vGrabWrite();                                           //! GRAB LOCK
-  
-  if (! m_pRootEntBuffer) {
-    EntBuffer* pRootBuffer = pNewRootBuffer();
-  }
-  
-  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
   
   //m_pRootEntBuffer->bVerify();
@@ -802,89 +750,6 @@ bool IndexTree::bVerifyIndex(void)
     return m_pRootEntBuffer->bVerify();
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a key from given row into EntWrk                                   */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
-{
-  // get stream def
-  StreamDef* pStreamDef = pEntWrk->pStreamDef();
-  
-  // inflate row
-  HV_Row hRow(pStreamDef,C_ALL);
-  
-  RowInflator::vInflateRow(hRow,aCrw);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
-  
-  i8 nIdxCols = pIndexDef->nColumns();
-  hRow->m_bGetAll = false;
-  
-  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
-    
-    // get the column from the index column vector
-    Column* pColumn = pIndexDef->pGetColumn(i_IdxCol);
-    
-    // mark column to be retrieved
-    i8 i_Col = pColumn->iColumnNo();
-    hRow->m_abGetCol[i_Col] = true;
-    hRow->m_iLastCol = (i_Col > hRow->m_iLastCol)
-                          ? i_Col
-                          : hRow->m_iLastCol;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (KE_INT == eKeyKind()) {
-    
-    Column* pCol = pIndexDef->pGetColumn(0);
-    i8 iVal = hRow->iColVal(pCol->iColumnNo());
-    pEntWrk->aEnt()->vKind(KE_INT);
-    pEntWrk->aEnt()->vIntElm0(iVal);
-    
-    return;
-  }
-  
-  for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
-    
-    Column* pColumn = pIndexDef->pGetColumn(i_Col);
-    
-    // add the column value to the key
-    pEntWrk->vAppendElement(hRow,pColumn);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a key from given row into EntWrk                                   */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vExtractKey(EntWrk* pEntWrk, Row* aRow)
-{
-  
-  if (KE_INT == eKeyKind()) {
-    
-    IndexDef* pIndexDef = m_pIndex->pIndexDef();
-    Column* pCol = pIndexDef->pGetColumn(0);
-    i8 iVal = aRow->iColVal_int(pCol->iColumnNo());
-    pEntWrk->aEnt()->vKind(KE_INT);
-    pEntWrk->aEnt()->vIntElm0(iVal);
-    
-    return;
-  }
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 nIdxCols = m_pIndexDef->nColumns();
-  
-  for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
-    
-    // add the column value to the key
-    pEntWrk->vAppendElement(aRow, m_pIndexDef->pGetColumn(i_Col));
-  }
 }
 
 /*----------------------------------------------------------------------------*/

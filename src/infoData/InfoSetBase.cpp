@@ -38,7 +38,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
-: RowBuffer(eClassNo)
+: RowBuffer(eClassNo,pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -68,7 +68,7 @@ Row* InfoSetBase::aAllotRow(void)
   Row* pRow = nullptr;
 
   if (nFreeBytes() >= m_nRowSize) {
-    pRow = RowBuffer::aAllotRow(m_nRowSize);
+    pRow = aAllotNewRow();
     m_nInfoRows++;
   }
 
@@ -78,15 +78,15 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
-Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Row* pRow = RowBuffer::aAllotRow(pRowSingle);
-  m_nInfoRows++;
-  
-  return pRow;
-}
+//Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  Row* pRow = RowBuffer::aAllotCopyRow(pRowSingle);
+//  m_nInfoRows++;
+//
+//  return pRow;
+//}
 
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
    _precondition_(_ADDRESS_,_MAGIC_);
    
    // allot a row
-   Row* ayRow = RowBuffer::aAllotRow(Row::nSizeBytes(pStreamDef));
+   Row* ayRow = aAllotNewRow();
    m_nInfoRows++;
    
    Stz* ayDst;
@@ -195,7 +195,7 @@ Row* InfoSetBase::aNextRow(Row* aPrevRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return RowBuffer::aNextRow(aPrevRow, m_nRowSize);
+  return RowBuffer::aNextRow(aPrevRow);
 }
 
 /*----------------------------------------------------------------------------*/

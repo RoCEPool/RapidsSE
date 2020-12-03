@@ -5,7 +5,13 @@
 
 namespace Rows
 {
-  class RowSingle : public RowWsp<C_ROWSOLO_WSP>
+  class RowSingle :
+#ifdef _ROWBOX_BASED
+                    public Object,
+                    public RowBox_t<C_ROWSINGLE_WSP>
+#else
+                    public RowWsp<C_ROWSINGLE_WSP>
+#endif
   {
   public:
     // - - - - - - - - - - - - - - - - - -
@@ -25,7 +31,10 @@ namespace Rows
   
   private:
  
+#ifndef _ROWBOX_BASED
     Dtm* m_awaColVal; // dynamically allotted column value array
+#endif
+
   
     // - - - - - - - - - - - - - - - - - -
     // footer -- must be last
@@ -39,27 +48,25 @@ namespace Rows
     RowSingle(StreamDef* pStreamDef, i8 iSubSet);
     ~RowSingle(void) noexcept(false);
   
-    void vAdjustAddresses(RowSingle* pCopiedFromRow);
+#ifndef _ROWBOX_BASED
     void vAllotSetVarchar(i8 i_Col,Stz* szVal);
+#endif
+  
+    byte* ayCellArray(void);
     Dtm* aColDtm(i8 i_Col);
+    Dtm  wColDtm(i8 i_Col);
     char* azColVal(i8 i_Col);
     i8   iColVal(i8 i_Col);
     d8   dColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
-    Dtm  wColVal(i8 i_Col);
-    void vCopy(Row* pRow);
-    void vDontDecodeVch(void);
-    byte* ayDstByte(void);
+    void vCopyRow(Row* pRow);
     bool bIsColNull(i8 i_Col);
     void vResetValues(void);
-    void vSet(i8 iArgsBegin, ...);
-    void vSetNull(i8 i_Col);
+    void vSetColNull(i8 i_Col);
     void vSetValue(Datum* pDatum, Column* pCol);
-    i8   nSizeBytes(void);
-    i8   nSizeRow(void);
-    i8   nSizeVch(void);
-
+    i8   nSumVchSizes(void);
     Stz* szStzArea(void);
+
   private:
     Footer* aFooter(void);
   };

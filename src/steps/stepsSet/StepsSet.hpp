@@ -511,7 +511,6 @@ public:
   void vIndexStreamSet(void);
 
   // index tree
-  void vIndexTreeAggregate(void);
   void vIndexTreeAsAlt(void);
   void vIndexTreeAsSrc(void);
   void vIndexTreeAsTmp(void);

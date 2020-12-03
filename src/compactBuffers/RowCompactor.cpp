@@ -647,7 +647,7 @@ bool RowCompactor::bCollectSample(RowSingle* pSrw)
     return false;
   }
   
-  if ( ! m_pRowSamples->aAllotRow(pSrw) ) {
+  if ( ! m_pRowSamples->aAllotCopyRow(pSrw) ) {
   
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples full\n"_Stz);
@@ -688,7 +688,7 @@ void RowCompactor::vPackSamples(void)
     bool bPacked = bAddRowAsCrw(pSampleRow);
     RASSERT(bPacked);
     
-    pSampleRow = m_pRowSamples->aNextRow(pSampleRow, nRowSize);
+    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
   }
   
   //vDebugPoint();
@@ -709,12 +709,10 @@ void RowCompactor::vAnalyzeSamples(void)
     
     if (DM_VCH != eDatum)
       continue;
-    
-    i8 nRowHeadSize = Row::nSizeBytes(m_pStreamDef);
-    
+        
     for (Row* pOuterRow = m_pRowSamples->aFirstRow();
          pOuterRow;
-         pOuterRow = m_pRowSamples->aNextRow(pOuterRow,nRowHeadSize)) {
+         pOuterRow = m_pRowSamples->aNextRow(pOuterRow)) {
       
       //pOuterRow->vDump(m_pStreamDef);
       
@@ -726,9 +724,9 @@ void RowCompactor::vAnalyzeSamples(void)
       if (nLength < 8)
         continue;
       
-      for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow,nRowHeadSize);
+      for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow);
            pInnerRow;
-           pInnerRow = m_pRowSamples->aNextRow(pInnerRow,nRowHeadSize)) {
+           pInnerRow = m_pRowSamples->aNextRow(pInnerRow)) {
         
         if (pInnerRow->bIsColNull(i_Col))
           continue;

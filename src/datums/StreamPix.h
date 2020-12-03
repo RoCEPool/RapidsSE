@@ -11,10 +11,11 @@ namespace Datums
   
     // IF YOU ADD A MEMBER CHANGE CALC IN nBytes()
   
-    i8 m_nCols;       // number of columns
-    i8 m_nExtraCols;  //   of which there are nExtra metadata columns
-    b8 m_bPtnHash;    // is there a partition hash ?
-    i8 m_nMaxRowSize; //
+    b8 m_bInitialised; // has this stream pix been initialised
+    i8 m_nCols;        // number of columns
+    i8 m_nExtraCols;   //   of which there are nExtra metadata columns
+    b8 m_bPtnHash;     // is there a partition hash ?
+    i8 m_nMaxRowSize;  //
 
     bool   m_bProject[C_MAX_DEFCOLUMNS];
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // col pix (C++ flexible member array must be last)
@@ -22,10 +23,11 @@ namespace Datums
     // constructor
     StreamPix(void)
     {
-      m_nCols       = 0;
-      m_nExtraCols  = 0;
-      m_bPtnHash    = false;
-      m_nMaxRowSize = 256;  // FOR TESTING PURPOSES
+      m_bInitialised = false;
+      m_nCols        = 0;
+      m_nExtraCols   = 0;
+      m_bPtnHash     = false;
+      m_nMaxRowSize  = 256;  // FOR TESTING PURPOSES
       
       for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
         m_xaColPix[i_Col].m_uAsI4 = 0;
@@ -33,11 +35,14 @@ namespace Datums
       }
     }
   
-    // calc number of bytes
+    // calc number of bytes (this is weird)
     i8 nBytes(i8 nCols)
     {
-      i8 nBytes = (  (    4 * (i8)sizeof(i8))
-                   + (nCols * (i8)sizeof(ColPix)) ) ;
+      // there are 5 scalar 8B members in StreamPix + 2 arrays
+      i8 nBytes = (  (    5 * (i8)sizeof(i8))
+                   + (nCols * (i8)sizeof(bool))
+                   + (nCols * (i8)sizeof(ColPix))
+                   ) ;
     
       return nBytes;
     }

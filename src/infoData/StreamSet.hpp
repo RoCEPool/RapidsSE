@@ -14,7 +14,7 @@ namespace InfoData
     void* operator new(size_t);
     void operator delete(void*);
   
-    StreamSet(void);
+    StreamSet(Socket*);
     StreamSet(StreamDef* pStreamDef);
     ~StreamSet(void) noexcept(false);
 

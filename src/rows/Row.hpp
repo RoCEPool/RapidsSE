@@ -28,6 +28,8 @@ namespace Rows
   
     void vDump(StreamDef* pStreamDef);
   
+    m8*  aCellArray(void);
+  
     m8*  aColCell(i8 i_Col);
   
     Dtm* aColDtm(i8 i_Col);

@@ -712,10 +712,9 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
 
   vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
 
-  
-  byte* ayDstByte = pRow->ayDstByte();
+  byte* ayCellArray = pRow->ayCellArray();
     
-  char* acStrArea = (char*)pRow->szStzArea();
+  char* azStrArea = (char*)pRow->szStzArea();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -729,7 +728,13 @@ void RowInflator::vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine)
     u1 uHigh = uMetaCode >> 4;
     u1 uLow  = uMetaCode & 0x0F;
 
-    vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,SI_AREA_ADR,acStrArea);
+#ifdef _ROWBOX_BASED
+    vInflate_v2(ayCellArray,ayDataByte,aHeadLine,
+                  uHigh,uLow,SI_AREA_OFS,azStrArea);
+#else
+    vInflate_v2(ayCellArray,ayDataByte,aHeadLine,
+                  uHigh,uLow,SI_AREA_ADR,azStrArea);
+#endif
     
   }
   // for each column

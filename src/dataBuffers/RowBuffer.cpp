@@ -43,23 +43,23 @@ RowBuffer::RowBuffer(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
+: DataBuffer(eClassNo, false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  
+  vResolveStreamPix(pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump reference buffer                                                      */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  //RowBuffer* pRowBuffer = _pRowBuffer(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,41 +69,21 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::aAllotRow(i8 nBytes)
+Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  // allot using bytes as we don't know the size of the item
-  Row* ayRow = ayAllotTail(nBytes);
-  
-  new(ayRow) Row;
-  
-  if (! ayRow)
-    return nullptr;
-  
-  //vIncItems();
-  
-  Row* aRow = new(ayRow) Row();
-  
-  return aRow;
-}
+  RASSERT(m_oStreamPix.m_bInitialised);
 
-/*----------------------------------------------------------------------------*/
-/* allot a ref set in this buffer (may return nulltpr)                        */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   
-  i8 nHeadSize = Row::nSizeBytes(pStreamDef);
-  i8 nTailSize = pRowSingle->nSizeVch();
+  //i8 nHeadSize = Row::nSizeBytes(pStreamDef);
+  i8 nVchSize = pRowSingle->nSumVchSizes();
   
-  if (nFreeBytes() < nHeadSize + nTailSize)
+  if (! bHasSpaceFor(nVchSize + m_nRowSizeProper))
     return nullptr;
   
-  Row* pRow = RowBuffer::aAllotRow(nHeadSize);
+  Row* pRow = aAllotNewRow();
   
   new(pRow) Row;
 
@@ -152,48 +132,6 @@ Row* RowBuffer::aAllotRow(RowSingle* pRowSingle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return first ref set in this buffer                                        */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::aFirstRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Row* aRow = aFirstItem();
-  
-  return aRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return last ref set in this buffer                                         */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::aLastRow(i8 nRowBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Row* aRow = aFirstItem();
-  Row* aLastRow = nullptr;
-  
-  while (aRow) {
-    aLastRow = aRow;
-    aRow = aNextRow(aRow, nRowBytes);
-  };
-  
-  return aLastRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return next ref set in this buffer                                         */
-/*----------------------------------------------------------------------------*/
-Row* RowBuffer::aNextRow(Row* aPriorRow, i8 nRowBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Row* aRow = aAdjacentItem(aPriorRow, nRowBytes);
-  
-  return aRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(StreamDef* pStreamDef)
@@ -208,15 +146,14 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   // get the first row
   Row* pRow = aFirstRow();
   HV_Row hvRowSingle(pStreamDef, C_ALL);
-  i8 nRowHeadSize = Row::nSizeBytes(pStreamDef);
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
-    hvRowSingle->vCopy(pRow);
+    hvRowSingle->vCopyRow(pRow);
     hvRec->vAppend(hvRowSingle);
     hvRec->vPrintRow();
     
     // get the next row
-    pRow = aNextRow(pRow, nRowHeadSize);
+    pRow = aNextRow(pRow);
   }
 }
 
@@ -239,13 +176,12 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   Row* pRow = aFirstRow();
   HV_Row hvRowSingle(pStreamDef, C_ALL);
-  i8 nRowHeadSize = pStreamDef->nColumns(C_ALL)* sizeof(i8);
   
   HV_Rec hvRec(pStreamDef,C_ALL);
   while (pRow) {
-    hvRowSingle->vCopy(pRow);
+    hvRowSingle->vCopyRow(pRow);
     hvRec->vAppend(hvRowSingle);
-    pRow = aNextRow(pRow, nRowHeadSize);
+    pRow = aNextRow(pRow);
     hvRec->vPrintRow();
   }
   
@@ -256,9 +192,12 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within buffer for given item                 */
 /*----------------------------------------------------------------------------*/
-i8 RowBuffer::iToOffset(Stz* aItem)
+
+// I THINK THIS NEEDS TO GO
+
+i8 RowBuffer::iToOffset(Stz* szStr)
 {
-  i4 iOffset = static_cast<i4>(nDifference(aItem,this));
+  i4 iOffset = static_cast<i4>(nDifference(szStr,this));
   
   return iOffset;
 }

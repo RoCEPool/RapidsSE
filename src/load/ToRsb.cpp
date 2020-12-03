@@ -321,7 +321,7 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     vACCEPT_CHAR(); \
   }
 
-#define vSKIP_WHITE_SPACE_LEADING() \
+#define vWHITE_SPACE_leading() \
   vSKIP_WHITE_SPACE()
 
 #define vSKIP_WHITE_SPACE_TRAILING() \
@@ -399,6 +399,23 @@ void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
     } \
     vFIELD_ERROR(_errorCode);\
   }
+
+#define vDEPOSIT_VALUE(_value) \
+  \
+  m_pRowSlab->vDeposit(_value); \
+  \
+  if (xColPix.m_bPtnKey) \
+    PtnMap::vRunningHash(&iPtnKeyHash,_value);
+
+#define vDEPOSIT_NULL(_errorCode) \
+  \
+  if (! bPixNullable) \
+    vFIELD_ERROR(_errorCode); \
+  \
+  m_pRowSlab->vDeposit(C_DATUM_NULL); \
+  \
+  if (xColPix.m_bPtnKey) \
+    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
 
 
 /*----------------------------------------------------------------------------*/
@@ -774,7 +791,7 @@ L_Boolean:
   
    */
 
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -874,22 +891,27 @@ L_Boolean_recognised:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit boolean
   
-  m_pRowSlab->vDeposit(iBooleanValue);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,iBooleanValue);
+//  m_pRowSlab->vDeposit(iBooleanValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,iBooleanValue);
+
+  vDEPOSIT_VALUE(iBooleanValue);
 
   goto L_FieldEnd;
     
 L_Boolean_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//
+//  m_pRowSlab->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+  vDEPOSIT_NULL(EC_CSV_BOOLEAN_INVALID);
+
 
   goto L_FieldEnd;                                            // end of boolean
 
@@ -923,7 +945,7 @@ L_Date:
    */
 
 
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1096,7 +1118,7 @@ L_Decimal:
    */
 
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1212,7 +1234,7 @@ L_Float:
   if (iTraceBits & C_BIT_Float)
     vTrace("L_Float:\n"_Stz);
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1344,7 +1366,7 @@ L_Integer:
          +1.2,  +1.2,  +1.2  ,+1.2  ,+1.2\n
    */
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1390,23 +1412,27 @@ L_Integer:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit integer
   
-  m_pRowSlab->vDeposit(iIntegerValue);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,iIntegerValue);
+//  m_pRowSlab->vDeposit(iIntegerValue);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,iIntegerValue);
+  
+  vDEPOSIT_VALUE(iIntegerValue);
   
   goto L_FieldEnd;
     
 L_Integer_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+//
+//  m_pRowSlab->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
-  
+  vDEPOSIT_NULL(EC_CSV_INTEGER_INVALID);
+
   goto L_FieldEnd;                                            // end of integer
 
 
@@ -1435,7 +1461,7 @@ L_Interval:
    */
 
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1550,7 +1576,7 @@ L_Time:
    
    */
 
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
@@ -1694,7 +1720,7 @@ L_Timestamp:
    */
 
   
-  vSKIP_WHITE_SPACE_LEADING();
+  vWHITE_SPACE_leading();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible null form
