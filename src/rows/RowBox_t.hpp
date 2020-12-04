@@ -16,6 +16,14 @@ namespace Rows
   
     Row* m_aRow;      // current row
   
+  
+    // from RowSlab
+  
+    char m_caModel[32]; // row slab model string
+    i8   m_iSeVersion;  // se version number
+    i8   m_iSeFormat;   // se format number
+
+  
     // must be last
     Footer m_xFooter;
 
@@ -26,6 +34,11 @@ namespace Rows
     RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash);
    ~RowBox_t(void) noexcept(false);
   
+  private:
+    void vInitRowBox_t(void);
+
+  
+  public:
   
     void vResolveStreamPix(StreamDef* pStreamDef);
     
@@ -53,6 +66,7 @@ namespace Rows
   
     //Footer* aFooter(void);
 
+
   };
 
 }
@@ -77,6 +91,8 @@ RowBox_t<SIZE>::RowBox_t(void)
 {
   //_precondition_(_ADDRESS_);
   
+  vInitRowBox_t();
+  
   m_nRowSizeProper = 0;
   
   m_aRow = nullptr;
@@ -91,6 +107,8 @@ template <i8 SIZE>
 RowBox_t<SIZE>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 {
   //_precondition_(_ADDRESS_);
+
+  vInitRowBox_t();
 
   pStreamDef->vToStreamPix(&m_oStreamPix,bAddPtnHash);
 
@@ -108,6 +126,29 @@ RowBox_t<SIZE>::~RowBox_t(void) noexcept(false)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* initialise this row box                                                    */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vInitRowBox_t(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_);
+
+  MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWSLAB);
+  m_caModel[sizeof(m_caModel) - 1] = '\0';
+  
+  StrLib::vSprint(m_caModel,"RapidsSE %s SeFormat %s"_Stz,
+                  RAPIDSSE_VERSION_STRING,
+                  RAPIDSSE_FORMAT_STRING);
+  
+  m_iSeVersion = RAPIDSSE_VERSION_NUMBER;
+  m_iSeFormat  = RAPIDSSE_FORMAT_NUMBER;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* -- public ---------------------------------------------------------------- */
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
@@ -121,10 +162,6 @@ void RowBox_t<SIZE>::vResolveStreamPix(StreamDef* pStreamDef)
   
   m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
 }
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */

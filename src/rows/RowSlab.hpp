@@ -25,10 +25,6 @@ namespace Rows
 
   private:
 
-    char m_caModel[32]; // row slab model string
-    i8   m_iSeVersion;  // se version number
-    i8   m_iSeFormat;   // se format number
-  
     StreamPix m_oStreamPix; // condensed stream def
   
     i8   m_i_RowCrs;    // current logical row number
