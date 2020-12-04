@@ -120,16 +120,8 @@ void EntWrk::vAppendElement(RowSingle* pRowSingle, Column* pCol)
   
   if (DM_VCH == pCol->eDatum()) {
 
-#ifdef _ROWBOX_BASED
     Stz* szSrc = pRowSingle->szColVal(i_Col);
     vAppendStz(szSrc);
-#else
-    Stz* szSrc = (Stz*)iValue;
-//    char* aDst = (char*)ayElmNext();
-//    nElmSize = StrLib::iWordFlip(aDst, aSrc);
-//    vIncElmSeqSize(nElmSize);
-    vAppendStz(szSrc);
-#endif
   }
   
   else {

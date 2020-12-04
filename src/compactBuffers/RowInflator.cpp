@@ -16,9 +16,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
 {
   _static_
 
-#ifdef _ROWBOX_BASED
   //vTrace("vInflate_ColumnSet_into_CellArray\n"_Stz);
-#endif
   
   u1* auMetaCode;
   byte* ayDataByte;
@@ -703,9 +701,7 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 {
   _static_
   
-#ifdef _ROWBOX_BASED
   //vTrace("vInflate_AllColumns_into_RowSingle\n"_Stz);
-#endif
   
   u1* auMetaCode;
   byte* ayDataByte;
@@ -731,8 +727,6 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 
     char* azStrArea = (char*)pRowSingle->szStzAlottable();
 
-#ifdef _ROWBOX_BASED
-
     vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_OFS,
                                   aHeadLine,ayDataByte,uHigh,uLow);
     
@@ -740,17 +734,6 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
       i8 nBytesTaken = nDifference(azStrArea,pRowSingle->szStzAlottable());
       pRowSingle->vStzBytesTaken(nBytesTaken);
     }
-#else
-    
-    vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_ADR,
-                                  aHeadLine,ayDataByte,uHigh,uLow);
-    
-    if (azStrArea != (char*)pRowSingle->szStzAlottable()) {
-      i8 nBytesTaken = nDifference(azStrArea,pRowSingle->szStzAlottable());
-      pRowSingle->vStzBytesTaken(nBytesTaken);
-    }
-
-#endif
     
   }
   // for each column

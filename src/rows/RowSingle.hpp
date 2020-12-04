@@ -6,12 +6,9 @@
 namespace Rows
 {
   class RowSingle :
-#ifdef _ROWBOX_BASED
                     public Object,
                     public RowBox_t<C_ROWSINGLE_WSP>
-#else
-                    public RowWsp<C_ROWSINGLE_WSP>
-#endif
+
   {
   public:
     // - - - - - - - - - - - - - - - - - -
@@ -26,17 +23,8 @@ namespace Rows
     bool       m_abGetCol[C_MAX_COLUMNS];
     i8         m_iLastCol;
 
-    // - - - - - - - - - - - - - - - - - -
-    // data
-  
   private:
- 
-#ifndef _ROWBOX_BASED
-    Dtm* m_awaColVal; // dynamically allotted column value array
-#endif
-
-  
-    // - - - - - - - - - - - - - - - - - -
+   
     // footer -- must be last
     Footer m_xFooter;
   
@@ -47,11 +35,7 @@ namespace Rows
 
     RowSingle(StreamDef* pStreamDef, i8 iSubSet);
     ~RowSingle(void) noexcept(false);
-  
-#ifndef _ROWBOX_BASED
-    void vAllotSetVarchar(i8 i_Col,Stz* szVal);
-#endif
-  
+    
     byte* ayCellArray(void);
     Dtm* aColDtm(i8 i_Col);
     Dtm  wColDtm(i8 i_Col);

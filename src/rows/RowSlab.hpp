@@ -64,7 +64,12 @@ namespace Rows
   class RowSlab :
                   //public RowWsp<C_ROWSLAB_WSP>
                   public Object,
+
                   public WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>
+
+                  //public RowBox_t<C_WSP_ROWBUFFER>
+
+
   {
     friend class Row;
 

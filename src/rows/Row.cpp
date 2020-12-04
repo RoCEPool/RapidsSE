@@ -214,8 +214,6 @@ void Row::vColVal_flt(i8 i_Col, d8 dVal)
 /*----------------------------------------------------------------------------*/
 /* get string column                                                          */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWBOX_BASED
-
 Stz* Row::szColVal_ofs(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
@@ -229,31 +227,6 @@ Stz* Row::szColVal_ofs(i8 i_Col)
   
   return pStz;
 }
-
-#else
-
-Stz* Row::szColVal_ofs(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-  
-  // get the poolBuffer from the row address
-  PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
-  
-  HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(pPoolBuffer);
-  
-  Object* pRowBuffer =
-  reinterpret_cast<Object*>(pHeapBuffer->aFirstChunk());
-  
-  // get the offset of the string
-  i8 i_Offset = m_waColVal[i_Col].m_iWrd;
-  
-  // get address of string within pool buffer
-  Stz* pStz = pAdd<Stz*>(pRowBuffer,i_Offset);
-  
-  return pStz;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* set column value                                                           */

@@ -40,9 +40,7 @@ namespace CompactBuffers
   {
     _static_
     
-#ifdef _ROWBOX_BASED
     //vTrace("vInflate_CodedValue_into_Cell\n"_Stz);
-#endif
   
     i8 nStrSize;
     i8* aiCellValue;
@@ -575,9 +573,7 @@ namespace CompactBuffers
   {
     _static_
     
-#ifdef _ROWBOX_BASED
     //vTrace("vInflate_Key_into_ElementArray\n"_Stz);
-#endif
   
 
   i8 nCols = pStreamDef->nTotalColumns();
