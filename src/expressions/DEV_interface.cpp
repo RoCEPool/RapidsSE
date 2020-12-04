@@ -1076,7 +1076,7 @@ i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  i8 iRes = pDevRsb->m_pRowSlab->iOfsOfRow(pDevRsb->m_aRow);
+  i8 iRes = pDevRsb->m_pRowSlab->iOffsetInWsp(pDevRsb->m_aRow);
 
   return iRes;
 }

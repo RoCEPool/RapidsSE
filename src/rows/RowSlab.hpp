@@ -16,20 +16,10 @@ namespace Rows
 
 }
 
-//#define _ROWBOX_BASED 1
-
 namespace Rows
 {
-  class RowSlab :
-                  public Object,
-
-#ifdef _ROWBOX_BASED
+  class RowSlab : public Object,
                   public RowBox_t<C_WSP_ROWBUFFER>
-#else
-                  public WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>
-
-#endif
-
   {
     friend class Row;
 
@@ -83,7 +73,7 @@ namespace Rows
     Row*  aRowAdr(i8 i_Row);
     Row*  aRowByOfs(i8 iOfs);
     void  vSetRow(i8 iRow);
-    i8    iOfsOfRow(Row* aRow);
+    i8    iOffsetInWsp(Row* aRow);
     i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);

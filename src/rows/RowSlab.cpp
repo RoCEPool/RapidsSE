@@ -447,11 +447,11 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 /* get the offset of rsb                                                      */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::iOfsOfRow(Row* aRow)
+i8 RowSlab::iOffsetInWsp(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  i8 iOfs = iToOffset((byte*)aRow);
+  i8 iOfs = WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>::iOffsetInWsp((byte*)aRow);
   
   return iOfs;
 }

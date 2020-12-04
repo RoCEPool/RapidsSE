@@ -49,7 +49,7 @@ namespace Alignment
     Stz*  szStzDeposit(Stz* szValue);
     void  vTakeHead(i8 nBytes);
     void  vTakeTail(i8 nBytes);
-    i8    iToOffset(byte* ayAllotted);
+    i8    iOffsetInWsp(byte* ayAllotted);
     i8    nUsed(void);
     i8    nUsedHead(void);
     i8    nUsedTail(void);
@@ -434,7 +434,7 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vTakeTail(i8 nBytes)
 /* get offset of an allotted                                                  */
 /*----------------------------------------------------------------------------*/
 template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::iToOffset(byte* ayAllotted)
+i8 WspConvergent_t<SIZE,HEAD,TAIL>::iOffsetInWsp(byte* ayAllotted)
 {
   // I THINK THIS SHOULD BE i_Offset()
 
