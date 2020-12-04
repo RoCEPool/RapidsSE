@@ -126,7 +126,11 @@ Row* InfoSetBase::aAllotRow(void)
            return nullptr;
          
          StrLib::vCopy((char*)ayDst, szVal->azChar());
+#ifdef _ROWBOX_BASED
+         ayRow->vColVal_ofs(i_Col,ayDst);
+#else
          ayRow->vColVal_ofs(i_Col,iToOffset(ayDst));
+#endif
        }
        else {
          ayRow->vSetColNull(i_Col);

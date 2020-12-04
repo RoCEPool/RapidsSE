@@ -591,7 +591,7 @@ void RowCompactor::vEncodeTailsForSrw(RowSingle* pSrw)
     
     // -- non-null vch column --
     
-    char* azStr = aColVal->m_azStr;
+    char* azStr = (char*)pSrw->szColVal(i_Col);
     if (StrLib::nLength(azStr) < 8)
       continue;
     

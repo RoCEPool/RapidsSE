@@ -214,6 +214,24 @@ void Row::vColVal_flt(i8 i_Col, d8 dVal)
 /*----------------------------------------------------------------------------*/
 /* get string column                                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWBOX_BASED
+
+Stz* Row::szColVal_ofs(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  // add cell contents (i.e. offset) to cell address to string address
+  
+  m8* amCellAddress = (m8*) & m_waColVal[i_Col];
+  i8  i_Ofs = m_waColVal[i_Col].m_iWrd;
+
+  Stz* pStz = aAdd<Stz*>(amCellAddress,i_Ofs);
+  
+  return pStz;
+}
+
+#else
+
 Stz* Row::szColVal_ofs(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
@@ -235,6 +253,7 @@ Stz* Row::szColVal_ofs(i8 i_Col)
   
   return pStz;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* set column value                                                           */
@@ -244,6 +263,18 @@ void Row::vColVal_ofs(i8 i_Col, i8 iOfs)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m_waColVal[i_Col].m_iWrd = iOfs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column value                                                           */
+/*----------------------------------------------------------------------------*/
+void Row::vColVal_ofs(i8 i_Col, Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  i8 i_Ofs = - nDifference(&m_waColVal[i_Col],szStz);
+  
+  m_waColVal[i_Col].m_iWrd = i_Ofs;
 }
 
 /*----------------------------------------------------------------------------*/

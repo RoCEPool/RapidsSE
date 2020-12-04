@@ -339,6 +339,8 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vReset(void)
   
   vUsedHead(0);
   vUsedTail(0);
+  
+  m_nTailItems = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,7 +392,7 @@ Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzDeposit(Stz* szValue)
   i8 nSize = szValue->nSize();
   
   Stz* szAllottedStz = szStzAllot_begin();
-  szAllottedStz = szValue;
+  szAllottedStz->vCopy(szValue);
   vStzAllot_end(nSize);
   
   return szAllottedStz;

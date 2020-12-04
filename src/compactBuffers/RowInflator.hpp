@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowInflator.hpp -- Row Inflator Mark V                                     */
+/* RowInflator.hpp -- Compact Row Inflator                                    */
 /*============================================================================*/
 #pragma once
 
@@ -8,84 +8,42 @@ namespace CompactBuffers
   class RowInflator : private RowCoder
   {
   public:
-    //! NOTE: KEEP BOTH INFLATES UP-TO-DATE
-    //! Any change in any one of the functions needs to be made in the others.
-    //! Kept separate for performance reasons
-    //! Highly performance-critical functions
-
   
-    static void vInflateSet(i8** aaiDstk, HeadLine* aHeadLine,
-                                StreamDef* pStreamDef,
-                                eSI eStrInflate, i8* iaColSet);
-    static void vInflateColumn(RowSingle* pRow, HeadLine* aHeadLine,
-                               i8 i_ColToRetrieve);
-    static void vInflateRow(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow(RowSlab* pRsbSlab, HeadLine* aHeadLine);
+  static void vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
+                                                 HeadLine* aHeadLine);
 
-  private:
-    
+  static void vInflate_AllColumns_into_RowSlab(RowSlab* pRowSlab,
+                                               HeadLine* aHeadLine);
+
+   static void vInflate_OneColumn_into_RowSingle(RowSingle* pRowSingle,
+                                                 HeadLine* aHeadLine,
+                                                 i8 i_ColToRetrieve);
   
-    // v2 meta code
+   static void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
+                                                 char*& racStrArea,
+                                                 eSI eStrInflateRule,
+                                                 HeadLine* aHeadLine,
+                                                 i8* iaColSet,
+                                                 StreamDef* pStreamDef);
   
-    static void vInflateSet_v2(i8** aaiDstk, HeadLine* aHeadLine,
-                               StreamDef* pStreamDef,
-                               eSI eStrInflate, i8* iaColSet);
-    static void vInflateColumn_v2(RowSingle* pRow, HeadLine* aHeadLine,
-                                  i8 i_ColToRetrieve);
-    static void vInflateRow_v2(RowSingle* pRow, HeadLine* aHeadLine);
-    static void vInflateRow_v2(RowSlab* pRsbSlab, HeadLine* aHeadLine);
-
   
-  /*----------------------------------------------------------------------------*/
-  /* general v2 skip code                                                       */
-  /*----------------------------------------------------------------------------*/
-  inline static void vSkip_v2(u1 uHigh, u1 uLow, byte*& rayDataByte, HeadLine* aHeadLine)
-  {
-    _static_
-
-    L_Overflowed:
-    
-    if (uHigh <=  MC_STRING_x1) // numeric & date
-      rayDataByte += uLow;
-    else
-    if (uHigh >=  MC_NEGATIVE)  // small value
-      {;}
-    else
-    if (uHigh == MC_STRING_x1)  // string x 1
-      rayDataByte += STRx1(uLow);
-    else
-    if (uHigh == MC_STRING_x2)  // string x 2
-      rayDataByte += STRx2(uLow);
-    else
-    if (uHigh == MC_STRING_x4)  // string x 4
-      rayDataByte += STRx4(uLow);
-    else
-    if (uHigh == MC_STRING_x8)  // string x 8
-      rayDataByte += STRx8(uLow);
-    else
-    if (uHigh == MC_OVERFLOW) { // overflow
-      OverLine* aOverLine = aHeadLine->aGetOver();
-      u1 uMetaCode = *((u1*)aOverLine + C_U_1B);
-      METACODE_SPLIT(uMetaCode,uHigh,uLow);
-      rayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
-      goto L_Overflowed;
-    }
-    else {
-      RASSERT(0);
-    }
-
-  }
-
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */
   /*----------------------------------------------------------------------------*/
-  inline static void vInflate_v2(byte*& rayDstByte,
-                                byte*& rayDataByte, HeadLine* aHeadLine,
-                                u1 uHigh, u1 uLow,
-                                eSI eStrInflate, char*& racStrArea)
+  inline static void vInflate_CodedValue_into_Cell(byte*& rayDstByte,
+                                                   char*& racStrArea,
+                                                   eSI eStrInflateRule,
+                                                   HeadLine* aHeadLine,
+                                                   byte*& rayDataByte,
+                                                   u1 uHigh,
+                                                   u1 uLow)
   {
     _static_
     
+#ifdef _ROWBOX_BASED
+    vTrace("vInflate_CodedValue_into_Cell\n"_Stz);
+#endif
+  
     i8 nStrSize;
     i8* aiCellValue;
     char** aacCellValue;
@@ -279,7 +237,7 @@ namespace CompactBuffers
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrSize = STRx1(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_CELLARRAY_ADR == eStrInflateRule) {
           aacCellValue = (char**)rayDstByte;
           *aacCellValue = (char*)rayDataByte;
           rayDstByte += 8;
@@ -287,21 +245,36 @@ namespace CompactBuffers
           rayDataByte += nStrSize;
         }
         else
-        if (SI_AREA_ADR == eStrInflate) {
+        if (SI_STRAREA_OFS == eStrInflateRule) {
+          // copy into str area, advance data point ptr
+          memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
+          rayDataByte += nStrSize;
+
+          i8 i_Ofs = - nDifference(racStrArea,rayDstByte);
+          aiCellValue = (i8*)rayDstByte;
+          *aiCellValue = i_Ofs;
+          rayDstByte += 8;
+
+          racStrArea += nStrSize;
+        }
+        else
+        if (SI_STRAREA_ADR == eStrInflateRule) {
+          // copy into str area, advance data point ptr
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
 
           aacCellValue = (char**)rayDstByte;
           *aacCellValue = racStrArea;
           rayDstByte += 8;
+          
           racStrArea += nStrSize;
         }
         else
-        if (SI_DEST_PST == eStrInflate) {
+        if (SI_CELLARRAY_PST == eStrInflateRule) {
           memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
 
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           rayDstByte += (((nStrSize) / 8) * 8) + 16;
           aiCellValue = (i8*)rayDstByte;
@@ -338,7 +311,7 @@ namespace CompactBuffers
       case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_CELLARRAY_ADR == eStrInflateRule) {
           aacCellValue = (char**)rayDstByte;
           *aacCellValue = (char*)rayDataByte;
           rayDstByte += 8;
@@ -346,7 +319,7 @@ namespace CompactBuffers
           rayDataByte += nStrSize;
         }
         else
-        if (SI_AREA_ADR == eStrInflate) {
+        if (SI_STRAREA_ADR == eStrInflateRule) {
 
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
@@ -357,12 +330,12 @@ namespace CompactBuffers
           racStrArea += nStrSize;
         }
         else
-        if (SI_DEST_PST == eStrInflate) {
+        if (SI_CELLARRAY_PST == eStrInflateRule) {
           char* azDst = (char*)rayDstByte;
           memcpy(azDst,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
 
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           rayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)rayDstByte;
@@ -378,7 +351,7 @@ namespace CompactBuffers
       case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_CELLARRAY_ADR == eStrInflateRule) {
           aacCellValue = (char**)rayDataByte;
           *aacCellValue = (char*)rayDataByte;
           rayDstByte += 8;
@@ -386,7 +359,7 @@ namespace CompactBuffers
           rayDataByte += nStrSize;
         }
         else
-        if (SI_AREA_ADR == eStrInflate) {
+        if (SI_STRAREA_ADR == eStrInflateRule) {
 
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
@@ -397,11 +370,11 @@ namespace CompactBuffers
           racStrArea += nStrSize;
         }
         else
-        if (SI_DEST_PST == eStrInflate) {
+        if (SI_CELLARRAY_PST == eStrInflateRule) {
           memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
 
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           rayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)rayDstByte;
@@ -417,7 +390,7 @@ namespace CompactBuffers
       case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
         
-        if (SI_ADDRESS == eStrInflate) {
+        if (SI_CELLARRAY_ADR == eStrInflateRule) {
           aacCellValue = (char**)rayDstByte;
           *aacCellValue = (char*)rayDataByte;
           rayDstByte += 8;
@@ -425,7 +398,7 @@ namespace CompactBuffers
           rayDataByte += nStrSize;
         }
         else
-        if (SI_AREA_ADR == eStrInflate) {
+        if (SI_STRAREA_ADR == eStrInflateRule) {
 
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
@@ -436,11 +409,11 @@ namespace CompactBuffers
           racStrArea += nStrSize;
         }
         else
-        if (SI_DEST_PST == eStrInflate) {
+        if (SI_CELLARRAY_PST == eStrInflateRule) {
           memcpy(rayDstByte,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
 
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           rayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)rayDstByte;
@@ -458,7 +431,7 @@ namespace CompactBuffers
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
         nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
-        if (SI_AREA_ADR == eStrInflate) {
+        if (SI_STRAREA_ADR == eStrInflateRule) {
           
           memcpy(racStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
 
@@ -541,13 +514,20 @@ namespace CompactBuffers
   /* inflate column set                                                         */
   /*----------------------------------------------------------------------------*/
   public:
-  static inline void vInflateSet(i8** aaiDstk, HeadLine*  aHeadLine,
-                                 i8* iaColSet, i8 ieStrInflate,
-                                 StreamDef* pStreamDef,
-                                 IndexDef* pIndexDef)
+  static inline void vInflate_Key_into_ElementArray(i8** aaElementArray,
+                                                    HeadLine* aHeadLine,
+                                                    i8* iaColSet,
+                                                    StreamDef* pStreamDef,
+                                                    IndexDef* pIndexDef,
+                                                    i8 ieStrInflateRule)
   {
     _static_
     
+#ifdef _ROWBOX_BASED
+    vTrace("vInflate_Key_into_ElementArray\n"_Stz);
+#endif
+  
+
   i8 nCols = pStreamDef->nTotalColumns();
   
   u1* auMetaCode = aHeadLine->auMetaArea();
@@ -560,7 +540,7 @@ namespace CompactBuffers
   
   char* acStrArea = nullptr;
   
-  i8* aiDstk_lcl = *aaiDstk;
+  i8* aiDstk_lcl = *aaElementArray;
   
   byte* ayDstByte = (byte*)++aiDstk_lcl;
   
@@ -650,7 +630,7 @@ namespace CompactBuffers
         goto L_Overflowed;
       }
       else {
-        vTrace("vInflateSet: Invalid uHigh=%lld\n"_Stz,(i8)uHigh);
+        vTrace("vInflate_ColumnSet_into_CellArray: Invalid uHigh=%lld\n"_Stz,(i8)uHigh);
         RASSERT(0);
       }
       
@@ -818,7 +798,7 @@ namespace CompactBuffers
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         //nStrSize = STRx1(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -826,7 +806,7 @@ namespace CompactBuffers
           ayDataByte += uLow;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
           memcpy(acStrArea,ayDataByte,(size_t)uLow);
           ayDataByte += uLow;
           
@@ -836,11 +816,11 @@ namespace CompactBuffers
           acStrArea += uLow;
         }
         else
-        if (SI_DEST_PST == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
           memcpy(ayDstByte,ayDataByte,(size_t)uLow);
           ayDataByte += uLow;
           
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           ayDstByte += (((uLow) / 8) * 8) + 16;
           aiCellValue = (i8*)ayDstByte;
@@ -886,7 +866,7 @@ namespace CompactBuffers
       case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -894,7 +874,7 @@ namespace CompactBuffers
           ayDataByte += nStrSize;
         }
         else
-        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
           
           memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
           ayDataByte += nStrSize;
@@ -905,12 +885,12 @@ namespace CompactBuffers
           acStrArea += nStrSize;
         }
         else
-        if (SI_DEST_PST == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
           azDst = (char*)ayDstByte;
           memcpy(azDst,ayDataByte,(size_t)nStrSize);
           ayDataByte += nStrSize;
           
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           ayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)ayDstByte;
@@ -926,7 +906,7 @@ namespace CompactBuffers
       case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDataByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -934,7 +914,7 @@ namespace CompactBuffers
           ayDataByte += nStrSize;
         }
         else
-        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
           
           memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
           ayDataByte += nStrSize;
@@ -945,11 +925,11 @@ namespace CompactBuffers
           acStrArea += nStrSize;
         }
         else
-        if (SI_DEST_PST == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
           memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
           ayDataByte += nStrSize;
           
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           ayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)ayDstByte;
@@ -965,7 +945,7 @@ namespace CompactBuffers
       case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -973,7 +953,7 @@ namespace CompactBuffers
           ayDataByte += nStrSize;
         }
         else
-        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
           
           memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
           ayDataByte += nStrSize;
@@ -984,11 +964,11 @@ namespace CompactBuffers
           acStrArea += nStrSize;
         }
         else
-        if (SI_DEST_PST == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
           memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
           ayDataByte += nStrSize;
           
-          //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
           ayDstByte += (((nStrSize) / 8) * 8) + 8;
           aiCellValue = (i8*)ayDstByte;
@@ -1007,14 +987,14 @@ namespace CompactBuffers
         
         nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = ((char*)aTailLine) + C_U_1B + C_L_1B;
           ayDstByte += 8;
           ayDataByte += 2;
         }
         else
-        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
           
           memcpy(acStrArea,
                  ( (char*)aTailLine + C_U_1B + C_L_1B ),
@@ -1027,7 +1007,7 @@ namespace CompactBuffers
           acStrArea += nStrSize;
         }
         else {
-          vTrace("ieStrInflate : %lld\n"_Stz,(i8)ieStrInflate);
+          vTrace("ieStrInflateRule : %lld\n"_Stz,(i8)ieStrInflateRule);
           RASSERT(0);
         }
         
@@ -1104,7 +1084,7 @@ namespace CompactBuffers
   
   aiDstk_lcl = (i8*)ayDstByte;
   
-  *aaiDstk = --aiDstk_lcl;
+  *aaElementArray = --aiDstk_lcl;
 
   }
   

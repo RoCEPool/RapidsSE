@@ -1306,7 +1306,7 @@ void EntBuffer::vPrintRows(void)
     Crw* aCrw = pCrwBuffer->aCrw(aEnt->rxRef().iItem());
     
     // inflate compact row into row
-    RowInflator::vInflateRow(hRow,aCrw);
+    RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
     
     hvRec->vAppend(hRow);
     hvRec->vPrintRow();
@@ -1756,7 +1756,7 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 //    pSrtSet->vRowRef(0, (i8)aCrw);
 //  
 //    // get the key from the left buffer row
-//    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
+//    RowInflator::vInflate_OneColumn_into_RowSingle(hRow, aCrw, iKeyCol);
 //    
 //    // set the key in the srtSet
 //    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);

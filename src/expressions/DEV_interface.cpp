@@ -1216,39 +1216,54 @@ void vDev_TABLEPTN_GRABREAD(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
+void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaColSet)
 {
   _static_
   
+  char* acStrArea_null = nullptr;
+  
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
       
-  RowInflator::vInflateSet(aaiDstk,
-                                //pLogicUnit->m_pDevAltIxt->m_aCrw,
-                                (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
-                                pLogicUnit->m_pDevAltRsb->m_pStreamDef,
-                                (eSI)ieStrInflate,iaColSet);
+  RowInflator::vInflate_ColumnSet_into_CellArray
+  (
+    aaiDstk,
+    acStrArea_null,
+    (eSI)ieStrInflateRule,
+    (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
+    iaColSet,
+    pLogicUnit->m_pDevAltRsb->m_pStreamDef
+  );
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
+void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaColSet)
 {
   _static_
   RASSERT(0); // check with ALka
   
+  char* acStrArea_null = nullptr;
+
   LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
     
-  RowInflator::vInflateSet(aaiDstk,
-                                pLogicUnit->m_pDevSrcIxt->m_aCrw,
-                                pLogicUnit->m_pDevSrcRsb->m_pStreamDef,
-                                (eSI)ieStrInflate,iaColSet);
+  RowInflator::vInflate_ColumnSet_into_CellArray
+  (
+    aaiDstk,
+    acStrArea_null,
+    (eSI)ieStrInflateRule,
+    pLogicUnit->m_pDevSrcIxt->m_aCrw,
+    iaColSet,
+    pLogicUnit->m_pDevSrcRsb->m_pStreamDef
+  );
 }
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet)
+HACK(LogicUnit,"Alka : vInflate_Key_into_ElementArray is not right");
+
+void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaColSet)
 {
   _static_
   
@@ -1256,8 +1271,9 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
   HeadLine*  aHeadLine  = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
   StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRsb->m_pStreamDef;
   
-  RowInflator::vInflateSet(aaiDstk,aHeadLine,iaColSet,ieStrInflate,
-                           pStreamDef,nullptr);
+  RowInflator::vInflate_Key_into_ElementArray
+        (aaiDstk,aHeadLine,iaColSet,
+         pStreamDef,nullptr,ieStrInflateRule);
   return;
   
   //--- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - --- - ---
@@ -1343,7 +1359,6 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
     // ignore column
     
     if (i_Col != i_ColToRetrieve) {
-      //vSkip_v2(uHigh,uLow,ayDataByte,aHeadLine);
       
     L_Overflowed:
       
@@ -1395,8 +1410,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
     
     //vTrace("Inflate %lld\n"_Stz,i_Col);
     
-    //RASSERT(SI_ADDRESS == eStrInflate || SI_DEST_PST == eStrInflate);
-    //vInflate_v2(ayDstByte,ayDataByte,aHeadLine,uHigh,uLow,eStrInflate,acStrArea);
+    //RASSERT(SI_CELLARRAY_ADR == eStrInflateRule || SI_CELLARRAY_PST == eStrInflateRule);
     
     
     /////////////////////////////////////////////////////////////////////////////
@@ -1627,7 +1641,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
         nStrSize = STRx1(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -1635,7 +1649,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
             
@@ -1645,11 +1659,11 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
+            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
               memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
               
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
               ayDstByte += (((nStrSize) / 8) * 8) + 16;
               aiCellValue = (i8*)ayDstByte;
@@ -1696,7 +1710,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
       case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx2(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -1704,7 +1718,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
             
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
@@ -1715,12 +1729,12 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
+            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
               azDst = (char*)ayDstByte;
               memcpy(azDst,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
               
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
               ayDstByte += (((nStrSize) / 8) * 8) + 8;
               aiCellValue = (i8*)ayDstByte;
@@ -1736,7 +1750,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
       case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx4(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDataByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -1744,7 +1758,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
             
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
@@ -1755,11 +1769,11 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
+            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
               memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
               
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
               ayDstByte += (((nStrSize) / 8) * 8) + 8;
               aiCellValue = (i8*)ayDstByte;
@@ -1775,7 +1789,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
       case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
         nStrSize = STRx8(uLow);
         
-        if (SI_ADDRESS == (eSI)ieStrInflate) {
+        if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
@@ -1783,7 +1797,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
           ayDataByte += nStrSize;
         }
         else
-          if (SI_AREA_ADR == (eSI)ieStrInflate) {
+          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
             
             memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
             ayDataByte += nStrSize;
@@ -1794,11 +1808,11 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
             acStrArea += nStrSize;
           }
           else
-            if (SI_DEST_PST == (eSI)ieStrInflate) {
+            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
               memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
               ayDataByte += nStrSize;
               
-              //vTrace("SI_DEST_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
               ayDstByte += (((nStrSize) / 8) * 8) + 8;
               aiCellValue = (i8*)ayDstByte;
@@ -1816,7 +1830,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflate, i8* iaColSet
         aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
         
         nStrSize = aTailLine->w8_1B(+ C_U_1B);
-        if (SI_AREA_ADR == (eSI)ieStrInflate) {
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
           
           memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
           
