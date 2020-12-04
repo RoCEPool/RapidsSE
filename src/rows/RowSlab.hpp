@@ -26,7 +26,6 @@ namespace Rows
   private:
   
     i8   m_i_RowCrs;    // current logical row number
-    Row* m_aRowCur;     // current row
     i8   m_i_ColCrs;    // current working column
     i8   m_nRowStringBytes; // number string bytes for current row
 

@@ -96,7 +96,7 @@ byte* RowSingle::ayCellArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
-  byte* ayArray = (byte*) m_aRow->aCellArray();
+  byte* ayArray = (byte*) m_aRowCur->aCellArray();
 
   return ayArray;
 }

@@ -14,7 +14,7 @@ namespace Rows
   
     StreamPix m_oStreamPix;
   
-    Row* m_aRow;      // current row
+    Row* m_aRowCur;      // current row
   
   
     // from RowSlab
@@ -95,8 +95,7 @@ RowBox_t<SIZE>::RowBox_t(void)
   
   m_nRowSizeProper = 0;
   
-  m_aRow = nullptr;
-  
+   
   //_postcondition_(_ADDRESS_);
 }
 
@@ -143,6 +142,11 @@ void RowBox_t<SIZE>::vInitRowBox_t(void)
   
   m_iSeVersion = RAPIDSSE_VERSION_NUMBER;
   m_iSeFormat  = RAPIDSSE_FORMAT_NUMBER;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_aRowCur = nullptr;
+
 }
 
 
@@ -173,14 +177,14 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 
   RASSERT(m_oStreamPix.m_bInitialised);
 
-  m_aRow = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
+  m_aRowCur = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
 
-  if (! m_aRow)
+  if (! m_aRowCur)
     return nullptr;
 
-  new(m_aRow) Row();
+  new(m_aRowCur) Row();
 
-  return m_aRow;
+  return m_aRowCur;
 }
 
 
@@ -190,7 +194,7 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 template <i8 SIZE>
 void RowBox_t<SIZE>::vColDeposit(i8 i_Col, i8 iValue)
 {
-  m_aRow->vColVal_int(i_Col,iValue);
+  m_aRowCur->vColVal_int(i_Col,iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,9 +205,9 @@ void RowBox_t<SIZE>::vColDeposit(i8 i_Col, Stz* szVal)
 {
   Stz* szDeposited = WspConvergent_t<SIZE,Stz,Row>::szStzDeposit(szVal);
   
-  i8 i_Ofs = - nDifference(m_aRow->aColCell(i_Col),szDeposited);
+  i8 i_Ofs = - nDifference(m_aRowCur->aColCell(i_Col),szDeposited);
   
-  m_aRow->vColVal_ofs(i_Col,i_Ofs);
+  m_aRowCur->vColVal_ofs(i_Col,i_Ofs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +216,7 @@ void RowBox_t<SIZE>::vColDeposit(i8 i_Col, Stz* szVal)
 template <i8 SIZE>
 Dtm* RowBox_t<SIZE>::aColDtm(i8 i_Col)
 {
-  Dtm* aDtm = m_aRow->aColDtm(i_Col);
+  Dtm* aDtm = m_aRowCur->aColDtm(i_Col);
   
   return aDtm;
 }
@@ -223,7 +227,7 @@ Dtm* RowBox_t<SIZE>::aColDtm(i8 i_Col)
 template <i8 SIZE>
 void RowBox_t<SIZE>::vColSetNull(i8 i_Col)
 {
-  m_aRow->vSetColNull(i_Col);
+  m_aRowCur->vSetColNull(i_Col);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,7 +236,7 @@ void RowBox_t<SIZE>::vColSetNull(i8 i_Col)
 template <i8 SIZE>
 d8 RowBox_t<SIZE>::dColVal(i8 i_Col)
 {
-  d8 dVal = m_aRow->dColVal_flt(i_Col);
+  d8 dVal = m_aRowCur->dColVal_flt(i_Col);
   
   return dVal;
 }
@@ -243,7 +247,7 @@ d8 RowBox_t<SIZE>::dColVal(i8 i_Col)
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::iColVal(i8 i_Col)
 {
-  i8 iVal = m_aRow->iColVal_int(i_Col);
+  i8 iVal = m_aRowCur->iColVal_int(i_Col);
   
   return iVal;
 }
@@ -254,7 +258,7 @@ i8 RowBox_t<SIZE>::iColVal(i8 i_Col)
 template <i8 SIZE>
 Stz* RowBox_t<SIZE>::szColVal(i8 i_Col)
 {
-  Stz* szVal = m_aRow->szColVal_ofs(i_Col);
+  Stz* szVal = m_aRowCur->szColVal_ofs(i_Col);
   
   return szVal;
 }
@@ -267,7 +271,7 @@ Stz* RowBox_t<SIZE>::szColVal(i8 i_Col)
 template <i8 SIZE>
 bool RowBox_t<SIZE>::bIsColNull(i8 i_Col)
 {
-  bool bIsNull = m_aRow->bIsColNull(i_Col);
+  bool bIsNull = m_aRowCur->bIsColNull(i_Col);
   
   return bIsNull;
 }
