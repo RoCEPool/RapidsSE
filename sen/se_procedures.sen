@@ -1862,6 +1862,9 @@
 
   stage stageC on all partitions :
     EOAsm2 ../eo_text/asm20_s0.txt 0
+    | toNstRsb
+    | toHshCrw
+    | insert tempTable0
     | stageD
 
   stage stageD on origin :
