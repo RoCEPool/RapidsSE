@@ -14,17 +14,19 @@ namespace Rows
   
     StreamPix m_oStreamPix;
   
-    Row* m_aRowCur;      // current row
+    Row* m_aRowCur;     // current row
+    i8   m_i_RowCrs;    // current logical row number
+    i8   m_i_ColCrs;    // current working column
   
-    // from RowSlab
-  
+    i8   m_nRowStringBytes; // string size of current row (discard)
+
+
     char m_caModel[32]; // row slab model string
     i8   m_iSeVersion;  // se version number
     i8   m_iSeFormat;   // se format number
 
     NmlStr m_oNmlStr;   // normalised string set
 
-    i8   m_nRowStringBytes; // string size of current row (discard)
 
   
     // must be last
@@ -148,7 +150,10 @@ void RowBox_t<SIZE>::vInitRowBox_t(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_aRowCur = nullptr;
+  m_aRowCur  = nullptr;
+  m_i_RowCrs = C_UNKNOWN;
+  m_i_ColCrs = C_UNKNOWN;
+
   m_nRowStringBytes = 0;
 }
 

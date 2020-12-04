@@ -21,18 +21,6 @@ RowSlab::RowSlab(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  
-  m_i_RowCrs  = C_UNKNOWN;
-  m_aRowCur   = nullptr;
-  m_i_ColCrs  = C_UNKNOWN;
-    
-  // m_oStreamPix
-  
-   
-  //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ROWSLAB);
-  
-  // m_oNmlStr
-
   _checkInitialised_(CN_ROWSLAB);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);

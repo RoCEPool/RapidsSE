@@ -25,9 +25,6 @@ namespace Rows
 
   private:
   
-    i8   m_i_RowCrs;    // current logical row number
-    i8   m_i_ColCrs;    // current working column
-
       
     // must be last
     Footer m_xFooter;
