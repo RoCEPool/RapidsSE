@@ -164,7 +164,11 @@ void RowBox_t<SIZE>::vColDeposit(i8 i_Col, Stz* szVal)
 {
   Stz* szDeposited = WspConvergent_t<SIZE,Stz,Row>::szStzDeposit(szVal);
   
+#ifdef _ROWBOX_BASED
+  i8 i_Ofs = - nDifference(m_aRow->aColCell(i_Col),szDeposited);
+#else
   i8 i_Ofs = WspConvergent_t<SIZE,Stz,Row>::iToOffset((byte*)szDeposited);
+#endif
   
   m_aRow->vColVal_ofs(i_Col,i_Ofs);
 }

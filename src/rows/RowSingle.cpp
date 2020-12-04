@@ -333,6 +333,10 @@ void RowSingle::vCopyRow(Row* pRow)
   
   RASSERT(m_oStreamPix.m_bInitialised);
   
+  RowBox_t<C_ROWSINGLE_WSP>::vReset();
+  vResetValues();
+  Row* aRow = aAllotNewRow();
+  
   for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
   
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
@@ -349,6 +353,7 @@ void RowSingle::vCopyRow(Row* pRow)
       Stz* szValue = pRow->szColVal_ofs(i_Col);
       vColDeposit(i_Col,szValue);
       
+      vTrace("Deposit: %s\n"_Stz,szValue);
       continue;
     }
     
