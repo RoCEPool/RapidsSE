@@ -102,11 +102,13 @@ void EntWrk::vAppendDatum(Datum* pDatum,Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElement(RowSingle* pRow, Column* pCol)
+void EntWrk::vAppendElement(RowSingle* pRowSingle, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iValue = pRow->iColVal(pCol->iColumnNo());
+  i8 i_Col = pCol->iColumnNo();
+  
+  i8 iValue = pRowSingle->iColVal(i_Col);
   
   if (Null::bIsNull(iValue)) {
 //    byte* ayDst = (byte*)ayElmNext();
@@ -117,12 +119,19 @@ void EntWrk::vAppendElement(RowSingle* pRow, Column* pCol)
   }
   
   if (DM_VCH == pCol->eDatum()) {
+
+#ifdef _ROWBOX_BASED
+    Stz* szSrc = pRowSingle->szColVal(i_Col);
+    vAppendStz(szSrc);
+#else
     Stz* szSrc = (Stz*)iValue;
 //    char* aDst = (char*)ayElmNext();
 //    nElmSize = StrLib::iWordFlip(aDst, aSrc);
 //    vIncElmSeqSize(nElmSize);
     vAppendStz(szSrc);
+#endif
   }
+  
   else {
 //    byte* ayDst = ayElmNext();
 //    nElmSize = Dtm::nCopy(ayDst,iValue);
