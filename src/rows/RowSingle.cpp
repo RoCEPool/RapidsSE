@@ -92,7 +92,7 @@ RowSingle::~RowSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get address of cell array                                                  */
 /*----------------------------------------------------------------------------*/
-byte* RowSingle::ayCellArray(void)                                       // DONE
+byte* RowSingle::ayCellArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
@@ -104,7 +104,7 @@ byte* RowSingle::ayCellArray(void)                                       // DONE
 /*----------------------------------------------------------------------------*/
 /* get address of column datum                                                */
 /*----------------------------------------------------------------------------*/
-Dtm* RowSingle::aColDtm(i8 i_Col)                                        // DONE
+Dtm* RowSingle::aColDtm(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -116,7 +116,7 @@ Dtm* RowSingle::aColDtm(i8 i_Col)                                        // DONE
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-Dtm RowSingle::wColDtm(i8 i_Col)                                         // DONE
+Dtm RowSingle::wColDtm(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -128,7 +128,7 @@ Dtm RowSingle::wColDtm(i8 i_Col)                                         // DONE
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-char* RowSingle::azColVal(i8 i_Col)                                      // DONE
+char* RowSingle::azColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -140,7 +140,7 @@ char* RowSingle::azColVal(i8 i_Col)                                      // DONE
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-i8 RowSingle::iColVal(i8 i_Col)                                          // DONE
+i8 RowSingle::iColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -152,7 +152,7 @@ i8 RowSingle::iColVal(i8 i_Col)                                          // DONE
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-d8 RowSingle::dColVal(i8 i_Col)                                          // DONE
+d8 RowSingle::dColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -164,7 +164,7 @@ d8 RowSingle::dColVal(i8 i_Col)                                          // DONE
 /*----------------------------------------------------------------------------*/
 /* get column value                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* RowSingle::szColVal(i8 i_Col)                                       // DONE
+Stz* RowSingle::szColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -216,7 +216,7 @@ void RowSingle::vCopyRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* is given column (of current row) null ?                                    */
 /*----------------------------------------------------------------------------*/
-bool RowSingle::bIsColNull(i8 i_Col)                                     // DONE
+bool RowSingle::bIsColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -228,7 +228,7 @@ bool RowSingle::bIsColNull(i8 i_Col)                                     // DONE
 /*----------------------------------------------------------------------------*/
 /* reset all column values                                                    */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vResetValues(void)                                       // DONE
+void RowSingle::vResetValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
     
@@ -238,7 +238,7 @@ void RowSingle::vResetValues(void)                                       // DONE
 /*----------------------------------------------------------------------------*/
 /* set column value to be null                                                */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vSetColNull(i8 i_Col)                                    // DONE
+void RowSingle::vSetColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
@@ -315,7 +315,7 @@ i8 RowSingle::nSumVchSizes(void)
 /*----------------------------------------------------------------------------*/
 /* get string area                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* RowSingle::szStzAlottable(void)                                          // DONE
+Stz* RowSingle::szStzAlottable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
@@ -327,7 +327,7 @@ Stz* RowSingle::szStzAlottable(void)                                          //
 /*----------------------------------------------------------------------------*/
 /* get string area                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* RowSingle::szStzArea(void)                                          // DONE
+Stz* RowSingle::szStzArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
@@ -339,7 +339,7 @@ Stz* RowSingle::szStzArea(void)                                          // DONE
 /*----------------------------------------------------------------------------*/
 /* given number of bytes have been taken from head/stz area                   */
 /*----------------------------------------------------------------------------*/
-void RowSingle::vStzBytesTaken(i8 nBytesTaken)                           // DONE
+void RowSingle::vStzBytesTaken(i8 nBytesTaken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 

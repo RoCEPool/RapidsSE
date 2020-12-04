@@ -6,7 +6,7 @@
 namespace Rows
 {
   static const i8 C_ROWSLAB_WSP    = C_SIZE_LARGE_OBJECT - C_16KB;
-  static const i8 C_ROWSINGLE_WSP    = C_MAX_RECORD;
+  static const i8 C_ROWSINGLE_WSP  = C_MAX_RECORD;
   static const i8 C_SLAB_CELLS     = C_ROWSLAB_WSP / C_BYTES_PER_WORD;
   static const i8 C_FIRST_LGL_CELL = C_SLAB_CELLS - 1;
 
@@ -14,61 +14,21 @@ namespace Rows
 
   static const i8 C_NML_STR_SPACE  = C_8KB;
 
-
-
-
-  template<int WSP_SIZE>
-  class RowWsp : public Object
-  {
-  protected:
-  
-    i8 m_nItems;  // number of items in this row wsp
-
-    SingleWord m__PadToCacheLine[4]; // padding to cache line
-
-    WspConverge_t<WSP_SIZE> m_xWsp; // workspace of row(s)
-
-  public:
-    RowWsp(eCN eClass);
-  
-    // must be last
-    Footer m_xFooter;
-  };
-
 }
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-template<int WSP_SIZE>
-RowWsp<WSP_SIZE>::RowWsp(eCN eClassNo)
-: Object(eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-
-  m_nItems = 0;
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
-#endif
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-
-// /////////////////////////////////////////////////////////////////////////////
-
+//#define _ROWBOX_BASED 1
 
 namespace Rows
 {
   class RowSlab :
-                  //public RowWsp<C_ROWSLAB_WSP>
                   public Object,
 
+#ifdef _ROWBOX_BASED
+                  public RowBox_t<C_WSP_ROWBUFFER>
+#else
                   public WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>
 
-                  //public RowBox_t<C_WSP_ROWBUFFER>
-
+#endif
 
   {
     friend class Row;
