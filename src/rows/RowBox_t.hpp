@@ -16,12 +16,15 @@ namespace Rows
   
     Row* m_aRowCur;      // current row
   
-  
     // from RowSlab
   
     char m_caModel[32]; // row slab model string
     i8   m_iSeVersion;  // se version number
     i8   m_iSeFormat;   // se format number
+
+    NmlStr m_oNmlStr;   // normalised string set
+
+    i8   m_nRowStringBytes; // string size of current row (discard)
 
   
     // must be last
@@ -146,7 +149,7 @@ void RowBox_t<SIZE>::vInitRowBox_t(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_aRowCur = nullptr;
-
+  m_nRowStringBytes = 0;
 }
 
 

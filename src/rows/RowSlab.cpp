@@ -28,8 +28,7 @@ RowSlab::RowSlab(void)
     
   // m_oStreamPix
   
-  m_nRowStringBytes = 0;
-  
+   
   //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_ROWSLAB);
   
   // m_oNmlStr

@@ -27,9 +27,7 @@ namespace Rows
   
     i8   m_i_RowCrs;    // current logical row number
     i8   m_i_ColCrs;    // current working column
-    i8   m_nRowStringBytes; // number string bytes for current row
 
-    NmlStr m_oNmlStr;   // normalised string set
       
     // must be last
     Footer m_xFooter;
