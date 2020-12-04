@@ -23,12 +23,14 @@
 
   // generate asm from query text
   Counter0[] <queryText> genAsm not if
+
     EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
     true
     exit
+
   then
 
   // execute plan generated STARTMARKER_handler

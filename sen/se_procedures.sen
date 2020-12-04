@@ -1840,16 +1840,16 @@
   "
   api::addProcedure
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Query 20 -
-//   [P0] ( insert into temptable select p_partkey from part where p_mfgr = 'Manufacturer#1' )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 20 -
+  //   [P0] ( insert into temptable select p_partkey from part where p_mfgr = 'Manufacturer#1' )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into tempTable0 select p_partkey from part where p_mfgr = 'Manufacturer#1';
   sPath
-"
-  procedure s0
-      begin
+  "
+  procedure Query20_S0
+  begin
 
   stage stageA on origin :
     start
@@ -1861,20 +1861,18 @@
     | stageC
 
   stage stageC on all partitions :
-    EOAsm2 ../eo_text/asm20_s0.txt 0 //select p_partkey from part where p_mfgr = 'Manufacturer#1';
+    EOAsm2 ../eo_text/asm20_s0.txt 0
     | stageD
 
-  stage stageD on all partitions :
-    EOAsm2 ../eo_text/asm20_s0.txt 0 // insert into tempTable0
-    | stage E
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
 
-  stage stageE on origin:
-    sink | stageA
-
-      end ;
+    end ;
   "
-api::addProcedure
-
+  api::addProcedure
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 20 -  [S1] select ps_suppkey from partsupp where ps_partKey in
   //             [S0] ( select p_partkey from part where p_name like 'forest%' )
@@ -1948,7 +1946,7 @@ api::addProcedure
     end ;
     "
     api::addProcedure
-
+*/
 ;
 
 /*============================================================================*/

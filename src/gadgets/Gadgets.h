@@ -108,11 +108,19 @@ static Stz* C_TAG_COLUMN_NAME   = "<columnName>"_Stz;
 
 static Stz* C_TAG_LOGICUNIT_HANDLER     = "<logicUnitHandler>"_Stz;
 static Stz* C_TAG_CRW_PROCESS_ROUTINE   = "<crwProcessRoutine>"_Stz;
-static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE   = "<dataPulseProcessRoutine>"_Stz;
+static Stz* C_TAG_CRW_PREDICATE_ROUTINE     = "<crwPredicateRoutine>"_Stz;
+static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
 
 static Stz* C_TAG_PROJECT_COLUMNS      = "<projectColumns>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMN   = "<projectSrcColumn>"_Stz;
 static Stz* C_TAG_PROJECT_DST_COLUMN   = "<projectDstColumn>"_Stz;
+
+static Stz* C_TAG_PREDICATE_COLUMNS     = "<predicateColumns>"_Stz;
+static Stz* C_TAG_PREDICATE_SRC_COLUMN  = "<predicateSrcColumn>"_Stz;
+
+static Stz* C_TAG_LITERAL_VALUE  = "<literalValue>"_Stz;
+static Stz* C_TAG_RELATIONAL_OP  = "<relationalOp>"_Stz;
+
 //------------------------------------------------------------------------------
 
 #include "Birth.hpp"
