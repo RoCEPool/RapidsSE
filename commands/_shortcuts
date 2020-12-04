@@ -9,6 +9,7 @@ shortcut ad   article_dump;
 shortcut asm  _AsmQueries;
 shortcut asm1  _AsmQueriesSF1;
 shortcut asm10  _AsmQueriesSF10;
+shortcut asm20  _AsmQuery20;
 shortcut b    _bm_insidx;
 shortcut bc   _bootCluster;
 shortcut i    _bm_inflateRow;

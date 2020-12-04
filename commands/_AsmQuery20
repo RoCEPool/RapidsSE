@@ -30,3 +30,4 @@ print "loading part...";
 
 // create a temp table
 create table tempTable0 (p_partkey integer);
+/time Query20_S0;

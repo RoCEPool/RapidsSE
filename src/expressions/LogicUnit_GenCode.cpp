@@ -432,7 +432,7 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
       vGenerateAsmTxt_Smt0(iQueryNo, iSubQueryNo, pFile);
       break;
     case 20:
-      //vGenerateAsmTxt_Query20(iQueryNo, iSubQueryNo, pFile);
+      vGenerateAsmTxt_Query20(iQueryNo, iSubQueryNo, pFile);
       break;
     default:
       RASSERT(0);
@@ -494,21 +494,108 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // append a handler for iterating a CRWBUFFER and
   //   to execute PROJECT_COLUMNS for each row
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "PROJECT_COLUMNS"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_HANDLER, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
   oTagSet.vReset();
 
 
   // add the columns to be projected to PROJECT_COLUMNS
   oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 1);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_BEGIN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_BEGIN, &oTagSet));
   oTagSet.vReset();
 
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, 5);
   oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS, &oTagSet)); //, 5, 0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMN, &oTagSet)); //, 5, 0);
   oTagSet.vReset();
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMNS_END, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // Finally query done
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Query20(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  // select p_partkey from part where p_mfgr = 'Manufacturer#1'
+
+  TagSet oTagSet;
+
+  // append the INIT code
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // append a default handler for the ZK_STARTMARKER
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "part"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+
+  // add a column to the streamDef
+  oTagSet.vAppend(C_TAG_COLUMN_SCALE, (i8)0);
+  oTagSet.vAppend(C_TAG_COLUMN_LENGTH, 19);
+  oTagSet.vAppend(C_TAG_COLUMN_TYPE, "CT_INTEGER"_Stz);
+  oTagSet.vAppend(C_TAG_COLUMN_NAME, "p_partkey"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+  oTagSet.vReset();
+
+  // end a StreamDef handler
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+
+  // append a default handler for the STREAMDEF
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // append a default handler for the EOSMARKER
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // append a datapulse handler
+  //   to begin crw tablePtn iteration
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // append a crwIterate routine
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // append a handler for iterating a CRWBUFFER and
+  //   to execute PREDICATE and PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PREDICATE_ROUTINE, "PREDICATE_COLUMNS"_Stz);
+  oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "PROJECT_COLUMNS"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PREDICATE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // add the columns to be projected to PREDICATE_COLUMNS
+  oTagSet.vAppend(C_TAG_PREDICATE_COLUMNS, (i8)2);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PREDICATE_BEGIN, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PREDICATE_SRC_COLUMN, 2);
+  oTagSet.vAppend(C_TAG_LITERAL_VALUE, "\"Manufacturer#1\""_Stz);
+  oTagSet.vAppend(C_TAG_RELATIONAL_OP, "EO_STR_COMPARE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PREDICATE_VARCHAR_COLUMN, &oTagSet)); //, 5, 0);
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PREDICATE_END, &oTagSet));
+
+  // add the columns to be projected to PROJECT_COLUMNS
+  oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 1);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_BEGIN, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, (i8)0);
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_COLUMN, &oTagSet)); //, 5, 0);
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
 
   // Finally query done
   pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
