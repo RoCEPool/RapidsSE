@@ -24,8 +24,6 @@ namespace Rows
     friend class Row;
 
   private:
-
-    StreamPix m_oStreamPix; // condensed stream def
   
     i8   m_i_RowCrs;    // current logical row number
     Row* m_aRowCur;     // current row
