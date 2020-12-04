@@ -333,14 +333,28 @@ void Encoding_v2::vInitialEncodingSrw(RowSingle* pSrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
   
+  Dtm wColDtm;
+
   m_i_Offset_next = m_i_BaseOffsetData;
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    Dtm wColDtm = pSrw->wColDtm(i_Col);
+    eDM eDatum = xrColEnc.m_pCol->eDatum();
+
+    //wColDtm = pSrw->wColDtm(i_Col);
     
+    if (C_DATUM_NULL == pSrw->iColVal(i_Col)) {
+      wColDtm = pSrw->iColVal(i_Col);
+    }
+    else if (DM_VCH == eDatum) {
+      wColDtm = pSrw->szColVal(i_Col);
+    }
+    else {
+      wColDtm = pSrw->iColVal(i_Col);
+    }
+
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
     
