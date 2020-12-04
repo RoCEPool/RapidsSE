@@ -620,6 +620,33 @@ i8 RowSingle::nSumVchSizes(void)
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWBOX_BASED
 
+Stz* RowSingle::szStzAlottable(void)                                          // DONE
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  Stz* szAllottable = RowBox_t<C_ROWSINGLE_WSP>::szStzAllot_begin();
+  
+  return szAllottable;
+}
+#else
+
+Stz* RowSingle::szStzAlottable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+  
+  Stz* szAllottable = (Stz*)m_xWsp.ayLatterHead();
+  
+  return szAllottable;
+
+}
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* get string area                                                            */
+/*----------------------------------------------------------------------------*/
+#ifdef _ROWBOX_BASED
+
 Stz* RowSingle::szStzArea(void)                                          // DONE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
@@ -636,6 +663,30 @@ Stz* RowSingle::szStzArea(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
   return (Stz*)m_xWsp.ayArea();
+}
+
+#endif
+
+
+/*----------------------------------------------------------------------------*/
+/* given number of bytes have been taken from head/stz area                   */
+/*----------------------------------------------------------------------------*/
+#ifdef _ROWBOX_BASED
+
+void RowSingle::vStzBytesTaken(i8 nBytesTaken)                           // DONE
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  RowBox_t<C_ROWSINGLE_WSP>::vTakeHead(nBytesTaken);
+}
+
+#else
+
+void RowSingle::vStzBytesTaken(i8 nBytesTaken)                           // DONE
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  m_xWsp.vTakeHead(nBytesTaken);
 }
 
 #endif

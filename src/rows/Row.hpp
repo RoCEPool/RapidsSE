@@ -44,7 +44,8 @@ namespace Rows
     void vColVal_int(i8 i_Col, i8 iVal);
     void vColVal_flt(i8 i_Col, d8 dVal);
     void vColVal_ofs(i8 i_Col, i8 iOfs);
-  
+    void vColVal_ofs(i8 i_Col, Stz* szStz);
+
     void vSetColNull(i8 i_Col);
   
   public:

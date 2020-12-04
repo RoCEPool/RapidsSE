@@ -40,6 +40,10 @@ namespace CompactBuffers
   {
     _static_
     
+#ifdef _ROWBOX_BASED
+    vTrace("vInflate_CodedValue_into_Cell\n"_Stz);
+#endif
+  
     i8 nStrSize;
     i8* aiCellValue;
     char** aacCellValue;
@@ -241,13 +245,28 @@ namespace CompactBuffers
           rayDataByte += nStrSize;
         }
         else
+        if (SI_STRAREA_OFS == eStrInflateRule) {
+          // copy into str area, advance data point ptr
+          memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
+          rayDataByte += nStrSize;
+
+          i8 i_Ofs = - nDifference(racStrArea,rayDstByte);
+          aiCellValue = (i8*)rayDstByte;
+          *aiCellValue = i_Ofs;
+          rayDstByte += 8;
+
+          racStrArea += nStrSize;
+        }
+        else
         if (SI_STRAREA_ADR == eStrInflateRule) {
+          // copy into str area, advance data point ptr
           memcpy(racStrArea,rayDataByte,(size_t)nStrSize);
           rayDataByte += nStrSize;
 
           aacCellValue = (char**)rayDstByte;
           *aacCellValue = racStrArea;
           rayDstByte += 8;
+          
           racStrArea += nStrSize;
         }
         else
@@ -504,6 +523,11 @@ namespace CompactBuffers
   {
     _static_
     
+#ifdef _ROWBOX_BASED
+    vTrace("vInflate_Key_into_ElementArray\n"_Stz);
+#endif
+  
+
   i8 nCols = pStreamDef->nTotalColumns();
   
   u1* auMetaCode = aHeadLine->auMetaArea();

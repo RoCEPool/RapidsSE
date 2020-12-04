@@ -4,19 +4,26 @@
 
 bc;
 
-create table tspTbl (
-  tsp_col1   TIMESTAMP   NOT NULL,
+create table bolTbl (
+  bol_col1   BOOLEAN     NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
   int_col4   INTEGER     NOT NULL,
-  ivl_col5   DECIMAL(10,2) NOT NULL,
+  dec_col5   DECIMAL(10,2) NOT NULL,
   flt_col6   FLOAT       NOT NULL,
-  tsp_col7   TIMESTAMP
+  tsp_col7   TIMESTAMP   NOT NULL,
+  bol_col8   BOOLEAN
 );
 
-Load tspTbl "../DATA/Datums/timestamp.csv" ;
+// create indexes
+create index bol_idx1 on bolTbl (bol_col1);
+create index bol_idx2 on bolTbl (bol_col8);
+lsidxcol bolTbl bol_idx1;
+lsidxcol bolTbl bol_idx2;
 
-tableScan tspTbl;
+load bolTbl "../DATA/Datums/boolean.csv" ;
+
+tableScan bolTbl;
 
 /*============================================================================*/
 /* end                                                                        */

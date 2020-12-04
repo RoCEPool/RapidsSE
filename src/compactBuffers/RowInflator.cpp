@@ -16,6 +16,10 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
 {
   _static_
 
+#ifdef _ROWBOX_BASED
+  vTrace("vInflate_ColumnSet_into_CellArray\n"_Stz);
+#endif
+  
   u1* auMetaCode;
   byte* ayDataByte;
   
@@ -369,30 +373,30 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           ayDataByte += nStrSize;
         }
         else
-          if (SI_STRAREA_ADR == eStrInflateRule) {
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_CELLARRAY_PST == eStrInflateRule) {
-              memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              ayDstByte += (((nStrSize) / 8) * 8) + 16;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+        if (SI_STRAREA_ADR == eStrInflateRule) {
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_CELLARRAY_PST == eStrInflateRule) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize - 1;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         
@@ -643,9 +647,13 @@ void RowInflator::vInflate_OneColumn_into_RowSingle(RowSingle* pRow,
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
-                                    HeadLine* aHeadLine)
+                                                     HeadLine* aHeadLine)
 {
   _static_
+  
+#ifdef _ROWBOX_BASED
+  vTrace("vInflate_AllColumns_into_RowSingle\n"_Stz);
+#endif
   
   u1* auMetaCode;
   byte* ayDataByte;
@@ -656,7 +664,6 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 
   byte* ayCellArray = pRowSingle->ayCellArray();
     
-  char* azStrArea = (char*)pRowSingle->szStzArea();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -670,12 +677,27 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
     u1 uHigh = uMetaCode >> 4;
     u1 uLow  = uMetaCode & 0x0F;
 
+    char* azStrArea = (char*)pRowSingle->szStzAlottable();
+
 #ifdef _ROWBOX_BASED
+
     vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_OFS,
                                   aHeadLine,ayDataByte,uHigh,uLow);
+    
+    if (azStrArea != (char*)pRowSingle->szStzAlottable()) {
+      i8 nBytesTaken = nDifference(azStrArea,pRowSingle->szStzAlottable());
+      pRowSingle->vStzBytesTaken(nBytesTaken);
+    }
 #else
+    
     vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_ADR,
                                   aHeadLine,ayDataByte,uHigh,uLow);
+    
+    if (azStrArea != (char*)pRowSingle->szStzAlottable()) {
+      i8 nBytesTaken = nDifference(azStrArea,pRowSingle->szStzAlottable());
+      pRowSingle->vStzBytesTaken(nBytesTaken);
+    }
+
 #endif
     
   }

@@ -65,7 +65,9 @@ namespace Rows
     void vSetColNull(i8 i_Col);
     void vSetValue(Datum* pDatum, Column* pCol);
     i8   nSumVchSizes(void);
+    Stz* szStzAlottable(void);
     Stz* szStzArea(void);
+    void vStzBytesTaken(i8 nBytesTaken);
 
   private:
     Footer* aFooter(void);
