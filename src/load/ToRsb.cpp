@@ -425,7 +425,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
-  m_pRowSlab->nFreeSpace();
+  m_pRowSlab->nFreeBytes();
 
   // change this to some no longer strib function
   ASSERT(StrLib::nSize(azCsvChunk) < C_1MB);
@@ -619,7 +619,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
-  m_pRowSlab->nFreeSpace();
+  m_pRowSlab->nFreeBytes();
   
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
@@ -686,7 +686,7 @@ L_TestMoreRecords:
   // reset field cursor
   i_Fld = -1;
 
-  m_pRowSlab->nFreeSpace();
+  m_pRowSlab->nFreeBytes();
 
   // allot a new rsb (new another rsbBuffer if necessary)
   if (! m_pRowSlab->aAllotNewRow()) {    // ? inline ?
@@ -695,7 +695,7 @@ L_TestMoreRecords:
     ASSERT(aNewRow);
   }
  
-  m_pRowSlab->nFreeSpace();
+  m_pRowSlab->nFreeBytes();
 
   //                                                      end of testMoreRecords
 
@@ -705,7 +705,7 @@ L_TestMoreRecords:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreFields:
   
-  m_pRowSlab->nFreeSpace();
+  m_pRowSlab->nFreeBytes();
   
   ASSERT(EC_NONE == eError);
 
@@ -2502,7 +2502,7 @@ L_Varchar_setNull:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_FieldEnd:
     
-  m_pRowSlab->nFreeSpace();
+  m_pRowSlab->nFreeBytes();
 
   if (iTraceBits & C_BIT_PostField)
     vTrace("L_FieldEnd: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,

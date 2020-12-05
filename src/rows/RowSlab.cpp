@@ -38,96 +38,15 @@ RowSlab::~RowSlab(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
-/*----------------------------------------------------------------------------*/
-
-//bool RowSlab::bAllotRow(Row** paRow)
+///*----------------------------------------------------------------------------*/
+///* get number of columns                                                      */
+///*----------------------------------------------------------------------------*/
+//i8 RowSlab::nCols(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 //  
-//  m_nRowStringBytes = 0;
-//  m_i_ColCrs  = 0;
-//  
-//  i8 nCellBytes = nRowProperBytes();
-//
-//  //if (nFreeBytes() < nCellBytes) { // hack Ray 1 dec 2020
-//  if (nFreeBytes() < C_2KB) {
-//    *paRow = nullptr;
-//    return false;
-//  }
-//  
-//  m_aRowCur = ayAllotTail(nCellBytes);
-//  
-//  
-//  if (! m_aRowCur) {
-//    *paRow = nullptr;
-//    return false;
-//  }
-//  
-//  new(m_aRowCur) Row;
-//
-//  
-//  m_i_RowCrs++;
-//  *paRow = m_aRowCur;
-//  
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//  
-//  return true;
+//  return m_oStreamPix.m_nCols;
 //}
-/*----------------------------------------------------------------------------*/
-//bool RowSlab::bAllotRow(Row** paRow)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//
-//  i8 nBytesAvail = nFree() - C_NML_STR_SPACE - (i8)C_BYTES_PER_CACHE_LINE;
-//
-//  if (nBytesAvail < m_oStreamPix.m_nMaxRowSize + /* m_iDummy */ (i8)sizeof(i8))
-//    return false;
-//
-//  m_i_RowCrs++;
-//
-//  m_aRowCur = aRowAdr(m_i_RowCrs);
-//
-//  *paRow = m_aRowCur;
-//
-//  m_i_ColCrs  = 0;
-//
-//  i8 nCellBytes = nRowProperBytes();
-//  vTakeTail(nCellBytes);
-//
-//  m_nRowStringBytes = 0;
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//
-//  return true;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* allot a new row                                                            */
-/*----------------------------------------------------------------------------*/
-//bool RowSlab::bAllotRow(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//    
-//  Row* aRow;
-//  
-//  bool b = bAllotRow(&aRow);
-//  
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//  
-//  return b;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get number of columns                                                      */
-/*----------------------------------------------------------------------------*/
-i8 RowSlab::nCols(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return m_oStreamPix.m_nCols;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get number of extra columns                                                */
@@ -157,7 +76,7 @@ void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   MemLib::vCopy(&m_oStreamPix,pStreamPixSrc,sizeof(StreamPix),CN_ROWSLAB);
-  
+
   m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
 }
 
@@ -294,7 +213,7 @@ void RowSlab::vDumpRow(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  Row* aRow = this->aRowAdr(i_Row);
+  Row* aRow = this->pRowAddress(i_Row);
   vDumpRow(i_Row,aRow);
 }
 
@@ -305,7 +224,7 @@ void RowSlab::vDumpRow(i8 i_Row, Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
-  SP_RowPix spRowPix(this->nCols(),this->axaColPix());
+  SP_RowPix spRowPix(this->nColumns(),this->axaColPix());
   
   Stz* szRow = spRowPix.sz(aRow);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
@@ -314,14 +233,14 @@ void RowSlab::vDumpRow(i8 i_Row, Row* aRow)
 /*----------------------------------------------------------------------------*/
 /* get number of rows                                                         */
 /*----------------------------------------------------------------------------*/
-i8 RowSlab::nFreeSpace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  i8 nFreeSp = nFreeBytes();
-  
-  return nFreeSp;
-}
+//i8 RowSlab::nFreeSpace(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//  
+//  i8 nFreeSp = nFreeBytes();
+//  
+//  return nFreeSp;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* initilize col pix                                                          */
@@ -356,7 +275,7 @@ void RowSlab::vNormaliseStrings(void)
 
   i8 nTimes = 0;
   i8 nRows  = this->nRows();
-  i8 nCols  = this->nCols();
+  i8 nCols  = this->nColumns();
   
   if (nCols < 14)
     return;
@@ -377,7 +296,7 @@ void RowSlab::vNormaliseStrings(void)
 
     for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
       
-      Row* aOuterRow = aRowAdr(i_OuterRow);
+      Row* aOuterRow = pRowAddress(i_OuterRow);
       
       if (C_DATUM_NULL == aOuterRow->iColVal_int(i_Col))
         continue;
@@ -395,7 +314,7 @@ void RowSlab::vNormaliseStrings(void)
 
         //vTrace("NormaliseStrings outer %lld inner %lld\n"_Stz,i_OuterRow,i_InnerRow);
         
-        Row* aInnerRow = aRowAdr(i_InnerRow);
+        Row* aInnerRow = pRowAddress(i_InnerRow);
 
         if (C_DATUM_NULL == aInnerRow->iColVal_int(i_Col))
           continue;
@@ -495,26 +414,26 @@ i8 RowSlab::nRowProperBytes(void)
   return nBytes;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get address of an rsb                                                      */
-/*----------------------------------------------------------------------------*/
-Row* RowSlab::aRowAdr(i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-    
-  /*          v row[1]            v row[0]
-       -------*----+----+----*----+----+---+----+----*
-              | Ob : c0 : c1 : cN | Ob :c0 : c1 : cN |!!!hazard
-       -------*----+----+----*----+----+---+----+----*
-   */
-    
-  Row* pRowAddr = aTailItem(i_Row);
-  
-  Row* pRow = _pRow(pRowAddr);
-  
-  return pRow;
-}
-
+///*----------------------------------------------------------------------------*/
+///* get address of an rsb                                                      */
+///*----------------------------------------------------------------------------*/
+//Row* RowSlab::aRowAdr(i8 i_Row)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//
+//  /*          v row[1]            v row[0]
+//       -------*----+----+----*----+----+---+----+----*
+//              | Ob : c0 : c1 : cN | Ob :c0 : c1 : cN |!!!hazard
+//       -------*----+----+----*----+----+---+----+----*
+//   */
+//
+//  Row* pRowAddr = aTailItem(i_Row);
+//
+//  Row* pRow = _pRow(pRowAddr);
+//
+//  return pRow;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb by its offset                                        */
 /*----------------------------------------------------------------------------*/
@@ -535,16 +454,6 @@ void RowSlab::vSetRow(i8 i_Row)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
   
   m_i_RowCrs = i_Row;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of rows                                                         */
-/*----------------------------------------------------------------------------*/
-i8 RowSlab::nRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return nItems();
 }
 
 /*----------------------------------------------------------------------------*/

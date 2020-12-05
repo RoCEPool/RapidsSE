@@ -36,10 +36,8 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
-    //bool  bAllotRow(Row** paRow);
-    //bool  bAllotRow(void);
     ColPix* axaColPix(void);
-     i8    nCols(void);
+//     i8    nCols(void);
     i8    iColumn(Row* aRow, i8 iColumn);
     void  vCopyPix(StreamPix* pStreamPixSrc);
     void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
@@ -49,7 +47,7 @@ namespace Rows
     void  vDumpRow(i8 i_Row);
     void  vDumpRow(i8 i_Row, Row* aRow);
     i8    nExtraCols(void);
-    i8    nFreeSpace(void);
+    //i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
@@ -58,11 +56,11 @@ namespace Rows
     bool  bPtnHash(void);
     void  vReset(void);
     i8    nRowProperBytes(void);
-    Row*  aRowAdr(i8 i_Row);
+//    Row*  aRowAdr(i8 i_Row);
     Row*  aRowByOfs(i8 iOfs);
     void  vSetRow(i8 iRow);
     i8    iOffsetInWsp(Row* aRow);
-    i8    nRows(void);
+//    i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
     void  vZeroRow(Row* aRow);

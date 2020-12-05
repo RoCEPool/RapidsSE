@@ -51,7 +51,7 @@ i8 RsbBuffer::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
   
-  SP_RowPix spRowPix(m_oRowSlab.nCols(),m_oRowSlab.axaColPix());
+  SP_RowPix spRowPix(m_oRowSlab.nColumns(),m_oRowSlab.axaColPix());
 
   i8 nRows = m_oRowSlab.nRows();
   
@@ -65,13 +65,13 @@ void RsbBuffer::vPrintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
   
-  SP_RowPix spRowPix(m_oRowSlab.nCols() - m_oRowSlab.nExtraCols(),
+  SP_RowPix spRowPix(m_oRowSlab.nColumns() - m_oRowSlab.nExtraCols(),
                      m_oRowSlab.axaColPix());
 
   i8 nRows = m_oRowSlab.nRows();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    Row* aRow = m_oRowSlab.aRowAdr(i_Row);
+    Row* aRow = m_oRowSlab.pRowAddress(i_Row);
     Stz* szRow = spRowPix.sz(aRow);
     vTrace("row: (%s)\n"_Stz,szRow);
   }
@@ -84,7 +84,7 @@ CsvBuffer* RsbBuffer::pToCsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
     
-  SP_RowPix spRowPix(m_oRowSlab.nCols(),m_oRowSlab.axaColPix());
+  SP_RowPix spRowPix(m_oRowSlab.nColumns(),m_oRowSlab.axaColPix());
   
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
@@ -95,7 +95,7 @@ CsvBuffer* RsbBuffer::pToCsvBuffer(void)
   i8 nRows = m_oRowSlab.nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Row* aRow = m_oRowSlab.aRowAdr(i_Row);
+    Row* aRow = m_oRowSlab.pRowAddress(i_Row);
     
     Stz* szRow = spRowPix.sz(aRow,true);
 

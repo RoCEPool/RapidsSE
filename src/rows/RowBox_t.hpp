@@ -49,6 +49,8 @@ namespace Rows
     
     Row* aAllotNewRow(void);
   
+    i8    nColumns(void);
+
   
     void vColDeposit(i8 i_Col, i8 iVal);
     void vColDeposit(i8 i_Col, Stz* szVal);
@@ -60,6 +62,8 @@ namespace Rows
 
     bool bIsColNull(i8 i_Col);
 
+    Row* pRowAddress(i8 i_Row);
+    i8   nRows(void);
     Row* aFirstRow(void);
     Row* aLastRow(void);
     Row* aNextRow(Row* aPriorRow);
@@ -212,6 +216,15 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* get number of columns                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::nColumns(void)
+{
+  return m_oStreamPix.m_nCols;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get datum value of given column                                            */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
@@ -297,6 +310,36 @@ bool RowBox_t<SIZE>::bIsColNull(i8 i_Col)
   bool bIsNull = m_aRowCur->bIsColNull(i_Col);
   
   return bIsNull;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get address of an rsb                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Row* RowBox_t<SIZE>::pRowAddress(i8 i_Row)
+{
+  /*          v row[1]            v row[0]
+       -------*----+----+----*----+----+---+----+----*
+              | Ob : c0 : c1 : cN | Ob :c0 : c1 : cN |!!!hazard
+       -------*----+----+----*----+----+---+----+----*
+   */
+    
+  Row* pRowAddr = WspConvergent_t<SIZE,Stz,Row>::aTailItem(i_Row);
+  
+  Row* pRow = _pRow(pRowAddr);
+  
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of rows                                                         */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::nRows(void)
+{
+  return WspConvergent_t<SIZE,Stz,Row>::nItems();
 }
 
 

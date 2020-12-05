@@ -58,7 +58,7 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
   i8 nRows = pRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Row* aRowSrc = pRowSlab->aRowAdr(i_Row);
+    Row* aRowSrc = pRowSlab->pRowAddress(i_Row);
     
     i_Ptn = pRowSlab->iPtnOfRow(aRowSrc);
     
