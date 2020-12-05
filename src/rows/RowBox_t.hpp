@@ -49,9 +49,12 @@ namespace Rows
     
     Row* aAllotNewRow(void);
   
-    i8    nColumns(void);
+    i8   nColumns(void);
+    ColPix* axaColPix(void);
+    i8    iColumn(Row* aRow, i8 iColumn);
+    void  vCopyPix(StreamPix* pStreamPixSrc);
+    void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
 
-  
     void vColDeposit(i8 i_Col, i8 iVal);
     void vColDeposit(i8 i_Col, Stz* szVal);
     Dtm* aColDtm(i8 i_Col);
@@ -73,6 +76,14 @@ namespace Rows
     
     i8   iToOffset(Stz* aItem);
   
+  
+    void vAdvanceCursor(void);
+    void vDeposit(d8 dVal);
+    void vDeposit(i8 iVal);
+    void vDeposit(Stz* szVal);
+    char* azDepositString_begin(void);
+    void vDepositString_end(i8 nSize);
+
     //Footer* aFooter(void);
 
 
@@ -213,6 +224,109 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
  
   return m_aRowCur;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the condensed column pix array                                         */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+ColPix* RowBox_t<SIZE>::axaColPix(void)
+{
+  return m_oStreamPix.m_xaColPix;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* copy given stream pix into the stream pix in this rsb                      */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vCopyPix(StreamPix* pStreamPixSrc)
+{
+  MemLib::vCopy(&m_oStreamPix,pStreamPixSrc,sizeof(StreamPix),CN_ROWSLAB);
+
+  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given source row into current row of this row slab                    */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
+{
+  i8 iVal;
+  Stz* szSrcStz;
+  
+  ASSERT(0 == m_i_ColCrs);
+  
+  i8 nCols = m_oStreamPix.m_nCols;
+  
+  i8 i_Col;
+  
+  for (i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+    
+    if (DM_VCH == eDatum) {
+       // vch datum
+
+      if (C_DATUM_NULL == aRowSrc->iColVal_int(i_Col)) {
+        vDeposit(C_DATUM_NULL);
+      }
+      else {
+        szSrcStz = aRowSrc->szVal_rsb(i_Col);
+        vDeposit(szSrcStz);
+      }
+    }
+    else {
+      // all others
+     
+      iVal = aRowSrc->iColVal_int(i_Col);
+      vDeposit(iVal);
+    }
+  }
+
+  if (bSrcHasPtnHash && bCopyPtnHash) {
+    iVal = aRowSrc->iColVal_int(i_Col);
+    vDeposit(iVal);
+  }
+  
+//  Row* aRowDst = aRowAdr(nRows() - 1);
+//  SP_RowPix spPix(nCols,m_oStreamPix.m_xaColPix);
+//  vTrace("CopyRow: %s\n"_Stz,spPix.sz(aRowDst));
+}
+
+/*----------------------------------------------------------------------------*/
+/* return column value from rsb for given column number                       */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
+{
+  i8 iVal;
+  Stz* szSrcStz;
+    
+  eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+    
+  if (DM_VCH == eDatum) {
+    // vch datum
+    
+    if (C_DATUM_NULL == aRow->iColVal_int(i_Col)) {
+      return C_DATUM_NULL;
+    }
+    else {
+      szSrcStz = aRow->szVal_rsb(i_Col);
+      return (i8)szSrcStz;
+    }
+  }
+  else {
+    // all others
+    
+    iVal = aRow->iColVal_int(i_Col);
+    return iVal;
+  }
+}
+
+
+
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -394,6 +508,103 @@ Row* RowBox_t<SIZE>::aNextRow(Row* aPriorRow)
   
   return aRow;
 }
+
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------*/
+/* advance cursor                                                           */
+/*--------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vAdvanceCursor(void)
+{
+  m_i_ColCrs++;
+}
+
+
+/*--------------------------------------------------------------------------*/
+/* deposit an d8 value into next cell                                       */
+/*--------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDeposit(d8 dVal)
+{
+
+  m_aRowCur->vColVal_flt(m_i_ColCrs,dVal);
+  
+  vAdvanceCursor();
+
+}
+
+/*--------------------------------------------------------------------------*/
+/* deposit an i8 value into next cell                                       */
+/*--------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDeposit(i8 iVal)
+{
+
+  m_aRowCur->vColVal_int(m_i_ColCrs,iVal);
+
+  vAdvanceCursor();
+
+}
+
+/*--------------------------------------------------------------------------*/
+/* deposit an stz value into next cell                                      */
+/*--------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDeposit(Stz* szVal)
+{
+
+  char* azTgt = azDepositString_begin();
+  
+  i8 nLen = StrLib::nCopy(azTgt,szVal->azChar());
+
+  vDepositString_end(nLen + 1);
+
+}
+
+/*--------------------------------------------------------------------------*/
+/* begin deposit of string                                                  */
+/*--------------------------------------------------------------------------*/
+template <i8 SIZE>
+char* RowBox_t<SIZE>::azDepositString_begin(void)
+{
+
+  char* azStz = (char*)WspConvergent_t<SIZE,Stz,Row>::ayLatterHead();
+  
+  m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
+  i8 i_Ofs = - nDifference(azStz,aColCell);
+
+  m_aRowCur->vColVal_ofs(m_i_ColCrs,i_Ofs);
+
+  vAdvanceCursor();
+
+
+  return azStz;
+}
+
+/*--------------------------------------------------------------------------*/
+/* take bytes for deposited string                                          */
+/*--------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDepositString_end(i8 nSize)
+{
+
+  WspConvergent_t<SIZE,Stz,Row>::vTakeHead(nSize);
+  
+  m_nRowStringBytes += nSize;
+
+
+}
+
+
 
 
 /*----------------------------------------------------------------------------*/

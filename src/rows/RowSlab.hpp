@@ -36,18 +36,16 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
-    ColPix* axaColPix(void);
-//     i8    nCols(void);
-    i8    iColumn(Row* aRow, i8 iColumn);
-    void  vCopyPix(StreamPix* pStreamPixSrc);
-    void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
+    //ColPix* axaColPix(void);
+//    i8    iColumn(Row* aRow, i8 iColumn);
+//    void  vCopyPix(StreamPix* pStreamPixSrc);
+//    void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
     void  vDiscardInvalidRow(void);
     void  vDumpAllRows(void);
     void  vDumpNst(void);
     void  vDumpRow(i8 i_Row);
     void  vDumpRow(i8 i_Row, Row* aRow);
     i8    nExtraCols(void);
-    //i8    nFreeSpace(void);
     void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
@@ -56,11 +54,9 @@ namespace Rows
     bool  bPtnHash(void);
     void  vReset(void);
     i8    nRowProperBytes(void);
-//    Row*  aRowAdr(i8 i_Row);
     Row*  aRowByOfs(i8 iOfs);
     void  vSetRow(i8 iRow);
     i8    iOffsetInWsp(Row* aRow);
-//    i8    nRows(void);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
     void  vZeroRow(Row* aRow);
@@ -73,98 +69,7 @@ namespace Rows
   
   public:
   
-  /*--------------------------------------------------------------------------*/
-  /* advance cursor                                                           */
-  /*--------------------------------------------------------------------------*/
-  inline void vAdvanceCursor(void)
-  {
-    m_i_ColCrs++;
-  };
-
-
-  /*--------------------------------------------------------------------------*/
-  /*--------------------------------------------------------------------------*/
   
-  /*--------------------------------------------------------------------------*/
-  /* deposit an d8 value into next cell                                       */
-  /*--------------------------------------------------------------------------*/
-  inline void vDeposit(d8 dVal)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-  
-    m_aRowCur->vColVal_flt(m_i_ColCrs,dVal);
-    
-    vAdvanceCursor();
-
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* deposit an i8 value into next cell                                       */
-  /*--------------------------------------------------------------------------*/
-  inline void vDeposit(i8 iVal)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-
-    m_aRowCur->vColVal_int(m_i_ColCrs,iVal);
-
-    vAdvanceCursor();
-  
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* deposit an stz value into next cell                                      */
-  /*--------------------------------------------------------------------------*/
-  inline void vDeposit(Stz* szVal)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-
-    char* azTgt = azDepositString_begin();
-    
-    i8 nLen = StrLib::nCopy(azTgt,szVal->azChar());
-
-    vDepositString_end(nLen + 1);
-
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* begin deposit of string                                                  */
-  /*--------------------------------------------------------------------------*/
-  inline char* azDepositString_begin(void)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-
-    char* azStz = (char*)ayLatterHead();
-    
-    m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
-    i8 i_Ofs = - nDifference(azStz,aColCell);
-
-    m_aRowCur->vColVal_ofs(m_i_ColCrs,i_Ofs);
-
-    vAdvanceCursor();
-
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-
-    return azStz;
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* take bytes for deposited string                                          */
-  /*--------------------------------------------------------------------------*/
-  inline void vDepositString_end(i8 nSize)
-  {
-     _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-
-    vTakeHead(nSize);
-    
-    m_nRowStringBytes += nSize;
-  
-    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB);
-  }
-
-
   };
   
   RowSlab* _pRowSlab(void* aAddr);

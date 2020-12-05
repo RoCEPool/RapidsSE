@@ -38,16 +38,6 @@ RowSlab::~RowSlab(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-///*----------------------------------------------------------------------------*/
-///* get number of columns                                                      */
-///*----------------------------------------------------------------------------*/
-//i8 RowSlab::nCols(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//  
-//  return m_oStreamPix.m_nCols;
-//}
-
 /*----------------------------------------------------------------------------*/
 /* get number of extra columns                                                */
 /*----------------------------------------------------------------------------*/
@@ -58,107 +48,6 @@ i8 RowSlab::nExtraCols(void)
   return m_oStreamPix.m_nExtraCols;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get the condensed column pix array                                         */
-/*----------------------------------------------------------------------------*/
-ColPix* RowSlab::axaColPix(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  return m_oStreamPix.m_xaColPix;
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given stream pix into the stream pix in this rsb                      */
-/*----------------------------------------------------------------------------*/
-void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-
-  MemLib::vCopy(&m_oStreamPix,pStreamPixSrc,sizeof(StreamPix),CN_ROWSLAB);
-
-  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given source row into current row of this row slab                    */
-/*----------------------------------------------------------------------------*/
-void RowSlab::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  i8 iVal;
-  Stz* szSrcStz;
-  
-  ASSERT(0 == m_i_ColCrs);
-  
-  i8 nCols = m_oStreamPix.m_nCols;
-  
-  i8 i_Col;
-  
-  for (i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
-    
-    if (DM_VCH == eDatum) {
-       // vch datum
-
-      if (C_DATUM_NULL == aRowSrc->iColVal_int(i_Col)) {
-        vDeposit(C_DATUM_NULL);
-      }
-      else {
-        szSrcStz = aRowSrc->szVal_rsb(i_Col);
-        vDeposit(szSrcStz);
-      }
-    }
-    else {
-      // all others
-     
-      iVal = aRowSrc->iColVal_int(i_Col);
-      vDeposit(iVal);
-    }
-  }
-
-  if (bSrcHasPtnHash && bCopyPtnHash) {
-    iVal = aRowSrc->iColVal_int(i_Col);
-    vDeposit(iVal);
-  }
-  
-//  Row* aRowDst = aRowAdr(nRows() - 1);
-//  SP_RowPix spPix(nCols,m_oStreamPix.m_xaColPix);
-//  vTrace("CopyRow: %s\n"_Stz,spPix.sz(aRowDst));
-}
-
-/*----------------------------------------------------------------------------*/
-/* return column value from rsb for given column number                       */
-/*----------------------------------------------------------------------------*/
-i8 RowSlab::iColumn(Row* aRow, i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  i8 iVal;
-  Stz* szSrcStz;
-    
-  eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
-    
-  if (DM_VCH == eDatum) {
-    // vch datum
-    
-    if (C_DATUM_NULL == aRow->iColVal_int(i_Col)) {
-      return C_DATUM_NULL;
-    }
-    else {
-      szSrcStz = aRow->szVal_rsb(i_Col);
-      return (i8)szSrcStz;
-    }
-  }
-  else {
-    // all others
-    
-    iVal = aRow->iColVal_int(i_Col);
-    return iVal;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* discard current invalid/incomplete row                                     */
@@ -229,18 +118,6 @@ void RowSlab::vDumpRow(i8 i_Row, Row* aRow)
   Stz* szRow = spRowPix.sz(aRow);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
 }
-
-/*----------------------------------------------------------------------------*/
-/* get number of rows                                                         */
-/*----------------------------------------------------------------------------*/
-//i8 RowSlab::nFreeSpace(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//  
-//  i8 nFreeSp = nFreeBytes();
-//  
-//  return nFreeSp;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* initilize col pix                                                          */
@@ -414,26 +291,6 @@ i8 RowSlab::nRowProperBytes(void)
   return nBytes;
 }
 
-///*----------------------------------------------------------------------------*/
-///* get address of an rsb                                                      */
-///*----------------------------------------------------------------------------*/
-//Row* RowSlab::aRowAdr(i8 i_Row)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-//
-//  /*          v row[1]            v row[0]
-//       -------*----+----+----*----+----+---+----+----*
-//              | Ob : c0 : c1 : cN | Ob :c0 : c1 : cN |!!!hazard
-//       -------*----+----+----*----+----+---+----+----*
-//   */
-//
-//  Row* pRowAddr = aTailItem(i_Row);
-//
-//  Row* pRow = _pRow(pRowAddr);
-//
-//  return pRow;
-//}
-//
 /*----------------------------------------------------------------------------*/
 /* get address of an rsb by its offset                                        */
 /*----------------------------------------------------------------------------*/
