@@ -7,6 +7,8 @@ namespace DataBuffers
 {
   typedef       HV <Record,StreamDef>        HV_Rec;
   
+
+
   class RowBuffer : public DataBuffer,
                     public RowBox_t<C_WSP_ROWBUFFER>
   {

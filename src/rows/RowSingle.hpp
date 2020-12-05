@@ -5,6 +5,8 @@
 
 namespace Rows
 {
+  static const i8 C_ROWSINGLE_WSP  = C_MAX_RECORD;
+
   class RowSingle :
                     public Object,
                     public RowBox_t<C_ROWSINGLE_WSP>

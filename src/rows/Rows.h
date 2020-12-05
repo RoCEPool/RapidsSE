@@ -22,6 +22,7 @@ static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 
 #include "Row.hpp"
 #include "NmlStr.hpp"
+#include "SP_RowPix.hpp"
 #include "RowBox_t.hpp"
 
 #include "RowSlab.hpp"
@@ -32,7 +33,6 @@ static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 #include "RowUte.hpp"
 
 #include "SP_Row.hpp"
-#include "SP_RowPix.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

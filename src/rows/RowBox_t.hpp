@@ -27,7 +27,6 @@ namespace Rows
 
     NmlStr m_oNmlStr;   // normalised string set
 
-
   
     // must be last
     Footer m_xFooter;
@@ -84,7 +83,32 @@ namespace Rows
     char* azDepositString_begin(void);
     void vDepositString_end(i8 nSize);
 
+    void  vDiscardInvalidRow(void);
+    void  vDumpAllRows(void);
+    void  vDumpNst(void);
+    void  vDumpRow(i8 i_Row);
+    void  vDumpRow(i8 i_Row, Row* aRow);
+
     //Footer* aFooter(void);
+    i8    nExtraCols(void);
+    void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
+    NmlStr* pNmlStr(void);
+    void  vNormaliseStrings(void);
+    i8    iPtnOfRow(Row* aRow);
+    void  vPositionOnCell(i8 i_Col);
+    bool  bPtnHash(void);
+    void  vReset(void);
+    i8    nRowProperBytes(void);
+    Row*  aRowByOfs(i8 iOfs);
+    void  vSetRow(i8 iRow);
+    i8    iOffsetInWsp(Row* aRow);
+    void  vSlabReport(void);
+    StreamPix* aStreamPix(void);
+    void  vZeroRow(Row* aRow);
+
+  private:
+    i8    i_RowSlabCell(i8 i_Row);
+    m8*   amSlabCellVec(void);
 
 
   };
@@ -605,7 +629,363 @@ void RowBox_t<SIZE>::vDepositString_end(i8 nSize)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* discard current invalid/incomplete row                                     */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDiscardInvalidRow(void)
+{
+  
+  // undo the row number increments of vNewRow()
+  m_i_RowCrs--;
+  
+  // return tail bytes allotted for cells of current row in vNewRow()
+  i8 nCellBytes = nRowProperBytes();
+  WspConvergent_t<SIZE,Stz,Row>::vGiveTail(nCellBytes);
+  
+  WspConvergent_t<SIZE,Stz,Row>::vDecItems();
+  
+  // return head bytes allotted for strings deposited in vDepositString_end()
+  if (m_nRowStringBytes) {
+    WspConvergent_t<SIZE,Stz,Row>::vGiveHead(m_nRowStringBytes);
+    m_nRowStringBytes = 0;
+  }
+}
 
+/*----------------------------------------------------------------------------*/
+/* dump given row                                                             */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDumpAllRows(void)
+{
+  
+  i8 nRows = this->nRows();
+  vTrace("RowSlab of %lld rows...\n"_Stz,nRows);
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++)
+    vDumpRow(i_Row);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump normalised string table                                               */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDumpNst(void)
+{
+
+  m_oNmlStr.vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump given row                                                             */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDumpRow(i8 i_Row)
+{
+  
+  Row* aRow = this->pRowAddress(i_Row);
+  vDumpRow(i_Row,aRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump given row                                                             */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vDumpRow(i8 i_Row, Row* aRow)
+{
+  
+  SP_RowPix spRowPix(this->nColumns(),this->axaColPix());
+  
+  Stz* szRow = spRowPix.sz(aRow);
+  vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of extra columns                                                */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::nExtraCols(void)
+{
+  
+  return m_oStreamPix.m_nExtraCols;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* initilize col pix                                                          */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
+{
+        
+  pStreamDef->vToStreamPix(&m_oStreamPix,bPtnHash);
+  
+  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get normalised string set                                                  */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+NmlStr* RowBox_t<SIZE>::pNmlStr(void)
+{
+
+  return & m_oNmlStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* normalize repeating strings                                                */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vNormaliseStrings(void)
+{
+
+  //m_oNmlStr.vDump();
+
+  i8 nTimes = 0;
+  i8 nRows  = this->nRows();
+  i8 nCols  = this->nColumns();
+  
+  if (nCols < 14)
+    return;
+  
+  if (nRows < 250)
+    return;
+  
+  //vTrace("NormaliseStrings %lld rows\n"_Stz,nRows);
+  
+//for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+  for (i8 i_Col = 13; i_Col < 14; i_Col++) {
+
+    eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+    
+    if (DM_VCH != eDatum)
+      continue;
+    
+
+    for (i8 i_OuterRow = 0; i_OuterRow < 100; i_OuterRow++) {
+      
+      Row* aOuterRow = pRowAddress(i_OuterRow);
+      
+      if (C_DATUM_NULL == aOuterRow->iColVal_int(i_Col))
+        continue;
+
+      Stz* szOuterStz = aOuterRow->szVal_rsb(i_Col);
+      //vTrace("Outer: %s\n"_Stz,szOuterStz);
+      
+      i8 nLength = szOuterStz->nLength();
+      if (nLength < 8)
+        continue;
+      
+      for (i8 i_InnerRow = i_OuterRow + 1;
+           i_InnerRow < i_OuterRow + 99;
+           i_InnerRow++) {
+
+        //vTrace("NormaliseStrings outer %lld inner %lld\n"_Stz,i_OuterRow,i_InnerRow);
+        
+        Row* aInnerRow = pRowAddress(i_InnerRow);
+
+        if (C_DATUM_NULL == aInnerRow->iColVal_int(i_Col))
+          continue;
+
+        Stz* szInnerStz = aInnerRow->szVal_rsb(i_Col);
+        //vTrace("Inner: %s\n"_Stz,szInnerStz);
+
+        if (! szInnerStz->bEqual(szOuterStz))
+          continue;
+
+        //vTrace("Testing : %lld - %lld : %s\n"_Stz,i_OuterRow,i_InnerRow,szOuterStz);
+        if (! m_oNmlStr.szFind(szOuterStz)) {
+          m_oNmlStr.szAdd(szOuterStz);
+          if (++nTimes >= 3)
+            goto L_Exit;
+        }
+        
+        break;
+        
+      } // each inner row
+      
+    } // each outer row
+
+  } // each col
+  
+L_Exit:
+  ; //m_oNmlStr.vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the offset of rsb                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::iOffsetInWsp(Row* aRow)
+{
+  
+  i8 iOfs = WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>::iOffsetInWsp((byte*)aRow);
+  
+  return iOfs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position on given cell in current rsb                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vPositionOnCell(i8 i_Col)
+{
+  
+  m_i_ColCrs = i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a ptn hash?                                                       */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+bool RowBox_t<SIZE>::bPtnHash(void)
+{
+
+  return m_oStreamPix.m_bPtnHash;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the partition of rsb                                                   */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::iPtnOfRow(Row* aRow)
+{
+
+  i8 i_HshCol = m_oStreamPix.m_nCols - 1;
+    
+  i8 i_Ptn = aRow->iColVal_int(i_HshCol);
+  
+  return i_Ptn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this rowslab                                                         */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vReset(void)
+{
+  
+  m_i_RowCrs  = C_UNKNOWN;
+  m_aRowCur   = nullptr;
+  m_i_ColCrs  = C_UNKNOWN;
+
+  WspConvergent_t<SIZE,Stz,Row>::vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes needed to hold row cells proper (i.e. without strings)           */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::nRowProperBytes(void)
+{
+  i8 nBytes = (m_oStreamPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of an rsb by its offset                                        */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Row* RowBox_t<SIZE>::aRowByOfs(i8 i_Ofs)
+{
+  
+  Row* aRow = aAdd<Row*>(WspConvergent_t<SIZE,Stz,Row>::ayArea(),i_Ofs);
+  
+  return aRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of an rsb by its offset                                        */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vSetRow(i8 i_Row)
+{
+  
+  m_i_RowCrs = i_Row;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump slap and report                                                       */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vSlabReport(void)
+{
+ 
+  s32 sSlab_magn;
+  MagLib::vByteMag(SIZE, sSlab_magn);
+  s32 sUsed_magn;
+  MagLib::vByteMag(WspConvergent_t<SIZE,Stz,Row>::nUsed(),sUsed_magn);
+  s32 sFree_magn;
+  MagLib::vByteMag(WspConvergent_t<SIZE,Stz,Row>::nFree(),sFree_magn);
+
+  vTrace("RowSlab space %s, used %s, free %s %lld%%; "
+         "rows %lld, %lld(B) per row\n"_Stz,
+         
+         sSlab_magn.szStz(),
+         sUsed_magn.szStz(),
+         sFree_magn.szStz(),
+         (WspConvergent_t<SIZE,Stz,Row>::nFree() * 100) / SIZE,
+         
+         nRows(),
+         WspConvergent_t<SIZE,Stz,Row>::nUsed() / nRows()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the condensed stream def                                               */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+StreamPix* RowBox_t<SIZE>::aStreamPix(void)
+{
+
+  return & m_oStreamPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mem zero the given rsb                                                     */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vZeroRow(Row *aRow)
+{
+
+  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
+
+  MemLib::vZero(aRow,nCellBytes,CN_ROWSLAB);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get slab cell for given row                                                */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+i8 RowBox_t<SIZE>::i_RowSlabCell(i8 i_Row)
+{
+  
+  i8 i_Cell_slab = (i_Row + 1) * (m_oStreamPix.m_nCols + 1 /* Object */ );
+  
+  i8 i_CellHazard = SIZE / C_BYTES_PER_WORD;
+  
+  i8 i_Cell_row  = i_CellHazard - i_Cell_slab;
+  
+  return i_Cell_row;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the cell vector for this slab                                          */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+m8* RowBox_t<SIZE>::amSlabCellVec(void)
+{
+
+  m8* amCellArea = (m8*)WspConvergent_t<SIZE,Stz,Row>::ayArea();
+  
+  return amCellArea;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
