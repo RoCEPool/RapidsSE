@@ -41,41 +41,40 @@ RowSlab::~RowSlab(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-HACK(RowSlab,"quick fix to check for enough space ");
 
-bool RowSlab::bAllotRow(Row** paRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  m_nRowStringBytes = 0;
-  m_i_ColCrs  = 0;
-  
-  i8 nCellBytes = nRowProperBytes();
-
-  //if (nFreeBytes() < nCellBytes) { // hack Ray 1 dec 2020
-  if (nFreeBytes() < C_2KB) {
-    *paRow = nullptr;
-    return false;
-  }
-  
-  m_aRowCur = ayAllotTail(nCellBytes);
-  
-  
-  if (! m_aRowCur) {
-    *paRow = nullptr;
-    return false;
-  }
-  
-  new(m_aRowCur) Row;
-
-  
-  m_i_RowCrs++;
-  *paRow = m_aRowCur;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return true;
-}
+//bool RowSlab::bAllotRow(Row** paRow)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//  
+//  m_nRowStringBytes = 0;
+//  m_i_ColCrs  = 0;
+//  
+//  i8 nCellBytes = nRowProperBytes();
+//
+//  //if (nFreeBytes() < nCellBytes) { // hack Ray 1 dec 2020
+//  if (nFreeBytes() < C_2KB) {
+//    *paRow = nullptr;
+//    return false;
+//  }
+//  
+//  m_aRowCur = ayAllotTail(nCellBytes);
+//  
+//  
+//  if (! m_aRowCur) {
+//    *paRow = nullptr;
+//    return false;
+//  }
+//  
+//  new(m_aRowCur) Row;
+//
+//  
+//  m_i_RowCrs++;
+//  *paRow = m_aRowCur;
+//  
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//  
+//  return true;
+//}
 /*----------------------------------------------------------------------------*/
 //bool RowSlab::bAllotRow(Row** paRow)
 //{
@@ -107,18 +106,18 @@ bool RowSlab::bAllotRow(Row** paRow)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-bool RowSlab::bAllotRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-    
-  Row* aRow;
-  
-  bool b = bAllotRow(&aRow);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
-  
-  return b;
-}
+//bool RowSlab::bAllotRow(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//    
+//  Row* aRow;
+//  
+//  bool b = bAllotRow(&aRow);
+//  
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
+//  
+//  return b;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
@@ -158,6 +157,8 @@ void RowSlab::vCopyPix(StreamPix* pStreamPixSrc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
 
   MemLib::vCopy(&m_oStreamPix,pStreamPixSrc,sizeof(StreamPix),CN_ROWSLAB);
+  
+  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,6 +170,8 @@ void RowSlab::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
   
   i8 iVal;
   Stz* szSrcStz;
+  
+  ASSERT(0 == m_i_ColCrs);
   
   i8 nCols = m_oStreamPix.m_nCols;
   
@@ -328,6 +331,8 @@ void RowSlab::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSLAB,_FOOTER_);
         
   pStreamDef->vToStreamPix(&m_oStreamPix,bPtnHash);
+  
+  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,17 +504,15 @@ Row* RowSlab::aRowAdr(i8 i_Row)
     
   /*          v row[1]            v row[0]
        -------*----+----+----*----+----+---+----+----*
-              | Ob : c0 : c1 : cN | Ob :c0 : c1 : cN |///boundary
+              | Ob : c0 : c1 : cN | Ob :c0 : c1 : cN |!!!hazard
        -------*----+----+----*----+----+---+----+----*
    */
-  
-  i8 i_RowCell = i_RowSlabCell(i_Row);
     
-  m8* amCellVec = amSlabCellVec();
+  Row* pRowAddr = aTailItem(i_Row);
   
-  Row* aRow = (Row*) & amCellVec[i_RowCell];
+  Row* pRow = _pRow(pRowAddr);
   
-  return aRow;
+  return pRow;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -36,8 +36,8 @@ namespace Rows
     RowSlab(void);
    ~RowSlab(void) noexcept(false);
         
-    bool  bAllotRow(Row** paRow);
-    bool  bAllotRow(void);
+    //bool  bAllotRow(Row** paRow);
+    //bool  bAllotRow(void);
     ColPix* axaColPix(void);
      i8    nCols(void);
     i8    iColumn(Row* aRow, i8 iColumn);

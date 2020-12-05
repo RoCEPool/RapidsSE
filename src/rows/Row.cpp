@@ -16,6 +16,8 @@ Row* Rows::_pRow(void* aAddr)
 {
   Row* pRow = reinterpret_cast<Row*>(aAddr);
   
+  ASSERT(!pRow || CN_ROW == pRow->eClass());
+  
   return pRow;
 }
 

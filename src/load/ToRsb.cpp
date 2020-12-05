@@ -90,9 +90,9 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    if (! m_pRowSlab->bAllotRow()) {
+    if (! m_pRowSlab->aAllotNewRow()) {
       vNewRsbBuffer();
-      bool b = m_pRowSlab->bAllotRow();
+      bool b = m_pRowSlab->aAllotNewRow();
       ASSERT(b);
     }
     
@@ -425,6 +425,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
+  m_pRowSlab->nFreeSpace();
+
   // change this to some no longer strib function
   ASSERT(StrLib::nSize(azCsvChunk) < C_1MB);
   
@@ -617,6 +619,8 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
+  m_pRowSlab->nFreeSpace();
+  
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
            spCsv.szInspect(azCsvCrs,128,true));
@@ -682,13 +686,17 @@ L_TestMoreRecords:
   // reset field cursor
   i_Fld = -1;
 
+  m_pRowSlab->nFreeSpace();
+
   // allot a new rsb (new another rsbBuffer if necessary)
-  if (! m_pRowSlab->bAllotRow(&aRow)) {    // ? inline ?
+  if (! m_pRowSlab->aAllotNewRow()) {    // ? inline ?
     vNewRsbBuffer();
-    bool b = m_pRowSlab->bAllotRow(&aRow);
-    ASSERT(b);
+    Row* aNewRow = m_pRowSlab->aAllotNewRow();
+    ASSERT(aNewRow);
   }
  
+  m_pRowSlab->nFreeSpace();
+
   //                                                      end of testMoreRecords
 
   
@@ -696,6 +704,8 @@ L_TestMoreRecords:
   // 2) while more fields of current record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreFields:
+  
+  m_pRowSlab->nFreeSpace();
   
   ASSERT(EC_NONE == eError);
 
@@ -2492,6 +2502,8 @@ L_Varchar_setNull:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_FieldEnd:
     
+  m_pRowSlab->nFreeSpace();
+
   if (iTraceBits & C_BIT_PostField)
     vTrace("L_FieldEnd: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,
            spPrv.szChar(cPrvChr),

@@ -116,6 +116,8 @@ RowBox_t<SIZE>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   pStreamDef->vToStreamPix(&m_oStreamPix,bAddPtnHash);
 
+  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
+  
   //_postcondition_(_ADDRESS_);
 }
 
@@ -178,12 +180,23 @@ void RowBox_t<SIZE>::vResolveStreamPix(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
+
+//HACK(RowSlab,"quick fix to check for enough space ");
+
 template <i8 SIZE>
 Row* RowBox_t<SIZE>::aAllotNewRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
   RASSERT(m_oStreamPix.m_bInitialised);
+  
+  m_nRowStringBytes = 0;
+  m_i_ColCrs  = 0;
+
+  if (WspConvergent_t<SIZE,Stz,Row>::nFreeBytes() < C_2KB)
+    return nullptr;
+
+  
 
   m_aRowCur = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
 
@@ -192,6 +205,8 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 
   new(m_aRowCur) Row();
 
+  m_i_RowCrs++;
+ 
   return m_aRowCur;
 }
 
