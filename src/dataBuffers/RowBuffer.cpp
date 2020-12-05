@@ -134,6 +134,23 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
+void RowBuffer::vPrintRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  SP_RowPix spRowPix(nColumns() - nExtraCols(),axaColPix());
+
+  i8 nRows = this->nRows();
+  
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    Row* aRow = pRowAddress(i_Row);
+    Stz* szRow = spRowPix.sz(aRow);
+    vTrace("row: (%s)\n"_Stz,szRow);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print rows                                                                 */
+/*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -187,6 +204,47 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert this rsb buffer into one or more csv buffers                       */
+/*----------------------------------------------------------------------------*/
+CsvBuffer* RowBuffer::pToCsvBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  SP_RowPix spRowPix(this->nColumns(),axaColPix());
+  
+  CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
+  CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
+  
+  Stz* szRecord = nullptr;
+  i8 nSize = 1;
+  
+  i8 nRows = this->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    Row* aRow = pRowAddress(i_Row);
+    
+    Stz* szRow = spRowPix.sz(aRow,true);
+
+    nSize = szRow->nSize();
+    
+    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+      CsvBuffer* pNewCsvBuffer = new CsvBuffer;
+      pCsvBuffer->vNextBuffer(pNewCsvBuffer);
+      pCsvBuffer = pNewCsvBuffer;
+    }
+
+    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+
+    StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
+  }
+  
+  if (szRecord)
+    ((char*)szRecord)[nSize-1] = '\0';
+  
+  return pFirstCsvBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

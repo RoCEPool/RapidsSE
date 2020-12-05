@@ -28,9 +28,12 @@ namespace DataBuffers
       
     Row* aAllotCopyRow(RowSingle* pRowSingle);
       
+    void vPrintRows(void);
     void vPrintRows(StreamDef* pStreamDef);
     void vShow(StreamDef* pStreamDef);
-    
+  
+    CsvBuffer* pToCsvBuffer(void);
+
   private:
     i8   iToOffset(Stz* szStr);
   };
