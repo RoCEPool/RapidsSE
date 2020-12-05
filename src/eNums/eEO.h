@@ -616,10 +616,6 @@ static Stz* aEO[]
   /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
   /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
 
-  // scan operators
-  /*    */ "EO_SCN_SRC_BEGIN"_Stz,
-  /*    */ "EO_SCN_SRC_NEXT"_Stz,
-
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
   /*    */ "EO_SUPER_Z001"_Stz,
