@@ -1749,7 +1749,7 @@ public:
   void vToPtnRowRegDangling(void);
   void vToPtnRowRegDelete(void);
 
-  // toRsb
+  // toRow
   void vToRsbRegCompleted(void);
   void vToRsbRegConvert(void);
   void vToRsbRegCreate(void);

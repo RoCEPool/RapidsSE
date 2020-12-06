@@ -9,15 +9,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRsb(void)
 {
-  vAddStep("toRsb[].completed"_Stz,   &Step::vToRsbRegCompleted);
-  vAddStep("toRsb[].convert"_Stz,     &Step::vToRsbRegConvert);
-  vAddStep("toRsb[].create"_Stz,      &Step::vToRsbRegCreate);
-  vAddStep("toRsb[].dangling"_Stz,    &Step::vToRsbRegDangling);
-  vAddStep("toRsb[].delete"_Stz,      &Step::vToRsbRegDelete);
+  vAddStep("toRow[].completed"_Stz,   &Step::vToRsbRegCompleted);
+  vAddStep("toRow[].convert"_Stz,     &Step::vToRsbRegConvert);
+  vAddStep("toRow[].create"_Stz,      &Step::vToRsbRegCreate);
+  vAddStep("toRow[].dangling"_Stz,    &Step::vToRsbRegDangling);
+  vAddStep("toRow[].delete"_Stz,      &Step::vToRsbRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].fullRsbBuffer -- full row buffer                                   */
+/* toRow[].fullRsbBuffer -- full row buffer                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegCompleted(void)
 {
@@ -33,7 +33,7 @@ void Step::vToRsbRegCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].convert -- convert csv buffer                                      */
+/* toRow[].convert -- convert csv buffer                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegConvert(void)
 {
@@ -52,7 +52,7 @@ void Step::vToRsbRegConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].create -- create toRsb                                             */
+/* toRow[].create -- create toRow                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegCreate(void)
 {
@@ -83,7 +83,7 @@ void Step::vToRsbRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].danglingRsbBuffer -- fetch row buffer                              */
+/* toRow[].danglingRsbBuffer -- fetch row buffer                              */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegDangling(void)
 {
@@ -102,7 +102,7 @@ void Step::vToRsbRegDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].delete -- delete toRsb                                             */
+/* toRow[].delete -- delete toRow                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegDelete(void)
 {

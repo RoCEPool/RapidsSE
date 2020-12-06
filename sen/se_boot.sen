@@ -205,7 +205,7 @@ assert::stack_0
         "OP_toHshCrw.sen"             include
         "OP_toNstRow.sen"             include
         "OP_toPtnRow.sen"             include
-        "OP_toRsb.sen"                include
+        "OP_toRow.sen"                include
         "OP_toStatDemon.sen"          include
         "OP_totalCount.sen"           include
         "OP_truncateIndex.sen"        include

@@ -654,7 +654,7 @@
 
   stage stageB on all partitions on origin :
 
-    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+    toRow $table       | // (csvBuffer)  => (rsbBuffer)
     // dump rowBuffer 1   |
 
     toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
@@ -718,7 +718,7 @@
 
   stage stageC on all partitions :
 
-    toRsb $table       | // (csvBuffer)  => (rsbBuffer)
+    toRow $table       | // (csvBuffer)  => (rsbBuffer)
     // dump rowBuffer 1   |
 
     toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
@@ -836,7 +836,7 @@
         | periodic once
 //        | catFile $File
         | rdCsvCyclic $File $NTimes
-        | toRsb $Table
+        | toRow $Table
         | toPtnRow
         | toNstRow
         | stageB hashed
@@ -1007,7 +1007,7 @@
         | periodic once
         //|  rdCsvCyclic $File $NTimes
         | catFile $File
-        | toRsb $Table
+        | toRow $Table
         | toPtnRow
         | stageB hashed
 
@@ -1039,7 +1039,7 @@
         | periodic once
         //|  rdCsvCyclic $File $NTimes
         | catFile $File
-        | toRsb $Table
+        | toRow $Table
         | toPtnRow
         | stageB hashed
 
@@ -1079,7 +1079,7 @@
 
    stage stageB on all partitions on origin  :
 
-     toRsb $Table |
+     toRow $Table |
 
      toPtnRow |
 

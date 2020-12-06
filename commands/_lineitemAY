@@ -85,7 +85,7 @@ stage stageA on origin :
 
 stage stageB on all partitions :
   scan lineitem
-  | toRsb lineitem
+  | toRow lineitem
   | sql 600
   | stageC
 
@@ -108,7 +108,7 @@ stage stageA on origin :
 
 stage stageB on all partitions :
   scan lineitem
-  | toRsb lineitem
+  | toRow lineitem
   | sql 600
   | stageC
 

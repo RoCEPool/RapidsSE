@@ -1,19 +1,19 @@
 /*============================================================================*/
-/* OP_toRsb.sen -- Convert csv buffers to row slab buffers                    */
+/* OP_toRow.sen -- Convert csv buffers to row slab buffers                    */
 /*============================================================================*/
 
-" OP_toRsb.sen" .verbose
+" OP_toRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: toRsb_StartMarker \handler
+: toRow_StartMarker \handler
 
   // test and create Table[] using <tableNm>
   <tableNm> op__table if
 
     // create a ToRsb using Table[].streamDef
-    ToRsb[].create
+    ToRow[].create
 
     // pipeout the (StartMarker)
     PipeIn[].pipeOut
@@ -30,7 +30,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: toRsb_CrwBuffer \handler
+: toRow_CrwBuffer \handler
 
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
@@ -43,12 +43,12 @@
   //profile.end
 
   // test for any completed
-  ToRsb[].completed to OperandB[]
+  ToRow[].completed to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    ToRsb[].completed to OperandB[]
+    ToRow[].completed to OperandB[]
   repeat
 
   Operand[].delete
@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_CSVBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: toRsb_CsvBuffer \handler
+: toRow_CsvBuffer \handler
 
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
@@ -72,12 +72,12 @@
   //profile.end
 
   // test for any completed
-  ToRsb[].completed to OperandB[]
+  ToRow[].completed to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    ToRsb[].completed to OperandB[]
+    ToRow[].completed to OperandB[]
   repeat
 
   Operand[].delete
@@ -88,19 +88,19 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
-: toRsb_EosMarker \handler
+: toRow_EosMarker \handler
 
   // test for any remainders
-  ToRsb[].dangling to OperandB[]
+  ToRow[].dangling to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    ToRsb[].dangling to OperandB[]
+    ToRow[].dangling to OperandB[]
   repeat
 
   // delete ToRsb
-  ToRsb[].delete
+  ToRow[].delete
 
   // get the profile from the task
   //task[] task.profile@ to Operand[]
@@ -117,18 +117,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* toRsb request                                                        SPAWN */
+/* toRow request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toRsb_req \operator
+: toRow_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: toRsb_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: toRsb_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: toRsb_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toRsb_StartMarker ZK_STARTMARKER op[].handler!
+  find: toRow_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: toRow_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: toRow_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: toRow_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -140,9 +140,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toRsb :: toRsb <tableNm> ;
+cmdSyntax: toRow :: toRow <tableNm> ;
 
-: toRsb _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toRow _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */
