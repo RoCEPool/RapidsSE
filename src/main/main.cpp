@@ -155,10 +155,12 @@ int main(int argc, char* argv[])
       Process::vExitFailure();
     
     // potentially run utilities
-    if (Engine::bRunUtilities(argc,(Stz**)argv))
+    if (gxArgs.m_bUtility) {
+      Engine::vRunUtility(argc,(Stz**)argv);
       Process::vExitSuccess();
+    }
     
-    // execute
+    // run SE
     Engine::vMainEntry();
   }
   

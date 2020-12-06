@@ -100,6 +100,12 @@ namespace Arguments
     bool m_bVerbose;         // print extra stuff
     bool m_bWelcome;         // print banner
     
+    // utilities
+    bool m_bUtility;         // run utility
+    bool m_bUteShm;          // shm utility
+    bool m_bUteApiDemo;      // api demo
+
+
     // must be last
     Footer m_xFooter;
     

@@ -54,7 +54,7 @@ namespace StorageEngine
     static void vPrintStatus(void);
     static void vPrintTime(void);
     static void vPrintWelcome(void);
-    static bool bRunUtilities(int argc, Stz* argv[]);
+    static void vRunUtility(int argc, Stz* argv[]);
     static void vSanityCheck(void);
     static void vSignalHandler(int iSignal);
     static void vStartSystem(void);

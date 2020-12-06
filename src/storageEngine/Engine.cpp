@@ -12,8 +12,6 @@ extern SizeHeap     gxaSizeHeap[];
 extern Header*      gaSeShmRegion;
 extern File*        gpTraceFile;
 
-extern bool         gbSHM;
-
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
 extern Stz* gsBuildHostName;
@@ -1510,15 +1508,19 @@ void Engine::vPrintWelcome(void)
 /*----------------------------------------------------------------------------*/
 /* run utilities                                                              */
 /*----------------------------------------------------------------------------*/
-bool Engine::bRunUtilities(int argc, Stz* argv[])
+void Engine::vRunUtility(int argc, Stz* argv[])
 {
   // potentially run the shm utility
-  if (gbSHM) {
+  if (gxArgs.m_bUteShm) {
     ShmUtility::vRun(argc,(Stz**)argv);
-    return true;
+    return;
   }
 
-  return false;
+  // potentially run the api demo
+  if (gxArgs.m_bUteApiDemo) {
+    // ... more
+    return;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

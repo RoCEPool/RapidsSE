@@ -14,7 +14,6 @@ Log*          gpLog         = nullptr;
 Header*       gaSeShmRegion = nullptr;
 File*         gpTraceFile   = nullptr;
 
-bool gbSHM = false;
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
 Stz* gsBuildHostName;

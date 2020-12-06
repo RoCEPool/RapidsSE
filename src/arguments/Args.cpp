@@ -7,7 +7,7 @@
 extern Args       gxArgs;
 extern AttachMap* gpAttachMap;
 extern Log*       gpLog;
-extern bool       gbSHM;
+
 
 i8     gi_argc;
 s256   gi_szaArgv[128];
@@ -110,6 +110,10 @@ Args::Args(void)
   m_bTracing         = false;
   m_bVerbose         = false;
   m_bWelcome         = true;
+
+  m_bUtility         = false;
+  m_bUteShm          = false;
+  m_bUteApiDemo      = false;
 
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -215,7 +219,14 @@ bool Args::bParse(i8 argc, s256 argv[])
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
     
   if (argv[1].bSame("shm"_Stz)) {
-    gbSHM = true;
+    m_bUtility = true;
+    m_bUteShm = true;
+    return true;
+  }
+  
+  if (argv[1].bSame("apiDemo"_Stz)) {
+    m_bUtility = true;
+    m_bUteApiDemo = true;
     return true;
   }
   
