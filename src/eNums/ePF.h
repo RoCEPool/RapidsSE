@@ -8,6 +8,7 @@ enum ePF // prompt function
   /*  0 */ PF_NONE=0,
   
   /*    */ PF_ANTLR,
+  /*    */ PF_APIDEMO,
   /*    */ PF_ARGS,
   /*    */ PF_ASCII,
   /*    */ PF_ATTACHMAP,
@@ -129,6 +130,7 @@ static Stz* aPF[]
 {
   /*  0 */ "NONE"_Stz,
   /*    */ "ANTLR"_Stz,
+  /*    */ "APIDEMO"_Stz,
   /*    */ "ARGS"_Stz,
   /*    */ "ASCII"_Stz,
   /*    */ "ATTACHMAP"_Stz,
