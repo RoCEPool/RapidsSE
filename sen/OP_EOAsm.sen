@@ -182,7 +182,7 @@
 
   //Pipein[] "GOT RSBBUFFER %v" .printf
   Operand[].pipeIn
-  Operand[].asSrcRowSlab
+  Operand[].asSrcRowBuffer
   ZK_RSBBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   Pot[].pipeoutAllCompletedPtns

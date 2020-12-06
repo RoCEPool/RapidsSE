@@ -12,7 +12,7 @@ namespace CompactBuffers
   static void vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
                                                  HeadLine* aHeadLine);
 
-  static void vInflate_AllColumns_into_RowSlab(RowBuffer* pRowSlab,
+  static void vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
                                                HeadLine* aHeadLine);
 
    static void vInflate_OneColumn_into_RowSingle(RowSingle* pRowSingle,

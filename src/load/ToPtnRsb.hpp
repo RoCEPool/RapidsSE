@@ -13,7 +13,7 @@ namespace Load
   
     RowBuffer* m_pFromRsbBuffer; // the
 
-    RowBuffer*   m_pIntoRowSlab;
+    RowBuffer*   m_pIntoRowBuffer;
   
     // must be last
     Footer m_xFooter;

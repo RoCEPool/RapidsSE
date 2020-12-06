@@ -12,7 +12,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[]"_Stz,                &Step::vRegOperandGet);
   vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
   vAddStep("Operand[].asSrcCrwBuffer"_Stz, &Step::vRegOperandAsSrcCrwBuffer);
-  vAddStep("Operand[].asSrcRowSlab"_Stz,   &Step::vRegOperandAsSrcRowSlab);
+  vAddStep("Operand[].asSrcRowBuffer"_Stz,   &Step::vRegOperandAsSrcRowBuffer);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
@@ -89,15 +89,15 @@ void Step::vRegOperandAsSrcCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].asSrcRowSlab -- use this operand as src row slab                 */
+/* Operand[].asSrcRowBuffer -- use this operand as src row slab                 */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandAsSrcRowSlab(void)
+void Step::vRegOperandAsSrcRowBuffer(void)
 {
   ENTRY();
 
   RowBuffer* pRsbBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
 
-  m_pLogicUnit->m_pDevSrcRsb->m_pRowSlab = pRsbBuffer;
+  m_pLogicUnit->m_pDevSrcRsb->m_pRowBuffer = pRsbBuffer;
 
   EXIT();
 }

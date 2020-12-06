@@ -25,7 +25,7 @@ DevRSB::DevRSB(void)
   m_i_Row      = C_UNKNOWN;
   m_nRows      = C_UNKNOWN;
   m_aRow       = nullptr;
-  m_pRowSlab   = nullptr;
+  m_pRowBuffer   = nullptr;
   m_pStreamDef = nullptr;
 
   

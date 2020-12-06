@@ -59,7 +59,7 @@ void ToHshCrw::vConvert(RowBuffer* pRsbBuffer)
   
   i8 i_Ptn = pRsbBuffer->tPtnNo();
   
-  //pRsbBuffer->pRowSlab()->vDumpNst();
+  //pRsbBuffer->pRowBuffer()->vDumpNst();
   
   m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn) ?
                   _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
@@ -138,12 +138,12 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  RowBuffer* pRowSlab = pRsbBuffer;
+  RowBuffer* pRowBuffer = pRsbBuffer;
   
-  i8 nRows = pRowSlab->nRows();
+  i8 nRows = pRowBuffer->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Row* aRow = pRowSlab->pRowAddress(i_Row);
+    Row* aRow = pRowBuffer->pRowAddress(i_Row);
     
     bool bAppended = m_pCrwBuffer->bAppendRow(aRow);
     

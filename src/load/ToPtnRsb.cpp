@@ -25,7 +25,7 @@ ToPtnRsb::ToPtnRsb(void)
 
   m_pFromRsbBuffer = nullptr;
 
-  m_pIntoRowSlab   = nullptr;
+  m_pIntoRowBuffer   = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
 }
@@ -53,14 +53,14 @@ void ToPtnRsb::vConvert(RowBuffer* pRsbBuffer)
   
   i8 i_Ptn = 0;
   
-  RowBuffer* pRowSlab = pRsbBuffer;
+  RowBuffer* pRowBuffer = pRsbBuffer;
   
-  i8 nRows = pRowSlab->nRows();
+  i8 nRows = pRowBuffer->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    Row* aRowSrc = pRowSlab->pRowAddress(i_Row);
+    Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
     
-    i_Ptn = pRowSlab->iPtnOfRow(aRowSrc);
+    i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
     
     vCopyRow(i_Ptn,aRowSrc);
   }
@@ -106,7 +106,7 @@ void ToPtnRsb::vCopyRow(i8 i_Ptn, Row* aRowSrc)
   // copy that
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
-  m_pIntoRowSlab->vCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
+  m_pIntoRowBuffer->vCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +138,7 @@ void ToPtnRsb::vNewDstRow(i8 i_Ptn)
   
   pDstRsbBuffer->vPtnNo(i_Ptn);
   
-  m_pIntoRowSlab = pDstRsbBuffer;
+  m_pIntoRowBuffer = pDstRsbBuffer;
 }
 
 /*============================================================================*/

@@ -1202,7 +1202,7 @@ public:
   // operand
   void vRegOperandAddColumnDef(void);
   void vRegOperandAsSrcCrwBuffer(void);
-  void vRegOperandAsSrcRowSlab(void);
+  void vRegOperandAsSrcRowBuffer(void);
   void vRegOperandCsvAppend(void);
   void vRegOperandBide(void);
   void vRegOperandCrwDuplicate(void);

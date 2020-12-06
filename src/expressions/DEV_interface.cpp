@@ -815,7 +815,7 @@ void vDev_ENTWRK_APPENDELM(void* aLU, void* aRSB, i8 iArg)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElement(pDevRsb->m_aRow,
-                                       pDevRsb->m_pRowSlab->aStreamPix(),
+                                       pDevRsb->m_pRowBuffer->aStreamPix(),
                                        iArg);
 }
 
@@ -940,7 +940,7 @@ void vDev_RSB_BEGIN(void* aLU, void* aRSB)
   
   pDevRsb->m_i_Row = -1;
   pDevRsb->m_aRow  = nullptr;
-  pDevRsb->m_nRows = pDevRsb->m_pRowSlab ? pDevRsb->m_pRowSlab->nRows() : 0;
+  pDevRsb->m_nRows = pDevRsb->m_pRowBuffer ? pDevRsb->m_pRowBuffer->nRows() : 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -957,7 +957,7 @@ i8 iDev_RSB_NEW(void* aLU, void* aRSB)
   
   pDevRsb->m_aRow =
     pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
-                                   &pDevRsb->m_pRowSlab, &bNewBuffer);
+                                   &pDevRsb->m_pRowBuffer, &bNewBuffer);
   
   return bNewBuffer ? 1 : 0;
 }
@@ -974,7 +974,7 @@ i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
   i8 iRes;
   
   if (++pDevRsb->m_i_Row  < pDevRsb->m_nRows) {
-    pDevRsb->m_aRow = pDevRsb->m_pRowSlab->pRowAddress(pDevRsb->m_i_Row );
+    pDevRsb->m_aRow = pDevRsb->m_pRowBuffer->pRowAddress(pDevRsb->m_i_Row );
     iRes = 1;
   }
   else {
@@ -992,7 +992,7 @@ void vDev_RSB_NULL(void* aLU, void* aRSB)
   _static_
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
-  pDevRsb->m_pRowSlab = nullptr;
+  pDevRsb->m_pRowBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1004,8 +1004,8 @@ void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_pRowSlab->vPositionOnCell(iArg);
-  pDevRsb->m_pRowSlab->vDeposit(iTop);
+  pDevRsb->m_pRowBuffer->vPositionOnCell(iArg);
+  pDevRsb->m_pRowBuffer->vDeposit(iTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1017,14 +1017,14 @@ void vDev_RSB_POPCOLS(void* aLU, void* aRSB, i8 iArg, Stz* szTop)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_pRowSlab->vPositionOnCell(iArg);
+  pDevRsb->m_pRowBuffer->vPositionOnCell(iArg);
   
-  char* azDst = pDevRsb->m_pRowSlab->azDepositString_begin();
+  char* azDst = pDevRsb->m_pRowBuffer->azDepositString_begin();
   
   StrLib::vCopy(azDst,(char*)szTop);
   i8 nSize = StrLib::nSize(azDst);
 
-  pDevRsb->m_pRowSlab->vDepositString_end(nSize);
+  pDevRsb->m_pRowBuffer->vDepositString_end(nSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1036,7 +1036,7 @@ void vDev_RSB_PRINT(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_pRowSlab->vDumpRow(-1,pDevRsb->m_aRow);
+  pDevRsb->m_pRowBuffer->vDumpRow(-1,pDevRsb->m_aRow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1076,7 +1076,7 @@ i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  i8 iRes = pDevRsb->m_pRowSlab->iOffsetInWsp(pDevRsb->m_aRow);
+  i8 iRes = pDevRsb->m_pRowBuffer->iOffsetInWsp(pDevRsb->m_aRow);
 
   return iRes;
 }
@@ -1090,7 +1090,7 @@ void vDev_RSB_RESET(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_pRowSlab->vReset();
+  pDevRsb->m_pRowBuffer->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1102,8 +1102,8 @@ void vDev_RSB_SET(void* aLU, void* aRSB, i8 iRow)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_pRowSlab->vSetRow(iRow);
-  pDevRsb->m_aRow = pDevRsb->m_pRowSlab->pRowAddress(iRow);
+  pDevRsb->m_pRowBuffer->vSetRow(iRow);
+  pDevRsb->m_aRow = pDevRsb->m_pRowBuffer->pRowAddress(iRow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1115,7 +1115,7 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_aRow = pDevRsb->m_pRowSlab->aRowByOfs(iTop);
+  pDevRsb->m_aRow = pDevRsb->m_pRowBuffer->aRowByOfs(iTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1159,7 +1159,7 @@ i8 iDev_RSB_TEST(void* aLU, void* aRSB)
   
   i8 iRes;
   
-  if (pDevRsb->m_pRowSlab)
+  if (pDevRsb->m_pRowBuffer)
     iRes = 1;
   else
     iRes = 0;
@@ -1176,7 +1176,7 @@ void vDev_RSB_ZERO(void* aLU, void* aRSB)
   
   DevRSB* pDevRsb = _pDevRSB(aRSB);
   
-  pDevRsb->m_pRowSlab->vZeroRow(pDevRsb->m_aRow);
+  pDevRsb->m_pRowBuffer->vZeroRow(pDevRsb->m_aRow);
 }
 
 /*----------------------------------------------------------------------------*/

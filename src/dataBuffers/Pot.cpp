@@ -110,13 +110,13 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* create new destination rsb (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowSlab,bool* pbNewBuffer)
+Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
   //ASSERT(0 == i_Ptn);
   
-  RowBuffer* pDstRowSlab;
+  RowBuffer* pDstRowBuffer;
   Row* aDstRow;
   
   *pbNewBuffer = false;
@@ -125,21 +125,21 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowSlab,bool* pbNewBuffer)
   RowBuffer* pDstRsbBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RowBuffer;
-    pDstRowSlab = pDstRsbBuffer;
-    pDstRowSlab->vCopyPix(m_pStreamPix);
+    pDstRowBuffer = pDstRsbBuffer;
+    pDstRowBuffer->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);
   }
   else {
-    pDstRowSlab = pDstRsbBuffer;
+    pDstRowBuffer = pDstRsbBuffer;
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
-  aDstRow = pDstRowSlab->aAllotNewRow();
+  aDstRow = pDstRowBuffer->aAllotNewRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
     pDstRsbBuffer = new RowBuffer;
-    pDstRowSlab = pDstRsbBuffer;
-    pDstRowSlab->vCopyPix(m_pStreamPix);
+    pDstRowBuffer = pDstRsbBuffer;
+    pDstRowBuffer->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);
     aDstRow = pDstRsbBuffer->aAllotNewRow();
     ASSERT(aDstRow);
@@ -147,7 +147,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowSlab,bool* pbNewBuffer)
   
   pDstRsbBuffer->vPtnNo(i_Ptn);
     
-  * ppRowSlab = pDstRowSlab;
+  * ppRowBuffer = pDstRowBuffer;
   
   return aDstRow;
 }

@@ -107,7 +107,7 @@ namespace Rows
     void  vZeroRow(Row* aRow);
 
   private:
-    i8    i_RowSlabCell(i8 i_Row);
+    i8    i_RowBufferCell(i8 i_Row);
     m8*   amSlabCellVec(void);
 
 
@@ -220,7 +220,7 @@ void RowBox_t<SIZE>::vResolveStreamPix(StreamDef* pStreamDef)
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
 
-//HACK(RowSlab,"quick fix to check for enough space ");
+//HACK(RowBuffer,"quick fix to check for enough space ");
 
 template <i8 SIZE>
 Row* RowBox_t<SIZE>::aAllotNewRow(void)
@@ -660,7 +660,7 @@ void RowBox_t<SIZE>::vDumpAllRows(void)
 {
   
   i8 nRows = this->nRows();
-  vTrace("RowSlab of %lld rows...\n"_Stz,nRows);
+  vTrace("RowBuffer of %lld rows...\n"_Stz,nRows);
   for (i8 i_Row = 0; i_Row < nRows; i_Row++)
     vDumpRow(i_Row);
 }
@@ -920,7 +920,7 @@ void RowBox_t<SIZE>::vSlabReport(void)
   s32 sFree_magn;
   MagLib::vByteMag(WspConvergent_t<SIZE,Stz,Row>::nFree(),sFree_magn);
 
-  vTrace("RowSlab space %s, used %s, free %s %lld%%; "
+  vTrace("RowBuffer space %s, used %s, free %s %lld%%; "
          "rows %lld, %lld(B) per row\n"_Stz,
          
          sSlab_magn.szStz(),
@@ -963,7 +963,7 @@ void RowBox_t<SIZE>::vZeroRow(Row *aRow)
 /* get slab cell for given row                                                */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
-i8 RowBox_t<SIZE>::i_RowSlabCell(i8 i_Row)
+i8 RowBox_t<SIZE>::i_RowBufferCell(i8 i_Row)
 {
   
   i8 i_Cell_slab = (i_Row + 1) * (m_oStreamPix.m_nCols + 1 /* Object */ );

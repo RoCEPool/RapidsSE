@@ -846,7 +846,7 @@ then
     103 of
      // "---------------------------- 103=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
-      Operand[].asSrcRowSlab
+      Operand[].asSrcRowBuffer
       Counter0[] 1 == if
         true 1 LogicUnit[].dynFunArgs
       else
@@ -860,7 +860,7 @@ then
       //"---------------------------- 301=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
       //Operand[] "RowBuffer %v\n" .printf
-      Operand[].asSrcRowSlab
+      Operand[].asSrcRowBuffer
 
       Counter0[] 1 == if
         LogicUnit[].dynFun
@@ -874,7 +874,7 @@ then
     302 of
       //"---------------------------- 302=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
-      Operand[].asSrcRowSlab
+      Operand[].asSrcRowBuffer
 
       Counter0[] 1 == if
         true 1 LogicUnit[].dynFunArgs
@@ -890,7 +890,7 @@ then
     401 of
       //"---------------------------- 401=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
-      Operand[].asSrcRowSlab
+      Operand[].asSrcRowBuffer
 
       Counter0[] 1 == if
         true 1 LogicUnit[].dynFunArgs
@@ -905,7 +905,7 @@ then
     601 of
       //"---------------------------- 601=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
-      Operand[].asSrcRowSlab
+      Operand[].asSrcRowBuffer
 
       Counter0[] 1 == if
         true 1 LogicUnit[].dynFunArgs

@@ -33,7 +33,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_i_Rec   = -1;
   m_bFirst  = true;
   
-  m_pRowSlab   = nullptr;
+  m_pRowBuffer   = nullptr;
   m_pRsbBuffer = nullptr;
 
   //--
@@ -90,19 +90,19 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    if (! m_pRowSlab->aAllotNewRow()) {
+    if (! m_pRowBuffer->aAllotNewRow()) {
       vNewRsbBuffer();
-      bool b = m_pRowSlab->aAllotNewRow();
+      bool b = m_pRowBuffer->aAllotNewRow();
       ASSERT(b);
     }
     
     // get the inflated compact row
-    pCrwBuffer->vGetRow(m_pRowSlab, i_Row);
+    pCrwBuffer->vGetRow(m_pRowBuffer, i_Row);
     
   } // end-data
     
-  //m_pRowSlab->vDumpAllRows();
-  //m_pRowSlab->vSlabReport();
+  //m_pRowBuffer->vDumpAllRows();
+  //m_pRowBuffer->vSlabReport();
   
   return true;
 }
@@ -162,8 +162,8 @@ void ToRsb::vNewRsbBuffer(void)
   m_pRsbBuffer = pRsbBuffer;
   
   // initialise the row slab inside the new rsb buffer
-  m_pRowSlab = m_pRsbBuffer;
-  m_pRowSlab->vInitPix(m_pStreamDef,m_bPtnHash);
+  m_pRowBuffer = m_pRsbBuffer;
+  m_pRowBuffer->vInitPix(m_pStreamDef,m_bPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -402,7 +402,7 @@ void ToRsb::vRsbBuffer(RowBuffer* pRsbBuffer)
 
 #define vDEPOSIT_VALUE(_value) \
   \
-  m_pRowSlab->vDeposit(_value); \
+  m_pRowBuffer->vDeposit(_value); \
   \
   if (xColPix.m_bPtnKey) \
     PtnMap::vRunningHash(&iPtnKeyHash,_value);
@@ -412,7 +412,7 @@ void ToRsb::vRsbBuffer(RowBuffer* pRsbBuffer)
   if (! bPixNullable) \
     vFIELD_ERROR(_errorCode); \
   \
-  m_pRowSlab->vDeposit(C_DATUM_NULL); \
+  m_pRowBuffer->vDeposit(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -425,7 +425,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
-  m_pRowSlab->nFreeBytes();
+  m_pRowBuffer->nFreeBytes();
 
   // change this to some no longer strib function
   ASSERT(StrLib::nSize(azCsvChunk) < C_1MB);
@@ -553,7 +553,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 i_ErrorCodeLine = -1;
   
   Column* pCol = nullptr;
-  ColPix* aColPix = m_pRowSlab->axaColPix();
+  ColPix* aColPix = m_pRowBuffer->axaColPix();
   i8 nCols = m_pStreamDef->nColumns(C_ALL);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -619,7 +619,7 @@ bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreRecords:
     
-  m_pRowSlab->nFreeBytes();
+  m_pRowBuffer->nFreeBytes();
   
   if (iTraceBits & C_BIT_TestMoreRecords)
     vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
@@ -686,16 +686,16 @@ L_TestMoreRecords:
   // reset field cursor
   i_Fld = -1;
 
-  m_pRowSlab->nFreeBytes();
+  m_pRowBuffer->nFreeBytes();
 
   // allot a new rsb (new another rsbBuffer if necessary)
-  if (! m_pRowSlab->aAllotNewRow()) {    // ? inline ?
+  if (! m_pRowBuffer->aAllotNewRow()) {    // ? inline ?
     vNewRsbBuffer();
-    Row* aNewRow = m_pRowSlab->aAllotNewRow();
+    Row* aNewRow = m_pRowBuffer->aAllotNewRow();
     ASSERT(aNewRow);
   }
  
-  m_pRowSlab->nFreeBytes();
+  m_pRowBuffer->nFreeBytes();
 
   //                                                      end of testMoreRecords
 
@@ -705,7 +705,7 @@ L_TestMoreRecords:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_TestMoreFields:
   
-  m_pRowSlab->nFreeBytes();
+  m_pRowBuffer->nFreeBytes();
   
   ASSERT(EC_NONE == eError);
 
@@ -901,7 +901,7 @@ L_Boolean_recognised:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit boolean
   
-//  m_pRowSlab->vDeposit(iBooleanValue);
+//  m_pRowBuffer->vDeposit(iBooleanValue);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,iBooleanValue);
@@ -915,7 +915,7 @@ L_Boolean_setNull:
 //  if (! bPixNullable)
 //    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
 //
-//  m_pRowSlab->vDeposit(C_DATUM_NULL);
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -1079,7 +1079,7 @@ L_Date_componentsCollected:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                               deposit date
   
-//  m_pRowSlab->vDeposit(xDateValue);
+//  m_pRowBuffer->vDeposit(xDateValue);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,xDateValue);
@@ -1094,7 +1094,7 @@ L_Date_setNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -1214,7 +1214,7 @@ L_Decimal:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit decimal
     
-//  m_pRowSlab->vDeposit(iDecimalValue);
+//  m_pRowBuffer->vDeposit(iDecimalValue);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,iDecimalValue);
@@ -1229,7 +1229,7 @@ L_Decimal_setNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  m_pRowBuffer->vDeposit(C_DATUM_NULL);
     
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -1333,7 +1333,7 @@ L_Float:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                              deposit float
   
-  m_pRowSlab->vDeposit(dFloatValue);
+  m_pRowBuffer->vDeposit(dFloatValue);
   
   goto L_FieldEnd;
 
@@ -1342,7 +1342,7 @@ L_Float_setNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
   goto L_FieldEnd;                                              // end of float
 
@@ -1428,7 +1428,7 @@ L_Integer:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit integer
   
-//  m_pRowSlab->vDeposit(iIntegerValue);
+//  m_pRowBuffer->vDeposit(iIntegerValue);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,iIntegerValue);
@@ -1442,7 +1442,7 @@ L_Integer_setNull:
 //  if (! bPixNullable)
 //    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
 //
-//  m_pRowSlab->vDeposit(C_DATUM_NULL);
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -1546,7 +1546,7 @@ L_Interval:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                           deposit interval
   
-//  m_pRowSlab->vDeposit(xIntervalValue);
+//  m_pRowBuffer->vDeposit(xIntervalValue);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,xIntervalValue);
@@ -1560,7 +1560,7 @@ L_Interval_setNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -1683,7 +1683,7 @@ L_Time:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                               deposit time
   
-//  m_pRowSlab->vDeposit(xTimeValue);
+//  m_pRowBuffer->vDeposit(xTimeValue);
 //    
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,xTimeValue);
@@ -1697,7 +1697,7 @@ L_Time_setNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_HOUR_INVALID);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -1971,7 +1971,7 @@ L_Timestamp_noTimeComponents:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                          deposit timestamp
   
-//  m_pRowSlab->vDeposit(xTimestampValue);
+//  m_pRowBuffer->vDeposit(xTimestampValue);
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,xTimestampValue);
@@ -1987,7 +1987,7 @@ L_Timestamp_setNull:
   if (! bPixNullable)
     vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
   if (xColPix.m_bPtnKey)
     PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
@@ -2120,7 +2120,7 @@ L_Varchar_unquoted:
     vTrace("L_Varchar_unquoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchValue = m_pRowSlab->azDepositString_begin();
+  azVchValue = m_pRowBuffer->azDepositString_begin();
   acVchDst  = azVchValue;
   
   while (! bIS_NULL()) {
@@ -2178,7 +2178,7 @@ L_Varchar_singleQuoted:
     vTrace("L_Varchar_singleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchValue = m_pRowSlab->azDepositString_begin();
+  azVchValue = m_pRowBuffer->azDepositString_begin();
   acVchDst  = azVchValue;
   
   // >> *'...
@@ -2294,7 +2294,7 @@ L_Varchar_doubleQuoted:
     vTrace("L_Varchar_doubleQuoted:\n"_Stz);
   
   // allocate string space in slab
-  azVchValue = m_pRowSlab->azDepositString_begin();
+  azVchValue = m_pRowBuffer->azDepositString_begin();
   acVchDst  = azVchValue;
   
   // >> *"...
@@ -2409,7 +2409,7 @@ L_Varchar_userEnclosed:
     vTrace("L_Varchar_userEnclosed:\n"_Stz);
   
   // allocate string space in slab
-  azVchValue = m_pRowSlab->azDepositString_begin();
+  azVchValue = m_pRowBuffer->azDepositString_begin();
   acVchDst  = azVchValue;
   
   // >> *{.*
@@ -2477,7 +2477,7 @@ L_Varchar_userEnclosed:
   
 L_Varchar_depositValue:
 
-  m_pRowSlab->vDepositString_end(nVchChars+1);
+  m_pRowBuffer->vDepositString_end(nVchChars+1);
   
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_Varchar_depositValue: %s\n"_Stz,azVchValue);
@@ -2492,7 +2492,7 @@ L_Varchar_setNull:
   if (iTraceBits & C_BIT_Varchar)
     vTrace("L_Varchar_depositValue: null\n"_Stz);
   
-  m_pRowSlab->vDeposit(C_DATUM_NULL);
+  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
   goto L_FieldEnd;                                            // end of varchar
 
@@ -2502,7 +2502,7 @@ L_Varchar_setNull:
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_FieldEnd:
     
-  m_pRowSlab->nFreeBytes();
+  m_pRowBuffer->nFreeBytes();
 
   if (iTraceBits & C_BIT_PostField)
     vTrace("L_FieldEnd: prvChr=%s curChr=%s nxtChr=%s csvCrs >>%s<<\n"_Stz,
@@ -2620,7 +2620,7 @@ L_FieldError:
   vSKIP_LINE_END();
   
   // discard partial row in row slab
-  m_pRowSlab->vDiscardInvalidRow();
+  m_pRowBuffer->vDiscardInvalidRow();
 
   goto L_TestMoreRecords;                                   // end of fieldError
   
@@ -2665,7 +2665,7 @@ L_RecordEndLineEnd:
     //tPtnNo_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
     //tPtnNo = tPtnNo_byBkt;
     
-    m_pRowSlab->vDeposit(tPtnNo);
+    m_pRowBuffer->vDeposit(tPtnNo);
     iPtnKeyHash = 0;
   }
   

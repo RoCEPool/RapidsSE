@@ -743,7 +743,7 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_AllColumns_into_RowSlab(RowBuffer* pRowSlab,
+void RowInflator::vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
                                   HeadLine* aHeadLine)
 {
   NEVER_REACH;

@@ -22,7 +22,7 @@ namespace Load
     bool       m_bFirst;
     i8         m_i_Rec;
 
-    RowBuffer* m_pRowSlab;
+    RowBuffer* m_pRowBuffer;
     RowBuffer* m_pRsbBuffer;
   
     //--
