@@ -381,7 +381,7 @@ void Result::vProcessBufferQueue(void)
         
       // -- -- -- -- -- --
         
-      case CN_RSBBUFFER: {
+      case CN_ROWBUFFER: {
         RowBuffer* pRsbBuffer = _pRowBuffer(pOperand);
 //        if (AM::bDeveloper())
 //          vTrace("[[RowBuffer %s ; Rsbs=%lld]]\n"_Stz,

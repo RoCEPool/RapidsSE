@@ -32,7 +32,6 @@ bool Operands::_bIsValidOperand(eCN eClass)
     case CN_MARKER:
     case CN_PROFILE:
     case CN_ROWBUFFER:
-    case CN_RSBBUFFER:
     case CN_STREAMDEF:
     case CN_STREAMSET:
       return true;

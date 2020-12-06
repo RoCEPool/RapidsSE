@@ -479,13 +479,13 @@ void Step::vSocketRecvObject(void)
       return;
     }
       
-    case CN_RSBBUFFER: {
+    case CN_ROWBUFFER: {
       RowBuffer* pRsbBuffer = new RowBuffer;
       
-      MemLib::vCopy(pRsbBuffer,pObject,sizeof(Object),CN_RSBBUFFER);
+      MemLib::vCopy(pRsbBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
       
       aBody = aAdd<void*>(pRsbBuffer,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_RSBBUFFER].m_nClassSize - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_ROWBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -790,16 +790,16 @@ void Step::vSocketRecvObject_LowMem(void)
       return;
     }
       
-    case CN_RSBBUFFER: {
+    case CN_ROWBUFFER: {
       
       vTrace("Received RSBBUFFER under low mem\n"_Stz);
       
       // copy the object header into the LowBuffer
-      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_RSBBUFFER);
+      MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_ROWBUFFER);
       
       // recv rest of the buffer into LowBuffer
       void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_RSBBUFFER].m_nClassSize - sizeof(Object);
+      nRemainingBytes = gxaSizeHeap[CN_ROWBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
 

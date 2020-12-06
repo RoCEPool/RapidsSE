@@ -239,7 +239,7 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
-    case CN_RSBBUFFER: {
+    case CN_ROWBUFFER: {
       RowBuffer* pRsbBuffer = _pRowBuffer(pOperand);
       delete pRsbBuffer;
       break;

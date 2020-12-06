@@ -265,7 +265,7 @@ void Step::vRegOperandInsdelIntoTable(void)
 //
 //  }
 //  else
-//  if (CN_RSBBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
+//  if (CN_ROWBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
 //    // will delete this buffer
 //    RowBuffer* pRsbBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
 //    pRsbBuffer->vIsPermanent(false);

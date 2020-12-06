@@ -237,7 +237,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RowSingle),          HT_TRANSIENT_MEDIUM  }, // CN_ROWSINGLE
   { sizeof(RowSlab),            HT_TRANSIENT_LARGE   }, // CN_ROWSLAB
   { sizeof(RowTray),            HT_TRANSIENT_LARGE   }, // CN_ROWTRAY
-  { sizeof(RowBuffer),          HT_TRANSIENT_LARGE   }, // CN_RSBBUFFER
   { sizeof(RU_Cpu),             HT_INVALID           }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID           }, // CN_RUDIR
   { 0,/*sizeof(RU_File)*/       HT_INVALID           }, // CN_RUFILE

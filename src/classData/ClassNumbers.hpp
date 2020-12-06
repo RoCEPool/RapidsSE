@@ -241,7 +241,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWSINGLE,
   /* */ CN_ROWSLAB,
   /* */ CN_ROWTRAY,
-  /* */ CN_RSBBUFFER,
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
   /* */ CN_RUFILE,
@@ -594,7 +593,6 @@ static Stz* aCN[]
   /* */ "ROWSINGLE"_Stz,           // CN_ROWSINGLE
   /* */ "ROWSLAB"_Stz,             // CN_ROWSLAB
   /* */ "ROWTRAY"_Stz,             // CN_ROWTRAY
-  /* */ "RSBBUFFER"_Stz,           // CN_RSBBUFFER
   /* */ "RUCPU"_Stz,               // CN_RUCPU
   /* */ "RUDIR"_Stz,               // CN_RUDIR
   /* */ "RUFILE"_Stz,              // CN_RUFILE
