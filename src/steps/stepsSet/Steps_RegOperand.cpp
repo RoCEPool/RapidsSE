@@ -97,7 +97,7 @@ void Step::vRegOperandAsSrcRowSlab(void)
 
   RowBuffer* pRsbBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
 
-  m_pLogicUnit->m_pDevSrcRsb->m_pRowSlab = pRsbBuffer->pRowSlab();
+  m_pLogicUnit->m_pDevSrcRsb->m_pRowSlab = pRsbBuffer;
 
   EXIT();
 }

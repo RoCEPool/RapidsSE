@@ -117,7 +117,7 @@ void ToHshCrw::vAddNst(RowBuffer* pRsbBuffer)
   
   ASSERT(0 == m_pCrwBuffer->nRowCount());
 
-  NmlStr* pNmlStr = pRsbBuffer->pRowSlab()->pNmlStr();
+  NmlStr* pNmlStr = pRsbBuffer->pNmlStr();
 
   Stz* szNmlStr = nullptr;
   while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
@@ -138,7 +138,7 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
+  RowBuffer* pRowSlab = pRsbBuffer;
   
   i8 nRows = pRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {

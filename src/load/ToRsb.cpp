@@ -162,7 +162,7 @@ void ToRsb::vNewRsbBuffer(void)
   m_pRsbBuffer = pRsbBuffer;
   
   // initialise the row slab inside the new rsb buffer
-  m_pRowSlab = m_pRsbBuffer->pRowSlab();
+  m_pRowSlab = m_pRsbBuffer;
   m_pRowSlab->vInitPix(m_pStreamDef,m_bPtnHash);
 }
 

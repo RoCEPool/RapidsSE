@@ -382,7 +382,7 @@ void CrwBuffer::vGetRow(RowSingle* pRow, i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* get the compact row from the buffer                                        */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vGetRow(RowSlab* pRowSlab, i8 i_Row)
+void CrwBuffer::vGetRow(RowBuffer* pRowSlab, i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 

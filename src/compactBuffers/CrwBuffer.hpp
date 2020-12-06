@@ -68,7 +68,7 @@ namespace CompactBuffers
     // row functions
     Crw*       aCrw(i8 i_Row);
     void       vGetRow(RowSingle* pRow, i8 i_Row);
-    void       vGetRow(RowSlab* pRowSlab, i8 i_Row);
+    void       vGetRow(RowBuffer* pRowSlab, i8 i_Row);
     void       vShow(void);
     void       vShowRow(i8 i_Row);
     StreamDef* pStreamDef(void);

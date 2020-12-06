@@ -270,10 +270,10 @@ i8 RowBuffer::iToOffset(Stz* szStr)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within buffer for given item                 */
 /*----------------------------------------------------------------------------*/
-RowSlab* RowBuffer::pRowSlab(void)
+RowBuffer* RowBuffer::pRowSlab(void)
 {
-  if (! m_pRowSlab)
-    m_pRowSlab = new RowSlab;
+  //if (! m_pRowSlab)
+  //  m_pRowSlab = new RowSlab;
   
   return m_pRowSlab;
 }

@@ -53,7 +53,7 @@ void ToPtnRsb::vConvert(RowBuffer* pRsbBuffer)
   
   i8 i_Ptn = 0;
   
-  RowSlab* pRowSlab = pRsbBuffer->pRowSlab();
+  RowBuffer* pRowSlab = pRsbBuffer;
   
   i8 nRows = pRowSlab->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
@@ -120,25 +120,25 @@ void ToPtnRsb::vNewDstRow(i8 i_Ptn)
   RowBuffer* pDstRsbBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RowBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
-    pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
+    pDstRsbBuffer->vCopyPix(m_pFromRsbBuffer->aStreamPix());
+    pDstRsbBuffer->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
   }
   
   // new a row in rsb buffer (new another rsb buffer if necessary)
-  Row* aNewRow = pDstRsbBuffer->pRowSlab()->aAllotNewRow();
+  Row* aNewRow = pDstRsbBuffer->aAllotNewRow();
   if (! aNewRow) {
     pDstRsbBuffer = new RowBuffer;
-    pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
-    pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
+    pDstRsbBuffer->vCopyPix(m_pFromRsbBuffer->aStreamPix());
+    pDstRsbBuffer->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
-    aNewRow = pDstRsbBuffer->pRowSlab()->aAllotNewRow();
+    aNewRow = pDstRsbBuffer->aAllotNewRow();
     ASSERT(aNewRow);
   }
   
   pDstRsbBuffer->vPtnNo(i_Ptn);
   
-  m_pIntoRowSlab = pDstRsbBuffer->pRowSlab();
+  m_pIntoRowSlab = pDstRsbBuffer;
 }
 
 /*============================================================================*/

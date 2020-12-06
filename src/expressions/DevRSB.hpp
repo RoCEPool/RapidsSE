@@ -13,7 +13,7 @@ namespace Expressions
     i8         m_i_Row;
     i8         m_nRows;
     Row*       m_aRow;
-    RowSlab*   m_pRowSlab;
+    RowBuffer*   m_pRowSlab;
     StreamDef* m_pStreamDef;
   
     // must be last

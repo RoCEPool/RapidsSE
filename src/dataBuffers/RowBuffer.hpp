@@ -14,7 +14,7 @@ namespace DataBuffers
   {
   protected:
   
-    RowSlab* m_pRowSlab;
+    RowBuffer* m_pRowSlab;
 
     // must be last
     Footer m_xFooter;
@@ -36,7 +36,7 @@ namespace DataBuffers
   
     CsvBuffer* pToCsvBuffer(void);
   
-    RowSlab*   pRowSlab(void);
+    RowBuffer*   pRowSlab(void);
 
 
   private:

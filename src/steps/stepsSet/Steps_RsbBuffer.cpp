@@ -24,9 +24,9 @@ void Step::vRsbBufferOperandDump(void)
   i8 iDetail = m_pDataStack->iPopInt(__func__);
   
   if (iDetail)
-    pRsbBuffer->pRowSlab()->vDumpAllRows();
+    pRsbBuffer->vDumpAllRows();
   
-  pRsbBuffer->pRowSlab()->vSlabReport();
+  pRsbBuffer->vSlabReport();
   
   EXIT();
 }
