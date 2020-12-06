@@ -24,8 +24,6 @@ typedef       HV <RowSingle,   StreamDef>                      HV_Row;
 #include "CsvMeta.hpp"
 #include "CsvBuffer.hpp"
 
-#include "RsbBuffer.hpp"
-
 #include "HashSet.hpp"
 #include "Pot.hpp"
 

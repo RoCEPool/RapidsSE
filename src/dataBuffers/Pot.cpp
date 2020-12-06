@@ -122,9 +122,9 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowSlab** ppRowSlab,bool* pbNewBuffer)
   *pbNewBuffer = false;
   
   // get rsb buffer for given partition (new a first buffer if ncessary)
-  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_paBufferChain[i_Ptn]);
+  RowBuffer* pDstRsbBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRsbBuffer) {
-    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer = new RowBuffer;
     pDstRowSlab = pDstRsbBuffer->pRowSlab();
     pDstRowSlab->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);
@@ -137,7 +137,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowSlab** ppRowSlab,bool* pbNewBuffer)
   aDstRow = pDstRowSlab->aAllotNewRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
-    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer = new RowBuffer;
     pDstRowSlab = pDstRsbBuffer->pRowSlab();
     pDstRowSlab->vCopyPix(m_pStreamPix);
     vAddBuffer(i_Ptn,pDstRsbBuffer);

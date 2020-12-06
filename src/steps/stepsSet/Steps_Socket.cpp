@@ -480,7 +480,7 @@ void Step::vSocketRecvObject(void)
     }
       
     case CN_RSBBUFFER: {
-      RsbBuffer* pRsbBuffer = new RsbBuffer;
+      RowBuffer* pRsbBuffer = new RowBuffer;
       
       MemLib::vCopy(pRsbBuffer,pObject,sizeof(Object),CN_RSBBUFFER);
       

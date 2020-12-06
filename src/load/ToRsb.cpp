@@ -110,11 +110,11 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling rsbBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
-RsbBuffer* ToRsb::pDanglingRsbBuffer(void)
+RowBuffer* ToRsb::pDanglingRsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
-  RsbBuffer* pRsbBuffer = m_pRsbBuffer;
+  RowBuffer* pRsbBuffer = m_pRsbBuffer;
   
   m_pRsbBuffer = nullptr;
   
@@ -124,21 +124,21 @@ RsbBuffer* ToRsb::pDanglingRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return a full rsbBuffer (if any)                                           */
 /*----------------------------------------------------------------------------*/
-RsbBuffer* ToRsb::pFullRsbBuffer(void)
+RowBuffer* ToRsb::pFullRsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
-  RsbBuffer* pFullRsbBuffer = nullptr;
+  RowBuffer* pFullRsbBuffer = nullptr;
   
-  RsbBuffer* pRsbBuffer = m_pRsbBuffer ?
-                            _pRsbBuffer(m_pRsbBuffer->pNextBuffer()) : nullptr;
+  RowBuffer* pRsbBuffer = m_pRsbBuffer ?
+                            _pRowBuffer(m_pRsbBuffer->pNextBuffer()) : nullptr;
   while (pRsbBuffer) {
     pFullRsbBuffer = pRsbBuffer;
-    pRsbBuffer = _pRsbBuffer(pRsbBuffer->pNextBuffer());
+    pRsbBuffer = _pRowBuffer(pRsbBuffer->pNextBuffer());
   }
   
   if (pFullRsbBuffer) {
-    RsbBuffer* pPrevBuffer = _pRsbBuffer(pFullRsbBuffer->pPrevBuffer());
+    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRsbBuffer->pPrevBuffer());
     pPrevBuffer->vNextBuffer(nullptr);
   }
   
@@ -153,7 +153,7 @@ void ToRsb::vNewRsbBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
   //  create a new buffer
-  RsbBuffer* pRsbBuffer = new RsbBuffer;
+  RowBuffer* pRsbBuffer = new RowBuffer;
   
   // link the new to old
   pRsbBuffer->vNextBuffer(m_pRsbBuffer);
@@ -169,7 +169,7 @@ void ToRsb::vNewRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get rsb buffer                                                             */
 /*----------------------------------------------------------------------------*/
-RsbBuffer* ToRsb::pRsbBuffer(void)
+RowBuffer* ToRsb::pRsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
@@ -179,7 +179,7 @@ RsbBuffer* ToRsb::pRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set rsb buffer                                                             */
 /*----------------------------------------------------------------------------*/
-void ToRsb::vRsbBuffer(RsbBuffer* pRsbBuffer)
+void ToRsb::vRsbBuffer(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 

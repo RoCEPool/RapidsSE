@@ -27,14 +27,14 @@ namespace Load
     ToHshCrw(StreamDef* pStreamDef);
    ~ToHshCrw(void) noexcept(false);
   
-    void vConvert(RsbBuffer* pRsbBuffer);
+    void vConvert(RowBuffer* pRsbBuffer);
   
     CrwBuffer* pCompleted(i8 i_Ptn);
     CrwBuffer* pDangling(i8 i_Ptn);
   
   private:
-    void vAddNst(RsbBuffer* pRsbBuffer);
-    void vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer);
+    void vAddNst(RowBuffer* pRsbBuffer);
+    void vAddRsbRows(i8 i_Ptn, RowBuffer* pRsbBuffer);
     CrwBuffer* pNewCrwBuffer(i8 i_Ptn);
 
     Footer* aFooter(void);

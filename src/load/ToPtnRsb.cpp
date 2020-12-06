@@ -45,7 +45,7 @@ ToPtnRsb::~ToPtnRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
+void ToPtnRsb::vConvert(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
@@ -69,11 +69,11 @@ void ToPtnRsb::vConvert(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
-RsbBuffer* ToPtnRsb::pCompleted(i8 i_Ptn)
+RowBuffer* ToPtnRsb::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
+  RowBuffer* pRsbBuffer = _pRowBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
   return pRsbBuffer;
 }
@@ -81,11 +81,11 @@ RsbBuffer* ToPtnRsb::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get any dangling/last buffer                                               */
 /*----------------------------------------------------------------------------*/
-RsbBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
+RowBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
+  RowBuffer* pRsbBuffer = _pRowBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
   
   return pRsbBuffer;}
 
@@ -117,9 +117,9 @@ void ToPtnRsb::vNewDstRow(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
   // get rsb buffer for given partition (new a first buffer if ncessary)
-  RsbBuffer* pDstRsbBuffer = _pRsbBuffer(m_oHashSet.pBuffer(i_Ptn));
+  RowBuffer* pDstRsbBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
   if (! pDstRsbBuffer) {
-    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer = new RowBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
@@ -128,7 +128,7 @@ void ToPtnRsb::vNewDstRow(i8 i_Ptn)
   // new a row in rsb buffer (new another rsb buffer if necessary)
   Row* aNewRow = pDstRsbBuffer->pRowSlab()->aAllotNewRow();
   if (! aNewRow) {
-    pDstRsbBuffer = new RsbBuffer;
+    pDstRsbBuffer = new RowBuffer;
     pDstRsbBuffer->pRowSlab()->vCopyPix(m_pFromRsbBuffer->pRowSlab()->aStreamPix());
     pDstRsbBuffer->pRowSlab()->aStreamPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);

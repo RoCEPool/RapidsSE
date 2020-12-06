@@ -23,7 +23,7 @@ void Step::vToNstRsbRegConvert(void)
 
   ToNstRsb* pToNstRsb = *m_pLogicUnit->m_xpToNstRsb;
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRsbBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   pToNstRsb->vConvert(pRsbBuffer);
   

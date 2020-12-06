@@ -382,9 +382,9 @@ void Result::vProcessBufferQueue(void)
       // -- -- -- -- -- --
         
       case CN_RSBBUFFER: {
-        RsbBuffer* pRsbBuffer = _pRsbBuffer(pOperand);
+        RowBuffer* pRsbBuffer = _pRowBuffer(pOperand);
 //        if (AM::bDeveloper())
-//          vTrace("[[RsbBuffer %s ; Rsbs=%lld]]\n"_Stz,
+//          vTrace("[[RowBuffer %s ; Rsbs=%lld]]\n"_Stz,
 //                 spDataBuffer.sz(pRsbBuffer),
 //                 pRsbBuffer->nRsb());
         m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRows();

@@ -1230,10 +1230,10 @@ void vTest19(void)
 /*----------------------------------------------------------------------------*/
 void vTest20(void)
 {
-  vTrace("This is RsbBuffer Test; sizeof(RsbBuffer) = %lld(B)\n"_Stz,
-         sizeof(RsbBuffer));
+  vTrace("This is RowBuffer Test; sizeof(RowBuffer) = %lld(B)\n"_Stz,
+         sizeof(RowBuffer));
 
-  RsbBuffer* pRsbBuffer = new RsbBuffer;
+  RowBuffer* pRsbBuffer = new RowBuffer;
 
   delete pRsbBuffer;
 }

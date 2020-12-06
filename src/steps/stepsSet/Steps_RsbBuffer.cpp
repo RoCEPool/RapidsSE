@@ -19,7 +19,7 @@ void Step::vRsbBufferOperandDump(void)
 {
   ENTRY();
   
-  RsbBuffer* pRsbBuffer = _pRsbBuffer(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRsbBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   i8 iDetail = m_pDataStack->iPopInt(__func__);
   

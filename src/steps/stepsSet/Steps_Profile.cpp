@@ -79,7 +79,7 @@ void Step::vProfileStart(void)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_RSBBUFFER: {
-        RsbBuffer* pRsbBuffer = _pRsbBuffer(pDataBuffer);
+        RowBuffer* pRsbBuffer = _pRowBuffer(pDataBuffer);
         nRowCount = pRsbBuffer->pRowSlab()->nRows();
         break;
       }

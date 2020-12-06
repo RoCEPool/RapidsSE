@@ -420,7 +420,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* insdel row buffer into the table indexes                                   */
 /*----------------------------------------------------------------------------*/
-//void Table::vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RsbBuffer* pRsbBuffer)
+//void Table::vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRsbBuffer)
 //{ //# indexTuning
 //
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);

@@ -53,7 +53,7 @@ ToHshCrw::~ToHshCrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vConvert(RsbBuffer* pRsbBuffer)
+void ToHshCrw::vConvert(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
@@ -111,7 +111,7 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* add normalised strings into new crw buffer                                 */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vAddNst(RsbBuffer* pRsbBuffer)
+void ToHshCrw::vAddNst(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
@@ -134,7 +134,7 @@ void ToHshCrw::vAddNst(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vAddRsbRows(i8 i_Ptn, RsbBuffer* pRsbBuffer)
+void ToHshCrw::vAddRsbRows(i8 i_Ptn, RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   

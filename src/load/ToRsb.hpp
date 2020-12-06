@@ -23,7 +23,7 @@ namespace Load
     i8         m_i_Rec;
 
     RowSlab*   m_pRowSlab;
-    RsbBuffer* m_pRsbBuffer;
+    RowBuffer* m_pRsbBuffer;
   
     //--
   
@@ -56,12 +56,12 @@ namespace Load
     bool bConvertCrw(CrwBuffer* pCrwBuffer);
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
 
-    RsbBuffer* pDanglingRsbBuffer(void);
-    RsbBuffer* pFullRsbBuffer(void);
+    RowBuffer* pDanglingRsbBuffer(void);
+    RowBuffer* pFullRsbBuffer(void);
     void vNewRsbBuffer(void);
 
-    RsbBuffer* pRsbBuffer(void);
-    void vRsbBuffer(RsbBuffer* pRsbBuffer);
+    RowBuffer* pRsbBuffer(void);
+    void vRsbBuffer(RowBuffer* pRsbBuffer);
   
 
   private:

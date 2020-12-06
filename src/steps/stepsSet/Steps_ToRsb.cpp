@@ -25,7 +25,7 @@ void Step::vToRsbRegCompleted(void)
   
   ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
   
-  RsbBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
+  RowBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
   
   m_pDataStack->vPushPtr(pRsbBuffer);
 
@@ -94,7 +94,7 @@ void Step::vToRsbRegDangling(void)
   }
   else {
     ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
-    RsbBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
+    RowBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
     m_pDataStack->vPushPtr(pRsbBuffer);
   }
   

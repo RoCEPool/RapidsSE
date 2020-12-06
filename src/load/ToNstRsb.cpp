@@ -39,7 +39,7 @@ ToNstRsb::~ToNstRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToNstRsb::vConvert(RsbBuffer* pRsbBuffer)
+void ToNstRsb::vConvert(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
   
@@ -53,7 +53,7 @@ void ToNstRsb::vConvert(RsbBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* analyze strings                                                            */
 /*----------------------------------------------------------------------------*/
-void ToNstRsb::vAnalyzeStrings(RsbBuffer* pRsbBuffer)
+void ToNstRsb::vAnalyzeStrings(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
 }

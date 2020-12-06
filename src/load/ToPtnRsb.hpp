@@ -11,7 +11,7 @@ namespace Load
   
     HashSet  m_oHashSet;
   
-    RsbBuffer* m_pFromRsbBuffer; // the
+    RowBuffer* m_pFromRsbBuffer; // the
 
     RowSlab*   m_pIntoRowSlab;
   
@@ -25,10 +25,10 @@ namespace Load
     ToPtnRsb(void);
    ~ToPtnRsb(void) noexcept(false);
   
-    void vConvert(RsbBuffer* pRsbBuffer);
+    void vConvert(RowBuffer* pRsbBuffer);
   
-    RsbBuffer* pCompleted(i8 i_Ptn);
-    RsbBuffer* pDangling(i8 i_Ptn);
+    RowBuffer* pCompleted(i8 i_Ptn);
+    RowBuffer* pDangling(i8 i_Ptn);
   
   private:
     void vCopyRow(i8 i_Ptn, Row* aRowSrc);

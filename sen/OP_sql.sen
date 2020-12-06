@@ -859,7 +859,7 @@ then
     301 of
       //"---------------------------- 301=RSBBUFFER ----------------------------" .
       Operand[].pipeIn
-      //Operand[] "RsbBuffer %v\n" .printf
+      //Operand[] "RowBuffer %v\n" .printf
       Operand[].asSrcRowSlab
 
       Counter0[] 1 == if

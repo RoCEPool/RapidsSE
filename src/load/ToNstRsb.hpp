@@ -19,11 +19,11 @@ namespace Load
     ToNstRsb(void);
    ~ToNstRsb(void) noexcept(false);
   
-    void vConvert(RsbBuffer* pRsbBuffer);
+    void vConvert(RowBuffer* pRsbBuffer);
   
   private:
   
-    void vAnalyzeStrings(RsbBuffer* pRsbBuffer);
+    void vAnalyzeStrings(RowBuffer* pRsbBuffer);
     void vCreateNmlStr(Stz* szStz);
 
     Footer* aFooter(void);
