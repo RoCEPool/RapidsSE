@@ -27,9 +27,9 @@ void Step::vToPtnRowRegCompleted(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRsbBuffer = pToPtnRow->pCompleted(i_Ptn);
+  RowBuffer* pRowBuffer = pToPtnRow->pCompleted(i_Ptn);
 
-  m_pDataStack->vPushPtr(pRsbBuffer);
+  m_pDataStack->vPushPtr(pRowBuffer);
 
   EXIT();
 }
@@ -43,11 +43,11 @@ void Step::vToPtnRowRegConvert(void)
 
   ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
     
-  RowBuffer* pRsbBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToPtnRow->vConvert(pRsbBuffer);
+  pToPtnRow->vConvert(pRowBuffer);
   
-  delete pRsbBuffer;
+  delete pRowBuffer;
   
   EXIT();
 }
@@ -77,9 +77,9 @@ void Step::vToPtnRowRegDangling(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRsbBuffer = pToPtnRow->pDangling(i_Ptn);
+  RowBuffer* pRowBuffer = pToPtnRow->pDangling(i_Ptn);
   
-  m_pDataStack->vPushPtr(pRsbBuffer);
+  m_pDataStack->vPushPtr(pRowBuffer);
 
   EXIT();
 }

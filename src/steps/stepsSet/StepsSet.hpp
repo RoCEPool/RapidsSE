@@ -1241,7 +1241,7 @@ public:
   void vRegOperandRowCountFetch(void);
   void vRegOperandSet(void);
   void vRegOperandUpsertIntoTable(void);
-  void vRegOperandRsbToCsv(void);
+  void vRegOperandRowToCsv(void);
   void vRegOperandWriteToFile0(void);
 
   // operandB

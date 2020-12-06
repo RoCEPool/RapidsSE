@@ -432,7 +432,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  ASSERT(i_TablePtn < AM::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
-//  if (pRowBuffer->nRsb() == 0) {
+//  if (pRowBuffer->nRows() == 0) {
 //    delete pRowBuffer;
 //    return;
 //  }

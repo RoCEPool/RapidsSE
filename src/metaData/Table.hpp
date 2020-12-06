@@ -70,7 +70,7 @@ namespace MetaData
     i8      iToPartition(i8 iRowHash);
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
-    //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRsbBuffer);
+    //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRowBuffer);
     //void vUpsertBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);

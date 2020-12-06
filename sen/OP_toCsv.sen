@@ -83,7 +83,7 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  Operand[].rsbToCsv
+  Operand[].rowToCsv
   Operand[] to Subset[]
 
   begin

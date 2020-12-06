@@ -53,7 +53,7 @@ void Step::vPotCompletedPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].danglingRsbBuffer -- get any dangling/last buffer                    */
+/* pot[].dangling -- get any dangling/last buffer                             */
 /*----------------------------------------------------------------------------*/
 void Step::vPotDangling(void)
 {

@@ -48,7 +48,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
   vAddStep("Operand[].report"_Stz,         &Step::vRegOperandReport);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vRegOperandRowCountFetch);
-  vAddStep("Operand[].rsbToCsv"_Stz,       &Step::vRegOperandRsbToCsv);
+  vAddStep("Operand[].rowToCsv"_Stz,       &Step::vRegOperandRowToCsv);
   vAddStep("Operand[].set"_Stz,            &Step::vRegOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vRegOperandWriteToFile0);
@@ -818,9 +818,9 @@ void Step::vRegOperandUpsertIntoTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].rsbToCsv -- convert rowBuffer operand to csvBuffer               */
+/* Operand[].rowToCsv -- convert rowBuffer operand to csvBuffer               */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandRsbToCsv(void)
+void Step::vRegOperandRowToCsv(void)
 {
   ENTRY();
   
