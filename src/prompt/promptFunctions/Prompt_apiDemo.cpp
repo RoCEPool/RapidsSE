@@ -34,6 +34,8 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   pInpTknVec->vTokeniseC("tableScan bolTbl"_Stz);
   pInpTknVec->vDumpVec(0);
 
+  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::pAllocSession\n"_Stz);
@@ -54,7 +56,20 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     goto L_End;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::vExecuteJob\n"_Stz);
+  Api::vExecuteJob(pSession->m_pSsnJob);
+
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Process Results\n"_Stz);
+  if (pSession->m_pSsnJob->bIsPipeline())
+    pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::vDeleteJob\n"_Stz);
+  Api::vDeleteJob(&pSession->m_pSsnJob);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_End:
   vTrace("  Api::vFreeSession\n"_Stz);
