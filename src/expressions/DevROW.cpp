@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DevRSB.hpp -- RSB Device                                                   */
+/* DevROW.hpp -- RSB Device                                                   */
 /*============================================================================*/
 
 #include "Expressions.h"
@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,DevRSB,CN_DEVRSB)
-__aNewFunction(DevRSB,CN_DEVRSB)
-__vDeleteFunction(DevRSB,CN_DEVRSB)
-__aFooterFunction(DevRSB)
+__pCastFunction(Expressions,DevROW,CN_DEVRSB)
+__aNewFunction(DevROW,CN_DEVRSB)
+__vDeleteFunction(DevROW,CN_DEVRSB)
+__aFooterFunction(DevROW)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DevRSB::DevRSB(void)
+DevROW::DevROW(void)
 : Device(CN_DEVRSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
@@ -37,7 +37,7 @@ DevRSB::DevRSB(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-DevRSB::~DevRSB(void) noexcept(false)
+DevROW::~DevROW(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
 

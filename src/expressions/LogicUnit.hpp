@@ -135,10 +135,10 @@ namespace Expressions
   
     EntWrk     m_oEntWrk;
 
-    DevRSB*    m_pDevDstRsb;
-    DevRSB*    m_pDevSrcRsb;
+    DevROW*    m_pDevDstRsb;
+    DevROW*    m_pDevSrcRsb;
     DevIXT*    m_pDevSrcIxt;
-    DevRSB*    m_pDevAltRsb;
+    DevROW*    m_pDevAltRsb;
     DevIXT*    m_pDevAltIxt;
     DevIXT*    m_pDevTmpIxt;
   

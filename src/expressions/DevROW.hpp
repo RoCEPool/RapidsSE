@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* DevRSB.hpp -- RSB Device                                                   */
+/* DevROW.hpp -- RSB Device                                                   */
 /*============================================================================*/
 #pragma once
 
 namespace Expressions
 {
-  class DevRSB : public Device
+  class DevROW : public Device
   {
   public:
   
@@ -23,8 +23,8 @@ namespace Expressions
     void* operator new(size_t);
     void  operator delete(void*);
 
-    DevRSB(void);
-   ~DevRSB(void) noexcept(false);
+    DevROW(void);
+   ~DevROW(void) noexcept(false);
   
     void  v_ENTWRK_APPENDELM(LogicUnit* pLogicUnit);
     void  v_ENTWRK_APPENDELMI(LogicUnit* pLogicUnit, i8 iTop);
@@ -35,7 +35,7 @@ namespace Expressions
     Footer* aFooter(void);
   };
   
-  DevRSB* _pDevRSB(void* aAddr);
+  DevROW* _pDevROW(void* aAddr);
 }
 
 /*============================================================================*/
