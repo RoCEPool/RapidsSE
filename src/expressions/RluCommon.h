@@ -30,10 +30,10 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   i8   m_iHash;
   i8   m_i_Ptn;
   
-  void* m_pDevDstRsb;
-  void* m_pDevSrcRsb;
+  void* m_pDevDstRow;
+  void* m_pDevSrcRow;
   void* m_pDevSrcIxt;
-  void* m_pDevAltRsb;
+  void* m_pDevAltRow;
   void* m_pDevAltIxt;
   void* m_pDevTmpIxt;
   

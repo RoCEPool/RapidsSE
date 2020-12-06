@@ -57,7 +57,7 @@ void Step::vStreamDefAsSrcStreamDef(void)
   
   StreamDef* pStreamDef = *m_pLogicUnit->m_xpStreamDef;
   
-  m_pLogicUnit->m_pDevSrcRsb->m_pStreamDef = pStreamDef;
+  m_pLogicUnit->m_pDevSrcRow->m_pStreamDef = pStreamDef;
   
   EXIT();
 }

@@ -1231,7 +1231,7 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
     (eSI)ieStrInflateRule,
     (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
     iaColSet,
-    pLogicUnit->m_pDevAltRsb->m_pStreamDef
+    pLogicUnit->m_pDevAltRow->m_pStreamDef
   );
 }
 
@@ -1254,7 +1254,7 @@ void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
     (eSI)ieStrInflateRule,
     pLogicUnit->m_pDevSrcIxt->m_aCrw,
     iaColSet,
-    pLogicUnit->m_pDevSrcRsb->m_pStreamDef
+    pLogicUnit->m_pDevSrcRow->m_pStreamDef
   );
 }
 
@@ -1269,7 +1269,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   HeadLine*  aHeadLine  = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
-  StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRsb->m_pStreamDef;
+  StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRow->m_pStreamDef;
   
   RowInflator::vInflate_Key_into_ElementArray
         (aaiDstk,aHeadLine,iaColSet,

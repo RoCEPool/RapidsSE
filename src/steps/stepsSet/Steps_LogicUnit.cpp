@@ -69,7 +69,7 @@ void Step::vLogicUnitAltTableFetch(void)
 {
   ENTRY();
   
-  DevROW* pDevRow = _pDevROW(m_pLogicUnit->m_xRluCommon.m_pDevAltRsb);
+  DevROW* pDevRow = _pDevROW(m_pLogicUnit->m_xRluCommon.m_pDevAltRow);
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
@@ -463,7 +463,7 @@ void Step::vLogicUnitSrcTableFetch(void)
 {
   ENTRY();
   
-  DevROW* pDevRow = _pDevROW(m_pLogicUnit->m_xRluCommon.m_pDevSrcRsb);
+  DevROW* pDevRow = _pDevROW(m_pLogicUnit->m_xRluCommon.m_pDevSrcRow);
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
