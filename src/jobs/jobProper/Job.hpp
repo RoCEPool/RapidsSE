@@ -29,7 +29,8 @@ namespace Jobs
     // into task? -------------
     Pipeline*  m_pPipeline;   // pipeline
     Op*        m_pOp;         // Op this job is executing
-    Op*        m_pOuterOp;    // Op that called the pipline
+    Op*        m_pOuterOp;    // Op that called the pipeline
+    Op*        m_pInputOp;    // The optional input op of the pipeline
 
     // undecided --------------
     ReqTuple  m_xReqTuple;    // the request tuple
