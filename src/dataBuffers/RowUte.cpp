@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* add a row single to row slab                                               */
 /*----------------------------------------------------------------------------*/
-bool RowUte::bAddSingleToSampleSet(RowSlab* pSampleSet,
+bool RowUte::bAddSingleToSampleSet(RowBuffer* pSampleSet,
                                    RowSingle* pRowSingle,
                                    StreamDef* pStreamDef)
 {
