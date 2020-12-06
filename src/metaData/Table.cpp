@@ -420,7 +420,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* insdel row buffer into the table indexes                                   */
 /*----------------------------------------------------------------------------*/
-//void Table::vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRsbBuffer)
+//void Table::vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRowBuffer)
 //{ //# indexTuning
 //
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -432,15 +432,15 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  ASSERT(i_TablePtn < AM::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
-//  if (pRsbBuffer->nRsb() == 0) {
-//    delete pRsbBuffer;
+//  if (pRowBuffer->nRsb() == 0) {
+//    delete pRowBuffer;
 //    return;
 //  }
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // mark crwBuffer as permanent before its appended to the table
 //
-//  pRsbBuffer->vIsPermanent(true);
+//  pRowBuffer->vIsPermanent(true);
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // append the buffer entries into the table
@@ -449,7 +449,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //
 //  t8 tPerspective = 0; //AM::tThisTLSPespective();
 //
-//  pTablePtn->vInsdelBuffer(pRsbBuffer,tPerspective);
+//  pTablePtn->vInsdelBuffer(pRowBuffer,tPerspective);
 //}
 
 /*----------------------------------------------------------------------------*/

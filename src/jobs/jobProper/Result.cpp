@@ -382,14 +382,14 @@ void Result::vProcessBufferQueue(void)
       // -- -- -- -- -- --
         
       case CN_ROWBUFFER: {
-        RowBuffer* pRsbBuffer = _pRowBuffer(pOperand);
+        RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 //        if (AM::bDeveloper())
 //          vTrace("[[RowBuffer %s ; Rsbs=%lld]]\n"_Stz,
-//                 spDataBuffer.sz(pRsbBuffer),
-//                 pRsbBuffer->nRsb());
-        m_xJobResponse.m_ixRowsProcessed += pRsbBuffer->nRows();
+//                 spDataBuffer.sz(pRowBuffer),
+//                 pRowBuffer->nRsb());
+        m_xJobResponse.m_ixRowsProcessed += pRowBuffer->nRows();
         vTrace("\n"_Stz);
-        pRsbBuffer->vPrintRows();
+        pRowBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
         break;
       }

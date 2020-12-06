@@ -25,7 +25,7 @@ namespace Load
     ToPtnRow(void);
    ~ToPtnRow(void) noexcept(false);
   
-    void vConvert(RowBuffer* pRsbBuffer);
+    void vConvert(RowBuffer* pRowBuffer);
   
     RowBuffer* pCompleted(i8 i_Ptn);
     RowBuffer* pDangling(i8 i_Ptn);
