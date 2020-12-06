@@ -21,7 +21,6 @@ RsbBuffer::RsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
   
-  m_pRowSlab = new RowSlab;
   _checkInitialised_(CN_RSBBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
@@ -34,93 +33,82 @@ RsbBuffer::~RsbBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
   
-  delete m_pRowSlab;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get row slab                                                               */
-/*----------------------------------------------------------------------------*/
-RowSlab* RsbBuffer::pRowSlab(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
-
-  return m_pRowSlab;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of rows                                                         */
-/*----------------------------------------------------------------------------*/
-i8 RsbBuffer::nRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
-  
-  SP_RowPix spRowPix(m_pRowSlab->nColumns(),m_pRowSlab->axaColPix());
-
-  i8 nRows = m_pRowSlab->nRows();
-  
-  return nRows;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print rows                                                                 */
-/*----------------------------------------------------------------------------*/
-void RsbBuffer::vPrintRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
-  
-  SP_RowPix spRowPix(m_pRowSlab->nColumns() - m_pRowSlab->nExtraCols(),
-                     m_pRowSlab->axaColPix());
-
-  i8 nRows = m_pRowSlab->nRows();
-  
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    Row* aRow = m_pRowSlab->pRowAddress(i_Row);
-    Stz* szRow = spRowPix.sz(aRow);
-    vTrace("row: (%s)\n"_Stz,szRow);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert this rsb buffer into one or more csv buffers                       */
-/*----------------------------------------------------------------------------*/
-CsvBuffer* RsbBuffer::pToCsvBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
-    
-  SP_RowPix spRowPix(m_pRowSlab->nColumns(),m_pRowSlab->axaColPix());
-  
-  CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
-  CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
-  
-  Stz* szRecord = nullptr;
-  i8 nSize = 1;
-  
-  i8 nRows = m_pRowSlab->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    Row* aRow = m_pRowSlab->pRowAddress(i_Row);
-    
-    Stz* szRow = spRowPix.sz(aRow,true);
-
-    nSize = szRow->nSize();
-    
-    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
-      CsvBuffer* pNewCsvBuffer = new CsvBuffer;
-      pCsvBuffer->vNextBuffer(pNewCsvBuffer);
-      pCsvBuffer = pNewCsvBuffer;
-    }
-
-    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
-
-    StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
-  }
-  
-  if (szRecord)
-    ((char*)szRecord)[nSize-1] = '\0';
-  
-  return pFirstCsvBuffer;
-}
-
+///*----------------------------------------------------------------------------*/
+///* get number of rows                                                         */
+///*----------------------------------------------------------------------------*/
+//i8 RsbBuffer::nRows(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
+//  
+//  SP_RowPix spRowPix(m_pRowSlab->nColumns(),m_pRowSlab->axaColPix());
+//
+//  i8 nRows = m_pRowSlab->nRows();
+//  
+//  return nRows;
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* print rows                                                                 */
+///*----------------------------------------------------------------------------*/
+//void RsbBuffer::vPrintRows(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
+//  
+//  SP_RowPix spRowPix(m_pRowSlab->nColumns() - m_pRowSlab->nExtraCols(),
+//                     m_pRowSlab->axaColPix());
+//
+//  i8 nRows = m_pRowSlab->nRows();
+//  
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//    Row* aRow = m_pRowSlab->pRowAddress(i_Row);
+//    Stz* szRow = spRowPix.sz(aRow);
+//    vTrace("row: (%s)\n"_Stz,szRow);
+//  }
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* convert this rsb buffer into one or more csv buffers                       */
+///*----------------------------------------------------------------------------*/
+//CsvBuffer* RsbBuffer::pToCsvBuffer(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RSBBUFFER,_FOOTER_);
+//    
+//  SP_RowPix spRowPix(m_pRowSlab->nColumns(),m_pRowSlab->axaColPix());
+//  
+//  CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
+//  CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
+//  
+//  Stz* szRecord = nullptr;
+//  i8 nSize = 1;
+//  
+//  i8 nRows = m_pRowSlab->nRows();
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//    
+//    Row* aRow = m_pRowSlab->pRowAddress(i_Row);
+//    
+//    Stz* szRow = spRowPix.sz(aRow,true);
+//
+//    nSize = szRow->nSize();
+//    
+//    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
+//      CsvBuffer* pNewCsvBuffer = new CsvBuffer;
+//      pCsvBuffer->vNextBuffer(pNewCsvBuffer);
+//      pCsvBuffer = pNewCsvBuffer;
+//    }
+//
+//    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
+//
+//    StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
+//  }
+//  
+//  if (szRecord)
+//    ((char*)szRecord)[nSize-1] = '\0';
+//  
+//  return pFirstCsvBuffer;
+//}
+//
 //*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

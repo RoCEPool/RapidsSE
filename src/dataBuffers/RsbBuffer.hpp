@@ -8,9 +8,7 @@ namespace DataBuffers
   class RsbBuffer : public RowBuffer
   {
   private:
-  
-    RowSlab* m_pRowSlab;
-  
+    
     // must be last
     Footer m_xFooter;
   
@@ -21,10 +19,9 @@ namespace DataBuffers
     RsbBuffer(void);
    ~RsbBuffer(void) noexcept(false);
 
-    RowSlab*   pRowSlab(void);
-    i8         nRows(void);
-    void       vPrintRows(void);
-    CsvBuffer* pToCsvBuffer(void);
+//    i8         nRows(void);
+//    void       vPrintRows(void);
+//    CsvBuffer* pToCsvBuffer(void);
 
   private:
     Footer* aFooter(void);
