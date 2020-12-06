@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToNstRsb.cpp -- Convert row to normalised string row slab buffers          */
+/* ToNstRow.cpp -- Convert row to normalised string row slab buffers          */
 /*============================================================================*/
 
 #include "Load.h"
@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToNstRsb,CN_TONSTRSB)
-__aNewFunction(ToNstRsb,CN_TONSTRSB)
-__vDeleteFunction(ToNstRsb,CN_TONSTRSB)
-__aFooterFunction(ToNstRsb)
+__pCastFunction(Load,ToNstRow,CN_TONSTRSB)
+__aNewFunction(ToNstRow,CN_TONSTRSB)
+__vDeleteFunction(ToNstRow,CN_TONSTRSB)
+__aFooterFunction(ToNstRow)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToNstRsb::ToNstRsb(void)
+ToNstRow::ToNstRow(void)
 : Object(CN_TONSTRSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
@@ -27,7 +27,7 @@ ToNstRsb::ToNstRsb(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ToNstRsb::~ToNstRsb(void) noexcept(false)
+ToNstRow::~ToNstRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
 }
@@ -39,7 +39,7 @@ ToNstRsb::~ToNstRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToNstRsb::vConvert(RowBuffer* pRsbBuffer)
+void ToNstRow::vConvert(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
   
@@ -53,7 +53,7 @@ void ToNstRsb::vConvert(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* analyze strings                                                            */
 /*----------------------------------------------------------------------------*/
-void ToNstRsb::vAnalyzeStrings(RowBuffer* pRsbBuffer)
+void ToNstRow::vAnalyzeStrings(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
 }
@@ -61,7 +61,7 @@ void ToNstRsb::vAnalyzeStrings(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* potentially create a normalised string                                     */
 /*----------------------------------------------------------------------------*/
-void ToNstRsb::vCreateNmlStr(Stz* szStz)
+void ToNstRow::vCreateNmlStr(Stz* szStz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
 }

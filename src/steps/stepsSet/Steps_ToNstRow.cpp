@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToNstRsb.cpp - Convert row to normalised string row slab buffers      */
+/* Steps_ToNstRow.cpp - Convert row to normalised string row buffers          */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,25 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ToNstRsb(void)
+void Step::vAddSteps_ToNstRow(void)
 {
-  vAddStep("toNstRsb[].convert"_Stz,     &Step::vToNstRsbRegConvert);
-  vAddStep("toNstRsb[].create"_Stz,      &Step::vToNstRsbRegCreate);
-  vAddStep("toNstRsb[].delete"_Stz,      &Step::vToNstRsbRegDelete);
+  vAddStep("toNstRow[].convert"_Stz,     &Step::vToNstRowRegConvert);
+  vAddStep("toNstRow[].create"_Stz,      &Step::vToNstRowRegCreate);
+  vAddStep("toNstRow[].delete"_Stz,      &Step::vToNstRowRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
-/* toNstRsb[].convert -- convert row buffer                                   */
+/* toNstRow[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vToNstRsbRegConvert(void)
+void Step::vToNstRowRegConvert(void)
 {
   ENTRY();
 
-  ToNstRsb* pToNstRsb = *m_pLogicUnit->m_xpToNstRsb;
+  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
   
   RowBuffer* pRsbBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToNstRsb->vConvert(pRsbBuffer);
+  pToNstRow->vConvert(pRsbBuffer);
   
   m_pDataStack->vPushPtr(pRsbBuffer);
 
@@ -33,31 +33,31 @@ void Step::vToNstRsbRegConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toNstRsb[].create -- create toNstRsb                                       */
+/* toNstRow[].create -- create toNstRow                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToNstRsbRegCreate(void)
+void Step::vToNstRowRegCreate(void)
 {
   ENTRY();
     
-  ToNstRsb* pToNstRsb = new ToNstRsb;
+  ToNstRow* pToNstRow = new ToNstRow;
       
-  m_pLogicUnit->m_xpToNstRsb = pToNstRsb;
+  m_pLogicUnit->m_xpToNstRow = pToNstRow;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* toNstRsb[].delete -- delete toNstRsb                                       */
+/* toNstRow[].delete -- delete toNstRow                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToNstRsbRegDelete(void)
+void Step::vToNstRowRegDelete(void)
 {
   ENTRY();
   
-  ToNstRsb* pToNstRsb = *m_pLogicUnit->m_xpToNstRsb;
+  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
   
-  m_pLogicUnit->m_xpToNstRsb = nullptr;
+  m_pLogicUnit->m_xpToNstRow = nullptr;
   
-  delete pToNstRsb;
+  delete pToNstRow;
   
   EXIT();
 }

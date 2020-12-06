@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ToNstRsb.hpp -- Convert row to normalised string row slab buffers          */
+/* ToNstRow.hpp -- Convert row to normalised string row slab buffers          */
 /*============================================================================*/
 #pragma once
 
 namespace Load
 {
-  class ToNstRsb : public Object
+  class ToNstRow : public Object
   {
   private:
 
@@ -16,8 +16,8 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToNstRsb(void);
-   ~ToNstRsb(void) noexcept(false);
+    ToNstRow(void);
+   ~ToNstRow(void) noexcept(false);
   
     void vConvert(RowBuffer* pRsbBuffer);
   
@@ -29,7 +29,7 @@ namespace Load
     Footer* aFooter(void);
   };
 
-  ToNstRsb* _pToNstRsb(void* aAddr);
+  ToNstRow* _pToNstRow(void* aAddr);
 }
 
 /*============================================================================*/

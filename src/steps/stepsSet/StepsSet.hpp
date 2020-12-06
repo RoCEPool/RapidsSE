@@ -1737,10 +1737,10 @@ public:
   void vToHshCrwRegDangling(void);
   void vToHshCrwRegDelete(void);
 
-  // toNstRsb
-  void vToNstRsbRegConvert(void);
-  void vToNstRsbRegCreate(void);
-  void vToNstRsbRegDelete(void);
+  // toNstRow
+  void vToNstRowRegConvert(void);
+  void vToNstRowRegCreate(void);
+  void vToNstRowRegDelete(void);
 
   // toPtnRow
   void vToPtnRowRegCompleted(void);

@@ -187,7 +187,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Timer();
   Step::vAddSteps_To();
   Step::vAddSteps_ToHshCrw();
-  Step::vAddSteps_ToNstRsb();
+  Step::vAddSteps_ToNstRow();
   Step::vAddSteps_ToPtnRow();
   Step::vAddSteps_ToRsb();
   Step::vAddSteps_TokenVec();

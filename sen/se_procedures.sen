@@ -660,7 +660,7 @@
     toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
     // dump rowBuffer 1   |
 
-    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    toNstRow           | // (rsbBuffer)  => (rsbBuffer 'nst)
     //dump rowBuffer 1   |
 
     toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
@@ -724,7 +724,7 @@
     toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
     // dump rowBuffer 1   |
 
-    toNstRsb           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    toNstRow           | // (rsbBuffer)  => (rsbBuffer 'nst)
     //dump rowBuffer 1   |
 
     toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
@@ -838,7 +838,7 @@
         | rdCsvCyclic $File $NTimes
         | toRsb $Table
         | toPtnRow
-        | toNstRsb
+        | toNstRow
         | stageB hashed
 
     stage stageB on all partitions :
@@ -1083,7 +1083,7 @@
 
      toPtnRow |
 
-     //toNstRsb |
+     //toNstRow |
 
      //toHshCrw |
 
@@ -1862,7 +1862,7 @@
 
   stage stageC on all partitions :
     EOAsm2 ../eo_text/asm20_s0.txt 0
-    | toNstRsb
+    | toNstRow
     | toHshCrw
     | insert tempTable0
     | stageD
