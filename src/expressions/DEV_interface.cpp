@@ -932,7 +932,7 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* begin src rsb traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_BEGIN(void* aLU, void* aROWDEVICE)
+void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -946,7 +946,7 @@ void vDev_RSB_BEGIN(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* create new rsb                                                             */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_NEW(void* aLU, void* aROWDEVICE)
+i8 iDev_ROW_NEW(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -965,7 +965,7 @@ i8 iDev_RSB_NEW(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* move to next src rsb                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_NEXT(void* aLU, void* aROWDEVICE)
+i8 iDev_ROW_NEXT(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -987,7 +987,7 @@ i8 iDev_RSB_NEXT(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /*  set rsb to null                                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_NULL(void* aLU, void* aROWDEVICE)
+void vDev_ROW_NULL(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -998,7 +998,7 @@ void vDev_RSB_NULL(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
+void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
 {
   _static_
   
@@ -1011,7 +1011,7 @@ void vDev_RSB_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
+void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 {
   _static_
   
@@ -1030,7 +1030,7 @@ void vDev_RSB_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* print src rsb                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_PRINT(void* aLU, void* aROWDEVICE)
+void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -1042,7 +1042,7 @@ void vDev_RSB_PRINT(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
+i8 iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
   
@@ -1056,7 +1056,7 @@ i8 iDev_RSB_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
+Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
   
@@ -1070,7 +1070,7 @@ Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHOFS(void* aLU, void* aROWDEVICE)
+i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -1084,7 +1084,7 @@ i8 iDev_RSB_PUSHOFS(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* reset rsb                                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_RESET(void* aLU, void* aROWDEVICE)
+void vDev_ROW_RESET(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -1096,7 +1096,7 @@ void vDev_RSB_RESET(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* set rsb row                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_SET(void* aLU, void* aROWDEVICE, i8 iRow)
+void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
 {
   _static_
   
@@ -1109,7 +1109,7 @@ void vDev_RSB_SET(void* aLU, void* aROWDEVICE, i8 iRow)
 /*----------------------------------------------------------------------------*/
 /* set src rsb by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
+void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
   
@@ -1121,7 +1121,7 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* set the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
+void vDev_ROW_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
 {
   _static_
   
@@ -1132,7 +1132,7 @@ void vDev_RSB_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_TESTROW(void* aLU, void* aROWDEVICE)
+i8 iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE)
 {
   _static_
     
@@ -1151,7 +1151,7 @@ i8 iDev_RSB_TESTROW(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_TEST(void* aLU, void* aROWDEVICE)
+i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -1170,7 +1170,7 @@ i8 iDev_RSB_TEST(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* zero rsb                                                                   */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_ZERO(void* aLU, void* aROWDEVICE)
+void vDev_ROW_ZERO(void* aLU, void* aROWDEVICE)
 {
   _static_
   
@@ -1238,7 +1238,7 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaColSet)
+void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaColSet)
 {
   _static_
   RASSERT(0); // check with ALka
