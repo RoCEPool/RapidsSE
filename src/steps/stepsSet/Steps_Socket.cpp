@@ -480,11 +480,11 @@ void Step::vSocketRecvObject(void)
     }
       
     case CN_ROWBUFFER: {
-      RowBuffer* pRsbBuffer = new RowBuffer;
+      RowBuffer* pRowBuffer = new RowBuffer;
       
-      MemLib::vCopy(pRsbBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
+      MemLib::vCopy(pRowBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
       
-      aBody = aAdd<void*>(pRsbBuffer,sizeof(Object));
+      aBody = aAdd<void*>(pRowBuffer,sizeof(Object));
       nRemainingBytes = gxaSizeHeap[CN_ROWBUFFER].m_nClassSize - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
@@ -494,7 +494,7 @@ void Step::vSocketRecvObject(void)
         return;
       }
       
-      m_pDataStack->vPushPtr(pRsbBuffer);
+      m_pDataStack->vPushPtr(pRowBuffer);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;

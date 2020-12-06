@@ -1750,11 +1750,11 @@ public:
   void vToPtnRowRegDelete(void);
 
   // toRow
-  void vToRsbRegCompleted(void);
-  void vToRsbRegConvert(void);
-  void vToRsbRegCreate(void);
-  void vToRsbRegDangling(void);
-  void vToRsbRegDelete(void);
+  void vToRowRegCompleted(void);
+  void vToRowRegConvert(void);
+  void vToRowRegCreate(void);
+  void vToRowRegDangling(void);
+  void vToRowRegDelete(void);
 
   // tokenVec
   void vTokenVecDelete(void);
