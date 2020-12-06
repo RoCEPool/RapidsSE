@@ -9,7 +9,7 @@ namespace DataBuffers
   {
   public:
    
-    static bool bAddSingleToSlab(RowSlab* pRowSlab,
+    static bool bAddSingleToSampleSet(RowSlab* pSampleSet,
                                  RowSingle* pRowSingle,
                                  StreamDef* pStreamDef);
   };

@@ -11,14 +11,15 @@
 /*----------------------------------------------------------------------------*/
 /* add a row single to row slab                                               */
 /*----------------------------------------------------------------------------*/
-bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
-                              StreamDef* pStreamDef)
+bool RowUte::bAddSingleToSampleSet(RowSlab* pSampleSet,
+                                   RowSingle* pRowSingle,
+                                   StreamDef* pStreamDef)
 {
   _static_
   
   // begin a new slab row, return false if no space
   
-  if (! pRowSlab->aAllotNewRow())
+  if (! pSampleSet->aAllotNewRow())
     return false;
 
   
@@ -34,7 +35,7 @@ bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
     if (DM_VCH != pCol->eDatum()) {
       
       // copy word from row single to row slab
-      pRowSlab->vDeposit(pRowSingle->iColVal(i_Col));
+      pSampleSet->vDeposit(pRowSingle->iColVal(i_Col));
       
       continue;
     }
@@ -43,17 +44,17 @@ bool RowUte::bAddSingleToSlab(RowSlab* pRowSlab, RowSingle* pRowSingle,
     
     // check for null
     if (pRowSingle->bIsColNull(i_Col)) {
-      pRowSlab->vDeposit(C_DATUM_NULL);
+      pSampleSet->vDeposit(C_DATUM_NULL);
       continue;
     }
         
     // copy vch from row single to row slab
-    char* azTgt = pRowSlab->azDepositString_begin();
+    char* azTgt = pSampleSet->azDepositString_begin();
     
     char* azSrc = pRowSingle->azColVal(i_Col);
     i8 nLen = StrLib::nCopy(azTgt,azSrc);
 
-    pRowSlab->vDepositString_end(nLen + 1);
+    pSampleSet->vDepositString_end(nLen + 1);
   }
   
   return true;
