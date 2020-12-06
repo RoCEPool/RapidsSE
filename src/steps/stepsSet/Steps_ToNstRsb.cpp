@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToNstRsb.cpp - Convert rsb to normalised string row slab buffers      */
+/* Steps_ToNstRsb.cpp - Convert row to normalised string row slab buffers      */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -15,7 +15,7 @@ void Step::vAddSteps_ToNstRsb(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toNstRsb[].convert -- convert rsb buffer                                   */
+/* toNstRsb[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vToNstRsbRegConvert(void)
 {

@@ -80,7 +80,7 @@ ToRsb::~ToRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert a crwbuffer into a rsbBuffer                                       */
+/* convert a crwbuffer into a rowBuffer                                       */
 /*----------------------------------------------------------------------------*/
 bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
 {
@@ -108,7 +108,7 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return last remaining dangling rsbBuffer (if any)                          */
+/* return last remaining dangling rowBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToRsb::pDanglingRsbBuffer(void)
 {
@@ -122,7 +122,7 @@ RowBuffer* ToRsb::pDanglingRsbBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return a full rsbBuffer (if any)                                           */
+/* return a full rowBuffer (if any)                                           */
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToRsb::pFullRsbBuffer(void)
 {
@@ -146,7 +146,7 @@ RowBuffer* ToRsb::pFullRsbBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new rsbBuffer                                                     */
+/* create a new rowBuffer                                                     */
 /*----------------------------------------------------------------------------*/
 void ToRsb::vNewRsbBuffer(void)
 {
@@ -161,13 +161,13 @@ void ToRsb::vNewRsbBuffer(void)
     m_pRsbBuffer->vPrevBuffer(pRsbBuffer);
   m_pRsbBuffer = pRsbBuffer;
   
-  // initialise the row slab inside the new rsb buffer
+  // initialise the row slab inside the new row buffer
   m_pRowBuffer = m_pRsbBuffer;
   m_pRowBuffer->vInitPix(m_pStreamDef,m_bPtnHash);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rsb buffer                                                             */
+/* get row buffer                                                             */
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToRsb::pRsbBuffer(void)
 {
@@ -177,7 +177,7 @@ RowBuffer* ToRsb::pRsbBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set rsb buffer                                                             */
+/* set row buffer                                                             */
 /*----------------------------------------------------------------------------*/
 void ToRsb::vRsbBuffer(RowBuffer* pRsbBuffer)
 {
@@ -688,7 +688,7 @@ L_TestMoreRecords:
 
   m_pRowBuffer->nFreeBytes();
 
-  // allot a new rsb (new another rsbBuffer if necessary)
+  // allot a new row (new another rowBuffer if necessary)
   if (! m_pRowBuffer->aAllotNewRow()) {    // ? inline ?
     vNewRsbBuffer();
     Row* aNewRow = m_pRowBuffer->aAllotNewRow();

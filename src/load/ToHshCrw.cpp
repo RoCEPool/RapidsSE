@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToHshCrw.cpp -- Convert ptn nst rsb buffers to hashed crw buffers          */
+/* ToHshCrw.cpp -- Convert ptn nst row buffers to hashed crw buffers          */
 /*============================================================================*/
 
 #include "Load.h"

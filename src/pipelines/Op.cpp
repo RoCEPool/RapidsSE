@@ -481,7 +481,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
     case   ZK_CRWBUFFER:
     case   ZK_ENTBUFFER:
-    case   ZK_RSBBUFFER:
+    case   ZK_ROWBUFFER:
     case   ZK_SRTBUFFER:
       // should have received a ZK_DATAPULSE
       if ( ! m_iOperandCount[ZK_DATAPULSE]) {

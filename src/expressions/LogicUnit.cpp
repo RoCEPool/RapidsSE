@@ -2034,7 +2034,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                         + *(char*)aiLocals[giaVectorSet[iArg+1]];
         break;//+endCase
 
-      case EO_KEY_RSB2C_TO_I: ArgGet(iArg); // convert two rsb varchar(1) to int
+      case EO_KEY_RSB2C_TO_I: ArgGet(iArg); // convert two row varchar(1) to int
         dLU1(EO_KEY_RSB2C_TO_I,iArg);
         azTopA = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRsb,
                                            giaVectorSet[iArg]);
@@ -2168,7 +2168,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         break;//+endCase
        
-      case EO_CRW_SRC_BEGIN: ArgNil(); // begin src rsb traverse
+      case EO_CRW_SRC_BEGIN: ArgNil(); // begin src row traverse
         dLU0(EO_CRW_SRC_BEGIN);
         vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
         break;//+endCase
@@ -2188,7 +2188,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         break;//+endCase
         
-      case EO_CRW_SRC_NEXT: ArgNil(); // move to next src rsb
+      case EO_CRW_SRC_NEXT: ArgNil(); // move to next src row
         dLU0(EO_CRW_SRC_NEXT);
         //iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
         
@@ -2685,136 +2685,136 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // rsb / rowslab
-      case EO_RSB_DST_PRINT: ArgNil(); // print dst rsb
-        dLU0(EO_RSB_DST_PRINT);
+      // row / rowslab
+      case EO_ROW_DST_PRINT: ArgNil(); // print dst row
+        dLU0(EO_ROW_DST_PRINT);
         vDev_ROW_PRINT(pLU,aRluCommon->m_pDevDstRsb);
         break;//+endCase
 
-      case EO_RSB_SRC_PRINT: ArgNil(); // print src rsb
-        dLU0(EO_RSB_SRC_PRINT);
+      case EO_ROW_SRC_PRINT: ArgNil(); // print src row
+        dLU0(EO_ROW_SRC_PRINT);
         vDev_ROW_PRINT(pLU,aRluCommon->m_pDevSrcRsb);
         break;//+endCase
         
-      case EO_RSB_ALT_PRINT: ArgNil(); // print alt rsb
-        dLU0(EO_RSB_ALT_PRINT);
+      case EO_ROW_ALT_PRINT: ArgNil(); // print alt row
+        dLU0(EO_ROW_ALT_PRINT);
         vDev_ROW_PRINT(pLU,aRluCommon->m_pDevAltRsb);
         break;//+endCase
         
-      case EO_RSB_DST_NEW: ArgNil(); // create new destination rsb
-        dLU0(EO_RSB_DST_NEW);
+      case EO_ROW_DST_NEW: ArgNil(); // create new destination row
+        dLU0(EO_ROW_DST_NEW);
         iRes = iDev_ROW_NEW(pLU,aRluCommon->m_pDevDstRsb);
         aRluCommon->m_bPotCompleted = iRes;
         break;//+endCase
 
-      case EO_RSB_DST_RESET: ArgNil(); // reset dst rowslab
-        dLU0(EO_RSB_DST_RESET);
+      case EO_ROW_DST_RESET: ArgNil(); // reset dst rowslab
+        dLU0(EO_ROW_DST_RESET);
         vDev_ROW_RESET(pLU,aRluCommon->m_pDevDstRsb);
         break;//+endCase
        
-      case EO_RSB_DST_SET: ArgNil(); // set dst row
-        dLU0(EO_RSB_DST_SET);
+      case EO_ROW_DST_SET: ArgNil(); // set dst row
+        dLU0(EO_ROW_DST_SET);
         iTopA = *(aiDstk--);
         vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRsb, iTopA);
         break;//+endCase
         
-      case EO_RSB_DST_TESTROW: ArgNil(); // test if there is a destination rsb
-        dLU0(EO_RSB_DST_TESTROW);
+      case EO_ROW_DST_TESTROW: ArgNil(); // test if there is a destination row
+        dLU0(EO_ROW_DST_TESTROW);
         iRes = iDev_ROW_TESTROW(pLU,aRluCommon->m_pDevDstRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_RSB_DST_ZERO: ArgNil(); // zero destination rsb
-        dLU0(EO_RSB_DST_ZERO);
+      case EO_ROW_DST_ZERO: ArgNil(); // zero destination row
+        dLU0(EO_ROW_DST_ZERO);
         vDev_ROW_ZERO(pLU,aRluCommon->m_pDevDstRsb);
         break;//+endCase
         
-      case EO_RSB_SRC_BEGIN: ArgNil(); // begin src rsb traverse
-        dLU0(EO_RSB_SRC_BEGIN);
+      case EO_ROW_SRC_BEGIN: ArgNil(); // begin src row traverse
+        dLU0(EO_ROW_SRC_BEGIN);
         vDev_ROW_BEGIN(pLU,aRluCommon->m_pDevSrcRsb);
         break;//+endCase
 
-      case EO_RSB_SRC_NEXT: ArgNil(); // move to next src rsb
-        dLU0(EO_RSB_SRC_NEXT);
+      case EO_ROW_SRC_NEXT: ArgNil(); // move to next src row
+        dLU0(EO_ROW_SRC_NEXT);
         iRes = iDev_ROW_NEXT(pLU,aRluCommon->m_pDevSrcRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_RSB_SRC_NULL: ArgNil(); // null the crw src
-        dLU0(EO_RSB_SRC_NULL);
+      case EO_ROW_SRC_NULL: ArgNil(); // null the crw src
+        dLU0(EO_ROW_SRC_NULL);
         vDev_ROW_NULL(pLU,aRluCommon->m_pDevSrcRsb);
         break;//+endCase
         
-      case EO_RSB_SRC_PUSHOFS: ArgNil(); // push offset of source rsb
-        dLU0(EO_RSB_SRC_PUSHOFS);
+      case EO_ROW_SRC_PUSHOFS: ArgNil(); // push offset of source row
+        dLU0(EO_ROW_SRC_PUSHOFS);
         iRes = iDev_ROW_PUSHOFS(pLU,aRluCommon->m_pDevSrcRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
 
-      case EO_RSB_SRC_SETBYOFS: ArgNil(); // set src rsb by using offset on stack
-        dLU0(EO_RSB_SRC_SETBYOFS);
+      case EO_ROW_SRC_SETBYOFS: ArgNil(); // set src row by using offset on stack
+        dLU0(EO_ROW_SRC_SETBYOFS);
         iTopA = *(aiDstk--);
         vDev_ROW_SETBYOFS(pLU,aRluCommon->m_pDevSrcRsb,iTopA);
         break;//+endCase
         
-      case EO_RSB_SRC_TEST: ArgNil(); // test for src crw
-        dLU0(EO_RSB_SRC_TEST);
+      case EO_ROW_SRC_TEST: ArgNil(); // test for src crw
+        dLU0(EO_ROW_SRC_TEST);
         iRes = iDev_ROW_TEST(pLU,aRluCommon->m_pDevSrcRsb);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_RSB_ALT_BEGIN: ArgNil(); // not yet implemented
+      case EO_ROW_ALT_BEGIN: ArgNil(); // not yet implemented
         NEVER_REACH;
         break;//+endCase
 
-      case EO_RSB_ALT_NEXT: ArgNil(); // not yet implemented
+      case EO_ROW_ALT_NEXT: ArgNil(); // not yet implemented
         NEVER_REACH;
         break;//+endCase
 
-      case EO_RSB_ALT_PUSHOFS: ArgNil(); // not yet implemented
+      case EO_ROW_ALT_PUSHOFS: ArgNil(); // not yet implemented
         NEVER_REACH;
         break;//+endCase
 
-      case EO_RSB_ALT_SETBYOFS: ArgNil(); // not yet implemented
+      case EO_ROW_ALT_SETBYOFS: ArgNil(); // not yet implemented
         NEVER_REACH;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // rsb operators
-      case EO_RSB_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column
+      // row operators
+      case EO_ROW_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column
         iTopA = *(aiDstk--);
-        dLU2(EO_RSB_DST_POPCOLI,iArg,iTopA);
+        dLU2(EO_ROW_DST_POPCOLI,iArg,iTopA);
         vDev_ROW_POPCOLI(pLU,aRluCommon->m_pDevDstRsb,iArg,iTopA);
         break;//+endCase
         
-      case EO_RSB_DST_POPCOLS: ArgGet(iArg); // pop and deposit top into dst column
-        dLU1(EO_RSB_DST_POPCOLS,iArg);
+      case EO_ROW_DST_POPCOLS: ArgGet(iArg); // pop and deposit top into dst column
+        dLU1(EO_ROW_DST_POPCOLS,iArg);
         szTopA = (Stz*)S_StrAdr();
         vDev_ROW_POPCOLS(pLU,aRluCommon->m_pDevDstRsb,iArg,szTopA);
         S_StrDrp();
         break;//+endCase
         
-      case EO_RSB_DST_PUSHCOLI: ArgGet(iArg); // push dst column
+      case EO_ROW_DST_PUSHCOLI: ArgGet(iArg); // push dst column
         iRes = iDev_ROW_PUSHCOLI(pLU,aRluCommon->m_pDevDstRsb,iArg);
-        dLU2(EO_RSB_DST_PUSHCOLI,iArg,iRes);
+        dLU2(EO_ROW_DST_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_RSB_SRC_PUSHCOLI: ArgGet(iArg); // push src column
+      case EO_ROW_SRC_PUSHCOLI: ArgGet(iArg); // push src column
         iRes = iDev_ROW_PUSHCOLI(pLU,aRluCommon->m_pDevSrcRsb,iArg);
-        dLU2(EO_RSB_SRC_PUSHCOLI,iArg,iRes);
+        dLU2(EO_ROW_SRC_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_RSB_SRC_PUSHCOLS: ArgGet(iArg); // push src column
+      case EO_ROW_SRC_PUSHCOLS: ArgGet(iArg); // push src column
         azSrc = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRsb,iArg);
-        dLU2(EO_RSB_SRC_PUSHCOLS,iArg,(i8)azSrc);
+        dLU2(EO_ROW_SRC_PUSHCOLS,iArg,(i8)azSrc);
         S_PushStr(azSrc);
         break;//+endCase
         
-      case EO_RSB_ALT_PUSHCOLI: ArgGet(iArg); // push alt column
+      case EO_ROW_ALT_PUSHCOLI: ArgGet(iArg); // push alt column
         iRes = iDev_ROW_PUSHCOLI(pLU,aRluCommon->m_pDevAltRsb,iArg);
-        dLU2(EO_RSB_ALT_PUSHCOLI,iArg,iRes);
+        dLU2(EO_ROW_ALT_PUSHCOLI,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
 

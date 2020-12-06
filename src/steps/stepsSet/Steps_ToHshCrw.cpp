@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToHshCrw.cpp - Convert ptn nst rsb buffers to hashed crw buffers   */
+/* Steps_ToHshCrw.cpp - Convert ptn nst row buffers to hashed crw buffers   */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -35,7 +35,7 @@ void Step::vToHshCrwRegCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toHshCrw[].convert -- convert rsb buffer                                   */
+/* toHshCrw[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vToHshCrwRegConvert(void)
 {

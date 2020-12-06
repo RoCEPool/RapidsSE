@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToPtnRsb.cpp - Convert rsb buffers to partitioned row slab buffers   */
+/* Steps_ToPtnRsb.cpp - Convert row buffers to partitioned row slab buffers   */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -35,7 +35,7 @@ void Step::vToPtnRsbRegCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toPtnRsb[].convert -- convert rsb buffer                                   */
+/* toPtnRsb[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vToPtnRsbRegConvert(void)
 {

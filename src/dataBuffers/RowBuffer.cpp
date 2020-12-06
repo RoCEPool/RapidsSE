@@ -208,7 +208,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert this rsb buffer into one or more csv buffers                       */
+/* convert this row buffer into one or more csv buffers                       */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* RowBuffer::pToCsvBuffer(void)
 {

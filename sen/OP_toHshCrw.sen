@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_toHshCrw.sen -- Convert ptn nst rsb buffers to hashed crw buffers       */
+/* OP_toHshCrw.sen -- Convert ptn nst row buffers to hashed crw buffers       */
 /*============================================================================*/
 
 " OP_toHshCrw.sen" .verbose
@@ -38,7 +38,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_RSBBUFFER ...                                                   EACH */
+/* on ZK_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toHshCrw_RsbBuffer \handler
 
@@ -106,7 +106,7 @@
 
   find: toHshCrw_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toHshCrw_DataMarker ZK_DATAPULSE op[].handler!
-  find: toHshCrw_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: toHshCrw_RsbBuffer   ZK_ROWBUFFER   op[].handler!
   find: toHshCrw_StartMarker ZK_STARTMARKER op[].handler!
   find: toHshCrw_StreamDef   ZK_STREAMDEF   op[].handler!
 

@@ -830,11 +830,11 @@ then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_RSBBUFFER ...                                                   EACH */
+/* on ZK_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : sql_RsbBuffer \handler
 
-  0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   <queryNo> >int locals| queryNo |
 
@@ -1108,7 +1108,7 @@ then
   find: sql_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: sql_EosMarker   ZK_EOSMARKER   op[].handler!
   find: sql_DataMarker ZK_DATAPULSE op[].handler!
-  find: sql_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: sql_RsbBuffer   ZK_ROWBUFFER   op[].handler!
   find: sql_StartMarker ZK_STARTMARKER op[].handler!
   find: sql_StreamDef   ZK_STREAMDEF   op[].handler!
 

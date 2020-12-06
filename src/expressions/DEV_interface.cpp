@@ -7,7 +7,7 @@
 #include "DEV_interface.h"
 
 /*----------------------------------------------------------------------------*/
-/* begin rsb traverse                                                         */
+/* begin row traverse                                                         */
 /*----------------------------------------------------------------------------*/
 void vDev_CRW_BEGIN(void* aLU, void* aIXT)
 {
@@ -60,7 +60,7 @@ void vDev_CRW_DEREF(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
-/*  move to next src rsb                                                      */
+/*  move to next src row                                                      */
 /*----------------------------------------------------------------------------*/
 i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 {
@@ -85,7 +85,7 @@ i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
-/*  move to next src rsb                                                      */
+/*  move to next src row                                                      */
 /*----------------------------------------------------------------------------*/
 void vDev_CRW_NULL(void* aLU, void* aIXT)
 {
@@ -930,7 +930,7 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin src rsb traverse                                                     */
+/* begin src row traverse                                                     */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
 {
@@ -944,7 +944,7 @@ void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create new rsb                                                             */
+/* create new row                                                             */
 /*----------------------------------------------------------------------------*/
 i8 iDev_ROW_NEW(void* aLU, void* aROWDEVICE)
 {
@@ -963,7 +963,7 @@ i8 iDev_ROW_NEW(void* aLU, void* aROWDEVICE)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move to next src rsb                                                       */
+/* move to next src row                                                       */
 /*----------------------------------------------------------------------------*/
 i8 iDev_ROW_NEXT(void* aLU, void* aROWDEVICE)
 {
@@ -985,7 +985,7 @@ i8 iDev_ROW_NEXT(void* aLU, void* aROWDEVICE)
 }
 
 /*----------------------------------------------------------------------------*/
-/*  set rsb to null                                                           */
+/*  set row to null                                                           */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_NULL(void* aLU, void* aROWDEVICE)
 {
@@ -1028,7 +1028,7 @@ void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print src rsb                                                              */
+/* print src row                                                              */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
 {
@@ -1068,7 +1068,7 @@ Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source rsb                                                  */
+/* push offset of source row                                                  */
 /*----------------------------------------------------------------------------*/
 i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
 {
@@ -1082,7 +1082,7 @@ i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset rsb                                                                  */
+/* reset row                                                                  */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_RESET(void* aLU, void* aROWDEVICE)
 {
@@ -1094,7 +1094,7 @@ void vDev_ROW_RESET(void* aLU, void* aROWDEVICE)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set rsb row                                                                 */
+/* set row row                                                                 */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
 {
@@ -1107,7 +1107,7 @@ void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set src rsb by using offset on stack                                       */
+/* set src row by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 {
@@ -1130,7 +1130,7 @@ void vDev_ROW_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source rsb                                                  */
+/* push offset of source row                                                  */
 /*----------------------------------------------------------------------------*/
 i8 iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE)
 {
@@ -1149,7 +1149,7 @@ i8 iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source rsb                                                  */
+/* push offset of source row                                                  */
 /*----------------------------------------------------------------------------*/
 i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
 {
@@ -1168,7 +1168,7 @@ i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
 }
 
 /*----------------------------------------------------------------------------*/
-/* zero rsb                                                                   */
+/* zero row                                                                   */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_ZERO(void* aLU, void* aROWDEVICE)
 {

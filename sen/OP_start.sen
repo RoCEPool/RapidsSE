@@ -122,7 +122,7 @@
   find: INVALID_OPERAND_handler ZK_CRWBUFFER       op[].handler!
   find: INVALID_OPERAND_handler ZK_CSVBUFFER       op[].handler!
   find: INVALID_OPERAND_handler ZK_ENTBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_RSBBUFFER       op[].handler!
+  find: INVALID_OPERAND_handler ZK_ROWBUFFER       op[].handler!
   find: INVALID_OPERAND_handler ZK_STREAMDEF       op[].handler!
 
   op__loop

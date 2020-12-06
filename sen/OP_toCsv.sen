@@ -65,7 +65,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_RSBBUFFER ...                                     RSBBUFFER */
+/* handler for ZK_ROWBUFFER ...                                     RSBBUFFER */
 /*----------------------------------------------------------------------------*/
 : toCsv_RsbBuffer \handler
 
@@ -121,7 +121,7 @@
   op__topology
 
   find: toCsv_CrwBuffer  ZK_CRWBUFFER op[].handler!
-  find: toCsv_RsbBuffer  ZK_RSBBUFFER op[].handler!
+  find: toCsv_RsbBuffer  ZK_ROWBUFFER op[].handler!
   find: toCsv_StreamDef  ZK_STREAMDEF op[].handler!
 
   op__loop

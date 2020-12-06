@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_CsvBuffer.cpp - CsvBuffer step group                                 */
+/* Steps_RowBuffer.cpp - RowBuffer step group                                 */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -9,24 +9,24 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RsbBuffer(void)
 {
-  vAddStep("rsbBuffer.operandDump"_Stz, &Step::vRsbBufferOperandDump);
+  vAddStep("rowBuffer.operandDump"_Stz, &Step::vRowBufferOperandDump);
 }
 
 /*----------------------------------------------------------------------------*/
-/* rsbBuffer.operandDump -- operand dump of rsbBuffer                         */
+/* rowBuffer.operandDump -- operand dump of rowBuffer                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRsbBufferOperandDump(void)
+void Step::vRowBufferOperandDump(void)
 {
   ENTRY();
   
-  RowBuffer* pRsbBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   i8 iDetail = m_pDataStack->iPopInt(__func__);
   
   if (iDetail)
-    pRsbBuffer->vDumpAllRows();
+    pRowBuffer->vDumpAllRows();
   
-  pRsbBuffer->vSlabReport();
+  pRowBuffer->vSlabReport();
   
   EXIT();
 }

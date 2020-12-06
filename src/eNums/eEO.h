@@ -173,7 +173,7 @@ enum eEO : u1 // expression operators
 
   // key
   /*    */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
-  /*    */ EO_KEY_RSB2C_TO_I,   // convert two rsb varchar(1) to int
+  /*    */ EO_KEY_RSB2C_TO_I,   // convert two row varchar(1) to int
 
   // partitioning
   /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
@@ -203,7 +203,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
   /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
   /*    */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref
-  /*    */ EO_CRW_SRC_NEXT,     // move to next src rsb
+  /*    */ EO_CRW_SRC_NEXT,     // move to next src row
   /*    */ EO_CRW_SRC_NULL,     // null crw src
   /*    */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
   
@@ -275,33 +275,33 @@ enum eEO : u1 // expression operators
   // pot operators
   /*    */ EO_POT_COMPLETED,    // do we have a full pot buffer ?
   
-  // rsb / rowslab
-  /*    */ EO_RSB_DST_PRINT,    // print dst rsb
-  /*    */ EO_RSB_DST_RESET,    // reset dst rowslab
-  /*    */ EO_RSB_DST_NEW,      // create new destination rsb
-  /*    */ EO_RSB_DST_SET,      // set dst rowslab
-  /*    */ EO_RSB_DST_TESTROW,  // test if destination rsb
-  /*    */ EO_RSB_DST_ZERO,     // zero destination rsb
-  /*    */ EO_RSB_SRC_BEGIN,    // begin src rsb traverse
-  /*    */ EO_RSB_SRC_NEXT,     // move to next src rsb
-  /*    */ EO_RSB_SRC_NULL,     // null rb src src
-  /*    */ EO_RSB_SRC_PRINT,    // print src rsb
-  /*    */ EO_RSB_SRC_PUSHOFS,  // push offset of source rsb
-  /*    */ EO_RSB_SRC_SETBYOFS, // set src rsb by using offset on stack
-  /*    */ EO_RSB_SRC_TEST,     // test if there is a rsb src buffer
-  /*    */ EO_RSB_ALT_BEGIN,    // begin linear traverse
-  /*    */ EO_RSB_ALT_NEXT,     // move to next rsb
-  /*    */ EO_RSB_ALT_PRINT,    // print alt rsb
-  /*    */ EO_RSB_ALT_PUSHOFS,  // push offset of alt rsb
-  /*    */ EO_RSB_ALT_SETBYOFS, // set alt rsb by using offset on stack
+  // row / rowslab
+  /*    */ EO_ROW_DST_PRINT,    // print dst row
+  /*    */ EO_ROW_DST_RESET,    // reset dst rowslab
+  /*    */ EO_ROW_DST_NEW,      // create new destination row
+  /*    */ EO_ROW_DST_SET,      // set dst rowslab
+  /*    */ EO_ROW_DST_TESTROW,  // test if destination row
+  /*    */ EO_ROW_DST_ZERO,     // zero destination row
+  /*    */ EO_ROW_SRC_BEGIN,    // begin src row traverse
+  /*    */ EO_ROW_SRC_NEXT,     // move to next src row
+  /*    */ EO_ROW_SRC_NULL,     // null rb src src
+  /*    */ EO_ROW_SRC_PRINT,    // print src row
+  /*    */ EO_ROW_SRC_PUSHOFS,  // push offset of source row
+  /*    */ EO_ROW_SRC_SETBYOFS, // set src row by using offset on stack
+  /*    */ EO_ROW_SRC_TEST,     // test if there is a row src buffer
+  /*    */ EO_ROW_ALT_BEGIN,    // begin linear traverse
+  /*    */ EO_ROW_ALT_NEXT,     // move to next row
+  /*    */ EO_ROW_ALT_PRINT,    // print alt row
+  /*    */ EO_ROW_ALT_PUSHOFS,  // push offset of alt row
+  /*    */ EO_ROW_ALT_SETBYOFS, // set alt row by using offset on stack
 
-  // rsb operators
-  /*    */ EO_RSB_DST_POPCOLI,  // pop and deposit top into dst column
-  /*    */ EO_RSB_DST_POPCOLS,  // pop and deposit top into dst column
-  /*    */ EO_RSB_DST_PUSHCOLI, // push dst column
-  /*    */ EO_RSB_SRC_PUSHCOLI, // push src column (integer)
-  /*    */ EO_RSB_SRC_PUSHCOLS, // push src column (string)
-  /*    */ EO_RSB_ALT_PUSHCOLI, // push alt column
+  // row operators
+  /*    */ EO_ROW_DST_POPCOLI,  // pop and deposit top into dst column
+  /*    */ EO_ROW_DST_POPCOLS,  // pop and deposit top into dst column
+  /*    */ EO_ROW_DST_PUSHCOLI, // push dst column
+  /*    */ EO_ROW_SRC_PUSHCOLI, // push src column (integer)
+  /*    */ EO_ROW_SRC_PUSHCOLS, // push src column (string)
+  /*    */ EO_ROW_ALT_PUSHCOLI, // push alt column
 
     // super fragments
   /*    */ EO_SUPER_Q100,       // super fragment Q100
@@ -588,33 +588,33 @@ static Stz* aEO[]
   // pot
   /*    */ "EO_POT_COMPLETED"_Stz,
   
-  // rsb / rowslab
-  /*    */ "EO_RSB_DST_PRINT"_Stz,
-  /*    */ "EO_RSB_DST_RESET"_Stz,
-  /*    */ "EO_RSB_DST_NEW"_Stz,
-  /*    */ "EO_RSB_DST_SET"_Stz,
-  /*    */ "EO_RSB_DST_TESTROW"_Stz,
-  /*    */ "EO_RSB_DST_ZERO"_Stz,
-  /*    */ "EO_RSB_SRC_BEGIN"_Stz,
-  /*    */ "EO_RSB_SRC_NEXT"_Stz,
-  /*    */ "EO_RSB_SRC_NULL"_Stz,
-  /*    */ "EO_RSB_SRC_PRINT"_Stz,
-  /*    */ "EO_RSB_SRC_PUSHOFS"_Stz,
-  /*    */ "EO_RSB_SRC_SETBYOFS"_Stz,
-  /*    */ "EO_RSB_SRC_TEST"_Stz,
-  /*    */ "EO_RSB_ALT_BEGIN"_Stz,
-  /*    */ "EO_RSB_ALT_NEXT"_Stz,
-  /*    */ "EO_RSB_ALT_PRINT"_Stz,
-  /*    */ "EO_RSB_ALT_PUSHOFS"_Stz,
-  /*    */ "EO_RSB_ALT_SETBYOFS"_Stz,
+  // row / rowslab
+  /*    */ "EO_ROW_DST_PRINT"_Stz,
+  /*    */ "EO_ROW_DST_RESET"_Stz,
+  /*    */ "EO_ROW_DST_NEW"_Stz,
+  /*    */ "EO_ROW_DST_SET"_Stz,
+  /*    */ "EO_ROW_DST_TESTROW"_Stz,
+  /*    */ "EO_ROW_DST_ZERO"_Stz,
+  /*    */ "EO_ROW_SRC_BEGIN"_Stz,
+  /*    */ "EO_ROW_SRC_NEXT"_Stz,
+  /*    */ "EO_ROW_SRC_NULL"_Stz,
+  /*    */ "EO_ROW_SRC_PRINT"_Stz,
+  /*    */ "EO_ROW_SRC_PUSHOFS"_Stz,
+  /*    */ "EO_ROW_SRC_SETBYOFS"_Stz,
+  /*    */ "EO_ROW_SRC_TEST"_Stz,
+  /*    */ "EO_ROW_ALT_BEGIN"_Stz,
+  /*    */ "EO_ROW_ALT_NEXT"_Stz,
+  /*    */ "EO_ROW_ALT_PRINT"_Stz,
+  /*    */ "EO_ROW_ALT_PUSHOFS"_Stz,
+  /*    */ "EO_ROW_ALT_SETBYOFS"_Stz,
 
-  // rsb operators
-  /*    */ "EO_RSB_DST_POPCOLI"_Stz,
-  /*    */ "EO_RSB_DST_POPCOLS"_Stz,
-  /*    */ "EO_RSB_DST_PUSHCOLI"_Stz,
-  /*    */ "EO_RSB_SRC_PUSHCOLI"_Stz,
-  /*    */ "EO_RSB_SRC_PUSHCOLS"_Stz,
-  /*    */ "EO_RSB_ALT_PUSHCOLI"_Stz,
+  // row operators
+  /*    */ "EO_ROW_DST_POPCOLI"_Stz,
+  /*    */ "EO_ROW_DST_POPCOLS"_Stz,
+  /*    */ "EO_ROW_DST_PUSHCOLI"_Stz,
+  /*    */ "EO_ROW_SRC_PUSHCOLI"_Stz,
+  /*    */ "EO_ROW_SRC_PUSHCOLS"_Stz,
+  /*    */ "EO_ROW_ALT_PUSHCOLI"_Stz,
 
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
@@ -907,33 +907,33 @@ static EoArg EoArgs[]
   // pot
   { EA_NONE,    0 },  // EO_POT_COMPLETED
   
-  // rsb / rowslab
-  { EA_NONE,    0 },  // EO_RSB_DST_PRINT
-  { EA_NONE,    0 },  // EO_RSB_DST_RESET
-  { EA_NONE,    0 },  // EO_RSB_DST_NEW
-  { EA_NONE,    0 },  // EO_RSB_DST_SET
-  { EA_NONE,    0 },  // EO_RSB_DST_TESTROW
-  { EA_NONE,    0 },  // EO_RSB_DST_ZERO
-  { EA_NONE,    0 },  // EO_RSB_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_RSB_SRC_NEXT
-  { EA_NONE,    0 },  // EO_RSB_SRC_NULL
-  { EA_NONE,    0 },  // EO_RSB_SRC_PRINT
-  { EA_NONE,    0 },  // EO_RSB_SRC_PUSHOFS
-  { EA_NONE,    0 },  // EO_RSB_SRC_SETBYOFS
-  { EA_NONE,    0 },  // EO_RSB_SRC_TEST
-  { EA_NONE,    0 },  // EO_RSB_ALT_BEGIN
-  { EA_NONE,    0 },  // EO_RSB_ALT_NEXT
-  { EA_NONE,    0 },  // EO_RSB_ALT_PRINT
-  { EA_NONE,    0 },  // EO_RSB_ALT_PUSHOFS
-  { EA_NONE,    0 },  // EO_RSB_ALT_SETBYOFS
+  // row / rowslab
+  { EA_NONE,    0 },  // EO_ROW_DST_PRINT
+  { EA_NONE,    0 },  // EO_ROW_DST_RESET
+  { EA_NONE,    0 },  // EO_ROW_DST_NEW
+  { EA_NONE,    0 },  // EO_ROW_DST_SET
+  { EA_NONE,    0 },  // EO_ROW_DST_TESTROW
+  { EA_NONE,    0 },  // EO_ROW_DST_ZERO
+  { EA_NONE,    0 },  // EO_ROW_SRC_BEGIN
+  { EA_NONE,    0 },  // EO_ROW_SRC_NEXT
+  { EA_NONE,    0 },  // EO_ROW_SRC_NULL
+  { EA_NONE,    0 },  // EO_ROW_SRC_PRINT
+  { EA_NONE,    0 },  // EO_ROW_SRC_PUSHOFS
+  { EA_NONE,    0 },  // EO_ROW_SRC_SETBYOFS
+  { EA_NONE,    0 },  // EO_ROW_SRC_TEST
+  { EA_NONE,    0 },  // EO_ROW_ALT_BEGIN
+  { EA_NONE,    0 },  // EO_ROW_ALT_NEXT
+  { EA_NONE,    0 },  // EO_ROW_ALT_PRINT
+  { EA_NONE,    0 },  // EO_ROW_ALT_PUSHOFS
+  { EA_NONE,    0 },  // EO_ROW_ALT_SETBYOFS
 
-  // rsb operators
-  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLI
-  { EA_SUBSCR,  8 },  // EO_RSB_DST_POPCOLS
-  { EA_SUBSCR,  8 },  // EO_RSB_DST_PUSHCOLI
-  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLI
-  { EA_SUBSCR,  8 },  // EO_RSB_SRC_PUSHCOLS
-  { EA_SUBSCR,  8 },  // EO_RSB_ALT_PUSHCOLI
+  // row operators
+  { EA_SUBSCR,  8 },  // EO_ROW_DST_POPCOLI
+  { EA_SUBSCR,  8 },  // EO_ROW_DST_POPCOLS
+  { EA_SUBSCR,  8 },  // EO_ROW_DST_PUSHCOLI
+  { EA_SUBSCR,  8 },  // EO_ROW_SRC_PUSHCOLI
+  { EA_SUBSCR,  8 },  // EO_ROW_SRC_PUSHCOLS
+  { EA_SUBSCR,  8 },  // EO_ROW_ALT_PUSHCOLI
 
   { EA_NONE,    0 },  // super fragment Q100
   { EA_NONE,    0 },  // super fragment

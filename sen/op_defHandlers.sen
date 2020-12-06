@@ -246,11 +246,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_RSBBUFFER ...                                               */
+/* handler for ZK_ROWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: ZK_RSBBUFFER_handler \handler
+: ZK_ROWBUFFER_handler \handler
 
-  //"ZK_RSBBUFFER_handler" .verbose
+  //"ZK_ROWBUFFER_handler" .verbose
   PipeIn[].pipeOut
   true
 ;

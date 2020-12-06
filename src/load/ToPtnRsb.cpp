@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToPtnRsb.cpp -- Convert rsb buffers to partitioned row slab buffers        */
+/* ToPtnRsb.cpp -- Convert row buffers to partitioned row slab buffers        */
 /*============================================================================*/
 
 #include "Load.h"
@@ -110,13 +110,13 @@ void ToPtnRsb::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a destination row in rsb slab in hash set                              */
+/* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
 void ToPtnRsb::vNewDstRow(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
-  // get rsb buffer for given partition (new a first buffer if ncessary)
+  // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRsbBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RowBuffer;
@@ -125,7 +125,7 @@ void ToPtnRsb::vNewDstRow(i8 i_Ptn)
     m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
   }
   
-  // new a row in rsb buffer (new another rsb buffer if necessary)
+  // new a row in row buffer (new another row buffer if necessary)
   Row* aNewRow = pDstRsbBuffer->aAllotNewRow();
   if (! aNewRow) {
     pDstRsbBuffer = new RowBuffer;

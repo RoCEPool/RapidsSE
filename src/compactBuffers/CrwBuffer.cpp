@@ -242,7 +242,7 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append an rsb into this crw buffer                                         */
+/* append an row into this crw buffer                                         */
 /*----------------------------------------------------------------------------*/
 bool CrwBuffer::bAppendRow(Row* aRowSrc)
 {

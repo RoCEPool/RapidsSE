@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToNstRsb.hpp -- Convert rsb to normalised string row slab buffers          */
+/* ToNstRsb.hpp -- Convert row to normalised string row slab buffers          */
 /*============================================================================*/
 #pragma once
 

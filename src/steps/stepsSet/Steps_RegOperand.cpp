@@ -149,7 +149,7 @@ void Step::vRegOperandCrwToCsv(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].crwToRsb -- convert crw buffer operand to rsb buffer             */
+/* Operand[].crwToRsb -- convert crw buffer operand to row buffer             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCrwToRsb(void)
 {
@@ -200,7 +200,7 @@ void Step::vRegOperandCsvData(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].csvToRsb -- convert csv nuffer operand to rsb buffer             */
+/* Operand[].csvToRsb -- convert csv nuffer operand to row buffer             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandCsvToRsb(void)
 {
@@ -818,7 +818,7 @@ void Step::vRegOperandUpsertIntoTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].rsbToCsv -- convert rsbBuffer operand to csvBuffer               */
+/* Operand[].rsbToCsv -- convert rowBuffer operand to csvBuffer               */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOperandRsbToCsv(void)
 {

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DevROW.hpp -- RSB Device                                                   */
+/* DevROW.hpp -- ROW Device                                                   */
 /*============================================================================*/
 
 #include "Expressions.h"
@@ -8,18 +8,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,DevROW,CN_DEVRSB)
-__aNewFunction(DevROW,CN_DEVRSB)
-__vDeleteFunction(DevROW,CN_DEVRSB)
+__pCastFunction(Expressions,DevROW,CN_DEVROW)
+__aNewFunction(DevROW,CN_DEVROW)
+__vDeleteFunction(DevROW,CN_DEVROW)
 __aFooterFunction(DevROW)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DevROW::DevROW(void)
-: Device(CN_DEVRSB)
+: Device(CN_DEVROW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DEVROW,_FOOTER_);
   
   m_sTableNm   = ""_Stz;
   m_i_Row      = C_UNKNOWN;
@@ -29,9 +29,9 @@ DevROW::DevROW(void)
   m_pStreamDef = nullptr;
 
   
-  _checkInitialised_(CN_DEVRSB);
+  _checkInitialised_(CN_DEVROW);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DEVROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ DevROW::DevROW(void)
 /*----------------------------------------------------------------------------*/
 DevROW::~DevROW(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DEVRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DEVROW,_FOOTER_);
 
 }
 

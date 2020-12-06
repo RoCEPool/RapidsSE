@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToPtnRsb.hpp -- Convert rsb buffers to partitioned row slab buffers        */
+/* ToPtnRsb.hpp -- Convert row buffers to partitioned row slab buffers        */
 /*============================================================================*/
 #pragma once
 

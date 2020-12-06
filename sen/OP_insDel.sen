@@ -22,7 +22,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_RSBBUFFER ...                                               */
+/* handler for ZK_ROWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : insDel_RsbBuffer \handler
 
@@ -75,7 +75,7 @@
   op__topology
 
   find: insDel_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: insDel_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: insDel_RsbBuffer   ZK_ROWBUFFER   op[].handler!
   find: insDel_StartMarker ZK_STARTMARKER op[].handler!
   find: insDel_StreamDef   ZK_STREAMDEF   op[].handler!
 

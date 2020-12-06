@@ -260,7 +260,7 @@ ColPix* RowBox_t<SIZE>::axaColPix(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* copy given stream pix into the stream pix in this rsb                      */
+/* copy given stream pix into the stream pix in this row                      */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 void RowBox_t<SIZE>::vCopyPix(StreamPix* pStreamPixSrc)
@@ -319,7 +319,7 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
 }
 
 /*----------------------------------------------------------------------------*/
-/* return column value from rsb for given column number                       */
+/* return column value from row for given column number                       */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
@@ -453,7 +453,7 @@ bool RowBox_t<SIZE>::bIsColNull(i8 i_Col)
 
 
 /*----------------------------------------------------------------------------*/
-/* get address of an rsb                                                      */
+/* get address of an row                                                      */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 Row* RowBox_t<SIZE>::pRowAddress(i8 i_Row)
@@ -814,7 +814,7 @@ L_Exit:
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the offset of rsb                                                      */
+/* get the offset of row                                                      */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::iOffsetInWsp(Row* aRow)
@@ -826,7 +826,7 @@ i8 RowBox_t<SIZE>::iOffsetInWsp(Row* aRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position on given cell in current rsb                                      */
+/* position on given cell in current row                                      */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 void RowBox_t<SIZE>::vPositionOnCell(i8 i_Col)
@@ -846,7 +846,7 @@ bool RowBox_t<SIZE>::bPtnHash(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the partition of rsb                                                   */
+/* get the partition of row                                                   */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::iPtnOfRow(Row* aRow)
@@ -885,7 +885,7 @@ i8 RowBox_t<SIZE>::nRowProperBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of an rsb by its offset                                        */
+/* get address of an row by its offset                                        */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 Row* RowBox_t<SIZE>::aRowByOfs(i8 i_Ofs)
@@ -897,7 +897,7 @@ Row* RowBox_t<SIZE>::aRowByOfs(i8 i_Ofs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of an rsb by its offset                                        */
+/* get address of an row by its offset                                        */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 void RowBox_t<SIZE>::vSetRow(i8 i_Row)
@@ -944,7 +944,7 @@ StreamPix* RowBox_t<SIZE>::aStreamPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mem zero the given rsb                                                     */
+/* mem zero the given row                                                     */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
 void RowBox_t<SIZE>::vZeroRow(Row *aRow)

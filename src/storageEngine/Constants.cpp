@@ -770,7 +770,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
   /*  0 */ vAddConstant("ZK_RETURNPIPELINE"_Stz,  ZK_RETURNPIPELINE);
-  /*  0 */ vAddConstant("ZK_RSBBUFFER"_Stz,       ZK_RSBBUFFER);
+  /*  0 */ vAddConstant("ZK_ROWBUFFER"_Stz,       ZK_ROWBUFFER);
   /*  0 */ vAddConstant("ZK_SEEKOFFSETS"_Stz,     ZK_SEEKOFFSETS);
   /*  0 */ vAddConstant("ZK_SRTBUFFER"_Stz,       ZK_SRTBUFFER);
   /*  0 */ vAddConstant("ZK_STARTMARKER"_Stz,     ZK_STARTMARKER);

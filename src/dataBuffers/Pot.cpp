@@ -108,7 +108,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create new destination rsb (possible new row slab)                         */
+/* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
 Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 {
@@ -121,7 +121,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   
   *pbNewBuffer = false;
   
-  // get rsb buffer for given partition (new a first buffer if ncessary)
+  // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRsbBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRsbBuffer) {
     pDstRsbBuffer = new RowBuffer;
@@ -133,7 +133,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     pDstRowBuffer = pDstRsbBuffer;
   }
   
-  // new a row in rsb buffer (new another rsb buffer if necessary)
+  // new a row in row buffer (new another row buffer if necessary)
   aDstRow = pDstRowBuffer->aAllotNewRow();
   if (! aDstRow) {
     *pbNewBuffer = true;

@@ -77,11 +77,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_RSBBUFFER ...                                               */
+/* handler for ZK_ROWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : output_RsbBuffer \handler
 
-  //"Operand:- ZK_RSBBUFFER" .verbose
+  //"Operand:- ZK_ROWBUFFER" .verbose
   PipeIn[].pipeToJob
 
   true
@@ -148,7 +148,7 @@ true
   find: output_EosMarker   ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
   find: output_DataMarker ZK_DATAPULSE op[].handler!
-  find: output_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: output_RsbBuffer   ZK_ROWBUFFER   op[].handler!
   find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: output_StartMarker ZK_STARTMARKER op[].handler!
   find: output_StreamDef   ZK_STREAMDEF   op[].handler!

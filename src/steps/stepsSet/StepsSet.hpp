@@ -1335,8 +1335,8 @@ public:
   void vRowOnceIsNull(void);
   void vRowOnceNew(void);
 
-  // rsb buffer
-  void vRsbBufferOperandDump(void);
+  // row buffer
+  void vRowBufferOperandDump(void);
 
   // rstack
   void vRstackCsPick(void);

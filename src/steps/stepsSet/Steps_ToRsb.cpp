@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToRsb.cpp - csv to rsb convertor                                     */
+/* Steps_ToRsb.cpp - csv to row convertor                                     */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -17,7 +17,7 @@ void Step::vAddSteps_ToRsb(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].fullRsbBuffer -- full rsb buffer                                   */
+/* toRsb[].fullRsbBuffer -- full row buffer                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegCompleted(void)
 {
@@ -83,7 +83,7 @@ void Step::vToRsbRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].danglingRsbBuffer -- fetch rsb buffer                              */
+/* toRsb[].danglingRsbBuffer -- fetch row buffer                              */
 /*----------------------------------------------------------------------------*/
 void Step::vToRsbRegDangling(void)
 {

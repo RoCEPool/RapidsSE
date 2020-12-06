@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_toPtnRsb.sen -- Convert rsb buffers to partitioned row slab buffers     */
+/* OP_toPtnRsb.sen -- Convert row buffers to partitioned row slab buffers     */
 /*============================================================================*/
 
 " OP_toPtnRsb.sen" .verbose
@@ -23,7 +23,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_RSBBUFFER ...                                                   EACH */
+/* on ZK_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toPtnRsb_RsbBuffer \handler
 
@@ -98,7 +98,7 @@
 
   find: toPtnRsb_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toPtnRsb_DataMarker ZK_DATAPULSE op[].handler!
-  find: toPtnRsb_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: toPtnRsb_RsbBuffer   ZK_ROWBUFFER   op[].handler!
   find: toPtnRsb_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

@@ -209,16 +209,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_RSBBUFFER ...                                                   EACH */
+/* on ZK_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : EOAsm2_RsbBuffer \handler
 
-  0 ZK_RSBBUFFER EG_ZK LogicUnit[].diaryNote
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   //Pipein[] "GOT RSBBUFFER %v" .printf
   Operand[].pipeIn
   Operand[].asSrcRowBuffer
-  ZK_RSBBUFFER Counter0[] executeAsmArgs
+  ZK_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   Pot[].pipeoutAllCompletedPtns
 
@@ -302,7 +302,7 @@
   find: EOAsm2_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: EOAsm2_EosMarker   ZK_EOSMARKER   op[].handler!
   find: EOAsm2_DataMarker  ZK_DATAPULSE op[].handler!
-  find: EOAsm2_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: EOAsm2_RsbBuffer   ZK_ROWBUFFER   op[].handler!
   find: EOAsm2_StartMarker ZK_STARTMARKER op[].handler!
   find: EOAsm2_StreamDef   ZK_STREAMDEF   op[].handler!
 

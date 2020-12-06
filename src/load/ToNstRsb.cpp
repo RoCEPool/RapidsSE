@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToNstRsb.cpp -- Convert rsb to normalised string row slab buffers          */
+/* ToNstRsb.cpp -- Convert row to normalised string row slab buffers          */
 /*============================================================================*/
 
 #include "Load.h"

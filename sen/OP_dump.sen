@@ -33,17 +33,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_RSBBUFFER ...                                                        */
+/* on ZK_ROWBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : dump_RsbBuffer \handler
 
   <operand> "rsbBuffer" str.same if
-    "OPERAND DUMP: rsbBuffer" .
+    "OPERAND DUMP: rowBuffer" .
 
-    <detail> >int PipeIn[] rsbBuffer.operandDump
+    <detail> >int PipeIn[] rowBuffer.operandDump
   then
 
-  ZK_RSBBUFFER_handler
+  ZK_ROWBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@
 
   find: dump_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: dump_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: dump_RsbBuffer   ZK_RSBBUFFER   op[].handler!
+  find: dump_RsbBuffer   ZK_ROWBUFFER   op[].handler!
   find: dump_SeekOffsets ZK_SEEKOFFSETS op[].handler!
 
   op__loop
