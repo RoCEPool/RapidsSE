@@ -806,11 +806,11 @@ Stz* szDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELM(void* aLU, void* aRSB, i8 iArg)
+void vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -822,11 +822,11 @@ void vDev_ENTWRK_APPENDELM(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMI(void* aLU, void* aRSB, i8 iTop)
+void vDev_ENTWRK_APPENDELMI(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -836,11 +836,11 @@ void vDev_ENTWRK_APPENDELMI(void* aLU, void* aRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMS(void* aLU, void* aRSB, Stz* szTop)
+void vDev_ENTWRK_APPENDELMS(void* aLU, void* aROWDEVICE, Stz* szTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -850,11 +850,11 @@ void vDev_ENTWRK_APPENDELMS(void* aLU, void* aRSB, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* create payload                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_CREATEPAY(void* aLU, void* aRSB, i8 iArg)
+void vDev_ENTWRK_CREATEPAY(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -865,11 +865,11 @@ void vDev_ENTWRK_CREATEPAY(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* pop offset                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_POPOFS(void* aLU, void* aRSB, i8 iTop)
+void vDev_ENTWRK_POPOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -879,11 +879,11 @@ void vDev_ENTWRK_POPOFS(void* aLU, void* aRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_PRINT(void* aLU, void* aRSB)
+void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -898,11 +898,11 @@ void vDev_ENTWRK_PRINT(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_RESET(void* aLU, void* aRSB)
+void vDev_ENTWRK_RESET(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -912,11 +912,11 @@ void vDev_ENTWRK_RESET(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* set int only element                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_SETINTELM(void* aLU, void* aRSB, i8 iTop)
+void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
   
-  //DevRSB* pDevRsb = _pDevRSB(aRSB);
+  //DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -932,11 +932,11 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* begin src rsb traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_BEGIN(void* aLU, void* aRSB)
+void vDev_RSB_BEGIN(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_i_Row = -1;
   pDevRsb->m_aRow  = nullptr;
@@ -946,11 +946,11 @@ void vDev_RSB_BEGIN(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* create new rsb                                                             */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_NEW(void* aLU, void* aRSB)
+i8 iDev_RSB_NEW(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   bool bNewBuffer;
@@ -965,11 +965,11 @@ i8 iDev_RSB_NEW(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* move to next src rsb                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
+i8 iDev_RSB_NEXT(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   i8 iRes;
   
@@ -987,22 +987,22 @@ i8 iDev_RSB_NEXT(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /*  set rsb to null                                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_NULL(void* aLU, void* aRSB)
+void vDev_RSB_NULL(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   pDevRsb->m_pRowBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop)
+void vDev_RSB_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_pRowBuffer->vPositionOnCell(iArg);
   pDevRsb->m_pRowBuffer->vDeposit(iTop);
@@ -1011,11 +1011,11 @@ void vDev_RSB_POPCOLI(void* aLU, void* aRSB, i8 iArg, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_POPCOLS(void* aLU, void* aRSB, i8 iArg, Stz* szTop)
+void vDev_RSB_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_pRowBuffer->vPositionOnCell(iArg);
   
@@ -1030,11 +1030,11 @@ void vDev_RSB_POPCOLS(void* aLU, void* aRSB, i8 iArg, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* print src rsb                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_PRINT(void* aLU, void* aRSB)
+void vDev_RSB_PRINT(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_pRowBuffer->vDumpRow(-1,pDevRsb->m_aRow);
 }
@@ -1042,11 +1042,11 @@ void vDev_RSB_PRINT(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg)
+i8 iDev_RSB_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
     
   i8 iRes = pDevRsb->m_aRow->iColVal_int(iArg);
 
@@ -1056,11 +1056,11 @@ i8 iDev_RSB_PUSHCOLI(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg)
+Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   Stz* szSrc = pDevRsb->m_aRow->szVal_rsb(iArg);
 
@@ -1070,11 +1070,11 @@ Stz* szDev_RSB_PUSHCOLS(void* aLU, void* aRSB, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
+i8 iDev_RSB_PUSHOFS(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   i8 iRes = pDevRsb->m_pRowBuffer->iOffsetInWsp(pDevRsb->m_aRow);
 
@@ -1084,11 +1084,11 @@ i8 iDev_RSB_PUSHOFS(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* reset rsb                                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_RESET(void* aLU, void* aRSB)
+void vDev_RSB_RESET(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_pRowBuffer->vReset();
 }
@@ -1096,11 +1096,11 @@ void vDev_RSB_RESET(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* set rsb row                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_SET(void* aLU, void* aRSB, i8 iRow)
+void vDev_RSB_SET(void* aLU, void* aROWDEVICE, i8 iRow)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_pRowBuffer->vSetRow(iRow);
   pDevRsb->m_aRow = pDevRsb->m_pRowBuffer->pRowAddress(iRow);
@@ -1109,11 +1109,11 @@ void vDev_RSB_SET(void* aLU, void* aRSB, i8 iRow)
 /*----------------------------------------------------------------------------*/
 /* set src rsb by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
+void vDev_RSB_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_aRow = pDevRsb->m_pRowBuffer->aRowByOfs(iTop);
 }
@@ -1121,22 +1121,22 @@ void vDev_RSB_SETBYOFS(void* aLU, void* aRSB, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* set the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_TABLENM_SET(void* aLU, void* aRSB, Stz* szTableNm)
+void vDev_RSB_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   pDevRsb->m_sTableNm = szTableNm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_TESTROW(void* aLU, void* aRSB)
+i8 iDev_RSB_TESTROW(void* aLU, void* aROWDEVICE)
 {
   _static_
     
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
 
   i8 iRes;
 
@@ -1151,11 +1151,11 @@ i8 iDev_RSB_TESTROW(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* push offset of source rsb                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_RSB_TEST(void* aLU, void* aRSB)
+i8 iDev_RSB_TEST(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   i8 iRes;
   
@@ -1170,11 +1170,11 @@ i8 iDev_RSB_TEST(void* aLU, void* aRSB)
 /*----------------------------------------------------------------------------*/
 /* zero rsb                                                                   */
 /*----------------------------------------------------------------------------*/
-void vDev_RSB_ZERO(void* aLU, void* aRSB)
+void vDev_RSB_ZERO(void* aLU, void* aROWDEVICE)
 {
   _static_
   
-  DevRSB* pDevRsb = _pDevRSB(aRSB);
+  DevRSB* pDevRsb = _pDevRSB(aROWDEVICE);
   
   pDevRsb->m_pRowBuffer->vZeroRow(pDevRsb->m_aRow);
 }
