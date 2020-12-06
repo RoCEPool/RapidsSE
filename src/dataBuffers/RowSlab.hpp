@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace DataBuffers
 {
   class RowSlab : public Object,
                   public RowBox_t<C_WSP_ROWBUFFER>
