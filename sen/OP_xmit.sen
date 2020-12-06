@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ROWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: xmit_RsbBuffer \handler
+: xmit_RowBuffer \handler
 
   //"ZK_ROWBUFFER_handler" .verbose
   //Pipein[] profile.start
@@ -66,7 +66,7 @@
 
   find: xmit_DestroyMarker ZK_DESTROYMARKER op[].handler!
   find: xmit_EosMarker     ZK_EOSMARKER     op[].handler!
-  find: xmit_RsbBuffer     ZK_ROWBUFFER     op[].handler!
+  find: xmit_RowBuffer     ZK_ROWBUFFER     op[].handler!
   find: xmit_StartMarker   ZK_STARTMARKER   op[].handler!
 
   op__loop

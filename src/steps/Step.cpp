@@ -157,7 +157,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegXmits();
   Step::vAddSteps_Row();
   Step::vAddSteps_RowOnce();
-  Step::vAddSteps_RsbBuffer();
+  Step::vAddSteps_RowBuffer();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_SeekOffsets();
@@ -188,7 +188,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_To();
   Step::vAddSteps_ToHshCrw();
   Step::vAddSteps_ToNstRsb();
-  Step::vAddSteps_ToPtnRsb();
+  Step::vAddSteps_ToPtnRow();
   Step::vAddSteps_ToRsb();
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();

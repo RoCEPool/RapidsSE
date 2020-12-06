@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ROWBUFFER ...                                     RSBBUFFER */
 /*----------------------------------------------------------------------------*/
-: toCsv_RsbBuffer \handler
+: toCsv_RowBuffer \handler
 
   // check for low memory
   attachMap::isLowMemory if
@@ -121,7 +121,7 @@
   op__topology
 
   find: toCsv_CrwBuffer  ZK_CRWBUFFER op[].handler!
-  find: toCsv_RsbBuffer  ZK_ROWBUFFER op[].handler!
+  find: toCsv_RowBuffer  ZK_ROWBUFFER op[].handler!
   find: toCsv_StreamDef  ZK_STREAMDEF op[].handler!
 
   op__loop

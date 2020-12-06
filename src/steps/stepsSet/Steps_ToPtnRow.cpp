@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToPtnRsb.cpp - Convert row buffers to partitioned row slab buffers   */
+/* Steps_ToPtnRow.cpp - Convert row buffers to partitioned row slab buffers   */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,27 +7,27 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ToPtnRsb(void)
+void Step::vAddSteps_ToPtnRow(void)
 {
-  vAddStep("toPtnRsb[].completed"_Stz, &Step::vToPtnRsbRegCompleted);
-  vAddStep("toPtnRsb[].convert"_Stz,   &Step::vToPtnRsbRegConvert);
-  vAddStep("toPtnRsb[].create"_Stz,    &Step::vToPtnRsbRegCreate);
-  vAddStep("toPtnRsb[].dangling"_Stz,  &Step::vToPtnRsbRegDangling);
-  vAddStep("toPtnRsb[].delete"_Stz,    &Step::vToPtnRsbRegDelete);
+  vAddStep("toPtnRow[].completed"_Stz, &Step::vToPtnRowRegCompleted);
+  vAddStep("toPtnRow[].convert"_Stz,   &Step::vToPtnRowRegConvert);
+  vAddStep("toPtnRow[].create"_Stz,    &Step::vToPtnRowRegCreate);
+  vAddStep("toPtnRow[].dangling"_Stz,  &Step::vToPtnRowRegDangling);
+  vAddStep("toPtnRow[].delete"_Stz,    &Step::vToPtnRowRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].completed -- get any completed/full buffer                         */
+/* toPtnRow[].completed -- get any completed/full buffer                      */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtnRsbRegCompleted(void)
+void Step::vToPtnRowRegCompleted(void)
 {
   ENTRY();
   
-  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
+  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRsbBuffer = pToPtnRsb->pCompleted(i_Ptn);
+  RowBuffer* pRsbBuffer = pToPtnRow->pCompleted(i_Ptn);
 
   m_pDataStack->vPushPtr(pRsbBuffer);
 
@@ -35,17 +35,17 @@ void Step::vToPtnRsbRegCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toPtnRsb[].convert -- convert row buffer                                   */
+/* toPtnRow[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtnRsbRegConvert(void)
+void Step::vToPtnRowRegConvert(void)
 {
   ENTRY();
 
-  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
+  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
     
   RowBuffer* pRsbBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToPtnRsb->vConvert(pRsbBuffer);
+  pToPtnRow->vConvert(pRsbBuffer);
   
   delete pRsbBuffer;
   
@@ -53,31 +53,31 @@ void Step::vToPtnRsbRegConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toPtnRsb[].create -- create toPtnRsb                                       */
+/* toPtnRow[].create -- create toPtnRow                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtnRsbRegCreate(void)
+void Step::vToPtnRowRegCreate(void)
 {
   ENTRY();
     
-  ToPtnRsb* pToPtnRsb = new ToPtnRsb;
+  ToPtnRow* pToPtnRow = new ToPtnRow;
       
-  m_pLogicUnit->m_xpToPtnRsb = pToPtnRsb;
+  m_pLogicUnit->m_xpToPtnRow = pToPtnRow;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRsb[].danglingRsbBuffer -- get any dangling/last buffer                  */
+/* toPtnRow[].danglingRsbBuffer -- get any dangling/last buffer               */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtnRsbRegDangling(void)
+void Step::vToPtnRowRegDangling(void)
 {
   ENTRY();
   
-  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
+  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRsbBuffer = pToPtnRsb->pDangling(i_Ptn);
+  RowBuffer* pRsbBuffer = pToPtnRow->pDangling(i_Ptn);
   
   m_pDataStack->vPushPtr(pRsbBuffer);
 
@@ -85,16 +85,16 @@ void Step::vToPtnRsbRegDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toPtnRsb[].delete -- delete toPtnRsb                                       */
+/* toPtnRow[].delete -- delete toPtnRow                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtnRsbRegDelete(void)
+void Step::vToPtnRowRegDelete(void)
 {
   ENTRY();
   
-  ToPtnRsb* pToPtnRsb = *m_pLogicUnit->m_xpToPtnRsb;
-  m_pLogicUnit->m_xpToPtnRsb = nullptr;
+  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
+  m_pLogicUnit->m_xpToPtnRow = nullptr;
   
-  delete pToPtnRsb;
+  delete pToPtnRow;
   
   EXIT();
 }

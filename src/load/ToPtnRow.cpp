@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToPtnRsb.cpp -- Convert row buffers to partitioned row slab buffers        */
+/* ToPtnRow.cpp -- Convert row buffers to partitioned row slab buffers        */
 /*============================================================================*/
 
 #include "Load.h"
@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToPtnRsb,CN_TOPTNRSB)
-__aNewFunction(ToPtnRsb,CN_TOPTNRSB)
-__vDeleteFunction(ToPtnRsb,CN_TOPTNRSB)
-__aFooterFunction(ToPtnRsb)
+__pCastFunction(Load,ToPtnRow,CN_TOPTNRSB)
+__aNewFunction(ToPtnRow,CN_TOPTNRSB)
+__vDeleteFunction(ToPtnRow,CN_TOPTNRSB)
+__aFooterFunction(ToPtnRow)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToPtnRsb::ToPtnRsb(void)
+ToPtnRow::ToPtnRow(void)
 : Object(CN_TOPTNRSB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
@@ -33,7 +33,7 @@ ToPtnRsb::ToPtnRsb(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ToPtnRsb::~ToPtnRsb(void) noexcept(false)
+ToPtnRow::~ToPtnRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
 }
@@ -45,7 +45,7 @@ ToPtnRsb::~ToPtnRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vConvert(RowBuffer* pRsbBuffer)
+void ToPtnRow::vConvert(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
@@ -69,7 +69,7 @@ void ToPtnRsb::vConvert(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToPtnRsb::pCompleted(i8 i_Ptn)
+RowBuffer* ToPtnRow::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
@@ -81,7 +81,7 @@ RowBuffer* ToPtnRsb::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get any dangling/last buffer                                               */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
+RowBuffer* ToPtnRow::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
   
@@ -96,7 +96,7 @@ RowBuffer* ToPtnRsb::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vCopyRow(i8 i_Ptn, Row* aRowSrc)
+void ToPtnRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     
@@ -112,7 +112,7 @@ void ToPtnRsb::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 /* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToPtnRsb::vNewDstRow(i8 i_Ptn)
+void ToPtnRow::vNewDstRow(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
     

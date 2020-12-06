@@ -24,12 +24,12 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_ROWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
-: insDel_RsbBuffer \handler
+: insDel_RowBuffer \handler
 
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  "insDel_RsbBuffer" .
+  "insDel_RowBuffer" .
 
   tablePtn[] tablePtnGrabWrite
   Operand[].insdelIntoTable
@@ -75,7 +75,7 @@
   op__topology
 
   find: insDel_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: insDel_RsbBuffer   ZK_ROWBUFFER   op[].handler!
+  find: insDel_RowBuffer   ZK_ROWBUFFER   op[].handler!
   find: insDel_StartMarker ZK_STARTMARKER op[].handler!
   find: insDel_StreamDef   ZK_STREAMDEF   op[].handler!
 

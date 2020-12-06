@@ -78,7 +78,7 @@ namespace Expressions
     REG<TablePtn>    m_xpTablePtn;
     REG<ToHshCrw>    m_xpToHshCrw;
     REG<ToNstRsb>    m_xpToNstRsb;
-    REG<ToPtnRsb>    m_xpToPtnRsb;
+    REG<ToPtnRow>    m_xpToPtnRow;
     REG<ToRsb>       m_xpToRsb;
     REG<Tx>          m_xpTx;
     REG<Xmits>       m_xpXmits;     // consume xmits

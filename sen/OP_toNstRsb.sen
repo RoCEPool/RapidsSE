@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: toNstRsb_RsbBuffer \handler
+: toNstRsb_RowBuffer \handler
 
   PipeIn[] ToNstRsb[].convert to OperandB[]
   nullptr to PipeIn[]
@@ -60,7 +60,7 @@
 
   find: toNstRsb_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toNstRsb_DataMarker ZK_DATAPULSE op[].handler!
-  find: toNstRsb_RsbBuffer   ZK_ROWBUFFER   op[].handler!
+  find: toNstRsb_RowBuffer   ZK_ROWBUFFER   op[].handler!
   find: toNstRsb_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop

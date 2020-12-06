@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: toHshCrw_RsbBuffer \handler
+: toHshCrw_RowBuffer \handler
 
   PipeIn[] ToHshCrw[].convert
   nullptr to PipeIn[]
@@ -106,7 +106,7 @@
 
   find: toHshCrw_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toHshCrw_DataMarker ZK_DATAPULSE op[].handler!
-  find: toHshCrw_RsbBuffer   ZK_ROWBUFFER   op[].handler!
+  find: toHshCrw_RowBuffer   ZK_ROWBUFFER   op[].handler!
   find: toHshCrw_StartMarker ZK_STARTMARKER op[].handler!
   find: toHshCrw_StreamDef   ZK_STREAMDEF   op[].handler!
 

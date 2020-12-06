@@ -204,7 +204,7 @@ assert::stack_0
         "OP_toDfload.sen"             include
         "OP_toHshCrw.sen"             include
         "OP_toNstRsb.sen"             include
-        "OP_toPtnRsb.sen"             include
+        "OP_toPtnRow.sen"             include
         "OP_toRsb.sen"                include
         "OP_toStatDemon.sen"          include
         "OP_totalCount.sen"           include

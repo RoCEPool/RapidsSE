@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RsbBuffer(void)
+void Step::vAddSteps_RowBuffer(void)
 {
   vAddStep("rowBuffer.operandDump"_Stz, &Step::vRowBufferOperandDump);
 }

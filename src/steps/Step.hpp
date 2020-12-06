@@ -136,7 +136,7 @@ namespace Steps
     static void vAddSteps_RegXmits(void);
     static void vAddSteps_Row(void);
     static void vAddSteps_RowOnce(void);
-    static void vAddSteps_RsbBuffer(void);
+    static void vAddSteps_RowBuffer(void);
     static void vAddSteps_Rstack(void);
 
     static void vAddSteps_SeekOffsets(void);
@@ -168,7 +168,7 @@ namespace Steps
     static void vAddSteps_To(void);
     static void vAddSteps_ToHshCrw(void);
     static void vAddSteps_ToNstRsb(void);
-    static void vAddSteps_ToPtnRsb(void);
+    static void vAddSteps_ToPtnRow(void);
     static void vAddSteps_ToRsb(void);
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_Trace(void);

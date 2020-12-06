@@ -1742,12 +1742,12 @@ public:
   void vToNstRsbRegCreate(void);
   void vToNstRsbRegDelete(void);
 
-  // toPtnRsb
-  void vToPtnRsbRegCompleted(void);
-  void vToPtnRsbRegConvert(void);
-  void vToPtnRsbRegCreate(void);
-  void vToPtnRsbRegDangling(void);
-  void vToPtnRsbRegDelete(void);
+  // toPtnRow
+  void vToPtnRowRegCompleted(void);
+  void vToPtnRowRegConvert(void);
+  void vToPtnRowRegCreate(void);
+  void vToPtnRowRegDangling(void);
+  void vToPtnRowRegDelete(void);
 
   // toRsb
   void vToRsbRegCompleted(void);

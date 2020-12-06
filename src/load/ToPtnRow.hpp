@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ToPtnRsb.hpp -- Convert row buffers to partitioned row slab buffers        */
+/* ToPtnRow.hpp -- Convert row buffers to partitioned row slab buffers        */
 /*============================================================================*/
 #pragma once
 
 namespace Load
 {
-  class ToPtnRsb : public Object
+  class ToPtnRow : public Object
   {
   private:
   
@@ -22,8 +22,8 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToPtnRsb(void);
-   ~ToPtnRsb(void) noexcept(false);
+    ToPtnRow(void);
+   ~ToPtnRow(void) noexcept(false);
   
     void vConvert(RowBuffer* pRsbBuffer);
   
@@ -37,7 +37,7 @@ namespace Load
     Footer* aFooter(void);
   };
 
-  ToPtnRsb* _pToPtnRsb(void* aAddr);
+  ToPtnRow* _pToPtnRow(void* aAddr);
 }
 
 /*============================================================================*/

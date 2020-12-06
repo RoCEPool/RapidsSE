@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* OP_toPtnRsb.sen -- Convert row buffers to partitioned row slab buffers     */
+/* OP_toPtnRow.sen -- Convert row buffers to partitioned row slab buffers     */
 /*============================================================================*/
 
-" OP_toPtnRsb.sen" .verbose
+" OP_toPtnRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: toPtnRsb_StartMarker \handler
+: toPtnRow_StartMarker \handler
 
-  ToPtnRsb[].create
+  ToPtnRow[].create
 
   ZK_STARTMARKER_handler
 ;
@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: toPtnRsb_DataMarker \handler
+: toPtnRow_DataMarker \handler
 
   ZK_DATAPULSE_handler
 ;
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_ROWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
-: toPtnRsb_RsbBuffer \handler
+: toPtnRow_RowBuffer \handler
 
   // check for low memory
   attachMap::isLowMemory if
@@ -38,19 +38,19 @@
     exit
   then
 
-  PipeIn[] ToPtnRsb[].convert
+  PipeIn[] ToPtnRow[].convert
   nullptr to Pipein[]
 
   grid::partitions 0
   do
 
-    I ToPtnRsb[].completed to OperandB[]
+    I ToPtnRow[].completed to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].pipeOut
-      I ToPtnRsb[].completed to OperandB[]
+      I ToPtnRow[].completed to OperandB[]
     repeat
 
   loop
@@ -61,23 +61,23 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
-: toPtnRsb_EosMarker \handler
+: toPtnRow_EosMarker \handler
 
   grid::partitions 0
   do
 
-    I ToPtnRsb[].dangling to OperandB[]
+    I ToPtnRow[].dangling to OperandB[]
 
     begin
       OperandB[].isNull not
     while
       OperandB[].pipeOut
-      I ToPtnRsb[].dangling to OperandB[]
+      I ToPtnRow[].dangling to OperandB[]
     repeat
 
   loop
 
-  ToPtnRsb[].delete
+  ToPtnRow[].delete
 
   PipeIn[].pipeOut
 
@@ -90,16 +90,16 @@
 /*----------------------------------------------------------------------------*/
 /* toRsb request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toPtnRsb_req \operator
+: toPtnRow_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: toPtnRsb_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: toPtnRsb_DataMarker ZK_DATAPULSE op[].handler!
-  find: toPtnRsb_RsbBuffer   ZK_ROWBUFFER   op[].handler!
-  find: toPtnRsb_StartMarker ZK_STARTMARKER op[].handler!
+  find: toPtnRow_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: toPtnRow_DataMarker ZK_DATAPULSE op[].handler!
+  find: toPtnRow_RowBuffer   ZK_ROWBUFFER   op[].handler!
+  find: toPtnRow_StartMarker ZK_STARTMARKER op[].handler!
 
   op__loop
 
@@ -111,9 +111,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toPtnRsb :: toPtnRsb ;
+cmdSyntax: toPtnRow :: toPtnRow ;
 
-: toPtnRsb _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toPtnRow _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */
