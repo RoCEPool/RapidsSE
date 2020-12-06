@@ -67,7 +67,7 @@ void Step::vToPtnRowRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toPtnRow[].danglingRsbBuffer -- get any dangling/last buffer               */
+/* toPtnRow[].dangling -- get any dangling/last buffer                        */
 /*----------------------------------------------------------------------------*/
 void Step::vToPtnRowRegDangling(void)
 {

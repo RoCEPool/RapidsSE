@@ -8,20 +8,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToNstRow,CN_TONSTRSB)
-__aNewFunction(ToNstRow,CN_TONSTRSB)
-__vDeleteFunction(ToNstRow,CN_TONSTRSB)
+__pCastFunction(Load,ToNstRow,CN_TONSTROW)
+__aNewFunction(ToNstRow,CN_TONSTROW)
+__vDeleteFunction(ToNstRow,CN_TONSTROW)
 __aFooterFunction(ToNstRow)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ToNstRow::ToNstRow(void)
-: Object(CN_TONSTRSB)
+: Object(CN_TONSTROW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -29,7 +29,7 @@ ToNstRow::ToNstRow(void)
 /*----------------------------------------------------------------------------*/
 ToNstRow::~ToNstRow(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ ToNstRow::~ToNstRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ToNstRow::vConvert(RowBuffer* pRsbBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
   
   pRsbBuffer->vNormaliseStrings();
 }
@@ -55,7 +55,7 @@ void ToNstRow::vConvert(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 void ToNstRow::vAnalyzeStrings(RowBuffer* pRsbBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ void ToNstRow::vAnalyzeStrings(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 void ToNstRow::vCreateNmlStr(Stz* szStz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
 }
 
 

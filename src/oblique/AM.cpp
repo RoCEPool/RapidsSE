@@ -240,8 +240,8 @@ void AM::vDeleteOperand(Operand* pOperand)
     }
       
     case CN_ROWBUFFER: {
-      RowBuffer* pRsbBuffer = _pRowBuffer(pOperand);
-      delete pRsbBuffer;
+      RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+      delete pRowBuffer;
       break;
     }
       

@@ -327,8 +327,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToHshCrw),           HT_TRANSIENT_LARGE   }, // CN_TOHSHCRW
   { sizeof(Token),              HT_TRANSIENT_TINY    }, // CN_TOKEN
   { sizeof(TokenVec),           HT_TRANSIENT_LARGE   }, // CN_TOKENVEC
-  { sizeof(ToNstRow),           HT_TRANSIENT_MEDIUM  }, // CN_TONSTRSB
-  { sizeof(ToPtnRow),           HT_TRANSIENT_LARGE   }, // CN_TOPTNRSB
+  { sizeof(ToNstRow),           HT_TRANSIENT_MEDIUM  }, // CN_TONSTROW
+  { sizeof(ToPtnRow),           HT_TRANSIENT_LARGE   }, // CN_TOPTNROW
   { sizeof(ToRsb),              HT_TRANSIENT_MEDIUM  }, // CN_TORSB
   { sizeof(TspVal),             HT_INVALID           }, // CN_TSPVAL
   { sizeof(Tx),                 HT_TRANSIENT_TINY    }, // CN_TX

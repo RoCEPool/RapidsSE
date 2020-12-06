@@ -8,18 +8,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToPtnRow,CN_TOPTNRSB)
-__aNewFunction(ToPtnRow,CN_TOPTNRSB)
-__vDeleteFunction(ToPtnRow,CN_TOPTNRSB)
+__pCastFunction(Load,ToPtnRow,CN_TOPTNROW)
+__aNewFunction(ToPtnRow,CN_TOPTNROW)
+__vDeleteFunction(ToPtnRow,CN_TOPTNROW)
 __aFooterFunction(ToPtnRow)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ToPtnRow::ToPtnRow(void)
-: Object(CN_TOPTNRSB)
+: Object(CN_TOPTNROW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
 
   // m_oHashSet
 
@@ -27,7 +27,7 @@ ToPtnRow::ToPtnRow(void)
 
   m_pIntoRowBuffer   = nullptr;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ ToPtnRow::ToPtnRow(void)
 /*----------------------------------------------------------------------------*/
 ToPtnRow::~ToPtnRow(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ ToPtnRow::~ToPtnRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ToPtnRow::vConvert(RowBuffer* pRsbBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
   
   m_pFromRsbBuffer = pRsbBuffer;
   
@@ -71,7 +71,7 @@ void ToPtnRow::vConvert(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToPtnRow::pCompleted(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
   
   RowBuffer* pRsbBuffer = _pRowBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
@@ -83,7 +83,7 @@ RowBuffer* ToPtnRow::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToPtnRow::pDangling(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
   
   RowBuffer* pRsbBuffer = _pRowBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
   
@@ -98,7 +98,7 @@ RowBuffer* ToPtnRow::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 void ToPtnRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
     
   // new a destination row in target partition row slab
   vNewDstRow(i_Ptn);
@@ -114,7 +114,7 @@ void ToPtnRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 void ToPtnRow::vNewDstRow(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNRSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
     
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRsbBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
