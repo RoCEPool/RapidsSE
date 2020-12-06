@@ -14,8 +14,6 @@ namespace DataBuffers
   {
   protected:
   
-    RowBuffer* m_pRowSlab;
-
     // must be last
     Footer m_xFooter;
   
@@ -35,9 +33,6 @@ namespace DataBuffers
     void vShow(StreamDef* pStreamDef);
   
     CsvBuffer* pToCsvBuffer(void);
-  
-    RowBuffer*   pRowSlab(void);
-
 
   private:
     i8   iToOffset(Stz* szStr);

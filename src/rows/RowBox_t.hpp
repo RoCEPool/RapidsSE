@@ -179,7 +179,7 @@ void RowBox_t<SIZE>::vInitRowBox_t(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
-  MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWSLAB);
+  MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWBUFFER);
   m_caModel[sizeof(m_caModel) - 1] = '\0';
   
   StrLib::vSprint(m_caModel,"RapidsSE %s SeFormat %s"_Stz,
@@ -265,7 +265,7 @@ ColPix* RowBox_t<SIZE>::axaColPix(void)
 template <i8 SIZE>
 void RowBox_t<SIZE>::vCopyPix(StreamPix* pStreamPixSrc)
 {
-  MemLib::vCopy(&m_oStreamPix,pStreamPixSrc,sizeof(StreamPix),CN_ROWSLAB);
+  MemLib::vCopy(&m_oStreamPix,pStreamPixSrc,sizeof(StreamPix),CN_ROWBUFFER);
 
   m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
 }
@@ -952,7 +952,7 @@ void RowBox_t<SIZE>::vZeroRow(Row *aRow)
 
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
 
-  MemLib::vZero(aRow,nCellBytes,CN_ROWSLAB);
+  MemLib::vZero(aRow,nCellBytes,CN_ROWBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

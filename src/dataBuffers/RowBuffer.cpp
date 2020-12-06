@@ -30,7 +30,6 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
   
-  m_pRowSlab = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +40,6 @@ RowBuffer::RowBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_pRowSlab = nullptr;
 
 }
 
@@ -53,8 +51,6 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_pRowSlab = nullptr;
-
   vResolveStreamPix(pStreamDef);
 }
 
@@ -65,8 +61,6 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  delete m_pRowSlab;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,17 +259,6 @@ i8 RowBuffer::iToOffset(Stz* szStr)
   i4 iOffset = static_cast<i4>(nDifference(szStr,this));
   
   return iOffset;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calculate the absolute offset within buffer for given item                 */
-/*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pRowSlab(void)
-{
-  //if (! m_pRowSlab)
-  //  m_pRowSlab = new RowSlab;
-  
-  return m_pRowSlab;
 }
 
 /*============================================================================*/
