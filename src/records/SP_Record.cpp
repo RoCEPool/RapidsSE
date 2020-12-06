@@ -204,9 +204,9 @@ void SP_Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
     case DM_TSP: vAppendTsp(pCol,&oDatum); break;
       
     case DM_VCH:
-      vTrace("DM_VCH: %s\n"_Stz,pRowSingle->szColVal(i_Col));
+      //vTrace("DM_VCH: %s\n"_Stz,pRowSingle->szColVal(i_Col));
       oDatum.vStz(pRowSingle->szColVal(i_Col));
-      oDatum.vStzDump();
+      //oDatum.vStzDump();
       
       vAppendVch(pCol,&oDatum);
       break;
