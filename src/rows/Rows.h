@@ -16,7 +16,7 @@ namespace Rows
 
 static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 
-//#define _ROWBOX_BASED 1
+#define _ROWBOX_BASED 1
 
 #include "Ref.hpp"
 

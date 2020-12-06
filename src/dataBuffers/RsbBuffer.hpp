@@ -5,11 +5,11 @@
 
 namespace DataBuffers
 {
-  class RsbBuffer : public DataBuffer
+  class RsbBuffer : public RowBuffer
   {
   private:
   
-    RowSlab m_oRowSlab;
+    RowSlab* m_pRowSlab;
   
     // must be last
     Footer m_xFooter;
