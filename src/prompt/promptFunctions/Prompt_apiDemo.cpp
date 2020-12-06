@@ -23,11 +23,47 @@ PromptFun __Prompt_apiDemo (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 {
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  
-  i8 iNumTokens = pInpTknVec->nItems();
-
   vTrace("Api Demo\n"_Stz);
+  
+  eEC eError;
+  
+  TokenVec* pInpTknVec = new TokenVec;
+  TokenVec* pLitTknVec = new TokenVec;
+  TagSet    oExtTagSet;
+
+  pInpTknVec->vTokeniseC("tableScan bolTbl"_Stz);
+  pInpTknVec->vDumpVec(0);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::pAllocSession\n"_Stz);
+  Session* pSession = Api::pAllocSession(SK_EXTERNAL);
+  if (! pSession) {
+    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
+    goto L_Cleanup;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::ePrepareJob\n"_Stz);
+  eError = Api::ePrepareJob(pSession,
+                            pInpTknVec,
+                            pLitTknVec,
+                            &oExtTagSet);
+  if (eError) {
+    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    goto L_End;
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_End:
+  vTrace("  Api::vFreeSession\n"_Stz);
+  Api::vFreeSession(pSession);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_Cleanup:
+  delete pInpTknVec;
+  delete pLitTknVec;
 
   return true;
 }
