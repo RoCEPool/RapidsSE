@@ -10,14 +10,10 @@
 /*----------------------------------------------------------------------------*/
 : input_StartMarker \handler
 
-  //"Operand:- ZK_STARTMARKER" .verbose
-  PipeIn[].pipeToJob
-  Operand[].newStartMarker
-  Operand[].pipeOut
-
-  true
+  op[] job[] job.input!
+  
+  ZK_STARTMARKER_handler
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* execute for input request                          (on node where spawned) */
