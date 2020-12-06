@@ -116,36 +116,30 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   
   //ASSERT(0 == i_Ptn);
   
-  RowBuffer* pDstRowBuffer;
   Row* aDstRow;
   
   *pbNewBuffer = false;
   
   // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRsbBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
-  if (! pDstRsbBuffer) {
-    pDstRsbBuffer = new RowBuffer;
-    pDstRowBuffer = pDstRsbBuffer;
+  RowBuffer* pDstRowBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
+  if (! pDstRowBuffer) {
+    pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyPix(m_pStreamPix);
-    vAddBuffer(i_Ptn,pDstRsbBuffer);
-  }
-  else {
-    pDstRowBuffer = pDstRsbBuffer;
+    vAddBuffer(i_Ptn,pDstRowBuffer);
   }
   
   // new a row in row buffer (new another row buffer if necessary)
   aDstRow = pDstRowBuffer->aAllotNewRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
-    pDstRsbBuffer = new RowBuffer;
-    pDstRowBuffer = pDstRsbBuffer;
+    pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyPix(m_pStreamPix);
-    vAddBuffer(i_Ptn,pDstRsbBuffer);
-    aDstRow = pDstRsbBuffer->aAllotNewRow();
+    vAddBuffer(i_Ptn,pDstRowBuffer);
+    aDstRow = pDstRowBuffer->aAllotNewRow();
     ASSERT(aDstRow);
   }
   
-  pDstRsbBuffer->vPtnNo(i_Ptn);
+  pDstRowBuffer->vPtnNo(i_Ptn);
     
   * ppRowBuffer = pDstRowBuffer;
   
