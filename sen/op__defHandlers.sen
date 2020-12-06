@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* op_defHandlers.sen -- Default Operand Handlers                             */
+/* op__defHandlers.sen -- Default Operand Handlers                            */
 /*============================================================================*/
 
-" OPERAND__handlers.sen" .verbose
+" op__defHandlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CALLPIPELINE ...                                            */

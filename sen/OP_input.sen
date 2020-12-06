@@ -4,99 +4,6 @@
 
 " OP_input.sen" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_CrwBuffer \handler
-
-  //"Operand:- ZK_CRWBUFFER" .verbose
-  PipeIn[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_CSVBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_CsvBuffer \handler
-
-  //"Operand:- ZK_CSVBUFFER" .verbose
-  PipeIn[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_ENTBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_EntBuffer \handler
-
-  //"Operand:- ZK_ENTBUFFER" .verbose
-  PipeIn[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_EosMarker \handler
-
-  //"Operand:- ZK_EOSMARKER" .verbose
-  PipeIn[].pipeToJob
-  Operand[].newEosMarker
-  Operand[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: input_ErrorMarker \handler
-
-  //"Operand:- ZK_ERRORMARKER" .verbose
-  PipeIn[].pipeToJob
-  Operand[].newErrorMarker
-  Operand[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_DataMarker \handler
-
-  //"Operand:- ZK_DATAPULSE" .verbose
-  PipeIn[].pipeOut
-  Operand[].newDataPulse
-  Operand[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_ROWBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_RowBuffer \handler
-
-  //"Operand:- ZK_ROWBUFFER" .verbose
-  PipeIn[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_SRTBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_SrtBuffer \handler
-
-  //"Operand:- ZK_SRTBUFFER" .verbose
-  PipeIn[].pipeToJob
-
-  true
-;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
@@ -111,27 +18,6 @@
   true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_StreamDef \handler
-
-  //"Operand:- ZK_STREAMDEF" .verbose
-  PipeIn[].pipeToJob
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMSET ...                                               */
-/*----------------------------------------------------------------------------*/
-: input_StreamSet \handler
-
-//"Operand:- ZK_STREAMSET" .verbose
-PipeIn[].pipeToJob
-
-true
-;
 
 /*----------------------------------------------------------------------------*/
 /* execute for input request                          (on node where spawned) */
@@ -142,17 +28,7 @@ true
 
   op__topology
 
-  find: input_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: input_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: input_EntBuffer   ZK_ENTBUFFER   op[].handler!
-  find: input_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: input_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: input_DataMarker  ZK_DATAPULSE   op[].handler!
-  find: input_RowBuffer   ZK_ROWBUFFER   op[].handler!
-  find: input_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: input_StartMarker ZK_STARTMARKER op[].handler!
-  find: input_StreamDef   ZK_STREAMDEF   op[].handler!
-  find: input_StreamDef   ZK_STREAMSET   op[].handler!
 
   op__loop
 
