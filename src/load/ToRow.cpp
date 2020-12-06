@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToRow,CN_TORSB)
-__aNewFunction(ToRow,CN_TORSB)
-__vDeleteFunction(ToRow,CN_TORSB)
+__pCastFunction(Load,ToRow,CN_TOROW)
+__aNewFunction(ToRow,CN_TOROW)
+__vDeleteFunction(ToRow,CN_TOROW)
 __aFooterFunction(ToRow)
 
 /*----------------------------------------------------------------------------*/
@@ -18,9 +18,9 @@ __aFooterFunction(ToRow)
 /*----------------------------------------------------------------------------*/
 ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
              Format* pFmt, bool bPtnHash)
-: Object(CN_TORSB)
+: Object(CN_TOROW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 
   m_pPipelineJob = AM::pPipelineJob();
 
@@ -60,7 +60,7 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
   m_nMaxErrors           = pFmt->m_nMaxErrors;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   vNewRsbBuffer();
 }
@@ -70,7 +70,7 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
 /*----------------------------------------------------------------------------*/
 ToRow::~ToRow(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   delete m_pRsbBuffer;
 }
@@ -84,7 +84,7 @@ ToRow::~ToRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool ToRow::bConvertCrw(CrwBuffer* pCrwBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
     
   i8 nRows = pCrwBuffer->nRowCount();
   
@@ -112,7 +112,7 @@ bool ToRow::bConvertCrw(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToRow::pDanglingRsbBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   RowBuffer* pRsbBuffer = m_pRsbBuffer;
   
@@ -126,7 +126,7 @@ RowBuffer* ToRow::pDanglingRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToRow::pFullRsbBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 
   RowBuffer* pFullRsbBuffer = nullptr;
   
@@ -150,7 +150,7 @@ RowBuffer* ToRow::pFullRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 void ToRow::vNewRsbBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   //  create a new buffer
   RowBuffer* pRsbBuffer = new RowBuffer;
@@ -171,7 +171,7 @@ void ToRow::vNewRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToRow::pRsbBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 
   return m_pRsbBuffer;
 }
@@ -181,7 +181,7 @@ RowBuffer* ToRow::pRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 
   m_pRsbBuffer = pRsbBuffer;
 }
@@ -423,7 +423,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   m_pRowBuffer->nFreeBytes();
 

@@ -1428,7 +1428,7 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - converting loaded CRW data into RSB
+  // Query 6 - converting loaded CRW data into ROW
   sPath
   "
   procedure Query6
@@ -1456,7 +1456,7 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - converting loaded CRW data into RSB
+  // Query 6 - converting loaded CRW data into ROW
   sPath
   "
   procedure Query6_I

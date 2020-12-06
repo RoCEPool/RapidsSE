@@ -2034,8 +2034,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                         + *(char*)aiLocals[giaVectorSet[iArg+1]];
         break;//+endCase
 
-      case EO_KEY_RSB2C_TO_I: ArgGet(iArg); // convert two row varchar(1) to int
-        dLU1(EO_KEY_RSB2C_TO_I,iArg);
+      case EO_KEY_ROW2C_TO_I: ArgGet(iArg); // convert two row varchar(1) to int
+        dLU1(EO_KEY_ROW2C_TO_I,iArg);
         azTopA = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRow,
                                            giaVectorSet[iArg]);
         azTopB = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRow,

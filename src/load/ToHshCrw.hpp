@@ -34,7 +34,7 @@ namespace Load
   
   private:
     void vAddNst(RowBuffer* pRowBuffer);
-    void vAddRsbRows(i8 i_Ptn, RowBuffer* pRowBuffer);
+    void vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer);
     CrwBuffer* pNewCrwBuffer(i8 i_Ptn);
 
     Footer* aFooter(void);

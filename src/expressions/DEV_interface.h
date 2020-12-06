@@ -50,7 +50,7 @@ void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop);
 Stz* szDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// prototypes for dev RSB
+// prototypes for dev ROW
 
 void vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg);
 void vDev_ENTWRK_APPENDELMI(void* aLU, void* aROWDEVICE, i8 iTop);

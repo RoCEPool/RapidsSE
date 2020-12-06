@@ -792,7 +792,7 @@ void Step::vSocketRecvObject_LowMem(void)
       
     case CN_ROWBUFFER: {
       
-      vTrace("Received RSBBUFFER under low mem\n"_Stz);
+      vTrace("Received ROWBUFFER under low mem\n"_Stz);
       
       // copy the object header into the LowBuffer
       MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_ROWBUFFER);
@@ -851,7 +851,7 @@ void Step::vSocketRecvObject_LowMem(void)
     }
       
     case CN_PROFILE: {
-      vTrace("Received RSBBUFFER under low mem\n"_Stz);
+      vTrace("Received ROWBUFFER under low mem\n"_Stz);
       
       // copy the object header into the LowBuffer
       MemLib::vCopy(aLowBuff,pObject,sizeof(Object),CN_PROFILE);

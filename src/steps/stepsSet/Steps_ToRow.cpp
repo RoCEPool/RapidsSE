@@ -83,7 +83,7 @@ void Step::vToRowRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toRow[].danglingRsbBuffer -- fetch row buffer                              */
+/* toRow[].dangling -- fetch row buffer                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowRegDangling(void)
 {

@@ -53,25 +53,25 @@ ToHshCrw::~ToHshCrw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vConvert(RowBuffer* pRsbBuffer)
+void ToHshCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  i8 i_Ptn = pRsbBuffer->tPtnNo();
+  i8 i_Ptn = pRowBuffer->tPtnNo();
   
-  //pRsbBuffer->pRowBuffer()->vDumpNst();
+  //pRowBuffer->pRowBuffer()->vDumpNst();
   
   m_pCrwBuffer = m_oHashSet.pBuffer(i_Ptn) ?
                   _pCrwBuffer(m_oHashSet.pBuffer(i_Ptn)) : nullptr;
   
   if (! m_pCrwBuffer) {
     m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
-    vAddNst(pRsbBuffer);
+    vAddNst(pRowBuffer);
   }
   
-  vAddRsbRows(i_Ptn,pRsbBuffer);
+  vAddRowsToBuffer(i_Ptn,pRowBuffer);
   
-  delete pRsbBuffer;
+  delete pRowBuffer;
   
   vDebugPoint();
 }
@@ -111,13 +111,13 @@ CrwBuffer* ToHshCrw::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* add normalised strings into new crw buffer                                 */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vAddNst(RowBuffer* pRsbBuffer)
+void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
   ASSERT(0 == m_pCrwBuffer->nRowCount());
 
-  NmlStr* pNmlStr = pRsbBuffer->pNmlStr();
+  NmlStr* pNmlStr = pRowBuffer->pNmlStr();
 
   Stz* szNmlStr = nullptr;
   while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
@@ -134,12 +134,10 @@ void ToHshCrw::vAddNst(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToHshCrw::vAddRsbRows(i8 i_Ptn, RowBuffer* pRsbBuffer)
+void ToHshCrw::vAddRowsToBuffer(i8 i_Ptn, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
-  
-  RowBuffer* pRowBuffer = pRsbBuffer;
-  
+    
   i8 nRows = pRowBuffer->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
@@ -155,7 +153,7 @@ void ToHshCrw::vAddRsbRows(i8 i_Ptn, RowBuffer* pRsbBuffer)
     //m_pCrwBuffer->vPrintRows(m_pStreamDef);
     
     m_pCrwBuffer = pNewCrwBuffer(i_Ptn);
-    vAddNst(pRsbBuffer);
+    vAddNst(pRowBuffer);
 
     bAppended = m_pCrwBuffer->bAppendRow(aRow);
     ASSERT(bAppended);

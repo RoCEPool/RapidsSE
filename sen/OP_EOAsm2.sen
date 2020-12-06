@@ -215,7 +215,7 @@
 
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  //Pipein[] "GOT RSBBUFFER %v" .printf
+  //Pipein[] "GOT ROWBUFFER %v" .printf
   Operand[].pipeIn
   Operand[].asSrcRowBuffer
   ZK_ROWBUFFER Counter0[] executeAsmArgs

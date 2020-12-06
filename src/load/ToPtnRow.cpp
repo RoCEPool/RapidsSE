@@ -45,16 +45,14 @@ ToPtnRow::~ToPtnRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToPtnRow::vConvert(RowBuffer* pRsbBuffer)
+void ToPtnRow::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
   
-  m_pFromRowBuffer = pRsbBuffer;
+  m_pFromRowBuffer = pRowBuffer;
   
   i8 i_Ptn = 0;
-  
-  RowBuffer* pRowBuffer = pRsbBuffer;
-  
+    
   i8 nRows = pRowBuffer->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
@@ -73,9 +71,9 @@ RowBuffer* ToPtnRow::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
   
-  RowBuffer* pRsbBuffer = _pRowBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
-  return pRsbBuffer;
+  return pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,9 +83,9 @@ RowBuffer* ToPtnRow::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
   
-  RowBuffer* pRsbBuffer = _pRowBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
   
-  return pRsbBuffer;}
+  return pRowBuffer;}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -117,28 +115,28 @@ void ToPtnRow::vNewDstRow(i8 i_Ptn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOPTNROW,_FOOTER_);
     
   // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRsbBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
-  if (! pDstRsbBuffer) {
-    pDstRsbBuffer = new RowBuffer;
-    pDstRsbBuffer->vCopyPix(m_pFromRowBuffer->aStreamPix());
-    pDstRsbBuffer->aStreamPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
+  RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
+  if (! pDstRowBuffer) {
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyPix(m_pFromRowBuffer->aStreamPix());
+    pDstRowBuffer->aStreamPix()->vRemovePtnHash();
+    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
   }
   
   // new a row in row buffer (new another row buffer if necessary)
-  Row* aNewRow = pDstRsbBuffer->aAllotNewRow();
+  Row* aNewRow = pDstRowBuffer->aAllotNewRow();
   if (! aNewRow) {
-    pDstRsbBuffer = new RowBuffer;
-    pDstRsbBuffer->vCopyPix(m_pFromRowBuffer->aStreamPix());
-    pDstRsbBuffer->aStreamPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRsbBuffer);
-    aNewRow = pDstRsbBuffer->aAllotNewRow();
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyPix(m_pFromRowBuffer->aStreamPix());
+    pDstRowBuffer->aStreamPix()->vRemovePtnHash();
+    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
+    aNewRow = pDstRowBuffer->aAllotNewRow();
     ASSERT(aNewRow);
   }
   
-  pDstRsbBuffer->vPtnNo(i_Ptn);
+  pDstRowBuffer->vPtnNo(i_Ptn);
   
-  m_pIntoRowBuffer = pDstRsbBuffer;
+  m_pIntoRowBuffer = pDstRowBuffer;
 }
 
 /*============================================================================*/

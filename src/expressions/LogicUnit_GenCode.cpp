@@ -602,7 +602,7 @@ void LogicUnit::vGenerateAsmTxt_Query20(i8 iQueryNo, i8 iSubQueryNo, File* pFile
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate iterating index on l_shipdate & project into RSB (Query 1)        */
+/* generate iterating index on l_shipdate & project into ROW (Query 1)        */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery100(void)
 {
@@ -623,7 +623,7 @@ void LogicUnit::vGenerateQuery100(void)
 
   vAddCode(EO_CRW_SRC_TEST);
   vAddCodeLabel(EO_JMP_TRUE,"BEGIN_CRW_SRC:"_Stz);
-  vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_RSB:"_Stz);
+  vAddCodeLabel(EO_CALL,"SUBROUTINE_IXT_TO_ROW:"_Stz);
   vAddCodeLabel(EO_JMP,"QRY_100_DONE:"_Stz);
    
   vDefineLabel("BEGIN_CRW_SRC:"_Stz);
@@ -906,10 +906,10 @@ void LogicUnit::vGenerateQuery100(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // BEGIN SUBROUTINE: SUBROUTINE_IXT_TO_ROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDefineLabel("SUBROUTINE_IXT_TO_RSB:"_Stz);
-  //vAddCodeString(EO_PRINTF,"**100** SUBROUTINE_IXT_TO_RSB\n"_Stz);
+  vDefineLabel("SUBROUTINE_IXT_TO_ROW:"_Stz);
+  //vAddCodeString(EO_PRINTF,"**100** SUBROUTINE_IXT_TO_ROW\n"_Stz);
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
   vAddCodeLabel(EO_JMP_FALSE,"END_IXT_SRC:"_Stz);
@@ -961,7 +961,7 @@ void LogicUnit::vGenerateQuery100(void)
   vDefineLabel("END_IXT_SRC:"_Stz);
   vAddCode(EO_RETURN);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // END SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // END SUBROUTINE: SUBROUTINE_IXT_TO_ROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vDumpCode();
@@ -990,7 +990,7 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCodeLabel(EO_JMP,"QRY_103_DONE:"_Stz);
   
   vDefineLabel("BEGIN_ROW_SRC:"_Stz);
-  //vAddCodeString(EO_PRINTF,"**103** Got RSB BUFFER\n"_Stz);
+  //vAddCodeString(EO_PRINTF,"**103** Got ROW BUFFER\n"_Stz);
   // -- -- -- -- -- -- -- -- -- -- --
   // insert each row
   
@@ -1011,7 +1011,7 @@ void LogicUnit::vGenerateQuery103(void)
   // add key L_RETURNFLAG, L_LINESTATUS
 //  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)Q101_RETURNFLAG);
 //  vAddCodeArg(EO_ENTWRK_APPENDELM, (i8)Q101_LINESTATUS);
-  vAddCodeArg(EO_KEY_RSB2C_TO_I,11);
+  vAddCodeArg(EO_KEY_ROW2C_TO_I,11);
   vAddCode(EO_ENTWRK_SETINTELM);
   
   
@@ -1155,11 +1155,11 @@ void LogicUnit::vGenerateQuery103(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // BEGIN SUBROUTINE: SUBROUTINE_EOS (IXT_TO_RSB)
+  // BEGIN SUBROUTINE: SUBROUTINE_EOS (IXT_TO_ROW)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDefineLabel("SUBROUTINE_EOS:"_Stz);
   
-  //vAddCodeString(EO_PRINTF,"**103** SUBROUTINE_IXT_TO_RSB\n"_Stz);
+  //vAddCodeString(EO_PRINTF,"**103** SUBROUTINE_IXT_TO_ROW\n"_Stz);
   
   // begin index tree traversal
   vAddCode(EO_IXT_TRV_BEGIN);
@@ -1233,7 +1233,7 @@ void LogicUnit::vGenerateQuery103(void)
   vAddCode(EO_RETURN);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // END SUBROUTINE: SUBROUTINE_IXT_TO_RSB
+  // END SUBROUTINE: SUBROUTINE_IXT_TO_ROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vDumpCode();
@@ -1695,7 +1695,7 @@ void LogicUnit::vGenerateQuery302(void)
   //vAddCode(EO_TRACEON);
   vAddCodeLabel(EO_JMP_FALSE,"QRY_OUT:"_Stz);
 
-  vAddCodeString(EO_STR_LITERAL,"**QRY_302 RSB**"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_302 ROW**"_Stz);
   vAddCode(EO_STR_PRINTADR);
   // --
   vAddCode(EO_ROW_SRC_BEGIN);
@@ -2094,7 +2094,7 @@ void LogicUnit::vGenerateQuery401(void)
   
   vAddCodeLabel(EO_JMP_FALSE,"QRY_OUT:"_Stz);
 
-  vAddCodeString(EO_STR_LITERAL,"**QRY_401 RSB**"_Stz);
+  vAddCodeString(EO_STR_LITERAL,"**QRY_401 ROW**"_Stz);
   vAddCode(EO_STR_PRINTADR);
   vAddCodeLabel(EO_CALL,"ITR_SRC:"_Stz);
   vAddCode(EO_EXIT);
@@ -2472,7 +2472,7 @@ void LogicUnit::vGenerateQuery601(void)
   
   // new a row dst row if not there
   vAddCode(EO_ROW_DST_TESTROW);
-  vAddCodeLabel(EO_JMP_TRUE,"RSB_SRC_BEGIN:"_Stz);
+  vAddCodeLabel(EO_JMP_TRUE,"ROW_SRC_BEGIN:"_Stz);
   vAddCode(EO_ROW_DST_NEW);
   
   // initialize the row
@@ -2480,8 +2480,8 @@ void LogicUnit::vGenerateQuery601(void)
   vAddCodeArg(EO_ROW_DST_POPCOLI,(i8)Q600_REVENUE);
   //vAddCode(EO_ROW_DST_PRINT);
   
-  // begin RSB traversal
-  vDefineLabel("RSB_SRC_BEGIN:"_Stz);
+  // begin ROW traversal
+  vDefineLabel("ROW_SRC_BEGIN:"_Stz);
   vAddCode(EO_ROW_SRC_BEGIN);
   
   vDefineLabel("NEXT_ROW_SRC:"_Stz);

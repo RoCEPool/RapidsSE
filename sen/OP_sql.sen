@@ -812,7 +812,7 @@ then
   queryNo case
 
     100 of
-      //"---------------------------- 100=RSBBUFFER ----------------------------" .
+      //"---------------------------- 100=ROWBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcCrwBuffer
       Counter0[] 1 == if
@@ -844,7 +844,7 @@ then
   queryNo case
 
     103 of
-     // "---------------------------- 103=RSBBUFFER ----------------------------" .
+     // "---------------------------- 103=ROWBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowBuffer
       Counter0[] 1 == if
@@ -857,7 +857,7 @@ then
     endof
 
     301 of
-      //"---------------------------- 301=RSBBUFFER ----------------------------" .
+      //"---------------------------- 301=ROWBUFFER ----------------------------" .
       Operand[].pipeIn
       //Operand[] "RowBuffer %v\n" .printf
       Operand[].asSrcRowBuffer
@@ -872,7 +872,7 @@ then
     endof
 
     302 of
-      //"---------------------------- 302=RSBBUFFER ----------------------------" .
+      //"---------------------------- 302=ROWBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowBuffer
 
@@ -888,7 +888,7 @@ then
     endof
 
     401 of
-      //"---------------------------- 401=RSBBUFFER ----------------------------" .
+      //"---------------------------- 401=ROWBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowBuffer
 
@@ -903,7 +903,7 @@ then
     endof
 
     601 of
-      //"---------------------------- 601=RSBBUFFER ----------------------------" .
+      //"---------------------------- 601=ROWBUFFER ----------------------------" .
       Operand[].pipeIn
       Operand[].asSrcRowBuffer
 
