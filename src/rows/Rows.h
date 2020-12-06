@@ -30,7 +30,6 @@ static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 #include "RowSingle.hpp"
 
 #include "RowGenerator.hpp"
-#include "RowUte.hpp"
 
 #include "SP_Row.hpp"
 
