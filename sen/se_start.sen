@@ -23,6 +23,7 @@
   start::defProc_Drop
   start::defProc_Scan
   start::defProc_Load
+  start::defProc_Api
   start::defProc_File
   start::defProc_Elasticity
   start::defProc_SteadyState

@@ -781,6 +781,78 @@
 /* define procedures                                                          */
 /*----------------------------------------------------------------------------*/
 
+"  start::defProc_Api" .verbose
+
+: start::defProc_Api
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load
+  sPath
+  "
+  procedure apiInsert
+    parameters $table $file
+  begin
+
+  stage stageA on origin :
+
+    start              |
+
+    periodic once    |
+
+    chunk $file        | // read chunks of file, produce (seekOffset) =>
+    // dump seekOffsets 1 |
+
+    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
+    // dump csvBuffer 0   |
+
+    stageB robin
+
+
+  stage stageB on all partitions on origin :
+
+    toRow $table       | // (csvBuffer)  => (rsbBuffer)
+    // dump rowBuffer 1   |
+
+    toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    // dump rowBuffer 1   |
+
+    toNstRow           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    //dump rowBuffer 1   |
+
+    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    //dump rowBuffer 1   |
+
+    stageC hashed
+
+  stage stageC on all partitions :
+
+    //eatSome |
+
+    insert $table | // (crwBuffer) inserted into table
+
+    stageD
+
+  stage stageD on origin :
+
+    progress 'Load'    |
+
+    toStatDemon        |
+
+    sink               |
+
+    stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
 "  start::defProc_File" .verbose
 
 : start::defProc_File
