@@ -1207,9 +1207,9 @@ public:
   void vRegOperandBide(void);
   void vRegOperandCrwDuplicate(void);
   void vRegOperandCrwToCsv(void);
-  void vRegOperandCrwToRsb(void);
+  void vRegOperandCrwToRow(void);
   void vRegOperandCsvData(void);
-  void vRegOperandCsvToRsb(void);
+  void vRegOperandCsvToRow(void);
   void vRegOperandDelete(void);
   void vRegOperandGet(void);
   void vRegOperandIsNotNull(void);

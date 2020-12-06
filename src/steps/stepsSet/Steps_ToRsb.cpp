@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToRsb.cpp - csv to row convertor                                     */
+/* Steps_ToRow.cpp - csv to row convertor                                     */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ToRsb(void)
+void Step::vAddSteps_ToRow(void)
 {
   vAddStep("toRow[].completed"_Stz,   &Step::vToRsbRegCompleted);
   vAddStep("toRow[].convert"_Stz,     &Step::vToRsbRegConvert);
@@ -23,9 +23,9 @@ void Step::vToRsbRegCompleted(void)
 {
   ENTRY();
   
-  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
   
-  RowBuffer* pRsbBuffer = pToRsb->pFullRsbBuffer();
+  RowBuffer* pRsbBuffer = pToRow->pFullRsbBuffer();
   
   m_pDataStack->vPushPtr(pRsbBuffer);
 
@@ -39,14 +39,14 @@ void Step::vToRsbRegConvert(void)
 {
   ENTRY();
 
-  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
 
   char* azCsvChunk  = (char*)pCsvBuffer->ayDataArea();
   
-  bool bResult = pToRsb->bConvertCsv(azCsvChunk,pCsvMeta);
+  bool bResult = pToRow->bConvertCsv(azCsvChunk,pCsvMeta);
   
   EXIT();
 }
@@ -73,9 +73,9 @@ void Step::vToRsbRegCreate(void)
   BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
 
   bool bPtnHash = true;
-  ToRsb* pToRsb = new ToRsb(pStreamDef,pBucketMap,pFmt,bPtnHash);
+  ToRow* pToRow = new ToRow(pStreamDef,pBucketMap,pFmt,bPtnHash);
       
-  m_pLogicUnit->m_xpToRsb = pToRsb;
+  m_pLogicUnit->m_xpToRow = pToRow;
   
   delete pFmt;
   
@@ -89,12 +89,12 @@ void Step::vToRsbRegDangling(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpToRsb.bIsNull()) {
+  if (m_pLogicUnit->m_xpToRow.bIsNull()) {
     m_pDataStack->vPushPtr(nullptr);
   }
   else {
-    ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
-    RowBuffer* pRsbBuffer = pToRsb->pDanglingRsbBuffer();
+    ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
+    RowBuffer* pRsbBuffer = pToRow->pDanglingRsbBuffer();
     m_pDataStack->vPushPtr(pRsbBuffer);
   }
   
@@ -108,10 +108,10 @@ void Step::vToRsbRegDelete(void)
 {
   ENTRY();
   
-  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
-  m_pLogicUnit->m_xpToRsb = nullptr;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
+  m_pLogicUnit->m_xpToRow = nullptr;
   
-  delete pToRsb;
+  delete pToRow;
   
   EXIT();
 }

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToRsb.hpp -- Csv Record to Row                                             */
+/* ToRow.hpp -- Csv Record to Row                                             */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@ namespace Load
   static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
   static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
 
-  class ToRsb : public Object
+  class ToRow : public Object
   {
   private:
     Job*       m_pPipelineJob;
@@ -49,9 +49,9 @@ namespace Load
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
+    ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
           Format* pFmt, bool bPtnHash);
-   ~ToRsb(void) noexcept(false);
+   ~ToRow(void) noexcept(false);
   
     bool bConvertCrw(CrwBuffer* pCrwBuffer);
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
@@ -68,7 +68,7 @@ namespace Load
     Footer* aFooter(void);
   };
 
-  ToRsb* _pToRsb(void* aAddr);
+  ToRow* _pToRow(void* aAddr);
 
   static const i8 C_MAX_INTEGER_DIGITS  = 19;
   static const char C_MINUS_SIGN        = '-';

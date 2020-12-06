@@ -12,7 +12,7 @@
   // test and create Table[] using <tableNm>
   <tableNm> op__table if
 
-    // create a ToRsb using Table[].streamDef
+    // create a ToRow using Table[].streamDef
     ToRow[].create
 
     // pipeout the (StartMarker)
@@ -38,7 +38,7 @@
   //Operand[]
   //profile.start
 
-  Operand[].crwToRsb
+  Operand[].crwToRow
 
   //profile.end
 
@@ -67,7 +67,7 @@
   //Operand[]
   //profile.start
 
-  Operand[].csvToRsb
+  Operand[].csvToRow
 
   //profile.end
 
@@ -99,7 +99,7 @@
     ToRow[].dangling to OperandB[]
   repeat
 
-  // delete ToRsb
+  // delete ToRow
   ToRow[].delete
 
   // get the profile from the task

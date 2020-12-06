@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToRsb.cpp -- Fast ToRsb of Csv Record                                      */
+/* ToRow.cpp -- Fast ToRow of Csv Record                                      */
 /*============================================================================*/
 
 #include "Load.h"
@@ -8,15 +8,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToRsb,CN_TORSB)
-__aNewFunction(ToRsb,CN_TORSB)
-__vDeleteFunction(ToRsb,CN_TORSB)
-__aFooterFunction(ToRsb)
+__pCastFunction(Load,ToRow,CN_TORSB)
+__aNewFunction(ToRow,CN_TORSB)
+__vDeleteFunction(ToRow,CN_TORSB)
+__aFooterFunction(ToRow)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
+ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
              Format* pFmt, bool bPtnHash)
 : Object(CN_TORSB)
 {
@@ -68,7 +68,7 @@ ToRsb::ToRsb(StreamDef* pStreamDef, BucketMap* pBucketMap,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ToRsb::~ToRsb(void) noexcept(false)
+ToRow::~ToRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -82,7 +82,7 @@ ToRsb::~ToRsb(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert a crwbuffer into a rowBuffer                                       */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
+bool ToRow::bConvertCrw(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
     
@@ -110,7 +110,7 @@ bool ToRsb::bConvertCrw(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling rowBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRsb::pDanglingRsbBuffer(void)
+RowBuffer* ToRow::pDanglingRsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -124,7 +124,7 @@ RowBuffer* ToRsb::pDanglingRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return a full rowBuffer (if any)                                           */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRsb::pFullRsbBuffer(void)
+RowBuffer* ToRow::pFullRsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
@@ -148,7 +148,7 @@ RowBuffer* ToRsb::pFullRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* create a new rowBuffer                                                     */
 /*----------------------------------------------------------------------------*/
-void ToRsb::vNewRsbBuffer(void)
+void ToRow::vNewRsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   
@@ -169,7 +169,7 @@ void ToRsb::vNewRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get row buffer                                                             */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRsb::pRsbBuffer(void)
+RowBuffer* ToRow::pRsbBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
@@ -179,7 +179,7 @@ RowBuffer* ToRsb::pRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set row buffer                                                             */
 /*----------------------------------------------------------------------------*/
-void ToRsb::vRsbBuffer(RowBuffer* pRsbBuffer)
+void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
 
@@ -421,7 +421,7 @@ void ToRsb::vRsbBuffer(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
 /*----------------------------------------------------------------------------*/
-bool ToRsb::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
+bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TORSB,_FOOTER_);
   

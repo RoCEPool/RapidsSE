@@ -16,10 +16,10 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vRegOperandCsvAppend);
   vAddStep("Operand[].csvData"_Stz,        &Step::vRegOperandCsvData);
-  vAddStep("Operand[].csvToRsb"_Stz,       &Step::vRegOperandCsvToRsb);
+  vAddStep("Operand[].csvToRow"_Stz,       &Step::vRegOperandCsvToRow);
   vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vRegOperandCrwDuplicate);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vRegOperandCrwToCsv);
-  vAddStep("Operand[].crwToRsb"_Stz,       &Step::vRegOperandCrwToRsb);
+  vAddStep("Operand[].crwToRow"_Stz,       &Step::vRegOperandCrwToRow);
   vAddStep("Operand[].delete"_Stz,         &Step::vRegOperandDelete);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vRegOperandInsdelIntoTable);
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vRegOperandIsNotNull);
@@ -149,17 +149,17 @@ void Step::vRegOperandCrwToCsv(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].crwToRsb -- convert crw buffer operand to row buffer             */
+/* Operand[].crwToRow -- convert crw buffer operand to row buffer             */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCrwToRsb(void)
+void Step::vRegOperandCrwToRow(void)
 {
   ENTRY();
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
   
-  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
   
-  bool b = pToRsb->bConvertCrw(pCrwBuffer);
+  bool b = pToRow->bConvertCrw(pCrwBuffer);
   
   EXIT();
 }
@@ -200,9 +200,9 @@ void Step::vRegOperandCsvData(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].csvToRsb -- convert csv nuffer operand to row buffer             */
+/* Operand[].csvToRow -- convert csv nuffer operand to row buffer             */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCsvToRsb(void)
+void Step::vRegOperandCsvToRow(void)
 {
   ENTRY();
   
@@ -211,9 +211,9 @@ void Step::vRegOperandCsvToRsb(void)
 
   char* azCsvChunk = (char*) pCsvBuffer->szRecords();
 
-  ToRsb* pToRsb = *m_pLogicUnit->m_xpToRsb;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
   
-  bool b = pToRsb->bConvertCsv(azCsvChunk,pCsvMeta);
+  bool b = pToRow->bConvertCsv(azCsvChunk,pCsvMeta);
 
   EXIT();
 }

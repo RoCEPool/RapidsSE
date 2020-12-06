@@ -169,7 +169,7 @@ namespace Steps
     static void vAddSteps_ToHshCrw(void);
     static void vAddSteps_ToNstRow(void);
     static void vAddSteps_ToPtnRow(void);
-    static void vAddSteps_ToRsb(void);
+    static void vAddSteps_ToRow(void);
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tx(void);
