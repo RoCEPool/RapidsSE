@@ -1233,9 +1233,9 @@ void vTest20(void)
   vTrace("This is RowBuffer Test; sizeof(RowBuffer) = %lld(B)\n"_Stz,
          sizeof(RowBuffer));
 
-  RowBuffer* pRsbBuffer = new RowBuffer;
+  RowBuffer* pRowBuffer = new RowBuffer;
 
-  delete pRsbBuffer;
+  delete pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

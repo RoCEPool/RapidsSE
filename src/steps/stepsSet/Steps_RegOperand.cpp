@@ -95,9 +95,9 @@ void Step::vRegOperandAsSrcRowBuffer(void)
 {
   ENTRY();
 
-  RowBuffer* pRsbBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
 
-  m_pLogicUnit->m_pDevSrcRow->m_pRowBuffer = pRsbBuffer;
+  m_pLogicUnit->m_pDevSrcRow->m_pRowBuffer = pRowBuffer;
 
   EXIT();
 }
@@ -267,9 +267,9 @@ void Step::vRegOperandInsdelIntoTable(void)
 //  else
 //  if (CN_ROWBUFFER == (*m_pLogicUnit->m_xpOperandA)->eClass()) {
 //    // will delete this buffer
-//    RowBuffer* pRsbBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
-//    pRsbBuffer->vIsPermanent(false);
-//    m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRsbBuffer);
+//    RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
+//    pRowBuffer->vIsPermanent(false);
+//    m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
 //  }
 //  else {
 //    NEVER_REACH;
@@ -824,11 +824,11 @@ void Step::vRegOperandRowToCsv(void)
 {
   ENTRY();
   
-  RowBuffer* pRsbBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpOperandA);
  
-  m_pLogicUnit->m_xpOperandA = pRsbBuffer->pToCsvBuffer();
+  m_pLogicUnit->m_xpOperandA = pRowBuffer->pToCsvBuffer();
   
-  delete pRsbBuffer;
+  delete pRowBuffer;
   
   EXIT();
 }

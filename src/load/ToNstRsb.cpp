@@ -39,11 +39,11 @@ ToNstRow::~ToNstRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToNstRow::vConvert(RowBuffer* pRsbBuffer)
+void ToNstRow::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
   
-  pRsbBuffer->vNormaliseStrings();
+  pRowBuffer->vNormaliseStrings();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ void ToNstRow::vConvert(RowBuffer* pRsbBuffer)
 /*----------------------------------------------------------------------------*/
 /* analyze strings                                                            */
 /*----------------------------------------------------------------------------*/
-void ToNstRow::vAnalyzeStrings(RowBuffer* pRsbBuffer)
+void ToNstRow::vAnalyzeStrings(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
 }

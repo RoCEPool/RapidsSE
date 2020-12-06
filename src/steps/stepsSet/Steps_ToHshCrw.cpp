@@ -43,9 +43,9 @@ void Step::vToHshCrwRegConvert(void)
 
   ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
     
-  RowBuffer* pRsbBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToHshCrw->vConvert(pRsbBuffer);
+  pToHshCrw->vConvert(pRowBuffer);
   
   EXIT();
 }
@@ -65,7 +65,7 @@ void Step::vToHshCrwRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toHshCrw[].danglingRsbBuffer -- get any dangling/last buffer               */
+/* toHshCrw[].dangling -- get any dangling/last buffer                        */
 /*----------------------------------------------------------------------------*/
 void Step::vToHshCrwRegDangling(void)
 {
