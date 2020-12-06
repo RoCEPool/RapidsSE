@@ -88,6 +88,8 @@ namespace Jobs
     bool bHasTag_noWait(void);
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
+    Op*  pInputOp(void);
+    void vInputOp(Op* pInputOp);
     bool bIsPipeline(void);
     i8   iJobId(void);
     void vJobError(eEC eErrorCode);

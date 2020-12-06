@@ -43,6 +43,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
+  vAddStep("job.input@"_Stz,           &Step::vJobInputFetch);
+  vAddStep("job.input!"_Stz,           &Step::vJobInputStore);
   vAddStep("job.IsExecuting"_Stz,      &Step::vJobIsExecuting);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
@@ -670,6 +672,38 @@ void Step::vJobIdFetch(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->m_iFocalId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.input@ -- fetch the input op                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobInputFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushPtr(pJob->pInputOp());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.input! -- store the input op                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobInputStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
+  pJob->vInputOp(pOp);
+  
+  //ActLog::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
   
   EXIT();
 }

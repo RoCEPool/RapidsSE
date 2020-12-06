@@ -792,20 +792,16 @@
   sPath
   "
   procedure apiInsert
-    parameters $table $file
+    parameters $table
   begin
 
   stage stageA on origin :
 
-    start              |
+    start |
 
-    periodic once    |
+    periodic once |
 
-    chunk $file        | // read chunks of file, produce (seekOffset) =>
-    // dump seekOffsets 1 |
-
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
+    input |
 
     stageB robin
 
