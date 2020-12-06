@@ -147,7 +147,7 @@ true
   find: output_EntBuffer   ZK_ENTBUFFER   op[].handler!
   find: output_EosMarker   ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: output_DataMarker ZK_DATAPULSE op[].handler!
+  find: output_DataMarker  ZK_DATAPULSE   op[].handler!
   find: output_RowBuffer   ZK_ROWBUFFER   op[].handler!
   find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: output_StartMarker ZK_STARTMARKER op[].handler!
