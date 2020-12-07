@@ -21,7 +21,7 @@ namespace Jobs
     Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
     
     StreamDef*   m_pStreamDef;
-    bool         m_bExitMarker; 
+    bool         m_bExitMarker;
 
     // must be last
     Footer m_xFooter;
@@ -39,6 +39,7 @@ namespace Jobs
     void vPrintDist2pcResponse(void);
     void vPrintLocalResponse(void);
     void vProcessBufferQueue(void);
+    Operand* pPopBufferQueue_blocking(void);
     bool bProcessOperand(Operand* pOperand);
     
     //! TO GO
