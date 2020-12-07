@@ -1000,6 +1000,8 @@ public:
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
+  void vOpOutboundOperandFetch(void);
+  void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);

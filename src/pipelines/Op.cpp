@@ -80,7 +80,8 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   m_iLocalRobin = 0;
   
   m_pDownstreamOp = nullptr;
-  
+  m_pOutboundOperand = nullptr;
+
   vInitOperandHandlers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -819,6 +820,26 @@ TagSet* Op::pOpTagSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return &m_oOpTagSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get outbound operand                                                       */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pOutboundOperand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pOutboundOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set outbound operand                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vOutboundOperand(Operand* pOutboundOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pOutboundOperand = pOutboundOperand;
 }
 
 /*----------------------------------------------------------------------------*/

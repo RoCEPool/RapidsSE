@@ -44,7 +44,7 @@
   op__topology
 
   find: input_StartMarker  ZK_STARTMARKER  op[].handler!
-  //find: input_DataPulse    ZK_DATAPULSE    op[].handler!
+  find: input_DataPulse    ZK_DATAPULSE    op[].handler!
   //find: input_PulsedMarker ZK_PULSEDMARKER op[].handler!
   
   op__loop

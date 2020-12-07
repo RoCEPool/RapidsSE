@@ -17,6 +17,8 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
+  vAddStep("Op.outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
+  vAddStep("Op.outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
@@ -156,6 +158,36 @@ void Step::vOpPipeOut(void)
 
   pOp->vPipeOut_nextOp(pOperand,m_pTask);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.outboundOperand@ -- fetch outbound operand from op                      */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOutboundOperandFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  m_pDataStack->vPushPtr(pOp->pOutboundOperand());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.outboundOperand! -- store outbound operand into op                      */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOutboundOperandStore(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  pOp->vOutboundOperand(pOperand);
+  
   EXIT();
 }
 

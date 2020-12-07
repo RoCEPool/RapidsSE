@@ -49,7 +49,8 @@ namespace Pipelines
     i8             m_iLocalRobin;    // xmit Round Robin local ptn/node/thread
   
     Op*            m_pDownstreamOp;  // downstream op
-  
+    Operand*       m_pOutboundOperand;  // operand to be piped out
+
     Word* m_paOperandHandler[ZK_ENUMS];  // array of operand handlers (by kind)
     i8    m_iOperandCount[ZK_ENUMS];     // array of operand counts of operands recceived
     
@@ -99,6 +100,8 @@ namespace Pipelines
     Job* pOpJob(void);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
+    Operand* pOutboundOperand(void);
+    void vOutboundOperand(Operand* pOutboundOperand);
     void vPtnNo(tPN tPtnNo);
     tPN  tPtnNo(void);
     bool bPause(void);

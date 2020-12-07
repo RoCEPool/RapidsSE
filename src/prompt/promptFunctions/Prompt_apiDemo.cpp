@@ -42,7 +42,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   eEC eError;
   Session* pSession;
-  Job* pJob;
+  Job* pOriginatingJob;
 
   if (pPrompt->pInpTknVec()->nItems() > 1)
     goto L_Insert;
@@ -67,7 +67,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     goto L_Cleanup;
   }
   
-  pJob = pSession->pJob();
+  pOriginatingJob = pSession->pJob();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::ePrepareJob\n"_Stz);
@@ -82,12 +82,12 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pJob);
+  Api::vExecuteJob(pOriginatingJob);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
-  if (pJob->bIsPipeline()) {
+  if (pOriginatingJob->bIsPipeline()) {
     //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
     
     for (;;) {
@@ -165,21 +165,21 @@ L_Insert:
     goto L_End;
   }
   
-  pJob = pSession->pJob();
+  pOriginatingJob = pSession->pJob();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pJob);
+  Api::vExecuteJob(pOriginatingJob);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
-  if (pJob->bIsPipeline()) {
+  if (pOriginatingJob->bIsPipeline()) {
     //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
     
     for (;;) {
       
-      Operand* pOperand = pJob->m_xResult.pPopBufferQueue_blocking();
+      Operand* pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
       
       if (! pOperand)
         break;
@@ -190,7 +190,20 @@ L_Insert:
       vTrace("  Operand %s %s\n"_Stz,
              aCN[eClassNo],aOM[eOpMarker]);
 
-      bool b = pJob->m_xResult.bProcessOperand(pOperand);
+      //bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
+      
+      if (OM_EXITMARKER == eOpMarker) {
+        delete pOperand;
+        break;
+      }
+      
+      if (OM_DATAPULSE == eOpMarker) {
+        //pOriginatingJob->m_pInputOp->
+        continue;
+      }
+
+
+      bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
       
       if (! b)
         break;
