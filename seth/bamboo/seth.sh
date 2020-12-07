@@ -11,8 +11,8 @@ CLASSPATH=".:*:${DIR}:${DIR}/*:${DIR}/..:${DIR}/../*"
 TESTLIST_FILE="${DIR}/allTestsBamboo"
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
-# Defaulting to 15 minutes.
-SETH_TIMEOUT="1800"
+# Defaulting to 30 minutes.
+SETH_TIMEOUT="3600"
 
 NODE="NODE0"
 SE_DIR="${ROOT_DIR}/bin"
