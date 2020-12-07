@@ -19,7 +19,9 @@ load bolTbl "../DATA/Datums/boolean.csv" ;
 
 tableScan bolTbl;
 
-apiDemo;
+//apiDemo;
+
+apiDemo apiInsert;
 
 /*============================================================================*/
 /* end                                                                        */

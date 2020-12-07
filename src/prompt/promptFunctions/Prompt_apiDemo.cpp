@@ -26,11 +26,21 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   vTrace("Api Demo\n"_Stz);
   
   eEC eError;
-  
+  Session* pSession;
+  Job* pJob;
   TokenVec* pInpTknVec = new TokenVec;
   TokenVec* pLitTknVec = new TokenVec;
   TagSet    oExtTagSet;
 
+
+  if (pPrompt->pInpTknVec()->nItems() > 1)
+    goto L_Insert;
+
+  
+  
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pInpTknVec->vTokeniseC("tableScan bolTbl"_Stz);
   pInpTknVec->vDumpVec(0);
 
@@ -39,7 +49,55 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::pAllocSession\n"_Stz);
-  Session* pSession = Api::pAllocSession(SK_EXTERNAL);
+  pSession = Api::pAllocSession(SK_EXTERNAL);
+  if (! pSession) {
+    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
+    goto L_Cleanup;
+  }
+  
+  pJob = pSession->pJob();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::ePrepareJob\n"_Stz);
+  eError = Api::ePrepareJob(pSession,
+                            pInpTknVec,
+                            pLitTknVec,
+                            &oExtTagSet);
+  if (eError) {
+    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    goto L_End;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::vExecuteJob\n"_Stz);
+  Api::vExecuteJob(pJob);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Process Results\n"_Stz);
+  if (pJob->bIsPipeline())
+    pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::vDeleteJob\n"_Stz);
+  Api::vDeleteJob(&pSession->m_pSsnJob);                                        // FIX
+
+  goto L_End;
+  
+  
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_Insert:
+  pInpTknVec->vTokeniseC("apiInsert bolTbl"_Stz);
+  pInpTknVec->vDumpVec(0);
+
+  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Api::pAllocSession\n"_Stz);
+  pSession = Api::pAllocSession(SK_EXTERNAL);
   if (! pSession) {
     vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
@@ -56,20 +114,27 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     goto L_End;
   }
   
+  pJob = pSession->pJob();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pSession->m_pSsnJob);
+  Api::vExecuteJob(pJob);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
-  if (pSession->m_pSsnJob->bIsPipeline())
-    pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
+  if (pJob->bIsPipeline())
+    pJob->m_xResult.vProcessBufferQueue();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(&pSession->m_pSsnJob);
+  Api::vDeleteJob(&pSession->m_pSsnJob);                                        // FIX
 
+  goto L_End;
+
+  
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_End:
   vTrace("  Api::vFreeSession\n"_Stz);

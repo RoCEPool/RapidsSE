@@ -86,7 +86,8 @@ namespace Sessions
     DicStack* pPathStack(void);
       
     void      vReport(void);
-    
+    Job*      pJob(void);
+
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   
