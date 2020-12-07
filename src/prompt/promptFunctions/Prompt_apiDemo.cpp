@@ -87,8 +87,23 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
-  if (pJob->bIsPipeline())
-    pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
+  if (pJob->bIsPipeline()) {
+    //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
+    
+    for (;;) {
+      
+      Operand* pOperand = pSession->m_pSsnJob->m_xResult.pPopBufferQueue_blocking();
+      
+      if (! pOperand)
+        break;
+      
+      bool b = pSession->m_pSsnJob->m_xResult.bProcessOperand(pOperand);
+      
+      if (! b)
+        break;
+    }
+
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vDeleteJob\n"_Stz);
@@ -159,9 +174,24 @@ L_Insert:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
-  if (pJob->bIsPipeline())
-    pJob->m_xResult.vProcessBufferQueue();
-  
+  if (pJob->bIsPipeline()) {
+    //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
+    
+    for (;;) {
+      
+      Operand* pOperand = pSession->m_pSsnJob->m_xResult.pPopBufferQueue_blocking();
+      
+      if (! pOperand)
+        break;
+      
+      bool b = pSession->m_pSsnJob->m_xResult.bProcessOperand(pOperand);
+      
+      if (! b)
+        break;
+    }
+
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vDeleteJob\n"_Stz);
   Api::vDeleteJob(&pSession->m_pSsnJob);                                        // FIX
