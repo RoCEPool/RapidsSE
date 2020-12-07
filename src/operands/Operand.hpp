@@ -16,7 +16,7 @@ namespace Operands
   public:
     Operand(eCN eClass);
     ~Operand(void) noexcept(false);
-    
+
     bool bIsBuffer(void);
     bool bIsInfoSet(void);
     bool bIsMarker(void);

@@ -82,6 +82,29 @@ Result::~Result(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* -- Static ---------------------------------------------------------------- */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode operand into class and marker                                       */
+/*----------------------------------------------------------------------------*/
+void Result::vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker)
+{
+  _static_
+  
+  eClassNo = pOperand->eClass();
+  
+  if (CN_MARKER == eClassNo) {
+    Marker* pMarker = _pMarker(pOperand);
+    
+    eOpMarker = pMarker->eOpMarker();
+  }
+  else {
+    eOpMarker = OM_NONE;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 void Result::vPrint(eRS eResponse)
@@ -342,7 +365,9 @@ bool Result::bProcessOperand(Operand* pOperand)
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
       
-      switch (pMarker->eOpMarker()) {
+      eOM eOpMarker = pMarker->eOpMarker();
+
+      switch (eOpMarker) {
           
         case OM_CANCELMARKER: {
           vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,

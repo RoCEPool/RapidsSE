@@ -36,6 +36,9 @@ namespace Jobs
     void vPrint(eRS eResponse);
     
   public:
+  
+    static void vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker);
+
     void vPrintDist2pcResponse(void);
     void vPrintLocalResponse(void);
     void vProcessBufferQueue(void);
