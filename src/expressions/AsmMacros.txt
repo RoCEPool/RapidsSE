@@ -221,7 +221,7 @@ macro AM_PROJECT_BEGIN
 // PROJECT_BEGIN
   Label PROJECT_COLUMNS
   EO_SET_ITEMS <projectColumns>
-  EO_RSB_DST_NEW
+  EO_ROW_DST_NEW
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -231,7 +231,7 @@ macro AM_PROJECT_COLUMN
 // PROJECT_COLUMN
   EO_SET_COLUMN <projectSrcColumn>
   EO_COL_SRC_PUSHSET      
-  EO_RSB_DST_POPCOLI <projectDstColumn>
+  EO_ROW_DST_POPCOLI <projectDstColumn>
 endMacro
 
 //----------------------------------------------------------------------------//

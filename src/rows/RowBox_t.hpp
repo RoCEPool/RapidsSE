@@ -100,7 +100,7 @@ namespace Rows
     void  vReset(void);
     i8    nRowProperBytes(void);
     Row*  aRowByOfs(i8 iOfs);
-    void  vSetRow(i8 iRow);
+    Row*  aSetCurRow(i8 iRow);
     i8    iOffsetInWsp(Row* aRow);
     void  vSlabReport(void);
     StreamPix* aStreamPix(void);
@@ -897,13 +897,15 @@ Row* RowBox_t<SIZE>::aRowByOfs(i8 i_Ofs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of an row by its offset                                        */
+/* get address of an row by its offset and set as current                     */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
-void RowBox_t<SIZE>::vSetRow(i8 i_Row)
+Row* RowBox_t<SIZE>::aSetCurRow(i8 i_Row)
 {
   
   m_i_RowCrs = i_Row;
+  m_aRowCur = pRowAddress(i_Row);
+  return m_aRowCur;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,7 +954,7 @@ void RowBox_t<SIZE>::vZeroRow(Row *aRow)
 
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
 
-  MemLib::vZero(aRow,nCellBytes,CN_ROWBUFFER);
+  MemLib::vZero(aRow->aCellArray(),nCellBytes,CN_ROWBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

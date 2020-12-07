@@ -1101,9 +1101,8 @@ void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
   _static_
   
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  pDevRow->m_pRowBuffer->vSetRow(iRow);
-  pDevRow->m_aRow = pDevRow->m_pRowBuffer->pRowAddress(iRow);
+
+  pDevRow->m_aRow = pDevRow->m_pRowBuffer->aSetCurRow(iRow);
 }
 
 /*----------------------------------------------------------------------------*/
