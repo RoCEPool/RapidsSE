@@ -63,7 +63,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   
   m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
   m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
-  
+
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
@@ -85,7 +85,10 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerbose()) {
+  Job* pPipelineJob = pStrand->pPipeline()->pPipelineJob();
+  TagSet* pJobTags = AM::pJobTags(pPipelineJob);
+  
+  if (AM::bVerbose() || pJobTags->bHasName(C_TAG_TRACEOP)) {
     m_bTraceOp = true;
   }
   
