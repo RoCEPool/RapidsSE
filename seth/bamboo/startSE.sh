@@ -20,7 +20,7 @@ START_CLUSTER_OUTPUT_FILE="${ROOT_DIR}/startCluster.log"
 export LD_LIBRARY_PATH="${EXE_PATH}":$LD_LIBRARY_PATH
 
 # how long to wait after SE has started to check that it is still running.
-SLEEP_SEC=10
+SLEEP_SEC=45
 
 # Declare a function to check if SE is running and if not, remove the pid file.
 # If SE is running, print an error and then exit.
