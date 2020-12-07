@@ -13,6 +13,8 @@ namespace Pipelines
     s32  m_sStrandNm;   // strand name within strand within pipeline
     s32  m_sOpNm;       // name of this operator
     i8   m_i_Op;        // [op] in strand
+  
+    bool m_bTraceOp;    // tracing this operator
 
     OpSpec*   m_pOpSpec;   // specification of this operator
     Strand*   m_pStrand;   // which strand of stage of pipleine
@@ -25,7 +27,7 @@ namespace Pipelines
     // -- -- -- -- -- --
   
     Job*           m_pPipelineJob;   // pipeline job this operator belongs to
-    Job*           m_pOpJob;         // operator job this operator belongs to
+    Job*           m_pOpJob;         // operator job of this operator
   
     TagSet         m_oOpTagSet;        // op tag set
     TagSet         m_oTopologyTagSet;  // topology tag set
