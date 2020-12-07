@@ -1943,6 +1943,44 @@
     end ;
   "
   api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // select ps_suppkey from partsupp where ps_parkey in tempTable0 and ps_availqty >
+  // ( select 0.5*sum(l_quantity) from lineitem where
+  //     l_partkey = ps_partkey
+  //     and l_suppkey = ps_suppkey
+  //     and l_shipdate >= ''
+  //     and l_shipdate < '' + 1 year;
+  sPath
+  "
+  procedure Query20_S2
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all nodes :
+    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
+    | stageC
+
+  stage stageC on all partitions :
+    EOAsm2 ../eo_text/asm20_s0.txt 0
+    | toNstRow
+    | toHshCrw
+    | insert tempTable0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+    end ;
+  "
+  api::addProcedure
+
 /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 20 -  [S1] select ps_suppkey from partsupp where ps_partKey in
