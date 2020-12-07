@@ -114,9 +114,9 @@ Label TST_2ND
 Label NXT_ORD
   EO_IXT_SRC_NEXT
   EO_JMP_TRUE GOT_ORD
+  EO_REG_EOSMARKER_NEW
 
 Label QRY_400_DONE
-  EO_REG_EOSMARKER_NEW
   EO_RETURN
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
