@@ -907,6 +907,16 @@ Pipeline* Op::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeline job from op                                                   */
+/*----------------------------------------------------------------------------*/
+Job* Op::pPipelineJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pPipelineJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)

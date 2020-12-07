@@ -105,6 +105,7 @@ namespace Pipelines
     bool bPeekQueue(void);
     bool bPeekQueueOoO(void);
     Pipeline* pPipeline(void);
+    Job* pPipelineJob(void);
     void vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
     void vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
     void vPipeToJob(Operand* pOperand);

@@ -179,7 +179,7 @@ L_Insert:
     
     for (;;) {
       
-      Operand* pOperand = pSession->m_pSsnJob->m_xResult.pPopBufferQueue_blocking();
+      Operand* pOperand = pJob->m_xResult.pPopBufferQueue_blocking();
       
       if (! pOperand)
         break;
@@ -190,7 +190,7 @@ L_Insert:
       vTrace("  Operand %s %s\n"_Stz,
              aCN[eClassNo],aOM[eOpMarker]);
 
-      bool b = pSession->m_pSsnJob->m_xResult.bProcessOperand(pOperand);
+      bool b = pJob->m_xResult.bProcessOperand(pOperand);
       
       if (! b)
         break;

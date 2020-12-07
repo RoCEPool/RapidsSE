@@ -4,7 +4,6 @@
 
 " OP_input.sen" .verbose
 
-
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
@@ -16,6 +15,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: input_DataPulse \handler
+
+  PipeIn[].pipeToJob
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PULSEDMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: input_PulsedMarker \handler
+
+  PipeIn[].pipeToJob
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for input request                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : input_req \operator
@@ -24,8 +43,10 @@
 
   op__topology
 
-  find: input_StartMarker ZK_STARTMARKER op[].handler!
-
+  find: input_StartMarker  ZK_STARTMARKER  op[].handler!
+  //find: input_DataPulse    ZK_DATAPULSE    op[].handler!
+  //find: input_PulsedMarker ZK_PULSEDMARKER op[].handler!
+  
   op__loop
 
   LogReqExit

@@ -703,8 +703,11 @@ void Step::vJobInputStore(void)
 
   pJob->vInputOp(pOp);
   
-  //ActLog::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
-  
+  // get the job in the session
+  Job* pJob_Originating = pOp->pPipelineJob()->m_pOriginatingTask->pJob();
+
+  pJob_Originating->vInputOp(pOp);
+
   EXIT();
 }
 
