@@ -31,6 +31,10 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   File* pFile = nullptr;
   CsvBuffer* pCsvBuffer = nullptr;
+  Marker* pPulsedMarker = nullptr;
+  Marker* pDataMarker = nullptr;
+  Marker* pEosMarker = nullptr;
+
   bool b;
   char* azInto;
   i8 nBytesRead;
