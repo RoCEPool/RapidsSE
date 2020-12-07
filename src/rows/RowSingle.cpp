@@ -226,12 +226,22 @@ bool RowSingle::bIsColNull(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset the row                                                              */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vResetRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  RowBox_t<C_ROWSINGLE_WSP>::vResetRow();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset all column values                                                    */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vResetValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-    
+
   RowBox_t<C_ROWSINGLE_WSP>::vReset();
 }
 

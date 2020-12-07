@@ -98,6 +98,7 @@ namespace Rows
     void  vPositionOnCell(i8 i_Col);
     bool  bPtnHash(void);
     void  vReset(void);
+    void  vResetRow(void);
     i8    nRowProperBytes(void);
     Row*  aRowByOfs(i8 iOfs);
     Row*  aSetCurRow(i8 iRow);
@@ -870,6 +871,15 @@ void RowBox_t<SIZE>::vReset(void)
   m_aRowCur   = nullptr;
   m_i_ColCrs  = C_UNKNOWN;
 
+  WspConvergent_t<SIZE,Stz,Row>::vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this row                                                             */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+void RowBox_t<SIZE>::vResetRow(void)
+{
   WspConvergent_t<SIZE,Stz,Row>::vReset();
 }
 
