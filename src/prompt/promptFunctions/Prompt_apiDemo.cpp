@@ -45,6 +45,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   pInpTknVec->vDumpVec(0);
 
   oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -93,6 +94,7 @@ L_Insert:
   pInpTknVec->vDumpVec(0);
 
   oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -10,7 +10,6 @@ namespace Jobs
   {
   private:
     s32       m_sJobNm;       // name of job
-    TagSet    m_oJobTags;     // tags for the job
     i8        m_iParentId;    // job id of parent job which spawned this job
     Timer     m_oTimer;       // timer
 
@@ -24,6 +23,8 @@ namespace Jobs
     eJS       m_eJobState;    // current state of the job
 
   public:
+    TagSet    m_oJobTags;     // tags for the job
+  
     Result    m_xResult;      // result of this job
     
     // into task? -------------

@@ -32,6 +32,8 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   m_sOpNm       = pOpSpec->szOpNm();
   m_i_Op        = pOpSpec->i_OpSpec();
   
+  m_bTraceOp    = false;
+  
   m_pOpSpec   = pOpSpec;
   m_pStrand   = pStrand;
   m_pStage    = pStrand->pStage();
@@ -61,7 +63,7 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   
   m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
   m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
-  
+
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
@@ -83,6 +85,15 @@ Op::Op(OpSpec* pOpSpec, Strand* pStrand)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  Job* pPipelineJob = pStrand->pPipeline()->pPipelineJob();
+  TagSet* pJobTags = AM::pJobTags(pPipelineJob);
+  
+  if (AM::bVerbose() || pJobTags->bHasName(C_TAG_TRACEOP)) {
+    m_bTraceOp = true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Task* pTask = AM::pThisTLSTask();
   AM::vTaskBeginOp(pTask);
   
@@ -172,7 +183,7 @@ void Op::vAckJob(void)
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr
   
-  if (AM::bVerbose())
+  if (m_bTraceOp)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
            AM::szJobName(m_pOpJob),
            m_pStage->szStageNm(),
@@ -902,7 +913,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (AM::bVerbose())
+  if (m_bTraceOp)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
@@ -948,7 +959,7 @@ void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (AM::bVerbose())
+  if (m_bTraceOp)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
@@ -982,7 +993,7 @@ void Op::vPipeToJob(Operand* pOperand)
   
   RASSERT(pBufferQueue);
   
-  if (AM::bVerbose())
+  if (m_bTraceOp)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
@@ -1031,7 +1042,7 @@ Operand* Op::pPopQueue(void)
     
   AM::vOperandsDec();
   
-  if (AM::bVerbose()) {
+  if (m_bTraceOp) {
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
@@ -1075,7 +1086,7 @@ Operand* Op::pPopQueueOoO(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerbose() && pOperand) {
+  if (m_bTraceOp && pOperand) {
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
@@ -1111,13 +1122,13 @@ Operand* Op::pPopQueueLeft(void)
   
       // Can Operand be deleted already ????
 //  if (pOperand) {
-//    if (AM::bVerbose())
+//    if (m_bTraceOp)
 //      AM::vLogOpr(SL_INF,this,OA_OP_POP,
 //                  "PopQueueLeft operand %s from left queue"_Stz, //!format-LogOpr
 //                  AM::pOperandName(pOperand));
 //  }
 //  else {
-//    if (AM::bVerbose())
+//    if (m_bTraceOp)
 //      AM::vLogOpr(SL_INF,this,OA_OP_POP,
 //                  "PopQueueLeft no operand on left queue"_Stz); //!format-LogOpr
 //  }
@@ -1125,7 +1136,7 @@ Operand* Op::pPopQueueLeft(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
-    if (AM::bVerbose())
+    if (m_bTraceOp)
       vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
              m_sOpNm.szStz(),
              AM::pOperandName(pOperand),
@@ -1165,7 +1176,7 @@ Operand* Op::pPopQueueRight(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
-    if (AM::bVerbose())
+    if (m_bTraceOp)
       vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
              m_sOpNm.szStz(),
              AM::pOperandName(pOperand),

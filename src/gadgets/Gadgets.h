@@ -71,6 +71,7 @@ static Stz* C_TAG_TABLENM    = "<tableNm>"_Stz;
 static Stz* C_TAG_TAGS       = "<tags>"_Stz;
 static Stz* C_TAG_TIME       = "<time>"_Stz;
 static Stz* C_TAG_TOPOLOGY   = "<topology>"_Stz;
+static Stz* C_TAG_TRACEOP    = "<traceOp>"_Stz;
 static Stz* C_TAG_WHEN       = "<when>"_Stz;
 static Stz* C_TAG_XFER       = "<xfer>"_Stz;
 static Stz* C_TAG_XMITKIND   = "<xmitKind>"_Stz;
