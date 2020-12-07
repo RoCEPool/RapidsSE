@@ -25,13 +25,24 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 {
   vTrace("Api Demo\n"_Stz);
   
-  eEC eError;
-  Session* pSession;
-  Job* pJob;
   TokenVec* pInpTknVec = new TokenVec;
   TokenVec* pLitTknVec = new TokenVec;
   TagSet    oExtTagSet;
 
+  File* pFile = nullptr;
+  CsvBuffer* pCsvBuffer = nullptr;
+  Marker* pPulsedMarker = nullptr;
+  Marker* pDataMarker = nullptr;
+  Marker* pEosMarker = nullptr;
+
+  bool b;
+  char* azInto;
+  i8 nBytesRead;
+  i8 nBytesToRead;
+
+  eEC eError;
+  Session* pSession;
+  Job* pJob;
 
   if (pPrompt->pInpTknVec()->nItems() > 1)
     goto L_Insert;
@@ -90,11 +101,34 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Insert:
-  pInpTknVec->vTokeniseC("apiInsert bolTbl"_Stz);
+  pInpTknVec->vTokeniseC("apiInsert lineitem"_Stz);
   pInpTknVec->vDumpVec(0);
 
   oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   oExtTagSet.vReplace(C_TAG_TRACEOP,1);
+
+  pFile = new File(nullptr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  b = pFile->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10.csv"_Stz);
+  if (! b) {
+    vTrace("Unable to open input file\n"_Stz);
+    goto L_Cleanup;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  nBytesToRead = C_512KB;
+  
+  pCsvBuffer = new CsvBuffer;
+  azInto = (char*)pCsvBuffer->ayDataArea();
+  nBytesRead = pFile->nReadBytes(azInto,nBytesToRead);
+  pCsvBuffer->vTake(nBytesRead + 1);
+  azInto[nBytesRead] = '\0';
+
+  vTrace("CsvBuffer data:\n"_Stz);
+  vTrace("%s"_Stz,azInto);
+  vTrace("End CsvBuffer\n"_Stz);
+
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -144,6 +178,14 @@ L_End:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Cleanup:
+  if (pFile) {
+    pFile->vClose();
+    delete pFile;
+  }
+  if (pCsvBuffer) {
+    delete pCsvBuffer;
+  }
+  
   delete pInpTknVec;
   delete pLitTknVec;
 
