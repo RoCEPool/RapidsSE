@@ -904,6 +904,7 @@ void RowBox_t<SIZE>::vSetRow(i8 i_Row)
 {
   
   m_i_RowCrs = i_Row;
+  m_aRowCur = pRowAddress(i_Row);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,7 +953,7 @@ void RowBox_t<SIZE>::vZeroRow(Row *aRow)
 
   i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
 
-  MemLib::vZero(aRow,nCellBytes,CN_ROWBUFFER);
+  MemLib::vZero(aRow->aCellArray(),nCellBytes,CN_ROWBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
