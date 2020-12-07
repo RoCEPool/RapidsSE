@@ -263,6 +263,7 @@ namespace Oblique
     static void vOperandsDec(void);
     static i8   nOperandsGet(void);
     static void vOperandsInc(void);
+    static i8   iOperandZkKind(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet);

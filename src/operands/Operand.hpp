@@ -22,6 +22,7 @@ namespace Operands
     bool bIsMarker(void);
     bool bIsProfile(void);
     bool bIsStreamDef(void);
+    eZK  eZkKind(void);
     void vTailProcessing(ePT eTailProcessing);
     ePT  eTailProcessing(void);
   };

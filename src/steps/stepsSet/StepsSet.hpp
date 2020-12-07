@@ -1007,6 +1007,9 @@ public:
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
 
+  // operand
+  void vOperandKind(void);
+
   // opsys
   void vOpSysIsLinux(void);
   void vOpSysIsMacOs(void);

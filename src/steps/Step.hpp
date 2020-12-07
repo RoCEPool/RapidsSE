@@ -101,6 +101,7 @@ namespace Steps
     static void vAddSteps_Object(void);
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
+    static void vAddSteps_Operand(void);
     static void vAddSteps_OpSys(void);
 
     static void vAddSteps_Persistence(void);
