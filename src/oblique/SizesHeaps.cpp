@@ -218,6 +218,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'R' - ('A' - 1),            HT_INVALID           }, // CN__R__
   { sizeof(ReadApi),            HT_TRANSIENT_TINY    }, // CN_READAPI
+  { sizeof(Reader),             HT_TRANSIENT_TINY    }, // CN_READER
   { sizeof(Record),             HT_TRANSIENT_MEDIUM  }, // CN_RECORD
   { sizeof(RecordBuffer),       HT_TRANSIENT_LARGE   }, // CN_RECORDBUFFER
   { sizeof(RelOp),              HT_TRANSIENT_TINY    }, // CN_RELOP

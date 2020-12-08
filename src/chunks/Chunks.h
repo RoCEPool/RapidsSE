@@ -24,6 +24,7 @@ namespace Chunks
 #include "IoChunk.hpp"
 #include "IoCopy.hpp"
 #include "LoadChunk.hpp"
+#include "Reader.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
