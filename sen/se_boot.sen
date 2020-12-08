@@ -336,7 +336,7 @@ makeDefaultFolders
 LogicCompiler[].extract
 
 "Extracting AM_ ASM Macros" .verbose
-//LogicCompiler[].extractAsm
+LogicCompiler[].extractAsm
 
 assert::stack_0
 

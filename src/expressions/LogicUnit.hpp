@@ -218,6 +218,9 @@ namespace Expressions
     void vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
     void vGenerateAsmTxt_Query20(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
 
+    void vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+    void vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+
     // TPCH Queries
     void vGenerateQuery100(void);
     void vGenerateQuery103(void);

@@ -25,9 +25,23 @@ create table part (
 	 P_COMMENT           VARCHAR(23) NOT NULL
 );
 
+create table partsupp (
+	PS_PARTKEY      INTEGER NOT NULL,
+	PS_SUPPKEY      INTEGER NOT NULL,
+	PS_AVAILQTY     INTEGER NOT NULL,
+	PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
+	PS_COMMENT      VARCHAR(199) NOT NULL
+);
+
 print "loading part...";
 /time load part "/DATA/TPCH/part_100.tbl";
 
+print "loading partsupp...";
+/time load part "/DATA/TPCH/partsupp_100.tbl";
+
 // create a temp table
 create table tempTable0 (p_partkey integer);
+create index tempTable0_idx on tempTable0(p_partkey);
+
 /time Query20_S0;
+tableScan tempTable0;

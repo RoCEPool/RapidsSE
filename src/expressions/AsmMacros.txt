@@ -47,6 +47,17 @@ macro AM_INIT
 
 endMacro
 
+macro AM_DEFAULT_STARTMARKER_HANDLER
+//----------------------------------------------------------------------------//
+// macro AM_DEFAULT_STARTMARKER_HANDLER                                       //
+//----------------------------------------------------------------------------//
+  // STARTMARKER HANDLER
+  Label STARTMARKER_HANDLER
+  EO_PRINTF "**STARTMARKER_HANDLER**\n"
+  EO_POP
+  EO_JMP QRY_DONE
+endMacro
+
 macro AM_DEFAULT_CRWBUFFER_HANDLER
 //----------------------------------------------------------------------------//
 // macro AM_DEFAULT_CRWBUFFER_HANDLER                                         //
@@ -64,7 +75,7 @@ macro AM_DEFAULT_DATAPULSE_HANDLER
 //----------------------------------------------------------------------------//
   // DATAPULSE HANDLER
   Label DATAPULSE_HANDLER
-  EO_PRINTF "**CRWBUFFER_HANDLER**\n"
+  EO_PRINTF "**DATAPULSE_HANDLER**\n"
   EO_POP
   EO_JMP QRY_DONE
 endMacro
@@ -80,13 +91,13 @@ macro AM_DEFAULT_EOSMARKER_HANDLER
   EO_JMP QRY_DONE
 endMacro
 
-macro AM_DEFAULT_RSBBUFFER_HANDLER
+macro AM_DEFAULT_ROWBUFFER_HANDLER
 //----------------------------------------------------------------------------//
-// macro AM_DEFAULT_RSBBUFFER_HANDLER                                         //
+// macro AM_DEFAULT_ROWBUFFER_HANDLER                                         //
 //----------------------------------------------------------------------------//
-  // RSBBUFFER HANDLER
-  Label RSBBUFFER_HANDLER
-  EO_PRINTF "**RSBBUFFER_HANDLER**\n"
+  // ROWBUFFER HANDLER
+  Label ROWBUFFER_HANDLER
+  EO_PRINTF "**ROWBUFFER_HANDLER**\n"
   EO_POP
   EO_JMP QRY_DONE
 endMacro
@@ -96,7 +107,7 @@ macro AM_DEFAULT_STREAMDEF_HANDLER
 // macro AM_DEFAULT_STREAMDEF_HANDLER                                         //
 //----------------------------------------------------------------------------//
   // STREAMDEF HANDLER
-  Label DATAPULSE_HANDLER
+  Label STREAMDEF_HANDLER
   EO_PRINTF "**STREAMDEF_HANDLER**\n"
   EO_POP
   EO_JMP QRY_DONE
@@ -111,17 +122,6 @@ macro AM_STARTMARKER_HANDLER
   EO_PRINTF "**STARTMARKER_HANDLER**\n"
   EO_POP
   EO_TABLENM_SRC_SET <srctableNm>
-endMacro
-
-macro AM_DEFAULT_STREAMDEF_HANDLER
-//----------------------------------------------------------------------------//
-// macro AM_DEFAULT_STREAMDEF_HANDLER                                         //
-//----------------------------------------------------------------------------//
-  // STREAMMDEF HANDLER
-  Label STREAMMDEF_HANDLER
-  EO_PRINTF "**STREAMDEF_HANDLER**\n"
-  EO_POP
-  EO_JMP QRY_DONE
 endMacro
 
 macro AM_STREAMDEF_BEGIN
@@ -190,11 +190,11 @@ macro AM_CRWBUFFER_PROJECT_HANDLER
   EO_JMP QRY_DONE
  endMacro
 
-macro AM_CRWBUFFER_PREDICATE_HANDLER
+macro AM_CRWBUFFER_FILTER_HANDLER
 //----------------------------------------------------------------------------//
-// macro AM_CRWBUFFER_PREDICATE_HANDLER                                       //
+// macro AM_CRWBUFFER_FILTER_HANDLER                                          //
 //----------------------------------------------------------------------------//
-  // CRWBUFFER_PREDICATE_HANDLER
+  // AM_CRWBUFFER_FILTER_HANDLER
   Label CRWBUFFER_HANDLER
   EO_PRINTF "**CRWBUFFER_HANDLER**\n"
   EO_POP
@@ -205,7 +205,7 @@ macro AM_CRWBUFFER_PREDICATE_HANDLER
   EO_CRW_SRC_NEXT
   EO_JMP_FALSE QRY_DONE
 
-  EO_CALL <crwPredicateRoutine>
+  EO_CALL <crwFilterRoutine>
   EO_JMP_FALSE NEXT_CRW_SRC
 
   EO_CALL <crwProcessRoutine>
@@ -214,12 +214,12 @@ macro AM_CRWBUFFER_PREDICATE_HANDLER
   EO_JMP QRY_DONE
  endMacro
 
+macro AM_PROJECT_ROUTINE
 //----------------------------------------------------------------------------//
-// macro AM_PROJECT_BEGIN                                                     //
+// macro AM_PROJECT_ROUTINE                                                   //
 //----------------------------------------------------------------------------//
-macro AM_PROJECT_BEGIN
-// PROJECT_BEGIN
-  Label PROJECT_COLUMNS
+  // PROJECT_ROUTINE
+  Label PROJECT_ROUTINE
   EO_SET_ITEMS <projectColumns>
   EO_ROW_DST_NEW
 endMacro
@@ -228,7 +228,7 @@ endMacro
 // macro AM_PROJECT_COLUMN                                                    //
 //----------------------------------------------------------------------------//
 macro AM_PROJECT_COLUMN
-// PROJECT_COLUMN
+  // PROJECT_COLUMN
   EO_SET_COLUMN <projectSrcColumn>
   EO_COL_SRC_PUSHSET      
   EO_ROW_DST_POPCOLI <projectDstColumn>
@@ -238,48 +238,48 @@ endMacro
 // macro AM_PROJECT_END                                                       //
 //----------------------------------------------------------------------------//
 macro AM_PROJECT_END
-// PROJECT_END
+  // PROJECT_END
   EO_RETURN
 endMacro
 
+macro AM_FILTER_ROUTINE
 //----------------------------------------------------------------------------//
-// macro AM_PREDICATE_BEGIN                                                   //
+// macro AM_FILTER_ROUTINE                                                    //
 //----------------------------------------------------------------------------//
-macro AM_PREDICATE_BEGIN
-// PREDICATE_COLUMNS_BEGIN
-  Label PREDICATE_COLUMNS
+  // FILTER_ROUTINE
+  Label FILTER_ROUTINE
   //EO_SET_LOCALS_SRC <predicateColumns>
   EO_SET_ITEMS 1
   EO_COL_SRC_PUSHONE <predicateColumns>
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_PREDICATE_COLUMN                                                  //
+// macro AM_FILTER_VARCHAR_COLUMN                                             //
 //----------------------------------------------------------------------------//
-macro AM_PREDICATE_VARCHAR_COLUMN
-// PREDICATE_COLUMN
+macro AM_FILTER_VARCHAR_COLUMN
+  // FILTER_COLUMN
   //EO_PUSH_LOCALI <predicateSrcColumn>
   EO_STR_LITERAL <literalValue>
   <relationalOp>
-  EO_JMP_FALSE PREDICATE_VARCHAR_TRUE
+  EO_JMP_FALSE FILTER_VARCHAR_TRUE
 
   EO_PUSH_0
-  EO_JMP PREDICATE_VARCHAR_DONE
+  EO_JMP FILTER_VARCHAR_DONE
 
-  Label PREDICATE_VARCHAR_TRUE
+  Label FILTER_VARCHAR_TRUE
   EO_PUSH_1
 
-  Label PREDICATE_VARCHAR_DONE
+  Label FILTER_VARCHAR_DONE
   EO_RETURN
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_PREDICATE_END                                                     //
+// macro AM_FILTER_END                                                        //
 //----------------------------------------------------------------------------//
-macro AM_PREDICATE_END
-// PREDICATE_END
+macro AM_FILTER_END
+  // FILTER_END
 
-  Label PREDICATE_DONE
+  Label FILTER_DONE
   EO_RETURN
 
 endMacro

@@ -1945,15 +1945,10 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // select ps_suppkey from partsupp where ps_parkey in tempTable0 and ps_availqty >
-  // ( select 0.5*sum(l_quantity) from lineitem where
-  //     l_partkey = ps_partkey
-  //     and l_suppkey = ps_suppkey
-  //     and l_shipdate >= ''
-  //     and l_shipdate < '' + 1 year;
+  // select ps_suppkey from partsupp where ps_parkey in tempTable0;
   sPath
   "
-  procedure Query20_S2
+  procedure Query20_S1
   begin
 
   stage stageA on origin :
@@ -1962,14 +1957,11 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
+    genAsmTxt 20 1 ../eo_text/asm20_s1.txt
     | stageC
 
   stage stageC on all partitions :
-    EOAsm2 ../eo_text/asm20_s0.txt 0
-    | toNstRow
-    | toHshCrw
-    | insert tempTable0
+    EOAsm2 ../eo_text/asm20_s1.txt 0
     | stageD
 
   stage stageD on origin :

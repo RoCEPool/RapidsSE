@@ -109,7 +109,7 @@ static Stz* C_TAG_COLUMN_NAME   = "<columnName>"_Stz;
 
 static Stz* C_TAG_LOGICUNIT_HANDLER     = "<logicUnitHandler>"_Stz;
 static Stz* C_TAG_CRW_PROCESS_ROUTINE   = "<crwProcessRoutine>"_Stz;
-static Stz* C_TAG_CRW_PREDICATE_ROUTINE     = "<crwPredicateRoutine>"_Stz;
+static Stz* C_TAG_CRW_FILTER_ROUTINE     = "<crwFilterRoutine>"_Stz;
 static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
 
 static Stz* C_TAG_PROJECT_COLUMNS      = "<projectColumns>"_Stz;
