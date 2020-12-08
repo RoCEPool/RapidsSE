@@ -86,63 +86,7 @@ void Step::vRegPipeinKind(void)
   Operand* pOperand = *m_pLogicUnit->m_xpPipein;
   
   eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-  
-//  eZK eOperand = ZK_NONE;
-//
-//  eCN eClass_op = m_pLogicUnit->m_xpPipein->eClass();
-//  switch (eClass_op) {
-//
-//    case CN_CRWBUFFER:            eOperand = ZK_CRWBUFFER;       break;
-//    case CN_CSVBUFFER:            eOperand = ZK_CSVBUFFER;       break;
-//    case CN_ENTBUFFER:            eOperand = ZK_ENTBUFFER;       break;
-//    case CN_INDEXDEF:             eOperand = ZK_INDEXDEF;        break;
-//    case CN_INFOSET  : {
-//      InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpPipein);
-//      switch(pInfoSet->eOpInfoSet()) {
-//        case OI_CALLPIPELINE:     eOperand = ZK_CALLPIPELINE;    break;
-//        case OI_COUNTINFO:        eOperand = ZK_COUNTINFO;       break;
-//        case OI_LOCKSTATS:        eOperand = ZK_LOCKSTATS;       break;
-//        case OI_NODEINFO:         eOperand = ZK_NODEINFO;        break;
-//        case OI_PATHINFO:         eOperand = ZK_PATHINFO;        break;
-//        case OI_PROGRESSUNITS:    eOperand = ZK_PROGRESSUNITS;   break;
-//        case OI_RETURNPIPELINE:   eOperand = ZK_RETURNPIPELINE;  break;
-//        case OI_SEEKOFFSETS:      eOperand = ZK_SEEKOFFSETS;     break;
-//        case OI_TOTALUNITS:       eOperand = ZK_TOTALUNITS;      break;
-//        default: RASSERT(0);
-//      }
-//      break;
-//    }
-//    case CN_MARKER: {
-//      Marker* pMarker = _pMarker(*m_pLogicUnit->m_xpPipein);
-//
-//       switch(pMarker->eOpMarker()) {
-//
-//         case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
-//         case OM_DATAPULSE:       eOperand = ZK_DATAPULSE;       break;
-//         case OM_DESTROYMARKER:   eOperand = ZK_DESTROYMARKER;   break;
-//         case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
-//         case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
-//         case OM_ERROREDMARKER:   eOperand = ZK_ERROREDMARKER;   break;
-//         case OM_EXITMARKER:      eOperand = ZK_EXITMARKER;      break;
-//         case OM_EXITEDMARKER:    eOperand = ZK_EXITEDMARKER;    break;
-//         case OM_PULSEDMARKER:    eOperand = ZK_PULSEDMARKER;    break;
-//         case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
-//         case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
-//         default:  RASSERT(0);
-//       }
-//      break;
-//    }
-//    case CN_PROFILE:              eOperand = ZK_PROFILE;         break;
-//    case CN_ROWBUFFER:            eOperand = ZK_ROWBUFFER;       break;
-//    case CN_SRTBUFFER:            eOperand = ZK_SRTBUFFER;       break;
-//    case CN_STREAMDEF:            eOperand = ZK_STREAMDEF;       break;
-//    case CN_STREAMSET:            eOperand = ZK_STREAMSET;       break;
-//
-//    default:
-//      RASSERT(0);
-//      break;
-//  }
-  
+    
   m_pDataStack->vPushInt(eOperand);
   
   EXIT();
