@@ -206,6 +206,40 @@ eEC Api::ePrepareJob(Session*  pSession,
 }
 
 /*----------------------------------------------------------------------------*/
+/* submit job (spawn job but don't wait for completion)                       */
+/*----------------------------------------------------------------------------*/
+void Api::vSubmitJob(Job* pJob)
+{
+  _static_
+  
+  Session* pSession = pJob->pSession();
+  Api::vMutexLock(pSession,pJob);
+
+  RASSERT(JS_LOCKED == pJob->eJobState());
+
+  
+  RASSERT(! pJob->pTask());
+  
+  vCreateTaskForJob(pJob);
+  
+  pJob->vTimerStart();
+  
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait for job completion                                                    */
+/*----------------------------------------------------------------------------*/
+void Api::vWaitJob(Job* pJob)
+{
+  Session* pSession = pJob->pSession();
+  
+  pSession->m_oSsnMutex.vObserve(true);
+  Api::vMutexWaitCond(pSession,pJob);
+  pJob->vTimerUpdate();
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

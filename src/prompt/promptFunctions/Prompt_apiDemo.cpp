@@ -200,6 +200,8 @@ L_Insert:
        
         // push data
         
+        // wait for outboundOperand to be null
+        
         // push Eos Marker
         continue;
       }

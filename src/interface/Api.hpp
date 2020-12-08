@@ -19,6 +19,10 @@ namespace Interface
                           TokenVec* pLitTknVec,
                           TagSet*   pTagSet);
 
+  static void vSubmitJob(Job* pJob);
+  static void vWaitJob(Job* pJob);
+
+  
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
   // external
