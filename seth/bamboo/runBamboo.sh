@@ -44,7 +44,8 @@ readonly DEBUG=0
 readonly NUM_CPUS="$(nproc)"
 
 # The default build targets to compile and test.
-readonly DEFAULT_TARGETS=("debug" "release")
+//readonly DEFAULT_TARGETS=("debug" "release")
+readonly DEFAULT_TARGETS=("release")
 
 ###############################################################################
 ### Significant Global Variables                                            ###
