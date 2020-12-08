@@ -6,13 +6,15 @@ bc;
 
 _lineitem_dates
 
-load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" ;
+//load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" ;
 
-tableScan lineitem;
+//tableScan lineitem;
 
 //apiDemo;
 
 apiDemo apiInsert;
+
+tableScan lineitem;
 
 /*============================================================================*/
 /* end                                                                        */

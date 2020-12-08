@@ -26,9 +26,9 @@
     begin op.outboundOperand@ not while 100 thread::sleepUsec repeat
 
     op.outboundOperand@ to Operand[]
-    nullptr op.outboundOperand!
+      nullptr op.outboundOperand!
     
-    Operand[].kind ZK_CSVBUFFER
+    Operand[].kind ZK_EOSMARKER !=
   while
       Operand[].pipeOut
   repeat

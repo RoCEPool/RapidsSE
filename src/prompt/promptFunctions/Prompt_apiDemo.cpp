@@ -168,8 +168,9 @@ L_Insert:
   pOriginatingJob = pSession->pJob();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pOriginatingJob);
+  vTrace("  Api::vSubmitJob\n"_Stz);
+  //Api::vExecuteJob(pOriginatingJob);
+  Api::vSubmitJob(pOriginatingJob);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,17 +193,31 @@ L_Insert:
       //bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
       
       if (OM_EXITMARKER == eOpMarker) {
-        delete pOperand;
+        AM::vDeleteOperand(pOperand);
         break;
       }
       
       if (OM_DATAPULSE == eOpMarker) {
        
-        // push data
+        Op* pInputOp = pOriginatingJob->m_pInputOp;
         
-        // wait for outboundOperand to be null
+        // push DataPulse Marker
+        pInputOp->vOutboundOperand(pOperand);
+        pOperand = nullptr;
+        while (pInputOp->pOutboundOperand())
+          AM::vNapUsec(100,CN_SEPROMPT);
         
+        // push csv data
+        pInputOp->vOutboundOperand(pCsvBuffer);
+        pCsvBuffer = nullptr;
+        while (pInputOp->pOutboundOperand())
+          AM::vNapUsec(100,CN_SEPROMPT);
+
         // push Eos Marker
+        pEosMarker = new Marker(OM_EOSMARKER);
+        pInputOp->vOutboundOperand(pEosMarker);
+        pEosMarker = nullptr;
+
         continue;
       }
 
@@ -214,6 +229,9 @@ L_Insert:
     }
 
   }
+
+  vTrace("  Api::vWaitJob\n"_Stz);
+  Api::vWaitJob(pOriginatingJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vDeleteJob\n"_Stz);
