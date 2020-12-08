@@ -23,16 +23,18 @@
   
   begin
   
-    begin op.outboundOperand@ not while repeat
+    begin op.outboundOperand@ not while 100 thread::sleepUsec repeat
 
-    op.outboundOperand@
+    op.outboundOperand@ to Operand[]
     nullptr op.outboundOperand!
-    dup
     
+    Operand[].kind ZK_CSVBUFFER
   while
-    
+      Operand[].pipeOut
   repeat
   
+  Operand[].pipeOut
+
   true
 ;
 
@@ -56,7 +58,7 @@
   op__topology
 
   find: input_StartMarker  ZK_STARTMARKER  op[].handler!
-  //find: input_DataPulse    ZK_DATAPULSE    op[].handler!
+  find: input_DataPulse    ZK_DATAPULSE    op[].handler!
   //find: input_PulsedMarker ZK_PULSEDMARKER op[].handler!
   
   op__loop
