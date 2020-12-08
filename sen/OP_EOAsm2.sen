@@ -91,9 +91,9 @@
 
     then
 
-    // set table streamDef as src streamDef
+    // set table streamDef as alt streamDef
     Table[].asAltStreamDef
-    Table[].tablePtn@ to tablePtn[]
+    //Table[].tablePtn@ to tablePtn[]
 
   then
 

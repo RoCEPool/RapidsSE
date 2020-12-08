@@ -295,7 +295,7 @@ void LogicCompiler::vExtractAsm(void)
   s4K sTok;
   while (pFile->bNextLiteTok(sTok)) {
 
-    vTrace("Found macro\n"_Stz);
+    //vTrace("Found macro\n"_Stz);
     while (bExtractAll(pFile,&azCrs,"macro"_Stz, "endMacro"_Stz))
     {;}
   }
@@ -743,7 +743,10 @@ Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet)
   bool bReplaced = false;
   sDst = gszaAmMacros[eMacro];
 
+  //vTrace("SRC: %s\n"_Stz, sDst.azChar());
   for (i8 i_Tag = 0; i_Tag < pTagSet->nEnames(); i_Tag++) {
+
+    //vTrace("tag: %s\n"_Stz, pTagSet->szName(i_Tag));
 
     // expects only strings in the tagsSet
     switch (pTagSet->eToken(i_Tag)) {

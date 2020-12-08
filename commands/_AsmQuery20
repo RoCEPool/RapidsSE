@@ -37,7 +37,7 @@ print "loading part...";
 /time load part "/DATA/TPCH/part_100.tbl";
 
 print "loading partsupp...";
-/time load part "/DATA/TPCH/partsupp_100.tbl";
+/time load partsupp "/DATA/TPCH/partsupp_100.tbl";
 
 // create a temp table
 create table tempTable0 (p_partkey integer);
@@ -45,3 +45,5 @@ create index tempTable0_idx on tempTable0(p_partkey);
 
 /time Query20_S0;
 tableScan tempTable0;
+
+///time Query20_S1;

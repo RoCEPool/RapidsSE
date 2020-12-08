@@ -188,7 +188,7 @@ macro AM_CRWBUFFER_PROJECT_HANDLER
   Label NEXT_CRW_SRC
   EO_CRW_SRC_NEXT
   EO_JMP_FALSE QRY_DONE
-  EO_CALL <crwProcessRoutine>
+  EO_CALL <crwProjectRoutine>
   EO_JMP NEXT_CRW_SRC
   EO_JMP QRY_DONE
  endMacro
@@ -211,46 +211,89 @@ macro AM_CRWBUFFER_FILTER_HANDLER
   EO_CALL <crwFilterRoutine>
   EO_JMP_FALSE NEXT_CRW_SRC
 
-  EO_CALL <crwProcessRoutine>
+  EO_CALL <crwProjectRoutine>
   EO_JMP NEXT_CRW_SRC
 
   EO_JMP QRY_DONE
  endMacro
 
-macro AM_PROJECT_ROUTINE
+macro AM_CRWBUFFER_EXISTS_HANDLER
 //----------------------------------------------------------------------------//
-// macro AM_PROJECT_ROUTINE                                                   //
+// macro AM_CRWBUFFER_EXISTS_HANDLER                                           //
 //----------------------------------------------------------------------------//
-  // PROJECT_ROUTINE
-  Label PROJECT_ROUTINE
+  // AM_CRWBUFFER_EXISTS_HANDLER
+  Label CRWBUFFER_HANDLER
+  EO_PRINTF "**CRWBUFFER_HANDLER**\n"
+  EO_POP
+
+  // forearch src row
+  EO_CRW_SRC_BEGIN
+
+  Label NEXT_CRW_SRC
+
+  EO_CRW_SRC_NEXT
+  EO_JMP_FALSE QRY_DONE
+
+  // test for row exits in altIndex
+  //EO_CALL <srcExistsAltIndex>
+  //EO_JMP_FALSE NEXT_CRW_SRC
+
+  EO_CALL <crwProjectRoutine>
+  EO_JMP NEXT_CRW_SRC
+
+ endMacro
+
+
+macro AM_CRW_PROJECT_ROUTINE
+//----------------------------------------------------------------------------//
+// macro AM_CRW_PROJECT_ROUTINE                                               //
+//----------------------------------------------------------------------------//
+  // CRW_PROJECT_ROUTINE
+  Label CRW_PROJECT_ROUTINE
   EO_SET_ITEMS <projectColumns>
   EO_ROW_DST_NEW
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_PROJECT_COLUMN                                                    //
+// macro AM_SET_SRC_COLUMN                                                    //
 //----------------------------------------------------------------------------//
-macro AM_PROJECT_COLUMN
-  // PROJECT_COLUMN
+macro AM_SET_SRC_COLUMN
+  // SET_SRC_COLUMN
   EO_SET_COLUMN <projectSrcColumn>
-  EO_COL_SRC_PUSHSET      
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_PUSH_SRC                                                          //
+//----------------------------------------------------------------------------//
+macro AM_PUSH_SRC
+  // PUSH_SRC
+  EO_COL_SRC_PUSHSET
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_SET_DST_COLUMN                                                    //
+//----------------------------------------------------------------------------//
+macro AM_SET_DST_COLUMN
+  // SET_DST_COLUMN
   EO_ROW_DST_POPCOLI <projectDstColumn>
 endMacro
+
 
 //----------------------------------------------------------------------------//
 // macro AM_PROJECT_END                                                       //
 //----------------------------------------------------------------------------//
 macro AM_PROJECT_END
   // PROJECT_END
+  EO_ROW_DST_PRINT
   EO_RETURN
 endMacro
 
-macro AM_FILTER_ROUTINE
+macro AM_CRW_FILTER_ROUTINE
 //----------------------------------------------------------------------------//
-// macro AM_FILTER_ROUTINE                                                    //
+// macro AM_CRW_FILTER_ROUTINE                                                //
 //----------------------------------------------------------------------------//
-  // FILTER_ROUTINE
-  Label FILTER_ROUTINE
+  // CRW_FILTER_ROUTINE
+  Label CRW_FILTER_ROUTINE
   //EO_SET_LOCALS_SRC <predicateColumns>
   EO_SET_ITEMS 1
   EO_COL_SRC_PUSHONE <predicateColumns>
@@ -287,12 +330,36 @@ macro AM_FILTER_END
 
 endMacro
 
+
 //----------------------------------------------------------------------------//
-// macro AM_PREDICATE_END                                                     //
+// macro AM_SRC_EXISTS_ALTINDEX                                               //
 //----------------------------------------------------------------------------//
-macro AM_PREDICATE_END
-// PREDICATE_END
+macro AM_SRC_EXISTS_ALTINDEX
+  // SRC_EXISTS_ALTINDEX
+
+  Label SRC_EXISTS_ALTINDEX
+  EO_ROW_SRC_PUSHCOLI 0
+  EO_ENTWRK_SETINTELM
+  EO_IXT_POS_ALTBYWRK
+  EO_JMP_FALSE RETURN_FALSE
+
+  EO_IXT_ALT_NEXT
+  EO_JMP_FALSE RETURN_FALSE
+
+  //EO_IXT_ALT_PRINT
+  EO_IXT_CMP_WRKALT
+  EO_JMP_FALSE RETURN_FALSE
+
+  // found one matching
+  Label RETURN_TRUE
+  EO_PUSH_1
   EO_RETURN
+
+  // no matching lineitem
+  Label RETURN_FALSE
+  EO_PUSH_0
+  EO_RETURN
+
 endMacro
 
 macro AM_QRY_DONE
