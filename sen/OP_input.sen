@@ -25,9 +25,8 @@
   
     begin op.outboundOperand@ not while repeat
 
-    op.outboundOperand@
+    op.outboundOperand@ to Operand[]
     nullptr op.outboundOperand!
-    dup
     
   while
     

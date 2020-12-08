@@ -187,8 +187,7 @@ L_Insert:
       eCN eClassNo;
       eOM eOpMarker;
       Result::vDecode(pOperand,eClassNo,eOpMarker);
-      vTrace("  Operand %s %s\n"_Stz,
-             aCN[eClassNo],aOM[eOpMarker]);
+      vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
 
       //bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
       
@@ -198,7 +197,10 @@ L_Insert:
       }
       
       if (OM_DATAPULSE == eOpMarker) {
-        //pOriginatingJob->m_pInputOp->
+       
+        // push data
+        
+        // push Eos Marker
         continue;
       }
 
