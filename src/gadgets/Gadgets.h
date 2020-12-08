@@ -100,7 +100,10 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 static Stz* C_TAG_QUERY_NO = "<queryNo>"_Stz;
 static Stz* C_TAG_SUBQUERY_NO = "<subQueryNo>"_Stz;
 
-static Stz* C_TAG_SRC_TABLENM  = "<srctableNm>"_Stz;
+static Stz* C_TAG_SRC_TABLENM  = "<srcTableNm>"_Stz;
+static Stz* C_TAG_SRC_INDEXNM  = "<srcIndexNm>"_Stz;
+static Stz* C_TAG_ALT_TABLENM  = "<altTableNm>"_Stz;
+static Stz* C_TAG_ALT_INDEXNM  = "<altIndexNm>"_Stz;
 
 static Stz* C_TAG_COLUMN_SCALE  = "<columnScale>"_Stz;
 static Stz* C_TAG_COLUMN_LENGTH = "<columnLength>"_Stz;

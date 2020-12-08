@@ -37,10 +37,10 @@
   ZK_STARTMARKER Counter0[] executeAsmArgs
 
   // do we have a table ?
-  logicUnit[].srcTable@ "" str.equal not if
+  logicUnit[].srcTable@ "null" str.equal not if
 
     // do we have an index ?
-    logicUnit[].srcIndex@ "" str.equal not if
+    logicUnit[].srcIndex@ "null" str.equal not if
 
       // find the src table and src index
       logicUnit[].srcTable@ logicUnit[].srcIndex@ op__table_index not if
@@ -67,10 +67,10 @@
   then
 
   // do we have an alternate table ?
-  logicUnit[].altTable@ "" str.equal not if
+  logicUnit[].altTable@ "null" str.equal not if
 
     // do we have an alternative index ?
-    logicUnit[].altIndex@ "" str.equal not if
+    logicUnit[].altIndex@ "null" str.equal not if
 
       // find the alt table and alt index
       logicUnit[].altTable@ logicUnit[].altIndex@ op__table_index not if

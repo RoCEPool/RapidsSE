@@ -566,6 +566,9 @@ void LogicUnit::vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // handler for the ZK_STARTMARKER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_SRC_TABLENM, "part"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
@@ -676,6 +679,9 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // handler for the ZK_STARTMARKER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_SRC_TABLENM, "partsupp"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, ""_Stz);
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "tempTable0"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "tempTable0_idx"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
