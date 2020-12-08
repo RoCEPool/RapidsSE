@@ -69,10 +69,14 @@ SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/mersenne/*.cpp)
-SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/antlr/generated/*.cpp)
+
+GRAMMAR_CPP := $(wildcard $(SRC_DIR)/../thirdparty/antlr/generated/*.cpp)
+SOURCES += $(GRAMMAR_CPP)
 
 SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
 S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
+
+SQL_GRAMMAR := ../thirdparty/antlr/sql.g4
 
 # Object directories
 # We separate debug & release so that swapping between builds doesn't mean
@@ -145,7 +149,7 @@ post-build : main-build
 main-build : pre-build
 	@$(MAKE) -e target
 
-pre-build : version thirdparty buildConfigCheck
+pre-build : version thirdparty sql buildConfigCheck
 
 target : $(TARGET_EXE) $(TARGET_LIBRARY)
 
@@ -232,6 +236,12 @@ $(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
 version : FORCE
 	@./generateVersion.sh
 
+# Rules to build the SQL grammar if the .sql file changes
+sql : $(GRAMMAR_CPP)
+
+$(GRAMMAR_CPP) : $(SQL_GRAMMAR)
+	@-../thirdparty/antlr/generate.sh
+
 # Since we write out a debug/release binary in the same location regardless
 # of whether it is a debug or release configuration, we need to handle the
 # case where someone does a make debug and then a make release. Because the
@@ -288,4 +298,4 @@ print-% : ; @echo $* = $($*)
 .SECONDARY :
 
 # List of make targets that don't correlate to files in the filesystem.
-.PHONY : clean distclean FORCE thirdparty antlr tcc version buildConfigCheck target release debug post-build main-build pre-build all
+.PHONY : clean distclean FORCE thirdparty antlr tcc version sql buildConfigCheck target release debug post-build main-build pre-build all
