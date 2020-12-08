@@ -9,20 +9,24 @@ namespace Interface
   {
   public:
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // external API functions
+  
   static Session* pAllocSession(eSK eSession);
   static void vFreeSession(Session* pSession);
 
-  static void vDeleteJob(Job** ppJob);
-  static void vExecuteJob(Job* pJob);
+  static void vDeleteJob(Session* pSession);
+  static void vExecuteJob(Session* pSession);
   static eEC  ePrepareJob(Session* pSession,
                           TokenVec* pCmdTknVec,
                           TokenVec* pLitTknVec,
                           TagSet*   pTagSet);
 
-  static void vSubmitJob(Job* pJob);
-  static void vWaitJob(Job* pJob);
+  static void vSubmitJob(Session* pSession);
+  static void vWaitJob(Session* pSession);
 
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
   
   // external

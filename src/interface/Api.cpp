@@ -49,13 +49,13 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* delete job  =                                                              */
 /*----------------------------------------------------------------------------*/
-void Api::vDeleteJob(Job** ppJob)
+void Api::vDeleteJob(Session* pSession)
 {
   _static_
   
-  Job* pJob = * ppJob;
-  * ppJob = nullptr;
-
+  Job* pJob = pSession->m_pSsnJob;
+  pSession->m_pSsnJob = nullptr;
+  
   delete pJob;
 }
 
@@ -63,11 +63,12 @@ void Api::vDeleteJob(Job** ppJob)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Job* pJob)
+void Api::vExecuteJob(Session* pSession)
 {
   _static_
   
-  Session* pSession = pJob->pSession();
+  Job* pJob = pSession->m_pSsnJob;
+  
   Api::bSpawnJob_session(pJob);
 }
 
@@ -177,7 +178,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   if (pSession->m_pSsnJob->bJobHasError()) {
     eRS eResponse = (eRS)pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
     pSession->m_pSsnJob->vPrintResult(eResponse);
-    Api::vDeleteJob(&pSession->m_pSsnJob);
+    Api::vDeleteJob(pSession);
     return EC_ZZZ_OTHER;
   }
   
@@ -208,11 +209,12 @@ eEC Api::ePrepareJob(Session*  pSession,
 /*----------------------------------------------------------------------------*/
 /* submit job (spawn job but don't wait for completion)                       */
 /*----------------------------------------------------------------------------*/
-void Api::vSubmitJob(Job* pJob)
+void Api::vSubmitJob(Session* pSession)
 {
   _static_
   
-  Session* pSession = pJob->pSession();
+  Job* pJob = pSession->m_pSsnJob;
+
   Api::vMutexLock(pSession,pJob);
 
   RASSERT(JS_LOCKED == pJob->eJobState());
@@ -230,9 +232,9 @@ void Api::vSubmitJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* wait for job completion                                                    */
 /*----------------------------------------------------------------------------*/
-void Api::vWaitJob(Job* pJob)
+void Api::vWaitJob(Session* pSession)
 {
-  Session* pSession = pJob->pSession();
+  Job* pJob = pSession->m_pSsnJob;
   
   pSession->m_oSsnMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);

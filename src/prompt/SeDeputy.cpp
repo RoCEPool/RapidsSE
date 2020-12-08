@@ -133,7 +133,7 @@ void SeDeputy::vExecuteJob(void)
   
   vTrace("vSeDeputy::vExecuteJob\n"_Stz);
   
-  Api::vExecuteJob(m_pSession->m_pSsnJob);
+  Api::vExecuteJob(m_pSession);
   
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
@@ -152,7 +152,7 @@ void SeDeputy::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  Api::vDeleteJob(&m_pSession->m_pSsnJob);
+  Api::vDeleteJob(m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/

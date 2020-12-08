@@ -216,7 +216,7 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Api::vDeleteJob(&pJob);
+  Api::vDeleteJob(pSession);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

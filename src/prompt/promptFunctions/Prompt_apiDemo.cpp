@@ -82,7 +82,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pOriginatingJob);
+  Api::vExecuteJob(pSession);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -107,7 +107,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(&pSession->m_pSsnJob);                                        // FIX
+  Api::vDeleteJob(pSession);   
 
   goto L_End;
   
@@ -170,7 +170,7 @@ L_Insert:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vSubmitJob\n"_Stz);
   //Api::vExecuteJob(pOriginatingJob);
-  Api::vSubmitJob(pOriginatingJob);
+  Api::vSubmitJob(pSession);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -231,11 +231,11 @@ L_Insert:
   }
 
   vTrace("  Api::vWaitJob\n"_Stz);
-  Api::vWaitJob(pOriginatingJob);
+  Api::vWaitJob(pSession);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(&pSession->m_pSsnJob);                                        // FIX
+  Api::vDeleteJob(pSession);
 
   goto L_End;
 
