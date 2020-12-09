@@ -9,8 +9,8 @@ namespace Interface
   {
   public:
   
-    static void* aAllocSession(void);
-    static void vFreeSession(void* aSession);
+    static eEC  eAllocSession(void** aaSession);
+    static eEC  eFreeSession(void** aaSession);
 
     static void vDeleteJob(void* aSession);
     static void vExecuteJob(void* aSession);

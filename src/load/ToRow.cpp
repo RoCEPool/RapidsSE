@@ -190,13 +190,13 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define bAT_DATE_SEPARATOR() \
+#define bIS_DATE_SEPARATOR() \
   (cCurChr == m_cDateSeparator)
 
-#define bAT_FIELD_DELIMITER() \
+#define bIS_FIELD_DELIMITER() \
   (cCurChr == m_cFieldDelimiter)
 
-#define bAT_FIELD_END() \
+#define bIS_FIELD_END() \
   (    cCurChr == m_cFieldDelimiter   \
                                       \
     || cCurChr == m_cRecordTerminator \
@@ -206,15 +206,15 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
        ) \
   )
 
-#define bAT_LINE_END() \
+#define bIS_LINE_END() \
   (cCurChr == m_cLineEnd \
    && ( (! m_cLineEnd2nd) || (cNxtChr == m_cLineEnd2nd) ) \
   )
 
-#define bAT_RECORD_TERMINATOR() \
+#define bIS_RECORD_TERMINATOR() \
   (cCurChr == m_cRecordTerminator)
 
-#define bAT_TIME_SEPARATOR() \
+#define bIS_TIME_SEPARATOR() \
   (cCurChr == C_TIME_SEPARATOR)
 
 #define bCHUNK_END() \
@@ -237,7 +237,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
   (' ' == cCurChr)
 
 #define bNOISY_FIELD_END() \
-  (! bAT_FIELD_END())
+  (! bIS_FIELD_END())
 
 #define bIS_WHITE_SPACE() \
   ( (cCurChr == ' ' ) || \
@@ -365,12 +365,17 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     } \
   }
 
+#define vDATE_SEPERATOR() \
+  if (! bIS_DATE_SEPARATOR()) \
+    vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);\
+  vACCEPT_CHAR();
+
 
 //--
 
 #define vIF_NULL_FORM(_label,_errorCode) \
   \
-  if (bAT_FIELD_END()) \
+  if (bIS_FIELD_END()) \
     goto _label; \
   \
   if ('n' == cCurChr || 'N' == cCurChr) { \
@@ -405,7 +410,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     vACCEPT_CHAR(); \
     if ('N' == cCurChr) { \
       vSKIP_WHITE_SPACE(); \
-    if (bAT_FIELD_END()) \
+    if (bIS_FIELD_END()) \
         goto _label; \
     } \
     vFIELD_ERROR(_errorCode);\
@@ -670,7 +675,7 @@ L_TestMoreRecords:
       continue;
     }
     
-    if (bAT_LINE_END()) {
+    if (bIS_LINE_END()) {
       vSKIP_LINE_END();
       azRecordStart = azCsvCrs - 1;
       continue;
@@ -989,7 +994,7 @@ L_Date_nextComponent:
   
   // skip over separator between components
   if (i_DateComponent > 0) {
-    if (! bAT_DATE_SEPARATOR())
+    if (! bIS_DATE_SEPARATOR())
       vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
     vACCEPT_CHAR(); // skip separator
   }
@@ -1641,7 +1646,7 @@ L_Time:
   vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
   
   // skip over mandatory time separator
-  if (! bAT_TIME_SEPARATOR())
+  if (! bIS_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
   
@@ -1658,7 +1663,7 @@ L_Time:
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   
   // skip over mandatory time separator
-  if (! bAT_TIME_SEPARATOR())
+  if (! bIS_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
 
@@ -1976,7 +1981,7 @@ L_Timestamp_noTimeComponents:
   
 //  vSKIP_WHITE_SPACE();
 //
-//  if (! (bAT_FIELD_END()))
+//  if (! (bIS_FIELD_END()))
 //    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
   /* FALLSTHROUGH */
@@ -2061,7 +2066,7 @@ L_Varchar:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (bAT_FIELD_END())
+  if (bIS_FIELD_END())
     goto L_Varchar_setNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2091,7 +2096,7 @@ L_Varchar:
       goto L_Varchar_which;
     }
     
-    if (! (bAT_FIELD_END())) {
+    if (! (bIS_FIELD_END())) {
       vRESET_FIELD();
       goto L_Varchar_which;
     }
@@ -2106,7 +2111,7 @@ L_Varchar:
     vACCEPT_CHAR(); // accept m_cEscapeChar
     if ('N' == cCurChr) {
       vACCEPT_CHAR(); // accept 'N'
-      if (bAT_FIELD_END())
+      if (bIS_FIELD_END())
         goto L_Varchar_setNull;
     }
   
@@ -2158,7 +2163,7 @@ L_Varchar_unquoted:
   while (! bIS_NULL()) {
         
     // test for field separator (because its not enclosed)
-    if (bAT_FIELD_END())
+    if (bIS_FIELD_END())
       break;
     
     if (cCurChr == m_cEscapeChar) {
@@ -2555,7 +2560,7 @@ L_FieldEnd:
 
    */
 
-  RASSERT(bAT_FIELD_END());
+  RASSERT(bIS_FIELD_END());
   
   if (cCurChr == m_cFieldDelimiter)
     vACCEPT_CHAR(); // accept field delimiter
@@ -2649,7 +2654,7 @@ L_FieldError:
   // resynch csv cursor to first char after next record end
   
   // consume up to and include end of line
-  while (! bAT_LINE_END())
+  while (! bIS_LINE_END())
     vACCEPT_CHAR(); // skip any
   vSKIP_LINE_END();
   

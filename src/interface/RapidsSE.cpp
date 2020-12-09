@@ -7,23 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
-void* RapidsSE::aAllocSession(void)
+eEC RapidsSE::eAllocSession(void** aaSession)
 {
   _static_
     
-  Session* pSession = Api::pAllocSession(SK_EXTERNAL);
-  return pSession;
+  * aaSession = Api::pAllocSession(SK_EXTERNAL);
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free a session                                                             */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vFreeSession(void* aSession)
+eEC RapidsSE::eFreeSession(void** aaSession)
 {
   _static_
   
-  Session* pSession = _pSession(aSession);
+  Session* pSession = _pSession(*aaSession);
+  * aaSession = nullptr;
   Api::vFreeSession(pSession);
+  return EC_NONE;
 }
 
 //

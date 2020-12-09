@@ -7,6 +7,10 @@ enum eEC // error code
 {
   /* */ EC_NONE=0,
   
+  /* */ EC_DONE,
+  
+  // - - - - - - - - - - - - - - - - - - -
+  
   /* */ EC_ASSERT,
   
   /* */ EC_BLANKLINE,
@@ -15,7 +19,6 @@ enum eEC // error code
   /* */ EC_CLUSTER_NOT_CONNECTED,
   /* */ EC_CLUSTER_PARTITIONS_MISMATCH,
   /* */ EC_CLUSTER_SIZE_MISMATCH,
-  
   
   /* */ EC_CSV_BOOLEAN_INVALID,
   /* */ EC_CSV_BOOLEAN_TOO_LARGE,
@@ -49,7 +52,6 @@ enum eEC // error code
   /* */ EC_CSV_YEAR_INVALID,
   /* */ EC_CSV_YEAR_TOO_SMALL,
   /* */ EC_CSV_YEAR_TOO_LARGE,
-
 
   /* */ EC_DUPLICATE_COLUMN,
   /* */ EC_DUPLICATE_KEY,
@@ -150,7 +152,12 @@ static Stz* aEC[]
 {
   /* */ "none"_Stz,
   
+  /* */ "done"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - -
+
   /* */ "assert"_Stz,
+  
   /* */ "blank line"_Stz,
   
   /* */ "catalog exists"_Stz,

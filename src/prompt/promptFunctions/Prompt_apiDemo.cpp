@@ -53,8 +53,8 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::aAllocSession\n"_Stz);
-  aSession = RapidsSE::aAllocSession();
-  if (! aSession) {
+  eError = RapidsSE::eAllocSession(&aSession);
+  if (eError) {
     vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
@@ -131,8 +131,8 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Get:
   vTrace("  RapidsSE::aAllocSession\n"_Stz);
-  aSession = RapidsSE::aAllocSession();
-  if (! aSession) {
+  eError = RapidsSE::eAllocSession(&aSession);
+  if (eError) {
     vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
@@ -175,7 +175,7 @@ L_Get:
 
 L_Cleanup:
   if (aSession)
-    RapidsSE::vFreeSession(aSession);
+    RapidsSE::eFreeSession(&aSession);
   if (pCsvBuffer)
     delete pCsvBuffer;
   if (pReader)
