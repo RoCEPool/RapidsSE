@@ -388,11 +388,15 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     } \
   }
 
-#define vDATE_SEPERATOR() \
+#define vDATE_SEPARATOR() \
   if (! bIS_DATE_SEPARATOR()) \
     vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);\
   vACCEPT_CHAR();
 
+#define vTIME_SEPARATOR() \
+  if (! bIS_TIME_SEPARATOR()) \
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING); \
+  vACCEPT_CHAR();
 
 //--
 
@@ -1020,7 +1024,7 @@ L_Date_nextComponent:
 //    if (! bIS_DATE_SEPARATOR())
 //      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
 //    vACCEPT_CHAR(); // skip separator
-    vDATE_SEPERATOR();
+    vDATE_SEPARATOR();
   }
 
   switch (m_eDateComponent[i_DateComponent]) {
@@ -1674,14 +1678,15 @@ L_Time:
                 EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
-  if (! bIS_TIME_SEPARATOR())
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
+//  if (! bIS_TIME_SEPARATOR())
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
   
 //  if (uHourComponent > 23)
 //    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   
-
+  vTIME_SEPARATOR();
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
@@ -1694,9 +1699,11 @@ L_Time:
                 EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
-  if (! bIS_TIME_SEPARATOR())
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
+//  if (! bIS_TIME_SEPARATOR())
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
+
+  vTIME_SEPARATOR();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
@@ -1840,7 +1847,7 @@ L_Timestamp_nextComponent:
 //    if (cCurChr != m_cDateSeparator)
 //      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
 //    vACCEPT_CHAR(); // skip separator
-    vDATE_SEPERATOR();
+    vDATE_SEPARATOR();
   }
 
   switch (m_eDateComponent[i_DateComponent]) {
@@ -1963,11 +1970,12 @@ L_Timestamp_dateCollected:
                 EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
-  if (cCurChr != C_TIME_SEPARATOR)
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
+//  if (cCurChr != C_TIME_SEPARATOR)
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
   
-  
+  vTIME_SEPARATOR();
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
@@ -1983,11 +1991,12 @@ L_Timestamp_dateCollected:
                 EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
-  if (cCurChr != C_TIME_SEPARATOR)
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
+//  if (cCurChr != C_TIME_SEPARATOR)
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
 
-  
+  vTIME_SEPARATOR();
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
