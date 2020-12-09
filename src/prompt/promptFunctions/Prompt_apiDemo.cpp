@@ -47,15 +47,16 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   Session* pSession;
   Job* pOriginatingJob;
 
-  if (pPrompt->pInpTknVec()->nItems() > 1)
-    goto L_Insert;
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("put"_Stz))
+    goto L_Put;
 
   
   
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pInpTknVec->vTokeniseC("tableScan bolTbl"_Stz);
+  pInpTknVec->vTokeniseC("tableScan lineitem"_Stz);
   pInpTknVec->vDumpVec(0);
 
   oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
@@ -69,8 +70,6 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
-  
-  pOriginatingJob = pSession->pJob();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::ePrepareJob\n"_Stz);
@@ -86,10 +85,12 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vExecuteJob\n"_Stz);
   Api::vExecuteJob(pSession);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
+
+  pOriginatingJob = pSession->pJob();
+  
   if (pOriginatingJob->bIsPipeline()) {
     //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
     
@@ -118,7 +119,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_Insert:
+L_Put:
   pInpTknVec->vTokeniseC("apiInsert lineitem"_Stz);
   pInpTknVec->vDumpVec(0);
 
@@ -136,7 +137,7 @@ L_Insert:
   
   
   pReader = new Reader;
-  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_100.csv"_Stz);
+  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
   if (! b) {
     vTrace("Unable to open input file\n"_Stz);
     goto L_Cleanup;
