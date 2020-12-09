@@ -81,8 +81,9 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     
   for (;;) {
         
-    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
-    if (! pOperand)
+    eError = RapidsSE::ePopOperand(aSession,(void**)&pOperand,
+                                   &eClassNo,&eOpMarker);
+    if (eError)
       break;
     
     vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
@@ -182,8 +183,9 @@ L_Get:
       
   for (;;) {
     
-    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
-    if (! pOperand)
+    eError = RapidsSE::ePopOperand(aSession,(void**)&pOperand,
+                                   &eClassNo,&eOpMarker);
+    if (eError)
       break;
     
     eError = RapidsSE::eProcessOperand(aSession,(void**)&pOperand);

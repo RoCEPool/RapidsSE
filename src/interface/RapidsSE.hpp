@@ -18,9 +18,8 @@ namespace Interface
     static eEC  eSubmitJob(void* aSession);
     static eEC  eWaitJob(void* aSession);
   
-    static Operand* pPopOperand(void* aSession,
-                                eCN* aeClassNo,
-                                eOM* aeOpMarker);
+    static eEC  ePopOperand(void* aSession, void** aaOperand,
+                            eCN* aeClassNo, eOM* aeOpMarker);
     static eEC  eProcessOperand(void* aSession, void** aaOperand);
     static eEC  ePushOperand(void* aSession, void** aaOperand);
 

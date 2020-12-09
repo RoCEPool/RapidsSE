@@ -115,9 +115,8 @@ eEC RapidsSE::eWaitJob(void* aSession)
 /*----------------------------------------------------------------------------*/
 /* push operand to input op                                                   */
 /*----------------------------------------------------------------------------*/
-Operand* RapidsSE::pPopOperand(void* aSession,
-                               eCN* aeClassNo,
-                               eOM* aeOpMarker)
+eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,
+                          eCN* aeClassNo, eOM* aeOpMarker)
 {
   Session* pSession = _pSession(aSession);
   
@@ -130,10 +129,11 @@ Operand* RapidsSE::pPopOperand(void* aSession,
   
   Result::vDecode(pOperand,eClassNo,eOpMarker);
   
+  * aaOperand  = pOperand;
   * aeClassNo  = eClassNo;
   * aeOpMarker = eOpMarker;
   
-  return pOperand;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
