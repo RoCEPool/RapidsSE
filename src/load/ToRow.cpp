@@ -398,6 +398,29 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING); \
   vACCEPT_CHAR();
 
+#define vYEAR_SPECIFICS() \
+  /* adjust a 2-digit year */ \
+  if (uYearComponent <= 99) \
+    uYearComponent += 2000; \
+  \
+  /* validate the year */ \
+  if (uYearComponent < C_YEAR_MIN) \
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL); \
+  \
+  if (uYearComponent > C_YEAR_MAX) \
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE); \
+  \
+  /* determine if a leap year */ \
+  if (uYearComponent % 4 == 0) { \
+    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0)) \
+      bIsLeapYear = false; \
+    else \
+      bIsLeapYear = true; \
+  } \
+  else { \
+    bIsLeapYear = false; \
+  }
+
 //--
 
 #define vIF_NULL_FORM(_label,_errorCode) \

@@ -36,6 +36,7 @@ namespace Steps
     static void vAddSteps_Compiler(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
+    static void vAddSteps_CrwToRow(void);
     static void vAddSteps_CsvBuffer(void);
     static void vAddSteps_Cursor(void);
   
