@@ -24,7 +24,7 @@ namespace Chunks
    ~Reader() noexcept(false);
   
     void  vCloseFile(void);
-    bool  bOpenRead(s256& sPath);
+    bool  bOpenRead(Stz* szPath);
     i8    nReadLines(Stz* szInto, i8 nMaxBytes);
 
     Footer* aFooter(void);

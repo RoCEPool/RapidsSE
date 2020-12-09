@@ -17,7 +17,7 @@ __aFooterFunction(Reader)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Reader::Reader(void)
-: Object(CN_PERUSE)
+: Object(CN_READER)
 , m_oFile(nullptr)
 {
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
@@ -54,12 +54,12 @@ void Reader::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Reader::bOpenRead(s256& sPath)
+bool Reader::bOpenRead(Stz* szPath)
 {
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
 
   // open the file
-  bool bOpened = m_oFile.bOpenRead(sPath);
+  bool bOpened = m_oFile.bOpenRead(szPath);
   
   return bOpened;
 }
@@ -69,8 +69,8 @@ bool Reader::bOpenRead(s256& sPath)
 /*----------------------------------------------------------------------------*/
 i8 Reader::nReadLines(Stz* szInto, i8 nMaxBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_MAGIC_,CN_READER,_FOOTER_);
+
   m_oFile.vSeek(m_i_Seek);
   
   i8 nBytesRead = m_oFile.nReadBytes(szInto->azChar(),nMaxBytes);
@@ -86,6 +86,8 @@ i8 Reader::nReadLines(Stz* szInto, i8 nMaxBytes)
     --nTrimmedTo;
   }
     
+  ((char*)szInto)[nTrimmedTo] = '\0';
+  
   m_i_Seek += nTrimmedTo;
   
   return nTrimmedTo;
