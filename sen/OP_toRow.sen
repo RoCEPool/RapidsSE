@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_toRow.sen -- Convert csv buffers to row slab buffers                    */
+/* OP_toRow.sen -- Convert csv buffers to row buffers                         */
 /*============================================================================*/
 
 " OP_toRow.sen" .verbose

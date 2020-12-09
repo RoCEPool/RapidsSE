@@ -1668,25 +1668,31 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
-  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+//  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
   
+  vNUMBER_range(uHourComponent,2,0,23,
+                EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+
   // skip over mandatory time separator
   if (! bIS_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
   
-  if (uHourComponent > 23)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
+//  if (uHourComponent > 23)
+//    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
-  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
-
-  if (uMinuteComponent > 59)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+//  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+//
+//  if (uMinuteComponent > 59)
+//    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   
+  vNUMBER_range(uMinuteComponent,2,0,59,
+                EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+
   // skip over mandatory time separator
   if (! bIS_TIME_SEPARATOR())
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
@@ -1695,10 +1701,13 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
-  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+//  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+//
+//  if (uSecondComponent > 59)
+//    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
 
-  if (uSecondComponent > 59)
-    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+  vNUMBER_range(uSecondComponent,2,0,59,
+                EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion

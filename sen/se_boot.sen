@@ -104,6 +104,7 @@ assert::stack_0
         "OP_createSchema.sen"         include
         "OP_createTable.sen"          include
         "OP_createTenant.sen"         include
+        "OP_crwToRow.sen"             include
 
         "OP_defineTable.sen"          include
         "OP_delete.sen"               include

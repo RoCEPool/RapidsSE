@@ -1,0 +1,91 @@
+/*============================================================================*/
+/* OP_crwToRow.sen -- Convert crw buffers to row buffers                      */
+/*============================================================================*/
+
+" OP_crwToRow.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: crwToRow_StartMarker \handler
+
+  // test and create Table[] using <tableNm>
+  <tableNm> op__table if
+
+    // create a ToRow using Table[].streamDef
+    ToRow[].create
+
+    // pipeout the (StartMarker)
+    PipeIn[].pipeOut
+
+    // new and pipe out (StreamDef)  DOES NOT SET StreamDef[]??
+    Operand[].newStreamDef
+    Operand[].pipeOut
+
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: crwToRow_CrwBuffer \handler
+
+  PipeIn[] to Operand[]
+  nullptr to PipeIn[]
+
+  //Operand[]
+  //profile.start
+
+  Operand[].crwToRow
+
+  //profile.end
+
+  // test for any completed
+  ToRow[].completed to OperandB[]
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    ToRow[].completed to OperandB[]
+  repeat
+
+  Operand[].delete
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* crwToRow request                                                     SPAWN */
+/*----------------------------------------------------------------------------*/
+: crwToRow_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: crwToRow_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: crwToRow_StartMarker ZK_STARTMARKER op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toRow :: crwToRow ;
+
+: crwToRow _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
