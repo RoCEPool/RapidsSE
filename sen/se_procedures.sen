@@ -1909,6 +1909,39 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - interpretive
+  sPath
+  "
+  procedure Query6_S
+    parameters $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | genAsmTxt 6 1 ../eo_text/asm6_s1.txt
+    | stageB
+
+  stage stageB on all nodes :
+    genAsmTxt 6 0 ../eo_text/asm6_s0.txt
+    | stageC
+
+  stage stageB on all partitions :
+    EOAsm2 ./eo_text/asm6_s0.txt 0
+    | stageC
+
+  stage stageC on origin :
+    EOAsm2 ./eo_text/asm6_s1.txt 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 20 -
   //   [P0] ( insert into temptable select p_partkey from part where p_mfgr = 'Manufacturer#1' )
 

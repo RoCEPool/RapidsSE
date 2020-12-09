@@ -250,34 +250,27 @@ macro AM_CRW_PROJECT_ROUTINE
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_ROUTINE
   Label CRW_PROJECT_ROUTINE
-  EO_SET_ITEMS <projectColumns>
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMNS <projectSrcColumns>
   EO_ROW_DST_NEW
-endMacro
-
-//----------------------------------------------------------------------------//
-// macro AM_SET_SRC_COLUMN                                                    //
-//----------------------------------------------------------------------------//
-macro AM_SET_SRC_COLUMN
-  // SET_SRC_COLUMN
-  EO_SET_COLUMN <projectSrcColumn>
-endMacro
-
-//----------------------------------------------------------------------------//
-// macro AM_PUSH_SRC                                                          //
-//----------------------------------------------------------------------------//
-macro AM_PUSH_SRC
-  // PUSH_SRC
   EO_COL_SRC_PUSHSET
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_SET_DST_COLUMN                                                    //
+// macro AM_SET_DST_COLUMNI                                                   //
 //----------------------------------------------------------------------------//
-macro AM_SET_DST_COLUMN
-  // SET_DST_COLUMN
+macro AM_SET_DST_COLUMNI
+  // SET_DST_COLUMNI
   EO_ROW_DST_POPCOLI <projectDstColumn>
 endMacro
 
+//----------------------------------------------------------------------------//
+// macro AM_SET_DST_COLUMNS                                                   //
+//----------------------------------------------------------------------------//
+macro AM_SET_DST_COLUMNS
+  // SET_DST_COLUMNS
+  EO_ROW_DST_POPCOLS <projectDstColumn>
+endMacro
 
 //----------------------------------------------------------------------------//
 // macro AM_PROJECT_END                                                       //
@@ -338,7 +331,7 @@ macro AM_SRC_EXISTS_ALTINDEX
   // SRC_EXISTS_ALTIDX
 
   Label SRC_EXISTS_ALTIDX
-  EO_SET_ITEMS <projectColumns>
+  EO_SET_ITEMS <projectItems>
   EO_SET_COLUMN <projectSrcColumn>
   EO_COL_SRC_PUSHSET
 
