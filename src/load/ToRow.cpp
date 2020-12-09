@@ -1067,11 +1067,12 @@ L_Date_year:
     
 L_Date_month:
   
-  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+  vNUMBER_range(uMonthComponent,2,1,12,
+                EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
   
   // validate the month
-  if (uMonthComponent < 1 || uMonthComponent > 12)
-    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
+//  if (uMonthComponent < 1 || uMonthComponent > 12)
+//    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
 
   goto L_Date_nextComponent;
 

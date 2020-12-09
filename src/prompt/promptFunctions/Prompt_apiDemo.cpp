@@ -44,7 +44,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
+/* RapidsSE Api Demo : get rows (table scan example)                          */
 /*----------------------------------------------------------------------------*/
 void vRapidsSE_ApiDemo_get(void)
 {
@@ -109,12 +109,10 @@ L_CleanUp:
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
+/* RapidsSE Api Demo : put rows (insert into table example)                   */
 /*----------------------------------------------------------------------------*/
 void vRapidsSE_ApiDemo_put(void)
 {
-  vTrace("Api Demo\n"_Stz);
-  
   void* aSession = nullptr;
   void* aOperand = nullptr;
   eCN eClassNo;
@@ -127,44 +125,41 @@ void vRapidsSE_ApiDemo_put(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // create a csv file reader
   Reader* pReader = new Reader;
   bool b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
   if (! b) ERROR_HANDLER(EC_NO_SUCH_FILE);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::aAllocSession\n"_Stz);
+  // allocate an SE session
   eError = RapidsSE::eAllocSession(&aSession);
   if (eError) ERROR_HANDLER(eError);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  // parse command and prepare job
   eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
   if (eError) ERROR_HANDLER(eError);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vSubmitJob\n"_Stz);
+  // submit job
   eError = RapidsSE::eSubmitJob(aSession);
   if (eError) ERROR_HANDLER(eError);
 
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Process Results\n"_Stz);
-    
+  // push buffers and markers
+
   for (;;) {
         
+    // get next operand
     eError = RapidsSE::ePopOperand(aSession,&aOperand,
                                    &eClassNo,&eOpMarker);
     if (eError)
       break;
-    
-    vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
-    
+        
+    // exit marker?
     if (OM_EXITMARKER == eOpMarker) {
       RapidsSE::eDeleteOperand(aSession,&aOperand);
       break;
     }
     
+    // push data?
     if (OM_DATAPULSE == eOpMarker) {
      
       // push DataPulse Marker
@@ -173,6 +168,7 @@ void vRapidsSE_ApiDemo_put(void)
 
       for (;;) {
                 
+        // read a bufer of csv data
         pCsvBuffer = pReader->pReadCsvBuffer();
         if (! pCsvBuffer)
           break;
@@ -190,31 +186,31 @@ void vRapidsSE_ApiDemo_put(void)
       continue;
     }
 
+    // default processing for any other operand
     eError = RapidsSE::eProcessOperand(aSession,&aOperand);
     if (eError)
       break;
   }
 
-  vTrace("  RapidsSE::vWaitJob\n"_Stz);
+  // wait for job to complete
   eError = RapidsSE::eWaitJob(aSession);
   if (eError) ERROR_HANDLER(eError);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  // delete the job
   eError = RapidsSE::eDeleteJob(aSession);
   if (eError) ERROR_HANDLER(eError);
 
   goto L_CleanUp;
 
-  //----------------------------------------------------------------------------
-  //----------------------------------------------------------------------------
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // error handler
+  
 L_Error:
   vTrace("  Error : code %lld line %lld : %s\n"_Stz,
          eError,iErrLine,RapidsSE::aErrorText(eError));
 
-  //----------------------------------------------------------------------------
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clean up
 
 L_CleanUp:
   if (aSession)
