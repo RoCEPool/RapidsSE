@@ -1260,7 +1260,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
   for (;;) {
     
-#ifdef WITH_TRACE_LOGICUNIT
+//#ifdef WITH_TRACE_LOGICUNIT
     // check for stack growth
     if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -1270,11 +1270,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
-#endif
+//#endif
     
     eEO eCode = *aeCode++;
 #ifdef WITH_TRACE_LOGICUNIT
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
     
     switch (eCode) { //+ExtractBegin
@@ -1698,6 +1698,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = iArg;
         break;//+endCase
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // columns set
+      case EO_SET_COLUMNS: { ArgGet(iArg); // add columns to set
+        dLU1(EO_SET_COLUMN, iArg);
+        i8 iCol = 0;
+        for (i8 iBit = 0; iBit < C_BITS_PER_WORD; iBit++) {
+          if (BitLib::bIsOn(iArg, iBit))
+            iaColSet[iCol++] = iBit;
+        }
+        //*(++aiDstk) = iArg;
+      }
+        break;//+endCase
+        
       case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
         dLU1(EO_SET_ITEMS,iArg);
         i_ColSet = iArg;
@@ -2190,6 +2203,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src row
         dLU0(EO_CRW_SRC_NEXT);
+        //((DevIXT*)aRluCommon->m_pDevSrcIxt)->m_pCrwBuffer->vDump();
         //iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
         
         
@@ -2551,6 +2565,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_CMP_WRKALT: ArgNil(); // compare wrk.key to alt.key
 //      iRes = iDev_IXT_CMP_WRKALT(pLU);
+        vTrace("Key0 : %lld; key1: %lld\n"_Stz,
+               aRluCommon->m_aWrkEnt->m_iIntElm0, aRluCommon->m_aAltEnt->m_iIntElm0);
         iRes = (aRluCommon->m_aWrkEnt->m_iIntElm0 ==
                 aRluCommon->m_aAltEnt->m_iIntElm0);
         dLU1(EO_IXT_CMP_WRKALT,iRes);

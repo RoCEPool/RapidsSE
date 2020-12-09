@@ -119,9 +119,10 @@ static Stz* C_TAG_SRC_EXISTS_ALTIDX     = "<srcExitsAltIdx>"_Stz;
 
 static Stz* C_TAG_ROW_PROJECT_ROUTINE   = "<rowProjectRoutine>"_Stz;
 
-static Stz* C_TAG_PROJECT_COLUMNS      = "<projectColumns>"_Stz;
-static Stz* C_TAG_PROJECT_SRC_COLUMN   = "<projectSrcColumn>"_Stz;
-static Stz* C_TAG_PROJECT_DST_COLUMN   = "<projectDstColumn>"_Stz;
+static Stz* C_TAG_PROJECT_ITEMS         = "<projectItems>"_Stz;
+static Stz* C_TAG_PROJECT_SRC_COLUMN    = "<projectSrcColumn>"_Stz;
+static Stz* C_TAG_PROJECT_SRC_COLUMNS   = "<projectSrcColumns>"_Stz;
+static Stz* C_TAG_PROJECT_DST_COLUMN    = "<projectDstColumn>"_Stz;
 
 static Stz* C_TAG_PREDICATE_COLUMNS     = "<predicateColumns>"_Stz;
 static Stz* C_TAG_PREDICATE_SRC_COLUMN  = "<predicateSrcColumn>"_Stz;

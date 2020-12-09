@@ -501,19 +501,17 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
   oTagSet.vReset();
 
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 5);
+
   // add the columns to be projected to PROJECT_COLUMNS
-  oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
   oTagSet.vReset();
 
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, 5);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_SRC_COLUMN, &oTagSet));
-  oTagSet.vReset();
-
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PUSH_SRC, &oTagSet));
-
   oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
   oTagSet.vReset();
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
@@ -638,18 +636,17 @@ void LogicUnit::vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // PROJECT_ROUTINE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_ROUTINE
-  oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 1);
+
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 0);
+
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
   oTagSet.vReset();
 
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, (i8)0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_SRC_COLUMN, &oTagSet));
-  oTagSet.vReset();
-
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PUSH_SRC, &oTagSet));
-
   oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
   oTagSet.vReset();
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
@@ -749,13 +746,12 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute CRWBUFFER_EXISTS and PROJECT_ROUTINE for each row
   oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
-
   oTagSet.vAppend(C_TAG_SRC_EXISTS_ALTIDX, "SRC_EXISTS_ALTIDX"_Stz);
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_EXISTS_HANDLER, &oTagSet));
   oTagSet.vReset();
 
-  oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, (i8)0);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_SRC_EXISTS_ALTINDEX, &oTagSet));
   oTagSet.vReset();
@@ -780,35 +776,26 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // PROJECT_ROUTINE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_ROUTINE
-  oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 3);
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 0);
+  BitLib::vSetOn(uProjectColumns, 1);
+  BitLib::vSetOn(uProjectColumns, 2);
+
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 3);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
   oTagSet.vReset();
 
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, (i8)2);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_SRC_COLUMN, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, (i8)1);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_SRC_COLUMN, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, (i8)0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_SRC_COLUMN, &oTagSet));
-  oTagSet.vReset();
-
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PUSH_SRC, &oTagSet));
-  oTagSet.vReset();
-
   oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)2);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
   oTagSet.vReset();
 
   oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)1);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
   oTagSet.vReset();
 
   oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
   oTagSet.vReset();
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
