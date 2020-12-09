@@ -21,6 +21,7 @@ namespace Interface
     static Operand* pPopOperand(void* aSession,
                                 eCN* aeClassNo,
                                 eOM* aeOpMarker);
+    static bool bProcessOperand(void* aSession, void** aaOperand);
     static void vPushOperand(void* aSession, void** aaOperand);
 
   };

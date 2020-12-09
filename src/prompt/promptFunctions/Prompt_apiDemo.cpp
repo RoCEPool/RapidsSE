@@ -25,23 +25,16 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 {
   vTrace("Api Demo\n"_Stz);
   
-  CsvBuffer* pCsvBuffer = nullptr;
-  Marker* pPulsedMarker = nullptr;
-  Marker* pDataMarker = nullptr;
-  Marker* pEosMarker = nullptr;
-
+  void* aSession = nullptr;
   Reader* pReader = nullptr;
+  CsvBuffer* pCsvBuffer = nullptr;
   Operand* pOperand = nullptr;
   
-  i8 nBytesToRead = 512; // C_512KB;
-
   bool b;
   char* azInto;
   i8 nBytesRead;
 
   eEC eError;
-  void* aSession;
-  Job* pOriginatingJob;
   eCN eClassNo;
   eOM eOpMarker;
 
@@ -53,7 +46,6 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   //----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pReader = new Reader;
   b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
   if (! b) {
@@ -74,14 +66,11 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
   if (eError) {
     vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_End;
+    goto L_Cleanup;
   }
-
-  pOriginatingJob = ((Session*)aSession)->pJob();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::vSubmitJob\n"_Stz);
-  //RapidsSE::vExecuteJob(pOriginatingJob);
   RapidsSE::vSubmitJob(aSession);
 
 
@@ -89,15 +78,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   vTrace("  Process Results\n"_Stz);
     
   for (;;) {
-    
-//    Operand* pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
-//    if (! pOperand)
-//      break;
-//
-//    eCN eClassNo;
-//    eOM eOpMarker;
-//    Result::vDecode(pOperand,eClassNo,eOpMarker);
-    
+        
     pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
     if (! pOperand)
       break;
@@ -118,7 +99,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
         
         pCsvBuffer = new CsvBuffer;
         azInto = (char*)pCsvBuffer->ayDataArea();
-        nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
+        nBytesRead = pReader->nReadLines((Stz*)azInto,512);
         
         if (! nBytesRead) {
           delete pCsvBuffer;
@@ -136,18 +117,16 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
       }
       
       // push Eos Marker
-      pEosMarker = new Marker(OM_EOSMARKER);
-      RapidsSE::vPushOperand(aSession,(void**)&pEosMarker);
+      pOperand = new Marker(OM_EOSMARKER);
+      RapidsSE::vPushOperand(aSession,(void**)&pOperand);
 
       continue;
     }
 
-
-    bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
+    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
     if (! b)
       break;
   }
-
 
   vTrace("  RapidsSE::vWaitJob\n"_Stz);
   RapidsSE::vWaitJob(aSession);
@@ -156,9 +135,11 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   vTrace("  RapidsSE::vDeleteJob\n"_Stz);
   RapidsSE::vDeleteJob(aSession);
 
-  goto L_End;
+  goto L_Cleanup;
 
-
+  
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Get:
@@ -174,7 +155,7 @@ L_Get:
   eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
   if (eError) {
     vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_End;
+    goto L_Cleanup;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -183,16 +164,14 @@ L_Get:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
-
-  pOriginatingJob = ((Session*)aSession)->pJob();
       
   for (;;) {
     
-    pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
+    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
     if (! pOperand)
       break;
     
-    bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
+    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
     if (! b)
       break;
   }
@@ -201,24 +180,19 @@ L_Get:
   vTrace("  RapidsSE::vDeleteJob\n"_Stz);
   RapidsSE::vDeleteJob(aSession);
 
-  goto L_End;
+  goto L_Cleanup;
 
+  
   //----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_End:
-  vTrace("  RapidsSE::vFreeSession\n"_Stz);
-  RapidsSE::vFreeSession(aSession);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Cleanup:
-  if (pCsvBuffer) {
+  if (aSession)
+    RapidsSE::vFreeSession(aSession);
+  if (pCsvBuffer)
     delete pCsvBuffer;
-  }
-  if (pReader) {
+  if (pReader)
     delete pReader;
-  }
 
   return true;
 }

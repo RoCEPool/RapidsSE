@@ -281,7 +281,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
   if (nWholeDigits > _maxDigits) \
     vFIELD_ERROR(_errorCode2)
 
-#define vSIGN_OPT() \
+#define vSIGN_optional() \
   if (cCurChr == C_MINUS_SIGN) { \
     bIsNegative = true; \
     vACCEPT_CHAR(); \
@@ -324,8 +324,10 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 #define vWHITE_SPACE_leading() \
   vSKIP_WHITE_SPACE()
 
-#define vSKIP_WHITE_SPACE_TRAILING() \
-  vSKIP_WHITE_SPACE()
+#define vWHITE_SPACE_trailing(_errorCode) \
+  vSKIP_WHITE_SPACE() \
+  if (bNOISY_FIELD_END()) \
+    vFIELD_ERROR(_errorCode);
 
 #define vSKIP_LINE_END() \
   { \
@@ -383,7 +385,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
       vFIELD_ERROR(_errorCode); \
     } \
     \
-    vSKIP_WHITE_SPACE_TRAILING(); \
+    vSKIP_WHITE_SPACE(); \
     if (bNOISY_FIELD_END()) \
       vFIELD_ERROR(_errorCode); \
     \
@@ -393,7 +395,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
   if (cCurChr == m_cEscapeChar) { \
     vACCEPT_CHAR(); \
     if ('N' == cCurChr) { \
-      vSKIP_WHITE_SPACE_TRAILING(); \
+      vSKIP_WHITE_SPACE(); \
     if (bAT_FIELD_END()) \
         goto _label; \
     } \
@@ -894,9 +896,9 @@ L_Boolean:
   
 L_Boolean_recognised:
 
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_BOOLEAN_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit boolean
@@ -1066,9 +1068,9 @@ L_Date_componentsCollected:
   // === === === === === === === === === === === === === === === === === === ===
   //                                                            recognised date
 
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_DATE_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_DATE_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_DATE_INVALID);
 
   // compute final field value from components
   xDateValue.m_uYearDelta = uYearComponent - C_YEAR_BASE;
@@ -1143,7 +1145,7 @@ L_Decimal:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
-  vSIGN_OPT();
+  vSIGN_optional();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned number portion
@@ -1202,9 +1204,9 @@ L_Decimal:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognized decimal
     
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_DECIMAL_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
   
   // compute final field value
   iDecimalValue = bIsNegative ? - uScaledNumber : uScaledNumber;
@@ -1263,7 +1265,7 @@ L_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
-  vSIGN_OPT();
+  vSIGN_optional();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
@@ -1324,9 +1326,9 @@ L_Float:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                           recognised float
 
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_FLOAT_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
 
   // compute final result
   dUnsignedFloat = atof(caBuffer_atof); // SHOULD BE USING strtod() AND TESTING FOR ERROR
@@ -1397,7 +1399,7 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
   
-  vSIGN_OPT();
+  vSIGN_optional();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
@@ -1423,9 +1425,9 @@ L_Integer:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognised integer
 
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_INTEGER_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_INTEGER_INVALID);
 
   // compute final field value
   iIntegerValue = bIsNegative ? - uWholeNumber : uWholeNumber;
@@ -1540,9 +1542,9 @@ L_Interval:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recogised interval
 
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_INTERVAL_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
 
   // compute final field value
   xIntervalValue.m_uSecond = uSecondComponent;
@@ -1674,9 +1676,9 @@ L_Time:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                            recognised time
 
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_TIME_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_TIME_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_TIME_INVALID);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // compute final field value
@@ -1963,9 +1965,9 @@ L_Timestamp_noTimeComponents:
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                       recognised timestamp
 
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
   // compute final timestamp value from components
   xTimestampValue.m_uYearDelta = uYearComponent - C_YEAR_BASE;
@@ -2288,9 +2290,9 @@ L_Varchar_singleQuotedTerminate:
   if (nVchChars >= nPixLength)
     nVchChars = nPixLength;
   
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
   
@@ -2404,9 +2406,9 @@ L_Varchar_doubleQuotedTerminate:
   if (nVchChars >= nPixLength)
     nVchChars = nPixLength;
     
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
   
@@ -2477,9 +2479,9 @@ L_Varchar_userEnclosed:
   if (nVchChars >= nPixLength)
     nVchChars = nPixLength;
   
-  vSKIP_WHITE_SPACE_TRAILING();
-  if (bNOISY_FIELD_END())
-    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
+  vWHITE_SPACE_trailing(EC_CSV_VARCHAR_INVALID);
+//  if (bNOISY_FIELD_END())
+//    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
   
   goto L_Varchar_depositValue;
     

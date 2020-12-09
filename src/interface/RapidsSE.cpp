@@ -131,6 +131,22 @@ Operand* RapidsSE::pPopOperand(void* aSession,
 }
 
 /*----------------------------------------------------------------------------*/
+/* process operand                                                            */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE::bProcessOperand(void* aSession, void** aaOperand)
+{
+  Session* pSession = _pSession(aSession);
+  Operand* pOperand = _pOperand(*aaOperand);
+  *aaOperand = nullptr;
+
+  Job* pJob = pSession->pJob();
+
+  bool b = pJob->m_xResult.bProcessOperand(pOperand);
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push operand to input op                                                   */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vPushOperand(void* aSession, void** aaOperand)
