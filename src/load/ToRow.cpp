@@ -1010,9 +1010,9 @@ L_Date:
   // date components
   
   i_DateComponent = -1;
-  uYearComponent  = 0;
-  uMonthComponent = 0;
-  uDayComponent   = 0;
+//  uYearComponent  = 0;
+//  uMonthComponent = 0;
+//  uDayComponent   = 0;
 
 L_Date_nextComponent:
   
@@ -1664,10 +1664,10 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // time components
   
-  uHourComponent   = 0;
-  uMinuteComponent = 0;
-  uSecondComponent = 0;
-  uMicrosecondComponent = 0;
+//  uHourComponent   = 0;
+//  uMinuteComponent = 0;
+//  uSecondComponent = 0;
+//  uMicrosecondComponent = 0;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
@@ -1719,6 +1719,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
   
+  uMicrosecondComponent = 0;
   if ('.' == cCurChr) {
     
     // nb. a dot without any futher digits is ok
@@ -1824,15 +1825,11 @@ L_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // timestamp components
     
-  uYearComponent   = 0;
-  uMonthComponent  = 0;
-  uDayComponent    = 0;
+//  uYearComponent   = 0;
+//  uMonthComponent  = 0;
+//  uDayComponent    = 0;
   
   i_DateComponent  = -1;
-  uHourComponent   = 0;
-  uMinuteComponent = 0;
-  uSecondComponent = 0;
-  uMicrosecondComponent = 0;
 
 L_Timestamp_nextComponent:
     
@@ -1952,9 +1949,14 @@ L_Timestamp_dateCollected:
   if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr)
     vACCEPT_CHAR();
   
-  if (! bIS_DIGIT())
+  if (! bIS_DIGIT()) {
+    uHourComponent   = 0;
+    uMinuteComponent = 0;
+    uSecondComponent = 0;
+    uMicrosecondComponent = 0;
     goto L_Timestamp_noTimeComponents;
-
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
@@ -2017,6 +2019,8 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_microsecond:\n"_Stz);
   
+  uMicrosecondComponent = 0;
+
   // a dot without any futher digits is ok
   if (bIS_DECIMAL_POINT()) {
     
@@ -2042,6 +2046,7 @@ L_Timestamp_noTimeComponents:
 //  if (! (bIS_FIELD_END()))
 //    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
+
   /* FALLSTHROUGH */
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
