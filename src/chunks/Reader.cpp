@@ -35,6 +35,9 @@ Reader::Reader(void)
 Reader::~Reader(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
+  
+  if (m_oFile.bIsOpen())
+    m_oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/

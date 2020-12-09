@@ -37,10 +37,11 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   Reader* pReader = nullptr;
   
+  i8 nBytesToRead = 512; // C_512KB;
+
   bool b;
   char* azInto;
   i8 nBytesRead;
-  i8 nBytesToRead;
 
   eEC eError;
   Session* pSession;
@@ -135,7 +136,7 @@ L_Insert:
   
   
   pReader = new Reader;
-  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10.csv"_Stz);
+  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_100.csv"_Stz);
   if (! b) {
     vTrace("Unable to open input file\n"_Stz);
     goto L_Cleanup;
@@ -143,18 +144,8 @@ L_Insert:
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  nBytesToRead = 512; // C_512KB;
   
-  pCsvBuffer = new CsvBuffer;
-  azInto = (char*)pCsvBuffer->ayDataArea();
-  nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
-  //nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
-  pCsvBuffer->vTake(nBytesRead + 1);
-  //azInto[nBytesRead] = '\0';
 
-  vTrace("CsvBuffer data:\n"_Stz);
-  vTrace("%s"_Stz,azInto);
-  vTrace("End CsvBuffer\n"_Stz);
 
 
   
@@ -219,12 +210,30 @@ L_Insert:
         while (pInputOp->pOutboundOperand())
           AM::vNapUsec(100,CN_SEPROMPT);
         
-        // push csv data
-        pInputOp->vOutboundOperand(pCsvBuffer);
-        pCsvBuffer = nullptr;
-        while (pInputOp->pOutboundOperand())
-          AM::vNapUsec(100,CN_SEPROMPT);
-
+        for (;;) {
+          
+          pCsvBuffer = new CsvBuffer;
+          azInto = (char*)pCsvBuffer->ayDataArea();
+          nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
+          
+          if (! nBytesRead) {
+            delete pCsvBuffer;
+            pCsvBuffer = nullptr;
+            break;
+          }
+          
+          pCsvBuffer->vTake(nBytesRead + 1);
+        //  vTrace("CsvBuffer data:\n"_Stz);
+        //  vTrace("%s"_Stz,azInto);
+        //  vTrace("End CsvBuffer\n"_Stz);
+          
+          // push csv data
+          pInputOp->vOutboundOperand(pCsvBuffer);
+          pCsvBuffer = nullptr;
+          while (pInputOp->pOutboundOperand())
+            AM::vNapUsec(100,CN_SEPROMPT);
+        }
+        
         // push Eos Marker
         pEosMarker = new Marker(OM_EOSMARKER);
         pInputOp->vOutboundOperand(pEosMarker);
