@@ -89,7 +89,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
     
     if (OM_EXITMARKER == eOpMarker) {
-      AM::vDeleteOperand(pOperand);
+      RapidsSE::eDeleteOperand(aSession,(void**)&pOperand);
       break;
     }
     

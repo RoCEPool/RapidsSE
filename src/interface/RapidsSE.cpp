@@ -113,6 +113,20 @@ eEC RapidsSE::eWaitJob(void* aSession)
 //
 
 /*----------------------------------------------------------------------------*/
+/* delete operand                                                             */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE::eDeleteOperand(void* aSession, void** aaOperand)
+{
+  Session* pSession = _pSession(aSession);
+  Operand* pOperand = _pOperand(*aaOperand);
+  *aaOperand = nullptr;
+
+  AM::vDeleteOperand(pOperand);
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push operand to input op                                                   */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,

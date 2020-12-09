@@ -264,7 +264,26 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 #define vCOLLECT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
 
+
 #define vNUMBER(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
+  \
+  _uComponent = 0; \
+  \
+  nWholeDigits = 0; \
+  while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
+    vCOLLECT(_uComponent); \
+    nWholeDigits++; \
+   vACCEPT_CHAR(); \
+  } \
+  \
+  if (! nWholeDigits) \
+    vFIELD_ERROR(_errorCode1) \
+  \
+  if (nWholeDigits > _maxDigits) \
+    vFIELD_ERROR(_errorCode2)
+
+#define vNUMBER2(_uComponent,_maxDigits,_minValue,_maxValue, \
+                 _errorCode1,_errorCode2) \
   \
   _uComponent = 0; \
   \
