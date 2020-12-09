@@ -70,13 +70,16 @@ SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/mersenne/*.cpp)
 
-GRAMMAR_CPP := $(wildcard $(SRC_DIR)/../thirdparty/antlr/generated/*.cpp)
-SOURCES += $(GRAMMAR_CPP)
+SQL_GRAMMAR_CPP := $(wildcard $(SRC_DIR)/../thirdparty/antlr/generated/sql*.cpp)
+JSON5_GRAMMAR_CPP := $(wildcard $(SRC_DIR)/../thirdparty/antlr/generated/json5*.cpp)
+SOURCES += $(SQL_GRAMMAR_CPP)
+SOURCES += $(JSON5_GRAMMAR_CPP)
 
 SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
 S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
 
 SQL_GRAMMAR := ../thirdparty/antlr/sql.g4
+JSON5_GRAMMAR := ../thirdparty/antlr/json5.g4
 
 # Object directories
 # We separate debug & release so that swapping between builds doesn't mean
@@ -149,7 +152,7 @@ post-build : main-build
 main-build : pre-build
 	@$(MAKE) -e target
 
-pre-build : version thirdparty sql buildConfigCheck
+pre-build : version thirdparty grammar buildConfigCheck
 
 target : $(TARGET_EXE) $(TARGET_LIBRARY)
 
@@ -236,11 +239,16 @@ $(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
 version : FORCE
 	@./generateVersion.sh
 
-# Rules to build the SQL grammar if the .sql file changes
-sql : $(GRAMMAR_CPP)
+# Rules to build the parser/lexers for the various grammar if the .g4 files change
+grammar : $(SQL_GRAMMAR_CPP) $(JSON5_GRAMMAR_CPP)
 
-$(GRAMMAR_CPP) : $(SQL_GRAMMAR)
-	@-../thirdparty/antlr/generate.sh
+# This is a hack to avoid make from invoking the generate.sh script for each input file
+$(firstword $(SQL_GRAMMAR_CPP)) : $(SQL_GRAMMAR)
+	@-../thirdparty/antlr/generate.sh $(SQL_GRAMMAR)
+
+$(firstword $(JSON5_GRAMMAR_CPP)) : $(JSON5_GRAMMAR)
+	@-../thirdparty/antlr/generate.sh $(JSON5_GRAMMAR)
+
 
 # Since we write out a debug/release binary in the same location regardless
 # of whether it is a debug or release configuration, we need to handle the

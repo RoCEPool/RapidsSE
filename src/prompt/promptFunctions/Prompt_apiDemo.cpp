@@ -37,24 +37,26 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   Reader* pReader = nullptr;
   
+  i8 nBytesToRead = 512; // C_512KB;
+
   bool b;
   char* azInto;
   i8 nBytesRead;
-  i8 nBytesToRead;
 
   eEC eError;
   Session* pSession;
   Job* pOriginatingJob;
 
-  if (pPrompt->pInpTknVec()->nItems() > 1)
-    goto L_Insert;
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("put"_Stz))
+    goto L_Put;
 
   
   
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pInpTknVec->vTokeniseC("tableScan bolTbl"_Stz);
+  pInpTknVec->vTokeniseC("tableScan lineitem"_Stz);
   pInpTknVec->vDumpVec(0);
 
   oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
@@ -68,8 +70,6 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
-  
-  pOriginatingJob = pSession->pJob();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::ePrepareJob\n"_Stz);
@@ -85,10 +85,12 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Api::vExecuteJob\n"_Stz);
   Api::vExecuteJob(pSession);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
+
+  pOriginatingJob = pSession->pJob();
+  
   if (pOriginatingJob->bIsPipeline()) {
     //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
     
@@ -117,7 +119,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_Insert:
+L_Put:
   pInpTknVec->vTokeniseC("apiInsert lineitem"_Stz);
   pInpTknVec->vDumpVec(0);
 
@@ -135,7 +137,7 @@ L_Insert:
   
   
   pReader = new Reader;
-  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10.csv"_Stz);
+  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
   if (! b) {
     vTrace("Unable to open input file\n"_Stz);
     goto L_Cleanup;
@@ -143,18 +145,8 @@ L_Insert:
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  nBytesToRead = 512; // C_512KB;
   
-  pCsvBuffer = new CsvBuffer;
-  azInto = (char*)pCsvBuffer->ayDataArea();
-  nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
-  //nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
-  pCsvBuffer->vTake(nBytesRead + 1);
-  //azInto[nBytesRead] = '\0';
 
-  vTrace("CsvBuffer data:\n"_Stz);
-  vTrace("%s"_Stz,azInto);
-  vTrace("End CsvBuffer\n"_Stz);
 
 
   
@@ -219,12 +211,30 @@ L_Insert:
         while (pInputOp->pOutboundOperand())
           AM::vNapUsec(100,CN_SEPROMPT);
         
-        // push csv data
-        pInputOp->vOutboundOperand(pCsvBuffer);
-        pCsvBuffer = nullptr;
-        while (pInputOp->pOutboundOperand())
-          AM::vNapUsec(100,CN_SEPROMPT);
-
+        for (;;) {
+          
+          pCsvBuffer = new CsvBuffer;
+          azInto = (char*)pCsvBuffer->ayDataArea();
+          nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
+          
+          if (! nBytesRead) {
+            delete pCsvBuffer;
+            pCsvBuffer = nullptr;
+            break;
+          }
+          
+          pCsvBuffer->vTake(nBytesRead + 1);
+        //  vTrace("CsvBuffer data:\n"_Stz);
+        //  vTrace("%s"_Stz,azInto);
+        //  vTrace("End CsvBuffer\n"_Stz);
+          
+          // push csv data
+          pInputOp->vOutboundOperand(pCsvBuffer);
+          pCsvBuffer = nullptr;
+          while (pInputOp->pOutboundOperand())
+            AM::vNapUsec(100,CN_SEPROMPT);
+        }
+        
         // push Eos Marker
         pEosMarker = new Marker(OM_EOSMARKER);
         pInputOp->vOutboundOperand(pEosMarker);

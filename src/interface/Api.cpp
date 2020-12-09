@@ -239,6 +239,8 @@ void Api::vWaitJob(Session* pSession)
   pSession->m_oSsnMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
   pJob->vTimerUpdate();
+  
+  Api::vMutexUnlock(pSession,pJob);
 }
 
 /*----------------------------------------------------------------------------*/
