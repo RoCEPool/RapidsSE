@@ -7,8 +7,6 @@ namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bool bPrompt_apiDemo(SePrompt* pPrompt);
-
-  bool bPrompt_apiDemo_first(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

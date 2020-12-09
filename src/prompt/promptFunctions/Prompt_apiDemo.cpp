@@ -25,117 +25,27 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 {
   vTrace("Api Demo\n"_Stz);
   
-  TokenVec* pInpTknVec = new TokenVec;
-  TokenVec* pLitTknVec = new TokenVec;
-  TagSet    oExtTagSet;
-
-  File* pFile = nullptr;
-  CsvBuffer* pCsvBuffer = nullptr;
-  Marker* pPulsedMarker = nullptr;
-  Marker* pDataMarker = nullptr;
-  Marker* pEosMarker = nullptr;
-
+  void* aSession = nullptr;
   Reader* pReader = nullptr;
+  CsvBuffer* pCsvBuffer = nullptr;
+  Operand* pOperand = nullptr;
   
-  i8 nBytesToRead = 512; // C_512KB;
-
   bool b;
   char* azInto;
   i8 nBytesRead;
 
   eEC eError;
-  Session* pSession;
-  Job* pOriginatingJob;
+  eCN eClassNo;
+  eOM eOpMarker;
 
   if (pPrompt->pInpTknVec()->nItems() > 1 &&
-      pPrompt->pInpTknVec()->pGet(1)->bSame("put"_Stz))
-    goto L_Put;
+      pPrompt->pInpTknVec()->pGet(1)->bSame("get"_Stz))
+    goto L_Get;
 
-  
-  
+                                            
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
 
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pInpTknVec->vTokeniseC("tableScan lineitem"_Stz);
-  pInpTknVec->vDumpVec(0);
-
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
-  if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
-    goto L_Cleanup;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
-                            pInpTknVec,
-                            pLitTknVec,
-                            &oExtTagSet);
-  if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_End;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pSession);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Process Results\n"_Stz);
-
-  pOriginatingJob = pSession->pJob();
-  
-  if (pOriginatingJob->bIsPipeline()) {
-    //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
-    
-    for (;;) {
-      
-      Operand* pOperand = pSession->m_pSsnJob->m_xResult.pPopBufferQueue_blocking();
-      
-      if (! pOperand)
-        break;
-      
-      bool b = pSession->m_pSsnJob->m_xResult.bProcessOperand(pOperand);
-      
-      if (! b)
-        break;
-    }
-
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);   
-
-  goto L_End;
-  
-  
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_Put:
-  pInpTknVec->vTokeniseC("apiInsert lineitem"_Stz);
-  pInpTknVec->vDumpVec(0);
-
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//pFile = new File(nullptr);
-//
-//  b = pFile->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10.csv"_Stz);
-//  if (! b) {
-//    vTrace("Unable to open input file\n"_Stz);
-//    goto L_Cleanup;
-//  }
-  
-  
   pReader = new Reader;
   b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
   if (! b) {
@@ -143,399 +53,146 @@ L_Put:
     goto L_Cleanup;
   }
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-
-
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
-  if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
+  vTrace("  RapidsSE::aAllocSession\n"_Stz);
+  aSession = RapidsSE::aAllocSession();
+  if (! aSession) {
+    vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
-                            pInpTknVec,
-                            pLitTknVec,
-                            &oExtTagSet);
+  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
   if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_End;
+    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    goto L_Cleanup;
   }
-  
-  pOriginatingJob = pSession->pJob();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vSubmitJob\n"_Stz);
-  //Api::vExecuteJob(pOriginatingJob);
-  Api::vSubmitJob(pSession);
+  vTrace("  RapidsSE::vSubmitJob\n"_Stz);
+  RapidsSE::vSubmitJob(aSession);
 
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
-  if (pOriginatingJob->bIsPipeline()) {
-    //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
     
-    for (;;) {
-      
-      Operand* pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
-      
-      if (! pOperand)
-        break;
-      
-      eCN eClassNo;
-      eOM eOpMarker;
-      Result::vDecode(pOperand,eClassNo,eOpMarker);
-      vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
+  for (;;) {
+        
+    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
+    if (! pOperand)
+      break;
+    
+    vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
+    
+    if (OM_EXITMARKER == eOpMarker) {
+      AM::vDeleteOperand(pOperand);
+      break;
+    }
+    
+    if (OM_DATAPULSE == eOpMarker) {
+     
+      // push DataPulse Marker
+      RapidsSE::vPushOperand(aSession,(void**)&pOperand);
 
-      //bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
-      
-      if (OM_EXITMARKER == eOpMarker) {
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-      
-      if (OM_DATAPULSE == eOpMarker) {
-       
-        Op* pInputOp = pOriginatingJob->m_pInputOp;
+      for (;;) {
         
-        // push DataPulse Marker
-        pInputOp->vOutboundOperand(pOperand);
-        pOperand = nullptr;
-        while (pInputOp->pOutboundOperand())
-          AM::vNapUsec(100,CN_SEPROMPT);
+        pCsvBuffer = new CsvBuffer;
+        azInto = (char*)pCsvBuffer->ayDataArea();
+        nBytesRead = pReader->nReadLines((Stz*)azInto,512);
         
-        for (;;) {
-          
-          pCsvBuffer = new CsvBuffer;
-          azInto = (char*)pCsvBuffer->ayDataArea();
-          nBytesRead = pReader->nReadLines((Stz*)azInto,nBytesToRead);
-          
-          if (! nBytesRead) {
-            delete pCsvBuffer;
-            pCsvBuffer = nullptr;
-            break;
-          }
-          
-          pCsvBuffer->vTake(nBytesRead + 1);
-        //  vTrace("CsvBuffer data:\n"_Stz);
-        //  vTrace("%s"_Stz,azInto);
-        //  vTrace("End CsvBuffer\n"_Stz);
-          
-          // push csv data
-          pInputOp->vOutboundOperand(pCsvBuffer);
+        if (! nBytesRead) {
+          delete pCsvBuffer;
           pCsvBuffer = nullptr;
-          while (pInputOp->pOutboundOperand())
-            AM::vNapUsec(100,CN_SEPROMPT);
+          break;
         }
         
-        // push Eos Marker
-        pEosMarker = new Marker(OM_EOSMARKER);
-        pInputOp->vOutboundOperand(pEosMarker);
-        pEosMarker = nullptr;
-
-        continue;
-      }
-
-
-      bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
-      
-      if (! b)
-        break;
-    }
-
-  }
-
-  vTrace("  Api::vWaitJob\n"_Stz);
-  Api::vWaitJob(pSession);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);
-
-  goto L_End;
-
-  
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_End:
-  vTrace("  Api::vFreeSession\n"_Stz);
-  Api::vFreeSession(pSession);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_Cleanup:
-  if (pFile) {
-    pFile->vClose();
-    delete pFile;
-  }
-  if (pCsvBuffer) {
-    delete pCsvBuffer;
-  }
-  if (pReader) {
-    delete pReader;
-  }
-
-  delete pInpTknVec;
-  delete pLitTknVec;
-
-  return true;
-}
-
-
-
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_apiDemo_first(SePrompt* pPrompt)
-{
-  vTrace("Api Demo\n"_Stz);
-  
-  TokenVec* pInpTknVec = new TokenVec;
-  TokenVec* pLitTknVec = new TokenVec;
-  TagSet    oExtTagSet;
-
-  File* pFile = nullptr;
-  CsvBuffer* pCsvBuffer = nullptr;
-  Marker* pPulsedMarker = nullptr;
-  Marker* pDataMarker = nullptr;
-  Marker* pEosMarker = nullptr;
-
-  bool b;
-  char* azInto;
-  i8 nBytesRead;
-  i8 nBytesToRead;
-
-  eEC eError;
-  Session* pSession;
-  Job* pOriginatingJob;
-
-  if (pPrompt->pInpTknVec()->nItems() > 1)
-    goto L_Insert;
-
-  
-  
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pInpTknVec->vTokeniseC("tableScan bolTbl"_Stz);
-  pInpTknVec->vDumpVec(0);
-
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
-  if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
-    goto L_Cleanup;
-  }
-  
-  pOriginatingJob = pSession->pJob();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
-                            pInpTknVec,
-                            pLitTknVec,
-                            &oExtTagSet);
-  if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_End;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pSession);
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Process Results\n"_Stz);
-  if (pOriginatingJob->bIsPipeline()) {
-    //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
-    
-    for (;;) {
-      
-      Operand* pOperand = pSession->m_pSsnJob->m_xResult.pPopBufferQueue_blocking();
-      
-      if (! pOperand)
-        break;
-      
-      bool b = pSession->m_pSsnJob->m_xResult.bProcessOperand(pOperand);
-      
-      if (! b)
-        break;
-    }
-
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);
-
-  goto L_End;
-  
-  
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_Insert:
-  pInpTknVec->vTokeniseC("apiInsert lineitem"_Stz);
-  pInpTknVec->vDumpVec(0);
-
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-
-  pFile = new File(nullptr);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  b = pFile->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10.csv"_Stz);
-  if (! b) {
-    vTrace("Unable to open input file\n"_Stz);
-    goto L_Cleanup;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  nBytesToRead = C_512KB;
-  
-  pCsvBuffer = new CsvBuffer;
-  azInto = (char*)pCsvBuffer->ayDataArea();
-  nBytesRead = pFile->nReadBytes(azInto,nBytesToRead);
-  pCsvBuffer->vTake(nBytesRead + 1);
-  azInto[nBytesRead] = '\0';
-
-  vTrace("CsvBuffer data:\n"_Stz);
-  vTrace("%s"_Stz,azInto);
-  vTrace("End CsvBuffer\n"_Stz);
-
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
-  if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
-    goto L_Cleanup;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
-                            pInpTknVec,
-                            pLitTknVec,
-                            &oExtTagSet);
-  if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_End;
-  }
-  
-  pOriginatingJob = pSession->pJob();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vSubmitJob\n"_Stz);
-  //Api::vExecuteJob(pOriginatingJob);
-  Api::vSubmitJob(pSession);
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Process Results\n"_Stz);
-  if (pOriginatingJob->bIsPipeline()) {
-    //pSession->m_pSsnJob->m_xResult.vProcessBufferQueue();
-    
-    for (;;) {
-      
-      Operand* pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
-      
-      if (! pOperand)
-        break;
-      
-      eCN eClassNo;
-      eOM eOpMarker;
-      Result::vDecode(pOperand,eClassNo,eOpMarker);
-      vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
-
-      //bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
-      
-      if (OM_EXITMARKER == eOpMarker) {
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-      
-      if (OM_DATAPULSE == eOpMarker) {
-       
-        Op* pInputOp = pOriginatingJob->m_pInputOp;
-        
-        // push DataPulse Marker
-        pInputOp->vOutboundOperand(pOperand);
-        pOperand = nullptr;
-        while (pInputOp->pOutboundOperand())
-          AM::vNapUsec(100,CN_SEPROMPT);
+        pCsvBuffer->vTake(nBytesRead + 1);
+      //  vTrace("CsvBuffer data:\n"_Stz);
+      //  vTrace("%s"_Stz,azInto);
+      //  vTrace("End CsvBuffer\n"_Stz);
         
         // push csv data
-        pInputOp->vOutboundOperand(pCsvBuffer);
-        pCsvBuffer = nullptr;
-        while (pInputOp->pOutboundOperand())
-          AM::vNapUsec(100,CN_SEPROMPT);
-
-        // push Eos Marker
-        pEosMarker = new Marker(OM_EOSMARKER);
-        pInputOp->vOutboundOperand(pEosMarker);
-        pEosMarker = nullptr;
-
-        continue;
+        RapidsSE::vPushOperand(aSession,(void**)&pCsvBuffer);
       }
-
-
-      bool b = pOriginatingJob->m_xResult.bProcessOperand(pOperand);
       
-      if (! b)
-        break;
+      // push Eos Marker
+      pOperand = new Marker(OM_EOSMARKER);
+      RapidsSE::vPushOperand(aSession,(void**)&pOperand);
+
+      continue;
     }
 
+    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
+    if (! b)
+      break;
   }
 
-  vTrace("  Api::vWaitJob\n"_Stz);
-  Api::vWaitJob(pSession);
+  vTrace("  RapidsSE::vWaitJob\n"_Stz);
+  RapidsSE::vWaitJob(aSession);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);
+  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  RapidsSE::vDeleteJob(aSession);
 
-  goto L_End;
+  goto L_Cleanup;
 
   
-  
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_End:
-  vTrace("  Api::vFreeSession\n"_Stz);
-  Api::vFreeSession(pSession);
-
+L_Get:
+  vTrace("  RapidsSE::aAllocSession\n"_Stz);
+  aSession = RapidsSE::aAllocSession();
+  if (! aSession) {
+    vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
+    goto L_Cleanup;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
+  if (eError) {
+    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    goto L_Cleanup;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  RapidsSE::vExecuteJob\n"_Stz);
+  RapidsSE::vExecuteJob(aSession);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Process Results\n"_Stz);
+      
+  for (;;) {
+    
+    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
+    if (! pOperand)
+      break;
+    
+    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
+    if (! b)
+      break;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  RapidsSE::vDeleteJob(aSession);
+
+  goto L_Cleanup;
+
+  
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+
 L_Cleanup:
-  if (pFile) {
-    pFile->vClose();
-    delete pFile;
-  }
-  if (pCsvBuffer) {
+  if (aSession)
+    RapidsSE::vFreeSession(aSession);
+  if (pCsvBuffer)
     delete pCsvBuffer;
-  }
-  
-  delete pInpTknVec;
-  delete pLitTknVec;
+  if (pReader)
+    delete pReader;
 
   return true;
 }
