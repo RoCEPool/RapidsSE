@@ -9,17 +9,17 @@ namespace Interface
   {
   public:
   
-    static Session* pAllocSession(void);
-    static void vFreeSession(Session* pSession);
+    static void* aAllocSession(void);
+    static void vFreeSession(void* aSession);
 
-    static void vDeleteJob(Session* pSession);
-    static void vExecuteJob(Session* pSession);
-    static eEC  ePrepareJob(Session* pSession,
+    static void vDeleteJob(void* aSession);
+    static void vExecuteJob(void* aSession);
+    static eEC  ePrepareJob(void* aSession,
                             TokenVec* pCmdTknVec,
                             TokenVec* pLitTknVec,
                             TagSet*   pTagSet);
-    static void vSubmitJob(Session* pSession);
-    static void vWaitJob(Session* pSession);
+    static void vSubmitJob(void* aSession);
+    static void vWaitJob(void* aSession);
 
   };
 }

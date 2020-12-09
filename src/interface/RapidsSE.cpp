@@ -7,22 +7,22 @@
 /*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
-Session* RapidsSE::pAllocSession(void)
+void* RapidsSE::aAllocSession(void)
 {
   _static_
     
   Session* pSession = Api::pAllocSession(SK_EXTERNAL);
-    
   return pSession;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free a session                                                             */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vFreeSession(Session* pSession)
+void RapidsSE::vFreeSession(void* aSession)
 {
   _static_
   
+  Session* pSession = _pSession(aSession);
   Api::vFreeSession(pSession);
 }
 
@@ -34,10 +34,11 @@ void RapidsSE::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* delete job                                                                 */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDeleteJob(Session* pSession)
+void RapidsSE::vDeleteJob(void* aSession)
 {
   _static_
   
+  Session* pSession = _pSession(aSession);
   Api::vDeleteJob(pSession);
 }
 
@@ -45,43 +46,46 @@ void RapidsSE::vDeleteJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vExecuteJob(Session* pSession)
+void RapidsSE::vExecuteJob(void* aSession)
 {
   _static_
   
+  Session* pSession = _pSession(aSession);
   Api::vExecuteJob(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE::ePrepareJob(Session*  pSession,
+eEC RapidsSE::ePrepareJob(void* aSession,
                           TokenVec* pCmdTknVec,
                           TokenVec* pLitTknVec,
                           TagSet*   pExtraTagSet)
 {
   _static_
 
+  Session* pSession = _pSession(aSession);
   eEC eError = Api::ePrepareJob(pSession,pCmdTknVec,pLitTknVec,pExtraTagSet);
-  
   return eError;
 }
 
 /*----------------------------------------------------------------------------*/
 /* submit job (spawn job but don't wait for completion)                       */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSubmitJob(Session* pSession)
+void RapidsSE::vSubmitJob(void* aSession)
 {
   _static_
   
+  Session* pSession = _pSession(aSession);
   Api::vSubmitJob(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* wait for job completion                                                    */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vWaitJob(Session* pSession)
+void RapidsSE::vWaitJob(void* aSession)
 {
+  Session* pSession = _pSession(aSession);
   Api::vWaitJob(pSession);
 }
 
