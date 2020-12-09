@@ -17,6 +17,8 @@ namespace Interface
     static eEC  ePrepareJob(void* aSession, char* azCommand);
     static void vSubmitJob(void* aSession);
     static void vWaitJob(void* aSession);
+  
+    static void vPushOperand(void* aSession, void** aaOperand);
 
   };
 }

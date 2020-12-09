@@ -27,8 +27,8 @@ void RapidsSE::vFreeSession(void* aSession)
 }
 
 //
-// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
-// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § job
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § job
 //
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +99,23 @@ void RapidsSE::vWaitJob(void* aSession)
 {
   Session* pSession = _pSession(aSession);
   Api::vWaitJob(pSession);
+}
+
+//
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § operand
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § operand
+//
+
+/*----------------------------------------------------------------------------*/
+/* push operand to input op                                                   */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vPushOperand(void* aSession, void** aaOperand)
+{
+  Session* pSession = _pSession(aSession);
+  Operand* pOperand = _pOperand(*aaOperand);
+  *aaOperand = nullptr;
+
+  Api::vPushOperand(pSession,pOperand);
 }
 
 /*============================================================================*/

@@ -25,6 +25,8 @@ namespace Interface
   static void vSubmitJob(Session* pSession);
   static void vWaitJob(Session* pSession);
 
+  static void vPushOperand(Session* pSession, Operand* pOperand);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);

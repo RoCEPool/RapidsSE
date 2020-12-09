@@ -165,11 +165,12 @@ L_Put:
         Op* pInputOp = pOriginatingJob->m_pInputOp;
         
         // push DataPulse Marker
-        pInputOp->vOutboundOperand(pOperand);
-        pOperand = nullptr;
-        while (pInputOp->pOutboundOperand())
-          AM::vNapUsec(100,CN_SEPROMPT);
-        
+//        pInputOp->vOutboundOperand(pOperand);
+//        pOperand = nullptr;
+//        while (pInputOp->pOutboundOperand())
+//          AM::vNapUsec(100,CN_SEPROMPT);
+        RapidsSE::vPushOperand(aSession,(void**)&pOperand);
+
         for (;;) {
           
           pCsvBuffer = new CsvBuffer;
@@ -188,10 +189,11 @@ L_Put:
         //  vTrace("End CsvBuffer\n"_Stz);
           
           // push csv data
-          pInputOp->vOutboundOperand(pCsvBuffer);
-          pCsvBuffer = nullptr;
-          while (pInputOp->pOutboundOperand())
-            AM::vNapUsec(100,CN_SEPROMPT);
+//          pInputOp->vOutboundOperand(pCsvBuffer);
+//          pCsvBuffer = nullptr;
+//          while (pInputOp->pOutboundOperand())
+//            AM::vNapUsec(100,CN_SEPROMPT);
+          RapidsSE::vPushOperand(aSession,(void**)&pCsvBuffer);
         }
         
         // push Eos Marker
