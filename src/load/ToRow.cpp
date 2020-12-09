@@ -994,9 +994,10 @@ L_Date_nextComponent:
   
   // skip over separator between components
   if (i_DateComponent > 0) {
-    if (! bIS_DATE_SEPARATOR())
-      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    vACCEPT_CHAR(); // skip separator
+//    if (! bIS_DATE_SEPARATOR())
+//      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
+//    vACCEPT_CHAR(); // skip separator
+    vDATE_SEPERATOR();
   }
 
   switch (m_eDateComponent[i_DateComponent]) {
@@ -1803,9 +1804,10 @@ L_Timestamp_nextComponent:
   
   // skip over separator
   if (i_DateComponent > 0) {
-    if (cCurChr != m_cDateSeparator)
-      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    vACCEPT_CHAR(); // skip separator
+//    if (cCurChr != m_cDateSeparator)
+//      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
+//    vACCEPT_CHAR(); // skip separator
+    vDATE_SEPERATOR();
   }
 
   switch (m_eDateComponent[i_DateComponent]) {

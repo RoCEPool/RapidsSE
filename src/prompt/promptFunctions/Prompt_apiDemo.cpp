@@ -69,7 +69,11 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::vSubmitJob\n"_Stz);
-  RapidsSE::vSubmitJob(aSession);
+  eError = RapidsSE::eSubmitJob(aSession);
+  if (eError) {
+    vTrace("  RapidsSE::eSubmitJob error: %s\n"_Stz,aEC[eError]);
+    goto L_Cleanup;
+  }
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,7 +95,11 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     if (OM_DATAPULSE == eOpMarker) {
      
       // push DataPulse Marker
-      RapidsSE::vPushOperand(aSession,(void**)&pOperand);
+      eError = RapidsSE::ePushOperand(aSession,(void**)&pOperand);
+      if (eError) {
+        vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
+        goto L_Cleanup;
+      }
 
       for (;;) {
                 
@@ -100,27 +108,43 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
           break;
 
         // push csv data
-        RapidsSE::vPushOperand(aSession,(void**)&pCsvBuffer);
+        eError = RapidsSE::ePushOperand(aSession,(void**)&pCsvBuffer);
+        if (eError) {
+          vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
+          goto L_Cleanup;
+        }
       }
       
       // push Eos Marker
       pOperand = new Marker(OM_EOSMARKER);
-      RapidsSE::vPushOperand(aSession,(void**)&pOperand);
+      eError = RapidsSE::ePushOperand(aSession,(void**)&pOperand);
+      if (eError) {
+        vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
+        goto L_Cleanup;
+      }
 
       continue;
     }
 
-    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
-    if (! b)
+    eError = RapidsSE::eProcessOperand(aSession,(void**)&pOperand);
+    if (eError)
       break;
   }
 
   vTrace("  RapidsSE::vWaitJob\n"_Stz);
-  RapidsSE::vWaitJob(aSession);
+  eError = RapidsSE::eWaitJob(aSession);
+  if (eError) {
+    vTrace("  RapidsSE::eWaitJob error: %s\n"_Stz,aEC[eError]);
+    goto L_Cleanup;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::vDeleteJob\n"_Stz);
-  RapidsSE::vDeleteJob(aSession);
+  eError = RapidsSE::eDeleteJob(aSession);
+  if (eError) {
+    vTrace("  RapidsSE::eDeleteJob error: %s\n"_Stz,aEC[eError]);
+    goto L_Cleanup;
+  }
 
   goto L_Cleanup;
 
@@ -147,8 +171,12 @@ L_Get:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::vExecuteJob\n"_Stz);
-  RapidsSE::vExecuteJob(aSession);
-  
+  eError = RapidsSE::eExecuteJob(aSession);
+  if (eError) {
+    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    goto L_Cleanup;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
       
@@ -158,14 +186,18 @@ L_Get:
     if (! pOperand)
       break;
     
-    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
-    if (! b)
+    eError = RapidsSE::eProcessOperand(aSession,(void**)&pOperand);
+    if (eError)
       break;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::vDeleteJob\n"_Stz);
-  RapidsSE::vDeleteJob(aSession);
+  eError = RapidsSE::eDeleteJob(aSession);
+  if (eError) {
+    vTrace("  RapidsSE::eDeleteJob error: %s\n"_Stz,aEC[eError]);
+    goto L_Cleanup;
+  }
 
   goto L_Cleanup;
 

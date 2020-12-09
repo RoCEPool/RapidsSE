@@ -36,24 +36,26 @@ eEC RapidsSE::eFreeSession(void** aaSession)
 /*----------------------------------------------------------------------------*/
 /* delete job                                                                 */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDeleteJob(void* aSession)
+eEC RapidsSE::eDeleteJob(void* aSession)
 {
   _static_
   
   Session* pSession = _pSession(aSession);
   Api::vDeleteJob(pSession);
+  return EC_NONE;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vExecuteJob(void* aSession)
+eEC RapidsSE::eExecuteJob(void* aSession)
 {
   _static_
   
   Session* pSession = _pSession(aSession);
   Api::vExecuteJob(pSession);
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,21 +88,23 @@ eEC RapidsSE::ePrepareJob(void* aSession, char* azCommand)
 /*----------------------------------------------------------------------------*/
 /* submit job (spawn job but don't wait for completion)                       */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSubmitJob(void* aSession)
+eEC RapidsSE::eSubmitJob(void* aSession)
 {
   _static_
   
   Session* pSession = _pSession(aSession);
   Api::vSubmitJob(pSession);
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* wait for job completion                                                    */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vWaitJob(void* aSession)
+eEC RapidsSE::eWaitJob(void* aSession)
 {
   Session* pSession = _pSession(aSession);
   Api::vWaitJob(pSession);
+  return EC_NONE;
 }
 
 //
@@ -135,7 +139,7 @@ Operand* RapidsSE::pPopOperand(void* aSession,
 /*----------------------------------------------------------------------------*/
 /* process operand                                                            */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE::bProcessOperand(void* aSession, void** aaOperand)
+eEC RapidsSE::eProcessOperand(void* aSession, void** aaOperand)
 {
   Session* pSession = _pSession(aSession);
   Operand* pOperand = _pOperand(*aaOperand);
@@ -145,19 +149,23 @@ bool RapidsSE::bProcessOperand(void* aSession, void** aaOperand)
 
   bool b = pJob->m_xResult.bProcessOperand(pOperand);
   
-  return b;
+  if (b)
+    return EC_NONE;
+  else
+    return EC_DONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push operand to input op                                                   */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vPushOperand(void* aSession, void** aaOperand)
+eEC RapidsSE::ePushOperand(void* aSession, void** aaOperand)
 {
   Session* pSession = _pSession(aSession);
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
 
   Api::vPushOperand(pSession,pOperand);
+  return EC_NONE;
 }
 
 /*============================================================================*/
