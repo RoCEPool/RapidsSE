@@ -9,7 +9,7 @@ namespace Interface
   {
   public:
   
-    static Session* pAllocSession(eSK eSession);
+    static Session* pAllocSession(void);
     static void vFreeSession(Session* pSession);
 
     static void vDeleteJob(Session* pSession);

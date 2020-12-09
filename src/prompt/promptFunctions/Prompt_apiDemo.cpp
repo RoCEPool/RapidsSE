@@ -64,27 +64,27 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
+  vTrace("  RapidsSE::pAllocSession\n"_Stz);
+  pSession = RapidsSE::pAllocSession();
   if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
+    vTrace("  RapidsSE::pAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
+  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  eError = RapidsSE::ePrepareJob(pSession,
                             pInpTknVec,
                             pLitTknVec,
                             &oExtTagSet);
   if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
     goto L_End;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pSession);
+  vTrace("  RapidsSE::vExecuteJob\n"_Stz);
+  RapidsSE::vExecuteJob(pSession);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  Process Results\n"_Stz);
@@ -110,8 +110,8 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);   
+  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  RapidsSE::vDeleteJob(pSession);
 
   goto L_End;
   
@@ -151,30 +151,30 @@ L_Put:
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
+  vTrace("  RapidsSE::pAllocSession\n"_Stz);
+  pSession = RapidsSE::pAllocSession();
   if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
+    vTrace("  RapidsSE::pAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
+  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  eError = RapidsSE::ePrepareJob(pSession,
                             pInpTknVec,
                             pLitTknVec,
                             &oExtTagSet);
   if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
     goto L_End;
   }
   
   pOriginatingJob = pSession->pJob();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vSubmitJob\n"_Stz);
-  //Api::vExecuteJob(pOriginatingJob);
-  Api::vSubmitJob(pSession);
+  vTrace("  RapidsSE::vSubmitJob\n"_Stz);
+  //RapidsSE::vExecuteJob(pOriginatingJob);
+  RapidsSE::vSubmitJob(pSession);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -252,12 +252,12 @@ L_Put:
 
   }
 
-  vTrace("  Api::vWaitJob\n"_Stz);
-  Api::vWaitJob(pSession);
+  vTrace("  RapidsSE::vWaitJob\n"_Stz);
+  RapidsSE::vWaitJob(pSession);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);
+  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  RapidsSE::vDeleteJob(pSession);
 
   goto L_End;
 
@@ -266,8 +266,8 @@ L_Put:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_End:
-  vTrace("  Api::vFreeSession\n"_Stz);
-  Api::vFreeSession(pSession);
+  vTrace("  RapidsSE::vFreeSession\n"_Stz);
+  RapidsSE::vFreeSession(pSession);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Cleanup:
@@ -337,29 +337,29 @@ bool Prompt::bPrompt_apiDemo_first(SePrompt* pPrompt)
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
+  vTrace("  RapidsSE::pAllocSession\n"_Stz);
+  pSession = RapidsSE::pAllocSession();
   if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
+    vTrace("  RapidsSE::pAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
   
   pOriginatingJob = pSession->pJob();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
+  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  eError = RapidsSE::ePrepareJob(pSession,
                             pInpTknVec,
                             pLitTknVec,
                             &oExtTagSet);
   if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
     goto L_End;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vExecuteJob\n"_Stz);
-  Api::vExecuteJob(pSession);
+  vTrace("  RapidsSE::vExecuteJob\n"_Stz);
+  RapidsSE::vExecuteJob(pSession);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -383,8 +383,8 @@ bool Prompt::bPrompt_apiDemo_first(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);
+  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  RapidsSE::vDeleteJob(pSession);
 
   goto L_End;
   
@@ -424,30 +424,30 @@ L_Insert:
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::pAllocSession\n"_Stz);
-  pSession = Api::pAllocSession(SK_EXTERNAL);
+  vTrace("  RapidsSE::pAllocSession\n"_Stz);
+  pSession = RapidsSE::pAllocSession();
   if (! pSession) {
-    vTrace("  Api::pAllocSession error: unable to allocate session\n"_Stz);
+    vTrace("  RapidsSE::pAllocSession error: unable to allocate session\n"_Stz);
     goto L_Cleanup;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::ePrepareJob\n"_Stz);
-  eError = Api::ePrepareJob(pSession,
+  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  eError = RapidsSE::ePrepareJob(pSession,
                             pInpTknVec,
                             pLitTknVec,
                             &oExtTagSet);
   if (eError) {
-    vTrace("  Api::ePrepareJob error: %s\n"_Stz,aEC[eError]);
+    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
     goto L_End;
   }
   
   pOriginatingJob = pSession->pJob();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vSubmitJob\n"_Stz);
-  //Api::vExecuteJob(pOriginatingJob);
-  Api::vSubmitJob(pSession);
+  vTrace("  RapidsSE::vSubmitJob\n"_Stz);
+  //RapidsSE::vExecuteJob(pOriginatingJob);
+  RapidsSE::vSubmitJob(pSession);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -507,12 +507,12 @@ L_Insert:
 
   }
 
-  vTrace("  Api::vWaitJob\n"_Stz);
-  Api::vWaitJob(pSession);
+  vTrace("  RapidsSE::vWaitJob\n"_Stz);
+  RapidsSE::vWaitJob(pSession);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Api::vDeleteJob\n"_Stz);
-  Api::vDeleteJob(pSession);
+  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  RapidsSE::vDeleteJob(pSession);
 
   goto L_End;
 
@@ -521,8 +521,8 @@ L_Insert:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_End:
-  vTrace("  Api::vFreeSession\n"_Stz);
-  Api::vFreeSession(pSession);
+  vTrace("  RapidsSE::vFreeSession\n"_Stz);
+  RapidsSE::vFreeSession(pSession);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Cleanup:

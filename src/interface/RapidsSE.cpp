@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
-Session* RapidsSE::pAllocSession(eSK eSession)
+Session* RapidsSE::pAllocSession(void)
 {
   _static_
     
-  Session* pSession = Api::pAllocSession(eSession);
+  Session* pSession = Api::pAllocSession(SK_EXTERNAL);
     
   return pSession;
 }
