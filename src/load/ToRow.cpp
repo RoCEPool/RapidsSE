@@ -954,13 +954,13 @@ L_Date:
      |                     Date Field                     |
      +----------------------------------------------------+
      | [<WHITE_SPACE>] <DATE> [<WHITE_SPACE>] <FIELD_END> |
-     |     leading                  trailing              |
+     |     leading               trailing                 |
      +----------------------------------------------------+
    
      <DATE> :   null     // null form
-                 | \N       // null form
-                 | <EMPTY>  // null form
-                 | <COMPONENT> <DATE_SEP> <COMPONENT> <DATE_SEP> <COMPONENT>
+              | \N       // null form
+              | <EMPTY>  // null form
+              | <COMPONENT> <DATE_SEP> <COMPONENT> <DATE_SEP> <COMPONENT>
    
      
      <COMPONENT> :  <YEAR> | <MONTH> | <DAY>
@@ -1020,6 +1020,17 @@ L_Date_year:
   if (uYearComponent > C_YEAR_MAX)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
 
+  // determine if a leap year
+  if (uYearComponent % 4 == 0) {
+    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
+      bIsLeapYear = false;
+    else
+      bIsLeapYear = true;
+  }
+  else {
+    bIsLeapYear = false;
+  }
+
   goto L_Date_nextComponent;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1051,17 +1062,6 @@ L_Date_componentsCollected:
   
   // validate day wrt possible leap year
   
-  // determine if a leap year
-  if (uYearComponent % 4 == 0) {
-    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
-      bIsLeapYear = false;
-    else
-      bIsLeapYear = true;
-  }
-  else {
-    bIsLeapYear = false;
-  }
-
   // validate days per month
   if (uDayComponent < 1)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
@@ -1513,16 +1513,21 @@ L_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds component
   
-  // collect digits for leading seconds
-  for  (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uSecondComponent);
-    nWholeDigits++;
-  }
+//  // collect digits for leading seconds
+//  for  (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
+//    vCOLLECT(uSecondComponent);
+//    nWholeDigits++;
+//  }
+//
+//  // no more than 9
+//  if (nWholeDigits > 9)
+//    vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
   
-  // no more than 9
-  if (nWholeDigits > 9)
-    vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
-  
+  // must have a leading digit??
+  vNUMBER(uWholeNumber,9,
+                       EC_CSV_INTERVAL_INVALID,
+                       EC_CSV_INTERVAL_SECS_TOO_LARGE);
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microseconds component
   
@@ -1827,6 +1832,17 @@ L_Timestamp_year:
   if (uYearComponent > C_YEAR_MAX)
     vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
 
+  // determine if a leap year
+  if (uYearComponent % 4 == 0) {
+    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
+      bIsLeapYear = false;
+    else
+      bIsLeapYear = true;
+  }
+  else {
+    bIsLeapYear = false;
+  }
+
   goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1867,17 +1883,6 @@ L_Timestamp_dateCollected:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // validate the date
     
-  // determine if a leap year
-  if (uYearComponent % 4 == 0) {
-    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
-      bIsLeapYear = false;
-    else
-      bIsLeapYear = true;
-  }
-  else {
-    bIsLeapYear = false;
-  }
-
   // validate days per month
   if (uDayComponent < 1)
     vFIELD_ERROR(EC_CSV_DAY_INVALID);
@@ -1969,10 +1974,12 @@ L_Timestamp_dateCollected:
   
 L_Timestamp_noTimeComponents:
   
-  vSKIP_WHITE_SPACE();
+//  vSKIP_WHITE_SPACE();
+//
+//  if (! (bAT_FIELD_END()))
+//    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
-  if (! (bAT_FIELD_END()))
-    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+  /* FALLSTHROUGH */
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                       recognised timestamp
