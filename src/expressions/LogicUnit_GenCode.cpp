@@ -749,7 +749,15 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute CRWBUFFER_EXISTS and PROJECT_ROUTINE for each row
   oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+
+  oTagSet.vAppend(C_TAG_SRC_EXISTS_ALTIDX, "SRC_EXISTS_ALTIDX"_Stz);
+
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_EXISTS_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_COLUMNS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SRC_EXISTS_ALTINDEX, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -791,7 +799,7 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PUSH_SRC, &oTagSet));
   oTagSet.vReset();
 
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)2);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
   oTagSet.vReset();
 
@@ -799,7 +807,7 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
   oTagSet.vReset();
 
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)2);
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMN, &oTagSet));
   oTagSet.vReset();
 

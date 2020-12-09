@@ -46,4 +46,4 @@ create index tempTable0_idx on tempTable0(p_partkey);
 /time Query20_S0;
 tableScan tempTable0;
 
-///time Query20_S1;
+/time Query20_S1;
