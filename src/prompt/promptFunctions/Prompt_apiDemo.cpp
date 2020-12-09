@@ -162,13 +162,7 @@ L_Put:
       
       if (OM_DATAPULSE == eOpMarker) {
        
-        Op* pInputOp = pOriginatingJob->m_pInputOp;
-        
         // push DataPulse Marker
-//        pInputOp->vOutboundOperand(pOperand);
-//        pOperand = nullptr;
-//        while (pInputOp->pOutboundOperand())
-//          AM::vNapUsec(100,CN_SEPROMPT);
         RapidsSE::vPushOperand(aSession,(void**)&pOperand);
 
         for (;;) {
@@ -189,17 +183,12 @@ L_Put:
         //  vTrace("End CsvBuffer\n"_Stz);
           
           // push csv data
-//          pInputOp->vOutboundOperand(pCsvBuffer);
-//          pCsvBuffer = nullptr;
-//          while (pInputOp->pOutboundOperand())
-//            AM::vNapUsec(100,CN_SEPROMPT);
           RapidsSE::vPushOperand(aSession,(void**)&pCsvBuffer);
         }
         
         // push Eos Marker
         pEosMarker = new Marker(OM_EOSMARKER);
-        pInputOp->vOutboundOperand(pEosMarker);
-        pEosMarker = nullptr;
+        RapidsSE::vPushOperand(aSession,(void**)&pEosMarker);
 
         continue;
       }
@@ -222,9 +211,11 @@ L_Put:
 
   goto L_End;
 
-  
-  
-  
+
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_End:
   vTrace("  RapidsSE::vFreeSession\n"_Stz);
