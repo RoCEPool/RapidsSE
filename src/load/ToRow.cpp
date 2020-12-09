@@ -1893,12 +1893,15 @@ L_Timestamp_month:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_month:\n"_Stz);
   
-  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
-
-  // validate the month
-  if (uMonthComponent < 1 || uMonthComponent > 12)
-    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
+//  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+//
+//  // validate the month
+//  if (uMonthComponent < 1 || uMonthComponent > 12)
+//    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
   
+  vNUMBER_range(uMonthComponent,2,1,12,
+                EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+
   goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1951,15 +1954,19 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_hour:\n"_Stz);
   
-  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+//  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+//
+//  if (uHourComponent > 23)
+//    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
+
+  vNUMBER_range(uHourComponent,2,0,23,
+                EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
   
-  if (uHourComponent > 23)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
@@ -1967,15 +1974,19 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_minute:\n"_Stz);
   
-  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+//  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+//
+//  if (uMinuteComponent > 59)
+//    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+  
+  vNUMBER_range(uMinuteComponent,2,0,59,
+                EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
   vACCEPT_CHAR(); // skip ':'
 
-  if (uMinuteComponent > 59)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
@@ -1983,10 +1994,13 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_second:\n"_Stz);
   
-  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
-  
-  if (uSecondComponent > 59)
-    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+//  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+//
+//  if (uSecondComponent > 59)
+//    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+
+  vNUMBER_range(uSecondComponent,2,0,59,
+                EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond component

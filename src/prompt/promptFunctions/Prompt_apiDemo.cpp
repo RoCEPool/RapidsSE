@@ -26,13 +26,27 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   vTrace("Api Demo\n"_Stz);
 
   if (pPrompt->pInpTknVec()->nItems() > 1 &&
-      pPrompt->pInpTknVec()->pGet(1)->bSame("get"_Stz))
+      pPrompt->pInpTknVec()->pGet(1)->bSame("tableScan"_Stz))
     
-    vRapidsSE_ApiDemo_get();
+    vRapidsSE_ApiDemo_tableScan();
   
   else
     
-    vRapidsSE_ApiDemo_put();
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("getRows"_Stz))
+    
+    vRapidsSE_ApiDemo_getRows();
+    
+  else
+    
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("putRows"_Stz))
+    
+     vRapidsSE_ApiDemo_putRows();
+  
+  else
+
+    vTrace("Usage: apiDemo tableScan|getRowsputRows $TableNm"_Stz);
   
   return true;
 }
@@ -46,7 +60,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* RapidsSE Api Demo : get rows (table scan example)                          */
 /*----------------------------------------------------------------------------*/
-void vRapidsSE_ApiDemo_get(void)
+void vRapidsSE_ApiDemo_tableScan(void)
 {
   void* aSession = nullptr;
   void* aOperand = nullptr;
@@ -109,9 +123,74 @@ L_CleanUp:
 }
 
 /*----------------------------------------------------------------------------*/
+/* RapidsSE Api Demo : get rows (table scan example)                          */
+/*----------------------------------------------------------------------------*/
+void vRapidsSE_ApiDemo_getRows(void)
+{
+  void* aSession = nullptr;
+  void* aOperand = nullptr;
+  eCN eClassNo;
+  eOM eOpMarker;
+
+  eEC eError = EC_NONE;
+  i8  iErrLine = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // allocate an SE session
+  eError = RapidsSE::eAllocSession(&aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // parse command and prepare job
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"getRows lineitem");
+  if (eError) ERROR_HANDLER(eError);
+
+  // execute job
+  eError = RapidsSE::eExecuteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process results
+      
+  for (;;) {
+    
+    // get next operand
+    eError = RapidsSE::ePopOperand(aSession,&aOperand,
+                                   &eClassNo,&eOpMarker);
+    if (eError)
+      break;
+    
+    // process the operand
+    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
+    if (eError)
+      break;
+  }
+  
+  // delete the job
+  eError = RapidsSE::eDeleteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  goto L_CleanUp;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // error handler
+
+L_Error:
+  vTrace("  Error : code %lld line %lld : %s\n"_Stz,
+         eError,iErrLine,RapidsSE::aErrorText(eError));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clean up
+
+L_CleanUp:
+  if (aSession)
+    RapidsSE::eFreeSession(&aSession);
+}
+
+/*----------------------------------------------------------------------------*/
 /* RapidsSE Api Demo : put rows (insert into table example)                   */
 /*----------------------------------------------------------------------------*/
-void vRapidsSE_ApiDemo_put(void)
+void vRapidsSE_ApiDemo_putRows(void)
 {
   void* aSession = nullptr;
   void* aOperand = nullptr;
@@ -135,7 +214,7 @@ void vRapidsSE_ApiDemo_put(void)
   if (eError) ERROR_HANDLER(eError);
 
   // parse command and prepare job
-  eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"putRows lineitem");
   if (eError) ERROR_HANDLER(eError);
 
   // submit job

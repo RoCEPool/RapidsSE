@@ -788,10 +788,34 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // load
+  // apiGetRows
   sPath
   "
-  procedure apiInsert
+  procedure getRows
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | toCsv | stageC
+
+  stage stageC on origin :
+    wrFile $File | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // apiPutRows
+  sPath
+  "
+  procedure putRows
     parameters $table
   begin
 
