@@ -264,7 +264,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 #define vCOLLECT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
 
-#define vWHOLE_NUMBER(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
+#define vNUMBER(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
   \
   _uComponent = 0; \
   \
@@ -356,6 +356,15 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
       vACCEPT_CHAR(); \
     } \
   }
+
+#define vFRACTION_ignore() \
+  if (bIS_DECIMAL_POINT()) { \
+    vACCEPT_CHAR(); \
+    while (bIS_DIGIT()) { \
+      vACCEPT_CHAR(); \
+    } \
+  }
+
 
 //--
 
@@ -799,7 +808,7 @@ L_Boolean:
                  | <EMPTY>  // null form
                  | true     // true form
                  | false    // false form
-                 | <WHOLE_NUMBER>  // number form
+                 | <NUMBER> // numeric form
   
    */
 
@@ -875,8 +884,9 @@ L_Boolean:
 
   if (bIS_DIGIT()) {
   
-    vWHOLE_NUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                    EC_CSV_BOOLEAN_INVALID,EC_CSV_BOOLEAN_TOO_LARGE);
+    vNUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
+                         EC_CSV_BOOLEAN_INVALID,
+                         EC_CSV_BOOLEAN_TOO_LARGE);
     
     if (uWholeNumber > 0)
       iBooleanValue = true;
@@ -997,7 +1007,7 @@ L_Date_nextComponent:
   
 L_Date_year:
 
-  vWHOLE_NUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
+  vNUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
   // adjust a 2-digit year
   if (uYearComponent <= 99)
@@ -1017,7 +1027,7 @@ L_Date_year:
     
 L_Date_month:
   
-  vWHOLE_NUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
   
   // validate the month
   if (uMonthComponent < 1 || uMonthComponent > 12)
@@ -1030,7 +1040,7 @@ L_Date_month:
           
 L_Date_day:
   
-  vWHOLE_NUMBER(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
+  vNUMBER(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
 
   goto L_Date_nextComponent;
   
@@ -1130,7 +1140,7 @@ L_Decimal:
      <DECIMAL> :   null     // null form
                  | \N       // null form
                  | <EMPTY>  // null form
-                 | <WHOLE_NUMBER> [ . <FRACTION> ]
+                 | <NUMBER> [ . <FRACTION> ]
 
    */
 
@@ -1374,7 +1384,7 @@ L_Integer:
      <INTEGER> :   null     // null form
                  | \N       // null form
                  | <EMPTY>  // null form
-                 | [ <SIGN> ] <WHOLE_NUMBER> [ . <FRACTION> ]
+                 | [ <SIGN> ] <NUMBER> [ . <FRACTION> ]
   
    */
 
@@ -1404,19 +1414,21 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
   
-  vWHOLE_NUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                             EC_CSV_INTEGER_INVALID,
-                             EC_CSV_INTEGER_TOO_LARGE);
+  vNUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
+                       EC_CSV_INTEGER_INVALID,
+                       EC_CSV_INTEGER_TOO_LARGE);
 
-  // -- vFACTION_opt() --
+//  // -- vFACTION_opt() --
+//
+//  // ignore any . digits
+//  if (bIS_DECIMAL_POINT()) {
+//    vACCEPT_CHAR(); // skip '.'
+//    while (bIS_DIGIT()) {
+//      vACCEPT_CHAR(); // skip digit
+//    }
+//  }
   
-  // ignore any . digits
-  if (bIS_DECIMAL_POINT()) {
-    vACCEPT_CHAR(); // skip '.'
-    while (bIS_DIGIT()) {
-      vACCEPT_CHAR(); // skip digit
-    }
-  }
+  vFRACTION_ignore();
 
   // too big?
   if (uWholeNumber > (u8)C_I8_MAX)
@@ -1479,7 +1491,7 @@ L_Interval:
      <INTERVAL> :   null     // null form
                   | \N       // null form
                   | <EMPTY>  // null form
-                  | <WHOLE_NUMBER> [ . <FRACTION> ]
+                  | <SECONDS> [ . <USEC_FRACTION> ]
 
    */
 
@@ -1621,7 +1633,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
-  vWHOLE_NUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
   
   // skip over mandatory time separator
   if (! bAT_TIME_SEPARATOR())
@@ -1635,7 +1647,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
-  vWHOLE_NUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   if (uMinuteComponent > 59)
     vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
@@ -1648,7 +1660,7 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
-  vWHOLE_NUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
 
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
@@ -1802,7 +1814,7 @@ L_Timestamp_year:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_year:\n"_Stz);
   
-  vWHOLE_NUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
+  vNUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
   // adjust a 2-digit year
   if (uYearComponent <= 99)
@@ -1825,7 +1837,7 @@ L_Timestamp_month:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_month:\n"_Stz);
   
-  vWHOLE_NUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
 
   // validate the month
   if (uMonthComponent < 1 || uMonthComponent > 12)
@@ -1841,7 +1853,7 @@ L_Timestamp_day:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_day:\n"_Stz);
   
-  vWHOLE_NUMBER(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
+  vNUMBER(uDayComponent,2,EC_CSV_DAY_INVALID,EC_CSV_DAY_TOO_LARGE);
 
   goto L_Timestamp_nextComponent;
   
@@ -1894,7 +1906,7 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_hour:\n"_Stz);
   
-  vWHOLE_NUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
@@ -1910,7 +1922,7 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_minute:\n"_Stz);
   
-  vWHOLE_NUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
   if (cCurChr != C_TIME_SEPARATOR)
@@ -1926,7 +1938,7 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_second:\n"_Stz);
   
-  vWHOLE_NUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
   
   if (uSecondComponent > 59)
     vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
