@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Chunks
+namespace DataBuffers
 {
   class Reader : public Object
   {
@@ -26,6 +26,8 @@ namespace Chunks
     void  vCloseFile(void);
     bool  bOpenRead(Stz* szPath);
     i8    nReadLines(Stz* szInto, i8 nMaxBytes);
+  
+    CsvBuffer* pReadCsvBuffer(void);
 
     Footer* aFooter(void);
   };

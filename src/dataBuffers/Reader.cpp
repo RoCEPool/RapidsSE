@@ -2,13 +2,13 @@
 /* Reader.cpp -- Assistant File Reader                                        */
 /*============================================================================*/
 
-#include "Chunks.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Chunks,Reader,CN_READER)
+__pCastFunction(DataBuffers,Reader,CN_READER)
 __aNewFunction(Reader,CN_READER)
 __vDeleteFunction(Reader,CN_READER)
 __aFooterFunction(Reader)
@@ -94,6 +94,35 @@ i8 Reader::nReadLines(Stz* szInto, i8 nMaxBytes)
   m_i_Seek += nTrimmedTo;
   
   return nTrimmedTo;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* read lines                                                                 */
+/*----------------------------------------------------------------------------*/
+CsvBuffer* Reader::pReadCsvBuffer(void)
+{
+  _precondition_(_MAGIC_,CN_READER,_FOOTER_);
+  
+  CsvBuffer* pCsvBuffer = new CsvBuffer;
+
+  char* azInto = (char*)pCsvBuffer->ayDataArea();
+  i8 nBytesRead = nReadLines((Stz*)azInto,512);
+  
+  if (nBytesRead) {
+    pCsvBuffer->vTake(nBytesRead + 1);
+    
+    //  vTrace("CsvBuffer data:\n"_Stz);
+    //  vTrace("%s"_Stz,azInto);
+    //  vTrace("End CsvBuffer\n"_Stz);
+
+  }
+  else {
+    delete pCsvBuffer;
+    pCsvBuffer = nullptr;
+  }
+
+  return pCsvBuffer;
 }
 
 /*============================================================================*/

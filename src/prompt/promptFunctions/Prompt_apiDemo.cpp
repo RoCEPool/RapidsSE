@@ -31,8 +31,6 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   Operand* pOperand = nullptr;
   
   bool b;
-  char* azInto;
-  i8 nBytesRead;
 
   eEC eError;
   eCN eClassNo;
@@ -96,22 +94,11 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
       RapidsSE::vPushOperand(aSession,(void**)&pOperand);
 
       for (;;) {
-        
-        pCsvBuffer = new CsvBuffer;
-        azInto = (char*)pCsvBuffer->ayDataArea();
-        nBytesRead = pReader->nReadLines((Stz*)azInto,512);
-        
-        if (! nBytesRead) {
-          delete pCsvBuffer;
-          pCsvBuffer = nullptr;
+                
+        pCsvBuffer = pReader->pReadCsvBuffer();
+        if (! pCsvBuffer)
           break;
-        }
-        
-        pCsvBuffer->vTake(nBytesRead + 1);
-      //  vTrace("CsvBuffer data:\n"_Stz);
-      //  vTrace("%s"_Stz,azInto);
-      //  vTrace("End CsvBuffer\n"_Stz);
-        
+
         // push csv data
         RapidsSE::vPushOperand(aSession,(void**)&pCsvBuffer);
       }
