@@ -9,6 +9,8 @@ namespace Interface
   {
   public:
   
+    static char* aErrorText(eEC eError);
+  
     static eEC  eAllocSession(void** aaSession);
     static eEC  eFreeSession(void** aaSession);
 

@@ -25,55 +25,297 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 {
   vTrace("Api Demo\n"_Stz);
   
+#define ERROR_HANDLER(_error) {\
+  eError = _error; \
+  iErrLine == __LINE__; \
+  goto L_Error; \
+}
+
+//  void* aSession = nullptr;
+//  Reader* pReader = nullptr;
+//  CsvBuffer* pCsvBuffer = nullptr;
+//  void* aOperand = nullptr;
+//
+//  eEC eError = EC_NONE;
+//  i8  iErrLine = 0;
+//  eCN eClassNo;
+//  eOM eOpMarker;
+//  bool b;
+
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("get"_Stz))
+    
+    vRapidsSE_ApiDemo_get();
+  
+  else
+    
+    vRapidsSE_ApiDemo_put();
+  
+  return true;
+  
+//    goto L_Get;
+//
+//  //----------------------------------------------------------------------------
+//  //----------------------------------------------------------------------------
+//
+//  pReader = new Reader;
+//  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
+//  if (! b) ERROR_HANDLER(EC_NO_SUCH_FILE);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  RapidsSE::aAllocSession\n"_Stz);
+//  eError = RapidsSE::eAllocSession(&aSession);
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+//  eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  RapidsSE::vSubmitJob\n"_Stz);
+//  eError = RapidsSE::eSubmitJob(aSession);
+//  if (eError) ERROR_HANDLER(eError);
+//
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  Process Results\n"_Stz);
+//
+//  for (;;) {
+//
+//    eError = RapidsSE::ePopOperand(aSession,&aOperand,
+//                                   &eClassNo,&eOpMarker);
+//    if (eError)
+//      break;
+//
+//    vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
+//
+//    if (OM_EXITMARKER == eOpMarker) {
+//      RapidsSE::eDeleteOperand(aSession,&aOperand);
+//      break;
+//    }
+//
+//    if (OM_DATAPULSE == eOpMarker) {
+//
+//      // push DataPulse Marker
+//      eError = RapidsSE::ePushOperand(aSession,&aOperand);
+//      if (eError) ERROR_HANDLER(eError);
+//
+//      for (;;) {
+//
+//        pCsvBuffer = pReader->pReadCsvBuffer();
+//        if (! pCsvBuffer)
+//          break;
+//
+//        // push csv data
+//        eError = RapidsSE::ePushOperand(aSession,(void**)&pCsvBuffer);
+//        if (eError) ERROR_HANDLER(eError);
+//      }
+//
+//      // push Eos Marker
+//      aOperand = new Marker(OM_EOSMARKER);
+//      eError = RapidsSE::ePushOperand(aSession,&aOperand);
+//      if (eError) ERROR_HANDLER(eError);
+//
+//      continue;
+//    }
+//
+//    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
+//    if (eError)
+//      break;
+//  }
+//
+//  vTrace("  RapidsSE::vWaitJob\n"_Stz);
+//  eError = RapidsSE::eWaitJob(aSession);
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+//  eError = RapidsSE::eDeleteJob(aSession);
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  goto L_CleanUp;
+//
+//
+//  //----------------------------------------------------------------------------
+//  //----------------------------------------------------------------------------
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//L_Get:
+//  vTrace("  RapidsSE::aAllocSession\n"_Stz);
+//  eError = RapidsSE::eAllocSession(&aSession);
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+//  eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  RapidsSE::vExecuteJob\n"_Stz);
+//  eError = RapidsSE::eExecuteJob(aSession);
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  Process Results\n"_Stz);
+//
+//  for (;;) {
+//
+//    eError = RapidsSE::ePopOperand(aSession,&aOperand,
+//                                   &eClassNo,&eOpMarker);
+//    if (eError)
+//      break;
+//
+//    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
+//    if (eError)
+//      break;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+//  eError = RapidsSE::eDeleteJob(aSession);
+//  if (eError) ERROR_HANDLER(eError);
+//
+//  goto L_CleanUp;
+//
+//  //----------------------------------------------------------------------------
+//  //----------------------------------------------------------------------------
+//
+//L_Error:
+//  vTrace("  Error : code %lld line %lld : %s\n"_Stz,
+//         eError,iErrLine,RapidsSE::aErrorText(eError));
+//
+//  //----------------------------------------------------------------------------
+//  //----------------------------------------------------------------------------
+//
+//L_CleanUp:
+//  if (aSession)
+//    RapidsSE::eFreeSession(&aSession);
+//  if (pCsvBuffer)
+//    delete pCsvBuffer;
+//  if (pReader)
+//    delete pReader;
+//
+//  return true;
+}
+
+#define ERROR_HANDLER(_error) {\
+  eError = _error; \
+  iErrLine == __LINE__; \
+  goto L_Error; \
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+void vRapidsSE_ApiDemo_get(void)
+{
   void* aSession = nullptr;
   Reader* pReader = nullptr;
   CsvBuffer* pCsvBuffer = nullptr;
   void* aOperand = nullptr;
   
-  bool b;
-
-  eEC eError;
+  eEC eError = EC_NONE;
+  i8  iErrLine = 0;
   eCN eClassNo;
   eOM eOpMarker;
+  bool b;
 
-  if (pPrompt->pInpTknVec()->nItems() > 1 &&
-      pPrompt->pInpTknVec()->pGet(1)->bSame("get"_Stz))
-    goto L_Get;
 
-                                            
+  vTrace("  RapidsSE::aAllocSession\n"_Stz);
+  eError = RapidsSE::eAllocSession(&aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
+  if (eError) ERROR_HANDLER(eError);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  RapidsSE::vExecuteJob\n"_Stz);
+  eError = RapidsSE::eExecuteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  Process Results\n"_Stz);
+      
+  for (;;) {
+    
+    eError = RapidsSE::ePopOperand(aSession,&aOperand,
+                                   &eClassNo,&eOpMarker);
+    if (eError)
+      break;
+    
+    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
+    if (eError)
+      break;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
+  eError = RapidsSE::eDeleteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  goto L_CleanUp;
+
   //----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
+
+L_Error:
+  vTrace("  Error : code %lld line %lld : %s\n"_Stz,
+         eError,iErrLine,RapidsSE::aErrorText(eError));
+
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+
+L_CleanUp:
+  if (aSession)
+    RapidsSE::eFreeSession(&aSession);
+  if (pCsvBuffer)
+    delete pCsvBuffer;
+  if (pReader)
+    delete pReader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+void vRapidsSE_ApiDemo_put(void)
+{
+  vTrace("Api Demo\n"_Stz);
+  
+  void* aSession = nullptr;
+  Reader* pReader = nullptr;
+  CsvBuffer* pCsvBuffer = nullptr;
+  void* aOperand = nullptr;
+  
+  eEC eError = EC_NONE;
+  i8  iErrLine = 0;
+  eCN eClassNo;
+  eOM eOpMarker;
+  bool b;
+
 
   pReader = new Reader;
   b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
-  if (! b) {
-    vTrace("Unable to open input file\n"_Stz);
-    goto L_Cleanup;
-  }
+  if (! b) ERROR_HANDLER(EC_NO_SUCH_FILE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::aAllocSession\n"_Stz);
   eError = RapidsSE::eAllocSession(&aSession);
-  if (eError) {
-    vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
-    goto L_Cleanup;
-  }
+  if (eError) ERROR_HANDLER(eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::ePrepareJob\n"_Stz);
   eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
-  if (eError) {
-    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
+  if (eError) ERROR_HANDLER(eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::vSubmitJob\n"_Stz);
   eError = RapidsSE::eSubmitJob(aSession);
-  if (eError) {
-    vTrace("  RapidsSE::eSubmitJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
+  if (eError) ERROR_HANDLER(eError);
+
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,10 +339,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
      
       // push DataPulse Marker
       eError = RapidsSE::ePushOperand(aSession,&aOperand);
-      if (eError) {
-        vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
-        goto L_Cleanup;
-      }
+      if (eError) ERROR_HANDLER(eError);
 
       for (;;) {
                 
@@ -110,20 +349,14 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
         // push csv data
         eError = RapidsSE::ePushOperand(aSession,(void**)&pCsvBuffer);
-        if (eError) {
-          vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
-          goto L_Cleanup;
-        }
+        if (eError) ERROR_HANDLER(eError);
       }
       
       // push Eos Marker
       aOperand = new Marker(OM_EOSMARKER);
       eError = RapidsSE::ePushOperand(aSession,&aOperand);
-      if (eError) {
-        vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
-        goto L_Cleanup;
-      }
-
+      if (eError) ERROR_HANDLER(eError);
+      
       continue;
     }
 
@@ -134,88 +367,32 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   vTrace("  RapidsSE::vWaitJob\n"_Stz);
   eError = RapidsSE::eWaitJob(aSession);
-  if (eError) {
-    vTrace("  RapidsSE::eWaitJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
+  if (eError) ERROR_HANDLER(eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::vDeleteJob\n"_Stz);
   eError = RapidsSE::eDeleteJob(aSession);
-  if (eError) {
-    vTrace("  RapidsSE::eDeleteJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
+  if (eError) ERROR_HANDLER(eError);
 
-  goto L_Cleanup;
+  goto L_CleanUp;
 
-  
-  //----------------------------------------------------------------------------
-  //----------------------------------------------------------------------------
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_Get:
-  vTrace("  RapidsSE::aAllocSession\n"_Stz);
-  eError = RapidsSE::eAllocSession(&aSession);
-  if (eError) {
-    vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
-    goto L_Cleanup;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
-  eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
-  if (eError) {
-    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vExecuteJob\n"_Stz);
-  eError = RapidsSE::eExecuteJob(aSession);
-  if (eError) {
-    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Process Results\n"_Stz);
-      
-  for (;;) {
-    
-    eError = RapidsSE::ePopOperand(aSession,&aOperand,
-                                   &eClassNo,&eOpMarker);
-    if (eError)
-      break;
-    
-    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
-    if (eError)
-      break;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
-  eError = RapidsSE::eDeleteJob(aSession);
-  if (eError) {
-    vTrace("  RapidsSE::eDeleteJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
-
-  goto L_Cleanup;
-
-  
   //----------------------------------------------------------------------------
   //----------------------------------------------------------------------------
 
-L_Cleanup:
+L_Error:
+  vTrace("  Error : code %lld line %lld : %s\n"_Stz,
+         eError,iErrLine,RapidsSE::aErrorText(eError));
+
+  //----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+
+L_CleanUp:
   if (aSession)
     RapidsSE::eFreeSession(&aSession);
   if (pCsvBuffer)
     delete pCsvBuffer;
   if (pReader)
     delete pReader;
-
-  return true;
 }
 
 /*============================================================================*/

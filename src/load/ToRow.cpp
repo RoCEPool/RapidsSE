@@ -282,8 +282,8 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
   if (nWholeDigits > _maxDigits) \
     vFIELD_ERROR(_errorCode2)
 
-#define vNUMBER2(_uComponent,_maxDigits,_minValue,_maxValue, \
-                 _errorCode1,_errorCode2) \
+#define vNUMBER_range(_uComponent,_maxDigits,_minValue,_maxValue, \
+                      _errorCode1,_errorCode2) \
   \
   _uComponent = 0; \
   \
@@ -298,7 +298,11 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     vFIELD_ERROR(_errorCode1) \
   \
   if (nWholeDigits > _maxDigits) \
-    vFIELD_ERROR(_errorCode2)
+    vFIELD_ERROR(_errorCode2) \
+  \
+  if (_uComponent < _minValue || _uComponent > _maxValue) \
+    vFIELD_ERROR(_errorCode1)
+
 
 #define vSIGN_optional() \
   if (cCurChr == C_MINUS_SIGN) { \

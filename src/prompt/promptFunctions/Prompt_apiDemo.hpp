@@ -9,6 +9,9 @@ namespace Prompt
   bool bPrompt_apiDemo(SePrompt* pPrompt);
 }
 
+void vRapidsSE_ApiDemo_get(void);
+void vRapidsSE_ApiDemo_put(void);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
