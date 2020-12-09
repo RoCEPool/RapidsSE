@@ -14,10 +14,7 @@ namespace Interface
 
     static void vDeleteJob(void* aSession);
     static void vExecuteJob(void* aSession);
-    static eEC  ePrepareJob(void* aSession,
-                            TokenVec* pCmdTknVec,
-                            TokenVec* pLitTknVec,
-                            TagSet*   pTagSet);
+    static eEC  ePrepareJob(void* aSession, char* azCommand);
     static void vSubmitJob(void* aSession);
     static void vWaitJob(void* aSession);
 

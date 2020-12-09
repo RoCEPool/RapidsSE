@@ -25,10 +25,6 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 {
   vTrace("Api Demo\n"_Stz);
   
-  TokenVec* pInpTknVec = new TokenVec;
-  TokenVec* pLitTknVec = new TokenVec;
-  TagSet    oExtTagSet;
-
   File* pFile = nullptr;
   CsvBuffer* pCsvBuffer = nullptr;
   Marker* pPulsedMarker = nullptr;
@@ -53,15 +49,6 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 
   
   
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pInpTknVec->vTokeniseC("tableScan lineitem"_Stz);
-  pInpTknVec->vDumpVec(0);
-
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::aAllocSession\n"_Stz);
@@ -73,10 +60,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::ePrepareJob\n"_Stz);
-  eError = RapidsSE::ePrepareJob(aSession,
-                            pInpTknVec,
-                            pLitTknVec,
-                            &oExtTagSet);
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
   if (eError) {
     vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
     goto L_End;
@@ -120,21 +104,6 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_Put:
-  pInpTknVec->vTokeniseC("apiInsert lineitem"_Stz);
-  pInpTknVec->vDumpVec(0);
-
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//pFile = new File(nullptr);
-//
-//  b = pFile->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10.csv"_Stz);
-//  if (! b) {
-//    vTrace("Unable to open input file\n"_Stz);
-//    goto L_Cleanup;
-//  }
-  
   
   pReader = new Reader;
   b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
@@ -142,13 +111,6 @@ L_Put:
     vTrace("Unable to open input file\n"_Stz);
     goto L_Cleanup;
   }
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-
-
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::aAllocSession\n"_Stz);
@@ -160,10 +122,7 @@ L_Put:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("  RapidsSE::ePrepareJob\n"_Stz);
-  eError = RapidsSE::ePrepareJob(aSession,
-                            pInpTknVec,
-                            pLitTknVec,
-                            &oExtTagSet);
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
   if (eError) {
     vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
     goto L_End;
@@ -282,12 +241,8 @@ L_Cleanup:
     delete pReader;
   }
 
-  delete pInpTknVec;
-  delete pLitTknVec;
-
   return true;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
