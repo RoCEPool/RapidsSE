@@ -28,7 +28,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   void* aSession = nullptr;
   Reader* pReader = nullptr;
   CsvBuffer* pCsvBuffer = nullptr;
-  Operand* pOperand = nullptr;
+  void* aOperand = nullptr;
   
   bool b;
 
@@ -81,7 +81,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     
   for (;;) {
         
-    eError = RapidsSE::ePopOperand(aSession,(void**)&pOperand,
+    eError = RapidsSE::ePopOperand(aSession,&aOperand,
                                    &eClassNo,&eOpMarker);
     if (eError)
       break;
@@ -89,14 +89,14 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
     
     if (OM_EXITMARKER == eOpMarker) {
-      RapidsSE::eDeleteOperand(aSession,(void**)&pOperand);
+      RapidsSE::eDeleteOperand(aSession,&aOperand);
       break;
     }
     
     if (OM_DATAPULSE == eOpMarker) {
      
       // push DataPulse Marker
-      eError = RapidsSE::ePushOperand(aSession,(void**)&pOperand);
+      eError = RapidsSE::ePushOperand(aSession,&aOperand);
       if (eError) {
         vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
         goto L_Cleanup;
@@ -117,8 +117,8 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
       }
       
       // push Eos Marker
-      pOperand = new Marker(OM_EOSMARKER);
-      eError = RapidsSE::ePushOperand(aSession,(void**)&pOperand);
+      aOperand = new Marker(OM_EOSMARKER);
+      eError = RapidsSE::ePushOperand(aSession,&aOperand);
       if (eError) {
         vTrace("  RapidsSE::ePushOperand error: %s\n"_Stz,aEC[eError]);
         goto L_Cleanup;
@@ -127,7 +127,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
       continue;
     }
 
-    eError = RapidsSE::eProcessOperand(aSession,(void**)&pOperand);
+    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
     if (eError)
       break;
   }
@@ -183,12 +183,12 @@ L_Get:
       
   for (;;) {
     
-    eError = RapidsSE::ePopOperand(aSession,(void**)&pOperand,
+    eError = RapidsSE::ePopOperand(aSession,&aOperand,
                                    &eClassNo,&eOpMarker);
     if (eError)
       break;
     
-    eError = RapidsSE::eProcessOperand(aSession,(void**)&pOperand);
+    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
     if (eError)
       break;
   }
