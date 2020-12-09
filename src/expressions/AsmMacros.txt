@@ -235,8 +235,8 @@ macro AM_CRWBUFFER_EXISTS_HANDLER
   EO_JMP_FALSE QRY_DONE
 
   // test for row exits in altIndex
-  //EO_CALL <srcExistsAltIndex>
-  //EO_JMP_FALSE NEXT_CRW_SRC
+  EO_CALL <srcExitsAltIdx>
+  EO_JMP_FALSE NEXT_CRW_SRC
 
   EO_CALL <crwProjectRoutine>
   EO_JMP NEXT_CRW_SRC
@@ -335,10 +335,13 @@ endMacro
 // macro AM_SRC_EXISTS_ALTINDEX                                               //
 //----------------------------------------------------------------------------//
 macro AM_SRC_EXISTS_ALTINDEX
-  // SRC_EXISTS_ALTINDEX
+  // SRC_EXISTS_ALTIDX
 
-  Label SRC_EXISTS_ALTINDEX
-  EO_ROW_SRC_PUSHCOLI 0
+  Label SRC_EXISTS_ALTIDX
+  EO_SET_ITEMS <projectColumns>
+  EO_SET_COLUMN <projectSrcColumn>
+  EO_COL_SRC_PUSHSET
+
   EO_ENTWRK_SETINTELM
   EO_IXT_POS_ALTBYWRK
   EO_JMP_FALSE RETURN_FALSE
