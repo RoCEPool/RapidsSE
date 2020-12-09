@@ -31,6 +31,7 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   Marker* pEosMarker = nullptr;
 
   Reader* pReader = nullptr;
+  Operand* pOperand = nullptr;
   
   i8 nBytesToRead = 512; // C_512KB;
 
@@ -41,6 +42,8 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
   eEC eError;
   void* aSession;
   Job* pOriginatingJob;
+  eCN eClassNo;
+  eOM eOpMarker;
 
   if (pPrompt->pInpTknVec()->nItems() > 1 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("get"_Stz))
@@ -87,13 +90,18 @@ bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
     
   for (;;) {
     
-    Operand* pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
+//    Operand* pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
+//    if (! pOperand)
+//      break;
+//
+//    eCN eClassNo;
+//    eOM eOpMarker;
+//    Result::vDecode(pOperand,eClassNo,eOpMarker);
+    
+    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
     if (! pOperand)
       break;
     
-    eCN eClassNo;
-    eOM eOpMarker;
-    Result::vDecode(pOperand,eClassNo,eOpMarker);
     vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
     
     if (OM_EXITMARKER == eOpMarker) {
@@ -180,7 +188,7 @@ L_Get:
       
   for (;;) {
     
-    Operand* pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
+    pOperand = pOriginatingJob->m_xResult.pPopBufferQueue_blocking();
     if (! pOperand)
       break;
     

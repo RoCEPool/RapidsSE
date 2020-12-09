@@ -18,6 +18,9 @@ namespace Interface
     static void vSubmitJob(void* aSession);
     static void vWaitJob(void* aSession);
   
+    static Operand* pPopOperand(void* aSession,
+                                eCN* aeClassNo,
+                                eOM* aeOpMarker);
     static void vPushOperand(void* aSession, void** aaOperand);
 
   };

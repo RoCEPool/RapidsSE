@@ -109,6 +109,30 @@ void RapidsSE::vWaitJob(void* aSession)
 /*----------------------------------------------------------------------------*/
 /* push operand to input op                                                   */
 /*----------------------------------------------------------------------------*/
+Operand* RapidsSE::pPopOperand(void* aSession,
+                               eCN* aeClassNo,
+                               eOM* aeOpMarker)
+{
+  Session* pSession = _pSession(aSession);
+  
+  Job* pJob = pSession->pJob();
+
+  Operand* pOperand = pJob->m_xResult.pPopBufferQueue_blocking();
+
+  eCN eClassNo;
+  eOM eOpMarker;
+  
+  Result::vDecode(pOperand,eClassNo,eOpMarker);
+  
+  * aeClassNo  = eClassNo;
+  * aeOpMarker = eOpMarker;
+  
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push operand to input op                                                   */
+/*----------------------------------------------------------------------------*/
 void RapidsSE::vPushOperand(void* aSession, void** aaOperand)
 {
   Session* pSession = _pSession(aSession);

@@ -1091,13 +1091,15 @@ L_Date_componentsCollected:
 
 L_Date_setNull:
     
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowBuffer->vDeposit(C_DATUM_NULL);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+  vDEPOSIT_NULL(EC_CSV_DATE_INVALID);
 
   goto L_FieldEnd;                                               // end of date
 
@@ -1221,18 +1223,19 @@ L_Decimal:
   
   vDEPOSIT_VALUE(iDecimalValue);
 
-
   goto L_FieldEnd;
 
 L_Decimal_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_DECIMAL_INVALID);
+//
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowBuffer->vDeposit(C_DATUM_NULL);
-    
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+  vDEPOSIT_NULL(EC_CSV_DECIMAL_INVALID);
   
   goto L_FieldEnd;                                            // end of decimal
 
@@ -1339,10 +1342,12 @@ L_Float:
 
 L_Float_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
+//
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
-  m_pRowBuffer->vDeposit(C_DATUM_NULL);
+  vDEPOSIT_NULL(EC_CSV_FLOAT_INVALID);
   
   goto L_FieldEnd;                                              // end of float
 
@@ -1557,13 +1562,15 @@ L_Interval:
 
 L_Interval_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
+//
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowBuffer->vDeposit(C_DATUM_NULL);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+  vDEPOSIT_NULL(EC_CSV_INTERVAL_INVALID);
 
   goto L_FieldEnd;                                           // end of interval
 
@@ -1694,13 +1701,15 @@ L_Time:
 
 L_Time_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_HOUR_INVALID);
+//
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
   
-  m_pRowBuffer->vDeposit(C_DATUM_NULL);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+  vDEPOSIT_NULL(EC_CSV_TIME_INVALID);
 
   goto L_FieldEnd;                                               // end of time
 
@@ -1984,13 +1993,15 @@ L_Timestamp_noTimeComponents:
 
 L_Timestamp_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
-  
-  m_pRowBuffer->vDeposit(C_DATUM_NULL);
-  
-  if (xColPix.m_bPtnKey)
-    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+//
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
+//
+//  if (xColPix.m_bPtnKey)
+//    PtnMap::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+
+  vDEPOSIT_NULL(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_FieldEnd;                                          // end of timestamp
 
@@ -2486,14 +2497,16 @@ L_Varchar_depositValue:
 
 L_Varchar_setNull:
   
-  if (! bPixNullable)
-    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
+//  if (! bPixNullable)
+//    vFIELD_ERROR(EC_CSV_VARCHAR_INVALID);
+//
+//  if (iTraceBits & C_BIT_Varchar)
+//    vTrace("L_Varchar_depositValue: null\n"_Stz);
+//
+//  m_pRowBuffer->vDeposit(C_DATUM_NULL);
   
-  if (iTraceBits & C_BIT_Varchar)
-    vTrace("L_Varchar_depositValue: null\n"_Stz);
-  
-  m_pRowBuffer->vDeposit(C_DATUM_NULL);
-  
+  vDEPOSIT_NULL(EC_CSV_VARCHAR_INVALID);
+
   goto L_FieldEnd;                                            // end of varchar
 
   
