@@ -1492,9 +1492,9 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
   
-  vNUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                       EC_CSV_INTEGER_INVALID,
-                       EC_CSV_INTEGER_TOO_LARGE);
+  vNUMBER_range(uWholeNumber,C_MAX_INTEGER_DIGITS,0,C_I8_MAX,
+                             EC_CSV_INTEGER_INVALID,
+                             EC_CSV_INTEGER_TOO_LARGE);
 
 //  // -- vFACTION_opt() --
 //
@@ -1508,9 +1508,9 @@ L_Integer:
   
   vFRACTION_ignore();
 
-  // too big?
-  if (uWholeNumber > (u8)C_I8_MAX)
-    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
+//  // too big?
+//  if (uWholeNumber > (u8)C_I8_MAX)
+//    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognised integer

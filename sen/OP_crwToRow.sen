@@ -5,24 +5,22 @@
 " OP_crwToRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* handler for ZK_STREAMDEF ...                                               */
 /*----------------------------------------------------------------------------*/
-: crwToRow_StartMarker \handler
+: crwToRow_StreamDef \handler
 
-  // test and create Table[] using <tableNm>
-  <tableNm> op__table if
+  // capture stream def
+  PipeIn[] to StreamDef[]
+  nullptr to PipeIn[]
 
-    // create a ToRow using Table[].streamDef
-    ToRow[].create
-
-    // pipeout the (StartMarker)
-    PipeIn[].pipeOut
-
-    // new and pipe out (StreamDef)  DOES NOT SET StreamDef[]??
-    Operand[].newStreamDef
-    Operand[].pipeOut
-
-  then
+  // pipeout copy of stream def
+  StreamDef[].duplicate to OperandB[]
+  OperandB[].pipeOut
+    
+  // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
+  
+  // create the crw to row register
+  CrwToRow[].create
 
   true
 ;
@@ -35,20 +33,15 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  //Operand[]
-  //profile.start
-
-  Operand[].crwToRow
-
-  //profile.end
+  crwToRow[].convert
 
   // test for any completed
-  ToRow[].completed to OperandB[]
+  crwToRow[].completed to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    ToRow[].completed to OperandB[]
+      crwToRow[].completed to OperandB[]
   repeat
 
   Operand[].delete
@@ -56,6 +49,29 @@
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: crwToRow_EosMarker \handler
+
+  crwToRow[].completed to OperandB[]
+  begin
+    OperandB[].isNull not
+  while
+    OperandB[].pipeOut
+    crwToRow[].completed to OperandB[]
+  repeat
+
+  // pipe out the eos marker
+  PipeIn[].pipeOut
+
+  // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
+  
+  // delete the crw to row register
+  CrwToRow[].delete
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -69,8 +85,9 @@
 
   op__topology
 
-  find: crwToRow_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: crwToRow_StartMarker ZK_STARTMARKER op[].handler!
+  find: crwToRow_StreamDef ZK_STREAMDEF  op[].handler!
+  find: crwToRow_CrwBuffer ZK_CRWBUFFER  op[].handler!
+  find: crwToRow_EosMarker ZK_EOSMARKER  op[].handler!
 
   op__loop
 
@@ -82,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toRow :: crwToRow ;
+cmdSyntax: crwToRow :: crwToRow ;
 
 : crwToRow _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
