@@ -67,7 +67,6 @@ namespace CompactBuffers
   private:
     // encoding (structural order)
     void vInitialEncodingRow(Row* pRow);
-    void vInitialEncodingRsb(Row* aRow);
     void vInitialEncodingSrw(RowSingle* pSrw);
  
     // support functions
