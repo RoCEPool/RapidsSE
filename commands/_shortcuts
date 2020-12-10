@@ -48,7 +48,7 @@ shortcut r3   _ray3;
 shortcut r4   _ray4;
 shortcut rs   "../FASTLOAD/commands/_rowSlabTest";
 shortcut s    _select;
-shortcut s0   _Smt0;
+shortcut smt  _AsmSmts;
 shortcut sq3  "../Expressions/_query_3";
 shortcut sq4  "../Expressions/_query_4";
 shortcut sq17 "../Expressions/_query_17";
