@@ -438,6 +438,26 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
   if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr) \
   vACCEPT_CHAR();
 
+#define vMICROSECOND_SPECIFICS() \
+  uMicrosecondComponent = 0; \
+  \
+  if (bIS_DECIMAL_POINT()) { \
+    \
+    vACCEPT_CHAR(); \
+    \
+    for (nMicrosecondShift = C_IVL_USEC_SHIFT; \
+         nMicrosecondShift > 1 && bIS_DIGIT(); \
+         vACCEPT_CHAR()) { \
+      vCOLLECT(uMicrosecondComponent); \
+      nMicrosecondShift /= 10; \
+    } \
+    \
+    uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift; \
+    \
+    while (bIS_DIGIT()) \
+    vACCEPT_CHAR(); \
+  }
+
 //--
 
 #define vIF_NULL_FORM(_label,_errorCode) \
@@ -1492,9 +1512,9 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
   
-  vNUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                       EC_CSV_INTEGER_INVALID,
-                       EC_CSV_INTEGER_TOO_LARGE);
+  vNUMBER_range(uWholeNumber,C_MAX_INTEGER_DIGITS,0,C_I8_MAX,
+                             EC_CSV_INTEGER_INVALID,
+                             EC_CSV_INTEGER_TOO_LARGE);
 
 //  // -- vFACTION_opt() --
 //
@@ -1508,9 +1528,9 @@ L_Integer:
   
   vFRACTION_ignore();
 
-  // too big?
-  if (uWholeNumber > (u8)C_I8_MAX)
-    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
+//  // too big?
+//  if (uWholeNumber > (u8)C_I8_MAX)
+//    vFIELD_ERROR(EC_CSV_INTEGER_TOO_LARGE);
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognised integer
@@ -1763,24 +1783,28 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
   
-  uMicrosecondComponent = 0;
-  if ('.' == cCurChr) {
-    
-    // nb. a dot without any futher digits is ok
-    
-    vACCEPT_CHAR(); // skip '.'
-
-    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vACCEPT_CHAR()) {
-      vCOLLECT(uMicrosecondComponent);
-      nMicrosecondShift /= 10;
-    }
-
-    uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
-    
-    while (bIS_DIGIT())
-      vACCEPT_CHAR(); // skip digit
-  }
+//  uMicrosecondComponent = 0;
+//  if ('.' == cCurChr) {
+//
+//    // nb. a dot without any futher digits is ok
+//
+//    vACCEPT_CHAR(); // skip '.'
+//
+//    for (nMicrosecondShift = C_IVL_USEC_SHIFT;
+//         nMicrosecondShift > 1 && bIS_DIGIT();
+//         vACCEPT_CHAR()) {
+//      vCOLLECT(uMicrosecondComponent);
+//      nMicrosecondShift /= 10;
+//    }
+//
+//    uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
+//
+//    while (bIS_DIGIT())
+//      vACCEPT_CHAR(); // skip digit
+//  }
   
+  vMICROSECOND_SPECIFICS();
+
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                            recognised time
 
@@ -2068,23 +2092,27 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_microsecond:\n"_Stz);
   
-  uMicrosecondComponent = 0;
-
-  // a dot without any futher digits is ok
-  if (bIS_DECIMAL_POINT()) {
-    
-    vACCEPT_CHAR(); // skip '.'
-
-    for (nMicrosecondShift = C_IVL_USEC_SHIFT; nMicrosecondShift > 1 && bIS_DIGIT(); vACCEPT_CHAR()) {
-      vCOLLECT(uMicrosecondComponent);
-      nMicrosecondShift /= 10;
-    }
-
-    uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
-    
-    while (bIS_DIGIT())
-      vACCEPT_CHAR(); // skip digit
-  }
+//  uMicrosecondComponent = 0;
+//
+//  // a dot without any futher digits is ok
+//  if (bIS_DECIMAL_POINT()) {
+//
+//    vACCEPT_CHAR(); // skip '.'
+//
+//    for (nMicrosecondShift = C_IVL_USEC_SHIFT;
+//         nMicrosecondShift > 1 && bIS_DIGIT();
+//         vACCEPT_CHAR()) {
+//      vCOLLECT(uMicrosecondComponent);
+//      nMicrosecondShift /= 10;
+//    }
+//
+//    uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift;
+//
+//    while (bIS_DIGIT())
+//      vACCEPT_CHAR(); // skip digit
+//  }
+  
+  vMICROSECOND_SPECIFICS();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   

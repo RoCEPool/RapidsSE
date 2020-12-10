@@ -738,8 +738,6 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
     }
     
   }
-  // for each column
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
 /*----------------------------------------------------------------------------*/
@@ -748,7 +746,40 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 void RowInflator::vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
                                                      HeadLine* aHeadLine)
 {
-  NEVER_REACH;
+  _static_
+  
+  //vTrace("vInflate_AllColumns_into_RowBuffer\n"_Stz);
+
+  i8 nCols = pRowBuffer->nColumns();
+
+  u1* auMetaCode;
+  byte* ayDataByte;
+  vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
+
+  Row* pRow = pRowBuffer->pRowCurrent();
+
+  byte* ayCellArray = (byte*)pRow->aCellArray();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+
+    u1 uMetaCode = *auMetaCode++;
+    u1 uHigh = uMetaCode >> 4;
+    u1 uLow  = uMetaCode & 0x0F;
+    
+    char* azStrArea = (char*)pRowBuffer->ayLatterHead();
+
+    vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_OFS,
+                                  aHeadLine,ayDataByte,uHigh,uLow);
+
+    if (azStrArea != (char*)pRowBuffer->ayLatterHead()) {
+      i8 nBytesTaken = nDifference(azStrArea,pRowBuffer->ayLatterHead());
+      pRowBuffer->vTakeHead(nBytesTaken);
+    }
+
+  }
+
 }
 
 /*============================================================================*/

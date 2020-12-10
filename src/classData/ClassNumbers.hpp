@@ -205,6 +205,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PIPELINESPEC,
   /* */ CN_PLAN,
   /* */ CN_PLANNER,
+  /* */ CN_PLANNODE,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
@@ -558,6 +559,7 @@ static Stz* aCN[]
   /* */ "PIPELINESPEC"_Stz,        // CN_PIPELINESPEC
   /* */ "PLAN"_Stz,                // CN_PLAN
   /* */ "PLANNER"_Stz,             // CN_PLANNER
+  /* */ "PLANNODE"_Stz,            // CN_PLANNODE
   /* */ "POT"_Stz,                 // CN_POT
   /* */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
