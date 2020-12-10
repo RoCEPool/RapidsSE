@@ -434,6 +434,10 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
       vFIELD_ERROR(EC_CSV_DAY_INVALID); \
   }
 
+#define vTIME_POINT() \
+  if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr) \
+  vACCEPT_CHAR();
+
 //--
 
 #define vIF_NULL_FORM(_label,_errorCode) \
@@ -1990,9 +1994,10 @@ L_Timestamp_dateCollected:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // ' ' or 'T' separator
   
-  if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr)
-    vACCEPT_CHAR();
-  
+//  if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr)
+//    vACCEPT_CHAR();
+  vTIME_POINT();
+
   if (! bIS_DIGIT()) {
     uHourComponent   = 0;
     uMinuteComponent = 0;

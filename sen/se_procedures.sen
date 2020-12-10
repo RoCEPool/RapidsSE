@@ -803,7 +803,7 @@
 
   stage stageB on all partitions :
     scan $Table   |
-    crwToRow      |
+//    crwToRow      |
     stageC
 
   stage stageC on origin :
