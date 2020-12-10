@@ -53,7 +53,9 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
   i8 nCrws = pCrwBuffer->nRowCount();
   for (i8 i_Crw = 0; i_Crw <nCrws; i_Crw++) {
     
+    HeadLine* pCrwHead = pCrwBuffer->aGetHead(i_Crw);
 
+    RowInflator::vInflate_AllColumns_into_RowBuffer(m_pRowBuffer,pCrwHead);
   }
 
   return true;
@@ -80,21 +82,14 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  RowBuffer* pFullRowBuffer = nullptr;
+  if (! m_pRowBuffer || ! m_pRowBuffer->pNextBuffer())
+    return nullptr;
   
-  RowBuffer* pRowBuffer =
-               m_pRowBuffer ? _pRowBuffer(m_pRowBuffer->pNextBuffer())
-                            : nullptr;
+  RowBuffer* pFullRowBuffer  = _pRowBuffer(m_pRowBuffer->pNextBuffer());
+  RowBuffer* pLaterRowBuffer = _pRowBuffer(pFullRowBuffer->pNextBuffer());
   
-  while (pRowBuffer) {
-    pFullRowBuffer = pRowBuffer;
-    pRowBuffer = _pRowBuffer(pRowBuffer->pNextBuffer());
-  }
-  
-  if (pFullRowBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRowBuffer->pPrevBuffer());
-    pPrevBuffer->vNextBuffer(nullptr);
-  }
+  m_pRowBuffer->vNextBuffer(pLaterRowBuffer);
+  pFullRowBuffer->vNextBuffer(nullptr);
   
   return pFullRowBuffer;
 }
@@ -110,6 +105,10 @@ void CrwToRow::vAllotNewRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
+  if (m_pRowBuffer->nFreeBytes() < C_MAX_RECORD)
+    vNewRowBuffer();
+  
+  Row* pRow = m_pRowBuffer->aAllotNewRow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,14 +121,12 @@ void CrwToRow::vNewRowBuffer(void)
   //  create a new buffer
   RowBuffer* pNewRowBuffer = new RowBuffer;
   
+  // initialise the column pix inside the new row buffer
+  pNewRowBuffer->vInitPix(m_pStreamDef,false);
+
   // link the new to old
   pNewRowBuffer->vNextBuffer(m_pRowBuffer);
-  if (m_pRowBuffer)
-    m_pRowBuffer->vPrevBuffer(pNewRowBuffer);
   m_pRowBuffer = pNewRowBuffer;
-  
-  // initialise the row slab inside the new row buffer
-  m_pRowBuffer->vInitPix(m_pStreamDef,false);
 }
 
 /*============================================================================*/

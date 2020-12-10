@@ -38,7 +38,7 @@ namespace CompactBuffers
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
 
     void       vDelete(Crw* aCrw);
-    HeadLine*  aGetHead(i8 i_Row);
+    HeadLine*  aGetHead(i8 i_Crw);
     void       vOperandDump(i8 iDetail);
     i8         nRowCount(void);
     void       vStreamDef(StreamDef* pStreamDef);

@@ -388,7 +388,7 @@ void CrwBuffer::vGetRow(RowBuffer* pRowBuffer, i8 i_Row)
 
   Crw* aCrw = (Crw*)aGetHead(i_Row);
 
-  RowInflator::bInflate_AllColumns_into_RowBuffer(pRowBuffer,aCrw);
+  RowInflator::vInflate_AllColumns_into_RowBuffer(pRowBuffer,aCrw);
 }
 
 /*----------------------------------------------------------------------------*/

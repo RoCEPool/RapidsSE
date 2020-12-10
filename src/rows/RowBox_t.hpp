@@ -100,6 +100,7 @@ namespace Rows
     void  vReset(void);
     void  vResetRow(void);
     i8    nRowProperBytes(void);
+    Row*  pRowCurrent(void);
     Row*  aRowByOfs(i8 iOfs);
     Row*  aSetCurRow(i8 iRow);
     i8    iOffsetInWsp(Row* aRow);
@@ -473,6 +474,15 @@ Row* RowBox_t<SIZE>::pRowAddress(i8 i_Row)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current row                                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 SIZE>
+Row* RowBox_t<SIZE>::pRowCurrent(void)
+{
+  return m_aRowCur;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of rows                                                         */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
@@ -480,8 +490,6 @@ i8 RowBox_t<SIZE>::nRows(void)
 {
   return WspConvergent_t<SIZE,Stz,Row>::nItems();
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* return first ref set in this buffer                                        */
