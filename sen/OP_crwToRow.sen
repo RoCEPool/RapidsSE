@@ -35,6 +35,8 @@
 
   crwToRow[].convert
 
+  // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖
+
   // test for any completed
   crwToRow[].completed to OperandB[]
   begin
@@ -54,12 +56,12 @@
 /*----------------------------------------------------------------------------*/
 : crwToRow_EosMarker \handler
 
-  crwToRow[].completed to OperandB[]
+  crwToRow[].dangling to OperandB[]
   begin
     OperandB[].isNull not
   while
     OperandB[].pipeOut
-    crwToRow[].completed to OperandB[]
+    crwToRow[].dangling to OperandB[]
   repeat
 
   // pipe out the eos marker

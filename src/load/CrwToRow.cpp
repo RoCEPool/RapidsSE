@@ -22,7 +22,7 @@ CrwToRow::CrwToRow(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
   m_pStreamDef = pStreamDef;
-  m_pRowBuffer = nullptr;
+  m_pRowBuffer = new RowBuffer;
   
   _checkInitialised_(CN_CRWTOROW);
 
@@ -36,6 +36,7 @@ CrwToRow::~CrwToRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
+  ASSERT(! m_pRowBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +50,13 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
     
-   return true;
+  i8 nCrws = pCrwBuffer->nRowCount();
+  for (i8 i_Crw = 0; i_Crw <nCrws; i_Crw++) {
+    
+
+  }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,6 +102,15 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row in rowBuffer; create neww buffer if needed                 */
+/*----------------------------------------------------------------------------*/
+void CrwToRow::vAllotNewRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* create a new rowBuffer                                                     */

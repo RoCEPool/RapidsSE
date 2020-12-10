@@ -745,10 +745,17 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
+bool RowInflator::bInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
                                                      HeadLine* aHeadLine)
 {
-  NEVER_REACH;
+  _static_
+  
+  if (pRowBuffer->nFreeBytes() < C_MAX_RECORD)
+    return false;
+  
+  Row* pRow = pRowBuffer->aAllotNewRow();
+  
+  return false;
 }
 
 /*============================================================================*/

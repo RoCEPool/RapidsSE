@@ -29,6 +29,7 @@ namespace Load
   
   private:
   
+    void vAllotNewRow(void);
     void vNewRowBuffer(void);
   
     Footer* aFooter(void);
