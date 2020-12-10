@@ -65,16 +65,6 @@ void Encoding::vEncodeRow(Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode signle row                                                          */
-/*----------------------------------------------------------------------------*/
-void Encoding::vEncodeSrw(RowSingle* pSrw)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-  
-  m_pEncoding_v2->vEncodeSrw(pSrw);
-}
-
-/*----------------------------------------------------------------------------*/
 /* morph the given column encoding (to MC_STR_TAIL_2T)                        */
 /*----------------------------------------------------------------------------*/
 void Encoding::vMorphEncoding(_ColEnc* aColEnc)

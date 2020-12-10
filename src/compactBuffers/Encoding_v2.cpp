@@ -103,18 +103,6 @@ void Encoding_v2::vEncodeRow(Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode signle row                                                          */
-/*----------------------------------------------------------------------------*/
-void Encoding_v2::vEncodeSrw(RowSingle* pSrw)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
-  
-  vReset();
-  
-  vInitialEncodingSrw(pSrw);
-}
-
-/*----------------------------------------------------------------------------*/
 /* morph the given column encoding (to MC_STRING_TAIL)                        */
 /*----------------------------------------------------------------------------*/
 void Encoding_v2::vMorphEncoding(_ColEnc* aColEnc)
@@ -250,65 +238,6 @@ void Encoding_v2::vInitialEncodingRow(Row* pRow)
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute initial offset and till for this column
     
-    vOffsetTill(xrColEnc);
-    
-  } // for i_Col
-  
-  m_nBytesNeeded = m_i_Offset_next;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode the columns of given row and compute their initial offsets          */
-/*----------------------------------------------------------------------------*/
-void Encoding_v2::vInitialEncodingSrw(RowSingle* pSrw)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
-  
-  Dtm wColDtm;
-
-  m_i_Offset_next = m_i_BaseOffsetData;
-
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    _ColEnc& xrColEnc = xaColEnc[i_Col];
-    
-    eDM eDatum = xrColEnc.m_pCol->eDatum();
-
-    //wColDtm = pSrw->wColDtm(i_Col);
-    
-    if (C_DATUM_NULL == pSrw->iColVal(i_Col)) {
-      wColDtm = pSrw->iColVal(i_Col);
-    }
-    else if (DM_VCH == eDatum) {
-      wColDtm = pSrw->szColVal(i_Col);
-    }
-    else {
-      wColDtm = pSrw->iColVal(i_Col);
-    }
-
-    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // encode the column value
-    
-    switch (xrColEnc.m_pCol->eDatum()) {
-        
-      case DM_BCD: vEncodeBcd(xrColEnc,wColDtm);  break;
-      case DM_BOL: vEncodeBol(xrColEnc,wColDtm);  break;
-      case DM_DTE: vEncodeDte(xrColEnc,wColDtm);  break;
-      case DM_FLT: vEncodeFlt(xrColEnc,wColDtm);  break;
-      case DM_INT: vEncodeInt(xrColEnc,wColDtm);  break;
-      case DM_IVL: vEncodeIvl(xrColEnc,wColDtm);  break;
-      case DM_TME: vEncodeTme(xrColEnc,wColDtm);  break;
-      case DM_TSP: vEncodeTsp(xrColEnc,wColDtm);  break;
-      case DM_VCH: vEncodeVch(xrColEnc,wColDtm);  break;
-        
-      default:
-        NEVER_REACH;
-        
-    } // switch eDatum
-    
-    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // compute initial offset and till for this column
-
     vOffsetTill(xrColEnc);
     
   } // for i_Col
