@@ -589,7 +589,8 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 nExponentDigits;
   char caBuffer_atof[256];
   char* acFltDst;
-
+  i8 nFloatChars;
+  
   Tme xTimeValue;
   u8 uHourComponent;
   u8 uMinuteComponent;
@@ -1398,16 +1399,28 @@ L_Float:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional leading sign
 
-  vSIGN_optional();
+  
+  //vSIGN_optional();
+  
+  nFloatChars = 0;
+  
+  // test for +/-
+  if (cCurChr == C_MINUS_SIGN || cCurChr == C_PLUS_SIGN) {
+    *acFltDst++ = cCurChr;
+    nFloatChars++;
+    vACCEPT_CHAR(); // skip sign
+  }
+
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
 
   // collect digits for leading number
   acFltDst = caBuffer_atof;
-  for (nWholeDigits = 0; nWholeDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
+  while (nFloatChars < 128 && bIS_DIGIT()) {
     *acFltDst++ = cCurChr;
-    nWholeDigits++;
+    nFloatChars++;
+    vACCEPT_CHAR();
   }
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1416,10 +1429,14 @@ L_Float:
   // collect digits for middle fraction
   if (bIS_DECIMAL_POINT()) {
     *acFltDst++ = cCurChr;
+    nFloatChars++;
+    
     vACCEPT_CHAR(); // skip '.'
-    for ( ; nWholeDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
+    
+    while (nFloatChars < 128 && bIS_DIGIT()) {
       *acFltDst++ = cCurChr;
-      nWholeDigits++;
+      nFloatChars++;
+      vACCEPT_CHAR();
     }
   }
 
@@ -1430,30 +1447,29 @@ L_Float:
   if ('e' == cCurChr || 'E' == cCurChr) {
     
     *acFltDst++ = cCurChr;
+    nFloatChars++;
     vACCEPT_CHAR(); // skip 'e'
 
     // test for +/-
     if (cCurChr == C_MINUS_SIGN || cCurChr == C_PLUS_SIGN) {
       *acFltDst++ = cCurChr;
+      nFloatChars++;
       vACCEPT_CHAR(); // skip sign
     }
         
     // collect exponent digits
-    for  (nExponentDigits = 0; nExponentDigits < 3 && bIS_DIGIT(); vACCEPT_CHAR()) {
+    while (nFloatChars < 128 && bIS_DIGIT()) {
       *acFltDst++ = cCurChr;
-      nExponentDigits++;
+      nFloatChars++;
+      vACCEPT_CHAR();
     }
-    
-    // should have seen some exponent digits
-    if (! nExponentDigits)
-      vFIELD_ERROR(EC_CSV_EXPONENT_MISSING);
   }
 
   // terminate
   *acFltDst++ = '\0';
   
   // should have seen some digits
-  if (! nWholeDigits)
+  if (! nFloatChars)
     vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
@@ -1464,9 +1480,9 @@ L_Float:
 //    vFIELD_ERROR(EC_CSV_FLOAT_INVALID);
 
   // compute final result
-  dUnsignedFloat = atof(caBuffer_atof); // SHOULD BE USING strtod() AND TESTING FOR ERROR
+  dFloatValue = atof(caBuffer_atof); // SHOULD BE USING strtod() AND TESTING FOR ERROR
   
-  dFloatValue = bIsNegative ? - dUnsignedFloat : dUnsignedFloat;
+  //dFloatValue = bIsNegative ? - dUnsignedFloat : dUnsignedFloat;
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                              deposit float
