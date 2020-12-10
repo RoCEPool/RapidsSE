@@ -103,18 +103,6 @@ void Encoding_v2::vEncodeRow(Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode inflated row                                                        */
-/*----------------------------------------------------------------------------*/
-void Encoding_v2::vEncodeRsb(Row* aRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING_V2,_FOOTER_);
-  
-  vReset();
-  
-  vInitialEncodingRsb(aRow);
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode signle row                                                          */
 /*----------------------------------------------------------------------------*/
 void Encoding_v2::vEncodeSrw(RowSingle* pSrw)
