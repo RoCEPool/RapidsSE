@@ -28,35 +28,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: toRow_CrwBuffer \handler
-
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
-
-  //Operand[]
-  //profile.start
-
-  Operand[].crwToRow
-
-  //profile.end
-
-  // test for any completed
-  ToRow[].completed to OperandB[]
-  begin
-    OperandB[].isNull not
-  while
-    OperandB[].pipeOut
-    ToRow[].completed to OperandB[]
-  repeat
-
-  Operand[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_CSVBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : toRow_CsvBuffer \handler
@@ -125,7 +96,6 @@
 
   op__topology
 
-  find: toRow_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: toRow_CsvBuffer   ZK_CSVBUFFER   op[].handler!
   find: toRow_EosMarker   ZK_EOSMARKER   op[].handler!
   find: toRow_StartMarker ZK_STARTMARKER op[].handler!

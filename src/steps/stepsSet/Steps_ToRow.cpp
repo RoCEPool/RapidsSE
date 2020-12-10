@@ -25,7 +25,7 @@ void Step::vToRowRegCompleted(void)
   
   ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
   
-  RowBuffer* pRowBuffer = pToRow->pFullRsbBuffer();
+  RowBuffer* pRowBuffer = pToRow->pFullRowBuffer();
   
   m_pDataStack->vPushPtr(pRowBuffer);
 
@@ -94,7 +94,7 @@ void Step::vToRowRegDangling(void)
   }
   else {
     ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
-    RowBuffer* pRowBuffer = pToRow->pDanglingRsbBuffer();
+    RowBuffer* pRowBuffer = pToRow->pDanglingRowBuffer();
     m_pDataStack->vPushPtr(pRowBuffer);
   }
   

@@ -62,7 +62,7 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
-  vNewRsbBuffer();
+  vNewRowBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,37 +80,9 @@ ToRow::~ToRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert a crwbuffer into a rowBuffer                                       */
-/*----------------------------------------------------------------------------*/
-bool ToRow::bConvertCrw(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
-    
-  i8 nRows = pCrwBuffer->nRowCount();
-  
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    if (! m_pRowBuffer->aAllotNewRow()) {
-      vNewRsbBuffer();
-      bool b = m_pRowBuffer->aAllotNewRow();
-      ASSERT(b);
-    }
-    
-    // get the inflated compact row
-    pCrwBuffer->vGetRow(m_pRowBuffer, i_Row);
-    
-  } // end-data
-    
-  //m_pRowBuffer->vDumpAllRows();
-  //m_pRowBuffer->vSlabReport();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* return last remaining dangling rowBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRow::pDanglingRsbBuffer(void)
+RowBuffer* ToRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
@@ -124,7 +96,7 @@ RowBuffer* ToRow::pDanglingRsbBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return a full rowBuffer (if any)                                           */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRow::pFullRsbBuffer(void)
+RowBuffer* ToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 
@@ -146,9 +118,13 @@ RowBuffer* ToRow::pFullRsbBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* create a new rowBuffer                                                     */
 /*----------------------------------------------------------------------------*/
-void ToRow::vNewRsbBuffer(void)
+void ToRow::vNewRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
@@ -164,26 +140,6 @@ void ToRow::vNewRsbBuffer(void)
   // initialise the row slab inside the new row buffer
   m_pRowBuffer = m_pRsbBuffer;
   m_pRowBuffer->vInitPix(m_pStreamDef,m_bPtnHash);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get row buffer                                                             */
-/*----------------------------------------------------------------------------*/
-RowBuffer* ToRow::pRsbBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
-
-  return m_pRsbBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set row buffer                                                             */
-/*----------------------------------------------------------------------------*/
-void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
-
-  m_pRsbBuffer = pRsbBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -858,7 +814,7 @@ L_TestMoreRecords:
 
   // allot a new row (new another rowBuffer if necessary)
   if (! m_pRowBuffer->aAllotNewRow()) {    // ? inline ?
-    vNewRsbBuffer();
+    vNewRowBuffer();
     Row* aNewRow = m_pRowBuffer->aAllotNewRow();
     ASSERT(aNewRow);
   }

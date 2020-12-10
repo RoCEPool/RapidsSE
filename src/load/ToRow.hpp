@@ -53,18 +53,13 @@ namespace Load
           Format* pFmt, bool bPtnHash);
    ~ToRow(void) noexcept(false);
   
-    bool bConvertCrw(CrwBuffer* pCrwBuffer);
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
 
-    RowBuffer* pDanglingRsbBuffer(void);
-    RowBuffer* pFullRsbBuffer(void);
-    void vNewRsbBuffer(void);
-
-    RowBuffer* pRsbBuffer(void);
-    void vRsbBuffer(RowBuffer* pRsbBuffer);
-  
+    RowBuffer* pDanglingRowBuffer(void);
+    RowBuffer* pFullRowBuffer(void);
 
   private:
+    void vNewRowBuffer(void);
     Footer* aFooter(void);
   };
 
