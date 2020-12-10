@@ -1403,7 +1403,8 @@ L_Float:
   //vSIGN_optional();
   
   nFloatChars = 0;
-  
+  acFltDst = caBuffer_atof;
+
   // test for +/-
   if (cCurChr == C_MINUS_SIGN || cCurChr == C_PLUS_SIGN) {
     *acFltDst++ = cCurChr;
@@ -1416,7 +1417,6 @@ L_Float:
   // unsigned whole portion
 
   // collect digits for leading number
-  acFltDst = caBuffer_atof;
   while (nFloatChars < 128 && bIS_DIGIT()) {
     *acFltDst++ = cCurChr;
     nFloatChars++;
