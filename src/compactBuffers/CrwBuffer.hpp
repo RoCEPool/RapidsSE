@@ -79,7 +79,6 @@ namespace CompactBuffers
     void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
     bool bAppendCrw(Crw* aCrwSrc);
     bool bAppendRow(Row* aRowSrc);
-    bool bAppendSrw(RowSingle* pRowSingle);
 
   private:
     bool bHasSpace(i8 nBytes);

@@ -254,22 +254,6 @@ bool CrwBuffer::bAppendRow(Row* aRowSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a row entry into this buffer                                        */
-/*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendSrw(RowSingle* pSrwSrc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-    
-#ifdef WITH_ENCODING_TRACE
-  vTrace("Partition:%lld\n"_Stz, m_tPtnNo);
-#endif
-  
-  bool bAppended = m_pRowCompactor->bCompactSrw(pSrwSrc);
-  
-  return bAppended;
-}
-
-/*----------------------------------------------------------------------------*/
 /* assert valid row buffer                                                    */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vAssertCrwBuffer(void)

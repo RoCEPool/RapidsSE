@@ -217,7 +217,7 @@ CrwBuffer* IndexStream::pRead_idxstm(RowOnce* pRowOnce)
         RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
         
         // insert row from entry in crwBuffer
-        if ( ! pCrwBuffer->bAppendSrw(hRow)) {
+        if ( ! pCrwBuffer->bAppendRow(hRow->pRowCurrent())) {
           
           // Buffer is full ?
           goto L_Exit;

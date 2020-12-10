@@ -1565,8 +1565,6 @@ public:
   // table partition
   void vTablePtnAppendBuffer(void);
   void vTablePtnGet(void);
-  void vTablePtnGenCrwBuffers(void);
-  void vTablePtnInflateCrwBuffer(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnPurge(void);
   void vTablePtnRoot(void);
