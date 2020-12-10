@@ -72,11 +72,11 @@ RowBuffer* CrwToRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
   
-  RowBuffer* pDanglingRsbBuffer = m_pRowBuffer;
+  RowBuffer* pDanglingRowBuffer = m_pRowBuffer;
   
   m_pRowBuffer = nullptr;
   
-  return pDanglingRsbBuffer;
+  return pDanglingRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

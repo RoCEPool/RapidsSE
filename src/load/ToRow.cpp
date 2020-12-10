@@ -34,7 +34,6 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_bFirst  = true;
   
   m_pRowBuffer   = nullptr;
-  m_pRsbBuffer = nullptr;
 
   //--
   
@@ -72,7 +71,7 @@ ToRow::~ToRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
-  delete m_pRsbBuffer;
+  delete m_pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,11 +85,11 @@ RowBuffer* ToRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
-  RowBuffer* pRsbBuffer = m_pRsbBuffer;
+  RowBuffer* pRowBuffer = m_pRowBuffer;
   
-  m_pRsbBuffer = nullptr;
+  m_pRowBuffer = nullptr;
   
-  return pRsbBuffer;
+  return pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,21 +99,21 @@ RowBuffer* ToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 
-  RowBuffer* pFullRsbBuffer = nullptr;
+  RowBuffer* pFullRiwBuffer = nullptr;
   
-  RowBuffer* pRsbBuffer = m_pRsbBuffer ?
-                            _pRowBuffer(m_pRsbBuffer->pNextBuffer()) : nullptr;
-  while (pRsbBuffer) {
-    pFullRsbBuffer = pRsbBuffer;
-    pRsbBuffer = _pRowBuffer(pRsbBuffer->pNextBuffer());
+  RowBuffer* pRowBuffer = m_pRowBuffer ?
+                            _pRowBuffer(m_pRowBuffer->pNextBuffer()) : nullptr;
+  while (pRowBuffer) {
+    pFullRiwBuffer = pRowBuffer;
+    pRowBuffer = _pRowBuffer(pRowBuffer->pNextBuffer());
   }
   
-  if (pFullRsbBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRsbBuffer->pPrevBuffer());
+  if (pFullRiwBuffer) {
+    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevBuffer());
     pPrevBuffer->vNextBuffer(nullptr);
   }
   
-  return pFullRsbBuffer;
+  return pFullRiwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,16 +128,15 @@ void ToRow::vNewRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   //  create a new buffer
-  RowBuffer* pRsbBuffer = new RowBuffer;
+  RowBuffer* pRowBuffer = new RowBuffer;
   
   // link the new to old
-  pRsbBuffer->vNextBuffer(m_pRsbBuffer);
-  if (m_pRsbBuffer)
-    m_pRsbBuffer->vPrevBuffer(pRsbBuffer);
-  m_pRsbBuffer = pRsbBuffer;
+  pRowBuffer->vNextBuffer(m_pRowBuffer);
+  if (m_pRowBuffer)
+    m_pRowBuffer->vPrevBuffer(pRowBuffer);
+  m_pRowBuffer = pRowBuffer;
   
   // initialise the row slab inside the new row buffer
-  m_pRowBuffer = m_pRsbBuffer;
   m_pRowBuffer->vInitPix(m_pStreamDef,m_bPtnHash);
 }
 

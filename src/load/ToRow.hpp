@@ -23,7 +23,6 @@ namespace Load
     i8         m_i_Rec;
 
     RowBuffer* m_pRowBuffer;
-    RowBuffer* m_pRsbBuffer;
   
     //--
   
