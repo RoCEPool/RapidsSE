@@ -9,6 +9,9 @@ namespace Load
   {
   private:
 
+    StreamDef* m_pStreamDef;
+    RowBuffer* m_pRowBuffer;
+  
     // must be last
     Footer m_xFooter;
 
@@ -20,8 +23,14 @@ namespace Load
    ~CrwToRow(void) noexcept(false);
   
     bool bConvertCrwToRow(CrwBuffer* pCrwBuffer);
-
+  
+    RowBuffer* pDanglingRowBuffer(void);
+    RowBuffer* pFullRowBuffer(void);
+  
   private:
+  
+    void vNewRowBuffer(void);
+  
     Footer* aFooter(void);
   };
 

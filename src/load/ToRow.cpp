@@ -421,6 +421,19 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     bIsLeapYear = false; \
   }
 
+#define vDAY_SPECIFICS() \
+  if (uDayComponent < 1) \
+    vFIELD_ERROR(EC_CSV_DAY_INVALID); \
+  \
+  if (bIsLeapYear) { \
+    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent]) \
+      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR); \
+  } \
+  else { \
+    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent]) \
+      vFIELD_ERROR(EC_CSV_DAY_INVALID); \
+  }
+
 //--
 
 #define vIF_NULL_FORM(_label,_errorCode) \
@@ -1065,28 +1078,30 @@ L_Date_year:
 
   vNUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
-  // adjust a 2-digit year
-  if (uYearComponent <= 99)
-    uYearComponent += 2000;
+//  // adjust a 2-digit year
+//  if (uYearComponent <= 99)
+//    uYearComponent += 2000;
+//
+//  // validate the year
+//  if (uYearComponent < C_YEAR_MIN)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
+//
+//  if (uYearComponent > C_YEAR_MAX)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
+//
+//  // determine if a leap year
+//  if (uYearComponent % 4 == 0) {
+//    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
+//      bIsLeapYear = false;
+//    else
+//      bIsLeapYear = true;
+//  }
+//  else {
+//    bIsLeapYear = false;
+//  }
+
+  vYEAR_SPECIFICS();
   
-  // validate the year
-  if (uYearComponent < C_YEAR_MIN)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
-
-  if (uYearComponent > C_YEAR_MAX)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-
-  // determine if a leap year
-  if (uYearComponent % 4 == 0) {
-    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
-      bIsLeapYear = false;
-    else
-      bIsLeapYear = true;
-  }
-  else {
-    bIsLeapYear = false;
-  }
-
   goto L_Date_nextComponent;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1117,21 +1132,23 @@ L_Date_day:
   
 L_Date_componentsCollected:
   
-  // validate day wrt possible leap year
-  
-  // validate days per month
-  if (uDayComponent < 1)
-    vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  
-  if (bIsLeapYear) {
-    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
-  }
-  else {
-    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
+//  // validate day wrt possible leap year
+//
+//  // validate days per month
+//  if (uDayComponent < 1)
+//    vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//
+//  if (bIsLeapYear) {
+//    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
+//  }
+//  else {
+//    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//  }
 
+  vDAY_SPECIFICS();
+  
   // === === === === === === === === === === === === === === === === === === ===
   //                                                            recognised date
 
@@ -1888,28 +1905,30 @@ L_Timestamp_year:
   
   vNUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
-  // adjust a 2-digit year
-  if (uYearComponent <= 99)
-    uYearComponent += 2000;
+//  // adjust a 2-digit year
+//  if (uYearComponent <= 99)
+//    uYearComponent += 2000;
+//
+//  // validate the year
+//  if (uYearComponent < C_YEAR_MIN)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
+//
+//  if (uYearComponent > C_YEAR_MAX)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
+//
+//  // determine if a leap year
+//  if (uYearComponent % 4 == 0) {
+//    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
+//      bIsLeapYear = false;
+//    else
+//      bIsLeapYear = true;
+//  }
+//  else {
+//    bIsLeapYear = false;
+//  }
+
+  vYEAR_SPECIFICS();
   
-  // validate the year
-  if (uYearComponent < C_YEAR_MIN)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
-
-  if (uYearComponent > C_YEAR_MAX)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-
-  // determine if a leap year
-  if (uYearComponent % 4 == 0) {
-    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
-      bIsLeapYear = false;
-    else
-      bIsLeapYear = true;
-  }
-  else {
-    bIsLeapYear = false;
-  }
-
   goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1954,17 +1973,19 @@ L_Timestamp_dateCollected:
   // validate the date
     
   // validate days per month
-  if (uDayComponent < 1)
-    vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  
-  if (bIsLeapYear) {
-    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
-  }
-  else {
-    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
+//  if (uDayComponent < 1)
+//    vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//
+//  if (bIsLeapYear) {
+//    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
+//  }
+//  else {
+//    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//  }
+
+  vDAY_SPECIFICS();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // ' ' or 'T' separator
