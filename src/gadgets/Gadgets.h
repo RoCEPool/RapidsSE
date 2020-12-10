@@ -115,6 +115,8 @@ static Stz* C_TAG_CRW_PROJECT_ROUTINE   = "<crwProjectRoutine>"_Stz;
 static Stz* C_TAG_CRW_FILTER_ROUTINE    = "<crwFilterRoutine>"_Stz;
 static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
 
+static Stz* C_TAG_INDEX_RANGE_ROUTINE = "<indexRangeRoutine>"_Stz;
+
 static Stz* C_TAG_SRC_EXISTS_ALTIDX     = "<srcExistsAltIdx>"_Stz;
 
 static Stz* C_TAG_ROW_PROJECT_ROUTINE   = "<rowProjectRoutine>"_Stz;
@@ -129,9 +131,12 @@ static Stz* C_TAG_PROJECT_DST_COLUMN    = "<projectDstColumn>"_Stz;
 static Stz* C_TAG_PREDICATE_COLUMNS     = "<predicateColumns>"_Stz;
 static Stz* C_TAG_PREDICATE_SRC_COLUMN  = "<predicateSrcColumn>"_Stz;
 
-static Stz* C_TAG_LITERAL_TYPE   = "<literalType>"_Stz;
-static Stz* C_TAG_LITERAL_VALUE  = "<literalValue>"_Stz;
-static Stz* C_TAG_RELATIONAL_OP  = "<relationalOp>"_Stz;
+static Stz* C_TAG_LITERAL_TYPE  = "<literalType>"_Stz;
+static Stz* C_TAG_LITERAL_VALUE = "<literalValue>"_Stz;
+static Stz* C_TAG_RELATIONAL_OP = "<relationalOp>"_Stz;
+
+static Stz* C_TAG_LOWER_BOUND = "<lowerBound>"_Stz;
+static Stz* C_TAG_UPPER_BOUND = "<upperBound>"_Stz;
 
 //------------------------------------------------------------------------------
 

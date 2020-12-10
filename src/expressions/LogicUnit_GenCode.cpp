@@ -890,36 +890,22 @@ void LogicUnit::vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFil
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handler for datapulse
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //  on datapulse execute table scan
-  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  //  on datapulse execute AM_INDEX_RANGE
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "AM_INDEX_RANGE_ROUTINE"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
   oTagSet.vReset();
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handler for ZK_CRWBUFFER
+  // index range
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //   to execute FILTER_ROUTINE and PROJECT_ROUTINE for each row
-  oTagSet.vAppend(C_TAG_CRW_FILTER_ROUTINE, "CRW_FILTER_ROUTINE"_Stz);
-  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_FILTER_HANDLER, &oTagSet));
+  oTagSet.vAppend(C_TAG_LITERAL_TYPE, "EO_DATE"_Stz);
+  oTagSet.vAppend(C_TAG_LOWER_BOUND, "1994-01-01"_Stz);
+  oTagSet.vAppend(C_TAG_UPPER_BOUND, "1995-01-01"_Stz);
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "AM_CRW_PROJECT_ROUTINE"_Stz);
+  //oTagSet.vAppend(C_TAG_CRW_FILTER_ROUTINE, "1995-01-01"_Stz);
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)1);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INDEX_RANGE_ROUTINE, &oTagSet));
   oTagSet.vReset();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FILTER_ROUTINE
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add the columns to be projected to PREDICATE_COLUMNS
-  oTagSet.vAppend(C_TAG_PREDICATE_COLUMNS, (i8)2);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROUTINE, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PREDICATE_SRC_COLUMN, 2);
-  oTagSet.vAppend(C_TAG_LITERAL_VALUE, "\"Manufacturer#1\""_Stz);
-  oTagSet.vAppend(C_TAG_RELATIONAL_OP, "EO_STR_COMPARE"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_FILTER_VARCHAR_COLUMN, &oTagSet));
-  oTagSet.vReset();
-
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_FILTER_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PROJECT_ROUTINE

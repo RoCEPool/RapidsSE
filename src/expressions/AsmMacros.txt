@@ -174,13 +174,13 @@ macro AM_TABLE_SCAN
   EO_JMP QRY_DONE
 endMacro
 
-macro AM_INDEX_RANGE
+macro AM_INDEX_RANGE_RIUTINE
 //----------------------------------------------------------------------------//
-// macro AM_INDEX_RANGE                                                       //
+// macro AM_INDEX_RANGE_RIUTINE                                               //
 //----------------------------------------------------------------------------//
-  Label INDEX_RANGE
+  Label INDEX_RANGE_ROUTINE
 
-  EO_DATE <param0>
+  <literalType> <lowerBound>
   EO_ENTWRK_SETINTELM
   EO_IXT_SRC_LBOUND
 
@@ -197,7 +197,7 @@ macro AM_INDEX_RANGE
   Label UPPERBOUND
 
     EO_ENTWRK_RESET
-    EO_DATE <param1>
+    <literalType> <upperBound>
     EO_ENTWRK_SETINTELM
     EO_IXT_SRC_UBOUND_LT
     EO_JMP_TRUE TRV_TILL_UPPER
@@ -209,8 +209,10 @@ macro AM_INDEX_RANGE
     EO_JMP_FALSE QRY_600_DONE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // call PROCESSROW subroutine to process the row
-    EO_CALL SUBROUTINE_PROCESSROW
+    // call project and filter
+    EO_CRW_SRC_DEREF
+    EO_CALL <crwProjectRoutine>
+    EO_CALL <crwFilterRoutine>
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // loop back to getting next row till end
@@ -233,10 +235,10 @@ macro AM_INDEX_RANGE
     EO_JMP_TRUE QRY_600_DONE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // call PROCESSROW subroutine to process the row
+    // call project and filter
     EO_CRW_SRC_DEREF
     EO_CALL <crwProjectRoutine>
-    EO_CALL <crwProjectRoutine>
+    EO_CALL <crwFilterRoutine>
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // loop back to getting next row

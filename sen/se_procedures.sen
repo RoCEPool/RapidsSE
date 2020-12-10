@@ -1918,7 +1918,6 @@
   sPath
   "
   procedure Query6_S
-    parameters $QueryText_stageB $QueryText_stageC
   begin
 
   stage stageA on origin :
@@ -1936,9 +1935,8 @@
     | stageC
 
   stage stageC on origin :
-    EOAsm2 ./eo_text/asm6_s1.txt 0
-    | output
-    //| toStatDemon
+    //EOAsm2 ./eo_text/asm6_s1.txt 0
+    output
     | sink
     | stageA
 
