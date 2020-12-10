@@ -85,7 +85,7 @@ namespace MetaData          { class Table;           class IdxColVec;
 namespace Metrics           {                                                 }
 namespace Oblique           { class AM;                                       }
 namespace Operands          { class Operand;                                  }
-namespace Parser            {                                                 }
+namespace Parser            { class PlanNode;                                 }
 namespace Partitioning      {
                               class PtnStream;       class TablePtn;          }
 namespace Persistence       { class CarryOver;                                }
