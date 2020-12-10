@@ -9,17 +9,17 @@ namespace CompactBuffers
   {
   public:
   
-  static void vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
-                                                 HeadLine* aHeadLine);
+    static void vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
+                                                   HeadLine* aHeadLine);
 
-  static void vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
-                                               HeadLine* aHeadLine);
+    static void vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
+                                                   HeadLine* aHeadLine);
 
-   static void vInflate_OneColumn_into_RowSingle(RowSingle* pRowSingle,
+    static void vInflate_OneColumn_into_RowSingle(RowSingle* pRowSingle,
                                                  HeadLine* aHeadLine,
                                                  i8 i_ColToRetrieve);
-  
-   static void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
+
+    static void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
                                                  char*& racStrArea,
                                                  eSI eStrInflateRule,
                                                  HeadLine* aHeadLine,

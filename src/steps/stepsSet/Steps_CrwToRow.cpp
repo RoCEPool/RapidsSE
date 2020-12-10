@@ -23,9 +23,9 @@ void Step::vCrwToRowCompleted(void)
 {
   ENTRY();
   
-  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
-  
-  RowBuffer* pRowBuffer = pToRow->pFullRsbBuffer();
+  CrwToRow* pCrwToRow = *m_pLogicUnit->m_xpCrwToRow;
+
+  RowBuffer* pRowBuffer = pCrwToRow->pFullRowBuffer();
   
   m_pDataStack->vPushPtr(pRowBuffer);
 
@@ -75,8 +75,8 @@ void Step::vCrwToRowDangling(void)
     m_pDataStack->vPushPtr(nullptr);
   }
   else {
-    ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
-    RowBuffer* pRowBuffer = pToRow->pDanglingRsbBuffer();
+    CrwToRow* pCrwToRow = *m_pLogicUnit->m_xpCrwToRow;
+    RowBuffer* pRowBuffer = pCrwToRow->pDanglingRowBuffer();
     m_pDataStack->vPushPtr(pRowBuffer);
   }
   
