@@ -947,6 +947,15 @@ void LogicUnit::vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFil
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Query6_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate iterating index on l_shipdate & project into ROW (Query 1)        */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateQuery100(void)
