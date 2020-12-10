@@ -217,8 +217,12 @@ namespace Expressions
     bool bGenerateAsm(Stz* sText);
     void vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName);
     void vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query20(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
 
+    void vGenerateAsmTxt_Query6(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+    void vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+    void vGenerateAsmTxt_Query6_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+
+    void vGenerateAsmTxt_Query20(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
     void vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
     void vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
 

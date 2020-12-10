@@ -142,7 +142,7 @@ macro AM_STREAMDEF_ADD_COLUMN
 
 macro AM_STREAMDEF_END
 // macro AM_STREAMDEF_END
-  EO_POT_USE_STREAMDEFOUT 0 
+  EO_POT_USE_STREAMDEFOUT <addPtnHash>
   EO_JMP QRY_DONE
 endMacro
 
@@ -161,7 +161,7 @@ endMacro
 
 macro AM_TABLE_SCAN
 //----------------------------------------------------------------------------//
-// macro TABLE_SCAN                                                           //
+// macro AM_TABLE_SCAN                                                        //
 //----------------------------------------------------------------------------//
   Label TABLE_SCAN
   EO_TABLEPTN_GRABREAD
@@ -172,6 +172,75 @@ macro AM_TABLE_SCAN
   EO_CALLAGAIN
 
   EO_JMP QRY_DONE
+endMacro
+
+macro AM_INDEX_RANGE
+//----------------------------------------------------------------------------//
+// macro AM_INDEX_RANGE                                                       //
+//----------------------------------------------------------------------------//
+  Label INDEX_RANGE
+
+  EO_DATE <param0>
+  EO_ENTWRK_SETINTELM
+  EO_IXT_SRC_LBOUND
+
+  EO_JMP_TRUE UPPERBOUND
+
+  // no lower key start position at beginning of index
+  EO_IXT_SRC_BEGIN
+
+  // no entry return
+  EO_JMP_FALSE QRY_DONE
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // create the upper key
+  Label UPPERBOUND
+
+    EO_ENTWRK_RESET
+    EO_DATE <param1>
+    EO_ENTWRK_SETINTELM
+    EO_IXT_SRC_UBOUND_LT
+    EO_JMP_TRUE TRV_TILL_UPPER
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // no upper key traverse till end
+  Label TRV_TILL_END
+    EO_IXT_SRC_NEXT
+    EO_JMP_FALSE QRY_600_DONE
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // call PROCESSROW subroutine to process the row
+    EO_CALL SUBROUTINE_PROCESSROW
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // loop back to getting next row till end
+    EO_JMP TRV_TILL_END
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // traverse the index till we reach upper bound
+  Label TRV_TILL_UPPER
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // fetch next entry from index
+    EO_IXT_SRC_NEXT
+    EO_JMP_FALSE QRY_600_DONE
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // have we reached the upper entry
+    EO_ENT_SRC_PUSH
+    EO_ENT_SRC_PUSHUPPER
+    EO_EQUAL
+    EO_JMP_TRUE QRY_600_DONE
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // call PROCESSROW subroutine to process the row
+    EO_CRW_SRC_DEREF
+    EO_CALL <crwProjectRoutine>
+    EO_CALL <crwProjectRoutine>
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // loop back to getting next row
+    EO_JMP TRV_TILL_UPPER
 endMacro
 
 macro AM_CRWBUFFER_PROJECT_HANDLER
@@ -215,11 +284,11 @@ macro AM_CRWBUFFER_FILTER_HANDLER
   EO_JMP NEXT_CRW_SRC
 
   EO_JMP QRY_DONE
- endMacro
+endMacro
 
 macro AM_CRWBUFFER_EXISTS_HANDLER
 //----------------------------------------------------------------------------//
-// macro AM_CRWBUFFER_EXISTS_HANDLER                                           //
+// macro AM_CRWBUFFER_EXISTS_HANDLER                                          //
 //----------------------------------------------------------------------------//
   // AM_CRWBUFFER_EXISTS_HANDLER
   Label CRWBUFFER_HANDLER
@@ -235,7 +304,7 @@ macro AM_CRWBUFFER_EXISTS_HANDLER
   EO_JMP_FALSE QRY_DONE
 
   // test for row exits in altIndex
-  EO_CALL <srcExitsAltIdx>
+  EO_CALL <srcExistsAltIdx>
   EO_JMP_FALSE NEXT_CRW_SRC
 
   EO_CALL <crwProjectRoutine>
@@ -262,6 +331,22 @@ endMacro
 macro AM_SET_DST_COLUMNI
   // SET_DST_COLUMNI
   EO_ROW_DST_POPCOLI <projectDstColumn>
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_POP_LOCALI                                                        //
+//----------------------------------------------------------------------------//
+macro AM_POP_LOCALI
+  // POP_LOCALI
+  EO_POP_LOCALI
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_POP_LOCALS                                                        //
+//----------------------------------------------------------------------------//
+macro AM_POP_LOCALS
+  // POP_LOCALS
+  EO_POP_LOCALS
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -293,10 +378,52 @@ macro AM_CRW_FILTER_ROUTINE
 endMacro
 
 //----------------------------------------------------------------------------//
+// macro AM_FILTER_INTEGER_COLUMN                                             //
+//----------------------------------------------------------------------------//
+macro AM_FILTER_INTEGER_COLUMN
+  // FILTER_INTEGER_COLUMN
+  //EO_PUSH_LOCALI <predicateSrcColumn>
+  EO_INTEGER <literalValue>
+  <relationalOp>
+  EO_JMP_FALSE FILTER_INTEGER_TRUE
+
+  EO_PUSH_0
+  EO_JMP FILTER_INTEGER_DONE
+
+  Label FILTER_INTEGER_TRUE
+  EO_PUSH_1
+
+  Label FILTER_INTEGER_DONE
+  EO_RETURN
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_FILTER_DECIMAL_COLUMN                                             //
+//----------------------------------------------------------------------------//
+macro AM_FILTER_DECIMAL_COLUMN
+  // FILTER_DECIMAL_COLUMN
+  //EO_PUSH_LOCALI <predicateSrcColumn>
+  EO_INTEGER <literalValue>
+  EO_INTEGER 100
+  EO_MULTIPLY
+  <relationalOp>
+  EO_JMP_FALSE FILTER_INTEGER_TRUE
+
+  EO_PUSH_0
+  EO_JMP FILTER_INTEGER_DONE
+
+  Label FILTER_INTEGER_TRUE
+  EO_PUSH_1
+
+  Label FILTER_INTEGER_DONE
+  EO_RETURN
+endMacro
+
+//----------------------------------------------------------------------------//
 // macro AM_FILTER_VARCHAR_COLUMN                                             //
 //----------------------------------------------------------------------------//
 macro AM_FILTER_VARCHAR_COLUMN
-  // FILTER_COLUMN
+  // FILTER_VARCHAR_COLUMN
   //EO_PUSH_LOCALI <predicateSrcColumn>
   EO_STR_LITERAL <literalValue>
   <relationalOp>
