@@ -398,6 +398,71 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING); \
   vACCEPT_CHAR();
 
+
+#define vBOOLEAN_NUMERIC() \
+  \
+  vNUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS, \
+                       EC_CSV_BOOLEAN_INVALID, \
+                       EC_CSV_BOOLEAN_TOO_LARGE); \
+  \
+  if (uWholeNumber > 0) \
+    iBooleanValue = true; \
+  else \
+    iBooleanValue = false;
+  
+
+#define vBOOLEAN_TRUE() \
+  \
+  iBooleanValue = true; \
+  \
+  vACCEPT_CHAR(); \
+  \
+  if ('r' == cCurChr || 'R' == cCurChr) { \
+    vACCEPT_CHAR(); \
+    if ('u' == cCurChr || 'U' == cCurChr) { \
+      vACCEPT_CHAR(); \
+      if ('e' == cCurChr || 'E' == cCurChr) { \
+        vACCEPT_CHAR(); \
+      } \
+      else { \
+        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID); \
+      } \
+    } \
+    else { \
+      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID); \
+    } \
+  }
+
+
+#define vBOOLEAN_FALSE() \
+  \
+  iBooleanValue = false; \
+  \
+  vACCEPT_CHAR(); \
+  \
+  if ('a' == cCurChr || 'A' == cCurChr) { \
+    vACCEPT_CHAR(); \
+    if ('l' == cCurChr || 'L' == cCurChr) { \
+      vACCEPT_CHAR(); \
+      if ('s' == cCurChr || 'S' == cCurChr) { \
+        vACCEPT_CHAR(); \
+        if ('e' == cCurChr || 'E' == cCurChr) { \
+          vACCEPT_CHAR(); \
+        } \
+        else { \
+          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID); \
+        } \
+      } \
+      else { \
+        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID); \
+      } \
+    } \
+    else { \
+      vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID); \
+    } \
+  }
+
+
 #define vYEAR_SPECIFICS() \
   /* adjust a 2-digit year */ \
   if (uYearComponent <= 99) \
@@ -912,29 +977,50 @@ L_Boolean:
   vIF_NULL_FORM(L_Boolean_setNull,EC_CSV_BOOLEAN_INVALID);
     
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible numeric form of boolean
+
+  if (bIS_DIGIT()) {
+  
+//    vNUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
+//                         EC_CSV_BOOLEAN_INVALID,
+//                         EC_CSV_BOOLEAN_TOO_LARGE);
+//
+//    if (uWholeNumber > 0)
+//      iBooleanValue = true;
+//    else
+//      iBooleanValue = false;
+    
+    vBOOLEAN_NUMERIC();
+    
+    goto L_Boolean_recognised;
+  }
+  
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // possible true form of boolean
   
   if ('t' == cCurChr || 'T' == cCurChr) {
 
-    iBooleanValue = true;
-    vACCEPT_CHAR(); // skip 't'
-    
-    if ('r' == cCurChr || 'R' == cCurChr) {
-      vACCEPT_CHAR(); // skip 'r'
-      if ('u' == cCurChr || 'U' == cCurChr) {
-        vACCEPT_CHAR(); // skip 'u'
-        if ('e' == cCurChr || 'E' == cCurChr) {
-          vACCEPT_CHAR(); // skip 'e'
-        }
-        else { // not expected 'e'
-          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-        }
-      }
-      else { // not expected 'u'
-        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-      }
-    }
+//    iBooleanValue = true;
+//    vACCEPT_CHAR(); // skip 't'
+//
+//    if ('r' == cCurChr || 'R' == cCurChr) {
+//      vACCEPT_CHAR(); // skip 'r'
+//      if ('u' == cCurChr || 'U' == cCurChr) {
+//        vACCEPT_CHAR(); // skip 'u'
+//        if ('e' == cCurChr || 'E' == cCurChr) {
+//          vACCEPT_CHAR(); // skip 'e'
+//        }
+//        else { // not expected 'e'
+//          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//        }
+//      }
+//      else { // not expected 'u'
+//        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//      }
+//    }
 
+    vBOOLEAN_TRUE();
+    
     goto L_Boolean_recognised;
   }
   
@@ -971,23 +1057,6 @@ L_Boolean:
     goto L_Boolean_recognised;
   }
 
-  // ---- ---- ---- ---- ---- ---- ---- ----
-  // possible numeric form of boolean
-
-  if (bIS_DIGIT()) {
-  
-    vNUMBER(uWholeNumber,C_MAX_INTEGER_DIGITS,
-                         EC_CSV_BOOLEAN_INVALID,
-                         EC_CSV_BOOLEAN_TOO_LARGE);
-    
-    if (uWholeNumber > 0)
-      iBooleanValue = true;
-    else
-      iBooleanValue = false;
-    
-    goto L_Boolean_recognised;
-  }
-  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unrecognisable boolean form
   

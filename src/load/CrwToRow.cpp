@@ -24,6 +24,8 @@ CrwToRow::CrwToRow(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
   m_pRowBuffer = new RowBuffer;
   
+  m_pRowBuffer->vResolveStreamPix(pStreamDef);
+  
   _checkInitialised_(CN_CRWTOROW);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
@@ -55,6 +57,8 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
     
     HeadLine* pCrwHead = pCrwBuffer->aGetHead(i_Crw);
 
+    vAllotNewRow();
+    
     RowInflator::vInflate_AllColumns_into_RowBuffer(m_pRowBuffer,pCrwHead);
   }
 
@@ -82,16 +86,21 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  if (! m_pRowBuffer || ! m_pRowBuffer->pNextBuffer())
+  if (! m_pRowBuffer)
     return nullptr;
   
-  RowBuffer* pFullRowBuffer  = _pRowBuffer(m_pRowBuffer->pNextBuffer());
-  RowBuffer* pLaterRowBuffer = _pRowBuffer(pFullRowBuffer->pNextBuffer());
+  RowBuffer* pScanRowBuffer = m_pRowBuffer;
+  if (! pScanRowBuffer->pNextBuffer())
+    return nullptr;
+
+  while (pScanRowBuffer->pNextBuffer()->pNextBuffer())
+    pScanRowBuffer = _pRowBuffer(pScanRowBuffer->pNextBuffer());
   
-  m_pRowBuffer->vNextBuffer(pLaterRowBuffer);
-  pFullRowBuffer->vNextBuffer(nullptr);
+  RowBuffer* pLastRowBuffer  = _pRowBuffer(pScanRowBuffer->pNextBuffer());
   
-  return pFullRowBuffer;
+  pScanRowBuffer->vNextBuffer(nullptr);
+
+  return pLastRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +112,7 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 void CrwToRow::vAllotNewRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
   
   if (m_pRowBuffer->nFreeBytes() < C_MAX_RECORD)
     vNewRowBuffer();
@@ -112,11 +121,11 @@ void CrwToRow::vAllotNewRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new rowBuffer                                                     */
+/* create a new rowBuffer, add as head of row buffer chain                    */
 /*----------------------------------------------------------------------------*/
 void CrwToRow::vNewRowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
   
   //  create a new buffer
   RowBuffer* pNewRowBuffer = new RowBuffer;
@@ -124,7 +133,13 @@ void CrwToRow::vNewRowBuffer(void)
   // initialise the column pix inside the new row buffer
   pNewRowBuffer->vInitPix(m_pStreamDef,false);
 
-  // link the new to old
+  if (! m_pRowBuffer) {
+    // set as head of empty row buffer chain
+    m_pRowBuffer = pNewRowBuffer;
+    return;
+  }
+
+  // add as head of existing row buffer chain
   pNewRowBuffer->vNextBuffer(m_pRowBuffer);
   m_pRowBuffer = pNewRowBuffer;
 }
