@@ -34,6 +34,7 @@
   start::defProc_TPCH_ASM
   start::defProc_TPCH_ASM_I
   start::defProc_Planner
+  start::defProc_PlannerTPCH
 
   // define the apriori system tables
   start::defineTables
