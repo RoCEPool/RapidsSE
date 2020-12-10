@@ -9,20 +9,22 @@ namespace Interface
   {
   public:
   
-    static void* aAllocSession(void);
-    static void vFreeSession(void* aSession);
-
-    static void vDeleteJob(void* aSession);
-    static void vExecuteJob(void* aSession);
-    static eEC  ePrepareJob(void* aSession, char* azCommand);
-    static void vSubmitJob(void* aSession);
-    static void vWaitJob(void* aSession);
+    static char* aErrorText(eEC eError);
   
-    static Operand* pPopOperand(void* aSession,
-                                eCN* aeClassNo,
-                                eOM* aeOpMarker);
-    static bool bProcessOperand(void* aSession, void** aaOperand);
-    static void vPushOperand(void* aSession, void** aaOperand);
+    static eEC  eAllocSession(void** aaSession);
+    static eEC  eFreeSession(void** aaSession);
+
+    static eEC  eDeleteJob(void* aSession);
+    static eEC  eExecuteJob(void* aSession);
+    static eEC  ePrepareJob(void* aSession, char* azCommand);
+    static eEC  eSubmitJob(void* aSession);
+    static eEC  eWaitJob(void* aSession);
+  
+    static eEC  eDeleteOperand(void* aSession, void** aaOperand);
+    static eEC  ePopOperand(void* aSession, void** aaOperand,
+                            eCN* aeClassNo, eOM* aeOpMarker);
+    static eEC  eProcessOperand(void* aSession, void** aaOperand);
+    static eEC  ePushOperand(void* aSession, void** aaOperand);
 
   };
 }

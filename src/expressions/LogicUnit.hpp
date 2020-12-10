@@ -54,6 +54,7 @@ namespace Expressions
 
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
+    REG<CrwToRow>    m_xpCrwToRow;
     REG<Fact>        m_xpFact;
     REG<Index>       m_xpIndex;
     REG<IndexDef>    m_xpIndexDef;
@@ -65,13 +66,13 @@ namespace Expressions
     REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
     REG<Planner>     m_xpPlanner;
+    REG<Pot>         m_xpPot;
     REG<PtnStream>   m_xpPtnStream;
     REG<Row>         m_xpRow;
     REG<RowOnce>     m_xpRowOnce;
     REG<StreamDef>   m_xpStreamDef;     // maybe rename this to stream def in ?
     REG<StreamDef>   m_xpStreamDefOut;
     REG<Operand>     m_xpStreamSet;
-    REG<Pot>         m_xpPot;
     REG<Table>       m_xpStreamSetTable;
     REG<Operand>     m_xpSubset;
     REG<Table>       m_xpTable;

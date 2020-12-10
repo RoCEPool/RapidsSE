@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_apiDemo.cpp -- Ascii Helper                                           */
+/* Prompt_apiDemo.cpp -- RapidsSE Api Demo                                    */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -24,164 +24,280 @@ PromptFun __Prompt_apiDemo (
 bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
 {
   vTrace("Api Demo\n"_Stz);
-  
-  void* aSession = nullptr;
-  Reader* pReader = nullptr;
-  CsvBuffer* pCsvBuffer = nullptr;
-  Operand* pOperand = nullptr;
-  
-  bool b;
 
-  eEC eError;
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("tableScan"_Stz))
+    
+    vRapidsSE_ApiDemo_tableScan();
+  
+  else
+    
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("getRows"_Stz))
+    
+    vRapidsSE_ApiDemo_getRows();
+    
+  else
+    
+  if (pPrompt->pInpTknVec()->nItems() > 1 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("putRows"_Stz))
+    
+     vRapidsSE_ApiDemo_putRows();
+  
+  else
+
+    vTrace("Usage: apiDemo tableScan|getRowsputRows $TableNm"_Stz);
+  
+  return true;
+}
+
+#define ERROR_HANDLER(_error) {\
+  eError = _error; \
+  iErrLine == __LINE__; \
+  goto L_Error; \
+}
+
+/*----------------------------------------------------------------------------*/
+/* RapidsSE Api Demo : get rows (table scan example)                          */
+/*----------------------------------------------------------------------------*/
+void vRapidsSE_ApiDemo_tableScan(void)
+{
+  void* aSession = nullptr;
+  void* aOperand = nullptr;
   eCN eClassNo;
   eOM eOpMarker;
 
-  if (pPrompt->pInpTknVec()->nItems() > 1 &&
-      pPrompt->pInpTknVec()->pGet(1)->bSame("get"_Stz))
-    goto L_Get;
-
-                                            
-  //----------------------------------------------------------------------------
-  //----------------------------------------------------------------------------
-
-  pReader = new Reader;
-  b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
-  if (! b) {
-    vTrace("Unable to open input file\n"_Stz);
-    goto L_Cleanup;
-  }
+  eEC eError = EC_NONE;
+  i8  iErrLine = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::aAllocSession\n"_Stz);
-  aSession = RapidsSE::aAllocSession();
-  if (! aSession) {
-    vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
-    goto L_Cleanup;
-  }
+
+  // allocate an SE session
+  eError = RapidsSE::eAllocSession(&aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // parse command and prepare job
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
+  if (eError) ERROR_HANDLER(eError);
+
+  // execute job
+  eError = RapidsSE::eExecuteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
-  eError = RapidsSE::ePrepareJob(aSession,(char*)"apiInsert lineitem");
-  if (eError) {
-    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vSubmitJob\n"_Stz);
-  RapidsSE::vSubmitJob(aSession);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Process Results\n"_Stz);
-    
+  // process results
+      
   for (;;) {
-        
-    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
-    if (! pOperand)
+    
+    // get next operand
+    eError = RapidsSE::ePopOperand(aSession,&aOperand,
+                                   &eClassNo,&eOpMarker);
+    if (eError)
       break;
     
-    vTrace("  Operand %s %s\n"_Stz,aCN[eClassNo],aOM[eOpMarker]);
+    // process the operand
+    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
+    if (eError)
+      break;
+  }
+  
+  // delete the job
+  eError = RapidsSE::eDeleteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  goto L_CleanUp;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // error handler
+
+L_Error:
+  vTrace("  Error : code %lld line %lld : %s\n"_Stz,
+         eError,iErrLine,RapidsSE::aErrorText(eError));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clean up
+
+L_CleanUp:
+  if (aSession)
+    RapidsSE::eFreeSession(&aSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* RapidsSE Api Demo : get rows (table scan example)                          */
+/*----------------------------------------------------------------------------*/
+void vRapidsSE_ApiDemo_getRows(void)
+{
+  void* aSession = nullptr;
+  void* aOperand = nullptr;
+  eCN eClassNo;
+  eOM eOpMarker;
+
+  eEC eError = EC_NONE;
+  i8  iErrLine = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // allocate an SE session
+  eError = RapidsSE::eAllocSession(&aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // parse command and prepare job
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"getRows lineitem");
+  if (eError) ERROR_HANDLER(eError);
+
+  // execute job
+  eError = RapidsSE::eExecuteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process results
+      
+  for (;;) {
     
+    // get next operand
+    eError = RapidsSE::ePopOperand(aSession,&aOperand,
+                                   &eClassNo,&eOpMarker);
+    if (eError)
+      break;
+    
+    // process the operand
+    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
+    if (eError)
+      break;
+  }
+  
+  // delete the job
+  eError = RapidsSE::eDeleteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  goto L_CleanUp;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // error handler
+
+L_Error:
+  vTrace("  Error : code %lld line %lld : %s\n"_Stz,
+         eError,iErrLine,RapidsSE::aErrorText(eError));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clean up
+
+L_CleanUp:
+  if (aSession)
+    RapidsSE::eFreeSession(&aSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* RapidsSE Api Demo : put rows (insert into table example)                   */
+/*----------------------------------------------------------------------------*/
+void vRapidsSE_ApiDemo_putRows(void)
+{
+  void* aSession = nullptr;
+  void* aOperand = nullptr;
+  eCN eClassNo;
+  eOM eOpMarker;
+
+  eEC eError = EC_NONE;
+  i8  iErrLine = 0;
+
+  CsvBuffer* pCsvBuffer = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // create a csv file reader
+  Reader* pReader = new Reader;
+  bool b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10k.csv"_Stz);
+  if (! b) ERROR_HANDLER(EC_NO_SUCH_FILE);
+
+  // allocate an SE session
+  eError = RapidsSE::eAllocSession(&aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // parse command and prepare job
+  eError = RapidsSE::ePrepareJob(aSession,(char*)"putRows lineitem");
+  if (eError) ERROR_HANDLER(eError);
+
+  // submit job
+  eError = RapidsSE::eSubmitJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push buffers and markers
+
+  for (;;) {
+        
+    // get next operand
+    eError = RapidsSE::ePopOperand(aSession,&aOperand,
+                                   &eClassNo,&eOpMarker);
+    if (eError)
+      break;
+        
+    // exit marker?
     if (OM_EXITMARKER == eOpMarker) {
-      AM::vDeleteOperand(pOperand);
+      RapidsSE::eDeleteOperand(aSession,&aOperand);
       break;
     }
     
+    // push data?
     if (OM_DATAPULSE == eOpMarker) {
      
       // push DataPulse Marker
-      RapidsSE::vPushOperand(aSession,(void**)&pOperand);
+      eError = RapidsSE::ePushOperand(aSession,&aOperand);
+      if (eError) ERROR_HANDLER(eError);
 
       for (;;) {
                 
+        // read a bufer of csv data
         pCsvBuffer = pReader->pReadCsvBuffer();
         if (! pCsvBuffer)
           break;
 
         // push csv data
-        RapidsSE::vPushOperand(aSession,(void**)&pCsvBuffer);
+        eError = RapidsSE::ePushOperand(aSession,(void**)&pCsvBuffer);
+        if (eError) ERROR_HANDLER(eError);
       }
       
       // push Eos Marker
-      pOperand = new Marker(OM_EOSMARKER);
-      RapidsSE::vPushOperand(aSession,(void**)&pOperand);
-
+      aOperand = new Marker(OM_EOSMARKER);
+      eError = RapidsSE::ePushOperand(aSession,&aOperand);
+      if (eError) ERROR_HANDLER(eError);
+      
       continue;
     }
 
-    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
-    if (! b)
+    // default processing for any other operand
+    eError = RapidsSE::eProcessOperand(aSession,&aOperand);
+    if (eError)
       break;
   }
 
-  vTrace("  RapidsSE::vWaitJob\n"_Stz);
-  RapidsSE::vWaitJob(aSession);
+  // wait for job to complete
+  eError = RapidsSE::eWaitJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  // delete the job
+  eError = RapidsSE::eDeleteJob(aSession);
+  if (eError) ERROR_HANDLER(eError);
+
+  goto L_CleanUp;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
-  RapidsSE::vDeleteJob(aSession);
+  // error handler
+  
+L_Error:
+  vTrace("  Error : code %lld line %lld : %s\n"_Stz,
+         eError,iErrLine,RapidsSE::aErrorText(eError));
 
-  goto L_Cleanup;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clean up
 
-  
-  //----------------------------------------------------------------------------
-  //----------------------------------------------------------------------------
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_Get:
-  vTrace("  RapidsSE::aAllocSession\n"_Stz);
-  aSession = RapidsSE::aAllocSession();
-  if (! aSession) {
-    vTrace("  RapidsSE::aAllocSession error: unable to allocate session\n"_Stz);
-    goto L_Cleanup;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::ePrepareJob\n"_Stz);
-  eError = RapidsSE::ePrepareJob(aSession,(char*)"tableScan lineitem");
-  if (eError) {
-    vTrace("  RapidsSE::ePrepareJob error: %s\n"_Stz,aEC[eError]);
-    goto L_Cleanup;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vExecuteJob\n"_Stz);
-  RapidsSE::vExecuteJob(aSession);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  Process Results\n"_Stz);
-      
-  for (;;) {
-    
-    pOperand = RapidsSE::pPopOperand(aSession,&eClassNo,&eOpMarker);
-    if (! pOperand)
-      break;
-    
-    b = RapidsSE::bProcessOperand(aSession,(void**)&pOperand);
-    if (! b)
-      break;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("  RapidsSE::vDeleteJob\n"_Stz);
-  RapidsSE::vDeleteJob(aSession);
-
-  goto L_Cleanup;
-
-  
-  //----------------------------------------------------------------------------
-  //----------------------------------------------------------------------------
-
-L_Cleanup:
+L_CleanUp:
   if (aSession)
-    RapidsSE::vFreeSession(aSession);
+    RapidsSE::eFreeSession(&aSession);
   if (pCsvBuffer)
     delete pCsvBuffer;
   if (pReader)
     delete pReader;
-
-  return true;
 }
 
 /*============================================================================*/

@@ -788,56 +788,61 @@
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // load
+  // getRows
+  
   sPath
   "
-  procedure apiInsert
-    parameters $table
+  procedure getRows
+    parameters $Table
   begin
 
   stage stageA on origin :
-
-    start |
-
+    start         |
     periodic once |
+    stageB
 
-    input |
+  stage stageB on all partitions :
+    scan $Table   |
+    crwToRow      |
+    stageC
 
+  stage stageC on origin :
+    output        |
+    sink          |
+    stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // putRows
+  
+  sPath
+  "
+  procedure putRows
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start         |
+    periodic once |
+    input         |
     stageB robin
 
-
   stage stageB on all partitions on origin :
-
-    toRow $table       | // (csvBuffer)  => (rsbBuffer)
-    // dump rowBuffer 1   |
-
-    toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
-    // dump rowBuffer 1   |
-
-    toNstRow           | // (rsbBuffer)  => (rsbBuffer 'nst)
-    //dump rowBuffer 1   |
-
-    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
-    //dump rowBuffer 1   |
-
+    toRow $Table  |
+    toPtnRow      |
+    toNstRow      |
+    toHshCrw      |
     stageC hashed
 
   stage stageC on all partitions :
-
-    //eatSome |
-
-    insert $table | // (crwBuffer) inserted into table
-
+    insert $Table |
     stageD
 
   stage stageD on origin :
-
-    progress 'Load'    |
-
-    toStatDemon        |
-
-    sink               |
-
+    sink          |
     stageA
 
   end ;

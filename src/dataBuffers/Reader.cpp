@@ -98,7 +98,7 @@ i8 Reader::nReadLines(Stz* szInto, i8 nMaxBytes)
 
 
 /*----------------------------------------------------------------------------*/
-/* read lines                                                                 */
+/* read lines into csv buffer                                                 */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* Reader::pReadCsvBuffer(void)
 {

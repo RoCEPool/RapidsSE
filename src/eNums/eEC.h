@@ -7,6 +7,10 @@ enum eEC // error code
 {
   /* */ EC_NONE=0,
   
+  /* */ EC_DONE,
+  
+  // - - - - - - - - - - - - - - - - - - -
+  
   /* */ EC_ASSERT,
   
   /* */ EC_BLANKLINE,
@@ -15,7 +19,6 @@ enum eEC // error code
   /* */ EC_CLUSTER_NOT_CONNECTED,
   /* */ EC_CLUSTER_PARTITIONS_MISMATCH,
   /* */ EC_CLUSTER_SIZE_MISMATCH,
-  
   
   /* */ EC_CSV_BOOLEAN_INVALID,
   /* */ EC_CSV_BOOLEAN_TOO_LARGE,
@@ -49,7 +52,6 @@ enum eEC // error code
   /* */ EC_CSV_YEAR_INVALID,
   /* */ EC_CSV_YEAR_TOO_SMALL,
   /* */ EC_CSV_YEAR_TOO_LARGE,
-
 
   /* */ EC_DUPLICATE_COLUMN,
   /* */ EC_DUPLICATE_KEY,
@@ -94,6 +96,7 @@ enum eEC // error code
   /* */ EC_NO_COLUMNS_DIC,
   /* */ EC_NO_SUCH_CATALOG,
   /* */ EC_NO_SUCH_DIRECTORY,
+  /* */ EC_NO_SUCH_FILE,
   /* */ EC_NO_SUCH_FOLDER,
   /* */ EC_NO_SUCH_INDEX,
   /* */ EC_NO_SUCH_NODE,
@@ -150,7 +153,12 @@ static Stz* aEC[]
 {
   /* */ "none"_Stz,
   
+  /* */ "done"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - -
+
   /* */ "assert"_Stz,
+  
   /* */ "blank line"_Stz,
   
   /* */ "catalog exists"_Stz,
@@ -234,6 +242,7 @@ static Stz* aEC[]
   /* */ "no columns dictionary"_Stz,
   /* */ "no such catalog"_Stz,
   /* */ "no such directory"_Stz,
+  /* */ "no such file"_Stz,
   /* */ "no such folder"_Stz,
   /* */ "no such index"_Stz,
   /* */ "no such node"_Stz,

@@ -182,12 +182,18 @@ public:
   void vCompilerNestedStore(void);
   void vCompilerPostponing(void);
 
-
   // crwBuffer
   void vCrwBufferDelete(void);
   void vCrwBufferOperandDump(void);
   void vCrwBufferNew(void);
   void vCrwBufferSnapshot(void);
+
+  // crw to row
+  void vCrwToRowCompleted(void);
+  void vCrwToRowConvert(void);
+  void vCrwToRowCreate(void);
+  void vCrwToRowDangling(void);
+  void vCrwToRowDelete(void);
 
   // csv buffer
   void vCsvBufferDelete(void);
@@ -294,22 +300,6 @@ public:
   void vEncodeNextPlus(void);
   void vEncodeThen(void);
   void vEncodeUntil(void);
-
-
-  // ename-set
-  void vTagSetAppendInt(void);
-  void vTagSetAppendStr(void);
-  void vTagSetAsStr(void);
-  void vTagSetCopy(void);
-  void vTagSetGetInt(void);
-  void vTagSetGetStr(void);
-  void vTagSetHasName(void);
-  void vTagSetInsertInt(void);
-  void vTagSetInsertStr(void);
-  void vTagSetReplaceInt(void);
-  void vTagSetReplaceStr(void);
-  void vTagSetUpsertStr(void);
-  void vTagSetNew(void);
 
   // enter
   void vEnterRoutine(void);
@@ -1588,6 +1578,22 @@ public:
   // tag
   void vTagGet(void);
   void vTagSet(void);
+
+  // tag-set
+  void vTagSetAppendInt(void);
+  void vTagSetAppendStr(void);
+  void vTagSetAsStr(void);
+  void vTagSetCopy(void);
+  void vTagSetGetInt(void);
+  void vTagSetGetStr(void);
+  void vTagSetHasName(void);
+  void vTagSetInsertInt(void);
+  void vTagSetInsertStr(void);
+  void vTagSetReplaceInt(void);
+  void vTagSetReplaceStr(void);
+  void vTagSetUpsertStr(void);
+  void vTagSetNew(void);
+
 
   // task
   void vTaskAck(void);

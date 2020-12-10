@@ -190,13 +190,13 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 /*                             -- FAST INLINE --                              */
 /*----------------------------------------------------------------------------*/
 
-#define bAT_DATE_SEPARATOR() \
+#define bIS_DATE_SEPARATOR() \
   (cCurChr == m_cDateSeparator)
 
-#define bAT_FIELD_DELIMITER() \
+#define bIS_FIELD_DELIMITER() \
   (cCurChr == m_cFieldDelimiter)
 
-#define bAT_FIELD_END() \
+#define bIS_FIELD_END() \
   (    cCurChr == m_cFieldDelimiter   \
                                       \
     || cCurChr == m_cRecordTerminator \
@@ -206,15 +206,15 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
        ) \
   )
 
-#define bAT_LINE_END() \
+#define bIS_LINE_END() \
   (cCurChr == m_cLineEnd \
    && ( (! m_cLineEnd2nd) || (cNxtChr == m_cLineEnd2nd) ) \
   )
 
-#define bAT_RECORD_TERMINATOR() \
+#define bIS_RECORD_TERMINATOR() \
   (cCurChr == m_cRecordTerminator)
 
-#define bAT_TIME_SEPARATOR() \
+#define bIS_TIME_SEPARATOR() \
   (cCurChr == C_TIME_SEPARATOR)
 
 #define bCHUNK_END() \
@@ -237,7 +237,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
   (' ' == cCurChr)
 
 #define bNOISY_FIELD_END() \
-  (! bAT_FIELD_END())
+  (! bIS_FIELD_END())
 
 #define bIS_WHITE_SPACE() \
   ( (cCurChr == ' ' ) || \
@@ -264,6 +264,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
 #define vCOLLECT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
 
+
 #define vNUMBER(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
   \
   _uComponent = 0; \
@@ -280,6 +281,28 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
   \
   if (nWholeDigits > _maxDigits) \
     vFIELD_ERROR(_errorCode2)
+
+#define vNUMBER_range(_uComponent,_maxDigits,_minValue,_maxValue, \
+                      _errorCode1,_errorCode2) \
+  \
+  _uComponent = 0; \
+  \
+  nWholeDigits = 0; \
+  while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
+    vCOLLECT(_uComponent); \
+    nWholeDigits++; \
+   vACCEPT_CHAR(); \
+  } \
+  \
+  if (! nWholeDigits) \
+    vFIELD_ERROR(_errorCode1) \
+  \
+  if (nWholeDigits > _maxDigits) \
+    vFIELD_ERROR(_errorCode2) \
+  \
+  if (_uComponent < _minValue || _uComponent > _maxValue) \
+    vFIELD_ERROR(_errorCode1)
+
 
 #define vSIGN_optional() \
   if (cCurChr == C_MINUS_SIGN) { \
@@ -365,12 +388,57 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     } \
   }
 
+#define vDATE_SEPARATOR() \
+  if (! bIS_DATE_SEPARATOR()) \
+    vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);\
+  vACCEPT_CHAR();
+
+#define vTIME_SEPARATOR() \
+  if (! bIS_TIME_SEPARATOR()) \
+    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING); \
+  vACCEPT_CHAR();
+
+#define vYEAR_SPECIFICS() \
+  /* adjust a 2-digit year */ \
+  if (uYearComponent <= 99) \
+    uYearComponent += 2000; \
+  \
+  /* validate the year */ \
+  if (uYearComponent < C_YEAR_MIN) \
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL); \
+  \
+  if (uYearComponent > C_YEAR_MAX) \
+    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE); \
+  \
+  /* determine if a leap year */ \
+  if (uYearComponent % 4 == 0) { \
+    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0)) \
+      bIsLeapYear = false; \
+    else \
+      bIsLeapYear = true; \
+  } \
+  else { \
+    bIsLeapYear = false; \
+  }
+
+#define vDAY_SPECIFICS() \
+  if (uDayComponent < 1) \
+    vFIELD_ERROR(EC_CSV_DAY_INVALID); \
+  \
+  if (bIsLeapYear) { \
+    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent]) \
+      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR); \
+  } \
+  else { \
+    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent]) \
+      vFIELD_ERROR(EC_CSV_DAY_INVALID); \
+  }
 
 //--
 
 #define vIF_NULL_FORM(_label,_errorCode) \
   \
-  if (bAT_FIELD_END()) \
+  if (bIS_FIELD_END()) \
     goto _label; \
   \
   if ('n' == cCurChr || 'N' == cCurChr) { \
@@ -405,7 +473,7 @@ void ToRow::vRsbBuffer(RowBuffer* pRsbBuffer)
     vACCEPT_CHAR(); \
     if ('N' == cCurChr) { \
       vSKIP_WHITE_SPACE(); \
-    if (bAT_FIELD_END()) \
+    if (bIS_FIELD_END()) \
         goto _label; \
     } \
     vFIELD_ERROR(_errorCode);\
@@ -670,7 +738,7 @@ L_TestMoreRecords:
       continue;
     }
     
-    if (bAT_LINE_END()) {
+    if (bIS_LINE_END()) {
       vSKIP_LINE_END();
       azRecordStart = azCsvCrs - 1;
       continue;
@@ -954,13 +1022,13 @@ L_Date:
      |                     Date Field                     |
      +----------------------------------------------------+
      | [<WHITE_SPACE>] <DATE> [<WHITE_SPACE>] <FIELD_END> |
-     |     leading                  trailing              |
+     |     leading               trailing                 |
      +----------------------------------------------------+
    
      <DATE> :   null     // null form
-                 | \N       // null form
-                 | <EMPTY>  // null form
-                 | <COMPONENT> <DATE_SEP> <COMPONENT> <DATE_SEP> <COMPONENT>
+              | \N       // null form
+              | <EMPTY>  // null form
+              | <COMPONENT> <DATE_SEP> <COMPONENT> <DATE_SEP> <COMPONENT>
    
      
      <COMPONENT> :  <YEAR> | <MONTH> | <DAY>
@@ -978,9 +1046,9 @@ L_Date:
   // date components
   
   i_DateComponent = -1;
-  uYearComponent  = 0;
-  uMonthComponent = 0;
-  uDayComponent   = 0;
+//  uYearComponent  = 0;
+//  uMonthComponent = 0;
+//  uDayComponent   = 0;
 
 L_Date_nextComponent:
   
@@ -989,9 +1057,10 @@ L_Date_nextComponent:
   
   // skip over separator between components
   if (i_DateComponent > 0) {
-    if (! bAT_DATE_SEPARATOR())
-      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    vACCEPT_CHAR(); // skip separator
+//    if (! bIS_DATE_SEPARATOR())
+//      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
+//    vACCEPT_CHAR(); // skip separator
+    vDATE_SEPARATOR();
   }
 
   switch (m_eDateComponent[i_DateComponent]) {
@@ -1009,17 +1078,30 @@ L_Date_year:
 
   vNUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
-  // adjust a 2-digit year
-  if (uYearComponent <= 99)
-    uYearComponent += 2000;
+//  // adjust a 2-digit year
+//  if (uYearComponent <= 99)
+//    uYearComponent += 2000;
+//
+//  // validate the year
+//  if (uYearComponent < C_YEAR_MIN)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
+//
+//  if (uYearComponent > C_YEAR_MAX)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
+//
+//  // determine if a leap year
+//  if (uYearComponent % 4 == 0) {
+//    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
+//      bIsLeapYear = false;
+//    else
+//      bIsLeapYear = true;
+//  }
+//  else {
+//    bIsLeapYear = false;
+//  }
+
+  vYEAR_SPECIFICS();
   
-  // validate the year
-  if (uYearComponent < C_YEAR_MIN)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
-
-  if (uYearComponent > C_YEAR_MAX)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-
   goto L_Date_nextComponent;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1027,11 +1109,12 @@ L_Date_year:
     
 L_Date_month:
   
-  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+  vNUMBER_range(uMonthComponent,2,1,12,
+                EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
   
   // validate the month
-  if (uMonthComponent < 1 || uMonthComponent > 12)
-    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
+//  if (uMonthComponent < 1 || uMonthComponent > 12)
+//    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
 
   goto L_Date_nextComponent;
 
@@ -1049,32 +1132,23 @@ L_Date_day:
   
 L_Date_componentsCollected:
   
-  // validate day wrt possible leap year
-  
-  // determine if a leap year
-  if (uYearComponent % 4 == 0) {
-    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
-      bIsLeapYear = false;
-    else
-      bIsLeapYear = true;
-  }
-  else {
-    bIsLeapYear = false;
-  }
+//  // validate day wrt possible leap year
+//
+//  // validate days per month
+//  if (uDayComponent < 1)
+//    vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//
+//  if (bIsLeapYear) {
+//    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
+//  }
+//  else {
+//    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//  }
 
-  // validate days per month
-  if (uDayComponent < 1)
-    vFIELD_ERROR(EC_CSV_DAY_INVALID);
+  vDAY_SPECIFICS();
   
-  if (bIsLeapYear) {
-    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
-  }
-  else {
-    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
-
   // === === === === === === === === === === === === === === === === === === ===
   //                                                            recognised date
 
@@ -1513,16 +1587,21 @@ L_Interval:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned seconds component
   
-  // collect digits for leading seconds
-  for  (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uSecondComponent);
-    nWholeDigits++;
-  }
+//  // collect digits for leading seconds
+//  for  (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
+//    vCOLLECT(uSecondComponent);
+//    nWholeDigits++;
+//  }
+//
+//  // no more than 9
+//  if (nWholeDigits > 9)
+//    vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
   
-  // no more than 9
-  if (nWholeDigits > 9)
-    vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
-  
+  // must have a leading digit??
+  vNUMBER(uWholeNumber,9,
+                       EC_CSV_INTERVAL_INVALID,
+                       EC_CSV_INTERVAL_SECS_TOO_LARGE);
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microseconds component
   
@@ -1625,49 +1704,62 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // time components
   
-  uHourComponent   = 0;
-  uMinuteComponent = 0;
-  uSecondComponent = 0;
-  uMicrosecondComponent = 0;
+//  uHourComponent   = 0;
+//  uMinuteComponent = 0;
+//  uSecondComponent = 0;
+//  uMicrosecondComponent = 0;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
-  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+//  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
   
-  // skip over mandatory time separator
-  if (! bAT_TIME_SEPARATOR())
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
-  
-  if (uHourComponent > 23)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  
+  vNUMBER_range(uHourComponent,2,0,23,
+                EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
+  // skip over mandatory time separator
+//  if (! bIS_TIME_SEPARATOR())
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
+  
+//  if (uHourComponent > 23)
+//    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
+  
+  vTIME_SEPARATOR();
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
-  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
-
-  if (uMinuteComponent > 59)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+//  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+//
+//  if (uMinuteComponent > 59)
+//    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
   
+  vNUMBER_range(uMinuteComponent,2,0,59,
+                EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+
   // skip over mandatory time separator
-  if (! bAT_TIME_SEPARATOR())
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
+//  if (! bIS_TIME_SEPARATOR())
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
+
+  vTIME_SEPARATOR();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
-  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+//  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+//
+//  if (uSecondComponent > 59)
+//    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
 
-  if (uSecondComponent > 59)
-    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+  vNUMBER_range(uSecondComponent,2,0,59,
+                EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
   
+  uMicrosecondComponent = 0;
   if ('.' == cCurChr) {
     
     // nb. a dot without any futher digits is ok
@@ -1773,15 +1865,11 @@ L_Timestamp:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // timestamp components
     
-  uYearComponent   = 0;
-  uMonthComponent  = 0;
-  uDayComponent    = 0;
+//  uYearComponent   = 0;
+//  uMonthComponent  = 0;
+//  uDayComponent    = 0;
   
   i_DateComponent  = -1;
-  uHourComponent   = 0;
-  uMinuteComponent = 0;
-  uSecondComponent = 0;
-  uMicrosecondComponent = 0;
 
 L_Timestamp_nextComponent:
     
@@ -1793,9 +1881,10 @@ L_Timestamp_nextComponent:
   
   // skip over separator
   if (i_DateComponent > 0) {
-    if (cCurChr != m_cDateSeparator)
-      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
-    vACCEPT_CHAR(); // skip separator
+//    if (cCurChr != m_cDateSeparator)
+//      vFIELD_ERROR(EC_CSV_DATE_SEP_MISSING);
+//    vACCEPT_CHAR(); // skip separator
+    vDATE_SEPARATOR();
   }
 
   switch (m_eDateComponent[i_DateComponent]) {
@@ -1816,17 +1905,30 @@ L_Timestamp_year:
   
   vNUMBER(uYearComponent,4,EC_CSV_YEAR_INVALID,EC_CSV_YEAR_TOO_LARGE);
   
-  // adjust a 2-digit year
-  if (uYearComponent <= 99)
-    uYearComponent += 2000;
+//  // adjust a 2-digit year
+//  if (uYearComponent <= 99)
+//    uYearComponent += 2000;
+//
+//  // validate the year
+//  if (uYearComponent < C_YEAR_MIN)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
+//
+//  if (uYearComponent > C_YEAR_MAX)
+//    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
+//
+//  // determine if a leap year
+//  if (uYearComponent % 4 == 0) {
+//    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
+//      bIsLeapYear = false;
+//    else
+//      bIsLeapYear = true;
+//  }
+//  else {
+//    bIsLeapYear = false;
+//  }
+
+  vYEAR_SPECIFICS();
   
-  // validate the year
-  if (uYearComponent < C_YEAR_MIN)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_SMALL);
-
-  if (uYearComponent > C_YEAR_MAX)
-    vFIELD_ERROR(EC_CSV_YEAR_TOO_LARGE);
-
   goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1837,12 +1939,15 @@ L_Timestamp_month:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_month:\n"_Stz);
   
-  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
-
-  // validate the month
-  if (uMonthComponent < 1 || uMonthComponent > 12)
-    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
+//  vNUMBER(uMonthComponent,2,EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+//
+//  // validate the month
+//  if (uMonthComponent < 1 || uMonthComponent > 12)
+//    vFIELD_ERROR(EC_CSV_MONTH_INVALID);
   
+  vNUMBER_range(uMonthComponent,2,1,12,
+                EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+
   goto L_Timestamp_nextComponent;
   
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1867,29 +1972,20 @@ L_Timestamp_dateCollected:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // validate the date
     
-  // determine if a leap year
-  if (uYearComponent % 4 == 0) {
-    if ((uYearComponent % 100 == 0) && (uYearComponent % 400 != 0))
-      bIsLeapYear = false;
-    else
-      bIsLeapYear = true;
-  }
-  else {
-    bIsLeapYear = false;
-  }
-
   // validate days per month
-  if (uDayComponent < 1)
-    vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  
-  if (bIsLeapYear) {
-    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
-  }
-  else {
-    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
-      vFIELD_ERROR(EC_CSV_DAY_INVALID);
-  }
+//  if (uDayComponent < 1)
+//    vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//
+//  if (bIsLeapYear) {
+//    if (uDayComponent > (u8)iDaysPerMonthLeap[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_NOT_LEAPYEAR);
+//  }
+//  else {
+//    if (uDayComponent > (u8)iDaysPerMonth[uMonthComponent])
+//      vFIELD_ERROR(EC_CSV_DAY_INVALID);
+//  }
+
+  vDAY_SPECIFICS();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // ' ' or 'T' separator
@@ -1897,51 +1993,69 @@ L_Timestamp_dateCollected:
   if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr)
     vACCEPT_CHAR();
   
-  if (! bIS_DIGIT())
+  if (! bIS_DIGIT()) {
+    uHourComponent   = 0;
+    uMinuteComponent = 0;
+    uSecondComponent = 0;
+    uMicrosecondComponent = 0;
     goto L_Timestamp_noTimeComponents;
-
+  }
+  
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_hour:\n"_Stz);
   
-  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+//  vNUMBER(uHourComponent,2,EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+//
+//  if (uHourComponent > 23)
+//    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
+
+  vNUMBER_range(uHourComponent,2,0,23,
+                EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
-  if (cCurChr != C_TIME_SEPARATOR)
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
+//  if (cCurChr != C_TIME_SEPARATOR)
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
   
-  if (uHourComponent > 23)
-    vFIELD_ERROR(EC_CSV_HOUR_TOO_LARGE);
-  
+  vTIME_SEPARATOR();
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_minute:\n"_Stz);
   
-  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+//  vNUMBER(uMinuteComponent,2,EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+//
+//  if (uMinuteComponent > 59)
+//    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
+  
+  vNUMBER_range(uMinuteComponent,2,0,59,
+                EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
-  if (cCurChr != C_TIME_SEPARATOR)
-    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
-  vACCEPT_CHAR(); // skip ':'
+//  if (cCurChr != C_TIME_SEPARATOR)
+//    vFIELD_ERROR(EC_CSV_TIME_SEP_MISSING);
+//  vACCEPT_CHAR(); // skip ':'
 
-  if (uMinuteComponent > 59)
-    vFIELD_ERROR(EC_CSV_MINUTE_TOO_LARGE);
-  
+  vTIME_SEPARATOR();
+
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_second:\n"_Stz);
   
-  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
-  
-  if (uSecondComponent > 59)
-    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+//  vNUMBER(uSecondComponent,2,EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+//
+//  if (uSecondComponent > 59)
+//    vFIELD_ERROR(EC_CSV_SECOND_TOO_LARGE);
+
+  vNUMBER_range(uSecondComponent,2,0,59,
+                EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond component
@@ -1949,6 +2063,8 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_microsecond:\n"_Stz);
   
+  uMicrosecondComponent = 0;
+
   // a dot without any futher digits is ok
   if (bIS_DECIMAL_POINT()) {
     
@@ -1969,10 +2085,13 @@ L_Timestamp_dateCollected:
   
 L_Timestamp_noTimeComponents:
   
-  vSKIP_WHITE_SPACE();
+//  vSKIP_WHITE_SPACE();
+//
+//  if (! (bIS_FIELD_END()))
+//    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
   
-  if (! (bAT_FIELD_END()))
-    vFIELD_ERROR(EC_CSV_YEAR_INVALID);
+
+  /* FALLSTHROUGH */
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                       recognised timestamp
@@ -2054,7 +2173,7 @@ L_Varchar:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible empty portion
 
-  if (bAT_FIELD_END())
+  if (bIS_FIELD_END())
     goto L_Varchar_setNull;
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -2084,7 +2203,7 @@ L_Varchar:
       goto L_Varchar_which;
     }
     
-    if (! (bAT_FIELD_END())) {
+    if (! (bIS_FIELD_END())) {
       vRESET_FIELD();
       goto L_Varchar_which;
     }
@@ -2099,7 +2218,7 @@ L_Varchar:
     vACCEPT_CHAR(); // accept m_cEscapeChar
     if ('N' == cCurChr) {
       vACCEPT_CHAR(); // accept 'N'
-      if (bAT_FIELD_END())
+      if (bIS_FIELD_END())
         goto L_Varchar_setNull;
     }
   
@@ -2151,7 +2270,7 @@ L_Varchar_unquoted:
   while (! bIS_NULL()) {
         
     // test for field separator (because its not enclosed)
-    if (bAT_FIELD_END())
+    if (bIS_FIELD_END())
       break;
     
     if (cCurChr == m_cEscapeChar) {
@@ -2548,7 +2667,7 @@ L_FieldEnd:
 
    */
 
-  RASSERT(bAT_FIELD_END());
+  RASSERT(bIS_FIELD_END());
   
   if (cCurChr == m_cFieldDelimiter)
     vACCEPT_CHAR(); // accept field delimiter
@@ -2642,7 +2761,7 @@ L_FieldError:
   // resynch csv cursor to first char after next record end
   
   // consume up to and include end of line
-  while (! bAT_LINE_END())
+  while (! bIS_LINE_END())
     vACCEPT_CHAR(); // skip any
   vSKIP_LINE_END();
   

@@ -53,6 +53,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CONSTSET,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
+  /* */ CN_CRWTOROW,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
 
@@ -405,6 +406,7 @@ static Stz* aCN[]
   /* */ "CONSTSET"_Stz,            // CN_CONSTSET
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
+  /* */ "CRWTOROW"_Stz,            // CN_CRWTOROW
   /* */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   /* */ "CSVMETA"_Stz,             // CN_CSVMETA
 
