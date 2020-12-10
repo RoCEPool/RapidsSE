@@ -147,7 +147,7 @@ bool RowCompactor::bCompactRow(Row* aRow)
   
   //m_pCrwNub->vDumpTails();
   
-  bool bResult = bAddRsbAsCrw(aRow);
+  bool bResult = bAddRowAsCrw(aRow);
   
 //  if (nRows > 1060 && nRows < 1070) {
 //    m_pCrwBuffer->vPrintRows(m_pStreamDef);
@@ -238,48 +238,6 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
   m_pCrwNub->vVerifyTails(C_UNKNOWN);
 #endif
   
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given input row into current crw buffer                                */
-/*----------------------------------------------------------------------------*/
-bool RowCompactor::bAddRsbAsCrw(Row* aRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
-  ASSERT(! m_bCollecting);
-  
-  // 1) initially encode head of inflated row into m_pEncoding_v1
-  m_pEncoding_v2->vEncodeRsb(aRow);
-
-  // 2) encode tails into m_pEncoding_v1
-  vEncodeTailsForRow(aRow);
-
-  // 3) split encoded head between crw head and crw overflow
-  m_pEncoding_v2->vSplitOver();
-
-  // 4) allot a logical compact row (head & over)
-  if (! bAllotCrw()) {
-    m_nTotalBuffers++;
-    return false;
-  }
-
-  //SP_Encoding_v2 spEncoding_v2;
-  //vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
-
-  // 5) pack encoded row into a compact row
-  Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
-
-  m_aHeadLine = nullptr;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify
-    
-  //#ifdef WITH_VERIFY_TAILS
-  //m_pCrwNub->vVerifyTails(C_UNKNOWN);
-  //#endif
-    
   return true;
 }
 

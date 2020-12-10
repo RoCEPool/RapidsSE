@@ -53,7 +53,6 @@ namespace CompactBuffers
     // Row Packing
   
     bool bAddRowAsCrw(Row* pRow);
-    bool bAddRsbAsCrw(Row* aRow);
     bool bAddSrwAsCrw(RowSingle* pSrw);
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
