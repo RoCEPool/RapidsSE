@@ -983,31 +983,33 @@ L_Boolean:
   
   if ('f' == cCurChr || 'F' == cCurChr) {
 
-    iBooleanValue = false;
-    vACCEPT_CHAR(); // skip 'f'
-    
-    if ('a' == cCurChr || 'A' == cCurChr) {
-      vACCEPT_CHAR(); // skip 'a'
-      if ('l' == cCurChr || 'L' == cCurChr) {
-        vACCEPT_CHAR(); // skip 'l'
-        if ('s' == cCurChr || 'S' == cCurChr) {
-          vACCEPT_CHAR(); // skip 's'
-          if ('e' == cCurChr || 'E' == cCurChr) {
-            vACCEPT_CHAR(); // skip 'e'
-          }
-          else { // not expected 'e'
-            vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-          }
-        }
-        else { // not expected 's'
-          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-        }
-      }
-      else { // not expected 'l'
-        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
-      }
-    }
+//    iBooleanValue = false;
+//    vACCEPT_CHAR(); // skip 'f'
+//
+//    if ('a' == cCurChr || 'A' == cCurChr) {
+//      vACCEPT_CHAR(); // skip 'a'
+//      if ('l' == cCurChr || 'L' == cCurChr) {
+//        vACCEPT_CHAR(); // skip 'l'
+//        if ('s' == cCurChr || 'S' == cCurChr) {
+//          vACCEPT_CHAR(); // skip 's'
+//          if ('e' == cCurChr || 'E' == cCurChr) {
+//            vACCEPT_CHAR(); // skip 'e'
+//          }
+//          else { // not expected 'e'
+//            vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//          }
+//        }
+//        else { // not expected 's'
+//          vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//        }
+//      }
+//      else { // not expected 'l'
+//        vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);
+//      }
+//    }
 
+    vBOOLEAN_FALSE();
+    
     goto L_Boolean_recognised;
   }
 

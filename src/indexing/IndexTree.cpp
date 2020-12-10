@@ -777,7 +777,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
   }
   
   // get the inflated compact row
-  pCrwBuffer->vGetRow(hRow, i_Row);
+  pCrwBuffer->vGetRow_single(hRow, i_Row);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

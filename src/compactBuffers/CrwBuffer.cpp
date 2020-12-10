@@ -354,25 +354,13 @@ HeadLine* CrwBuffer::aGetHead(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* get the compact row from the buffer                                        */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vGetRow(RowSingle* pRow, i8 i_Row)
+void CrwBuffer::vGetRow_single(RowSingle* pRowSingle, i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   Crw* aCrw = (Crw*)aGetHead(i_Row);
   
-  RowInflator::vInflate_AllColumns_into_RowSingle(pRow,aCrw);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the compact row from the buffer                                        */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vGetRow(RowBuffer* pRowBuffer, i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-
-  Crw* aCrw = (Crw*)aGetHead(i_Row);
-
-  RowInflator::vInflate_AllColumns_into_RowBuffer(pRowBuffer,aCrw);
+  RowInflator::vInflate_AllColumns_into_RowSingle(pRowSingle,aCrw);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -701,7 +689,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     // get the inflated compact row
-    vGetRow(hRow, i_Row);
+    vGetRow_single(hRow, i_Row);
     
     // append the row to the record
     hvRec->vAppend(hRow);
