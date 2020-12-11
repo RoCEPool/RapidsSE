@@ -69,7 +69,7 @@ void vRapidsSE_ApiDemo_tableScan(void)
   i8  iErrLine = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // session and job setup
+  // (a) session and job setup
 
   // allocate an SE session
   eError = RapidsSE::eAllocSession(&aSession);
@@ -84,7 +84,7 @@ void vRapidsSE_ApiDemo_tableScan(void)
   if (eError) ERROR_HANDLER(eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process results
+  // (b) process results
       
   for (;;) {
     
@@ -101,7 +101,7 @@ void vRapidsSE_ApiDemo_tableScan(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // job end
+  // (c) job end
   
   // delete the job
   eError = RapidsSE::eDeleteJob(aSession);
@@ -110,7 +110,7 @@ void vRapidsSE_ApiDemo_tableScan(void)
   goto L_CleanUp;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // error handler and cleanup
+  // (d) error handler and cleanup
 
 L_Error:
   vTrace("  Error : code %lld line %lld : %s\n"_Stz,
@@ -135,7 +135,7 @@ void vRapidsSE_ApiDemo_getRows(void)
   i8  iErrLine = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // session and job setup
+  // (a) session and job setup
 
   // allocate an SE session
   eError = RapidsSE::eAllocSession(&aSession);
@@ -150,7 +150,7 @@ void vRapidsSE_ApiDemo_getRows(void)
   if (eError) ERROR_HANDLER(eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process results
+  // (b) process results
       
   for (;;) {
     
@@ -191,7 +191,7 @@ void vRapidsSE_ApiDemo_getRows(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // job end
+  // (c) job end
   
   // delete the job
   eError = RapidsSE::eDeleteJob(aSession);
@@ -200,7 +200,7 @@ void vRapidsSE_ApiDemo_getRows(void)
   goto L_CleanUp;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // error handler and cleanup
+  // (d) error handler and cleanup
 
 L_Error:
   vTrace("  Error : code %lld line %lld : %s\n"_Stz,
@@ -227,11 +227,11 @@ void vRapidsSE_ApiDemo_putRows(void)
   
   // create a csv file reader
   Reader* pReader = new Reader;
-  bool b = pReader->bOpenRead("/Users/Shared/tpch/SF0/lineitem_10.csv"_Stz);
+  bool b = pReader->bOpenRead("/Users/Shared/tpch/SF10/lineitem.csv"_Stz);
   if (! b) ERROR_HANDLER(EC_NO_SUCH_FILE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // session and job setup
+  // (a) session and job setup
   
   // allocate an SE session
   eError = RapidsSE::eAllocSession(&aSession);
@@ -246,7 +246,7 @@ void vRapidsSE_ApiDemo_putRows(void)
   if (eError) ERROR_HANDLER(eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push buffers and markers
+  // (b) push buffers and markers
 
   for (;;) {
         
@@ -295,7 +295,7 @@ void vRapidsSE_ApiDemo_putRows(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // job end
+  // (c) job end
   
   // wait for job to complete
   eError = RapidsSE::eWaitJob(aSession);
@@ -308,7 +308,7 @@ void vRapidsSE_ApiDemo_putRows(void)
   goto L_CleanUp;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // error handler and cleanup
+  // (d) error handler and cleanup
 
 L_Error:
   vTrace("  Error : code %lld line %lld : %s\n"_Stz,

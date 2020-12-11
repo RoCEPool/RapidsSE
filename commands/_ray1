@@ -7,14 +7,15 @@ bc;
 _lineitem_dates
 
 //load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" ;
+///time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv" ;
 
 //tableScan lineitem;
 
-apiDemo putRows;
+/time apiDemo putRows;
 
 //apiDemo tableScan;
 
-apiDemo getRows;
+//apiDemo getRows;
 
 /*============================================================================*/
 /* end                                                                        */
