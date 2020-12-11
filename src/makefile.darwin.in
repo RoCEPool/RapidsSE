@@ -13,8 +13,8 @@
 # Refer to the below url for details:
 #  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 
-DARWIN_CPPFLAGS := -mmacosx-version-min=10.12
-DARWIN_CPPFLAGS_DEBUG := -mmacosx-version-min=10.12
+DARWIN_CPPFLAGS := -mmacosx-version-min=10.12 -D__APPLE__
+DARWIN_CPPFLAGS_DEBUG := -mmacosx-version-min=10.12 -D__APPLE__
 
 DARWIN_LDFLAGS :=
 DARWIN_LDFLAGS_DEBUG :=
