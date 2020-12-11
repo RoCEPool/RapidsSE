@@ -12,7 +12,9 @@ _lineitem_dates
 
 apiDemo putRows;
 
-apiDemo tableScan;
+//apiDemo tableScan;
+
+apiDemo getRows;
 
 /*============================================================================*/
 /* end                                                                        */
