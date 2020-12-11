@@ -8,6 +8,7 @@
 
 #include "emmintrin.h"
 
+#include "Heart.h"
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
@@ -159,6 +160,8 @@ int main(int argc, char* argv[])
       Engine::vRunUtility(argc,(Stz**)argv);
       Process::vExitSuccess();
     }
+    
+    vHeartInit();
     
     // run SE
     Engine::vMainEntry();

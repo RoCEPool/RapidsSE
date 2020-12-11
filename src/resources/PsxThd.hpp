@@ -24,8 +24,25 @@ namespace Resources
     void operator delete(void* pPsxThdAddress);
 
     PsxThd(void);
-    ~PsxThd(void) noexcept(false);
+   ~PsxThd(void) noexcept(false);
   
+    static void* aGetStackBase(void);
+    static void* aGetStackPointer(void);
+    static i8    iGetStackSize(void);
+  
+    static bool  bIsCppThread(void);
+    static bool  bIsJavaThread(void);
+
+    static void  vMarkNonSeThread(void);
+    static void  vMonitorPortrait(s48K& sPortrait);
+
+    static void  vSleepers(void);
+
+    static bool  bTlsCreate(pthread_key_t* aTlsKey);
+    static void* pTlsGet(pthread_key_t iTlsKey);
+    static void  vTlsSet(pthread_key_t iTlsKey, void* pArg);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     bool bBindThread(i8 i_Core);
     void vDisableRealtime(void);
@@ -51,23 +68,8 @@ namespace Resources
     void vThreadBoost(i8 nPoints);
     void vThreadPriority(i8 iPriority);
   
-    //--------------------------------------------------------------------------
   
-    static bool  bIsCppThread(void);
-    static bool  bIsJavaThread(void);
-  
-    static void  vMarkNonSeThread(void);
-    static void  vMonitorPortrait(s48K& sPortrait);
-
-    static void  vSleepers(void);
-    static void* aGetStackBase(void);
-    static void* aGetStackPointer(void);
-    static i8    iGetStackSize(void);
-  
-    static bool  bTlsCreate(pthread_key_t* aTlsKey);
-    static void* pTlsGet(pthread_key_t iTlsKey);
-    static void  vTlsSet(pthread_key_t iTlsKey, void* pArg);
-  
+ 
     Footer* aFooter(void);
   };
   

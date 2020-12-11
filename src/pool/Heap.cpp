@@ -281,7 +281,8 @@ void Heap::vFreeObject(Object* pObject)
   
   m_okLock.vGrabWrite();
   
-  vPushFree(reinterpret_cast<FreeChunk*>(pObject),pObject->eClass());
+  FreeChunk* aFreeChunk = reinterpret_cast<FreeChunk*>(pObject);
+  vPushFree(aFreeChunk,pObject->eClass());
   
   m_nCurrAllocated--;
 
