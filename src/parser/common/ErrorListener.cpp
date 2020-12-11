@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* SqlErrorListener.cpp - Listens for errors when a grammar is parsed.        */
+/* ErrorListener.cpp - Listens for errors when a grammar is parsed.           */
 /*============================================================================*/
 
-#include "SqlErrorListener.hpp"
+#include "ErrorListener.hpp"
 #include "Parser.h"
 
 using namespace Parser;
@@ -11,7 +11,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SqlErrorListener::SqlErrorListener()
+ErrorListener::ErrorListener()
 : m_bGotError(false), m_nLine(-1), m_nPos(-1), m_sToken(""_Stz), m_sErrorMsg(""_Stz)
 {
   
@@ -20,7 +20,7 @@ SqlErrorListener::SqlErrorListener()
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SqlErrorListener::~SqlErrorListener() noexcept
+ErrorListener::~ErrorListener() noexcept
 {
  
 }
@@ -33,12 +33,12 @@ SqlErrorListener::~SqlErrorListener() noexcept
 /*----------------------------------------------------------------------------*/
 /* Called by the parser when it encounters a syntax error                     */
 /*----------------------------------------------------------------------------*/
-void SqlErrorListener::syntaxError(antlr4::Recognizer *recognizer,
-                 antlr4::Token *offendingSymbol,
-                 size_t line,
-                 size_t charPositionInLine,
-                 const std::string &msg,
-                 std::exception_ptr e)
+void ErrorListener::syntaxError(antlr4::Recognizer *recognizer,
+                                antlr4::Token *offendingSymbol,
+                                size_t line,
+                                size_t charPositionInLine,
+                                const std::string &msg,
+                                std::exception_ptr e)
 {
   if (!m_bGotError) {
     m_bGotError = true;
@@ -56,7 +56,7 @@ void SqlErrorListener::syntaxError(antlr4::Recognizer *recognizer,
 /*----------------------------------------------------------------------------*/
 /* Return true if an error was encountered during parsing                     */
 /*----------------------------------------------------------------------------*/
-bool SqlErrorListener::bGotError(void)
+bool ErrorListener::bGotError(void)
 {
   return m_bGotError;
 }
@@ -64,7 +64,7 @@ bool SqlErrorListener::bGotError(void)
 /*----------------------------------------------------------------------------*/
 /* Return the error message encountered during parsing                        */
 /*----------------------------------------------------------------------------*/
-Stz* SqlErrorListener::szErrorMsg(void)
+Stz* ErrorListener::szErrorMsg(void)
 {
   return m_sErrorMsg.szStz();
 }

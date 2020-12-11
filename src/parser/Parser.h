@@ -20,7 +20,8 @@ namespace Parser
 #include "SqlPlanner.hpp"
 #include "TableRef.hpp"
 
-#include  "PlanNode.hpp"
+#include "graph/PlanNode.hpp"
+#include "graph/PlanDefinitionParser.hpp"
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

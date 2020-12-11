@@ -6,7 +6,7 @@
 #include "sqlLexer.h"
 #include "sqlParser.h"
 #include "sqlBaseVisitor.h"
-#include "SqlErrorListener.hpp"
+#include "parser/common/ErrorListener.hpp"
 
 //using namespace antlr4;
 
@@ -94,7 +94,7 @@ void SqlPlanner::plan(Stz* pStr)
   antlr4::CommonTokenStream tokens(&lexer);
   
   // The thing that gets told of parsing errors.
-  SqlErrorListener errorListener;
+  ErrorListener errorListener;
   
   // Create a parser from the stream of tokens.
   sqlParser parser(&tokens);

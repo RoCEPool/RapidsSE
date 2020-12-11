@@ -24,6 +24,17 @@ PromptFun __Prompt_antlr (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
 {
+  // Read in and parse the plan graph definitions
+
+  PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
+  //PlanNode* root = pPlanDefinitionParser->parse();
+
+  delete pPlanDefinitionParser;
+
+//  if (root == nullptr) {
+//    return false;
+//  }
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   s48K sAntlr;

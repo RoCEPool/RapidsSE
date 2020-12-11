@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SqlErrorListener.hpp - Listens for errors when a grammar is parsed.        */
+/* ErrorListener.hpp - Listens for errors when a grammar is parsed.        */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@
 namespace Parser
 {
   /* Note: Not a proper object */
-  class SqlErrorListener : public antlr4::BaseErrorListener
+  class ErrorListener : public antlr4::BaseErrorListener
   {
    private:
     bool m_bGotError;
@@ -19,8 +19,8 @@ namespace Parser
     s256 m_sErrorMsg;
     
    public:
-    SqlErrorListener();
-    virtual ~SqlErrorListener() noexcept;
+    ErrorListener();
+    virtual ~ErrorListener() noexcept;
     
     virtual void syntaxError(antlr4::Recognizer *recognizer,
                              antlr4::Token * offendingSymbol,

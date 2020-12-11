@@ -31,8 +31,8 @@ Then from the Source directory run the following command to build rapidsse:
   $(error $(ERR))
 endif
 
-LINUX_CPPFLAGS := -DWITH_LINUX
-LINUX_CPPFLAGS_DEBUG := -DWITH_LINUX
+LINUX_CPPFLAGS :=
+LINUX_CPPFLAGS_DEBUG :=
 
 LINUX_LDFLAGS :=
 LINUX_LDFLAGS_DEBUG :=
