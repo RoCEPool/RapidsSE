@@ -3,11 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-struct Heartbeat {
+class Heartbeat {
+  
+public:
   
   i8   m_iHeader;            //   8    8
   i8   m_iSeqNo;             //   8   16
-  i8   m_iTime;              //   8   24
+  i8   m_iSincePosixEpoch;   //   8   24
   char m_acBuildGitHash[32]; //  32   56
   i8   m_iValue0;            //   8   64
   i8   m_iValue1;            //   8   72

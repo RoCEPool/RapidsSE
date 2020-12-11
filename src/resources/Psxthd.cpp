@@ -249,6 +249,28 @@ void PsxThd::vSleepers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create thread, passing it function to execute                              */
+/*----------------------------------------------------------------------------*/
+i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
+{
+  _static_
+    
+  pthread_t iThreadId;
+  
+  i8 rCode = pthread_create(&iThreadId,nullptr,aFun,aArg);
+  
+  if (rCode) {
+    vWarn("pthread_create() error; rCode=%lld\n"_Stz,rCode);
+    return -1;
+  }
+  
+  // this is important otherwise resources are not released
+  pthread_detach(iThreadId);
+  
+  return (i8)iThreadId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a tls slot                                                          */
 /*----------------------------------------------------------------------------*/
 bool PsxThd::bTlsCreate(pthread_key_t* aTlsKey)
