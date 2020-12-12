@@ -45,8 +45,21 @@ namespace Records
   
     void vToRecord(RowSingle* pRow);
   
+    // from Record
+  
+    void vAppend(RowSingle* pRow);
+
+    void vPrintRow(void);
+    void vPrintPartialRow(void);
+
+    void vRecStr(Stz* szRecStr);
+    Stz* szRecStr(void);
+
     Footer* aFooter(void);
   };
+
+  SP_Record* _pSP_Record(void* aAddr);
+
 }
 
 /*============================================================================*/

@@ -5,6 +5,16 @@
 #include "Records.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+SP_Record* Records::_pSP_Record(void* aAddr)
+{
+  SP_Record* pSP_Record = reinterpret_cast<SP_Record*>(aAddr);
+  
+  return pSP_Record;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Record::SP_Record(void)
@@ -520,6 +530,115 @@ void SP_Record::vToRecord(RowSingle* pRowSingle)
   }
   
 }
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* decode and sprint row into record                                          */
+/*----------------------------------------------------------------------------*/
+void SP_Record::vAppend(RowSingle* pRow)
+{
+  vReset();
+  
+  if (m_iSubSet == C_ALL) {
+    
+    for (i8 i_DefSet = 0; i_DefSet < m_pStreamDef->m_nDefSets; i_DefSet++) {
+      
+      // get no of columns in this stream def
+      i8 nColumns = m_pStreamDef->m_nDefColumns[i_DefSet];
+    
+      // get start of stream def columns
+      i8 iDefStart = m_pStreamDef->m_i_DefStart[i_DefSet];
+    
+      // for each column
+      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+        
+        // get the column at index
+        Column xCol = m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+        
+        // comma separate column values
+        if (i_Col)
+          StrLib::vAppendString(&m_azCursor,",");
+        
+        vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+        //vTrace("%s\n"_Stz,szRecStr());
+        
+      }
+    }
+  }
+  else {
+    // get no of columns in this stream def
+     i8 nColumns = m_pStreamDef->m_nDefColumns[m_iSubSet];
+
+     // get start of stream def columns
+     i8 iDefStart = m_pStreamDef->m_i_DefStart[m_iSubSet];
+
+     // for each column
+     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+       
+       // get the column at index
+       Column xCol = m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+       
+       // comma separate column values
+       if (i_Col)
+         StrLib::vAppendString(&m_azCursor,",");
+       
+       //! ALKA: Revert once Column not newable
+       // append column value
+       vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+     }
+   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print record string as row                                                 */
+/*----------------------------------------------------------------------------*/
+void SP_Record::vPrintRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  
+  vTrace("row: (%s)\n"_Stz,azRecord());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print record string as row                                                 */
+/*----------------------------------------------------------------------------*/
+void SP_Record::vPrintPartialRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  
+  vTrace("%s"_Stz,azRecord());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get record string                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Record::szRecStr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  
+  return sz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set record string                                                          */
+/*----------------------------------------------------------------------------*/
+void SP_Record::vRecStr(Stz* szStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  
+  StrLib::vCopy(m_caRecord,(char*)szStr);
+}
+
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -20,13 +20,13 @@ namespace Records
     Record(StreamDef* pStreamDef, i8 iSubSet);
    ~Record(void) noexcept(false);
   
-    void vAppend(RowSingle* pRow);
-  
-    void vPrintRow(void);
-    void vPrintPartialRow(void);
-  
-    void vRecStr(Stz* szRecStr);
-    Stz* szRecStr(void);
+//    void vAppend(RowSingle* pRow);
+//  
+//    void vPrintRow(void);
+//    void vPrintPartialRow(void);
+//  
+//    void vRecStr(Stz* szRecStr);
+//    Stz* szRecStr(void);
 
   private:
     Footer* aFooter(void);
