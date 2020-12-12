@@ -477,27 +477,25 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  HV_Row hRow(pStreamDef,C_ALL);
-  Record hvRec(pStreamDef,C_ALL);
+  HV_Row hvRowSingle(pStreamDef,C_ALL);
   
   //m_oRowTray.pNub()->vDumpTails();
   
-  i8 nRows = m_oRowTray.pNub()->nHeads();
+  i8 nCrws = m_oRowTray.pNub()->nHeads();
   
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+  for (i8 i_Crw = 0; i_Crw < nCrws; i_Crw++) {
     
     // get the compact row
-    Crw* aCrw = (Crw*)aGetHead(i_Row);
+    Crw* aCrw = (Crw*)aGetHead(i_Crw);
     
     // ignore deleted rows
     if (aCrw->bIsDeleted())
       continue;
     
     // inflate compact row into row
-    RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
+    RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCrw);
     
-    hvRec.vAppend(hRow);
-    hvRec.vPrintRow();
+    hvRowSingle->vPrintRow();
   }
   
 }
@@ -567,16 +565,16 @@ void CrwBuffer::vShowRow(i8 i_Row)
   Record hvRec(pStreamDef,C_ALL);
   
   // create a row
-  HV_Row hRow(pStreamDef,C_ALL);
+  HV_Row hvRowSingle(pStreamDef,C_ALL);
   
   // get compact row
   Crw* aCompactRow = (Crw*)aGetHead(i_Row);
   
   // inflate compact row into row
-  RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCompactRow);
+  RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCompactRow);
   
   // append the row to the record
-  hvRec.vAppend(hRow);
+  hvRec.vAppend(hvRowSingle);
   
   i8 nOffset = nDifference(this,aCompactRow);
   
@@ -680,7 +678,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
   
   Record hvRec(pStreamDef,C_ALL);
-  HV_Row hRow(pStreamDef,C_ALL);
+  HV_Row hvRowSingle(pStreamDef,C_ALL);
   
   i8 nRows = nRowCount();
   i8 nBytes = 1;
@@ -689,10 +687,10 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     // get the inflated compact row
-    vGetRow_single(hRow, i_Row);
+    vGetRow_single(hvRowSingle, i_Row);
     
     // append the row to the record
-    hvRec.vAppend(hRow);
+    hvRec.vAppend(hvRowSingle);
     
     StrLib::vConcat(hvRec.szRecStr()->azChar(),'\n');           //! sub-optimal
     
@@ -723,7 +721,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //  
 //  i8 nRowRefs = 1;
 //  
-//  HV_Row hRow(pTable()->pStreamDef(),C_ALL);
+//  HV_Row hvRowSingle(pTable()->pStreamDef(),C_ALL);
 //  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //  
 //  i8 nRows = nRowCount();
@@ -750,10 +748,10 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //    pSrtSet->vRowRef(0, (i8)aCrw);
 //    
 //    // get the key from the row
-//    RowInflator::vInflate_OneColumn_into_RowSingle(hRow, aCrw, iKeyCol);
+//    RowInflator::vInflate_OneColumn_into_RowSingle(hvRowSingle, aCrw, iKeyCol);
 //    
 //    // set the key in the srtSet
-//    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
+//    pSrtSet->vKey(hvRowSingle->m_waColVal[iKeyCol].m_iWrd);
 //  }
 //  
 //  return pSrtBuffer;

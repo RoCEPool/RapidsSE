@@ -161,7 +161,7 @@ void Step::vIndexDeleteNext(void)
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  HV_Row hRow(pTable->pStreamDef(),C_ALL);
+  HV_Row hvRowSingle(pTable->pStreamDef(),C_ALL);
   Record hvRec(pTable->pStreamDef(),C_ALL);
   
   bool bBefore = true;
@@ -193,8 +193,8 @@ void Step::vIndexDeleteNext(void)
         
       Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
       
-      RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
-      hvRec.vAppend(hRow);
+      RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCrw);
+      hvRec.vAppend(hvRowSingle);
       hvRec.vPrintRow();
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

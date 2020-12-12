@@ -183,7 +183,7 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 i_KeyCol, i8 iColVec)
   
   Crw* aCrw;
 
-  HV_Row hRow(pStreamDef,C_ALL);
+  HV_Row hvRowSingle(pStreamDef,C_ALL);
   
   SrtSet* aSrtSet = aFirstSrtSet();
   while (aSrtSet) {
@@ -193,10 +193,10 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 i_KeyCol, i8 iColVec)
       
       // get the key from the left buffer row
       if (aCrw) {
-        RowInflator::vInflate_OneColumn_into_RowSingle(hRow, aCrw, i_KeyCol);
+        RowInflator::vInflate_OneColumn_into_RowSingle(hvRowSingle, aCrw, i_KeyCol);
         
         // set the key in the srtSet
-        aSrtSet->vKey(hRow->iColVal(i_KeyCol));
+        aSrtSet->vKey(hvRowSingle->iColVal(i_KeyCol));
       }
     
      aSrtSet = aNextSrtSet(aSrtSet);
@@ -320,21 +320,21 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRef));
       
       Record hvRec(pStreamDef, iRowRef);
-      HV_Row hRow(pStreamDef, iRowRef);
+      HV_Row hvRowSingle(pStreamDef, iRowRef);
       
       // inflate the row
       if (aCrw) {
-        RowInflator::vInflate_AllColumns_into_RowSingle(hRow, aCrw);
+        RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle, aCrw);
       } else {
         // get no of columns
         i8 nColumns = pStreamDef->nColumns(iRowRef);
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRow->vSetColNull(i_Col);
+          hvRowSingle->vSetColNull(i_Col);
         }
       }
-      hvRec.vAppend(hRow);
+      hvRec.vAppend(hvRowSingle);
       hvRec.vPrintPartialRow();
     }
     
@@ -432,21 +432,21 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
       
       Record hvRec(pStreamDef, iRowRefs);
-      HV_Row hRow(pStreamDef, iRowRefs);
+      HV_Row hvRowSingle(pStreamDef, iRowRefs);
 
       // inflate the row
       if (aCrw) {
-        RowInflator::vInflate_AllColumns_into_RowSingle(hRow, aCrw);
+        RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle, aCrw);
       } else {
         // get no of columns
         i8 nColumns = pStreamDef->nColumns(iRowRefs);
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRow->vSetColNull(i_Col);
+          hvRowSingle->vSetColNull(i_Col);
         }
       }
-      hvRec.vAppend(hRow);
+      hvRec.vAppend(hvRowSingle);
       
       vTrace("%s"_Stz,hvRec.szRecStr());
     }

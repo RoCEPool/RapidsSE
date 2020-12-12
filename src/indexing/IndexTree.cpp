@@ -758,12 +758,12 @@ bool IndexTree::bVerifyIndex(void)
 void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
   // create a row
-  HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
+  HV_Row hvRowSingle(pCrwBuffer->pStreamDef(),C_ALL);
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   i8 nIdxCols = pIndexDef->nColumns();
-  hRow->m_bGetAll = false;
+  hvRowSingle->m_bGetAll = false;
   
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
     
@@ -772,19 +772,19 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
     
     // mark column to be retrieved
     i8 iColumn = pColumn->iColumnNo();
-    hRow->m_abGetCol[iColumn] = true;
-    hRow->m_iLastCol = iColumn > hRow->m_iLastCol ? iColumn :  hRow->m_iLastCol;
+    hvRowSingle->m_abGetCol[iColumn] = true;
+    hvRowSingle->m_iLastCol = iColumn > hvRowSingle->m_iLastCol ? iColumn :  hvRowSingle->m_iLastCol;
   }
   
   // get the inflated compact row
-  pCrwBuffer->vGetRow_single(hRow, i_Row);
+  pCrwBuffer->vGetRow_single(hvRowSingle, i_Row);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (KE_INT == eKeyKind()) {
     
     Column* pCol = pIndexDef->pGetColumn(0);
-    i8 iVal = hRow->iColVal(pCol->iColumnNo());
+    i8 iVal = hvRowSingle->iColVal(pCol->iColumnNo());
     pEntWrk->aEnt()->vKind(KE_INT);
     pEntWrk->aEnt()->vIntElm0(iVal);
     
@@ -796,7 +796,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
     Column* pColumn = pIndexDef->pGetColumn(i_Column);
     
     // add the column value to the key
-    pEntWrk->vAppendElement(hRow, pColumn);
+    pEntWrk->vAppendElement(hvRowSingle, pColumn);
   }
   
 }
