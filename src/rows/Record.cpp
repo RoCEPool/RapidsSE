@@ -198,7 +198,7 @@ void Record::vToRecord(RowSingle* pRowSingle)
       StrLib::vAppendString(&m_azCursor,",");
     
      
-    vAppendCol(eDatum,iScale,i_Col,pRowSingle)
+    vAppendCol(eDatum,iScale,i_Col,pRowSingle);
     
   }
   
@@ -304,62 +304,64 @@ void Record::vToRecord(RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 /* decode and sprint row into record                                          */
 /*----------------------------------------------------------------------------*/
-void Record::vAppend(RowSingle* pRow)
+void Record::vAppend(RowSingle* pRowSingle)
 {
-  vReset();
-  
-  if (m_iSubSet == C_ALL) {
-    
-    for (i8 i_DefSet = 0; i_DefSet < m_pStreamDef->m_nDefSets; i_DefSet++) {
-      
-      // get no of columns in this stream def
-      i8 nColumns = m_pStreamDef->m_nDefColumns[i_DefSet];
-    
-      // get start of stream def columns
-      i8 iDefStart = m_pStreamDef->m_i_DefStart[i_DefSet];
-    
-      // for each column
-      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-        
-        // get the column at index
-        Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
-        eDM eDatum = pCol->eDatum();
-        i8 iScale = pCol->iColumnScale();
-        
-        // comma separate column values
-        if (i_Col)
-          StrLib::vAppendString(&m_azCursor,",");
-        
-        vAppendCol(eDatum,iScale,i_Col,pRow);
-        //vTrace("%s\n"_Stz,szRecStr());
-        
-      }
-    }
-  }
-  else {
-    // get no of columns in this stream def
-     i8 nColumns = m_pStreamDef->m_nDefColumns[m_iSubSet];
+  vToRecord(pRowSingle);
 
-     // get start of stream def columns
-     i8 iDefStart = m_pStreamDef->m_i_DefStart[m_iSubSet];
-
-     // for each column
-     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-       
-       // get the column at index
-       Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
-       eDM eDatum = pCol->eDatum();
-       i8 iScale = pCol->iColumnScale();
-
-       // comma separate column values
-       if (i_Col)
-         StrLib::vAppendString(&m_azCursor,",");
-       
-       //! ALKA: Revert once Column not newable
-       // append column value
-       vAppendCol(eDatum,iScale,i_Col,pRow);
-     }
-   }
+//  vReset();
+//
+//  if (m_iSubSet == C_ALL) {
+//
+//    for (i8 i_DefSet = 0; i_DefSet < m_pStreamDef->m_nDefSets; i_DefSet++) {
+//
+//      // get no of columns in this stream def
+//      i8 nColumns = m_pStreamDef->m_nDefColumns[i_DefSet];
+//
+//      // get start of stream def columns
+//      i8 iDefStart = m_pStreamDef->m_i_DefStart[i_DefSet];
+//
+//      // for each column
+//      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+//
+//        // get the column at index
+//        Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+//        eDM eDatum = pCol->eDatum();
+//        i8 iScale = pCol->iColumnScale();
+//
+//        // comma separate column values
+//        if (i_Col)
+//          StrLib::vAppendString(&m_azCursor,",");
+//
+//        vAppendCol(eDatum,iScale,i_Col,pRow);
+//        //vTrace("%s\n"_Stz,szRecStr());
+//
+//      }
+//    }
+//  }
+//  else {
+//    // get no of columns in this stream def
+//     i8 nColumns = m_pStreamDef->m_nDefColumns[m_iSubSet];
+//
+//     // get start of stream def columns
+//     i8 iDefStart = m_pStreamDef->m_i_DefStart[m_iSubSet];
+//
+//     // for each column
+//     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+//
+//       // get the column at index
+//       Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+//       eDM eDatum = pCol->eDatum();
+//       i8 iScale = pCol->iColumnScale();
+//
+//       // comma separate column values
+//       if (i_Col)
+//         StrLib::vAppendString(&m_azCursor,",");
+//
+//       //! ALKA: Revert once Column not newable
+//       // append column value
+//       vAppendCol(eDatum,iScale,i_Col,pRow);
+//     }
+//   }
 }
 
 /*----------------------------------------------------------------------------*/
