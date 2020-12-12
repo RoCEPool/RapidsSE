@@ -301,9 +301,7 @@ bool RowCompactor::bAllotCrw(void)
 bool RowCompactor::bCreateTail(Stz* szTailStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  SP_Row spRow;
-  
+    
 #ifdef WITH_ENCODING_TRACE
   vTrace("Create Tail: %s\n"_Stz,szTailStr);
 #endif
@@ -450,9 +448,7 @@ void RowCompactor::vPackSamples(void)
   vAnalyzeSamples();
   
   //vDumpTails();
-  
-  SP_Row spRow;
-  
+    
   i8 nRowSize = Row::nSizeBytes(m_pStreamDef);
   
   Row* pSampleRow = m_pRowSamples->aFirstRow();
@@ -460,9 +456,6 @@ void RowCompactor::vPackSamples(void)
     
     //pSampleRow->vDump(m_pStreamDef);
     
-#ifdef WITH_ENCODING_TRACE
-    vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-#endif
     bool bPacked = bAddRowAsCrw(pSampleRow);
     RASSERT(bPacked);
     
@@ -525,13 +518,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
                                      Row* pInnerRowSample)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  SP_Row spRow;
-  
-#ifdef WITH_ENCODING_TRACE
-  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterStagedRow));
-#endif
-  
+    
   i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

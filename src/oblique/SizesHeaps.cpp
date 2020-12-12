@@ -118,7 +118,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(HashSet),            HT_TRANSIENT_LARGE   ,0 }, // CN_HASHSET
   { sizeof(HashMap),            HT_TRANSIENT_TINY    ,0 }, // CN_HASHMAP
   { sizeof(HeapBuffer),         HT_INVALID           ,0 }, // CN_HEAPBUFFER
-  { sizeof(SP_Row),             HT_INVALID           ,0 }, // CN_HPROW
 
   { 'I' - ('A' - 1),            HT_INVALID           ,0 }, // CN__I__
   { sizeof(Index),              HT_TRANSIENT_TINY    ,0 }, // CN_INDEX
