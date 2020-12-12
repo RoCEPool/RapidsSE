@@ -1,30 +1,29 @@
 /*============================================================================*/
-/* Record.cpp - Record sprint helper                                       */
+/* Record.cpp - Record sprint helper                                          */
 /*============================================================================*/
 
 #include "Rows.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Record* Rows::_pRecord(void* aAddr)
-{
-  Record* pSP_Record = reinterpret_cast<Record*>(aAddr);
-  
-  return pSP_Record;
-}
+
+__pCastFunction(Rows,Record,CN_RECORD)
+__aNewFunction(Record,CN_RECORD)
+__vDeleteFunction(Record,CN_RECORD)
+__aFooterFunction(Record)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(void)
-: StackObject(CN_RECORD)
+: Object(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azCursor = azRecord();
-  m_pStreamDef     = nullptr;
-  m_iSubSet        = C_UNKNOWN;
+  m_azCursor   = azRecord();
+  m_pStreamDef = nullptr;
+  m_iSubSet    = C_UNKNOWN;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
@@ -42,7 +41,7 @@ Record::Record(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(StreamDef* pStreamDef, i8 iSubset)
-: StackObject(CN_RECORD)
+: Object(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -66,7 +65,7 @@ Record::Record(StreamDef* pStreamDef, i8 iSubset)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(RowSingle* pRowSingle)
-: StackObject(CN_RECORD)
+: Object(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -588,23 +587,23 @@ void Record::vAppend(RowSingle* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print record string as row                                                 */
+/* print record string as csv,...                                              */
 /*----------------------------------------------------------------------------*/
-void Record::vPrintRow(void)
-{
-  _precondition_(_MAGIC_,CN_RECORD);
-  
-  vTrace("row: (%s)\n"_Stz,azRecord());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print record string as row                                                 */
-/*----------------------------------------------------------------------------*/
-void Record::vPrintPartialRow(void)
+void Record::vPrintAsCsv(void)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
   vTrace("%s"_Stz,azRecord());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print record string as row (...)                                           */
+/*----------------------------------------------------------------------------*/
+void Record::vPrintAsRow(void)
+{
+  _precondition_(_MAGIC_,CN_RECORD);
+  
+  vTrace("row: (%s)\n"_Stz,azRecord());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -626,16 +625,6 @@ void Record::vRecStr(Stz* szStr)
   
   StrLib::vCopy(m_caRecord,(char*)szStr);
 }
-
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Record)
 
 /*============================================================================*/
 /* end                                                                        */

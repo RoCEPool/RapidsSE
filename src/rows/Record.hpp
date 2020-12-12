@@ -5,7 +5,7 @@
 
 namespace Rows
 {
-  class Record : public StackObject
+  class Record : public Object
   {
   public:
     char       m_caRecord[C_MAX_RECORD];
@@ -18,6 +18,9 @@ namespace Rows
     Footer m_xFooter;
     
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
     Record(void);
     Record(StreamDef* pStreamDef, i8 iSubSet);
     Record(RowSingle* pRowSingle);
@@ -49,8 +52,8 @@ namespace Rows
   
     void vAppend(RowSingle* pRow);
 
-    void vPrintRow(void);
-    void vPrintPartialRow(void);
+    void vPrintAsCsv(void);
+    void vPrintAsRow(void);
 
     void vRecStr(Stz* szRecStr);
     Stz* szRecStr(void);

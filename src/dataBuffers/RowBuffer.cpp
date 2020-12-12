@@ -168,7 +168,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
     hvRowSingle->vCopyRow(pRow);
     hvRecord.vAppend(hvRowSingle);
-    hvRecord.vPrintRow();
+    hvRecord.vPrintAsRow();
     
     // get the next row
     pRow = aNextRow(pRow);
@@ -200,7 +200,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
     hvRowSingle->vCopyRow(pRow);
     hvRecord.vAppend(hvRowSingle);
     pRow = aNextRow(pRow);
-    hvRecord.vPrintRow();
+    hvRecord.vPrintAsRow();
   }
   
   vTrace("--------------------------------------------------"
