@@ -150,15 +150,15 @@ Stz* Record::sz(Row* aRow)
     if (DM_VCH == pCol->eDatum()) {
       
       if (aRow->bIsColNull(i_Col)) {
-        vAddCol_col(pCol,pCol->eDatum(),pCol->iColumnScale(),C_DATUM_NULL);
+        vAddCol_col(pCol->eDatum(),pCol->iColumnScale(),C_DATUM_NULL);
         continue;
       }
       
       Stz* acSrcString = aRow->szColVal_ofs(i_Col);
-      vAddCol_col(pCol,pCol->eDatum(),pCol->iColumnScale(),(i8)acSrcString);
+      vAddCol_col(pCol->eDatum(),pCol->iColumnScale(),(i8)acSrcString);
       continue;
     }
-    vAddCol_col(pCol,pCol->eDatum(),pCol->iColumnScale(),
+    vAddCol_col(pCol->eDatum(),pCol->iColumnScale(),
                 aRow->iColVal_int(i_Col));
   }
   
@@ -300,13 +300,15 @@ void Record::vAppend(RowSingle* pRow)
       for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
         
         // get the column at index
-        Column xCol = m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+        Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+        eDM eDatum = pCol->eDatum();
+        i8 iScale = pCol->iColumnScale();
         
         // comma separate column values
         if (i_Col)
           StrLib::vAppendString(&m_azCursor,",");
         
-        vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+        vAppendCol(eDatum,iScale,i_Col,pRow);
         //vTrace("%s\n"_Stz,szRecStr());
         
       }
@@ -323,15 +325,17 @@ void Record::vAppend(RowSingle* pRow)
      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
        
        // get the column at index
-       Column xCol = m_pStreamDef->m_xaColumn[i_Col + iDefStart];
-       
+       Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+       eDM eDatum = pCol->eDatum();
+       i8 iScale = pCol->iColumnScale();
+
        // comma separate column values
        if (i_Col)
          StrLib::vAppendString(&m_azCursor,",");
        
        //! ALKA: Revert once Column not newable
        // append column value
-       vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+       vAppendCol(eDatum,iScale,i_Col,pRow);
      }
    }
 }
@@ -383,7 +387,7 @@ void Record::vRecStr(Stz* szStr)
 /*----------------------------------------------------------------------------*/
 /* add a value                                                                */
 /*----------------------------------------------------------------------------*/
-void Record::vAddCol_col(Column* pCol, eDM eDatum, i8 iScale, i8 iVal)
+void Record::vAddCol_col(eDM eDatum, i8 iScale, i8 iVal)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -395,7 +399,7 @@ void Record::vAddCol_col(Column* pCol, eDM eDatum, i8 iScale, i8 iVal)
   switch (eDatum) {
     case DM_BCD: {
       SP_Bcd spBcd;
-      StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal));
+      StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal));                 // FIX
       break;
     }
       
@@ -456,11 +460,11 @@ void Record::vAddCol_col(Column* pCol, eDM eDatum, i8 iScale, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
+void Record::vAppendCol(eDM eDatum, i8 iScale, i8 i_Col,
+                        RowSingle* pRowSingle)
 {
   Datum oDatum;
   
-  i8 i_Col = pCol->iColumnNo();
   oDatum = pRowSingle->iColVal(i_Col);
   
   if (oDatum.bIsNull()) {
@@ -469,11 +473,9 @@ void Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eDM eDatum = pCol->eDatum();
-  
+    
   switch (eDatum) {
-    case DM_BCD: vAppendBcd(&oDatum,pCol->iColumnScale()); break;
+    case DM_BCD: vAppendBcd(&oDatum,iScale); break;
     case DM_BOL: vAppendBol(&oDatum); break;
     case DM_DTE: vAppendDte(&oDatum); break;
     case DM_FLT: vAppendFlt(&oDatum); break;
