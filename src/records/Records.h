@@ -19,8 +19,6 @@ namespace Records
 #include "Record.hpp"
 typedef HV<Record,StreamDef>   HV_Rec;
 
-#include "RecordBuffer.hpp"
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

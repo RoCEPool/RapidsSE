@@ -225,7 +225,7 @@ void ToRow::vNewRowBuffer(void)
     vACCEPT_CHAR(); \
   }
 
-#define vCOLLECT_FLT_CHARS() \
+#define vCOLLECT_FLT_DIGITS() \
   while (nFloatChars < 128 && bIS_DIGIT()) { \
     vCOLLECT_FLT_CHAR(); \
   }
@@ -468,7 +468,7 @@ void ToRow::vNewRowBuffer(void)
   if (' ' == cCurChr || 'T' == cCurChr || 't' == cCurChr) \
   vACCEPT_CHAR();
 
-#define vMICROSECOND_SPECIFICS() \
+#define vMICROSECOND_optonal() \
   uMicrosecondComponent = 0; \
   \
   if (bIS_DECIMAL_POINT()) { \
@@ -1429,7 +1429,7 @@ L_Float:
 //    nFloatChars++;
 //    vACCEPT_CHAR();
 //  }
-  vCOLLECT_FLT_CHARS();
+  vCOLLECT_FLT_DIGITS();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional fraction portion
@@ -1441,11 +1441,12 @@ L_Float:
 //    vACCEPT_CHAR(); // skip '.'
     vCOLLECT_FLT_CHAR();
 
-    while (nFloatChars < 128 && bIS_DIGIT()) {
-      *acFltDst++ = cCurChr;
-      nFloatChars++;
-      vACCEPT_CHAR();
-    }
+//    while (nFloatChars < 128 && bIS_DIGIT()) {
+//      *acFltDst++ = cCurChr;
+//      nFloatChars++;
+//      vACCEPT_CHAR();
+//    }
+    vCOLLECT_FLT_DIGITS();
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1468,11 +1469,12 @@ L_Float:
     }
         
     // collect exponent digits
-    while (nFloatChars < 128 && bIS_DIGIT()) {
-      *acFltDst++ = cCurChr;
-      nFloatChars++;
-      vACCEPT_CHAR();
-    }
+//    while (nFloatChars < 128 && bIS_DIGIT()) {
+//      *acFltDst++ = cCurChr;
+//      nFloatChars++;
+//      vACCEPT_CHAR();
+//    }
+    vCOLLECT_FLT_DIGITS();
   }
 
   // terminate
@@ -1854,7 +1856,7 @@ L_Time:
 //      vACCEPT_CHAR(); // skip digit
 //  }
   
-  vMICROSECOND_SPECIFICS();
+  vMICROSECOND_optonal();
 
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                            recognised time
@@ -2163,7 +2165,7 @@ L_Timestamp_dateCollected:
 //      vACCEPT_CHAR(); // skip digit
 //  }
   
-  vMICROSECOND_SPECIFICS();
+  vMICROSECOND_optonal();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   

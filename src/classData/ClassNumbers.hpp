@@ -227,7 +227,6 @@ enum eCN : u2 // Class Number
   /* */ CN_READAPI,
   /* */ CN_READER,
   /* */ CN_RECORD,
-  /* */ CN_RECORDBUFFER,
   /* */ CN_RELOP,
   /* */ CN_RESOURCETRACKER,
   /* */ CN_RESPONSE,
@@ -582,7 +581,6 @@ static Stz* aCN[]
   /* */ "READAPI"_Stz,             // CN_READAPI
   /* */ "READER"_Stz,              // CN_READER
   /* */ "RECORD"_Stz,              // CN_RECORD
-  /* */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
   /* */ "RELOP"_Stz,               // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
   /* */ "RESPONSE"_Stz,            // CN_RESPONSE

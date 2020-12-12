@@ -489,7 +489,6 @@ void Api::vIncStatistics(eAC eApiCall)
     case AC_GetFirstBuffer:      pStats->Api.m_nGetFirstBuffer++;       break;
     case AC_GetLoadResult:       pStats->Api.m_nGetLoadResult++;        break;
     case AC_GetNextBuffer:       pStats->Api.m_nGetNextBuffer++;        break;
-    case AC_GetRecordBuffer:     pStats->Api.m_nGetRecordBuffer++;      break;
     case AC_GetRow:              pStats->Api.m_nGetRow++;               break;
     case AC_GetRowCount:         pStats->Api.m_nGetRowCount++;          break;
     case AC_GetTableColumnRow:   pStats->Api.m_nGetTableColumnRow++;    break;
@@ -575,10 +574,6 @@ void Api::vMonitorPortrait(s48K& sPortrait)
   if (pStats->Api.m_nGetLoadResult) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("getLoadResult %lld "_Stz,pStats->Api.m_nGetLoadResult);
-  }
-  if (pStats->Api.m_nGetRecordBuffer) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("getRecordBuffer %lld "_Stz,pStats->Api.m_nGetRecordBuffer);
   }
   if (pStats->Api.m_nGetRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
