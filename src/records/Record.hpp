@@ -5,7 +5,7 @@
 
 namespace Records
 {
-  class Record : public Sprint
+  class Record : public StackObject
   {
   public:
     char       m_caRecord[C_MAX_RECORD];

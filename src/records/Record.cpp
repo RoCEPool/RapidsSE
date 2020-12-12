@@ -18,13 +18,10 @@ Record* Records::_pRecord(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(void)
-: Sprint(CN_RECORD)
+: StackObject(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  // set default enclosing char
-  vFormat(F_VCH_enclose);
-
   m_azCursor = azRecord();
   m_pStreamDef     = nullptr;
   m_iSubSet        = C_UNKNOWN;
@@ -45,13 +42,10 @@ Record::Record(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(StreamDef* pStreamDef, i8 iSubset)
-: Sprint(CN_RECORD)
+: StackObject(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  // set default enclosing char
-  vFormat(F_VCH_enclose);
-
   m_azCursor   = azRecord();
   m_pStreamDef = pStreamDef;
   m_iSubSet    = iSubset;
@@ -72,13 +66,11 @@ Record::Record(StreamDef* pStreamDef, i8 iSubset)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(RowSingle* pRowSingle)
-: Sprint(CN_RECORD)
+: StackObject(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  // set default enclosing char
-  vFormat(F_VCH_enclose);
-  
+  // set default enclosing char  
   m_azCursor   = azRecord();
   m_pStreamDef = nullptr;
   m_iSubSet    = C_UNKNOWN;
