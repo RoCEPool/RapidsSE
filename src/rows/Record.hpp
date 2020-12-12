@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Records
+namespace Rows
 {
   class Record : public StackObject
   {

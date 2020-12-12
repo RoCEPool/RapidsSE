@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Records
+namespace Entries
 {
   class SP_Key : public SPsmall
   {

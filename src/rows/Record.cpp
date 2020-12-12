@@ -2,12 +2,12 @@
 /* Record.cpp - Record sprint helper                                       */
 /*============================================================================*/
 
-#include "Records.h"
+#include "Rows.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Record* Records::_pRecord(void* aAddr)
+Record* Rows::_pRecord(void* aAddr)
 {
   Record* pSP_Record = reinterpret_cast<Record*>(aAddr);
   
@@ -70,7 +70,7 @@ Record::Record(RowSingle* pRowSingle)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  // set default enclosing char  
+  // set default enclosing char
   m_azCursor   = azRecord();
   m_pStreamDef = nullptr;
   m_iSubSet    = C_UNKNOWN;

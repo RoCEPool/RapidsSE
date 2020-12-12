@@ -99,7 +99,6 @@ namespace Pool              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;        }
 namespace Prompt            {   class SePrompt;                               }
 namespace ReadConsistency   { class Crv;                                      }
-namespace Records           {                                                 }
 namespace Reflection        { class ConstDef;        class ConstSet;
                               class MetaBlock;       class MetaCell;
                               class MetaGraph;       class MetaInherit;
@@ -180,7 +179,6 @@ using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
 using namespace ReadConsistency;
-using namespace Records;
 using namespace Reflection;
 using namespace ResourceUsage;
 using namespace Resources;

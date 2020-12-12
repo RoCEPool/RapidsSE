@@ -485,7 +485,7 @@ void ToRow::vNewRowBuffer(void)
     uMicrosecondComponent = uMicrosecondComponent * nMicrosecondShift; \
     \
     while (bIS_DIGIT()) \
-    vACCEPT_CHAR(); \
+      vACCEPT_CHAR(); \
   }
 
 //--
