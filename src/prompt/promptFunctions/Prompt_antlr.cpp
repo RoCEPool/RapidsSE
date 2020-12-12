@@ -27,6 +27,7 @@ bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
   // Read in and parse the plan graph definitions
 
   PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
+  
   //PlanNode* root = pPlanDefinitionParser->parse();
 
   delete pPlanDefinitionParser;
@@ -35,20 +36,20 @@ bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
 //    return false;
 //  }
 
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-
-  s48K sAntlr;
-  
-  pInpTknVec->vVecToString(sAntlr,1,true);
-  
-  vTrace("antlr: %s\n"_Stz,sAntlr.azChar());
-  
-  // antlr test here
-  SqlPlanner* pPlanner = new SqlPlanner();
-  
-  pPlanner->plan(sAntlr.szStz());
-  
-  delete pPlanner;
+//  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+//
+//  s48K sAntlr;
+//
+//  pInpTknVec->vVecToString(sAntlr,1,true);
+//
+//  vTrace("antlr: %s\n"_Stz,sAntlr.azChar());
+//
+//  // antlr test here
+//  SqlPlanner* pPlanner = new SqlPlanner();
+//
+//  pPlanner->plan(sAntlr.szStz());
+//
+//  delete pPlanner;
   
   return true;
 }
