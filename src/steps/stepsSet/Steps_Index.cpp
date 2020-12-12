@@ -162,7 +162,7 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   HV_Row hRow(pTable->pStreamDef(),C_ALL);
-  SP_Record hvRec(pTable->pStreamDef(),C_ALL);
+  Record hvRec(pTable->pStreamDef(),C_ALL);
   
   bool bBefore = true;
   Ent* aEntryToDelete;

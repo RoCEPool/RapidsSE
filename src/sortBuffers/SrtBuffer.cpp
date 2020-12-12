@@ -319,7 +319,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       // get the dataRow of rowref
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRef));
       
-      SP_Record hvRec(pStreamDef, iRowRef);
+      Record hvRec(pStreamDef, iRowRef);
       HV_Row hRow(pStreamDef, iRowRef);
       
       // inflate the row
@@ -431,7 +431,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
       // get the srtSet dataRow
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
       
-      SP_Record hvRec(pStreamDef, iRowRefs);
+      Record hvRec(pStreamDef, iRowRefs);
       HV_Row hRow(pStreamDef, iRowRefs);
 
       // inflate the row

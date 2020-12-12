@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Record.cpp - Record sprint helper                                       */
+/* Record.cpp - Record sprint helper                                       */
 /*============================================================================*/
 
 #include "Records.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SP_Record* Records::_pSP_Record(void* aAddr)
+Record* Records::_pRecord(void* aAddr)
 {
-  SP_Record* pSP_Record = reinterpret_cast<SP_Record*>(aAddr);
+  Record* pSP_Record = reinterpret_cast<Record*>(aAddr);
   
   return pSP_Record;
 }
@@ -17,7 +17,7 @@ SP_Record* Records::_pSP_Record(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Record::SP_Record(void)
+Record::Record(void)
 : Sprint(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
@@ -44,7 +44,7 @@ SP_Record::SP_Record(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Record::SP_Record(StreamDef* pStreamDef, i8 iSubset)
+Record::Record(StreamDef* pStreamDef, i8 iSubset)
 : Sprint(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
@@ -71,7 +71,7 @@ SP_Record::SP_Record(StreamDef* pStreamDef, i8 iSubset)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Record::SP_Record(RowSingle* pRowSingle)
+Record::Record(RowSingle* pRowSingle)
 : Sprint(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
@@ -100,7 +100,7 @@ SP_Record::SP_Record(RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Record::~SP_Record(void) noexcept(false)
+Record::~Record(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 }
@@ -112,7 +112,7 @@ SP_Record::~SP_Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a value                                                                */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAddCol(Column* pCol, i8 iVal)
+void Record::vAddCol(Column* pCol, i8 iVal)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -187,7 +187,7 @@ void SP_Record::vAddCol(Column* pCol, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
+void Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
 {
   Datum oDatum;
   
@@ -229,7 +229,7 @@ void SP_Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendDtm(Column* pCol, Datum* pDatum)
+void Record::vAppendDtm(Column* pCol, Datum* pDatum)
 {
   if (pDatum->bIsNull()) {
     StrLib::vAppendString(&m_azCursor,"null");
@@ -256,7 +256,7 @@ void SP_Record::vAppendDtm(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of decimal datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendBcd(Column* pCol, Datum* pDatum)
+void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -268,7 +268,7 @@ void SP_Record::vAppendBcd(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of boolean datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendBol(Column* pCol, Datum* pDatum)
+void Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -280,7 +280,7 @@ void SP_Record::vAppendBol(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of date datum to record                                       */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendDte(Column* pCol, Datum* pDatum)
+void Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -292,7 +292,7 @@ void SP_Record::vAppendDte(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of float datum to record                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendFlt(Column* pCol, Datum* pDatum)
+void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -303,7 +303,7 @@ void SP_Record::vAppendFlt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of integer datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendInt(Column* pCol, Datum* pDatum)
+void Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -315,7 +315,7 @@ void SP_Record::vAppendInt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of interval datum to record                                   */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendIvl(Column* pCol, Datum* pDatum)
+void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -327,7 +327,7 @@ void SP_Record::vAppendIvl(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of time datum to record                                       */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendTme(Column* pCol, Datum* pDatum)
+void Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -339,7 +339,7 @@ void SP_Record::vAppendTme(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of timestamp datum to record                                  */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendTsp(Column* pCol, Datum* pDatum)
+void Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -351,7 +351,7 @@ void SP_Record::vAppendTsp(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* append ascii of varchar datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppendVch(Column* pCol, Datum* pDatum)
+void Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -363,7 +363,7 @@ void SP_Record::vAppendVch(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* return char* of result                                                     */
 /*----------------------------------------------------------------------------*/
-char* SP_Record::azRecord(void)
+char* Record::azRecord(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -373,7 +373,7 @@ char* SP_Record::azRecord(void)
 /*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vReset(void)
+void Record::vReset(void)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
@@ -385,7 +385,7 @@ void SP_Record::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Record::sz(void)
+Stz* Record::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -395,7 +395,7 @@ Stz* SP_Record::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Record::sz(Row* aRow)
+Stz* Record::sz(Row* aRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -428,7 +428,7 @@ Stz* SP_Record::sz(Row* aRow)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Record::sz(RowSingle* pRowSingle)
+Stz* Record::sz(RowSingle* pRowSingle)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -441,7 +441,7 @@ Stz* SP_Record::sz(RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vToRecord(RowSingle* pRowSingle)
+void Record::vToRecord(RowSingle* pRowSingle)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -541,7 +541,7 @@ void SP_Record::vToRecord(RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 /* decode and sprint row into record                                          */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vAppend(RowSingle* pRow)
+void Record::vAppend(RowSingle* pRow)
 {
   vReset();
   
@@ -598,7 +598,7 @@ void SP_Record::vAppend(RowSingle* pRow)
 /*----------------------------------------------------------------------------*/
 /* print record string as row                                                 */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vPrintRow(void)
+void Record::vPrintRow(void)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
@@ -608,7 +608,7 @@ void SP_Record::vPrintRow(void)
 /*----------------------------------------------------------------------------*/
 /* print record string as row                                                 */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vPrintPartialRow(void)
+void Record::vPrintPartialRow(void)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
@@ -618,7 +618,7 @@ void SP_Record::vPrintPartialRow(void)
 /*----------------------------------------------------------------------------*/
 /* get record string                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Record::szRecStr(void)
+Stz* Record::szRecStr(void)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
@@ -628,7 +628,7 @@ Stz* SP_Record::szRecStr(void)
 /*----------------------------------------------------------------------------*/
 /* set record string                                                          */
 /*----------------------------------------------------------------------------*/
-void SP_Record::vRecStr(Stz* szStr)
+void Record::vRecStr(Stz* szStr)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
@@ -643,7 +643,7 @@ void SP_Record::vRecStr(Stz* szStr)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(SP_Record)
+__aFooterFunction(Record)
 
 /*============================================================================*/
 /* end                                                                        */

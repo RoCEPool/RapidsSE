@@ -14,9 +14,9 @@ namespace Records
 
 //------------------------------------------------------------------------------
 
-#include "SP_Record.hpp"
+#include "Record.hpp"
 
-typedef HV<SP_Record,StreamDef>   HV_Rec;
+typedef HV<Record,StreamDef>   HV_Rec;
 
 /*============================================================================*/
 /* end                                                                        */

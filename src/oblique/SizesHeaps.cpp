@@ -222,7 +222,7 @@ SizeHeap gxaSizeHeap[]
   { 'R' - ('A' - 1),            HT_INVALID           ,0 }, // CN__R__
   { sizeof(ReadApi),            HT_TRANSIENT_TINY    ,0 }, // CN_READAPI
   { sizeof(Reader),             HT_TRANSIENT_TINY    ,0 }, // CN_READER
-  { sizeof(SP_Record),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_RECORD
+  { sizeof(Record),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_TRANSIENT_TINY    ,0 }, // CN_RELOP
   { sizeof(ResourceTracker),    HT_TRANSIENT_TINY    ,0 }, // CN_RESOURCETRACKER
   { sizeof(Response),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_RESPONSE

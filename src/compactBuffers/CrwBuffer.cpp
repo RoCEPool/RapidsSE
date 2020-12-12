@@ -478,7 +478,7 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   HV_Row hRow(pStreamDef,C_ALL);
-  SP_Record hvRec(pStreamDef,C_ALL);
+  Record hvRec(pStreamDef,C_ALL);
   
   //m_oRowTray.pNub()->vDumpTails();
   
@@ -564,7 +564,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   vTrace("Rrf: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
-  SP_Record hvRec(pStreamDef,C_ALL);
+  Record hvRec(pStreamDef,C_ALL);
   
   // create a row
   HV_Row hRow(pStreamDef,C_ALL);
@@ -679,7 +679,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
   
-  SP_Record hvRec(pStreamDef,C_ALL);
+  Record hvRec(pStreamDef,C_ALL);
   HV_Row hRow(pStreamDef,C_ALL);
   
   i8 nRows = nRowCount();

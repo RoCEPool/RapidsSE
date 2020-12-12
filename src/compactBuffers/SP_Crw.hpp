@@ -5,7 +5,7 @@
 
 namespace CompactBuffers
 {
-  class SP_Crw : public SP_Record
+  class SP_Crw : public Record
   {
   public:
   

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Record.hpp - Record sprint helper                                       */
+/* Record.hpp - Record sprint helper                                       */
 /*============================================================================*/
 #pragma once
 
 namespace Records
 {
-  class SP_Record : public Sprint
+  class Record : public Sprint
   {
   public:
     char       m_caRecord[C_MAX_RECORD];
@@ -18,10 +18,10 @@ namespace Records
     Footer m_xFooter;
     
   public:
-    SP_Record(void);
-    SP_Record(StreamDef* pStreamDef, i8 iSubSet);
-    SP_Record(RowSingle* pRow);
-   ~SP_Record(void) noexcept(false);
+    Record(void);
+    Record(StreamDef* pStreamDef, i8 iSubSet);
+    Record(RowSingle* pRowSingle);
+   ~Record(void) noexcept(false);
   
     void vAddCol(Column* pCol, i8 iVal);
   
@@ -40,8 +40,8 @@ namespace Records
     char* azRecord(void);
     void vReset(void);
     Stz* sz(void);
-    Stz* sz(Row* aRow);
-    Stz* sz(RowSingle* pRow);
+    Stz* sz(Row* pRow);
+    Stz* sz(RowSingle* pRowSingle);
   
     void vToRecord(RowSingle* pRow);
   
@@ -58,7 +58,7 @@ namespace Records
     Footer* aFooter(void);
   };
 
-  SP_Record* _pSP_Record(void* aAddr);
+  Record* _pRecord(void* aAddr);
 
 }
 

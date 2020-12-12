@@ -253,7 +253,7 @@ void Step::vTableGenCsvBuffer(void)
     hRow->vResetValues();
     RowGenerator::vRandom(hRow,pStreamDef);
     
-    SP_Record spRecord(hRow);
+    Record spRecord(hRow);
     StrLib::vConcat(spRecord.sz()->azChar(),'\n');               //! sub-optimal
     //vTrace("Random Rec: %s"_Stz,spRecord.sz());
 
