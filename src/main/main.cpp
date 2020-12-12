@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
     }
     
     vHeartInit();
-    
+
     // run SE
     Engine::vMainEntry();
   }
