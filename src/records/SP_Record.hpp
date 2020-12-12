@@ -19,7 +19,7 @@ namespace Records
     
   public:
     SP_Record(void);
-    SP_Record(StreamDef* pStreamDef);
+    SP_Record(StreamDef* pStreamDef, i8 iSubSet);
     SP_Record(RowSingle* pRow);
    ~SP_Record(void) noexcept(false);
   

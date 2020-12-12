@@ -76,7 +76,7 @@ bool IndexStream::bDelete(void)
   IndexTree* pIndexTree = m_pTablePtn->pIndexTree(iIndexNo);
   
   HV_Row hRow(pTable->pStreamDef(),C_ALL);
-  HV_Rec hvRec(pTable->pStreamDef(),C_ALL);
+  SP_Record hvRec(pTable->pStreamDef(),C_ALL);
   
   bool bBefore = true;
   
@@ -103,8 +103,8 @@ bool IndexStream::bDelete(void)
       Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
       
       RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
-      hvRec->vAppend(hRow);
-      hvRec->vPrintRow();
+      hvRec.vAppend(hRow);
+      hvRec.vPrintRow();
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // delete the refernced crw

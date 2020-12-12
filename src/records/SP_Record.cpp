@@ -44,7 +44,7 @@ SP_Record::SP_Record(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Record::SP_Record(StreamDef* pStreamDef)
+SP_Record::SP_Record(StreamDef* pStreamDef, i8 iSubset)
 : Sprint(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
@@ -54,7 +54,7 @@ SP_Record::SP_Record(StreamDef* pStreamDef)
 
   m_azCursor   = azRecord();
   m_pStreamDef = pStreamDef;
-  m_iSubSet    = C_UNKNOWN;
+  m_iSubSet    = iSubset;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
@@ -258,7 +258,7 @@ void SP_Record::vAppendDtm(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Bcd spBcd;
   
@@ -270,7 +270,7 @@ void SP_Record::vAppendBcd(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Bol spBol;
   
@@ -282,7 +282,7 @@ void SP_Record::vAppendBol(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Dte spDte;
   
@@ -294,7 +294,7 @@ void SP_Record::vAppendDte(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Flt spFlt;
   StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(pDatum->dFlt()));
@@ -305,7 +305,7 @@ void SP_Record::vAppendFlt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Int spInt;
   
@@ -317,7 +317,7 @@ void SP_Record::vAppendInt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Ivl spIvl;
   
@@ -329,7 +329,7 @@ void SP_Record::vAppendIvl(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Tme spTme;
   
@@ -341,7 +341,7 @@ void SP_Record::vAppendTme(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Tsp spTsp;
   
@@ -353,7 +353,7 @@ void SP_Record::vAppendTsp(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Vch spVch;
   
@@ -600,7 +600,7 @@ void SP_Record::vAppend(RowSingle* pRow)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vPrintRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  _precondition_(_MAGIC_,CN_RECORD);
   
   vTrace("row: (%s)\n"_Stz,azRecord());
 }
@@ -610,7 +610,7 @@ void SP_Record::vPrintRow(void)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vPrintPartialRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  _precondition_(_MAGIC_,CN_RECORD);
   
   vTrace("%s"_Stz,azRecord());
 }
@@ -620,7 +620,7 @@ void SP_Record::vPrintPartialRow(void)
 /*----------------------------------------------------------------------------*/
 Stz* SP_Record::szRecStr(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  _precondition_(_MAGIC_,CN_RECORD);
   
   return sz();
 }
@@ -630,7 +630,7 @@ Stz* SP_Record::szRecStr(void)
 /*----------------------------------------------------------------------------*/
 void SP_Record::vRecStr(Stz* szStr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  _precondition_(_MAGIC_,CN_RECORD);
   
   StrLib::vCopy(m_caRecord,(char*)szStr);
 }

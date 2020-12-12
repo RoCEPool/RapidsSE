@@ -319,7 +319,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       // get the dataRow of rowref
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRef));
       
-      HV_Rec hvRec(pStreamDef, iRowRef);
+      SP_Record hvRec(pStreamDef, iRowRef);
       HV_Row hRow(pStreamDef, iRowRef);
       
       // inflate the row
@@ -334,8 +334,8 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
           hRow->vSetColNull(i_Col);
         }
       }
-      hvRec->vAppend(hRow);
-      hvRec->vPrintPartialRow();
+      hvRec.vAppend(hRow);
+      hvRec.vPrintPartialRow();
     }
     
     vTrace(")\n"_Stz);
@@ -431,7 +431,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
       // get the srtSet dataRow
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
       
-      HV_Rec hvRec(pStreamDef, iRowRefs);
+      SP_Record hvRec(pStreamDef, iRowRefs);
       HV_Row hRow(pStreamDef, iRowRefs);
 
       // inflate the row
@@ -446,9 +446,9 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
           hRow->vSetColNull(i_Col);
         }
       }
-      hvRec->vAppend(hRow);
+      hvRec.vAppend(hRow);
       
-      vTrace("%s"_Stz,hvRec->szRecStr());
+      vTrace("%s"_Stz,hvRec.szRecStr());
     }
     
     vTrace("\n"_Stz);

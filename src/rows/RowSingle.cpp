@@ -232,9 +232,9 @@ void RowSingle::vPrintRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
-//  HV_Rec hvRec(m_pStreamDef,C_ALL);
-//  hvRec->vAppend(hRow);
-//  hvRec->vPrintRow();
+//  SP_Record hvRec(m_pStreamDef,C_ALL);
+//  hvRec.vAppend(hRow);
+//  hvRec.vPrintRow();
 }
 
 /*----------------------------------------------------------------------------*/

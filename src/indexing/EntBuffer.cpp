@@ -1293,7 +1293,7 @@ void EntBuffer::vPrintRows(void)
   StreamDef* pStreamDef = m_pIndexTree->pIndex()->pTable()->pStreamDef();
   
   HV_Row hRow(pStreamDef, C_ALL);
-  HV_Rec hvRec(pStreamDef, C_ALL);
+  SP_Record hvRec(pStreamDef, C_ALL);
   
   Ent* aEnt = aLeadEntry();
   
@@ -1308,8 +1308,8 @@ void EntBuffer::vPrintRows(void)
     // inflate compact row into row
     RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
     
-    hvRec->vAppend(hRow);
-    hvRec->vPrintRow();
+    hvRec.vAppend(hRow);
+    hvRec.vPrintRow();
     
     aEnt = aNextEntry(aEnt, 0);
   }

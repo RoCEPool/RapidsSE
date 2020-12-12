@@ -5,7 +5,7 @@
 
 namespace DataBuffers
 {
-  typedef       HV <Record,StreamDef>        HV_Rec;
+  typedef       HV <SP_Record,StreamDef>        HV_Rec;
   
 
 
