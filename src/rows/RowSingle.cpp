@@ -226,6 +226,18 @@ bool RowSingle::bIsColNull(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the row                                                              */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vPrintRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+//  HV_Rec hvRec(m_pStreamDef,C_ALL);
+//  hvRec->vAppend(hRow);
+//  hvRec->vPrintRow();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset the row                                                              */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vResetRow(void)

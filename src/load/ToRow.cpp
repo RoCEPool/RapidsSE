@@ -215,9 +215,20 @@ void ToRow::vNewRowBuffer(void)
 #define vACCEPT_CHAR() \
   (cPrvChr = cCurChr, cCurChr = cNxtChr , cNxtChr = *++azCsvCrs)
 
-#define vCOLLECT(uComponent) \
+#define vCOLLECT_INT_DIGIT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
 
+#define vCOLLECT_FLT_CHAR() \
+  { \
+    *acFltDst++ = cCurChr; \
+    nFloatChars++; \
+    vACCEPT_CHAR(); \
+  }
+
+#define vCOLLECT_FLT_CHARS() \
+  while (nFloatChars < 128 && bIS_DIGIT()) { \
+    vCOLLECT_FLT_CHAR(); \
+  }
 
 #define vNUMBER(_uComponent,_maxDigits,_errorCode1,_errorCode2) \
   \
@@ -225,7 +236,7 @@ void ToRow::vNewRowBuffer(void)
   \
   nWholeDigits = 0; \
   while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
-    vCOLLECT(_uComponent); \
+    vCOLLECT_INT_DIGIT(_uComponent); \
     nWholeDigits++; \
    vACCEPT_CHAR(); \
   } \
@@ -243,7 +254,7 @@ void ToRow::vNewRowBuffer(void)
   \
   nWholeDigits = 0; \
   while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
-    vCOLLECT(_uComponent); \
+    vCOLLECT_INT_DIGIT(_uComponent); \
     nWholeDigits++; \
    vACCEPT_CHAR(); \
   } \
@@ -467,7 +478,7 @@ void ToRow::vNewRowBuffer(void)
     for (nMicrosecondShift = C_IVL_USEC_SHIFT; \
          nMicrosecondShift > 1 && bIS_DIGIT(); \
          vACCEPT_CHAR()) { \
-      vCOLLECT(uMicrosecondComponent); \
+      vCOLLECT_INT_DIGIT(uMicrosecondComponent); \
       nMicrosecondShift /= 10; \
     } \
     \
@@ -1288,7 +1299,7 @@ L_Decimal:
   nDecimalDigits = 0;
   uUnscaledNumber = 0;
   for ( ; nDecimalDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
-    vCOLLECT(uUnscaledNumber);
+    vCOLLECT_INT_DIGIT(uUnscaledNumber);
     nDecimalDigits++;
     nPixWholeDigits--;
     if (nPixWholeDigits < 0)
@@ -1304,7 +1315,7 @@ L_Decimal:
     vACCEPT_CHAR(); // skip '.'
     
     for ( ; nPixFracDigits && nDecimalDigits < 19 && bIS_DIGIT(); vACCEPT_CHAR()) {
-      vCOLLECT(uUnscaledNumber);
+      vCOLLECT_INT_DIGIT(uUnscaledNumber);
       nDecimalDigits++;
       nPixFracDigits--;
     }
@@ -1406,33 +1417,30 @@ L_Float:
   acFltDst = caBuffer_atof;
 
   // test for +/-
-  if (cCurChr == C_MINUS_SIGN || cCurChr == C_PLUS_SIGN) {
-    *acFltDst++ = cCurChr;
-    nFloatChars++;
-    vACCEPT_CHAR(); // skip sign
-  }
-
+  if (cCurChr == C_MINUS_SIGN || cCurChr == C_PLUS_SIGN)
+    vCOLLECT_FLT_CHAR();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
 
   // collect digits for leading number
-  while (nFloatChars < 128 && bIS_DIGIT()) {
-    *acFltDst++ = cCurChr;
-    nFloatChars++;
-    vACCEPT_CHAR();
-  }
+//  while (nFloatChars < 128 && bIS_DIGIT()) {
+//    *acFltDst++ = cCurChr;
+//    nFloatChars++;
+//    vACCEPT_CHAR();
+//  }
+  vCOLLECT_FLT_CHARS();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional fraction portion
   
   // collect digits for middle fraction
   if (bIS_DECIMAL_POINT()) {
-    *acFltDst++ = cCurChr;
-    nFloatChars++;
-    
-    vACCEPT_CHAR(); // skip '.'
-    
+//    *acFltDst++ = cCurChr;
+//    nFloatChars++;
+//    vACCEPT_CHAR(); // skip '.'
+    vCOLLECT_FLT_CHAR();
+
     while (nFloatChars < 128 && bIS_DIGIT()) {
       *acFltDst++ = cCurChr;
       nFloatChars++;
@@ -1446,15 +1454,17 @@ L_Float:
   // collect digits for trailing exponent
   if ('e' == cCurChr || 'E' == cCurChr) {
     
-    *acFltDst++ = cCurChr;
-    nFloatChars++;
-    vACCEPT_CHAR(); // skip 'e'
+//    *acFltDst++ = cCurChr;
+//    nFloatChars++;
+//    vACCEPT_CHAR(); // skip 'e'
+    vCOLLECT_FLT_CHAR();
 
     // test for +/-
     if (cCurChr == C_MINUS_SIGN || cCurChr == C_PLUS_SIGN) {
-      *acFltDst++ = cCurChr;
-      nFloatChars++;
-      vACCEPT_CHAR(); // skip sign
+//      *acFltDst++ = cCurChr;
+//      nFloatChars++;
+//      vACCEPT_CHAR(); // skip sign
+      vCOLLECT_FLT_CHAR();
     }
         
     // collect exponent digits
@@ -1654,7 +1664,7 @@ L_Interval:
   
 //  // collect digits for leading seconds
 //  for  (nWholeDigits = 0; bIS_DIGIT(); vACCEPT_CHAR()) {
-//    vCOLLECT(uSecondComponent);
+//    vCOLLECT_INT_DIGIT(uSecondComponent);
 //    nWholeDigits++;
 //  }
 //
@@ -1674,7 +1684,7 @@ L_Interval:
   if (bIS_DECIMAL_POINT()) {
     vACCEPT_CHAR(); // skip '.'
     for (nWholeDigits = 0; nMicrosecondShift > 1 && bIS_DIGIT(); vACCEPT_CHAR()) {
-      vCOLLECT(uMicrosecondComponent);
+      vCOLLECT_INT_DIGIT(uMicrosecondComponent);
       nWholeDigits++;
       nMicrosecondShift /= 10;
     }
@@ -1834,7 +1844,7 @@ L_Time:
 //    for (nMicrosecondShift = C_IVL_USEC_SHIFT;
 //         nMicrosecondShift > 1 && bIS_DIGIT();
 //         vACCEPT_CHAR()) {
-//      vCOLLECT(uMicrosecondComponent);
+//      vCOLLECT_INT_DIGIT(uMicrosecondComponent);
 //      nMicrosecondShift /= 10;
 //    }
 //
@@ -2143,7 +2153,7 @@ L_Timestamp_dateCollected:
 //    for (nMicrosecondShift = C_IVL_USEC_SHIFT;
 //         nMicrosecondShift > 1 && bIS_DIGIT();
 //         vACCEPT_CHAR()) {
-//      vCOLLECT(uMicrosecondComponent);
+//      vCOLLECT_INT_DIGIT(uMicrosecondComponent);
 //      nMicrosecondShift /= 10;
 //    }
 //
