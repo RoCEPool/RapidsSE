@@ -14,10 +14,28 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __pCastFunction(Parser,PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
-__aNewFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
-__vDeleteFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
+//__aNewFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
+//__vDeleteFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
 __aFooterFunction(PlanDefinitionParser)
 
+
+void* PlanDefinitionParser::operator new(size_t nSize)
+{
+  vTrace("PlanDefinitionParser::operator : nSize %lld ; sizeof() %lld\n"_Stz,
+         nSize,sizeof(PlanDefinitionParser));
+  
+  void* pObject = HeapMem::pAllocate(CN_PLANDEFINITIONPARSER);
+  
+  return pObject;
+}
+
+void PlanDefinitionParser::operator delete(void* aAddr)
+{
+  PlanDefinitionParser*
+    pObject = reinterpret_cast<PlanDefinitionParser*>(aAddr);
+
+  HeapMem::vFree(pObject);
+}
 
 /*----------------------------------------------------------------------------*/
 /* constants                                                                  */

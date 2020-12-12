@@ -192,85 +192,107 @@ void Record::vToRecord(RowSingle* pRowSingle)
     
     Column* pCol = pRowSingle->m_pStreamDef->pGetColumn(i_Col);
     eDM eDatum   = pCol->eDatum();
-   
+    i8 iScale    = pCol->iColumnScale();
+
     if (i_Col)
       StrLib::vAppendString(&m_azCursor,",");
     
-    if (pRowSingle->bIsColNull(i_Col)) {
-      StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
-      continue;
-    }
+     
+    vAppendCol(eDatum,iScale,i_Col,pRowSingle)
     
-    switch (eDatum) {
-      case DM_BCD: {
-        SP_Bcd spBcd;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spBcd.sz(pRowSingle->iColVal(i_Col)));
-        break;
-      }
-        
-      case DM_BOL: {
-        SP_Bol spBol;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spBol.sz(pRowSingle->iColVal(i_Col)));
-        break;
-      }
-        
-      case DM_DTE: {
-        SP_Dte spDte;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spDte.sz(pRowSingle->iColVal(i_Col)));
-        break;
-      }
-        
-      case DM_FLT: {
-        SP_Flt spFlt;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spFlt.sz(pRowSingle->dColVal(i_Col)));
-        break;
-      }
-        
-      case DM_INT: {
-        SP_Int spInt;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spInt.sz(pRowSingle->iColVal(i_Col)));
-        break;
-      }
-        
-      case DM_IVL: {
-        SP_Ivl spIvl;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spIvl.sz(pRowSingle->iColVal(i_Col)));
-        break;
-      }
-        
-      case DM_TME: {
-        SP_Tme spTme;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spTme.sz(pRowSingle->iColVal(i_Col)));
-        break;
-      }
-        
-      case DM_TSP: {
-        SP_Tsp spTsp;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spTsp.sz(pRowSingle->iColVal(i_Col)));
-        break;
-      }
-        
-      case DM_VCH: {
-        SP_Vch spVch;
-        StrLib::vAppendString(&m_azCursor,
-                              (char*)spVch.sz(pRowSingle->szColVal(i_Col)));
-        break;
-      }
-        
-      default:
-        NEVER_REACH;
-    }
   }
   
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vToRecord(RowSingle* pRowSingle)
+//{
+//  _precondition_(_MAGIC_,_FOOTER_);
+//
+//  vReset();
+//
+//  for (i8 i_Col = 0; i_Col < pRowSingle->m_nColumns; i_Col++) {
+//
+//    Column* pCol = pRowSingle->m_pStreamDef->pGetColumn(i_Col);
+//    eDM eDatum   = pCol->eDatum();
+//
+//    if (i_Col)
+//      StrLib::vAppendString(&m_azCursor,",");
+//
+//    if (pRowSingle->bIsColNull(i_Col)) {
+//      StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
+//      continue;
+//    }
+//
+//    switch (eDatum) {
+//      case DM_BCD: {
+//        SP_Bcd spBcd;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spBcd.sz(pRowSingle->iColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_BOL: {
+//        SP_Bol spBol;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spBol.sz(pRowSingle->iColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_DTE: {
+//        SP_Dte spDte;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spDte.sz(pRowSingle->iColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_FLT: {
+//        SP_Flt spFlt;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spFlt.sz(pRowSingle->dColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_INT: {
+//        SP_Int spInt;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spInt.sz(pRowSingle->iColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_IVL: {
+//        SP_Ivl spIvl;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spIvl.sz(pRowSingle->iColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_TME: {
+//        SP_Tme spTme;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spTme.sz(pRowSingle->iColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_TSP: {
+//        SP_Tsp spTsp;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spTsp.sz(pRowSingle->iColVal(i_Col)));
+//        break;
+//      }
+//
+//      case DM_VCH: {
+//        SP_Vch spVch;
+//        StrLib::vAppendString(&m_azCursor,
+//                              (char*)spVch.sz(pRowSingle->szColVal(i_Col)));
+//        break;
+//      }
+//
+//      default:
+//        NEVER_REACH;
+//    }
+//  }
+//
+//}
 
 
 
