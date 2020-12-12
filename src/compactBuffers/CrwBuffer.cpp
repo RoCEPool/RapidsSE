@@ -574,11 +574,11 @@ void CrwBuffer::vShowRow(i8 i_Row)
   RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCompactRow);
   
   // append the row to the record
-  hvRecord->vAppend(hvRowSingle);
+  hvRecord->vToRecord(hvRowSingle);
   
   i8 nOffset = nDifference(this,aCompactRow);
   
-  vTrace("row: %04x (%s)\n"_Stz,nOffset,hvRecord->szRecStr());
+  vTrace("row: %04x (%s)\n"_Stz,nOffset,hvRecord->sz());
   
   if (0 == i_Row)
     Crw::vDumpCrw("  "_Stz,aCompactRow,pStreamDef);
@@ -690,11 +690,11 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     vGetRow_single(hvRowSingle, i_Row);
     
     // append the row to the record
-    hvRecord->vAppend(hvRowSingle);
+    hvRecord->vToRecord(hvRowSingle);
     
-    StrLib::vConcat(hvRecord->szRecStr()->azChar(),'\n');           //! sub-optimal
+    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
     
-    nBytes = hvRecord->szRecStr()->nSize();
+    nBytes = hvRecord->sz()->nSize();
     
     if (pCsvBuffer->nFreeBytes() < nBytes + 1) {
       CsvBuffer* pNewCsvBuffer = new CsvBuffer;
@@ -703,7 +703,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     }
     
     szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(szRecord->azChar(),hvRecord->szRecStr()->azChar(),nBytes - 1);
+    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nBytes - 1);
   }
   
   if (szRecord)

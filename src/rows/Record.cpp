@@ -21,7 +21,7 @@ Record::Record(void)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azCursor   = azRecord();
+  m_azCursor   = az();
   m_pStreamDef = nullptr;
   m_iSubSet    = C_UNKNOWN;
 
@@ -45,7 +45,7 @@ Record::Record(StreamDef* pStreamDef, i8 iSubset)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azCursor   = azRecord();
+  m_azCursor   = az();
   m_pStreamDef = pStreamDef;
   m_iSubSet    = iSubset;
 
@@ -70,7 +70,7 @@ Record::Record(RowSingle* pRowSingle)
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   // set default enclosing char
-  m_azCursor   = azRecord();
+  m_azCursor   = az();
   m_pStreamDef = nullptr;
   m_iSubSet    = C_UNKNOWN;
   
@@ -103,23 +103,11 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return char* of result                                                     */
 /*----------------------------------------------------------------------------*/
-char* Record::azRecord(void)
+char* Record::az(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   return & m_caRecord[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset                                                                      */
-/*----------------------------------------------------------------------------*/
-void Record::vReset(void)
-{
-  _precondition_(_MAGIC_,CN_RECORD);
-  
-  m_caRecord[0] = '\0';
-  
-  m_azCursor = azRecord();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +115,7 @@ void Record::vReset(void)
 /*----------------------------------------------------------------------------*/
 Stz* Record::sz(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   return (Stz*) &m_caRecord[0];
 }
@@ -137,7 +125,7 @@ Stz* Record::sz(void)
 /*----------------------------------------------------------------------------*/
 Stz* Record::sz(Row* aRow)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 
   vReset();
 
@@ -171,7 +159,7 @@ Stz* Record::sz(Row* aRow)
 /*----------------------------------------------------------------------------*/
 Stz* Record::sz(RowSingle* pRowSingle)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 
   vToRecord(pRowSingle);
   
@@ -184,7 +172,7 @@ Stz* Record::sz(RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 void Record::vToRecord(RowSingle* pRowSingle)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   vReset();
 
@@ -203,166 +191,10 @@ void Record::vToRecord(RowSingle* pRowSingle)
   }
   
 }
-/*----------------------------------------------------------------------------*/
-//void Record::vToRecord(RowSingle* pRowSingle)
-//{
-//  _precondition_(_MAGIC_,_FOOTER_);
-//
-//  vReset();
-//
-//  for (i8 i_Col = 0; i_Col < pRowSingle->m_nColumns; i_Col++) {
-//
-//    Column* pCol = pRowSingle->m_pStreamDef->pGetColumn(i_Col);
-//    eDM eDatum   = pCol->eDatum();
-//
-//    if (i_Col)
-//      StrLib::vAppendString(&m_azCursor,",");
-//
-//    if (pRowSingle->bIsColNull(i_Col)) {
-//      StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
-//      continue;
-//    }
-//
-//    switch (eDatum) {
-//      case DM_BCD: {
-//        SP_Bcd spBcd;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spBcd.sz(pRowSingle->iColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_BOL: {
-//        SP_Bol spBol;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spBol.sz(pRowSingle->iColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_DTE: {
-//        SP_Dte spDte;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spDte.sz(pRowSingle->iColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_FLT: {
-//        SP_Flt spFlt;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spFlt.sz(pRowSingle->dColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_INT: {
-//        SP_Int spInt;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spInt.sz(pRowSingle->iColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_IVL: {
-//        SP_Ivl spIvl;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spIvl.sz(pRowSingle->iColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_TME: {
-//        SP_Tme spTme;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spTme.sz(pRowSingle->iColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_TSP: {
-//        SP_Tsp spTsp;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spTsp.sz(pRowSingle->iColVal(i_Col)));
-//        break;
-//      }
-//
-//      case DM_VCH: {
-//        SP_Vch spVch;
-//        StrLib::vAppendString(&m_azCursor,
-//                              (char*)spVch.sz(pRowSingle->szColVal(i_Col)));
-//        break;
-//      }
-//
-//      default:
-//        NEVER_REACH;
-//    }
-//  }
-//
-//}
 
 
 
 
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* decode and sprint row into record                                          */
-/*----------------------------------------------------------------------------*/
-void Record::vAppend(RowSingle* pRowSingle)
-{
-  vToRecord(pRowSingle);
-
-//  vReset();
-//
-//  if (m_iSubSet == C_ALL) {
-//
-//    for (i8 i_DefSet = 0; i_DefSet < m_pStreamDef->m_nDefSets; i_DefSet++) {
-//
-//      // get no of columns in this stream def
-//      i8 nColumns = m_pStreamDef->m_nDefColumns[i_DefSet];
-//
-//      // get start of stream def columns
-//      i8 iDefStart = m_pStreamDef->m_i_DefStart[i_DefSet];
-//
-//      // for each column
-//      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-//
-//        // get the column at index
-//        Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
-//        eDM eDatum = pCol->eDatum();
-//        i8 iScale = pCol->iColumnScale();
-//
-//        // comma separate column values
-//        if (i_Col)
-//          StrLib::vAppendString(&m_azCursor,",");
-//
-//        vAppendCol(eDatum,iScale,i_Col,pRow);
-//        //vTrace("%s\n"_Stz,szRecStr());
-//
-//      }
-//    }
-//  }
-//  else {
-//    // get no of columns in this stream def
-//     i8 nColumns = m_pStreamDef->m_nDefColumns[m_iSubSet];
-//
-//     // get start of stream def columns
-//     i8 iDefStart = m_pStreamDef->m_i_DefStart[m_iSubSet];
-//
-//     // for each column
-//     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-//
-//       // get the column at index
-//       Column* pCol = &m_pStreamDef->m_xaColumn[i_Col + iDefStart];
-//       eDM eDatum = pCol->eDatum();
-//       i8 iScale = pCol->iColumnScale();
-//
-//       // comma separate column values
-//       if (i_Col)
-//         StrLib::vAppendString(&m_azCursor,",");
-//
-//       //! ALKA: Revert once Column not newable
-//       // append column value
-//       vAppendCol(eDatum,iScale,i_Col,pRow);
-//     }
-//   }
-}
 
 /*----------------------------------------------------------------------------*/
 /* print record string as csv,...                                              */
@@ -371,7 +203,7 @@ void Record::vPrintAsCsv(void)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
-  vTrace("%s"_Stz,azRecord());
+  vTrace("%s"_Stz,az());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,28 +213,9 @@ void Record::vPrintAsRow(void)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
-  vTrace("row: (%s)\n"_Stz,azRecord());
+  vTrace("row: (%s)\n"_Stz,az());
 }
 
-/*----------------------------------------------------------------------------*/
-/* get record string                                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Record::szRecStr(void)
-{
-  _precondition_(_MAGIC_,CN_RECORD);
-  
-  return sz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set record string                                                          */
-/*----------------------------------------------------------------------------*/
-void Record::vRecStr(Stz* szStr)
-{
-  _precondition_(_MAGIC_,CN_RECORD);
-  
-  StrLib::vCopy(m_caRecord,(char*)szStr);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -413,7 +226,7 @@ void Record::vRecStr(Stz* szStr)
 /*----------------------------------------------------------------------------*/
 void Record::vAddCol_col(eDM eDatum, i8 iScale, i8 iVal)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   if (C_DATUM_NULL == iVal) {
     StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
@@ -629,6 +442,18 @@ void Record::vAppendVch(Datum* pDatum)
   SP_Vch spVch;
   StrLib::vAppendString(&m_azCursor,
                         (char*)spVch.sz(pDatum->azChar()));
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void Record::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_RECORD);
+  
+  m_caRecord[0] = '\0';
+  
+  m_azCursor = az();
 }
 
 /*============================================================================*/

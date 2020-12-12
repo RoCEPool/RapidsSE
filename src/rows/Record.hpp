@@ -27,23 +27,15 @@ namespace Rows
    ~Record(void) noexcept(false);
   
   
-    char* azRecord(void);
-    void vReset(void);
+    char* az(void);
     Stz* sz(void);
     Stz* sz(Row* pRow);
     Stz* sz(RowSingle* pRowSingle);
   
     void vToRecord(RowSingle* pRowSingle);
   
-    // from Record
-  
-    void vAppend(RowSingle* pRow);
-
     void vPrintAsCsv(void);
     void vPrintAsRow(void);
-
-    void vRecStr(Stz* szRecStr);
-    Stz* szRecStr(void);
 
   private:
     void vAddCol_col(eDM eDatum, i8 iScale, i8 iVal);
@@ -59,6 +51,8 @@ namespace Rows
     void vAppendTme(Datum* pDatum);
     void vAppendTsp(Datum* pDatum);
     void vAppendVch(Datum* pDatum);
+
+    void vReset(void);
 
     Footer* aFooter(void);
   };
