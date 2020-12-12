@@ -52,7 +52,7 @@ Stz* SP_Crw::sz(Crw* aCrw, StreamDef* pStreamDef)
 {
   _precondition_(_MAGIC_,_FOOTER_)
   
-  HV_Row hvRow(pStreamDef,C_ALL);
+  HV_RowSingle hvRow(pStreamDef,C_ALL);
   
   CrwBuffer::vToRow(hvRow,aCrw);
   

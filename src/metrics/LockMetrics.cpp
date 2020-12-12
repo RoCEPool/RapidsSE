@@ -26,7 +26,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
   InfoSet* pInfoSet = new InfoSet(pStreamDef);
   pInfoSet->vInfoSetNm(C_TDEF_LOCKSTATS);
 
-  HV_Row hvRowSingle(pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
 
   for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
 
