@@ -474,21 +474,21 @@ void Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
   eDM eDatum = pCol->eDatum();
   
   switch (eDatum) {
-    case DM_BCD: vAppendBcd(pCol,&oDatum); break;
-    case DM_BOL: vAppendBol(pCol,&oDatum); break;
-    case DM_DTE: vAppendDte(pCol,&oDatum); break;
-    case DM_FLT: vAppendFlt(pCol,&oDatum); break;
-    case DM_INT: vAppendInt(pCol,&oDatum); break;
-    case DM_IVL: vAppendIvl(pCol,&oDatum); break;
-    case DM_TME: vAppendTme(pCol,&oDatum); break;
-    case DM_TSP: vAppendTsp(pCol,&oDatum); break;
+    case DM_BCD: vAppendBcd(&oDatum,pCol->iColumnScale()); break;
+    case DM_BOL: vAppendBol(&oDatum); break;
+    case DM_DTE: vAppendDte(&oDatum); break;
+    case DM_FLT: vAppendFlt(&oDatum); break;
+    case DM_INT: vAppendInt(&oDatum); break;
+    case DM_IVL: vAppendIvl(&oDatum); break;
+    case DM_TME: vAppendTme(&oDatum); break;
+    case DM_TSP: vAppendTsp(&oDatum); break;
       
     case DM_VCH:
       //vTrace("DM_VCH: %s\n"_Stz,pRowSingle->szColVal(i_Col));
       oDatum.vStz(pRowSingle->szColVal(i_Col));
       //oDatum.vStzDump();
       
-      vAppendVch(pCol,&oDatum);
+      vAppendVch(&oDatum);
       break;
       
     default:
@@ -497,137 +497,113 @@ void Record::vAppendCol(Column* pCol, RowSingle* pRowSingle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append ascii of datum to record                                            */
-/*----------------------------------------------------------------------------*/
-void Record::vAppendDtm(Column* pCol, Datum* pDatum)
-{
-  if (pDatum->bIsNull()) {
-    StrLib::vAppendString(&m_azCursor,"null");
-    return;
-  }
-  
-  eDM eDatum = pCol->eDatum();
-  
-  switch (eDatum) {
-    case DM_BCD: vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: vAppendBol(pCol,pDatum); break;
-    case DM_DTE: vAppendDte(pCol,pDatum); break;
-    case DM_FLT: vAppendFlt(pCol,pDatum); break;
-    case DM_INT: vAppendInt(pCol,pDatum); break;
-    case DM_IVL: vAppendIvl(pCol,pDatum); break;
-    case DM_TME: vAppendTme(pCol,pDatum); break;
-    case DM_TSP: vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: vAppendVch(pCol,pDatum); break;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* append ascii of decimal datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBcd(Column* pCol, Datum* pDatum)
+void Record::vAppendBcd(Datum* pDatum, i8 iScale)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Bcd spBcd;
   
-  StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(pDatum->iBcd(), pCol->iColumnScale()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spBcd.sz(pDatum->iBcd(),iScale));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of boolean datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBol(Column* pCol, Datum* pDatum)
+void Record::vAppendBol(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Bol spBol;
   
-  StrLib::vAppendString(&m_azCursor,(char*)spBol.sz(pDatum->iBol()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spBol.sz(pDatum->iBol()));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of date datum to record                                       */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendDte(Column* pCol, Datum* pDatum)
+void Record::vAppendDte(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Dte spDte;
-  
-  StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(pDatum->iDte()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spDte.sz(pDatum->iDte()));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of float datum to record                                      */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendFlt(Column* pCol, Datum* pDatum)
+void Record::vAppendFlt(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Flt spFlt;
-  StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(pDatum->dFlt()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spFlt.sz(pDatum->dFlt()));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of integer datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendInt(Column* pCol, Datum* pDatum)
+void Record::vAppendInt(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Int spInt;
-  
-  StrLib::vAppendString(&m_azCursor,(char*)spInt.sz(pDatum->iInt()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spInt.sz(pDatum->iInt()));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of interval datum to record                                   */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendIvl(Column* pCol, Datum* pDatum)
+void Record::vAppendIvl(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Ivl spIvl;
-  
-  StrLib::vAppendString(&m_azCursor,(char*)spIvl.sz(pDatum->iIvl()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spIvl.sz(pDatum->iIvl()));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of time datum to record                                       */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTme(Column* pCol, Datum* pDatum)
+void Record::vAppendTme(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Tme spTme;
-  
-  StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(pDatum->iTme()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spTme.sz(pDatum->iTme()));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of timestamp datum to record                                  */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTsp(Column* pCol, Datum* pDatum)
+void Record::vAppendTsp(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Tsp spTsp;
-  
-  StrLib::vAppendString(&m_azCursor,(char*)spTsp.sz(pDatum->iTsp()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spTsp.sz(pDatum->iTsp()));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of varchar datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendVch(Column* pCol, Datum* pDatum)
+void Record::vAppendVch(Datum* pDatum)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   SP_Vch spVch;
-  
-  StrLib::vAppendString(&m_azCursor,(char*)spVch.sz(pDatum->azChar()));
+  StrLib::vAppendString(&m_azCursor,
+                        (char*)spVch.sz(pDatum->azChar()));
 }
 
 /*============================================================================*/

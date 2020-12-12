@@ -49,16 +49,16 @@ namespace Rows
     void vAddCol_col(Column* pCol, i8 iVal);
 
     void vAppendCol(Column* pCol, RowSingle* pRow);
-    void vAppendDtm(Column* pCol, Datum* pDatum);
-    void vAppendBcd(Column* pCol, Datum* pDatum);
-    void vAppendBol(Column* pCol, Datum* pDatum);
-    void vAppendDte(Column* pCol, Datum* pDatum);
-    void vAppendFlt(Column* pCol, Datum* pDatum);
-    void vAppendInt(Column* pCol, Datum* pDatum);
-    void vAppendIvl(Column* pCol, Datum* pDatum);
-    void vAppendTme(Column* pCol, Datum* pDatum);
-    void vAppendTsp(Column* pCol, Datum* pDatum);
-    void vAppendVch(Column* pCol, Datum* pDatum);
+  
+    void vAppendBcd(Datum* pDatum, i8 iScale);
+    void vAppendBol(Datum* pDatum);
+    void vAppendDte(Datum* pDatum);
+    void vAppendFlt(Datum* pDatum);
+    void vAppendInt(Datum* pDatum);
+    void vAppendIvl(Datum* pDatum);
+    void vAppendTme(Datum* pDatum);
+    void vAppendTsp(Datum* pDatum);
+    void vAppendVch(Datum* pDatum);
 
     Footer* aFooter(void);
   };
