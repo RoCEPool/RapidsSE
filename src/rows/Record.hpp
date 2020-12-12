@@ -46,7 +46,7 @@ namespace Rows
     Stz* szRecStr(void);
 
   private:
-    void vAddCol_col(Column* pCol, i8 iVal);
+    void vAddCol_col(Column* pCol, eDM eDatum, i8 iScale, i8 iVal);
 
     void vAppendCol(Column* pCol, RowSingle* pRow);
   

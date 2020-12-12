@@ -150,15 +150,16 @@ Stz* Record::sz(Row* aRow)
     if (DM_VCH == pCol->eDatum()) {
       
       if (aRow->bIsColNull(i_Col)) {
-        vAddCol_col(pCol, C_DATUM_NULL);
+        vAddCol_col(pCol,pCol->eDatum(),pCol->iColumnScale(),C_DATUM_NULL);
         continue;
       }
       
       Stz* acSrcString = aRow->szColVal_ofs(i_Col);
-      vAddCol_col(pCol, (i8)acSrcString);
+      vAddCol_col(pCol,pCol->eDatum(),pCol->iColumnScale(),(i8)acSrcString);
       continue;
     }
-    vAddCol_col(pCol, aRow->iColVal_int(i_Col));
+    vAddCol_col(pCol,pCol->eDatum(),pCol->iColumnScale(),
+                aRow->iColVal_int(i_Col));
   }
   
   return (Stz*) &m_caRecord[0];
@@ -382,7 +383,7 @@ void Record::vRecStr(Stz* szStr)
 /*----------------------------------------------------------------------------*/
 /* add a value                                                                */
 /*----------------------------------------------------------------------------*/
-void Record::vAddCol_col(Column* pCol, i8 iVal)
+void Record::vAddCol_col(Column* pCol, eDM eDatum, i8 iScale, i8 iVal)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -390,9 +391,7 @@ void Record::vAddCol_col(Column* pCol, i8 iVal)
     StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
     return;
   }
-  
-  eDM eDatum = pCol->eDatum();
-  
+    
   switch (eDatum) {
     case DM_BCD: {
       SP_Bcd spBcd;
