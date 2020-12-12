@@ -156,7 +156,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Record hvRecord(pStreamDef,C_ALL);
+  HV_Record hvRecord(pStreamDef,C_ALL);
   
   // NOTE: We need to print only nItem no of rows
   // as the limitOp may have truncated the rows via setting the nItems()
@@ -167,8 +167,8 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
     hvRowSingle->vCopyRow(pRow);
-    hvRecord.vAppend(hvRowSingle);
-    hvRecord.vPrintAsRow();
+    hvRecord->vAppend(hvRowSingle);
+    hvRecord->vPrintAsRow();
     
     // get the next row
     pRow = aNextRow(pRow);
@@ -195,12 +195,12 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   Row* pRow = aFirstRow();
   HV_RowSingle hvRowSingle(pStreamDef, C_ALL);
   
-  Record hvRecord(pStreamDef,C_ALL);
+  HV_Record hvRecord(pStreamDef,C_ALL);
   while (pRow) {
     hvRowSingle->vCopyRow(pRow);
-    hvRecord.vAppend(hvRowSingle);
+    hvRecord->vAppend(hvRowSingle);
     pRow = aNextRow(pRow);
-    hvRecord.vPrintAsRow();
+    hvRecord->vPrintAsRow();
   }
   
   vTrace("--------------------------------------------------"

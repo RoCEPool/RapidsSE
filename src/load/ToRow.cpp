@@ -749,14 +749,14 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) test more records in csv chunk
+  // 1) advance to next record in csv chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_TestMoreRecords:
+L_AdvanceNextRecord:
     
   m_pRowBuffer->nFreeBytes();
   
   if (iTraceBits & C_BIT_TestMoreRecords)
-    vTrace("\nL_TestMoreRecords: >>%s<<\n"_Stz,
+    vTrace("\nL_AdvanceNextRecord: >>%s<<\n"_Stz,
            spCsv.szInspect(azCsvCrs,128,true));
   
   /*
@@ -837,7 +837,7 @@ L_TestMoreRecords:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) while more fields of current record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_TestMoreFields:
+L_NextFieldInRecord:
   
   m_pRowBuffer->nFreeBytes();
   
@@ -846,7 +846,7 @@ L_TestMoreFields:
   // all fields for current record processed?
   if (++i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
-      vTrace("L_TestMoreFields: end-of-fields\n"_Stz);
+      vTrace("L_NextFieldInRecord: end-of-fields\n"_Stz);
     goto L_RecordEndLineEnd;
   }
   
@@ -882,7 +882,7 @@ L_TestMoreFields:
   //pCol = m_pStreamDef->pGetColumn(i_Fld);
 
   if (iTraceBits & C_BIT_TestMoreFields) {
-    vTrace("L_TestMoreFields: err %lld rec %lld fld %lld %s "
+    vTrace("L_NextFieldInRecord: err %lld rec %lld fld %lld %s "
            "prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
            
            m_nErrors,m_i_Rec,i_Fld,aDM[ePixDatum],
@@ -1675,9 +1675,9 @@ L_Interval:
 //    vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
   
   // must have a leading digit??
-  vNUMBER(uWholeNumber,9,
-                       EC_CSV_INTERVAL_INVALID,
-                       EC_CSV_INTERVAL_SECS_TOO_LARGE);
+  vNUMBER(uSecondComponent,9,
+                           EC_CSV_INTERVAL_INVALID,
+                           EC_CSV_INTERVAL_SECS_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microseconds component
@@ -2759,7 +2759,7 @@ L_FieldEnd:
     vACCEPT_CHAR(); // accept field delimiter
   
   // move to next field
-  goto L_TestMoreFields;                                     // end of postField
+  goto L_NextFieldInRecord;                                  // end of postField
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2854,7 +2854,7 @@ L_FieldError:
   // discard partial row in row slab
   m_pRowBuffer->vDiscardInvalidRow();
 
-  goto L_TestMoreRecords;                                   // end of fieldError
+  goto L_AdvanceNextRecord;                                   // end of fieldError
   
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2911,7 +2911,7 @@ L_RecordEndLineEnd:
   AM::vIncRowsProcessed(m_pPipelineJob);
 
   
-  goto L_TestMoreRecords;                                    // end of endRecord
+  goto L_AdvanceNextRecord;                                  // end of endRecord
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
