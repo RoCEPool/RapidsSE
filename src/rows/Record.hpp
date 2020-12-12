@@ -26,8 +26,28 @@ namespace Rows
     Record(RowSingle* pRowSingle);
    ~Record(void) noexcept(false);
   
-    void vAddCol(Column* pCol, i8 iVal);
   
+    char* azRecord(void);
+    void vReset(void);
+    Stz* sz(void);
+    Stz* sz(Row* pRow);
+    Stz* sz(RowSingle* pRowSingle);
+  
+    void vToRecord(RowSingle* pRowSingle);
+  
+    // from Record
+  
+    void vAppend(RowSingle* pRow);
+
+    void vPrintAsCsv(void);
+    void vPrintAsRow(void);
+
+    void vRecStr(Stz* szRecStr);
+    Stz* szRecStr(void);
+
+  private:
+    void vAddCol_col(Column* pCol, i8 iVal);
+
     void vAppendCol(Column* pCol, RowSingle* pRow);
     void vAppendDtm(Column* pCol, Datum* pDatum);
     void vAppendBcd(Column* pCol, Datum* pDatum);
@@ -39,24 +59,6 @@ namespace Rows
     void vAppendTme(Column* pCol, Datum* pDatum);
     void vAppendTsp(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
-  
-    char* azRecord(void);
-    void vReset(void);
-    Stz* sz(void);
-    Stz* sz(Row* pRow);
-    Stz* sz(RowSingle* pRowSingle);
-  
-    void vToRecord(RowSingle* pRow);
-  
-    // from Record
-  
-    void vAppend(RowSingle* pRow);
-
-    void vPrintAsCsv(void);
-    void vPrintAsRow(void);
-
-    void vRecStr(Stz* szRecStr);
-    Stz* szRecStr(void);
 
     Footer* aFooter(void);
   };

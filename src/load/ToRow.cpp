@@ -676,8 +676,6 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char cCurChr = *azCsvCrs++;
   char cNxtChr = *azCsvCrs;
 
-  Row* aRow = nullptr;
-
   i8 iBucketId = 0;
   i8 i_Fld = 0;
   i8 iPtnKeyHash = 0;
@@ -2904,7 +2902,9 @@ L_RecordEndLineEnd:
   if (iTraceBits & C_BIT_EndRecord) {
     SP_RowPix spRowPix(nCols,aColPix);
     vTrace("[%lld : %lld] %s\n"_Stz,
-           m_i_Rec,m_bPtnHash ? tPtnNo : C_UNKNOWN,spRowPix.sz(aRow));
+           m_i_Rec,
+           m_bPtnHash ? tPtnNo : C_UNKNOWN,
+           spRowPix.sz(m_pRowBuffer->pRowCurrent()));
   }
 
   // increment records processed
