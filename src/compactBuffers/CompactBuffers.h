@@ -61,7 +61,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 #include "Lrw.hpp"
 #include "LrwBuffer.hpp"
 
-#include "SP_Crw.hpp"
 #include "SP_Encoding_v2.hpp"
 
 /*============================================================================*/
