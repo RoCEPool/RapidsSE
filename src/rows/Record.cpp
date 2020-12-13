@@ -146,6 +146,7 @@ Stz* Record::sz(Row* aRow)
       vAddCol_col(pCol->eDatum(),pCol->iColumnScale(),(i8)acSrcString);
       continue;
     }
+    
     vAddCol_col(pCol->eDatum(),pCol->iColumnScale(),
                 aRow->iColVal_int(i_Col));
   }
@@ -176,19 +177,21 @@ void Record::vToRecord(RowSingle* pRowSingle)
   
   vReset();
 
-  for (i8 i_Col = 0; i_Col < pRowSingle->m_nColumns; i_Col++) {
-    
-    Column* pCol = pRowSingle->m_pStreamDef->pGetColumn(i_Col);
-    eDM eDatum   = pCol->eDatum();
-    i8 iScale    = pCol->iColumnScale();
-
-    if (i_Col)
-      StrLib::vAppendString(&m_azCursor,",");
-    
-     
-    vAppendCol(eDatum,iScale,i_Col,pRowSingle);
-    
-  }
+  sz(pRowSingle->pRowCurrent());
+  
+//  for (i8 i_Col = 0; i_Col < pRowSingle->m_nColumns; i_Col++) {
+//
+//    Column* pCol = pRowSingle->m_pStreamDef->pGetColumn(i_Col);
+//    eDM eDatum   = pCol->eDatum();
+//    i8 iScale    = pCol->iColumnScale();
+//
+//    if (i_Col)
+//      StrLib::vAppendString(&m_azCursor,",");
+//
+//
+//    vAppendCol(eDatum,iScale,i_Col,pRowSingle);
+//
+//  }
   
 }
 
@@ -236,7 +239,7 @@ void Record::vAddCol_col(eDM eDatum, i8 iScale, i8 iVal)
   switch (eDatum) {
     case DM_BCD: {
       SP_Bcd spBcd;
-      StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal));                 // FIX
+      StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal,iScale));                 // FIX
       break;
     }
       
