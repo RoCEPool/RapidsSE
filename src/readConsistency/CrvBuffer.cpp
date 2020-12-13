@@ -151,7 +151,7 @@ void CrvBuffer::vDumpAllCrv(void)
     
   
   HV_RowSingle hvRowSingle(m_pStreamDef,C_ALL);
-  Record spRec;
+  Record spRec(m_pStreamDef,C_ALL);
 
   for (i8 i_Crv = 0; i_Crv < m_nCrv; i_Crv++) {
     

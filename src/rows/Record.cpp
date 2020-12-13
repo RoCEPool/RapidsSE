@@ -64,29 +64,29 @@ Record::Record(StreamDef* pStreamDef, i8 iSubset)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Record::Record(RowSingle* pRowSingle)
-: Object(CN_RECORD)
-{
-  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-  
-  // set default enclosing char
-  m_azCursor   = az();
-  m_pStreamDef = nullptr;
-  m_iSubSet    = C_UNKNOWN;
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
-#else
-  m_caRecord[0] = '\0';
-#endif
-  
-  //! FIX RAY
-  //_checkInitialised_(CN_RECORD);
-  
-  vToRecord(pRowSingle);
-  
-  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-}
+//Record::Record(RowSingle* pRowSingle)
+//: Object(CN_RECORD)
+//{
+//  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  // set default enclosing char
+//  m_azCursor   = az();
+//  m_pStreamDef = nullptr;
+//  m_iSubSet    = C_UNKNOWN;
+//
+//#ifdef WITH_CHECK_INITIALISED
+//  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
+//#else
+//  m_caRecord[0] = '\0';
+//#endif
+//
+//  //! FIX RAY
+//  //_checkInitialised_(CN_RECORD);
+//
+//  vToRecord(pRowSingle);
+//
+//  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

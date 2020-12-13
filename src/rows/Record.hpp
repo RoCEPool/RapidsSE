@@ -23,7 +23,7 @@ namespace Rows
   
     Record(void);
     Record(StreamDef* pStreamDef, i8 iSubSet);
-    Record(RowSingle* pRowSingle);
+//    Record(RowSingle* pRowSingle);
    ~Record(void) noexcept(false);
   
   
