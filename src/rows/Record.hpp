@@ -30,7 +30,6 @@ namespace Rows
     char* az(void);
     Stz* sz(void);
     Stz* sz(Row* pRow);
-    Stz* sz(RowSingle* pRowSingle);
   
     void vToRecord(RowSingle* pRowSingle);
   

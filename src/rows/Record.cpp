@@ -132,20 +132,6 @@ Stz* Record::sz(Row* aRow)
   return (Stz*) &m_caRecord[0];
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* sprint Vch and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* Record::sz(RowSingle* pRowSingle)
-{
-  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-
-  vToRecord(pRowSingle);
-  
-  return (Stz*) &m_caRecord[0];
-}
-
-
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
@@ -153,8 +139,6 @@ void Record::vToRecord(RowSingle* pRowSingle)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  vReset();
-
   sz(pRowSingle->pRowCurrent());
 }
 
