@@ -38,20 +38,8 @@ namespace Rows
     void vPrintAsRow(void);
 
   private:
-    void vAddCol_col(eDM eDatum, i8 iScale, i8 iVal);
-
-    void vAppendCol(eDM eDatum, i8 iScale, i8 i_Col,
-                    RowSingle* pRow);
-  
-    void vAppendBcd(Datum* pDatum, i8 iScale);
-    void vAppendBol(Datum* pDatum);
-    void vAppendDte(Datum* pDatum);
-    void vAppendFlt(Datum* pDatum);
-    void vAppendInt(Datum* pDatum);
-    void vAppendIvl(Datum* pDatum);
-    void vAppendTme(Datum* pDatum);
-    void vAppendTsp(Datum* pDatum);
-    void vAppendVch(Datum* pDatum);
+    void vAddRow(Row* aRow);
+    void vAddColVal(eDM eDatum, i8 iScale, i8 iColVal);
 
     void vReset(void);
 
