@@ -199,7 +199,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Pipeline),           HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINE
   { sizeof(PipelineSpec),       HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINESPEC
   { sizeof(Plan),               HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLAN
-  { sizeof(PlanDefinitionParser),HT_TRANSIENT_MEDIUM ,0 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlanDefinitionParser),HT_TRANSIENT_MEDIUM ,-8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(Planner),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLANNER
   { sizeof(PlanNode),           HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODE
   { sizeof(Pot),                HT_TRANSIENT_LARGE   ,0 }, // CN_POT

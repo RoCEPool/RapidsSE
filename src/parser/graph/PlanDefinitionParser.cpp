@@ -26,6 +26,11 @@ void* PlanDefinitionParser::operator new(size_t nSize)
   
   void* pObject = HeapMem::pAllocate(CN_PLANDEFINITIONPARSER);
   
+  vTrace("\n\n-- new() -- pObject %p\n\n"_Stz,pObject);
+  void* aMem = aAdd<void*>(pObject, - 64);
+  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
+  MemLib::vHexDump(aMem,nBytes);
+  
   return pObject;
 }
 
@@ -33,6 +38,11 @@ void PlanDefinitionParser::operator delete(void* aAddr)
 {
   PlanDefinitionParser*
     pObject = reinterpret_cast<PlanDefinitionParser*>(aAddr);
+
+  vTrace("\n\n-- delete() -- pObject %p\n\n"_Stz,pObject);
+  void* aMem = aAdd<void*>(pObject, - 64);
+  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
+  MemLib::vHexDump(aMem,nBytes);
 
   HeapMem::vFree(pObject);
 }
@@ -52,6 +62,12 @@ Stz* PlanDefinitionParser::definitionPaths[] = {
 PlanDefinitionParser::PlanDefinitionParser(void)
 : Object(CN_PLANDEFINITIONPARSER)
 {
+  vTrace("\n\n-- ::PlanDefinitionParser() -- this %p\n\n"_Stz,this);
+  void* aMem = aAdd<void*>(this, - 64);
+  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
+  MemLib::vHexDump(aMem,nBytes);
+
+
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
   
   _checkInitialised_(CN_PLANDEFINITIONPARSER);
@@ -64,6 +80,11 @@ PlanDefinitionParser::PlanDefinitionParser(void)
 /*----------------------------------------------------------------------------*/
 PlanDefinitionParser::~PlanDefinitionParser(void) noexcept
 {
+  vTrace("\n\n-- ~PlanDefinitionParser() -- this %p\n\n"_Stz,this);
+  void* aMem = aAdd<void*>(this, - 64);
+  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
+  MemLib::vHexDump(aMem,nBytes);
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
    
 

@@ -28,6 +28,12 @@ bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
 
   PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
   
+  vTrace("\n\n-- ~bPrompt_antlr() -- pPlanDefinitionParser %p\n\n"_Stz,
+         pPlanDefinitionParser);
+  void* aMem = aAdd<void*>(pPlanDefinitionParser, - 64);
+  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
+  MemLib::vHexDump(aMem,nBytes);
+
   //PlanNode* root = pPlanDefinitionParser->parse();
 
   delete pPlanDefinitionParser;
