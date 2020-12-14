@@ -23,6 +23,8 @@ Record::Record(StreamDef* pStreamDef)
   
   m_azCursor   = az();
   m_pStreamDef = pStreamDef;
+  
+  m_pStreamDef->vToRowPix(&m_oRowPix,false);
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
@@ -128,22 +130,25 @@ void Record::vAddRow(Row* aRow)
   for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
 
+    eDM eDatum = pCol->eDatum();
+    i8  iScale = pCol->iColumnScale();
+
     if (i_Col)
       StrLib::vAppendString(&m_azCursor,",");
 
     if (DM_VCH == pCol->eDatum()) {
       
       if (aRow->bIsColNull(i_Col)) {
-        vAppendCsvVal(pCol->eDatum(),pCol->iColumnScale(),C_DATUM_NULL);
+        vAppendCsvVal(eDatum,iScale,C_DATUM_NULL);
         continue;
       }
       
       Stz* acSrcString = aRow->szColVal_ofs(i_Col);
-      vAppendCsvVal(pCol->eDatum(),pCol->iColumnScale(),(i8)acSrcString);
+      vAppendCsvVal(eDatum,iScale,(i8)acSrcString);
       continue;
     }
     
-    vAppendCsvVal(pCol->eDatum(),pCol->iColumnScale(),aRow->iColVal_int(i_Col));
+    vAppendCsvVal(eDatum,iScale,aRow->iColVal_int(i_Col));
   }
 }
 

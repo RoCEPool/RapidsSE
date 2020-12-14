@@ -10,6 +10,8 @@ namespace Rows
   public:
     StreamDef* m_pStreamDef;  // stream def
  
+    RowPix     m_oRowPix;
+
     char       m_caRecord[C_MAX_RECORD];
     char*      m_azCursor;    // append cursor for StrLib::vAppend()
 

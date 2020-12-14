@@ -124,7 +124,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRowBuffer) {
     pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyPix(m_pRowPix);
+    pDstRowBuffer->vCopyRowPix(m_pRowPix);
     vAddBuffer(i_Ptn,pDstRowBuffer);
   }
   
@@ -133,7 +133,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   if (! aDstRow) {
     *pbNewBuffer = true;
     pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyPix(m_pRowPix);
+    pDstRowBuffer->vCopyRowPix(m_pRowPix);
     vAddBuffer(i_Ptn,pDstRowBuffer);
     aDstRow = pDstRowBuffer->aAllotNewRow();
     ASSERT(aDstRow);

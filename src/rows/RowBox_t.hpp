@@ -51,7 +51,7 @@ namespace Rows
     i8   nColumns(void);
     ColPix* axaColPix(void);
     i8    iColumn(Row* aRow, i8 iColumn);
-    void  vCopyPix(RowPix* pRowPixSrc);
+    void  vCopyRowPix(RowPix* pRowPixSrc);
     void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
 
     Dtm* aColDtm(i8 i_Col);
@@ -265,7 +265,7 @@ ColPix* RowBox_t<SIZE>::axaColPix(void)
 /* copy given stream pix into the stream pix in this row                      */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
-void RowBox_t<SIZE>::vCopyPix(RowPix* pRowPixSrc)
+void RowBox_t<SIZE>::vCopyRowPix(RowPix* pRowPixSrc)
 {
   MemLib::vCopy(&m_oRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
