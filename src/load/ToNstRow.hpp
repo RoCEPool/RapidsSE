@@ -23,9 +23,6 @@ namespace Load
   
   private:
   
-    void vAnalyzeStrings(RowBuffer* pRowBuffer);
-    void vCreateNmlStr(Stz* szStz);
-
     Footer* aFooter(void);
   };
 

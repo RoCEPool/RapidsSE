@@ -13,7 +13,7 @@ namespace Rows
   friend class DataBuffers::RowBuffer;
 
   private:
-    Dtm m_waColVal[1];
+    Dtm m_wxaColumnCell[1];
     
   public:
     void* operator new(size_t);
@@ -48,21 +48,6 @@ namespace Rows
 
     void vSetColNull(i8 i_Col);
   
-  public:
-
-  /*----------------------------------------------------------------------------*/
-  /* get Stz* string                                                            */
-  /*----------------------------------------------------------------------------*/
-  inline Stz* szVal_rsb(i8 i_Col)
-  {
-    ASSERT(i_Col >= 0);
-
-    i8 i_Ofs = iColVal_int(i_Col);
-      
-    Stz* szStz = aAdd<Stz*>(&m_waColVal[i_Col],i_Ofs);
-        
-    return szStz;
-  }
 
   };
   

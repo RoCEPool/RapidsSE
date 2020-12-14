@@ -758,7 +758,7 @@ bool IndexTree::bVerifyIndex(void)
 void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
   // create a row
-  HV_RowSingle hvRowSingle(pCrwBuffer->pStreamDef(),C_ALL);
+  HV_RowSingle hvRowSingle(pCrwBuffer->pStreamDef());
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   

@@ -50,14 +50,14 @@ void RowSingle::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowSingle::RowSingle(StreamDef* pStreamDef, i8 iSubSet)
+RowSingle::RowSingle(StreamDef* pStreamDef)
 : Object(CN_ROWSINGLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
   m_pStreamDef  = pStreamDef;
-  m_nColumns    = pStreamDef->nColumns(iSubSet);
-  m_iSubSet     = iSubSet;
+  m_nColumns    = pStreamDef->nColumns(C_ALL);
+  m_iSubSet     = C_ALL;
   
   m_bGetAll     = true;
   
@@ -232,8 +232,8 @@ void RowSingle::vPrintRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
-  HV_Record hvRecord(m_pStreamDef,C_ALL);
-  hvRecord->vToRecord(this);
+  HV_Record hvRecord(m_pStreamDef);
+  hvRecord->vToCsvRecord(pRowCurrent());
   hvRecord->vPrintAsRow();
 }
 

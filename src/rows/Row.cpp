@@ -96,7 +96,7 @@ void Row::vDump(StreamDef* pStreamDef)
     
     if (DM_VCH == pCol->eDatum()) {
       
-      if (m_waColVal[i_Col].bIsNull()) {
+      if (m_wxaColumnCell[i_Col].bIsNull()) {
         vTrace(" NULL "_Stz);
         continue;
       }
@@ -111,7 +111,7 @@ void Row::vDump(StreamDef* pStreamDef)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    vTrace(" %ld "_Stz, m_waColVal[i_Col].m_iWrd);
+    vTrace(" %ld "_Stz, m_wxaColumnCell[i_Col].m_iWrd);
   }
 
   vTrace("\n"_Stz);
@@ -128,7 +128,7 @@ m8* Row::aCellArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m8* aArray = (m8*) & m_waColVal[0];
+  m8* aArray = (m8*) & m_wxaColumnCell[0];
   
   return aArray;
 }
@@ -140,7 +140,7 @@ m8* Row::aColCell(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m8* aCell = (m8*) & m_waColVal[i_Col];
+  m8* aCell = (m8*) & m_wxaColumnCell[i_Col];
   
   return aCell;
 }
@@ -152,7 +152,7 @@ Dtm* Row::aColDtm(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  Dtm* aDtm = & m_waColVal[i_Col];
+  Dtm* aDtm = & m_wxaColumnCell[i_Col];
   
   return aDtm;
 }
@@ -164,7 +164,7 @@ Dtm Row::wColDtm(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  Dtm wDtm = m_waColVal[i_Col];
+  Dtm wDtm = m_wxaColumnCell[i_Col];
   
   return wDtm;
 }
@@ -176,7 +176,7 @@ i8 Row::iColVal_int(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  i8 iVal = m_waColVal[i_Col].m_iWrd;
+  i8 iVal = m_wxaColumnCell[i_Col].m_iWrd;
   
   return iVal;
 }
@@ -188,7 +188,7 @@ void Row::vColVal_int(i8 i_Col, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m_waColVal[i_Col].m_iWrd = iVal;
+  m_wxaColumnCell[i_Col].m_iWrd = iVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,7 +198,7 @@ d8 Row::dColVal_flt(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  d8 dVal = m_waColVal[i_Col].m_dWrd;
+  d8 dVal = m_wxaColumnCell[i_Col].m_dWrd;
   
   return dVal;
 }
@@ -210,7 +210,7 @@ void Row::vColVal_flt(i8 i_Col, d8 dVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m_waColVal[i_Col].m_dWrd = dVal;
+  m_wxaColumnCell[i_Col].m_dWrd = dVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,8 +222,8 @@ Stz* Row::szColVal_ofs(i8 i_Col)
   
   // add cell contents (i.e. offset) to cell address to string address
   
-  m8* amCellAddress = (m8*) & m_waColVal[i_Col];
-  i8  i_Ofs = m_waColVal[i_Col].m_iWrd;
+  m8* amCellAddress = (m8*) & m_wxaColumnCell[i_Col];
+  i8  i_Ofs = m_wxaColumnCell[i_Col].m_iWrd;
 
   Stz* pStz = aAdd<Stz*>(amCellAddress,i_Ofs);
   
@@ -237,7 +237,7 @@ void Row::vColVal_ofs(i8 i_Col, i8 iOfs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m_waColVal[i_Col].m_iWrd = iOfs;
+  m_wxaColumnCell[i_Col].m_iWrd = iOfs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,9 +247,9 @@ void Row::vColVal_ofs(i8 i_Col, Stz* szStz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  i8 i_Ofs = - nDifference(&m_waColVal[i_Col],szStz);
+  i8 i_Ofs = - nDifference(&m_wxaColumnCell[i_Col],szStz);
   
-  m_waColVal[i_Col].m_iWrd = i_Ofs;
+  m_wxaColumnCell[i_Col].m_iWrd = i_Ofs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,7 +259,7 @@ bool Row::bIsColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  bool bNull = m_waColVal[i_Col].bIsNull();
+  bool bNull = m_wxaColumnCell[i_Col].bIsNull();
   
   return bNull;
 }
@@ -271,7 +271,7 @@ void Row::vSetColNull(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m_waColVal[i_Col].vSetNull();
+  m_wxaColumnCell[i_Col].vSetNull();
 }
 
 /*============================================================================*/

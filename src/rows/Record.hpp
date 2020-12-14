@@ -9,8 +9,7 @@ namespace Rows
   {
   public:
     StreamDef* m_pStreamDef;  // stream def
-    i8         m_iSubSet;     // stream def subset
-
+ 
     char       m_caRecord[C_MAX_RECORD];
     char*      m_azCursor;    // append cursor for StrLib::vAppend()
 
@@ -21,7 +20,7 @@ namespace Rows
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Record(StreamDef* pStreamDef, i8 iSubSet);
+    Record(StreamDef* pStreamDef);
    ~Record(void) noexcept(false);
   
     char* az(void);
@@ -31,7 +30,7 @@ namespace Rows
     void vPrintAsCsv(void);
     void vPrintAsRow(void);
 
-    void vToRecord(RowSingle* pRowSingle);
+    void vToCsvRecord(Row* pRow);
   
   private:
     void vAddRow(Row* aRow);

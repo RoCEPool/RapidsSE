@@ -477,7 +477,7 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef);
   
   //m_oRowTray.pNub()->vDumpTails();
   
@@ -562,10 +562,10 @@ void CrwBuffer::vShowRow(i8 i_Row)
   vTrace("Rrf: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
-  HV_Record hvRecord(pStreamDef,C_ALL);
+  HV_Record hvRecord(pStreamDef);
   
   // create a row
-  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef);
   
   // get compact row
   Crw* aCompactRow = (Crw*)aGetHead(i_Row);
@@ -574,7 +574,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCompactRow);
   
   // append the row to the record
-  hvRecord->vToRecord(hvRowSingle);
+  hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
   
   i8 nOffset = nDifference(this,aCompactRow);
   
@@ -677,8 +677,8 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
   
-  HV_Record hvRecord(pStreamDef,C_ALL);
-  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
+  HV_Record hvRecord(pStreamDef);
+  HV_RowSingle hvRowSingle(pStreamDef);
   
   i8 nRows = nRowCount();
   i8 nBytes = 1;
@@ -690,7 +690,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     vGetRow_single(hvRowSingle, i_Row);
     
     // append the row to the record
-    hvRecord->vToRecord(hvRowSingle);
+    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
     
     StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
     

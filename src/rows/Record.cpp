@@ -16,14 +16,13 @@ __aFooterFunction(Record)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Record::Record(StreamDef* pStreamDef, i8 iSubset)
+Record::Record(StreamDef* pStreamDef)
 : Object(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_azCursor   = az();
   m_pStreamDef = pStreamDef;
-  m_iSubSet    = iSubset;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
@@ -77,7 +76,7 @@ Stz* Record::sz(Row* aRow)
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 
   vAddRow(aRow);
-  
+
   return (Stz*) &m_caRecord[0];
 }
 
@@ -104,11 +103,11 @@ void Record::vPrintAsRow(void)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void Record::vToRecord(RowSingle* pRowSingle)
+void Record::vToCsvRecord(Row* aRow)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  sz(pRowSingle->pRowCurrent());
+  vAddRow(aRow);
 }
 
 /*----------------------------------------------------------------------------*/

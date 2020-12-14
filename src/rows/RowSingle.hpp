@@ -35,7 +35,7 @@ namespace Rows
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    RowSingle(StreamDef* pStreamDef, i8 iSubSet);
+    RowSingle(StreamDef* pStreamDef);
     ~RowSingle(void) noexcept(false);
     
     byte* ayCellArray(void);

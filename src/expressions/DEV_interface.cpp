@@ -1062,7 +1062,7 @@ Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
   
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
-  Stz* szSrc = pDevRow->m_aRow->szVal_rsb(iArg);
+  Stz* szSrc = pDevRow->m_aRow->szColVal_ofs(iArg);
 
   return szSrc;
 }

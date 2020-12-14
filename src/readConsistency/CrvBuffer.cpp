@@ -150,13 +150,12 @@ void CrvBuffer::vDumpAllCrv(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
     
   
-  HV_RowSingle hvRowSingle(m_pStreamDef,C_ALL);
-  Record spRec(m_pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(m_pStreamDef);
+  HV_Record hvRecord(m_pStreamDef);
 
   for (i8 i_Crv = 0; i_Crv < m_nCrv; i_Crv++) {
     
     Crv* aCrv = aGetCrv(i_Crv);
-  
   
     Crw* aCrw = aCrv->aCrw();
     CrwBuffer::vToRow(hvRowSingle,aCrw);
@@ -166,7 +165,7 @@ void CrvBuffer::vDumpAllCrv(void)
            aCrv->xwRef().iBuffer(),
            aCrv->xwRef().iItem(),
            aCrw->tPerspective(),
-           spRec.sz(hvRowSingle->pRowCurrent()));
+           hvRecord->sz(hvRowSingle->pRowCurrent()));
 
     vDebugPoint();
   }
