@@ -298,7 +298,7 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
         vDepositColVal(C_DATUM_NULL);
       }
       else {
-        szSrcStz = aRowSrc->szVal_rsb(i_Col);
+        szSrcStz = aRowSrc->szColVal_ofs(i_Col);
         vDepositColVal(szSrcStz);
       }
     }
@@ -338,7 +338,7 @@ i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
       return C_DATUM_NULL;
     }
     else {
-      szSrcStz = aRow->szVal_rsb(i_Col);
+      szSrcStz = aRow->szColVal_ofs(i_Col);
       return (i8)szSrcStz;
     }
   }
@@ -777,7 +777,7 @@ void RowBox_t<SIZE>::vNormaliseStrings(void)
       if (C_DATUM_NULL == aOuterRow->iColVal_int(i_Col))
         continue;
 
-      Stz* szOuterStz = aOuterRow->szVal_rsb(i_Col);
+      Stz* szOuterStz = aOuterRow->szColVal_ofs(i_Col);
       //vTrace("Outer: %s\n"_Stz,szOuterStz);
       
       i8 nLength = szOuterStz->nLength();
@@ -795,7 +795,7 @@ void RowBox_t<SIZE>::vNormaliseStrings(void)
         if (C_DATUM_NULL == aInnerRow->iColVal_int(i_Col))
           continue;
 
-        Stz* szInnerStz = aInnerRow->szVal_rsb(i_Col);
+        Stz* szInnerStz = aInnerRow->szColVal_ofs(i_Col);
         //vTrace("Inner: %s\n"_Stz,szInnerStz);
 
         if (! szInnerStz->bEqual(szOuterStz))

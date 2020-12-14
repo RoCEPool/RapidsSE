@@ -335,7 +335,7 @@ bool Result::bProcessOperand(Operand* pOperand)
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
       m_xJobResponse.m_ixRowsProcessed += pEntBuffer->nItems();
       vTrace("\n"_Stz);
-      pEntBuffer->vPrintRows();
+      pEntBuffer->vPrintRefdRows();
       AM::vDeleteOperand(pOperand);
       break;
     }

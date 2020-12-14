@@ -147,7 +147,7 @@ void EntWrk::vAppendElement(Row* aRow, Column* pColumn)
   }
   
   if (DM_VCH == pColumn->eDatum()) {
-      Stz* szSrc = aRow->szVal_rsb(i_Col);
+      Stz* szSrc = aRow->szColVal_ofs(i_Col);
       vAppendStz(szSrc);
   }
   else {
@@ -170,7 +170,7 @@ void EntWrk::vAppendElement(Row* aRow, StreamPix* pStreamPix, i8 i_Col)
   }
   
   if (DM_VCH == eDatum) {
-    Stz* szSrc = aRow->szVal_rsb(i_Col);
+    Stz* szSrc = aRow->szColVal_ofs(i_Col);
     vAppendStz(szSrc);
   }
   else {

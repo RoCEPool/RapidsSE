@@ -58,7 +58,7 @@ namespace Indexing
 
     Index*  pIndex(void);
     IndexDef*  pIndexDef(void);
-    void    vPrintRows(void);
+    void    vPrintRefdRows(void);
   
     bool    bTreeDebug(void);
     i8      nTreeDeleteCnt(void);

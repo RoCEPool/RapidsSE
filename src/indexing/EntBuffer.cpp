@@ -1286,7 +1286,7 @@ void EntBuffer::vPrevBuffer(EntBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* print rows of the buffer                                                   */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPrintRows(void)
+void EntBuffer::vPrintRefdRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   

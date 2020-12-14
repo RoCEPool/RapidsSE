@@ -48,21 +48,6 @@ namespace Rows
 
     void vSetColNull(i8 i_Col);
   
-  public:
-
-  /*----------------------------------------------------------------------------*/
-  /* get Stz* string                                                            */
-  /*----------------------------------------------------------------------------*/
-  inline Stz* szVal_rsb(i8 i_Col)
-  {
-    ASSERT(i_Col >= 0);
-
-    i8 i_Ofs = iColVal_int(i_Col);
-      
-    Stz* szStz = aAdd<Stz*>(&m_wxaColumnCell[i_Col],i_Ofs);
-        
-    return szStz;
-  }
 
   };
   
