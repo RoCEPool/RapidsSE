@@ -1130,11 +1130,11 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
   aiDstk -= (nSize / 8) + 2; \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
-#define S_StrAdr() ( (char*) ( (aiDstk) - (( (*aiDstk) / 8) + 1) ) )
+#define S_StrAdr() ( (char*) ( (aiDstk-1) - (( (*aiDstk) / 8) + 1) ) )
 
 #define S_StrDrp() \
   nSize = *(aiDstk--); \
-  aiDstk -= (nSize / 8) + 1;
+  aiDstk -= (nSize / 8) + 2;
 
 #define JumpTo(__iArg,__EO) \
   aeCode = & m_eaCode[__iArg];
@@ -1262,7 +1262,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
   for (;;) {
     
-#ifdef WITH_TRACE_LOGICUNIT
+//#ifdef WITH_TRACE_LOGICUNIT
     // check for stack growth
     if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -1272,11 +1272,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
     if (iStkPct > 80)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
-#endif
+//#endif
     
     eEO eCode = *aeCode++;
 #ifdef WITH_TRACE_LOGICUNIT
-    //vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
     
     switch (eCode) { //+ExtractBegin

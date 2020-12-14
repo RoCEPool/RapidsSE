@@ -348,7 +348,7 @@ namespace CompactBuffers
 
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 8;
+          rayDstByte += (((nStrSize) / 8) * 8) + 16;
           aiCellValue = (i8*)rayDstByte;
           *aiCellValue = nStrSize - 1;
           rayDstByte += 8;
@@ -400,7 +400,7 @@ namespace CompactBuffers
 
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 8;
+          rayDstByte += (((nStrSize) / 8) * 8) + 16;
           aiCellValue = (i8*)rayDstByte;
           *aiCellValue = nStrSize - 1;
           rayDstByte += 8;
@@ -452,7 +452,7 @@ namespace CompactBuffers
 
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 8;
+          rayDstByte += (((nStrSize) / 8) * 8) + 16;
           aiCellValue = (i8*)rayDstByte;
           *aiCellValue = nStrSize - 1;
           rayDstByte += 8;
@@ -870,9 +870,9 @@ namespace CompactBuffers
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((uLow) / 8) * 8) + 8;
+          ayDstByte += (((uLow) / 8) * 8) + 16;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = uLow;
+          *aiCellValue = uLow - 1;
           ayDstByte += 8;
         }
         else {
@@ -940,9 +940,9 @@ namespace CompactBuffers
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          ayDstByte += (((nStrSize) / 8) * 8) + 16;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize;
+          *aiCellValue = nStrSize - 1;
           ayDstByte += 8;
         }
         else {
@@ -979,9 +979,9 @@ namespace CompactBuffers
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          ayDstByte += (((nStrSize) / 8) * 8) + 16;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize;
+          *aiCellValue = nStrSize - 1;
           ayDstByte += 8;
         }
         else {
@@ -1018,7 +1018,7 @@ namespace CompactBuffers
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 8;
+          ayDstByte += (((nStrSize) / 8) * 8) + 16;
           aiCellValue = (i8*)ayDstByte;
           *aiCellValue = nStrSize - 1;
           ayDstByte += 8;

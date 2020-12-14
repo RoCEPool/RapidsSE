@@ -36,12 +36,12 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
-/time load lineitem "/DATA/TPCH/lineitem100.csv";
+/time load lineitem "/DATA/TPCH/lineitem1.csv";
 
 tableScan lineitem;
 
 // select * from lineitem;
-//Smt0;
+Smt0;
 
 // select l_extendedPrice from lineitem;
 //Smt1;

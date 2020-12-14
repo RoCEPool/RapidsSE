@@ -244,7 +244,7 @@ void LogicUnit::vCollectOpcode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
+  //vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
   
   if (m_pTkn->bSame("Label"_Stz)) {
     vAcceptToken();
