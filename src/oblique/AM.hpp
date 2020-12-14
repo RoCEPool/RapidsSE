@@ -23,6 +23,8 @@
 #include "eXA.h"
 #include "eYA.h"
 
+namespace Resources { class PsxThd; }
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace Oblique
