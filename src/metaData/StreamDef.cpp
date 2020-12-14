@@ -519,10 +519,10 @@ void StreamDef::vToRowPix(RowPix* aRowPix, bool bPtnHash)
   
   ASSERT(! aRowPix->m_bInitialised);
   
-  aRowPix->m_nCols    = nColumns(C_ALL);
+  aRowPix->m_nColumns = nColumns(C_ALL);
   aRowPix->m_bPtnHash = bPtnHash;
   if (aRowPix->m_bPtnHash) {
-    aRowPix->m_nCols++;
+    aRowPix->m_nColumns++;
     aRowPix->m_nExtraCols = 1;
   }
   vToColPix(aRowPix->m_xaColPix,bPtnHash);

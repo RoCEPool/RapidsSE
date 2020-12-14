@@ -21,11 +21,10 @@ Record::Record(StreamDef* pStreamDef)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azCursor   = az();
-  m_pStreamDef = pStreamDef;
+  pStreamDef->vToRowPix(&m_oRowPix,false);
   
-  m_pStreamDef->vToRowPix(&m_oRowPix,false);
-
+  m_azCursor = & m_caRecord[0];
+  
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
 #else
@@ -127,16 +126,15 @@ void Record::vAddRow(Row* aRow)
   m_caRecord[0] = '\0';
   m_azCursor = & m_caRecord[0];
 
-  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+  for (i8 i_Col = 0; i_Col < m_oRowPix.m_nColumns; i_Col++) {
 
-    eDM eDatum = pCol->eDatum();
-    i8  iScale = pCol->iColumnScale();
+    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum; //pCol->eDatum();
+    i8  iScale = m_oRowPix.m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
 
     if (i_Col)
       StrLib::vAppendString(&m_azCursor,",");
 
-    if (DM_VCH == pCol->eDatum()) {
+    if (DM_VCH == eDatum) {
       
       if (aRow->bIsColNull(i_Col)) {
         vAppendCsvVal(eDatum,iScale,C_DATUM_NULL);

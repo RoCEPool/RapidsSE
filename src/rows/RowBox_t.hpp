@@ -283,7 +283,7 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
   
   ASSERT(0 == m_i_ColCrs);
   
-  i8 nCols = m_oRowPix.m_nCols;
+  i8 nCols = m_oRowPix.m_nColumns;
   
   i8 i_Col;
   
@@ -361,7 +361,7 @@ i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::nColumns(void)
 {
-  return m_oRowPix.m_nCols;
+  return m_oRowPix.m_nColumns;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -859,7 +859,7 @@ template <i8 SIZE>
 i8 RowBox_t<SIZE>::iPtnOfRow(Row* aRow)
 {
 
-  i8 i_HshCol = m_oRowPix.m_nCols - 1;
+  i8 i_HshCol = m_oRowPix.m_nColumns - 1;
     
   i8 i_Ptn = aRow->iColVal_int(i_HshCol);
   
@@ -895,7 +895,7 @@ void RowBox_t<SIZE>::vResetRow(void)
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::nRowProperBytes(void)
 {
-  i8 nBytes = (m_oRowPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  i8 nBytes = (m_oRowPix.m_nColumns + 1 /* dummy */ ) * C_BYTES_PER_WORD;
   
   return nBytes;
 }
@@ -968,7 +968,7 @@ template <i8 SIZE>
 void RowBox_t<SIZE>::vZeroRow(Row *aRow)
 {
 
-  i8 nCellBytes = m_oRowPix.m_nCols * C_BYTES_PER_WORD;
+  i8 nCellBytes = m_oRowPix.m_nColumns * C_BYTES_PER_WORD;
 
   MemLib::vZero(aRow->aCellArray(),nCellBytes,CN_ROWBUFFER);
 }
@@ -984,7 +984,7 @@ template <i8 SIZE>
 i8 RowBox_t<SIZE>::i_RowBufferCell(i8 i_Row)
 {
   
-  i8 i_Cell_slab = (i_Row + 1) * (m_oRowPix.m_nCols + 1 /* Object */ );
+  i8 i_Cell_slab = (i_Row + 1) * (m_oRowPix.m_nColumns + 1 /* Object */ );
   
   i8 i_CellHazard = SIZE / C_BYTES_PER_WORD;
   

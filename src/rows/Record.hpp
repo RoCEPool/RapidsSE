@@ -8,8 +8,6 @@ namespace Rows
   class Record : public Object
   {
   public:
-    StreamDef* m_pStreamDef;  // stream def
- 
     RowPix     m_oRowPix;
 
     char       m_caRecord[C_MAX_RECORD];

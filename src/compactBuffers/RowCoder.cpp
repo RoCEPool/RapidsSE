@@ -194,7 +194,7 @@ i8 RowCoder::nMetaSize(RowPix* pRowPix)
   //  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
   //                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
   
-  i8 nMetaBytes = pRowPix->m_nCols - pRowPix->m_nExtraCols;
+  i8 nMetaBytes = pRowPix->m_nColumns - pRowPix->m_nExtraCols;
   
   return nMetaBytes;
 }
