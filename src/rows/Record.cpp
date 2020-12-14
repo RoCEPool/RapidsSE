@@ -16,30 +16,6 @@ __aFooterFunction(Record)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Record::Record(void)
-: Object(CN_RECORD)
-{
-  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-  
-  m_azCursor   = az();
-  m_pStreamDef = nullptr;
-  m_iSubSet    = C_UNKNOWN;
-
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
-#else
-  m_caRecord[0] = '\0';
-#endif
-  
-  //! FIX RAY
-  //_checkInitialised_(CN_RECORD);
-  
-  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Record::Record(StreamDef* pStreamDef, i8 iSubset)
 : Object(CN_RECORD)
 {
@@ -60,33 +36,6 @@ Record::Record(StreamDef* pStreamDef, i8 iSubset)
   
   _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 }
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-//Record::Record(RowSingle* pRowSingle)
-//: Object(CN_RECORD)
-//{
-//  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-//
-//  // set default enclosing char
-//  m_azCursor   = az();
-//  m_pStreamDef = nullptr;
-//  m_iSubSet    = C_UNKNOWN;
-//
-//#ifdef WITH_CHECK_INITIALISED
-//  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
-//#else
-//  m_caRecord[0] = '\0';
-//#endif
-//
-//  //! FIX RAY
-//  //_checkInitialised_(CN_RECORD);
-//
-//  vToRecord(pRowSingle);
-//
-//  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -133,20 +82,6 @@ Stz* Record::sz(Row* aRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return Stz* of result                                                      */
-/*----------------------------------------------------------------------------*/
-void Record::vToRecord(RowSingle* pRowSingle)
-{
-  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-  
-  sz(pRowSingle->pRowCurrent());
-}
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
 /* print record string as csv,...                                              */
 /*----------------------------------------------------------------------------*/
 void Record::vPrintAsCsv(void)
@@ -166,6 +101,15 @@ void Record::vPrintAsRow(void)
   vTrace("row: (%s)\n"_Stz,az());
 }
 
+/*----------------------------------------------------------------------------*/
+/* return Stz* of result                                                      */
+/*----------------------------------------------------------------------------*/
+void Record::vToRecord(RowSingle* pRowSingle)
+{
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  sz(pRowSingle->pRowCurrent());
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -178,7 +122,9 @@ void Record::vAddRow(Row* aRow)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 
-  vReset();
+  //vReset();
+  m_caRecord[0] = '\0';
+  m_azCursor = & m_caRecord[0];
 
   for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
@@ -189,23 +135,23 @@ void Record::vAddRow(Row* aRow)
     if (DM_VCH == pCol->eDatum()) {
       
       if (aRow->bIsColNull(i_Col)) {
-        vAddColVal(pCol->eDatum(),pCol->iColumnScale(),C_DATUM_NULL);
+        vAppendCsvVal(pCol->eDatum(),pCol->iColumnScale(),C_DATUM_NULL);
         continue;
       }
       
       Stz* acSrcString = aRow->szColVal_ofs(i_Col);
-      vAddColVal(pCol->eDatum(),pCol->iColumnScale(),(i8)acSrcString);
+      vAppendCsvVal(pCol->eDatum(),pCol->iColumnScale(),(i8)acSrcString);
       continue;
     }
     
-    vAddColVal(pCol->eDatum(),pCol->iColumnScale(),aRow->iColVal_int(i_Col));
+    vAppendCsvVal(pCol->eDatum(),pCol->iColumnScale(),aRow->iColVal_int(i_Col));
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* add a value                                                                */
 /*----------------------------------------------------------------------------*/
-void Record::vAddColVal(eDM eDatum, i8 iScale, i8 iVal)
+void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -273,18 +219,6 @@ void Record::vAddColVal(eDM eDatum, i8 iScale, i8 iVal)
       NEVER_REACH;
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset                                                                      */
-/*----------------------------------------------------------------------------*/
-void Record::vReset(void)
-{
-  _precondition_(_MAGIC_,CN_RECORD);
-  
-  m_caRecord[0] = '\0';
-  
-  m_azCursor = az();
 }
 
 /*============================================================================*/
