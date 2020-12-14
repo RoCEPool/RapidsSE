@@ -15,7 +15,7 @@ namespace Resources
 //------------------------------------------------------------------------------
 
 #include "Resource.hpp"
-#include "ResourceTracker.hpp"
+//?#include "ResourceTracker.hpp"
 
 //?#include "Dir.hpp"
 //?#include "Fifo.hpp"

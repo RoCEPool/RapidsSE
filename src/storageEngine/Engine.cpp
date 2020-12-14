@@ -8,6 +8,7 @@
 #include "Socket.hpp"  //?
 #include "Dir.hpp"     //?
 #include "PsxThd.hpp"  //?
+#include "ResourceTracker.hpp" //?
 
 extern Args         gxArgs;
 

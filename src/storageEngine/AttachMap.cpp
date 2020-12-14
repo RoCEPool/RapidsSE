@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+#include "ResourceTracker.hpp" //?
+
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 

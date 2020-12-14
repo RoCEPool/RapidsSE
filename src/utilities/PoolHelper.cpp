@@ -4,6 +4,8 @@
 
 #include "Utilities.h"
 
+#include "ResourceTracker.hpp" //?
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/

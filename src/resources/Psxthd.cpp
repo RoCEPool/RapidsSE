@@ -4,7 +4,8 @@
 
 #include "Resources.h"
 
-#include "PsxThd.hpp"  //?
+#include "PsxThd.hpp" //?
+#include "ResourceTracker.hpp" //?
 
 Atomic gixPsxThd;
 

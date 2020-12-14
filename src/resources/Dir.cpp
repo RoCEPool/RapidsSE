@@ -5,6 +5,7 @@
 #include "Resources.h"
 
 #include "Dir.hpp" //?
+#include "ResourceTracker.hpp" //?
 
 Atomic gixDir;
 
