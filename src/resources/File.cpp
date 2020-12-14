@@ -4,6 +4,7 @@
 
 #include "Resources.h"
 
+#include "File.hpp" //?
 
 Atomic gixFile;
 
