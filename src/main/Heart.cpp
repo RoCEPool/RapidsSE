@@ -29,7 +29,7 @@ void vHeartInit(void)
   strncpy(gxHeartbeat.m_acBuildGitHash,(char*)gsBuildGitHash,32);
   
   char azPath[256];
-  sprintf(azPath,"/tmp/rapidsse_pid%lld",(i8)0); //getpid());
+  sprintf(azPath,"../tmp/rapidsse_pid%lld",(i8)0); //getpid());
   gaHearbeatFile = fopen(azPath,"w");
   
   PsxThd::iSpawnPosixThread(vHeartLoop,nullptr);

@@ -37,14 +37,22 @@ void* PlanDefinitionParser::operator new(size_t nSize)
 void PlanDefinitionParser::operator delete(void* aAddr)
 {
   PlanDefinitionParser*
-    pObject = reinterpret_cast<PlanDefinitionParser*>(aAddr);
+    pPlanDefinitionParser = reinterpret_cast<PlanDefinitionParser*>(aAddr);
+  
+  Object*
+    pObject_rc = reinterpret_cast<Object*>(aAddr);
+  
+  Object*
+    pObject_sc = static_cast<Object*>(pPlanDefinitionParser);
 
-  vTrace("\n\n-- delete() -- pObject %p\n\n"_Stz,pObject);
-  void* aMem = aAdd<void*>(pObject, - 64);
+//  vTrace("\n\n-- delete() -- pObject %p\n\n"_Stz,pObject);
+  void* aMem = aAdd<void*>(aAddr, - 64);
   i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
   MemLib::vHexDump(aMem,nBytes);
 
-  HeapMem::vFree(pObject);
+  //HeapMem::vFree(pObject_sc);
+  //HeapMem::vFree(pObject_rc);
+  HeapMem::vFree(pPlanDefinitionParser);
 }
 
 /*----------------------------------------------------------------------------*/
