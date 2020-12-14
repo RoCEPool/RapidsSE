@@ -105,8 +105,7 @@ namespace Reflection        { class ConstDef;        class ConstSet;
                               class MetaInherits;    class MetaMember;
                               class MetaType;                                 }
 namespace ResourceUsage     { class RU_Cpu;          class RU_Memory;         }
-namespace Resources         { class File;            class Resource;
-                              class ResourceTracker;                          }
+namespace Resources         { class File;                                     }
 namespace Rows              {                                                 }
 namespace SenVM             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
