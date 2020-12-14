@@ -157,7 +157,6 @@ void CrvBuffer::vDumpAllCrv(void)
     
     Crv* aCrv = aGetCrv(i_Crv);
   
-  
     Crw* aCrw = aCrv->aCrw();
     CrwBuffer::vToRow(hvRowSingle,aCrw);
     

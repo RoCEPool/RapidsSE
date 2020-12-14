@@ -574,7 +574,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCompactRow);
   
   // append the row to the record
-  hvRecord->vToRecord(hvRowSingle);
+  hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
   
   i8 nOffset = nDifference(this,aCompactRow);
   
@@ -690,7 +690,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     vGetRow_single(hvRowSingle, i_Row);
     
     // append the row to the record
-    hvRecord->vToRecord(hvRowSingle);
+    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
     
     StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
     

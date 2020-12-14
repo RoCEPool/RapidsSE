@@ -31,7 +31,7 @@ namespace Rows
     void vPrintAsCsv(void);
     void vPrintAsRow(void);
 
-    void vToRecord(RowSingle* pRowSingle);
+    void vToCsvRecord(Row* pRow);
   
   private:
     void vAddRow(Row* aRow);

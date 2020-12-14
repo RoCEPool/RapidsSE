@@ -167,7 +167,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
     hvRowSingle->vCopyRow(pRow);
-    hvRecord->vToRecord(hvRowSingle);
+    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
     hvRecord->vPrintAsRow();
     
     // get the next row
@@ -198,7 +198,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   HV_Record hvRecord(pStreamDef,C_ALL);
   while (pRow) {
     hvRowSingle->vCopyRow(pRow);
-    hvRecord->vToRecord(hvRowSingle);
+    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
     pRow = aNextRow(pRow);
     hvRecord->vPrintAsRow();
   }

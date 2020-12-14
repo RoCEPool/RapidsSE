@@ -77,7 +77,7 @@ Stz* Record::sz(Row* aRow)
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 
   vAddRow(aRow);
-  
+
   return (Stz*) &m_caRecord[0];
 }
 
@@ -104,11 +104,11 @@ void Record::vPrintAsRow(void)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void Record::vToRecord(RowSingle* pRowSingle)
+void Record::vToCsvRecord(Row* aRow)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  sz(pRowSingle->pRowCurrent());
+  vAddRow(aRow);
 }
 
 /*----------------------------------------------------------------------------*/

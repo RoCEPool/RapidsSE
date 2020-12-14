@@ -246,6 +246,7 @@ void Step::vTableGenCsvBuffer(void)
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
   HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
+  HV_Record hvRecord(pStreamDef,C_ALL);
 
   i8 nRecords = 0;
   for ( ; ; nRecords++) {
@@ -253,12 +254,11 @@ void Step::vTableGenCsvBuffer(void)
     hvRowSingle->vResetValues();
     RowGenerator::vRandom(hvRowSingle,pStreamDef);
     
-    Record spRecord(pStreamDef,C_ALL);
-    spRecord.vToRecord(hvRowSingle);
-    StrLib::vConcat(spRecord.sz()->azChar(),'\n');               //! sub-optimal
+    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
+    StrLib::vConcat(hvRecord->az(),'\n');               //! sub-optimal
     //vTrace("Random Rec: %s"_Stz,spRecord.sz());
 
-    if (! pCsvBuffer->szAppendRecord(spRecord.sz()))
+    if (! pCsvBuffer->szAppendRecord(hvRecord->sz()))
       break;
   }
   
