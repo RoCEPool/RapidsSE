@@ -5,6 +5,8 @@
 
 #include "InflateSet.h"
 
+namespace Resources { class Dir; } //?
+
 namespace Expressions
 {
   static const i8 C_LOGIC_DEV   = 16;

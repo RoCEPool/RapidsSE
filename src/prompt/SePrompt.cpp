@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "Dir.hpp" //?
+
 extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;

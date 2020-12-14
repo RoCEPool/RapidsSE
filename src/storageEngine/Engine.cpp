@@ -6,6 +6,7 @@
 
 #include "TlsKeys.hpp" //?
 #include "Socket.hpp"  //?
+#include "Dir.hpp"     //?
 
 extern Args         gxArgs;
 

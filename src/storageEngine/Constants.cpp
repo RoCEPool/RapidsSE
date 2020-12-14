@@ -795,7 +795,6 @@ void Constants::vAddConstantsCpp(void)
   /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
   /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
   /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
-  /* 16 */ vAddConstant("SIZEOF_DIR"_Stz,          sizeof(Dir));
   /*    */ vAddConstant("SIZEOF_EntBUFFER"_Stz,    sizeof(EntBuffer));
   /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));

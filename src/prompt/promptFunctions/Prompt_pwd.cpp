@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "Dir.hpp" //?
+
 PromptFun __Prompt_pwd (
   PF_PWD,             // prompt function
   "Prompt_pwd"_Stz,   // name of the prompt function

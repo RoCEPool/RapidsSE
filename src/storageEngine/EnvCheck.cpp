@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+#include "Dir.hpp" //?
+
 extern Args gxArgs;
 
 extern char giProgressPoint;

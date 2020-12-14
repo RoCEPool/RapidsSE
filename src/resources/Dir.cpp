@@ -4,6 +4,7 @@
 
 #include "Resources.h"
 
+#include "Dir.hpp" //?
 
 Atomic gixDir;
 
