@@ -4,6 +4,8 @@
 
 #include "Chunks.h"
 
+#include "File.hpp" //?
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -43,11 +45,10 @@ void FileChunk::operator delete(void* pFileChunkAddress)
 /*----------------------------------------------------------------------------*/
 FileChunk::FileChunk(eCN eClassNo, Format* pFmt)
 : RecordChunk(eClassNo,pFmt)
-, m_oFile(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  //m_oFile
+  m_pFile = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -58,6 +59,8 @@ FileChunk::FileChunk(eCN eClassNo, Format* pFmt)
 FileChunk::~FileChunk(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  delete m_pFile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +74,9 @@ void FileChunk::vCloseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_oFile.vClose();
+  m_pFile->vClose();
+  
+  delete m_pFile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,8 +86,10 @@ bool FileChunk::bOpenRead(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  m_pFile = new File(nullptr);
+  
   // open the file
-  bool bOpened = m_oFile.bOpenRead(sPath);
+  bool bOpened = m_pFile->bOpenRead(sPath);
   
   return bOpened;
 }
@@ -94,8 +101,10 @@ bool FileChunk::bOpenWrite(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  m_pFile = new File(nullptr);
+
   // open the file
-  bool bOpened = m_oFile.bOpenWrite(sPath);
+  bool bOpened = m_pFile->bOpenWrite(sPath);
   
   return bOpened;
 }
@@ -113,7 +122,7 @@ i8 FileChunk::nReadBytes(i8 nBytes)
   if (nBytes == C_WSP_DATACHUNK)
     nBytes -= 1;
   
-  m_nDataBytes = m_oFile.nReadBytes(m_xWsp.ayArea(),nBytes);
+  m_nDataBytes = m_pFile->nReadBytes(m_xWsp.ayArea(),nBytes);
 
   if (! m_nDataBytes)
     return 0;
@@ -132,13 +141,13 @@ void FileChunk::vReadSpecificChunk(i8 iSeek, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_oFile.vSeek(iSeek);
+  m_pFile->vSeek(iSeek);
   
   Stz* aStartArea = (Stz*)aDataArea();
   Stz* aIntoAddr  = aStartArea;
   i8   nAsMuchAs  = nBytes;
   
-  i8 nBytesRead = m_oFile.nReadBytes(aIntoAddr,nAsMuchAs);
+  i8 nBytesRead = m_pFile->nReadBytes(aIntoAddr,nAsMuchAs);
   
   RASSERT(nBytesRead == nAsMuchAs);
   
@@ -156,7 +165,7 @@ void FileChunk::vRewindFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_oFile.vSeekStart();
+  m_pFile->vSeekStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +175,7 @@ void FileChunk::vWriteData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bResult = m_oFile.bWriteBytes(m_xWsp.ayArea(),m_nDataBytes);
+  bool bResult = m_pFile->bWriteBytes(m_xWsp.ayArea(),m_nDataBytes);
   RASSERT(bResult);
 }
 

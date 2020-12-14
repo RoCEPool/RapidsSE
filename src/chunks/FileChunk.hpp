@@ -11,7 +11,7 @@ namespace Chunks
   class FileChunk : public RecordChunk
   {
   protected:
-    File m_oFile; // file being used
+    File* m_pFile; // file being used
   
   public: //$ functions:
     void* operator new(size_t);
