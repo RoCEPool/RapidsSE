@@ -125,10 +125,30 @@ macro AM_STARTMARKER_HANDLER
   EO_INDEXNM_SRC_SET <srcIndexNm>
   EO_TABLENM_ALT_SET <altTableNm>
   EO_INDEXNM_ALT_SET <altIndexNm>
+
+  EO_HANDLER <logicUnitHandler>
+  EO_CALLAGAIN
+  EO_JMP QRY_DONE
 endMacro
 
-macro AM_STREAMDEF_BEGIN
-// macro AM_STREAMDEF_BEGIN
+macro AM_STREAMDEF_FROM_SRC_HANDLER
+//----------------------------------------------------------------------------//
+// macro AM_STREAMDEF_FROM_SRC_HANDLER                                        //
+//----------------------------------------------------------------------------//
+// macro AM_STREAMDEF_FROM_SRC_HANDLER
+Label STREAMDEF_HANDLER
+  EO_REG_SRC_STREAMDEFOUT_NEW
+  EO_POT_USE_STREAMDEFOUT <addPtnHash>
+  EO_JMP QRY_DONE
+endMacro
+
+macro AM_STREAMDEF_HANDLER
+//----------------------------------------------------------------------------//
+// macro AM_STREAMDEF_HANDLER                                                 //
+//----------------------------------------------------------------------------//
+  // STREAMDEF HANDLER
+  Label STREAMDEF_HANDLER
+
   EO_REG_STREAMDEFOUT_NEW
 endMacro
 
@@ -138,7 +158,7 @@ macro AM_STREAMDEF_ADD_COLUMN
   EO_PUSH_COLUMN_LENGTH <columnLength>
   EO_PUSH_COLUMN_TYPE <columnType>
   EO_REG_STREAMDEFOUT_ADDCOLUMN <columnName>
- endMacro
+endMacro
 
 macro AM_STREAMDEF_END
 // macro AM_STREAMDEF_END
@@ -174,9 +194,9 @@ macro AM_TABLE_SCAN
   EO_JMP QRY_DONE
 endMacro
 
-macro AM_INDEX_RANGE_RIUTINE
+macro AM_INDEX_RANGE_ROUTINE
 //----------------------------------------------------------------------------//
-// macro AM_INDEX_RANGE_RIUTINE                                               //
+// macro AM_INDEX_RANGE_ROUTINE                                               //
 //----------------------------------------------------------------------------//
   Label INDEX_RANGE_ROUTINE
 
@@ -325,6 +345,7 @@ macro AM_CRW_PROJECT_ROUTINE
   EO_SET_COLUMNS <projectSrcColumns>
   EO_ROW_DST_NEW
   EO_COL_SRC_PUSHSET
+  EO_DUMP
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -333,6 +354,7 @@ endMacro
 macro AM_SET_DST_COLUMNI
   // SET_DST_COLUMNI
   EO_ROW_DST_POPCOLI <projectDstColumn>
+  EO_ROW_DST_PRINT
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -357,6 +379,7 @@ endMacro
 macro AM_SET_DST_COLUMNS
   // SET_DST_COLUMNS
   EO_ROW_DST_POPCOLS <projectDstColumn>
+  EO_ROW_DST_PRINT
 endMacro
 
 //----------------------------------------------------------------------------//

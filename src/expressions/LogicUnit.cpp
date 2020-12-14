@@ -1130,11 +1130,11 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
   aiDstk -= (nSize / 8) + 2; \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
-#define S_StrAdr() ( (char*) ( (aiDstk-1) - ((*aiDstk / 8) + 1) ) )
+#define S_StrAdr() ( (char*) ( (aiDstk) - (( (*aiDstk) / 8) + 1) ) )
 
 #define S_StrDrp() \
   nSize = *(aiDstk--); \
-  aiDstk -= (nSize / 8) + 2;
+  aiDstk -= (nSize / 8) + 1;
 
 #define JumpTo(__iArg,__EO) \
   aeCode = & m_eaCode[__iArg];
@@ -1251,7 +1251,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eEO*  eaReturnStack[C_LOGIC_STACK];
   eEO** aeaRstk = &eaReturnStack[0];
   eEO*  aeCode  = & m_eaCode[0];
-  
+
+  char* aStrAdr;
+
   i8 iWrkA, iWrkB, iWrkC, iWrkD, iWrkE, iWrkF;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
@@ -1672,11 +1674,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_PTNSTREAM_READ(pLU);
         break;//+endCase
 
-      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new an ptnStream in ptnStream[]
+      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from streamDef[]
         dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
         break;//+endCase
-        
+
+      case EO_REG_SRC_STREAMDEFOUT_NEW: ArgNil(); // new a streamDefOut[] from devSrcRow
+        dLU0(EO_REG_SRC_STREAMDEFOUT_NEW);
+        vDev_REG_SRC_STREAMDEFOUT_NEW(pLU);
+        break;//+endCase
+
       case EO_REG_STREAMDEFOUT_NEW: ArgNil(); // new a streamDef in streamDefOut[]
         dLU0(EO_REG_STREAMDEFOUT_NEW);
         vDev_REG_STREAMDEFOUT_NEW(pLU);
@@ -1707,7 +1714,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           if (BitLib::bIsOn(iArg, iBit))
             iaColSet[iCol++] = iBit;
         }
-        //*(++aiDstk) = iArg;
+        iaColSet[iCol] = C_UNKNOWN;
       }
         break;//+endCase
         

@@ -100,6 +100,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
   /*    */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
   /*    */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
+  /*    */ EO_REG_SRC_STREAMDEFOUT_NEW,   // new streamDefOut[] from DevSrcRow
   /*    */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
   /*    */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
   /*    */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
@@ -414,6 +415,7 @@ static Stz* aEO[]
   /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
   /*    */ "EO_REG_PTNSTREAM_OPEN"_Stz,
   /*    */ "EO_REG_PTNSTREAM_READ"_Stz,
+  /*    */ "EO_REG_SRC_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
@@ -729,11 +731,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
-  {EA_NONE,      0},  //EO_REG_PTNSTREAM_CLOSE
-  {EA_NONE,      0},  //EO_REG_PTNSTREAM_DELETE
-  {EA_NONE,      0},  //EO_REG_PTNSTREAM_NEW
-  {EA_NONE,      0},  //EO_REG_PTNSTREAM_OPEN
-  {EA_NONE,      0},  //EO_REG_PTNSTREAM_READ
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_OPEN
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_READ
+  { EA_NONE,    0 },  // EO_REG_SRC_STREAMDEFOUT_NEW
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN

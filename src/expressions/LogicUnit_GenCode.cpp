@@ -431,12 +431,34 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
     case 0:
       vGenerateAsmTxt_Smt0(iQueryNo, iSubQueryNo, pFile);
       break;
+    case 1:
+      vGenerateAsmTxt_Smt1(iQueryNo, iSubQueryNo, pFile);
+      break;
+    case 2:
+      vGenerateAsmTxt_Smt2(iQueryNo, iSubQueryNo, pFile);
+      break;
+    case 3:
+      vGenerateAsmTxt_Smt3(iQueryNo, iSubQueryNo, pFile);
+      break;
+    case 4:
+      vGenerateAsmTxt_Smt4(iQueryNo, iSubQueryNo, pFile);
+      break;
+    case 5:
+      vGenerateAsmTxt_Smt5(iQueryNo, iSubQueryNo, pFile);
+      break;
     case 6:
-      vGenerateAsmTxt_Query6(iQueryNo, iSubQueryNo, pFile);
+      vGenerateAsmTxt_Smt6(iQueryNo, iSubQueryNo, pFile);
       break;
-    case 20:
-      vGenerateAsmTxt_Query20(iQueryNo, iSubQueryNo, pFile);
+    case 7:
+      vGenerateAsmTxt_Smt7(iQueryNo, iSubQueryNo, pFile);
       break;
+
+//    case 6:
+//      vGenerateAsmTxt_Query6(iQueryNo, iSubQueryNo, pFile);
+//      break;
+//    case 20:
+//      vGenerateAsmTxt_Query20(iQueryNo, iSubQueryNo, pFile);
+//      break;
     default:
       RASSERT(0);
   }
@@ -445,8 +467,10 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
   delete pFile;
   
 }
+
 /*----------------------------------------------------------------------------*/
 /* generate asm text for given query into a file                              */
+/* select * from lineitem;                                                    */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
@@ -454,13 +478,178 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
   TagSet oTagSet;
 
-  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
   oTagSet.vReset();
 
-  // append a handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // EOSMARKER HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // STARTMARKER HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_StreamDef"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // STREAMDEF HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_FROM_SRC_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DATAPULSE HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  // 15 columns in lineitem. Setting lower order 15 bits on.
+  u8 uProjectColumns = 0xFFFF;
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 15);
+
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)15);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)14);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)13);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)12);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)11);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)10);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)9);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)8);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)7);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)6);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)5);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)4);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)3);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)2);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)1);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select l_extendedPrice from lineitem;                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
   oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
   oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
@@ -483,29 +672,33 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
   oTagSet.vReset();
 
-  // append a default handler for the STREAMDEF
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
-
-  // append a default handler for the EOSMARKER
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
-
-  // append a datapulse handler
-  //   to begin crw tablePtn iteration
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for datapulse
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
   oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
   oTagSet.vReset();
 
-  // append a crwIterate routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
   oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
   oTagSet.vReset();
 
-  // append a handler for iterating a CRWBUFFER and
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
   oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
   oTagSet.vReset();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_COLUMNS
   u8 uProjectColumns = 0;
   BitLib::vSetOn(uProjectColumns, 5);
@@ -520,7 +713,609 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
 
-  // Finally query done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select l_extendedPrice from lineitem;                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt2(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+
+  // add a column to the streamDef
+  oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
+  oTagSet.vAppend(C_TAG_COLUMN_LENGTH, 15);
+  oTagSet.vAppend(C_TAG_COLUMN_TYPE, "CT_DECIMAL"_Stz);
+  oTagSet.vAppend(C_TAG_COLUMN_NAME, "l_extendedprice"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+  oTagSet.vReset();
+
+  // end a StreamDef handler
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for datapulse
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 5);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select l_extendedPrice from lineitem;                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt3(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+
+  // add a column to the streamDef
+  oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
+  oTagSet.vAppend(C_TAG_COLUMN_LENGTH, 15);
+  oTagSet.vAppend(C_TAG_COLUMN_TYPE, "CT_DECIMAL"_Stz);
+  oTagSet.vAppend(C_TAG_COLUMN_NAME, "l_extendedprice"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+  oTagSet.vReset();
+
+  // end a StreamDef handler
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for datapulse
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 5);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select l_extendedPrice from lineitem;                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt4(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+
+  // add a column to the streamDef
+  oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
+  oTagSet.vAppend(C_TAG_COLUMN_LENGTH, 15);
+  oTagSet.vAppend(C_TAG_COLUMN_TYPE, "CT_DECIMAL"_Stz);
+  oTagSet.vAppend(C_TAG_COLUMN_NAME, "l_extendedprice"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+  oTagSet.vReset();
+
+  // end a StreamDef handler
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for datapulse
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 5);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select l_extendedPrice from lineitem;                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt5(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+
+  // add a column to the streamDef
+  oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
+  oTagSet.vAppend(C_TAG_COLUMN_LENGTH, 15);
+  oTagSet.vAppend(C_TAG_COLUMN_TYPE, "CT_DECIMAL"_Stz);
+  oTagSet.vAppend(C_TAG_COLUMN_NAME, "l_extendedprice"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+  oTagSet.vReset();
+
+  // end a StreamDef handler
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for datapulse
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 5);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select l_extendedPrice from lineitem;                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+
+  // add a column to the streamDef
+  oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
+  oTagSet.vAppend(C_TAG_COLUMN_LENGTH, 15);
+  oTagSet.vAppend(C_TAG_COLUMN_TYPE, "CT_DECIMAL"_Stz);
+  oTagSet.vAppend(C_TAG_COLUMN_NAME, "l_extendedprice"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+  oTagSet.vReset();
+
+  // end a StreamDef handler
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for datapulse
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 5);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select l_extendedPrice from lineitem;                                      */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STARTMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+
+  // add a column to the streamDef
+  oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
+  oTagSet.vAppend(C_TAG_COLUMN_LENGTH, 15);
+  oTagSet.vAppend(C_TAG_COLUMN_TYPE, "CT_DECIMAL"_Stz);
+  oTagSet.vAppend(C_TAG_COLUMN_NAME, "l_extendedprice"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_ADD_COLUMN, &oTagSet));
+  oTagSet.vReset();
+
+  // end a StreamDef handler
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_END, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for datapulse
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "TABLE_SCAN"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TABLE_SCAN routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_CrwBuffer"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_TABLE_SCAN, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  u8 uProjectColumns = 0;
+  BitLib::vSetOn(uProjectColumns, 5);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 1);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
+  oTagSet.vReset();
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
 }
 

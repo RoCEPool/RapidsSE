@@ -1947,6 +1947,18 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
 }
 
 /*----------------------------------------------------------------------------*/
+/* move DevSrcRow StreamDef to  streamDefout[]                                */
+/*----------------------------------------------------------------------------*/
+void vDev_REG_SRC_STREAMDEFOUT_NEW(void* aLU)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  
+  pLogicUnit->m_xpStreamDefOut = new StreamDef(pLogicUnit->m_pDevSrcRow->m_pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* move StreamDef[] to  streamDefout[]                                        */
 /*----------------------------------------------------------------------------*/
 void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU)

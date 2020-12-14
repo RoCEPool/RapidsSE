@@ -108,10 +108,12 @@ void vDev_REG_PTNSTREAM_NEW(void* aLU);
 void vDev_REG_PTNSTREAM_OPEN(void* aLU);
 void vDev_REG_PTNSTREAM_READ(void* aLU);
 
+void vDev_REG_SRC_STREAMDEFOUT_NEW(void* aLU);
 void vDev_REG_STREAMDEFOUT_NEW(void* aLU);
 void vDev_REG_STREAMDEFOUT_ADDCOLUMN(void* aLU,
         Stz* sColumnNm, i8 iColumnType, i8 iColumnLength, i8 iColumnScale);
 void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU);
+
 
 /*============================================================================*/
 /* end                                                                        */

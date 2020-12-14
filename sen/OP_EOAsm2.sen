@@ -103,7 +103,6 @@
   //StreamDefOut[].isNull not if
   //  StreamDefOut[].pipeout
   //then
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -268,18 +267,19 @@
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  Pipein[] to StreamDef[]
-  nullptr to Pipein[]
+  "STREAMDEF" .
+  //Pipein[] to StreamDef[]
+  //nullptr to Pipein[]
 
   // execute plan STREAMDEF_handler
   ZK_STREAMDEF Counter0[] executeAsmArgs
 
-  streamDef[].asSrcStreamDef
+  //streamDef[].asSrcStreamDef
 
   // pipeout streamDefout if any
-  StreamDefOut[].isNull not if
+  //StreamDefOut[].isNull not if
     StreamDefOut[].pipeout
-  then
+  //then
 
   true
 ;

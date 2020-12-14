@@ -129,6 +129,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_REG_PTNSTREAM_OPEN"_Stz,         (const void *) vDev_REG_PTNSTREAM_OPEN     },
   { "vDev_REG_PTNSTREAM_READ"_Stz,         (const void *) vDev_REG_PTNSTREAM_READ     },
 
+  { "vDev_REG_SRC_STREAMDEFOUT_NEW"_Stz,   (const void *) vDev_REG_SRC_STREAMDEFOUT_NEW },
   { "vDev_REG_STREAMDEFOUT_NEW"_Stz,       (const void *) vDev_REG_STREAMDEFOUT_NEW },
   { "vDev_REG_STREAMDEFOUT_ADDCOLUMN"_Stz, (const void *) vDev_REG_STREAMDEFOUT_ADDCOLUMN },
   { "vDev_REG_STREAMDEF_STREAMDEFOUT"_Stz, (const void *) vDev_REG_STREAMDEF_STREAMDEFOUT },

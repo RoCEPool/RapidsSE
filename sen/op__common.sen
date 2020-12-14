@@ -389,12 +389,12 @@
         false LogicUnit[].callAgain!
         true LogicUnit[].calledAgain!
 
-        iOperandKind op[].isOperandValid not if
-          find: INVALID_OPERAND_handler op__handle
-        else
+        //iOperandKind op[].isOperandValid not if
+        //  find: INVALID_OPERAND_handler op__handle
+        //else
           iOperandKind op[].IncOperandCount
           iOperandKind LogicUnit[].handler@ op__handle
-        then
+        //then
       else
  
         iOperandYield 1 + to iOperandYield
