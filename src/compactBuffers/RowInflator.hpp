@@ -26,6 +26,10 @@ namespace CompactBuffers
                                                  i8* iaColSet,
                                                  StreamDef* pStreamDef);
   
+// 8,16,24,...
+#define nWordRoundedStrBytes(_Size) \
+  ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + \
+    (_Size % C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) )
   
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */
@@ -48,6 +52,8 @@ namespace CompactBuffers
     OverLine* aOverLine;
     u2 u_Tail_rel;
     TailLine* aTailLine;
+  
+    i8 nRoundedStrBytes;
 
     L_HighSwitch:
     
@@ -274,9 +280,10 @@ namespace CompactBuffers
 
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          rayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)rayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           rayDstByte += 8;
         }
         else {
@@ -348,9 +355,10 @@ namespace CompactBuffers
 
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          rayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)rayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           rayDstByte += 8;
         }
         else {
@@ -400,9 +408,10 @@ namespace CompactBuffers
 
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          rayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)rayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           rayDstByte += 8;
         }
         else {
@@ -452,9 +461,10 @@ namespace CompactBuffers
 
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          rayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          rayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)rayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           rayDstByte += 8;
         }
         else {
@@ -594,6 +604,8 @@ namespace CompactBuffers
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 nRoundedStrBytes;
+
   i8 nSizeUnits;
   i8 nHeadBytes;
   i8 i_Over_rel;
@@ -844,7 +856,7 @@ namespace CompactBuffers
         break;
         
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
-        //nStrSize = STRx1(uLow);
+        nStrSize = uLow;
         
         if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
@@ -865,14 +877,15 @@ namespace CompactBuffers
         }
         else
         if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
-          memcpy(ayDstByte,ayDataByte,(size_t)uLow);
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
           ayDataByte += uLow;
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((uLow) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = uLow - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {
@@ -940,9 +953,10 @@ namespace CompactBuffers
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {
@@ -979,9 +993,10 @@ namespace CompactBuffers
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {
@@ -1018,9 +1033,10 @@ namespace CompactBuffers
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {

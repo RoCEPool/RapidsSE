@@ -16,6 +16,8 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
 {
   _static_
 
+  i8 nRoundedStrBytes;
+
   //vTrace("vInflate_ColumnSet_into_CellArray\n"_Stz);
   
   u1* auMetaCode;
@@ -361,7 +363,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
         break;
         
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
-        nStrSize = STRx1(uLow);
+        nStrSize = uLow;
         
         if (SI_CELLARRAY_ADR == eStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
@@ -400,9 +402,10 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {
@@ -484,9 +487,10 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {
@@ -536,9 +540,10 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {
@@ -588,9 +593,10 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           
           //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
           
-          ayDstByte += (((nStrSize) / 8) * 8) + 16;
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
           aiCellValue = (i8*)ayDstByte;
-          *aiCellValue = nStrSize - 1;
+          *aiCellValue = nStrSize;
           ayDstByte += 8;
         }
         else {

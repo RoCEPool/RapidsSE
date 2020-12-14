@@ -1109,7 +1109,7 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
   nSize = StrLib::nSize((char*)__azStr); \
   azDst = (char*)(++aiDstk); \
   StrLib::vCopy(azDst,(char*)__azStr); \
-  aiDstk += (nSize / 8) + 1; \
+  aiDstk += nWordRoundedStrBytes(nSize)/8; \
   *(++aiDstk) = nSize; \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
 
@@ -1118,23 +1118,15 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
   nSize = *(aiDstk--); \
   azSrc = (char*)(aiDstk - ((nSize / 8) + 1)); \
   StrLib::vCopy(__azDst,azSrc); \
-  aiDstk -= (nSize / 8) + 2; \
+  aiDstk -= nWordRoundedStrBytes(nSize)/8; \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
-#define S_UseStr(__szStz) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = *(aiDstk--); \
-  __szStz = (Stz*)(aiDstk - ((nSize / 8) + 1));
-
-#define S_UseEnd() \
-  aiDstk -= (nSize / 8) + 2; \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
-
-#define S_StrAdr() ( (char*) ( (aiDstk-1) - (( (*aiDstk) / 8) + 1) ) )
+#define S_StrAdr() \
+  ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk))
 
 #define S_StrDrp() \
   nSize = *(aiDstk--); \
-  aiDstk -= (nSize / 8) + 2;
+  aiDstk -= nWordRoundedStrBytes(nSize)/8;
 
 #define JumpTo(__iArg,__EO) \
   aeCode = & m_eaCode[__iArg];
@@ -2388,9 +2380,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
         dLU0(EO_ENTWRK_APPENDELMS);
-        S_UseStr(szTopA);
+        szTopA = (Stz*)S_StrAdr();
         vDev_ENTWRK_APPENDELMS(pLU,aRluCommon->m_pDevSrcRow,szTopA);
-        S_UseEnd();
+        S_StrDrp();
         break;//+endCase
         
       case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk

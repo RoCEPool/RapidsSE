@@ -1348,6 +1348,8 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   OverLine* aOverLine;
   TailLine* aTailLine;
   
+  i8 nRoundedStrBytes;
+  
   for (i8 i_Col = 0; /*none*/; i_Col++) {
     
     uMetaCode = *auMetaCode++;
@@ -1664,9 +1666,10 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
               
               //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
-              ayDstByte += (((nStrSize) / 8) * 8) + 16;
+              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+              ayDstByte += nRoundedStrBytes;
               aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
+              *aiCellValue = nStrSize;
               ayDstByte += 8;
             }
             else {
@@ -1735,9 +1738,10 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
               
               //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
-              ayDstByte += (((nStrSize) / 8) * 8) + 8;
+              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+              ayDstByte += nRoundedStrBytes;
               aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
+              *aiCellValue = nStrSize;
               ayDstByte += 8;
             }
             else {
@@ -1774,9 +1778,10 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
               
               //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
-              ayDstByte += (((nStrSize) / 8) * 8) + 8;
+              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+              ayDstByte += nRoundedStrBytes;
               aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
+              *aiCellValue = nStrSize;
               ayDstByte += 8;
             }
             else {
@@ -1813,9 +1818,10 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
               
               //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
               
-              ayDstByte += (((nStrSize) / 8) * 8) + 8;
+              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+              ayDstByte += nRoundedStrBytes;
               aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize - 1;
+              *aiCellValue = nStrSize;
               ayDstByte += 8;
             }
             else {
