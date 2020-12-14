@@ -9,7 +9,7 @@ namespace DataBuffers
   {
   private:
   
-    StreamPix* m_pStreamPix;    // condensed stream def
+    RowPix* m_pRowPix;    // condensed stream def
 
     //HashSet    m_oHashSet; // using this as an interim step
     DataBuffer*  m_paBufferChain[C_MAX_PARTITIONS];
@@ -31,7 +31,7 @@ namespace DataBuffers
     DataBuffer* pDangling(i8 i_Ptn);
     Row* aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer, bool* pbNewBuffer);
   
-    void vStreamPix(StreamPix* pStreamPix);
+    void vRowPix(RowPix* pRowPix);
   
   private:
     void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);

@@ -51,7 +51,7 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  vResolveStreamPix(pStreamDef);
+  vResolveRowPix(pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_oStreamPix.m_bInitialised);
+  RASSERT(m_oRowPix.m_bInitialised);
 
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   

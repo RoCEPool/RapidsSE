@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* StreamPix.h Stream Pix                                                     */
+/* RowPix.h Stream Pix                                                        */
 /*============================================================================*/
 #pragma once
 
 namespace Datums
 {
-  class StreamPix // condensed stream def
+  class RowPix // condensed stream def
   {
   public:
   
@@ -21,7 +21,7 @@ namespace Datums
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // col pix (C++ flexible member array must be last)
     
     // constructor
-    StreamPix(void)
+    RowPix(void)
     {
       m_bInitialised = false;
       m_nCols        = 0;
@@ -38,7 +38,7 @@ namespace Datums
     // calc number of bytes (this is weird)
     i8 nBytes(i8 nCols)
     {
-      // there are 5 scalar 8B members in StreamPix + 2 arrays
+      // there are 5 scalar 8B members in RowPix + 2 arrays
       i8 nBytes = (  (    5 * (i8)sizeof(i8))
                    + (nCols * (i8)sizeof(bool))
                    + (nCols * (i8)sizeof(ColPix))
@@ -70,7 +70,7 @@ namespace Datums
       m_bPtnHash = false;
     }
     
-    // calc size of this StreamPix
+    // calc size of this RowPix
     i8 nSize(void)
     {
       i8 nSize = nBytes(m_nCols);
@@ -81,7 +81,7 @@ namespace Datums
     // print
     void vPrint(void)
     {
-      vTrace("StreamPix: %lld cols\n"_Stz,m_nCols);
+      vTrace("RowPix: %lld cols\n"_Stz,m_nCols);
       for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
         vTrace("[%02lld] P:%s %s(%lld,%lld)%s%s\n"_Stz,
                i_Col,

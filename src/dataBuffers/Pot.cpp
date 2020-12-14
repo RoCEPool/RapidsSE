@@ -21,7 +21,7 @@ Pot::Pot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  m_pStreamPix = nullptr;
+  m_pRowPix = nullptr;
   
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++)
     m_paBufferChain[i_Ptn] = nullptr;
@@ -124,7 +124,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRowBuffer) {
     pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyPix(m_pStreamPix);
+    pDstRowBuffer->vCopyPix(m_pRowPix);
     vAddBuffer(i_Ptn,pDstRowBuffer);
   }
   
@@ -133,7 +133,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   if (! aDstRow) {
     *pbNewBuffer = true;
     pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyPix(m_pStreamPix);
+    pDstRowBuffer->vCopyPix(m_pRowPix);
     vAddBuffer(i_Ptn,pDstRowBuffer);
     aDstRow = pDstRowBuffer->aAllotNewRow();
     ASSERT(aDstRow);
@@ -149,12 +149,12 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 /*----------------------------------------------------------------------------*/
 /* set stream pix                                                             */
 /*----------------------------------------------------------------------------*/
-void Pot::vStreamPix(StreamPix* pStreamPix)
+void Pot::vRowPix(RowPix* pRowPix)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  //if (! m_pStreamPix) {
-    m_pStreamPix = pStreamPix;
+  //if (! m_pRowPix) {
+    m_pRowPix = pRowPix;
   //}
 }
 

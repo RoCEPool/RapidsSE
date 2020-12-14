@@ -513,21 +513,21 @@ void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to condensed streamPix format                            */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToStreamPix(StreamPix* aStreamPix, bool bPtnHash)
+void StreamDef::vToRowPix(RowPix* aRowPix, bool bPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  ASSERT(! aStreamPix->m_bInitialised);
+  ASSERT(! aRowPix->m_bInitialised);
   
-  aStreamPix->m_nCols    = nColumns(C_ALL);
-  aStreamPix->m_bPtnHash = bPtnHash;
-  if (aStreamPix->m_bPtnHash) {
-    aStreamPix->m_nCols++;
-    aStreamPix->m_nExtraCols = 1;
+  aRowPix->m_nCols    = nColumns(C_ALL);
+  aRowPix->m_bPtnHash = bPtnHash;
+  if (aRowPix->m_bPtnHash) {
+    aRowPix->m_nCols++;
+    aRowPix->m_nExtraCols = 1;
   }
-  vToColPix(aStreamPix->m_xaColPix,bPtnHash);
+  vToColPix(aRowPix->m_xaColPix,bPtnHash);
   
-  aStreamPix->m_bInitialised = true;
+  aRowPix->m_bInitialised = true;
 }
 
 /*----------------------------------------------------------------------------*/

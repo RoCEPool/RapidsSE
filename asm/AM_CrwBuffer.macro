@@ -1,0 +1,100 @@
+/*============================================================================*/
+/* AM_CrwBuffer.macro -- ASM Macros for CRWBUFFER Handler                     */
+/*============================================================================*/
+
+macro AM_CRWBUFFER_PROJECT_HANDLER
+//----------------------------------------------------------------------------//
+// macro AM_CRWBUFFER_PROJECT_HANDLER                                         //
+//----------------------------------------------------------------------------//
+  // CRWBUFFER_PROJECT_HANDLER
+  Label CRWBUFFER_HANDLER
+  EO_PRINTF "**CRWBUFFER_HANDLER**\n"
+  EO_POP
+  EO_CRW_SRC_BEGIN
+
+  // NEXT_CRW_SRC
+  Label NEXT_CRW_SRC
+  EO_CRW_SRC_NEXT
+  EO_JMP_FALSE QRY_DONE
+  EO_CALL <crwProjectRoutine>
+  EO_JMP NEXT_CRW_SRC
+  EO_JMP QRY_DONE
+ endMacro
+
+macro AM_CRW_PROJECT_ROUTINE
+//----------------------------------------------------------------------------//
+// macro AM_CRW_PROJECT_ROUTINE                                               //
+//----------------------------------------------------------------------------//
+  // CRW_PROJECT_ROUTINE
+  Label CRW_PROJECT_ROUTINE
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMNS <projectSrcColumns>
+  EO_ROW_DST_NEW
+  EO_COL_SRC_PUSHSET
+  EO_DUMP
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_SET_DST_COLUMNI                                                   //
+//----------------------------------------------------------------------------//
+macro AM_SET_DST_COLUMNI
+  // SET_DST_COLUMNI
+  EO_ROW_DST_POPCOLI <projectDstColumn>
+  EO_ROW_DST_PRINT
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_SET_DST_COLUMNS                                                   //
+//----------------------------------------------------------------------------//
+macro AM_SET_DST_COLUMNS
+  // SET_DST_COLUMNS
+  EO_ROW_DST_POPCOLS <projectDstColumn>
+  EO_ROW_DST_PRINT
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_PROJECT_END                                                       //
+//----------------------------------------------------------------------------//
+macro AM_PROJECT_END
+  // PROJECT_END
+  EO_ROW_DST_PRINT
+  EO_RETURN
+endMacro
+
+
+//----------------------------------------------------------------------------//
+// macro AM_SRC_EXISTS_ALTINDEX                                               //
+//----------------------------------------------------------------------------//
+macro AM_SRC_EXISTS_ALTINDEX
+  // SRC_EXISTS_ALTIDX
+
+  Label SRC_EXISTS_ALTIDX
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMN <projectSrcColumn>
+  EO_COL_SRC_PUSHSET
+
+  EO_ENTWRK_SETINTELM
+  EO_IXT_POS_ALTBYWRK
+  EO_JMP_FALSE RETURN_FALSE
+
+  EO_IXT_ALT_NEXT
+  EO_JMP_FALSE RETURN_FALSE
+
+  //EO_IXT_ALT_PRINT
+  EO_IXT_CMP_WRKALT
+  EO_JMP_FALSE RETURN_FALSE
+
+  // found one matching
+  Label RETURN_TRUE
+  EO_PUSH_1
+  EO_RETURN
+
+  // no matching lineitem
+  Label RETURN_FALSE
+  EO_PUSH_0
+  EO_RETURN
+endMacro
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

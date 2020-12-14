@@ -815,7 +815,7 @@ void vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElement(pDevRow->m_aRow,
-                                       pDevRow->m_pRowBuffer->aStreamPix(),
+                                       pDevRow->m_pRowBuffer->aRowPix(),
                                        iArg);
 }
 
@@ -1933,7 +1933,7 @@ void vDev_PIX_STM_PRINT(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_oStreamPix.vPrint();
+  pLogicUnit->m_oRowPix.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1945,10 +1945,10 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_xpStreamDefOut->vToStreamPix(&pLogicUnit->m_oStreamPix,
+  pLogicUnit->m_xpStreamDefOut->vToRowPix(&pLogicUnit->m_oRowPix,
                                                (bool)iAddPtnHsh);
   
-  pLogicUnit->m_xpPot->vStreamPix(&pLogicUnit->m_oStreamPix);
+  pLogicUnit->m_xpPot->vRowPix(&pLogicUnit->m_oRowPix);
   
 }
 

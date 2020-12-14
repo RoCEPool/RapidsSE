@@ -48,7 +48,7 @@ namespace MetaData
     eEC eParse(Stz* szCmd);
     void vPrint(void);
     void vToColPix(ColPix* axColPix, bool bPtnHash);
-    void vToStreamPix(StreamPix* aStreamPix, bool bPtnHash);
+    void vToRowPix(RowPix* aRowPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);
     i8   nTotalColumns(void);
     

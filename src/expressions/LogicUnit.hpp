@@ -132,7 +132,7 @@ namespace Expressions
     AggTimer   m_oAggTimer;
 
     
-    StreamPix  m_oStreamPix;    // condensed stream def
+    RowPix  m_oRowPix;    // condensed stream def
   
     EntWrk     m_oEntWrk;
 

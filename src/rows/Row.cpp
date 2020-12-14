@@ -73,9 +73,9 @@ i8 Row::nSizeBytes(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* get size of row + dtm[]                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Row::nRowProper(StreamPix* pStreamPix)
+i8 Row::nRowProper(RowPix* pRowPix)
 {
-  i8 nSize = sizeof(Row) + ( (pStreamPix->m_nCols - 1) * sizeof(Dtm) );
+  i8 nSize = sizeof(Row) + ( (pRowPix->m_nCols - 1) * sizeof(Dtm) );
   
   return nSize;
 }

@@ -24,7 +24,7 @@ CrwToRow::CrwToRow(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
   m_pRowBuffer = new RowBuffer;
   
-  m_pRowBuffer->vResolveStreamPix(pStreamDef);
+  m_pRowBuffer->vResolveRowPix(pStreamDef);
   
   _checkInitialised_(CN_CRWTOROW);
 

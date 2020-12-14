@@ -1,8 +1,10 @@
 /*============================================================================*/
-/* TlsKeys.hpp -- Thread Local Storage Keys                                   */
+/* TlsKeys.cpp -- Thread Local Storage Keys                                   */
 /*============================================================================*/
 
 #include "Resources.h"
+
+#include "TlsKeys.hpp"
 
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;

@@ -18,6 +18,15 @@ Stz* gszaEoFragments[EO_ENUMS];
 char gcaAmMacros[C_128K];
 Stz* gszaAmMacros[AM_ENUMS];
 
+const i8 C_MACRO_FILES = 6;
+char gszaAmMacroFiles[C_MACRO_FILES][128] = {
+    "../asm/AM_CrwBuffer.macro",
+    "../asm/AM_DataPulse.macro",
+    "../asm/AM_DefaultHandlers.macro",
+    "../asm/AM_Init.macro",
+    "../asm/AM_StartMarker.macro",
+    "../asm/AM_StreamDef.macro"
+};
 #include "DEV_interface.h"
 #include "LIB_interface.h"
 #include "RLU_interface.h"
@@ -287,29 +296,29 @@ void LogicCompiler::vExtractAsm(void)
   vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
 
   File* pFile = new File(nullptr);
+  char *azCrs = gcaAmMacros;
 
-  bool b = pFile->bOpenRead("../src/expressions/AsmMacros.txt"_Stz);
-  RASSERT(b);
+  //bool b = pFile->bOpenRead("../asm/AsmMacros.txt"_Stz);
+  for (i8 iMacroFile = 0; iMacroFile < C_MACRO_FILES; iMacroFile++) {
 
-  char* azCrs = gcaAmMacros;
+    vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
+    bool b = pFile->bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
+    RASSERT(b);
 
-  s4K sTok;
-  while (pFile->bNextLiteTok(sTok)) {
+    s4K sTok;
+    while (pFile->bNextLiteTok(sTok)) {
 
-    //vTrace("Found macro\n"_Stz);
-    while (bExtractAll(pFile,&azCrs,"macro"_Stz, "endMacro"_Stz))
-    {;}
+      //vTrace("Found macro\n"_Stz);
+      while (bExtractAll(pFile, &azCrs, "macro"_Stz, "endMacro"_Stz)) { ; }
+    }
+    pFile->vClose();
   }
 
-
-  if (AM::bVerbose()) {
-    //vTrace("Macros:: %s\n"_Stz,gcaAmMacros);
-    for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++) {
-      vTrace("Macro:: %s\n%s\n"_Stz,aAM[i_AM],gszaAmMacros[i_AM]);
+   if (AM::bVerbose()) {
+     for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++) {
+       vTrace("Macro[%lld]:: %s\n%s\n"_Stz, i_AM, aAM[i_AM], gszaAmMacros[i_AM]);
     }
   }
-
-  pFile->vClose();
 
   delete pFile;
 }
@@ -339,7 +348,7 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarke
     RASSERT(startMarker->bSame("macro"_Stz));
     i_AM = eFindAM(sTok);
 
-    if (AM::bVerbose())
+    //if (AM::bVerbose())
       vTrace("Macro %s [%lld]\n"_Stz, sTok.szStz(), i_AM);
 
     gszaAmMacros[i_AM] = (Stz *) *aazCrs;

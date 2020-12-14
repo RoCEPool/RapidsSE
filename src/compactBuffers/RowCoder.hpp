@@ -17,7 +17,7 @@ namespace CompactBuffers
   {
   public:
     static i8   iBaseOffsetData(StreamDef* pStreamDef);
-    static i8   iBaseOffsetData(StreamPix* pStreamPix);
+    static i8   iBaseOffsetData(RowPix* pRowPix);
     static i8   iBaseOffsetMeta(void);
     static i8   nControlSize(void);
     static i8   iDteFromEdt(i8 wEdtDte, i8 iEra);
@@ -26,7 +26,7 @@ namespace CompactBuffers
     //static void vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_);
     static i8   nHeadSize(StreamDef* pStreamDef);
     static i8   nMetaSize(StreamDef* pStreamDef);
-    static i8   nMetaSize(StreamPix* pStreamPix);
+    static i8   nMetaSize(RowPix* pRowPix);
   
   /*--------------------------------------------------------------------------*/
   /* how many bytes does given encoding occupy in the data portion of a head? */

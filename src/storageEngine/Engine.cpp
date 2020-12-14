@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+#include "TlsKeys.hpp"
+
 extern Args         gxArgs;
 
 extern AttachMap*   gpAttachMap;

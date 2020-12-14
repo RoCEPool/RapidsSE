@@ -24,7 +24,7 @@ namespace Rows
     ~Row(void) noexcept(false);
   
     static i8 nSizeBytes(StreamDef* pStreamDef);
-    static i8 nRowProper(StreamPix* pStreamPix);
+    static i8 nRowProper(RowPix* pRowPix);
   
     void vDump(StreamDef* pStreamDef);
   

@@ -12,7 +12,7 @@ namespace Rows
 
     i8 m_nRowSizeProper;
   
-    StreamPix m_oStreamPix;
+    RowPix m_oRowPix;
   
     Row* m_aRowCur;     // current row
     i8   m_i_RowCrs;    // current logical row number
@@ -44,14 +44,14 @@ namespace Rows
   
   public:
   
-    void vResolveStreamPix(StreamDef* pStreamDef);
+    void vResolveRowPix(StreamDef* pStreamDef);
     
     Row* aAllotNewRow(void);
   
     i8   nColumns(void);
     ColPix* axaColPix(void);
     i8    iColumn(Row* aRow, i8 iColumn);
-    void  vCopyPix(StreamPix* pStreamPixSrc);
+    void  vCopyPix(RowPix* pRowPixSrc);
     void  vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash);
 
     Dtm* aColDtm(i8 i_Col);
@@ -105,7 +105,7 @@ namespace Rows
     Row*  aSetCurRow(i8 iRow);
     i8    iOffsetInWsp(Row* aRow);
     void  vSlabReport(void);
-    StreamPix* aStreamPix(void);
+    RowPix* aRowPix(void);
     void  vZeroRow(Row* aRow);
 
   private:
@@ -155,9 +155,9 @@ RowBox_t<SIZE>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   vInitRowBox_t();
 
-  pStreamDef->vToStreamPix(&m_oStreamPix,bAddPtnHash);
+  pStreamDef->vToRowPix(&m_oRowPix,bAddPtnHash);
 
-  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
+  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
   
   //_postcondition_(_ADDRESS_);
 }
@@ -209,13 +209,13 @@ void RowBox_t<SIZE>::vInitRowBox_t(void)
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
-void RowBox_t<SIZE>::vResolveStreamPix(StreamDef* pStreamDef)
+void RowBox_t<SIZE>::vResolveRowPix(StreamDef* pStreamDef)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
-  pStreamDef->vToStreamPix(&m_oStreamPix,false);
+  pStreamDef->vToRowPix(&m_oRowPix,false);
   
-  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
+  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +229,7 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(m_oStreamPix.m_bInitialised);
+  RASSERT(m_oRowPix.m_bInitialised);
   
   m_nRowStringBytes = 0;
   m_i_ColCrs  = 0;
@@ -257,7 +257,7 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 template <i8 SIZE>
 ColPix* RowBox_t<SIZE>::axaColPix(void)
 {
-  return m_oStreamPix.m_xaColPix;
+  return m_oRowPix.m_xaColPix;
 }
 
 
@@ -265,11 +265,11 @@ ColPix* RowBox_t<SIZE>::axaColPix(void)
 /* copy given stream pix into the stream pix in this row                      */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
-void RowBox_t<SIZE>::vCopyPix(StreamPix* pStreamPixSrc)
+void RowBox_t<SIZE>::vCopyPix(RowPix* pRowPixSrc)
 {
-  MemLib::vCopy(&m_oStreamPix,pStreamPixSrc,sizeof(StreamPix),CN_ROWBUFFER);
+  MemLib::vCopy(&m_oRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
-  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
+  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,13 +283,13 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
   
   ASSERT(0 == m_i_ColCrs);
   
-  i8 nCols = m_oStreamPix.m_nCols;
+  i8 nCols = m_oRowPix.m_nCols;
   
   i8 i_Col;
   
   for (i_Col = 0; i_Col < nCols; i_Col++) {
     
-    eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
     
     if (DM_VCH == eDatum) {
        // vch datum
@@ -316,7 +316,7 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
   }
   
 //  Row* aRowDst = aRowAdr(nRows() - 1);
-//  SP_RowPix spPix(nCols,m_oStreamPix.m_xaColPix);
+//  SP_RowPix spPix(nCols,m_oRowPix.m_xaColPix);
 //  vTrace("CopyRow: %s\n"_Stz,spPix.sz(aRowDst));
 }
 
@@ -329,7 +329,7 @@ i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
   i8 iVal;
   Stz* szSrcStz;
     
-  eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+  eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
     
   if (DM_VCH == eDatum) {
     // vch datum
@@ -361,7 +361,7 @@ i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::nColumns(void)
 {
-  return m_oStreamPix.m_nCols;
+  return m_oRowPix.m_nCols;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,7 +477,7 @@ Row* RowBox_t<SIZE>::aFirstRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_oStreamPix.m_bInitialised);
+  RASSERT(m_oRowPix.m_bInitialised);
   
   Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aFirstItem();
   
@@ -492,7 +492,7 @@ Row* RowBox_t<SIZE>::aLastRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_oStreamPix.m_bInitialised);
+  RASSERT(m_oRowPix.m_bInitialised);
 
   Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aFirstItem();
   Row* aLastRow = nullptr;
@@ -513,7 +513,7 @@ Row* RowBox_t<SIZE>::aNextRow(Row* aPriorRow)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(m_oStreamPix.m_bInitialised);
+  RASSERT(m_oRowPix.m_bInitialised);
 
   Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aAdjacentItem(aPriorRow, m_nRowSizeProper);
   
@@ -713,7 +713,7 @@ template <i8 SIZE>
 i8 RowBox_t<SIZE>::nExtraCols(void)
 {
   
-  return m_oStreamPix.m_nExtraCols;
+  return m_oRowPix.m_nExtraCols;
 }
 
 
@@ -725,9 +725,9 @@ template <i8 SIZE>
 void RowBox_t<SIZE>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 {
         
-  pStreamDef->vToStreamPix(&m_oStreamPix,bPtnHash);
+  pStreamDef->vToRowPix(&m_oRowPix,bPtnHash);
   
-  m_nRowSizeProper = Row::nRowProper(&m_oStreamPix);
+  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,7 +764,7 @@ void RowBox_t<SIZE>::vNormaliseStrings(void)
 //for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
   for (i8 i_Col = 13; i_Col < 14; i_Col++) {
 
-    eDM eDatum = (eDM)m_oStreamPix.m_xaColPix[i_Col].m_uDatum;
+    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
     
     if (DM_VCH != eDatum)
       continue;
@@ -849,7 +849,7 @@ template <i8 SIZE>
 bool RowBox_t<SIZE>::bPtnHash(void)
 {
 
-  return m_oStreamPix.m_bPtnHash;
+  return m_oRowPix.m_bPtnHash;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -859,7 +859,7 @@ template <i8 SIZE>
 i8 RowBox_t<SIZE>::iPtnOfRow(Row* aRow)
 {
 
-  i8 i_HshCol = m_oStreamPix.m_nCols - 1;
+  i8 i_HshCol = m_oRowPix.m_nCols - 1;
     
   i8 i_Ptn = aRow->iColVal_int(i_HshCol);
   
@@ -895,7 +895,7 @@ void RowBox_t<SIZE>::vResetRow(void)
 template <i8 SIZE>
 i8 RowBox_t<SIZE>::nRowProperBytes(void)
 {
-  i8 nBytes = (m_oStreamPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  i8 nBytes = (m_oRowPix.m_nCols + 1 /* dummy */ ) * C_BYTES_PER_WORD;
   
   return nBytes;
 }
@@ -955,10 +955,10 @@ void RowBox_t<SIZE>::vSlabReport(void)
 /* get the condensed stream def                                               */
 /*----------------------------------------------------------------------------*/
 template <i8 SIZE>
-StreamPix* RowBox_t<SIZE>::aStreamPix(void)
+RowPix* RowBox_t<SIZE>::aRowPix(void)
 {
 
-  return & m_oStreamPix;
+  return & m_oRowPix;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -968,7 +968,7 @@ template <i8 SIZE>
 void RowBox_t<SIZE>::vZeroRow(Row *aRow)
 {
 
-  i8 nCellBytes = m_oStreamPix.m_nCols * C_BYTES_PER_WORD;
+  i8 nCellBytes = m_oRowPix.m_nCols * C_BYTES_PER_WORD;
 
   MemLib::vZero(aRow->aCellArray(),nCellBytes,CN_ROWBUFFER);
 }
@@ -984,7 +984,7 @@ template <i8 SIZE>
 i8 RowBox_t<SIZE>::i_RowBufferCell(i8 i_Row)
 {
   
-  i8 i_Cell_slab = (i_Row + 1) * (m_oStreamPix.m_nCols + 1 /* Object */ );
+  i8 i_Cell_slab = (i_Row + 1) * (m_oRowPix.m_nCols + 1 /* Object */ );
   
   i8 i_CellHazard = SIZE / C_BYTES_PER_WORD;
   

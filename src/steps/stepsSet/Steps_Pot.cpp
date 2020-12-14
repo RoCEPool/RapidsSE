@@ -124,10 +124,10 @@ void Step::vPotUseStreamDefOut(void)
     
   i8 iAddPtnHsh = m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->m_xpStreamDefOut->vToStreamPix(&m_pLogicUnit->m_oStreamPix,
+  m_pLogicUnit->m_xpStreamDefOut->vToRowPix(&m_pLogicUnit->m_oRowPix,
                                                (bool)iAddPtnHsh);
   
-  m_pLogicUnit->m_xpPot->vStreamPix(&m_pLogicUnit->m_oStreamPix);
+  m_pLogicUnit->m_xpPot->vRowPix(&m_pLogicUnit->m_oRowPix);
 
   EXIT();
 }

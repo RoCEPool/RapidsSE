@@ -158,11 +158,11 @@ void EntWrk::vAppendElement(Row* aRow, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAppendElement(Row* aRow, StreamPix* pStreamPix, i8 i_Col)
+void EntWrk::vAppendElement(Row* aRow, RowPix* pRowPix, i8 i_Col)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  eDM eDatum = (eDM)pStreamPix->m_xaColPix[i_Col].m_uDatum;
+  eDM eDatum = (eDM)pRowPix->m_xaColPix[i_Col].m_uDatum;
     
   if (aRow->bIsColNull(i_Col)) {
     vAppendNull();

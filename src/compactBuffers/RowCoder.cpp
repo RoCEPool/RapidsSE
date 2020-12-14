@@ -26,11 +26,11 @@ i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* calc base offset for column data in head line                              */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffsetData(StreamPix* pStreamPix)
+i8 RowCoder::iBaseOffsetData(RowPix* pRowPix)
 {
   i8 i_OffsetMeta = nControlSize();
   
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamPix);
+  i8 nMetaSize = RowCoder::nMetaSize(pRowPix);
   
   i8 i_OffsetData = i_OffsetMeta + nMetaSize;
   
@@ -185,7 +185,7 @@ i8 RowCoder::nMetaSize(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* calc size of meta tape for given column vector (does not incl <W>)         */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nMetaSize(StreamPix* pStreamPix)
+i8 RowCoder::nMetaSize(RowPix* pRowPix)
 {
   //  i8 nColumns = pColVec->nItems();
   //
@@ -194,7 +194,7 @@ i8 RowCoder::nMetaSize(StreamPix* pStreamPix)
   //  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
   //                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
   
-  i8 nMetaBytes = pStreamPix->m_nCols - pStreamPix->m_nExtraCols;
+  i8 nMetaBytes = pRowPix->m_nCols - pRowPix->m_nExtraCols;
   
   return nMetaBytes;
 }
