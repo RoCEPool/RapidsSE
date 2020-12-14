@@ -13,7 +13,7 @@ namespace Rows
   friend class DataBuffers::RowBuffer;
 
   private:
-    Dtm m_waColVal[1];
+    Dtm m_wxaColumnCell[1];
     
   public:
     void* operator new(size_t);
@@ -59,7 +59,7 @@ namespace Rows
 
     i8 i_Ofs = iColVal_int(i_Col);
       
-    Stz* szStz = aAdd<Stz*>(&m_waColVal[i_Col],i_Ofs);
+    Stz* szStz = aAdd<Stz*>(&m_wxaColumnCell[i_Col],i_Ofs);
         
     return szStz;
   }
