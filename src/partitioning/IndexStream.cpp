@@ -75,7 +75,7 @@ bool IndexStream::bDelete(void)
   i8 iIndexNo = m_pIndex->iIndexNo();
   IndexTree* pIndexTree = m_pTablePtn->pIndexTree(iIndexNo);
   
-  HV_RowSingle hvRowSingle(pTable->pStreamDef(),C_ALL);
+  HV_RowSingle hvRowSingle(pTable->pStreamDef());
   
   bool bBefore = true;
   
@@ -172,7 +172,7 @@ CrwBuffer* IndexStream::pRead_idxstm(RowOnce* pRowOnce)
   CrwBuffer* pCrwBuffer = nullptr;
   RowCompactor* pRowCompactor = nullptr;
   Table* pTable = m_pIndex->pTable();
-  HV_RowSingle hvRowSingle(pTable->pStreamDef(),C_ALL);
+  HV_RowSingle hvRowSingle(pTable->pStreamDef());
   
   bool bBefore = true;
   

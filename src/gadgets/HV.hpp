@@ -25,10 +25,10 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    HV<CLASSNM,PARAMETER>(PARAMETER* pParameter, i8 iValue)
-    {
-      m_pObject = new CLASSNM(pParameter,iValue);
-    }
+//    HV<CLASSNM,PARAMETER>(PARAMETER* pParameter, i8 iValue)
+//    {
+//      m_pObject = new CLASSNM(pParameter,iValue);
+//    }
     
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */

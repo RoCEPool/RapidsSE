@@ -183,7 +183,7 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 i_KeyCol, i8 iColVec)
   
   Crw* aCrw;
 
-  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef);
   
   SrtSet* aSrtSet = aFirstSrtSet();
   while (aSrtSet) {
@@ -319,7 +319,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       // get the dataRow of rowref
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRef));
       
-      HV_RowSingle hvRowSingle(pStreamDef, iRowRef);
+      HV_RowSingle hvRowSingle(pStreamDef);
       
       // inflate the row
       if (aCrw) {
@@ -429,7 +429,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
       // get the srtSet dataRow
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
       
-      HV_RowSingle hvRowSingle(pStreamDef, iRowRefs);
+      HV_RowSingle hvRowSingle(pStreamDef);
 
       // inflate the row
       if (aCrw) {

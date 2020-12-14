@@ -1292,7 +1292,7 @@ void EntBuffer::vPrintRows(void)
   
   StreamDef* pStreamDef = m_pIndexTree->pIndex()->pTable()->pStreamDef();
   
-  HV_RowSingle hvRowSingle(pStreamDef, C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef);
   
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt, 0)) {

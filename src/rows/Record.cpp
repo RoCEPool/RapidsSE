@@ -16,14 +16,13 @@ __aFooterFunction(Record)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Record::Record(StreamDef* pStreamDef, i8 iSubset)
+Record::Record(StreamDef* pStreamDef)
 : Object(CN_RECORD)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_azCursor   = az();
   m_pStreamDef = pStreamDef;
-  m_iSubSet    = iSubset;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);

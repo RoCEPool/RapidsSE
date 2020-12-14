@@ -161,7 +161,7 @@ void Step::vIndexDeleteNext(void)
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  HV_RowSingle hvRowSingle(pTable->pStreamDef(),C_ALL);
+  HV_RowSingle hvRowSingle(pTable->pStreamDef());
   
   bool bBefore = true;
   Ent* aEntryToDelete;
