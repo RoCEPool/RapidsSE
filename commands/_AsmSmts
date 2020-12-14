@@ -36,7 +36,8 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
-/time load lineitem "/DATA/TPCH/lineitem1.csv";
+///time load lineitem "/DATA/TPCH/lineitem1.csv";
+/time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
 tableScan lineitem;
 

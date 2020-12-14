@@ -28,9 +28,9 @@ void vHeartInit(void)
   memset(&gxHeartbeat,0x00,sizeof(Heartbeat));
   strncpy(gxHeartbeat.m_acBuildGitHash,(char*)gsBuildGitHash,32);
   
-  char azPath[256];
-  sprintf(azPath,"../tmp/rapidsse_pid%lld",(i8)0); //getpid());
-  gaHearbeatFile = fopen(azPath,"w");
+//  char azPath[256];
+//  sprintf(azPath,"../tmp/rapidsse_pid%lld",(i8)0); //getpid());
+//  gaHearbeatFile = fopen(azPath,"w");
   
   PsxThd::iSpawnPosixThread(vHeartLoop,nullptr);
 }
@@ -60,8 +60,8 @@ void* vHeartLoop(void*)
             );
     
     //fseeko(gaHearbeatFile,0,SEEK_SET);
-    fwrite(azHeartbeat, 1, strlen(azHeartbeat)+1,gaHearbeatFile);
-    fflush(gaHearbeatFile);
+//    fwrite(azHeartbeat, 1, strlen(azHeartbeat)+1,gaHearbeatFile);
+//    fflush(gaHearbeatFile);
 
     sleep(3);
   }
