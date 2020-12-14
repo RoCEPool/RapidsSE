@@ -1005,7 +1005,7 @@ void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_pRowBuffer->vPositionOnCell(iArg);
-  pDevRow->m_pRowBuffer->vDeposit(iTop);
+  pDevRow->m_pRowBuffer->vDepositColVal(iTop);
 }
 
 /*----------------------------------------------------------------------------*/

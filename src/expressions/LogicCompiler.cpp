@@ -495,29 +495,17 @@ bool LogicCompiler::bCompile(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
 #ifdef __TINYC
-  #ifdef WITH_APPLE
-  
-    // TODO: This needs to change when we migrate to a makefile-only project
-    tcc_add_include_path((TCCState*)m_aTccState, "../thirdparty/tcc/lib/macos/tcc/include");
-    tcc_add_library_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/macos/tcc");
-    tcc_set_lib_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/macos/tcc");
-  
-  #elif defined(WITH_LINUX)
-    // Compilation search path so that dynamically generated code can find include files for libtcc1.a
-    tcc_add_include_path((TCCState*)m_aTccState, "../thirdparty/tcc/lib/tcc/include");
-  
-    // Library search path so that dynamically generated code can find the libtcc1.a library
-    tcc_add_library_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
-  
-    // Library search path so that dynamically generated code can find the libtcc1.a library
-    // It's not entirely clear if this is required in addition to
-    // the call to tcc_add_library_path above.
-    // Some reference here: https://lists.gnu.org/archive/html/tinycc-devel/2010-11/msg00023.html
-    tcc_set_lib_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
-  
-  #else
-    #error "Unknown Operating Library"
-  #endif
+  // Compilation search path so that dynamically generated code can find include files for libtcc1.a
+  tcc_add_include_path((TCCState*)m_aTccState, "../thirdparty/tcc/lib/tcc/include");
+
+  // Library search path so that dynamically generated code can find the libtcc1.a library
+  tcc_add_library_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
+
+  // Library search path so that dynamically generated code can find the libtcc1.a library
+  // It's not entirely clear if this is required in addition to
+  // the call to tcc_add_library_path above.
+  // Some reference here: https://lists.gnu.org/archive/html/tinycc-devel/2010-11/msg00023.html
+  tcc_set_lib_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
   
   if (-1 == tcc_compile_string((TCCState*)m_aTccState,m_caSource))
     return false;
