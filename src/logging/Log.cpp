@@ -4,7 +4,8 @@
 
 #include "Logging.h"
 
-#include "PsxThd.hpp"  //?
+#include "File.hpp" //?
+#include "PsxThd.hpp" //?
 
 extern Log* gpLog;
 

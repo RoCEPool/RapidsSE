@@ -5,6 +5,7 @@
 #include "StorageEngine.h"
 
 #include "Dir.hpp" //?
+#include "File.hpp" //?
 
 extern Args gxArgs;
 

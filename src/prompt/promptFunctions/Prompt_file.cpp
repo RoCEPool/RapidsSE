@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "File.hpp" //?
+
 PromptFun __Prompt_file (
   PF_FILESTATS,      // prompt function
   "Prompt_file"_Stz, // name of the prompt function

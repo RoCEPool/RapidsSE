@@ -4,6 +4,8 @@
 
 #include "Utilities.h"
 
+#include "File.hpp" //?
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -46,7 +48,6 @@ void SchemaTest::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 SchemaTest::SchemaTest(Stz* sStream)
 : Object(CN_SCHEMATEST)
-, m_oFile(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
   
@@ -81,6 +82,9 @@ SchemaTest::SchemaTest(Stz* sStream)
     m_eColumns[i_Col] = CT_NONE;
   m_sStatement = C_NO_NAME;
 
+  
+  m_pFile = new File(nullptr);
+  
   _checkInitialised_(CN_SCHEMATEST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
@@ -92,6 +96,8 @@ SchemaTest::SchemaTest(Stz* sStream)
 SchemaTest::~SchemaTest(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
+  
+  delete m_pFile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +271,7 @@ void SchemaTest::vAddZcolumns(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vCloseFile(void)
 {
-  m_oFile.vClose();
+  m_pFile->vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,18 +280,18 @@ void SchemaTest::vCloseFile(void)
 void SchemaTest::vFileFooter(void)
 {
 #ifdef WITH_SETH_SUPPORT
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/*----------------------------------------------------------------------------*/"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/* end                                                                        */"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/*----------------------------------------------------------------------------*/"_Stz);
 #else
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/*============================================================================*/"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/* end                                                                        */"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/*============================================================================*/"_Stz);
 #endif
 }
@@ -296,18 +302,18 @@ void SchemaTest::vFileFooter(void)
 void SchemaTest::vFileHeader(void)
 {
 #ifdef WITH_SETH_SUPPORT
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/*----------------------------------------------------------------------------*/"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/* schemaTest.test -- schema stress test (auto generated)                     */"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
    "/*----------------------------------------------------------------------------*/"_Stz);
 #else
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/*============================================================================*/"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/* _schemaTest -- schema stress test (auto generated)                         */"_Stz);
-  m_oFile.vPrint("%s\n"_Stz,
+  m_pFile->vPrint("%s\n"_Stz,
   "/*============================================================================*/"_Stz);
 #endif
 }
@@ -593,7 +599,7 @@ void SchemaTest::vForPattern(i8 nX, i8 nC, i8 nZ)
   
   vAddCcolumns(0);
   
-  m_oFile.vPrint("\n"_Stz);
+  m_pFile->vPrint("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,7 +607,7 @@ void SchemaTest::vForPattern(i8 nX, i8 nC, i8 nZ)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vOpenFile(void)
 {
-  bool bOpened = m_oFile.bOpenWrite(m_sFilePath);
+  bool bOpened = m_pFile->bOpenWrite(m_sFilePath);
   RASSERT(bOpened);
 }
 
@@ -649,7 +655,7 @@ eCT SchemaTest::eRandomType(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vWriteLsCol(void)
 {
-  m_oFile.vPrint("lscol %s ;\n"_Stz,m_sTableNm.azChar());
+  m_pFile->vPrint("lscol %s ;\n"_Stz,m_sTableNm.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -657,12 +663,12 @@ void SchemaTest::vWriteLsCol(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vWriteRows(void)
 {
-  m_oFile.vPrint("rows:\n"_Stz);
+  m_pFile->vPrint("rows:\n"_Stz);
   for (i8 i_Col = 0; i_Col < m_nTotalColumns; i_Col++) {
     vFormRow(i_Col);
-    m_oFile.vPrint("%s\n"_Stz,m_sRow.azChar());
+    m_pFile->vPrint("%s\n"_Stz,m_sRow.azChar());
   }
-  m_oFile.vPrint("\n"_Stz);
+  m_pFile->vPrint("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -670,7 +676,7 @@ void SchemaTest::vWriteRows(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vWriteStatement(void)
 {
-  m_oFile.vPrint("%s\n"_Stz,m_sStatement.azChar());
+  m_pFile->vPrint("%s\n"_Stz,m_sStatement.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -678,7 +684,7 @@ void SchemaTest::vWriteStatement(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vWriteSuccess(void)
 {
-  m_oFile.vPrint("success\n\n"_Stz);
+  m_pFile->vPrint("success\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

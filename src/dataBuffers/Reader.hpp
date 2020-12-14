@@ -9,7 +9,7 @@ namespace DataBuffers
   {
   public:
   
-    File m_oFile; // file being used
+    File* m_pFile; // file being used
 
     i8   m_i_Seek;
 

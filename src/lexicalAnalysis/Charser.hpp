@@ -21,7 +21,7 @@ namespace LexicalAnalysis
     Word*    m_pInclude;  // the include file/group
 
     // source
-    File     m_oSrcFile;  // given file
+    File*    m_pSrcFile;  // given file
     i8       m_iSrcLine;  // line number of raw char in source
     i8       m_iSrcCol;   // column number of raw char in source
   

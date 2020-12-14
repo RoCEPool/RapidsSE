@@ -4,6 +4,8 @@
 
 #include "DataBuffers.h"
 
+#include "File.hpp" //?
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -18,11 +20,12 @@ __aFooterFunction(Reader)
 /*----------------------------------------------------------------------------*/
 Reader::Reader(void)
 : Object(CN_READER)
-, m_oFile(nullptr)
 {
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
     
   m_i_Seek = 0;
+  
+  m_pFile = new File(nullptr);
   
   _checkInitialised_(CN_PERUSE);
   
@@ -36,8 +39,10 @@ Reader::~Reader(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
   
-  if (m_oFile.bIsOpen())
-    m_oFile.vClose();
+  if (m_pFile->bIsOpen())
+    m_pFile->vClose();
+  
+  delete m_pFile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +56,7 @@ void Reader::vCloseFile(void)
 {
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
 
-  m_oFile.vClose();
+  m_pFile->vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +67,7 @@ bool Reader::bOpenRead(Stz* szPath)
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
 
   // open the file
-  bool bOpened = m_oFile.bOpenRead(szPath);
+  bool bOpened = m_pFile->bOpenRead(szPath);
   
   return bOpened;
 }
@@ -74,9 +79,9 @@ i8 Reader::nReadLines(Stz* szInto, i8 nMaxBytes)
 {
   _precondition_(_MAGIC_,CN_READER,_FOOTER_);
 
-  m_oFile.vSeek(m_i_Seek);
+  m_pFile->vSeek(m_i_Seek);
   
-  i8 nBytesRead = m_oFile.nReadBytes(szInto->azChar(),nMaxBytes);
+  i8 nBytesRead = m_pFile->nReadBytes(szInto->azChar(),nMaxBytes);
   
   ((char*)szInto)[nBytesRead] = '\0';
 

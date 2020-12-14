@@ -4,8 +4,9 @@
 
 #include "Prompt.h"
 
-#include "Dir.hpp"     //?
-#include "PsxThd.hpp"  //?
+#include "Dir.hpp" //?
+#include "File.hpp" //?
+#include "PsxThd.hpp" //?
 
 extern Args          gxArgs;
 

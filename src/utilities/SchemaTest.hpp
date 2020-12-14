@@ -13,7 +13,7 @@ namespace Utilities
     i8   m_nTests;    // number of tests generated
   
     s256 m_sFilePath; // file name
-    File m_oFile;     // file to write to
+    File* m_pFile;    // file to write to
   
     s32  m_sStream;   // stream prefix
     s32  m_sTableNm;  // name of the table

@@ -4,6 +4,8 @@
 
 #include "Steps.h"
 
+#include "File.hpp" //?
+
 extern EnvFlags gxEnvFlags;;
 
 /*----------------------------------------------------------------------------*/

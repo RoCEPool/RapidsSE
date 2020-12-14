@@ -4,6 +4,8 @@
 
 #include "Logging.h"
 
+#include "File.hpp" //?
+
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/

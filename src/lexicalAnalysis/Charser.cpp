@@ -4,6 +4,8 @@
 
 #include "LexicalAnalysis.h"
 
+#include "File.hpp" //?
+
 extern Args gxArgs;
 
 /*----------------------------------------------------------------------------*/
@@ -21,7 +23,6 @@ __aFooterFunction(Charser)
 /*----------------------------------------------------------------------------*/
 Charser::Charser(Charser* pNext)
 : Object(CN_CHARSER)
-, m_oSrcFile(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
@@ -37,6 +38,8 @@ Charser::Charser(Charser* pNext)
   m_bUseClosed = true;
   m_bUseEnded  = true;
   
+  m_pSrcFile = new File(nullptr);
+  
   vResetCharser();
   
   _checkInitialised_(CN_CHARSER);
@@ -51,8 +54,10 @@ Charser::~Charser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  if (m_oSrcFile.bIsOpen())
-    m_oSrcFile.vClose();
+  if (m_pSrcFile->bIsOpen())
+    m_pSrcFile->vClose();
+  
+  delete m_pSrcFile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +189,7 @@ bool Charser::bIsStdin(void)
   if (IS_STDIN != m_eSource)
     return false;
 
-  bool bIsStdin = m_oSrcFile.bIsStdin();
+  bool bIsStdin = m_pSrcFile->bIsStdin();
 
   return bIsStdin;
 }
@@ -381,8 +386,8 @@ void Charser::vUseClose(void)
   switch (m_eSource) {
       
     case IS_FILE:
-      ASSERT( m_oSrcFile.bIsOpen() );
-      m_oSrcFile.vClose();
+      ASSERT( m_pSrcFile->bIsOpen() );
+      m_pSrcFile->vClose();
       break;
       
     case IS_STDIN:
@@ -427,7 +432,7 @@ bool Charser::bUseFile(Stz* szPath)
   
   m_sPath.vSprint("file: %s"_Stz,szPath);
   
-  m_bUseOpened = m_oSrcFile.bOpenRead(szPath);
+  m_bUseOpened = m_pSrcFile->bOpenRead(szPath);
    
   return m_bUseOpened;
 }
@@ -461,7 +466,7 @@ void Charser::vUseStdin(void)
   
   ASSERT(IS_NONE == m_eSource);
   
-  m_oSrcFile.vUseStdin();
+  m_pSrcFile->vUseStdin();
   m_eSource = IS_STDIN;
   m_bRead = true;
   
@@ -596,7 +601,7 @@ void Charser::vResetCharser(void)
   m_pInclude   = nullptr;
   
   // source
-  m_oSrcFile.vReset();
+  m_pSrcFile->vReset();
   m_iSrcLine   = 0;
   m_iSrcCol    = 0;
   
@@ -1083,7 +1088,7 @@ void Charser::vLoadRegWithRawCharFromFile(AnnChar& rxReg)
     return;
   }
   
-  ASSERT(m_oSrcFile.bIsOpen());
+  ASSERT(m_pSrcFile->bIsOpen());
   
   if (! m_bSingleLineCmd) {
     vReadFileIntoRawBuff();
@@ -1123,8 +1128,8 @@ void Charser::vLoadRegWithRawCharFromStdin(AnnChar& rxReg)
     return;
   }
   
-  ASSERT(m_oSrcFile.bIsStdin());
-  ASSERT(m_oSrcFile.bIsOpen());
+  ASSERT(m_pSrcFile->bIsStdin());
+  ASSERT(m_pSrcFile->bIsOpen());
   
   if (! m_bSingleLineCmd) {
     vReadStdinIntoRawBuff();
@@ -1208,7 +1213,7 @@ void Charser::vReadFileIntoRawBuff(void)
   
   do {
     
-    cInput = m_oSrcFile.cGetChar();
+    cInput = m_pSrcFile->cGetChar();
     
     *acRawLineCrs++ = cInput;
     
@@ -1249,7 +1254,7 @@ void Charser::vReadStdinIntoRawBuff(void)
       
   for (;;) {
     
-    char cInput = m_oSrcFile.cGetChar();
+    char cInput = m_pSrcFile->cGetChar();
     
     *acRawLine++ = cInput;
     

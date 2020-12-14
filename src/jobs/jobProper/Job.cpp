@@ -4,6 +4,7 @@
 
 #include "Jobs.h"
 
+#include "File.hpp" //?
 
 Atomic gixJob;
 

@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+#include "File.hpp" //?
+
 extern Args  gxArgs;
 
 extern Stz* gsBuildGitHash;

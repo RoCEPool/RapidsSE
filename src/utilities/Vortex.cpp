@@ -4,6 +4,8 @@
 
 #include "Utilities.h"
 
+#include "File.hpp" //?
+
 #define TRACE(fmt, ...) if (m_bTrace) vTrace(fmt, ##__VA_ARGS__)
 
 #define CHECKED(fun)    if (! fun) vThrowProblem(__LINE__);
