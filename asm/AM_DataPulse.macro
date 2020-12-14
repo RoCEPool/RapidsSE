@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* AM_DataPulse.macro -- ASM Macros for DataPulse Marker                      */
+/*============================================================================*/
+macro AM_DATAPULSE_HANDLER
+//----------------------------------------------------------------------------//
+// macro DATAPULSE_HANDLER                                                    //
+//----------------------------------------------------------------------------//
+  // DATAPULSE HANDLER
+  Label DATAPULSE_HANDLER
+  EO_PRINTF "**DATAPULSE_HANDLER**\n"
+  EO_POP
+
+  EO_CALL <dataPulseProcessRoutine>
+  EO_JMP QRY_DONE
+endMacro
+
+macro AM_TABLE_SCAN
+//----------------------------------------------------------------------------//
+// macro AM_TABLE_SCAN                                                        //
+//----------------------------------------------------------------------------//
+  Label TABLE_SCAN
+  EO_TABLEPTN_GRABREAD
+  EO_REG_PTNSTREAM_NEW
+  EO_REG_PTNSTREAM_OPEN
+
+  EO_HANDLER <logicUnitHandler>
+  EO_CALLAGAIN
+
+  EO_JMP QRY_DONE
+endMacro
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
