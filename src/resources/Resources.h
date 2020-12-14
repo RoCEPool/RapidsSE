@@ -20,7 +20,7 @@ namespace Resources
 //?#include "Dir.hpp"
 //?#include "Fifo.hpp"
 #include "File.hpp"
-#include "PsxThd.hpp"
+//?#include "PsxThd.hpp"
 //?#include "Socket.hpp"
 //?#include "TlsKeys.hpp"
 

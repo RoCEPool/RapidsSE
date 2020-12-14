@@ -4,7 +4,8 @@
 
 #include "Resources.h"
 
-#include "TlsKeys.hpp"
+#include "TlsKeys.hpp" //?
+#include "PsxThd.hpp"  //?
 
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;

@@ -6,6 +6,8 @@
 #include "Heart.h"
 #include "Heartbeat.hpp"
 
+#include "PsxThd.hpp"  //?
+
 extern Args gxArgs;
 
 extern Stz* gsBuildGitHash;

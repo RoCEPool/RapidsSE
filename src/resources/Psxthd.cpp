@@ -1,9 +1,10 @@
 /*============================================================================*/
-/* PsxThd - a posix thread                                                    */
+/* PsxThd.cpp - a posix thread                                                */
 /*============================================================================*/
 
 #include "Resources.h"
 
+#include "PsxThd.hpp"  //?
 
 Atomic gixPsxThd;
 

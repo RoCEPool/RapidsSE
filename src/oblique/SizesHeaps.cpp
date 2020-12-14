@@ -6,6 +6,7 @@
 
 #include "Dir.hpp"    //?
 #include "Fifo.hpp"   //?
+#include "PsxThd.hpp" //?
 #include "Socket.hpp" //?
 
 /*----------------------------------------------------------------------------*/

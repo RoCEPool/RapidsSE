@@ -4,6 +4,8 @@
 
 #include "Threads.h"
 
+#include "PsxThd.hpp"  //?
+
 Atomic gixThread;
 
 extern pthread_key_t giTLS_ThreadKey;

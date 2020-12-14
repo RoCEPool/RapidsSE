@@ -4,6 +4,8 @@
 
 #include "Tasks.h"
 
+#include "PsxThd.hpp" //?
+
 Atomic gixTask;
 
 extern pthread_key_t giTLS_TaskKey;

@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "PsxThd.hpp"  //?
+
 PromptFun __Prompt_sleepers (
   PF_SLEEPERS,           // prompt function
   "Prompt_sleepers"_Stz, // name of the prompt function
