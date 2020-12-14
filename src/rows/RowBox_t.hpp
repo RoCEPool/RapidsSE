@@ -77,9 +77,9 @@ namespace Rows
   
   
     void vAdvanceCursor(void);
-    void vDeposit(d8 dVal);
-    void vDeposit(i8 iVal);
-    void vDeposit(Stz* szVal);
+    void vDepositColVal(d8 dColVal);
+    void vDepositColVal(i8 iColVal);
+    void vDepositColVal(Stz* szColVal);
     char* azDepositString_begin(void);
     void vDepositString_end(i8 nSize);
 
@@ -295,24 +295,24 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
        // vch datum
 
       if (C_DATUM_NULL == aRowSrc->iColVal_int(i_Col)) {
-        vDeposit(C_DATUM_NULL);
+        vDepositColVal(C_DATUM_NULL);
       }
       else {
         szSrcStz = aRowSrc->szVal_rsb(i_Col);
-        vDeposit(szSrcStz);
+        vDepositColVal(szSrcStz);
       }
     }
     else {
       // all others
      
       iVal = aRowSrc->iColVal_int(i_Col);
-      vDeposit(iVal);
+      vDepositColVal(iVal);
     }
   }
 
   if (bSrcHasPtnHash && bCopyPtnHash) {
     iVal = aRowSrc->iColVal_int(i_Col);
-    vDeposit(iVal);
+    vDepositColVal(iVal);
   }
   
 //  Row* aRowDst = aRowAdr(nRows() - 1);
@@ -566,10 +566,10 @@ void RowBox_t<SIZE>::vAdvanceCursor(void)
 /* deposit an d8 value into next cell                                       */
 /*--------------------------------------------------------------------------*/
 template <i8 SIZE>
-void RowBox_t<SIZE>::vDeposit(d8 dVal)
+void RowBox_t<SIZE>::vDepositColVal(d8 dColVal)
 {
 
-  m_aRowCur->vColVal_flt(m_i_ColCrs,dVal);
+  m_aRowCur->vColVal_flt(m_i_ColCrs,dColVal);
   
   vAdvanceCursor();
 
@@ -579,10 +579,10 @@ void RowBox_t<SIZE>::vDeposit(d8 dVal)
 /* deposit an i8 value into next cell                                       */
 /*--------------------------------------------------------------------------*/
 template <i8 SIZE>
-void RowBox_t<SIZE>::vDeposit(i8 iVal)
+void RowBox_t<SIZE>::vDepositColVal(i8 iColVal)
 {
 
-  m_aRowCur->vColVal_int(m_i_ColCrs,iVal);
+  m_aRowCur->vColVal_int(m_i_ColCrs,iColVal);
 
   vAdvanceCursor();
 
@@ -592,12 +592,12 @@ void RowBox_t<SIZE>::vDeposit(i8 iVal)
 /* deposit an stz value into next cell                                      */
 /*--------------------------------------------------------------------------*/
 template <i8 SIZE>
-void RowBox_t<SIZE>::vDeposit(Stz* szVal)
+void RowBox_t<SIZE>::vDepositColVal(Stz* szColVal)
 {
 
   char* azTgt = azDepositString_begin();
   
-  i8 nLen = StrLib::nCopy(azTgt,szVal->azChar());
+  i8 nLen = StrLib::nCopy(azTgt,szColVal->azChar());
 
   vDepositString_end(nLen + 1);
 
