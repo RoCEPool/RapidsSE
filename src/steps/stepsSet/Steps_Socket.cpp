@@ -4,6 +4,8 @@
 
 #include "Steps.h"
 
+#include "Socket.hpp"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -501,7 +503,7 @@ void Step::vSocketRecvObject(void)
     }
       
     case CN_STREAMSET: {
-      StreamSet* pStreamSet = new StreamSet(pSocket);
+      StreamSet* pStreamSet = new StreamSet();
       
       MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
       
@@ -809,7 +811,7 @@ void Step::vSocketRecvObject_LowMem(void)
     }
       
     case CN_STREAMSET: {
-      StreamSet* pStreamSet = new StreamSet(pSocket);
+      StreamSet* pStreamSet = new StreamSet();
       
       MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
       

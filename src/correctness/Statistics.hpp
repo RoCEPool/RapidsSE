@@ -105,7 +105,7 @@ namespace Correctness
   
     i8 m_nRecvBytes;
     i8 m_nSendBytes;
-  } Socket;
+  } Socket_;
   
   struct {
     i8 m_nCreates;

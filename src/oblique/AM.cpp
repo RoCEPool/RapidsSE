@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "Oblique.h"
+#include "Socket.hpp"
+
+
 
 extern Args          gxArgs;
 extern PromptCatalog gxPromptCatalog;

@@ -4,6 +4,8 @@
 
 #include "Resources.h"
 
+#include "Socket.hpp"
+
 
 Atomic gixSocket;
 
@@ -148,8 +150,8 @@ void Socket::vMonitorPortrait(s48K& sPortrait)
 {
   Statistics* pStat = AM::pStatistics();
   
-  s32 sRecvMag; MagLib::vByteMag(pStat->Socket.m_nRecvBytes, sRecvMag);
-  s32 sSendMag; MagLib::vByteMag(pStat->Socket.m_nSendBytes, sSendMag);
+  s32 sRecvMag; MagLib::vByteMag(pStat->Socket_.m_nRecvBytes, sRecvMag);
+  s32 sSendMag; MagLib::vByteMag(pStat->Socket_.m_nSendBytes, sSendMag);
 
   sPortrait.vSprint("Socket: "
                     "accepts %lld "
@@ -164,17 +166,17 @@ void Socket::vMonitorPortrait(s48K& sPortrait)
                     "sendTos %lld (%s)"
                     "\n"_Stz,
                     
-                    pStat->Socket.m_nAccepts,
-                    pStat->Socket.m_nCloses,
-                    pStat->Socket.m_nConnects,
-                    pStat->Socket.m_nListens,
-                    pStat->Socket.m_nPeeks,
+                    pStat->Socket_.m_nAccepts,
+                    pStat->Socket_.m_nCloses,
+                    pStat->Socket_.m_nConnects,
+                    pStat->Socket_.m_nListens,
+                    pStat->Socket_.m_nPeeks,
                     
-                    pStat->Socket.m_nRecvs,
-                    pStat->Socket.m_nRecvFroms,
+                    pStat->Socket_.m_nRecvs,
+                    pStat->Socket_.m_nRecvFroms,
                       sRecvMag.szStz(),
-                    pStat->Socket.m_nSends,
-                    pStat->Socket.m_nSendTos,
+                    pStat->Socket_.m_nSends,
+                    pStat->Socket_.m_nSendTos,
                       sSendMag.szStz()
                     );
 }
@@ -188,19 +190,19 @@ void Socket::vStatistics(void)
   
   Statistics* pStat = AM::pStatistics();
 
-  vTrace("  nSocketAccepts    %lld\n"_Stz,pStat->Socket.m_nAccepts);
-  vTrace("  nSocketCloses     %lld\n"_Stz,pStat->Socket.m_nCloses);
-  vTrace("  nSocketConnects   %lld\n"_Stz,pStat->Socket.m_nConnects);
-  vTrace("  nSocketListens    %lld\n"_Stz,pStat->Socket.m_nListens);
-  vTrace("  nSocketPeeks      %lld\n"_Stz,pStat->Socket.m_nPeeks);
-  vTrace("  nSocketRecvs      %lld\n"_Stz,pStat->Socket.m_nRecvs);
-  vTrace("  nSocketRecvFroms  %lld\n"_Stz,pStat->Socket.m_nRecvFroms);
-  vTrace("  nSocketSends      %lld\n"_Stz,pStat->Socket.m_nSends);
-  vTrace("  nSocketSendTos    %lld\n"_Stz,pStat->Socket.m_nSendTos);
+  vTrace("  nSocketAccepts    %lld\n"_Stz,pStat->Socket_.m_nAccepts);
+  vTrace("  nSocketCloses     %lld\n"_Stz,pStat->Socket_.m_nCloses);
+  vTrace("  nSocketConnects   %lld\n"_Stz,pStat->Socket_.m_nConnects);
+  vTrace("  nSocketListens    %lld\n"_Stz,pStat->Socket_.m_nListens);
+  vTrace("  nSocketPeeks      %lld\n"_Stz,pStat->Socket_.m_nPeeks);
+  vTrace("  nSocketRecvs      %lld\n"_Stz,pStat->Socket_.m_nRecvs);
+  vTrace("  nSocketRecvFroms  %lld\n"_Stz,pStat->Socket_.m_nRecvFroms);
+  vTrace("  nSocketSends      %lld\n"_Stz,pStat->Socket_.m_nSends);
+  vTrace("  nSocketSendTos    %lld\n"_Stz,pStat->Socket_.m_nSendTos);
 
-  MagLib::vByteMag(pStat->Socket.m_nRecvBytes,  sByteMag);
+  MagLib::vByteMag(pStat->Socket_.m_nRecvBytes,  sByteMag);
   vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.szStz());
-  MagLib::vByteMag(pStat->Socket.m_nSendBytes,  sByteMag);
+  MagLib::vByteMag(pStat->Socket_.m_nSendBytes,  sByteMag);
   vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.szStz());
 }
 

@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "Socket.hpp" //?
+
 PromptFun __Prompt_socket (
   PF_SOCKET,           // prompt function
   "Prompt_socket"_Stz, // name of the prompt function

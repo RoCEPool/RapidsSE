@@ -43,7 +43,7 @@ void StreamSet::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor (when new'd by the receiver)                                   */
 /*----------------------------------------------------------------------------*/
-StreamSet::StreamSet(Socket*)
+StreamSet::StreamSet(void)
 : InfoSetBase(CN_STREAMSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
