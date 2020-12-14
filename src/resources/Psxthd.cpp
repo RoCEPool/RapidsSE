@@ -86,6 +86,113 @@ PsxThd::~PsxThd(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get stack base address                                                     */
+/*----------------------------------------------------------------------------*/
+void* PsxThd::aGetStackBase(void)
+{
+  void* aAddress;
+  
+  pthread_t tThread = pthread_self();
+  
+#ifdef WITH_APPLE
+  
+  aAddress = pthread_get_stackaddr_np(tThread);
+  
+#elif defined(WITH_LINUX)
+  
+  size_t iStackSize;
+  pthread_attr_t attr;
+  
+  i8 rCode = pthread_getattr_np(tThread, &attr);
+  if (0 != rCode)
+    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
+  
+  rCode = pthread_attr_getstack(&attr,
+                            &aAddress, &iStackSize);
+  if (0 != rCode)
+    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
+  
+#else
+#error "Unknown Operating Library"
+#endif
+  
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current stack pointer                                                  */
+/*----------------------------------------------------------------------------*/
+void* PsxThd::aGetStackPointer(void)
+{
+  void* aPointer = &aPointer;
+  
+  return aPointer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stack size                                                             */
+/*----------------------------------------------------------------------------*/
+i8 PsxThd::iGetStackSize(void)
+{
+  pthread_t tThread = pthread_self();
+  i8 iSize;
+  
+#ifdef WITH_APPLE
+  
+  iSize = pthread_get_stacksize_np(tThread);
+  
+#elif defined(WITH_LINUX)
+  
+  pthread_attr_t attr;
+  void* aAddress;
+  size_t iStackSize;
+  
+  i8 rCode = pthread_getattr_np(tThread, &attr);
+  if (0 != rCode)
+    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
+  
+  rCode = pthread_attr_getstack(&attr,
+                                   &aAddress, &iStackSize);
+  if (0 != rCode)
+    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
+  
+  iSize = (i8) iStackSize;
+  
+#else
+#error "Unknown Operating Library"
+#endif
+  
+  return iSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for C++ thread                                                        */
+/*----------------------------------------------------------------------------*/
+bool PsxThd::bIsCppThread(void)
+{
+  if (C_UNKNOWN != (int)giTLS_ThreadKey)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for Java thread                                                       */
+/*----------------------------------------------------------------------------*/
+bool PsxThd::bIsJavaThread(void)
+{
+  if (C_UNKNOWN == (int)giTLS_ThreadKey)
+    return true;
+  else
+    return false;
+}
+
 /*----------------------------------------------------------------------------*/
 /* mark thread as not being an SE thread                                      */
 /*----------------------------------------------------------------------------*/
@@ -117,6 +224,87 @@ void PsxThd::vMonitorPortrait(s48K& sPortrait)
   }
   sPortrait.vSprintCat("\n"_Stz);
 
+}
+/*----------------------------------------------------------------------------*/
+/* sleeper statistics                                                         */
+/*----------------------------------------------------------------------------*/
+void PsxThd::vSleepers(void)
+{
+  s32 sUnitMag;
+  s32 sTimeMag;
+
+  Statistics* pStats = AM::pStatistics();
+  
+  MagLib::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
+  vTrace("PsxThd::vSleep() total %s\n"_Stz,sUnitMag.szStz());
+  
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (pStats->Thread.m_iaSleeps[i_Class]) {
+      MagLib::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
+      MagLib::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
+      vTrace("  %s: %s times for duration of %s\n"_Stz,
+             aCN[i_Class],sUnitMag.szStz(),sTimeMag.szStz());
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create thread, passing it function to execute                              */
+/*----------------------------------------------------------------------------*/
+i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
+{
+  _static_
+    
+  pthread_t iThreadId;
+  
+  i8 rCode = pthread_create(&iThreadId,nullptr,aFun,aArg);
+  
+  if (rCode) {
+    vWarn("pthread_create() error; rCode=%lld\n"_Stz,rCode);
+    return -1;
+  }
+  
+  // this is important otherwise resources are not released
+  pthread_detach(iThreadId);
+  
+  return (i8)iThreadId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a tls slot                                                          */
+/*----------------------------------------------------------------------------*/
+bool PsxThd::bTlsCreate(pthread_key_t* aTlsKey)
+{
+  i8 iResult = pthread_key_create(aTlsKey,nullptr);
+  
+  if (0 == iResult) {
+    RASSERT(-1 != (int)*aTlsKey);
+    return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value from tls slot                                                    */
+/*----------------------------------------------------------------------------*/
+void* PsxThd::pTlsGet(pthread_key_t iTlsKey)
+{
+  RASSERT(-1 != (int)iTlsKey);
+  
+  void* pVal = pthread_getspecific(iTlsKey);
+  
+  return pVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set value in tls slot                                                      */
+/*----------------------------------------------------------------------------*/
+void PsxThd::vTlsSet(pthread_key_t iTlsKey, void* pArg)
+{
+  RASSERT(-1 != (int)iTlsKey);
+  
+  pthread_setspecific(iTlsKey,pArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -778,171 +966,6 @@ void PsxThd::vThreadPriority(i8 iPriority)
 
 }
         
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* test for C++ thread                                                        */
-/*----------------------------------------------------------------------------*/
-bool PsxThd::bIsCppThread(void)
-{
-  if (C_UNKNOWN != (int)giTLS_ThreadKey)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for Java thread                                                       */
-/*----------------------------------------------------------------------------*/
-bool PsxThd::bIsJavaThread(void)
-{
-  if (C_UNKNOWN == (int)giTLS_ThreadKey)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sleeper statistics                                                         */
-/*----------------------------------------------------------------------------*/
-void PsxThd::vSleepers(void)
-{
-  s32 sUnitMag;
-  s32 sTimeMag;
-
-  Statistics* pStats = AM::pStatistics();
-  
-  MagLib::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
-  vTrace("PsxThd::vSleep() total %s\n"_Stz,sUnitMag.szStz());
-  
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (pStats->Thread.m_iaSleeps[i_Class]) {
-      MagLib::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
-      MagLib::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
-      vTrace("  %s: %s times for duration of %s\n"_Stz,
-             aCN[i_Class],sUnitMag.szStz(),sTimeMag.szStz());
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stack base address                                                     */
-/*----------------------------------------------------------------------------*/
-void* PsxThd::aGetStackBase(void)
-{
-  void* aAddress;
-  
-  pthread_t tThread = pthread_self();
-  
-#ifdef WITH_APPLE
-  
-  aAddress = pthread_get_stackaddr_np(tThread);
-  
-#elif defined(WITH_LINUX)
-  
-  size_t iStackSize;
-  pthread_attr_t attr;
-  
-  i8 rCode = pthread_getattr_np(tThread, &attr);
-  if (0 != rCode)
-    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
-  
-  rCode = pthread_attr_getstack(&attr,
-                            &aAddress, &iStackSize);
-  if (0 != rCode)
-    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
-  
-#else
-#error "Unknown Operating Library"
-#endif
-  
-  return aAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current stack pointer                                                  */
-/*----------------------------------------------------------------------------*/
-void* PsxThd::aGetStackPointer(void)
-{
-  void* aPointer = &aPointer;
-  
-  return aPointer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stack size                                                             */
-/*----------------------------------------------------------------------------*/
-i8 PsxThd::iGetStackSize(void)
-{
-  pthread_t tThread = pthread_self();
-  i8 iSize;
-  
-#ifdef WITH_APPLE
-  
-  iSize = pthread_get_stacksize_np(tThread);
-  
-#elif defined(WITH_LINUX)
-  
-  pthread_attr_t attr;
-  void* aAddress;
-  size_t iStackSize;
-  
-  i8 rCode = pthread_getattr_np(tThread, &attr);
-  if (0 != rCode)
-    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
-  
-  rCode = pthread_attr_getstack(&attr,
-                                   &aAddress, &iStackSize);
-  if (0 != rCode)
-    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
-  
-  iSize = (i8) iStackSize;
-  
-#else
-#error "Unknown Operating Library"
-#endif
-  
-  return iSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a tls slot                                                          */
-/*----------------------------------------------------------------------------*/
-bool PsxThd::bTlsCreate(pthread_key_t* aTlsKey)
-{
-  i8 iResult = pthread_key_create(aTlsKey,nullptr);
-  
-  if (0 == iResult) {
-    RASSERT(-1 != (int)*aTlsKey);
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get value from tls slot                                                    */
-/*----------------------------------------------------------------------------*/
-void* PsxThd::pTlsGet(pthread_key_t iTlsKey)
-{
-  RASSERT(-1 != (int)iTlsKey);
-  
-  void* pVal = pthread_getspecific(iTlsKey);
-  
-  return pVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set value in tls slot                                                      */
-/*----------------------------------------------------------------------------*/
-void PsxThd::vTlsSet(pthread_key_t iTlsKey, void* pArg)
-{
-  RASSERT(-1 != (int)iTlsKey);
-  
-  pthread_setspecific(iTlsKey,pArg);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -57,8 +57,6 @@ namespace CompactBuffers
     i8   nBytesNeeded(void);
   
     void vEncodeRow(Row* pRow);
-    void vEncodeRsb(Row* aRow);
-    void vEncodeSrw(RowSingle* pSrw);
   
     void vMorphEncoding(_ColEnc* aColEnc);
     bool bOverFlowed(void);
@@ -68,8 +66,6 @@ namespace CompactBuffers
   private:
     // encoding (structural order)
     void vInitialEncodingRow(Row* pRow);
-    void vInitialEncodingRsb(Row* aRow);
-    void vInitialEncodingSrw(RowSingle* pSrw);
  
     // support functions
     Column* pNonFitting(void);

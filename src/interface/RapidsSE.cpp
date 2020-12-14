@@ -87,10 +87,10 @@ eEC RapidsSE::ePrepareJob(void* aSession, char* azCommand)
   Session* pSession = _pSession(aSession);
   
   pCmdTknVec->vTokeniseC((Stz*)azCommand);
-  pCmdTknVec->vDumpVec(0);
+  //pCmdTknVec->vDumpVec(0);
 
   oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  oExtTagSet.vReplace(C_TAG_TRACEOP,1);
+  //oExtTagSet.vReplace(C_TAG_TRACEOP,1);
   
   eEC eError = Api::ePrepareJob(pSession,pCmdTknVec,pLitTknVec,&oExtTagSet);
   

@@ -227,13 +227,13 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pSrw)
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
   
   m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-  bool bAppended = m_pCurrentCrwBuffer->bAppendSrw(pSrw);
+  bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pSrw->pRowCurrent());
   
   if (! bAppended) {
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
 
     m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-    bAppended = m_pCurrentCrwBuffer->bAppendSrw(pSrw);
+    bAppended = m_pCurrentCrwBuffer->bAppendRow(pSrw->pRowCurrent());
     RASSERT(bAppended);
   }
   

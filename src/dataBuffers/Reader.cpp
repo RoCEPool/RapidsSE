@@ -107,7 +107,7 @@ CsvBuffer* Reader::pReadCsvBuffer(void)
   CsvBuffer* pCsvBuffer = new CsvBuffer;
 
   char* azInto = (char*)pCsvBuffer->ayDataArea();
-  i8 nBytesRead = nReadLines((Stz*)azInto,512);
+  i8 nBytesRead = nReadLines((Stz*)azInto,C_1M);
   
   if (nBytesRead) {
     pCsvBuffer->vTake(nBytesRead + 1);

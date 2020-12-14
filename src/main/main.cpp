@@ -8,6 +8,7 @@
 
 #include "emmintrin.h"
 
+#include "Heart.h"
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
@@ -20,6 +21,8 @@ extern EnvFlags gxEnvFlags;
 
 extern i8   gi_argc;
 extern s256 gi_szaArgv[];
+
+extern i8     giProgressPoint;
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -160,6 +163,8 @@ int main(int argc, char* argv[])
       Process::vExitSuccess();
     }
     
+    vHeartInit();
+
     // run SE
     Engine::vMainEntry();
   }

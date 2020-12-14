@@ -23,7 +23,6 @@ namespace Alignment
 #include "CacheLine.hpp"
 #include "SpaceUnit.hpp"
 
-#include "WspConverge_t.hpp"
 #include "WspConvergent_t.hpp"
 #include "Wsp_t.hpp"
 

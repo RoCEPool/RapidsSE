@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 : dump_RowBuffer \handler
 
-  <operand> "rsbBuffer" str.same if
+  <operand> "rowBuffer" str.same if
     "OPERAND DUMP: rowBuffer" .
 
     <detail> >int PipeIn[] rowBuffer.operandDump

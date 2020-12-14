@@ -6,9 +6,9 @@ bc;
 
 _lineitem_dates
 
-load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" ;
+load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" ;
 
-tableScan lineitem;
+//tableScan lineitem;
 
 getRows lineitem;
 

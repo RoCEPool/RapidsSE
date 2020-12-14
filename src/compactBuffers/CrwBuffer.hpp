@@ -67,8 +67,7 @@ namespace CompactBuffers
     ////////////////////////////////////////////////////////////////////////////
     // row functions
     Crw*       aCrw(i8 i_Row);
-    void       vGetRow(RowSingle* pRow, i8 i_Row);
-    void       vGetRow(RowBuffer* pRowBuffer, i8 i_Row);
+    void       vGetRow_single(RowSingle* pRowSingle, i8 i_Row);
     void       vShow(void);
     void       vShowRow(i8 i_Row);
     StreamDef* pStreamDef(void);
@@ -79,7 +78,6 @@ namespace CompactBuffers
     void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
     bool bAppendCrw(Crw* aCrwSrc);
     bool bAppendRow(Row* aRowSrc);
-    bool bAppendSrw(RowSingle* pRowSingle);
 
   private:
     bool bHasSpace(i8 nBytes);

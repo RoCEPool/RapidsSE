@@ -410,7 +410,7 @@ void MemLib::vHexDump(void *aAddress, i8 nBytes)
   
   // write header
   vTrace("\n%18s %8s %49s %16s\n"_Stz,
-         "MemLib address"_Stz,
+         "Address"_Stz,
          "Offset"_Stz,
          "(0a is \\n ; 0d is \\r)                    Hex dump"_Stz,
          "Context"_Stz);

@@ -20,19 +20,19 @@ ifeq ($(GCC_VERSION_GTE5), 0)
   define ERR
 gcc version 5 or later is required. You have v$(shell gcc -dumpversion).
 
-To install gcc 5 on Centos7 run the following commands:
-  sudo yum install libuuid-devel centos-release-scl devtoolset-7-gcc*
+To install gcc >5 on Centos7 run the following commands:
+  sudo yum install libuuid-devel centos-release-scl devtoolset-8-gcc*
 
 Then from the Source directory run the following command to build rapidsse:
-  scl enable devtoolset-7 'make -j 8'
+  scl enable devtoolset-8 'make -j 8'
 
 
   endef
   $(error $(ERR))
 endif
 
-LINUX_CPPFLAGS := -DWITH_LINUX
-LINUX_CPPFLAGS_DEBUG := -DWITH_LINUX
+LINUX_CPPFLAGS := -D__LINUX__
+LINUX_CPPFLAGS_DEBUG := -D__LINUX__
 
 LINUX_LDFLAGS :=
 LINUX_LDFLAGS_DEBUG :=

@@ -71,7 +71,7 @@ void Step::vCrwToRowDangling(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpToRow.bIsNull()) {
+  if (m_pLogicUnit->m_xpCrwToRow.bIsNull()) {
     m_pDataStack->vPushPtr(nullptr);
   }
   else {

@@ -27,6 +27,8 @@ struct SizeHeap {
   
   i8  m_nClassSize;
   eHT m_eWhichHeap;
+  
+  i8  m_nVtableAdjust; // temp: explore support for vtable
 
 };
 

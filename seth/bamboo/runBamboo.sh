@@ -179,7 +179,7 @@ function buildSE() {
     hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
 
     if [ "${hasOldGcc}" -eq 1 ]; then
-      scl enable devtoolset-7 "make clean && time make ${target} -j${NUM_CPUS}"
+      scl enable devtoolset-8 "make clean && time make ${target} -j${NUM_CPUS}"
 
     else
       make clean && time make "${target}" "-j${NUM_CPUS}"

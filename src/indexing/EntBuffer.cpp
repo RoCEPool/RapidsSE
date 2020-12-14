@@ -1292,12 +1292,10 @@ void EntBuffer::vPrintRows(void)
   
   StreamDef* pStreamDef = m_pIndexTree->pIndex()->pTable()->pStreamDef();
   
-  HV_Row hRow(pStreamDef, C_ALL);
-  HV_Rec hvRec(pStreamDef, C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef, C_ALL);
   
-  Ent* aEnt = aLeadEntry();
   
-  while (aEnt) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt, 0)) {
     
     // get the crw buffer of the row
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->rxRef());
@@ -1306,12 +1304,9 @@ void EntBuffer::vPrintRows(void)
     Crw* aCrw = pCrwBuffer->aCrw(aEnt->rxRef().iItem());
     
     // inflate compact row into row
-    RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
+    RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCrw);
     
-    hvRec->vAppend(hRow);
-    hvRec->vPrintRow();
-    
-    aEnt = aNextEntry(aEnt, 0);
+    hvRowSingle->vPrintRow();
   }
 
 }
@@ -1726,7 +1721,7 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 //  
 //  i8 nRowRefs = 1;
 //  
-//  HV_Row hRow(m_pIndex->pTable()->pStreamDef(), C_ALL);
+//  HV_RowSingle hvRowSingle(m_pIndex->pTable()->pStreamDef(), C_ALL);
 //  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //  
 //  Ent* aEntry = aLeadEntry();
@@ -1756,10 +1751,10 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 //    pSrtSet->vRowRef(0, (i8)aCrw);
 //  
 //    // get the key from the left buffer row
-//    RowInflator::vInflate_OneColumn_into_RowSingle(hRow, aCrw, iKeyCol);
+//    RowInflator::vInflate_OneColumn_into_RowSingle(hvRowSingle, aCrw, iKeyCol);
 //    
 //    // set the key in the srtSet
-//    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
+//    pSrtSet->vKey(hvRowSingle->m_waColVal[iKeyCol].m_iWrd);
 //    
 //    aEntry = aNextEntry(aEntry,0);
 //  }

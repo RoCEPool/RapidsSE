@@ -335,16 +335,6 @@ void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLow, BufCursor& xHi
 // Quicksort using cursor into an intbuffer
 BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
 void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
-
-/*----------------------------------------------------------------------------*/
-/* Test for WspCoverage_t                                                     */
-/*----------------------------------------------------------------------------*/
-class Buffer  {
-  static const i8 C_WSP_HEAP = C_SIZE_LARGE_OBJECT - C_1KB;
-  
-public:
-  WspConverge_t<C_WSP_HEAP> m_xWspConverge;
-};
   
 /*============================================================================*/
 /* end                                                                        */

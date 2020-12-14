@@ -254,22 +254,6 @@ bool CrwBuffer::bAppendRow(Row* aRowSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a row entry into this buffer                                        */
-/*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendSrw(RowSingle* pSrwSrc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-    
-#ifdef WITH_ENCODING_TRACE
-  vTrace("Partition:%lld\n"_Stz, m_tPtnNo);
-#endif
-  
-  bool bAppended = m_pRowCompactor->bCompactSrw(pSrwSrc);
-  
-  return bAppended;
-}
-
-/*----------------------------------------------------------------------------*/
 /* assert valid row buffer                                                    */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vAssertCrwBuffer(void)
@@ -370,25 +354,13 @@ HeadLine* CrwBuffer::aGetHead(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* get the compact row from the buffer                                        */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vGetRow(RowSingle* pRow, i8 i_Row)
+void CrwBuffer::vGetRow_single(RowSingle* pRowSingle, i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   Crw* aCrw = (Crw*)aGetHead(i_Row);
   
-  RowInflator::vInflate_AllColumns_into_RowSingle(pRow,aCrw);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the compact row from the buffer                                        */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vGetRow(RowBuffer* pRowBuffer, i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-
-  Crw* aCrw = (Crw*)aGetHead(i_Row);
-
-  RowInflator::vInflate_AllColumns_into_RowBuffer(pRowBuffer,aCrw);
+  RowInflator::vInflate_AllColumns_into_RowSingle(pRowSingle,aCrw);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -505,27 +477,25 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  HV_Row hRow(pStreamDef,C_ALL);
-  HV_Rec hvRec(pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
   
   //m_oRowTray.pNub()->vDumpTails();
   
-  i8 nRows = m_oRowTray.pNub()->nHeads();
+  i8 nCrws = m_oRowTray.pNub()->nHeads();
   
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+  for (i8 i_Crw = 0; i_Crw < nCrws; i_Crw++) {
     
     // get the compact row
-    Crw* aCrw = (Crw*)aGetHead(i_Row);
+    Crw* aCrw = (Crw*)aGetHead(i_Crw);
     
     // ignore deleted rows
     if (aCrw->bIsDeleted())
       continue;
     
     // inflate compact row into row
-    RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
+    RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCrw);
     
-    hvRec->vAppend(hRow);
-    hvRec->vPrintRow();
+    hvRowSingle->vPrintRow();
   }
   
 }
@@ -592,23 +562,23 @@ void CrwBuffer::vShowRow(i8 i_Row)
   vTrace("Rrf: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
-  HV_Rec hvRec(pStreamDef,C_ALL);
+  HV_Record hvRecord(pStreamDef,C_ALL);
   
   // create a row
-  HV_Row hRow(pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
   
   // get compact row
   Crw* aCompactRow = (Crw*)aGetHead(i_Row);
   
   // inflate compact row into row
-  RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCompactRow);
+  RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCompactRow);
   
   // append the row to the record
-  hvRec->vAppend(hRow);
+  hvRecord->vToRecord(hvRowSingle);
   
   i8 nOffset = nDifference(this,aCompactRow);
   
-  vTrace("row: %04x (%s)\n"_Stz,nOffset,hvRec->szRecStr());
+  vTrace("row: %04x (%s)\n"_Stz,nOffset,hvRecord->sz());
   
   if (0 == i_Row)
     Crw::vDumpCrw("  "_Stz,aCompactRow,pStreamDef);
@@ -707,8 +677,8 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
   
-  HV_Rec hvRec(pStreamDef,C_ALL);
-  HV_Row hRow(pStreamDef,C_ALL);
+  HV_Record hvRecord(pStreamDef,C_ALL);
+  HV_RowSingle hvRowSingle(pStreamDef,C_ALL);
   
   i8 nRows = nRowCount();
   i8 nBytes = 1;
@@ -717,14 +687,14 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     // get the inflated compact row
-    vGetRow(hRow, i_Row);
+    vGetRow_single(hvRowSingle, i_Row);
     
     // append the row to the record
-    hvRec->vAppend(hRow);
+    hvRecord->vToRecord(hvRowSingle);
     
-    StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');           //! sub-optimal
+    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
     
-    nBytes = hvRec->szRecStr()->nSize();
+    nBytes = hvRecord->sz()->nSize();
     
     if (pCsvBuffer->nFreeBytes() < nBytes + 1) {
       CsvBuffer* pNewCsvBuffer = new CsvBuffer;
@@ -733,7 +703,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     }
     
     szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(szRecord->azChar(),hvRec->szRecStr()->azChar(),nBytes - 1);
+    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nBytes - 1);
   }
   
   if (szRecord)
@@ -751,7 +721,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //  
 //  i8 nRowRefs = 1;
 //  
-//  HV_Row hRow(pTable()->pStreamDef(),C_ALL);
+//  HV_RowSingle hvRowSingle(pTable()->pStreamDef(),C_ALL);
 //  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //  
 //  i8 nRows = nRowCount();
@@ -778,10 +748,10 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //    pSrtSet->vRowRef(0, (i8)aCrw);
 //    
 //    // get the key from the row
-//    RowInflator::vInflate_OneColumn_into_RowSingle(hRow, aCrw, iKeyCol);
+//    RowInflator::vInflate_OneColumn_into_RowSingle(hvRowSingle, aCrw, iKeyCol);
 //    
 //    // set the key in the srtSet
-//    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
+//    pSrtSet->vKey(hvRowSingle->m_waColVal[iKeyCol].m_iWrd);
 //  }
 //  
 //  return pSrtBuffer;

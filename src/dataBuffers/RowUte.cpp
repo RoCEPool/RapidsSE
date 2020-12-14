@@ -35,7 +35,7 @@ bool RowUte::bAddSingleToSampleSet(RowBuffer* pSampleSet,
     if (DM_VCH != pCol->eDatum()) {
       
       // copy word from row single to row slab
-      pSampleSet->vDeposit(pRowSingle->iColVal(i_Col));
+      pSampleSet->vDepositColVal(pRowSingle->iColVal(i_Col));
       
       continue;
     }
@@ -44,7 +44,7 @@ bool RowUte::bAddSingleToSampleSet(RowBuffer* pSampleSet,
     
     // check for null
     if (pRowSingle->bIsColNull(i_Col)) {
-      pSampleSet->vDeposit(C_DATUM_NULL);
+      pSampleSet->vDepositColVal(C_DATUM_NULL);
       continue;
     }
         

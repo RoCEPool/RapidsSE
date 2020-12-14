@@ -44,7 +44,6 @@ namespace CompactBuffers
     void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
     bool bCompactRow(Row* aRow);
-    bool bCompactSrw(RowSingle* pSrw);
     bool bCompactTail(Stz* szTailStr);
 
   private:
@@ -53,20 +52,14 @@ namespace CompactBuffers
     // Row Packing
   
     bool bAddRowAsCrw(Row* pRow);
-    bool bAddRsbAsCrw(Row* aRow);
-    bool bAddSrwAsCrw(RowSingle* pSrw);
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
     void vEncodeHeadForRow(Row* pRow);
-    void vEncodeHeadForSrw(RowSingle* pSrw);
     void vEncodeTailsForRow(Row* pRow);
-    void vEncodeTailsForSrw(RowSingle* pSrw);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Row Sampling (structural order)
-  
-    bool bCollectSample(RowSingle* pSrw);
-  
+    
     void vPackSamples(void);
     void vAnalyzeSamples(void);
     void vCreateSampleTail(Column* pCol,

@@ -122,7 +122,6 @@ enum eCN : u2 // Class Number
   /* */ CN_HASHMAP,
   /* */ CN_HASHSET,
   /* */ CN_HEAPBUFFER,
-  /* */ CN_HPROW,
   
   /* */ CN__I__,
   /* */ CN_INDEX,
@@ -204,6 +203,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINESPEC,
   /* */ CN_PLAN,
+  /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNER,
   /* */ CN_PLANNODE,
   /* */ CN_POT,
@@ -226,7 +226,6 @@ enum eCN : u2 // Class Number
   /* */ CN_READAPI,
   /* */ CN_READER,
   /* */ CN_RECORD,
-  /* */ CN_RECORDBUFFER,
   /* */ CN_RELOP,
   /* */ CN_RESOURCETRACKER,
   /* */ CN_RESPONSE,
@@ -476,7 +475,6 @@ static Stz* aCN[]
   /* */ "HASHSET"_Stz,             // CN_HASHSET
   /* */ "HASHMAP"_Stz,             // CN_HASHMAP
   /* */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER
-  /* */ "HPROW"_Stz,               // CN_HPROW
   
   /* */ "_I__"_Stz,                // CN__I__
   /* */ "INDEX"_Stz,               // CN_INDEX
@@ -489,7 +487,7 @@ static Stz* aCN[]
   /* */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
   /* */ "INPUT"_Stz,               // CN_INPUT
   /* */ "INTBUFFER"_Stz,           // CN_INTBUFFER
-  /* */ "INTUTILITY"_Stz,          // CN_INTSET
+  /* */ "INTSET"_Stz,              // CN_INTSET
   /* */ "INTVAL"_Stz,              // CN_INTVAL
   /* */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /* */ "IOCOPY"_Stz,              // CN_IOCOPY
@@ -558,6 +556,7 @@ static Stz* aCN[]
   /* */ "PIPELINE"_Stz,            // CN_PIPELINE
   /* */ "PIPELINESPEC"_Stz,        // CN_PIPELINESPEC
   /* */ "PLAN"_Stz,                // CN_PLAN
+  /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNER"_Stz,             // CN_PLANNER
   /* */ "PLANNODE"_Stz,            // CN_PLANNODE
   /* */ "POT"_Stz,                 // CN_POT
@@ -580,7 +579,6 @@ static Stz* aCN[]
   /* */ "READAPI"_Stz,             // CN_READAPI
   /* */ "READER"_Stz,              // CN_READER
   /* */ "RECORD"_Stz,              // CN_RECORD
-  /* */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
   /* */ "RELOP"_Stz,               // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
   /* */ "RESPONSE"_Stz,            // CN_RESPONSE

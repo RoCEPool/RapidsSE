@@ -6,13 +6,19 @@ bc;
 
 _lineitem_dates
 
-//load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" ;
+load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv" ;
+///time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv" ;
+
+//antbl lineitem <note> = "SF10 LineItem (by Loader)";
 
 //tableScan lineitem;
 
-apiDemo putRows;
+///time apiDemo putRows;
+//antbl lineitem <note> = "SF10 LineItem (via API)";
 
-apiDemo tableScan;
+//apiDemo tableScan;
+
+apiDemo getRows;
 
 /*============================================================================*/
 /* end                                                                        */

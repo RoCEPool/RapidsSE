@@ -141,21 +141,21 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 {  
   HeapMem* pHeapMem = AM::pHeapMem();
   
-  eCN eFreeingClass = pObject->eClass();
+  eCN eWasClass = pObject->eClass();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
-    AM::vFreeInc(pRU_Memory, eFreeingClass);
+    AM::vFreeInc(pRU_Memory, eWasClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dont-free capability
   
   if (gpBufferPool->bDontFree()) {
     
-    if (CN_ENTBUFFER != eFreeingClass) {
+    if (CN_ENTBUFFER != eWasClass) {
       pObject->vClass(CN_FREEDNOT);
       return;
     }
@@ -169,7 +169,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actually free the object and return its space for reuse
   
-  eHT eHeap = gxaSizeHeap[eFreeingClass].m_eWhichHeap;
+  eHT eHeap = gxaSizeHeap[eWasClass].m_eWhichHeap;
   
   if (bPersistent) {
     switch(eHeap) {
@@ -183,12 +183,14 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pObject = aAdd<Object*>(pObject,gxaSizeHeap[eWasClass].m_nVtableAdjust);
+  
   switch(eHeap) {
     case HT_INVALID:
       MemLib::vWordDump(pObject,256,0);
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
-             eFreeingClass,aCN[eFreeingClass]);
+             eWasClass,aCN[eWasClass]);
       
     // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       

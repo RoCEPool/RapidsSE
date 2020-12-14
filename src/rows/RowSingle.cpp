@@ -200,7 +200,7 @@ void RowSingle::vCopyRow(Row* pRow)
       }
       
       Stz* szValue = pRow->szColVal_ofs(i_Col);
-      vColDeposit(i_Col,szValue);
+      vDepositColVal(i_Col,szValue);
       
       vTrace("Deposit: %s\n"_Stz,szValue);
       continue;
@@ -209,7 +209,7 @@ void RowSingle::vCopyRow(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    vColDeposit(i_Col, pRow->iColVal_int(i_Col));
+    vDepositColVal(i_Col, pRow->iColVal_int(i_Col));
   }
 }
 
@@ -223,6 +223,18 @@ bool RowSingle::bIsColNull(i8 i_Col)
   bool bIsNull = RowBox_t<C_ROWSINGLE_WSP>::bIsColNull(i_Col);
   
   return bIsNull;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print the row                                                              */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vPrintRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
+
+  HV_Record hvRecord(m_pStreamDef,C_ALL);
+  hvRecord->vToRecord(this);
+  hvRecord->vPrintAsRow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,14 +290,14 @@ void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
     
     Stz* szValue = pDatum->szStz();
 
-    vColDeposit(i_Col,szValue);
+    vDepositColVal(i_Col,szValue);
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  vColDeposit(i_Col,pDatum->iInt());
+  vDepositColVal(i_Col,pDatum->iInt());
 }
 
 /*----------------------------------------------------------------------------*/

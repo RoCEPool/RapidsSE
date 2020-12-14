@@ -10,6 +10,8 @@ namespace Esses
   {
   private:
     i8   m_nSize;       // size of str
+  
+  
     char m_caStr[SIZE]; // str area
     
     // must be last

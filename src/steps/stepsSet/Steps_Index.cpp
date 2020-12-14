@@ -161,8 +161,7 @@ void Step::vIndexDeleteNext(void)
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  HV_Row hRow(pTable->pStreamDef(),C_ALL);
-  HV_Rec hvRec(pTable->pStreamDef(),C_ALL);
+  HV_RowSingle hvRowSingle(pTable->pStreamDef(),C_ALL);
   
   bool bBefore = true;
   Ent* aEntryToDelete;
@@ -193,9 +192,8 @@ void Step::vIndexDeleteNext(void)
         
       Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
       
-      RowInflator::vInflate_AllColumns_into_RowSingle(hRow,aCrw);
-      hvRec->vAppend(hRow);
-      hvRec->vPrintRow();
+      RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCrw);
+      hvRowSingle->vPrintRow();
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // delete the refernced crw

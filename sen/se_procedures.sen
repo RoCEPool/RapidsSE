@@ -654,16 +654,16 @@
 
   stage stageB on all partitions on origin :
 
-    toRow $table       | // (csvBuffer)  => (rsbBuffer)
+    toRow $table       | // (csvBuffer)  => (rowBuffer)
     // dump rowBuffer 1   |
 
-    toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
     // dump rowBuffer 1   |
 
-    toNstRow           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
     //dump rowBuffer 1   |
 
-    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
     //dump rowBuffer 1   |
 
     stageC hashed
@@ -718,16 +718,16 @@
 
   stage stageC on all partitions :
 
-    toRow $table       | // (csvBuffer)  => (rsbBuffer)
+    toRow $table       | // (csvBuffer)  => (rowBuffer)
     // dump rowBuffer 1   |
 
-    toPtnRow           | // (rsbBuffer)  => (rsbBuffer 'ptn)
+    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
     // dump rowBuffer 1   |
 
-    toNstRow           | // (rsbBuffer)  => (rsbBuffer 'nst)
+    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
     //dump rowBuffer 1   |
 
-    toHshCrw           | // (rsbBuffer)  => (crwBuffer 'hsh)
+    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
     //dump rowBuffer 1   |
 
     stageD hashed

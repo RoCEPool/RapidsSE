@@ -1196,33 +1196,10 @@ void vTest18(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test19 : testing wspConverge_t                                             */
+/* test19 :                                                                   */
 /*----------------------------------------------------------------------------*/
 void vTest19(void)
 {
-  Buffer xBuffer;
-  s256 s;
-  
-  // allot heads of size upto 100 bytes and tails of size upto 30 bytes
-  while (true) {
-    // allocate from head
-    i8 iHeadSize = RndLib::iInteger(1,100);
-    i8 iTailSize = RndLib::iInteger(1,30);
-    
-    if (xBuffer.m_xWspConverge.nFree() < iHeadSize + iTailSize)
-      break;
-    
-    byte* pbHead = xBuffer.m_xWspConverge.ayAllotHead(iHeadSize);
-    ASSERT(pbHead);
-    
-    byte* pbTail = xBuffer.m_xWspConverge.ayAllotTail(iTailSize);
-    ASSERT(pbTail);
-    
-    RndLib::vString(s,iTailSize);
-    StrLib::vCopy((char*)pbTail, s.azChar());
-    
-    vTrace("Head:%p; Tail:%p; iHeadSize: %lld; iTailSize: %lld; Tail: %s\n"_Stz, pbHead, pbTail, iHeadSize, iTailSize, pbTail);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1230,12 +1207,6 @@ void vTest19(void)
 /*----------------------------------------------------------------------------*/
 void vTest20(void)
 {
-  vTrace("This is RowBuffer Test; sizeof(RowBuffer) = %lld(B)\n"_Stz,
-         sizeof(RowBuffer));
-
-  RowBuffer* pRowBuffer = new RowBuffer;
-
-  delete pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
