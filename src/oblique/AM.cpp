@@ -5,6 +5,7 @@
 #include "Oblique.h"
 
 #include "Dir.hpp"    //?
+#include "Fifo.hpp"   //?
 #include "Socket.hpp" //?
 
 extern Args          gxArgs;

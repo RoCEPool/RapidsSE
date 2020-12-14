@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "Fifo.hpp" //?
+
 PromptFun __Prompt_mkfifo (
   PF_MKFIFO,             // prompt function
   "Prompt_mkfifo"_Stz,   // name of the prompt function
