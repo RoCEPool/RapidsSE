@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "ePP.h"
+
 #include "Dir.hpp" //?
 #include "File.hpp" //?
 #include "PsxThd.hpp" //?

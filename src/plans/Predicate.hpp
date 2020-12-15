@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "ePK.h"
+
 namespace Plans
 {  
   class Predicate : public Object

@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "ePT.h"
 #include "eZK.h"
 
 namespace Operands

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "ePF.h"
+
 namespace Prompt
 {
   class PromptFun

@@ -8,6 +8,9 @@
 #include "eAN.h"
 #include "eCK.h"
 #include "eDL.h"
+#include "ePD.h"
+#include "ePP.h"
+#include "ePY.h"
 #include "eUF.h"
 #include "eUK.h"
 

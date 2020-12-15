@@ -21,6 +21,8 @@
 #include "eOK.h"
 #include "eOP.h"
 #include "eOR.h"
+#include "ePP.h"
+#include "ePY.h"
 #include "eUK.h"
 
 #include "EnumGroups.h"
