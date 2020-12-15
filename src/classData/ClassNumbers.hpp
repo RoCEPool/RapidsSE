@@ -276,7 +276,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SPSTRING,
   /* */ CN_SPMEDIUM,
   /* */ CN_SPSMALL,
-  /* */ CN_SQLGRAPH,
   /* */ CN_SQLPLANNER,
   /* */ CN_SRTBUFFER,
   /* */ CN_SRTSET,
@@ -619,7 +618,6 @@ static Stz* aCN[]
   /* */ "SPSTRING"_Stz,            // CN_SPSTRING
   /* */ "SPMEDIUM"_Stz,            // CN_SPMEDIUM
   /* */ "SPSMALL"_Stz,             // CN_SPSMALL
-  /* */ "SQLGRAPH"_Stz,            // CN_SQLGRAPH
   /* */ "SQLPLANNER"_Stz,          // CN_SQLPLANNER
   /* */ "SRTBUFFER"_Stz,           // CN_SRTBUFFER
   /* */ "SRTSET"_Stz,              // CN_SRTSET

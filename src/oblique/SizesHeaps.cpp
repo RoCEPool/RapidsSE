@@ -278,7 +278,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SP_String),          HT_INVALID           ,0 }, // CN_SPSTRING
   { sizeof(SPmedium),           HT_INVALID           ,0 }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID           ,0 }, // CN_SPSMALL
-  { sizeof(SqlGraph),           HT_TRANSIENT_TINY    ,0 }, // CN_SQLGRAPH
   { sizeof(SqlPlanner),         HT_TRANSIENT_TINY    ,0 }, // CN_SQLPLANNER
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           ,0 }, // CN_SRTSET
@@ -350,7 +349,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'Z' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Z__
 
-  { -1,                         HT_INVALID           ,0 }, // CN_ENUMS
+  { C_VARGS_END,                HT_INVALID           ,0 }, // CN_ENUMS
 };
 
 /*============================================================================*/
