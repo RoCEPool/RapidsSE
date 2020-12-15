@@ -23,13 +23,13 @@ namespace Enums
 
 //#include "eBO.h"
 
-#include "eCC.h"
-#include "eCK.h"
-#include "eCM.h"
-#include "eCP.h"
-#include "eCS.h"
-#include "eCT.h"
-#include "eCX.h"
+//#include "eCC.h"
+//#include "eCK.h"
+//#include "eCM.h"
+//#include "eCP.h"
+//#include "eCS.h"
+//#include "eCT.h"
+//#include "eCX.h"
 
 #include "eDA.h"
 #include "eDC.h"

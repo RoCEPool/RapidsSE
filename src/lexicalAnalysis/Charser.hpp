@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eCS.h"
 #include "eIS.h"
 
 namespace LexicalAnalysis

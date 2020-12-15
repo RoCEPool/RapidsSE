@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eCM.h"
+
 namespace SenVM
 {
   class Compiler : public Object
