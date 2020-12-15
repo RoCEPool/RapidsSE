@@ -21,6 +21,8 @@ namespace MetaData
     
     bool   m_bTemp;         // is this a temporary definition?
   
+    RowPix m_oRowPix;
+
     // must be last
     Footer m_xFooter;
     
@@ -47,6 +49,7 @@ namespace MetaData
     Stz* szName(void);
     eEC eParse(Stz* szCmd);
     void vPrint(void);
+    RowPix* aRowPix(void);
     void vToColPix(ColPix* axColPix, bool bPtnHash);
     void vToRowPix(RowPix* aRowPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);

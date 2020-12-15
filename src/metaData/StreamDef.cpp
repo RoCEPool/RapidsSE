@@ -471,6 +471,18 @@ void StreamDef::vPrint(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert streamDef to condensed streamPix format                            */
+/*----------------------------------------------------------------------------*/
+RowPix* StreamDef::aRowPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  vToRowPix(&m_oRowPix,false);
+  
+  return & m_oRowPix;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to colPix format                                         */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
