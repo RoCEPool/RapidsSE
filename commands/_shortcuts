@@ -72,7 +72,6 @@ shortcut sf250_q3 "../demo/_TPCH_SF250_Q3";
 shortcut sfa "../demo/_alka";
 shortcut tpch1  __SF1;
 shortcut tpch10 __SF10;
-shortcut u    _upsertRJH;
 shortcut x    exp3;
 shortcut z    _ray;
 

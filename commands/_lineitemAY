@@ -195,20 +195,6 @@ partitionScan lineitem 1;
 
 docol epochTake;
 
-/time pipeline passThru
-begin
-
-  stage stageA on origin:
-    start | periodic once | stageB
-
-  stage stageB on origin:
-    GenCsv T | passThru | stageC
-
-  stage stageC on origin:
-    sink | stageA
-
-end
-;
 
 
 /time pipeline python
