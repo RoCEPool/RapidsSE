@@ -16,25 +16,35 @@ namespace Parser
     PlanNode*  m_pXref;      // cross-ref to another PlanNode
   };
 
-  class PlanNode : public Object
+  class PlanNode : public Object,
+                   public ListItem_t<PlanNode>
   {
   protected:
     s256  m_sName;
-    s2K   m_sType;
+    s256  m_sType;
     Value m_xValue;
-    ListNL_t<PlanNode>* m_pAttributes;
-    ListNL_t<PlanNode>* m_pChildren;
+    PlanNodeList* m_pProperties;
+    PlanNodeList* m_pChildren;
     
   private:
     Footer m_xFooter;
     
-   public:
-    
-    PlanNode(eCN eClassNo);
-    virtual ~PlanNode(void);
-    
+  public:
+    // Overriding these because we inherited from ListItem_t
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    PlanNode(Stz* szName, Stz* szType, Value xValue,
+             PlanNodeList* pProperties, PlanNodeList* pChildren);
+    ~PlanNode(void); // TODO: Shouldn't this be virtual so that we can properly clean up members?
+
     Footer* aFooter(void);
-    
+
+  protected:
+    PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
+             PlanNodeList* pProperties, PlanNodeList* pChildren);
+
+  public:
     Stz* getName();
     Stz* getType();
 

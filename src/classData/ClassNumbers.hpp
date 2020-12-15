@@ -40,17 +40,8 @@ enum eCN : u2 // Class Number
   /* */ CN_CARRYOVER,
   /* */ CN_CATALOG,
   /* */ CN_CHARSER,
-  /* */ CN_CLAUSE_FROM,
-  /* */ CN_CLAUSE_GROUPBY,
-  /* */ CN_CLAUSE_JOIN,
-  /* */ CN_CLAUSE_LIMIT,
-  /* */ CN_CLAUSE_ORDERBY,
-  /* */ CN_CLAUSE_PROJECT,
-  /* */ CN_CLAUSE_WHERE,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
-  /* */ CN_CONSTDEF,
-  /* */ CN_CONSTSET,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTOROW,
@@ -61,7 +52,6 @@ enum eCN : u2 // Class Number
   /* */ CN_DATUM,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
-  /* */ CN_DESCEND,
   /* */ CN_DEVIXT,
   /* */ CN_DEVROW,
   /* */ CN_DIC,
@@ -88,20 +78,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FACT,
   /* */ CN_FIFO,
   /* */ CN_FILE,
-  /* */ CN_FILTER_FETCH,
-  /* */ CN_FILTER_FROM,
-  /* */ CN_FILTER_GROUPBY,
-  /* */ CN_FILTER_INFLATE,
-  /* */ CN_FILTER_JOIN,
-  /* */ CN_FILTER_LIMIT,
-  /* */ CN_FILTER_ORDERBY,
-  /* */ CN_FILTER_OUTPUT,
-  /* */ CN_FILTER_PROJECT,
-  /* */ CN_FILTER_SCAN,
-  /* */ CN_FILTER_SELECT,
-  /* */ CN_FILTER_SUBQRY,
-  /* */ CN_FILTER_WHERE,
-  /* */ CN_FILTER_ZED,
   /* */ CN_FIPVAL,
   /* */ CN_FLTVAL,
   /* */ CN_FOCALOBJECTS,
@@ -114,7 +90,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FREQDIST,
   
   /* */ CN__G__,
-  /* */ CN_GGADAPTOR,
   /* */ CN_GRID,
   
   /* */ CN__H__,
@@ -164,23 +139,13 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICCOMPILER,
   /* */ CN_LOGICTIMER,
   /* */ CN_LOGICUNIT,
-  /* */ CN_LRW,
-  /* */ CN_LRWBUFFER,
 
   /* */ CN__M__,
   /* */ CN_MARKER,
   /* */ CN_MEDIUMPERSISTENT,
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEMTEST,
-  /* */ CN_METABLOCK,
-  /* */ CN_METACELL,
-  /* */ CN_METAGRAPH,
-  /* */ CN_METAINHERIT,
-  /* */ CN_METAINHERITS,
-  /* */ CN_METAMEMBER,
-  /* */ CN_METATYPE,
   /* */ CN_METHOD,
-  /* */ CN_MIDEND_FROMVEC,
   /* */ CN_MUTEX,
   
   /* */ CN__N__,
@@ -206,6 +171,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNER,
   /* */ CN_PLANNODE,
+  /* */ CN_PLANNODEBUILDER,
+  /* */ CN_PLANNODELIST,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
@@ -285,7 +252,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SPSTRING,
   /* */ CN_SPMEDIUM,
   /* */ CN_SPSMALL,
-  /* */ CN_SQLGRAPH,
   /* */ CN_SQLPLANNER,
   /* */ CN_SRTBUFFER,
   /* */ CN_SRTSET,
@@ -295,8 +261,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STATISTICS,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPTIMING,
-  /* */ CN_STMT_SELECT,
-  /* */ CN_STMT_SUBQRY,
   /* */ CN_STRAND,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMSET,
@@ -343,7 +307,6 @@ enum eCN : u2 // Class Number
   /* */ CN__U__,
   
   /* */ CN__V__,
-  /* */ CN_VORTEX,
 
   /* */ CN__W__,
   /* */ CN_WILDERNESS,
@@ -393,17 +356,8 @@ static Stz* aCN[]
   /* */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /* */ "CATALOG"_Stz,             // CN_CATALOG
   /* */ "CHARSER"_Stz,             // CN_CHARSER
-  /* */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
-  /* */ "CLAUSE_GROUPBY"_Stz,      // CN_CLAUSE_GROUPBY
-  /* */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN
-  /* */ "CLAUSE_LIMIT"_Stz,        // CN_CLAUSE_LIMIT
-  /* */ "CLAUSE_ORDERBY"_Stz,      // CN_CLAUSE_ORDERBY
-  /* */ "CLAUSE_PROJECT"_Stz,      // CN_CLAUSE_PROJECT
-  /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /* */ "COLUMN"_Stz,              // CN_COLUMN
   /* */ "COMPILER"_Stz,            // CN_COMPILER
-  /* */ "CONSTDEF"_Stz,            // CN_CONSTDEF
-  /* */ "CONSTSET"_Stz,            // CN_CONSTSET
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /* */ "CRWTOROW"_Stz,            // CN_CRWTOROW
@@ -414,7 +368,6 @@ static Stz* aCN[]
   /* */ "DATUM"_Stz,               // CN_DATUM
   /* */ "DECACNT"_Stz,             // CN_DECACNT
   /* */ "DECIDER"_Stz,             // CN_DECIDER
-  /* */ "DESCEND"_Stz,             // CN_DESCEND
   /* */ "DEVIXT"_Stz,              // CN_DEVIXT
   /* */ "DEVROW"_Stz,              // CN_DEVROW
   /* */ "DIC"_Stz,                 // CN_DIC
@@ -441,20 +394,6 @@ static Stz* aCN[]
   /* */ "FACT"_Stz,                // CN_FACT
   /* */ "FIFO"_Stz,                // CN_FIFO
   /* */ "FILE"_Stz,                // CN_FILE
-  /* */ "FILTER_FETCH"_Stz,        // CN_FILTER_FETCH
-  /* */ "FILTER_FROM"_Stz,         // CN_FILTER_FROM
-  /* */ "FILTER_GROUPBY"_Stz,      // CN_FILTER_GROUPBY
-  /* */ "FILTER_INFLATE"_Stz,      // CN_FILTER_INFLATE
-  /* */ "FILTER_JOIN"_Stz,         // CN_FILTER_JOIN
-  /* */ "FILTER_LIMIT"_Stz,        // CN_FILTER_LIMIT
-  /* */ "FILTER_ORDERBY"_Stz,      // CN_FILTER_ORDERBY
-  /* */ "FILTER_OUTPUT"_Stz,       // CN_FILTER_OUTPUT
-  /* */ "FILTER_PROJECT"_Stz,      // CN_FILTER_PROJECT
-  /* */ "FILTER_SCAN"_Stz,         // CN_FILTER_SCAN
-  /* */ "FILTER_SELECT"_Stz,       // CN_FILTER_SELECT
-  /* */ "FILTER_SUBQRY"_Stz,       // CN_FILTER_SUBQRY
-  /* */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
-  /* */ "FILTER_ZED"_Stz,          // CN_FILTER_ZED
   /* */ "FIPVAL"_Stz,              // CN_FIPVAL
   /* */ "FLTVAL"_Stz,              // CN_FLTVAL
   /* */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS
@@ -467,7 +406,6 @@ static Stz* aCN[]
   /* */ "FREQDIST"_Stz,            // CN_FREQDIST
   
   /* */ "_G__"_Stz,                // CN__G__
-  /* */ "GGADAPTOR"_Stz,           // CN_GGADAPTOR
   /* */ "GRID"_Stz,                // CN_GRID
   
   /* */ "_H__"_Stz,                // CN__H__
@@ -517,23 +455,13 @@ static Stz* aCN[]
   /* */ "LOGICCOMPILER"_Stz,       // CN_LOGICCOMPILER
   /* */ "LOGICTIMER"_Stz,          // CN_LOGICTIMER
   /* */ "LOGICUNIT"_Stz,           // CN_LOGICUNIT
-  /* */ "LRW"_Stz,                 // CN_LRW
-  /* */ "LRWBUFFER"_Stz,           // CN_LRWBUFFER
 
   /* */ "_M__"_Stz,                // CN__M__
   /* */ "MARKER"_Stz,              // CN_MARKER
   /* */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* */ "MEMTEST"_Stz,             // CN_MEMTEST
-  /* */ "METABLOCK"_Stz,           // CN_METABLOCK
-  /* */ "METACELL"_Stz,            // CN_METACELL
-  /* */ "METAGRAPH"_Stz,           // CN_METAGRAPH
-  /* */ "METAINHERIT"_Stz,         // CN_METAINHERIT
-  /* */ "METAINHERITS"_Stz,        // CN_METAINHERITS
-  /* */ "METAMEMBER"_Stz,          // CN_METAMEMBER
-  /* */ "METATYPE"_Stz,            // CN_METATYPE
   /* */ "METHOD"_Stz,              // CN_METHOD
-  /* */ "MIDEND_FROMVEC"_Stz,      // CN_MIDEND_FROMVEC
   /* */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* */ "_N__"_Stz,                // CN__N__
@@ -559,6 +487,8 @@ static Stz* aCN[]
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNER"_Stz,             // CN_PLANNER
   /* */ "PLANNODE"_Stz,            // CN_PLANNODE
+  /* */ "PLANNODEBUILDER"_Stz,     // CN_PLANNODEBUILDER
+  /* */ "PLANNODELIST"_Stz,        // CN_PLANNODELIST
   /* */ "POT"_Stz,                 // CN_POT
   /* */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
@@ -638,7 +568,6 @@ static Stz* aCN[]
   /* */ "SPSTRING"_Stz,            // CN_SPSTRING
   /* */ "SPMEDIUM"_Stz,            // CN_SPMEDIUM
   /* */ "SPSMALL"_Stz,             // CN_SPSMALL
-  /* */ "SQLGRAPH"_Stz,            // CN_SQLGRAPH
   /* */ "SQLPLANNER"_Stz,          // CN_SQLPLANNER
   /* */ "SRTBUFFER"_Stz,           // CN_SRTBUFFER
   /* */ "SRTSET"_Stz,              // CN_SRTSET
@@ -648,8 +577,6 @@ static Stz* aCN[]
   /* */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* */ "STEPTIMING"_Stz,          // CN_STEPTIMING
-  /* */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
-  /* */ "STMT_SUBQRY"_Stz,         // CN_STMT_SUBQRY
   /* */ "STRAND"_Stz,              // CN_STRAND
   /* */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* */ "STREAMSET"_Stz,           // CN_STREAMSET
@@ -696,7 +623,6 @@ static Stz* aCN[]
   /* */ "_U__"_Stz,                // CN__U__
   
   /* */ "_V__"_Stz,                // CN__V__
-  /* */ "VORTEX"_Stz,              // CN_VORTEX
 
   /* */ "_W__"_Stz,                // CN__W__
   /* */ "WILDERNESS"_Stz,          // CN_WILDERNESS

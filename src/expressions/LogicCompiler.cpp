@@ -895,6 +895,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "\n  #define C_MAX_LVL_LEVELS 6"
   "\n  #define C_LOCALS 8"
+  "\n  #define C_UNKNOWN -1"
   "\n"
   "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"
   "\n  enum eSI { "

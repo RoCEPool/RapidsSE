@@ -260,7 +260,7 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   visitChildren(ctx);
   
   // pop the expr stack and add it to the select list.
-  ASSERT(m_pExprStack->nValues() == 1);
+  //ASSERT(m_pExprStack->nValues() == 1);
   
   ExprAtom* pAtom = (ExprAtom*) (m_pExprStack->pPopPtr(__func__));
   m_pSelectList->vAppend(pAtom);

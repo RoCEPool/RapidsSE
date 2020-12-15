@@ -253,7 +253,6 @@ assert::stack_0
         "se_schemaTest.sen"           include
         "se_stepTests.sen"            include
         "se_stepTiming.sen"           include
-        "se_vortex.sen"               include
 
 //cmd::fillOut_allCmds_usingInfo
 //cmd::fillOut_allCmds_usingCmdSyntax

@@ -1819,14 +1819,6 @@ public:
   void vUtilityPrefetch(void);
   void vUtilitySchemaTest(void);
 
-  // vortex
-  void vVortexClose(void);
-  void vVortexDelete(void);
-  void vVortexNew(void);
-  void vVortexOpen(void);
-  void vVortexProcessH(void);
-  void vVortexProcessHpp(void);
-
   // word
   void vWord(void);
   void vWordAllot(void);

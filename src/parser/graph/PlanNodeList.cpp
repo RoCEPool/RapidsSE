@@ -1,61 +1,54 @@
 /*============================================================================*/
-/* Clause_GroupBy.cpp -- GroupBy Clause operand                               */
+/* PlanNodeList.cpp - a list of PlanNode objects                              */
 /*============================================================================*/
 
-#include "FrontEnd.h"
+#include "Parser.h"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+__pCastFunction(Parser,PlanNodeList,CN_PLANNODELIST)
+__aNewFunction(PlanNodeList,CN_PLANNODELIST)
+__vDeleteFunction(PlanNodeList,CN_PLANNODELIST)
+__aFooterFunction(PlanNodeList)
 
-__pCastFunction(FrontEnd,Clause_GroupBy,CN_CLAUSE_GROUPBY)
-__aNewFunction(Clause_GroupBy,CN_CLAUSE_GROUPBY)
-__vDeleteFunction(Clause_GroupBy,CN_CLAUSE_GROUPBY)
-__aFooterFunction(Clause_GroupBy)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_GroupBy::Clause_GroupBy(void)
-: Clause(CN_CLAUSE_GROUPBY)
+PlanNodeList::PlanNodeList()
+: ListNL_t<PlanNode>(CN_PLANNODELIST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
-
-  m_sName = "groupBy"_Stz;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODELIST,_FOOTER_);
   
-  _checkInitialised_(CN_CLAUSE_GROUPBY);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
+  _checkInitialised_(CN_PLANNODELIST);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNODELIST,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Clause_GroupBy::~Clause_GroupBy(void) noexcept(false)
+PlanNodeList::~PlanNodeList(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODELIST,_FOOTER_);
+
+  while (nItems() > 0) {
+    PlanNode* planNode = pPop();
+    delete planNode;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* descend                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Clause_GroupBy::bParse(Descend* pDescend, Stmt_SubQry* pSubQry)
-{
-  _static_
 
-  Token* pCurTkn = pDescend->pCurrToken();
-  
-  vTrace(C_FMT_CLAUSE,"GROUPBY"_Stz,Stz::szTab(pSubQry->iAtDepth()),pCurTkn->szChars());
-  pDescend->vNextToken();
-  
-  vCollect(pDescend,pSubQry);
-  
-  return true;
-}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */

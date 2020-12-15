@@ -20,10 +20,8 @@ namespace Correctness       { class Cell;            class Focal;
                               class Statistics;                               }
 namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
-namespace DataOperators     {                                                 }
 namespace Datums            { class Datum_h;
                               template <i8 SPACE> class Datum_t;              }
-namespace Debugging         {                                                 }
 namespace DynamoCompiler    { class Dynamo;                                   }
 namespace Entries           {                                                 }
 namespace Enums             {                                                 }
@@ -55,13 +53,7 @@ namespace Facts             { class Fact;            class Kbase;
                               class Question;        class Transform;         }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
-namespace FrontEnd          { class Clause_Project;  class Clause_From;
-                              class Clause_Where;    class Clause_GroupBy;
-                              class Clause_OrderBy;  class Clause_Limit;
-                              class Stmt_Select;     class Stmt_SubQry;
-                              class Descend;                                  }
 namespace Gadgets           { class EnumFlags;       class TagSet;            }
-namespace GoldenGate        {                                                 }
 namespace Grids             { class Grid;            class Node;              }
 namespace Host              {                                                 }
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
@@ -77,8 +69,6 @@ namespace Library           {                                                 }
 namespace Load              {                                                 }
 namespace Locking           { class Lock;            class LockTracker;       }
 namespace Logging           { class Log;             class LogEntry;          }
-namespace LogicalPlans      {                                                 }
-namespace MiddleEnd         {                                                 }
 namespace MetaData          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
@@ -99,11 +89,6 @@ namespace Pool              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;        }
 namespace Prompt            {   class SePrompt;                               }
 namespace ReadConsistency   { class Crv;                                      }
-namespace Reflection        { class ConstDef;        class ConstSet;
-                              class MetaBlock;       class MetaCell;
-                              class MetaGraph;       class MetaInherit;
-                              class MetaInherits;    class MetaMember;
-                              class MetaType;                                 }
 namespace ResourceUsage     { class RU_Cpu;          class RU_Memory;         }
 namespace Resources         {                                                 }
 namespace Rows              {                                                 }
@@ -112,7 +97,6 @@ namespace SenVM             { class Dic;             class DicStack;
 namespace Sessions          { class Session;         class SessionState;      }
 namespace SharedMemory      {                                                 }
 namespace SortBuffers       {                                                 }
-namespace SqlParsing        {                                                 }
 namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
@@ -123,7 +107,6 @@ namespace Threads           { class Scheduler;       class Thread;
                               class Queues;                                   }
 namespace Transactions      { class Tx;              class TxSet;             }
 namespace Utilities         { class BPA;             class PoolHelper;        }
-namespace Verbs             {                                                 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -138,9 +121,7 @@ using namespace CompilerOperators;
 using namespace ControlData;
 using namespace Correctness;
 using namespace DataBuffers;
-using namespace DataOperators;
 using namespace Datums;
-using namespace Debugging;
 using namespace DynamoCompiler;
 using namespace Entries;
 using namespace Enums;
@@ -149,9 +130,7 @@ using namespace Expressions;
 using namespace Facts;
 using namespace Focals;
 using namespace Folders;
-using namespace FrontEnd;
 using namespace Gadgets;
-using namespace GoldenGate;
 using namespace Grids;
 using namespace Host;
 using namespace Indexing;
@@ -163,8 +142,6 @@ using namespace Library;
 using namespace Load;
 using namespace Locking;
 using namespace Logging;
-using namespace LogicalPlans;
-using namespace MiddleEnd;
 using namespace MetaData;
 using namespace Metrics;
 using namespace Oblique;
@@ -178,7 +155,6 @@ using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
 using namespace ReadConsistency;
-using namespace Reflection;
 using namespace ResourceUsage;
 using namespace Resources;
 using namespace Rows;
@@ -186,7 +162,6 @@ using namespace SenVM;
 using namespace Sessions;
 using namespace SharedMemory;
 using namespace SortBuffers;
-using namespace SqlParsing;
 using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;
@@ -196,7 +171,6 @@ using namespace Tasks;
 using namespace Threads;
 using namespace Transactions;
 using namespace Utilities;
-using namespace Verbs;
 
 /*============================================================================*/
 /* end                                                                        */

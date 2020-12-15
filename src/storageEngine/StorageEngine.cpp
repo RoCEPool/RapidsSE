@@ -20,11 +20,9 @@ void StorageEngine::vCheckAllAssumptions(void)
   ClassData::vCheckAssumptions();
   CompactBuffers::vCheckAssumptions();
   Expressions::vCheckAssumptions();
-  FrontEnd::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();
-  DynamoCompiler::vCheckAssumptions();
   DynamoCompiler::vCheckAssumptions();
   Entries::vCheckAssumptions();
   Enums::vCheckAssumptions();
@@ -32,7 +30,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Facts::vCheckAssumptions();
   Focals::vCheckAssumptions();
   Gadgets::vCheckAssumptions();
-  GoldenGate::vCheckAssumptions();
   Grids::vCheckAssumptions();
   Host::vCheckAssumptions();
   Indexing::vCheckAssumptions();
@@ -42,8 +39,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   LexicalAnalysis::vCheckAssumptions();
   Library::vCheckAssumptions();
   Locking::vCheckAssumptions();
-  LogicalPlans::vCheckAssumptions();
-  MiddleEnd::vCheckAssumptions();
+  Load::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
   Operands::vCheckAssumptions();
@@ -55,14 +51,12 @@ void StorageEngine::vCheckAllAssumptions(void)
   Plans::vCheckAssumptions();
   Pool::vCheckAssumptions();
   //Prompt::vCheckAssumptions();
-  Reflection::vCheckAssumptions();
   ResourceUsage::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Sessions::vCheckAssumptions();
   SharedMemory::vCheckAssumptions();
   SortBuffers::vCheckAssumptions();
-  SqlParsing::vCheckAssumptions();
   SqlValues::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
@@ -71,7 +65,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   Transactions::vCheckAssumptions();
-  Load::vCheckAssumptions();
   Utilities::vCheckAssumptions();
 
   // third party??

@@ -752,7 +752,7 @@ bool Fact::bHasAtrNm(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FACT,_FOOTER_);
     
-//  for (Fact* pAtr = m_pAttributes;
+//  for (Fact* pAtr = m_pProperties;
 //       pAtr;
 //       pAtr = pAtr->m_pAttributeNext) {
 //
@@ -1314,7 +1314,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //
 //  vTraceF(pFile,"\n"_Stz);
 //
-//  for (Fact* pAttribute = m_pAttributes;
+//  for (Fact* pAttribute = m_pProperties;
 //       pAttribute;
 //       pAttribute = pAttribute->m_pAttributeNext)
 //    pAttribute->vPrint_r(pFile, iDepth + 1, iAs ? 2 : 0);
@@ -1482,7 +1482,7 @@ void Fact::vPrint_r(File* pFile, i8 iDepth)
 //    case 3: vTrace("\n"_Stz); break;
 //  }
 //
-//  for (Fact* pAttribute = m_pAttributes;
+//  for (Fact* pAttribute = m_pProperties;
 //       pAttribute;
 //       pAttribute = pAttribute->m_pAttributeNext)
 //    pAttribute->vPrint_r(iDepth + 1, iAs ? 2 : 0);

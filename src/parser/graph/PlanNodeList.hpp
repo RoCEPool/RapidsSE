@@ -1,40 +1,28 @@
 /*============================================================================*/
-/* MetaGraph.hpp - MetaGraph                                                  */
+/* PlanNodeList.hpp - a list of PlanNode objects                              */
 /*============================================================================*/
 #pragma once
 
-namespace Reflection
-{
-  class MetaGraph : public Object,
-                    public List_t<MetaType>
+namespace Parser
+{  
+  class PlanNodeList : public ListNL_t<PlanNode>
   {
-  public:
- 
-    ConstSet* m_pConstSet;
-  
+  private:
     // must be last
     Footer m_xFooter;
     
-  public:
+   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    MetaGraph(void);
-   ~MetaGraph(void) noexcept(false);
-  
-    static void vPrintTermSeq(TagSet& roTerms);
-  
-    void  vAddMetaType(MetaType* pMetaType);
-
-    ConstSet* pConstSet(void);
-
-    void vPrint(void);
-    void vRecursivePrint(void);
-  
+    
+    PlanNodeList();
+    ~PlanNodeList(void);
+    
     Footer* aFooter(void);
+    
   };
-
-  MetaGraph* _pMetaGraph(void* aAddr);
+  
+  PlanNodeList* _pPlanNodeList(void* aAddr);
 }
 
 /*============================================================================*/

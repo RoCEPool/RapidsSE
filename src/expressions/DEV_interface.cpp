@@ -1382,43 +1382,46 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
       if (uHigh <=  MC_STRING_x1) // numeric & date
         ayDataByte += uLow;
       else
-        if (uHigh >=  MC_NEGATIVE)  // small value
-        {;}
-        else
-          if (uHigh == MC_STRING_x1)  // string x 1
-            ayDataByte += STRx1(uLow);
-          else
-            if (uHigh == MC_STRING_x2)  // string x 2
-              ayDataByte += STRx2(uLow);
-            else
-              if (uHigh == MC_STRING_x4)  // string x 4
-                ayDataByte += STRx4(uLow);
-              else
-                if (uHigh == MC_STRING_x8)  // string x 8
-                  ayDataByte += STRx8(uLow);
-                else
-                  if (uHigh == MC_OVERFLOW) { // overflow
-                    
-                    //OverLine* aOverLine = aHeadLine->aGetOver();
-                    
-                    // calculation to get overflow
-                    nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
-                    if (nSizeUnits >= 128) nSizeUnits -= 128;
-                    nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-                    i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
-                    
-                    aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
-                    //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
-                    
-                    uMetaCode = *((u1*)aOverLine + C_U_1B);
-                    METACODE_SPLIT(uMetaCode,uHigh,uLow);
-                    ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
-                    goto L_Overflowed;
-                  }
-                  else {
-                    RASSERT(0);
-                  }
-      
+      if (uHigh >=  MC_NEGATIVE)  // small value
+      {;}
+      else
+      if (uHigh == MC_STRING_x1)  // string x 1
+        ayDataByte += STRx1(uLow);
+      else
+      if (uHigh == MC_STRING_x2)  // string x 2
+        ayDataByte += STRx2(uLow);
+      else
+      if (uHigh == MC_STRING_x4)  // string x 4
+        ayDataByte += STRx4(uLow);
+      else
+      if (uHigh == MC_STRING_x8)  // string x 8
+        ayDataByte += STRx8(uLow);
+      else
+      if (uHigh == MC_STRING_TAIL)  // string tail is 2B
+        ayDataByte += 2;
+      else
+      if (uHigh == MC_OVERFLOW) { // overflow
+        
+        //OverLine* aOverLine = aHeadLine->aGetOver();
+        
+        // calculation to get overflow
+        nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+        if (nSizeUnits >= 128) nSizeUnits -= 128;
+        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
+        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+        
+        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+        //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
+        
+        uMetaCode = *((u1*)aOverLine + C_U_1B);
+        METACODE_SPLIT(uMetaCode,uHigh,uLow);
+        ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
+        goto L_Overflowed;
+      }
+      else {
+        RASSERT(0);
+      }
+    
       continue;
     }
     
@@ -1666,32 +1669,32 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
           ayDataByte += nStrSize;
         }
         else
-          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
-              memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
-              ayDstByte += nRoundedStrBytes;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
-        
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
+      
         break;
         
       case MC_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1736,33 +1739,33 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
           ayDataByte += nStrSize;
         }
         else
-          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
-            
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
-              azDst = (char*)ayDstByte;
-              memcpy(azDst,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
-              ayDstByte += nRoundedStrBytes;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
+          azDst = (char*)ayDstByte;
+          memcpy(azDst,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         
@@ -1777,32 +1780,32 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
           ayDataByte += nStrSize;
         }
         else
-          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
-            
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
-              memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
-              ayDstByte += nRoundedStrBytes;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         
@@ -1817,32 +1820,32 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
           ayDataByte += nStrSize;
         }
         else
-          if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
-            
-            memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
-            ayDataByte += nStrSize;
-            
-            aacCellValue = (char**)ayDstByte;
-            *aacCellValue = acStrArea;
-            ayDstByte += 8;
-            acStrArea += nStrSize;
-          }
-          else
-            if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
-              memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
-              ayDataByte += nStrSize;
-              
-              //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
-              
-              nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
-              ayDstByte += nRoundedStrBytes;
-              aiCellValue = (i8*)ayDstByte;
-              *aiCellValue = nStrSize;
-              ayDstByte += 8;
-            }
-            else {
-              RASSERT(0);
-            }
+        if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
+          
+          memcpy(acStrArea,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          aacCellValue = (char**)ayDstByte;
+          *aacCellValue = acStrArea;
+          ayDstByte += 8;
+          acStrArea += nStrSize;
+        }
+        else
+        if (SI_CELLARRAY_PST == (eSI)ieStrInflateRule) {
+          memcpy(ayDstByte,ayDataByte,(size_t)nStrSize);
+          ayDataByte += nStrSize;
+          
+          //vTrace("SI_CELLARRAY_PST : %p %s\n"_Stz,rayDstByte,rayDstByte);
+          
+          nRoundedStrBytes = nWordRoundedStrBytes(nStrSize);
+          ayDstByte += nRoundedStrBytes;
+          aiCellValue = (i8*)ayDstByte;
+          *aiCellValue = nStrSize;
+          ayDstByte += 8;
+        }
+        else {
+          RASSERT(0);
+        }
         
         break;
         

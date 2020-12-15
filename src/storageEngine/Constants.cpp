@@ -344,7 +344,6 @@ void Constants::vAddConstantsCpp(void)
   /* 68 */ vAddConstant("CN_STATISTICS"_Stz,   CN_STATISTICS);
   /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
   /* 69 */ vAddConstant("CN_STEPTIMING"_Stz,   CN_STEPTIMING);
-  /* 69 */ vAddConstant("CN_STMT_SELECT"_Stz,  CN_STMT_SELECT);
   /*  1 */ vAddConstant("CN_STREAMDEF"_Stz,    CN_STREAMDEF);
   /*  1 */ vAddConstant("CN_STREAMSET"_Stz,    CN_STREAMSET);
   /*  1 */ vAddConstant("CN_STRING_T"_Stz,     CN_STRING_T);
@@ -594,7 +593,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_UK"_Stz,   EG_UK);
   vAddConstant("EG_VA"_Stz,   EG_VA);
   vAddConstant("EG_VL"_Stz,   EG_VL);
-  vAddConstant("EG_VP"_Stz,   EG_VP);
   vAddConstant("EG_WK"_Stz,   EG_WK);
   vAddConstant("EG_XA"_Stz,   EG_XA);
   vAddConstant("EG_XK"_Stz,   EG_XK);

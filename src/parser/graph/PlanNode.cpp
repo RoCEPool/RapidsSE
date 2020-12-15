@@ -15,13 +15,56 @@ __aFooterFunction(PlanNode)
 
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* PlanNode::operator new(size_t)
+{
+  void* pObject = HeapMem::pAllocate(CN_PLANNODE);
+
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void PlanNode::operator delete(void* pAddress)
+{
+  Object* pObject = reinterpret_cast<PlanNode*>(pAddress);
+
+  HeapMem::vFree(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PlanNode::PlanNode(eCN eClassNo)
+PlanNode::PlanNode(Stz* szName, Stz* szType, Value xValue,
+                   PlanNodeList* pProperties, PlanNodeList* pChildren)
+    : Object(CN_PLANNODE),
+      m_sName(szName),
+      m_sType(szType),
+      m_xValue{xValue},
+      m_pProperties(pProperties),
+      m_pChildren(pChildren)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
+
+  _checkInitialised_(CN_PLANNODE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
+                   PlanNodeList* pProperties, PlanNodeList* pChildren)
 : Object(eClassNo),
-  m_xValue{.m_iInt = 0},
-  m_pAttributes(nullptr),
-  m_pChildren(nullptr)
+  m_sName(szName),
+  m_sType(szType),
+  m_xValue{xValue},
+  m_pProperties(pProperties),
+  m_pChildren(pChildren)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
   
@@ -37,7 +80,9 @@ PlanNode::PlanNode(eCN eClassNo)
 PlanNode::~PlanNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
-  
+
+  if (m_pProperties != nullptr) delete m_pProperties;
+  if (m_pChildren   != nullptr) delete m_pChildren;
 }
 
 /*----------------------------------------------------------------------------*/
