@@ -152,7 +152,7 @@ static Stz* aEG[]
   class EnumGroups
   {
   public:
-    static Stz* szEnumText(i8 i_EnumGroup, i8 i_Enum);
+    //static Stz* szEnumText(i8 i_EnumGroup, i8 i_Enum);
   };
 }
 

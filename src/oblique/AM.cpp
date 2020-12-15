@@ -2070,6 +2070,285 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aDoes,
   
 }
 
+static Stz* aEG[]
+{
+  "EG_NONE"_Stz,
+  
+  "EG_AA"_Stz,
+  "EG_AC"_Stz,
+  "EG_AK"_Stz,
+  "EG_AN"_Stz,
+  "EG_AT"_Stz,
+
+  "EG_BO"_Stz,
+
+  "EG_CC"_Stz,
+  "EG_CK"_Stz,
+  "EG_CM"_Stz,
+  "EG_CN"_Stz,
+  "EG_CP"_Stz,
+  "EG_CS"_Stz,
+  "EG_CT"_Stz,
+  "EG_CX"_Stz,
+
+  "EG_DA"_Stz,
+  "EG_DC"_Stz,
+  "EG_DG"_Stz,
+  "EG_DL"_Stz,
+  "EG_DM"_Stz,
+  "EG_DS"_Stz,
+  
+  "EG_EA"_Stz,
+  "EG_EC"_Stz,
+  "EG_ED"_Stz,
+  "EG_EK"_Stz,
+  "EG_EO"_Stz,
+  "EG_EP"_Stz,
+
+  "EG_FA"_Stz,
+  "EG_FN"_Stz,
+  "EG_FU"_Stz,
+
+  "EG_GA"_Stz,
+  
+  "EG_HT"_Stz,
+  "EG_HS"_Stz,
+  "EG_HT"_Stz,
+
+  "EG_IK"_Stz,
+  "EG_IS"_Stz,
+  "EG_IT"_Stz,
+
+  "EG_JA"_Stz,
+  "EG_JF"_Stz,
+  "EG_JK"_Stz,
+  "EG_JL"_Stz,
+  "EG_JP"_Stz,
+  "EG_JS"_Stz,
+  
+  "EG_KC"_Stz,
+  "EG_KE"_Stz,
+  "EG_KK"_Stz,
+
+  "EG_LA"_Stz,
+  "EG_LK"_Stz,
+  "EG_LN"_Stz,
+  
+  "EG_MA"_Stz,
+  "EG_MC"_Stz,
+  "EG_MK"_Stz,
+  "EG_MM"_Stz,
+  "EG_MT"_Stz,
+
+  "EG_NE"_Stz,
+  "EG_NK"_Stz,
+  "EG_NS"_Stz,
+  
+  "EG_OA"_Stz,
+  "EG_OC"_Stz,
+  "EG_OI"_Stz,
+  "EG_OK"_Stz,
+  "EG_OM"_Stz,
+  "EG_OP"_Stz,
+  "EG_OR"_Stz,
+
+  "EG_PA"_Stz,
+  "EG_PF"_Stz,
+  "EG_PK"_Stz,
+  "EG_PO"_Stz,
+  "EG_PP"_Stz,
+  "EG_PT"_Stz,
+  "EG_PX"_Stz,
+  "EG_PY"_Stz,
+  
+  "EG_QA"_Stz,
+  "EG_QK"_Stz,
+  "EG_QN"_Stz,
+
+  "EG_RA"_Stz,
+  "EG_RE"_Stz,
+  "EG_RG"_Stz,
+  "EG_RO"_Stz,
+  "EG_RS"_Stz,
+  "EG_RU"_Stz,
+  
+  "EG_SC"_Stz,
+  "EG_SI"_Stz,
+  "EG_SK"_Stz,
+  "EG_SL"_Stz,
+  "EG_SS"_Stz,
+  "EG_ST"_Stz,
+
+  "EG_TA"_Stz,
+  "EG_TN"_Stz,
+  "EG_TP"_Stz,
+  "EG_TQ"_Stz,
+  "EG_TR"_Stz,
+  "EG_TS"_Stz,
+  "EG_TT"_Stz,
+  
+  "EG_UF"_Stz,
+  "EG_UK"_Stz,
+
+  "EG_VA"_Stz,
+  "EG_VL"_Stz,
+
+  "EG_WK"_Stz,
+
+  "EG_XA"_Stz,
+  "EG_XK"_Stz,
+  "EG_XP"_Stz,
+
+  "EG_YA"_Stz,
+  
+  "EG_ZK"_Stz,
+  
+  "EG_ENUMS"_Stz,
+};
+  
+
+/*----------------------------------------------------------------------------*/
+/* get enum text                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
+{
+  switch (i_EnumGroup) {
+      
+    case EG_AA: return aAA[i_Enum];
+    case EG_AC: return aAC[i_Enum];
+    case EG_AK: return aAK[i_Enum];
+    //case EG_AN: return aAN[i_Enum];
+    case EG_AT: return aAT[i_Enum];
+             
+    case EG_BO: return aBO[i_Enum];
+      
+    case EG_CC: return aCC[i_Enum];
+    case EG_CK: return aCK[i_Enum];
+    case EG_CM: return aCM[i_Enum];
+    case EG_CN: return aCN[i_Enum];
+    case EG_CP: return aCP[i_Enum];
+    //case EG_CS: return aCS[i_Enum];
+    case EG_CT: return aCT[i_Enum];
+    case EG_CX: return aCX[i_Enum];
+
+    case EG_DA: return aDA[i_Enum];
+    case EG_DC: return aDC[i_Enum];
+    case EG_DG: return aDG[i_Enum];
+    case EG_DL: return aDL[i_Enum];
+    case EG_DM: return aDM[i_Enum];
+    case EG_DS: return aDS[i_Enum];
+      
+    case EG_EA: return aEA[i_Enum];
+    case EG_EC: return aEC[i_Enum];
+    case EG_ED: return aED[i_Enum];
+    case EG_EO: return aEO[i_Enum];
+    case EG_EP: return aEP[i_Enum];
+
+    case EG_FA: return aFA[i_Enum];
+    case EG_FN: return aFN[i_Enum];
+    case EG_FU: return aFU[i_Enum];
+
+    case EG_GA: return aGA[i_Enum];
+
+    case EG_HA: return aHA[i_Enum];
+    case EG_HS: return aHS[i_Enum];
+    case EG_HT: return aHT[i_Enum];
+      
+    case EG_IK: return aIK[i_Enum];
+    case EG_IS: return aIS[i_Enum];
+    case EG_IT: return aIT[i_Enum];
+      
+    case EG_JA: return aJA[i_Enum];
+    case EG_JF: return aJF[i_Enum];
+    case EG_JK: return aJK[i_Enum];
+    case EG_JL: return aJL[i_Enum];
+    case EG_JP: return aJP[i_Enum];
+    case EG_JS: return aJS[i_Enum];
+      
+    case EG_KC: return aKC[i_Enum];
+    case EG_KE: return aKE[i_Enum];
+    case EG_KK: return aKK[i_Enum];
+
+    case EG_LA: return aLA[i_Enum];
+    case EG_LG: return aLG[i_Enum];
+    case EG_LH: return aLH[i_Enum];
+    case EG_LK: return aLK[i_Enum];
+      
+    case EG_MA: return aMA[i_Enum];
+    case EG_MC: return aMC[i_Enum];
+    case EG_MK: return aMK[i_Enum];
+    case EG_MM: return aMM[i_Enum];
+    case EG_MT: return aMT[i_Enum];
+
+    case EG_NE: return aNE[i_Enum];
+    case EG_NK: return aNK[i_Enum];
+    case EG_NS: return aNS[i_Enum];
+      
+    case EG_OA: return aOA[i_Enum];
+    case EG_OC: return aOC[i_Enum];
+    case EG_OI: return aOI[i_Enum];
+    case EG_OK: return aOK[i_Enum];
+    case EG_OM: return aOM[i_Enum];
+    case EG_OP: return aOP[i_Enum];
+    case EG_OR: return aOR[i_Enum];
+
+    case EG_PA: return aPA[i_Enum];
+    case EG_PF: return aPF[i_Enum];
+    case EG_PK: return aPK[i_Enum];
+    case EG_PO: return aPO[i_Enum];
+    case EG_PP: return aPP[i_Enum];
+    case EG_PT: return aPT[i_Enum];
+    case EG_PX: return aPX[i_Enum];
+    case EG_PY: return aPY[i_Enum];
+
+    case EG_QA: return aQA[i_Enum];
+    case EG_QK: return aQK[i_Enum];
+    case EG_QN: return aQN[i_Enum];
+
+    case EG_RA: return aRA[i_Enum];
+    case EG_RE: return aLE[i_Enum];
+    case EG_RG: return aRG[i_Enum];
+    case EG_RO: return aRO[i_Enum];
+    case EG_RS: return aRS[i_Enum];
+    case EG_RU: return aRU[i_Enum];
+      
+    case EG_SC: return aSC[i_Enum];
+    case EG_SI: return aSI[i_Enum];
+    case EG_SK: return aSK[i_Enum];
+    case EG_SL: return aSL[i_Enum];
+    case EG_SS: return aSS[i_Enum];
+    case EG_ST: return aST[i_Enum];
+
+    case EG_TA: return aTA[i_Enum];
+    case EG_TN: return aTN[i_Enum];
+    case EG_TP: return aTP[i_Enum];
+    case EG_TQ: return aTQ[i_Enum];
+    case EG_TR: return aTR[i_Enum];
+    case EG_TS: return aTS[i_Enum];
+    case EG_TT: return aTT[i_Enum];
+      
+    case EG_UF: return aUF[i_Enum];
+    case EG_UK: return aUK[i_Enum];
+
+    case EG_VA: return aVA[i_Enum];
+    case EG_VL: return aVL[i_Enum];
+ 
+    case EG_WK: return aWK[i_Enum];
+
+    case EG_XA: return aXA[i_Enum];
+    case EG_XK: return aXK[i_Enum];
+    case EG_XP: return aXP[i_Enum];
+
+    case EG_YA: return aYA[i_Enum];
+
+    case EG_ZK: return aZK[i_Enum];
+
+    default:
+      vTrace("AM::szEnumText: Unknown enum group %lld\n"_Stz, i_EnumGroup);
+      return nullptr;
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

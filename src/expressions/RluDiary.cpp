@@ -217,7 +217,7 @@ void RluDiary::vReportDiary(Stz *szFilePath)
 
                     (i8)m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                     (i8)m_xaDiaryEnt[i_Ent].m_i_Enum,
-                    EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
+                    AM::szEnumText(m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_Enum),
                     
                     (i8)m_xaDiaryEnt[i_Ent].m_iItem,
@@ -225,7 +225,7 @@ void RluDiary::vReportDiary(Stz *szFilePath)
                     (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs - nPrevNanoSecs,
 
                     aPP[m_xaDiaryEnt[i_Ent].m_iAction],
-                    EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_ActEnumGroup,
+                    AM::szEnumText(m_xaDiaryEnt[i_Ent].m_i_ActEnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_ActEnum)
 
                     );
@@ -239,7 +239,7 @@ void RluDiary::vReportDiary(Stz *szFilePath)
 
                     (i8)m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                     (i8)m_xaDiaryEnt[i_Ent].m_i_Enum,
-                    EnumGroups::szEnumText(m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
+                    AM::szEnumText(m_xaDiaryEnt[i_Ent].m_i_EnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_Enum),
                     
                     (i8)m_xaDiaryEnt[i_Ent].m_iItem,

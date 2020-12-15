@@ -338,6 +338,10 @@ namespace Oblique
     static void vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs);
     static void vWriteTrace(eYA eSysAct, Stz* szFormat, ...);
 
+  
+  
+    static Stz* szEnumText(i8 i_EnumGroup, i8 i_Enum);
+
   };
 }
 
