@@ -66,8 +66,8 @@ assert::stack_0
 
         "job_ConnectCluster.sen"  include
 
-        "Job_Pipeline.sen"        include
-        "Job_PipelineLocal.sen"   include
+        "job_Pipeline.sen"        include
+        "job_PipelineLocal.sen"   include
 
       //"otherJobs"               include-subdir
 
@@ -77,7 +77,7 @@ assert::stack_0
 4 .put
         "op__defHandlers.sen"         include
         "op__common.sen"              include
-        "op__EOcommon.sen"            include
+        "op__EOCommon.sen"            include
         "reg__common.sen"             include
 
         // -- -- -- -- -- -- -- -- -- --
@@ -152,7 +152,7 @@ assert::stack_0
         "OP_listTableDefs.sen"        include
         "OP_listTenants.sen"          include
 
-        "OP_nodeinfo.sen"             include
+        "OP_nodeInfo.sen"             include
         "OP_noop.sen"                 include
 
         "OP_output.sen"               include
@@ -183,7 +183,7 @@ assert::stack_0
 
         "OP_scan.sen"                 include
         "OP_send.sen"                 include
-        "OP_showcluster.sen"          include
+        "OP_showCluster.sen"          include
         "OP_sink.sen"                 include
         "OP_sizeIndex.sen"            include
         "OP_sizeTable.sen"            include
