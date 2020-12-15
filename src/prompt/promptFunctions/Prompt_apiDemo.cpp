@@ -166,20 +166,11 @@ void vRapidsSE_ApiDemo_getRows(void)
       i8 nRows = pRowBuffer->nRows();
       i8 nCols = pRowBuffer->nColumns();
 
-//      SP_RowPix spRowPix(nCols,pRowBuffer->axaColPix());
-//
-//      for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-//        Row* pRow = pRowBuffer->pRowAddress(i_Row);
-//        Stz* szRow = spRowPix.sz(pRow);
-//        vTrace("row: (%s)\n"_Stz,szRow);
-//      }
-      
-      SP_RowPix spRowPix(nCols,pRowBuffer->axaColPix());
- //     HV_Record hvRecord(pRowBuffer->pStreamDef(),C_ALL);
+     HV_Record hvRecord(pRowBuffer->aRowPix());
 
       for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
         Row* pRow = pRowBuffer->pRowAddress(i_Row);
-        Stz* szRow = spRowPix.sz(pRow);
+        Stz* szRow = hvRecord->sz(pRow);
         vTrace("row: (%s)\n"_Stz,szRow);
       }
 
