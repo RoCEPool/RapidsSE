@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eXP.h"
+
 namespace Transactions
 {    
   class Tx : public Focal

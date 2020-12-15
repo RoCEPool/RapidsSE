@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eKE.h"
+
 namespace MetaData
 {
   class IndexDef : public Definition

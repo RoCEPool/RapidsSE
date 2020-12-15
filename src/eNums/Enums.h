@@ -68,9 +68,9 @@ namespace Enums
 #include "eJP.h"
 #include "eJS.h"
 
-#include "eKC.h"
-#include "eKE.h"
-#include "eKK.h"
+//#include "eKC.h"
+//#include "eKE.h"
+//#include "eKK.h"
 
 #include "eLA.h"
 #include "eLE.h"
@@ -84,9 +84,9 @@ namespace Enums
 #include "eMM.h"
 #include "eMT.h"
 
-#include "eNE.h"
-#include "eNK.h"
-#include "eNS.h"
+//#include "eNE.h"
+//#include "eNK.h"
+//#include "eNS.h"
 
 #include "eOA.h"
 #include "eOC.h"
@@ -107,9 +107,9 @@ namespace Enums
 #include "ePX.h"
 #include "ePY.h"
 
-#include "eQA.h"
-#include "eQK.h"
-#include "eQN.h"
+//#include "eQA.h"
+//#include "eQK.h"
+//#include "eQN.h"
 
 #include "eRA.h"
 #include "eRG.h"
@@ -140,9 +140,9 @@ namespace Enums
 
 //#include "eWK.h"
 
-#include "eXA.h"
-#include "eXK.h"
-#include "eXP.h"
+//#include "eXA.h"
+//#include "eXK.h"
+//#include "eXP.h"
 
 //#include "eYA.h"
 

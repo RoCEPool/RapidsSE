@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eNK.h"
+
 namespace Structures
 {
   class Article : public Object,

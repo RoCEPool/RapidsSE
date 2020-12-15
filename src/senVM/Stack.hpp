@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eKK.h"
+
 namespace SenVM
 {
   static const i8 C_NO_ADDITIONAL_BYTES = 0;

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eXK.h"
+
 namespace PipelineSpecs
 {
   class OpSpec : public Object

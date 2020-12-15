@@ -5,6 +5,8 @@
 
 namespace Resources { class Socket; } //?
 
+#include "eNS.h"
+
 namespace Grids
 {
   class Node : public Object,

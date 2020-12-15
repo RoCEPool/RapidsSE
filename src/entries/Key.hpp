@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eKC.h"
+
 namespace Entries
 {
   class Key

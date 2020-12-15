@@ -6,6 +6,7 @@
 
 #include "eBO.h"
 #include "eUK.h"
+#include "eNE.h"
 
 #include "EnumGroups.h"
 

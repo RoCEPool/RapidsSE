@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eQN.h"
+
 namespace Facts
 {
   // typedef to support pointer to member function
