@@ -111,6 +111,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_SET_ITEMS,        // set number of column items
   /*    */ EO_SET_LOCALS_ALT,   // inflate alt columns direct into locals
   /*    */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
+  /*    */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
 
   // table
   /*    */ EO_TABLENM_ALT_SET,    // set the alt table name
@@ -195,6 +196,7 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
+  /*    */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row
   /*    */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw
   /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
   /*    */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw
@@ -426,6 +428,7 @@ static Stz* aEO[]
   /*    */ "EO_SET_ITEMS"_Stz,
   /*    */ "EO_SET_LOCALS_ALT"_Stz,
   /*    */ "EO_SET_LOCALS_SRC"_Stz,
+  /*    */ "EO_SET_LOCALS_SRC2"_Stz,
 
   // table
   /*    */ "EO_TABLENM_ALT_SET"_Stz,
@@ -510,6 +513,7 @@ static Stz* aEO[]
   //----------------------------------------------------------------------------
 
   // col operators
+  /*    */ "EO_COL_SRC_PUSHDST"_Stz,
   /*    */ "EO_COL_ALT_PUSHONE"_Stz,
   /*    */ "EO_COL_ALT_PUSHSET"_Stz,
   /*    */ "EO_COL_SRC_PUSHONE"_Stz,
@@ -747,6 +751,7 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_SET_ITEMS
   { EA_INT,     8 },  // EO_SET_LOCALS_ALT
   { EA_INT,     8 },  // EO_SET_LOCALS_SRC
+  { EA_INT,     8 },  // EO_SET_LOCALS_SRC2
 
   // table
   { EA_STRING, -1 },  // EO_TABLENM_ALT_SET
@@ -831,6 +836,7 @@ static EoArg EoArgs[]
   //----------------------------------------------------------------------------
   
   // col operators
+  { EA_NONE,    0 },  // EO_COL_SRC_PUSHDST
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
   { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE

@@ -21,6 +21,17 @@ macro AM_CRWBUFFER_PROJECT_HANDLER
   EO_JMP QRY_DONE
  endMacro
 
+macro AM_CRW_PROJECT_ALL_ROUTINE
+//----------------------------------------------------------------------------//
+// macro AM_CRW_PROJECT_ALL_ROUTINE                                           //
+//----------------------------------------------------------------------------//
+  // CRW_PROJECT_ALL_ROUTINE
+  Label CRW_PROJECT_ALL_ROUTINE
+  EO_ROW_DST_NEW
+  EO_COL_SRC_PUSHDST
+  EO_DUMP
+endMacro
+
 macro AM_CRW_PROJECT_ROUTINE
 //----------------------------------------------------------------------------//
 // macro AM_CRW_PROJECT_ROUTINE                                               //

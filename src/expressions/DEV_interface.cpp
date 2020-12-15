@@ -1211,7 +1211,6 @@ void vDev_TABLEPTN_GRABREAD(void* aLU)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
@@ -1232,6 +1231,23 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
     iaColSet,
     pLogicUnit->m_pDevAltRow->m_pStreamDef
   );
+}
+
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw to dst row                                */
+/*----------------------------------------------------------------------------*/
+void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE) {
+  _static_
+
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+  HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  StreamDef *pStreamDef = pLogicUnit->m_pDevSrcRow->m_pStreamDef;
+
+  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  RowInflator::vInflate_AllColumns_into_RowBuffer(pDevRow->m_pRowBuffer,aHeadLine);
+
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
