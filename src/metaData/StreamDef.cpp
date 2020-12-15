@@ -529,7 +529,10 @@ void StreamDef::vToRowPix(RowPix* aRowPix, bool bPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  ASSERT(! aRowPix->m_bInitialised);
+  if (aRowPix->m_bInitialised)
+    return;
+  
+  //ASSERT(! aRowPix->m_bInitialised);
   
   aRowPix->m_nColumns = nColumns(C_ALL);
   aRowPix->m_bPtnHash = bPtnHash;

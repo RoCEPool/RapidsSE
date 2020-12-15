@@ -562,7 +562,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   vTrace("Rrf: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
-  HV_Record hvRecord(pStreamDef);
+  HV_Record hvRecord(pStreamDef->aRowPix());
   
   // create a row
   HV_RowSingle hvRowSingle(pStreamDef);
@@ -677,7 +677,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
   
-  HV_Record hvRecord(pStreamDef);
+  HV_Record hvRecord(pStreamDef->aRowPix());
   HV_RowSingle hvRowSingle(pStreamDef);
   
   i8 nRows = nRowCount();

@@ -17,7 +17,7 @@ void MetricsHelper::vWriteCsv(InfoSet* pInfoSet, StreamDef* pStreamDef, File* pF
 {
   _static_
   
-  HV_Record hvRecord(pStreamDef);
+  HV_Record hvRecord(pStreamDef->aRowPix());
   
   for (Row* aInfoRow = pInfoSet->aFirstRow();
        aInfoRow;

@@ -35,7 +35,7 @@ static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 //------------------------------------------------------------------------------
 
 typedef HV<RowSingle,StreamDef> HV_RowSingle;
-typedef HV<Record,StreamDef>    HV_Record;
+typedef HV<Record,RowPix>       HV_Record;
 
 /*============================================================================*/
 /* end                                                                        */

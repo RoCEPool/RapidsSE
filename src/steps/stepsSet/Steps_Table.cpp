@@ -246,7 +246,7 @@ void Step::vTableGenCsvBuffer(void)
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
   HV_RowSingle hvRowSingle(pStreamDef);
-  HV_Record hvRecord(pStreamDef);
+  HV_Record hvRecord(pStreamDef->aRowPix());
 
   i8 nRecords = 0;
   for ( ; ; nRecords++) {
