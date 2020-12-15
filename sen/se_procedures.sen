@@ -1943,7 +1943,7 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt2 - select l_extendedprice from lineitem where l_partkey > 400000;
+  // Smt2 - select * from lineitem where l_partkey > 1000000;
   sPath
   "
   procedure Smt2
@@ -1972,10 +1972,10 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt3 - select l_extendedprice from lineitem where l_partkey < 400000;
+  // Smt3 - select l_extendedprice from lineitem where where l_partkey < 1000000;
   sPath
   "
-  procedure Smt4
+  procedure Smt3
   begin
 
   stage stageA on origin :
@@ -1984,7 +1984,7 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt4_s0.txt
+    genAsmTxt 3 0 ../eo_text/asmSmt4_s0.txt
     | stageC
 
   stage stageC on all partitions :
@@ -2002,7 +2002,7 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt4 - select l_extendedprice from lineitem where l_partkey > 400000 and l_partkey <= 600000;
+  // Smt4 - select l_extendedprice from lineitem where l_partkey > 500000 and l_partkey <= 1000000;
   sPath
   "
   procedure Smt4
@@ -2014,7 +2014,7 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt4_s0.txt
+    genAsmTxt 4 0 ../eo_text/asmSmt4_s0.txt
     | stageC
 
   stage stageC on all partitions :
@@ -2033,10 +2033,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index: l_orderkey
-  // Smt4 - select l_extendedprice from lineitem where l_orkeykey > 36;
+  // Smt5 - select l_extendedprice from lineitem where l_orkeykey > 36;
   sPath
   "
-  procedure Smt4
+  procedure Smt5
   begin
 
   stage stageA on origin :
@@ -2045,7 +2045,7 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt4_s0.txt
+    genAsmTxt 5 0 ../eo_text/asmSmt4_s0.txt
     | stageC
 
   stage stageC on all partitions :
@@ -2075,7 +2075,7 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt6_s0.txt
+    genAsmTxt 6 0 ../eo_text/asmSmt6_s0.txt
     | stageC
 
   stage stageC on all partitions :
@@ -2105,7 +2105,7 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt7_s0.txt
+    genAsmTxt 7 0 ../eo_text/asmSmt7_s0.txt
     | stageC
 
   stage stageC on all partitions :
