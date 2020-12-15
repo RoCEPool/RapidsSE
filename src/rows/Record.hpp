@@ -21,7 +21,6 @@ namespace Rows
     void  operator delete(void*);
   
     Record(RowPix* pRowPix);
-    Record(StreamDef* pStreamDef);
    ~Record(void) noexcept(false);
   
     char* az(void);
