@@ -11,9 +11,6 @@ void CompactBuffers::vCheckAssumptions(void)
 {
   ALWAYS(sizeof(HeadLine) == sizeof(SingleWord));
   ALWAYS(sizeof(TailLine) == sizeof(SpaceUnit));
-
-  ALWAYS(sizeof(Lrw) == 16);
-  ALWAYS(sizeof(LrwCdx) == 8);
 }
 
 /*============================================================================*/

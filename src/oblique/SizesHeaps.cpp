@@ -141,8 +141,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(LogicCompiler),      HT_TRANSIENT_LARGE   ,0 }, // CN_LOGICCOMPILER
   { sizeof(LogicTimer),         HT_TRANSIENT_LARGE   ,0 }, // CN_LOGICTIMER
   { sizeof(LogicUnit),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_LOGICUNIT
-  { sizeof(Lrw),                HT_TRANSIENT_SMALL   ,0 }, // CN_LRW
-  { sizeof(LrwBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_LRWBUFFER
 
   { 'M' - ('A' - 1),            HT_INVALID           ,0 }, // CN__M__
   { sizeof(Marker),             HT_TRANSIENT_TINY    ,0 }, // CN_MARKER

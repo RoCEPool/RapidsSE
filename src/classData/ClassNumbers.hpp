@@ -139,8 +139,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICCOMPILER,
   /* */ CN_LOGICTIMER,
   /* */ CN_LOGICUNIT,
-  /* */ CN_LRW,
-  /* */ CN_LRWBUFFER,
 
   /* */ CN__M__,
   /* */ CN_MARKER,
@@ -455,8 +453,6 @@ static Stz* aCN[]
   /* */ "LOGICCOMPILER"_Stz,       // CN_LOGICCOMPILER
   /* */ "LOGICTIMER"_Stz,          // CN_LOGICTIMER
   /* */ "LOGICUNIT"_Stz,           // CN_LOGICUNIT
-  /* */ "LRW"_Stz,                 // CN_LRW
-  /* */ "LRWBUFFER"_Stz,           // CN_LRWBUFFER
 
   /* */ "_M__"_Stz,                // CN__M__
   /* */ "MARKER"_Stz,              // CN_MARKER
