@@ -171,7 +171,6 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEMTEST,
   /* */ CN_METHOD,
-  /* */ CN_MIDEND_FROMVEC,
   /* */ CN_MUTEX,
   
   /* */ CN__N__,
@@ -513,7 +512,6 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* */ "MEMTEST"_Stz,             // CN_MEMTEST
   /* */ "METHOD"_Stz,              // CN_METHOD
-  /* */ "MIDEND_FROMVEC"_Stz,      // CN_MIDEND_FROMVEC
   /* */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* */ "_N__"_Stz,                // CN__N__

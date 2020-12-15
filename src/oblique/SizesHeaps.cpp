@@ -173,7 +173,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(MemTest),            HT_TRANSIENT_TINY    ,0 }, // CN_MEMTEST
   { sizeof(Method),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_METHOD
-  { sizeof(MidEnd_FromVec),     HT_TRANSIENT_SMALL   ,0 }, // CN_MIDEND_FROMVEC
   { sizeof(Mutex),              HT_TRANSIENT_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID           ,0 }, // CN__N__
