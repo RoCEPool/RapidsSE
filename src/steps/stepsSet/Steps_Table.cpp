@@ -24,7 +24,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("table[].findColumn"_Stz,       &Step::vTableFindColumn);
-  vAddStep("table[].genCsvBuffer"_Stz,     &Step::vTableGenCsvBuffer);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table[].isDefinitionOnly@"_Stz, &Step::vTableIsDefinitionOnlyFetch);
@@ -231,44 +230,6 @@ void Step::vTableDump(void)
     pTablePtn->vDump();
   }
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Table[].genCsvBuffer -- generate a random row for table                    */
-/*----------------------------------------------------------------------------*/
-void Step::vTableGenCsvBuffer(void)
-{
-  ENTRY();
-
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  CsvBuffer* pCsvBuffer = new CsvBuffer;
-  HV_RowSingle hvRowSingle(pStreamDef);
-  HV_Record hvRecord(pStreamDef->aRowPix());
-
-  i8 nRecords = 0;
-  for ( ; ; nRecords++) {
-    
-    hvRowSingle->vResetValues();
-    RowGenerator::vRandom(hvRowSingle,pStreamDef);
-    
-    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
-    StrLib::vConcat(hvRecord->az(),'\n');               //! sub-optimal
-    //vTrace("Random Rec: %s"_Stz,spRecord.sz());
-
-    if (! pCsvBuffer->szAppendRecord(hvRecord->sz()))
-      break;
-  }
-  
-  //pCsvBuffer->vPrintRecords();
-  
-  //delete pCsvBuffer;
-  //delete pRow;
-  
-  m_pDataStack->vPushPtr(pCsvBuffer);
-
   EXIT();
 }
 

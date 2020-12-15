@@ -1529,7 +1529,6 @@ public:
   void vTableDelete(void);
   void vTableDump(void);
   void vTableFindColumn(void);
-  void vTableGenCsvBuffer(void);
   void vTableGet(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
