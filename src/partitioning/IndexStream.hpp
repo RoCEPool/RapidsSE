@@ -1,7 +1,10 @@
 /*============================================================================*/
-/* IdxStream.hpp -- Index Stream                                              */
+/* IndexStream.hpp -- Index Stream                                            */
 /*============================================================================*/
 #pragma once
+
+#include "eRA.h"
+#include "eRO.h"
 
 namespace Partitioning
 {

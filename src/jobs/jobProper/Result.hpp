@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eRS.h"
+
 namespace Jobs
 {
   class Result : public Object

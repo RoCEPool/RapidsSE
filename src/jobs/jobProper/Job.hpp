@@ -7,6 +7,7 @@
 #include "eJL.h"
 #include "eJS.h"
 #include "eJP.h"
+#include "eRS.h"
 
 namespace Jobs
 {

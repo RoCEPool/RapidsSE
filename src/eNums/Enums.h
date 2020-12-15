@@ -111,11 +111,11 @@ namespace Enums
 //#include "eQK.h"
 //#include "eQN.h"
 
-#include "eRA.h"
-#include "eRG.h"
-#include "eRO.h"
-#include "eRS.h"
-#include "eRU.h"
+//#include "eRA.h"
+//#include "eRG.h"
+//#include "eRO.h"
+//#include "eRS.h"
+//#include "eRU.h"
 
 #include "eSC.h"
 #include "eSI.h"

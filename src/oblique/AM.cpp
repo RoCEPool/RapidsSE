@@ -23,6 +23,8 @@
 #include "eOR.h"
 #include "ePP.h"
 #include "ePY.h"
+#include "eRG.h"
+#include "eRU.h"
 #include "eUK.h"
 
 #include "EnumGroups.h"
