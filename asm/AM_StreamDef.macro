@@ -13,6 +13,29 @@ Label STREAMDEF_HANDLER
   EO_JMP QRY_DONE
 endMacro
 
+macro AM_STREAMDEF_HANDLER
+//----------------------------------------------------------------------------//
+// macro AM_STREAMDEF_HANDLER                                                 //
+//----------------------------------------------------------------------------//
+// macro AM_STREAMDEF_HANDLER
+  Label STREAMDEF_HANDLER
+  EO_REG_STREAMDEFOUT_NEW
+endMacro
+
+macro AM_STREAMDEF_ADD_COLUMN
+// macro AM_STREAMDEF_ADD_COLUMN
+  EO_PUSH_COLUMN_SCALE <columnScale>
+  EO_PUSH_COLUMN_LENGTH <columnLength>
+  EO_PUSH_COLUMN_TYPE <columnType>
+  EO_REG_STREAMDEFOUT_ADDCOLUMN <columnName>
+endMacro
+
+macro AM_STREAMDEF_END
+// macro AM_STREAMDEF_END
+  EO_POT_USE_STREAMDEFOUT <addPtnHash>
+  EO_JMP QRY_DONE
+endMacro
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

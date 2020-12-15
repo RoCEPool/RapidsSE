@@ -489,11 +489,6 @@ void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // default handler for the STREAMDEF
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // default handler for the EOSMARKER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
@@ -505,10 +500,13 @@ void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
   oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
   oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_StreamDef"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
   oTagSet.vReset();
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER, &oTagSet));
+  oTagSet.vReset();
 
   // add a column to the streamDef
   oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);
