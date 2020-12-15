@@ -2903,11 +2903,11 @@ L_RecordEndLineEnd:
   }
   
   if (iTraceBits & C_BIT_EndRecord) {
-    SP_RowPix spRowPix(nCols,aColPix);
+    HV_Record hvRecord(m_pStreamDef->aRowPix());
     vTrace("[%lld : %lld] %s\n"_Stz,
            m_i_Rec,
            m_bPtnHash ? tPtnNo : C_UNKNOWN,
-           spRowPix.sz(m_pRowBuffer->pRowCurrent()));
+           hvRecord->sz(m_pRowBuffer->pRowCurrent()));
   }
 
   // increment records processed

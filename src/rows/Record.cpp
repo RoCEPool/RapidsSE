@@ -72,11 +72,14 @@ Stz* Record::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* Record::sz(Row* aRow)
+Stz* Record::sz(Row* aRow, bool bNewLine)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 
   vAddRow(aRow);
+
+  if (bNewLine)
+    StrLib::vAppendString(&m_azCursor,"\n");
 
   return (Stz*) &m_caRecord[0];
 }

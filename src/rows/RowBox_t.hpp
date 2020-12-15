@@ -315,9 +315,6 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
     vDepositColVal(iVal);
   }
   
-//  Row* aRowDst = aRowAdr(nRows() - 1);
-//  SP_RowPix spPix(nCols,m_oRowPix.m_xaColPix);
-//  vTrace("CopyRow: %s\n"_Stz,spPix.sz(aRowDst));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -700,9 +697,9 @@ template <i8 SIZE>
 void RowBox_t<SIZE>::vDumpRow(i8 i_Row, Row* aRow)
 {
   
-  SP_RowPix spRowPix(this->nColumns(),this->axaColPix());
-  
-  Stz* szRow = spRowPix.sz(aRow);
+  HV_Record hvRecord(aRowPix());
+
+  Stz* szRow = hvRecord->sz(aRow);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
 }
 
