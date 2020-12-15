@@ -214,7 +214,7 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  SP_RowPix spRowPix(this->nColumns(),axaColPix());
+  HV_Record hvRecord(aRowPix());
   
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
@@ -227,7 +227,7 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
     
     Row* aRow = pRowAddress(i_Row);
     
-    Stz* szRow = spRowPix.sz(aRow,true);
+    Stz* szRow = hvRecord->sz(aRow,true);
 
     nSize = szRow->nSize();
     
