@@ -5,6 +5,8 @@
 
 #include "eEP.h"
 #include "eQK.h"
+#include "eTR.h"
+#include "eTS.h"
 
 namespace Tasks
 {  

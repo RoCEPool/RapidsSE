@@ -26,6 +26,8 @@
 #include "eRG.h"
 #include "eRU.h"
 #include "eST.h"
+#include "eTP.h"
+#include "eTT.h"
 #include "eUK.h"
 
 #include "EnumGroups.h"

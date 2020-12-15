@@ -5,6 +5,7 @@
 #include "Jobs.h"
 
 #include "eQK.h"
+#include "eTS.h"
 
 extern Log* gpLog;
 

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eTQ.h"
+
 namespace Facts
 {
   static const i8 C_METHOD_CODE  = C_4KB;

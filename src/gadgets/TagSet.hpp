@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eTN.h"
+
 namespace Gadgets
 {
   static const i8 C_ENAME_SET = 256;
