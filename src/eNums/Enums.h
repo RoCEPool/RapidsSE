@@ -148,7 +148,7 @@ namespace Enums
 
 #include "eZK.h"
 
-#include "EnumGroups.hpp"
+#include "EnumGroups.h"
 
 /*============================================================================*/
 /* end                                                                        */
