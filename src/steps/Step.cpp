@@ -199,9 +199,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_User();
   Step::vAddSteps_Utility();
-  
-  Step::vAddSteps_Vortex();
-  
+    
   Step::vAddSteps_Word();
 
   Step::vAddSteps_XmitOperand();

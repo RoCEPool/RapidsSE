@@ -129,8 +129,7 @@ Stz* EnumGroups::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_VA: return aVA[i_Enum];
     case EG_VL: return aVL[i_Enum];
-    case EG_VP: return aVP[i_Enum];
-
+ 
     case EG_WK: return aWK[i_Enum];
 
     case EG_XA: return aXA[i_Enum];

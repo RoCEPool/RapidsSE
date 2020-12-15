@@ -49,8 +49,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CLAUSE_WHERE,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
-  /* */ CN_CONSTDEF,
-  /* */ CN_CONSTSET,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTOROW,
@@ -172,13 +170,6 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMPERSISTENT,
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEMTEST,
-  /* */ CN_METABLOCK,
-  /* */ CN_METACELL,
-  /* */ CN_METAGRAPH,
-  /* */ CN_METAINHERIT,
-  /* */ CN_METAINHERITS,
-  /* */ CN_METAMEMBER,
-  /* */ CN_METATYPE,
   /* */ CN_METHOD,
   /* */ CN_MIDEND_FROMVEC,
   /* */ CN_MUTEX,
@@ -343,7 +334,6 @@ enum eCN : u2 // Class Number
   /* */ CN__U__,
   
   /* */ CN__V__,
-  /* */ CN_VORTEX,
 
   /* */ CN__W__,
   /* */ CN_WILDERNESS,
@@ -402,8 +392,6 @@ static Stz* aCN[]
   /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /* */ "COLUMN"_Stz,              // CN_COLUMN
   /* */ "COMPILER"_Stz,            // CN_COMPILER
-  /* */ "CONSTDEF"_Stz,            // CN_CONSTDEF
-  /* */ "CONSTSET"_Stz,            // CN_CONSTSET
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /* */ "CRWTOROW"_Stz,            // CN_CRWTOROW
@@ -525,13 +513,6 @@ static Stz* aCN[]
   /* */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* */ "MEMTEST"_Stz,             // CN_MEMTEST
-  /* */ "METABLOCK"_Stz,           // CN_METABLOCK
-  /* */ "METACELL"_Stz,            // CN_METACELL
-  /* */ "METAGRAPH"_Stz,           // CN_METAGRAPH
-  /* */ "METAINHERIT"_Stz,         // CN_METAINHERIT
-  /* */ "METAINHERITS"_Stz,        // CN_METAINHERITS
-  /* */ "METAMEMBER"_Stz,          // CN_METAMEMBER
-  /* */ "METATYPE"_Stz,            // CN_METATYPE
   /* */ "METHOD"_Stz,              // CN_METHOD
   /* */ "MIDEND_FROMVEC"_Stz,      // CN_MIDEND_FROMVEC
   /* */ "MUTEX"_Stz,               // CN_MUTEX
@@ -696,7 +677,6 @@ static Stz* aCN[]
   /* */ "_U__"_Stz,                // CN__U__
   
   /* */ "_V__"_Stz,                // CN__V__
-  /* */ "VORTEX"_Stz,              // CN_VORTEX
 
   /* */ "_W__"_Stz,                // CN__W__
   /* */ "WILDERNESS"_Stz,          // CN_WILDERNESS

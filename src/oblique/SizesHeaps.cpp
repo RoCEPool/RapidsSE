@@ -51,8 +51,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Clause_Where),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_WHERE
   { sizeof(Column),             HT_TRANSIENT_TINY    ,0 }, // CN_COLUMN
   { sizeof(Compiler),           HT_TRANSIENT_TINY    ,0 }, // CN_COMPILER
-  { sizeof(ConstDef),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_CONSTDEF
-  { sizeof(ConstSet),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_CONSTSET
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_CRWBUFFER
   { sizeof(CrwToRow),           HT_TRANSIENT_LARGE   ,0 }, // CN_CRWTOROW
@@ -174,13 +172,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMPERSISTENT
   { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(MemTest),            HT_TRANSIENT_TINY    ,0 }, // CN_MEMTEST
-  { sizeof(MetaBlock),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_METABLOCK
-  { sizeof(MetaCell),           HT_TRANSIENT_TINY    ,0 }, // CN_METACELL
-  { sizeof(MetaGraph),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_METAGRAPH
-  { sizeof(MetaInherit),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_METAINHERIT
-  { sizeof(MetaInherits),       HT_TRANSIENT_TINY    ,0 }, // CN_METAINHERITS
-  { sizeof(MetaMember),         HT_TRANSIENT_TINY    ,0 }, // CN_METAMEMBER
-  { sizeof(MetaType),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_METATYPE
   { sizeof(Method),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_METHOD
   { sizeof(MidEnd_FromVec),     HT_TRANSIENT_SMALL   ,0 }, // CN_MIDEND_FROMVEC
   { sizeof(Mutex),              HT_TRANSIENT_TINY    ,0 }, // CN_MUTEX
@@ -345,7 +336,6 @@ SizeHeap gxaSizeHeap[]
   { 'U' - ('A' - 1),            HT_INVALID           ,0 }, // CN__U__
 
   { 'V' - ('A' - 1),            HT_INVALID           ,0 }, // CN__V__
-  { sizeof(Vortex),             HT_TRANSIENT_LARGE   ,0 }, // CN_VORTEX
 
   { 'W' - ('A' - 1),            HT_INVALID           ,0 }, // CN__W__
   { sizeof(Wilderness),         HT_INVALID           ,0 }, // CN_WILDERNESS

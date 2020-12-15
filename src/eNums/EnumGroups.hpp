@@ -133,7 +133,6 @@ static Stz* aEG[]
 
   "EG_VA"_Stz,
   "EG_VL"_Stz,
-  "EG_VP"_Stz,
 
   "EG_WK"_Stz,
 
