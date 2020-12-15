@@ -17,7 +17,7 @@ macro AM_STARTMARKER_HANDLER
 
   EO_HANDLER <logicUnitHandler>
   EO_CALLAGAIN
-  EO_JMP QRY_DONE
+  EO_JMP QUERY_DONE
 endMacro
 
 /*============================================================================*/

@@ -11,7 +11,7 @@ macro AM_DATAPULSE_HANDLER
   EO_POP
 
   EO_CALL <dataPulseProcessRoutine>
-  EO_JMP QRY_DONE
+  EO_JMP QUERY_DONE
 endMacro
 
 macro AM_TABLE_SCAN
@@ -26,7 +26,7 @@ macro AM_TABLE_SCAN
   EO_HANDLER <logicUnitHandler>
   EO_CALLAGAIN
 
-  EO_JMP QRY_DONE
+  EO_JMP QUERY_DONE
 endMacro
 
 /*============================================================================*/

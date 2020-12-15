@@ -317,7 +317,7 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -360,7 +360,7 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handler for CRWBUFFER
+  // CRWBUFFER HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_ALL for each row
   oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ALL_ROUTINE"_Stz);
@@ -374,97 +374,10 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ALL_ROUTINE, &oTagSet));
   oTagSet.vReset();
 
-  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handler for CRWBUFFER
+  // QUERYY DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //   to execute PROJECT_COLUMNS for each row
-  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
-  oTagSet.vReset();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // PROJECT_COLUMNS Routine
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add the columns to be projected to PROJECT_COLUMNS
-  // 15 columns in lineitem. Setting lower order 15 bits on.
-  u8 uProjectColumns = 0xFFFF;
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, 15);
-
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)15);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)14);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)13);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)12);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)11);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)10);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)9);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)8);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNS, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)7);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)6);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)5);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)4);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)3);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)2);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)1);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-  oTagSet.vAppend(C_TAG_PROJECT_DST_COLUMN, (i8)0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
-  oTagSet.vReset();
-
-*/
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query Done
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -482,7 +395,7 @@ void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -497,11 +410,15 @@ void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
   oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
   oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+
   // set the logicUnit handler to be executed once we step back into the sen code
   oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_StreamDef"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
   oTagSet.vReset();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for the ZK_STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER, &oTagSet));
   oTagSet.vReset();
 
@@ -562,7 +479,7 @@ void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -580,7 +497,7 @@ void LogicUnit::vGenerateAsmTxt_Smt2(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -656,7 +573,7 @@ void LogicUnit::vGenerateAsmTxt_Smt2(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -674,7 +591,7 @@ void LogicUnit::vGenerateAsmTxt_Smt3(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -756,7 +673,7 @@ void LogicUnit::vGenerateAsmTxt_Smt3(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -774,7 +691,7 @@ void LogicUnit::vGenerateAsmTxt_Smt4(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -856,7 +773,7 @@ void LogicUnit::vGenerateAsmTxt_Smt4(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -874,7 +791,7 @@ void LogicUnit::vGenerateAsmTxt_Smt5(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -956,7 +873,7 @@ void LogicUnit::vGenerateAsmTxt_Smt5(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -974,7 +891,7 @@ void LogicUnit::vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1056,7 +973,7 @@ void LogicUnit::vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1074,7 +991,7 @@ void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1156,7 +1073,7 @@ void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1213,7 +1130,7 @@ void LogicUnit::vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1314,7 +1231,7 @@ void LogicUnit::vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Finally query done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1333,7 +1250,7 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1465,7 +1382,7 @@ void LogicUnit::vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFi
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Finally query done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1484,7 +1401,7 @@ void LogicUnit::vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFil
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INIT, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1564,7 +1481,7 @@ void LogicUnit::vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFil
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Finally query done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QRY_DONE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
 }
 
 /*----------------------------------------------------------------------------*/

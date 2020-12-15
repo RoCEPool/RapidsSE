@@ -10,7 +10,7 @@ macro AM_STREAMDEF_FROM_SRC_HANDLER
 Label STREAMDEF_HANDLER
   EO_REG_SRC_STREAMDEFOUT_NEW
   EO_POT_USE_STREAMDEFOUT <addPtnHash>
-  EO_JMP QRY_DONE
+  EO_JMP QUERY_DONE
 endMacro
 
 macro AM_STREAMDEF_HANDLER
@@ -33,7 +33,7 @@ endMacro
 macro AM_STREAMDEF_END
 // macro AM_STREAMDEF_END
   EO_POT_USE_STREAMDEFOUT <addPtnHash>
-  EO_JMP QRY_DONE
+  EO_JMP QUERY_DONE
 endMacro
 
 /*============================================================================*/
