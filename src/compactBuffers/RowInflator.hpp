@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eSI.h"
+
 namespace CompactBuffers
 {
   class RowInflator : private RowCoder

@@ -117,12 +117,12 @@ namespace Enums
 //#include "eRS.h"
 //#include "eRU.h"
 
-#include "eSC.h"
-#include "eSI.h"
-#include "eSK.h"
-#include "eSL.h"
-#include "eSS.h"
-#include "eST.h"
+//#include "eSC.h"
+//#include "eSI.h"
+//#include "eSK.h"
+//#include "eSL.h"
+//#include "eSS.h"
+//#include "eST.h"
 
 #include "eTA.h"
 #include "eTN.h"

@@ -6,6 +6,7 @@
 #include "Sessions.h"
 
 #include "eAC.h"
+#include "eSK.h"
 
 namespace Sessions
 {
