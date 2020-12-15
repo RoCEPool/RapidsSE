@@ -700,9 +700,9 @@ template <i8 SIZE>
 void RowBox_t<SIZE>::vDumpRow(i8 i_Row, Row* aRow)
 {
   
-  SP_RowPix spRowPix(this->nColumns(),this->axaColPix());
-  
-  Stz* szRow = spRowPix.sz(aRow);
+  HV_Record hvRecord(aRowPix());
+
+  Stz* szRow = hvRecord->sz(aRow);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
 }
 
