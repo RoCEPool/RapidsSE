@@ -135,31 +135,17 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
-//void RowBuffer::vPrintRows(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//
-//  HV_Record hvRecord(aRowPix());
-//
-//  i8 nRows = this->nRows();
-//
-//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-//    hvRecord->vToCsvRecord(pRowAddress(i_Row));
-//    hvRecord->vPrintAsRow();
-//  }
-//}
-/*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  SP_RowPix spRowPix(nColumns() - nExtraCols(),axaColPix());
+
+  HV_Record hvRecord(aRowPix());
 
   i8 nRows = this->nRows();
 
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    Row* aRow = pRowAddress(i_Row);
-    Stz* szRow = spRowPix.sz(aRow);
-    vTrace("row: (%s)\n"_Stz,szRow);
+    hvRecord->vToCsvRecord(pRowAddress(i_Row));
+    hvRecord->vPrintAsRow();
   }
 }
 
