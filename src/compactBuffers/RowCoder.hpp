@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eMC.h"
+
 namespace CompactBuffers
 {
   static const i8 C_METABITS = 8;

@@ -5,6 +5,8 @@
 
 #include "Sessions.h"
 
+#include "eAC.h"
+
 namespace Sessions
 {
   class Session : public Focal

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eAM.h"
+
 namespace Expressions
 {
   static const i8 C_LOGIC_SOURCE  = C_SIZE_LARGE_OBJECT - C_1KB;

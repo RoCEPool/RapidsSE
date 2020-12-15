@@ -14,12 +14,12 @@ namespace Enums
 
 //------------------------------------------------------------------------------
 
-#include "eAA.h"
-#include "eAC.h"
-#include "eAK.h"
-#include "eAM.h"
-#include "eAN.h"
-#include "eAT.h"
+//#include "eAA.h"
+//#include "eAC.h"
+//#include "eAK.h"
+//#include "eAM.h"
+//#include "eAN.h"
+//#include "eAT.h"
 
 //#include "eBO.h"
 
@@ -78,11 +78,11 @@ namespace Enums
 //#include "eLH.h"
 //#include "eLK.h"
 
-#include "eMA.h"
-#include "eMC.h"
-#include "eMK.h"
-#include "eMM.h"
-#include "eMT.h"
+//#include "eMA.h"
+//#include "eMC.h"
+//#include "eMK.h"
+//#include "eMM.h"
+//#include "eMT.h"
 
 //#include "eNE.h"
 //#include "eNK.h"

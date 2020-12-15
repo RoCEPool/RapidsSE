@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eAT.h"
+
 namespace Plans
 {
   class AccessPath : public Object

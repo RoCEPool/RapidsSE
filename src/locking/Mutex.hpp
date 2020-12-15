@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eMK.h"
+
 namespace Locking
 {
   class Mutex : public Object
