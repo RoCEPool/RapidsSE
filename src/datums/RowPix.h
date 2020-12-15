@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eDM.h"
+
 namespace Datums
 {
   class RowPix // condensed stream def

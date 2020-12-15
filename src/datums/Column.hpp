@@ -4,6 +4,8 @@
 #pragma once
 
 #include "eCT.h"
+#include "eDG.h"
+#include "eDM.h"
 #include "eFA.h"
 
 namespace Datums

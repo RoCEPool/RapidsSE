@@ -9,6 +9,8 @@
 #include "eCK.h"
 #include "eCP.h"
 #include "eCX.h"
+#include "eDL.h"
+#include "eDS.h"
 #include "eFN.h"
 #include "eMM.h"
 #include "eMT.h"

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eDU.h"
+
 namespace Indexing
 {
   static const bool C_NOT_FINAL    = false;
