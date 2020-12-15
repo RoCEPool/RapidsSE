@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include "eIK.h"
+#include "eLG.h"
+
 namespace Focals
 {
   class SP_Gid : public SPsmall

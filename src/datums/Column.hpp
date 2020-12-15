@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eFA.h"
+
 namespace Datums
 {
   class Column : public Object

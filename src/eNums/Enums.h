@@ -46,20 +46,20 @@ namespace Enums
 #include "eEO.h"
 #include "eEP.h"
 
-#include "eFA.h"
-#include "eFN.h"
-#include "eFU.h"
-#include "eFX.h"
+//#include "eFA.h"
+//#include "eFN.h"
+//#include "eFU.h"
+//#include "eFX.h"
 
 //#include "eGA.h"
 
 //#include "eHA.h"
 //#include "eHS.h"
 
-#include "eIK.h"
-#include "eIS.h"
-#include "eIT.h"
-#include "eIU.h"
+//#include "eIK.h"
+//#include "eIS.h"
+//#include "eIT.h"
+//#include "eIU.h"
 
 #include "eJA.h"
 #include "eJF.h"
@@ -72,11 +72,11 @@ namespace Enums
 //#include "eKE.h"
 //#include "eKK.h"
 
-#include "eLA.h"
-#include "eLE.h"
-#include "eLG.h"
-#include "eLH.h"
-#include "eLK.h"
+//#include "eLA.h"
+//#include "eLE.h"
+//#include "eLG.h"
+//#include "eLH.h"
+//#include "eLK.h"
 
 #include "eMA.h"
 #include "eMC.h"

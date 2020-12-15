@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eLE.h"
+
 namespace Chunks
 {
   class Format : public Object

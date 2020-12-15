@@ -5,6 +5,8 @@
 
 #include "InflateSet.h"
 
+#include "eLH.h"
+
 namespace Resources { class Dir; } //?
 
 namespace Expressions

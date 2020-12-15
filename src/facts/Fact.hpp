@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include "eFU.h"
+#include "eIU.h"
+
 namespace Facts
 {
   union Value {

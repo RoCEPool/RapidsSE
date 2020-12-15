@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eIT.h"
 #include "eKE.h"
 
 namespace MetaData
