@@ -20,10 +20,8 @@ namespace Correctness       { class Cell;            class Focal;
                               class Statistics;                               }
 namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
-namespace DataOperators     {                                                 }
 namespace Datums            { class Datum_h;
                               template <i8 SPACE> class Datum_t;              }
-namespace Debugging         {                                                 }
 namespace DynamoCompiler    { class Dynamo;                                   }
 namespace Entries           {                                                 }
 namespace Enums             {                                                 }
@@ -55,11 +53,6 @@ namespace Facts             { class Fact;            class Kbase;
                               class Question;        class Transform;         }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
-//namespace FrontEnd          { class Clause_Project;  class Clause_From;
-//                              class Clause_Where;    class Clause_GroupBy;
-//                              class Clause_OrderBy;  class Clause_Limit;
-//                              class Stmt_Select;     class Stmt_SubQry;
-//                              class Descend;                                  }
 namespace Gadgets           { class EnumFlags;       class TagSet;            }
 namespace GoldenGate        {                                                 }
 namespace Grids             { class Grid;            class Node;              }
@@ -77,8 +70,6 @@ namespace Library           {                                                 }
 namespace Load              {                                                 }
 namespace Locking           { class Lock;            class LockTracker;       }
 namespace Logging           { class Log;             class LogEntry;          }
-namespace LogicalPlans      {                                                 }
-namespace MiddleEnd         {                                                 }
 namespace MetaData          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
@@ -132,9 +123,7 @@ using namespace CompilerOperators;
 using namespace ControlData;
 using namespace Correctness;
 using namespace DataBuffers;
-using namespace DataOperators;
 using namespace Datums;
-using namespace Debugging;
 using namespace DynamoCompiler;
 using namespace Entries;
 using namespace Enums;
@@ -156,8 +145,6 @@ using namespace Library;
 using namespace Load;
 using namespace Locking;
 using namespace Logging;
-using namespace LogicalPlans;
-using namespace MiddleEnd;
 using namespace MetaData;
 using namespace Metrics;
 using namespace Oblique;

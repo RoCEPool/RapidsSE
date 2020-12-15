@@ -41,7 +41,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Library::vCheckAssumptions();
   Locking::vCheckAssumptions();
   Load::vCheckAssumptions();
-  LogicalPlans::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
   Operands::vCheckAssumptions();

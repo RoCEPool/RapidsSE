@@ -80,20 +80,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Fact),               HT_TRANSIENT_SMALL   ,0 }, // CN_FACT
   { sizeof(Fifo),               HT_TRANSIENT_TINY    ,0 }, // CN_FIFO
   { sizeof(File),               HT_TRANSIENT_TINY    ,0 }, // CN_FILE
-  { sizeof(Filter_Fetch),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_FETCH
-  { sizeof(Filter_From),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_FROM
-  { sizeof(Filter_GroupBy),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_GROUPBY
-  { sizeof(Filter_Inflate),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_INFLATE
-  { sizeof(Filter_Join),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_JOIN
-  { sizeof(Filter_Limit),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_LIMIT
-  { sizeof(Filter_OrderBy),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_ORDERBY
-  { sizeof(Filter_Output),      HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_OUTPUT
-  { sizeof(Filter_Project),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_PROJECT
-  { sizeof(Filter_Scan),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_SCAN
-  { sizeof(Filter_Select),      HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_SELECT
-  { sizeof(Filter_SubQry),      HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_SUBQRY
-  { sizeof(Filter_Where),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_WHERE
-  { sizeof(Filter_Zed),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_FILTER_ZED
   { sizeof(FipVal),             HT_INVALID           ,0 }, // CN_FIPVAL
   { sizeof(FltVal),             HT_INVALID           ,0 }, // CN_FLTVAL
   { sizeof(FocalObjects),       HT_TRANSIENT_LARGE   ,0 }, // CN_FOCALOBJECTS
