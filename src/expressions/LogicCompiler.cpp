@@ -20,11 +20,12 @@ Stz* gszaEoFragments[EO_ENUMS];
 char gcaAmMacros[C_128K];
 Stz* gszaAmMacros[AM_ENUMS];
 
-const i8 C_MACRO_FILES = 6;
+const i8 C_MACRO_FILES = 7;
 char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_CrwBuffer.macro",
     "../asm/AM_DataPulse.macro",
     "../asm/AM_DefaultHandlers.macro",
+    "../asm/AM_Filters.macro",
     "../asm/AM_QueryMisc.macro",
     "../asm/AM_StartMarker.macro",
     "../asm/AM_StreamDef.macro"

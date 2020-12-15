@@ -1,0 +1,90 @@
+/*============================================================================*/
+/* AM_Filters.macro -- ASM Macros for Filters                                 */
+/*============================================================================*/
+
+macro AM_CRW_FILTER_ROUTINE
+//----------------------------------------------------------------------------//
+// macro AM_CRW_FILTER_ROUTINE                                                //
+//----------------------------------------------------------------------------//
+  // CRW_FILTER_ROUTINE
+  Label CRW_FILTER_ROUTINE
+  EO_SET_ITEMS 1
+  EO_COL_SRC_PUSHONE <predicateColumns>
+  EO_DUMP
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_FILTER_INTEGER_COLUMN                                             //
+//----------------------------------------------------------------------------//
+macro AM_FILTER_INTEGER_COLUMN
+  // AM_FILTER_INTEGER_COLUMN
+  EO_INTEGER <literalValue>
+  <relationalOp>
+  EO_JMP_TRUE FILTER_INTEGER_TRUE
+
+  Label FILTER_INTEGER_FALSE
+  EO_PUSH_0
+  EO_JMP FILTER_INTEGER_DONE
+
+  Label FILTER_INTEGER_TRUE
+  EO_PUSH_1
+
+  Label FILTER_INTEGER_DONE
+  EO_RETURN
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_FILTER_DECIMAL_COLUMN                                             //
+//----------------------------------------------------------------------------//
+macro AM_FILTER_DECIMAL_COLUMN
+  // FILTER_DECIMAL_COLUMN
+  EO_INTEGER <literalValue>
+  EO_INTEGER 100
+  EO_MULTIPLY
+  <relationalOp>
+  EO_JMP_TRUE FILTER_DECIMAL_TRUE
+
+  Label FILTER_DECIMAL_FALSE
+  EO_PUSH_0
+  EO_JMP FILTER_DECIMAL_DONE
+
+  Label FILTER_DECIMAL_TRUE
+  EO_PUSH_1
+
+  Label FILTER_DECIMAL_DONE
+  EO_RETURN
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_FILTER_VARCHAR_COLUMN                                             //
+//----------------------------------------------------------------------------//
+macro AM_FILTER_VARCHAR_COLUMN
+  // FILTER_VARCHAR_COLUMN
+  EO_STR_LITERAL <literalValue>
+  <relationalOp>
+  EO_JMP_FALSE FILTER_VARCHAR_TRUE
+
+  Label FILTER_VARCHAR_TRUE
+  EO_PUSH_0
+  EO_JMP FILTER_VARCHAR_DONE
+
+  Label FILTER_VARCHAR_TRUE
+  EO_PUSH_1
+
+  Label FILTER_VARCHAR_DONE
+  EO_RETURN
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_FILTER_END                                                        //
+//----------------------------------------------------------------------------//
+macro AM_FILTER_END
+  // FILTER_END
+  Label FILTER_DONE
+  EO_RETURN
+endMacro
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

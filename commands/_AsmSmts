@@ -47,5 +47,8 @@ Smt0;
 // select l_extendedPrice from lineitem;
 Smt1;
 
-// select l_extendedPrice from lineitem where l_partkey < 1000000;
+// select l_extendedPrice from lineitem where l_partkey >= 1000000;
 Smt2;
+
+// select l_extendedPrice from lineitem where l_partkey < 1000000;
+Smt3;
