@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eEO.h"
+
 namespace Expressions
 {
   class LogicTimer : public Object

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eEA.h"
+
 #ifdef __TINYC__
 enum eEO // expression operators
 #else

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eAM.h"
+#include "eEO.h"
 
 namespace Expressions
 {

@@ -6,6 +6,9 @@
 
 #include "EnumGroups.h"
 
+#include "eED.h"
+#include "eEO.h"
+
 #include "LIB_interface.h"
 #include "DEV_interface.h"
 

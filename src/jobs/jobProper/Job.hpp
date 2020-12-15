@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+#include "eJK.h"
+#include "eJL.h"
+#include "eJS.h"
+#include "eJP.h"
+
 namespace Jobs
 {
   class Job : public Focal,
