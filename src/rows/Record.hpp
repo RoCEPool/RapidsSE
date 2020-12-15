@@ -20,6 +20,7 @@ namespace Rows
     void* operator new(size_t);
     void  operator delete(void*);
   
+    Record(RowPix* pRowPix);
     Record(StreamDef* pStreamDef);
    ~Record(void) noexcept(false);
   

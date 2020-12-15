@@ -35,6 +35,15 @@ namespace Datums
       }
     }
   
+    void vCopyRowPix(RowPix* pRowPixSrc)
+    {
+      MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
+
+      //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
+    }
+
+  
+  
     // calc number of bytes (this is weird)
     i8 nBytes(i8 nCols)
     {

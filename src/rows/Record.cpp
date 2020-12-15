@@ -16,6 +16,30 @@ __aFooterFunction(Record)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Record::Record(RowPix* pRowPix)
+: Object(CN_RECORD)
+{
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  m_oRowPix.vCopyRowPix(pRowPix);
+  
+  m_azCursor = & m_caRecord[0];
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
+#else
+  m_caRecord[0] = '\0';
+#endif
+  
+  //! FIX RAY
+  //_checkInitialised_(CN_RECORD);
+  
+  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Record::Record(StreamDef* pStreamDef)
 : Object(CN_RECORD)
 {
