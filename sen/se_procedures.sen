@@ -1926,7 +1926,7 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt1_s0.txt
+    genAsmTxt 1 0 ../eo_text/asmSmt1_s0.txt
     | stageC
 
   stage stageC on all partitions :
@@ -1955,7 +1955,7 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt2_s0.txt
+    genAsmTxt 2 0 ../eo_text/asmSmt2_s0.txt
     | stageC
 
   stage stageC on all partitions :

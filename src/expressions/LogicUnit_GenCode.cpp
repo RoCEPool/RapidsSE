@@ -6,174 +6,6 @@
 
 #include "File.hpp"
 
-//----------------------------------------------------------------------------
-// INITIALIZATION
-//----------------------------------------------------------------------------
-#define ASM_INIT(sString, aTemp, iQueryNo) \
-  aTemp = (char*) \
-  "\nRoutine QRY_%lld\n"    \
-  "\n  // initialization"   \
-  "\n  EO_INIT"             \
-  "\n  EO_ENTER"            \
-  "\n  EO_SQL %lld"         \
-  "\n" \
-  "\n  // check for ZK_STARTMARKER"     \
-  "\n  EO_DUP"                          \
-  "\n  EO_INTEGER ZK_STARTMARKER"       \
-  "\n  EO_EQUAL"                        \
-  "\n  EO_JMP_TRUE STARTMARKER_HANDLER" \
-  "\n" \
-  "\n  // check for ZK_DATAPULSE"     \
-  "\n  EO_DUP"                        \
-  "\n  EO_INTEGER ZK_DATAPULSE"       \
-  "\n  EO_EQUAL"                      \
-  "\n  EO_JMP_TRUE DATAPULSE_HANDLER" \
-  "\n" \
-  "\n  // check for ZK_STREAMDEF"     \
-  "\n  EO_DUP"                        \
-  "\n  EO_INTEGER  ZK_STREAMDEF"      \
-  "\n  EO_EQUAL"                      \
-  "\n  EO_JMP_TRUE STREAMDEF_HANDLER" \
-  "\n" \
-  "\n  // check for ZK_CRWBUFFER"     \
-  "\n  EO_DUP"                        \
-  "\n  EO_INTEGER ZK_CRWBUFFER"       \
-  "\n  EO_EQUAL"                      \
-  "\n  EO_JMP_TRUE CRWBUFFER_HANDLER" \
-  "\n" \
-  "\n  // check for ZK_EOSMARKER"     \
-  "\n  EO_DUP"                        \
-  "\n  EO_INTEGER  ZK_EOSMARKER"      \
-  "\n  EO_EQUAL"                      \
-  "\n  EO_JMP_TRUE EOSMARKER_HANDLER" \
-  "\n" \
-  "\n  // Never reach"                      \
-  "\n  EO_PRINTF \"**NO_HANDLER : 0**\\n\"" \
-  "\n  EO_NEVERREACH"                       \
-  "\n\n"; \
-  sString.vSprint((Stz*)aTemp, iQueryNo, iQueryNo); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// DEAFULT HANDLER
-//----------------------------------------------------------------------------
-#define ASM_DEFAULT_HANDLER(sString, aTemp, aMarker) \
-  aTemp = (char*) \
-  "\n  // %s"                       \
-  "\nLabel %s"                      \
-  "\n  EO_PRINTF \"**%s : 0**\\n\"" \
-  "\n  EO_POP"                      \
-  "\n  EO_JMP QRY_DONE"             \
-  "\n\n";                           \
-  sString.vSprint((Stz*)aTemp, aMarker, aMarker, aMarker); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// BEGIN STREAMDEF_HANDLER
-//----------------------------------------------------------------------------
-#define ASM_STREAMDEF_HANDLER_BEGIN(sString, aTemp) \
-  aTemp = (char*) \
-  "\n// STREAMDEF_HANDLER"                         \
-  "\nLabel STREAMDEF_HANDLER"                      \
-  "\n  EO_PRINTF \"**STREAMDEF_HANDLER : 0**\\n\"" \
-  "\n  EO_POP"                                     \
-  "\n  EO_REG_STREAMDEFOUT_NEW\n";                 \
-  sString.vSprint((Stz*)aTemp); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// ADD COLUMN TO STREAMDEF
-//----------------------------------------------------------------------------
-#define ASM_STREAMDEF_ADD_COLUMN(sString, aTemp, iScale, iLength, eCT, sColumnNm) \
-  aTemp = (char*) \
-  "\n  EO_PUSH_COLUMN_SCALE %lld"               \
-  "\n  EO_PUSH_COLUMN_LENGTH %lld"              \
-  "\n  EO_PUSH_COLUMN_TYPE CT_%s"               \
-  "\n  EO_REG_STREAMDEFOUT_ADDCOLUMN \"%s\"";   \
-  "\n"; \
-  sString.vSprint((Stz*)aTemp, iScale, iLength, aCT[eCT], sColumnNm); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// END STREAMDEF_HANDLER
-//----------------------------------------------------------------------------
-#define ASM_STREAMDEF_HANDLER_END(sString, aTemp) \
-  aTemp = (char*) \
-  "\n  EO_POT_USE_STREAMDEFOUT 0" \
-  "\n  EO_JMP QRY_DONE"           \
-  "\n\n"; \
-  sString.vSprint((Stz*)aTemp); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// CRWBUFFER_HANDLER
-//----------------------------------------------------------------------------
-#define ASM_CRWBUFFER_HANDLER(sString, aTemp, aProcessRoutine) \
-  aTemp = (char*) \
-  "\n  // CRWBUFFER_HANDLER"                       \
-  "\nLabel CRWBUFFER_HANDLER"                      \
-  "\n  EO_PRINTF \"**CRWBUFFER_HANDLER : 0**\\n\"" \
-  "\n  EO_POP"                                     \
-  "\n  EO_CRW_SRC_BEGIN"                           \
-  "\n" \
-  "\n  // NEXT_CRW_SRC"             \
-  "\nLabel NEXT_CRW_SRC"            \
-  "\n  EO_CRW_SRC_NEXT"             \
-  "\n  EO_JMP_FALSE QRY_DONE"       \
-  "\n" \
-  "\n  // call %s subroutine"_Stz \
-  "\n  EO_CALL %s"_Stz            \
-  "\n  EO_JMP NEXT_CRW_SRC"       \
-  "\n  EO_JMP QRY_DONE"           \
-  "\n\n"; \
-  sString.vSprint((Stz*)aTemp, aProcessRoutine, aProcessRoutine); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// BEGIN PROJECT_COLUMNS
-//----------------------------------------------------------------------------
-#define ASM_PROJECT_COLUMNS_BEGIN(sString, aTemp, iColumns) \
-  aTemp = (char*) \
-  "\n  // Project columns"  \
-  "\nLabel PROJECT_COLUMNS" \
-  "\n  EO_SET_ITEMS %lld"   \
-  "\n  EO_ROW_DST_NEW";     \
-  sString.vSprint((Stz*)aTemp, iColumns); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// PROJECT_COLUMNS
-//----------------------------------------------------------------------------
-#define ASM_PROJECT_COLUMNS(sString, aTemp, iSrcColumn, iDstColumn) \
-  aTemp = (char*) \
-  "\n  EO_SET_COLUMN %lld"      \
-  "\n  EO_COL_SRC_PUSHSET"      \
-  "\n  EO_ROW_DST_POPCOLI %lld"; \
-  sString.vSprint((Stz*)aTemp, iSrcColumn, iDstColumn); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// END PROJECT_COLUMNS
-//----------------------------------------------------------------------------
-#define ASM_PROJECT_COLUMNS_END(sString, aTemp) \
-  aTemp = (char*) \
-  "\n  EO_RETURN"; \
-  sString.vSprint((Stz*)aTemp); \
-EndDefine
-
-//----------------------------------------------------------------------------
-// QRY_DONE
-//----------------------------------------------------------------------------
-#define ASM_QRY_DONE(sString, aTemp) \
-  aTemp = (char*) \
-  "\n" \
-  "\n  // QRY_DONE"    \
-  "\nLabel QRY_DONE"   \
-  "\n  EO_EXIT"        \
-  "\n  EO_RETURN";     \
-  sString.vSprint((Stz*)aTemp); \
-EndDefine
-
 /*----------------------------------------------------------------------------*/
 /* generate code for given test                                               */
 /*----------------------------------------------------------------------------*/
@@ -530,6 +362,23 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handler for CRWBUFFER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_ALL for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ALL_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_ALL for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ALL_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ALL_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  /*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
   oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
@@ -611,7 +460,7 @@ void LogicUnit::vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_SET_DST_COLUMNI, &oTagSet));
   oTagSet.vReset();
 
-  oTagSet.vReset();
+*/
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
 
@@ -640,11 +489,6 @@ void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // default handler for the STREAMDEF
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_STREAMDEF_HANDLER, &oTagSet));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // default handler for the EOSMARKER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
@@ -656,10 +500,13 @@ void LogicUnit::vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   oTagSet.vAppend(C_TAG_SRC_INDEXNM, "null"_Stz);
   oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
   oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_StreamDef"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
   oTagSet.vReset();
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_BEGIN, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_HANDLER, &oTagSet));
+  oTagSet.vReset();
 
   // add a column to the streamDef
   oTagSet.vAppend(C_TAG_COLUMN_SCALE, 2);

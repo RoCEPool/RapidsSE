@@ -1713,7 +1713,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
         dLU1(EO_SET_ITEMS,iArg);
         i_ColSet = iArg;
-        iaColSet[i_ColSet] = -1;
+        iaColSet[i_ColSet] = C_UNKNOWN;
         //*(++aiDstk) = -1;
         break;//+endCase
 
@@ -1728,6 +1728,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_SET_LOCALS_SRC);
         aiLocals = aRluCommon->m_iaLocals - 1;
         vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_CELLARRAY_ADR,&giaVectorSet[iArg]);
+        break;//+endCase
+
+      case EO_SET_LOCALS_SRC2: ArgGet(iArg); // inflate src columns direct into locals
+        dLU0(EO_SET_LOCALS_SRC);
+        aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_CELLARRAY_ADR,iaColSet);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2162,7 +2168,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
         dLU0(EO_COL_SRC_PUSHSET);
         break;//+endCase
-      
+
+      case EO_COL_SRC_PUSHDST: ArgNil(); // push all columns from m_aSrcCrw into dst
+        vDev_SRC_COL_PUSHDST(pLU,aRluCommon->m_pDevDstRow);
+        dLU0(EO_COL_SRC_PUSHDST);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
       case EO_CRW_ALT_DEREF: ArgNil(); // deref m_aAltCrw using m_aAltEnt.ref
@@ -2806,7 +2817,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_POPCOLS(pLU,aRluCommon->m_pDevDstRow,iArg,szTopA);
         S_StrDrp();
         break;//+endCase
-        
+
       case EO_ROW_DST_PUSHCOLI: ArgGet(iArg); // push dst column
         iRes = iDev_ROW_PUSHCOLI(pLU,aRluCommon->m_pDevDstRow,iArg);
         dLU2(EO_ROW_DST_PUSHCOLI,iArg,iRes);
