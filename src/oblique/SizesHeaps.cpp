@@ -173,6 +173,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PlanDefinitionParser),HT_TRANSIENT_MEDIUM ,-8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(Planner),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLANNER
   { sizeof(PlanNode),           HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODE
+  { sizeof(PlanNodeBuilder),    HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODEBUILDER
+  { sizeof(PlanNodeList),       HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODELIST
   { sizeof(Pot),                HT_TRANSIENT_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),          HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC
@@ -252,7 +254,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SP_String),          HT_INVALID           ,0 }, // CN_SPSTRING
   { sizeof(SPmedium),           HT_INVALID           ,0 }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID           ,0 }, // CN_SPSMALL
-  { sizeof(SqlPlanner),         HT_TRANSIENT_TINY    ,0 }, // CN_SQLPLANNER
+  { sizeof(SqlPlanner),         HT_TRANSIENT_TINY    ,-8 }, // CN_SQLPLANNER
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           ,0 }, // CN_SRTSET
   { sizeof(Stack),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_STACK

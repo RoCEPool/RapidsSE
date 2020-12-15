@@ -13,6 +13,8 @@ namespace Parser
     // The paths that the planner definition json5 file could be found
     static Stz* definitionPaths[];
 
+    // A stack of JSON objects
+    Stack* m_pNodeBuilderStack;
     Footer m_xFooter;
     
    public:
@@ -22,26 +24,23 @@ namespace Parser
     
     PlanDefinitionParser(void);
 
-    b1 findDefinitionFile(s2K& pBuf);
-    PlanNode* parse();
+    b1 bFindDefinitionFile(s2K& pBuf);
+    PlanNode* pParse();
 
     ~PlanDefinitionParser(void) noexcept;
   
     Footer* aFooter(void);
     
-//    virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *ctx)      override;
-//    virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *ctx)              override;
-//    virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *ctx)  override;
-//    virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *ctx)    override;
-//    virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *ctx)              override;
-//    virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *ctx) override;
-//    virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *ctx)    override;
-//    virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* ctx) override;
-//    virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* ctx) override;
-    
-    
   private:
-//    Text* cleanId(json5Parser::IdentifierContext *ctx);
+    virtual antlrcpp::Any visitJson5(json5Parser::Json5Context *ctx)      override;
+    virtual antlrcpp::Any visitObj(json5Parser::ObjContext *ctx)          override;
+    virtual antlrcpp::Any visitArr(json5Parser::ArrContext *ctx)          override;
+    virtual antlrcpp::Any visitPair(json5Parser::PairContext *ctx)        override;
+
+    void vExtractValue(json5Parser::ValueContext* ctx, PlanNodeBuilder* pNodeBuilder);
+    void vCleanString(std::string idStr, s256& keyName);
+    Text* pCleanString(std::string idStr);
+    void vCleanId(std::string idStr, s256& keyName);
   };
   
   PlanDefinitionParser* _pPlanDefinitionParser(void* aAddr);

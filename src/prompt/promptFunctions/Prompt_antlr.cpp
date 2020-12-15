@@ -34,13 +34,15 @@ bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
   i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
   MemLib::vHexDump(aMem,nBytes);
 
-  //PlanNode* root = pPlanDefinitionParser->parse();
+  PlanNode* root = pPlanDefinitionParser->pParse();
 
   delete pPlanDefinitionParser;
 
-//  if (root == nullptr) {
-//    return false;
-//  }
+  if (root == nullptr) {
+    return false;
+  }
+
+  delete root;
 
 //  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 //
