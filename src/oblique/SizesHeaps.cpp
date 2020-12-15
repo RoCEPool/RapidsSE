@@ -42,13 +42,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CarryOver),          HT_INVALID           ,0 }, // CN_CARRYOVER
   { sizeof(Catalog),            HT_INVALID           ,0 }, // CN_CATALOG
   { sizeof(Charser),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_CHARSER
-  { sizeof(Clause_From),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_FROM
-  { sizeof(Clause_GroupBy),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_GROUPBY
-  { sizeof(Clause_Join),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_JOIN
-  { sizeof(Clause_Limit),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_LIMIT
-  { sizeof(Clause_OrderBy),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_ORDERBY
-  { sizeof(Clause_Project),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_PROJECT
-  { sizeof(Clause_Where),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_CLAUSE_WHERE
   { sizeof(Column),             HT_TRANSIENT_TINY    ,0 }, // CN_COLUMN
   { sizeof(Compiler),           HT_TRANSIENT_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_CRVBUFFER
@@ -61,7 +54,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Datum_h),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_DATUM
   { sizeof(DecaCnt),            HT_TRANSIENT_TINY    ,0 }, // CN_DECACNT
   { sizeof(Decider),            HT_TRANSIENT_TINY    ,0 }, // CN_DECIDER
-  { sizeof(Descend),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_DESCEND
   { sizeof(DevIXT),             HT_TRANSIENT_TINY    ,0 }, // CN_DEVIXT
   { sizeof(DevROW),             HT_TRANSIENT_TINY    ,0 }, // CN_DEVROW
   { sizeof(Dic),                HT_TRANSIENT_TINY    ,0 }, // CN_DIC
@@ -286,8 +278,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Statistics),         HT_INVALID           ,0 }, // CN_STEPACCUM
   { sizeof(StepAccum),          HT_INVALID           ,0 }, // CN_STATISTICS
   { sizeof(StepTiming),         HT_TRANSIENT_LARGE   ,0 }, // CN_STEPTIMING
-  { sizeof(Stmt_Select),        HT_TRANSIENT_LARGE   ,0 }, // CN_STMT_SELECT
-  { sizeof(Stmt_SubQry),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_STMT_SUBQRY
   { sizeof(Strand),             HT_TRANSIENT_SMALL   ,0 }, // CN_STRAND
   { sizeof(StreamDef),          HT_TRANSIENT_LARGE   ,0 }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_TRANSIENT_LARGE   ,0 }, // CN_STREAMSET

@@ -55,11 +55,11 @@ namespace Facts             { class Fact;            class Kbase;
                               class Question;        class Transform;         }
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
-namespace FrontEnd          { class Clause_Project;  class Clause_From;
-                              class Clause_Where;    class Clause_GroupBy;
-                              class Clause_OrderBy;  class Clause_Limit;
-                              class Stmt_Select;     class Stmt_SubQry;
-                              class Descend;                                  }
+//namespace FrontEnd          { class Clause_Project;  class Clause_From;
+//                              class Clause_Where;    class Clause_GroupBy;
+//                              class Clause_OrderBy;  class Clause_Limit;
+//                              class Stmt_Select;     class Stmt_SubQry;
+//                              class Descend;                                  }
 namespace Gadgets           { class EnumFlags;       class TagSet;            }
 namespace GoldenGate        {                                                 }
 namespace Grids             { class Grid;            class Node;              }
@@ -99,11 +99,6 @@ namespace Pool              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;        }
 namespace Prompt            {   class SePrompt;                               }
 namespace ReadConsistency   { class Crv;                                      }
-//namespace Reflection        { class ConstDef;        class ConstSet;
-//                              class MetaBlock;       class MetaCell;
-//                              class MetaGraph;       class MetaInherit;
-//                              class MetaInherits;    class MetaMember;
-//                              class MetaType;                                 }
 namespace ResourceUsage     { class RU_Cpu;          class RU_Memory;         }
 namespace Resources         {                                                 }
 namespace Rows              {                                                 }
@@ -148,7 +143,6 @@ using namespace Expressions;
 using namespace Facts;
 using namespace Focals;
 using namespace Folders;
-using namespace FrontEnd;
 using namespace Gadgets;
 using namespace GoldenGate;
 using namespace Grids;

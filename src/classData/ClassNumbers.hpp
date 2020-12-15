@@ -40,13 +40,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CARRYOVER,
   /* */ CN_CATALOG,
   /* */ CN_CHARSER,
-  /* */ CN_CLAUSE_FROM,
-  /* */ CN_CLAUSE_GROUPBY,
-  /* */ CN_CLAUSE_JOIN,
-  /* */ CN_CLAUSE_LIMIT,
-  /* */ CN_CLAUSE_ORDERBY,
-  /* */ CN_CLAUSE_PROJECT,
-  /* */ CN_CLAUSE_WHERE,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
   /* */ CN_CRVBUFFER,
@@ -59,7 +52,6 @@ enum eCN : u2 // Class Number
   /* */ CN_DATUM,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
-  /* */ CN_DESCEND,
   /* */ CN_DEVIXT,
   /* */ CN_DEVROW,
   /* */ CN_DIC,
@@ -284,8 +276,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STATISTICS,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPTIMING,
-  /* */ CN_STMT_SELECT,
-  /* */ CN_STMT_SUBQRY,
   /* */ CN_STRAND,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMSET,
@@ -381,13 +371,6 @@ static Stz* aCN[]
   /* */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /* */ "CATALOG"_Stz,             // CN_CATALOG
   /* */ "CHARSER"_Stz,             // CN_CHARSER
-  /* */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
-  /* */ "CLAUSE_GROUPBY"_Stz,      // CN_CLAUSE_GROUPBY
-  /* */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN
-  /* */ "CLAUSE_LIMIT"_Stz,        // CN_CLAUSE_LIMIT
-  /* */ "CLAUSE_ORDERBY"_Stz,      // CN_CLAUSE_ORDERBY
-  /* */ "CLAUSE_PROJECT"_Stz,      // CN_CLAUSE_PROJECT
-  /* */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /* */ "COLUMN"_Stz,              // CN_COLUMN
   /* */ "COMPILER"_Stz,            // CN_COMPILER
   /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
@@ -400,7 +383,6 @@ static Stz* aCN[]
   /* */ "DATUM"_Stz,               // CN_DATUM
   /* */ "DECACNT"_Stz,             // CN_DECACNT
   /* */ "DECIDER"_Stz,             // CN_DECIDER
-  /* */ "DESCEND"_Stz,             // CN_DESCEND
   /* */ "DEVIXT"_Stz,              // CN_DEVIXT
   /* */ "DEVROW"_Stz,              // CN_DEVROW
   /* */ "DIC"_Stz,                 // CN_DIC
@@ -625,8 +607,6 @@ static Stz* aCN[]
   /* */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* */ "STEPTIMING"_Stz,          // CN_STEPTIMING
-  /* */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
-  /* */ "STMT_SUBQRY"_Stz,         // CN_STMT_SUBQRY
   /* */ "STRAND"_Stz,              // CN_STRAND
   /* */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* */ "STREAMSET"_Stz,           // CN_STREAMSET

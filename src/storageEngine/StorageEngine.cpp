@@ -20,11 +20,9 @@ void StorageEngine::vCheckAllAssumptions(void)
   ClassData::vCheckAssumptions();
   CompactBuffers::vCheckAssumptions();
   Expressions::vCheckAssumptions();
-  FrontEnd::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();
-  DynamoCompiler::vCheckAssumptions();
   DynamoCompiler::vCheckAssumptions();
   Entries::vCheckAssumptions();
   Enums::vCheckAssumptions();
@@ -42,6 +40,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   LexicalAnalysis::vCheckAssumptions();
   Library::vCheckAssumptions();
   Locking::vCheckAssumptions();
+  Load::vCheckAssumptions();
   LogicalPlans::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
@@ -68,7 +67,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   Transactions::vCheckAssumptions();
-  Load::vCheckAssumptions();
   Utilities::vCheckAssumptions();
 
   // third party??
