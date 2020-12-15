@@ -90,7 +90,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FREQDIST,
   
   /* */ CN__G__,
-  /* */ CN_GGADAPTOR,
   /* */ CN_GRID,
   
   /* */ CN__H__,
@@ -407,7 +406,6 @@ static Stz* aCN[]
   /* */ "FREQDIST"_Stz,            // CN_FREQDIST
   
   /* */ "_G__"_Stz,                // CN__G__
-  /* */ "GGADAPTOR"_Stz,           // CN_GGADAPTOR
   /* */ "GRID"_Stz,                // CN_GRID
   
   /* */ "_H__"_Stz,                // CN__H__

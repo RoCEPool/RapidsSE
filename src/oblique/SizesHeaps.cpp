@@ -92,7 +92,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(FreqDist),           HT_TRANSIENT_SMALL   ,0 }, // CN_FREQDIST
 
   { 'G' - ('A' - 1),            HT_INVALID           ,0 }, // CN__G__
-  { sizeof(GGadaptor),          HT_TRANSIENT_TINY    ,0 }, // CN_GGADAPTOR
   { sizeof(Grid),               HT_TRANSIENT_SMALL   ,0 }, // CN_GRID
 
   { 'H' - ('A' - 1),            HT_INVALID           ,0 }, // CN__H__

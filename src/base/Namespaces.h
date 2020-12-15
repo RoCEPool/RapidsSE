@@ -54,7 +54,6 @@ namespace Facts             { class Fact;            class Kbase;
 namespace Focals            { class ReqTuple;                                 }
 namespace Folders           {                                                 }
 namespace Gadgets           { class EnumFlags;       class TagSet;            }
-namespace GoldenGate        {                                                 }
 namespace Grids             { class Grid;            class Node;              }
 namespace Host              {                                                 }
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
@@ -133,7 +132,6 @@ using namespace Facts;
 using namespace Focals;
 using namespace Folders;
 using namespace Gadgets;
-using namespace GoldenGate;
 using namespace Grids;
 using namespace Host;
 using namespace Indexing;
