@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "eOC.h"
+
 PromptFun __Prompt_ascii (
   PF_ASCII,           // prompt function
   "Prompt_ascii"_Stz, // name of the prompt function

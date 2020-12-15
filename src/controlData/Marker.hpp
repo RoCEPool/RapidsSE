@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eOM.h"
+
 namespace ControlData
 {
   class Marker : public Operand

@@ -17,6 +17,10 @@
 #include "eMM.h"
 #include "eMT.h"
 #include "eNE.h"
+#include "eOC.h"
+#include "eOK.h"
+#include "eOP.h"
+#include "eOR.h"
 #include "eUK.h"
 
 #include "EnumGroups.h"
