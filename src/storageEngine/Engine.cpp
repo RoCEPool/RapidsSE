@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+#include "eBO.h"
+
 #include "Dir.hpp" //?
 #include "File.hpp" //?
 #include "PsxThd.hpp" //?

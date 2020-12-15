@@ -4,6 +4,8 @@
 
 #include "Oblique.h"
 
+#include "eBO.h"
+
 #include "Dir.hpp"    //?
 #include "Fifo.hpp"   //?
 #include "File.hpp"   //?

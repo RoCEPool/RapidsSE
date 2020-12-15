@@ -21,7 +21,7 @@ namespace Enums
 #include "eAN.h"
 #include "eAT.h"
 
-#include "eBO.h"
+//#include "eBO.h"
 
 #include "eCC.h"
 #include "eCK.h"
@@ -51,7 +51,7 @@ namespace Enums
 #include "eFU.h"
 #include "eFX.h"
 
-#include "eGA.h"
+//#include "eGA.h"
 
 #include "eHA.h"
 #include "eHS.h"
@@ -138,15 +138,15 @@ namespace Enums
 #include "eVA.h"
 #include "eVL.h"
 
-#include "eWK.h"
+//#include "eWK.h"
 
 #include "eXA.h"
 #include "eXK.h"
 #include "eXP.h"
 
-#include "eYA.h"
+//#include "eYA.h"
 
-#include "eZK.h"
+//#include "eZK.h"
 
 #include "EnumGroups.h"
 

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eBO.h"
+
 namespace StorageEngine
 {
   class Engine

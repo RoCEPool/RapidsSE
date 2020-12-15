@@ -1,9 +1,10 @@
-
 /*============================================================================*/
 /* Task_Axioms.cpp - functions which add axioms during the boot of system     */
 /*============================================================================*/
 
 #include "Tasks.h"
+
+#include "eWK.h"
 
 extern Stz* gszaMungedText[];
 

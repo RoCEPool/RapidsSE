@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eZK.h"
+
 namespace Pipelines
 {
   class Op : public Focal
