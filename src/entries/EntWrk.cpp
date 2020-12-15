@@ -543,27 +543,6 @@ void EntWrk::vPayloadBytes(i8 nPayloadBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate random entry                                                      */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vRandomEnt(IndexDef* pIndexDef)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-
-  Datum oDatum;
-  
-  i8 nIdxCol = pIndexDef->nColumns();
-  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCol; i_IdxCol++) {
-    
-    Column* pCol = pIndexDef->pGetColumn(i_IdxCol);
-    
-    DatumRandom::vRndDtm(&oDatum,pCol);
-  
-    vAppendDatum(&oDatum,pCol);
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
 Rrf& EntWrk::rxRef(void)

@@ -442,8 +442,6 @@ public:
   void vIndexCompact(void);
   void vIndexCompactPtn(void);
   void vIndexDump(void);
-  void vIndexGenEntBuffer(void);
-  void vIndexGenEntBuffers(void);
   void vIndexSize(void);
   void vIndexVerify(void);
   void vIndexVerifyPtn(void);

@@ -53,8 +53,8 @@ namespace Enums
 
 //#include "eGA.h"
 
-#include "eHA.h"
-#include "eHS.h"
+//#include "eHA.h"
+//#include "eHS.h"
 
 #include "eIK.h"
 #include "eIS.h"
@@ -132,11 +132,11 @@ namespace Enums
 #include "eTS.h"
 #include "eTT.h"
 
-#include "eUF.h"
-#include "eUK.h"
+//#include "eUF.h"
+//#include "eUK.h"
 
-#include "eVA.h"
-#include "eVL.h"
+//#include "eVA.h"
+//#include "eVL.h"
 
 //#include "eWK.h"
 
@@ -148,7 +148,7 @@ namespace Enums
 
 //#include "eZK.h"
 
-#include "EnumGroups.h"
+//#include "EnumGroups.h"
 
 /*============================================================================*/
 /* end                                                                        */

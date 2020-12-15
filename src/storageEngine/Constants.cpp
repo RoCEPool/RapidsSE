@@ -4,6 +4,10 @@
 
 #include "StorageEngine.h"
 
+#include "EnumGroups.h"
+#include "eUF.h"
+#include "eUK.h"
+
 #include "File.hpp" //?
 
 extern Args  gxArgs;

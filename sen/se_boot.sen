@@ -237,7 +237,6 @@ assert::stack_0
         "test_iData.sen"              include
         "test_jData.sen"              include
         "test_misc.sen"               include
-        "test_rjh.sen"                include
         "test_sleep.sen"              include
         "test_str.sen"                include
         "test_tData.sen"              include

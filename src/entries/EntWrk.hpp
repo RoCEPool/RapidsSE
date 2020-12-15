@@ -76,7 +76,6 @@ namespace Entries
     i8    nPayloadBytes(void);
     void  vPayloadBytes(i8 nPayloadBytes);
 
-    void  vRandomEnt(IndexDef* pIndexDef);
     Rrf&  rxRef(void);
     void  vRef(Rrf& xRef);
     void  vReset(void);

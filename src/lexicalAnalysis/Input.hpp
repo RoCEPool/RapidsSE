@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eUF.h"
+
 namespace LexicalAnalysis
 {
   class Input : public Object

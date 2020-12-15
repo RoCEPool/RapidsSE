@@ -5,6 +5,9 @@
 #include "Oblique.h"
 
 #include "eBO.h"
+#include "eUK.h"
+
+#include "EnumGroups.h"
 
 #include "Dir.hpp"    //?
 #include "Fifo.hpp"   //?

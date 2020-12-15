@@ -4,6 +4,8 @@
 
 #include "Expressions.h"
 
+#include "EnumGroups.h"
+
 #include "LIB_interface.h"
 #include "DEV_interface.h"
 

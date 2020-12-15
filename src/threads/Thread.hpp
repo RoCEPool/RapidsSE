@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eHS.h"
+
 namespace Threads
 {
   class Thread : public Focal,
