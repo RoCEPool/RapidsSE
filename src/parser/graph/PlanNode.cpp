@@ -81,6 +81,10 @@ PlanNode::~PlanNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
 
+  if (m_xValue.bMustFree && m_xValue.m_pText) {
+    delete m_xValue.m_pText;
+  }
+
   if (m_pProperties != nullptr) delete m_pProperties;
   if (m_pChildren   != nullptr) delete m_pChildren;
 }
