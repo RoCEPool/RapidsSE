@@ -264,8 +264,11 @@ antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
 
 void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNodeBuilder* pNodeBuilder)
 {
+  pNodeBuilder->m_xValue.bMustFree = false;
+
   if (ctx->STRING() != nullptr) {
     pNodeBuilder->m_xValue.m_pText = pCleanString(ctx->STRING()->getText());
+    pNodeBuilder->m_xValue.bMustFree = true;
 
   } else if (ctx->NUMBER() != nullptr) {
     // TODO: handle floating point numbers and hexadecimal

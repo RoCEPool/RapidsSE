@@ -77,6 +77,8 @@ PlanNode* PlanNodeBuilder::pBuild(void)
   PlanNode* planNode = new PlanNode(m_sName.szStz(), m_sType.szStz(),
                                     m_xValue, pPropertiesList, pChildrenList);
 
+  m_xValue.m_iInt = 0;
+  m_xValue.bMustFree = false;
   return planNode;
 }
 

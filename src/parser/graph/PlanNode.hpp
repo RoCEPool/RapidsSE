@@ -5,16 +5,18 @@
 
 namespace Parser
 {
-  union Value {
-    i8         (*m_afFun)(void* aArg);  // function pointer
-
-    b1         m_bBoolean;   // boolean value
-    i8         m_iInt;       // signed 8-byte integer value
-    u8         m_uInt;       // unsigned 8-byte integer value
-    d8         m_dFloat;     // 8-byte floating point value
-    Text*      m_pText;      // text
-//    PlanNode*  m_pXref;      // cross-ref to another PlanNode
-  };
+  typedef struct {
+    union {
+      i8 (*m_afFun)(void *aArg);  // function pointer
+      b1         m_bBoolean;   // boolean value
+      i8         m_iInt;       // signed 8-byte integer value
+      u8         m_uInt;       // unsigned 8-byte integer value
+      d8         m_dFloat;     // 8-byte floating point value
+      Text*      m_pText;      // text
+      //  //    PlanNode*  m_pXref;      // cross-ref to another PlanNode
+    };
+    b1 bMustFree; // do we need to delete the object stored in the structure?
+  } Value;
 
   class PlanNode : public Object,
                    public ListItem_t<PlanNode>
