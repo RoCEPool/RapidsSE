@@ -25,6 +25,7 @@
 // Path: /
 {
   name: "__root__",
+  value: "The root of the plan graph",
   type: "/primitives/root",
   children: [
 // Path: /primitives
