@@ -1114,16 +1114,16 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
   nSize = StrLib::nSize((char*)__azStr); \
   azDst = (char*)(++aiDstk); \
   StrLib::vCopy(azDst,(char*)__azStr); \
-  aiDstk += nWordRoundedStrBytes(nSize)/8; \
-  *(++aiDstk) = nSize; \
+  aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
+  *(++aiDstk) = nSize;     \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
 
 #define S_PopStr(__azDst) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
   nSize = *(aiDstk--); \
-  azSrc = (char*)(aiDstk - ((nSize / 8) + 1)); \
+  azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1)); \
   StrLib::vCopy(__azDst,azSrc); \
-  aiDstk -= nWordRoundedStrBytes(nSize)/8; \
+  aiDstk -= nWordRoundedStrBytes(nSize)/8;                               \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
 #define S_StrAdr() \
@@ -1259,22 +1259,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
   for (;;) {
     
-#ifdef WITH_TRACE_LOGICUNIT
-    // check for stack growth
-    if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "LogicUnit data stack exhausted\n"_Stz);
-    
-    i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
-    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
-    if (iStkPct > 80)
-      vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
-#endif
+//#ifdef WITH_TRACE_LOGICUNIT
+//    // check for stack growth
+//    if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
+//      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+//             "LogicUnit data stack exhausted\n"_Stz);
+//
+//    i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
+//    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
+//    if (iStkPct > 80)
+//      vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
+//#endif
     
     eEO eCode = *aeCode++;
-#ifdef WITH_TRACE_LOGICUNIT
-    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
-#endif
+//#ifdef WITH_TRACE_LOGICUNIT
+//    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+//#endif
     
     switch (eCode) { //+ExtractBegin
         
