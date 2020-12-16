@@ -38,7 +38,7 @@ void PlanNodeBuilder::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PlanNodeBuilder::PlanNodeBuilder()
-: Object(CN_PLANNODEBUILDER), m_sName(""_Stz), m_sType(""_Stz), m_xValue({.m_uInt = 0}),
+: Object(CN_PLANNODEBUILDER), m_sName(""_Stz), m_sType(""_Stz),
   m_pProperties(nullptr), m_pChildren(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODEBUILDER,_FOOTER_);
@@ -46,7 +46,9 @@ PlanNodeBuilder::PlanNodeBuilder()
   _checkInitialised_(CN_PLANNODEBUILDER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNODEBUILDER,_FOOTER_);
-  
+
+  m_xValue.m_uInt = 0;
+  m_xValue.bMustFree = false;
 }
 
 /*----------------------------------------------------------------------------*/
