@@ -19,9 +19,9 @@ namespace Structures
     void  operator delete(void* pText);
     
     TextSmall(void);
-   ~TextSmall(void) noexcept(false);
+    virtual ~TextSmall(void) noexcept(false);
     
-    Stz* aGetText(void);
+    virtual Stz* aGetText(void);
     
     Footer* aFooter(void);
   };

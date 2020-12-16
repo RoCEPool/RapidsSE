@@ -19,9 +19,10 @@ namespace Structures
   public:
     
     TextBuffer(eCN eClass, i8 nBufferSize);
-   ~TextBuffer(void) noexcept(false);
+    virtual ~TextBuffer(void) noexcept(false);
     
     i8 nBufferSize(void);
+    virtual Stz* aGetText(void) = 0;
   };
   
   TextBuffer* _pTextBuffer(void* aAddr);

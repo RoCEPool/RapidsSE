@@ -20,9 +20,9 @@ namespace Structures
     void  operator delete(void* pText);
     
     TextTiny(void);
-   ~TextTiny(void) noexcept(false);
+    virtual ~TextTiny(void) noexcept(false);
     
-    Stz* aGetText(void);
+    virtual Stz* aGetText(void);
     
     Footer* aFooter(void);
   };
