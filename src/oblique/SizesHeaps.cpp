@@ -172,7 +172,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Plan),               HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLAN
   { sizeof(PlanDefinitionParser),HT_TRANSIENT_MEDIUM ,-8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(Planner),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLANNER
-  { sizeof(PlanNode),           HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODE
+  { sizeof(PlanNode),           HT_TRANSIENT_SMALL   ,-8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),    HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeList),       HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODELIST
   { sizeof(Pot),                HT_TRANSIENT_LARGE   ,0 }, // CN_POT
@@ -284,10 +284,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Tenant),             HT_TRANSIENT_TINY    ,0 }, // CN_TENANTS
   { sizeof(Tenants),            HT_TRANSIENT_TINY    ,0 }, // CN_TASKQUEUE
   { sizeof(Text),               HT_TRANSIENT_TINY    ,0 }, // CN_TEXT
-  { sizeof(TextLarge),          HT_TRANSIENT_LARGE   ,0 }, // CN_TEXTLARGE
-  { sizeof(TextMedium),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_TEXTMEDIUM
-  { sizeof(TextSmall),          HT_TRANSIENT_SMALL   ,0 }, // CN_TEXTSMALL
-  { sizeof(TextTiny),           HT_TRANSIENT_TINY    ,0 }, // CN_TEXTTINY
+  { sizeof(TextLarge),          HT_TRANSIENT_LARGE   ,-8 }, // CN_TEXTLARGE
+  { sizeof(TextMedium),         HT_TRANSIENT_MEDIUM  ,-8 }, // CN_TEXTMEDIUM
+  { sizeof(TextSmall),          HT_TRANSIENT_SMALL   ,-8 }, // CN_TEXTSMALL
+  { sizeof(TextTiny),           HT_TRANSIENT_TINY    ,-8 }, // CN_TEXTTINY
   { sizeof(Thing),              HT_TRANSIENT_TINY    ,0 }, // CN_THING
   { sizeof(Thread),             HT_TRANSIENT_TINY    ,0 }, // CN_THREAD
   { sizeof(ThreadQueue),        HT_TRANSIENT_TINY    ,0 }, // CN_THREADQUEUE

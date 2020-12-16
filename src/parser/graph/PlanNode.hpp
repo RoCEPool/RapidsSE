@@ -36,7 +36,7 @@ namespace Parser
 
     PlanNode(Stz* szName, Stz* szType, Value xValue,
              PlanNodeList* pProperties, PlanNodeList* pChildren);
-    ~PlanNode(void); // TODO: Shouldn't this be virtual so that we can properly clean up members?
+    virtual ~PlanNode(void);
 
     Footer* aFooter(void);
 

@@ -67,35 +67,7 @@ Text::~Text(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
   if (m_pTextBuffer) {
-    switch (m_pTextBuffer->eClass()) {
-        
-      case CN_TEXTLARGE: {
-        TextLarge* pTextLarge = _pTextLarge(m_pTextBuffer);
-        delete pTextLarge;
-        break;
-      }
-        
-      case CN_TEXTMEDIUM: {
-        TextMedium* pTextMedium = _pTextMedium(m_pTextBuffer);
-        delete pTextMedium;
-        break;
-      }
-        
-      case CN_TEXTSMALL:  {
-        TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
-        delete pTextSmall;
-        break;
-      }
-        
-      case CN_TEXTTINY: {
-        TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
-        delete pTextTiny;
-        break;
-      }
-        
-      default:
-        RASSERT(0);
-    }
+    delete m_pTextBuffer;
   }
   
 }
@@ -106,32 +78,8 @@ Text::~Text(void) noexcept(false)
 Stz* Text::szGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
-  
-  switch (m_pTextBuffer->eClass()) {
-      
-    case CN_TEXTLARGE: {
-      TextLarge* pTextLarge = _pTextLarge(m_pTextBuffer);
-      return pTextLarge->aGetText();
-    }
-      
-    case CN_TEXTMEDIUM: {
-      TextMedium* pTextMedium = _pTextMedium(m_pTextBuffer);
-      return pTextMedium->aGetText();;
-    }
-      
-    case CN_TEXTSMALL:  {
-      TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
-      return pTextSmall->aGetText();
-    }
-      
-    case CN_TEXTTINY: {
-      TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
-      return pTextTiny->aGetText();
-    }
-      
-    default:
-      RASSERT(0);
-  }
+
+  return m_pTextBuffer->aGetText();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,36 +151,7 @@ void Text::vDeleteBuffer(void)
   
   ASSERT(m_pTextBuffer);
 
-  switch (m_pTextBuffer->eClass()) {
-      
-    case CN_TEXTLARGE: {
-      TextLarge* pTextLarge = _pTextLarge(m_pTextBuffer);
-      delete pTextLarge;
-      break;
-    }
-      
-    case CN_TEXTMEDIUM: {
-      TextMedium* pTextMedium = _pTextMedium(m_pTextBuffer);
-      delete pTextMedium;
-      break;
-    }
-      
-    case CN_TEXTSMALL:  {
-      TextSmall* pTextSmall = _pTextSmall(m_pTextBuffer);
-      delete pTextSmall;
-      break;
-    }
-      
-    case CN_TEXTTINY: {
-      TextTiny* pTextTiny = _pTextTiny(m_pTextBuffer);
-      delete pTextTiny;
-      break;
-    }
-      
-    default:
-      RASSERT(0);
-  }
-
+  delete m_pTextBuffer;
   m_pTextBuffer = nullptr;
 }
 
