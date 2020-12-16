@@ -49,7 +49,7 @@ using namespace Resources;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+ 
 
 namespace Arguments         {                                                 }
 namespace Chunks            { class Format;                                   }
