@@ -77,10 +77,12 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
        aChunk = aNextChunk(aChunk,nBytes), iChunk++) {
 
     eCN eClass = aChunk->eClass();
-    //vTrace("Analyse %p : %p %lld\n"_Stz,this,pChunk,eClass);
+    //vTrace("Analyse : %p %lld\n"_Stz,aChunk,eClass);
     
-    if (eClass >= CN_ENUMS)
+    if (eClass >= CN_ENUMS || eClass < 1) {
+      vTrace("Ghost Object: %p %lld\n"_Stz,aChunk,(i8)eClass);
       continue;
+    }
     
     if (CN_FREECHUNK == eClass)
       continue;
