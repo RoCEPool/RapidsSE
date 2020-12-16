@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-using namespace Base;
+using namespace Resources;
 
 static const i8 C_0B = 0;
 static const i8 C_1B = 1;

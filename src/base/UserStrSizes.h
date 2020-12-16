@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Resources
 {
   static const i8 C_MAX_RECORD    = C_16KB;       // max length of record
   static const i8 C_MAX_STATEMENT = C_32KB - 64;  // max length of statement

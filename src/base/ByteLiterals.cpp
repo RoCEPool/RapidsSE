@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* _KB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _KB(unsigned long long i)
+i8 Resources::operator "" _KB(unsigned long long i)
 {
   return i * C_1KB;
 }
@@ -15,7 +15,7 @@ i8 Base::operator "" _KB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _MB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _MB(unsigned long long i)
+i8 Resources::operator "" _MB(unsigned long long i)
 {
   return i * C_1MB;
 }
@@ -23,7 +23,7 @@ i8 Base::operator "" _MB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _GB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _GB(unsigned long long i)
+i8 Resources::operator "" _GB(unsigned long long i)
 {
   return i * C_1GB;
 }
@@ -31,7 +31,7 @@ i8 Base::operator "" _GB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _TB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _TB(unsigned long long i)
+i8 Resources::operator "" _TB(unsigned long long i)
 {
   return i * C_1TB;
 }
@@ -39,7 +39,7 @@ i8 Base::operator "" _TB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _PB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _PB(unsigned long long i)
+i8 Resources::operator "" _PB(unsigned long long i)
 {
   return i * C_1PB;
 }
@@ -47,7 +47,7 @@ i8 Base::operator "" _PB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _EB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _EB(unsigned long long i)
+i8 Resources::operator "" _EB(unsigned long long i)
 {
   return i * C_1EB;
 }
@@ -58,7 +58,7 @@ i8 Base::operator "" _EB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _K literal suffix                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _K(unsigned long long i)
+i8 Resources::operator "" _K(unsigned long long i)
 {
   return i * C_1K;
 }
@@ -66,7 +66,7 @@ i8 Base::operator "" _K(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _M literal suffix                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _M(unsigned long long i)
+i8 Resources::operator "" _M(unsigned long long i)
 {
   return i * C_1M;
 }
@@ -74,7 +74,7 @@ i8 Base::operator "" _M(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _G literal suffix                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _G(unsigned long long i)
+i8 Resources::operator "" _G(unsigned long long i)
 {
   return i * C_1G;
 }
@@ -82,7 +82,7 @@ i8 Base::operator "" _G(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _T literal suffix                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _T(unsigned long long i)
+i8 Resources::operator "" _T(unsigned long long i)
 {
   return i * C_1T;
 }
@@ -90,7 +90,7 @@ i8 Base::operator "" _T(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _P literal suffix                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _P(unsigned long long i)
+i8 Resources::operator "" _P(unsigned long long i)
 {
   return i * C_1P;
 }

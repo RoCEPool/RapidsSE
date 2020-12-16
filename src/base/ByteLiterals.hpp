@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Resources
 {
   i8 operator "" _KB(unsigned long long i);
   i8 operator "" _MB(unsigned long long i);

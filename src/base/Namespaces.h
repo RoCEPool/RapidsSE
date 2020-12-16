@@ -5,7 +5,7 @@
 
 // resources
 
-namespace Base              {                                                 }
+namespace Resources              {                                                 }
 namespace Assembler         {                                                 }
 namespace Strings           {                                                 }
 namespace ClassData         {                                                 }
@@ -45,7 +45,7 @@ namespace Pool              { class BufferPool;      class HeapBuffer;
 namespace Resources         {                                                 }
 
 
-using namespace Base;
+using namespace Resources;
 using namespace Assembler;
 using namespace Strings;
 using namespace ClassData;

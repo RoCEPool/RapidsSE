@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Resources
 {
   typedef unsigned char      b1;   // 1 byte boolean
   typedef unsigned short     b2;   // 2 byte boolean

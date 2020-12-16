@@ -88,7 +88,7 @@ const u8 C_MASKOFF_UPPER_08 = 0x00FFFFFFFFFFFFFF;
 
 /*----------------------------------------------------------------------------*/
 
-namespace Base
+namespace Resources
 {
   class BitLib
   {
