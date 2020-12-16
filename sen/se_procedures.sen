@@ -1984,11 +1984,11 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 3 0 ../eo_text/asmSmt4_s0.txt
+    genAsmTxt 3 0 ../eo_text/asmSmt3_s0.txt
     | stageC
 
   stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt4_s0.txt 0
+    EOAsm2 ../eo_text/asmSmt3_s0.txt 0
     | stageD
 
   stage stageD on origin :
@@ -2045,11 +2045,11 @@
     | stageB
 
   stage stageB on all nodes :
-    genAsmTxt 5 0 ../eo_text/asmSmt4_s0.txt
+    genAsmTxt 5 0 ../eo_text/asmSmt5_s0.txt
     | stageC
 
   stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt4_s0.txt 0
+    EOAsm2 ../eo_text/asmSmt5_s0.txt 0
     | stageD
 
   stage stageD on origin :
