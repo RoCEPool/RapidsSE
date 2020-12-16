@@ -29,6 +29,42 @@ namespace Resources
 
 //------------------------------------------------------------------------------
 
+namespace Resources {
+
+  template <int BYTES> class String_t;
+  typedef String_t<32>     s32;
+  typedef String_t<256>    s256;
+  typedef String_t<C_2K>   s2K;   // note: 2K not 2KB
+  typedef String_t<C_4K>   s4K;   // note: 4K not 4KB
+  typedef String_t<C_16KB> s16KB; // note: this is 16KB
+  typedef String_t<C_24KB> s24KB; // note: this is 17KB
+  typedef String_t<C_48K>  s48K;  // note: 48K not 24KB
+  typedef String_t<C_1M>   s1M;   // note: 1M not 1MB
+
+  typedef String_t<C_MAX_STATEMENT> sSTMT;
+  typedef String_t<C_MAX_VCH>       sVCH;
+
+  template <int BYTES> class Bytes_t;
+  typedef Bytes_t<32>      b32;
+  typedef Bytes_t<256>     b256;
+  typedef Bytes_t<C_4K>    b4K;   // note: K, not KB
+  typedef Bytes_t<C_8K>    b8K;   // note: K, not KB
+  typedef Bytes_t<C_32K>   b32K;  // note: K, not KB
+  typedef Bytes_t<C_256K>  b256K; // note: K, not KB
+}
+
+namespace Resources       { class ForthCell;            class Focal;
+                              class Header;          class Object;
+                              class Statistics;                               }
+namespace Resources            { class ReqTuple;                                 }
+namespace Resources           { class Lock;            class LockTracker;       }
+namespace Resources              { class BufferPool;      class HeapBuffer;
+                              class HeapMem;         class PoolBuffer;        }
+
+
+using namespace Resources;
+
+
 //------------------------------------------------------------------------------
 #include "AxiomaticConstants.h"
 #include "BitLib.hpp"

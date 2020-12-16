@@ -67,6 +67,24 @@ namespace Resources
         return false;
     }
 
+    /*------------------------------------------------------------------------*/
+    /* set stz offset                                                         */
+    /*------------------------------------------------------------------------*/
+    inline void vSetStz_offset(Stz* szStz)
+    {
+      m_iWrd = nDifference(this,szStz);
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* set stz offset                                                         */
+    /*------------------------------------------------------------------------*/
+    inline Stz* szGetStz_offset(void)
+    {
+      Stz* szStz = aAdd<Stz*>(this,m_iWrd);
+    
+      return szStz;
+    }
+
   };
 }
 
