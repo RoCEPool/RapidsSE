@@ -8,9 +8,6 @@ macro AM_CRW_FILTER_ROUTINE
 //----------------------------------------------------------------------------//
   // CRW_FILTER_ROUTINE
   Label CRW_FILTER_ROUTINE
-  EO_SET_ITEMS 1
-  EO_COL_SRC_PUSHONE <predicateColumns>
-  EO_DUMP
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -18,19 +15,20 @@ endMacro
 //----------------------------------------------------------------------------//
 macro AM_FILTER_INTEGER_COLUMN
   // AM_FILTER_INTEGER_COLUMN
+  EO_SET_ITEMS 1
+  EO_COL_SRC_PUSHONE <predicateSrcColumn>
+  EO_DUMP
   EO_INTEGER <literalValue>
   <relationalOp>
-  EO_JMP_TRUE FILTER_INTEGER_TRUE
+  EO_JMP_TRUE FILTER_INTEGER_TRUE_<filterNo>
 
-  Label FILTER_INTEGER_FALSE
+  Label FILTER_INTEGER_FALSE_<filterNo>
   EO_PUSH_0
-  EO_JMP FILTER_INTEGER_DONE
+  EO_JMP FILTER_DONE
 
-  Label FILTER_INTEGER_TRUE
+  Label FILTER_INTEGER_TRUE_<filterNo>
   EO_PUSH_1
 
-  Label FILTER_INTEGER_DONE
-  EO_RETURN
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -52,7 +50,7 @@ macro AM_FILTER_DECIMAL_COLUMN
   EO_PUSH_1
 
   Label FILTER_DECIMAL_DONE
-  EO_RETURN
+
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -72,7 +70,7 @@ macro AM_FILTER_VARCHAR_COLUMN
   EO_PUSH_1
 
   Label FILTER_VARCHAR_DONE
-  EO_RETURN
+
 endMacro
 
 //----------------------------------------------------------------------------//
