@@ -129,7 +129,7 @@ void Record::vAddRow(Row* aRow)
   m_caRecord[0] = '\0';
   m_azCursor = & m_caRecord[0];
 
-  for (i8 i_Col = 0; i_Col < m_oRowPix.m_nColumns; i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_oRowPix.m_nColumns - m_oRowPix.m_nExtraCols; i_Col++) {
 
     eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum; //pCol->eDatum();
     i8  iScale = m_oRowPix.m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();

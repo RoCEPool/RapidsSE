@@ -15,7 +15,7 @@ namespace Prompt
   static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_TRCFILE  = "<traceFile>"_Stz;
 
-  static Stz* C_Query1 = "/time Query1_ASM_I lineitem \"../eo_text/QRY_100.txt\" \"../eo_text/QRY_102.txt\""_Stz;
+  static Stz* C_Query1 = "/time Query1_ASM lineitem \"../eo_text/QRY_100.txt\" \"../eo_text/QRY_102.txt\""_Stz;
   
   static Stz* C_Query3 = "/time Query3_ASM \"../eo_text/QRY_300.txt\" \"../eo_text/QRY_301.txt\" \"../eo_text/QRY_302.txt\""_Stz;
   
