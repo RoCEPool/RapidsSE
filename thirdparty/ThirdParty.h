@@ -19,9 +19,9 @@
 //#include "sqlBaseVisitor.h"
 //#include "sqlVisitor.h"
 
-#ifdef WITH_APPLE
-#include "libtcc_rjh.hpp"
-#endif
+//#ifdef WITH_APPLE
+//#include "libtcc_rjh.hpp"
+//#endif
 
 
 //#pragma GCC diagnostic warning "-Wunused-variable"

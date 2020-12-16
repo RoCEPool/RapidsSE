@@ -35,8 +35,6 @@ int main(int argc, char* argv[])
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //ThirdParty::libtcc_rjh(0,argv);
-  
   gsBuildGitHash  = (Stz*)C_BUILD_GIT_HASH;
   gsBuildDate     = (Stz*)C_BUILD_DATE;
   gsBuildHostName = (Stz*)C_BUILD_HOSTNAME;
