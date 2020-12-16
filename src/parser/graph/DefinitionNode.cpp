@@ -46,7 +46,15 @@ DefinitionNode::~DefinitionNode(void)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
+/*----------------------------------------------------------------------------*/
+/* Returns the path of this node in the hierarchy.                            */
+/*----------------------------------------------------------------------------*/
+Stz* DefinitionNode::szPath(void)
+{
+  // Child elements are separated from parents using the '/' character.
+  // Property elements are separated from their parent using the ':' character.
+  return m_sPath.szStz();
+}
 
 
 /*----------------------------------------------------------------------------*/
