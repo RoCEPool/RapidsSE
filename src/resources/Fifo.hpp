@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Resource.hpp"
+
 namespace Resources
 {
   class Fifo : public Resource

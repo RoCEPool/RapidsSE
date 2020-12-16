@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Gadgets.h"
+#include "Structures.h"
 
 //------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace Resources
 
 //------------------------------------------------------------------------------
 
-#include "Resource.hpp"
+//#include "Resource.hpp"
 //?#include "ResourceTracker.hpp"
 
 //?#include "Dir.hpp"

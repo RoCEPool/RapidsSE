@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Resource.hpp"
+
 namespace Resources
 {
   static const i8 C_NO_BUFFERING = 0;

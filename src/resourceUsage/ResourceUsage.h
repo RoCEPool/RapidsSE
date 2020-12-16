@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Resources.h"
+#include "Gadgets.h"
 
 namespace ResourceUsage
 {

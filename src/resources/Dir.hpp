@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Resource.hpp"
+
 static const i8 C_ACCESS_READ      = R_OK;
 static const i8 C_ACCESS_WRITE     = W_OK;
 static const i8 C_ACCESS_READWRITE = R_OK | W_OK;
