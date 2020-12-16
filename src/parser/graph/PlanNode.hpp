@@ -13,7 +13,7 @@ namespace Parser
     u8         m_uInt;       // unsigned 8-byte integer value
     d8         m_dFloat;     // 8-byte floating point value
     Text*      m_pText;      // text
-    PlanNode*  m_pXref;      // cross-ref to another PlanNode
+//    PlanNode*  m_pXref;      // cross-ref to another PlanNode
   };
 
   class PlanNode : public Object,
@@ -30,7 +30,8 @@ namespace Parser
     Footer m_xFooter;
     
   public:
-    // Overriding these because we inherited from ListItem_t
+    // Overriding these because we inherited from ListItem_t and ListItem_t overrides
+    // operator new with a fatal error that it cannot directly be newed.
     void* operator new(size_t);
     void  operator delete(void*);
 

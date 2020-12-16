@@ -173,6 +173,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANNODE,
   /* */ CN_PLANNODEBUILDER,
   /* */ CN_PLANNODELIST,
+  /* */ CN_PLANNODEBUILDERLIST,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
@@ -489,6 +490,7 @@ static Stz* aCN[]
   /* */ "PLANNODE"_Stz,            // CN_PLANNODE
   /* */ "PLANNODEBUILDER"_Stz,     // CN_PLANNODEBUILDER
   /* */ "PLANNODELIST"_Stz,        // CN_PLANNODELIST
+  /* */ "PLANNODEBUILDERLIST"_Stz, // CN_PLANNODEBUILDERLIST
   /* */ "POT"_Stz,                 // CN_POT
   /* */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC

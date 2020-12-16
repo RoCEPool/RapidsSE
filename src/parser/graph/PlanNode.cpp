@@ -157,13 +157,6 @@ Stz* PlanNode::getStringValue()
   return m_xValue.m_pText->szGet();
 }
 
-/*----------------------------------------------------------------------------*/
-/* Get the cross reference PlanNode value out of the Value object. May be null*/
-/*----------------------------------------------------------------------------*/
-PlanNode* PlanNode::getXrefValue()
-{
-  return m_xValue.m_pXref;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
