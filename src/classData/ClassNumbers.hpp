@@ -52,6 +52,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DATUM,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
+  /* */ CN_DEFINITIONNODE,
   /* */ CN_DEVIXT,
   /* */ CN_DEVROW,
   /* */ CN_DIC,
@@ -369,6 +370,7 @@ static Stz* aCN[]
   /* */ "DATUM"_Stz,               // CN_DATUM
   /* */ "DECACNT"_Stz,             // CN_DECACNT
   /* */ "DECIDER"_Stz,             // CN_DECIDER
+  /* */ "DEFINITIONNODE"_Stz,      // CN_DEFINITIONNODE
   /* */ "DEVIXT"_Stz,              // CN_DEVIXT
   /* */ "DEVROW"_Stz,              // CN_DEVROW
   /* */ "DIC"_Stz,                 // CN_DIC

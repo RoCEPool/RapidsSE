@@ -16,6 +16,7 @@ namespace Parser
     Value m_xValue;
     PlanNodeBuilderList* m_pProperties;
     PlanNodeBuilderList* m_pChildren;
+    s256  m_sPath;
     
   private:
     Footer m_xFooter;
@@ -34,7 +35,7 @@ namespace Parser
 
   private:
     PlanNodeList* pBuildList(PlanNodeBuilderList* builderList);
-
+    void vSetPath(s256& sParentPath);
   };
   
   PlanNodeBuilder* _pPlanNodeBuilder(void* aAddr);

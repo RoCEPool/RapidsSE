@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* PlanNode.hpp - A generic node in the plan graph                            */
+/* PlanNode.hpp - A base class of a generic node in the plan graph            */
 /*============================================================================*/
 #pragma once
 
 namespace Parser
 {
-  typedef struct {
+  struct Value {
     union {
       i8 (*m_afFun)(void *aArg);  // function pointer
       b1         m_bBoolean;   // boolean value
@@ -16,7 +16,10 @@ namespace Parser
       //  //    PlanNode*  m_pXref;      // cross-ref to another PlanNode
     };
     b1 bMustFree; // do we need to delete the object stored in the structure?
-  } Value;
+
+    // constructor initialisation
+    Value() : m_uInt(0), bMustFree(false) {/*noop*/}
+  };
 
   class PlanNode : public Object,
                    public ListItem_t<PlanNode>
@@ -32,18 +35,12 @@ namespace Parser
     Footer m_xFooter;
     
   public:
-    // Overriding these because we inherited from ListItem_t and ListItem_t overrides
-    // operator new with a fatal error that it cannot directly be newed.
-    void* operator new(size_t);
-    void  operator delete(void*);
-
-    PlanNode(Stz* szName, Stz* szType, Value xValue,
-             PlanNodeList* pProperties, PlanNodeList* pChildren);
-    virtual ~PlanNode(void);
+    virtual ~PlanNode(void) = 0;
 
     Footer* aFooter(void);
 
   protected:
+    // Protected constructor to force inheritence of this base class.
     PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
              PlanNodeList* pProperties, PlanNodeList* pChildren);
 
@@ -58,9 +55,6 @@ namespace Parser
     u8   getUnsignedIntValue();
     d8   getFloatValue();
     Stz* getStringValue();
-    PlanNode* getXrefValue();
-
-
   };
   
   PlanNode* _pPlanNode(void* aAddr);

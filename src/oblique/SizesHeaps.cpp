@@ -54,6 +54,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Datum_h),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_DATUM
   { sizeof(DecaCnt),            HT_TRANSIENT_TINY    ,0 }, // CN_DECACNT
   { sizeof(Decider),            HT_TRANSIENT_TINY    ,0 }, // CN_DECIDER
+  { sizeof(DefinitionNode),     HT_TRANSIENT_TINY    ,-8 }, // CN_DEFINITIONNODE
   { sizeof(DevIXT),             HT_TRANSIENT_TINY    ,0 }, // CN_DEVIXT
   { sizeof(DevROW),             HT_TRANSIENT_TINY    ,0 }, // CN_DEVROW
   { sizeof(Dic),                HT_TRANSIENT_TINY    ,0 }, // CN_DIC
