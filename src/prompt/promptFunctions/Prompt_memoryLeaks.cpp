@@ -25,6 +25,10 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
 {
   i8 iRowsProcessed = 0;
   
+  // force memory leaks test
+//  Text* pText_leak = new Text;
+//  vTrace("Text_leak : %p\n"_Stz,pText_leak);
+
   if ( ! pPrompt->bTrackingMemory() ) {
     vTrace("error: Memory not being tracked; Run trackMemory;\n"_Stz);
     return true;
@@ -61,11 +65,17 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
       
       eCN eClass = (eCN)i_Object;
       
+      
       if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
         continue;
       
       i8 nCount = pSnapshotObjects->m_nObjects[eClass] -
-        pObjectsInPool->m_nObjects[eClass];
+                    pObjectsInPool->m_nObjects[eClass];
+      
+//      vTrace("LEAKTEST: %s %lld %lld %lld\n"_Stz,aCN[eClass],
+//             pSnapshotObjects->m_nObjects[eClass],
+//             pObjectsInPool->m_nObjects[eClass],
+//             nCount);
       
       if ( nCount == 0 )
         continue;
