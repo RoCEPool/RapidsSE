@@ -795,7 +795,7 @@ void Api::vCreateTaskForJob(Job* pJob)
     pJob->pJobTags()->vDumpSet();
 
   if (! pJob->bHasTag(C_TAG_TAGS))
-    Correctness::vDebugPoint();
+    Resources::vDebugPoint();
   
   pJob->vTimerStart();
 }

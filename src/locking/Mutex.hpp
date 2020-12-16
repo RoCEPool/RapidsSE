@@ -5,7 +5,7 @@
 
 #include "eMK.h"
 
-namespace Locking
+namespace Resources
 {
   class Mutex : public Object
   {

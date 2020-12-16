@@ -887,7 +887,7 @@ void Input::vCollectVecFirstLine(void)
 //    m_pTknVec->vListTokens();
 //  }
 //
-//  Correctness::vDebugPoint();
+//  Resources::vDebugPoint();
 }
 #endif
 
@@ -1490,7 +1490,7 @@ void Input::vCollectSen(void)
     case TN_TAG:
 //      if (m_pCurrTkn->szChars()->bSame(""_Stz)) {
 //        vInspect();
-//        Correctness::vDebugPoint();
+//        Resources::vDebugPoint();
 //      }
       break;
       

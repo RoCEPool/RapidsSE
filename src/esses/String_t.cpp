@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-void* Esses::_pStrVar(void* aAddr)
+void* Resources::_pStrVar(void* aAddr)
 {
   Object* pStrVar = reinterpret_cast<Object*>(aAddr);
   

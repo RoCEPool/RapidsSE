@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Library
+namespace Resources
 {
   class SP_Bits : public SP
   {

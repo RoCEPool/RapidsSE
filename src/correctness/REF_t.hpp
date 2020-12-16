@@ -9,7 +9,7 @@ namespace Gadgets {
   template <class CLASSNM> class CRM;
 }
 
-namespace Correctness
+namespace Resources
 {
   template <class CLASSNM>
   class REF

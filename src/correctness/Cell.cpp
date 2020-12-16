@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* Correctness::_aCell(void* aAddr)
+Cell* Resources::_aCell(void* aAddr)
 {
   Cell* aCell = reinterpret_cast<Cell*>(aAddr);
   

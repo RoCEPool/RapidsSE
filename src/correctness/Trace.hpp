@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Resources
 {
   void  vInfo(Stz* szFormat,...);
   void  vTrace(Stz* szFormat,...);

@@ -370,7 +370,7 @@ void Stz::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* _Stz literal suffix (which converts const char* to Stz*)                   */
 /*----------------------------------------------------------------------------*/
-Stz* Strings::operator "" _Stz(const char* szArg, size_t nSize)
+Stz* Resources::operator "" _Stz(const char* szArg, size_t nSize)
 {
   return (Stz*)(szArg);
 }

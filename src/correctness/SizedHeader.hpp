@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Resources
 {
   class SizedHeader : public Header
   {

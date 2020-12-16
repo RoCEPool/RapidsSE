@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* test with                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Correctness::bTraceWith(Stz* szWith)
+bool Resources::bTraceWith(Stz* szWith)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
@@ -155,7 +155,7 @@ bool Correctness::bTraceWith(Stz* szWith)
 /*----------------------------------------------------------------------------*/
 /* trace with                                                                 */
 /*----------------------------------------------------------------------------*/
-void Correctness::vTraceWith(void)
+void Resources::vTraceWith(void)
 {
   vTrace("\nWith:\n"_Stz);
 
@@ -276,7 +276,7 @@ void Correctness::vTraceWith(void)
 /*----------------------------------------------------------------------------*/
 /* test without                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Correctness::bTraceWithout(Stz* szWith)
+bool Resources::bTraceWithout(Stz* szWith)
 {
 #ifndef WITH_ACTION_SEQUENCE
   if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
@@ -424,7 +424,7 @@ bool Correctness::bTraceWithout(Stz* szWith)
 /*----------------------------------------------------------------------------*/
 /* trace what hasn't been compiled with                                       */
 /*----------------------------------------------------------------------------*/
-void Correctness::vTraceWithout(void)
+void Resources::vTraceWithout(void)
 {
   vTrace("\nWithout:\n"_Stz);
 

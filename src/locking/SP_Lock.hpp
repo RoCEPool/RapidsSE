@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Locking
+namespace Resources
 {
   class SP_Lock : public SP
   {

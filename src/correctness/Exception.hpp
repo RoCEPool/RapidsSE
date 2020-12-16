@@ -5,7 +5,7 @@
 
 #include "eVL.h"
 
-namespace Correctness
+namespace Resources
 {
   class Exception
   {

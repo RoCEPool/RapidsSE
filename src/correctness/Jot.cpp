@@ -39,7 +39,7 @@ i8    _g_iDisableDebug    = 0;
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJot1(char cFlag, Stz* szFormat, ...)
+void Resources::vJot1(char cFlag, Stz* szFormat, ...)
 {
   if (! _g_iDebug)
     return;
@@ -91,7 +91,7 @@ void Correctness::vJot1(char cFlag, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
+void Resources::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 {
   if (! _g_iDebug)
     return;
@@ -153,7 +153,7 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
      _g_nDepth++;
 }
 /*----------------------------------------------------------------------------*/
-//void Correctness::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
+//void Resources::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
 //{
 //  if (! _g_bJotting)
 //    return;
@@ -190,7 +190,7 @@ void Correctness::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get current jot section                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotSection(void)
+i8 Resources::iJotSection(void)
 {
   return _g_iSection;
 }
@@ -198,7 +198,7 @@ i8 Correctness::iJotSection(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
+i8 Resources::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
 {
   _g_sSection = szFun->azChar();
   
@@ -224,7 +224,7 @@ i8 Correctness::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
 /*----------------------------------------------------------------------------*/
 /* get current jot section                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotSummary(void)
+i8 Resources::iJotSummary(void)
 {
   return _g_iSummary;
 }
@@ -232,7 +232,7 @@ i8 Correctness::iJotSummary(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
+i8 Resources::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
 {
   _g_sSummary = szFun->azChar();
   
@@ -259,7 +259,7 @@ i8 Correctness::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
 /*----------------------------------------------------------------------------*/
 /* get current jot division                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotDivision(void)
+i8 Resources::iJotDivision(void)
 {
   return _g_iDivision;
 }
@@ -267,7 +267,7 @@ i8 Correctness::iJotDivision(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
+i8 Resources::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
 {
   _g_sArea     = szArea->azChar();
   _g_sDivision = szFun->azChar();
@@ -306,7 +306,7 @@ i8 Correctness::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
 /*----------------------------------------------------------------------------*/
 /* get jot debug                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::iJotDebug(void)
+i8 Resources::iJotDebug(void)
 {
   return _g_iDebug;
 }
@@ -314,7 +314,7 @@ i8 Correctness::iJotDebug(void)
 /*----------------------------------------------------------------------------*/
 /* set jot debug                                                              */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDebug(i8 iDebug)
+void Resources::vJotDebug(i8 iDebug)
 {
   _g_iDebug = iDebug;
 }
@@ -322,7 +322,7 @@ void Correctness::vJotDebug(i8 iDebug)
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotFilter(Stz* szPhrase)
+void Resources::vJotFilter(Stz* szPhrase)
 {
   _g_sPhrase = szPhrase->azChar();
 }
@@ -332,7 +332,7 @@ void Correctness::vJotFilter(Stz* szPhrase)
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotTabIn(void)
+void Resources::vJotTabIn(void)
 {
   //_g_nDepth++;
 }
@@ -340,7 +340,7 @@ void Correctness::vJotTabIn(void)
 /*----------------------------------------------------------------------------*/
 /* tab out for next jotting                                                   */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotTabOut(void)
+void Resources::vJotTabOut(void)
 {
 //  if (_g_nDepth)
 //    _g_nDepth--;
@@ -349,7 +349,7 @@ void Correctness::vJotTabOut(void)
 /*----------------------------------------------------------------------------*/
 /* tab out for next jotting                                                   */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotTrigger(i8 iDivision, i8 iDebug)
+void Resources::vJotTrigger(i8 iDivision, i8 iDebug)
 {
   _g_iTriggerDivision = iDivision;
   _g_iTriggerDebug    = iDebug;
@@ -358,7 +358,7 @@ void Correctness::vJotTrigger(i8 iDivision, i8 iDebug)
 /*----------------------------------------------------------------------------*/
 /* tab out for next jotting                                                   */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDisable(i8 iDivision, i8 iDebug)
+void Resources::vJotDisable(i8 iDivision, i8 iDebug)
 {
   _g_iDisableDivision = iDivision;
   _g_iDisableDebug    = iDebug;
@@ -373,7 +373,7 @@ void Correctness::vJotDisable(i8 iDivision, i8 iDebug)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line 1                                                        */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDiv1(void)
+void Resources::vJotDiv1(void)
 {
   if (! _g_iDebug)
     return;
@@ -388,7 +388,7 @@ void Correctness::vJotDiv1(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line 2                                                        */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDiv2(void)
+void Resources::vJotDiv2(void)
 {
   if (! _g_iDebug)
     return;
@@ -403,7 +403,7 @@ void Correctness::vJotDiv2(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line equals&space                                             */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDivES(void)
+void Resources::vJotDivES(void)
 {
   if (! _g_iDebug)
     return;
@@ -418,7 +418,7 @@ void Correctness::vJotDivES(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line minus&space                                               */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDivMS(void)
+void Resources::vJotDivMS(void)
 {
   if (! _g_iDebug)
     return;
@@ -433,7 +433,7 @@ void Correctness::vJotDivMS(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line minus&space                                               */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDivPS(void)
+void Resources::vJotDivPS(void)
 {
   if (! _g_iDebug)
     return;
@@ -449,7 +449,7 @@ void Correctness::vJotDivPS(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line A                                                        */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDivA(void)
+void Resources::vJotDivA(void)
 {
   if (! _g_iDebug)
     return;
@@ -464,7 +464,7 @@ void Correctness::vJotDivA(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line B                                                        */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDivB(void)
+void Resources::vJotDivB(void)
 {
   if (! _g_iDebug)
     return;
@@ -479,7 +479,7 @@ void Correctness::vJotDivB(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line B                                                        */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDivC(void)
+void Resources::vJotDivC(void)
 {
   if (! _g_iDebug)
     return;
@@ -494,7 +494,7 @@ void Correctness::vJotDivC(void)
 /*----------------------------------------------------------------------------*/
 /* jot section                                                                */
 /*----------------------------------------------------------------------------*/
-void Correctness::vJotDivX(void)
+void Resources::vJotDivX(void)
 {
   if (! _g_iDebug)
     return;

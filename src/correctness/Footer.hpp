@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Resources
 {
   static const u8 C_FOOTER = 0x245245544F4F4624; // spells $FOOTER$
                              //$ R E T O O F $

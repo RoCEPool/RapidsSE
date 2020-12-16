@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace ClassData
+namespace Resources
 {
   class FnDesc
   {

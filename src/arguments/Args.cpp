@@ -1006,7 +1006,7 @@ void Args::vPrintStartupInfo(void)
     
 
   
-  Correctness::vTraceWith();
+  Resources::vTraceWith();
 }
 
 /*----------------------------------------------------------------------------*/

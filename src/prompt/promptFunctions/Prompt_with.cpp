@@ -29,13 +29,13 @@ bool Prompt::bPrompt_with(SePrompt* pPrompt)
   i8 nTokens = pInpTknVec->nTokens();
   
   if (1 == nTokens) {
-    Correctness::vTraceWith();
+    Resources::vTraceWith();
     return true;
   }
   
   Stz* szWith = pInpTknVec->pGet(1)->szChars();
   
-  if (! Correctness::bTraceWith(szWith))
+  if (! Resources::bTraceWith(szWith))
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "With: Code was not compiled with: %s"_Stz,szWith);
 

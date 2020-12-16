@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Resources
 {
   static const u8 C_SCRIBBLE_PATTERN = 0x21454D54494E4921; // !INITME!
   static const u8 C_SEEME            = 0x23654D5F65655323; // #See_Me#

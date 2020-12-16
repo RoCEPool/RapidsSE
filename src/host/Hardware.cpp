@@ -385,7 +385,7 @@ i8 Hardware::iReadTscp(void)
    a ring transition or access to a platform resource.
    */
   
-  i8 iTscp = Assembler::iRdtscp();
+  i8 iTscp = Resources::iRdtscp();
   return iTscp;
   
 }

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Alignment
+namespace Resources
 {
   class CacheLine : public Line
   {

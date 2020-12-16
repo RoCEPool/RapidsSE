@@ -5,7 +5,7 @@
 
 #include "eSC.h"
 
-namespace Host
+namespace Resources
 {
   class SysCall : public Object
   {

@@ -5,7 +5,7 @@
 
 #include "eLK.h"
 
-namespace Locking
+namespace Resources
 {
   const u8 C_WRITELOCK = 0x8000000000000000;
     

@@ -135,9 +135,9 @@ void Step::vWordCategoryStore(void)
   Word* pCategory = _pWord(m_pDataStack->pPopPtr(__func__));
   
 //  if (pCategory->szWordNm()->bSame("proccatg"_Stz))
-//    Correctness::vDebugPoint();
+//    Resources::vDebugPoint();
 //  if (pWord->szWordNm()->bSame("proccatg"_Stz))
-//    Correctness::vDebugPoint();
+//    Resources::vDebugPoint();
 //
 //  vTrace("Word %s : Category %s\n"_Stz,
 //         pWord->szWordNm(),pCategory->szWordNm());

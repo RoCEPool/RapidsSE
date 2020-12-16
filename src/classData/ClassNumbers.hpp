@@ -5,7 +5,7 @@
 
 #include "ClassData.h"
 
-namespace ClassData
+namespace Resources
 {
 
 /*----------------------------------------------------------------------------*/

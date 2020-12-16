@@ -5,7 +5,7 @@
 
 #include "eDC.h"
 
-namespace Strings
+namespace Resources
 {
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;

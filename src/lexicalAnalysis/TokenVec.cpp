@@ -254,7 +254,7 @@ void TokenVec::vCollectEnd(Token* pToken)
   
   //if (pToken->szChars()->bSame("catalog"_Stz))
   //if (pToken->szChars()->bSame(""_Stz))
-  //  Correctness::vDebugPoint();
+  //  Resources::vDebugPoint();
   
   vIntegrityCheck();
 }
@@ -1298,7 +1298,7 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
 
   vIntegrityCheck();
 
-  //Correctness::vDebugPoint();
+  //Resources::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

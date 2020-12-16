@@ -173,7 +173,7 @@ void Step::vCompilerCurrentFetch(void)
   Word* pCurrWord = m_pCompiler->pCurrentWord();
     
 //  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
-//    Correctness::vDebugPoint();
+//    Resources::vDebugPoint();
 
   m_pDataStack->vPushPtr(pCurrWord);
   

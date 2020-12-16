@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Resources
 {
   static const i8 C_STACK_BACKTRACE = 16;
 

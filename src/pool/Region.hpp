@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Pool
+namespace Resources
 {
   class Region
   {

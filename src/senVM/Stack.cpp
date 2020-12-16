@@ -224,7 +224,7 @@ i8 Stack::iPopAsInt(const char* azFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
-    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+    Resources::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -242,7 +242,7 @@ Cell* Stack::aPopFip(const char* azFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_FIPVAL) )
-    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+    Resources::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -261,7 +261,7 @@ i8 Stack::iPopInt(const char* azFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_INTVAL) )
-    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+    Resources::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -280,7 +280,7 @@ Object* Stack::pPopPtr(const char* azFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (! bGuard(CN_PTRVAL) && ! bTopIsZero() )
-    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+    Resources::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -299,7 +299,7 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_STZVAL) )
-    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+    Resources::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -311,7 +311,7 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   
 //  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
 //    vTrace("vPopStr: %s"_Stz,aStzVal->szStz());
-//    Correctness::vDebugPoint();
+//    Resources::vDebugPoint();
 //  }
   
   vDiscardTop();
@@ -327,7 +327,7 @@ void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
-    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+    Resources::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   

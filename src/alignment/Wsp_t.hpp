@@ -4,7 +4,7 @@
 #pragma once
 
 
-namespace Alignment
+namespace Resources
 {
   template<int LENGTH>
   class Wsp_t

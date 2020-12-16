@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-void* Esses::_pBytes_t(void* aAddr)
+void* Resources::_pBytes_t(void* aAddr)
 {
   Object* pBytes_t = reinterpret_cast<Object*>(aAddr);
   

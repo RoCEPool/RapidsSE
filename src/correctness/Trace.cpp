@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* report an information message                                              */
 /*----------------------------------------------------------------------------*/
-void Correctness::vInfo(Stz* aFormat, ...)
+void Resources::vInfo(Stz* aFormat, ...)
 {
   va_list xVaArgs;
   
@@ -19,7 +19,7 @@ void Correctness::vInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Correctness::vTrace(Stz* aFormat, ...)
+void Resources::vTrace(Stz* aFormat, ...)
 {
   va_list xVaArgs;
 
@@ -31,7 +31,7 @@ void Correctness::vTrace(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message (and optionally write to file)                      */
 /*----------------------------------------------------------------------------*/
-void Correctness::vTraceF(File* pFile, Stz* aFormat, ...)
+void Resources::vTraceF(File* pFile, Stz* aFormat, ...)
 {
   va_list xVaArgs;
 
@@ -48,7 +48,7 @@ void Correctness::vTraceF(File* pFile, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a warning message                                                   */
 /*----------------------------------------------------------------------------*/
-void Correctness::vWarn(Stz* aFormat, ...)
+void Resources::vWarn(Stz* aFormat, ...)
 {
   va_list xVaArgs;
   

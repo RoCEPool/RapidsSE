@@ -718,7 +718,7 @@ void Engine::vErrorHandler(Error* pError)
     vTrace("Engine::vErrorHandler: Unknown error\n"_Stz);
   }
            
-  Correctness::vThreadCallStackDump();
+  Resources::vThreadCallStackDump();
 }
 
 /*----------------------------------------------------------------------------*/

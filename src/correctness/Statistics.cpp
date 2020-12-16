@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Statistics* Correctness::_pStatistics(void* aAddr)
+Statistics* Resources::_pStatistics(void* aAddr)
 {
   Statistics* pStatistics = reinterpret_cast<Statistics*>(aAddr);
   

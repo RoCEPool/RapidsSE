@@ -10,7 +10,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* compute absolute byte difference between two addresses                     */
 /*----------------------------------------------------------------------------*/
-i8 Correctness::nDifference(void* aAddress0, void* aAddress1)
+i8 Resources::nDifference(void* aAddress0, void* aAddress1)
 {
   byte* ayAddr0 = reinterpret_cast<byte*>(aAddress0);
   byte* ayAddr1 = reinterpret_cast<byte*>(aAddress1);

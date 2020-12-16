@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ObjectsInPool* Pool::_pObjectsInPool(void* aAddr)
+ObjectsInPool* Resources::_pObjectsInPool(void* aAddr)
 {
   ObjectsInPool* pObjectsInPool = reinterpret_cast<ObjectsInPool*>(aAddr);
   

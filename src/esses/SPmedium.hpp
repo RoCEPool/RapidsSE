@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Esses
+namespace Resources
 {
   static const i8 C_SPMEDIUM_FORMAT = 32;
   static const i8 C_SPMEDIUM_RESULT = C_MAX_STATEMENT;

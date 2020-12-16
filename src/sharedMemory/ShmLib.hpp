@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace SharedMemory
+namespace Resources
 {
   static const bool C_HUGE_PAGES    = true;
   static const bool C_NO_HUGE_PAGES = false;

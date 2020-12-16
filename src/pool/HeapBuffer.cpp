@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-HeapBuffer* Pool::_pHeapBuffer(void* aAddr)
+HeapBuffer* Resources::_pHeapBuffer(void* aAddr)
 {
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(aAddr);
   

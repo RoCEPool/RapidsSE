@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* debug point                                                                */
 /*----------------------------------------------------------------------------*/
-void Correctness::vDebugPoint(void)
+void Resources::vDebugPoint(void)
 {
   sleep(0);
 }
@@ -15,7 +15,7 @@ void Correctness::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 /* dump current thread's call stack                                           */
 /*----------------------------------------------------------------------------*/
-void Correctness::vThreadCallStackDump(void)
+void Resources::vThreadCallStackDump(void)
 {
   // get void*'s for all frames on the stack
   void* aaFramePtr[C_STACK_BACKTRACE];
@@ -35,7 +35,7 @@ void Correctness::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* abort the process                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vAbortProcess(void)
+[[ noreturn ]] void Resources::vAbortProcess(void)
 {
   // dump the call stack
   vThreadCallStackDump();
@@ -56,7 +56,7 @@ void Correctness::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* throw anexception                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(eFK   eKind,
+[[ noreturn ]] void Resources::vThrow(eFK   eKind,
                                         eVL   eSeverity,
                                         const char* azFunc,
                                         const char* azFilePath,
@@ -64,7 +64,7 @@ void Correctness::vThreadCallStackDump(void)
                                         Stz*  szFormat,...)
 {
   fprintf(stderr,
-          "Correctness::vThrow:\n"
+          "Resources::vThrow:\n"
           "eKind = %lld\n"
           "eSeverity = %lld\n"
           "azFunc = %s\n"
@@ -111,7 +111,7 @@ void Correctness::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* throw a user exception                                                     */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrowUser(eFK   eKind,
+[[ noreturn ]] void Resources::vThrowUser(eFK   eKind,
                                         eVL   eSeverity,
                                         const char* azFunc,
                                         const char* azFilePath,
@@ -120,7 +120,7 @@ void Correctness::vThreadCallStackDump(void)
 {
   if (AM::bDeveloper()) {
     fprintf(stderr,
-            "Correctness::vThrow:\n"
+            "Resources::vThrow:\n"
             "eKind = %lld\n"
             "eSeverity = %lld\n"
             "azFunc = %s\n"
@@ -158,7 +158,7 @@ void Correctness::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrowType(eFK   eKind,
+[[ noreturn ]] void Resources::vThrowType(eFK   eKind,
                                             eVL   eSeverity,
                                             const char* azFunc,
                                             const char* azFilePath,

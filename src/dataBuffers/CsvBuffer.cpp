@@ -62,7 +62,7 @@ Stz* CsvBuffer::szAllotRecord(i8 nBytes)
   m_nRecords++;
   
   // Linuxerror: error:
-  //   ambiguous overload for 'operator=' (operand types are 'Strings::Stz' and 'char')
+  //   ambiguous overload for 'operator=' (operand types are 'Resources::Stz' and 'char')
   // *szRecord = '\0';
   char* cRecord = (char*)szRecord;
   *cRecord = '\0';

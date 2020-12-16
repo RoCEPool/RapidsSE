@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Esses
+namespace Resources
 {
   template <int SIZE>
   class String_t : public Object
@@ -67,7 +67,7 @@ namespace Esses
   void* _pStrVar(void* aAddr);
 }
 
-using namespace Correctness;
+using namespace Resources;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -173,7 +173,7 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   if (szStart < szString)
     szStart = szString;
   else
-    Correctness::vDebugPoint();
+    Resources::vDebugPoint();
   
   i8 nBytes = nDifference(szStart,szCursor);
   

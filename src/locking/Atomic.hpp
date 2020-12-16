@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Locking
+namespace Resources
 {
   class Atomic : public Object
   {

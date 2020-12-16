@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Strings
+namespace Resources
 {
   class Stz
   {

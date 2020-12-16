@@ -818,7 +818,7 @@ Footer* BufferPool::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- CheckAddress ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Correctness::vCheckAddress(void *aAddress)
+void Resources::vCheckAddress(void *aAddress)
 {
   if (gpBufferPool)
     gpBufferPool->vCheckAddress(aAddress);

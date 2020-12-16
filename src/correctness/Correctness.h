@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Correctness
+namespace Resources
 {
   bool bTraceWith(Stz* szWith);
   void vTraceWith(void);

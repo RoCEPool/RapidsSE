@@ -116,25 +116,25 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   // debug
 
 //  if (IS_FILE == m_eSource) {
-//    Correctness::vDebugPoint();
+//    Resources::vDebugPoint();
 //    if (m_bSingleLineCmd)
-//      Correctness::vDebugPoint();
+//      Resources::vDebugPoint();
 //    else
-//      Correctness::vDebugPoint();
+//      Resources::vDebugPoint();
 //  }
 //  else if (IS_STDIN == m_eSource) {
-//    Correctness::vDebugPoint();
+//    Resources::vDebugPoint();
 //    if (m_bSingleLineCmd)
-//      Correctness::vDebugPoint();
+//      Resources::vDebugPoint();
 //    else
-//      Correctness::vDebugPoint();
+//      Resources::vDebugPoint();
 //  }
 //  else if (IS_STRING == m_eSource) {
-//    Correctness::vDebugPoint();
+//    Resources::vDebugPoint();
 //    if (m_bSingleLineCmd)
-//      Correctness::vDebugPoint();
+//      Resources::vDebugPoint();
 //    else
-//      Correctness::vDebugPoint();
+//      Resources::vDebugPoint();
 //  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

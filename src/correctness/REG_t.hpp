@@ -5,7 +5,7 @@
 
 
 
-namespace Correctness
+namespace Resources
 {
   template <class CLASSNM>
   class REG

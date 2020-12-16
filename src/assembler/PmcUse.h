@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Assembler
+namespace Resources
 {
   extern "C" i8 iPmc_Core(void);
   extern "C" u8 iPmc_GetLlcMisses(void);

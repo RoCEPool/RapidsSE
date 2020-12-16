@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Esses
+namespace Resources
 {
   static const i8 C_SPSMALL_FORMAT = 32;
   static const i8 C_SPSMALL_RESULT = C_4KB;

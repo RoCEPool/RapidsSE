@@ -5,7 +5,7 @@
 
 #include "Locking.h"
 
-namespace Locking
+namespace Resources
 {
   class LockTracker
   {

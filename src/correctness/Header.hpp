@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Resources
 {
   static const u4 C_MAGIC = 0x4B696A4D; // spells MjiK
                             //K i j M

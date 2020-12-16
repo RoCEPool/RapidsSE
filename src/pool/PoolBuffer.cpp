@@ -13,7 +13,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PoolBuffer* Pool::_pPoolBuffer(void* aAddr)
+PoolBuffer* Resources::_pPoolBuffer(void* aAddr)
 {
   PoolBuffer* pBuffer = reinterpret_cast<PoolBuffer*>(aAddr);
   

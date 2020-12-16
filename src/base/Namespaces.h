@@ -6,13 +6,13 @@
 // resources
 
 namespace Resources              {                                                 }
-namespace Assembler         {                                                 }
-namespace Strings           {                                                 }
-namespace ClassData         {                                                 }
-namespace Correctness       { class Cell;            class Focal;
+namespace Resources         {                                                 }
+namespace Resources           {                                                 }
+namespace Resources         {                                                 }
+namespace Resources       { class Cell;            class Focal;
                               class Header;          class Object;
                               class Statistics;                               }
-namespace Esses             { template <int BYTES> class String_t;
+namespace Resources             { template <int BYTES> class String_t;
                               typedef String_t<32>     s32;
                               typedef String_t<256>    s256;
                               typedef String_t<C_2K>   s2K;   // note: 2K not 2KB
@@ -33,32 +33,18 @@ namespace Esses             { template <int BYTES> class String_t;
                               typedef Bytes_t<C_32K>   b32K;  // note: K, not KB
                               typedef Bytes_t<C_256K>  b256K; // note: K, not KB
                                                                               }
-namespace Enums             {                                                 }
-namespace Focals            { class ReqTuple;                                 }
-namespace Library           {                                                 }
-namespace Host              {                                                 }
-namespace Locking           { class Lock;            class LockTracker;       }
-namespace Alignment         {                                                 }
-namespace SharedMemory      {                                                 }
-namespace Pool              { class BufferPool;      class HeapBuffer;
+namespace Resources             {                                                 }
+namespace Resources            { class ReqTuple;                                 }
+namespace Resources           {                                                 }
+namespace Resources              {                                                 }
+namespace Resources           { class Lock;            class LockTracker;       }
+namespace Resources         {                                                 }
+namespace Resources      {                                                 }
+namespace Resources              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;        }
 namespace Resources         {                                                 }
 
 
-using namespace Resources;
-using namespace Assembler;
-using namespace Strings;
-using namespace ClassData;
-using namespace Correctness;
-using namespace Esses;
-using namespace Enums;
-using namespace Focals;
-using namespace Library;
-using namespace Host;
-using namespace Locking;
-using namespace Alignment;
-using namespace SharedMemory;
-using namespace Pool;
 using namespace Resources;
 
 

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Esses
+namespace Resources
 {
   template <int BYTES>
   class Bytes_t : public Object
@@ -41,7 +41,7 @@ namespace Esses
   void* _pBytes_t(void* aAddr);
 }
 
-using namespace Correctness;
+using namespace Resources;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Focals
+namespace Resources
 {
   class NamedObject
   {
