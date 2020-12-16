@@ -2,7 +2,7 @@
 /* Trace.cpp - message reporter                                               */
 /*============================================================================*/
 
-#include "Correctness.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* report an information message                                              */

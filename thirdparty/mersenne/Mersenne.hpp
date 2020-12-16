@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Assembler.h"
+#include "Resources.h"
 
 namespace Mersenne
 {

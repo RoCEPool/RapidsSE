@@ -2,7 +2,7 @@
 /* Jot.cpp - Jot Debug Rig                                                    */
 /*============================================================================*/
 
-#include "Correctness.h"
+#include "Resources.h"
 
 i8    _g_iDebug   = 0;
 char* _g_sPhrase  = nullptr;

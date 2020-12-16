@@ -2,7 +2,7 @@
 /* SMA.cpp -- pointer which must be an address in shared memory (or nullptr)  */
 /*============================================================================*/
 
-#include "Correctness.h"
+#include "Resources.h"
 
 /*============================================================================*/
 /* end                                                                        */

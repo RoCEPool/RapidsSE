@@ -2,7 +2,7 @@
 /* RndLib.cpp -- generate random number/string                                */
 /*============================================================================*/
 
-#include "Library.h"
+#include "Resources.h"
 
 #include "Mersenne.hpp"
 

@@ -2,7 +2,7 @@
 /* Mutex.cpp -- Mutex (posix pthread mutex and condition variable)            */
 /*============================================================================*/
 
-#include "Locking.h"
+#include "Resources.h"
 
 
 Atomic gixMutex;

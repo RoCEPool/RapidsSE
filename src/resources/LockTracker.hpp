@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Locking.h"
+#include "Resources.h"
 
 namespace Resources
 {

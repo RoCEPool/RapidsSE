@@ -2,7 +2,7 @@
 /* HeapMem.cpp -- Set of Heaps in Pool                                        */
 /*============================================================================*/
 
-#include "Pool.h"
+#include "Resources.h"
 
 extern SizeHeap  gxaSizeHeap[];
 

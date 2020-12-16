@@ -2,7 +2,7 @@
 /* Process.cpp -- process utility                                             */
 /*============================================================================*/
 
-#include "Host.h"
+#include "Resources.h"
 
 extern pthread_key_t giTLS_ThreadKey;
 

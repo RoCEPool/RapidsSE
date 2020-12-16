@@ -2,7 +2,7 @@
 /* Env.cpp -- Environment Variable Utility                                    */
 /*============================================================================*/
 
-#include "Host.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* translate environment variable                                             */

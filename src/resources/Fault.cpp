@@ -2,7 +2,7 @@
 /* Fault.cpp -- Fault Handler                                                 */
 /*============================================================================*/
 
-#include "Correctness.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* handle an invalid default value in a switch statement                      */

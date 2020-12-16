@@ -2,7 +2,7 @@
 /* MemLib.cpp -- Memory Library                                               */
 /*============================================================================*/
 
-#include "Correctness.h"
+#include "Resources.h"
 
 extern SizeHeap  gxaSizeHeap[];
 
