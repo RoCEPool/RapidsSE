@@ -22,6 +22,7 @@ namespace Parser
 
 #include "graph/PlanNodeList.hpp"
 #include "graph/PlanNode.hpp"
+#include "graph/PlanNodeBuilderList.hpp"
 #include "graph/PlanNodeBuilder.hpp"
 #include "graph/PlanDefinitionParser.hpp"
 /*============================================================================*/

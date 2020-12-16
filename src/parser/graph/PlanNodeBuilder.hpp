@@ -5,6 +5,8 @@
 
 namespace Parser
 {
+  class PlanNodeBuilderList;
+
   class PlanNodeBuilder : public Object,
                           public ListItem_t<PlanNodeBuilder>
   {
@@ -12,8 +14,8 @@ namespace Parser
     s256  m_sName;
     s256  m_sType;
     Value m_xValue;
-    PlanNodeList* m_pProperties;
-    PlanNodeList* m_pChildren;
+    PlanNodeBuilderList* m_pProperties;
+    PlanNodeBuilderList* m_pChildren;
     
   private:
     Footer m_xFooter;
@@ -29,6 +31,9 @@ namespace Parser
     PlanNode* pBuild();
     
     Footer* aFooter(void);
+
+  private:
+    PlanNodeList* pBuildList(PlanNodeBuilderList* builderList);
 
   };
   

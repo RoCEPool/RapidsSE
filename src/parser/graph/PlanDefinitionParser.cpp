@@ -18,46 +18,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __pCastFunction(Parser,PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
-//__aNewFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
-//__vDeleteFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
+__aNewFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
+__vDeleteFunction(PlanDefinitionParser,CN_PLANDEFINITIONPARSER)
 __aFooterFunction(PlanDefinitionParser)
 
-
-void* PlanDefinitionParser::operator new(size_t nSize)
-{
-  vTrace("PlanDefinitionParser::operator : nSize %lld ; sizeof() %lld\n"_Stz,
-         nSize,sizeof(PlanDefinitionParser));
-  
-  void* pObject = HeapMem::pAllocate(CN_PLANDEFINITIONPARSER);
-  
-  vTrace("\n\n-- new() -- pObject %p\n\n"_Stz,pObject);
-  void* aMem = aAdd<void*>(pObject, - 64);
-  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
-  MemLib::vHexDump(aMem,nBytes);
-  
-  return pObject;
-}
-
-void PlanDefinitionParser::operator delete(void* aAddr)
-{
-  PlanDefinitionParser*
-    pPlanDefinitionParser = reinterpret_cast<PlanDefinitionParser*>(aAddr);
-  
-  Object*
-    pObject_rc = reinterpret_cast<Object*>(aAddr);
-  
-  Object*
-    pObject_sc = static_cast<Object*>(pPlanDefinitionParser);
-
-//  vTrace("\n\n-- delete() -- pObject %p\n\n"_Stz,pObject);
-  void* aMem = aAdd<void*>(aAddr, - 64);
-  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
-  MemLib::vHexDump(aMem,nBytes);
-
-  //HeapMem::vFree(pObject_sc);
-  //HeapMem::vFree(pObject_rc);
-  HeapMem::vFree(pPlanDefinitionParser);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constants                                                                  */
@@ -75,13 +39,7 @@ PlanDefinitionParser::PlanDefinitionParser(void)
 : Object(CN_PLANDEFINITIONPARSER),
   m_pNodeBuilderStack(new Stack(KK_PARSER_STACK))
 {
-  vTrace("\n\n-- ::PlanDefinitionParser() -- this %p\n\n"_Stz,this);
-  void* aMem = aAdd<void*>(this, - 64);
-  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
-  MemLib::vHexDump(aMem,nBytes);
-
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
+   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
   
   _checkInitialised_(CN_PLANDEFINITIONPARSER);
   
@@ -93,11 +51,6 @@ PlanDefinitionParser::PlanDefinitionParser(void)
 /*----------------------------------------------------------------------------*/
 PlanDefinitionParser::~PlanDefinitionParser(void) noexcept
 {
-  vTrace("\n\n-- ~PlanDefinitionParser() -- this %p\n\n"_Stz,this);
-  void* aMem = aAdd<void*>(this, - 64);
-  i8 nBytes = 64 + sizeof(PlanDefinitionParser) + 64;
-  MemLib::vHexDump(aMem,nBytes);
-  
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
    
   ASSERT(m_pNodeBuilderStack->nValues() == 0);
@@ -188,9 +141,13 @@ PlanNode* PlanDefinitionParser::pParse()
   }
 
   // Visit the parse tree that resulted from the above parsing.
-  PlanNode* root = this->visitJson5(pJson5Ctx).as<PlanNode*>();
+  this->visitJson5(pJson5Ctx);
 
-  return root;
+  PlanNodeBuilder* rootBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
+
+  PlanNode* rootPlan = rootBuilder->pBuild();
+  delete rootBuilder;
+  return rootPlan;
 }
 
 
@@ -221,12 +178,7 @@ antlrcpp::Any PlanDefinitionParser::visitObj(json5Parser::ObjContext *ctx)
   // Visit the key-value pairs of this object
   visitChildren(ctx);
 
-  // Pop the fields and build the plan node
-  pNodeBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
-  PlanNode* planNode = pNodeBuilder->pBuild();
-  delete pNodeBuilder;
-
-  return planNode;
+  return nullptr;
 }
 
 
@@ -282,7 +234,7 @@ antlrcpp::Any PlanDefinitionParser::visitPair(json5Parser::PairContext *ctx)
 
 antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
 {
-  PlanNodeList* pNodeList = new PlanNodeList();
+  PlanNodeBuilderList* pBuilderList = new PlanNodeBuilderList();
 
   std::vector<json5Parser::ValueContext*> values = ctx->value();
   std::vector<json5Parser::ValueContext*>::iterator iterator;
@@ -293,14 +245,15 @@ antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
     // All array elements must be objects
     ASSERT(ctx->obj() != nullptr);
 
-    // Visit this object manually
-    PlanNode* planNode = visitObj(ctx->obj());
+    // Visit this object manually. It will leave a PlanNodeBuilder on the stack.
+    visitObj(ctx->obj());
 
     // Put it in the array
-    pNodeList->vAppend(planNode);
+    PlanNodeBuilder* pBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
+    pBuilderList->vAppend(pBuilder);
   }
 
-  return pNodeList;
+  return pBuilderList;
 }
 
 
@@ -321,8 +274,10 @@ void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNod
     pNodeBuilder->m_xValue.m_iInt = sNum.iToI8();
 
   } else if (ctx->obj() != nullptr) {
+    NEVER_REACH
     // Use the visit function on this child
-    pNodeBuilder->m_xValue.m_pXref = visitObj(ctx->obj());
+//    visitObj(ctx->obj());
+//    pNodeBuilder->m_xValue.m_pXref = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
 
   } else if (ctx->arr() != nullptr) {
      // Can't have an array in a value field
@@ -336,7 +291,7 @@ void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNod
       pNodeBuilder->m_xValue.m_bBoolean = false;
 
     } else if (ctx->LITERAL()->getText().compare("null") == 0) {
-      pNodeBuilder->m_xValue.m_pXref = nullptr;
+      pNodeBuilder->m_xValue.m_pText = nullptr;
 
     } else {
       // Got a literal value we didn't expect

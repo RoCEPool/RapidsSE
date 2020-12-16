@@ -70,12 +70,35 @@ PlanNodeBuilder::~PlanNodeBuilder(void)
 PlanNode* PlanNodeBuilder::pBuild(void)
 {
   // TODO: Create DefinitionNode or PrimitiveNode depending on current path.
+
+  PlanNodeList *pPropertiesList = pBuildList(m_pProperties);
+  PlanNodeList *pChildrenList   = pBuildList(m_pChildren);
+
   PlanNode* planNode = new PlanNode(m_sName.szStz(), m_sType.szStz(),
-                                    m_xValue, m_pProperties, m_pChildren);
-  m_pProperties = nullptr;
-  m_pChildren = nullptr;
+                                    m_xValue, pPropertiesList, pChildrenList);
 
   return planNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Creates a List of PlanNode*'s                                              */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* PlanNodeBuilder::pBuildList(PlanNodeBuilderList* builderList)
+{
+  if (!builderList) {
+    return nullptr;
+  }
+
+  PlanNodeList *pPlanNodeList = new PlanNodeList();
+
+  PlanNodeBuilder* builder = builderList->pHead();
+  while (builder) {
+    PlanNode* planNode = builder->pBuild();
+    pPlanNodeList->vAppend(planNode);
+    builder = builder->pNextItem();
+  }
+
+  return pPlanNodeList;
 }
 
 
