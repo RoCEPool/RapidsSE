@@ -25,7 +25,7 @@ PromptFun __Prompt_rnd (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_rnd(SePrompt* pPrompt)
 {  
-  ThirdParty::init_genrand64(0);
+  Mersenne::init_genrand64(0);
   
 //  for (i8 i = 0; i < 1024; i++) {
 //    vTrace("/* %4lld */ %20lluull, "_Stz,i,Random::uInteger());

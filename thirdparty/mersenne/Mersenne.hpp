@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "ThirdParty.h"
+#include "Assembler.h"
 
-namespace ThirdParty
+namespace Mersenne
 {
 
   #define NN 312

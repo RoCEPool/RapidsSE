@@ -30,7 +30,7 @@ void RndLib::vBytes(byte* ayBytes, i8 iLength)
 /*----------------------------------------------------------------------------*/
 i8 RndLib::iInteger(void)
 {
-  i8 iRand = ThirdParty::genrand64_int63();
+  i8 iRand = Mersenne::genrand64_int63();
   
   return iRand;
 }
@@ -40,7 +40,7 @@ i8 RndLib::iInteger(void)
 /*----------------------------------------------------------------------------*/
 i8 RndLib::iInteger(i8 iMax)
 {
-  i8 iRand = ThirdParty::genrand64_int63() % iMax;
+  i8 iRand = Mersenne::genrand64_int63() % iMax;
   
   return iRand;
 }
@@ -50,7 +50,7 @@ i8 RndLib::iInteger(i8 iMax)
 /*----------------------------------------------------------------------------*/
 i8 RndLib::iInteger(i8 iLow, i8 iHigh)
 {
-  i8 r = ThirdParty::genrand64_int63();
+  i8 r = Mersenne::genrand64_int63();
   
   i8 m = iHigh - iLow + 1;
   i8 v = r % m;
@@ -67,7 +67,7 @@ i8 RndLib::iInteger(i8 iLow, i8 iHigh)
 /*----------------------------------------------------------------------------*/
 u8 RndLib::uInteger(void)
 {
-  u8 iRand = ThirdParty::genrand64_int64();
+  u8 iRand = Mersenne::genrand64_int64();
   
   return iRand;
 }
@@ -77,7 +77,7 @@ u8 RndLib::uInteger(void)
 /*----------------------------------------------------------------------------*/
 u8 RndLib::uInteger(u8 uMax)
 {
-  u8 uRand = ThirdParty::genrand64_int64() % uMax;
+  u8 uRand = Mersenne::genrand64_int64() % uMax;
   
   return uRand;
 }
@@ -87,7 +87,7 @@ u8 RndLib::uInteger(u8 uMax)
 /*----------------------------------------------------------------------------*/
 u8 RndLib::uInteger(u8 uLow, u8 uHigh)
 {
-  u8 r = ThirdParty::genrand64_int64();
+  u8 r = Mersenne::genrand64_int64();
   
   u8 m = uHigh - uLow + 1;
   u8 v = r % m;
