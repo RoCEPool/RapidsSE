@@ -5,31 +5,6 @@
 #include "Correctness.h"
 
 /*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Correctness::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(u2)  == sizeof(eCN));
-    
-  ALWAYS(8 == sizeof(Header));
-  ALWAYS(8 == sizeof(Object));
-  ALWAYS(16 == sizeof(Footer));
-  
-
-  ALWAYS(8 == sizeof(Gid));
-  
-  ALWAYS(8 == sizeof(Bcd));
-  ALWAYS(8 == sizeof(Bol));
-  ALWAYS(8 == sizeof(Dte));
-  ALWAYS(8 == sizeof(Edt));
-  ALWAYS(8 == sizeof(Flt));
-  ALWAYS(8 == sizeof(Int));
-  ALWAYS(8 == sizeof(Ivl));
-  ALWAYS(8 == sizeof(Tme));
-  ALWAYS(8 == sizeof(Tsp));
-}
-
-/*----------------------------------------------------------------------------*/
 /* test with                                                                  */
 /*----------------------------------------------------------------------------*/
 bool Correctness::bTraceWith(Stz* szWith)

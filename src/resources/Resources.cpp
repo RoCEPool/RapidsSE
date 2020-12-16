@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Resources::vCheckAssumptions(void)
 {
+  // resources
+  
   ALWAYS(sizeof(struct sockaddr_in) <= (8 * 16));
   
   // pool
