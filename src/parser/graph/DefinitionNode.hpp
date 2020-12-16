@@ -25,6 +25,8 @@ namespace Parser
 
     Footer* aFooter(void);
 
+    // Get the path of this node in the hierarchy
+    Stz* szPath();
   };
   
   DefinitionNode* _pDefinitionNode(void* aAddr);

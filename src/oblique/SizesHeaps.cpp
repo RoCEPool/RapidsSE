@@ -181,6 +181,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Pot),                HT_TRANSIENT_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),          HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC
+  { sizeof(PrimitiveNode),      HT_TRANSIENT_TINY    ,-8 }, // CN_PRIMITIVENODE
   { sizeof(Profile),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PROFILE
   { sizeof(PsxThd),             HT_TRANSIENT_TINY    ,0 }, // CN_PSXTHD
   { sizeof(PtnColVec),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_PTNCOLVEC

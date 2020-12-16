@@ -64,7 +64,6 @@ MAN_PAGES=../Documents/se.man
 # Source Files
 SRC_DIR := .
 MAIN_CPP := $(shell find $(SRC_DIR) -name "main.cpp")
-SHOCO_C := ../thirdparty/shoco/shoco.c  # Not currently used
 SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
@@ -113,7 +112,6 @@ endif
 OBJECTS := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 OBJECTS += $(patsubst $(SRC_DIR)/%.s,   $(OBJ_DIR)/%.obj, $(S_SOURCES))
 MAIN_O  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAIN_CPP))
-SHOCO_O := $(patsubst %.c, $(OBJ_DIR)/%.o, $(SHOCO_C)) 
 
 # Dependency Files for library
 DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
@@ -121,13 +119,13 @@ DEPFILES += $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(MAIN_CPP))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
-THIRDPARTY_INCLUDES := -I../thirdparty -I../thirdparty/lz4 -I../thirdparty/bzip2 -I ../thirdparty/xxhash -I ../thirdparty/shoco -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include -I ../thirdparty/tcc/src
+THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include -I ../thirdparty/tcc/src
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
 LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
 RAPIDS_LIBS = -lRapidsSE
-LIB_DIRS = -L../thirdparty/bzip2 -L../thirdparty/lz4 -L$(TARGET_PATH) -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIB_DIRS = -L$(TARGET_PATH) -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
 ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
@@ -163,10 +161,6 @@ debug : all
 
 # Explicit release builds (the default)
 release : all
-
-#$(SHOCO_O): $(SHOCO_C)
-#	$(DIR_GUARD)
-#	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -Wno-narrowing -c $(INCLUDES) $< -o $@ 
 
 # RapidsSE dynamic library
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
