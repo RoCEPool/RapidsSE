@@ -3,28 +3,15 @@
 /*============================================================================*/
 #pragma once
 
-namespace Alignment         {                                                 }
-namespace Arguments         {                                                 }
-namespace Assembler         {                                                 }
+// resources
+
 namespace Base              {                                                 }
-namespace Chunks            { class Format;                                   }
+namespace Assembler         {                                                 }
+namespace Strings           {                                                 }
 namespace ClassData         {                                                 }
-namespace CompactBuffers    { class Crw;             class CrwBuffer;
-                              class RowCompactor;    class RowInflator;
-                              class HeadLine;
-                              class OverLine;        class TailLine;          }
-namespace CompilerOperators {                                                 }
-namespace ControlData       {                                                 }
 namespace Correctness       { class Cell;            class Focal;
                               class Header;          class Object;
                               class Statistics;                               }
-namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
-                              class RowBuffer;       class RowBuffer;         }
-namespace Datums            { class Datum_h;
-                              template <i8 SPACE> class Datum_t;              }
-namespace DynamoCompiler    { class Dynamo;                                   }
-namespace Entries           {                                                 }
-namespace Enums             {                                                 }
 namespace Esses             { template <int BYTES> class String_t;
                               typedef String_t<32>     s32;
                               typedef String_t<256>    s256;
@@ -46,16 +33,62 @@ namespace Esses             { template <int BYTES> class String_t;
                               typedef Bytes_t<C_32K>   b32K;  // note: K, not KB
                               typedef Bytes_t<C_256K>  b256K; // note: K, not KB
                                                                               }
+namespace Enums             {                                                 }
+namespace Focals            { class ReqTuple;                                 }
+namespace Library           {                                                 }
+namespace Host              {                                                 }
+namespace Locking           { class Lock;            class LockTracker;       }
+namespace Alignment         {                                                 }
+namespace SharedMemory      {                                                 }
+namespace Pool              { class BufferPool;      class HeapBuffer;
+                              class HeapMem;         class PoolBuffer;        }
+namespace Resources         {                                                 }
+
+
+using namespace Base;
+using namespace Assembler;
+using namespace Strings;
+using namespace ClassData;
+using namespace Correctness;
+using namespace Esses;
+using namespace Enums;
+using namespace Focals;
+using namespace Library;
+using namespace Host;
+using namespace Locking;
+using namespace Alignment;
+using namespace SharedMemory;
+using namespace Pool;
+using namespace Resources;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+namespace Arguments         {                                                 }
+namespace Chunks            { class Format;                                   }
+namespace CompactBuffers    { class Crw;             class CrwBuffer;
+                              class RowCompactor;    class RowInflator;
+                              class HeadLine;
+                              class OverLine;        class TailLine;          }
+namespace CompilerOperators {                                                 }
+namespace ControlData       {                                                 }
+namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
+                              class RowBuffer;       class RowBuffer;         }
+namespace Datums            { class Datum_h;
+                              template <i8 SPACE> class Datum_t;              }
+namespace DynamoCompiler    { class Dynamo;                                   }
+namespace Entries           {                                                 }
 namespace Expressions       { class Expr;            class ExprVec;
                               class LogicUnit;                                }
 namespace Facts             { class Fact;            class Kbase;
                               class Method;        
                               class Question;        class Transform;         }
-namespace Focals            { class ReqTuple;                                 }
+
 namespace Folders           {                                                 }
 namespace Gadgets           { class EnumFlags;       class TagSet;            }
 namespace Grids             { class Grid;            class Node;              }
-namespace Host              {                                                 }
+
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
 namespace InfoData          { class InfoSetBase;                              }
 namespace Interface         { class SessionArray;                             }
@@ -65,9 +98,7 @@ namespace Jobs              { class Job;
                               class Job_Distributed;                          }
 namespace LexicalAnalysis   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
-namespace Library           {                                                 }
 namespace Load              {                                                 }
-namespace Locking           { class Lock;            class LockTracker;       }
 namespace Logging           { class Log;             class LogEntry;          }
 namespace MetaData          { class Table;           class IdxColVec;
                               class Index;
@@ -85,22 +116,17 @@ namespace Pipelines         { class Xmits;           class Op;
 namespace PipelineSpecs     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
 namespace Plans             { class Planner;                                  }
-namespace Pool              { class BufferPool;      class HeapBuffer;
-                              class HeapMem;         class PoolBuffer;        }
 namespace Prompt            {   class SePrompt;                               }
 namespace ReadConsistency   { class Crv;                                      }
 namespace ResourceUsage     { class RU_Cpu;          class RU_Memory;         }
-namespace Resources         {                                                 }
 namespace Rows              {                                                 }
 namespace SenVM             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace Sessions          { class Session;         class SessionState;      }
-namespace SharedMemory      {                                                 }
 namespace SortBuffers       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
-namespace Strings           {                                                 }
 namespace Structures        { class Article;         class Queue;             }
 namespace Tasks             { class Task;                                     }
 namespace Threads           { class Scheduler;       class Thread;
@@ -110,37 +136,26 @@ namespace Utilities         { class BPA;             class PoolHelper;        }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-using namespace Alignment;
 using namespace Arguments;
-using namespace Assembler;
-using namespace Base;
 using namespace Chunks;
-using namespace ClassData;
 using namespace CompactBuffers;
 using namespace CompilerOperators;
 using namespace ControlData;
-using namespace Correctness;
 using namespace DataBuffers;
 using namespace Datums;
 using namespace DynamoCompiler;
 using namespace Entries;
-using namespace Enums;
-using namespace Esses;
 using namespace Expressions;
 using namespace Facts;
-using namespace Focals;
 using namespace Folders;
 using namespace Gadgets;
 using namespace Grids;
-using namespace Host;
 using namespace Indexing;
 using namespace InfoData;
 using namespace Interface;
 using namespace Jobs;
 using namespace LexicalAnalysis;
-using namespace Library;
 using namespace Load;
-using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
 using namespace Metrics;
@@ -152,20 +167,16 @@ using namespace Persistence;
 using namespace Pipelines;
 using namespace PipelineSpecs;
 using namespace Plans;
-using namespace Pool;
 using namespace Prompt;
 using namespace ReadConsistency;
 using namespace ResourceUsage;
-using namespace Resources;
 using namespace Rows;
 using namespace SenVM;
 using namespace Sessions;
-using namespace SharedMemory;
 using namespace SortBuffers;
 using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;
-using namespace Strings;
 using namespace Structures;
 using namespace Tasks;
 using namespace Threads;
