@@ -24,16 +24,6 @@ typedef Datum_t<32>     Datum_y32;
 #include "Column.hpp"
 typedef VectorNL_t<CN_PTNCOLVEC,Column,1024> PtnColVec;
 
-#include "RN_Bcd.hpp"
-#include "RN_Bol.hpp"
-#include "RN_Dte.hpp"
-#include "RN_Flt.hpp"
-#include "RN_Int.hpp"
-#include "RN_Ivl.hpp"
-#include "RN_Tme.hpp"
-#include "RN_Tsp.hpp"
-#include "RN_Vch.hpp"
-
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
 #include "SN_Dte.hpp"
@@ -54,12 +44,8 @@ typedef VectorNL_t<CN_PTNCOLVEC,Column,1024> PtnColVec;
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
 
-
 #include "CsvValue.hpp"
 #include "DatumToken.hpp"
-
-#include "Qty.hpp"
-
 
 /*============================================================================*/
 /* end                                                                        */

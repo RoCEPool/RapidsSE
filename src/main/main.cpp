@@ -6,8 +6,6 @@
 
 #include "Version.h"
 
-#include "emmintrin.h"
-
 #include "Heart.h"
 
 extern Stz* gsBuildGitHash;
@@ -22,7 +20,7 @@ extern EnvFlags gxEnvFlags;
 extern i8   gi_argc;
 extern s256 gi_szaArgv[];
 
-extern i8     giProgressPoint;
+extern i8   giProgressPoint;
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -30,75 +28,6 @@ extern i8     giProgressPoint;
 int main(int argc, char* argv[])
 {
 //  printf("sizeof(Object) %lld\n",       (i8)sizeof(Object));
-//  printf("sizeof(Operand) %lld\n",      (i8)sizeof(Operand));
-//  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
-//  printf("sizeof(DataBuffer) %lld\n",   (i8)sizeof(DataBuffer));
-//  printf("sizeof(Ent) %lld\n",          (i8)sizeof(Ent));
-//  printf("sizeof(Ent_gen) %lld\n",      (i8)sizeof(Ent_gen));
-//  printf("sizeof(Ent_int) %lld\n",      (i8)sizeof(Ent_int));
-//  printf("sizeof(EntWrk) %lld\n",       (i8)sizeof(EntWrk));
-//  printf("sizeof(Fact) %lld\n",         (i8)sizeof(Fact));
-//  printf("sizeof(LogicUnit) %lld\n",    (i8)sizeof(LogicUnit));
-//  printf("sizeof(Method) %lld\n",       (i8)sizeof(Method));
-//  printf("sizeof(SP_Ent) %lld\n",       (i8)sizeof(SP_Ent));
-//  printf("sizeof(SP_Key) %lld\n",       (i8)sizeof(SP_Key));
-//  printf("sizeof(SP_Ref) %lld\n",       (i8)sizeof(SP_Ref));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  Qty xQty;
-//  
-//  xQty = Datums::xQtyTest();
-//  printf("Qty isNull=%lld Value=%lld\n",(i8)xQty.m_bIsNull,xQty.m_iValue);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  size_t size = C_64KB;
-//
-//  void *prx;
-//  char tmpfname[] = "/tmp/.tccrunXXXXXX";
-//  int fd = mkstemp(tmpfname);
-//  unlink(tmpfname);
-//  ftruncate(fd, size);
-//
-//  prx = mmap (NULL, size, PROT_READ|PROT_EXEC, MAP_SHARED, fd, 0);
-//    if (prx == MAP_FAILED)
-//      printf("could not map memory");
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // some word flip experiments
-  
-//  char acText[128];
-//  char acFlipped[128];
-//
-//  StrLib::vCopy(acText,"1-URGENT");
-//  printf("%s\n",acText);
-//  StrLib::iWordFlip(acFlipped,acText);
-//  StrLib::iWordFlipBack(acText,acFlipped);
-//  printf("%s\n",acText);
-//
-//  StrLib::vCopy(acText,"2-HIGH");
-//  printf("%s\n",acText);
-//  StrLib::iWordFlip(acFlipped,acText);
-//  StrLib::iWordFlipBack(acText,acFlipped);
-//  printf("%s\n",acText);
-//
-//  StrLib::vCopy(acText,"3-MEDIUM");
-//  printf("%s\n",acText);
-//  StrLib::iWordFlip(acFlipped,acText);
-//  StrLib::iWordFlipBack(acText,acFlipped);
-//  printf("%s\n",acText);
-//
-//  StrLib::vCopy(acText,"4-NOT SPECIFIED***");
-//  printf("%s\n",acText);
-//  StrLib::iWordFlip(acFlipped,acText);
-//  StrLib::iWordFlipBack(acText,acFlipped);
-//  printf("%s\n",acText);
-//
-//  StrLib::vCopy(acText,"5-LOW");
-//  printf("%s\n",acText);
-//  StrLib::iWordFlip(acFlipped,acText);
-//  StrLib::iWordFlipBack(acText,acFlipped);
-//  printf("%s\n",acText);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
