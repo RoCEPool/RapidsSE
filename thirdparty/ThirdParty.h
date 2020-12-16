@@ -8,11 +8,11 @@
 
 //------------------------------------------------------------------------------
 
-#include "bzlib.h"
-#include "lz4.h"
-#include "Mersenne.hpp"
-#include "shoco.h"
-#include "xxhash.hpp"
+//#include "bzlib.h"
+//#include "lz4.h"
+//#include "Mersenne.hpp"
+//#include "shoco.h"
+//#include "xxhash.hpp"
 
 //#include "sqlLexer.h"
 //#include "sqlParser.h"

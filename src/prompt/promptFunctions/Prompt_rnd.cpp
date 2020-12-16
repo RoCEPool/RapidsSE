@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+#include "Mersenne.hpp"
+
 PromptFun __Prompt_rnd (
   PF_RND,           // prompt function
   "Prompt_rnd"_Stz, // name of the prompt function
