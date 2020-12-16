@@ -45,7 +45,7 @@ namespace SenVM
                               //  this allows the address of m_aInxPtr
                               //  to be computed
       
-    Cell*     m_aInxPtr;      // the cell to start executing from for
+    ForthCell*     m_aInxPtr;      // the cell to start executing from for
                               //   - normal words: this will be the
                               //       first cell in the routine
                               //   - future words: this will be
@@ -82,13 +82,13 @@ namespace SenVM
     void  vCategory(Word* pCategory);
     void  vContentDump(void);
     Dic*  pDic(void);
-    void* aEncodeArg(Cell* aArgCell);
+    void* aEncodeArg(ForthCell* aArgCell);
     void  vEncodeCall(StepFp* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
-    void  vEncodeJump(Stz* aWordNm, Cell* aArgCell);
+    void  vEncodeJump(Stz* aWordNm, ForthCell* aArgCell);
     void  vEncodePush(AnyVal* aAnyVal);
-    void  vEntryCell(Cell* aInxPtr);
-    Cell* aEntryCell(void);
+    void  vEntryCell(ForthCell* aInxPtr);
+    ForthCell* aEntryCell(void);
     void  vEntryStep(StepFp fpIntrinsic);
     StepFp fpEntryStep(void);
     StepFp* afpEntryStep(void);
@@ -97,14 +97,14 @@ namespace SenVM
     void  vExceptionHook(Stz* szExceptionHook);
     Stz*  szExitHook(void);
     void  vExitHook(Stz* szExitHook);
-    Cell* aFirstCell(void);
-    bool  bHasCell(Cell* aCell);
+    ForthCell* aFirstCell(void);
+    bool  bHasCell(ForthCell* aCell);
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
     Word* pInclude(void);
     void  vInclude(Word* pInclude);
     bool  bIsName(s32& sName);
-    Cell* aLastCell(void);
+    ForthCell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
     Object* pObject(void);

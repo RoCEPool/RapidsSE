@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Cell.hpp -- cell in the routine area of a word                             */
+/* ForthCell.hpp -- cell in the routine area of a word                             */
 /*============================================================================*/
 #pragma once
 
 namespace Resources
 {
-  class Cell
+  class ForthCell
   {
   public:
     union {
@@ -25,13 +25,13 @@ namespace Resources
       // additionally cells can be an argument to a another cell
       //
       
-      Cell*    m_aJumpTo;  // a pointer to another cell within same routine
+      ForthCell*    m_aJumpTo;  // a pointer to another cell within same routine
       
-      _Header  m_xEmbVal;  // or an embedded value (for PushValue)
+      _Header  m_xEmbVal;  // or marker for embedded value (for PushValue)
     };
   };
   
-  Cell* _aCell(void* aAddr);
+  ForthCell* _aCell(void* aAddr);
 }
 
 /*============================================================================*/

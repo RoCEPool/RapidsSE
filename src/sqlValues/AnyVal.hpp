@@ -13,7 +13,7 @@ namespace SqlValues
     union {
       i8      m__zero__;
       
-      Cell*   m_aFip;
+      ForthCell*   m_aFip;
       d8      m_dFlt;
       i8      m_iInt;
       Object* m_pObj;
@@ -45,8 +45,8 @@ namespace SqlValues
     void    vDte(Dte wDte);
     Edt     wEdt(void);
     void    vEdt(Edt wEdt);
-    Cell*   aFip(void);
-    void    vFip(Cell* aFip);
+    ForthCell*   aFip(void);
+    void    vFip(ForthCell* aFip);
     Flt     wFlt(void);
     void    vFlt(Flt wFlt);
     void    vInspect(void);

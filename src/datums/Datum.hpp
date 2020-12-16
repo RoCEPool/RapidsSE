@@ -41,7 +41,7 @@ namespace Datums
   
     void operator =(AnyVal*);
   
-    void operator =(Cell* aFip);
+    void operator =(ForthCell* aFip);
     void operator =(i8 iInt);
     void operator =(Object* pObj);
     void operator =(Stz* szStz);
@@ -66,8 +66,8 @@ namespace Datums
     void    vDte(i8 iDte);
     void    vDte(i8 iYear, i8 iMonth, i8 iDay);
     i8      iEdt(void);
-    Cell*   aFip(void);
-    void    vFip(Cell* aFip);
+    ForthCell*   aFip(void);
+    void    vFip(ForthCell* aFip);
     d8      dFlt(void);
     void    vFlt(d8 dFlt);
     i8      iInt(void);
@@ -116,7 +116,7 @@ namespace Datums
   
     void operator =(AnyVal*);
   
-    void operator =(Cell* aFip);
+    void operator =(ForthCell* aFip);
     void operator =(i8 iInt);
     void operator =(Object* pObj);
     void operator =(Stz* szStz);
@@ -164,7 +164,7 @@ void Datum_t<SPACE>::operator =(AnyVal* aAnyVal)
 /* assign/copy a forth instruction pointer                                    */
 /*----------------------------------------------------------------------------*/
 template <i8 SPACE>
-void Datum_t<SPACE>::operator =(Cell* aFip)
+void Datum_t<SPACE>::operator =(ForthCell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   

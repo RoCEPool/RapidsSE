@@ -26,13 +26,13 @@ namespace SenVM
     Routine(Word* p_Word);
    ~Routine(void) noexcept(false);
 
-    static Routine* pToRoutine(Cell* aInxPtr);
-    static Word*    pToWord(Cell* aInxPtr);
+    static Routine* pToRoutine(ForthCell* aInxPtr);
+    static Word*    pToWord(ForthCell* aInxPtr);
   
     byte* ayAllot(i8 iBytes);
 
-    void* aAppend(Cell* aCell);
-    void  vAppend(Cell* aCell);
+    void* aAppend(ForthCell* aCell);
+    void  vAppend(ForthCell* aCell);
     void  vAppend(i8 iInt);
     void  vAppend(StepFp* afpStep);
     void  vAppend(AnyVal* aAnyVal);

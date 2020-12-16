@@ -64,13 +64,13 @@ namespace SenVM
     void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
   
     i8   iPopAsInt(const char* azFunNm);
-    Cell* aPopFip(const char* azFunNm);
+    ForthCell* aPopFip(const char* azFunNm);
     i8   iPopInt(const char* azFunNm);
     Object* pPopPtr(const char* azFunNm);
     void vPopStr(String* pStr, const char* azFunNm);
     void vPopVal(AnyVal* aAnyVal, const char* azFunNm);
 
-    void vPushFip(Cell* aFip);
+    void vPushFip(ForthCell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushStr(String* pStr);

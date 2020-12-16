@@ -22,7 +22,7 @@ namespace SenVM
     DicStack  m_oDicStack;      // dictionary stack
     DicStack  m_oSaveDicStack;  // save dictionary stack
 
-    Cell*     m_aInxPtr;      // instruction/cell pointer
+    ForthCell*     m_aInxPtr;      // instruction/cell pointer
   
     Stack*    m_pAuxStack;    // auxiliary stack
     Stack*    m_pDataStack;   // data stack

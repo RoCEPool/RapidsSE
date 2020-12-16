@@ -332,7 +332,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);
     static void vWordSee(Word* pWord, DicStack* pDicStack);
-    static void vWordSeeDoes(Word* pWord, Word* pDoesWord, Cell* aFip, DicStack* pDicStack);
+    static void vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aFip, DicStack* pDicStack);
     static void vWriteLog(void);
     static void vWriteTrace_vargs(eYA eSysAct, Stz* szFormat, va_list xArgs);
     static void vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs);

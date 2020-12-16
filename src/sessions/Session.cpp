@@ -227,7 +227,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   Dic* pDic = nullptr;
-  Cell* aCell =  nullptr;
+  ForthCell* aCell =  nullptr;
   //m_oDicStack.vContentDump();
  
   //fprintf(stderr,"eInit A\n");

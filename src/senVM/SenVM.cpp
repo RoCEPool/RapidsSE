@@ -14,7 +14,7 @@ void SenVM::vCheckAssumptions(void)
   ALWAYS(sizeof(AnyVal) == sizeof(FipVal));
   ALWAYS(sizeof(AnyVal) == sizeof(PtrVal));
 
-  ALWAYS(sizeof(Cell)   == 8);
+  ALWAYS(sizeof(ForthCell)   == 8);
   
   ALWAYS(sizeof(Dic)     < C_SIZE_SMALL_OBJECT);
   

@@ -122,7 +122,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
     switch(eValClass) {
         
       case CN_FIPVAL: {
-        Cell* aFip  = aAnyVal->aFip();
+        ForthCell* aFip  = aAnyVal->aFip();
         if (pDicStack) {
           Word* pWord = pDicStack->pLocateRoutineWord(aFip);
           
@@ -237,7 +237,7 @@ i8 Stack::iPopAsInt(const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
-Cell* Stack::aPopFip(const char* azFunNm)
+ForthCell* Stack::aPopFip(const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -246,7 +246,7 @@ Cell* Stack::aPopFip(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  Cell* aFip = m_xTop.aFipVal->aFip();
+  ForthCell* aFip = m_xTop.aFipVal->aFip();
   
   vDiscardTop();
   
@@ -345,9 +345,9 @@ void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push Cell* onto stack                                                      */
+/* push ForthCell* onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushFip(Cell* aFip)
+void Stack::vPushFip(ForthCell* aFip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

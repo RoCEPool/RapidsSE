@@ -9,7 +9,7 @@ namespace Resources              {                                              
 namespace Resources         {                                                 }
 namespace Resources           {                                                 }
 namespace Resources         {                                                 }
-namespace Resources       { class Cell;            class Focal;
+namespace Resources       { class ForthCell;            class Focal;
                               class Header;          class Object;
                               class Statistics;                               }
 namespace Resources             { template <int BYTES> class String_t;

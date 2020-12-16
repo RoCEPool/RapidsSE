@@ -105,7 +105,7 @@ void Datum_h::operator =(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a forth instruction pointer                                    */
 /*----------------------------------------------------------------------------*/
-void Datum_h::operator =(Cell* aFip)
+void Datum_h::operator =(ForthCell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -345,11 +345,11 @@ i8 Datum_h::iEdt(void)
 /*----------------------------------------------------------------------------*/
 /* get forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-Cell* Datum_h::aFip(void)
+ForthCell* Datum_h::aFip(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  Cell* aFip = m_xFipVal.aFip();
+  ForthCell* aFip = m_xFipVal.aFip();
   
   return aFip;
 }
@@ -357,7 +357,7 @@ Cell* Datum_h::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* set forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-void Datum_h::vFip(Cell* aFip)
+void Datum_h::vFip(ForthCell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   

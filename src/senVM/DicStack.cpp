@@ -194,7 +194,7 @@ Word* DicStack::pFindInCurrent(Stz* szWordNm)
 /*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries that has given cell                   */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pLocateRoutineWord(Cell* aCell)
+Word* DicStack::pLocateRoutineWord(ForthCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   

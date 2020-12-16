@@ -21,7 +21,7 @@ void* FipVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* return value                                                               */
 /*----------------------------------------------------------------------------*/
-Cell* FipVal::aFip(void)
+ForthCell* FipVal::aFip(void)
 {
   vClass(CN_FIPVAL);
   
@@ -31,7 +31,7 @@ Cell* FipVal::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* assign value                                                               */
 /*----------------------------------------------------------------------------*/
-void FipVal::vFip(Cell* aFip)
+void FipVal::vFip(ForthCell* aFip)
 {
   vClass(CN_FIPVAL);
   m_aFip = aFip;

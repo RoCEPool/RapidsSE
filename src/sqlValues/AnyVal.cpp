@@ -136,7 +136,7 @@ void AnyVal::vEdt(Edt wEdt)
 /*----------------------------------------------------------------------------*/
 /* get forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-Cell* AnyVal::aFip(void)
+ForthCell* AnyVal::aFip(void)
 {
   _magic_();
     
@@ -146,7 +146,7 @@ Cell* AnyVal::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* set forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-void AnyVal::vFip(Cell* aFip)
+void AnyVal::vFip(ForthCell* aFip)
 {
   _magic_();
   

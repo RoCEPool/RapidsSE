@@ -11,7 +11,7 @@ namespace SqlValues
 
   private:
   union {
-    Cell*  m_aFip;
+    ForthCell*  m_aFip;
     i8     m_iFip;
   };
 
@@ -19,8 +19,8 @@ namespace SqlValues
     void* operator new(size_t);
     
   public:
-    Cell* aFip(void);
-    void  vFip(Cell* aFip);
+    ForthCell* aFip(void);
+    void  vFip(ForthCell* aFip);
     i8    nStackUsage(void);
     void  vToStz(Stz* szDst);
   };

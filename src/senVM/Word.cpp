@@ -161,7 +161,7 @@ Word* Word::pToWord(void* aEmbeddedObject)
 {
   _static_
     
-  Word* pWord = Routine::pToWord((Cell*)aEmbeddedObject);
+  Word* pWord = Routine::pToWord((ForthCell*)aEmbeddedObject);
   
   return pWord;
 }
@@ -283,11 +283,11 @@ Dic* Word::pDic(void)
 /*----------------------------------------------------------------------------*/
 /* encode a cell* argument                                                    */
 /*----------------------------------------------------------------------------*/
-void* Word::aEncodeArg(Cell* aArgCell)
+void* Word::aEncodeArg(ForthCell* aArgCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aAllottedCell = (Cell*)m_pRoutine->aAppend(aArgCell);
+  ForthCell* aAllottedCell = (ForthCell*)m_pRoutine->aAppend(aArgCell);
   
   return aAllottedCell;
 }
@@ -319,7 +319,7 @@ void Word::vEncodeCall(Stz* aWordNm)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncodeJump(Stz* aWordNm, Cell* aCell)
+void Word::vEncodeJump(Stz* aWordNm, ForthCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -375,7 +375,7 @@ void Word::vEntryStep(StepFp fpIntrinsic)
 /*----------------------------------------------------------------------------*/
 /* get which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-Cell* Word::aEntryCell(void)
+ForthCell* Word::aEntryCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -385,7 +385,7 @@ Cell* Word::aEntryCell(void)
 /*----------------------------------------------------------------------------*/
 /* set which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vEntryCell(Cell* aInxPtr)
+void Word::vEntryCell(ForthCell* aInxPtr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -455,19 +455,19 @@ void Word::vExitHook(Stz* szExitHook)
 /*----------------------------------------------------------------------------*/
 /* get pointer to first cell in data area                                     */
 /*----------------------------------------------------------------------------*/
-Cell* Word::aFirstCell(void)
+ForthCell* Word::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aFirst = reinterpret_cast<Cell*>(m_pRoutine->ayWspArea());
+  ForthCell* aFirst = reinterpret_cast<ForthCell*>(m_pRoutine->ayWspArea());
   
-  return pPoolCheck<Cell*>(aFirst);
+  return pPoolCheck<ForthCell*>(aFirst);
 }
 
 /*----------------------------------------------------------------------------*/
 /* does this word have given cell?                                            */
 /*----------------------------------------------------------------------------*/
-bool Word::bHasCell(Cell* aCell)
+bool Word::bHasCell(ForthCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -532,13 +532,13 @@ bool Word::bIsName(s32& sName)
 /*----------------------------------------------------------------------------*/
 /* get pointer to last cell                                                   */
 /*----------------------------------------------------------------------------*/
-Cell* Word::aLastCell(void)
+ForthCell* Word::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aLast = reinterpret_cast<Cell*>(m_pRoutine->ayWspLatter());
+  ForthCell* aLast = reinterpret_cast<ForthCell*>(m_pRoutine->ayWspLatter());
   
-  return pPoolCheck<Cell*>(aLast);
+  return pPoolCheck<ForthCell*>(aLast);
 }
 
 /*----------------------------------------------------------------------------*/

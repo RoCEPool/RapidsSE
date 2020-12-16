@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Cell.hpp - a cell in the body of a word                                    */
+/* ForthCell.hpp - a cell in the body of a word                                    */
 /*============================================================================*/
 
 #include "Resources.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* Resources::_aCell(void* aAddr)
+ForthCell* Resources::_aCell(void* aAddr)
 {
-  Cell* aCell = reinterpret_cast<Cell*>(aAddr);
+  ForthCell* aCell = reinterpret_cast<ForthCell*>(aAddr);
   
   return aCell;
 }
