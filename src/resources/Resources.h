@@ -36,7 +36,6 @@ namespace Resources
 #include "CommonTypes.h"
 #include "EnvFlags.h"
 #include "Gid.h"
-#include "i3.hpp"
 #include "Nibbler.h"
 #include "Null.hpp"
 #include "WordAsBytes.h"
