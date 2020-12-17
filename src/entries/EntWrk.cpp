@@ -76,30 +76,6 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add element from datum to key                                              */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vAppendDatum(Datum* pDatum,Column* pCol)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nElmSize = 0;
-
-  if (pDatum->bIsNull()) {
-    vAppendNull();
-    return;
-  }
-
-  if (DM_VCH == pCol->eDatum()) {
-    Stz* szSrc = pDatum->szStz();
-    vAppendStz(szSrc);
-  }
-  else {
-    i8 iValue = pDatum->iInt();
-    vAppendInt(iValue);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* add element from row to key                                                */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAppendElement(RowSingle* pRowSingle, Column* pCol)

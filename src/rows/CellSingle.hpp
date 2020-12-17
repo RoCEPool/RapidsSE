@@ -15,7 +15,7 @@ namespace Rows
   
     Dtm m_wxCell;
 
-    char m_caStringArea[C_MAX_RECORD];
+    char m_caStringArea[C_MAX_VCH];
 
     // must be last
     Footer m_xFooter;
