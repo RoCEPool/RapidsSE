@@ -27,8 +27,6 @@ macro AM_FILTER_INTEGER_COLUMN
   EO_JMP FILTER_DONE
 
   Label FILTER_INTEGER_TRUE_<filterNo>
-  EO_PUSH_1
-
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -40,17 +38,13 @@ macro AM_FILTER_DECIMAL_COLUMN
   EO_INTEGER 100
   EO_MULTIPLY
   <relationalOp>
-  EO_JMP_TRUE FILTER_DECIMAL_TRUE
+  EO_JMP_TRUE FILTER_DECIMAL_TRUE_<filterNo>
 
-  Label FILTER_DECIMAL_FALSE
+  Label FILTER_DECIMAL_FALSE_<filterNo>
   EO_PUSH_0
-  EO_JMP FILTER_DECIMAL_DONE
+  EO_JMP FILTER_DONE
 
-  Label FILTER_DECIMAL_TRUE
-  EO_PUSH_1
-
-  Label FILTER_DECIMAL_DONE
-
+  Label FILTER_DECIMAL_TRUE_<filterNo>
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -60,17 +54,13 @@ macro AM_FILTER_VARCHAR_COLUMN
   // FILTER_VARCHAR_COLUMN
   EO_STR_LITERAL <literalValue>
   <relationalOp>
-  EO_JMP_FALSE FILTER_VARCHAR_TRUE
+  EO_JMP_FALSE FILTER_VARCHAR_TRUE_<filterNo>
 
-  Label FILTER_VARCHAR_TRUE
+  Label FILTER_VARCHAR_FALSE_<filterNo>
   EO_PUSH_0
-  EO_JMP FILTER_VARCHAR_DONE
+  EO_JMP FILTER_DONE
 
-  Label FILTER_VARCHAR_TRUE
-  EO_PUSH_1
-
-  Label FILTER_VARCHAR_DONE
-
+  Label FILTER_VARCHAR_TRUE_<filterNo>
 endMacro
 
 //----------------------------------------------------------------------------//
@@ -78,10 +68,11 @@ endMacro
 //----------------------------------------------------------------------------//
 macro AM_FILTER_END
   // FILTER_END
+  EO_PUSH_1
+
   Label FILTER_DONE
   EO_RETURN
 endMacro
-
 
 /*============================================================================*/
 /* end                                                                        */
