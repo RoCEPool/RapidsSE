@@ -35,7 +35,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Parser::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
   Pipelines::vCheckAssumptions();
-  PipelineSpecs::vCheckAssumptions();
   Plans::vCheckAssumptions();
   //Prompt::vCheckAssumptions();
   Resources::vCheckAssumptions();

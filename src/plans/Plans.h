@@ -27,6 +27,11 @@ typedef VectorNL_t<CN_PATHVEC,AccessPath,128> PathVec;
 #include "Planner.hpp"
 
 
+#include "OpSpec.hpp"
+#include "StageSpec.hpp"
+#include "PipelineSpec.hpp"
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
