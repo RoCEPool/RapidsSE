@@ -32,6 +32,15 @@ typedef VectorNL_t<CN_PATHVEC,AccessPath,128> PathVec;
 #include "PipelineSpec.hpp"
 
 
+
+#include "Xmits.hpp"
+#include "Op.hpp"
+#include "Strand.hpp"
+#include "Stage.hpp"
+#include "Pipeline.hpp"
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
