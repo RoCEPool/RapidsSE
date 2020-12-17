@@ -51,10 +51,7 @@ AttachMap::AttachMap(void)
   //ASSERT(nPoolBufferNo() == 1_bn);
   
   m_iTimePoint = AM::iRdTimePoint();
-  
-  // create the carry over (which records global pointers restored on restart)
-  m_pCarryOver = new CarryOver;
-  
+    
   // create the transient heaps
   m_xHeapMem.vInit();
   

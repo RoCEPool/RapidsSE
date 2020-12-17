@@ -65,7 +65,6 @@ namespace StorageEngine
     bool          m_bBootError;
     BucketMap*    m_pBucketMap;
     BufferPool*   m_pBufferPool;
-    CarryOver*    m_pCarryOver;
     EnumFlags     m_oClassFlags;
     Lock          m_okDdlLock;
     Lock          m_okDicLock;

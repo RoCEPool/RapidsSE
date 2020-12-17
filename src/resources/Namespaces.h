@@ -76,7 +76,6 @@ namespace Operands          { class Operand;                                  }
 namespace Parser            { class PlanNode;        class PlanNodeBuilder;   }
 namespace Partitioning      {
                               class PtnStream;       class TablePtn;          }
-namespace Persistence       { class CarryOver;                                }
 namespace Pipelines         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
                               class StageVec;        class Strand;            }
@@ -130,7 +129,6 @@ using namespace Oblique;
 using namespace Operands;
 using namespace Parser;
 using namespace Partitioning;
-using namespace Persistence;
 using namespace Pipelines;
 using namespace PipelineSpecs;
 using namespace Plans;

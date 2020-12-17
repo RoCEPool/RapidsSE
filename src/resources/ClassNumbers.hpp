@@ -37,7 +37,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BYTES_T,
   
   /* */ CN__C__,
-  /* */ CN_CARRYOVER,
   /* */ CN_CATALOG,
   /* */ CN_CELLSEGMENT,
   /* */ CN_CELLSINGLE,
@@ -361,7 +360,6 @@ static Stz* aCN[]
   /* */ "BYTES_T"_Stz,             // CN_BYTES_T
   
   /* */ "_C__"_Stz,                // CN__C__
-  /* */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /* */ "CATALOG"_Stz,             // CN_CATALOG
   /* */ "CELLSEGMENT"_Stz,         // CN_CELLSEGMENT
   /* */ "CELLSINGLE"_Stz,          // CN_CELLSINGLE

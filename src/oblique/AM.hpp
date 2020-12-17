@@ -66,7 +66,6 @@ namespace Oblique
     static bool bBootError(void);
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
-    static CarryOver* pCarryOver(void);
     static EnumFlags* pClassFlags(void);
     static Lock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);

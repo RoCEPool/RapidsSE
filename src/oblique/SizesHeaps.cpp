@@ -39,7 +39,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(s32),                HT_INVALID           ,0 }, // CN_BYTES_T
 
   { 'C' - ('A' - 1),            HT_INVALID           ,0 }, // CN__C__
-  { sizeof(CarryOver),          HT_INVALID           ,0 }, // CN_CARRYOVER
   { sizeof(Catalog),            HT_INVALID           ,0 }, // CN_CATALOG
   { sizeof(CellSegment),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_CELLSEGMENT
   { sizeof(CellSingle),         HT_INVALID           ,0 }, // CN_CELLSIGN:E
