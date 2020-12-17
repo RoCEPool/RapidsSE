@@ -2,7 +2,7 @@
 /* DecaCnt.cpp - deca-counter                                                 */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Resources.h"
 
 
 

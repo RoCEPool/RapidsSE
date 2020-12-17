@@ -283,7 +283,7 @@ static const i8 C_VIA_MALLOC         = 1;
 
 
 
-namespace Gadgets
+namespace Resources
 {
   static const i8 C_TPCH_CUSTOMER =  150 * C_1K;
   static const i8 C_TPCH_LINEITEM = 6000 * C_1K;

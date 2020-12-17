@@ -5,7 +5,7 @@
 
 
 
-namespace Gadgets {
+namespace Resources {
   template <class CLASSNM> class CRM;
 }
 

@@ -2,12 +2,12 @@
 /* ByteRate.cpp -- Byte Rate                                                  */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ByteRate* Gadgets::_pByteRate(void* aAddr)
+ByteRate* Resources::_pByteRate(void* aAddr)
 {
   ByteRate* pByteRate = reinterpret_cast<ByteRate*>(aAddr);
   

@@ -29,8 +29,8 @@ namespace Resources
   friend class Datums::SP_Tme;
   friend class Datums::SP_Tsp;
 
-  friend class Gadgets::Birth;
-  friend class Gadgets::Now;
+  friend class Resources::Birth;
+  friend class Resources::Now;
   
   friend class Resources::Mutex;
   friend class Resources::IvlLib;

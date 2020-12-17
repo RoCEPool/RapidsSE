@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Gadgets
+namespace Resources
 {
   class SP_String : public SP
   {

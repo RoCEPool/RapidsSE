@@ -51,7 +51,7 @@ namespace Facts             { class Fact;            class Kbase;
                               class Question;        class Transform;         }
 
 namespace Folders           {                                                 }
-namespace Gadgets           { class EnumFlags;       class TagSet;
+namespace Resources           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
 namespace Grids             { class Grid;            class Node;              }
@@ -115,7 +115,7 @@ using namespace Entries;
 using namespace Expressions;
 using namespace Facts;
 using namespace Folders;
-using namespace Gadgets;
+using namespace Resources;
 using namespace Grids;
 using namespace Indexing;
 using namespace InfoData;

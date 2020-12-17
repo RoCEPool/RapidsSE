@@ -2,7 +2,7 @@
 /* MemTest.hpp -- Memory pattern test                                         */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Resources.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-MemTest* Gadgets::_pMemTest(void* aAddr)
+MemTest* Resources::_pMemTest(void* aAddr)
 {
   MemTest* pMemTest = reinterpret_cast<MemTest*>(aAddr);
   

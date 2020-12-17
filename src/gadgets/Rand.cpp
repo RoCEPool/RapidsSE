@@ -2,7 +2,7 @@
 /* Rand.cpp - Rand Gadget for generating random datums                        */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

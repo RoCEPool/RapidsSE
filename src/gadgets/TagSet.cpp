@@ -2,12 +2,12 @@
 /* TagSet.cpp -- name-value tag set                                           */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TagSet* Gadgets::_pTagSet(void* aAddr)
+TagSet* Resources::_pTagSet(void* aAddr)
 {
   TagSet* pTagSet = reinterpret_cast<TagSet*>(aAddr);
   

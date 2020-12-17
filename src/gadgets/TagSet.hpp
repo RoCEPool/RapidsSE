@@ -5,7 +5,7 @@
 
 #include "eTN.h"
 
-namespace Gadgets
+namespace Resources
 {
   static const i8 C_ENAME_SET = 256;
   

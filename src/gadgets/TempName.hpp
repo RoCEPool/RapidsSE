@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Gadgets
+namespace Resources
 {
   class TempName : public Object
   {

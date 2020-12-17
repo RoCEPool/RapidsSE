@@ -2,7 +2,7 @@
 /* SP_Footer.cpp - Footer sprint helper                          (on c stack) */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Resources.h"
 
 extern SizeHeap  gxaSizeHeap[];
 

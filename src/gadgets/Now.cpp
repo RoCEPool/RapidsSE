@@ -2,12 +2,12 @@
 /* Now.cpp - Now sprint helper                                                */
 /*============================================================================*/
 
-#include "Gadgets.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__pCastFunction(Gadgets,Now,CN_NOW)
+__pCastFunction(Resources,Now,CN_NOW)
 __aNewFunction(Now,CN_NOW)
 __vDeleteFunction(Now,CN_NOW)
 __aFooterFunction(Now)

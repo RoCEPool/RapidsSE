@@ -21,7 +21,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   DynamoCompiler::vCheckAssumptions();
   Entries::vCheckAssumptions();
   Facts::vCheckAssumptions();
-  Gadgets::vCheckAssumptions();
+  Resources::vCheckAssumptions();
   Grids::vCheckAssumptions();
   Indexing::vCheckAssumptions();
   InfoData::vCheckAssumptions();
