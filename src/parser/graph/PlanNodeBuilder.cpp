@@ -115,28 +115,25 @@ PlanNode* PlanNodeBuilder::pBuild(void)
                                    m_sPath.szStz());
 
   } else if (m_sPath.bBeginsWith(C_PLAN)) {
-    pPlanNode = new DefinitionNode(m_sName.szStz(),
-                                   m_sType.szStz(),
-                                   m_xValue,
-                                   pPropertiesList,
-                                   pChildrenList,
-                                   m_sPath.szStz());
+    pPlanNode = new QueryNode(m_sName.szStz(),
+                              m_sType.szStz(),
+                              m_xValue,
+                               pPropertiesList,
+                               pChildrenList);
 
   } else if (m_sPath.bBeginsWith(C_METADATA)) {
-    pPlanNode = new DefinitionNode(m_sName.szStz(),
+    pPlanNode = new MetadataNode(m_sName.szStz(),
                                    m_sType.szStz(),
                                    m_xValue,
                                    pPropertiesList,
-                                   pChildrenList,
-                                   m_sPath.szStz());
+                                   pChildrenList);
 
   } else if (m_sPath.bBeginsWith(C_STATISTICS)) {
-    pPlanNode = new DefinitionNode(m_sName.szStz(),
+    pPlanNode = new StatisticsNode(m_sName.szStz(),
                                    m_sType.szStz(),
                                    m_xValue,
                                    pPropertiesList,
-                                   pChildrenList,
-                                   m_sPath.szStz());
+                                   pChildrenList);
   } else {
     NEVER_REACH
   }

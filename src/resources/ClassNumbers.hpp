@@ -147,9 +147,11 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMPERSISTENT,
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEMTEST,
+  /* */ CN_METADATANODE,
   /* */ CN_METHOD,
+  /* */ CN_MUTABLEPLANNODE,
   /* */ CN_MUTEX,
-  
+
   /* */ CN__N__,
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
@@ -188,6 +190,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PTRVAL,
   
   /* */ CN__Q__,
+  /* */ CN_QUERYNODE,
   /* */ CN_QUESTION,
   /* */ CN_QUEUE,
   /* */ CN_QUEUEBUFFER,
@@ -263,6 +266,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STAGE,
   /* */ CN_STAGESPEC,
   /* */ CN_STATISTICS,
+  /* */ CN_STATISTICSNODE,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPTIMING,
   /* */ CN_STRAND,
@@ -467,9 +471,11 @@ static Stz* aCN[]
   /* */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* */ "MEMTEST"_Stz,             // CN_MEMTEST
+  /* */ "METADATANODE"_Stz,        // CN_METADATANODE
   /* */ "METHOD"_Stz,              // CN_METHOD
+  /* */ "MUTABLEPLANNODE"_Stz,     // CN_MUTABLEPLANNODE
   /* */ "MUTEX"_Stz,               // CN_MUTEX
-  
+
   /* */ "_N__"_Stz,                // CN__N__
   /* */ "NEXTGID"_Stz,             // CN_NEXTGID
   /* */ "NMLSTR"_Stz,              // CN_NMLSTR
@@ -508,6 +514,7 @@ static Stz* aCN[]
   /* */ "PTRVAL"_Stz,              // CN_PTRVAL
   
   /* */ "_Q__"_Stz,                // CN__Q__
+  /* */ "QUERYNODE"_Stz,           // CN_QUERYNODE
   /* */ "QUESTION"_Stz,            // CN_QUESTION
   /* */ "QUEUE"_Stz,               // CN_QUEUE
   /* */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
@@ -583,6 +590,7 @@ static Stz* aCN[]
   /* */ "STAGE"_Stz,               // CN_STAGE
   /* */ "STAGESPEC"_Stz,           // CN_STAGESPEC
   /* */ "STATISTICS"_Stz,          // CN_STATISTICS
+  /* */ "STATISTICSNODE"_Stz,      // CN_STATISTICSNODE
   /* */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* */ "STRAND"_Stz,              // CN_STRAND
