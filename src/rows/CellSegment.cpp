@@ -51,9 +51,9 @@ CellSegment::~CellSegment(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get address of colun cell                                                  */
+/* get address of column cell                                                 */
 /*----------------------------------------------------------------------------*/
-Dtm* CellSegment::aColumCell(i8 i_Col)
+Dtm* CellSegment::aCellAddress(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSEGMENT,_FOOTER_);
   
@@ -105,7 +105,7 @@ d8 CellSegment::dGetColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSEGMENT,_FOOTER_);
   
-  d8 dColVal = m_wxaCellArray[i_Col].m_wFlt;
+  d8 dColVal = m_wxaCellArray[i_Col].dGetColVal();
   
   return dColVal;
 }
@@ -117,7 +117,7 @@ i8 CellSegment::iGetColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSEGMENT,_FOOTER_);
   
-  i8 iColVal = m_wxaCellArray[i_Col].m_wInt;
+  i8 iColVal = m_wxaCellArray[i_Col].iGetColVal();
   
   return iColVal;
 }
@@ -129,7 +129,9 @@ Stz* CellSegment::szGetColVal(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSEGMENT,_FOOTER_);
   
-  return nullptr;
+  Stz* szColVal = m_wxaCellArray[i_Col].szGetColVal_offset();
+
+  return szColVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +151,7 @@ void CellSegment::vPutColVal(i8 i_Col, d8 dColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSEGMENT,_FOOTER_);
   
-  m_wxaCellArray[i_Col].m_wFlt = dColVal;
+  m_wxaCellArray[i_Col].vPutColVal(dColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +161,7 @@ void CellSegment::vPutColVal(i8 i_Col, i8 iColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSEGMENT,_FOOTER_);
   
-  m_wxaCellArray[i_Col].m_wInt = iColVal;
+  m_wxaCellArray[i_Col].vPutColVal(iColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,15 +173,11 @@ void CellSegment::vPutColVal(i8 i_Col, Stz* szColVal)
   
   // depends on the semantics
   
-  Stz* szDst = szStringAdd_begin();
+  Stz* StzBegin = szStringAdd_begin();
   
-  i8 nStringSize = StrLib::nCopy((char*)szDst,(char*)szColVal) + 1;
+  i8 nStringSize = m_wxaCellArray[i_Col].nPutColVal_offset(szColVal,StzBegin);
   
   vStringAdd_end(nStringSize);
-  
-  Dtm* aCell = & m_wxaCellArray[i_Col];
-  
-  aCell->vSetStz_offset(szDst);
 }
 
 /*----------------------------------------------------------------------------*/

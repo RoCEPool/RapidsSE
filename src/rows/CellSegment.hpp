@@ -29,7 +29,7 @@ namespace Rows
     CellSegment(eSI eStringSemantics);
    ~CellSegment(void) noexcept(false);
   
-    Dtm* aColumCell(i8 i_Col);
+    Dtm* aCellAddress(i8 i_Col);
 
     void vDepositColVal(d8 dColVal);
     void vDepositColVal(i8 iColVal);

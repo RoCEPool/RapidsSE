@@ -55,11 +55,15 @@ namespace Resources {
 
 namespace Resources       { class ForthCell;            class Focal;
                               class Header;          class Object;
-                              class Statistics;                               }
-namespace Resources            { class ReqTuple;                                 }
+                              class Statistics;     class Mutex;              }
+namespace Resources            { class ReqTuple;                              }
 namespace Resources           { class Lock;            class LockTracker;       }
 namespace Resources              { class BufferPool;      class HeapBuffer;
-                              class HeapMem;         class PoolBuffer;        }
+                              class HeapMem;         class PoolBuffer;
+
+class IvlLib;
+
+}
 
 
 using namespace Resources;

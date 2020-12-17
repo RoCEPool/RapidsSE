@@ -7,7 +7,38 @@ namespace Resources
 {
   class Dtm
   {
-  public:
+  friend class CompactBuffers::Encoding_v2;
+  friend class CompactBuffers::SP_Encoding_v2;
+  friend class CompactBuffers::Packing_v2;
+  
+  friend class Datums::SN_Bcd;
+  friend class Datums::SN_Bol;
+  friend class Datums::SN_Dte;
+  friend class Datums::SN_Flt;
+  friend class Datums::SN_Int;
+  friend class Datums::SN_Ivl;
+  friend class Datums::SN_Tme;
+  friend class Datums::SN_Tsp;
+
+  friend class Datums::SP_Bcd;
+  friend class Datums::SP_Bol;
+  friend class Datums::SP_Dte;
+  friend class Datums::SP_Flt;
+  friend class Datums::SP_Int;
+  friend class Datums::SP_Ivl;
+  friend class Datums::SP_Tme;
+  friend class Datums::SP_Tsp;
+
+  friend class Gadgets::Birth;
+  friend class Gadgets::Now;
+  
+  friend class Resources::Mutex;
+  friend class Resources::IvlLib;
+  
+  friend class Rows::Row;
+
+  private:
+  
     union {
 
       Bcd   m_wBcd;
@@ -57,6 +88,32 @@ namespace Resources
     operator i8(void) { return m_iWrd; } // auto conversion to i8
   
     /*------------------------------------------------------------------------*/
+    /* get float column value                                                 */
+    /*------------------------------------------------------------------------*/
+    inline d8 dGetColVal(void)
+    {
+      return m_wFlt;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* get integer column value                                               */
+    /*------------------------------------------------------------------------*/
+    inline i8 iGetColVal(void)
+    {
+      return m_wInt;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* get stz via offset                                                     */
+    /*------------------------------------------------------------------------*/
+    inline Stz* szGetColVal_offset(void)
+    {
+      Stz* StzBegin = aAdd<Stz*>(this,m_iWrd);
+    
+      return StzBegin;
+    }
+
+    /*------------------------------------------------------------------------*/
     /* test if null                                                           */
     /*------------------------------------------------------------------------*/
     inline bool bIsNull(void)
@@ -68,22 +125,41 @@ namespace Resources
     }
 
     /*------------------------------------------------------------------------*/
+    /* put float column value                                                 */
+    /*------------------------------------------------------------------------*/
+    inline void vPutColVal(d8 dColVal)
+    {
+      m_wFlt = dColVal;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* put integer column value                                               */
+    /*------------------------------------------------------------------------*/
+    inline void vPutColVal(i8 iColVal)
+    {
+      m_wInt = iColVal;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* put string column value                                                */
+    /*------------------------------------------------------------------------*/
+    inline i8 nPutColVal_offset(Stz* szColVal, Stz* StzBegin)
+    {
+      i8 nStringSize = StrLib::nCopy((char*)StzBegin,(char*)szColVal) + 1;
+
+      vSetStz_offset(StzBegin);
+    
+      return nStringSize;
+    }
+
+    /*------------------------------------------------------------------------*/
     /* set stz offset                                                         */
     /*------------------------------------------------------------------------*/
-    inline void vSetStz_offset(Stz* szStz)
+    inline void vSetStz_offset(Stz* StzBegin)
     {
-      m_iWrd = nDifference(this,szStz);
+      m_iWrd = nDifference(this,StzBegin);
     }
   
-    /*------------------------------------------------------------------------*/
-    /* set stz offset                                                         */
-    /*------------------------------------------------------------------------*/
-    inline Stz* szGetStz_offset(void)
-    {
-      Stz* szStz = aAdd<Stz*>(this,m_iWrd);
-    
-      return szStz;
-    }
 
   };
 }
