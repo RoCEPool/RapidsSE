@@ -38,7 +38,6 @@ enum eEG // enum groups
   EG_EO,
   EG_EP,
 
-  EG_FA,
   EG_FN,
   EG_FU,
 

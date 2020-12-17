@@ -63,9 +63,6 @@ Column::Column(void)
 
   m_xColPix.m_uAsI4 = 0;
   
-  m_eFunApplied = FA_NONE;
-  m_iFunColArg  = C_UNKNOWN;
-
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);

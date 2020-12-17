@@ -2132,7 +2132,6 @@ static Stz* aEG[]
   "EG_EO"_Stz,
   "EG_EP"_Stz,
 
-  "EG_FA"_Stz,
   "EG_FN"_Stz,
   "EG_FU"_Stz,
 
@@ -2270,7 +2269,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_EO: return aEO[i_Enum];
     case EG_EP: return aEP[i_Enum];
 
-    case EG_FA: return aFA[i_Enum];
     case EG_FN: return aFN[i_Enum];
     case EG_FU: return aFU[i_Enum];
 

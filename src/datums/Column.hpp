@@ -5,7 +5,6 @@
 
 #include "eCT.h"
 #include "eDM.h"
-#include "eFA.h"
 
 namespace Datums
 {
@@ -27,9 +26,6 @@ namespace Datums
     
     ColPix m_xColPix;
   
-    eFA   m_eFunApplied;    // function to be applied (FA_COUNT etc)
-    i8    m_iFunColArg;     // which column is the arg for applied fun
-
     // must be last
     Footer m_xFooter;
     
