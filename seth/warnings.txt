@@ -1021,7 +1021,7 @@ Steps_Str.cpp:66:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
 In file included from Values.h:37:0,
                  from System.h:6,
                  from Pool.h:6,
-                 from Structures.h:6,
+                 from Resources.h:6,
                  from Measurement.h:6,
                  from Parsing.h:6,
                  from Transactions.h:6,

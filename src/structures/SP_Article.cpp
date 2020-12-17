@@ -2,7 +2,7 @@
 /* SP_Article.cpp -- Article sprint helper                       (on c stack) */
 /*============================================================================*/
 
-#include "Structures.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
