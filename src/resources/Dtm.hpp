@@ -57,6 +57,32 @@ namespace Resources
     operator i8(void) { return m_iWrd; } // auto conversion to i8
   
     /*------------------------------------------------------------------------*/
+    /* get float column value                                                 */
+    /*------------------------------------------------------------------------*/
+    inline d8 dGetColVal(void)
+    {
+      return m_wFlt;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* get integer column value                                               */
+    /*------------------------------------------------------------------------*/
+    inline i8 iGetColVal(void)
+    {
+      return m_wInt;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* get stz via offset                                                     */
+    /*------------------------------------------------------------------------*/
+    inline Stz* szGetColVal_offset(void)
+    {
+      Stz* StzBegin = aAdd<Stz*>(this,m_iWrd);
+    
+      return StzBegin;
+    }
+
+    /*------------------------------------------------------------------------*/
     /* test if null                                                           */
     /*------------------------------------------------------------------------*/
     inline bool bIsNull(void)
@@ -68,22 +94,41 @@ namespace Resources
     }
 
     /*------------------------------------------------------------------------*/
+    /* put float column value                                                 */
+    /*------------------------------------------------------------------------*/
+    inline void vPutColVal(d8 dColVal)
+    {
+      m_wFlt = dColVal;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* put integer column value                                               */
+    /*------------------------------------------------------------------------*/
+    inline void vPutColVal(i8 iColVal)
+    {
+      m_wInt = iColVal;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* put string column value                                                */
+    /*------------------------------------------------------------------------*/
+    inline i8 nPutColVal_offset(Stz* szColVal, Stz* StzBegin)
+    {
+      i8 nStringSize = StrLib::nCopy((char*)StzBegin,(char*)szColVal) + 1;
+
+      vSetStz_offset(StzBegin);
+    
+      return nStringSize;
+    }
+
+    /*------------------------------------------------------------------------*/
     /* set stz offset                                                         */
     /*------------------------------------------------------------------------*/
-    inline void vSetStz_offset(Stz* szStz)
+    inline void vSetStz_offset(Stz* StzBegin)
     {
-      m_iWrd = nDifference(this,szStz);
+      m_iWrd = nDifference(this,StzBegin);
     }
   
-    /*------------------------------------------------------------------------*/
-    /* set stz offset                                                         */
-    /*------------------------------------------------------------------------*/
-    inline Stz* szGetStz_offset(void)
-    {
-      Stz* szStz = aAdd<Stz*>(this,m_iWrd);
-    
-      return szStz;
-    }
 
   };
 }
