@@ -28,6 +28,7 @@ typedef HV<Record,RowPix>       HV_Record;
 #include "RowSingle.hpp"
 
 #include "CellSegment.hpp"
+#include "CellSingle.hpp"
 
 //------------------------------------------------------------------------------
 
