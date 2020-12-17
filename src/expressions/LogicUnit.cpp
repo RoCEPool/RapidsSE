@@ -1825,9 +1825,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         szTopB = (Stz*) *(aiDstk--);
       
         iTopA = *(aiDstk--);
-        szTopA = (Stz*) (aiDstk-(iTopA/8 + 1));
+        szTopA = (Stz*) (aiDstk-(nWordRoundedStrBytes(iTopA)/8 - 1));
         iRes = iLib_STR_COMPARE(pLU,szTopA,szTopB);
-        aiDstk -= (iTopA/8) + 2;
+        aiDstk -= nWordRoundedStrBytes(nSize)/8;
         *(++aiDstk) = iRes;
         break;//+endCase
         

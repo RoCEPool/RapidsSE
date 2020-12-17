@@ -55,3 +55,6 @@ Smt3;
 
 // select l_extendedPrice from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
 Smt4;
+
+// select l_extendedPrice from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R' ;
+Smt5;

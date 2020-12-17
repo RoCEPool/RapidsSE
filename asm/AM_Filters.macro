@@ -34,6 +34,8 @@ endMacro
 //----------------------------------------------------------------------------//
 macro AM_FILTER_DECIMAL_COLUMN
   // FILTER_DECIMAL_COLUMN
+  EO_SET_ITEMS 1
+  EO_COL_SRC_PUSHONE <predicateSrcColumn>
   EO_INTEGER <literalValue>
   EO_INTEGER 100
   EO_MULTIPLY
@@ -52,9 +54,14 @@ endMacro
 //----------------------------------------------------------------------------//
 macro AM_FILTER_VARCHAR_COLUMN
   // FILTER_VARCHAR_COLUMN
+  EO_SET_ITEMS 1
+  EO_COL_SRC_PUSHONE <predicateSrcColumn>
   EO_STR_LITERAL <literalValue>
+  EO_DUMP
+  EO_STR_COMPARE
+  EO_PUSH_0
   <relationalOp>
-  EO_JMP_FALSE FILTER_VARCHAR_TRUE_<filterNo>
+  EO_JMP_TRUE FILTER_VARCHAR_TRUE_<filterNo>
 
   Label FILTER_VARCHAR_FALSE_<filterNo>
   EO_PUSH_0
