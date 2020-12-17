@@ -2121,7 +2121,6 @@ static Stz* aEG[]
 
   "EG_DA"_Stz,
   "EG_DC"_Stz,
-  "EG_DG"_Stz,
   "EG_DL"_Stz,
   "EG_DM"_Stz,
   "EG_DS"_Stz,
@@ -2133,7 +2132,6 @@ static Stz* aEG[]
   "EG_EO"_Stz,
   "EG_EP"_Stz,
 
-  "EG_FA"_Stz,
   "EG_FN"_Stz,
   "EG_FU"_Stz,
 
@@ -2261,7 +2259,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_DA: return aDA[i_Enum];
     case EG_DC: return aDC[i_Enum];
-    case EG_DG: return aDG[i_Enum];
     case EG_DL: return aDL[i_Enum];
     case EG_DM: return aDM[i_Enum];
     case EG_DS: return aDS[i_Enum];
@@ -2272,7 +2269,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_EO: return aEO[i_Enum];
     case EG_EP: return aEP[i_Enum];
 
-    case EG_FA: return aFA[i_Enum];
     case EG_FN: return aFN[i_Enum];
     case EG_FU: return aFU[i_Enum];
 

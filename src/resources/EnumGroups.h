@@ -28,7 +28,6 @@ enum eEG // enum groups
 
   EG_DA,
   EG_DC,
-  EG_DG,
   EG_DL,
   EG_DM,
   EG_DS,
@@ -39,7 +38,6 @@ enum eEG // enum groups
   EG_EO,
   EG_EP,
 
-  EG_FA,
   EG_FN,
   EG_FU,
 

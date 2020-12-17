@@ -1,12 +1,10 @@
 /*============================================================================*/
-/* Column.hpp - Column                                                        */
+/* Column.hpp -- Column                                                       */
 /*============================================================================*/
 #pragma once
 
 #include "eCT.h"
-#include "eDG.h"
 #include "eDM.h"
-#include "eFA.h"
 
 namespace Datums
 {
@@ -15,24 +13,19 @@ namespace Datums
     private:
     i8    m_iColumnNo;      // this columns subscript
     s32   m_sColumnNm;      // name of the column
-    eDM   m_eDatum;         // SE internal datum type (DM_INT etc)
-
     eCT   m_eColumnType;    // column type (CT_INTEGER etc)
+
+    bool  m_bIsUnique;      // is column unique?
+    bool  m_bIsLastColumn;  // is last column
+
+    eDM   m_eDatum;         // SE internal datum type (DM_INT etc)
     i8    m_iColumnLength;  // logical length of the column
     i8    m_iColumnScale;   // logical scale of the column
-  
     bool  m_bIsNullable;    // is column nullable?
-    bool  m_bIsUnique;      // is column unique?
     bool  m_bIsPtnKey;      // is part of partition key?
-    bool  m_bIsLastColumn;  // is last column
+    
+    ColPix m_xColPix;
   
-    eDG   m_eGeneration;    // data generation (DG_ASCENDING etc)
-    Datum_y32 m_xMaxVal;    // max value that can be generated
-    Datum_y32 m_xMinVal;    // min value that can be generated
-  
-    eFA   m_eFunApplied;    // function to be applied (FA_COUNT etc)
-    i8    m_iFunColArg;     // which column is the arg for applied fun
-
     // must be last
     Footer m_xFooter;
     
@@ -67,9 +60,6 @@ namespace Datums
   
     void vDatum(eDM eDatum);
   
-    eDG  eGeneration(void);
-    void vGeneration(eDG eGeneration);
-
     bool bIsLastColumn(void);
     void vIsLastColumn(bool bIsLastColumn);
     
@@ -84,14 +74,8 @@ namespace Datums
     bool bIsPtnKey(void);
     void vIsPtnKey(bool bIsPtnKey);
 
-    Datum_h* pMaxVal(void);
-    Datum_h* pMinVal(void);
-
     void vShow(void);
-  
-
-    byte* ayValue(i8& nBytes, byte** aayCursor);
-  
+    
     Footer* aFooter(void);
   
     /*----------------------------------------------------------------------------*/
