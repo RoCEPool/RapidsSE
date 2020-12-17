@@ -5,7 +5,7 @@
 
 #include "eZK.h"
 
-namespace Pipelines
+namespace Plans
 {
   class Op : public Focal
   {

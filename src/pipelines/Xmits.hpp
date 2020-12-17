@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Pipelines
+namespace Plans
 {
   class Xmits : public Focal
   {

@@ -2,7 +2,7 @@
 /* Stage.cpp -- Stage of Pipeline                                             */
 /*============================================================================*/
 
-#include "Pipelines.h"
+#include "Plans.h"
 
 extern AttachMap gxAttachMap;
 
@@ -10,7 +10,7 @@ extern AttachMap gxAttachMap;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Pipelines,Stage,CN_STAGE)
+__pCastFunction(Plans,Stage,CN_STAGE)
 __aNewFunction(Stage,CN_STAGE)
 __vDeleteFunction(Stage,CN_STAGE)
 __aFooterFunction(Stage)

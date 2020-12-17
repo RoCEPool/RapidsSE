@@ -2,7 +2,7 @@
 /* Op.cpp -- Operator of Strand of Stage of Pipeline                          */
 /*============================================================================*/
 
-#include "Pipelines.h"
+#include "Plans.h"
 
 #include "eTS.h"
 
@@ -12,7 +12,7 @@ Atomic gixOp;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Pipelines,Op,CN_OP)
+__pCastFunction(Plans,Op,CN_OP)
 __aNewFunction(Op,CN_OP)
 __vDeleteFunction(Op,CN_OP)
 __aFooterFunction(Op);
