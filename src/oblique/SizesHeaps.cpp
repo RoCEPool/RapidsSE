@@ -150,7 +150,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMPERSISTENT
   { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(MemTest),            HT_TRANSIENT_TINY    ,0 }, // CN_MEMTEST
+  { sizeof(MetadataNode),       HT_TRANSIENT_TINY    ,-8 }, // CN_METADATANODE
   { sizeof(Method),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_METHOD
+  { sizeof(MutablePlanNode),    HT_TRANSIENT_TINY    ,-8 }, // CN_MUTABLEPLANNODE
   { sizeof(Mutex),              HT_TRANSIENT_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID           ,0 }, // CN__N__
@@ -191,6 +193,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PtrVal),             HT_INVALID           ,0 }, // CN_PTRVAL
 
   { 'Q' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Q__
+  { sizeof(QueryNode),          HT_TRANSIENT_TINY    ,-8 }, // CN_QUERYNODE
   { sizeof(Question),           HT_TRANSIENT_TINY    ,0 }, // CN_QUESTION
   { sizeof(Queue),              HT_TRANSIENT_TINY    ,0 }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID           ,0 }, // CN_QUEUEBUFFER
@@ -265,8 +268,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stack),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_STACK
   { sizeof(Stage),              HT_TRANSIENT_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_TRANSIENT_SMALL   ,0 }, // CN_STAGESPEC
-  { sizeof(Statistics),         HT_INVALID           ,0 }, // CN_STEPACCUM
-  { sizeof(StepAccum),          HT_INVALID           ,0 }, // CN_STATISTICS
+  { sizeof(Statistics),         HT_INVALID           ,0 }, // CN_STATISTICS
+  { sizeof(StatisticsNode),     HT_TRANSIENT_TINY    ,-8 }, // CN_STATISTICSNODE
+  { sizeof(StepAccum),          HT_INVALID           ,0 }, // CN_STEPACCUM
   { sizeof(StepTiming),         HT_TRANSIENT_LARGE   ,0 }, // CN_STEPTIMING
   { sizeof(Strand),             HT_TRANSIENT_SMALL   ,0 }, // CN_STRAND
   { sizeof(StreamDef),          HT_TRANSIENT_LARGE   ,0 }, // CN_STREAMDEF

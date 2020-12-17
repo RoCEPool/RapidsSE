@@ -31,6 +31,7 @@ namespace Resources
   
     void vAppend(const char cChar);
     void vAppend(char** aazCursor, Stz* szArg);
+    bool bBeginsWith(Stz* szArg);
     bool bBreak(i8 iBreakAt, i8& iPrevBreak);
     byte* ayByte(void);
     void vCat(Stz* szArg, ...);
@@ -198,6 +199,15 @@ void String_t<SIZE>::vAppend(char** aazCursor, Stz* szArg)
   StrLib::vAppendString(aazCursor,szArg->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if arg is a leading sub-string of this string                         */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+bool String_t<SIZE>::bBeginsWith(Stz* szArg)
+{
+  return StrLib::bBeginsWith(m_caStr,szArg->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

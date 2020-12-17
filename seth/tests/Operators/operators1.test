@@ -65,58 +65,16 @@ tableScan OpTable2;
 rows: 21
 
 // scan error
-pipeline scan1
-begin
-
-  stage stageA on origin:
-  start | periodic once | stageB
-
-  stage stageB on all partitions:
-  scan OpTableXXX | stageC
-
-  stage stageC on origin:
-  output | sink | stageA
-
-end
-;
+tableScan OpTableXXX;
 failure contains: 'no such table'
 
 
 // scan failure
-pipeline scan2
-begin
-
-stage stageA on origin:
-start | periodic once | stageB
-
-stage stageB on all partitions:
-scan OpTableXXX | stageC
-
-stage stageC on origin:
-output | stageD
-
-stage stageD on origin:
-sink | stageA
-
-end
-;
+tableScan OpTableXXX;
 failure contains: 'no such table'
 
 // scan
-pipeline scan1
-  begin
-
-  stage stageA on origin:
-    start | periodic once | stageB
-
-  stage stageB on all partitions:
-    scan OpTable1 | stageC
-
-  stage stageC on origin:
-    output | sink | stageA
-
-  end
-;
+tableScan OpTable1;
 rows:
   (  0, 'zero'    , 1001, 0, 0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
   (  1, 'one'     , 101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -146,23 +104,7 @@ rows:
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
 // scan
-pipeline scan2
-  begin
-
-  stage stageA on origin:
-    start | periodic once | stageB
-
-  stage stageB on all partitions:
-    scan OpTable1 | stageC
-
-  stage stageC on origin:
-    output | stageD
-
-  stage stageD on origin:
-    sink | stageA
-
-  end
-;
+tableScan OpTable1;
 rows:
 (  0, 'zero'    , 1001, 0, 0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 (  1, 'one'     , 101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -190,24 +132,6 @@ rows:
 ( 23, 'twothree', 123, 3, 23, 1.023020e+03, TIMESTAMP '1923-01-01 00:00:00.0', DATE '1923-01-01' )
 ( 24, 'twofour' , 124, 4, 24, 1.024020e+03, TIMESTAMP '1924-01-01 00:00:00.0', DATE '1924-01-01' )
 ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
-
-
-// scan : no output
-pipeline scan3
-begin
-
-  stage stageA on origin:
-    start | periodic once | stageB
-
-  stage stageB on all partitions:
-    scan OpTable1 | stageC
-
-  stage stageC on origin:
-    sink | stageA
-
-  end
-;
-affected: 0
 
 // drop the table
 drop table OpTable1;

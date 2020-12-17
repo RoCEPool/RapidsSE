@@ -145,9 +145,9 @@ PlanNode* PlanDefinitionParser::pParse()
 
   PlanNodeBuilder* rootBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
 
-  PlanNode* rootPlan = rootBuilder->pBuild();
+  PlanNode* pTemplatePlan = rootBuilder->pBuild();
   delete rootBuilder;
-  return rootPlan;
+  return pTemplatePlan;
 }
 
 

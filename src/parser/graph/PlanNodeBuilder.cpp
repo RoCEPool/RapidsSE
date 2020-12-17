@@ -5,7 +5,13 @@
 #include "../Parser.h"
 #include "PlanNodeBuilder.hpp"
 
-
+// Names of nodes
+static Stz* C_ROOT        = "/__root__"_Stz;
+static Stz* C_PRIMITIVES  = "/__root__/primitives"_Stz;
+static Stz* C_DEFINITIONS = "/__root__/definitions"_Stz;
+static Stz* C_PLAN        = "/__root__/plan"_Stz;
+static Stz* C_METADATA    = "/__root__/metadata"_Stz;
+static Stz* C_STATISTICS  = "/__root__/statistics"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -82,16 +88,59 @@ PlanNode* PlanNodeBuilder::pBuild(void)
   PlanNodeList *pPropertiesList = pBuildList(m_pProperties);
   PlanNodeList *pChildrenList   = pBuildList(m_pChildren);
 
-  PlanNode* planNode = new DefinitionNode(m_sName.szStz(),
-                                          m_sType.szStz(),
-                                          m_xValue,
-                                          pPropertiesList,
-                                          pChildrenList,
-                                          m_sPath.szStz());
+  PlanNode* pPlanNode;
+
+  if (m_sPath.bEqual(C_ROOT)) {
+    pPlanNode = new PrimitiveNode(m_sName.szStz(),
+                                   m_sType.szStz(),
+                                   m_xValue,
+                                   pPropertiesList,
+                                   pChildrenList,
+                                   m_sPath.szStz());
+
+  } else if (m_sPath.bBeginsWith(C_PRIMITIVES)) {
+    pPlanNode = new PrimitiveNode(m_sName.szStz(),
+                                   m_sType.szStz(),
+                                   m_xValue,
+                                   pPropertiesList,
+                                   pChildrenList,
+                                   m_sPath.szStz());
+
+  } else if (m_sPath.bBeginsWith(C_DEFINITIONS)) {
+    pPlanNode = new DefinitionNode(m_sName.szStz(),
+                                   m_sType.szStz(),
+                                   m_xValue,
+                                   pPropertiesList,
+                                   pChildrenList,
+                                   m_sPath.szStz());
+
+  } else if (m_sPath.bBeginsWith(C_PLAN)) {
+    pPlanNode = new QueryNode(m_sName.szStz(),
+                              m_sType.szStz(),
+                              m_xValue,
+                               pPropertiesList,
+                               pChildrenList);
+
+  } else if (m_sPath.bBeginsWith(C_METADATA)) {
+    pPlanNode = new MetadataNode(m_sName.szStz(),
+                                   m_sType.szStz(),
+                                   m_xValue,
+                                   pPropertiesList,
+                                   pChildrenList);
+
+  } else if (m_sPath.bBeginsWith(C_STATISTICS)) {
+    pPlanNode = new StatisticsNode(m_sName.szStz(),
+                                   m_sType.szStz(),
+                                   m_xValue,
+                                   pPropertiesList,
+                                   pChildrenList);
+  } else {
+    NEVER_REACH
+  }
 
   m_xValue.m_iInt = 0;
   m_xValue.bMustFree = false;
-  return planNode;
+  return pPlanNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,6 +164,9 @@ PlanNodeList* PlanNodeBuilder::pBuildList(PlanNodeBuilderList* builderList)
   return pPlanNodeList;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Sets the path of this builder and all properties and child builders        */
+/*----------------------------------------------------------------------------*/
 void PlanNodeBuilder::vSetPath(s256& sParentPath)
 {
   if (m_sPath.nLength() == 0) {

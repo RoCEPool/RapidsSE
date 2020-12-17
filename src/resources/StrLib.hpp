@@ -30,6 +30,7 @@ namespace Resources
     static char* azAscii(i8 i_Char);
     
     static bool  bBackward(char** ps, char* pBegin, const char c);
+    static bool  bBeginsWith(char* s, const char* sArg);
     static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
     static Stz*  szCharToStr(char cArg);
