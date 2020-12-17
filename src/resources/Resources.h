@@ -81,15 +81,6 @@ using namespace Resources;
 #include "WordAsBytes.h"
 
 
-
-
-
-
-
-/*============================================================================*/
-/* Assembler.h -- Assembler namespace                                         */
-/*============================================================================*/
-
 #if !( (defined(WITH_APPLE) || defined(WITH_LINUX)) )
   #include "Asm.h"
 #endif
