@@ -137,7 +137,7 @@ DtmLib.cpp:625:6: warning: unused parameter ‘pFormatters’ [-Wunused-paramete
  bool DtmLib::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
       ^
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Addressing.cpp -o Addressing.o
-g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Threads.cpp -o Threads.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tasking.cpp -o Tasking.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Since.cpp -o Since.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobGeneric.cpp -o Steps_JobGeneric.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  JobResult.cpp -o JobResult.o
@@ -256,7 +256,7 @@ Job_Space.cpp:241:6: warning: unused parameter ‘pSession’ [-Wunused-paramete
  void JobsModel::vJob_Space_delete(Interface::Session* pSession, Job* pJob)
       ^
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TaskQueue.cpp -o TaskQueue.o
-TaskQueue.cpp: In member function ‘void Threads::TaskQueue::vRemoveTask(Threads::Task*)’:
+TaskQueue.cpp: In member function ‘void Tasking::TaskQueue::vRemoveTask(Tasking::Task*)’:
 TaskQueue.cpp:175:8: warning: variable ‘bRemoved’ set but not used [-Wunused-but-set-variable]
    bool bRemoved;
         ^
@@ -610,7 +610,7 @@ Job_SubFetch.cpp:202:6: warning: unused parameter ‘pSession’ [-Wunused-param
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Datums.cpp -o Datums.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Comment.cpp -o Steps_Comment.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  WspFx2.cpp -o WspFx2.o
-g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Threads.cpp -o Threads.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tasking.cpp -o Tasking.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Arguments.cpp -o Arguments.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Parsing.cpp -o Parsing.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_EndInsert.cpp -o Job_EndInsert.o
@@ -1032,8 +1032,8 @@ In file included from Values.h:37:0,
                  from JobsModel.h:6,
                  from MockEE.h:6,
                  from Utilities.h:6,
-                 from Threads.h:6,
-                 from Threads.h:6,
+                 from Tasking.h:6,
+                 from Tasking.h:6,
                  from GridModel.h:7,
                  from Interface.h:7,
                  from Prompt.h:6,
@@ -1306,7 +1306,7 @@ Prompt_taskQueues.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-pa
  bool Prompt::bPrompt_taskQueues(SePrompt* pPrompt)
       ^
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TlsKeys.cpp -o TlsKeys.o
-TlsKeys.cpp: In static member function ‘static void Threads::TlsKeys::vInit()’:
+TlsKeys.cpp: In static member function ‘static void Tasking::TlsKeys::vInit()’:
 TlsKeys.cpp:15:8: warning: variable ‘b’ set but not used [-Wunused-but-set-variable]
    bool b = PosixThread::bTlsCreate(&giTLS_ThreadKey);
         ^

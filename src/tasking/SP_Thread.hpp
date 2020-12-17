@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Task.hpp - Task sprint helper                                           */
+/* SP_Thread.hpp - Thread sprint helper                                       */
 /*============================================================================*/
 #pragma once
 
-namespace Threads
+namespace Tasking
 {
-  class SP_Task : public SP
+  class SP_Thread : public SP
   {
   public:
 
@@ -13,11 +13,11 @@ namespace Threads
     Footer m_xFooter;
     
   public:
-    SP_Task(void);
-   ~SP_Task(void) noexcept(false);
+    SP_Thread(void);
+   ~SP_Thread(void) noexcept(false);
   
-    Stz* sz(Task* pTask);
-    Stz* sz_log(Task* pTask);
+    Stz* sz(Thread* pThread);
+    Stz* sz_log(Thread* pThread);
 
     Footer* aFooter(void);
   };

@@ -1,23 +1,15 @@
 /*============================================================================*/
-/* Profile.hpp - runtime profile of task                                      */
+/* ThreadQueue.hpp -- queue of (idle) threads                                 */
 /*============================================================================*/
 #pragma once
 
-namespace Threads
+namespace Tasking
 {
-  class Profile : public Operand
+  class ThreadQueue : public ListNL_t<Thread>
   {
   private:
-    
-    s256 m_sOpName;
-    
-    // timestamp
-    // version
-    // git hash
+    Lock m_okLock;
   
-    RU_Memory m_oRU_Memory;
-    RU_Cpu    m_oRU_Cpu;
-    
     // must be last
     Footer m_xFooter;
     
@@ -25,18 +17,24 @@ namespace Threads
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Profile(Stz* szOpName);
-   ~Profile(void) noexcept(false);
+    ThreadQueue(void);
+    ~ThreadQueue(void) noexcept(false);
     
-    void       vOpName(Stz* aName);
-    RU_Cpu*    pRU_Cpu();
-    RU_Memory* pRU_Memory();
-    void       vWriteReport(File* pFile);
+    void vAppendThread(Thread* pThread);
+    void vDropLock(void);
+    void vGrabLock(void);
+    bool bGrabLock(void);
+    bool bIsLocked(void);
+    Thread* pPeekThread(void);
+    Thread* pPopThread(void);
+    i8   nQueuedThreads(void);
+  
+    void vContentDump(void);
     
     Footer* aFooter(void);
   };
   
-  Profile* _pProfile(void* aAddr);
+  ThreadQueue* _pThreadQueue(void* aAddr);
 }
 
 /*============================================================================*/

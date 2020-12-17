@@ -2,13 +2,13 @@
 /* TaskQueue.cpp - task queue                                                 */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskQueue* Threads::_pTaskQueue(void* aAddr)
+TaskQueue* Tasking::_pTaskQueue(void* aAddr)
 {
   TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(aAddr);
   

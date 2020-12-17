@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Threads
+namespace Tasking
 {
   class TaskQueue : public Object
   {

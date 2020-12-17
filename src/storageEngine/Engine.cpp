@@ -1681,7 +1681,7 @@ void Engine::vStartSystem(void)
   // threading
   
   if (AM::bVerboseProgress())
-    vInfo("  Spawning Threads\n"_Stz);
+    vInfo("  Spawning Tasking\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
   // spawn general threads

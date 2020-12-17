@@ -2,12 +2,12 @@
 /* ThreadQueue.hpp -- queue of (idle) threads                                 */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ThreadQueue* Threads::_pThreadQueue(void* aAddr)
+ThreadQueue* Tasking::_pThreadQueue(void* aAddr)
 {
   ThreadQueue* pThreadQueue = reinterpret_cast<ThreadQueue*>(aAddr);
   

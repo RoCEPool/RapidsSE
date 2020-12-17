@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* ThreadVec.hpp -- Vector of Threads                                         */
+/* ThreadVec.hpp -- Vector of Tasking                                         */
 /*============================================================================*/
 #pragma once
 
-namespace Threads
+namespace Tasking
 {
   class ThreadVec : public VectorNL_t<CN_THREADVEC,Thread,C_MAX_THREADS>
   {

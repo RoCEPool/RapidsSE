@@ -2,7 +2,7 @@
 /* Thread.cpp -- thread                                                       */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 #include "PsxThd.hpp"  //?
 
@@ -17,7 +17,7 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Thread* Threads::_pThread(void* aAddr)
+Thread* Tasking::_pThread(void* aAddr)
 {
   Thread* pThread = reinterpret_cast<Thread*>(aAddr);
   

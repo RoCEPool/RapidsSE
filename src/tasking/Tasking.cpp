@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Threads.cpp -- Threads namespace functions                                 */
+/* Tasking.cpp -- Tasking namespace functions                                 */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Threads::vCheckAssumptions(void)
+void Tasking::vCheckAssumptions(void)
 {
   ALWAYS(sizeof(Thread) < C_SIZE_SMALL_OBJECT);
   

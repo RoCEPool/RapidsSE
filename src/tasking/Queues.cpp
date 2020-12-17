@@ -2,7 +2,7 @@
 /* Queues.cpp -- Collection of the Systems' Queues                            */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 #include "PsxThd.hpp"  //?
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queues* Threads::_pQueues(void* aAddr)
+Queues* Tasking::_pQueues(void* aAddr)
 {
   Queues* pQueues = reinterpret_cast<Queues*>(aAddr);
   
@@ -631,7 +631,7 @@ void Queues::vDumpBidingSet(void)
   
   m_pBidingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Biding Set: %p Threads %lld\n"_Stz,
+  vTrace("Biding Set: %p Tasking %lld\n"_Stz,
          m_pBidingSet,m_pBidingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pBidingSet->vContentDump();
@@ -650,7 +650,7 @@ void Queues::vDumpExecutingSet(void)
   
   m_pExecutingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Executing Set: %p Threads %lld\n"_Stz,
+  vTrace("Executing Set: %p Tasking %lld\n"_Stz,
          m_pExecutingSet,m_pExecutingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pExecutingSet->vContentDump();
@@ -669,7 +669,7 @@ void Queues::vDumpReadyQueue(void)
   
   m_pReadyQueue->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (normal priority): %p Threads %lld\n"_Stz,
+  vTrace("Ready Queue (normal priority): %p Tasking %lld\n"_Stz,
          m_pReadyQueue,m_pReadyQueue->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueue->vContentDump();
@@ -688,7 +688,7 @@ void Queues::vDumpReadyQueueLP(void)
   
   m_pReadyQueueLP->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (low Priority): %p Threads %lld\n"_Stz,
+  vTrace("Ready Queue (low Priority): %p Tasking %lld\n"_Stz,
          m_pReadyQueueLP,m_pReadyQueueLP->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueueLP->vContentDump();
@@ -707,7 +707,7 @@ void Queues::vDumpSleepingQueue(void)
 
   m_pSleepingQueue->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Sleeping Queue: %p Threads %lld\n"_Stz,
+  vTrace("Sleeping Queue: %p Tasking %lld\n"_Stz,
          m_pSleepingQueue,m_pSleepingQueue->nTasks());
   vTrace("------------------------------------\n"_Stz);
   m_pSleepingQueue->vContentDump();
@@ -726,7 +726,7 @@ void Queues::vDumpWaitingSet(void)
   
   m_pWaitingSet->vGrabLock();
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Waiting Set: %p Threads %lld\n"_Stz,
+  vTrace("Waiting Set: %p Tasking %lld\n"_Stz,
          m_pWaitingSet,m_pWaitingSet->nItems());
   vTrace("------------------------------------\n"_Stz);
   m_pWaitingSet->vContentDump();
@@ -807,7 +807,7 @@ void Queues::vMonitorThread(s48K& sPortrait)
   
   m_pGeneralThreadVec->vDropLock();
   
-  sPortrait.vSprint("Threads: running %lld (dedicated %lld) idle %lld\n"_Stz,
+  sPortrait.vSprint("Tasking: running %lld (dedicated %lld) idle %lld\n"_Stz,
                     nThreads,
                     nDedicated,
                     nIdle);

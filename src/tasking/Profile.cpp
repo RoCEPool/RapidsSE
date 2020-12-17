@@ -2,13 +2,13 @@
 /* Profile.cpp - runtime profile of task                                      */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Threads,Profile,CN_PROFILE)
+__pCastFunction(Tasking,Profile,CN_PROFILE)
 __aNewFunction(Profile,CN_PROFILE)
 __vDeleteFunction(Profile,CN_PROFILE)
 __aFooterFunction(Profile)

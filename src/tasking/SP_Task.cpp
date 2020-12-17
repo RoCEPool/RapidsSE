@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* SP_Thread.cpp - Thread sprint helper                          (on c stack) */
+/* SP_Task.cpp - Task sprint helper                              (on c stack) */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Thread::SP_Thread(void)
+SP_Task::SP_Task(void)
 : SP(CN_SPID)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
@@ -20,7 +20,7 @@ SP_Thread::SP_Thread(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Thread::~SP_Thread(void) noexcept(false)
+SP_Task::~SP_Task(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 }
@@ -32,7 +32,7 @@ SP_Thread::~SP_Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Thread::sz(Thread* pThread)
+Stz* SP_Task::sz(Task* pTask)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
@@ -42,27 +42,29 @@ Stz* SP_Thread::sz(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Thread::sz_log(Thread* pThread)
+Stz* SP_Task::sz_log(Task* pTask)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  SP_Gid spTaskId;
+  SP_Gid spThreadId;
   
   StrLib::vSprint(m_caResult,
-                  "{%s %s%s}"_Stz,
-                  
-                  aHS[pThread->m_eThreadState],
-                  
-                  spTaskId.sz(pThread->m_pTask
-                                ? pThread->m_pTask->m_iFocalId
-                                : C_UNKNOWN),
-                  
-                  CN_NONE == pThread->m_eDedicated
-                    ? ""_Stz
-                    : " dedicated"_Stz,
+                  "{%s %s %s}"_Stz,
+
+                  aTS[pTask->eState()],
+                  aQK[pTask->eQueue()],
+                  aTR[pTask->eTranstionRequest()],
+  
+// AY+RH : 29th Apr 2020 : TaskA should never attempt pTaskB->pThread()
+//                         TaskA can never assume existence of
+//                         some other tasks thread
+//
+//                  spThreadId.sz(pTask->pThread()
+//                                  ? AM::iThreadId(pTask->pThread())
+//                                  : C_UNKNOWN),
 
                   C_VARGS_END);
-  
+
   return (Stz*) &m_caResult[0];
 }
 
@@ -70,7 +72,7 @@ Stz* SP_Thread::sz_log(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(SP_Thread)
+__aFooterFunction(SP_Task)
 
 /*============================================================================*/
 /* end                                                                        */

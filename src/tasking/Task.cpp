@@ -2,7 +2,7 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Tasking.h"
 
 #include "PsxThd.hpp" //?
 
@@ -19,7 +19,7 @@ extern pthread_key_t giTLS_TaskKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Threads::_pTask(void* aAddr)
+Task* Tasking::_pTask(void* aAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(aAddr);
   
@@ -31,7 +31,7 @@ Task* Threads::_pTask(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Threads::_pTask(i8 iAddr)
+Task* Tasking::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
   
@@ -945,7 +945,7 @@ i8 Task::iTaskId(void)
 /*----------------------------------------------------------------------------*/
 /* get thread                                                                 */
 /*----------------------------------------------------------------------------*/
-Threads::Thread* Task::pvThread_DONT_DEREF(void)
+Tasking::Thread* Task::pvThread_DONT_DEREF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -955,7 +955,7 @@ Threads::Thread* Task::pvThread_DONT_DEREF(void)
 /*----------------------------------------------------------------------------*/
 /* set thread                                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThread(Threads::Thread* pThread)
+void Task::vThread(Tasking::Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
