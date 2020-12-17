@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
+namespace Threads
 {
   class SP_Task : public SP
   {

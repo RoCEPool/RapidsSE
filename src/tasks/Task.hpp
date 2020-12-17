@@ -8,7 +8,7 @@
 #include "eTR.h"
 #include "eTS.h"
 
-namespace Tasks
+namespace Threads
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tracing masks

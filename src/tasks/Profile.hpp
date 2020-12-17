@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
+namespace Threads
 {
   class Profile : public Operand
   {

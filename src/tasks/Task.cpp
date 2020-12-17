@@ -2,7 +2,7 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "Threads.h"
 
 #include "PsxThd.hpp" //?
 
@@ -19,7 +19,7 @@ extern pthread_key_t giTLS_TaskKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Tasks::_pTask(void* aAddr)
+Task* Threads::_pTask(void* aAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(aAddr);
   
@@ -31,7 +31,7 @@ Task* Tasks::_pTask(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Tasks::_pTask(i8 iAddr)
+Task* Threads::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
   

@@ -157,7 +157,7 @@ struct SizeHeap {
 #include "REG_t.hpp"
 
 
-namespace Tasks {
+namespace Threads {
   typedef void (Step::*StepFp)(void);
 }
 

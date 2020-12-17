@@ -95,7 +95,7 @@ namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
 namespace Structures        { class Article;         class Queue;             }
-namespace Tasks             { class Task;                                     }
+namespace Threads             { class Task;                                     }
 namespace Threads           { class Scheduler;       class Thread;
                               class Queues;                                   }
 namespace Transactions      { class Tx;              class TxSet;             }
@@ -145,7 +145,7 @@ using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;
 using namespace Structures;
-using namespace Tasks;
+using namespace Threads;
 using namespace Threads;
 using namespace Transactions;
 using namespace Utilities;

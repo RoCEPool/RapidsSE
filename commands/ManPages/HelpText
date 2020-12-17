@@ -190,7 +190,7 @@ print        - Print given string
 .br 
 rassert      - Generate an assert
 .br 
-ready        - Tasks in ready queue
+ready        - Threads in ready queue
 .br 
 resources    - Library level resources
 .br 
@@ -222,7 +222,7 @@ timerStart   - Start timer
 .br 
 version      - Print version string
 .br 
-waiting      - Tasks in waiting set
+waiting      - Threads in waiting set
 .br 
 $            - Run shell command
 .\"-----------------------------------------------------------------------------

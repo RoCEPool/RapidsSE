@@ -8,7 +8,7 @@ namespace Steps
   class Step : public Forth
   {
   friend class StorageEngine::AttachMap;
-  friend class Tasks::Task;
+  friend class Threads::Task;
   friend class Word;
 
   public:

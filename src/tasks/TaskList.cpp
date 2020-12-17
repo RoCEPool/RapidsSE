@@ -2,12 +2,12 @@
 /* TaskList.cpp - task list                                                   */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "Threads.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskList* Tasks::_pTaskList(void* aAddr)
+TaskList* Threads::_pTaskList(void* aAddr)
 {
   TaskList* pTaskQueue = reinterpret_cast<TaskList*>(aAddr);
   
