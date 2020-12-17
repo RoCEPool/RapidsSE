@@ -34,7 +34,7 @@ namespace Expressions
 
   class LogicUnit : public Object
   {
-  friend class Tasks::Task;
+  friend class Threads::Task;
   
   public:
     Task* m_pTask; // which task

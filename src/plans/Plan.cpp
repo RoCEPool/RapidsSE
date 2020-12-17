@@ -129,7 +129,7 @@ void Plan::vAppendToLambda(s48K& sText)
 /*----------------------------------------------------------------------------*/
 /* get execute task                                                           */
 /*----------------------------------------------------------------------------*/
-Tasks::Task* Plan::pExecutingTask(void)
+Threads::Task* Plan::pExecutingTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
@@ -139,7 +139,7 @@ Tasks::Task* Plan::pExecutingTask(void)
 /*----------------------------------------------------------------------------*/
 /* set execute task                                                           */
 /*----------------------------------------------------------------------------*/
-void Plan::vExecutingTask(Tasks::Task* pExecutingTask)
+void Plan::vExecutingTask(Threads::Task* pExecutingTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
