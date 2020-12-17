@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DefinitionNode.hpp - A node that holds definitions of other nodes          */
+/* DefinitionNode.hpp - An immutable node that holds definitions of other nodes*/
 /*============================================================================*/
 #pragma once
 
@@ -27,6 +27,9 @@ namespace Parser
 
     // Get the path of this node in the hierarchy
     Stz* szPath();
+
+    // Get the description of this definition
+    Stz* szDescription();
   };
   
   DefinitionNode* _pDefinitionNode(void* aAddr);

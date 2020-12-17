@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PrimitiveNode.hpp - A node that holds definitions of base primitives       */
+/* PrimitiveNode.hpp - An immutable node that holds definitions of base primitives*/
 /*============================================================================*/
 #pragma once
 
@@ -27,6 +27,9 @@ namespace Parser
 
     // Get the path of this node in the hierarchy
     Stz* szPath();
+
+    // Get the description of this definition
+    Stz* szDescription();
 
   };
   
