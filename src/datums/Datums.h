@@ -17,12 +17,10 @@ namespace Datums
 #include "Datum.hpp"
 
 typedef Datum_t<C_48KB> Datum;
-typedef Datum_t<32>     Datum_y32;
 
 #include "ColPix.h"
 #include "RowPix.h"
 #include "Column.hpp"
-typedef VectorNL_t<CN_PTNCOLVEC,Column,1024> PtnColVec;
 
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
