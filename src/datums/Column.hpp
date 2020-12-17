@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Column.hpp - Column                                                        */
+/* Column.hpp -- Column                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -75,10 +75,7 @@ namespace Datums
     void vIsPtnKey(bool bIsPtnKey);
 
     void vShow(void);
-  
-
-    byte* ayValue(i8& nBytes, byte** aayCursor);
-  
+    
     Footer* aFooter(void);
   
     /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Column.cpp - Column                                                        */
+/* Column.cpp -- Column                                                       */
 /*============================================================================*/
 
 #include "Datums.h"
@@ -8,37 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Column* Datums::_pColumn(void* aAddr)
-{
-  Column* pColumn = reinterpret_cast<Column*>(aAddr);
-  
-  RASSERT_TYPE(pColumn,CN_COLUMN);
- 
-  return pColumn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Column::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_COLUMN);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Column::operator delete(void* pAddress)
-{
-  Column* pColumn = reinterpret_cast<Column*>(pAddress);
-  
-  HeapMem::vFree(pColumn);
-}
+__pCastFunction(Datums,Column,CN_COLUMN)
+__aNewFunction(Column,CN_COLUMN)
+__vDeleteFunction(Column,CN_COLUMN)
+__aFooterFunction(Column)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -74,9 +47,8 @@ Column::Column(void)
 /*----------------------------------------------------------------------------*/
 Column::~Column(void) noexcept(false)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 }
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -153,8 +125,8 @@ bool Column::bValidVch(i8 iSize)
 /*----------------------------------------------------------------------------*/
 void Column::vColumnNo(i8 iColumnNo)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_iColumnNo = iColumnNo;
 }
 
@@ -163,8 +135,8 @@ void Column::vColumnNo(i8 iColumnNo)
 /*----------------------------------------------------------------------------*/
 i8 Column::iColumnLength(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   return m_iColumnLength;
 }
 
@@ -173,8 +145,8 @@ i8 Column::iColumnLength(void)
 /*----------------------------------------------------------------------------*/
 void Column::vColumnLength(i8 iColumnLength)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_iColumnLength = iColumnLength;
 }
 
@@ -183,8 +155,8 @@ void Column::vColumnLength(i8 iColumnLength)
 /*----------------------------------------------------------------------------*/
 i8 Column::iColumnScale(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   return m_iColumnScale;
 }
 
@@ -193,8 +165,8 @@ i8 Column::iColumnScale(void)
 /*----------------------------------------------------------------------------*/
 void Column::vColumnScale(i8 iColumnScale)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_iColumnScale = iColumnScale;
 }
 
@@ -203,8 +175,8 @@ void Column::vColumnScale(i8 iColumnScale)
 /*----------------------------------------------------------------------------*/
 Stz* Column::szColNm(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   return m_sColumnNm.szStz();
 }
 
@@ -213,8 +185,8 @@ Stz* Column::szColNm(void)
 /*----------------------------------------------------------------------------*/
 void Column::vColumnNm(Stz* aColumnName)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_sColumnNm = aColumnName;
 }
 
@@ -223,7 +195,7 @@ void Column::vColumnNm(Stz* aColumnName)
 /*----------------------------------------------------------------------------*/
 eCT Column::eColumnType(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   return m_eColumnType;
 }
@@ -233,8 +205,8 @@ eCT Column::eColumnType(void)
 /*----------------------------------------------------------------------------*/
 void Column::vColumnType(eCT eColumnType)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_eColumnType = eColumnType;
 }
 
@@ -243,8 +215,8 @@ void Column::vColumnType(eCT eColumnType)
 /*----------------------------------------------------------------------------*/
 void Column::vCopy(Column* pCol)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_iColumnNo       = pCol->m_iColumnNo;
   m_sColumnNm       = pCol->m_sColumnNm;
   m_eColumnType     = pCol->m_eColumnType;
@@ -256,9 +228,9 @@ void Column::vCopy(Column* pCol)
   m_bIsPtnKey       = pCol->m_bIsPtnKey;
   m_bIsLastColumn   = pCol->m_bIsLastColumn;
   
-  //_checkInitialised_(CN_COLUMN);
+  _checkInitialised_(CN_COLUMN);
   
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,8 +238,8 @@ void Column::vCopy(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void Column::vDatum(eDM eDatum)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_eDatum = eDatum;
 }
 
@@ -276,8 +248,8 @@ void Column::vDatum(eDM eDatum)
 /*----------------------------------------------------------------------------*/
 bool Column::bIsLastColumn(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   return m_bIsLastColumn;
 }
 
@@ -286,8 +258,8 @@ bool Column::bIsLastColumn(void)
 /*----------------------------------------------------------------------------*/
 void Column::vIsLastColumn(bool bIsLastColumn)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_bIsLastColumn = bIsLastColumn;
 }
 
@@ -296,8 +268,8 @@ void Column::vIsLastColumn(bool bIsLastColumn)
 /*----------------------------------------------------------------------------*/
 bool Column::bIsName(s32& sName)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   bool b = m_sColumnNm.bSame(sName);
   
   return b;
@@ -308,7 +280,7 @@ bool Column::bIsName(s32& sName)
 /*----------------------------------------------------------------------------*/
 bool Column::bIsNullable(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   return m_bIsNullable;
 }
@@ -318,8 +290,8 @@ bool Column::bIsNullable(void)
 /*----------------------------------------------------------------------------*/
 void Column::vIsNullable(bool bIsNullable)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_bIsNullable = bIsNullable;
 }
 
@@ -328,8 +300,8 @@ void Column::vIsNullable(bool bIsNullable)
 /*----------------------------------------------------------------------------*/
 bool Column::bIsUnique(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   return m_bIsUnique;
 }
 
@@ -338,8 +310,8 @@ bool Column::bIsUnique(void)
 /*----------------------------------------------------------------------------*/
 void Column::vIsUnique(bool bIsUnique)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_bIsUnique = bIsUnique;
 }
 
@@ -348,8 +320,8 @@ void Column::vIsUnique(bool bIsUnique)
 /*----------------------------------------------------------------------------*/
 bool Column::bIsPtnKey(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   return m_bIsPtnKey;
 }
 
@@ -358,8 +330,8 @@ bool Column::bIsPtnKey(void)
 /*----------------------------------------------------------------------------*/
 void Column::vIsPtnKey(bool bIsPtnKey)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   m_bIsPtnKey = bIsPtnKey;
 }
 
@@ -368,8 +340,8 @@ void Column::vIsPtnKey(bool bIsPtnKey)
 /*----------------------------------------------------------------------------*/
 void Column::vShow(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
   vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
          m_sColumnNm.szStz(),
@@ -378,101 +350,7 @@ void Column::vShow(void)
          m_iColumnScale,
          aDM[m_eDatum],
          m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
-         m_bIsPtnKey? "partitionKey"_Stz : ""_Stz);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* column value                                                               */
-/*----------------------------------------------------------------------------*/
-byte* Column::ayValue(i8& nBytes, byte** aayCursor)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-
-  Stz* szElem;
-  byte* ayValue = *aayCursor;
-  /*
-  switch (m_eDatumType) {
-      
-    case DM_BOL:
-      nBytes = sizeof(i8);
-      break;
-      
-    case DM_DTE:
-      nBytes = sizeof(i8);
-      break;
-      
-    case DM_BCD:
-      nBytes = sizeof(i8);
-      break;
-      
-    case DM_FLT:
-      nBytes = sizeof(d8);
-      break;
-      
-    case DM_INT:
-      nBytes = sizeof(i8);
-      break;
-      
-    case DM_IVL:
-      nBytes = sizeof(i8);
-      break;
-      
-    case DM_TME:
-      nBytes = sizeof(i8);
-      break;
-      
-    case DM_TSP:
-      nBytes = sizeof(i8);
-      break;
-      
-    
-    case DM_VCH:
-      aElem = (Stz*)aValue;
-      nBytes = 0;
-      
-      while (*aElem->azChar() != '\0') {
-        nBytes++;
-        aElem++;
-      }
-      nBytes++;
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-  */
-  
-//  if (DM_VCH == m_eDatum) {
-//    szElem = (Stz*)ayValue;
-//    nBytes = 0;
-//
-//    while (*szElem->azChar() != '\0') {
-//      nBytes++;
-//      szElem++;
-//    }
-//    nBytes++;
-//  }
-//  else
-    nBytes = sizeof(i8);
-  
-  *aayCursor = aAdd<byte*>(ayValue,nBytes);
-  
-  return ayValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Column::aFooter(void)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN);
-  
-  return &m_xFooter;
+         m_bIsPtnKey ? "partitionKey"_Stz : ""_Stz);
 }
 
 /*============================================================================*/

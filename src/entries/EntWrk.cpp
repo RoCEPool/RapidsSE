@@ -65,8 +65,11 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 {
-  byte* ayElm = pColumn->ayValue(nBytes,aayCursor);
+  //byte* ayElm = pColumn->ayValue(nBytes,aayCursor);
   
+  nBytes = sizeof(i8);
+  byte* ayElm = aAdd<byte*>(*aayCursor,nBytes);
+
   return ayElm;
 }
 
