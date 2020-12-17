@@ -53,7 +53,7 @@ CellSegment::~CellSegment(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get address of column cell                                                 */
 /*----------------------------------------------------------------------------*/
-Dtm* CellSegment::aColumCell(i8 i_Col)
+Dtm* CellSegment::aCellAddress(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSEGMENT,_FOOTER_);
   

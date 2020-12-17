@@ -13,10 +13,8 @@ namespace Rows
   
     eSI m_eStringSemantics;  // string
   
-    i8  m_i_CellDeposit;
-    Dtm m_wxaCellArray[C_MAX_COLUMNS];
+    Dtm m_wxCell;
 
-    char*  m_azStringAdd;
     char m_caStringArea[C_MAX_RECORD];
 
     // must be last
@@ -29,23 +27,21 @@ namespace Rows
     CellSingle(eSI eStringSemantics);
    ~CellSingle(void) noexcept(false);
   
-    Dtm* aColumCell(i8 i_Col);
-
-    void vDepositColVal(d8 dColVal);
-    void vDepositColVal(i8 iColVal);
-    void vDepositColVal(Stz* szColVal);
+    void operator =(d8 dFlt);
+    void operator =(i8 iInt);
+    void operator =(Stz* szStz);
   
-    d8   dGetColVal(i8 i_Col);
-    i8   iGetColVal(i8 i_Col);
-    Stz* szGetColVal(i8 i_Col);
+    Dtm* aCellAddress(void);
+ 
+    d8   dGetColVal(void);
+    i8   iGetColVal(void);
+    Stz* szGetColVal(void);
   
-    void vPrintStrings(void);
+    void vPrintString(void);
   
-    void vPutColVal(i8 i_Col, d8 dColVal);
-    void vPutColVal(i8 i_Col, i8 iColVal);
-    void vPutColVal(i8 i_Col, Stz* szColVal);
-  
-    void vReset(void);
+    void vPutColVal(d8 dColVal);
+    void vPutColVal(i8 iColVal);
+    void vPutColVal(Stz* szColVal);
   
   private:
   
