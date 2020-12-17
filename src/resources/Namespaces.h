@@ -79,7 +79,7 @@ namespace Partitioning      {
 namespace Pipelines         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
                               class StageVec;        class Strand;            }
-namespace PipelineSpecs     { class OpSpec;          class PipelineSpec;
+namespace Plans     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
 namespace Plans             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
@@ -130,7 +130,7 @@ using namespace Operands;
 using namespace Parser;
 using namespace Partitioning;
 using namespace Pipelines;
-using namespace PipelineSpecs;
+using namespace Plans;
 using namespace Plans;
 using namespace Prompt;
 using namespace ReadConsistency;

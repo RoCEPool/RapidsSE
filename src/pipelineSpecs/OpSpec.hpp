@@ -5,7 +5,7 @@
 
 #include "eXK.h"
 
-namespace PipelineSpecs
+namespace Plans
 {
   class OpSpec : public Object
   {
