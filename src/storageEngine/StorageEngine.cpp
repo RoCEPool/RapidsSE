@@ -39,7 +39,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   PipelineSpecs::vCheckAssumptions();
   Plans::vCheckAssumptions();
   //Prompt::vCheckAssumptions();
-  ResourceUsage::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Sessions::vCheckAssumptions();
