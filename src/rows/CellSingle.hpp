@@ -11,9 +11,30 @@ namespace Rows
   {
   protected:
   
+    union {
+      
+      struct {
+        _Header m_wxCellHeader;
+        Dtm     m_wxCell;
+      } DtmCell;
+      
+      AnyVal  m_xAnyVal;
+    
+      FipVal  m_xFipVal;
+      PtrVal  m_xPtrVal;
+    
+      BcdVal  m_xBcdVal;
+      BolVal  m_xBolVal;
+      DteVal  m_xDteVal;
+      EdtVal  m_xEdtVal;
+      FltVal  m_xFltVal;
+      IntVal  m_xIntVal;
+      IvlVal  m_xIvlVal;
+      TmeVal  m_xTmeVal;
+      TspVal  m_xTspVal;
+    };
+
     eSI m_eStringSemantics;  // string
-  
-    Dtm m_wxCell;
 
     char m_caStringArea[C_MAX_VCH];
 
