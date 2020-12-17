@@ -15,13 +15,32 @@ namespace Arguments         {                                                 }
 namespace Chunks            { class Format;                                   }
 namespace CompactBuffers    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
-                              class HeadLine;
+                              class HeadLine;        class Encoding_v2;
+class SP_Encoding_v2;
+class Packing_v2;
                               class OverLine;        class TailLine;          }
 namespace CompilerOperators {                                                 }
 namespace ControlData       {                                                 }
 namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
 namespace Datums            { class Datum_h;
+class SN_Bcd;
+class SN_Bol;
+class SN_Dte;
+class SN_Flt;
+class SN_Int;
+class SN_Ivl;
+class SN_Tme;
+class SN_Tsp;
+
+class SP_Bcd;
+class SP_Bol;
+class SP_Dte;
+class SP_Flt;
+class SP_Int;
+class SP_Ivl;
+class SP_Tme;
+class SP_Tsp;
                               template <i8 SPACE> class Datum_t;              }
 namespace DynamoCompiler    { class Dynamo;                                   }
 namespace Entries           {                                                 }
@@ -32,7 +51,9 @@ namespace Facts             { class Fact;            class Kbase;
                               class Question;        class Transform;         }
 
 namespace Folders           {                                                 }
-namespace Gadgets           { class EnumFlags;       class TagSet;            }
+namespace Gadgets           { class EnumFlags;       class TagSet;
+class Birth; class Now;
+}
 namespace Grids             { class Grid;            class Node;              }
 
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
@@ -65,7 +86,7 @@ namespace Plans             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
 namespace ReadConsistency   { class Crv;                                      }
 namespace ResourceUsage     { class RU_Cpu;          class RU_Memory;         }
-namespace Rows              {                                                 }
+namespace Rows              { class Row;                                      }
 namespace SenVM             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace Sessions          { class Session;         class SessionState;      }

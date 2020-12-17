@@ -7,7 +7,38 @@ namespace Resources
 {
   class Dtm
   {
-  public:
+  friend class CompactBuffers::Encoding_v2;
+  friend class CompactBuffers::SP_Encoding_v2;
+  friend class CompactBuffers::Packing_v2;
+  
+  friend class Datums::SN_Bcd;
+  friend class Datums::SN_Bol;
+  friend class Datums::SN_Dte;
+  friend class Datums::SN_Flt;
+  friend class Datums::SN_Int;
+  friend class Datums::SN_Ivl;
+  friend class Datums::SN_Tme;
+  friend class Datums::SN_Tsp;
+
+  friend class Datums::SP_Bcd;
+  friend class Datums::SP_Bol;
+  friend class Datums::SP_Dte;
+  friend class Datums::SP_Flt;
+  friend class Datums::SP_Int;
+  friend class Datums::SP_Ivl;
+  friend class Datums::SP_Tme;
+  friend class Datums::SP_Tsp;
+
+  friend class Gadgets::Birth;
+  friend class Gadgets::Now;
+  
+  friend class Resources::Mutex;
+  friend class Resources::IvlLib;
+  
+  friend class Rows::Row;
+
+  private:
+  
     union {
 
       Bcd   m_wBcd;

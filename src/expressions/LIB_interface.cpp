@@ -35,14 +35,14 @@ i8 iLib_DTE_NOW(void* pLU)
   _static_
   
   Now oNow;
-  Dtm wDte;
+  Dte wDte;
 
-  wDte.m_wDte.m_uDay = oNow.m_wTsp.m_uDay;
-  wDte.m_wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
-  wDte.m_wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
-  wDte.m_wDte.m_uSpare = 0;
+  wDte.m_uDay = oNow.m_wTsp.m_uDay;
+  wDte.m_uMonth = oNow.m_wTsp.m_uMonth;
+  wDte.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
+  wDte.m_uSpare = 0;
   
-  i8 iRes = wDte.iAsI8();
+  i8 iRes = wDte.m_iAsI8;
 
   return iRes;
 }
@@ -72,11 +72,11 @@ i8 iLib_DTE_YEAR(void* pLU, i8 iArg)
 {
   _static_
   
-  Dtm wDte;
+  Dte wDte;
 
   wDte = iArg;
  
-  i8 iRes = wDte.m_wDte.m_uYearDelta + C_YEAR_BASE;
+  i8 iRes = wDte.m_uYearDelta + C_YEAR_BASE;
 
   return iRes;
 }
