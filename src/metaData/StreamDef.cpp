@@ -948,24 +948,6 @@ eEC StreamDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
       continue;
     }
     
-    if (pTkn->bSame("max"_Stz)) {
-      
-      eError = eParseMax(pTknVec,pCol);
-      if (EC_NONE != eError)
-        return eError;
-      
-      continue;
-    }
-    
-    if (pTkn->bSame("min"_Stz)) {
-      
-      eError = eParseMin(pTknVec,pCol);
-      if (EC_NONE != eError)
-        return eError;
-      
-      continue;
-    }
-    
     if (pTkn->bSame("not"_Stz)) {
       
       eError = eParseNotNull(pTknVec,pCol);
@@ -976,16 +958,7 @@ eEC StreamDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
       
       continue;
     }
-    
-    if (pTkn->bSame("random"_Stz)) {
-      
-      eError = eParseRandom(pTknVec,pCol);
-      if (EC_NONE != eError)
-        return eError;
-      
-      continue;
-    }
-    
+        
     break;
   }
   
@@ -1052,44 +1025,6 @@ eEC StreamDef::eParseFixed(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse max column clause                                                    */
-/*----------------------------------------------------------------------------*/
-eEC StreamDef::eParseMax(TokenVec* pTknVec, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  Token* pTkn = pTknVec->pNextToken(); dPT();
-  
-  Datum_h* pDatum_max = pCol->pMaxVal();
-  
-  DatumToken::vAssign(pDatum_max,pTkn,pCol);
-  
-  //  if (!b)
-  //    return EC_INVALID_COLUMN;
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse min column clause                                                    */
-/*----------------------------------------------------------------------------*/
-eEC StreamDef::eParseMin(TokenVec* pTknVec, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  Token* pTkn = pTknVec->pNextToken(); dPT();
-  
-  Datum_h* pDatum_min = pCol->pMinVal();
-  
-  DatumToken::vAssign(pDatum_min,pTkn,pCol);
-  
-  //  if (!b)
-  //    return EC_INVALID_COLUMN;
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse not null column clause                                               */
 /*----------------------------------------------------------------------------*/
 eEC StreamDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
@@ -1102,18 +1037,6 @@ eEC StreamDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
     return EC_INVALID_COMMAND;
   
   pCol->vIsNullable(false);
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse random column clause                                                 */
-/*----------------------------------------------------------------------------*/
-eEC StreamDef::eParseRandom(TokenVec* pTknVec, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  pCol->vGeneration(DG_RANDOM);
   
   return EC_NONE;
 }

@@ -62,8 +62,6 @@ Column::Column(void)
   m_bIsLastColumn = false;
   
   m_eGeneration   = DG_NONE;
-//  m_xMaxVal.vInit();
-//  m_xMinVal.vInit();
   
   m_eFunApplied = FA_NONE;
   m_iFunColArg  = C_UNKNOWN;
@@ -388,27 +386,6 @@ void Column::vIsPtnKey(bool bIsPtnKey)
   
   m_bIsPtnKey = bIsPtnKey;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get m_MaxVal                                                               */
-/*----------------------------------------------------------------------------*/
-Datum_h* Column::pMaxVal(void)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-
-  return & m_xMaxVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get m_MinVal                                                               */
-/*----------------------------------------------------------------------------*/
-Datum_h* Column::pMinVal(void)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return & m_xMinVal;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* show column contents                                                       */

@@ -27,8 +27,6 @@ namespace Datums
     bool  m_bIsLastColumn;  // is last column
   
     eDG   m_eGeneration;    // data generation (DG_ASCENDING etc)
-    Datum_y32 m_xMaxVal;    // max value that can be generated
-    Datum_y32 m_xMinVal;    // min value that can be generated
   
     eFA   m_eFunApplied;    // function to be applied (FA_COUNT etc)
     i8    m_iFunColArg;     // which column is the arg for applied fun
@@ -83,9 +81,6 @@ namespace Datums
   
     bool bIsPtnKey(void);
     void vIsPtnKey(bool bIsPtnKey);
-
-    Datum_h* pMaxVal(void);
-    Datum_h* pMinVal(void);
 
     void vShow(void);
   
