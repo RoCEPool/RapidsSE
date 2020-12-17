@@ -16,6 +16,8 @@ enum eEA // expression argument
   /*    */ EA_ENUMS
 };
 
+#ifndef __TINYC__
+
 static Stz* aEA[]
 {
   /*  0 */ "EA_NONE"_Stz,
@@ -28,6 +30,8 @@ static Stz* aEA[]
 
   /*    */ "EA_ENUMS"_Stz
 };
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */
