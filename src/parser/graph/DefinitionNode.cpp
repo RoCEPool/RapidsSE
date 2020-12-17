@@ -56,6 +56,14 @@ Stz* DefinitionNode::szPath(void)
   return m_sPath.szStz();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the description of this definition.                                */
+/*----------------------------------------------------------------------------*/
+Stz* DefinitionNode::szDescription(void)
+{
+  ASSERT(m_xValue.m_pText);
+  return m_xValue.m_pText->szGet();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

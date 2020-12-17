@@ -240,6 +240,17 @@ bool StrLib::bBackward(char** ps, char* pBegin, const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bBeginsWith: test if arg is a leading subset of s                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bBeginsWith(char* s, const char* sArg)
+{
+  _static_
+  i8 nBytes = nLength(sArg);
+  i8 iResult = iCompare(s, sArg, nBytes, C_NO_CASE);
+  return iResult == 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* burst given str into argv                                                  */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::nBurstArgs(Stz* szaArgv[], Stz* szArgStr)
