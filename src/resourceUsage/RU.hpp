@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace ResourceUsage
+namespace Resources
 {
   class RU : public Object
   {

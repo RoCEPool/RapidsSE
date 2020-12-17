@@ -85,7 +85,7 @@ namespace PipelineSpecs     { class OpSpec;          class PipelineSpec;
 namespace Plans             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
 namespace ReadConsistency   { class Crv;                                      }
-namespace ResourceUsage     { class RU_Cpu;          class RU_Memory;         }
+namespace Resources     { class RU_Cpu;          class RU_Memory;         }
 namespace Rows              { class Row;                                      }
 namespace SenVM             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
@@ -136,7 +136,7 @@ using namespace PipelineSpecs;
 using namespace Plans;
 using namespace Prompt;
 using namespace ReadConsistency;
-using namespace ResourceUsage;
+using namespace Resources;
 using namespace Rows;
 using namespace SenVM;
 using namespace Sessions;
