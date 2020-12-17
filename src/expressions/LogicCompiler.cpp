@@ -870,7 +870,7 @@ void LogicCompiler::v_DynPreliminary(void)
   
   char* azFrag = (char*)
   "\n  /*====================================================================*/"
-  "\n  /* Code for Qf%4lld                                                    */"
+  "\n  /* Code for Qf%4lld                                                   */"
   "\n  /*====================================================================*/"
   "\n"
   "\n  #include \"tcclib.h\" // include libc header for TCC"
@@ -905,14 +905,14 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n             SI_STRAREA_ADR, SI_STRAREA_OFS"
   "\n           };"
   "\n"
-  "\n  #include \"../src/eNums/EnumGroups.h\""
+  "\n  #include \"../src/resources/EnumGroups.h\""
   "\n  #include \"../src/entries/Ent_int.h\""
   "\n  #include \"../src/expressions/InflateSet.h\""
   "\n  #include \"../src/expressions/LIB_interface.h\""
   "\n  #include \"../src/expressions/DEV_interface.h\""
   "\n  #include \"../src/expressions/RLU_interface.h\""
   "\n  #include \"../src/expressions/RluCommon.h\""
-  "\n  #include \"../src/eNums/eEO.h\""
+  "\n  #include \"../src/resources/eEO.h\""
   "\n"
   "\n  #define ArgNil() "
   "\n  #define ArgGet(x) "
@@ -929,37 +929,37 @@ void LogicCompiler::v_DynPreliminary(void)
 //  "      aiDstk += (nSize / 8) + 1;"
 //  "      *(++aiDstk) = nSize;"
   "\n"
+  "\n  #define C_BYTES_PER_WORD 8"
+  "\n"
+  "\n  #define nWordRoundedStrBytes(_Size) "
+  "      ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + "
+  "      (_Size %% C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) ) "
+  "\n"
   "\n  #define S_PopStr(__azDst)"
   "      nSize = *(aiDstk--);"
-  "      azSrc = (char*)(aiDstk - ((nSize / 8) + 1));"
+  "      azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1));"
   "      strcpy(__azDst,azSrc);"
-  "      aiDstk -= (nSize / 8) + 2;"
+  "      aiDstk -= nWordRoundedStrBytes(nSize)/8;"
   "\n"
   "\n  #define S_PushStr(__azStr)"
   "      nSize = strlen(__azStr) + 1;"
   "      azDst = (char*)(++aiDstk);"
   "      strcpy(azDst,__azStr);"
-  "      aiDstk += (nSize / 8) + 1;"
+  "      aiDstk += nWordRoundedStrBytes(nSize)/8 - 1;"
   "      *(++aiDstk) = nSize;"
   "\n"
-  "\n  #define S_UseStr(__szStz)"
-  "      nSize = *(aiDstk--);"
-  "      __szStz = (Stz*)(aiDstk - ((nSize / 8) + 1));"
-  "\n"
-  "\n  #define S_UseEnd()"
-  "      aiDstk -= (nSize / 8) + 2;"
-  "\n"
-  "\n  #define S_StrAdr() ( (char*) ( (aiDstk-1) - ((*aiDstk / 8) + 1) ) )"
+  "\n  #define S_StrAdr() ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk) )"
   "\n"
   "\n  #define S_StrDrp()"
   "      nSize = *(aiDstk--);"
-  "      aiDstk -= (nSize / 8) + 2;"
+  "      aiDstk -= nWordRoundedStrBytes(nSize)/8;"
   "\n";
-  
-  s4K sReplaced;
+
+  s16KB sReplaced;
 
   sReplaced.vSprint((Stz*)azFrag,m_pLogicUnit->iQueryFragment());
-  
+  vTrace("After : %s\n"_Stz, sReplaced.azChar());
+
   StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
   if (AM::bRLUTimer())
     StrLib::vAppendString(&m_azSrcCrs,
