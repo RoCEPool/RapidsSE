@@ -16,7 +16,7 @@ namespace Datums
 
 #include "Datum.hpp"
 
-typedef Datum_t<C_48KB> Datum;
+typedef Datum_t<C_16KB> Datum;
 
 #include "ColPix.h"
 #include "RowPix.h"
@@ -43,7 +43,6 @@ typedef Datum_t<C_48KB> Datum;
 #include "SP_Vch.hpp"
 
 #include "CsvValue.hpp"
-#include "DatumToken.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
