@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {
   class TextMedium : public TextBuffer
   {

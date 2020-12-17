@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {  
   template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
   class Vector_t : public Object
@@ -55,7 +55,7 @@ namespace Structures
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-Vector_t<VEC_CN,ITEM,MAX_ITEMS>* Structures::_pVector_t(void* aAddr)
+Vector_t<VEC_CN,ITEM,MAX_ITEMS>* Resources::_pVector_t(void* aAddr)
 {
   Vector_t<VEC_CN,ITEM,MAX_ITEMS>* pVector =
     reinterpret_cast<Vector_t<VEC_CN,ITEM,MAX_ITEMS>*>(aAddr);

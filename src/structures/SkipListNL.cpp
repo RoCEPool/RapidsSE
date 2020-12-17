@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipListNL* Structures::_pSkipList(void* aAddr)
+SkipListNL* Resources::_pSkipList(void* aAddr)
 {
   SkipListNL* pSkipList = reinterpret_cast<SkipListNL*>(aAddr);
   
@@ -514,7 +514,7 @@ bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
     return false;
 }
 
-void Structures::vSkipListDump(SkipListNL* pSkipList)
+void Resources::vSkipListDump(SkipListNL* pSkipList)
 {
   vTrace("----------------------------\n"_Stz);
   
@@ -539,7 +539,7 @@ void Structures::vSkipListDump(SkipListNL* pSkipList)
   vTrace("\n"_Stz);
 }
 
-void Structures::vSkipListTest(void)
+void Resources::vSkipListTest(void)
 {
   vTrace("SkipListNL Tests\n"_Stz);
   vTrace("\n"_Stz);

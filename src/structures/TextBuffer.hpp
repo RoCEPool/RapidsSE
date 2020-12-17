@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {
   static const i8 C_SIZE_BASE        = 8*C_BYTES_PER_WORD;
   static const i8 C_SIZE_TINY_TEXT   = C_SIZE_TINY_OBJECT   - C_SIZE_BASE;

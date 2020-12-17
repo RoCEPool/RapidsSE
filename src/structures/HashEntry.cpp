@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-HashEntry* Structures::_pHashEntry(void* aAddr)
+HashEntry* Resources::_pHashEntry(void* aAddr)
 {
   HashEntry* pHashEntry = reinterpret_cast<HashEntry*>(aAddr);
   

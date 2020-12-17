@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Lexicon* Structures::_pLexicon(void* aAddr)
+Lexicon* Resources::_pLexicon(void* aAddr)
 {
   Lexicon* pLexicon = reinterpret_cast<Lexicon*>(aAddr);
   

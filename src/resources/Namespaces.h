@@ -93,7 +93,7 @@ namespace SortBuffers       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
-namespace Structures        { class Article;         class Queue;             }
+namespace Resources        { class Article;         class Queue;             }
 namespace Tasking             { class Task;                                     }
 namespace Tasking           { class Scheduler;       class Thread;
                               class Queues;                                   }
@@ -142,7 +142,7 @@ using namespace SortBuffers;
 using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;
-using namespace Structures;
+using namespace Resources;
 using namespace Tasking;
 using namespace Tasking;
 using namespace Transactions;

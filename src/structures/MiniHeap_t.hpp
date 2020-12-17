@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {
   template <class ITEM>
   class MiniHeap_t
@@ -72,7 +72,7 @@ namespace Structures
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-MiniHeap_t<ITEM>* Structures::_pMiniHeap_t(void* aAddr)
+MiniHeap_t<ITEM>* Resources::_pMiniHeap_t(void* aAddr)
 {
   MiniHeap_t<ITEM>* pBufferAbstract =
     reinterpret_cast<MiniHeap_t<ITEM>*>(aAddr);

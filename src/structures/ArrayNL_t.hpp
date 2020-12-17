@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {  
   template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
   class ArrayNL_t : public Object

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queue* Structures::_pQueue(void* aAddr)
+Queue* Resources::_pQueue(void* aAddr)
 {
   Queue* pQueue = reinterpret_cast<Queue*>(aAddr);
   

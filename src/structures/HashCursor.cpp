@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-HashCursor* Structures::_pHashCursor(void* aAddr)
+HashCursor* Resources::_pHashCursor(void* aAddr)
 {
   HashCursor* pHashCursor = reinterpret_cast<HashCursor*>(aAddr);
   

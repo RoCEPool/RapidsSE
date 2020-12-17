@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Wilderness* Structures::_aWilderness(void* aAddr)
+Wilderness* Resources::_aWilderness(void* aAddr)
 {
   Wilderness* aWilderness = reinterpret_cast<Wilderness*>(aAddr);
   

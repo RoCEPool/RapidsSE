@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TextTiny* Structures::_pTextTiny(void* aAddr)
+TextTiny* Resources::_pTextTiny(void* aAddr)
 {
   TextTiny* pText = reinterpret_cast<TextTiny*>(aAddr);
   

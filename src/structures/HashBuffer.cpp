@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-HashBuffer* Structures::_pHashBuffer(void* aAddr)
+HashBuffer* Resources::_pHashBuffer(void* aAddr)
 {
   HashBuffer* pHashBuffer = reinterpret_cast<HashBuffer*>(aAddr);
   

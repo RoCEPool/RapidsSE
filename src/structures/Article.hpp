@@ -5,7 +5,7 @@
 
 #include "eNK.h"
 
-namespace Structures
+namespace Resources
 {
   class Article : public Object,
                    public ListItem_t<Article>,

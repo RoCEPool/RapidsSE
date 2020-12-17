@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FreeItem* Structures::_aFreeItem(void* aAddr)
+FreeItem* Resources::_aFreeItem(void* aAddr)
 {
   FreeItem* aFreeEntry = reinterpret_cast<FreeItem*>(aAddr);
   

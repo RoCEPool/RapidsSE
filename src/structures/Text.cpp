@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Structures,Text,CN_TEXT)
+__pCastFunction(Resources,Text,CN_TEXT)
 __aNewFunction(Text,CN_TEXT)
 __vDeleteFunction(Text,CN_TEXT)
 __aFooterFunction(Text)

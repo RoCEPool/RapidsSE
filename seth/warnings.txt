@@ -1650,7 +1650,7 @@ Job__Cancelled.cpp:168:6: warning: unused parameter ‘pSession’ [-Wunused-par
  void JobsModel::vJob__Cancelled_delete(Interface::Session* pSession, Job* pJob)
       ^
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_File.cpp -o Steps_File.o
-g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Structures.cpp -o Structures.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Resources.cpp -o Resources.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Dic.cpp -o Steps_Dic.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Plan.cpp -o Steps_Plan.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Cast.cpp -o Steps_Cast.o

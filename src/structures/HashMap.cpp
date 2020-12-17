@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-HashMap* Structures::_pHashMap(void* aAddr)
+HashMap* Resources::_pHashMap(void* aAddr)
 {
   HashMap* pHashMap = reinterpret_cast<HashMap*>(aAddr);
   

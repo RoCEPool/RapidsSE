@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {
   template <class ITEM>
   class List_t
@@ -41,7 +41,7 @@ namespace Structures
   };
 }
 
-using namespace Structures;
+using namespace Resources;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

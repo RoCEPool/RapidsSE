@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {
   template <class ITEM> 
   class ListNL_t : public Object,
@@ -24,7 +24,7 @@ namespace Structures
   };
 }
 
-using namespace Structures;
+using namespace Resources;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

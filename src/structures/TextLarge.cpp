@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TextLarge* Structures::_pTextLarge(void* aAddr)
+TextLarge* Resources::_pTextLarge(void* aAddr)
 {
   TextLarge* pText = reinterpret_cast<TextLarge*>(aAddr);
   

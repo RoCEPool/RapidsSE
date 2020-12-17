@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Resources
 {
   static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit);
   static const i8 C_TAILLINE_QUANTA  = sizeof(DoubleWord);
@@ -136,7 +136,7 @@ namespace Structures
   TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>* _pNubNL(void* aAddr);
 }
 
-using namespace Structures;
+using namespace Resources;
 
 
 
@@ -1036,7 +1036,7 @@ Footer* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aFooter(void)
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC, i8 BYTES>
-TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>* Structures::_pNubNL(void* aAddr)
+TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>* Resources::_pNubNL(void* aAddr)
 {
   TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>* pVector =
     reinterpret_cast<TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>*>(aAddr);
