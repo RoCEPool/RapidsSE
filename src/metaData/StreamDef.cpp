@@ -920,34 +920,7 @@ eEC StreamDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
   for (;;) {
     
     Token* pTkn = pTknVec->pNextToken(); dPT();
-    
-    if (pTkn->bSame("asc"_Stz)) {
-      
-      eError = eParseAsc(pTknVec,pCol);
-      if (EC_NONE != eError)
-        return eError;
-      
-      continue;
-    }
-    
-    if (pTkn->bSame("desc"_Stz)) {
-      
-      eError = eParseDesc(pTknVec,pCol);
-      if (EC_NONE != eError)
-        return eError;
-      
-      continue;
-    }
-    
-    if (pTkn->bSame("fixed"_Stz)) {
-      
-      eError = eParseFixed(pTknVec,pCol);
-      if (EC_NONE != eError)
-        return eError;
-      
-      continue;
-    }
-    
+        
     if (pTkn->bSame("not"_Stz)) {
       
       eError = eParseNotNull(pTknVec,pCol);
@@ -984,42 +957,6 @@ eEC StreamDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
   //
   //      pTkn = pTknVec->pNextToken(); dPT();
   //    }
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse asc column clause                                                    */
-/*----------------------------------------------------------------------------*/
-eEC StreamDef::eParseAsc(TokenVec* pTknVec, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  pCol->vGeneration(DG_ASCENDING);
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse desc column clause                                                   */
-/*----------------------------------------------------------------------------*/
-eEC StreamDef::eParseDesc(TokenVec* pTknVec, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  pCol->vGeneration(DG_DESCENDING);
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse fixed column clause                                                  */
-/*----------------------------------------------------------------------------*/
-eEC StreamDef::eParseFixed(TokenVec* pTknVec, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  pCol->vGeneration(DG_FIXED);
   
   return EC_NONE;
 }

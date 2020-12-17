@@ -70,9 +70,6 @@ namespace MetaData
     eEC eParseColumnVarchar  (TokenVec* pTknVec, Column* pCol);
     
     eEC eParseColumnClauses  (TokenVec* pTknVec, Column* pCol);
-    eEC eParseAsc            (TokenVec* pTknVec, Column* pCol);
-    eEC eParseDesc           (TokenVec* pTknVec, Column* pCol);
-    eEC eParseFixed          (TokenVec* pTknVec, Column* pCol);
     eEC eParseNotNull        (TokenVec* pTknVec, Column* pCol);
     
     eEC eParseTableClauses(TokenVec* pTknVec);

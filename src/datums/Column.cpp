@@ -50,18 +50,18 @@ Column::Column(void)
   
   m_iColumnNo     = C_UNKNOWN;
   m_sColumnNm     = C_NO_NAME;
-  m_eDatum        = DM_NONE;
-  
   m_eColumnType   = CT_NONE;
+
+  m_bIsUnique     = false;
+  m_bIsLastColumn = false;
+
+  m_eDatum        = DM_NONE;
   m_iColumnLength = 0;
   m_iColumnScale  = 0;
-
   m_bIsNullable   = true;
-  m_bIsUnique     = false;
   m_bIsPtnKey     = false;
-  m_bIsLastColumn = false;
-  
-  m_eGeneration   = DG_NONE;
+
+  m_xColPix.m_uAsI4 = 0;
   
   m_eFunApplied = FA_NONE;
   m_iFunColArg  = C_UNKNOWN;
@@ -254,7 +254,6 @@ void Column::vCopy(Column* pCol)
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;
   m_eDatum          = pCol->m_eDatum;
-  m_eGeneration     = pCol->m_eGeneration;
   m_bIsNullable     = pCol->m_bIsNullable;
   m_bIsUnique       = pCol->m_bIsUnique;
   m_bIsPtnKey       = pCol->m_bIsPtnKey;
@@ -273,26 +272,6 @@ void Column::vDatum(eDM eDatum)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_eDatum = eDatum;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data generation style                                                  */
-/*----------------------------------------------------------------------------*/
-eDG Column::eGeneration(void)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return m_eGeneration;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set data generation style                                                  */
-/*----------------------------------------------------------------------------*/
-void Column::vGeneration(eDG eGeneration)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  m_eGeneration = eGeneration;
 }
 
 /*----------------------------------------------------------------------------*/
