@@ -12,19 +12,6 @@ namespace Threads
   void vCheckAssumptions(void);
 }
 
-//------------------------------------------------------------------------------
-
-
-#include "Scheduler.hpp"
-
-#include "Thread.hpp"
-#include "ThreadQueue.hpp"
-#include "ThreadVec.hpp"
-
-#include "Queues.hpp"
-
-#include "SP_Thread.hpp"
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

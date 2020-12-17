@@ -48,7 +48,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
   Structures::vCheckAssumptions();
-  Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Utilities::vCheckAssumptions();
