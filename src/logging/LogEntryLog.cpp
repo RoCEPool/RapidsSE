@@ -2,7 +2,7 @@
 /* LogEntryLog.cpp - Log Entry for Log                                        */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "File.hpp" //?
 

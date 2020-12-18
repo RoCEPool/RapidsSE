@@ -114,7 +114,7 @@ i8   AM::nIndexEntries(void)  { return gpAttachMap->Arg.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
   return gpAttachMap->m_pQueues->m_pLocalJobs;                                }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
-bool AM::bLogging(void)       { return gpLog ? true : false;                  }
+bool AM::bStorageEngine(void)       { return gpLog ? true : false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();  }
@@ -867,7 +867,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
 void AM::vLogAll(void)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   gpLog->vMarkAll(true);
@@ -880,7 +880,7 @@ void AM::vLogAll(void)
 void AM::vLogHow(i8 iRequestId, i8 iDetail)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   gpLog->vHow(iRequestId,iDetail);
@@ -893,7 +893,7 @@ void AM::vLogHow(i8 iRequestId, i8 iDetail)
 void AM::vLogFyi(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   va_list xArgs;
@@ -912,7 +912,7 @@ void AM::vLogFyi(Stz* szFormat, ...)
 void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pJob))
@@ -937,7 +937,7 @@ void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
 void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pJob))
@@ -962,7 +962,7 @@ void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pLock))
@@ -987,7 +987,7 @@ void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pLog))
@@ -1012,7 +1012,7 @@ void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pJob))
@@ -1037,7 +1037,7 @@ void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
 void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pOpr))
@@ -1062,7 +1062,7 @@ void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pPrm))
@@ -1087,7 +1087,7 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
 
   if (! gpLog->bIsLoggable(pQue))
@@ -1112,7 +1112,7 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
     
   if (! gpLog->bIsLoggable(pRes))
@@ -1137,7 +1137,7 @@ void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pSsn))
@@ -1162,7 +1162,7 @@ void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pJob))
@@ -1187,7 +1187,7 @@ void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(gpAttachMap))
@@ -1213,7 +1213,7 @@ void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pThread))
@@ -1238,7 +1238,7 @@ void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...
 void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pTask))
@@ -1263,7 +1263,7 @@ void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   if (! gpLog->bIsLoggable(pTxn))

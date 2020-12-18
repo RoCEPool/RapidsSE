@@ -2,7 +2,7 @@
 /* LogEntryLck.cpp - Log Entry for Lock                                       */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

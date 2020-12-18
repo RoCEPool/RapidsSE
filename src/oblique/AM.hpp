@@ -85,7 +85,7 @@ namespace Oblique
     static Article* pLexiconArticle(void);
     static JobList* pLocalJobs(void);
     static LockTracker* pLockTracker(void);
-    static bool bLogging(void);
+    static bool bStorageEngine(void);
     static i8   nLvlLevels(void);
     static i8   iLvlRatio(void);
     static bool bMetadata(void);

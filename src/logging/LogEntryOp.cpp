@@ -2,7 +2,7 @@
 /* LogEntryOp.cpp - Log Entry for Operator                                    */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

@@ -2,7 +2,7 @@
 /* LogEntryTsk.cpp - Log Entry for Task                                       */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

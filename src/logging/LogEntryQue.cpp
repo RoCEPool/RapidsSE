@@ -2,7 +2,7 @@
 /* LogEntryQue.cpp - Log Entry for Queues                                     */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

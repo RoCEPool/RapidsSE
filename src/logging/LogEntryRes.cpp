@@ -2,7 +2,7 @@
 /* LogEntryRes.cpp - Log Entry for Resource                                   */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

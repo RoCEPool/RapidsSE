@@ -2,7 +2,7 @@
 /* LogEntryTxn.cpp - Log Entry for Transaction                                */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "File.hpp" //?
 

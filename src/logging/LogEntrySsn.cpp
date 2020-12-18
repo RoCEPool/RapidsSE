@@ -2,7 +2,7 @@
 /* LogEntryItf.cpp - Log Entry for Api                                        */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

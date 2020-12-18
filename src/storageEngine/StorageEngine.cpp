@@ -33,7 +33,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Parser::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
   Plans::vCheckAssumptions();
-  //Prompt::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Sessions::vCheckAssumptions();

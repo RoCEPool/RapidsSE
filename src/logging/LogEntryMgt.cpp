@@ -2,7 +2,7 @@
 /* LogEntryMgt.cpp - Log Entry for Management Actions                         */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */

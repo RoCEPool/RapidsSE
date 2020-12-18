@@ -2,7 +2,7 @@
 /* Log.cpp - Log                                                              */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "File.hpp" //?
 #include "PsxThd.hpp" //?
@@ -16,7 +16,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Log* Logging::_pLog(void* aAddr)
+Log* StorageEngine::_pLog(void* aAddr)
 {
   Log* pLog = reinterpret_cast<Log*>(aAddr);
   

@@ -2,7 +2,7 @@
 /* LogEntry.cpp - Shared Log Entry                                            */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 
@@ -17,7 +17,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LogEntry* Logging::_pLogEntry(void* aAddr)
+LogEntry* StorageEngine::_pLogEntry(void* aAddr)
 {
   LogEntry* pLogEntry = reinterpret_cast<LogEntry*>(aAddr);
   

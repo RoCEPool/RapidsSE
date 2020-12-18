@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Logging
+namespace StorageEngine
 {
   class ShmLog : public Focal
   {

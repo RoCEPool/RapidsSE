@@ -2,7 +2,7 @@
 /* LogEntryThd.cpp - Log Entry for Thread                                     */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

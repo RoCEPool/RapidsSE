@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Logging
+namespace StorageEngine
 {
   class _LogEntryOp
   {

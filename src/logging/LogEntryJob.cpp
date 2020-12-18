@@ -2,7 +2,7 @@
 /* LogEntryJob.cpp - Log Entry for Job                                        */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "eOC.h"
 

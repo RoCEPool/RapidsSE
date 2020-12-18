@@ -2,7 +2,7 @@
 /* LogEntrySvc.cpp - Log Entry for Service                                    */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 #include "File.hpp" //?
 

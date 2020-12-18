@@ -13,7 +13,7 @@ namespace Resources
     i8   m_iReqNo;     // the sequence no of the request from that session
     i8   m_iForId;     // id of prompt or api
   
-    i8   m_iDetail;    // level of logging  
+    i8   m_iDetail;    // level of StorageEngine  
     s32  m_sPurpose;   // purpose of request
 
   public:

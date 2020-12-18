@@ -66,7 +66,7 @@ namespace Plans              { class Job;
 namespace LexicalAnalysis   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
 namespace Load              {                                                 }
-namespace Logging           { class Log;             class LogEntry;          }
+namespace StorageEngine           { class Log;             class LogEntry;          }
 namespace MetaData          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
@@ -122,7 +122,7 @@ using namespace Interface;
 using namespace Plans;
 using namespace LexicalAnalysis;
 using namespace Load;
-using namespace Logging;
+using namespace StorageEngine;
 using namespace MetaData;
 using namespace Metrics;
 using namespace Oblique;
