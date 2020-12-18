@@ -2,7 +2,7 @@
 /* PlanNodeList.cpp - a list of PlanNode objects                              */
 /*============================================================================*/
 
-#include "parser/stages/parser/Parser.h"
+#include "parser/Parser.h"
 
 
 /*----------------------------------------------------------------------------*/

@@ -176,10 +176,11 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Plan),               HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLAN
   { sizeof(PlanDefinitionParser),HT_TRANSIENT_MEDIUM ,-8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(Planner),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLANNER
-  { sizeof(PlanNode),           HT_TRANSIENT_SMALL   ,-8 }, // CN_PLANNODE
-  { sizeof(PlanNodeBuilder),    HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODEBUILDER
-  { sizeof(PlanNodeList),       HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODELIST
-  { sizeof(PlanNodeBuilderList),HT_TRANSIENT_SMALL   ,0 }, // CN_PLANNODEBUILDERLIST
+  { sizeof(PlanNode),           HT_TRANSIENT_TINY    ,-8 }, // CN_PLANNODE
+  { sizeof(PlanNodeBuilder),    HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDER
+  { sizeof(PlanNodeList),       HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODELIST
+  { sizeof(PlanNodeBuilderList),HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
+  { sizeof(PlanWalker),         HT_TRANSIENT_TINY    ,0 }, // CN_PLANWALKER
   { sizeof(Pot),                HT_TRANSIENT_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),          HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC

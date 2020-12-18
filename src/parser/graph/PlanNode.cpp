@@ -2,7 +2,7 @@
 /* PlanNode.cpp - A generic node in the plan graph                            */
 /*============================================================================*/
 
-#include "parser/stages/parser/Parser.h"
+#include "parser/Parser.h"
 #include "PlanNode.hpp"
 
 

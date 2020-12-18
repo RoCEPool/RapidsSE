@@ -2,7 +2,7 @@
 /* PrimitiveNode.cpp - A node that holds definitions of base primitives       */
 /*============================================================================*/
 
-#include "parser/stages/parser/Parser.h"
+#include "parser/Parser.h"
 #include "PrimitiveNode.hpp"
 
 

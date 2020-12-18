@@ -1,2 +1,0 @@
-# This file is only here to keep the directory structure, otherwise git
-# doesn't keep directories with no files in them.

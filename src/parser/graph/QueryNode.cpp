@@ -2,7 +2,7 @@
 /* QueryNode.cpp - An mutable node that holds the plan of the user's query    */
 /*============================================================================*/
 
-#include "parser/stages/parser/Parser.h"
+#include "parser/Parser.h"
 #include "QueryNode.hpp"
 
 
