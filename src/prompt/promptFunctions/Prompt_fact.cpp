@@ -2,7 +2,7 @@
 /* Prompt_fact.cpp -- fact prompt function                                    */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_fact (
   PF_FACT,            // prompt function

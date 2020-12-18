@@ -2,7 +2,7 @@
 /* Prompt_hw.cpp -- print hardware related information                        */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_hw (
   PF_HW,                // prompt function

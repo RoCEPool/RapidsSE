@@ -2,7 +2,7 @@
 /* Prompt_mri.cpp -- mri                                                      */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_mri (
   PF_MRI,              // prompt function

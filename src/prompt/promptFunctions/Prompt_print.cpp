@@ -2,7 +2,7 @@
 /* Prompt_ls.cpp -- list directory contents                                   */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_print (
   PF_PRINT,          // prompt function

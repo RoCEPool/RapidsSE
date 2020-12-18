@@ -2,7 +2,7 @@
 /* Prompt_pow2.cpp -- power of 2                                             */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_pow2 (
   PF_POW2,           // prompt function

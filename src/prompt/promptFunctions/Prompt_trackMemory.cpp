@@ -2,7 +2,7 @@
 /* Prompt_trackMemory.cpp -- track memory                                     */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_trackMemory (
   PF_TRACKMEMORY,             // prompt function

@@ -2,7 +2,7 @@
 /* Prompt_heapMem.cpp -- heap memory contents                                 */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_heapMem (
   PF_HEAPMEM,           // prompt function

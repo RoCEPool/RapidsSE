@@ -2,7 +2,7 @@
 /* Prompt_operands.cpp -- show / change max operands arg                      */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_operands (
   PF_OPERANDS,       // prompt function

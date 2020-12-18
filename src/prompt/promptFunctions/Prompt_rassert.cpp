@@ -2,7 +2,7 @@
 /* Prompt_rassert.cpp -- execute an rassert(0)                                */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_rassert (
   PF_RASSERT,          // prompt function

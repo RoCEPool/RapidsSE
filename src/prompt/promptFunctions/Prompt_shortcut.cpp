@@ -2,7 +2,7 @@
 /* Prompt_shortcut.cpp -- shortcut                                            */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_shortcut (
   PF_SHORTCUT,        // prompt function

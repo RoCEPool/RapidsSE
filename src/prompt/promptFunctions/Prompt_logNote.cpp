@@ -2,7 +2,7 @@
 /* Prompt_logNote.cpp -- write a note into the log                            */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_logNote (
   PF_LOGNOTE,           // prompt function

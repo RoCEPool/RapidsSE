@@ -2,7 +2,7 @@
 /* Prompt_ssnState.hpp -- Print Session State Information                     */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 
 

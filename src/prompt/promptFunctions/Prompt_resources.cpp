@@ -2,7 +2,7 @@
 /* Prompt_resources.cpp -- print resource report                              */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 
 PromptFun __Prompt_resources (

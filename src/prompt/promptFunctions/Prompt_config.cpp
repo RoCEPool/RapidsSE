@@ -2,7 +2,7 @@
 /* Prompt_config.cpp -- simple configuration report                           */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 extern Args gxArgs;
 

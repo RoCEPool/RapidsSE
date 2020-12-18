@@ -2,7 +2,7 @@
 /* Prompt_classes.cpp -- classes report                                       */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_classes (
   PF_CLASSES,           // prompt function

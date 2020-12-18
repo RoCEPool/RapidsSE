@@ -2,7 +2,7 @@
 /* Prompt_bp.cpp -- buffer pool report                                        */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_bp (
   PF_BP,                // prompt function

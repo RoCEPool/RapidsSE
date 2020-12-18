@@ -2,7 +2,7 @@
 /* Prompt_memory.cpp -- memory statistics                                     */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_memory (
   PF_MEMORY,           // prompt function

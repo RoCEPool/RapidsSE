@@ -2,7 +2,7 @@
 /* Prompt_opdq.cpp -- Operand Queue Repo                                      */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_opdq (
   PF_OPDQ,              // prompt function

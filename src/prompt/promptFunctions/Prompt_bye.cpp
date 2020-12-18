@@ -2,7 +2,7 @@
 /* Prompt_bye.cpp -- bye from prompt                                          */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_bye (
   PF_BYE,            // prompt function

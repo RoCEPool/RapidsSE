@@ -2,7 +2,7 @@
 /* Prompt_hashDefs.cpp -- hash define report                                  */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_hashDefs (
   PF_HASHDEFS,          // prompt function

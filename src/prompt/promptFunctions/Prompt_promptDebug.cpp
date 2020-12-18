@@ -2,7 +2,7 @@
 /* Prompt_promptDebug.cpp -- get / set prompt debug                           */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_promptDebug (
   PF_PROMPTDEBUG,           // prompt function

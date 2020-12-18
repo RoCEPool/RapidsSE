@@ -2,7 +2,7 @@
 /* PromptHelper.cpp -- a set of prompt helper functions                       */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* process command flags                                                      */

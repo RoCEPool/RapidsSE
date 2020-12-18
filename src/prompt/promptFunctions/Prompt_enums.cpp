@@ -2,7 +2,7 @@
 /* Prompt_enums.cpp -- enums list                                             */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_enums (
   PF_ENUMS,             // prompt function

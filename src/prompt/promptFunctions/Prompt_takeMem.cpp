@@ -2,7 +2,7 @@
 /* Prompt_takeMem.cpp -- take heap memory                                     */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_takeMem (
   PF_TAKEMEM,           // prompt function

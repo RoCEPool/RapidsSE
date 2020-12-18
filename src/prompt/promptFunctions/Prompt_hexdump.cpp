@@ -2,7 +2,7 @@
 /* Prompt_hexdump.cpp -- memory hex dump                                      */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_hexdump (
   PF_HEXDUMP,           // prompt function

@@ -2,7 +2,7 @@
 /* Prompt_help.cpp -- print prompt help                                       */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_help (
   PF_HELP,           // prompt function

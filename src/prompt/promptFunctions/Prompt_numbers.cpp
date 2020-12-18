@@ -2,7 +2,7 @@
 /* Prompt_numbers.cpp -- numbers report                                       */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_numbers (
   PF_NUMBERS,           // prompt function

@@ -2,7 +2,7 @@
 /* PromptFun.cpp -- description of a prompt function                          */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 extern PromptCatalog gxPromptCatalog;
 

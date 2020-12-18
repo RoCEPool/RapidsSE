@@ -2,7 +2,7 @@
 /* Prompt_opsys.cpp -- Print OS Information                                   */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_opsys (
   PF_OPSYS,           // prompt function

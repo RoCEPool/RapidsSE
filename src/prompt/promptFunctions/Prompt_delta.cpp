@@ -2,7 +2,7 @@
 /* Prompt_delta.cpp -- objec delta report                                     */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_delta (
   PF_DELTA,            // prompt function

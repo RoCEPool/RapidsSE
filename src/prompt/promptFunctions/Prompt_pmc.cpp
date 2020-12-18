@@ -2,7 +2,7 @@
 /* Prompt_pmc.cpp -- perfromance monitor counters                             */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_pmc (
   PF_PMC,               // prompt function

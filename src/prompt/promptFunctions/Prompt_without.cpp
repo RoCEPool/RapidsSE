@@ -2,7 +2,7 @@
 /* Prompt_without.cpp -- compiled without report                              */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 
 PromptFun __Prompt_without (

@@ -2,7 +2,7 @@
 /* Prompt_now.cpp -- show current local date and time                        */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_now (
   PF_NOW,           // prompt function

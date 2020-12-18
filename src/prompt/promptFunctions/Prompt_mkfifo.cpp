@@ -2,7 +2,7 @@
 /* Prompt_mkfifo.cpp -- make fifo                                             */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 #include "Fifo.hpp" //?
 

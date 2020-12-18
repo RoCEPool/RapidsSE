@@ -2,7 +2,7 @@
 /* Prompt_tempName.cpp -- show tempName                                       */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 
 PromptFun __Prompt_tempName (

@@ -2,7 +2,7 @@
 /* Prompt_shell.cpp -- shell command                                          */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_shell (
   PF_SHELL,           // prompt function

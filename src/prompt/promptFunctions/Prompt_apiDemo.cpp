@@ -2,7 +2,7 @@
 /* Prompt_apiDemo.cpp -- RapidsSE Api Demo                                    */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_apiDemo (
   PF_APIDEMO,           // prompt function

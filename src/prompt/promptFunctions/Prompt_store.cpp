@@ -2,7 +2,7 @@
 /* Prompt_store.cpp -- store command                                          */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_store (
   PF_STORE,           // prompt function

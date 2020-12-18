@@ -2,7 +2,7 @@
 /* SePrompt.cpp -- the se> prompt                                             */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 #include "ePP.h"
 

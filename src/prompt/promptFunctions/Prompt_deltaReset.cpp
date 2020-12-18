@@ -2,7 +2,7 @@
 /* Prompt_deltaReset.cpp -- object delta reset                                */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_deltaReset (
   PF_DELTARESET,            // prompt function

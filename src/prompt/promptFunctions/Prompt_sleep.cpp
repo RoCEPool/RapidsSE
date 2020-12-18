@@ -2,7 +2,7 @@
 /* Prompt_sleep.cpp -- sleep n seconds                                        */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_sleep (
   PF_SLEEP,           // prompt function

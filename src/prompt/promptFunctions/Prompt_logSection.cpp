@@ -2,7 +2,7 @@
 /* Prompt_logSection.cpp -- write a section line into the log                 */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_logSection (
   PF_LOGSECTION,           // prompt function

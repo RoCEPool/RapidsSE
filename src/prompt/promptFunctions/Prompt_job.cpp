@@ -2,7 +2,7 @@
 /* Prompt_job.hpp -- Print Job Information                                    */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_job (
   PF_JOB,                 // prompt function

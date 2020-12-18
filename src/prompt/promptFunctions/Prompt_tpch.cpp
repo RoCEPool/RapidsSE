@@ -2,7 +2,7 @@
 /* Prompt_tpch.cpp -- show tpch                                               */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_tpch (
   PF_TPCH,           // prompt function

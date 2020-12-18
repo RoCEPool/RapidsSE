@@ -2,7 +2,7 @@
 /* Prompt_so.cpp -- print so information                                      */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_so (
   PF_SO,           // prompt function

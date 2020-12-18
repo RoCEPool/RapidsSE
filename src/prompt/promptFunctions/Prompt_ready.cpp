@@ -2,7 +2,7 @@
 /* Prompt_ready.cpp -- ready queue report                                     */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 
 PromptFun __Prompt_ready (

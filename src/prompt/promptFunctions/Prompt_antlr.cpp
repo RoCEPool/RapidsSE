@@ -2,7 +2,7 @@
 /* Prompt_antlr.cpp -- antlr test                                             */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptFun __Prompt_antlr (
   PF_ANTLR,           // prompt function

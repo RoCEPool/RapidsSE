@@ -2,7 +2,7 @@
 /* Prompt_sleeping.cpp -- sleeping queue report                               */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 
 PromptFun __Prompt_sleeping (

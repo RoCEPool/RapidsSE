@@ -2,7 +2,7 @@
 /* Prompt_tag.cpp -- session tag managememnt                                  */
 /*============================================================================*/
 
-#include "Prompt.h"
+#include "StorageEngine.h"
 
 
 PromptFun __Prompt_tag (
