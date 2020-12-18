@@ -27,7 +27,7 @@ Reader::Reader(void)
   
   m_pFile = new File(nullptr);
   
-  _checkInitialised_(CN_PERUSE);
+  _checkInitialised_(CN_READER);
   
   _postcondition_(_MAGIC_,CN_READER,_FOOTER_);
 }
