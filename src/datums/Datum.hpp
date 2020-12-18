@@ -58,6 +58,7 @@ namespace Datums
     void    vBcd(i8 iBcd);
     i8      iBol(void);
     void    vBol(i8 iBol);
+    Dtm*    aCell(void);
     void    vCopy(AnyVal* aAnyVal);
     i8      iDte(void);
     i8      iDte_day(void);

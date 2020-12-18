@@ -11,23 +11,23 @@
 /*----------------------------------------------------------------------------*/
 /* extract a datum from csv field value                                       */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCell(Dtm* aDtm, Column* pCol,
-                        char** aazCrs, Format* pFmt)
+bool CsvValue::bToCell(Dtm* aCell, Column* pCol,
+                       char** aazCrs, Format* pFmt)
 {
   bool b = false;
   
   eDM eDatum = pCol->eDatum();
 
   switch (eDatum) {
-    case DM_BCD: b = bToCellBcd(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_BOL: b = bToCellBol(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_DTE: b = bToCellDte(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_FLT: b = bToCellFlt(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_INT: b = bToCellInt(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_IVL: b = bToCellIvl(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_TME: b = bToCellTme(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_TSP: b = bToCellTsp(aDtm,pCol,aazCrs,pFmt); break;
-    case DM_VCH: b = bToCellVch(aDtm,pCol,aazCrs,pFmt); break;
+    case DM_BCD: b = bToCellBcd(aCell,pCol,aazCrs,pFmt); break;
+    case DM_BOL: b = bToCellBol(aCell,pCol,aazCrs,pFmt); break;
+    case DM_DTE: b = bToCellDte(aCell,pCol,aazCrs,pFmt); break;
+    case DM_FLT: b = bToCellFlt(aCell,pCol,aazCrs,pFmt); break;
+    case DM_INT: b = bToCellInt(aCell,pCol,aazCrs,pFmt); break;
+    case DM_IVL: b = bToCellIvl(aCell,pCol,aazCrs,pFmt); break;
+    case DM_TME: b = bToCellTme(aCell,pCol,aazCrs,pFmt); break;
+    case DM_TSP: b = bToCellTsp(aCell,pCol,aazCrs,pFmt); break;
+    case DM_VCH: b = bToCellVch(aCell,pCol,aazCrs,pFmt); break;
       
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -72,13 +72,14 @@ bool CsvValue::bToDatum(Datum_h* pDatum, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a decimal datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellBcd(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellBcd(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Bcd snBcd;
   
   try {
-    snBcd.i(aazCrs,pCol->iColumnLength(), pCol->iColumnScale(),pFmt);
+    aCell->vPutColVal(snBcd.i(aazCrs,pCol->iColumnLength(),
+                             pCol->iColumnScale(),pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -90,13 +91,13 @@ bool CsvValue::bToCellBcd(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellBol(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellBol(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Bol snBol;
   
   try {
-    snBol.i(aazCrs,pFmt);
+    aCell->vPutColVal(snBol.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -108,13 +109,13 @@ bool CsvValue::bToCellBol(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a date datum from csv field value                      yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellDte(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellDte(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Dte snDte;
   
   try {
-    snDte.i(aazCrs,pFmt);
+    aCell->vPutColVal(snDte.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -126,13 +127,13 @@ bool CsvValue::bToCellDte(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a float datum from csv field value                                 */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellFlt(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellFlt(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Flt snFlt;
   
   try {
-    snFlt.d(aazCrs,pFmt);
+    aCell->vPutColVal(snFlt.d(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -144,13 +145,13 @@ bool CsvValue::bToCellFlt(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract an integer datum from csv field value                              */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellInt(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellInt(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Int snInt;
   
   try {
-    snInt.i(aazCrs,pFmt);
+    aCell->vPutColVal(snInt.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -170,13 +171,13 @@ bool CsvValue::bToCellInt(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellIvl(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellIvl(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Ivl snIvl;
   
   try {
-    snIvl.i(aazCrs,pFmt);
+    aCell->vPutColVal(snIvl.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -188,13 +189,13 @@ bool CsvValue::bToCellIvl(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a time datum from csv field value                    hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellTme(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellTme(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Tme snTme;
   
   try {
-    snTme.i(aazCrs,pFmt);
+    aCell->vPutColVal(snTme.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -206,13 +207,13 @@ bool CsvValue::bToCellTme(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellTsp(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellTsp(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
   try {
-    snTsp.i(aazCrs,pFmt);
+    aCell->vPutColVal(snTsp.i(aazCrs,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -224,14 +225,13 @@ bool CsvValue::bToCellTsp(Dtm* aDtm, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellVch(Dtm* aDtm, Column* pCol,
-                           char** aazCrs, Format* pFmt)
+bool CsvValue::bToCellVch(Dtm* aCell, Column* pCol,
+                          char** aazCrs, Format* pFmt)
 {
   NEVER_REACH; // not supported yet
   
   return true;
 }
-
 
 
 /*----------------------------------------------------------------------------*/

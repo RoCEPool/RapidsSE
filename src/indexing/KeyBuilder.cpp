@@ -38,20 +38,41 @@ void KeyBuilder::vAddElement_gen(EntWrk* pEntWrk, Column* pCol,
     return;
   }
   
-  Datum oDatum;
+  Dtm* aCell = (Dtm*)azDst;
   
-  bool b = CsvValue::bToDatum(&oDatum,pCol,&azSrc,pFmt);
-  ASSERT(b);
-  
-  if (oDatum.bIsNull()) {
-    nElmSize = Null::nCopy((byte*)azDst);
-    pEntWrk->vIncElmSeqSize(nElmSize);
-    return;
-  }
-  
-  nElmSize = Dtm::nCopy((byte*)azDst,oDatum.iInt());
+  bool b = CsvValue::bToCell(aCell,pCol,&azSrc,pFmt);
+  nElmSize = sizeof(Dtm);
   pEntWrk->vIncElmSeqSize(nElmSize);
 }
+/*----------------------------------------------------------------------------*/
+//void KeyBuilder::vAddElement_gen(EntWrk* pEntWrk, Column* pCol,
+//                                 Stz* szElementSrc, Format* pFmt)
+//{
+//  i8 nElmSize;
+//
+//  char* azSrc = (char*)szElementSrc;
+//  char* azDst = (char*)pEntWrk->ayElmNext();
+//
+//  if (DM_VCH == pCol->eDatum()) {
+//    nElmSize = StrLib::iWordFlip(azDst,azSrc);
+//    pEntWrk->vIncElmSeqSize(nElmSize);
+//    return;
+//  }
+//
+//  Datum oDatum;
+//
+//  bool b = CsvValue::bToDatum(&oDatum,pCol,&azSrc,pFmt);
+//  ASSERT(b);
+//
+//  if (oDatum.bIsNull()) {
+//    nElmSize = Null::nCopy((byte*)azDst);
+//    pEntWrk->vIncElmSeqSize(nElmSize);
+//    return;
+//  }
+//
+//  nElmSize = Dtm::nCopy((byte*)azDst,oDatum.iInt());
+//  pEntWrk->vIncElmSeqSize(nElmSize);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* add element to entwrk key                                                  */

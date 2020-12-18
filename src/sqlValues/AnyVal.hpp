@@ -40,6 +40,7 @@ namespace SqlValues
     Bol     wBol(void);
     void    vBol(Bol wBol);
     char*   azChar(void);
+    Dtm*    aCell(void);
     void    vCopy(AnyVal* aSrcVal, i8 nBytes=0);
     Dte     wDte(void);
     void    vDte(Dte wDte);
