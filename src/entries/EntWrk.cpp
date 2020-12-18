@@ -185,7 +185,7 @@ void EntWrk::vAppendInt(i8 iArg)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   if (KE_GENERAL == m_xEnt.eKind()) {
-    byte* ayDst = ayElmNext();
+    byte* ayDst = ayElmNext_dtm();
   
     i8 nElmSize = Dtm::nCopy(ayDst,iArg);
   
@@ -204,7 +204,7 @@ void EntWrk::vAppendMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = ayElmNext();
+  byte* ayDst = ayElmNext_dtm();
   Dtm::vCopy(ayDst,(i8)C_DATUM_MINUS_INFINITY);
 
   vIncElmSeqSize(C_BYTES_PER_WORD);
@@ -217,7 +217,7 @@ void EntWrk::vAppendNull(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = (byte*)ayElmNext();
+  byte* ayDst = (byte*)ayElmNext_dtm();
   
   i8 nElmSize = Null::nCopy(ayDst);
   
@@ -231,7 +231,7 @@ void EntWrk::vAppendPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
    
-  byte* ayDst = ayElmNext();
+  byte* ayDst = ayElmNext_dtm();
   Dtm::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
   
   vIncElmSeqSize(C_BYTES_PER_WORD);
@@ -244,7 +244,7 @@ void EntWrk::vAppendRef(Rrf xwArg)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = ayElmNext();
+  byte* ayDst = ayElmNext_dtm();
   
   MemLib::vCopy(ayDst,&xwArg,8,CN_ENTWRK);
   
@@ -259,7 +259,7 @@ void EntWrk::vAppendStz(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  char* aDst = (char*)ayElmNext();
+  char* aDst = (char*)ayElmNext_dtm();
   
   i8 nElmSize = StrLib::iWordFlip(aDst, szArg->azChar());
   
@@ -291,7 +291,7 @@ void EntWrk::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* get address where next element would be added                              */
 /*----------------------------------------------------------------------------*/
-byte* EntWrk::ayElmNext(void)
+byte* EntWrk::ayElmNext_dtm(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
