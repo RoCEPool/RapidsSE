@@ -2,7 +2,7 @@
 /* JobLog.cpp -- job log helper                                               */
 /*============================================================================*/
 
-#include "Jobs.h"
+#include "Plans.h"
 
 #include "eQK.h"
 #include "eTS.h"
@@ -12,7 +12,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 /* add a log entry for job                                                    */
 /*----------------------------------------------------------------------------*/
-void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
+void JobLog::vNote(Plans::Job* pJob, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if ( ! gpLog )
@@ -56,7 +56,7 @@ void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for job state at some point in the code                    */
 /*----------------------------------------------------------------------------*/
-void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
+void JobLog::vNoteState(Plans::Job* pJob, Stz* szPoint)
 {
 #ifdef WITH_SHARED_LOG
   if (! gpLog)
@@ -65,7 +65,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
   if (! pJob)
     return;
 
-  if (! Jobs::_bIsValidJob(pJob->eClass()))
+  if (! Plans::_bIsValidJob(pJob->eClass()))
     return;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

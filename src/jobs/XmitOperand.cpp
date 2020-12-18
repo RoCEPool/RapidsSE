@@ -2,7 +2,7 @@
 /* XmitOperand.cpp -- xmit Operand                                            */
 /*============================================================================*/
 
-#include "Jobs.h"
+#include "Plans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-XmitOperand* Jobs::_pXmitOperand(void* aAddress)
+XmitOperand* Plans::_pXmitOperand(void* aAddress)
 {
   XmitOperand* pXmitOperand= reinterpret_cast<XmitOperand*>(aAddress);
   

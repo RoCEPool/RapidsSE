@@ -1044,7 +1044,7 @@ void Step::vJobPostRecv(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run the post recv function
-  Jobs::vJob_recv(pJob);
+  Plans::vJob_recv(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
@@ -1069,7 +1069,7 @@ void Step::vJobPreSend(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   //ActLog::vAdd(pJob,AN_PRE_SEND,m_pTask->pJob());
-  Jobs::vJob_send(pJob);
+  Plans::vJob_send(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(pJob,
@@ -1409,7 +1409,7 @@ void Step::vJobSend(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   // call the job pre-send function
-  Jobs::vJob_send(pJob);  // come back to this, remove session as parameter to delete
+  Plans::vJob_send(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }

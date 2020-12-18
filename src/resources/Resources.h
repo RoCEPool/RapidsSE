@@ -464,9 +464,9 @@ EndDefine
 
 #define JOBS_fn(FNNAME) \
   \
-  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Jobs::FNNAME); \
+  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Plans::FNNAME); \
   \
-  void Jobs::FNNAME(Job* pJob) \
+  void Plans::FNNAME(Job* pJob) \
 EndDefine
 
 

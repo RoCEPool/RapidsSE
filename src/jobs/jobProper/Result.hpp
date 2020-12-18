@@ -5,7 +5,7 @@
 
 #include "eRS.h"
 
-namespace Jobs
+namespace Plans
 {
   class Result : public Object
   {

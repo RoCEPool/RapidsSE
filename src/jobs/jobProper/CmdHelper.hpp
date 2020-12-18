@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Jobs
+namespace Plans
 {
   class CmdHelper
   {

@@ -10,7 +10,7 @@
 #include "eRS.h"
 #include "eSS.h"
 
-namespace Jobs
+namespace Plans
 {
   class Job : public Focal,
               public CRM<Job>

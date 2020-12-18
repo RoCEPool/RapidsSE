@@ -59,7 +59,7 @@ namespace Grids             { class Grid;            class Node;              }
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
 namespace InfoData          { class InfoSetBase;                              }
 namespace Interface         { class SessionArray;                             }
-namespace Jobs              { class Job;             
+namespace Plans              { class Job;             
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }
@@ -119,7 +119,7 @@ using namespace Grids;
 using namespace Indexing;
 using namespace InfoData;
 using namespace Interface;
-using namespace Jobs;
+using namespace Plans;
 using namespace LexicalAnalysis;
 using namespace Load;
 using namespace Logging;
