@@ -18,7 +18,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Expressions::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();
-  DynamoCompiler::vCheckAssumptions();
   Entries::vCheckAssumptions();
   Facts::vCheckAssumptions();
   Resources::vCheckAssumptions();

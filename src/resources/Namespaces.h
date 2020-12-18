@@ -42,7 +42,7 @@ class SP_Ivl;
 class SP_Tme;
 class SP_Tsp;
                               template <i8 SPACE> class Datum_t;              }
-namespace DynamoCompiler    { class Dynamo;                                   }
+namespace Plans    { class Dynamo;                                   }
 namespace Entries           {                                                 }
 namespace Expressions       { class Expr;            class ExprVec;
                               class LogicUnit;                                }
@@ -109,7 +109,7 @@ using namespace CompilerOperators;
 using namespace ControlData;
 using namespace DataBuffers;
 using namespace Datums;
-using namespace DynamoCompiler;
+using namespace Plans;
 using namespace Entries;
 using namespace Expressions;
 using namespace Facts;

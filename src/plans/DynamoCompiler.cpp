@@ -1,22 +1,8 @@
 /*============================================================================*/
-/* DynamoCompiler.h -- Dynamo Compiler namespace                              */
+/* DynamoCompiler.cpp -- DynamoCompiler namespace functions                   */
 /*============================================================================*/
-#pragma once
 
-#include "Plans.h"
-
-//------------------------------------------------------------------------------
-
-namespace DynamoCompiler
-{
-  void vCheckAssumptions(void);
-}
-
-//------------------------------------------------------------------------------
-
-#include "Procedure.hpp"
-
-#include "Dynamo.hpp"
+#include "DynamoCompiler.h"
 
 /*============================================================================*/
 /* end                                                                        */

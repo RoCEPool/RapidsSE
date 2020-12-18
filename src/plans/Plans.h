@@ -54,6 +54,10 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 #include "JobList.hpp"
 #include "SP_Job.hpp"
 
+#include "Procedure.hpp"
+
+#include "Dynamo.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */
