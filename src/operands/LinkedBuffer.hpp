@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operands
+namespace Chunks
 {
   class LinkedBuffer : public Operand
   {

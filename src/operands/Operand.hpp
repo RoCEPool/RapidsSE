@@ -6,7 +6,7 @@
 #include "ePT.h"
 #include "eZK.h"
 
-namespace Operands
+namespace Chunks
 {
   class Operand : public AlignedObject,
                   public ListItem_t<Operand>

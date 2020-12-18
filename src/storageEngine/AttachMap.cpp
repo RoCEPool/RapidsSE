@@ -166,7 +166,7 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.szStz());
   vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
-  vInfo("Operands     : %lld \n"_Stz,   gpAttachMap->Arg.m_nOperands);
+  vInfo("Chunks     : %lld \n"_Stz,   gpAttachMap->Arg.m_nOperands);
 
   vInfo("\n"_Stz);
   vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);

@@ -2,7 +2,7 @@
 /* LinkedBuffer.cpp -- Linked Buffer                                          */
 /*============================================================================*/
 
-#include "Operands.h"
+#include "Chunks.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* Operands::_pLinkedBuffer(void* aAddress)
+LinkedBuffer* Chunks::_pLinkedBuffer(void* aAddress)
 {
   LinkedBuffer* pLinkedBuffer = reinterpret_cast<LinkedBuffer*>(aAddress);
   

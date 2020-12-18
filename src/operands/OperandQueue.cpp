@@ -2,12 +2,12 @@
 /* OperandQueue.cpp -- queue of buffers to be processed by an op              */
 /*============================================================================*/
 
-#include "Operands.h"
+#include "Chunks.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OperandQueue* Operands::_pOperandQueue(void* aAddr)
+OperandQueue* Chunks::_pOperandQueue(void* aAddr)
 {
   OperandQueue* pOperandQueue = reinterpret_cast<OperandQueue*>(aAddr);
   

@@ -2,7 +2,7 @@
 /* Definition.cpp -- Definition                                               */
 /*============================================================================*/
 
-#include "Operands.h"
+#include "Chunks.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Definition* Operands::_pDefinition(void* aAddr)
+Definition* Chunks::_pDefinition(void* aAddr)
 {
   Definition* pDefinition = reinterpret_cast<Definition*>(aAddr);
   

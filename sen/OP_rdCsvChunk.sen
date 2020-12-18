@@ -21,7 +21,7 @@
 
    args.operands attachmap::operands@ args.operands > and if
     
-      attachmap::operands@ "Queued Operands : %v" .printf
+      attachmap::operands@ "Queued Chunks : %v" .printf
       25 task::sleepMsec
  
    else

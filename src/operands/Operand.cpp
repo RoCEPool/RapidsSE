@@ -2,7 +2,7 @@
 /* Operand.cpp -- Operand Buffer                                              */
 /*============================================================================*/
 
-#include "Operands.h"
+#include "Chunks.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Operand* Operands::_pOperand(void* aAddress)
+Operand* Chunks::_pOperand(void* aAddress)
 {
   Operand* pOperand = reinterpret_cast<Operand*>(aAddress);
   
@@ -22,7 +22,7 @@ Operand* Operands::_pOperand(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid operand?                                            */
 /*----------------------------------------------------------------------------*/
-bool Operands::_bIsValidOperand(eCN eClass)
+bool Chunks::_bIsValidOperand(eCN eClass)
 {
   switch(eClass) {
     case CN_CRWBUFFER:

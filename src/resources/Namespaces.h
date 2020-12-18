@@ -72,7 +72,7 @@ namespace MetaData          { class Table;           class IdxColVec;
                               class BucketMap;       class PtnMap;            }
 namespace Metrics           {                                                 }
 namespace Oblique           { class AM;                                       }
-namespace Operands          { class Operand;                                  }
+namespace Chunks          { class Operand;                                  }
 namespace Parser            { class PlanNode;        class PlanNodeBuilder;   }
 namespace Partitioning      {
                               class PtnStream;       class TablePtn;          }
@@ -126,7 +126,7 @@ using namespace StorageEngine;
 using namespace MetaData;
 using namespace Metrics;
 using namespace Oblique;
-using namespace Operands;
+using namespace Chunks;
 using namespace Parser;
 using namespace Partitioning;
 using namespace Plans;
