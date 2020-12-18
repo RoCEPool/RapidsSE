@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* CsvValue.hpp -- Csv Value                                                  */
+/* Literal.hpp -- Literal Value                                               */
 /*============================================================================*/
 #pragma once
 
 namespace Datums
 {
   
-  class CsvValue
+  class Literal
   {
   public:
     static bool bToCell(Dtm* aCell, Column* pCol,

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CsvValue.cpp -- Csv Value                                                  */
+/* Literal.cpp -- Literal Value                                               */
 /*============================================================================*/
 
 #include "Datums.h"
@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* extract a datum from csv field value                                       */
+/* extract a datum from literal value                                         */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCell(Dtm* aCell, Column* pCol,
+bool Literal::bToCell(Dtm* aCell, Column* pCol,
                        char** aazCrs, Format* pFmt)
 {
   bool b = false;
@@ -31,7 +31,7 @@ bool CsvValue::bToCell(Dtm* aCell, Column* pCol,
       
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "CsvValue::bToCell: Invalid eDatum : %lld\n"_Stz,eDatum);
+             "Literal::bToCell: Invalid eDatum : %lld\n"_Stz,eDatum);
   }
   
   return b;
@@ -40,7 +40,7 @@ bool CsvValue::bToCell(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* sprint into target                                                         */
 /*----------------------------------------------------------------------------*/
-void CsvValue::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
+void Literal::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
 {
   eDM eDatum = pCol->eDatum();
   char* az   = (char*)szTgt;
@@ -128,7 +128,7 @@ void CsvValue::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellBcd(Dtm* aCell, Column* pCol,
+bool Literal::bToCellBcd(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Bcd snBcd;
@@ -147,7 +147,7 @@ bool CsvValue::bToCellBcd(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellBol(Dtm* aCell, Column* pCol,
+bool Literal::bToCellBol(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Bol snBol;
@@ -165,7 +165,7 @@ bool CsvValue::bToCellBol(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a date datum from csv field value                      yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellDte(Dtm* aCell, Column* pCol,
+bool Literal::bToCellDte(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Dte snDte;
@@ -183,7 +183,7 @@ bool CsvValue::bToCellDte(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a float datum from csv field value                                 */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellFlt(Dtm* aCell, Column* pCol,
+bool Literal::bToCellFlt(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Flt snFlt;
@@ -201,7 +201,7 @@ bool CsvValue::bToCellFlt(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract an integer datum from csv field value                              */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellInt(Dtm* aCell, Column* pCol,
+bool Literal::bToCellInt(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Int snInt;
@@ -227,7 +227,7 @@ bool CsvValue::bToCellInt(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellIvl(Dtm* aCell, Column* pCol,
+bool Literal::bToCellIvl(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Ivl snIvl;
@@ -245,7 +245,7 @@ bool CsvValue::bToCellIvl(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a time datum from csv field value                    hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellTme(Dtm* aCell, Column* pCol,
+bool Literal::bToCellTme(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Tme snTme;
@@ -263,7 +263,7 @@ bool CsvValue::bToCellTme(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellTsp(Dtm* aCell, Column* pCol,
+bool Literal::bToCellTsp(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
@@ -281,7 +281,7 @@ bool CsvValue::bToCellTsp(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToCellVch(Dtm* aCell, Column* pCol,
+bool Literal::bToCellVch(Dtm* aCell, Column* pCol,
                           char** aazCrs, Format* pFmt)
 {
   NEVER_REACH; // not supported yet
@@ -295,7 +295,7 @@ bool CsvValue::bToCellVch(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* test for some form of null                                                 */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces)
+bool Literal::bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces)
 {
   /*
    * This function scans aazCrs and attempts to identify the text form of a null.
@@ -377,7 +377,7 @@ bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces
 /*----------------------------------------------------------------------------*/
 /* is the string enclosed?                                                    */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bIsEnclosedString(char** aazCrs, Format* pFmt)
+bool Literal::bIsEnclosedString(char** aazCrs, Format* pFmt)
 {
   if (! pFmt->m_cEnclosedBy_Leading)
     return false;
@@ -402,7 +402,7 @@ bool CsvValue::bIsEnclosedString(char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bIsThereFieldData(char* aSrc, Format* pFmt)
+bool Literal::bIsThereFieldData(char* aSrc, Format* pFmt)
 {
   if ( ! *aSrc
       || *aSrc == pFmt->m_cFieldDelimiter
@@ -417,7 +417,7 @@ bool CsvValue::bIsThereFieldData(char* aSrc, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* test for valid field end                                                   */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bValidFieldEnd(char* aSrc, Format* pFmt)
+bool Literal::bValidFieldEnd(char* aSrc, Format* pFmt)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for end of data
@@ -434,22 +434,22 @@ bool CsvValue::bValidFieldEnd(char* aSrc, Format* pFmt)
     return true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for explicit CsvValue terminator
+  // test for explicit Literal terminator
   
   if (pFmt->m_cRecordTerminator) {
     
-    // not a valid field end if expected CsvValue terminator is not seen
+    // not a valid field end if expected Literal terminator is not seen
     if (*aSrc != pFmt->m_cRecordTerminator)
       return false;
     
-    // test we see the CsvValue end after the CsvValue termintor
+    // test we see the Literal end after the Literal termintor
     bool bValidEnd = bValidRecordEnd(aSrc+1,pFmt);
     
     return bValidEnd;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for explicit CsvValue ends
+  // test for explicit Literal ends
   
   bool bValidEnd = bValidRecordEnd(aSrc,pFmt);
   
@@ -459,7 +459,7 @@ bool CsvValue::bValidFieldEnd(char* aSrc, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* test for valid record end                                                  */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bValidRecordEnd(char* aSrc, Format* pFmt)
+bool Literal::bValidRecordEnd(char* aSrc, Format* pFmt)
 {
   switch (pFmt->m_eLineEnd) {
       

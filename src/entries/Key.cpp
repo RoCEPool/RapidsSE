@@ -266,7 +266,7 @@ void Key::vShow(IndexDef* pIndexDef)
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     }
     else {
-      CsvValue::vSprint((Stz*)caLiteral,(Dtm*)ayElm,pCol);
+      Literal::vSprint((Stz*)caLiteral,(Dtm*)ayElm,pCol);
     }
     
     vTrace(" Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);

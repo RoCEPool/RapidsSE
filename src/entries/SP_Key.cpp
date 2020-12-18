@@ -115,7 +115,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     if (eDatum == DM_VCH)
       nElmBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     else
-      CsvValue::vSprint((Stz*)caLiteral,ayElm,pCol);
+      Literal::vSprint((Stz*)caLiteral,ayElm,pCol);
  
     if (i_IdxCol)
       StrLib::vConcat(m_caResult,", ");

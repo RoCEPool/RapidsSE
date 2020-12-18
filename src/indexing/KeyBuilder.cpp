@@ -40,7 +40,7 @@ void KeyBuilder::vAddElement_gen(EntWrk* pEntWrk, Column* pCol,
   
   Dtm* aCell = (Dtm*)azDst;
   
-  bool b = CsvValue::bToCell(aCell,pCol,&azSrc,pFmt);
+  bool b = Literal::bToCell(aCell,pCol,&azSrc,pFmt);
   nElmSize = sizeof(Dtm);
   pEntWrk->vIncElmSeqSize(nElmSize);
 }
@@ -56,7 +56,7 @@ void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol,
   pEntWrk->aEnt()->vKind(KE_INT);
 
   Dtm* aCell = pEntWrk->aEnt()->aIntElm0();
-  bool b = CsvValue::bToCell(aCell,pCol,&azSrc,pFmt);
+  bool b = Literal::bToCell(aCell,pCol,&azSrc,pFmt);
 }
 
 /*============================================================================*/

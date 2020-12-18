@@ -42,7 +42,7 @@ typedef Datum_t<C_16KB> Datum;
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
 
-#include "CsvValue.hpp"
+#include "Literal.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
