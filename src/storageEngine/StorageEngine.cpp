@@ -43,9 +43,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Tasking::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Utilities::vCheckAssumptions();
-
-  // third party??
-
 }
 
 /*----------------------------------------------------------------------------*/
