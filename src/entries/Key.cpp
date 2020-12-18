@@ -66,8 +66,8 @@ eKC Key::eCompare(Key* aKey_l, Key* aKey_r)
   i8 nKeyBytes_l = aKey_l->nElmSeqSize();
   i8 nKeyBytes_r = aKey_r->nElmSeqSize();
   
-  byte* ayKeyBytes_l = aKey_l->ayElmSeq_dtm();
-  byte* ayKeyBytes_r = aKey_r->ayElmSeq_dtm();
+  Dtm* ayKeyBytes_l = aKey_l->ayElmSeq_dtm();
+  Dtm* ayKeyBytes_r = aKey_r->ayElmSeq_dtm();
   
   i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
   
@@ -172,14 +172,14 @@ i8 Key::iGetIntElm(void)
 i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 {
   i8 nBytes;
-  byte* ayCursor = ayElmSeq_dtm();
+  Dtm* ayCursor = ayElmSeq_dtm();
   i8 iVal = C_UNKNOWN;
   
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
     
     Column* pCol = pIndexDef->pGetColumn(i_Col);
     
-    byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
+    byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,(byte**)&ayCursor);
   
     if (i_Element == i_Col) {
       iVal  = *(i8*)ayElm;
@@ -244,7 +244,7 @@ void Key::vShow(IndexDef* pIndexDef)
   
   i8 nBytes;
   
-  byte* ayCursor = ayElmSeq_dtm();
+  Dtm* ayCursor = ayElmSeq_dtm();
   
   char caLiteral[128];
   
@@ -252,7 +252,7 @@ void Key::vShow(IndexDef* pIndexDef)
     
     Column* pCol = pIndexDef->pGetColumn(i_Col);
     
-    byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
+    byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,(byte**)&ayCursor);
     
     eDM eDatum = pCol->eDatum();
     

@@ -315,7 +315,7 @@ void EntWrk::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 /* get byte sequence of key                                                   */
 /*----------------------------------------------------------------------------*/
-byte* EntWrk::ayElmSeq_dtm(void)
+Dtm* EntWrk::ayElmSeq_dtm(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -339,7 +339,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayElmSeq_dtm(),m_xEnt.nElmSeqSize());
+  i8 iHash = HshLib::iHash((byte*)ayElmSeq_dtm(),m_xEnt.nElmSeqSize());
   
   return iHash;
 }
@@ -582,11 +582,11 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
     return;
   }
   
-  byte* ayByteSeq = pEntry->ayElmSeq_dtm();
+  Dtm* ayByteSeq = pEntry->ayElmSeq_dtm();
   i8 nKeyBytes = pEntry->nElmSeqSize();
   RASSERT(nKeyBytes % 8 == 0);
   
-  vElmSeq(nKeyBytes,ayByteSeq);
+  vElmSeq(nKeyBytes,(byte*)ayByteSeq);
 }
 
 /*----------------------------------------------------------------------------*/

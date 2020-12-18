@@ -98,7 +98,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  byte* ayCursor = aKey->ayElmSeq_dtm();
+  Dtm* ayCursor = aKey->ayElmSeq_dtm();
   
 
   StrLib::vSprint((Stz*)m_caResult,"Key[%lldB]; "_Stz,aKey->nElmSeqSize());
@@ -108,7 +108,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     
     Column* pCol = pIndexDef->pGetColumn(i_IdxCol);
     
-    Dtm* ayElm = (Dtm*)EntWrk::ayEachElm(pCol,nElmBytes,&ayCursor);
+    Dtm* ayElm = (Dtm*)EntWrk::ayEachElm(pCol,nElmBytes,(byte**)&ayCursor);
     
     eDM eDatum = pCol->eDatum();
     

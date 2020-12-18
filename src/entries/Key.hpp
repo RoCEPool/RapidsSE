@@ -41,9 +41,9 @@ namespace Entries
     /*------------------------------------------------------------------------*/
     /* get the element sequence of this key                                   */
     /*------------------------------------------------------------------------*/
-    inline byte* ayElmSeq_dtm(void)
+    inline Dtm* ayElmSeq_dtm(void)
     {
-      return aAdd<byte*>(this,sizeof(m_nElmSeqSize));
+      return aAdd<Dtm*>(this,sizeof(m_nElmSeqSize));
     }
   };
   
