@@ -167,6 +167,16 @@ i8 Ent::iIntElm0(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dtm/cell address of int elment 0 (permitted when m_uKind is KE_INT)    */
+/*----------------------------------------------------------------------------*/
+Dtm* Ent::aIntElm0(void)
+{
+  ASSERT(KE_INT == m_xRef.eKind());
+  
+  return (Dtm*) & m_iIntElm0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set integer elment 0 (permitted when m_uKind is KE_INT)                    */
 /*----------------------------------------------------------------------------*/
 void Ent::vIntElm0(i8 iIntElm0)

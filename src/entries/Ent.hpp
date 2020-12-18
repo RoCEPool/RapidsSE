@@ -62,6 +62,7 @@ namespace Entries
 
     void  vFree(bool bFree);
   
+    Dtm*  aIntElm0(void);
     i8    iIntElm0(void);
     void  vIntElm0(i8 iIntElm0);
     i8    iItem(void);
