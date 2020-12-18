@@ -297,7 +297,7 @@ byte* EntWrk::ayElmNext(void)
   
   i8 nElmSeqSize = m_xEnt.nElmSeqSize();
 
-  byte* ayNextElm = aAdd<byte*>(ayElmSeq(),nElmSeqSize);
+  byte* ayNextElm = aAdd<byte*>(ayElmSeq_dtm(),nElmSeqSize);
 
   return ayNextElm;
 }
@@ -315,11 +315,11 @@ void EntWrk::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 /* get byte sequence of key                                                   */
 /*----------------------------------------------------------------------------*/
-byte* EntWrk::ayElmSeq(void)
+byte* EntWrk::ayElmSeq_dtm(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xEnt.ayElmSeq();
+  return m_xEnt.ayElmSeq_dtm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +339,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayElmSeq(),m_xEnt.nElmSeqSize());
+  i8 iHash = HshLib::iHash(ayElmSeq_dtm(),m_xEnt.nElmSeqSize());
   
   return iHash;
 }
@@ -412,7 +412,7 @@ void EntWrk::vElmSeq(i8 nElmSeqSize, byte* ayElmSeq)
   
   m_xEnt.vElmSeqSize(nElmSeqSize);
   
-  MemLib::vCopy(this->ayElmSeq(),ayElmSeq,nElmSeqSize,CN_ENTWRK);
+  MemLib::vCopy(this->ayElmSeq_dtm(),ayElmSeq,nElmSeqSize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,7 +582,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
     return;
   }
   
-  byte* ayByteSeq = pEntry->ayElmSeq();
+  byte* ayByteSeq = pEntry->ayElmSeq_dtm();
   i8 nKeyBytes = pEntry->nElmSeqSize();
   RASSERT(nKeyBytes % 8 == 0);
   

@@ -471,7 +471,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
       if (aToEntry == aNextEntry_sl)
         break;
       
-      Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
+      Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq_dtm());
       
       i8 iNextInt = aNextEntry_sl->iIntElm0();
       i8 iWithInt = *(i8*)aWithKey;

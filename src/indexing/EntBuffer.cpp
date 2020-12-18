@@ -154,7 +154,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     
     Rrf xRef = aRightH0_Entry->rxRef();
     eKE eEntKind = xRef.eKind();
-    byte* ayElmSeq = aRightH0_Entry->ayElmSeq();
+    byte* ayElmSeq = aRightH0_Entry->ayElmSeq_dtm();
     
     i8 nElmSeqSize = aRightH0_Entry->nElmSeqSize();
     i8 nOffsets = aRightH0_Entry->nSkipLevels();
@@ -277,7 +277,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   
   Rrf xRef = aFirstL0_ent->rxRef();
   eKE eEntKind = xRef.eKind();
-  byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
+  byte* aKeyBytes = aFirstL0_ent->ayElmSeq_dtm();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
   i8 nLevels = aFirstL0_ent->nSkipLevels();
   

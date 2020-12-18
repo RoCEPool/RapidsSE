@@ -316,7 +316,7 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
       if (aToEntry == aNextEntry_sl)
         break;
       
-      Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
+      Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq_dtm());
       
       bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
       

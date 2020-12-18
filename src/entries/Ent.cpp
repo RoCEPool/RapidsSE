@@ -98,9 +98,9 @@ eCN Ent::eClass(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the element bytes of the key in this entry                  */
 /*----------------------------------------------------------------------------*/
-byte* Ent::ayElmSeq(void)
+byte* Ent::ayElmSeq_dtm(void)
 {
-  byte* ayElmSeq = aKey()->ayElmSeq();
+  byte* ayElmSeq = aKey()->ayElmSeq_dtm();
   
   ASSERT(ayElmSeq == aAdd<byte*>(this,sizeof(Ent)));
   
@@ -417,8 +417,8 @@ void Ent::vSetEntry(Ent* aFromEntry)
     m_iIntElm0 = iInt;
   }
   else {
-    byte* aDstKey  = this->ayElmSeq();
-    byte* aSrcKey  = aFromEntry->ayElmSeq();
+    byte* aDstKey  = this->ayElmSeq_dtm();
+    byte* aSrcKey  = aFromEntry->ayElmSeq_dtm();
     i8    nKeySize = aFromEntry->nElmSeqSize();
   
     m_xKey.vElmSeqSize(nKeySize);
