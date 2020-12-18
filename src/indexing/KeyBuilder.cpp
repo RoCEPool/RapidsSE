@@ -40,7 +40,7 @@ void KeyBuilder::vAddElement_gen(EntWrk* pEntWrk, Column* pCol,
   
   Datum oDatum;
   
-  bool b = CsvValue::bToDtm(&oDatum,pCol,&azSrc,pFmt);
+  bool b = CsvValue::bToDatum(&oDatum,pCol,&azSrc,pFmt);
   ASSERT(b);
   
   if (oDatum.bIsNull()) {
@@ -65,7 +65,7 @@ void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol,
   
   Datum oDatum;
   
-  bool b = CsvValue::bToDtm(&oDatum,pCol,&azSrc,pFmt);
+  bool b = CsvValue::bToDatum(&oDatum,pCol,&azSrc,pFmt);
   ASSERT(b);
   
   pEntWrk->aEnt()->vKind(KE_INT);
