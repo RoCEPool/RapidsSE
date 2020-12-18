@@ -108,14 +108,14 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     
     Column* pCol = pIndexDef->pGetColumn(i_IdxCol);
     
-    byte* ayElm = EntWrk::ayEachElm(pCol,nElmBytes,&ayCursor);
+    Dtm* ayElm = (Dtm*)EntWrk::ayEachElm(pCol,nElmBytes,&ayCursor);
     
     eDM eDatum = pCol->eDatum();
     
     if (eDatum == DM_VCH)
       nElmBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     else
-      CsvValue::vInto((Stz*)caLiteral,ayElm,pCol);
+      CsvValue::vSprint((Stz*)caLiteral,ayElm,pCol);
  
     if (i_IdxCol)
       StrLib::vConcat(m_caResult,", ");

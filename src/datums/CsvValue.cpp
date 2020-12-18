@@ -38,33 +38,89 @@ bool CsvValue::bToCell(Dtm* aCell, Column* pCol,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a datum from csv field value                                       */
+/* sprint into target                                                         */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatum(Datum_h* pDatum, Column* pCol,
-                        char** aazCrs, Format* pFmt)
+void CsvValue::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
 {
-  bool b = false;
-  
   eDM eDatum = pCol->eDatum();
-
+  char* az   = (char*)szTgt;
+  i8 iValue  = *(i8*)avSrc;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  if (C_DATUM_NULL == iValue) {
+    StrLib::vCopy(az,(char*)C_NULL);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   switch (eDatum) {
-    case DM_BCD: b = bToDatumBcd(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_BOL: b = bToDatumBol(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_DTE: b = bToDatumDte(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_FLT: b = bToDatumFlt(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_INT: b = bToDatumInt(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_IVL: b = bToDatumIvl(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_TME: b = bToDatumTme(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_TSP: b = bToDatumTsp(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_VCH: b = bToDatumVch(pDatum,pCol,aazCrs,pFmt); break;
+      
+    case DM_BCD: {
+      SP_Bcd SP_Bcd;
+      StrLib::vCopy(az,(char*)SP_Bcd.sz(iValue));
+      break;
+    }
+      
+    case DM_BOL: {
+      SP_Bol SP_Bol;
+      StrLib::vCopy(az,(char*)SP_Bol.sz(iValue));
+      break;
+    }
+      
+    case DM_DTE: {
+      SP_Dte SP_Dte;
+      StrLib::vCopy(az,(char*)SP_Dte.sz(iValue));
+      break;
+    }
+      
+    case DM_FLT: {
+      SP_Flt SP_Flt;
+      StrLib::vCopy(az,(char*)SP_Flt.sz(*(d8*)avSrc));
+      break;
+    }
+      
+    case DM_INT: {
+      SP_Int spInt;
+      StrLib::vCopy(az,(char*)spInt.sz(iValue));
+      break;
+    }
+      
+    case DM_IVL: {
+      SP_Ivl spIvl;
+      StrLib::vCopy(az,(char*)spIvl.sz(iValue));
+      break;
+    }
+      
+    case DM_TME: {
+      SP_Tme SP_Tme;
+      StrLib::vCopy(az,(char*)SP_Tme.sz(iValue));
+      break;
+    }
+      
+    case DM_TSP: {
+      SP_Tsp SP_Tsp;
+      StrLib::vCopy(az,(char*)SP_Tsp.sz(iValue));
+      break;
+    }
+      
+    case DM_VCH: {
+      SP_Vch SP_Vch;
+      StrLib::vCopy(az,(char*)SP_Vch.sz((char*)avSrc));
+      break;
+    }
       
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "CsvValue::bToDatum: Invalid eDatum : %lld\n"_Stz,eDatum);
+             "Sprint::Into: Invalid eDatum: %lld\n"_Stz,
+             eDatum);
   }
   
-  return b;
 }
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -233,192 +289,8 @@ bool CsvValue::bToCellVch(Dtm* aCell, Column* pCol,
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* extract a decimal datum from csv field value                               */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumBcd(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Bcd snBcd;
-  
-  try {
-    pDatum->vBcd(snBcd.i(aazCrs,pCol->iColumnLength(), pCol->iColumnScale(),pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a boolean datum from csv field value                               */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumBol(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Bol snBol;
-  
-  try {
-    pDatum->vBol(snBol.i(aazCrs,pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a date datum from csv field value                      yyyy-mo-ddZ */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumDte(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Dte snDte;
-  
-  try {
-    pDatum->vDte(snDte.i(aazCrs,pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a float datum from csv field value                                 */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumFlt(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Flt snFlt;
-  
-  try {
-    pDatum->vFlt(snFlt.d(aazCrs,pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract an integer datum from csv field value                              */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumInt(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Int snInt;
-  
-  try {
-    pDatum->vInt(snInt.i(aazCrs,pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  // ignore any trailing digits (after optional '.')
-  if ('.' == **aazCrs) {
-    
-    // skip the '.' and any digits
-    (*aazCrs)++;
-    StrLib::vSkipDigits(aazCrs);
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract an interval datum from csv field value                             */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumIvl(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Ivl snIvl;
-  
-  try {
-    pDatum->vIvl(snIvl.i(aazCrs,pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a time datum from csv field value                    hh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumTme(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Tme snTme;
-  
-  try {
-    pDatum->vTme(snTme.i(aazCrs,pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumTsp(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Tsp snTsp;
-  
-  try {
-    pDatum->vTsp(snTsp.i(aazCrs,pFmt));
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a varchar datum from csv field value                               */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bToDatumVch(Datum_h* pDatum, Column* pCol,
-                           char** aazCrs, Format* pFmt)
-{
-  SN_Vch snVch;
-  bool bSawEnclosedLeading = false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for enclosed
-  bSawEnclosedLeading = bIsEnclosedString(aazCrs,pFmt);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // varchar field value processing
-  
-  try {
-    
-    i8 nChars = 0;
-    * pDatum = snVch.sz(aazCrs,pCol->iColumnLength(),pFmt,bSawEnclosedLeading,nChars);
-
-    //pDatum->vStzDump();
-
-  }
-  catch (Exception xException) {
-    return false;
-  }
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* test for some form of null                                                 */
@@ -496,89 +368,6 @@ bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint into target                                                         */
-/*----------------------------------------------------------------------------*/
-void CsvValue::vInto(Stz *szTgt, void *avSrc, Column *pCol)
-{
-  eDM eDatum = pCol->eDatum();
-  char* az   = (char*)szTgt;
-  i8 iValue  = *(i8*)avSrc;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  if (C_DATUM_NULL == iValue) {
-    StrLib::vCopy(az,(char*)C_NULL);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  switch (eDatum) {
-      
-    case DM_BCD: {
-      SP_Bcd SP_Bcd;
-      StrLib::vCopy(az,(char*)SP_Bcd.sz(iValue));
-      break;
-    }
-      
-    case DM_BOL: {
-      SP_Bol SP_Bol;
-      StrLib::vCopy(az,(char*)SP_Bol.sz(iValue));
-      break;
-    }
-      
-    case DM_DTE: {
-      SP_Dte SP_Dte;
-      StrLib::vCopy(az,(char*)SP_Dte.sz(iValue));
-      break;
-    }
-      
-    case DM_FLT: {
-      SP_Flt SP_Flt;
-      StrLib::vCopy(az,(char*)SP_Flt.sz(*(d8*)avSrc));
-      break;
-    }
-      
-    case DM_INT: {
-      SP_Int spInt;
-      StrLib::vCopy(az,(char*)spInt.sz(iValue));
-      break;
-    }
-      
-    case DM_IVL: {
-      SP_Ivl spIvl;
-      StrLib::vCopy(az,(char*)spIvl.sz(iValue));
-      break;
-    }
-      
-    case DM_TME: {
-      SP_Tme SP_Tme;
-      StrLib::vCopy(az,(char*)SP_Tme.sz(iValue));
-      break;
-    }
-      
-    case DM_TSP: {
-      SP_Tsp SP_Tsp;
-      StrLib::vCopy(az,(char*)SP_Tsp.sz(iValue));
-      break;
-    }
-      
-    case DM_VCH: {
-      SP_Vch SP_Vch;
-      StrLib::vCopy(az,(char*)SP_Vch.sz((char*)avSrc));
-      break;
-    }
-      
-    default:
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "Sprint::Into: Invalid eDatum: %lld\n"_Stz,
-             eDatum);
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/

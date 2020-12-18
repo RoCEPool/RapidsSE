@@ -58,28 +58,6 @@ void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol,
   Dtm* aCell = pEntWrk->aEnt()->aIntElm0();
   bool b = CsvValue::bToCell(aCell,pCol,&azSrc,pFmt);
 }
-/*----------------------------------------------------------------------------*/
-//void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol,
-//                                 Stz* szElementSrc, Format* pFmt)
-//{
-//  char* azSrc = (char*)szElementSrc;
-//
-//  //ASSERT (DM_INT == pCol->eDatum());
-//
-//  Datum oDatum;
-//
-//  bool b = CsvValue::bToDatum(&oDatum,pCol,&azSrc,pFmt);
-//  ASSERT(b);
-//
-//  pEntWrk->aEnt()->vKind(KE_INT);
-//
-//  if (oDatum.bIsNull()) {
-//    pEntWrk->aEnt()->vIntElm0(C_DATUM_NULL);
-//    return;
-//  }
-//
-//  pEntWrk->aEnt()->vIntElm0(oDatum.iInt());
-//}
 
 /*============================================================================*/
 /* end                                                                        */
