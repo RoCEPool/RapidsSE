@@ -2,13 +2,13 @@
 /* Dynamo.cpp -- Dynamo (pipeline plan compiler)                              */
 /*============================================================================*/
 
-#include "DynamoCompiler.h"
+#include "Plans.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(DynamoCompiler,Dynamo,CN_DYNAMO)
+__pCastFunction(Plans,Dynamo,CN_DYNAMO)
 __aNewFunction(Dynamo,CN_DYNAMO)
 __vDeleteFunction(Dynamo,CN_DYNAMO)
 __aFooterFunction(Dynamo)

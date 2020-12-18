@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DynamoCompiler
+namespace Plans
 {
   class Procedure
   {
