@@ -13,58 +13,59 @@
 /* add element to entwrk key                                                  */
 /*----------------------------------------------------------------------------*/
 void KeyBuilder::vAddElement(eKE eKeyKind, EntWrk* pEntWrk, Column* pCol,
-                             Stz* szSrc, Format* pFmt)
+                             Stz* szElementSrc, Format* pFmt)
 {
   if (eKeyKind == KE_INT)
-    vAddElement_int(pEntWrk, pCol, szSrc, pFmt);
+    vAddElement_int(pEntWrk, pCol, szElementSrc, pFmt);
   else
-    vAddElement_gen(pEntWrk, pCol, szSrc, pFmt);
+    vAddElement_gen(pEntWrk, pCol, szElementSrc, pFmt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add element to entwrk key                                                  */
 /*----------------------------------------------------------------------------*/
 void KeyBuilder::vAddElement_gen(EntWrk* pEntWrk, Column* pCol,
-                             Stz* szSrc, Format* pFmt)
+                                 Stz* szElementSrc, Format* pFmt)
 {
   i8 nElmSize;
   
-  char* aSrc = (char*)szSrc;
-  char* aDst = (char*)pEntWrk->ayElmNext();
+  char* azSrc = (char*)szElementSrc;
+  char* azDst = (char*)pEntWrk->ayElmNext();
   
   if (DM_VCH == pCol->eDatum()) {
-    nElmSize = StrLib::iWordFlip(aDst,aSrc);
+    nElmSize = StrLib::iWordFlip(azDst,azSrc);
     pEntWrk->vIncElmSeqSize(nElmSize);
     return;
   }
   
   Datum oDatum;
   
-  bool b = CsvValue::bToDtm(&oDatum,pCol,&aSrc,pFmt);
+  bool b = CsvValue::bToDtm(&oDatum,pCol,&azSrc,pFmt);
   ASSERT(b);
   
   if (oDatum.bIsNull()) {
-    nElmSize = Null::nCopy((byte*)aDst);
+    nElmSize = Null::nCopy((byte*)azDst);
     pEntWrk->vIncElmSeqSize(nElmSize);
     return;
   }
   
-  nElmSize = Dtm::nCopy((byte*)aDst,oDatum.iInt());
+  nElmSize = Dtm::nCopy((byte*)azDst,oDatum.iInt());
   pEntWrk->vIncElmSeqSize(nElmSize);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add element to entwrk key                                                  */
 /*----------------------------------------------------------------------------*/
-void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol, Stz* szSrc, Format* pFmt)
+void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol,
+                                 Stz* szElementSrc, Format* pFmt)
 {
-  char* aSrc = (char*)szSrc;
+  char* azSrc = (char*)szElementSrc;
   
   //ASSERT (DM_INT == pCol->eDatum());
   
   Datum oDatum;
   
-  bool b = CsvValue::bToDtm(&oDatum,pCol,&aSrc,pFmt);
+  bool b = CsvValue::bToDtm(&oDatum,pCol,&azSrc,pFmt);
   ASSERT(b);
   
   pEntWrk->aEnt()->vKind(KE_INT);

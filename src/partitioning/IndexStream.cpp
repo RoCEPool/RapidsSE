@@ -274,7 +274,8 @@ void IndexStream::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* position                                                                   */
 /*----------------------------------------------------------------------------*/
-void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey, eRO eUpperRelnOp, Stz* szUpperKey)
+void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey,
+                        eRO eUpperRelnOp, Stz* szUpperKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
   
