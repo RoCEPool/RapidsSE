@@ -165,7 +165,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     xLeftEntWrk.vRef(xRef);
     
     if (KE_GENERAL == eEntKind) {
-      xLeftEntWrk.vElmSeq(nElmSeqSize,(byte*)ayElmSeq);
+      xLeftEntWrk.vElmSeq_dtm(nElmSeqSize,(byte*)ayElmSeq);
     }
     else {
       i8 iVal = aRightH0_Entry->iIntElm0();
@@ -291,7 +291,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   xFirstH1_ent.vRef(xRef);
   
   if (KE_GENERAL == eEntKind) {
-    xFirstH1_ent.vElmSeq(nKeyBytes,(byte*)aKeyBytes);
+    xFirstH1_ent.vElmSeq_dtm(nKeyBytes,(byte*)aKeyBytes);
   }
   else {
     i8 iVal = aFirstL0_ent->iIntElm0();

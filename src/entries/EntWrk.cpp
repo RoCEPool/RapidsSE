@@ -185,9 +185,9 @@ void EntWrk::vAppendInt(i8 iArg)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   if (KE_GENERAL == m_xEnt.eKind()) {
-    byte* ayDst = ayElmNext_dtm();
+    Dtm* ayDst = ayElmNext_dtm();
   
-    i8 nElmSize = Dtm::nCopy(ayDst,iArg);
+    i8 nElmSize = Dtm::nCopy((byte*)ayDst,iArg);
   
     vIncElmSeqSize(nElmSize);
   }
@@ -204,8 +204,8 @@ void EntWrk::vAppendMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = ayElmNext_dtm();
-  Dtm::vCopy(ayDst,(i8)C_DATUM_MINUS_INFINITY);
+  Dtm* ayDst = ayElmNext_dtm();
+  Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_MINUS_INFINITY);
 
   vIncElmSeqSize(C_BYTES_PER_WORD);
 }
@@ -231,8 +231,8 @@ void EntWrk::vAppendPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
    
-  byte* ayDst = ayElmNext_dtm();
-  Dtm::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
+  Dtm* ayDst = ayElmNext_dtm();
+  Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_PLUS_INFINITY);
   
   vIncElmSeqSize(C_BYTES_PER_WORD);
 }
@@ -244,9 +244,9 @@ void EntWrk::vAppendRef(Rrf xwArg)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = ayElmNext_dtm();
+  Dtm* ayDst = ayElmNext_dtm();
   
-  MemLib::vCopy(ayDst,&xwArg,8,CN_ENTWRK);
+  MemLib::vCopy((byte*)ayDst,&xwArg,8,CN_ENTWRK);
   
   i8 nElmSize = 8;
   vIncElmSeqSize(nElmSize);
@@ -291,13 +291,13 @@ void EntWrk::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* get address where next element would be added                              */
 /*----------------------------------------------------------------------------*/
-byte* EntWrk::ayElmNext_dtm(void)
+Dtm* EntWrk::ayElmNext_dtm(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nElmSeqSize = m_xEnt.nElmSeqSize();
 
-  byte* ayNextElm = aAdd<byte*>(ayElmSeq_dtm(),nElmSeqSize);
+  Dtm* ayNextElm = aAdd<Dtm*>(ayElmSeq_dtm(),nElmSeqSize);
 
   return ayNextElm;
 }
@@ -406,7 +406,7 @@ void EntWrk::vItem(i8 iItem)
 /*----------------------------------------------------------------------------*/
 /* set element sequence size and element sequence of key                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vElmSeq(i8 nElmSeqSize, byte* ayElmSeq)
+void EntWrk::vElmSeq_dtm(i8 nElmSeqSize, byte* ayElmSeq)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -586,7 +586,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   i8 nKeyBytes = pEntry->nElmSeqSize();
   RASSERT(nKeyBytes % 8 == 0);
   
-  vElmSeq(nKeyBytes,(byte*)ayByteSeq);
+  vElmSeq_dtm(nKeyBytes,(byte*)ayByteSeq);
 }
 
 /*----------------------------------------------------------------------------*/
