@@ -26,7 +26,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Indexing::vCheckAssumptions();
   InfoData::vCheckAssumptions();
   Interface::vCheckAssumptions();
-  Jobs::vCheckAssumptions();
   LexicalAnalysis::vCheckAssumptions();
   Load::vCheckAssumptions();
   MetaData::vCheckAssumptions();
