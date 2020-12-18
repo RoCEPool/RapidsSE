@@ -2,7 +2,7 @@
 /* StatisticsNode.cpp - An mutable node that holds stats for the user's query */
 /*============================================================================*/
 
-#include "../Parser.h"
+#include "parser/stages/parser/Parser.h"
 #include "StatisticsNode.hpp"
 
 

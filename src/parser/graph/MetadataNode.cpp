@@ -2,7 +2,7 @@
 /* MetadataNode.cpp - An mutable node that holds metadata for the user's query*/
 /*============================================================================*/
 
-#include "../Parser.h"
+#include "parser/stages/parser/Parser.h"
 #include "MetadataNode.hpp"
 
 

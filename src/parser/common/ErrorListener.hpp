@@ -4,7 +4,7 @@
 #pragma once
 
 #include "BaseErrorListener.h"
-#include "Parser.h"
+#include "parser/stages/parser/Parser.h"
 
 namespace Parser
 {

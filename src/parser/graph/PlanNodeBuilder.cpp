@@ -2,7 +2,7 @@
 /* PlanNodeBuilder.cpp - A way to build PlanNodes                             */
 /*============================================================================*/
 
-#include "../Parser.h"
+#include "parser/stages/parser/Parser.h"
 #include "PlanNodeBuilder.hpp"
 
 // Names of nodes

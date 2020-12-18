@@ -2,7 +2,7 @@
 /* MutablePlanNode.cpp - An node of the plan graph that can be modified       */
 /*============================================================================*/
 
-#include "../Parser.h"
+#include "parser/stages/parser/Parser.h"
 #include "MutablePlanNode.hpp"
 
 

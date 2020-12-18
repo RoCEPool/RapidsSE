@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "ErrorListener.hpp"
-#include "Parser.h"
+#include "parser/stages/parser/Parser.h"
 
 using namespace Parser;
 

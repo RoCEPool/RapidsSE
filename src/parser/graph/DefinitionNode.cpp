@@ -2,7 +2,7 @@
 /* DefinitionNode.cpp - A node that holds definitions of other nodes          */
 /*============================================================================*/
 
-#include "../Parser.h"
+#include "parser/stages/parser/Parser.h"
 #include "DefinitionNode.hpp"
 
 
