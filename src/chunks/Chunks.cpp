@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Chunks::vCheckAssumptions(void)
 {
+  ALWAYS(CacheLine::bMultipleCacheLines(sizeof(Operand)));
+  ALWAYS(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
 }
 
 /*============================================================================*/

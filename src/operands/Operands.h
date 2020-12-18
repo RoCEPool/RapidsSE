@@ -7,17 +7,9 @@
 
 //------------------------------------------------------------------------------
 
-namespace Operands
-{
-  void vCheckAssumptions(void);
-}
 
 //------------------------------------------------------------------------------
 
-#include "Operand.hpp"
-#include "LinkedBuffer.hpp"
-#include "Definition.hpp"
-#include "OperandQueue.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

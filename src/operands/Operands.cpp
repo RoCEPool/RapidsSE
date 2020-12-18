@@ -4,14 +4,6 @@
 
 #include "Operands.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Operands::vCheckAssumptions(void)
-{
-  ALWAYS(CacheLine::bMultipleCacheLines(sizeof(Operand)));
-  ALWAYS(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
-}
 
 /*============================================================================*/
 /* end                                                                        */

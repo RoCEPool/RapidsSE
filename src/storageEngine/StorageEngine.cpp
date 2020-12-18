@@ -29,7 +29,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Load::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
-  Operands::vCheckAssumptions();
   Parser::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
   Plans::vCheckAssumptions();
