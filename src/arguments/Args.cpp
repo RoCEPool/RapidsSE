@@ -233,6 +233,7 @@ bool Args::bParse(i8 argc, s256 argv[])
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   
   i8 i_BootNode = 0;
+  i8 i_HeartbeatNode = 0;
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
@@ -354,6 +355,22 @@ bool Args::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--gridTest"_Stz)) {
       m_bGridTest = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Heartbeat command is here, using the same syntax as --node command, we can finalize
+    // the command syntax later, but for now to have the code in place
+    if (szArg->bSame("--heartbeat"_Stz)) {
+      m_xHeartbeatNode[i_HeartbeatNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xHeartbeatNode[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xHeartbeatNode[i_HeartbeatNode].m_iPortNo    = argv[++i_Arg].iToI8();
+      i_HeartbeatNode++;
+
+      if (i_HeartbeatNode > C_MAX_NODES) {
+        vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
+        return false;
+      }
       continue;
     }
     
@@ -839,6 +856,16 @@ bool Args::bParse(i8 argc, s256 argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // if --heartbeat was defined just set the m_nHeartbeatNodes
+  // for Broadcast mode, this is 1
+  if (i_HeartbeatNode) {
+
+    // set no. of HB nodes
+    m_nHeartbeatNodes = i_HeartbeatNode;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // if --node was defined just set the m_nBootNodes
   if (i_BootNode) {
     
@@ -976,6 +1003,13 @@ void Args::vPrintStartupInfo(void)
       m_xBootNode[i_Index].m_sNodeName.azChar(),
       m_xBootNode[i_Index].m_sIPAddress.azChar(),
       m_xBootNode[i_Index].m_iPortNo);
+  }
+
+  for (i8 i_Index = 0; i_Index < m_nHeartbeatNodes; i_Index++) {
+    vTrace("  --heartbeat %s %s %lld\n"_Stz,
+           m_xHeartbeatNode[i_Index].m_sNodeName.azChar(),
+           m_xHeartbeatNode[i_Index].m_sIPAddress.azChar(),
+           m_xHeartbeatNode[i_Index].m_iPortNo);
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nPtnsPerTable);

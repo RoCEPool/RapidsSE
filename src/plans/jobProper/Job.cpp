@@ -790,7 +790,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
   _precondition_(_ADDRESS_,_MAGIC_);
 
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
+  if (! AM::bStorageEngine())
     return;
   
   va_list xArgs;

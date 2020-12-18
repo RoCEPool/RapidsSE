@@ -40,6 +40,14 @@ namespace Arguments
     } m_xBootNode[C_MAX_NODES];
     i8   m_iThisNode;      // this node no in the m_xBootNode list       //! FIX
 
+    // Heartbeat configuration
+    i8    m_nHeartbeatNodes;
+    struct {
+      s32 m_sNodeName;     // name of node
+      s32 m_sIPAddress;    // ip address of node
+      i8  m_iPortNo;       // port number
+    } m_xHeartbeatNode[C_MAX_NODES];
+
     TagSet m_oArgTagSet;  // arguments tag set
   
     // command
