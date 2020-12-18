@@ -9,7 +9,7 @@ namespace Datums
   class CsvValue
   {
   public:
-    static bool bToCell(Datum_h* pDatum, Column* pCol,
+    static bool bToCell(Dtm* aDtm, Column* pCol,
                         char** aazCrs, Format* pFmt);
   
     static bool bToDatum(Datum_h* pDatum, Column* pCol,
@@ -22,23 +22,23 @@ namespace Datums
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
   
-    static bool bToCellBcd(Datum_h* pDatum, Column* pCol,
+    static bool bToCellBcd(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellBol(Datum_h* pDatum, Column* pCol,
+    static bool bToCellBol(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellDte(Datum_h* pDatum, Column* pCol,
+    static bool bToCellDte(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellFlt(Datum_h* pDatum, Column* pCol,
+    static bool bToCellFlt(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellInt(Datum_h* pDatum, Column* pCol,
+    static bool bToCellInt(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellIvl(Datum_h* pDatum, Column* pCol,
+    static bool bToCellIvl(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellTme(Datum_h* pDatum, Column* pCol,
+    static bool bToCellTme(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellTsp(Datum_h* pDatum, Column* pCol,
+    static bool bToCellTsp(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
-    static bool bToCellVch(Datum_h* pDatum, Column* pCol,
+    static bool bToCellVch(Dtm* aDtm, Column* pCol,
                            char** aazCrs, Format* pFmt);
 
     static bool bToDatumBcd(Datum_h* pDatum, Column* pCol,
