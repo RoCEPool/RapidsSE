@@ -11,6 +11,35 @@
 /*----------------------------------------------------------------------------*/
 /* extract a datum from csv field value                                       */
 /*----------------------------------------------------------------------------*/
+bool CsvValue::bToCell(Datum_h* pDatum, Column* pCol,
+                        char** aazCrs, Format* pFmt)
+{
+  bool b = false;
+  
+  eDM eDatum = pCol->eDatum();
+
+  switch (eDatum) {
+    case DM_BCD: b = bToCellBcd(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_BOL: b = bToCellBol(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_DTE: b = bToCellDte(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_FLT: b = bToCellFlt(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_INT: b = bToCellInt(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_IVL: b = bToCellIvl(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_TME: b = bToCellTme(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_TSP: b = bToCellTsp(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_VCH: b = bToCellVch(pDatum,pCol,aazCrs,pFmt); break;
+      
+    default:
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "CsvValue::bToCell: Invalid eDatum : %lld\n"_Stz,eDatum);
+  }
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a datum from csv field value                                       */
+/*----------------------------------------------------------------------------*/
 bool CsvValue::bToDatum(Datum_h* pDatum, Column* pCol,
                         char** aazCrs, Format* pFmt)
 {
@@ -36,6 +65,194 @@ bool CsvValue::bToDatum(Datum_h* pDatum, Column* pCol,
   
   return b;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* extract a decimal datum from csv field value                               */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellBcd(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Bcd snBcd;
+  
+  try {
+    pDatum->vBcd(snBcd.i(aazCrs,pCol->iColumnLength(), pCol->iColumnScale(),pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a boolean datum from csv field value                               */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellBol(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Bol snBol;
+  
+  try {
+    pDatum->vBol(snBol.i(aazCrs,pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a date datum from csv field value                      yyyy-mo-ddZ */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellDte(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Dte snDte;
+  
+  try {
+    pDatum->vDte(snDte.i(aazCrs,pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a float datum from csv field value                                 */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellFlt(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Flt snFlt;
+  
+  try {
+    pDatum->vFlt(snFlt.d(aazCrs,pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an integer datum from csv field value                              */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellInt(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Int snInt;
+  
+  try {
+    pDatum->vInt(snInt.i(aazCrs,pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  // ignore any trailing digits (after optional '.')
+  if ('.' == **aazCrs) {
+    
+    // skip the '.' and any digits
+    (*aazCrs)++;
+    StrLib::vSkipDigits(aazCrs);
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an interval datum from csv field value                             */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellIvl(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Ivl snIvl;
+  
+  try {
+    pDatum->vIvl(snIvl.i(aazCrs,pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a time datum from csv field value                    hh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellTme(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Tme snTme;
+  
+  try {
+    pDatum->vTme(snTme.i(aazCrs,pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellTsp(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Tsp snTsp;
+  
+  try {
+    pDatum->vTsp(snTsp.i(aazCrs,pFmt));
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a varchar datum from csv field value                               */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToCellVch(Datum_h* pDatum, Column* pCol,
+                           char** aazCrs, Format* pFmt)
+{
+  SN_Vch snVch;
+  bool bSawEnclosedLeading = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for enclosed
+  bSawEnclosedLeading = bIsEnclosedString(aazCrs,pFmt);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // varchar field value processing
+  
+  try {
+    
+    i8 nChars = 0;
+    * pDatum = snVch.sz(aazCrs,pCol->iColumnLength(),pFmt,bSawEnclosedLeading,nChars);
+
+    //pDatum->vStzDump();
+
+  }
+  catch (Exception xException) {
+    return false;
+  }
+  
+  return true;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
