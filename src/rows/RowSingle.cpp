@@ -268,39 +268,6 @@ void RowSingle::vSetColNull(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set column value in row                                                    */
-/*----------------------------------------------------------------------------*/
-void RowSingle::vSetValue(Datum* pDatum, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-  
-  RASSERT(m_oRowPix.m_bInitialised);
-
-  i8 i_Col = pCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // vch
-  
-  if (DM_VCH == pCol->eDatum()) {
-    
-    if (pDatum->bIsNull()) {
-      vColSetNull(i_Col);
-      return;
-    }
-    
-    Stz* szValue = pDatum->szStz();
-
-    vDepositColVal(i_Col,szValue);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all others
-  
-  vDepositColVal(i_Col,pDatum->iInt());
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size of row data                                                       */
 /*----------------------------------------------------------------------------*/
 i8 RowSingle::nSumVchSizes(void)

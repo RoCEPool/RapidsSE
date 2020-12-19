@@ -51,7 +51,6 @@ namespace Rows
     void vResetRow(void);
     void vResetValues(void);
     void vSetColNull(i8 i_Col);
-    void vSetValue(Datum* pDatum, Column* pCol);
     i8   nSumVchSizes(void);
     Stz* szStzAlottable(void);
     Stz* szStzArea(void);
