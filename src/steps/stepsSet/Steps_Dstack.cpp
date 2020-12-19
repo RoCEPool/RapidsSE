@@ -104,7 +104,9 @@ void Step::vDstackDup(void)
 
   // could just copy from stack back into stack
   
-  Datum xVarA;
+  //Datum xVarA;
+  
+  CellSingle xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
   
   m_pDataStack->vPushVal(xVarA);

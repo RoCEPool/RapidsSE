@@ -27,6 +27,7 @@ namespace Rows
     void* operator new(size_t);
     void  operator delete(void*);
 
+    CellSingle(void);
     CellSingle(eSI eStringSemantics);
    ~CellSingle(void) noexcept(false);
   
