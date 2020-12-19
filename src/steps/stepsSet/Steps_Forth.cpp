@@ -181,7 +181,7 @@ void Step::vFind(void)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
-  Datum xVar;
+  CellSingle xVar;
   xVar = pWord;
 
   if (m_pCompiler->bCompiling()) {
@@ -249,7 +249,7 @@ void Step::vPostpone(void)
            m_pInput->szChars()->azChar());
   
   
-  Datum xVar;
+  CellSingle xVar;
   xVar = pCalledWord;
 
   if (pCalledWord->bImmediate()) {

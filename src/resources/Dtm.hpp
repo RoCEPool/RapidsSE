@@ -53,6 +53,8 @@ namespace Resources
       
       Stz*  m_szVch;
 
+      Object*  m_pObject;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
       i8    m_iWrd;
@@ -133,6 +135,14 @@ namespace Resources
     inline void vPutColVal(i8 iColVal)
     {
       m_wInt = iColVal;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* put integer column value                                               */
+    /*------------------------------------------------------------------------*/
+    inline void vPutColVal(Object* pObject)
+    {
+      m_pObject = pObject;
     }
 
     /*------------------------------------------------------------------------*/

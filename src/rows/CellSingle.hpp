@@ -36,6 +36,7 @@ namespace Rows
 
     void operator =(d8 dFlt);
     void operator =(i8 iInt);
+    void operator =(Object* pObject);
     void operator =(Stz* szStz);
   
     eCN  eAnyClass(void);
@@ -56,8 +57,9 @@ namespace Rows
     void vPutColVal(d8 dColVal);
     void vPutColVal(i8 iColVal);
     void vPutColVal(Stz* szColVal);
-  
-  void vToString(Stz* szDst);
+    void vPutColVal(Object* pObject);
+
+    void vToString(Stz* szDst);
 
   
   private:

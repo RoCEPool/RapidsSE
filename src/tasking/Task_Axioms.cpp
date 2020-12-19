@@ -343,7 +343,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   Word*     pNewWord;
   StepFp    fpStep;
   Word*     pCalledWord;
-  Datum     xVariable;
+  CellSingle xVariable;
   TokenVec* pTokenVec;
   
   Compiler*  pCompiler = m_pForth->pCompiler();

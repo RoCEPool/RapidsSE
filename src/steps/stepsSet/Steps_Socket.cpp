@@ -82,7 +82,7 @@ void Step::vSocketConnect(void)
   
   SysCall oSysCall;
   Socket* pSocket;
-  Datum xNodeVar;
+  CellSingle xNodeVar;
   
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);

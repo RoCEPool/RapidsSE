@@ -87,6 +87,7 @@ void CellSingle::operator =(d8 dColVal)
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
   vPutColVal(dColVal);
+  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_FLTVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,6 +98,20 @@ void CellSingle::operator =(i8 iColVal)
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
   vPutColVal(iColVal);
+  
+  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_INTVAL);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator (string)                                               */
+/*----------------------------------------------------------------------------*/
+void CellSingle::operator =(Object* pObject)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  
+  vPutColVal(pObject);
+
+  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_PTRVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,7 +121,11 @@ void CellSingle::operator =(Stz* szColVal)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  vPutColVal(szColVal);
+  StzVal* aStzVal = (StzVal*) & AnyVal_DtmCell;
+  
+  aStzVal->vStz(szColVal);
+  
+  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_STZVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,6 +267,16 @@ void CellSingle::vPutColVal(Stz* szColVal)
     AnyVal_DtmCell.m_wxCell.nPutColVal_offset(szColVal,StzBegin);
   
   vStringAdd_end(nStringSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put string value of given column                                           */
+/*----------------------------------------------------------------------------*/
+void CellSingle::vPutColVal(Object* pObject)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  
+  AnyVal_DtmCell.m_wxCell.vPutColVal(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

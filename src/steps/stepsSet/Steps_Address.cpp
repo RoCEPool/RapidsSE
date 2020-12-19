@@ -21,14 +21,14 @@ void Step::vAddressEqual(void)
 {
   ENTRY();
   
-  Datum xAddressA;
+  CellSingle xAddressA;
   m_pDataStack->vPopVal(xAddressA,__func__);
   
-  Datum xAddressB;
+  CellSingle xAddressB;
   m_pDataStack->vPopVal(xAddressB,__func__);
 
-  i8 iA = xAddressA.iInt();
-  i8 iB = xAddressB.iInt();
+  i8 iA = xAddressA.iGetColVal();
+  i8 iB = xAddressB.iGetColVal();
   
   i8 r = iA == iB;
   
@@ -62,7 +62,7 @@ void Step::vAddressStore(void)
   
   AnyVal* aAnyVal = _aAnyVal(m_pDataStack->pPopPtr(__func__));
 
-  Datum xValToStore;
+  CellSingle xValToStore;
   m_pDataStack->vPopVal(xValToStore,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

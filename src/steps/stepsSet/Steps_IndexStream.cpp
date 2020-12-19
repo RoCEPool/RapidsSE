@@ -169,13 +169,13 @@ void Step::vIndexStreamSeek(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the upper bound key
-  Datum xUpperVariable;
+  CellSingle xUpperVariable;
   m_pDataStack->vPopVal(xUpperVariable,__func__);
   Stz* szUpperKey = xUpperVariable.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower bound key
-  Datum xLowerVariable;
+  CellSingle xLowerVariable;
   m_pDataStack->vPopVal(xLowerVariable,__func__);
   Stz* szLowerKey = xLowerVariable.szStz();
   

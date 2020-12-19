@@ -19,7 +19,7 @@ void Step::vShellExecute(void)
 {
   ENTRY();
   
-  Datum xCommand;
+  CellSingle xCommand;
   
   m_pDataStack->vPopVal(xCommand,__func__);
   
