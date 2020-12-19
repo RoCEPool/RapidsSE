@@ -24,6 +24,19 @@ namespace Parser
   class PlanNode : public Object,
                    public ListItem_t<PlanNode>
   {
+  public:
+    // Constants.
+    static const Stz* C_ROOT_NAME;
+    static const Stz* C_ROOT_PATH;
+    static const Stz* C_PRIMITIVES_PATH;
+    static const Stz* C_DEFINITIONS_PATH;
+    static const Stz* C_PLAN_PATH;
+    static const Stz* C_METADATA_PATH;
+    static const Stz* C_STATISTICS_PATH;
+
+    static const Stz* C_PROPERTY_SEPARATOR;
+    static const Stz* C_CHILD_SEPARATOR;
+
   protected:
     s256  m_sName;
     s256  m_sType;
@@ -55,6 +68,12 @@ namespace Parser
     u8   getUnsignedIntValue();
     d8   getFloatValue();
     Stz* getStringValue();
+
+    b1 bHasProperties();
+    b1 bHasChildren();
+
+    PlanNode* pFirstProperty();
+    PlanNode* pFirstChild();
   };
   
   PlanNode* _pPlanNode(void* aAddr);

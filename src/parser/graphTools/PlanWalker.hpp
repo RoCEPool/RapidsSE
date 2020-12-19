@@ -20,7 +20,16 @@ namespace Parser
 
     Footer* aFooter(void);
 
+    // Methods for walking a plan graph.
 
+    // The following functions require a functor with the definition:
+    //   b1 func(PlanNode* pNode, s256& sPath)
+    static b1 bWalk(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor);
+    static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor);
+
+  private:
+    static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                    std::function<b1(PlanNode*, s256&)> fVisitor, s256& sPath);
   };
 
   PlanWalker* _pPlanWalker(void* aAddr);

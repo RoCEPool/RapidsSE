@@ -5,14 +5,6 @@
 #include "parser/Parser.h"
 #include "PlanNodeBuilder.hpp"
 
-// Names of nodes
-static Stz* C_ROOT        = "/__root__"_Stz;
-static Stz* C_PRIMITIVES  = "/__root__/primitives"_Stz;
-static Stz* C_DEFINITIONS = "/__root__/definitions"_Stz;
-static Stz* C_PLAN        = "/__root__/plan"_Stz;
-static Stz* C_METADATA    = "/__root__/metadata"_Stz;
-static Stz* C_STATISTICS  = "/__root__/statistics"_Stz;
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -83,14 +75,14 @@ PlanNode* PlanNodeBuilder::pBuild(void)
     vSetPath(sParentPath);
   }
 
-  // TODO: Create DefinitionNode or PrimitiveNode depending on current path.
-
+  // Create the properties and children first.
   PlanNodeList *pPropertiesList = pBuildList(m_pProperties);
   PlanNodeList *pChildrenList   = pBuildList(m_pChildren);
 
   PlanNode* pPlanNode;
 
-  if (m_sPath.bEqual(C_ROOT)) {
+  // Create DefinitionNode or PrimitiveNode depending on current path.
+  if (m_sPath.bEqual(const_cast<Stz*>(PlanNode::C_ROOT_PATH))) {
     pPlanNode = new PrimitiveNode(m_sName.szStz(),
                                    m_sType.szStz(),
                                    m_xValue,
@@ -98,7 +90,7 @@ PlanNode* PlanNodeBuilder::pBuild(void)
                                    pChildrenList,
                                    m_sPath.szStz());
 
-  } else if (m_sPath.bBeginsWith(C_PRIMITIVES)) {
+  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(PlanNode::C_PRIMITIVES_PATH))) {
     pPlanNode = new PrimitiveNode(m_sName.szStz(),
                                    m_sType.szStz(),
                                    m_xValue,
@@ -106,7 +98,7 @@ PlanNode* PlanNodeBuilder::pBuild(void)
                                    pChildrenList,
                                    m_sPath.szStz());
 
-  } else if (m_sPath.bBeginsWith(C_DEFINITIONS)) {
+  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(PlanNode::C_DEFINITIONS_PATH))) {
     pPlanNode = new DefinitionNode(m_sName.szStz(),
                                    m_sType.szStz(),
                                    m_xValue,
@@ -114,21 +106,21 @@ PlanNode* PlanNodeBuilder::pBuild(void)
                                    pChildrenList,
                                    m_sPath.szStz());
 
-  } else if (m_sPath.bBeginsWith(C_PLAN)) {
+  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(PlanNode::C_PLAN_PATH))) {
     pPlanNode = new QueryNode(m_sName.szStz(),
                               m_sType.szStz(),
                               m_xValue,
                                pPropertiesList,
                                pChildrenList);
 
-  } else if (m_sPath.bBeginsWith(C_METADATA)) {
+  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(PlanNode::C_METADATA_PATH))) {
     pPlanNode = new MetadataNode(m_sName.szStz(),
                                    m_sType.szStz(),
                                    m_xValue,
                                    pPropertiesList,
                                    pChildrenList);
 
-  } else if (m_sPath.bBeginsWith(C_STATISTICS)) {
+  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(PlanNode::C_STATISTICS_PATH))) {
     pPlanNode = new StatisticsNode(m_sName.szStz(),
                                    m_sType.szStz(),
                                    m_xValue,

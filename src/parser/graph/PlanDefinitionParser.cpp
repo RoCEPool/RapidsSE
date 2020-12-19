@@ -147,6 +147,14 @@ PlanNode* PlanDefinitionParser::pParse()
 
   PlanNode* pTemplatePlan = rootBuilder->pBuild();
   delete rootBuilder;
+
+  auto fVisitor = [](PlanNode* pNode, s256& sPath) -> b1 {
+    vTrace("%s\n"_Stz, sPath.szStz());
+    return true;
+  };
+
+  PlanWalker::bWalk(pTemplatePlan, fVisitor);
+
   return pTemplatePlan;
 }
 
