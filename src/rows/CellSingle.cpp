@@ -22,9 +22,6 @@ CellSingle::CellSingle(void)
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(&AnyVal_DtmCell.m_wxCell,
-                sizeof(AnyVal_DtmCell.m_wxCell),
-                CN_CELLSINGLE);
   MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
 #endif
   
@@ -52,7 +49,7 @@ CellSingle::operator AnyVal*(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  return (AnyVal*) & AnyVal_DtmCell;
+  return (AnyVal*) & m_xTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +60,7 @@ void CellSingle::operator =(d8 dColVal)
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
   vPutColVal(dColVal);
-  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_FLTVAL);
+  m_xTypedCell.vType(CN_FLTVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +72,7 @@ void CellSingle::operator =(i8 iColVal)
   
   vPutColVal(iColVal);
   
-  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_INTVAL);
+  m_xTypedCell.vType(CN_INTVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +84,7 @@ void CellSingle::operator =(Object* pObject)
   
   vPutColVal(pObject);
 
-  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_PTRVAL);
+  m_xTypedCell.vType(CN_PTRVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,11 +94,11 @@ void CellSingle::operator =(Stz* szColVal)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  StzVal* aStzVal = (StzVal*) & AnyVal_DtmCell;
+  StzVal* aStzVal = (StzVal*) & m_xTypedCell;
   
   aStzVal->vStz(szColVal);
   
-  AnyVal_DtmCell.m_wxCellHeader.vClass(CN_STZVAL);
+  m_xTypedCell.vType(CN_STZVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +112,7 @@ eCN CellSingle::eAnyClass(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  return AnyVal_DtmCell.m_wxCellHeader.eClass();
+  return m_xTypedCell.eType();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +122,7 @@ Dtm* CellSingle::aCellAddress(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  Dtm* aColCell = & AnyVal_DtmCell.m_wxCell;
+  Dtm* aColCell = & m_xTypedCell.m_wxValueCell;
   
   return aColCell;
 }
@@ -157,7 +154,7 @@ d8 CellSingle::dGetColVal(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  d8 dColVal = AnyVal_DtmCell.m_wxCell.dGetColVal();
+  d8 dColVal = m_xTypedCell.m_wxValueCell.dGetColVal();
   
   return dColVal;
 }
@@ -169,7 +166,7 @@ i8 CellSingle::iGetColVal(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  i8 iColVal = AnyVal_DtmCell.m_wxCell.iGetColVal();
+  i8 iColVal = m_xTypedCell.m_wxValueCell.iGetColVal();
   
   return iColVal;
 }
@@ -181,7 +178,9 @@ Stz* CellSingle::szGetColVal(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  Stz* szColVal = AnyVal_DtmCell.m_wxCell.szGetColVal_offset();
+  RASSERT(0);
+  
+  Stz* szColVal = m_xTypedCell.m_wxValueCell.szGetColVal_offset();
 
   return szColVal;
 }
@@ -215,7 +214,7 @@ void CellSingle::vPutColVal(d8 dColVal)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  AnyVal_DtmCell.m_wxCell.vPutColVal(dColVal);
+  m_xTypedCell.m_wxValueCell.vPutColVal(dColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,7 +224,7 @@ void CellSingle::vPutColVal(i8 iColVal)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  AnyVal_DtmCell.m_wxCell.vPutColVal(iColVal);
+  m_xTypedCell.m_wxValueCell.vPutColVal(iColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,7 +239,7 @@ void CellSingle::vPutColVal(Stz* szColVal)
   Stz* StzBegin = szStringAdd_begin();
   
   i8 nStringSize =
-    AnyVal_DtmCell.m_wxCell.nPutColVal_offset(szColVal,StzBegin);
+  m_xTypedCell.m_wxValueCell.nPutColVal_offset(szColVal,StzBegin);
   
   vStringAdd_end(nStringSize);
 }
@@ -252,7 +251,7 @@ void CellSingle::vPutColVal(Object* pObject)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  AnyVal_DtmCell.m_wxCell.vPutColVal(pObject);
+  m_xTypedCell.m_wxValueCell.vPutColVal(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,25 +264,25 @@ void CellSingle::vToString(Stz* szStz)
   switch (eClass) {
             
     case CN_FIPVAL: {
-      FipVal* aFipVal = _aFipVal(&AnyVal_DtmCell);
+      FipVal* aFipVal = _aFipVal(&m_xTypedCell.m_wxValueCell);
       aFipVal->vToStz(szStz);
       break;
     }
       
     case CN_INTVAL: {
-      IntVal* aIntVal = _aIntVal(&AnyVal_DtmCell);
+      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValueCell);
       aIntVal->vToStz(szStz);
       break;
     }
       
     case CN_PTRVAL: {
-      PtrVal* aPtrVal = _aPtrVal(&AnyVal_DtmCell);
+      PtrVal* aPtrVal = _aPtrVal(&m_xTypedCell.m_wxValueCell);
       aPtrVal->vToStz(szStz);
       break;
     }
       
     case CN_STZVAL: {
-      StzVal* aStzVal = _aStzVal(&AnyVal_DtmCell);
+      StzVal* aStzVal = _aStzVal(&m_xTypedCell.m_wxValueCell);
       aStzVal->vToStz(szStz);
       break;
     }

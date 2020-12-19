@@ -11,11 +11,11 @@ namespace Rows
   {
   protected:
         
-    struct {
-      _Header m_wxCellHeader;
-      Dtm     m_wxCell;
-    } AnyVal_DtmCell;
-    //MorphicCell m_xMorphicCell;
+//    struct {
+//      _Header m_wxCellHeader;
+//      Dtm     m_wxCell;
+//    } AnyVal_DtmCell;
+    TypedCell m_xTypedCell;
   
     char m_caStringArea[C_MAX_VCH];
 
