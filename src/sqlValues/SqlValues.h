@@ -19,12 +19,7 @@ namespace SqlValues
 #include "PtrVal.hpp"
 
 
-#include "BcdVal.hpp"
-#include "BolVal.hpp"
-#include "DteVal.hpp"
-#include "EdtVal.hpp"
 #include "IntVal.hpp"
-#include "IvlVal.hpp"
 #include "StzVal.hpp"
 
 /*============================================================================*/

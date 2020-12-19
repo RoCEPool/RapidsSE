@@ -28,9 +28,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AttachMap),          HT_INVALID           ,0 }, // CN_ATTACHMAP
 
   { 'B' - ('A' - 1),            HT_INVALID           ,0 }, // CN__B__
-  { sizeof(BcdVal),             HT_INVALID           ,0 }, // CN_BCDVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID           ,0 }, // CN_BIRTH
-  { sizeof(BolVal),             HT_INVALID           ,0 }, // CN_BOLVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_BOLVAL
   { sizeof(BPA),                HT_TRANSIENT_MEDIUM  ,0 }, // CN_BPA
   { sizeof(BucketMap),          HT_TRANSIENT_LARGE   ,0 }, // CN_BUCKETMAP
   { sizeof(BufferCursor),       HT_TRANSIENT_LARGE   ,0 }, // CN_BUFFERCURSOR
@@ -60,11 +60,11 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Dic),                HT_TRANSIENT_TINY    ,0 }, // CN_DIC
   { sizeof(DicStack),           HT_TRANSIENT_TINY    ,0 }, // CN_DICSTACK
   { sizeof(Dir),                HT_TRANSIENT_TINY    ,0 }, // CN_DIR
-  { sizeof(DteVal),             HT_INVALID           ,0 }, // CN_DTEVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_TRANSIENT_TINY    ,0 }, // CN_DYNAMO
 
   { 'E' - ('A' - 1),            HT_INVALID           ,0 }, // CN__E__
-  { sizeof(EdtVal),             HT_INVALID           ,0 }, // CN_EDTVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_EDTVAL
   { sizeof(Encoding),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_ENCODING
   { sizeof(Encoding_v2),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_ENCODING_V2
   { sizeof(Ent),                HT_INVALID           ,0 }, // CN_ENT
@@ -116,7 +116,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IntVal),             HT_INVALID           ,0 }, // CN_INTVAL
   { sizeof(IoChunk),            HT_TRANSIENT_LARGE   ,0 }, // CN_IOCHUNK
   { sizeof(IoCopy),             HT_TRANSIENT_TINY    ,0 }, // CN_IOCOPY
-  { sizeof(IvlVal),             HT_INVALID           ,0 }, // CN_IVLVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_IVLVAL
 
   { 'J' - ('A' - 1),            HT_INVALID           ,0 }, // CN__J__
   { sizeof(Job),                HT_TRANSIENT_MEDIUM  ,0 }, // CN_JOB
