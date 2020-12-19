@@ -103,7 +103,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_DATAPULSE ...                                                  BEGIN */
 /*----------------------------------------------------------------------------*/
-: EOAsm2_DataMarker \handler
+: EOAsm2_DataPulse \handler
 
   PipeIn[].isNull not if
     ZK_DATAPULSE EG_ZK PD_PIPE_OUT 0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryAction
@@ -112,6 +112,15 @@
 
   // execute plan DATAPULSE_HANDLER
   ZK_DATAPULSE Counter0[] executeAsmArgs
+
+  LogicUnit[].callAgain@ not if
+
+    // force op loop to call EOAsm_EosMarker to end
+    "EOAsm2_EosMarker" word::find LogicUnit[].handler!
+    true LogicUnit[].callAgain!
+  then
+
+  Pot[].pipeoutAllCompletedPtns
 
   true
 ;
@@ -147,16 +156,10 @@
     // drop partition lock
     tablePtn[] tablePtnDropRead
 
-    // pipe out all pot[]
-    //Pot[].pipeoutAllDanglingPtns
-    //Pot[].delete
-
-    // pipe out an eos marker
-    Operand[].newEosMarker
-
-    // force op loop to call EOAsm_EosMarker to end
-    "EOAsm_EosMarker" word::find LogicUnit[].handler!
+    // force op loop to call EOAsm2_EosMarker to end
+    "EOAsm2_EosMarker" word::find LogicUnit[].handler!
     true LogicUnit[].callAgain!
+
   then
 
   Pot[].pipeoutAllCompletedPtns
@@ -188,33 +191,22 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  // Invoked from PULSEMARKER call again?
-  Operand[].isNull not if
-    //"PULSEMARKER created an EOSMARKER" .
-    // there should be no Pipein EOSMARKER
-    Pipein[].isNull assert
-    Operand[] to Pipein[]
-  then
+  // pipe out all pot[]
+  Pot[].pipeoutAllDanglingPtns
+  Pot[].delete
 
-  // Invoked from PULSEMARKER call again?
-  // but PULSEMARKER did not create an EOS MARKER
   Pipein[].isNull if
-    //"PULSEMARKER is null" .
-    true
-    exit
+    // create a new eos marker
+    Operand[].newEosMarker
+    Operand[] to Pipein[]
   then
 
   // handle EOSMARKER
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
 
-  // pipe out all pot[]
-  Pot[].pipeoutAllDanglingPtns
-  Pot[].delete
-
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -248,7 +240,7 @@
 
   find: EOAsm2_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: EOAsm2_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: EOAsm2_DataMarker  ZK_DATAPULSE op[].handler!
+  find: EOAsm2_DataPulse   ZK_DATAPULSE   op[].handler!
   find: EOAsm2_RowBuffer   ZK_ROWBUFFER   op[].handler!
   find: EOAsm2_StartMarker ZK_STARTMARKER op[].handler!
   find: EOAsm2_StreamDef   ZK_STREAMDEF   op[].handler!

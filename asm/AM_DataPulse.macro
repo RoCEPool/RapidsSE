@@ -7,11 +7,42 @@ macro AM_DATAPULSE_HANDLER
 //----------------------------------------------------------------------------//
   // DATAPULSE HANDLER
   Label DATAPULSE_HANDLER
-  EO_PRINTF "**DATAPULSE_HANDLER**\n"
+  EO_PRINTF "**DATAPULSE_HANDLER**\\n"
   EO_POP
 
   EO_CALL <dataPulseProcessRoutine>
   EO_JMP QUERY_DONE
+endMacro
+
+macro AM_INDEX_GE_INTEGER
+//----------------------------------------------------------------------------//
+// macro AM_INDEX_GE_INTEGER                                                  //
+//----------------------------------------------------------------------------//
+  Label INDEX_GE_INTEGER
+  EO_INTEGER <literalValue>
+  EO_ENTWRK_SETINTELM
+  EO_IXT_SRC_LBOUND
+  EO_IXT_SRC_PRINT
+
+  EO_JMP_FALSE INDEX_GE_INTEGER_DONE
+
+  Label INDEX_LBD_INTEGER_POS
+  EO_IXT_SRC_NEXT
+  EO_PRINTF "reached\n"
+  EO_JMP_FALSE INDEX_GE_INTEGER_DONE
+
+  EO_JMP_FALSE INDEX_GE_INTEGER_POS
+
+  Label INDEX_GE_INTEGER_PROJECT
+  EO_CRW_SRC_DEREF
+  EO_CALL <crwProjectRoutine>
+
+  Label INDEX_GE_INTEGER_NEXT
+  EO_IXT_SRC_NEXT
+  EO_JMP_TRUE INDEX_GE_INTEGER_PROJECT
+
+  Label INDEX_GE_INTEGER_DONE
+  EO_RETURN
 endMacro
 
 macro AM_TABLE_SCAN
@@ -26,7 +57,7 @@ macro AM_TABLE_SCAN
   EO_HANDLER <logicUnitHandler>
   EO_CALLAGAIN
 
-  EO_JMP QUERY_DONE
+  EO_RETURN
 endMacro
 
 /*============================================================================*/
