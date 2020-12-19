@@ -11,13 +11,12 @@ namespace Rows
   {
   protected:
         
-    eSI m_eStringSemantics;  // string
-  
     struct {
       _Header m_wxCellHeader;
       Dtm     m_wxCell;
     } AnyVal_DtmCell;
-      
+    //MorphicCell m_xMorphicCell;
+  
     char m_caStringArea[C_MAX_VCH];
 
     // must be last
@@ -28,7 +27,6 @@ namespace Rows
     void  operator delete(void*);
 
     CellSingle(void);
-    CellSingle(eSI eStringSemantics);
    ~CellSingle(void) noexcept(false);
   
     // auto conversion

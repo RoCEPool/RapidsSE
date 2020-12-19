@@ -193,6 +193,7 @@ extern pOUTLINEFUN *gpOutline[];
 #include "IntLib.hpp"
 #include "MagLib.hpp"
 #include "Dtm.hpp"
+#include "TypedCell.hpp"
 #include "HshLib.hpp"
 
 #include "SP_Bits.hpp"

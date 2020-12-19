@@ -21,30 +21,6 @@ CellSingle::CellSingle(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  m_eStringSemantics = SI_NONE;;
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(&AnyVal_DtmCell.m_wxCell,
-                sizeof(AnyVal_DtmCell.m_wxCell),
-                CN_CELLSINGLE);
-  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
-#endif
-  
-  _checkInitialised_(CN_CELLSINGLE);
-  
-  _postcondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-CellSingle::CellSingle(eSI eStringSemantics)
-: Object(CN_CELLSINGLE)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-  
-  m_eStringSemantics = eStringSemantics;
-  
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(&AnyVal_DtmCell.m_wxCell,
                 sizeof(AnyVal_DtmCell.m_wxCell),
