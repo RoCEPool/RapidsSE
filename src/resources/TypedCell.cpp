@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 TypedCell::TypedCell(void)
 {
-//#ifdef WITH_CHECK_INITIALISED
-//  MemLib::vZero(&m_xTypedCell,sizeof(m_xTypedCell),CN_CELLSINGLE);
-//#endif
+  #ifdef WITH_CHECK_INITIALISED
+    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+  #endif
  }
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +37,82 @@ void TypedCell::vType(eCN eType)
 {
   m_wxType.vClass(eType);
 }
+
+
+#if 0
+
+/*----------------------------------------------------------------------------*/
+/* assign given str                                                           */
+/*----------------------------------------------------------------------------*/
+void TypedCell::vStz(Stz* szStz)
+{
+  vType(CN_STZVAL);
+  
+  i8 nBytesFollowing = StrLib::nCopy(m_caStz,szStz->azChar()) + 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign given str                                                           */
+/*----------------------------------------------------------------------------*/
+void TypedCell::vStz(char* acnChar, i8 nLength)
+{
+  vType(CN_STZVAL);
+  
+  m_nBytesFollowing = StrLib::nCopy(m_caStz,acnChar) + 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get char*                                                                  */
+/*----------------------------------------------------------------------------*/
+char* TypedCell::azChar(void)
+{
+  return m_caStz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get how many bytes are needed to push this StzVal on stack                 */
+/*----------------------------------------------------------------------------*/
+i8 TypedCell::nStackUsage(void)
+{
+  i8 nBytes = sizeof(AnyVal) + m_nBytesFollowing;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get adddress of Stz area                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* TypedCell::szStz(void)
+{
+  return reinterpret_cast<Stz*>(m_caStz);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get size of str                                                            */
+/*----------------------------------------------------------------------------*/
+i8 TypedCell::nStzSize(void)
+{
+  return m_nBytesFollowing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size of str                                                            */
+/*----------------------------------------------------------------------------*/
+void TypedCell::vStzSize(i8 nSize)
+{
+  m_nBytesFollowing = nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to string                                                          */
+/*----------------------------------------------------------------------------*/
+void TypedCell::vToStz(Stz* szDst)
+{
+  StrLib::vCopy(szDst->azChar(),m_caStz);
+}
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

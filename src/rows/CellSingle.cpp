@@ -20,11 +20,7 @@ CellSingle::CellSingle(void)
 : Object(CN_CELLSINGLE)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
-#endif
-  
+    
   _checkInitialised_(CN_CELLSINGLE);
   
   _postcondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
@@ -134,7 +130,7 @@ char* CellSingle::azChar(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
 
-  return m_caStringArea;
+  return m_xTypedCell.m_caStringArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,7 +140,7 @@ Stz* CellSingle::szStz(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
 
-  return (Stz*) m_caStringArea;
+  return (Stz*) m_xTypedCell.m_caStringArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,23 +226,6 @@ void CellSingle::vPutColVal(i8 iColVal)
 /*----------------------------------------------------------------------------*/
 /* put string value of given column                                           */
 /*----------------------------------------------------------------------------*/
-void CellSingle::vPutColVal(Stz* szColVal)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-  
-  // depends on the semantics
-  
-  Stz* StzBegin = szStringAdd_begin();
-  
-  i8 nStringSize =
-  m_xTypedCell.m_wxValueCell.nPutColVal_offset(szColVal,StzBegin);
-  
-  vStringAdd_end(nStringSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put string value of given column                                           */
-/*----------------------------------------------------------------------------*/
 void CellSingle::vPutColVal(Object* pObject)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
@@ -298,25 +277,6 @@ void CellSingle::vToString(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* begin add of string                                                        */
-/*----------------------------------------------------------------------------*/
-Stz* CellSingle::szStringAdd_begin(void)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-  
-  m_caStringArea[0] = '\0';
-  return (Stz*)m_caStringArea;
-}
-
-/*----------------------------------------------------------------------------*/
-/* end add of string                                                          */
-/*----------------------------------------------------------------------------*/
-void CellSingle::vStringAdd_end(i8 nStringSize)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -12,6 +12,9 @@ namespace Resources
     //Dtm  m_wxTypeCell;
     _Header m_wxType;
     Dtm     m_wxValueCell;
+  
+    char m_caStringArea[C_MAX_VCH];
+
 
   public:
     TypedCell(void);
@@ -20,7 +23,15 @@ namespace Resources
     eCN  eType(void);
     void vType(eCN eType);
   
-    
+    void  vInt(i8 iVal);
+    char* azChar(void);
+    i8    nStackUsage(void);
+    Stz*  szStz(void);
+    void  vStz(Stz* szStz);
+    void  vStz(char* anChar, i8 nLength);
+    i8    nStzSize(void);
+    void  vStzSize(i8 nSize);
+    void  vToStz(Stz* szStz);
   };
 }
 

@@ -19,12 +19,6 @@ namespace SqlValues
   public:
     char* azChar(void);
   
-    void vSetMax(void)                {  }  // set max value
-    void vSetMid(void)                {  }  // set mid value
-    void vSetMin(void)                { }  // set min value
-    void vSetNull(void)              {  }  // set to be null
-    void vSetUsual(void)            {  }  // set usual value
-
     i8    nStackUsage(void);
     Stz*  szStz(void);
     void  vStz(Stz* szStz);

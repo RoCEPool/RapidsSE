@@ -17,7 +17,6 @@ namespace Rows
 //    } AnyVal_DtmCell;
     TypedCell m_xTypedCell;
   
-    char m_caStringArea[C_MAX_VCH];
 
     // must be last
     Footer m_xFooter;
@@ -54,7 +53,6 @@ namespace Rows
   
     void vPutColVal(d8 dColVal);
     void vPutColVal(i8 iColVal);
-    void vPutColVal(Stz* szColVal);
     void vPutColVal(Object* pObject);
 
     void vToString(Stz* szDst);
@@ -62,9 +60,6 @@ namespace Rows
   
   private:
   
-    Stz* szStringAdd_begin(void);
-    void vStringAdd_end(i8 nStringSize);
-
     Footer* aFooter(void);
   };
 
