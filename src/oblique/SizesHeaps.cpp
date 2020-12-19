@@ -52,7 +52,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CsvMeta),            HT_TRANSIENT_TINY    ,0 }, // CN_CSVMETA
 
   { 'D' - ('A' - 1),            HT_INVALID           ,0 }, // CN__D__
-  { sizeof(Datum_h),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_DATUM
   { sizeof(DecaCnt),            HT_TRANSIENT_TINY    ,0 }, // CN_DECACNT
   { sizeof(Decider),            HT_TRANSIENT_TINY    ,0 }, // CN_DECIDER
   { sizeof(DefinitionNode),     HT_TRANSIENT_TINY    ,-8 }, // CN_DEFINITIONNODE

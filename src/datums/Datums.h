@@ -14,10 +14,6 @@ namespace Datums
 
 //------------------------------------------------------------------------------
 
-#include "Datum.hpp"
-
-typedef Datum_t<C_16KB> Datum;
-
 #include "ColPix.h"
 #include "RowPix.h"
 #include "Column.hpp"

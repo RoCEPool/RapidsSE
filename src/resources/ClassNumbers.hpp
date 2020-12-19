@@ -50,7 +50,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CSVMETA,
 
   /* */ CN__D__,
-  /* */ CN_DATUM,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
   /* */ CN_DEFINITIONNODE,
@@ -374,7 +373,6 @@ static Stz* aCN[]
   /* */ "CSVMETA"_Stz,             // CN_CSVMETA
 
   /* */ "_D__"_Stz,                // CN__D__
-  /* */ "DATUM"_Stz,               // CN_DATUM
   /* */ "DECACNT"_Stz,             // CN_DECACNT
   /* */ "DECIDER"_Stz,             // CN_DECIDER
   /* */ "DEFINITIONNODE"_Stz,      // CN_DEFINITIONNODE
