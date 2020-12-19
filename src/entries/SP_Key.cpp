@@ -98,7 +98,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Dtm* ayCursor = aKey->ayElmSeq_dtm();
+  Dtm* ayCursor = aKey->aElmSeq_dtm();
   
 
   StrLib::vSprint((Stz*)m_caResult,"Key[%lldB]; "_Stz,aKey->nElmSeqSize());

@@ -54,7 +54,7 @@ namespace Entries
   
     eCN   eClass(void);
   
-    Dtm*  ayElmSeq_dtm(void);
+    Dtm*  aElmSeq_dtm(void);
     i8    nElmSeqSize(void);
     void  vElmSeqSize(i8 nElmSeqSize);
     i8    iEntryNo(void);

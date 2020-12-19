@@ -185,11 +185,12 @@ void EntWrk::vAppendInt(i8 iArg)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   if (KE_GENERAL == m_xEnt.eKind()) {
-    Dtm* ayDst = ayElmNext_dtm();
+    Dtm* aDst = ayElmNext_dtm();
   
-    i8 nElmSize = Dtm::nCopy((byte*)ayDst,iArg);
-  
-    vIncElmSeqSize(nElmSize);
+    //i8 nElmSize = Dtm::nCopy((byte*)ayDst,iArg);
+    aDst->vPutColVal(iArg);
+    
+    vIncElmSeqSize(sizeof(i8));
   }
   else {
     ASSERT(KE_INT == m_xEnt.eKind());
@@ -204,8 +205,9 @@ void EntWrk::vAppendMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Dtm* ayDst = ayElmNext_dtm();
-  Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_MINUS_INFINITY);
+  Dtm* aDst = ayElmNext_dtm();
+  //Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_MINUS_INFINITY);
+  aDst->vPutColVal(C_DATUM_MINUS_INFINITY);
 
   vIncElmSeqSize(C_BYTES_PER_WORD);
 }
@@ -217,11 +219,12 @@ void EntWrk::vAppendNull(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = (byte*)ayElmNext_dtm();
+  Dtm* aDst = ayElmNext_dtm();
   
-  i8 nElmSize = Null::nCopy(ayDst);
-  
-  vIncElmSeqSize(nElmSize);
+  //i8 nElmSize = Null::nCopy(ayDst);
+  aDst->vPutColVal(C_DATUM_NULL);
+
+  vIncElmSeqSize(sizeof(i8));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,9 +234,10 @@ void EntWrk::vAppendPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
    
-  Dtm* ayDst = ayElmNext_dtm();
-  Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_PLUS_INFINITY);
-  
+  Dtm* aDst = ayElmNext_dtm();
+  //Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_PLUS_INFINITY);
+  aDst->vPutColVal(C_DATUM_PLUS_INFINITY);
+
   vIncElmSeqSize(C_BYTES_PER_WORD);
 }
 
@@ -297,7 +301,7 @@ Dtm* EntWrk::ayElmNext_dtm(void)
   
   i8 nElmSeqSize = m_xEnt.nElmSeqSize();
 
-  Dtm* ayNextElm = aAdd<Dtm*>(ayElmSeq_dtm(),nElmSeqSize);
+  Dtm* ayNextElm = aAdd<Dtm*>(aElmSeq_dtm(),nElmSeqSize);
 
   return ayNextElm;
 }
@@ -315,11 +319,11 @@ void EntWrk::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 /* get byte sequence of key                                                   */
 /*----------------------------------------------------------------------------*/
-Dtm* EntWrk::ayElmSeq_dtm(void)
+Dtm* EntWrk::aElmSeq_dtm(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xEnt.ayElmSeq_dtm();
+  return m_xEnt.aElmSeq_dtm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +343,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash((byte*)ayElmSeq_dtm(),m_xEnt.nElmSeqSize());
+  i8 iHash = HshLib::iHash((byte*)aElmSeq_dtm(),m_xEnt.nElmSeqSize());
   
   return iHash;
 }
@@ -406,13 +410,13 @@ void EntWrk::vItem(i8 iItem)
 /*----------------------------------------------------------------------------*/
 /* set element sequence size and element sequence of key                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vElmSeq_dtm(i8 nElmSeqSize, byte* ayElmSeq)
+void EntWrk::vElmSeq_dtm(i8 nElmSeqSize, Dtm* aElmSeq)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vElmSeqSize(nElmSeqSize);
   
-  MemLib::vCopy(this->ayElmSeq_dtm(),ayElmSeq,nElmSeqSize,CN_ENTWRK);
+  MemLib::vCopy(this->aElmSeq_dtm(),aElmSeq,nElmSeqSize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,11 +586,11 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
     return;
   }
   
-  Dtm* ayByteSeq = pEntry->ayElmSeq_dtm();
-  i8 nKeyBytes = pEntry->nElmSeqSize();
-  RASSERT(nKeyBytes % 8 == 0);
+  Dtm* aElmSeq = pEntry->aElmSeq_dtm();
+  i8 nElmSeqSize = pEntry->nElmSeqSize();
+  RASSERT(nElmSeqSize % 8 == 0);
   
-  vElmSeq_dtm(nKeyBytes,(byte*)ayByteSeq);
+  vElmSeq_dtm(nElmSeqSize,aElmSeq);
 }
 
 /*----------------------------------------------------------------------------*/

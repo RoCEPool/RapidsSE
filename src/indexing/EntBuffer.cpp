@@ -154,7 +154,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     
     Rrf xRef = aRightH0_Entry->rxRef();
     eKE eEntKind = xRef.eKind();
-    Dtm* ayElmSeq = aRightH0_Entry->ayElmSeq_dtm();
+    Dtm* aElmSeq = aRightH0_Entry->aElmSeq_dtm();
     
     i8 nElmSeqSize = aRightH0_Entry->nElmSeqSize();
     i8 nOffsets = aRightH0_Entry->nSkipLevels();
@@ -165,7 +165,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     xLeftEntWrk.vRef(xRef);
     
     if (KE_GENERAL == eEntKind) {
-      xLeftEntWrk.vElmSeq_dtm(nElmSeqSize,(byte*)ayElmSeq);
+      xLeftEntWrk.vElmSeq_dtm(nElmSeqSize,aElmSeq);
     }
     else {
       i8 iVal = aRightH0_Entry->iIntElm0();
@@ -277,8 +277,8 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   
   Rrf xRef = aFirstL0_ent->rxRef();
   eKE eEntKind = xRef.eKind();
-  Dtm* aKeyBytes = aFirstL0_ent->ayElmSeq_dtm();
-  i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
+  Dtm* aElmSeq = aFirstL0_ent->aElmSeq_dtm();
+  i8 nElmSeqSize = aFirstL0_ent->nElmSeqSize();
   i8 nLevels = aFirstL0_ent->nSkipLevels();
   
   i8 iFirstL0_BufferNo = pFirstH0->iBufferNo();
@@ -291,7 +291,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   xFirstH1_ent.vRef(xRef);
   
   if (KE_GENERAL == eEntKind) {
-    xFirstH1_ent.vElmSeq_dtm(nKeyBytes,(byte*)aKeyBytes);
+    xFirstH1_ent.vElmSeq_dtm(nElmSeqSize,aElmSeq);
   }
   else {
     i8 iVal = aFirstL0_ent->iIntElm0();

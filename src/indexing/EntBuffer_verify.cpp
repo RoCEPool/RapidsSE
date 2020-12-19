@@ -807,7 +807,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
       }
       
       if (bShowKeys) {
-        Key* aTestKey = _aKey(aTestEntry_sl->ayElmSeq_dtm());
+        Key* aTestKey = _aKey(aTestEntry_sl->aElmSeq_dtm());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
         aTestKey->vShow(pIndexDef);
         vTrace("\n"_Stz);

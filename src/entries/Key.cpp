@@ -66,8 +66,8 @@ eKC Key::eCompare(Key* aKey_l, Key* aKey_r)
   i8 nKeyBytes_l = aKey_l->nElmSeqSize();
   i8 nKeyBytes_r = aKey_r->nElmSeqSize();
   
-  Dtm* ayKeyBytes_l = aKey_l->ayElmSeq_dtm();
-  Dtm* ayKeyBytes_r = aKey_r->ayElmSeq_dtm();
+  Dtm* ayKeyBytes_l = aKey_l->aElmSeq_dtm();
+  Dtm* ayKeyBytes_r = aKey_r->aElmSeq_dtm();
   
   i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
   
@@ -161,7 +161,7 @@ bool Key::bNotEqual(Key* aKey_l, Key* aKey_r)
 i8 Key::iGetIntElm(void)
 {
   //RASSERT(0);
-  i8 iVal = *(i8*)ayElmSeq_dtm();
+  i8 iVal = *(i8*)aElmSeq_dtm();
   
   return iVal;
 }
@@ -172,7 +172,7 @@ i8 Key::iGetIntElm(void)
 i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 {
   i8 nBytes;
-  Dtm* ayCursor = ayElmSeq_dtm();
+  Dtm* ayCursor = aElmSeq_dtm();
   i8 iVal = C_UNKNOWN;
   
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
@@ -195,7 +195,7 @@ i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 /*----------------------------------------------------------------------------*/
 Stz* Key::szGetStrElm(void)
 {
-  Stz* szVal = (Stz*)ayElmSeq_dtm();
+  Stz* szVal = (Stz*)aElmSeq_dtm();
   
   return szVal;
 }
@@ -244,7 +244,7 @@ void Key::vShow(IndexDef* pIndexDef)
   
   i8 nBytes;
   
-  Dtm* ayCursor = ayElmSeq_dtm();
+  Dtm* ayCursor = aElmSeq_dtm();
   
   char caLiteral[128];
   
@@ -282,7 +282,7 @@ void Key::vShowIntKey(void)
   i8 nBytes = 8;
   char caLiteral[128];
 
-  i8 iInt = (i8)* (i8*)ayElmSeq_dtm();
+  i8 iInt = (i8)* (i8*)aElmSeq_dtm();
   StrLib::vSprint(caLiteral,"%05lld"_Stz,iInt);
   
   vTrace(" Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);

@@ -49,8 +49,8 @@ namespace Entries
     void  vBuffer(i8 iBuffer);
 
     Dtm*  ayElmNext_dtm(void);
-    Dtm*  ayElmSeq_dtm(void);
-    void  vElmSeq_dtm(i8 nElmSeqSize, byte* ayElmSeq);
+    Dtm*  aElmSeq_dtm(void);
+    void  vElmSeq_dtm(i8 nElmSeqSize, Dtm* aElmSeq);
     void  vElmSeqSize(i8 nElmSeqSize);
     Ent*  aEnt(void);
     
