@@ -23,7 +23,6 @@ namespace SqlValues
 #include "BolVal.hpp"
 #include "DteVal.hpp"
 #include "EdtVal.hpp"
-#include "FltVal.hpp"
 #include "IntVal.hpp"
 #include "IvlVal.hpp"
 #include "StzVal.hpp"
