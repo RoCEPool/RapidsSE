@@ -24,7 +24,9 @@ CellSingle::CellSingle(eSI eStringSemantics)
   m_eStringSemantics = eStringSemantics;
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(&DtmCell.m_wxCell,sizeof(DtmCell.m_wxCell),CN_CELLSINGLE);
+  MemLib::vZero(&AnyVal_DtmCell.m_wxCell,
+                sizeof(AnyVal_DtmCell.m_wxCell),
+                CN_CELLSINGLE);
   MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
 #endif
   
@@ -39,6 +41,20 @@ CellSingle::CellSingle(eSI eStringSemantics)
 CellSingle::~CellSingle(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Operators ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : as AnyVal*                                      */
+/*----------------------------------------------------------------------------*/
+CellSingle::operator AnyVal*(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return (AnyVal*) & AnyVal_DtmCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +98,7 @@ Dtm* CellSingle::aCellAddress(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  Dtm* aColCell = & DtmCell.m_wxCell;
+  Dtm* aColCell = & AnyVal_DtmCell.m_wxCell;
   
   return aColCell;
 }
@@ -94,7 +110,7 @@ d8 CellSingle::dGetColVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  d8 dColVal = DtmCell.m_wxCell.dGetColVal();
+  d8 dColVal = AnyVal_DtmCell.m_wxCell.dGetColVal();
   
   return dColVal;
 }
@@ -106,7 +122,7 @@ i8 CellSingle::iGetColVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  i8 iColVal = DtmCell.m_wxCell.iGetColVal();
+  i8 iColVal = AnyVal_DtmCell.m_wxCell.iGetColVal();
   
   return iColVal;
 }
@@ -118,7 +134,7 @@ Stz* CellSingle::szGetColVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  Stz* szColVal = DtmCell.m_wxCell.szGetColVal_offset();
+  Stz* szColVal = AnyVal_DtmCell.m_wxCell.szGetColVal_offset();
 
   return szColVal;
 }
@@ -140,7 +156,7 @@ void CellSingle::vPutColVal(d8 dColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  DtmCell.m_wxCell.vPutColVal(dColVal);
+  AnyVal_DtmCell.m_wxCell.vPutColVal(dColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +166,7 @@ void CellSingle::vPutColVal(i8 iColVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  DtmCell.m_wxCell.vPutColVal(iColVal);
+  AnyVal_DtmCell.m_wxCell.vPutColVal(iColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +180,8 @@ void CellSingle::vPutColVal(Stz* szColVal)
   
   Stz* StzBegin = szStringAdd_begin();
   
-  i8 nStringSize = DtmCell.m_wxCell.nPutColVal_offset(szColVal,StzBegin);
+  i8 nStringSize =
+    AnyVal_DtmCell.m_wxCell.nPutColVal_offset(szColVal,StzBegin);
   
   vStringAdd_end(nStringSize);
 }

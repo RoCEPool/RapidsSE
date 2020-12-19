@@ -10,32 +10,14 @@ namespace Rows
   class CellSingle : public Object
   {
   protected:
-  
-    union {
-      
-      struct {
-        _Header m_wxCellHeader;
-        Dtm     m_wxCell;
-      } DtmCell;
-      
-      AnyVal  m_xAnyVal;
-    
-      FipVal  m_xFipVal;
-      PtrVal  m_xPtrVal;
-    
-      BcdVal  m_xBcdVal;
-      BolVal  m_xBolVal;
-      DteVal  m_xDteVal;
-      EdtVal  m_xEdtVal;
-      FltVal  m_xFltVal;
-      IntVal  m_xIntVal;
-      IvlVal  m_xIvlVal;
-      TmeVal  m_xTmeVal;
-      TspVal  m_xTspVal;
-    };
-
+        
     eSI m_eStringSemantics;  // string
-
+  
+    struct {
+      _Header m_wxCellHeader;
+      Dtm     m_wxCell;
+    } AnyVal_DtmCell;
+      
     char m_caStringArea[C_MAX_VCH];
 
     // must be last
@@ -48,6 +30,9 @@ namespace Rows
     CellSingle(eSI eStringSemantics);
    ~CellSingle(void) noexcept(false);
   
+    // auto conversion
+    operator AnyVal*(void);
+
     void operator =(d8 dFlt);
     void operator =(i8 iInt);
     void operator =(Stz* szStz);
