@@ -5,7 +5,18 @@
 #include "parser/Parser.h"
 #include "PlanNode.hpp"
 
+const Stz* PlanNode::C_ROOT_NAME        = "__root__"_Stz;
 
+// Paths of nodes
+const Stz* PlanNode::C_ROOT_PATH        = "/__root__"_Stz;
+const Stz* PlanNode::C_PRIMITIVES_PATH  = "/__root__/primitives"_Stz;
+const Stz* PlanNode::C_DEFINITIONS_PATH = "/__root__/definitions"_Stz;
+const Stz* PlanNode::C_PLAN_PATH        = "/__root__/plan"_Stz;
+const Stz* PlanNode::C_METADATA_PATH    = "/__root__/metadata"_Stz;
+const Stz* PlanNode::C_STATISTICS_PATH  = "/__root__/statistics"_Stz;
+
+const Stz* PlanNode::C_PROPERTY_SEPARATOR = ":"_Stz;
+const Stz* PlanNode::C_CHILD_SEPARATOR    = "/"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -121,6 +132,45 @@ Stz* PlanNode::getStringValue()
   return m_xValue.m_pText->szGet();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if there are any properties of this node                      */
+/*----------------------------------------------------------------------------*/
+b1 PlanNode::bHasProperties()
+{
+  return (m_pProperties && m_pProperties->pHead());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if there are any children of this node                        */
+/*----------------------------------------------------------------------------*/
+b1 PlanNode::bHasChildren()
+{
+  return (m_pChildren && m_pChildren->pHead());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the first property of this node. May be null.                      */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pFirstProperty()
+{
+  if (!m_pProperties) {
+    return nullptr;
+  }
+
+  return m_pProperties->pHead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the first child of this node. May be null.                         */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pFirstChild()
+{
+  if (!m_pChildren) {
+    return nullptr;
+  }
+
+  return m_pChildren->pHead();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

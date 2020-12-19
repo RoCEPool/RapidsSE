@@ -2003,7 +2003,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index on orderkey
-  // Smt6 - select l_extendedprice from lineitem where l_orkeykey <= 36;
+  // Smt6 - select * from lineitem where l_orderkey >=2;
   sPath
   "
   procedure Smt6

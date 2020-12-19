@@ -36,7 +36,7 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
-/time load lineitem "/DATA/TPCH/lineitem100.csv";
+/time load lineitem "/DATA/TPCH/lineitem10.csv";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
 tableScan lineitem;
@@ -47,14 +47,18 @@ Smt0;
 // select l_extendedPrice from lineitem;
 Smt1;
 
-// select l_extendedPrice from lineitem where l_partkey >= 1000000;
+// select * from lineitem where l_partkey >= 1000000;
 Smt2;
 
-// select l_extendedPrice from lineitem where l_partkey < 1000000;
+// select * from lineitem where l_partkey < 1000000;
 Smt3;
 
-// select l_extendedPrice from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
+// select * from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
 Smt4;
 
-// select l_extendedPrice from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R' ;
+// select * from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R' ;
 Smt5;
+
+// index filters
+//select * from lineitem where l_orderkey >= 2 ;
+Smt6;
