@@ -302,14 +302,14 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Timer),              HT_TRANSIENT_TINY    ,0 }, // CN_TIMER
   { sizeof(Heap),/*correct*/    HT_INVALID           ,0 }, // CN_TINYPERSISTENT
   { sizeof(Heap),/*correct*/    HT_INVALID           ,0 }, // CN_TINYTRANSIENT
-  { sizeof(TmeVal),             HT_INVALID           ,0 }, // CN_TMEVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_TMEVAL
   { sizeof(ToHshCrw),           HT_TRANSIENT_LARGE   ,0 }, // CN_TOHSHCRW
   { sizeof(Token),              HT_TRANSIENT_TINY    ,0 }, // CN_TOKEN
   { sizeof(TokenVec),           HT_TRANSIENT_LARGE   ,0 }, // CN_TOKENVEC
   { sizeof(ToNstRow),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_TONSTROW
   { sizeof(ToPtnRow),           HT_TRANSIENT_LARGE   ,0 }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_TOROW
-  { sizeof(TspVal),             HT_INVALID           ,0 }, // CN_TSPVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_TSPVAL
   { sizeof(Tx),                 HT_TRANSIENT_TINY    ,0 }, // CN_TX
   { sizeof(TxSet),              HT_TRANSIENT_TINY    ,0 }, // CN_TXSET
 

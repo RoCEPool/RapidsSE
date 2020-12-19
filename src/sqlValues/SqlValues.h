@@ -26,8 +26,6 @@ namespace SqlValues
 #include "IntVal.hpp"
 #include "IvlVal.hpp"
 #include "StzVal.hpp"
-#include "TmeVal.hpp"
-#include "TspVal.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
