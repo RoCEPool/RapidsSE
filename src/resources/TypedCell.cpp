@@ -27,7 +27,7 @@ TypedCell::~TypedCell(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eCN TypedCell::eType(void)
 {
-  return (eCN)m_wxCellHeader.eClass();
+  return (eCN)m_wxType.eClass();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ eCN TypedCell::eType(void)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vType(eCN eType)
 {
-  m_wxCellHeader.vClass(eType);
+  m_wxType.vClass(eType);
 }
 
 /*============================================================================*/

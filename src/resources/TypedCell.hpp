@@ -10,7 +10,7 @@ namespace Resources
   public:
   
     //Dtm  m_wxTypeCell;
-    _Header m_wxCellHeader;
+    _Header m_wxType;
     Dtm     m_wxValueCell;
 
   public:
@@ -19,6 +19,8 @@ namespace Resources
   
     eCN  eType(void);
     void vType(eCN eType);
+  
+    
   };
 }
 
