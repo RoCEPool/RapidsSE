@@ -42,7 +42,7 @@ void Step::vAstackClass(void)
   
   i8 nTh = m_pDataStack->iPopInt(__func__);
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(nTh,xVariable);
   
@@ -88,7 +88,7 @@ void Step::vAstackDup(void)
   
   // could just copy from stack back into stack
   
-  Datum xValA;
+  CellSingle xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
   
   m_pAuxStack->vPushVal(xValA);
@@ -106,7 +106,7 @@ void Step::vAstackFetch(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(0,xVariable);
   
@@ -122,10 +122,10 @@ void Step::vAstackNip(void)
 {
   ENTRY();
   
-  Datum xValA;
+  CellSingle xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
   
-  Datum xValB;
+  CellSingle xValB;
   m_pAuxStack->vPopVal(xValB,__func__);
 
   m_pAuxStack->vPushVal(xValA);
@@ -144,7 +144,7 @@ void Step::vAstackPick(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(iPick,xVariable);
   
@@ -160,14 +160,14 @@ void Step::vAstackReverse(void)
 {
   ENTRY();
   
-  Datum xVal1;
-  Datum xVal2;
-  Datum xVal3;
-  Datum xVal4;
-  Datum xVal5;
-  Datum xVal6;
-  Datum xVal7;
-  Datum xVal8;
+  CellSingle xVal1;
+  CellSingle xVal2;
+  CellSingle xVal3;
+  CellSingle xVal4;
+  CellSingle xVal5;
+  CellSingle xVal6;
+  CellSingle xVal7;
+  CellSingle xVal8;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -214,10 +214,10 @@ void Step::vAstackSwap(void)
 {
   ENTRY();
   
-  Datum xValA;
+  CellSingle xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
   
-  Datum xValB;
+  CellSingle xValB;
   m_pAuxStack->vPopVal(xValB,__func__);
 
   m_pAuxStack->vPushVal(xValA);
@@ -233,7 +233,7 @@ void Step::vAstackToA(void)
 {
   ENTRY();
   
-  Datum xValOpaque;
+  CellSingle xValOpaque;
   m_pDataStack->vPopVal(xValOpaque,__func__);
   
   m_pAuxStack->vPushVal(xValOpaque);
@@ -248,7 +248,7 @@ void Step::vAstackToD(void)
 {
   ENTRY();
   
-  Datum xVal;
+  CellSingle xVal;
   m_pAuxStack->vPopVal(xVal,__func__);
   
   m_pDataStack->vPushVal(xVal);
@@ -265,7 +265,7 @@ void Step::vAstack0(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(0,xVariable);
   
@@ -283,7 +283,7 @@ void Step::vAstack1(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(1,xVariable);
   
@@ -301,7 +301,7 @@ void Step::vAstack2(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(2,xVariable);
   
@@ -319,7 +319,7 @@ void Step::vAstack3(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(3,xVariable);
   
@@ -337,7 +337,7 @@ void Step::vAstack4(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(4,xVariable);
   
@@ -355,7 +355,7 @@ void Step::vAstack5(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(5,xVariable);
   
@@ -373,7 +373,7 @@ void Step::vAstack6(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(6,xVariable);
   
@@ -391,7 +391,7 @@ void Step::vAstack7(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(7,xVariable);
   
@@ -409,7 +409,7 @@ void Step::vAstack8(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(8,xVariable);
   
@@ -427,7 +427,7 @@ void Step::vAstack9(void)
   
   // could do this directly on stack
   
-  Datum xVariable;
+  CellSingle xVariable;
   
   m_pAuxStack->vPeekVal(9,xVariable);
   

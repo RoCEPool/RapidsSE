@@ -114,6 +114,16 @@ void CellSingle::operator =(Stz* szColVal)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get class of embedded value                                                */
+/*----------------------------------------------------------------------------*/
+eCN CellSingle::eAnyClass(void)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  
+  return AnyVal_DtmCell.m_wxCellHeader.eClass();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of column cell                                                 */
 /*----------------------------------------------------------------------------*/
 Dtm* CellSingle::aCellAddress(void)
@@ -182,6 +192,18 @@ Stz* CellSingle::szGetColVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does cell contain an int val                                               */
+/*----------------------------------------------------------------------------*/
+bool CellSingle::bIsIntVal(void)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  
+  bool b = eAnyClass() == CN_INTVAL ? true : false;
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print the strings                                                          */
 /*----------------------------------------------------------------------------*/
 void CellSingle::vPrintString(void)
@@ -227,6 +249,47 @@ void CellSingle::vPutColVal(Stz* szColVal)
   
   vStringAdd_end(nStringSize);
 }
+
+/*----------------------------------------------------------------------------*/
+/* convert to string                                                          */
+/*----------------------------------------------------------------------------*/
+void CellSingle::vToString(Stz* szStz)
+{
+  eCN eClass = this->eAnyClass();
+  
+  switch (eClass) {
+            
+    case CN_FIPVAL: {
+      FipVal* aFipVal = _aFipVal(&AnyVal_DtmCell);
+      aFipVal->vToStz(szStz);
+      break;
+    }
+      
+    case CN_INTVAL: {
+      IntVal* aIntVal = _aIntVal(&AnyVal_DtmCell);
+      aIntVal->vToStz(szStz);
+      break;
+    }
+      
+    case CN_PTRVAL: {
+      PtrVal* aPtrVal = _aPtrVal(&AnyVal_DtmCell);
+      aPtrVal->vToStz(szStz);
+      break;
+    }
+      
+    case CN_STZVAL: {
+      StzVal* aStzVal = _aStzVal(&AnyVal_DtmCell);
+      aStzVal->vToStz(szStz);
+      break;
+    }
+            
+    default:
+      vTrace("CellSingle::vToString -- invalid eClass %lld"_Stz,eClass);
+      NEVER_REACH;
+      break;
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

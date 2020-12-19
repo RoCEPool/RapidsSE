@@ -38,6 +38,8 @@ namespace Rows
     void operator =(i8 iInt);
     void operator =(Stz* szStz);
   
+    eCN  eAnyClass(void);
+  
     Dtm* aCellAddress(void);
  
     char* azChar(void);
@@ -47,11 +49,16 @@ namespace Rows
     i8   iGetColVal(void);
     Stz* szGetColVal(void);
   
+    bool bIsIntVal(void);
+  
     void vPrintString(void);
   
     void vPutColVal(d8 dColVal);
     void vPutColVal(i8 iColVal);
     void vPutColVal(Stz* szColVal);
+  
+  void vToString(Stz* szDst);
+
   
   private:
   

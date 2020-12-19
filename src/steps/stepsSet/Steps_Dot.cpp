@@ -22,16 +22,16 @@ void Step::vDot(void)
 {
   ENTRY();
   
-  Datum xVariable;
+  CellSingle xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
   
-  if (xVariable.bIsInt()) {
+  if (xVariable.bIsIntVal()) {
 //    vTrace("[%s %s] %lld\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
 //           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //           xVariable.iInt());
     
-    m_pTask->m_pJob->vPrint("%lld"_Stz,xVariable.iInt());
+    m_pTask->m_pJob->vPrint("%lld"_Stz,xVariable.iGetColVal());
     
   }
   else {
@@ -50,7 +50,7 @@ void Step::vDot(void)
 //{
 //  ENTRY();
 //
-//  Datum xVariable;
+//  CellSingle xVariable;
 //  m_pDataStack->vPopVal(xVariable,__func__);
 //
 //  s32 sSide;
@@ -82,11 +82,11 @@ void Step::vDotPut(void)
 {
   ENTRY();
   
-  Datum xVariable;
+  CellSingle xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
   
-  if (xVariable.bIsInt())
-    vTrace("%lld"_Stz,xVariable.iInt());
+  if (xVariable.bIsIntVal())
+    vTrace("%lld"_Stz,xVariable.iGetColVal());
   else
     vTrace("%s"_Stz,xVariable.szStz());
   
@@ -112,7 +112,7 @@ void Step::vDotVerbose(void)
 {
   ENTRY();
   
-  Datum xVariable;
+  CellSingle xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
   
   if (AM::bVerbose()) {

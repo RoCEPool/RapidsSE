@@ -57,7 +57,7 @@ void Step::vToStr(void)
 {
   ENTRY();
   
-  Datum xVar;
+  CellSingle xVar;
   m_pDataStack->vPopVal(xVar,__func__);
   
   s48K sString;

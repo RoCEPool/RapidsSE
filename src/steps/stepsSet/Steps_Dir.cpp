@@ -74,7 +74,7 @@ void Step::vDirGetCurrent(void)
 {
   ENTRY();
   
-  Datum xDirPath;
+  CellSingle xDirPath;
   
   s256 sDirPath;
   

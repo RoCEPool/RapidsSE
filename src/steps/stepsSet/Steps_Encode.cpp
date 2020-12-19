@@ -56,7 +56,7 @@ void Step::vEncodeCurrentPush(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  Datum xVal;
+  CellSingle xVal;
   m_pDataStack->vPopVal(xVal,__func__);
 
   pCurrentWord->vEncodePush(xVal);
@@ -91,7 +91,7 @@ void Step::vEncodePush(void)
   
   Word* pTargetWord = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  Datum xVal;
+  CellSingle xVal;
   m_pDataStack->vPopVal(xVal,__func__);
 
   pTargetWord->vEncodePush(xVal);
