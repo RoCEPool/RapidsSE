@@ -40,6 +40,9 @@ namespace Rows
   
     Dtm* aCellAddress(void);
  
+    char* azChar(void);
+    Stz*  szStz(void);
+
     d8   dGetColVal(void);
     i8   iGetColVal(void);
     Stz* szGetColVal(void);

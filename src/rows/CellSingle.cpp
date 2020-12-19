@@ -126,6 +126,26 @@ Dtm* CellSingle::aCellAddress(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of column cell                                                 */
+/*----------------------------------------------------------------------------*/
+char* CellSingle::azChar(void)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+
+  return m_caStringArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of column cell                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* CellSingle::szStz(void)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+
+  return (Stz*) m_caStringArea;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get float value of given column                                            */
 /*----------------------------------------------------------------------------*/
 d8 CellSingle::dGetColVal(void)
