@@ -49,6 +49,16 @@ CellSingle::operator AnyVal*(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* auto conversion operator : as AnyVal*                                      */
+/*----------------------------------------------------------------------------*/
+CellSingle::operator TypedCell*(void)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  
+  return & m_xTypedCell;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assignment operator (float)                                                */
 /*----------------------------------------------------------------------------*/
 void CellSingle::operator =(d8 dColVal)

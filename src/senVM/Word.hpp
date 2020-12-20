@@ -86,7 +86,7 @@ namespace SenVM
     void  vEncodeCall(StepFp* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
     void  vEncodeJump(Stz* aWordNm, ForthCell* aArgCell);
-    void  vEncodePush(AnyVal* aAnyVal);
+    void  vEncodePush(TypedCell* aTypedCell);
     void  vEntryCell(ForthCell* aInxPtr);
     ForthCell* aEntryCell(void);
     void  vEntryStep(StepFp fpIntrinsic);

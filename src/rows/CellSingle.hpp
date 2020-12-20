@@ -26,6 +26,7 @@ namespace Rows
   
     // auto conversion
     operator AnyVal*(void);
+    operator TypedCell*(void);
 
     void operator =(d8 dFlt);
     void operator =(i8 iInt);

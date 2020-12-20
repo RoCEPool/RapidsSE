@@ -63,46 +63,6 @@ void Step::vFlowJumpFalse(void)
   
   EXIT();
 }
-/*----------------------------------------------------------------------------*/
-//void Step::vFlowJumpFalse(void)
-//{
-//  ENTRY();
-//
-//  //if ( ! bGuard(1) ) THROW_DSTACK();
-//
-//  // get pointer to value on the top of the stack
-//  Stack* pDataStack = m_pDataStack;
-//  AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(pDataStack->m_xTop.pAnyVal);
-//
-//  eCN eClassNo = aAnyVal->eClass(); // inline
-//
-//  i8 iVal;
-//  if (CN_INTVAL == eClassNo) {
-//    iVal = _aIntVal(aAnyVal)->iInt(); // inline
-//  }
-//  else
-//  if (CN_PTRVAL == eClassNo) {
-//    iVal = _aPtrVal(aAnyVal)->pObj() ? 1 : 0; // inline
-//  }
-//  else {
-//    iVal = -1;
-//    NEVER_REACH;
-//  }
-//
-//  pDataStack->vPopBy(sizeof(IntVal)); // inline
-//  pDataStack->m_nValues--;
-//
-//  // n.b. the IP points to the jump arg
-//
-//  if (iVal)
-//    // do not jump, skip over argument
-//    m_aInxPtr++;
-//  else
-//    // jump to location
-//    m_aInxPtr = m_aInxPtr->m_aJumpTo;
-//
-//  EXIT();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */

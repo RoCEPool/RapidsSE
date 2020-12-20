@@ -331,11 +331,11 @@ void Word::vEncodeJump(Stz* aWordNm, ForthCell* aCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncodePush(AnyVal* aAnyVal)
+void Word::vEncodePush(TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  eCN eClassNo_val = aAnyVal->eClass();
+  eCN eClassNo_val = aTypedCell->eType();
   
   if (CN_FIPVAL == eClassNo_val)
     vEncodeCall("pushFipVal"_Stz);
@@ -349,7 +349,7 @@ void Word::vEncodePush(AnyVal* aAnyVal)
     NEVER_REACH;
   }
 
-  m_pRoutine->vAppend((TypedCell*)aAnyVal);
+  m_pRoutine->vAppend(aTypedCell);
 }
 
 /*----------------------------------------------------------------------------*/

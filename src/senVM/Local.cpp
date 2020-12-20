@@ -62,7 +62,7 @@ Local::operator AnyVal*(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* auto conversion operator : as AnyVal*                                      */
+/* auto conversion operator : as TypedCell*                                   */
 /*----------------------------------------------------------------------------*/
 Local::operator TypedCell*(void)
 {
