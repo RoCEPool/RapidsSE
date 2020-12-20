@@ -79,7 +79,7 @@ void Step::vAssertClass_0(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  AnyVal* aAnyVal = m_pDataStack->aPeekVal(0);
+  AnyVal* aAnyVal = (AnyVal*)m_pDataStack->aPeekVal(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aAnyVal->eClass();
@@ -107,7 +107,7 @@ void Step::vAssertClass_1(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  AnyVal* aAnyVal = m_pDataStack->aPeekVal(1);
+  AnyVal* aAnyVal = (AnyVal*)m_pDataStack->aPeekVal(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aAnyVal->eClass();
@@ -134,7 +134,7 @@ void Step::vAssertClass_2(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  AnyVal* aAnyVal = m_pDataStack->aPeekVal(2);
+  AnyVal* aAnyVal = (AnyVal*)m_pDataStack->aPeekVal(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aAnyVal->eClass();
@@ -162,7 +162,7 @@ void Step::vAssertClass_3(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  AnyVal* aAnyVal = m_pDataStack->aPeekVal(3);
+  AnyVal* aAnyVal = (AnyVal*)m_pDataStack->aPeekVal(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aAnyVal->eClass();
@@ -190,7 +190,7 @@ void Step::vAssertClass_4(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  AnyVal* aAnyVal = m_pDataStack->aPeekVal(4);
+  AnyVal* aAnyVal = (AnyVal*)m_pDataStack->aPeekVal(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aAnyVal->eClass();

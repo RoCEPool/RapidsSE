@@ -40,7 +40,7 @@ void Step::vPushJ(void)
 {
   ENTRY();
   
-  AnyVal* aLoopIndex_J = m_pReturnStack->aPeekVal(3);
+  AnyVal* aLoopIndex_J = (AnyVal*)m_pReturnStack->aPeekVal(3);
   
   m_pDataStack->vPushVal((TypedCell*) aLoopIndex_J);
   

@@ -106,7 +106,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    AnyVal* aAnyVal = aPeekVal(i_Val);
+    AnyVal* aAnyVal = (AnyVal*)aPeekVal(i_Val);
     
     eCN eValClass  = aAnyVal->eClass();
     i8 nStackUsage = aAnyVal->nStackUsage();
@@ -177,7 +177,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-AnyVal* Stack::aPeekVal(i8 i_Val)
+TypedCell* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -189,7 +189,7 @@ AnyVal* Stack::aPeekVal(i8 i_Val)
     aAnyVal = reinterpret_cast<AnyVal*>(aAddress);
   }
   
-  return (AnyVal*)aAnyVal;
+  return (TypedCell*)aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,7 +211,7 @@ void Stack::vPokeVal(i8 i_Val, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  AnyVal* aPokeAddress = aPeekVal(i_Val);
+  AnyVal* aPokeAddress = (AnyVal*)aPeekVal(i_Val);
   
   aPokeAddress->vCopy((AnyVal*)aTypedCell);
 }
@@ -616,7 +616,7 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  AnyVal* aAnyVal0 = aPeekVal(0);
+  AnyVal* aAnyVal0 = (AnyVal*)aPeekVal(0);
   if (eClass0 != aAnyVal0->eClass())
     return false;
   
@@ -633,11 +633,11 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  AnyVal* aAnyVal0 = aPeekVal(0);
+  AnyVal* aAnyVal0 = (AnyVal*)aPeekVal(0);
   if (eClass0 != aAnyVal0->eClass())
     return false;
   
-  AnyVal* aAnyVal1 = aPeekVal(1);
+  AnyVal* aAnyVal1 = (AnyVal*)aPeekVal(1);
   if (eClass1 != aAnyVal1->eClass())
     return false;
   
@@ -654,15 +654,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  AnyVal* aAnyVal0 = aPeekVal(0);
+  AnyVal* aAnyVal0 = (AnyVal*)aPeekVal(0);
   if (eClass0 != aAnyVal0->eClass())
     return false;
   
-  AnyVal* aAnyVal1 = aPeekVal(1);
+  AnyVal* aAnyVal1 = (AnyVal*)aPeekVal(1);
   if (eClass1 != aAnyVal1->eClass())
     return false;
   
-  AnyVal* aSrkVal2 = aPeekVal(2);
+  AnyVal* aSrkVal2 = (AnyVal*)aPeekVal(2);
   if (eClass2 != aSrkVal2->eClass())
     return false;
   

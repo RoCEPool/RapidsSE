@@ -834,7 +834,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    AnyVal* aAnyVal = pStack->aPeekVal(iValue);
+    AnyVal* aAnyVal = (AnyVal*)pStack->aPeekVal(iValue);
     
     eCN eClass = aAnyVal->eClass();
     
@@ -1231,7 +1231,7 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // handle a StzVal, IntVal or a PtrVal
     
-    AnyVal* aAnyVal0 = m_pForth->m_pDataStack->aPeekVal(0);
+    AnyVal* aAnyVal0 = (AnyVal*)m_pForth->m_pDataStack->aPeekVal(0);
     eCN eClass = aAnyVal0->eClass();
     
     // test for StzVal
