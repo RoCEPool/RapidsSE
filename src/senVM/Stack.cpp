@@ -207,13 +207,13 @@ void Stack::vPeekVal(i8 i_Val, TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
+void Stack::vPokeVal(i8 i_Val, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   AnyVal* aPokeAddress = aPeekVal(i_Val);
   
-  aPokeAddress->vCopy(aAnyVal);
+  aPokeAddress->vCopy((AnyVal*)aTypedCell);
 }
 
 /*----------------------------------------------------------------------------*/

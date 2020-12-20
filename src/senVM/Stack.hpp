@@ -57,7 +57,7 @@ namespace SenVM
     AnyVal* aPeekVal(i8 i_Val);
     void vPeekVal(i8 i_Val, TypedCell* aTypedCell);
 
-    void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
+    void vPokeVal(i8 i_Val, TypedCell* aTypedCell);
   
     i8   iPopAsInt(const char* azFunNm);
     ForthCell* aPopFip(const char* azFunNm);
