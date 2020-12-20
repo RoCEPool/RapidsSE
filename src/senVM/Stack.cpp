@@ -420,17 +420,17 @@ void Stack::vPushStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushVal(AnyVal* aAnyVal)
+void Stack::vPushVal(TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   _hazard_();
   
-  i8 nBytes = aAnyVal->nStackUsage();
+  i8 nBytes = aTypedCell->nStackUsage();
   
   m_xTop.vAdvance(nBytes);
   
-  m_xTop.aAnyVal->vCopy(aAnyVal,nBytes);
+  m_xTop.aAnyVal->vCopy((AnyVal*)aTypedCell,nBytes);
   
   m_nValues++;
   
