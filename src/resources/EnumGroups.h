@@ -39,7 +39,6 @@ enum eEG // enum groups
   EG_EP,
 
   EG_FN,
-  EG_FU,
 
   EG_GA,
   
@@ -96,7 +95,6 @@ enum eEG // enum groups
 
   EG_QA,
   EG_QK,
-  EG_QN,
 
   EG_RA,
   EG_RE,
@@ -115,7 +113,6 @@ enum eEG // enum groups
   EG_TA,
   EG_TN,
   EG_TP,
-  EG_TQ,
   EG_TR,
   EG_TS,
   EG_TT,

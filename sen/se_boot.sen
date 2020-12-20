@@ -16,7 +16,6 @@ assert::stack_0
         "se_categories.sen"       include
         "se_cluster.sen"          include
         "se_tags.sen"             include
-        "se_kbase.sen"            include
         "se_log.sen"              include
         "se_path.sen"             include
         "se_folder.sen"           include
@@ -135,8 +134,6 @@ assert::stack_0
         "OP_insDel.sen"               include
         "OP_insert.sen"               include
 
-        "OP_kbase.sen"                include
-
         "OP_listFolders.sen"          include
         "OP_listCatalogs.sen"         include
         "OP_listColumns.sen"          include
@@ -166,8 +163,6 @@ assert::stack_0
         "OP_pwf.sen"                  include
         "OP_python.sen"               include
         "OP_pythonShell.sen"          include
-
-        "OP_q0.sen"                   include
 
         "OP_rdCrwFile.sen"            include
         "OP_rdCsvChunk.sen"           include

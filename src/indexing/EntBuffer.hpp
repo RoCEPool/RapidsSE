@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eDU.h"
+#include "eIU.h"
 
 namespace Indexing
 {

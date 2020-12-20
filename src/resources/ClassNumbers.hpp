@@ -76,7 +76,6 @@ enum eCN : u2 // Class Number
   /* */ CN_EXPRLIST,
 
   /* */ CN__F__,
-  /* */ CN_FACT,
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FIPVAL,
@@ -122,7 +121,6 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBLIST,
 
   /* */ CN__K__,
-  /* */ CN_KBASE,
   /* */ CN_KEY,
 
   /* */ CN__L__,
@@ -147,7 +145,6 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEMTEST,
   /* */ CN_METADATANODE,
-  /* */ CN_METHOD,
   /* */ CN_MUTABLEPLANNODE,
   /* */ CN_MUTEX,
 
@@ -190,7 +187,6 @@ enum eCN : u2 // Class Number
   
   /* */ CN__Q__,
   /* */ CN_QUERYNODE,
-  /* */ CN_QUESTION,
   /* */ CN_QUEUE,
   /* */ CN_QUEUEBUFFER,
   /* */ CN_QUEUES,
@@ -399,7 +395,6 @@ static Stz* aCN[]
   /* */ "EXPRLIST"_Stz,            // CN_EXPRLIST
 
   /* */ "_F__"_Stz,                // CN__F__
-  /* */ "FACT"_Stz,                // CN_FACT
   /* */ "FIFO"_Stz,                // CN_FIFO
   /* */ "FILE"_Stz,                // CN_FILE
   /* */ "FIPVAL"_Stz,              // CN_FIPVAL
@@ -445,7 +440,6 @@ static Stz* aCN[]
   /* */ "JOBLIST"_Stz,             // CN_JOBLIST
 
   /* */ "_K__"_Stz,                // CN__K__
-  /* */ "KBASE"_Stz,               // CN_KBASE
   /* */ "KEY"_Stz,                 // CN_KEY
   
   /* */ "_L__"_Stz,                // CN__L__
@@ -470,7 +464,6 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* */ "MEMTEST"_Stz,             // CN_MEMTEST
   /* */ "METADATANODE"_Stz,        // CN_METADATANODE
-  /* */ "METHOD"_Stz,              // CN_METHOD
   /* */ "MUTABLEPLANNODE"_Stz,     // CN_MUTABLEPLANNODE
   /* */ "MUTEX"_Stz,               // CN_MUTEX
 
@@ -513,7 +506,6 @@ static Stz* aCN[]
   
   /* */ "_Q__"_Stz,                // CN__Q__
   /* */ "QUERYNODE"_Stz,           // CN_QUERYNODE
-  /* */ "QUESTION"_Stz,            // CN_QUESTION
   /* */ "QUEUE"_Stz,               // CN_QUEUE
   /* */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
   /* */ "QUEUES"_Stz,              // CN_QUEUES

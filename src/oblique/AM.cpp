@@ -2134,7 +2134,6 @@ static Stz* aEG[]
   "EG_EP"_Stz,
 
   "EG_FN"_Stz,
-  "EG_FU"_Stz,
 
   "EG_GA"_Stz,
   
@@ -2190,7 +2189,6 @@ static Stz* aEG[]
   
   "EG_QA"_Stz,
   "EG_QK"_Stz,
-  "EG_QN"_Stz,
 
   "EG_RA"_Stz,
   "EG_RE"_Stz,
@@ -2209,7 +2207,6 @@ static Stz* aEG[]
   "EG_TA"_Stz,
   "EG_TN"_Stz,
   "EG_TP"_Stz,
-  "EG_TQ"_Stz,
   "EG_TR"_Stz,
   "EG_TS"_Stz,
   "EG_TT"_Stz,
@@ -2271,7 +2268,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_EP: return aEP[i_Enum];
 
     case EG_FN: return aFN[i_Enum];
-    case EG_FU: return aFU[i_Enum];
 
     case EG_GA: return aGA[i_Enum];
 
@@ -2328,7 +2324,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_QA: return aQA[i_Enum];
     case EG_QK: return aQK[i_Enum];
-    case EG_QN: return aQN[i_Enum];
 
     case EG_RA: return aRA[i_Enum];
     case EG_RE: return aLE[i_Enum];
@@ -2347,7 +2342,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_TA: return aTA[i_Enum];
     case EG_TN: return aTN[i_Enum];
     case EG_TP: return aTP[i_Enum];
-    case EG_TQ: return aTQ[i_Enum];
     case EG_TR: return aTR[i_Enum];
     case EG_TS: return aTS[i_Enum];
     case EG_TT: return aTT[i_Enum];

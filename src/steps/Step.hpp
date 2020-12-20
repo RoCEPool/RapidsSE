@@ -55,7 +55,6 @@ namespace Steps
     static void vAddSteps_Error(void);
     static void vAddSteps_Executable(void);
 
-    static void vAddSteps_Fact(void);
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
     static void vAddSteps_Flow(void);
@@ -80,8 +79,6 @@ namespace Steps
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
 
-    static void vAddSteps_Kbase(void);
-  
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
     static void vAddSteps_LockTracker(void);

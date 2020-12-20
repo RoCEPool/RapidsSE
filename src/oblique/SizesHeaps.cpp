@@ -78,7 +78,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ExprList),           HT_TRANSIENT_TINY    ,0 }, // CN_EXPRLIST
 
   { 'F' - ('A' - 1),            HT_INVALID           ,0 }, // CN__F__
-  { sizeof(Fact),               HT_TRANSIENT_SMALL   ,0 }, // CN_FACT
   { sizeof(Fifo),               HT_TRANSIENT_TINY    ,0 }, // CN_FIFO
   { sizeof(File),               HT_TRANSIENT_TINY    ,0 }, // CN_FILE
   { sizeof(TypedCell), /*yes*/  HT_INVALID           ,0 }, // CN_FIPVAL
@@ -124,7 +123,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(JobList),            HT_TRANSIENT_TINY    ,0 }, // CN_JOBLIST
 
   { 'K' - ('A' - 1),            HT_INVALID           ,0 }, // CN__K__
-  { sizeof(Kbase),              HT_TRANSIENT_TINY    ,0 }, // CN_KBASE
   { sizeof(Key),                HT_INVALID           ,0 }, // CN_KEY
 
   { 'L' - ('A' - 1),            HT_INVALID           ,0 }, // CN__L__
@@ -149,7 +147,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(MemTest),            HT_TRANSIENT_TINY    ,0 }, // CN_MEMTEST
   { sizeof(MetadataNode),       HT_TRANSIENT_TINY    ,-8 }, // CN_METADATANODE
-  { sizeof(Method),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_METHOD
   { sizeof(MutablePlanNode),    HT_TRANSIENT_TINY    ,-8 }, // CN_MUTABLEPLANNODE
   { sizeof(Mutex),              HT_TRANSIENT_TINY    ,0 }, // CN_MUTEX
 
@@ -192,7 +189,6 @@ SizeHeap gxaSizeHeap[]
 
   { 'Q' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Q__
   { sizeof(QueryNode),          HT_TRANSIENT_TINY    ,-8 }, // CN_QUERYNODE
-  { sizeof(Question),           HT_TRANSIENT_TINY    ,0 }, // CN_QUESTION
   { sizeof(Queue),              HT_TRANSIENT_TINY    ,0 }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID           ,0 }, // CN_QUEUEBUFFER
   { sizeof(Queues),             HT_TRANSIENT_TINY    ,0 }, // CN_QUEUES

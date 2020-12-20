@@ -77,7 +77,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Error();
   Step::vAddSteps_Executable();
 
-  Step::vAddSteps_Fact();
   Step::vAddSteps_File();
   Step::vAddSteps_Flow();
   Step::vAddSteps_Forth();
@@ -100,8 +99,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobRef();
-
-  Step::vAddSteps_Kbase();
   
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();

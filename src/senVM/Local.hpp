@@ -13,7 +13,7 @@ namespace SenVM
     // must be last
     Footer m_xFooter;
   
-  public: 
+  public:
     void* operator new(size_t);
     Local(void);
   
