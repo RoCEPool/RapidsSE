@@ -85,7 +85,7 @@ namespace SenVM
     i8   nValues(void);
   
   private:
-    AnyVal* aAllotAnyVal(i8 nWithAdditionalBytes);
+    TypedCell* aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes);
     TypedCell* aAllotFipVal(void);
     TypedCell* aAllotIntVal(void);
     TypedCell* aAllotPtrVal(void);

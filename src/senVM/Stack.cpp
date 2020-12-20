@@ -513,20 +513,22 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 /* allot a value on top of stack                                               */
 /*----------------------------------------------------------------------------*/
-AnyVal* Stack::aAllotAnyVal(i8 nWithAdditionalBytes)
+TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 nAllotBytes = sizeof(AnyVal) + nWithAdditionalBytes;
+  i8 nAllotBytes = sizeof(_Header) + sizeof(Dtm) + nWithAdditionalBytes;
   
   m_rTop.vAdvance(nAllotBytes);
   ASSERT(m_rTop.ayByte >= (byte*)aStackLimit());
   
   m_rTop.aTypedCell->vMagic();
 
+  m_rTop.aTypedCell->vType(eType);
+
   m_nValues++;
   
-  return (AnyVal*)m_rTop.aTypedCell;
+  return m_rTop.aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -536,9 +538,9 @@ TypedCell* Stack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
+  TypedCell* aTypedCell = aAllotTypedCell(CN_FIPVAL,C_NO_ADDITIONAL_BYTES);
   
-  aTypedCell->vType(CN_FIPVAL);
+  //aTypedCell->vType(CN_FIPVAL);
   //aFipVal->vMagic();
   
   return aTypedCell;
@@ -551,9 +553,9 @@ TypedCell* Stack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
+  TypedCell* aTypedCell = aAllotTypedCell(CN_INTVAL,C_NO_ADDITIONAL_BYTES);
   
-  aTypedCell->vType(CN_INTVAL);
+  //aTypedCell->vType(CN_INTVAL);
   //aIntVal->vMagic();
   
   return aTypedCell;
@@ -566,9 +568,9 @@ TypedCell* Stack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
+  TypedCell* aTypedCell = aAllotTypedCell(CN_PTRVAL,C_NO_ADDITIONAL_BYTES);
   
-  aTypedCell->vType(CN_PTRVAL);
+  //aTypedCell->vType(CN_PTRVAL);
   //aPtrVal->vMagic();
   
   return aTypedCell;
@@ -583,9 +585,9 @@ TypedCell* Stack::aAllotStzVal(i8 nStrSize)
   
   i8 nWithAdditionalBytes = nStrSize;
   
-  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(nWithAdditionalBytes);
+  TypedCell* aTypedCell = aAllotTypedCell(CN_STZVAL,nWithAdditionalBytes);
   
-  aTypedCell->vType(CN_STZVAL);
+  //aTypedCell->vType(CN_STZVAL);
   //aStzVal->vMagic();
   
   return aTypedCell;
