@@ -18,9 +18,11 @@ namespace SenVM
     Local(void);
   
     operator AnyVal*(void);
-  
+    operator TypedCell*(void);
+
     AnyVal* aAnyValue(void);
-  
+    TypedCell* aTypedCell(void);
+
   private:
     Footer* aFooter(void);
   };
