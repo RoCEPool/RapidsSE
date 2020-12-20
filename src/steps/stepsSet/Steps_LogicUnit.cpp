@@ -276,11 +276,17 @@ void Step::vLogicUnitGenAsm(void)
   RASSERT(b);
   
   s16KB sText;
+  //MemLib::vZero(sText.azChar(),C_16KB,CN_STRING_T);
+
   i8 nSize = pFile->iSize();
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
-  
+
   //vTrace("FILE %s\n"_Stz, sFileName.azChar());
-  
+
+  // null terminate the read bytes
+  char* sReadStr = sText.azChar();
+  sReadStr[nSize] = '\0';
+
   bool bResult = m_pLogicUnit->bGenerateAsm(sText);
   
   m_pDataStack->vPushInt(bResult);

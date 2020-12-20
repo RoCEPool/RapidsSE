@@ -863,6 +863,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENT_PUSHOFS
   { EA_NONE,    0 },  // EO_ENT_PUSHREF
 
+  { EA_NONE,    0 },  // EO_ENT_SRC_PUSH
+  { EA_NONE,    0 },  // EO_ENT_SRC_PUSHUPPER
+
   // entry relational operators
   { EA_NONE,    0 },  // EO_ENT_LESS
   { EA_NONE,    0 },  // EO_ENT_LESSEQUAL
@@ -872,8 +875,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENT_GREATER
   { EA_NONE,    0 },  // EO_ENT_PRINTKEYS
 
-  { EA_NONE,    0 },  // EO_ENT_SRC_PUSH
-  { EA_NONE,    0 },  // EO_ENT_SRC_PUSHUPPER
+
   
   // entWrk
   { EA_SUBSCR,  8 },  // EO_ENTWRK_APPENDELM
