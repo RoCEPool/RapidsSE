@@ -70,11 +70,11 @@ void Step::vPushFipVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  FipVal* aFipVal = _aFipVal(& m_aInxPtr->m_xEmbVal);
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
   
-  m_pDataStack->vPushFip(aFipVal->aFip());
+  m_pDataStack->vPushFip(aTypedCell->aFip());
   
-  m_pTask->vAdjustFIP(aFipVal->nStackUsage());
+  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
   
   EXIT();
 }

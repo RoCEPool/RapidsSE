@@ -17,7 +17,6 @@ namespace SenVM
     byte*   ayByte;
     
     AnyVal* aAnyVal;
-    FipVal* aFipVal;
     IntVal* aIntVal;
  
     TypedCell* aTypedCell;
@@ -88,7 +87,7 @@ namespace SenVM
   
   private:
     AnyVal* aAllotAnyVal(i8 nWithAdditionalBytes);
-    FipVal* aAllotFipVal(void);
+    TypedCell* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     TypedCell* aAllotPtrVal(void);
     TypedCell* aAllotStzVal(i8 nStrSize);

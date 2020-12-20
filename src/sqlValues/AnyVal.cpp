@@ -370,8 +370,10 @@ i8 AnyVal::nStackUsage(void)
   switch (eClassNo) {
       
     case CN_FIPVAL: {
-      FipVal* aFipVal = _aFipVal(this);
-      nBytes = aFipVal->nStackUsage();
+//      FipVal* aFipVal = _aFipVal(this);
+//      nBytes = aFipVal->nStackUsage();
+      TypedCell* aTypedCell = _aTypedCell(this);
+      nBytes = aTypedCell->nStackUsage();
       break;
     }
       
@@ -436,8 +438,10 @@ void AnyVal::vToString(Stz* szStz)
   switch (eClass) {
             
     case CN_FIPVAL: {
-      FipVal* aFipVal = _aFipVal(this);
-      aFipVal->vToStz(szStz);
+//      FipVal* aFipVal = _aFipVal(this);
+//      aFipVal->vToStz(szStz);
+      TypedCell* aTypedCell = _aTypedCell(this);
+      aTypedCell->vToStz(szStz);
       break;
     }
       

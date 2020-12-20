@@ -246,7 +246,7 @@ ForthCell* Stack::aPopFip(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  ForthCell* aFip = m_xTop.aFipVal->aFip();
+  ForthCell* aFip = m_xTop.aTypedCell->aFip();
   
   vDiscardTop();
   
@@ -352,9 +352,9 @@ void Stack::vPushFip(ForthCell* aFip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  FipVal* aFipVal = aAllotFipVal();
+  TypedCell* aTypedCell = aAllotFipVal();
   
-  aFipVal->vFip(aFip);
+  aTypedCell->vFip(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,16 +531,16 @@ AnyVal* Stack::aAllotAnyVal(i8 nWithAdditionalBytes)
 /*----------------------------------------------------------------------------*/
 /* allot a fip value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-FipVal* Stack::aAllotFipVal(void)
+TypedCell* Stack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  FipVal* aFipVal = (FipVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
+  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
-  aFipVal->vClass(CN_FIPVAL);
-  aFipVal->vMagic();
+  aTypedCell->vType(CN_FIPVAL);
+  //aFipVal->vMagic();
   
-  return aFipVal;
+  return aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/

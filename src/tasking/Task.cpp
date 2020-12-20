@@ -883,7 +883,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     }
     else if (CN_FIPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
-                                _aFipVal(aAnyVal)->aFip());
+                                _aTypedCell(aAnyVal)->aFip());
     }
     else if (CN_STZVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,

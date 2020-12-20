@@ -41,6 +41,9 @@ namespace Rows
     Dtm* aCellAddress(void);
  
     char* azChar(void);
+  
+   ForthCell* aFip(void);
+
     Stz*  szStz(void);
 
     d8   dGetColVal(void);

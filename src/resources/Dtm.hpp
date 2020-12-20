@@ -55,6 +55,9 @@ namespace Resources
 
       Object*  m_pObject;
 
+      ForthCell*  m_aFip;
+      i8     m_iFip;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
       i8    m_iWrd;
@@ -103,6 +106,14 @@ namespace Resources
     /*------------------------------------------------------------------------*/
     /* get float column value                                                 */
     /*------------------------------------------------------------------------*/
+    inline ForthCell* aGetColVal(void)
+    {
+      return m_aFip;
+    }
+
+   /*------------------------------------------------------------------------*/
+    /* get float column value                                                 */
+    /*------------------------------------------------------------------------*/
     inline Object* pGetColVal(void)
     {
       return m_pObject;
@@ -143,6 +154,14 @@ namespace Resources
     inline void vPutColVal(i8 iColVal)
     {
       m_wInt = iColVal;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /* put integer column value                                               */
+    /*------------------------------------------------------------------------*/
+    inline void vPutColVal(ForthCell* aFip)
+    {
+      m_aFip = aFip;
     }
 
     /*------------------------------------------------------------------------*/

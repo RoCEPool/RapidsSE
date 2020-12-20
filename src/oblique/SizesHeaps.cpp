@@ -81,7 +81,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Fact),               HT_TRANSIENT_SMALL   ,0 }, // CN_FACT
   { sizeof(Fifo),               HT_TRANSIENT_TINY    ,0 }, // CN_FIFO
   { sizeof(File),               HT_TRANSIENT_TINY    ,0 }, // CN_FILE
-  { sizeof(FipVal),             HT_INVALID           ,0 }, // CN_FIPVAL
+  { sizeof(TypedCell), /*yes*/  HT_INVALID           ,0 }, // CN_FIPVAL
   { sizeof(TypedCell), /*yes*/  HT_INVALID           ,0 }, // CN_FLTVAL
   { sizeof(FocalObjects),       HT_TRANSIENT_LARGE   ,0 }, // CN_FOCALOBJECTS
   { sizeof(Forth),              HT_TRANSIENT_TINY    ,0 }, // CN_FORTH

@@ -24,6 +24,9 @@ namespace Resources
     void vType(eCN eType);
   
     char* azChar(void);
+  
+    ForthCell* aFip(void);
+    void vFip(ForthCell* aFip);
 
     void  vInt(i8 iVal);
 

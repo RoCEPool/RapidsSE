@@ -138,6 +138,16 @@ char* CellSingle::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get address of column cell                                                 */
 /*----------------------------------------------------------------------------*/
+ForthCell* CellSingle::aFip(void)
+{
+  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+
+  return m_xTypedCell.aFip();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of column cell                                                 */
+/*----------------------------------------------------------------------------*/
 Stz* CellSingle::szStz(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
@@ -245,8 +255,9 @@ void CellSingle::vToString(Stz* szStz)
   switch (eClass) {
             
     case CN_FIPVAL: {
-      FipVal* aFipVal = _aFipVal(&m_xTypedCell.m_wxValueCell);
-      aFipVal->vToStz(szStz);
+//      FipVal* aFipVal = _aFipVal(&m_xTypedCell.m_wxValueCell);
+//      aFipVal->vToStz(szStz);
+      m_xTypedCell.vToStz(szStz);
       break;
     }
       
