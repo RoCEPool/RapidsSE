@@ -468,7 +468,7 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_aRetryTop    = (AnyVal*)m_rTop.aTypedCell;
+  m_aRetryTop    = m_rTop.aTypedCell;
   m_nRetryValues = m_nValues;
 }
 
@@ -672,25 +672,25 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* compute the base of this stack                                             */
 /*----------------------------------------------------------------------------*/
-AnyVal* Stack::aStackBase(void)
+TypedCell* Stack::aStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* aBase = (char*)&m_xWsp.ayArea()[C_WSP_STACK - 1];
   
-  return pPoolCheck<AnyVal*>(aBase);
+  return pPoolCheck<TypedCell*>(aBase);
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute the limit of this stack                                            */
 /*----------------------------------------------------------------------------*/
-AnyVal* Stack::aStackLimit(void)
+TypedCell* Stack::aStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
-  return pPoolCheck<AnyVal*>(aLimit);
+  return pPoolCheck<TypedCell*>(aLimit);
 }
 
 /*----------------------------------------------------------------------------*/

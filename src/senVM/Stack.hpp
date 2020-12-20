@@ -16,8 +16,6 @@ namespace SenVM
     
     byte*   ayByte;
     
-    //AnyVal* aAnyVal;
- 
     TypedCell* aTypedCell;
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
@@ -33,7 +31,7 @@ namespace SenVM
     StkPtr  m_rTop;         // current top of stack
     i8      m_nValues;      // number of values currently on stack
 
-    AnyVal* m_aRetryTop;    // reset to this top of stack
+    TypedCell* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
     
     Footer  m_xHazard;
@@ -96,8 +94,8 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
   
-    AnyVal* aStackBase(void);
-    AnyVal* aStackLimit(void);
+    TypedCell* aStackBase(void);
+    TypedCell* aStackLimit(void);
     
     Footer* aFooter(void);
     Footer* aHazard(void);
