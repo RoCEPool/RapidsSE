@@ -2019,10 +2019,11 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      IntVal* aIntVal = _aIntVal(aCell);
-      vTrace(" %lld\n"_Stz,aIntVal->iInt());
+//      IntVal* aIntVal = _aIntVal(aCell);
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
       
-      i8 iBytes = aIntVal->nStackUsage();
+      i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<ForthCell*>(aCell,iBytes);
       
       continue;

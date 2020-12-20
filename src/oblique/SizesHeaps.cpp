@@ -113,7 +113,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Input),              HT_TRANSIENT_TINY    ,0 }, // CN_INPUT
   { sizeof(IntBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_INTBUFFER
   { sizeof(IntSet),             HT_TRANSIENT_TINY    ,0 }, // CN_INTSET
-  { sizeof(IntVal),             HT_INVALID           ,0 }, // CN_INTVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_INTVAL
   { sizeof(IoChunk),            HT_TRANSIENT_LARGE   ,0 }, // CN_IOCHUNK
   { sizeof(IoCopy),             HT_TRANSIENT_TINY    ,0 }, // CN_IOCOPY
   { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_IVLVAL

@@ -45,16 +45,16 @@ void Step::vIntAdd(void)
   */
   
   // get pointer to value on the top of the stack
-  AnyVal* j = m_pDataStack->aTopVal();
+  TypedCell* j = (TypedCell*)m_pDataStack->aTopVal();
   
   // discard the value
   m_pDataStack->vDiscardTop();
   
   // get pointer to value on the top of the stack
-  AnyVal* i = m_pDataStack->aTopVal();
+  TypedCell* i = (TypedCell*)m_pDataStack->aTopVal();
   
   // add the two values and leave the result on the stack
-  _aIntVal(i)->vInt(_aIntVal(j)->iInt() + _aIntVal(i)->iInt());
+  i->vInt(j->iInt() + i->iInt());
   
   EXIT();
 }

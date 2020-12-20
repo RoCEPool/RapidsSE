@@ -839,7 +839,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     eCN eClass = aAnyVal->eClass();
     
     if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Stz,_aIntVal(aAnyVal)->iInt());
+      sStackContents.vCatSprint("%lld"_Stz,_aTypedCell(aAnyVal)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
       if (_aTypedCell(aAnyVal)->pObj()) {

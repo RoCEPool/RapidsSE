@@ -90,12 +90,18 @@ void Step::vPushIntVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbVal);
+//  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbVal);
+//
+//  m_pDataStack->vPushInt(aIntVal->iInt());
+//
+//  m_pTask->vAdjustFIP(aIntVal->nStackUsage());
   
-  m_pDataStack->vPushInt(aIntVal->iInt());
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
   
-  m_pTask->vAdjustFIP(aIntVal->nStackUsage());
+  m_pDataStack->vPushInt(aTypedCell->iInt());
   
+  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
+
   EXIT();
 }
 

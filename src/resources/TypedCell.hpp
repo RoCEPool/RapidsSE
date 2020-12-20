@@ -28,6 +28,7 @@ namespace Resources
     ForthCell* aFip(void);
     void vFip(ForthCell* aFip);
 
+    i8    iInt(void);
     void  vInt(i8 iVal);
 
     Object* pObj(void);
