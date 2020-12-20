@@ -834,19 +834,19 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    TypedCell* aAnyVal = pStack->aPeekVal(iValue);
+    TypedCell* aTypedCell = pStack->aPeekVal(iValue);
     
-    eCN eClass = aAnyVal->eType();
+    eCN eClass = aTypedCell->eType();
     
     if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Stz,_aTypedCell(aAnyVal)->iInt());
+      sStackContents.vCatSprint("%lld"_Stz,aTypedCell->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (_aTypedCell(aAnyVal)->pObj()) {
+      if (aTypedCell->pObj()) {
         
-        Object* pPtr = _aTypedCell(aAnyVal)->pObj();
+        Object* pPtr = aTypedCell->pObj();
         
-        eCN ePtrClass = _aTypedCell(aAnyVal)->pObj()->eClass();
+        eCN ePtrClass = aTypedCell->pObj()->eClass();
         
         if (CN_WORD == ePtrClass)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
@@ -878,20 +878,20 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       }
       else
         sStackContents.vCatSprint("^%s=%p"_Stz,
-                                  aCN[aAnyVal->eType()],
-                                  _aTypedCell(aAnyVal)->pObj());
+                                  aCN[aTypedCell->eType()],
+                                  aTypedCell->pObj());
     }
     else if (CN_FIPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
-                                _aTypedCell(aAnyVal)->aFip());
+                                aTypedCell->aFip());
     }
     else if (CN_STZVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _aTypedCell(aAnyVal)->azChar());
+                                aTypedCell->azChar());
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
-                                aAnyVal->eType());
+                                aTypedCell->eType());
     }
   }
   
