@@ -39,17 +39,7 @@ CellSingle::~CellSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* auto conversion operator : as AnyVal*                                      */
-/*----------------------------------------------------------------------------*/
-CellSingle::operator AnyVal*(void)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-  
-  return (AnyVal*) & m_xTypedCell;
-}
-
-/*----------------------------------------------------------------------------*/
-/* auto conversion operator : as AnyVal*                                      */
+/* auto conversion operator : as TypedCell*                                   */
 /*----------------------------------------------------------------------------*/
 CellSingle::operator TypedCell*(void)
 {

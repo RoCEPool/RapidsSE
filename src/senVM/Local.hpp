@@ -17,8 +17,7 @@ namespace SenVM
     void* operator new(size_t);
     Local(void);
   
-    operator AnyVal*(void);
-    operator TypedCell*(void);
+    operator TypedCell*(void); // auto conversion operator
 
     TypedCell* aTypedCell(void);
 

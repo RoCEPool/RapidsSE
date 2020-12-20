@@ -25,7 +25,6 @@ namespace Rows
    ~CellSingle(void) noexcept(false);
   
     // auto conversion
-    operator AnyVal*(void);
     operator TypedCell*(void);
 
     void operator =(d8 dFlt);

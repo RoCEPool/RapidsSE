@@ -108,6 +108,13 @@ void Compiler::vLocals(i8 nLocals)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_nLocals = nLocals;
+  
+  static i8 nMaxLocals = 0;
+  
+  if (nLocals > nMaxLocals) {
+    nMaxLocals = nLocals;
+//    vTrace("                                                      MaxLocals %lld\n"_Stz,nMaxLocals);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
