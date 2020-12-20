@@ -834,9 +834,9 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    AnyVal* aAnyVal = (AnyVal*)pStack->aPeekVal(iValue);
+    TypedCell* aAnyVal = pStack->aPeekVal(iValue);
     
-    eCN eClass = aAnyVal->eClass();
+    eCN eClass = aAnyVal->eType();
     
     if (CN_INTVAL == eClass) {
       sStackContents.vCatSprint("%lld"_Stz,_aTypedCell(aAnyVal)->iInt());
@@ -878,7 +878,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       }
       else
         sStackContents.vCatSprint("^%s=%p"_Stz,
-                                  aCN[aAnyVal->eClass()],
+                                  aCN[aAnyVal->eType()],
                                   _aTypedCell(aAnyVal)->pObj());
     }
     else if (CN_FIPVAL == eClass) {                                      
@@ -891,7 +891,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
-                                aAnyVal->eClass());
+                                aAnyVal->eType());
     }
   }
   
@@ -1231,8 +1231,8 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // handle a StzVal, IntVal or a PtrVal
     
-    AnyVal* aAnyVal0 = (AnyVal*)m_pForth->m_pDataStack->aPeekVal(0);
-    eCN eClass = aAnyVal0->eClass();
+    TypedCell* aAnyVal0 = m_pForth->m_pDataStack->aPeekVal(0);
+    eCN eClass = aAnyVal0->eType();
     
     // test for StzVal
     if (CN_STZVAL == eClass) {
