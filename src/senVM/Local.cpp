@@ -74,16 +74,6 @@ Local::operator TypedCell*(void)
 /*----------------------------------------------------------------------------*/
 /* get address of value nested in the wsp                                     */
 /*----------------------------------------------------------------------------*/
-AnyVal* Local::aAnyValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
-  
-  return (AnyVal*)& m_xTypeCell;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of value nested in the wsp                                     */
-/*----------------------------------------------------------------------------*/
 TypedCell* Local::aTypedCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);

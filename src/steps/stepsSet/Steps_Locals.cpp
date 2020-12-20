@@ -32,7 +32,7 @@ void Step::vLocalFetch(void)
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->vPushVal(pLocal->aAnyValue());
+  m_pDataStack->vPushVal((AnyVal*)pLocal->aTypedCell());
   
   EXIT();
 }
@@ -50,7 +50,7 @@ void Step::vLocalStore(void)
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->vPopVal(pLocal->aAnyValue(),__func__);
+  m_pDataStack->vPopVal((AnyVal*)pLocal->aTypedCell(),__func__);
  
   EXIT();
 }
