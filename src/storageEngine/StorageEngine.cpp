@@ -36,7 +36,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   SenVM::vCheckAssumptions();
   Sessions::vCheckAssumptions();
   SortBuffers::vCheckAssumptions();
-  SqlValues::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
   Tasking::vCheckAssumptions();
