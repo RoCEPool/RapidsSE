@@ -195,13 +195,13 @@ AnyVal* Stack::aPeekVal(i8 i_Val)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekVal(i8 i_Val, AnyVal* aAnyVal)
+void Stack::vPeekVal(i8 i_Val, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  AnyVal* aPeekedValue = aPeekVal(i_Val);
+  TypedCell* aPeekedValue = (TypedCell*)aPeekVal(i_Val);
   
-  aAnyVal->vCopy(aPeekedValue);
+  aTypedCell->vCopy(aPeekedValue);
 }
 
 /*----------------------------------------------------------------------------*/

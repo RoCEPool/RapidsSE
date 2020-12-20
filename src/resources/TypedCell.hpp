@@ -23,7 +23,7 @@ namespace Resources
 
     char* azChar(void);
   
-    void vCopy(TypedCell* aTypedCell, i8 nBytes);
+    void vCopy(TypedCell* aTypedCell, i8 nBytes=0);
 
     ForthCell* aFip(void);
     void vFip(ForthCell* aFip);
