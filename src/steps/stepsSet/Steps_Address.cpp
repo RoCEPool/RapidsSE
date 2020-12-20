@@ -44,11 +44,11 @@ void Step::vAddressFetch(void)
 {
   ENTRY();
   
-  AnyVal* aAnyVal = _aAnyVal(m_pDataStack->pPopPtr(__func__));
+  TypedCell* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  m_pDataStack->vPushVal((TypedCell*)aAnyVal);
+  m_pDataStack->vPushVal(aTypedCell);
   
   EXIT();
 }
@@ -60,14 +60,14 @@ void Step::vAddressStore(void)
 {
   ENTRY();
   
-  AnyVal* aAnyVal = _aAnyVal(m_pDataStack->pPopPtr(__func__));
+  TypedCell* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
 
   CellSingle xValToStore;
   m_pDataStack->vPopVal(xValToStore,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  aAnyVal->vCopy(xValToStore);
+  aTypedCell->vCopy(xValToStore);
   
   EXIT();
 }
