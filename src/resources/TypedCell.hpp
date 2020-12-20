@@ -23,6 +23,8 @@ namespace Resources
     eCN  eType(void);
     void vType(eCN eType);
   
+    void vInit(void);
+  
     char* azChar(void);
   
     ForthCell* aFip(void);

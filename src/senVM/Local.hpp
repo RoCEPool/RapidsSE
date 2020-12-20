@@ -8,7 +8,7 @@ namespace SenVM
   class Local : public Object
   {
   private:
-    AnyVal_y8KB u;
+    TypedCell m_xTypeCell;
   
     // must be last
     Footer m_xFooter;

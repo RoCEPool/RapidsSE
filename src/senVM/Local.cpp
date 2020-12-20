@@ -35,7 +35,7 @@ Local::Local(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  u.vInit();
+  m_xTypeCell.vInit();
   
  _checkInitialised_(CN_LOCAL);
   
@@ -53,7 +53,7 @@ Local::operator AnyVal*(void)
 {
   _precondition_(_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  return & u;
+  return (AnyVal*)& m_xTypeCell;
 }
 
 
@@ -64,9 +64,7 @@ AnyVal* Local::aAnyValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  AnyVal* aAnyVal = & u;
-  
-  return aAnyVal;
+  return (AnyVal*)& m_xTypeCell;
 }
 
 /*----------------------------------------------------------------------------*/

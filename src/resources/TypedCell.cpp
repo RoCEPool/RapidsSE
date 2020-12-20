@@ -39,6 +39,22 @@ void TypedCell::vType(eCN eType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set type/class of embedded value                                           */
+/*----------------------------------------------------------------------------*/
+void TypedCell::vInit(void)
+{
+  vType(CN_NONE);
+  vInt(-1);
+
+  m_caStringArea[0] = '\0';
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+#endif
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
 void TypedCell::vStz(Stz* szStz)
