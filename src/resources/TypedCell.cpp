@@ -65,6 +65,8 @@ void TypedCell::vStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 char* TypedCell::azChar(void)
 {
+  ASSERT(CN_STZVAL == eType());
+
   return m_caStringArea;
 }
 
@@ -73,9 +75,14 @@ char* TypedCell::azChar(void)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::nStackUsage(void)
 {
-  i8 nBytes = sizeof(m_wxType)
-                + sizeof(m_wxValueCell)
-                + m_wxValueCell.iGetColVal();
+  i8 nBytes;
+  
+  if (CN_STZVAL == eType())
+    nBytes = sizeof(m_wxType)
+               + sizeof(m_wxValueCell)
+               + m_wxValueCell.iGetColVal();
+  else
+    NEVER_REACH;
   
   return nBytes;
 }
@@ -85,15 +92,16 @@ i8 TypedCell::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 Stz* TypedCell::szStz(void)
 {
+  ASSERT(CN_STZVAL == eType());
   return reinterpret_cast<Stz*>(m_caStringArea);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get size of str                                                            */
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::nStzSize(void)
 {
+  ASSERT(CN_STZVAL == eType());
   return m_wxValueCell.iGetColVal();
 }
 
@@ -110,6 +118,8 @@ void TypedCell::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vToStz(Stz* szDst)
 {
+  ASSERT(CN_STZVAL == eType());
+  
   StrLib::vCopy(szDst->azChar(),m_caStringArea);
 }
 
