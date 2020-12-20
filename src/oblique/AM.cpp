@@ -2061,10 +2061,10 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      StzVal* aStzVal = _aStzVal(aCell);
-      vTrace(" \"%s\"\n"_Stz,aStzVal->szStz());
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      vTrace(" \"%s\"\n"_Stz,aTypedCell->szStz());
       
-      i8 iBytes = aStzVal->nStackUsage();
+      i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<ForthCell*>(aCell,iBytes);
       
       continue;

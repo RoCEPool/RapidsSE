@@ -130,16 +130,16 @@ void Step::vPushStzVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  StzVal* aStzVal = _aStzVal(& m_aInxPtr->m_xEmbVal);
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
   
 //  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
 //    vTrace("vPushStzVal: %s"_Stz,aStzVal->szStz());
 //    Resources::vDebugPoint();
 //  }
   
-  m_pDataStack->vPushStz(aStzVal->szStz());
+  m_pDataStack->vPushStz(aTypedCell->szStz());
   
-  m_pTask->vAdjustFIP(aStzVal->nStackUsage());
+  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
   
   EXIT();
 }

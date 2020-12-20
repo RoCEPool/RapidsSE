@@ -114,7 +114,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
     if (CN_STZVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass],
-             _aStzVal(aAnyVal)->nStzSize());
+             _aTypedCell(aAnyVal)->nStzSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass]);
@@ -305,9 +305,9 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   
   _hazard_();
   
-  StzVal* aStzVal = _aStzVal(aTopVal());
+  TypedCell* aTypedCell = _aTypedCell(aTopVal());
   
-  pString->vCopy(aStzVal->szStz());
+  pString->vCopy(aTypedCell->szStz());
   
 //  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
 //    vTrace("vPopStr: %s"_Stz,aStzVal->szStz());
@@ -390,9 +390,9 @@ void Stack::vPushStr(String* pStr)
   //vDump(nullptr,"Before:"_Stz);
 
   i8 nSize = StrLib::nSize(pStr->azStr());
-  StzVal* aStzVal = aAllotStzVal(nSize);
+  TypedCell* aTypedCell = aAllotStzVal(nSize);
 
-  aStzVal->vStz(pStr->szStz());
+  aTypedCell->vStz(pStr->szStz());
   //aStzVal->vInspect();
 
   //vDump(nullptr,"After:"_Stz);
@@ -408,9 +408,9 @@ void Stack::vPushStz(Stz* szStz)
   //vDump(nullptr,"Before:"_Stz);
   
   i8 nSize = szStz->nSize();
-  StzVal* aStzVal = aAllotStzVal(nSize);
+  TypedCell* aTypedCell = aAllotStzVal(nSize);
   
-  aStzVal->vStz(szStz);
+  aTypedCell->vStz(szStz);
   //aStzVal->vInspect();
   
   //vDump(nullptr,"After:"_Stz);
@@ -573,18 +573,18 @@ PtrVal* Stack::aAllotPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a str value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-StzVal* Stack::aAllotStzVal(i8 nStrSize)
+TypedCell* Stack::aAllotStzVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 nWithAdditionalBytes = nStrSize;
   
-  StzVal* aStzVal = (StzVal*) aAllotAnyVal(nWithAdditionalBytes);
+  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(nWithAdditionalBytes);
   
-  aStzVal->vClass(CN_STZVAL);
-  aStzVal->vMagic();
+  aTypedCell->vType(CN_STZVAL);
+  //aStzVal->vMagic();
   
-  return aStzVal;
+  return aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/

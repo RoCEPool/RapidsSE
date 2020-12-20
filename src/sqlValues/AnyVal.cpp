@@ -88,7 +88,7 @@ char* AnyVal::azChar(void)
 {
   _magic_();
   
-  char* az = _aStzVal(this)->azChar();
+  char* az = _aTypedCell(this)->azChar();
   
   return az;
 }
@@ -330,7 +330,7 @@ i8 AnyVal::nStzSize(void)
 {
   _magic_();
   
-  i8 nSize = _aStzVal(this)->nStzSize();
+  i8 nSize = _aTypedCell(this)->nStzSize();
   
   return nSize;
 }
@@ -342,7 +342,7 @@ Stz* AnyVal::szStz(void)
 {
   _magic_();
   
-  Stz* sz = _aStzVal(this)->szStz();
+  Stz* sz = _aTypedCell(this)->szStz();
   
   return sz;
 }
@@ -354,7 +354,7 @@ void AnyVal::vStz(Stz* szStz)
 {
   _magic_();
   
-  _aStzVal(this)->vStz(szStz);
+  _aTypedCell(this)->vStz(szStz);
 }
 
 
@@ -388,8 +388,8 @@ i8 AnyVal::nStackUsage(void)
     }
       
     case CN_STZVAL: {
-      StzVal* aStzVal = _aStzVal(this);
-      nBytes = aStzVal->nStackUsage();
+      TypedCell* aTypedCell = _aTypedCell(this);
+      nBytes = aTypedCell->nStackUsage();
       break;
     }
       
@@ -452,8 +452,8 @@ void AnyVal::vToString(Stz* szStz)
     }
       
     case CN_STZVAL: {
-      StzVal* aStzVal = _aStzVal(this);
-      aStzVal->vToStz(szStz);
+      TypedCell* aTypedCell = _aTypedCell(this);
+      aTypedCell->vToStz(szStz);
       break;
     }
             

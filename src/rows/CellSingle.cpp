@@ -90,11 +90,13 @@ void CellSingle::operator =(Stz* szColVal)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
-  StzVal* aStzVal = (StzVal*) & m_xTypedCell;
+//  StzVal* aStzVal = (StzVal*) & m_xTypedCell;
+//
+//  aStzVal->vStz(szColVal);
+//
+//  m_xTypedCell.vType(CN_STZVAL);
   
-  aStzVal->vStz(szColVal);
-  
-  m_xTypedCell.vType(CN_STZVAL);
+  m_xTypedCell.vStz(szColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,8 +263,8 @@ void CellSingle::vToString(Stz* szStz)
     }
       
     case CN_STZVAL: {
-      StzVal* aStzVal = _aStzVal(&m_xTypedCell.m_wxValueCell);
-      aStzVal->vToStz(szStz);
+      //StzVal* aStzVal = _aStzVal(&m_xTypedCell.m_wxValueCell);
+      m_xTypedCell.vToStz(szStz);
       break;
     }
             

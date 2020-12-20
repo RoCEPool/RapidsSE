@@ -887,7 +887,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     }
     else if (CN_STZVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _aStzVal(aAnyVal)->azChar());
+                                _aTypedCell(aAnyVal)->azChar());
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,

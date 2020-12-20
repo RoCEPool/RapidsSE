@@ -103,8 +103,10 @@ void LogicUnit::vCollectOpcode(void)
           if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
             i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
             ASSERT(i_Ename != C_UNKNOWN);
-            if (pJobTags->eToken(i_Ename) != TN_STRING)
+            if (pJobTags->eToken(i_Ename) != TN_STRING) {
+              pJobTags->vDumpSet(true);
               THROW_USER("vCollectOpcode"_Stz);
+            }
             Stz* szParam = pJobTags->szValue(i_Ename);
             vAddCodeArg((eEO)i_OpCode, szParam);
           }
@@ -212,12 +214,12 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
   // dump the toekns
   i8 nTokens = m_pTknVec->nTokens();
   
-//  for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
-//    Token* pTkn = m_pTknVec->pGet(i_Tkn++);
-//
-//    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
-//  }
-//  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+  for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
+    Token* pTkn = m_pTknVec->pGet(i_Tkn++);
+
+    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
+  }
+  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code

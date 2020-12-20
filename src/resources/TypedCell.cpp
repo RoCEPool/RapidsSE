@@ -38,9 +38,6 @@ void TypedCell::vType(eCN eType)
   m_wxType.vClass(eType);
 }
 
-
-#if 0
-
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
@@ -48,25 +45,27 @@ void TypedCell::vStz(Stz* szStz)
 {
   vType(CN_STZVAL);
   
-  i8 nBytesFollowing = StrLib::nCopy(m_caStz,szStz->azChar()) + 1;
+  i8 nBytesFollowing = StrLib::nCopy(m_caStringArea,szStz->azChar()) + 1;
+  
+  m_wxValueCell = nBytesFollowing;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vStz(char* acnChar, i8 nLength)
-{
-  vType(CN_STZVAL);
-  
-  m_nBytesFollowing = StrLib::nCopy(m_caStz,acnChar) + 1;
-}
+//void TypedCell::vStz(char* acnChar, i8 nLength)
+//{
+//  vType(CN_STZVAL);
+//
+//  m_nBytesFollowing = StrLib::nCopy(m_caStz,acnChar) + 1;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get char*                                                                  */
 /*----------------------------------------------------------------------------*/
 char* TypedCell::azChar(void)
 {
-  return m_caStz;
+  return m_caStringArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +73,9 @@ char* TypedCell::azChar(void)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::nStackUsage(void)
 {
-  i8 nBytes = sizeof(AnyVal) + m_nBytesFollowing;
+  i8 nBytes = sizeof(m_wxType)
+                + sizeof(m_wxValueCell)
+                + m_wxValueCell.iGetColVal();
   
   return nBytes;
 }
@@ -84,7 +85,7 @@ i8 TypedCell::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 Stz* TypedCell::szStz(void)
 {
-  return reinterpret_cast<Stz*>(m_caStz);
+  return reinterpret_cast<Stz*>(m_caStringArea);
 }
 
 
@@ -93,7 +94,7 @@ Stz* TypedCell::szStz(void)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::nStzSize(void)
 {
-  return m_nBytesFollowing;
+  return m_wxValueCell.iGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +102,7 @@ i8 TypedCell::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vStzSize(i8 nSize)
 {
-  m_nBytesFollowing = nSize;
+  m_wxValueCell = nSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,10 +110,8 @@ void TypedCell::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vToStz(Stz* szDst)
 {
-  StrLib::vCopy(szDst->azChar(),m_caStz);
+  StrLib::vCopy(szDst->azChar(),m_caStringArea);
 }
-
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

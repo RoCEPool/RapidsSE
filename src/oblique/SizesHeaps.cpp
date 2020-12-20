@@ -274,7 +274,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StreamDef),          HT_TRANSIENT_LARGE   ,0 }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_TRANSIENT_LARGE   ,0 }, // CN_STREAMSET
   { sizeof(s32),                HT_INVALID           ,0 }, // CN_STRING_T
-  { sizeof(StzVal),             HT_INVALID           ,0 }, // CN_STZVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID           ,0 }, // CN_SYSCALL
 
   { 'T' - ('A' - 1),            HT_INVALID           ,0 }, // CN__T__

@@ -1383,6 +1383,9 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy the pipeline job tag set into the operator job tags
   TagSet* pPipeLineJobTags = AM::pJobTags(m_pPipelineJob);
+  
+  //pPipeLineJobTags->vDumpSet(true);
+  
   pOpJobTagSet->vCopy(pPipeLineJobTags);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

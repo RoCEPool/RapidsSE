@@ -84,7 +84,9 @@ void TagSet::vAppend(Stz* szName)
 
   m_nEnames++;
 
-  //vDumpSet();
+//  if (szName->bSame("<param0>"_Stz))
+//    vDumpSet(true);
+      
   if (! bHasName(szName)) {
     RASSERT(0);
   }
@@ -105,7 +107,9 @@ void TagSet::vAppend(Stz* szName, i8 iValue)
 
   m_nEnames++;
 
-  //vDumpSet();
+//  if (szName->bSame("<param0>"_Stz))
+//    vDumpSet(true);
+      
   if (! bHasName(szName)) {
     RASSERT(0);
   }
@@ -126,7 +130,9 @@ void TagSet::vAppend(Stz* szName, Stz* szValue)
 
   m_nEnames++;
 
-  //vDumpSet();
+//  if (szName->bSame("<param0>"_Stz))
+//    vDumpSet(true);
+      
   if (! bHasName(szName)) {
     RASSERT(0);
   }
@@ -268,6 +274,9 @@ void TagSet::vDumpSet(bool bCarriageReturns)
     
     if (i_Ename && bCarriageReturns)
       vTrace("\n  "_Stz);
+    
+    if (bCarriageReturns)
+      vTrace("[%lld] %s : "_Stz,i_Ename,aTN[m_xEname[i_Ename].m_eToken]);
 
     if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
       
@@ -397,7 +406,9 @@ void TagSet::vInsert(Stz* szName)
 
   m_nEnames++;
 
-  //vDumpSet();
+//  if (szName->bSame("<param0>"_Stz))
+//    vDumpSet(true);
+      
   ASSERT(bHasName(szName));
 }
 
@@ -435,7 +446,11 @@ void TagSet::vInsert(Stz* szName, i8 iValue)
 
   m_nEnames++;
 
-  //vDumpSet();
+//  if (szName->bSame("<param0>"_Stz)) {
+//    vTrace("TagSet::vInsert i : %s %lld\n"_Stz,szName,iValue);
+//    vDumpSet(true);
+//  }
+  
   ASSERT(bHasName(szName));
 }
 
@@ -473,7 +488,11 @@ void TagSet::vInsert(Stz* szName, Stz* szValue)
 
   m_nEnames++;
 
-  //vDumpSet();
+//  if (szName->bSame("<param0>"_Stz)) {
+//    
+//    vTrace("TagSet::vInsert s : %s %s\n"_Stz,szName,szValue);
+//    vDumpSet(true);
+//  }
   ASSERT(bHasName(szName));
 }
 

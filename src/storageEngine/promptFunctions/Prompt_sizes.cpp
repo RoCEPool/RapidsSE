@@ -33,7 +33,6 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("\n"_Stz);
   vTrace("  sizeof(IntVal) = %lu; \n"_Stz, sizeof(IntVal));
   vTrace("  sizeof(PtrVal) = %lu; \n"_Stz, sizeof(PtrVal));
-  vTrace("  sizeof(StzVal) = %lu; \n"_Stz, sizeof(StzVal));
   vTrace("\n"_Stz);
   
   vTrace("  sizeof(Task)   = %lu; \n"_Stz, sizeof(Task));
