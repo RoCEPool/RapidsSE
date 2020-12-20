@@ -51,15 +51,15 @@ void Step::vAssertClass(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aAnyVal = m_pDataStack->aTopVal();
+  TypedCell* aTypedCell = m_pDataStack->aTopVal();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aAnyVal->eType();
+  eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
     //PtrVal* aPtrVal = _aPtrVal(aAnyVal);
     //eClassNo = aPtrVal->pObj()->eClass();
-    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
+    // TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -79,15 +79,15 @@ void Step::vAssertClass_0(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aAnyVal = m_pDataStack->aPeekVal(0);
+  TypedCell* aTypedCell = m_pDataStack->aPeekVal(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aAnyVal->eType();
+  eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
 //    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
 //    eClassNo = aPtrVal->pObj()->eClass();
-    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
+//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -107,15 +107,15 @@ void Step::vAssertClass_1(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aAnyVal = m_pDataStack->aPeekVal(1);
+  TypedCell* aTypedCell = m_pDataStack->aPeekVal(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aAnyVal->eType();
+  eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
     //PtrVal* aPtrVal = _aPtrVal(aAnyVal);
     //eClassNo = aPtrVal->pObj()->eClass();
-    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
+    //TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();  }
   
   if ( eClassNo != eAssertClassNo )
@@ -134,15 +134,15 @@ void Step::vAssertClass_2(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aAnyVal = m_pDataStack->aPeekVal(2);
+  TypedCell* aTypedCell = m_pDataStack->aPeekVal(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aAnyVal->eType();
+  eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
 //    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
 //    eClassNo = aPtrVal->pObj()->eClass();
-    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
+//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -162,15 +162,15 @@ void Step::vAssertClass_3(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aAnyVal = m_pDataStack->aPeekVal(3);
+  TypedCell* aTypedCell = m_pDataStack->aPeekVal(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aAnyVal->eType();
+  eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
 //    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
 //    eClassNo = aPtrVal->pObj()->eClass();
-    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
+//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -190,15 +190,15 @@ void Step::vAssertClass_4(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aAnyVal = m_pDataStack->aPeekVal(4);
+  TypedCell* aTypedCell = m_pDataStack->aPeekVal(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aAnyVal->eType();
+  eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
 //    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
 //    eClassNo = aPtrVal->pObj()->eClass();
-    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
+//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass(); 
   }
   
