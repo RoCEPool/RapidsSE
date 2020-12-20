@@ -211,9 +211,9 @@ void Stack::vPokeVal(i8 i_Val, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  AnyVal* aPokeAddress = (AnyVal*)aPeekVal(i_Val);
+  TypedCell* aPoked = aPeekVal(i_Val);
   
-  aPokeAddress->vCopy((AnyVal*)aTypedCell);
+  aPoked->vCopy(aTypedCell);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -616,8 +616,8 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  AnyVal* aAnyVal0 = (AnyVal*)aPeekVal(0);
-  if (eClass0 != aAnyVal0->eClass())
+  TypedCell* aPeeked = aPeekVal(0);
+  if (eClass0 != aPeeked->eType())
     return false;
   
   return true;
@@ -633,12 +633,12 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  AnyVal* aAnyVal0 = (AnyVal*)aPeekVal(0);
-  if (eClass0 != aAnyVal0->eClass())
+  TypedCell* aPeeked0 = aPeekVal(0);
+  if (eClass0 != aPeeked0->eType())
     return false;
   
-  AnyVal* aAnyVal1 = (AnyVal*)aPeekVal(1);
-  if (eClass1 != aAnyVal1->eClass())
+  TypedCell* aPeeked1 = aPeekVal(1);
+  if (eClass1 != aPeeked1->eType())
     return false;
   
   return true;
@@ -654,16 +654,16 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  AnyVal* aAnyVal0 = (AnyVal*)aPeekVal(0);
-  if (eClass0 != aAnyVal0->eClass())
+  TypedCell* aPeeked0 = aPeekVal(0);
+  if (eClass0 != aPeeked0->eType())
     return false;
   
-  AnyVal* aAnyVal1 = (AnyVal*)aPeekVal(1);
-  if (eClass1 != aAnyVal1->eClass())
+  TypedCell* aPeeked1 = aPeekVal(1);
+  if (eClass1 != aPeeked1->eType())
     return false;
-  
-  AnyVal* aSrkVal2 = (AnyVal*)aPeekVal(2);
-  if (eClass2 != aSrkVal2->eClass())
+
+  TypedCell* aPeeked2 = aPeekVal(2);
+  if (eClass2 != aPeeked2->eType())
     return false;
   
   return true;
