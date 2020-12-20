@@ -75,8 +75,6 @@ char* TypedCell::azChar(void)
 /*----------------------------------------------------------------------------*/
 ForthCell* TypedCell::aFip(void)
 {
-  vType(CN_PTRVAL);
-  
   return m_wxValueCell.aGetColVal();
 }
 
@@ -94,8 +92,6 @@ void TypedCell::vFip(ForthCell* aFip)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::iInt(void)
 {
-  vType(CN_INTVAL);
-  
   return m_wxValueCell.iGetColVal();
 }
 
@@ -113,8 +109,6 @@ void TypedCell::vInt(i8 iInt)
 /*----------------------------------------------------------------------------*/
 Object* TypedCell::pObj(void)
 {
-  vType(CN_PTRVAL);
-  
   return m_wxValueCell.pGetColVal();
 }
 

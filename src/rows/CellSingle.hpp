@@ -11,10 +11,6 @@ namespace Rows
   {
   protected:
         
-//    struct {
-//      _Header m_wxCellHeader;
-//      Dtm     m_wxCell;
-//    } AnyVal_DtmCell;
     TypedCell m_xTypedCell;
   
 
