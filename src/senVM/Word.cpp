@@ -349,7 +349,7 @@ void Word::vEncodePush(AnyVal* aAnyVal)
     NEVER_REACH;
   }
 
-  m_pRoutine->vAppend(aAnyVal);
+  m_pRoutine->vAppend((TypedCell*)aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/

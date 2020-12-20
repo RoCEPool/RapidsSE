@@ -139,15 +139,15 @@ void Routine::vAppend(StepFp* afpStepFp)
 /*----------------------------------------------------------------------------*/
 /* append a value (the entire value, not a pointer to it)                     */
 /*----------------------------------------------------------------------------*/
-void Routine::vAppend(AnyVal* aAnyVal)
+void Routine::vAppend(TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
-  i8 nBytes = aAnyVal->nStackUsage();
+  i8 nBytes = aTypedCell->nStackUsage();
   
   char* aValueAddress = (char*)ayAllot(nBytes);
   
-  MemLib::vCopy(aValueAddress,aAnyVal,nBytes,CN_ROUTINE);
+  MemLib::vCopy(aValueAddress,aTypedCell,nBytes,CN_ROUTINE);
 }
 
 /*----------------------------------------------------------------------------*/

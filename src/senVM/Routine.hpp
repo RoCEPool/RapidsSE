@@ -35,7 +35,7 @@ namespace SenVM
     void  vAppend(ForthCell* aCell);
     void  vAppend(i8 iInt);
     void  vAppend(StepFp* afpStep);
-    void  vAppend(AnyVal* aAnyVal);
+    void  vAppend(TypedCell* aTypedCell);
   
     void  vReset(void);
   
