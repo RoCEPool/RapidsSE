@@ -23,8 +23,13 @@ namespace Resources
     eCN  eType(void);
     void vType(eCN eType);
   
-    void  vInt(i8 iVal);
     char* azChar(void);
+
+    void  vInt(i8 iVal);
+
+    Object* pObj(void);
+    void    vObj(Object* pObject);
+
     i8    nStackUsage(void);
     Stz*  szStz(void);
     void  vStz(Stz* szStz);

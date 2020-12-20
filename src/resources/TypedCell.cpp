@@ -71,6 +71,25 @@ char* TypedCell::azChar(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return a value                                                             */
+/*----------------------------------------------------------------------------*/
+Object* TypedCell::pObj(void)
+{
+  vType(CN_PTRVAL);
+  
+  return m_wxValueCell.pGetColVal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign a value                                                             */
+/*----------------------------------------------------------------------------*/
+void TypedCell::vObj(Object* pObject)
+{
+  vType(CN_PTRVAL);
+  m_wxValueCell.vPutColVal(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push this StzVal on stack                 */
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::nStackUsage(void)
@@ -82,8 +101,9 @@ i8 TypedCell::nStackUsage(void)
                + sizeof(m_wxValueCell)
                + m_wxValueCell.iGetColVal();
   else
-    NEVER_REACH;
-  
+    nBytes = sizeof(m_wxType)
+               + sizeof(m_wxValueCell);
+
   return nBytes;
 }
 
@@ -118,9 +138,14 @@ void TypedCell::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vToStz(Stz* szDst)
 {
-  ASSERT(CN_STZVAL == eType());
-  
-  StrLib::vCopy(szDst->azChar(),m_caStringArea);
+  if (CN_STZVAL == eType())
+    StrLib::vCopy(szDst->azChar(),m_caStringArea);
+  else
+  if (CN_PTRVAL == eType())
+    * szDst = reinterpret_cast<void*>(pObj());
+  else
+    NEVER_REACH;
+
 }
 
 /*============================================================================*/
