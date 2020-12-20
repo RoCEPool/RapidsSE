@@ -106,9 +106,9 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    AnyVal* aAnyVal = (AnyVal*)aPeekVal(i_Val);
+    TypedCell* aAnyVal = aPeekVal(i_Val);
     
-    eCN eValClass  = aAnyVal->eClass();
+    eCN eValClass  = aAnyVal->eType();
     i8 nStackUsage = aAnyVal->nStackUsage();
     
     if (CN_STZVAL == eValClass)
