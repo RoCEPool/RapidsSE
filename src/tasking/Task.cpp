@@ -1231,8 +1231,8 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // handle a StzVal, IntVal or a PtrVal
     
-    TypedCell* aAnyVal0 = m_pForth->m_pDataStack->aPeekVal(0);
-    eCN eClass = aAnyVal0->eType();
+    TypedCell* aTypedCell0 = m_pForth->m_pDataStack->aPeekVal(0);
+    eCN eClass = aTypedCell0->eType();
     
     // test for StzVal
     if (CN_STZVAL == eClass) {

@@ -57,9 +57,6 @@ void Step::vAssertClass(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    //PtrVal* aPtrVal = _aPtrVal(aAnyVal);
-    //eClassNo = aPtrVal->pObj()->eClass();
-    // TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -85,9 +82,6 @@ void Step::vAssertClass_0(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-//    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
-//    eClassNo = aPtrVal->pObj()->eClass();
-//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -113,9 +107,6 @@ void Step::vAssertClass_1(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    //PtrVal* aPtrVal = _aPtrVal(aAnyVal);
-    //eClassNo = aPtrVal->pObj()->eClass();
-    //TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();  }
   
   if ( eClassNo != eAssertClassNo )
@@ -140,9 +131,6 @@ void Step::vAssertClass_2(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-//    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
-//    eClassNo = aPtrVal->pObj()->eClass();
-//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -168,9 +156,6 @@ void Step::vAssertClass_3(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-//    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
-//    eClassNo = aPtrVal->pObj()->eClass();
-//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass();
   }
   
@@ -196,9 +181,6 @@ void Step::vAssertClass_4(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-//    PtrVal* aPtrVal = _aPtrVal(aAnyVal);
-//    eClassNo = aPtrVal->pObj()->eClass();
-//    TypedCell* aTypedCell = _aTypedCell(aAnyVal);
     eClassNo = aTypedCell->pObj()->eClass(); 
   }
   
