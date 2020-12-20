@@ -66,7 +66,8 @@ namespace SenVM
     i8   iPopInt(const char* azFunNm);
     Object* pPopPtr(const char* azFunNm);
     void vPopStr(String* pStr, const char* azFunNm);
-    void vPopVal(AnyVal* aAnyVal, const char* azFunNm);
+    //void vPopVal(AnyVal* aAnyVal, const char* azFunNm);
+    void vPopVal(TypedCell* aTypedCell, const char* azFunNm);
 
     void vPushFip(ForthCell* aFip);
     void vPushInt(i8 iInt);

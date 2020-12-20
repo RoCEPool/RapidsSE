@@ -320,10 +320,35 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   _hazard_();
 }
 
+///*----------------------------------------------------------------------------*/
+///* pop value from stack                                                       */
+///*----------------------------------------------------------------------------*/
+//void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+//
+//  if ( ! bGuard(1) )
+//    Resources::vThrow(FK_DSTACK,VL_FATAL,
+//                        azFunNm,__FILE__,__LINE__,
+//                        "Invalid d-stack"_Stz);
+//
+//  _hazard_();
+//
+//  i8 nBytes = aTopVal()->nStackUsage();
+//
+//  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
+//
+//  m_xTop.vRewind(nBytes);
+//
+//  m_nValues--;
+//
+//  _hazard_();
+//}
+
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
+void Stack::vPopVal(TypedCell* aTypedCell, const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -336,7 +361,7 @@ void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
   
   i8 nBytes = aTopVal()->nStackUsage();
   
-  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
+  aTypedCell->vCopy(m_xTop.aTypedCell,nBytes);
   
   m_xTop.vRewind(nBytes);
   

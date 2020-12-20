@@ -87,6 +87,17 @@ char* TypedCell::azChar(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy source stack value into this one                                      */
+/*----------------------------------------------------------------------------*/
+void TypedCell::vCopy(TypedCell* aSrcVal, i8 nBytes)
+{
+  if (! nBytes)
+    nBytes = aSrcVal->nStackUsage();
+  
+  MemLib::vCopy(this,aSrcVal,nBytes,CN_STACK);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
 ForthCell* TypedCell::aFip(void)
