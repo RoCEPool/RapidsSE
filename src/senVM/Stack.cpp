@@ -265,7 +265,7 @@ i8 Stack::iPopInt(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  i8 iInt = m_xTop.aIntVal->iInt();
+  i8 iInt = m_xTop.aTypedCell->iInt();
   
   vDiscardTop();
   
@@ -364,9 +364,9 @@ void Stack::vPushInt(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IntVal* aIntVal = aAllotIntVal();
+  TypedCell* aTypedCell = aAllotIntVal();
   
-  aIntVal->vInt(iInt);
+  aTypedCell->vInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -479,7 +479,8 @@ bool Stack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (CN_INTVAL == m_xTop.aAnyVal->eClass() && 0 == m_xTop.aIntVal->iInt())
+  if (CN_INTVAL == m_xTop.aAnyVal->eClass() &&
+      0 == m_xTop.aTypedCell->iInt())
     return true;
   
   return false;
@@ -546,16 +547,16 @@ TypedCell* Stack::aAllotFipVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot an int value on top of stack                                         */
 /*----------------------------------------------------------------------------*/
-IntVal* Stack::aAllotIntVal(void)
+TypedCell* Stack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IntVal* aIntVal = (IntVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
+  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
-  aIntVal->vClass(CN_INTVAL);
-  aIntVal->vMagic();
+  aTypedCell->vType(CN_INTVAL);
+  //aIntVal->vMagic();
   
-  return aIntVal;
+  return aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -262,8 +262,9 @@ void CellSingle::vToString(Stz* szStz)
     }
       
     case CN_INTVAL: {
-      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValueCell);
-      aIntVal->vToStz(szStz);
+//      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValueCell);
+//      aIntVal->vToStz(szStz);
+      m_xTypedCell.vToStz(szStz);
       break;
     }
       
