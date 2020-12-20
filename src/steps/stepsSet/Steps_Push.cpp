@@ -26,9 +26,9 @@ void Step::vPushI(void)
 {
   ENTRY();
   
-  AnyVal* aLoopIndex_I = m_pReturnStack->aTopVal();
+  TypedCell* aLoopIndex_I = m_pReturnStack->aTopVal();
   
-  m_pDataStack->vPushVal((TypedCell*)aLoopIndex_I);
+  m_pDataStack->vPushVal(aLoopIndex_I);
   
   EXIT();
 }

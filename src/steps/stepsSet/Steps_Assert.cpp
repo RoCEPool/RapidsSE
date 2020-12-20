@@ -51,7 +51,7 @@ void Step::vAssertClass(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  AnyVal* aAnyVal = m_pDataStack->aTopVal();
+  AnyVal* aAnyVal = (AnyVal*)m_pDataStack->aTopVal();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aAnyVal->eClass();

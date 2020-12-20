@@ -78,7 +78,7 @@ namespace SenVM
     void vRetryPoint(void);
   
     bool bTopIsZero(void);
-    AnyVal* aTopVal(void);
+    TypedCell* aTopVal(void);
   
     i8   nValues(void);
   

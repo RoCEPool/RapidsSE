@@ -181,15 +181,15 @@ TypedCell* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  AnyVal* aAnyVal = aTopVal();
+  TypedCell* aPeeked = aTopVal();
   while (i_Val--) {
-    char* aAddress = reinterpret_cast<char*>(aAnyVal);
-    i8 iSize = aAnyVal->nStackUsage();
+    char* aAddress = reinterpret_cast<char*>(aPeeked);
+    i8 iSize = aPeeked->nStackUsage();
     aAddress += iSize;
-    aAnyVal = reinterpret_cast<AnyVal*>(aAddress);
+    aPeeked = reinterpret_cast<TypedCell*>(aAddress);
   }
   
-  return (TypedCell*)aAnyVal;
+  return aPeeked;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,9 +199,9 @@ void Stack::vPeekVal(i8 i_Val, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPeekedValue = (TypedCell*)aPeekVal(i_Val);
+  TypedCell* aPeeked = aPeekVal(i_Val);
   
-  aTypedCell->vCopy(aPeekedValue);
+  aTypedCell->vCopy(aPeeked);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,11 +489,11 @@ bool Stack::bTopIsZero(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-AnyVal* Stack::aTopVal(void)
+TypedCell* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return (AnyVal*) m_rTop.aTypedCell;
+  return m_rTop.aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
