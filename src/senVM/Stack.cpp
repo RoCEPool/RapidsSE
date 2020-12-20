@@ -106,23 +106,23 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    TypedCell* aAnyVal = aPeekVal(i_Val);
+    TypedCell* aTypedCell = aPeekVal(i_Val);
     
-    eCN eValClass  = aAnyVal->eType();
-    i8 nStackUsage = aAnyVal->nStackUsage();
+    eCN eValClass  = aTypedCell->eType();
+    i8 nStackUsage = aTypedCell->nStackUsage();
     
     if (CN_STZVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
-             i_Val,aAnyVal,nStackUsage,aCN[eValClass],
-             _aTypedCell(aAnyVal)->nStzSize());
+             i_Val,aTypedCell,nStackUsage,aCN[eValClass],
+             _aTypedCell(aTypedCell)->nStzSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
-             i_Val,aAnyVal,nStackUsage,aCN[eValClass]);
+             i_Val,aTypedCell,nStackUsage,aCN[eValClass]);
     
     switch(eValClass) {
         
       case CN_FIPVAL: {
-        ForthCell* aFip  = aAnyVal->aFip();
+        ForthCell* aFip  = aTypedCell->aFip();
         if (pDicStack) {
           Word* pWord = pDicStack->pLocateRoutineWord(aFip);
           
@@ -137,14 +137,14 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
       }
         
       case CN_INTVAL: {
-        i8 iInt = aAnyVal->iInt();
+        i8 iInt = aTypedCell->iInt();
         
         vTrace("%lld\n"_Stz,iInt);
         break;
       }
         
       case CN_PTRVAL: {
-        Object* pObj  =aAnyVal->pObj();
+        Object* pObj  =aTypedCell->pObj();
         eCN ePtdClass = pObj->eClass();
         
         if (CN_WORD == ePtdClass) {
@@ -158,7 +158,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
       }
         
       case CN_STZVAL: {
-        char* azChar = aAnyVal->azChar();
+        char* azChar = aTypedCell->azChar();
         
         vTrace("%s\n"_Stz,azChar);
         break;
