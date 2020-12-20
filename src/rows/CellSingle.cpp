@@ -257,8 +257,9 @@ void CellSingle::vToString(Stz* szStz)
     }
       
     case CN_PTRVAL: {
-      PtrVal* aPtrVal = _aPtrVal(&m_xTypedCell.m_wxValueCell);
-      aPtrVal->vToStz(szStz);
+//      PtrVal* aPtrVal = _aPtrVal(&m_xTypedCell.m_wxValueCell);
+//      aPtrVal->vToStz(szStz);
+      m_xTypedCell.vToStz(szStz);
       break;
     }
       

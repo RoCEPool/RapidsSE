@@ -16,7 +16,6 @@ namespace SqlValues
 
 #include "AnyVal.hpp"
 #include "FipVal.hpp"
-#include "PtrVal.hpp"
 
 #include "IntVal.hpp"
 

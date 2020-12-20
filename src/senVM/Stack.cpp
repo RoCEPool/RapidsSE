@@ -284,8 +284,9 @@ Object* Stack::pPopPtr(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  Object* pObj = m_xTop.aPtrVal->pObj();
-  
+  //Object* pObj = m_xTop.aPtrVal->pObj();
+  Object* pObj = m_xTop.aTypedCell->pObj();
+
   vDiscardTop();
   
   return pObj;
@@ -375,9 +376,9 @@ void Stack::vPushPtr(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal* aPtrVal = aAllotPtrVal();
+  TypedCell* aTypedCell = aAllotPtrVal();
   
-  aPtrVal->vObj(pObj);
+  aTypedCell->vObj(pObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -520,6 +521,8 @@ AnyVal* Stack::aAllotAnyVal(i8 nWithAdditionalBytes)
   m_xTop.vAdvance(nAllotBytes);
   ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
   
+  m_xTop.aAnyVal->vMagic();
+
   m_nValues++;
   
   return m_xTop.aAnyVal;
@@ -558,16 +561,16 @@ IntVal* Stack::aAllotIntVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a ptr value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-PtrVal* Stack::aAllotPtrVal(void)
+TypedCell* Stack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal* aPtrVal = (PtrVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
+  TypedCell* aTypedCell = (TypedCell*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
-  aPtrVal->vClass(CN_PTRVAL);
-  aPtrVal->vMagic();
+  aTypedCell->vType(CN_PTRVAL);
+  //aPtrVal->vMagic();
   
-  return aPtrVal;
+  return aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/

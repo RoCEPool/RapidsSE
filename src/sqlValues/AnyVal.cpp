@@ -382,8 +382,10 @@ i8 AnyVal::nStackUsage(void)
     }
       
     case CN_PTRVAL: {
-      PtrVal* aPtrVal = _aPtrVal(this);
-      nBytes = aPtrVal->nStackUsage();
+//      PtrVal* aPtrVal = _aPtrVal(this);
+//      nBytes = aPtrVal->nStackUsage();
+      TypedCell* aTypedCell = _aTypedCell(this);
+      nBytes = aTypedCell->nStackUsage();
       break;
     }
       
@@ -446,8 +448,10 @@ void AnyVal::vToString(Stz* szStz)
     }
       
     case CN_PTRVAL: {
-      PtrVal* aPtrVal = _aPtrVal(this);
-      aPtrVal->vToStz(szStz);
+//      PtrVal* aPtrVal = _aPtrVal(this);
+//      aPtrVal->vToStz(szStz);
+      TypedCell* aTypedCell = _aTypedCell(this);
+      aTypedCell->vToStz(szStz);
       break;
     }
       

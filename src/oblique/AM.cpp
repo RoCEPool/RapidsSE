@@ -2036,18 +2036,20 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      PtrVal* aPtrVal = _aPtrVal(aCell);
-      eCN eClassNo_obj = aPtrVal->pObj()->eClass();
-      
+      //PtrVal* aPtrVal = _aPtrVal(aCell);
+      //eCN eClassNo_obj = aPtrVal->pObj()->eClass();
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      eCN eClassNo_obj = aTypedCell->pObj()->eClass();
+
       if (CN_WORD == eClassNo_obj) {
-        Word* pWord = _pWord(aPtrVal->pObj());
+        Word* pWord = _pWord(aTypedCell->pObj());
         vTrace(" %p %s\n"_Stz,pWord,pWord->szWordNm());
       }
       else {
         vTrace(" %p %s\n"_Stz,aCN[eClassNo_obj]);
       }
       
-      i8 iBytes = aPtrVal->nStackUsage();
+      i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<ForthCell*>(aCell,iBytes);
       
       continue;

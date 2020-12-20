@@ -842,11 +842,11 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       sStackContents.vCatSprint("%lld"_Stz,_aIntVal(aAnyVal)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (_aPtrVal(aAnyVal)->pObj()) {
+      if (_aTypedCell(aAnyVal)->pObj()) {
         
-        Object* pPtr = _aPtrVal(aAnyVal)->pObj();
+        Object* pPtr = _aTypedCell(aAnyVal)->pObj();
         
-        eCN ePtrClass = _aPtrVal(aAnyVal)->pObj()->eClass();
+        eCN ePtrClass = _aTypedCell(aAnyVal)->pObj()->eClass();
         
         if (CN_WORD == ePtrClass)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
@@ -879,7 +879,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       else
         sStackContents.vCatSprint("^%s=%p"_Stz,
                                   aCN[aAnyVal->eClass()],
-                                  _aPtrVal(aAnyVal)->pObj());
+                                  _aTypedCell(aAnyVal)->pObj());
     }
     else if (CN_FIPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,

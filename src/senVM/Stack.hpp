@@ -19,8 +19,7 @@ namespace SenVM
     AnyVal* aAnyVal;
     FipVal* aFipVal;
     IntVal* aIntVal;
-    PtrVal* aPtrVal;
-
+ 
     TypedCell* aTypedCell;
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
@@ -91,7 +90,7 @@ namespace SenVM
     AnyVal* aAllotAnyVal(i8 nWithAdditionalBytes);
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
-    PtrVal* aAllotPtrVal(void);
+    TypedCell* aAllotPtrVal(void);
     TypedCell* aAllotStzVal(i8 nStrSize);
   
     bool bGuard(i8 nValues);

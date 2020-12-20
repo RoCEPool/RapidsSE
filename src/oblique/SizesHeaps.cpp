@@ -188,7 +188,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PsxThd),             HT_TRANSIENT_TINY    ,0 }, // CN_PSXTHD
   { sizeof(PtnMap),             HT_TRANSIENT_LARGE   ,0 }, // CN_PTNMAP
   { sizeof(PtnStream),          HT_TRANSIENT_TINY    ,0 }, // CN_PTNSTREAM
-  { sizeof(PtrVal),             HT_INVALID           ,0 }, // CN_PTRVAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_PTRVAL
 
   { 'Q' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Q__
   { sizeof(QueryNode),          HT_TRANSIENT_TINY    ,-8 }, // CN_QUERYNODE

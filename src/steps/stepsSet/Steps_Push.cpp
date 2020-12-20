@@ -110,11 +110,11 @@ void Step::vPushPtrVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  PtrVal* aPtrVal = _aPtrVal(& m_aInxPtr->m_xEmbVal);
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
   
-  m_pDataStack->vPushPtr(aPtrVal->pObj());
+  m_pDataStack->vPushPtr(aTypedCell->pObj());
   
-  m_pTask->vAdjustFIP(aPtrVal->nStackUsage());
+  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
   
   EXIT();
 }
