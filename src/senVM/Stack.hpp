@@ -16,13 +16,13 @@ namespace SenVM
     
     byte*   ayByte;
     
-    AnyVal* aAnyVal;
+    //AnyVal* aAnyVal;
  
     TypedCell* aTypedCell;
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
-    void vRewind  (void)      { vRewind(aAnyVal->nStackUsage()); }
+    void vRewind  (void)      { vRewind(aTypedCell->nStackUsage()); }
   };
 
   class Stack: public Object
@@ -30,7 +30,7 @@ namespace SenVM
   private:
     eKK     m_eKind;        // kind of stack
   
-    StkPtr  m_xTop;         // current top of stack
+    StkPtr  m_rTop;         // current top of stack
     i8      m_nValues;      // number of values currently on stack
 
     AnyVal* m_aRetryTop;    // reset to this top of stack
@@ -66,7 +66,6 @@ namespace SenVM
     i8   iPopInt(const char* azFunNm);
     Object* pPopPtr(const char* azFunNm);
     void vPopStr(String* pStr, const char* azFunNm);
-    //void vPopVal(AnyVal* aAnyVal, const char* azFunNm);
     void vPopVal(TypedCell* aTypedCell, const char* azFunNm);
 
     void vPushFip(ForthCell* aFip);

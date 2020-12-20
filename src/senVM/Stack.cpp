@@ -50,7 +50,7 @@ Stack::Stack(eKK eKind)
   
   m_eKind        = eKind;
   
-  m_xTop.aAnyVal = aStackBase();
+  m_rTop.aTypedCell = (TypedCell*)aStackBase();
   m_nValues      = 0;
   
   m_aRetryTop    = aStackBase();
@@ -88,7 +88,7 @@ void Stack::vDiscardTop(void)
   
   _hazard_();
   
-  m_xTop.vRewind();
+  m_rTop.vRewind();
   m_nValues--;
   
   _hazard_();
@@ -228,7 +228,7 @@ i8 Stack::iPopAsInt(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  i8 iInt = m_xTop.aAnyVal->iAsInt();
+  i8 iInt = m_rTop.aTypedCell->iAsInt();
   vDiscardTop();
   
   return iInt;
@@ -246,7 +246,7 @@ ForthCell* Stack::aPopFip(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  ForthCell* aFip = m_xTop.aTypedCell->aFip();
+  ForthCell* aFip = m_rTop.aTypedCell->aFip();
   
   vDiscardTop();
   
@@ -265,7 +265,7 @@ i8 Stack::iPopInt(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  i8 iInt = m_xTop.aTypedCell->iInt();
+  i8 iInt = m_rTop.aTypedCell->iInt();
   
   vDiscardTop();
   
@@ -284,8 +284,8 @@ Object* Stack::pPopPtr(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  //Object* pObj = m_xTop.aPtrVal->pObj();
-  Object* pObj = m_xTop.aTypedCell->pObj();
+  //Object* pObj = m_rTop.aPtrVal->pObj();
+  Object* pObj = m_rTop.aTypedCell->pObj();
 
   vDiscardTop();
   
@@ -320,31 +320,6 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   _hazard_();
 }
 
-///*----------------------------------------------------------------------------*/
-///* pop value from stack                                                       */
-///*----------------------------------------------------------------------------*/
-//void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-//
-//  if ( ! bGuard(1) )
-//    Resources::vThrow(FK_DSTACK,VL_FATAL,
-//                        azFunNm,__FILE__,__LINE__,
-//                        "Invalid d-stack"_Stz);
-//
-//  _hazard_();
-//
-//  i8 nBytes = aTopVal()->nStackUsage();
-//
-//  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
-//
-//  m_xTop.vRewind(nBytes);
-//
-//  m_nValues--;
-//
-//  _hazard_();
-//}
-
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
@@ -361,9 +336,9 @@ void Stack::vPopVal(TypedCell* aTypedCell, const char* azFunNm)
   
   i8 nBytes = aTopVal()->nStackUsage();
   
-  aTypedCell->vCopy(m_xTop.aTypedCell,nBytes);
+  aTypedCell->vCopy(m_rTop.aTypedCell,nBytes);
   
-  m_xTop.vRewind(nBytes);
+  m_rTop.vRewind(nBytes);
   
   m_nValues--;
   
@@ -453,9 +428,9 @@ void Stack::vPushVal(TypedCell* aTypedCell)
   
   i8 nBytes = aTypedCell->nStackUsage();
   
-  m_xTop.vAdvance(nBytes);
+  m_rTop.vAdvance(nBytes);
   
-  m_xTop.aAnyVal->vCopy((AnyVal*)aTypedCell,nBytes);
+  m_rTop.aTypedCell->vCopy(aTypedCell,nBytes);
   
   m_nValues++;
   
@@ -471,7 +446,7 @@ void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_xTop.aAnyVal  = aStackBase();
+  m_rTop.aTypedCell  = (TypedCell*)aStackBase();
   m_nValues       = 0;
 }
 
@@ -482,7 +457,7 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_xTop.aAnyVal = m_aRetryTop;
+  m_rTop.aTypedCell = (TypedCell*)m_aRetryTop;
   m_nValues      = m_nRetryValues;
 }
 
@@ -493,7 +468,7 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_aRetryTop    = m_xTop.aAnyVal;
+  m_aRetryTop    = (AnyVal*)m_rTop.aTypedCell;
   m_nRetryValues = m_nValues;
 }
 
@@ -504,8 +479,8 @@ bool Stack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (CN_INTVAL == m_xTop.aAnyVal->eClass() &&
-      0 == m_xTop.aTypedCell->iInt())
+  if (CN_INTVAL == m_rTop.aTypedCell->eType() &&
+      0 == m_rTop.aTypedCell->iInt())
     return true;
   
   return false;
@@ -518,7 +493,7 @@ AnyVal* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return (AnyVal*) m_xTop.aAnyVal;
+  return (AnyVal*) m_rTop.aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -544,14 +519,14 @@ AnyVal* Stack::aAllotAnyVal(i8 nWithAdditionalBytes)
   
   i8 nAllotBytes = sizeof(AnyVal) + nWithAdditionalBytes;
   
-  m_xTop.vAdvance(nAllotBytes);
-  ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
+  m_rTop.vAdvance(nAllotBytes);
+  ASSERT(m_rTop.ayByte >= (byte*)aStackLimit());
   
-  m_xTop.aAnyVal->vMagic();
+  m_rTop.aTypedCell->vMagic();
 
   m_nValues++;
   
-  return m_xTop.aAnyVal;
+  return (AnyVal*)m_rTop.aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
