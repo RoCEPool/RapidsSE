@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace SortBuffers
+namespace DataBuffers
 {
   class QuickSort
   {

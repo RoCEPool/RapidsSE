@@ -89,7 +89,7 @@ namespace Rows              { class Row;                                      }
 namespace SenVM             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace Sessions          { class Session;         class SessionState;      }
-namespace SortBuffers       {                                                 }
+namespace DataBuffers       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
@@ -138,7 +138,7 @@ using namespace Resources;
 using namespace Rows;
 using namespace SenVM;
 using namespace Sessions;
-using namespace SortBuffers;
+using namespace DataBuffers;
 using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;

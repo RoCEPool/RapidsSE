@@ -2,7 +2,7 @@
 /* SrtSet.cpp -- Row Rrf Set                                                  */
 /*============================================================================*/
 
-#include "SortBuffers.h"
+#include "DataBuffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SrtSet* SortBuffers::_pSrtSet(void* aAddr)
+SrtSet* DataBuffers::_pSrtSet(void* aAddr)
 {
   SrtSet* pSrtSet = reinterpret_cast<SrtSet*>(aAddr);
   

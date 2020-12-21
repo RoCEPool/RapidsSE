@@ -2,7 +2,7 @@
 /* IntBuffer.cpp -- Integer Buffer                                            */
 /*============================================================================*/
 
-#include "SortBuffers.h"
+#include "DataBuffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntBuffer* SortBuffers::_pIntBuffer(void* aAddress)
+IntBuffer* DataBuffers::_pIntBuffer(void* aAddress)
 {
   IntBuffer* pIntBuffer = reinterpret_cast<IntBuffer*>(aAddress);
   
