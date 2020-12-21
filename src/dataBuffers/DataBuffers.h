@@ -182,6 +182,14 @@ typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
 #include "SP_Node.hpp"
 
 
+
+
+#include "Session.hpp"
+
+#include "SP_Session.hpp"
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

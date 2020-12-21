@@ -13,7 +13,7 @@ Atomic gixSession;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Session* Sessions::_pSession(void* aAddr)
+Session* DataBuffers::_pSession(void* aAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(aAddr);
   
@@ -30,7 +30,7 @@ Session* Sessions::_pSession(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Session* Sessions::_pSession(i8 iAddr)
+Session* DataBuffers::_pSession(i8 iAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(iAddr);
   

@@ -26,7 +26,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Plans::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
-  Sessions::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
   Tasking::vCheckAssumptions();
