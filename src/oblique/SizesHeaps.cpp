@@ -291,6 +291,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TextLarge),          HT_TRANSIENT_LARGE   ,-8 }, // CN_TEXTLARGE
   { sizeof(TextMedium),         HT_TRANSIENT_MEDIUM  ,-8 }, // CN_TEXTMEDIUM
   { sizeof(TextSmall),          HT_TRANSIENT_SMALL   ,-8 }, // CN_TEXTSMALL
+  { sizeof(TextStack),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_TEXTSTACK
   { sizeof(TextTiny),           HT_TRANSIENT_TINY    ,-8 }, // CN_TEXTTINY
   { sizeof(Thing),              HT_TRANSIENT_TINY    ,0 }, // CN_THING
   { sizeof(Thread),             HT_TRANSIENT_TINY    ,0 }, // CN_THREAD

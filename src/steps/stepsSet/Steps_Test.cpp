@@ -98,6 +98,8 @@ void Step::vTestTest1(void)
 {
   ENTRY();
   
+  vTest1();
+  
   EXIT();
 }
 

@@ -12,25 +12,11 @@
 /*----------------------------------------------------------------------------*/
 void vTest1(void)
 {
-  File oFile(nullptr);
-  i8 iChunk = C_32KB;
-  char caChunk[iChunk];
-  Timer oTimer;
+  vTrace("Stack Test\n"_Stz);
   
-  vTrace("Reading lineitem.tbl in chunks of %lld\n"_Stz, iChunk);
-  bool b = oFile.bOpenRead("/Volumes/Rows/Users/alkayamarti/tpch_SF10/lineitem.csv"_Stz);
-  ASSERT(b);
+  TextStack* pTextStack = new TextStack;
   
-  oTimer.vStart();
-  i8 nBytesRead = oFile.nReadBytes(caChunk,iChunk);
-  
-  while (nBytesRead) {
-    nBytesRead = oFile.nReadBytes(caChunk,iChunk);
-  }
-  oTimer.vUpdate();
-  vTrace("duration %lldms\n"_Stz,oTimer.iMilliseconds());
-  
-  oFile.vClose();
+  delete pTextStack;
 }
 
 /*----------------------------------------------------------------------------*/

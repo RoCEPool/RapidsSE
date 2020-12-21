@@ -5,67 +5,98 @@
 
 namespace Resources
 {  
-  template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
+  template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
   class StackNL_t : public Object
   {
   private:
-    i8    m_nItems;            // number of actual items
-    ITEM  m_oItem[MAX_ITEMS];  // array of items
-  
+    i8    m_nItems;            // number of current items
+    ITEM*  m_paItem[MAX_ITEMS];  // array of items
+
     // must be last
     Footer m_xFooter;
 
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
     StackNL_t(void);
    ~StackNL_t(void) noexcept(false);
   
-    void  vDecItems(void);
-    ITEM* pGet(i8 i_Item, bool bDisableBounds=false);
-    ITEM  xGet(i8 i_Item);
-    void  vIncItems(void);
-    ITEM* aItemArea(void);
+    ITEM* pPeek(i8 i_Item);
+    ITEM* pPop(void);
+    void  vPush(ITEM* pItem);
     i8    nItems(void);
-    void  vItems(i8 nItems);
     i8    nMaxItems(void);
-    void  vSet(i8 i_Item, ITEM xItem);
 
     Footer* aFooter(void);
   };
 
-  template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-    StackNL_t<ARY_CN, ITEM, MAX_ITEMS>* _pStackNL_t(void* aAddr);
+  template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+    StackNL_t<CLASSNO, ITEM, MAX_ITEMS>* _pStackNL_t(void* aAddr);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/*                         -- Template Implementation --                      */
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+void* StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::operator new(size_t)
+{
+  Object* pObject = (Object*)HeapMem::pAllocate(CLASSNO);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+void StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::operator delete(void* aAddress)
+{
+  HeapMem::vFree((Object*)aAddress);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::StackNL_t(void)
-: Object(ARY_CN)
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::StackNL_t(void)
+: Object(CLASSNO)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
   aFooter()->vAssertFooter();
   
   m_nItems = 0;
   
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_paItem,sizeof(m_paItem),CLASSNO);
+#endif
+  
   _setFooter_();
   
   aFooter()->vAssertFooter();
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::~StackNL_t(void) noexcept(false)
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::~StackNL_t(void) noexcept(false)
 {
-  aFooter()->vAssertFooter();
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
+  aFooter()->vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,27 +104,17 @@ StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::~StackNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* decrement the number of items                                              */
-/*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-void StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::vDecItems(void)
-{
-  aFooter()->vAssertFooter();
-
-  m_nItems--;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::pGet(i8 i_Item, bool bDisableBounds)
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+ITEM* StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::pPeek(i8 i_Item)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   aFooter()->vAssertFooter();
   
-  ASSERT(bDisableBounds || (i_Item >= 0 && i_Item < m_nItems));
+  ASSERT(i_Item >= 0 && i_Item < m_nItems);
 
-  ITEM* pItem = &m_oItem[i_Item];
+  ITEM* pItem = m_paItem[i_Item];
   
   return pItem;
 }
@@ -101,46 +122,44 @@ ITEM* StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::pGet(i8 i_Item, bool bDisableBounds)
 /*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::xGet(i8 i_Item)
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+ITEM* StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::pPop(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   aFooter()->vAssertFooter();
   
-  ITEM xItem = m_oItem[i_Item];
+  ITEM* pItem = m_paItem[m_nItems - 1];
   
-  return xItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment the number of items                                              */
-/*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-void StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::vIncItems(void)
-{
-  aFooter()->vAssertFooter();
-
-  m_nItems++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
-/*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::aItemArea(void)
-{
-  aFooter()->vAssertFooter();
-  
-  ITEM* pItem = m_oItem;
+  -- m_nItems;
   
   return pItem;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of actual items                                                 */
+/* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-i8 StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::nItems(void)
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+void StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::vPush(ITEM* pItem)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  aFooter()->vAssertFooter();
+  
+  ASSERT(m_nItems < MAX_ITEMS);
+
+  m_paItem[m_nItems] = pItem;
+  
+  ++ m_nItems;
+  
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of current items                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+i8 StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   aFooter()->vAssertFooter();
   
   ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
@@ -149,40 +168,16 @@ i8 StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of actual items                                                 */
-/*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-void StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::vItems(i8 nItems)
-{
-  aFooter()->vAssertFooter();
-  
-  ASSERT(nItems >= 0 && nItems <= MAX_ITEMS);
-  
-  m_nItems = nItems;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get maximum number of items                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-i8 StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::nMaxItems(void)
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+i8 StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::nMaxItems(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   aFooter()->vAssertFooter();
   
   return MAX_ITEMS;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set a specific item                                                        */
-/*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-void StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::vSet(i8 i_Item, ITEM xItem)
-{
-  aFooter()->vAssertFooter();
-  
-  m_oItem[i_Item] = xItem;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
@@ -191,8 +186,8 @@ void StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::vSet(i8 i_Item, ITEM xItem)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN ARY_CN, class ITEM, i8 MAX_ITEMS>
-Footer* StackNL_t<ARY_CN, ITEM, MAX_ITEMS>::aFooter(void)
+template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
+Footer* StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::aFooter(void)
 {
   return &m_xFooter;
 }

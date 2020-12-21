@@ -289,6 +289,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TEXTLARGE,
   /* */ CN_TEXTMEDIUM,
   /* */ CN_TEXTSMALL,
+  /* */ CN_TEXTSTACK,
   /* */ CN_TEXTTINY,
   /* */ CN_THING,
   /* */ CN_THREAD,
@@ -609,6 +610,7 @@ static Stz* aCN[]
   /* */ "TEXTLARGE"_Stz,           // CN_TEXTLARGE,
   /* */ "TEXTMEDIUM"_Stz,          // CN_TEXTMEDIUM,
   /* */ "TEXTSMALL"_Stz,           // CN_TEXTSMALL,
+  /* */ "TEXTSTACK"_Stz,           // CN_TEXTSTACK,
   /* */ "TEXTTINY"_Stz,            // CN_TEXTTINY,
   /* */ "THING"_Stz,               // CN_THING
   /* */ "THREAD"_Stz,              // CN_THREAD
