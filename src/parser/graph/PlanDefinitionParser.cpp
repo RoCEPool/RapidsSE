@@ -37,7 +37,7 @@ Stz* PlanDefinitionParser::definitionPaths[] = {
 /*----------------------------------------------------------------------------*/
 PlanDefinitionParser::PlanDefinitionParser(void)
 : Object(CN_PLANDEFINITIONPARSER),
-  m_pNodeBuilderStack(new TypedStack(KK_PARSER_STACK))
+  m_pNodeBuilderStack(new NodeBuilderStack())
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
   
@@ -53,7 +53,7 @@ PlanDefinitionParser::~PlanDefinitionParser(void) noexcept
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
    
-  ASSERT(m_pNodeBuilderStack->nValues() == 0);
+  ASSERT(m_pNodeBuilderStack->nItems() == 0);
   delete m_pNodeBuilderStack;
 }
 
@@ -143,7 +143,7 @@ PlanNode* PlanDefinitionParser::pParse()
   // Visit the parse tree that resulted from the above parsing.
   this->visitJson5(pJson5Ctx);
 
-  PlanNodeBuilder* rootBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
+  PlanNodeBuilder* rootBuilder = m_pNodeBuilderStack->pPop();
 
   PlanNode* pTemplatePlan = rootBuilder->pBuild();
   delete rootBuilder;
@@ -182,7 +182,7 @@ antlrcpp::Any PlanDefinitionParser::visitObj(json5Parser::ObjContext *ctx)
   // Create a mutable object to hold the fields of this node. Put it on a stack
   // so it can be filled in when we parse the pairs.
   PlanNodeBuilder* pNodeBuilder = new PlanNodeBuilder();
-  m_pNodeBuilderStack->vPushPtr(pNodeBuilder);
+  m_pNodeBuilderStack->vPush(pNodeBuilder);
 
   // Visit the key-value pairs of this object
   visitChildren(ctx);
@@ -199,7 +199,7 @@ antlrcpp::Any PlanDefinitionParser::visitPair(json5Parser::PairContext *ctx)
   s256 keyName;
 
   // Get the PlanNodeBuilder to add these properties to. Don't remove it from the stack though.
-  PlanNodeBuilder* pNodeBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->aPeekItem(0)->pObj());
+  PlanNodeBuilder* pNodeBuilder = m_pNodeBuilderStack->pTop();
   ASSERT(m_pNodeBuilderStack != nullptr);
 
   if (keyCtx->STRING() != nullptr) {
@@ -258,7 +258,7 @@ antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
     visitObj(ctx->obj());
 
     // Put it in the array
-    PlanNodeBuilder* pBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
+    PlanNodeBuilder* pBuilder = m_pNodeBuilderStack->pPop();
     pBuilderList->vAppend(pBuilder);
   }
 

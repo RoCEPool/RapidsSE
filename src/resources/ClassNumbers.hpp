@@ -74,6 +74,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EXPRATOM,
   /* */ CN_EXPRCOLUMNREF,
   /* */ CN_EXPRLIST,
+  /* */ CN_EXPRSTACK,
 
   /* */ CN__F__,
   /* */ CN_FIFO,
@@ -154,6 +155,7 @@ enum eCN : u2 // Class Number
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
+  /* */ CN_NODEBUILDERSTACK,
   /* */ CN_NODE_I,
   /* */ CN_NOW,
   /* */ CN_NUMBAT,
@@ -278,6 +280,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TABLEPTN,
   /* */ CN_TABLEPTNVEC,
   /* */ CN_TABLEREF,
+  /* */ CN_TABLEREFSTACK,
   /* */ CN_TAGSET,
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
@@ -395,6 +398,7 @@ static Stz* aCN[]
   /* */ "EXPRATOM"_Stz,            // CN_EXPRATOM
   /* */ "EXPRCOLUMNREF"_Stz,       // CN_EXPRCOLUMNREF
   /* */ "EXPRLIST"_Stz,            // CN_EXPRLIST
+  /* */ "EXPRSTACK"_Stz,           // CN_EXPRSTACK
 
   /* */ "_F__"_Stz,                // CN__F__
   /* */ "FIFO"_Stz,                // CN_FIFO
@@ -475,6 +479,7 @@ static Stz* aCN[]
   /* */ "NEXTGID"_Stz,             // CN_NEXTGID
   /* */ "NMLSTR"_Stz,              // CN_NMLSTR
   /* */ "NODE"_Stz,                // CN_NODE
+  /* */ "NODEBUILDERSTAACK"_Stz,   // CN_NODEBUILDERSTACK
   /* */ "NODE_I"_Stz,              // CN_NODE_I
   /* */ "NOW"_Stz,                 // CN_NOW
   /* */ "NUMBAT"_Stz,              // CN_NUMBAT
@@ -599,6 +604,7 @@ static Stz* aCN[]
   /* */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
   /* */ "TABLEREF"_Stz,            // CN_TABLEREF
+  /* */ "TABLEREFSTACK"_Stz,       // CN_TABLEREFSTACK
   /* */ "TAGSET"_Stz,              // CN_TAGSET
   /* */ "TASK"_Stz,                // CN_TASK
   /* */ "TASKLIST"_Stz,            // CN_TASKLIST

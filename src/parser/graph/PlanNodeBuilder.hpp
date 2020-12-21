@@ -39,6 +39,8 @@ namespace Parser
   };
   
   PlanNodeBuilder* _pPlanNodeBuilder(void* aAddr);
+
+  typedef StackNL_t<CN_NODEBUILDERSTACK,PlanNodeBuilder,1024> NodeBuilderStack;
 }
 
 /*============================================================================*/
