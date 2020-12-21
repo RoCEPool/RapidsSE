@@ -49,8 +49,8 @@ namespace Prompt
    
     // object delta reporting
     BPA*           m_pBPA;
-    ObjectsInPool* m_pObjectsInPool;
-    ObjectsInPool* m_pSnapshotObjects;
+    ObjectsInPool* m_pSnapshotAtTrackingMemory;
+    ObjectsInPool* m_pSnapshotAtMemoryLeaks;
 
     // some debugging aids
     i8  d_iDebugMode; // debug mode?
@@ -111,7 +111,6 @@ namespace Prompt
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
-    ObjectsInPool*  pObjectsInPool(void);
     void vPromptUser(void);
     bool bReadNextCommand(SeDeputy* pSeDeputy);
     bool bRedirectFromFile(void);
@@ -126,7 +125,8 @@ namespace Prompt
     TagSet* pPmtTagSet(void);
     bool bShortCut(SeDeputy* pSeDeputy);
     ShortCutVec* pShortCutVec(void);
-    ObjectsInPool* pSnapshotObjects(void);
+    ObjectsInPool* pSnapshotAtTrackingMemory(void);
+    ObjectsInPool* pSnapshotAtMemoryLeaks(void);
     bool bStdIn(void);
     bool bSubSsnTags(SeDeputy* pSeDeputy);
     void vTrackingMemory(bool bTrackMemory);

@@ -52,8 +52,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bOneRun     = false;
 
   m_pBPA = nullptr;
-  m_pObjectsInPool = new ObjectsInPool;
-  m_pSnapshotObjects = new ObjectsInPool;
+  m_pSnapshotAtTrackingMemory = new ObjectsInPool;
+  m_pSnapshotAtMemoryLeaks = new ObjectsInPool;
   
   d_iDebugMode = gxArgs.m_iPromptDebug;
 
@@ -87,8 +87,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   delete m_pInput;
   
   delete m_pBPA;
-  delete m_pObjectsInPool;
-  delete m_pSnapshotObjects;
+  delete m_pSnapshotAtTrackingMemory;
+  delete m_pSnapshotAtMemoryLeaks;
   
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
@@ -991,11 +991,11 @@ i8 SePrompt::iNextSectionNo(void)
 /*----------------------------------------------------------------------------*/
 /* objects in pool                                                            */
 /*----------------------------------------------------------------------------*/
-ObjectsInPool* SePrompt::pObjectsInPool(void)
+ObjectsInPool* SePrompt::pSnapshotAtTrackingMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pObjectsInPool;
+  return m_pSnapshotAtTrackingMemory;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1311,11 +1311,11 @@ bool SePrompt::bShortCut(SeDeputy* pSeDeputy)
 /*----------------------------------------------------------------------------*/
 /* get snapshot objects                                                       */
 /*----------------------------------------------------------------------------*/
-ObjectsInPool* SePrompt::pSnapshotObjects(void)
+ObjectsInPool* SePrompt::pSnapshotAtMemoryLeaks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSnapshotObjects;
+  return m_pSnapshotAtMemoryLeaks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1447,7 +1447,7 @@ void SePrompt::vTrackingMemory(bool bTrackMemory)
     m_oPmtTagSet.vDelete(C_PMT_MEMTRACK);
 
   if (bTrackingMemory())
-    PoolHelper::vObjectSnapshot(m_pObjectsInPool);
+    PoolHelper::vObjectSnapshot(m_pSnapshotAtTrackingMemory);
 }
 
 /*----------------------------------------------------------------------------*/

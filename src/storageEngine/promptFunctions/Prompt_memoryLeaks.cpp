@@ -51,8 +51,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);
   }
   
-  ObjectsInPool* pObjectsInPool = pPrompt->pObjectsInPool();
-  ObjectsInPool* pSnapshotObjects = pPrompt->pSnapshotObjects();
+  ObjectsInPool* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
+  ObjectsInPool* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
   
   // NOTE: Need to wait for job to complete and cleanup
   // Loop C_ATTEMPTS times to wait for memory leaks to go away
@@ -60,25 +60,24 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     iRowsProcessed = 0;
-    PoolHelper::vObjectSnapshot(pSnapshotObjects);
+    PoolHelper::vObjectSnapshot(pPoolSnapshot_curr);
     
-    for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+    for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
       
-      eCN eClass = (eCN)i_Object;
-      
+      eCN eClass = (eCN)i_Class;
       
       if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
         continue;
       
-      i8 nCount = pSnapshotObjects->m_nObjects[eClass] -
-                    pObjectsInPool->m_nObjects[eClass];
+      i8 nDelta = pPoolSnapshot_curr->m_nObjects[eClass] -
+                    pPoolSnapshot_then->m_nObjects[eClass];
       
 //      vTrace("LEAKTEST: %s %lld %lld %lld\n"_Stz,aCN[eClass],
-//             pSnapshotObjects->m_nObjects[eClass],
-//             pObjectsInPool->m_nObjects[eClass],
-//             nCount);
+//             pPoolSnapshot_curr->m_nObjects[eClass],
+//             pPoolSnapshot_then->m_nObjects[eClass],
+//             nDelta);
       
-      if ( nCount == 0 )
+      if ( nDelta == 0 )
         continue;
       
       // we have a memory leak
@@ -99,23 +98,23 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   // attempted C_ATTEMPTS to see if memory leaks settle down
   // time to report
   iRowsProcessed = 0;
-  PoolHelper::vObjectSnapshot(pSnapshotObjects);
+  PoolHelper::vObjectSnapshot(pPoolSnapshot_curr);
   
-  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
     
-    eCN eClass = (eCN)i_Object;
+    eCN eClass = (eCN)i_Class;
     
     if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
       continue;
     
-    i8 nCount = pSnapshotObjects->m_nObjects[eClass] -
-    pObjectsInPool->m_nObjects[eClass];
-    if ( nCount == 0 )
+    i8 nDelta = pPoolSnapshot_curr->m_nObjects[eClass] -
+                  pPoolSnapshot_then->m_nObjects[eClass];
+    if ( nDelta == 0 )
       continue;
     
     vTrace("row: ('%s',  %lld)\n"_Stz,
            aCN[eClass],
-           nCount
+           nDelta
            );
     iRowsProcessed++;
   }
