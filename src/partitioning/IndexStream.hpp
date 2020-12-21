@@ -6,7 +6,7 @@
 #include "eRA.h"
 #include "eRO.h"
 
-namespace Partitioning
+namespace DataBuffers
 {
   class IndexStream : public Object
   {

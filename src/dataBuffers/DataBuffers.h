@@ -161,6 +161,16 @@ typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
 
 
 
+//#define TRACE_UPSERT(smt) smt EndDefine
+#define TRACE_UPSERT(smt) EndDefine
+
+//------------------------------------------------------------------------------
+
+#include "TablePtn.hpp"
+#include "RowOnce.hpp"
+#include "IndexStream.hpp"
+#include "PtnStream.hpp"
+
 
 
 /*============================================================================*/

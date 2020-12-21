@@ -2,13 +2,13 @@
 /* IndexStream.cpp -- Index Stream                                            */
 /*============================================================================*/
 
-#include "Partitioning.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Partitioning,IndexStream,CN_INDEXSTREAM)
+__pCastFunction(DataBuffers,IndexStream,CN_INDEXSTREAM)
 __aNewFunction(IndexStream,CN_INDEXSTREAM)
 __vDeleteFunction(IndexStream,CN_INDEXSTREAM)
 __aFooterFunction(IndexStream)

@@ -22,7 +22,7 @@ namespace MetaData
 #include "IndexDef.hpp"
 
 typedef VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES> IdxVec;
-typedef VectorNL_t<CN_TABLEPTNVEC,Partitioning::TablePtn,C_MAX_TABLEPTNS>TablePtnVec;
+typedef VectorNL_t<CN_TABLEPTNVEC,DataBuffers::TablePtn,C_MAX_TABLEPTNS>TablePtnVec;
 
 #include "Table.hpp"
 

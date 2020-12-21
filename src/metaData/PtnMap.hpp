@@ -37,8 +37,8 @@ namespace MetaData
     static void vRunningHash(i8* aiHash, i8 iMixIn);
     static tPN  tStrandToLglPtnNo(i8 i_Strand);
 
-    void vAdjustPartitioning(i8 nConnectedNodes, i8 nDegOfPar);
-    void vDumpPartitioning(void);
+    void vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar);
+    void vDumpDataBuffers(void);
 
     i8 nPtnsInGrid(void);
     i8 nPtnsPerTable(void);

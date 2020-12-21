@@ -2,14 +2,14 @@
 /* TablePtn.cpp -- Table Partition                                            */
 /*============================================================================*/
 
-#include "Partitioning.h"
+#include "DataBuffers.h"
 
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TablePtn* Partitioning::_pTablePtn(void* aAddr)
+TablePtn* DataBuffers::_pTablePtn(void* aAddr)
 {
   TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
   

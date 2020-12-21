@@ -2,7 +2,7 @@
 /* PtnMap.cpp -- Partition (to node,tablePtn) Map                             */
 /*============================================================================*/
 
-#include "Partitioning.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -103,7 +103,7 @@ tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
 /*----------------------------------------------------------------------------*/
 /* adjust partitioning                                                        */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vAdjustPartitioning(i8 nConnectedNodes, i8 nDegOfPar)
+void PtnMap::vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
@@ -114,7 +114,7 @@ void PtnMap::vAdjustPartitioning(i8 nConnectedNodes, i8 nDegOfPar)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void PtnMap::vDumpPartitioning(void)
+void PtnMap::vDumpDataBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   

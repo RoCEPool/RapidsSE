@@ -2,13 +2,13 @@
 /* PtnStream.cpp -- Partition Stream                                          */
 /*============================================================================*/
 
-#include "Partitioning.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Partitioning,PtnStream,CN_PTNSTREAM)
+__pCastFunction(DataBuffers,PtnStream,CN_PTNSTREAM)
 __aNewFunction(PtnStream,CN_PTNSTREAM)
 __vDeleteFunction(PtnStream,CN_PTNSTREAM)
 __aFooterFunction(PtnStream)

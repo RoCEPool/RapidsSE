@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Partitioning
+namespace DataBuffers
 {
   class PtnStream : public Object
   {
