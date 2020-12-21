@@ -29,6 +29,14 @@ namespace DataBuffers
 
 #include "SP_DataBuffer.hpp"
 
+
+
+
+#include "InfoSetBase.hpp"
+#include "InfoSet.hpp"
+#include "StreamSet.hpp"
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

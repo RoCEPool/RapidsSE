@@ -12,12 +12,16 @@ namespace SenVM
   //static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
   static const i8 C_WSP_STACK = C_SIZE_MEDIUM_OBJECT - 256;
 
-  union StkPtr {
+  class StkPtr
+  {
+  public:
+    union {
     
-    byte*   ayByte;
+      byte*   ayByte;
     
-    TypedCell* aTypedCell;
-    
+      TypedCell* aTypedCell;
+    };
+  
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
     void vRewind  (void)      { vRewind(aTypedCell->nStackUsage()); }
