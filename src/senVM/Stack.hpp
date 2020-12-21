@@ -53,17 +53,17 @@ namespace SenVM
   
     void vDump(DicStack* pDicStack, Stz* szTitle);
 
-    TypedCell* aPeekVal(i8 i_Item);
+    TypedCell* aPeekItem(i8 i_Item);
     void vPeekVal(i8 i_Item, TypedCell* aTypedCell);
 
     void vPokeVal(i8 i_Item, TypedCell* aTypedCell);
   
-    i8   iPopAsInt(const char* azFunNm);
-    ForthCell* aPopFip(const char* azFunNm);
-    i8   iPopInt(const char* azFunNm);
-    Object* pPopPtr(const char* azFunNm);
-    void vPopStr(String* pStr, const char* azFunNm);
-    void vPopVal(TypedCell* aTypedCell, const char* azFunNm);
+    i8   iPopAsInt(const char* azCallingFunNm);
+    ForthCell* aPopFip(const char* azCallingFunNm);
+    i8   iPopInt(const char* azCallingFunNm);
+    Object* pPopPtr(const char* azCallingFunNm);
+    void vPopStr(String* pStr, const char* azCallingFunNm);
+    void vPopVal(TypedCell* aTypedCell, const char* azCallingFunNm);
 
     void vPushFip(ForthCell* aFip);
     void vPushInt(i8 iInt);

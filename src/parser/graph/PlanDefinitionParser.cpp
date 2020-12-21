@@ -198,7 +198,7 @@ antlrcpp::Any PlanDefinitionParser::visitPair(json5Parser::PairContext *ctx)
   s256 keyName;
 
   // Get the PlanNodeBuilder to add these properties to. Don't remove it from the stack though.
-  PlanNodeBuilder* pNodeBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->aPeekVal(0)->pObj());
+  PlanNodeBuilder* pNodeBuilder = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->aPeekItem(0)->pObj());
   ASSERT(m_pNodeBuilderStack != nullptr);
 
   if (keyCtx->STRING() != nullptr) {

@@ -834,7 +834,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    TypedCell* aTypedCell = pStack->aPeekVal(iValue);
+    TypedCell* aTypedCell = pStack->aPeekItem(iValue);
     
     eCN eClass = aTypedCell->eType();
     
@@ -1231,7 +1231,7 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // handle a StzVal, IntVal or a PtrVal
     
-    TypedCell* aTypedCell0 = m_pForth->m_pDataStack->aPeekVal(0);
+    TypedCell* aTypedCell0 = m_pForth->m_pDataStack->aPeekItem(0);
     eCN eClass = aTypedCell0->eType();
     
     // test for StzVal

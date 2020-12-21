@@ -105,7 +105,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Item = 0; i_Item < nValues; i_Item++) {
     
-    TypedCell* aTypedCell = aPeekVal(i_Item);
+    TypedCell* aTypedCell = aPeekItem(i_Item);
     eCN eType = aTypedCell->eType();
     i8 nStackUsage = aTypedCell->nStackUsage();
     
@@ -177,9 +177,9 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at given value on stack                                               */
+/* peek at given item on stack                                                */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aPeekVal(i8 i_Item)
+TypedCell* Stack::aPeekItem(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -201,7 +201,7 @@ void Stack::vPeekVal(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPeeked = aPeekVal(i_Item);
+  TypedCell* aPeeked = aPeekItem(i_Item);
   
   aTypedCell->vCopy(aPeeked);
 }
@@ -213,7 +213,7 @@ void Stack::vPokeVal(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPoked = aPeekVal(i_Item);
+  TypedCell* aPoked = aPeekItem(i_Item);
   
   aPoked->vCopy(aTypedCell);
 }
@@ -221,13 +221,13 @@ void Stack::vPokeVal(i8 i_Item, TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack as integer                                            */
 /*----------------------------------------------------------------------------*/
-i8 Stack::iPopAsInt(const char* azFunNm)
+i8 Stack::iPopAsInt(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     Resources::vThrow(FK_DSTACK,VL_FATAL,
-                        azFunNm,__FILE__,__LINE__,
+                        azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
   i8 iInt = m_rTop.m_aTypedCell->iAsInt();
@@ -239,13 +239,13 @@ i8 Stack::iPopAsInt(const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
-ForthCell* Stack::aPopFip(const char* azFunNm)
+ForthCell* Stack::aPopFip(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_FIPVAL) )
     Resources::vThrow(FK_DSTACK,VL_FATAL,
-                        azFunNm,__FILE__,__LINE__,
+                        azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
   ForthCell* aFip = m_rTop.m_aTypedCell->aFip();
@@ -258,13 +258,13 @@ ForthCell* Stack::aPopFip(const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop i8 from stack                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Stack::iPopInt(const char* azFunNm)
+i8 Stack::iPopInt(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_INTVAL) )
     Resources::vThrow(FK_DSTACK,VL_FATAL,
-                        azFunNm,__FILE__,__LINE__,
+                        azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
   i8 iInt = m_rTop.m_aTypedCell->iInt();
@@ -277,13 +277,13 @@ i8 Stack::iPopInt(const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from stack                                                     */
 /*----------------------------------------------------------------------------*/
-Object* Stack::pPopPtr(const char* azFunNm)
+Object* Stack::pPopPtr(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (! bGuard(CN_PTRVAL) && ! bTopIsZero() )
     Resources::vThrow(FK_DSTACK,VL_FATAL,
-                        azFunNm,__FILE__,__LINE__,
+                        azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
   Object* pObj = m_rTop.m_aTypedCell->pObj();
@@ -296,13 +296,13 @@ Object* Stack::pPopPtr(const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop string from stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopStr(String* pString, const char* azFunNm)
+void Stack::vPopStr(String* pString, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_STZVAL) )
     Resources::vThrow(FK_DSTACK,VL_FATAL,
-                        azFunNm,__FILE__,__LINE__,
+                        azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
   _hazard_();
@@ -319,13 +319,13 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopVal(TypedCell* aTypedCell, const char* azFunNm)
+void Stack::vPopVal(TypedCell* aTypedCell, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     Resources::vThrow(FK_DSTACK,VL_FATAL,
-                        azFunNm,__FILE__,__LINE__,
+                        azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
   _hazard_();
@@ -588,7 +588,7 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  TypedCell* aPeeked = aPeekVal(0);
+  TypedCell* aPeeked = aPeekItem(0);
   if (eClass0 != aPeeked->eType())
     return false;
   
@@ -605,11 +605,11 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  TypedCell* aPeeked0 = aPeekVal(0);
+  TypedCell* aPeeked0 = aPeekItem(0);
   if (eClass0 != aPeeked0->eType())
     return false;
   
-  TypedCell* aPeeked1 = aPeekVal(1);
+  TypedCell* aPeeked1 = aPeekItem(1);
   if (eClass1 != aPeeked1->eType())
     return false;
   
@@ -626,15 +626,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  TypedCell* aPeeked0 = aPeekVal(0);
+  TypedCell* aPeeked0 = aPeekItem(0);
   if (eClass0 != aPeeked0->eType())
     return false;
   
-  TypedCell* aPeeked1 = aPeekVal(1);
+  TypedCell* aPeeked1 = aPeekItem(1);
   if (eClass1 != aPeeked1->eType())
     return false;
 
-  TypedCell* aPeeked2 = aPeekVal(2);
+  TypedCell* aPeeked2 = aPeekItem(2);
   if (eClass2 != aPeeked2->eType())
     return false;
   
