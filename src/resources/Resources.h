@@ -522,6 +522,7 @@ extern BufferPool* gpBufferPool;
 
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
+#include "StackNL_t.hpp"
 
 #include "TextBuffer.hpp"
 #include "TextLarge.hpp"
