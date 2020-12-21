@@ -2,13 +2,13 @@
 /* ReadApi.cpp -- Read Consistency API                                        */
 /*============================================================================*/
 
-#include "ReadConsistency.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(ReadConsistency,ReadApi,CN_READAPI)
+__pCastFunction(DataBuffers,ReadApi,CN_READAPI)
 __aNewFunction(ReadApi,CN_READAPI)
 __vDeleteFunction(ReadApi,CN_READAPI)
 __aFooterFunction(ReadApi)

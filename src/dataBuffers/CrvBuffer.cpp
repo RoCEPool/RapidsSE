@@ -2,7 +2,7 @@
 /* CrvBuffer.cpp -- Compact Row Buffer                                        */
 /*============================================================================*/
 
-#include "ReadConsistency.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CrvBuffer* ReadConsistency::_pCrvBuffer(void* aAddress)
+CrvBuffer* DataBuffers::_pCrvBuffer(void* aAddress)
 {
   CrvBuffer* pCrvBuffer = reinterpret_cast<CrvBuffer*>(aAddress);
   

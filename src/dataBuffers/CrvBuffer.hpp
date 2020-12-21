@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace ReadConsistency
+namespace DataBuffers
 {
   class CrvBuffer : public DataBuffer
   {

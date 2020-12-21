@@ -83,7 +83,7 @@ namespace Plans     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
 namespace Plans             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
-namespace ReadConsistency   { class Crv;                                      }
+namespace DataBuffers   { class Crv;                                      }
 namespace Resources     { class RU_Cpu;          class RU_Memory;         }
 namespace Rows              { class Row;                                      }
 namespace SenVM             { class Dic;             class DicStack;
@@ -133,7 +133,7 @@ using namespace Plans;
 using namespace Plans;
 using namespace Plans;
 using namespace Prompt;
-using namespace ReadConsistency;
+using namespace DataBuffers;
 using namespace Resources;
 using namespace Rows;
 using namespace SenVM;
