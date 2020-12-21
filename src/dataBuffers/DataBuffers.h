@@ -173,6 +173,15 @@ typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
 
 
 
+
+#include "Node.hpp"
+#include "Node_I.hpp"
+#include "Grid.hpp"
+
+#include "SP_Grid.hpp"
+#include "SP_Node.hpp"
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
