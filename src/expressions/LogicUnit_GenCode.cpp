@@ -886,7 +886,7 @@ void LogicUnit::vGenerateAsmTxt_Smt5(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for given query into a file                              */
-/* select * from lineitem where l_orderkey >= 2;   (index)                     */
+/* select * from lineitem where l_orderkey >= 70;   (index)                   */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
@@ -938,7 +938,7 @@ void LogicUnit::vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the logicUnit handler to be executed once we step back into the sen code
   oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ALL_ROUTINE"_Stz);
-  oTagSet.vAppend(C_TAG_LITERAL_VALUE, 2);
+  oTagSet.vAppend(C_TAG_LITERAL_VALUE, 70);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_INDEX_GE_INTEGER, &oTagSet));
   oTagSet.vReset();
 
@@ -957,7 +957,8 @@ void LogicUnit::vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for given query into a file                              */
-/* select l_extendedPrice from lineitem;                                      */
+/* select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;           */
+/* index on orderkey
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
@@ -1000,7 +1001,7 @@ void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // DATAPULSE HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   handler intiates tableScan
-  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "INDEX_GE_INTEGER"_Stz);
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "INDEX_RANGE_ROUTINE"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
   oTagSet.vReset();
 
@@ -1009,8 +1010,9 @@ void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the logicUnit handler to be executed once we step back into the sen code
   oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ALL_ROUTINE"_Stz);
-  oTagSet.vAppend(C_TAG_LITERAL_VALUE, 2);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INDEX_GE_INTEGER, &oTagSet));
+  oTagSet.vAppend(C_TAG_LBOUND_VALUE, 30);
+  oTagSet.vAppend(C_TAG_UBOUND_VALUE, 50);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INDEX_RANGE_ROUTINE, &oTagSet));
   oTagSet.vReset();
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

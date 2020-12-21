@@ -19,6 +19,8 @@ namespace Parser
     MutablePlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
                     PlanNodeList* pProperties, PlanNodeList* pChildren);
 
+    MutablePlanNode(eCN eClassNo, const MutablePlanNode& oNode);
+
     Footer* aFooter(void);
 
   public:

@@ -412,6 +412,8 @@ static Stz* C_TAG_FILTERNO  = "<filterNo>"_Stz;
 static Stz* C_TAG_LITERAL_TYPE  = "<literalType>"_Stz;
 static Stz* C_TAG_LITERAL_VALUE = "<literalValue>"_Stz;
 static Stz* C_TAG_RELATIONAL_OP = "<relationalOp>"_Stz;
+static Stz* C_TAG_LBOUND_VALUE = "<lboundValue>"_Stz;
+static Stz* C_TAG_UBOUND_VALUE = "<uboundValue>"_Stz;
 
 static Stz* C_TAG_LOWER_BOUND = "<lowerBound>"_Stz;
 static Stz* C_TAG_UPPER_BOUND = "<upperBound>"_Stz;
