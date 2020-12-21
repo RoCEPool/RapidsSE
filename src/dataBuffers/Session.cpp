@@ -112,7 +112,7 @@ Session::Session(void)
   m_pSsnJob     = nullptr;
   m_pTx         = nullptr;
   m_bExiting    = false;
-  m_pJobStack   = new Stack(KK_JOB_STACK);
+  m_pJobStack   = new TypedStack(KK_JOB_STACK);
 
   m_sToDo       = ""_Stz;
     

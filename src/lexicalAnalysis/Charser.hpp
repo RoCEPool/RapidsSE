@@ -103,7 +103,7 @@ namespace LexicalAnalysis
     void vUseStdin(void);
     void vUseString(Stz* szString);
 
-    // Charser Stack
+    // Charser TypedStack
     Charser* pNext(void);
     void     vNext(Charser* pNext);
     i8       iDepth(void);

@@ -83,7 +83,7 @@ void DicStack::vContentDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   vTrace("\n"_Stz);
-  vTrace("Dictionary Stack\n"_Stz);
+  vTrace("Dictionary TypedStack\n"_Stz);
   vTrace("----------------\n"_Stz);
 
   vTrace("%p:\n"_Stz,this);

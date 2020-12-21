@@ -22,7 +22,7 @@ void Resources::vThreadCallStackDump(void)
   int nPtrs = backtrace(aaFramePtr,C_STACK_BACKTRACE);
   
   vTrace("\n"_Stz);
-  vTrace("Call Stack Backtrace\n"_Stz);
+  vTrace("Call TypedStack Backtrace\n"_Stz);
   vTrace("--------------------\n"_Stz);
 
   // print out all the frames to stderr

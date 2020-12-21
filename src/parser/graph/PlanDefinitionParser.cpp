@@ -37,7 +37,7 @@ Stz* PlanDefinitionParser::definitionPaths[] = {
 /*----------------------------------------------------------------------------*/
 PlanDefinitionParser::PlanDefinitionParser(void)
 : Object(CN_PLANDEFINITIONPARSER),
-  m_pNodeBuilderStack(new Stack(KK_PARSER_STACK))
+  m_pNodeBuilderStack(new TypedStack(KK_PARSER_STACK))
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
   

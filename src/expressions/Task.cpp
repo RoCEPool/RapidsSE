@@ -821,7 +821,7 @@ void Task::vSleepUsec(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 /* stack contents as string                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStackContents(Stack* pStack, s48K& sStackContents)
+void Task::vStackContents(TypedStack* pStack, s48K& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

@@ -24,7 +24,7 @@ __aFooterFunction(SqlPlanner)
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
-  m_pTableRefStack(new Stack(KK_PARSER_STACK)),
+  m_pTableRefStack(new TypedStack(KK_PARSER_STACK)),
   m_pExprStack(nullptr),
   m_pSelectList(nullptr)
 {
@@ -239,7 +239,7 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
   ASSERT(m_pSelectList);
   
   ASSERT(!m_pExprStack);
-  m_pExprStack = new Stack(KK_PARSER_STACK);
+  m_pExprStack = new TypedStack(KK_PARSER_STACK);
   
   visitChildren(ctx);
   

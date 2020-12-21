@@ -58,9 +58,9 @@ Forth::Forth(Task* pTask, LogicUnit* pLogicUnit)
 
   m_aInxPtr      = nullptr;
   
-  m_pAuxStack    = new Stack(KK_AUX_STACK);
-  m_pDataStack   = new Stack(KK_DATA_STACK);
-  m_pReturnStack = new Stack(KK_RETURN_STACK);
+  m_pAuxStack    = new TypedStack(KK_AUX_STACK);
+  m_pDataStack   = new TypedStack(KK_DATA_STACK);
+  m_pReturnStack = new TypedStack(KK_RETURN_STACK);
 
   m_pLocalsFrame = nullptr;
 

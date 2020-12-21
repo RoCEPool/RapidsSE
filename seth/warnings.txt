@@ -1574,11 +1574,11 @@ Steps_Task.cpp:559:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Address.cpp -o Steps_Address.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Class.cpp -o Steps_Class.o
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BitArray.cpp -o BitArray.o
-g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Stack.cpp -o Stack.o
-Stack.cpp:78:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
- void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TypedStack.cpp -o TypedStack.o
+TypedStack.cpp:78:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void TypedStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
       ^
-Stack.cpp:78:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+TypedStack.cpp:78:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
 g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Ping.cpp -o Job_Ping.o
 Job_Ping.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
  void Job_Ping::vDump(eCN eClass, Object* pObject, Stz* aTab)

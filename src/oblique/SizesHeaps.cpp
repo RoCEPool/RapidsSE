@@ -260,7 +260,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SqlPlanner),         HT_TRANSIENT_TINY    ,-8 }, // CN_SQLPLANNER
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           ,0 }, // CN_SRTSET
-  { sizeof(Stack),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_STACK
+  { sizeof(TypedStack),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_STACK
   { sizeof(Stage),              HT_TRANSIENT_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_TRANSIENT_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID           ,0 }, // CN_STATISTICS

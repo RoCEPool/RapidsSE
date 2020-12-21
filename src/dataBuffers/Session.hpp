@@ -51,7 +51,7 @@ namespace DataBuffers
   
     i8       m_i_Strand;   // which partition this session processes
     DicStack m_oDicStack;  // dictionary stack
-    Stack*   m_pJobStack;  // stack of jobs
+    TypedStack*   m_pJobStack;  // stack of jobs
 
     TagSet   m_oSsnTagSet; // session level tags
 

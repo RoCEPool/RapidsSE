@@ -110,7 +110,7 @@ namespace Expressions
     void vSendNode(Node* pSendNode);
     void vSleepUsec(i8 iMicroSeconds);
     void vValSprint(s48K& sFormat, s48K& sString);
-    void vStackContents(Stack* pStack, s48K& sStackContents);
+    void vStackContents(TypedStack* pStack, s48K& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
     i8   iTaskId(void);

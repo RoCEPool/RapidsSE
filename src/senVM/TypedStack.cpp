@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stack.cpp -- Push/Pop Stack of Typed Cells                                 */
+/* TypedStack.cpp -- Push/Pop TypedStack of Typed Cells                                 */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -25,9 +25,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Stack* Stack::_pStack(void* aAddr)
+TypedStack* TypedStack::_pStack(void* aAddr)
 {
-  Stack* pStack = reinterpret_cast<Stack*>(aAddr);
+  TypedStack* pStack = reinterpret_cast<TypedStack*>(aAddr);
   
   RASSERT_TYPE(pStack,CN_STACK);
   
@@ -37,7 +37,7 @@ Stack* Stack::_pStack(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Stack::operator new(size_t)
+void* TypedStack::operator new(size_t)
 {
   void* pStack = HeapMem::pAllocate(CN_STACK);
   
@@ -47,9 +47,9 @@ void* Stack::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Stack::operator delete(void* pBufferAddress)
+void TypedStack::operator delete(void* pBufferAddress)
 {
-  Stack* pStack = _pStack(pBufferAddress);
+  TypedStack* pStack = _pStack(pBufferAddress);
   
   HeapMem::vFree(pStack);
 }
@@ -57,7 +57,7 @@ void Stack::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stack::Stack(eKK eKind)
+TypedStack::TypedStack(eKK eKind)
 : Object(CN_STACK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
@@ -84,7 +84,7 @@ Stack::Stack(eKK eKind)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Stack::~Stack(void) noexcept(false)
+TypedStack::~TypedStack(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -96,7 +96,7 @@ Stack::~Stack(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* discard value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-void Stack::vDiscardTop(void)
+void TypedStack::vDiscardTop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -110,7 +110,7 @@ void Stack::vDiscardTop(void)
 /*----------------------------------------------------------------------------*/
 /* dump contents of the stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
+void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -193,7 +193,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
 /*----------------------------------------------------------------------------*/
 /* peek at given item on stack                                                */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aPeekItem(i8 i_Item)
+TypedCell* TypedStack::aPeekItem(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -211,7 +211,7 @@ TypedCell* Stack::aPeekItem(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekItem(i8 i_Item, TypedCell* aTypedCell)
+void TypedStack::vPeekItem(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -223,7 +223,7 @@ void Stack::vPeekItem(i8 i_Item, TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeItem(i8 i_Item, TypedCell* aTypedCell)
+void TypedStack::vPokeItem(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -235,7 +235,7 @@ void Stack::vPokeItem(i8 i_Item, TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack as integer                                            */
 /*----------------------------------------------------------------------------*/
-i8 Stack::iPopAsInt(const char* azCallingFunNm)
+i8 TypedStack::iPopAsInt(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -253,7 +253,7 @@ i8 Stack::iPopAsInt(const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
-ForthCell* Stack::aPopFip(const char* azCallingFunNm)
+ForthCell* TypedStack::aPopFip(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -272,7 +272,7 @@ ForthCell* Stack::aPopFip(const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop i8 from stack                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Stack::iPopInt(const char* azCallingFunNm)
+i8 TypedStack::iPopInt(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -291,7 +291,7 @@ i8 Stack::iPopInt(const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from stack                                                     */
 /*----------------------------------------------------------------------------*/
-Object* Stack::pPopPtr(const char* azCallingFunNm)
+Object* TypedStack::pPopPtr(const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -310,7 +310,7 @@ Object* Stack::pPopPtr(const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop string from stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopStr(String* pString, const char* azCallingFunNm)
+void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -333,7 +333,7 @@ void Stack::vPopStr(String* pString, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm)
+void TypedStack::vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -356,7 +356,7 @@ void Stack::vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* push ForthCell* onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushFip(ForthCell* aFip)
+void TypedStack::vPushFip(ForthCell* aFip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -368,7 +368,7 @@ void Stack::vPushFip(ForthCell* aFip)
 /*----------------------------------------------------------------------------*/
 /* push i8 onto stack                                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushInt(i8 iInt)
+void TypedStack::vPushInt(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -380,7 +380,7 @@ void Stack::vPushInt(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* push pointer to proper object onto stack                                   */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushPtr(Object* pObj)
+void TypedStack::vPushPtr(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -392,7 +392,7 @@ void Stack::vPushPtr(Object* pObj)
 /*----------------------------------------------------------------------------*/
 /* push string onto stack                                                     */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushStr(String* pStr)
+void TypedStack::vPushStr(String* pStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -405,7 +405,7 @@ void Stack::vPushStr(String* pStr)
 /*----------------------------------------------------------------------------*/
 /* push stz onto stack                                                        */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushStz(Stz* szStz)
+void TypedStack::vPushStz(Stz* szStz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -420,7 +420,7 @@ void Stack::vPushStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushItem(TypedCell* aTypedCell)
+void TypedStack::vPushItem(TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
@@ -440,7 +440,7 @@ void Stack::vPushItem(TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* completely reset stack                                                     */
 /*----------------------------------------------------------------------------*/
-void Stack::vReset(void)
+void TypedStack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -451,7 +451,7 @@ void Stack::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* set stack back to retry point                                              */
 /*----------------------------------------------------------------------------*/
-void Stack::vRetry(void)
+void TypedStack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
@@ -462,7 +462,7 @@ void Stack::vRetry(void)
 /*----------------------------------------------------------------------------*/
 /* mark retry point                                                           */
 /*----------------------------------------------------------------------------*/
-void Stack::vRetryPoint(void)
+void TypedStack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -473,7 +473,7 @@ void Stack::vRetryPoint(void)
 /*----------------------------------------------------------------------------*/
 /* is top value a zero?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Stack::bTopIsZero(void)
+bool TypedStack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -487,7 +487,7 @@ bool Stack::bTopIsZero(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aTopVal(void)
+TypedCell* TypedStack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -497,7 +497,7 @@ TypedCell* Stack::aTopVal(void)
 /*----------------------------------------------------------------------------*/
 /* get number of values currently on stack                                    */
 /*----------------------------------------------------------------------------*/
-i8 Stack::nValues(void)
+i8 TypedStack::nValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -511,7 +511,7 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 /* allot a value on top of stack                                               */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
+TypedCell* TypedStack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -530,7 +530,7 @@ TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
 /*----------------------------------------------------------------------------*/
 /* allot a fip value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aAllotFipVal(void)
+TypedCell* TypedStack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -542,7 +542,7 @@ TypedCell* Stack::aAllotFipVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot an int value on top of stack                                         */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aAllotIntVal(void)
+TypedCell* TypedStack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -554,7 +554,7 @@ TypedCell* Stack::aAllotIntVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a ptr value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aAllotPtrVal(void)
+TypedCell* TypedStack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -566,7 +566,7 @@ TypedCell* Stack::aAllotPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a str value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aAllotStzVal(i8 nStrSize)
+TypedCell* TypedStack::aAllotStzVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -580,7 +580,7 @@ TypedCell* Stack::aAllotStzVal(i8 nStrSize)
 /*----------------------------------------------------------------------------*/
 /* guard stack has at least nValues on it                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuard(i8 nItems)
+bool TypedStack::bGuard(i8 nItems)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -593,7 +593,7 @@ bool Stack::bGuard(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /* guard top value on stack has given class                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuard(eCN eClass0)
+bool TypedStack::bGuard(eCN eClass0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -610,7 +610,7 @@ bool Stack::bGuard(eCN eClass0)
 /*----------------------------------------------------------------------------*/
 /* guard top 2 values on stack have given classes                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuard(eCN eClass0, eCN eClass1)
+bool TypedStack::bGuard(eCN eClass0, eCN eClass1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -631,7 +631,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
 /*----------------------------------------------------------------------------*/
 /* guard top 3 values on stack have given classes                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
+bool TypedStack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -656,7 +656,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* compute the base of this stack                                             */
 /*----------------------------------------------------------------------------*/
-byte* Stack::ayStackBase(void)
+byte* TypedStack::ayStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -668,7 +668,7 @@ byte* Stack::ayStackBase(void)
 /*----------------------------------------------------------------------------*/
 /* compute the limit of this stack                                            */
 /*----------------------------------------------------------------------------*/
-byte* Stack::ayStackLimit(void)
+byte* TypedStack::ayStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -680,12 +680,12 @@ byte* Stack::ayStackLimit(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(Stack)
+__aFooterFunction(TypedStack)
 
 /*----------------------------------------------------------------------------*/
 /*-- Hazard ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aHazardFunction(Stack,CN_STACK)
+__aHazardFunction(TypedStack,CN_STACK)
 
 /*============================================================================*/
 /* end                                                                        */

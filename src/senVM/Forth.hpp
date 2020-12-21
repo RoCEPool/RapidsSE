@@ -24,9 +24,9 @@ namespace SenVM
 
     ForthCell*     m_aInxPtr;      // instruction/cell pointer
   
-    Stack*    m_pAuxStack;    // auxiliary stack
-    Stack*    m_pDataStack;   // data stack
-    Stack*    m_pReturnStack; // return stack
+    TypedStack*    m_pAuxStack;    // auxiliary stack
+    TypedStack*    m_pDataStack;   // data stack
+    TypedStack*    m_pReturnStack; // return stack
  
     LocalChain* m_pLocalsFrame; // locals| | register frame chain
   

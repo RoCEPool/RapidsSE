@@ -32,8 +32,8 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("\n"_Stz);
   
   vTrace("  sizeof(Task)   = %lu; \n"_Stz, sizeof(Task));
-  vTrace("  sizeof(Stack)  = %lu; \n"_Stz, sizeof(Stack));
-  vTrace("  Task+Stacks    = %lu; \n"_Stz, sizeof(Stack) + 3 * sizeof(Stack));
+  vTrace("  sizeof(TypedStack)  = %lu; \n"_Stz, sizeof(TypedStack));
+  vTrace("  Task+Stacks    = %lu; \n"_Stz, sizeof(TypedStack) + 3 * sizeof(TypedStack));
   vTrace("\n"_Stz);
   
   vTrace("  sizeof(s32)    = %lu; \n"_Stz, sizeof(s32));

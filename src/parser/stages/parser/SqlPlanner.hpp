@@ -11,8 +11,8 @@ namespace Parser
   {
   private:
   
-    Stack* m_pTableRefStack;
-    Stack* m_pExprStack;
+    TypedStack* m_pTableRefStack;
+    TypedStack* m_pExprStack;
     ExprList* m_pSelectList;
     Footer m_xFooter;
     

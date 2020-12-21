@@ -826,7 +826,7 @@ void Constants::vAddConstantsCpp(void)
   /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
   /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));
 
-  /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(Stack));
+  /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(TypedStack));
   /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
   /* 55 */ vAddConstant("SIZEOF_STEPTIMING"_Stz,   sizeof(StepTiming));
   /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));

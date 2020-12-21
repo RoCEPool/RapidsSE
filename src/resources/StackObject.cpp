@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StackObject.hpp -- On Stack-Only Proper Object in system                   */
+/* StackObject.hpp -- On TypedStack-Only Proper Object in system                   */
 /*============================================================================*/
 
 #include "Resources.h"

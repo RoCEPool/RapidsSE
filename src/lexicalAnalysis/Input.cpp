@@ -164,7 +164,7 @@ void Input::vDump(void)
          pCurTkn->iColNo()
          );
   
-  vTrace("Charser Stack:\n"_Stz);
+  vTrace("Charser TypedStack:\n"_Stz);
          
   Charser* pCharser = m_pCharser;
   while (pCharser) {

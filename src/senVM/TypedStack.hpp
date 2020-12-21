@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stack.hpp -- Push/Pop Stack of Typed Cells                                 */
+/* TypedStack.hpp -- Push/Pop TypedStack of Typed Cells                                 */
 /*============================================================================*/
 #pragma once
 
@@ -27,7 +27,7 @@ namespace SenVM
     void vRewind  (void)      { vRewind(m_aTypedCell->nStackUsage()); }
   };
 
-  class Stack: public Object
+  class TypedStack: public Object
   {
   private:
     eKK     m_eKind;  // kind of stack
@@ -44,10 +44,10 @@ namespace SenVM
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stack(eKK eKind);
-   ~Stack(void) noexcept(false);
+    TypedStack(eKK eKind);
+   ~TypedStack(void) noexcept(false);
     
-    static Stack* _pStack(void* aAddr);
+    static TypedStack* _pStack(void* aAddr);
   
     void vDiscardTop(void);
   
