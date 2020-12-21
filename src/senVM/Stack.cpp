@@ -7,9 +7,12 @@
 /*
 
                +-------------------------+-------------------------+
-            << | head : cell [ string⦰ ] | head : cell [ string⦰ ] |
+               |         TypedCell 1     |         TypedCell 0     |
+               +-------------------------+-------------------------+
+           <<< | head : cell [ string⦰ ] | head : cell [ string⦰ ] |
                +-------------------------+-------------------------+
  
+               ^m_ayStackPtr
                2 items
 
  */
@@ -61,10 +64,10 @@ Stack::Stack(eKK eKind)
   
   m_eKind = eKind;
   
-  m_rTop.m_aTypedCell = aStackBase();
+  m_rTop.m_ayStackPtr = ayStackBase();
   m_rTop.m_nItems     = 0;
  
-  m_rRetry.m_aTypedCell = aStackBase();
+  m_rRetry.m_ayStackPtr = ayStackBase();
   m_rRetry.m_nItems     = 0;
   
 #ifdef WITH_CHECK_INITIALISED
@@ -393,8 +396,6 @@ void Stack::vPushStr(String* pStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  //vDump(nullptr,"Before:"_Stz);
-
   i8 nSize = StrLib::nSize(pStr->azStr());
   TypedCell* aTypedCell = aAllotStzVal(nSize);
 
@@ -443,7 +444,7 @@ void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_rTop.m_aTypedCell  = aStackBase();
+  m_rTop.m_ayStackPtr  = ayStackBase();
   m_rTop.m_nItems       = 0;
 }
 
@@ -517,7 +518,7 @@ TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
   i8 nAllotBytes = sizeof(_Header) + sizeof(Dtm) + nWithAdditionalBytes;
   
   m_rTop.vAdvance(nAllotBytes);
-  ASSERT(m_rTop.m_ayStackPtr >= (byte*)aStackLimit());
+  ASSERT(m_rTop.m_ayStackPtr >= ayStackLimit());
   
   m_rTop.m_aTypedCell->vMagic();
 
@@ -655,25 +656,25 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* compute the base of this stack                                             */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aStackBase(void)
+byte* Stack::ayStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* aBase = (char*)&m_xWsp.ayArea()[C_WSP_STACK - 1];
+  byte* ayBase = & m_xWsp.ayArea()[C_WSP_STACK - 1];
   
-  return pPoolCheck<TypedCell*>(aBase);
+  return pPoolCheck<byte*>(ayBase);
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute the limit of this stack                                            */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aStackLimit(void)
+byte* Stack::ayStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* aLimit = (char*)&m_xWsp.ayArea()[0];
+  byte* aLimit = & m_xWsp.ayArea()[0];
   
-  return pPoolCheck<TypedCell*>(aLimit);
+  return pPoolCheck<byte*>(aLimit);
 }
 
 /*----------------------------------------------------------------------------*/

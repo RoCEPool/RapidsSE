@@ -93,8 +93,8 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
   
-    TypedCell* aStackBase(void);
-    TypedCell* aStackLimit(void);
+    byte* ayStackBase(void);
+    byte* ayStackLimit(void);
     
     Footer* aFooter(void);
     Footer* aHazard(void);
