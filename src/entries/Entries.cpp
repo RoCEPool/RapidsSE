@@ -4,17 +4,6 @@
 
 #include "Entries.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Entries::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(FreeItem) <= sizeof(Ent));
-  ALWAYS(sizeof(NEO)      == C_NEO_SIZE);
-  
-  // dont change without correcting Ent
-  ALWAYS(6 == C_MAX_LVL_LEVELS);
-}
 
 /*============================================================================*/
 /* end                                                                        */

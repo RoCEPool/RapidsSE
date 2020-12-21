@@ -18,7 +18,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Expressions::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();
-  Entries::vCheckAssumptions();
   Resources::vCheckAssumptions();
   Grids::vCheckAssumptions();
   Indexing::vCheckAssumptions();

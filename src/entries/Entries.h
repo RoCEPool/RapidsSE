@@ -7,23 +7,8 @@
 
 //------------------------------------------------------------------------------
 
-namespace Entries
-{
-  void vCheckAssumptions(void);
-}
 
 //------------------------------------------------------------------------------
-
-#include "Pay.hpp"
-#include "Key.hpp"
-#include "NEO.h"
-#include "Ent.hpp"
-#include "Ent_flat.hpp"
-#include "EntWrk.hpp"
-
-#include "SP_Ent.hpp"
-#include "SP_Key.hpp"
-#include "SP_Ref.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
