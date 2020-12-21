@@ -5,7 +5,7 @@
 
 #include "eKC.h"
 
-namespace Entries
+namespace DataBuffers
 {
   class Key
   {

@@ -2,7 +2,7 @@
 /* Key.cpp -- key part of an index entry                                      */
 /*============================================================================*/
 
-#include "Entries.h"
+#include "DataBuffers.h"
 
 #include "Sprint.hpp"
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Key* Entries::_aKey(void* aAddr)
+Key* DataBuffers::_aKey(void* aAddr)
 {
   Key* aKey = reinterpret_cast<Key*>(aAddr);
   

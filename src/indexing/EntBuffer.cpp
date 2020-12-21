@@ -1515,7 +1515,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
     return;
   
   vTrace("\n"_Stz);
-  vTrace("Entries (by headEntry vector[0]):\n"_Stz);
+  vTrace("DataBuffers (by headEntry vector[0]):\n"_Stz);
   
   tET tEntry = aSkipRoots->tNextEntry(0);
   while (C_ENT_END_TICKET != tEntry) {

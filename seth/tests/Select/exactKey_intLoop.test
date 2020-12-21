@@ -9,154 +9,154 @@ LOG 'Running exactKey_int test with varying indexEntries per buffer.';
 indexEntries 0;
 affected: 0
 
-LOG 'Entries per buffer: default';
+LOG 'DataBuffers per buffer: default';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 5;
 affected: 0
 
-LOG 'Entries per buffer: 5';
+LOG 'DataBuffers per buffer: 5';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 6;
 affected: 0
 
-LOG 'Entries per buffer: 6';
+LOG 'DataBuffers per buffer: 6';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 7;
 affected: 0
 
-LOG 'Entries per buffer: 7';
+LOG 'DataBuffers per buffer: 7';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 8;
 affected: 0
 
-LOG 'Entries per buffer: 8';
+LOG 'DataBuffers per buffer: 8';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 9;
 affected: 0
 
-LOG 'Entries per buffer: 9';
+LOG 'DataBuffers per buffer: 9';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 10;
 affected: 0
 
-LOG 'Entries per buffer: 10';
+LOG 'DataBuffers per buffer: 10';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 11;
 affected: 0
 
-LOG 'Entries per buffer: 11';
+LOG 'DataBuffers per buffer: 11';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 12;
 affected: 0
 
-LOG 'Entries per buffer: 12';
+LOG 'DataBuffers per buffer: 12';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 13;
 affected: 0
 
-LOG 'Entries per buffer: 13';
+LOG 'DataBuffers per buffer: 13';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 14;
 affected: 0
 
-LOG 'Entries per buffer: 14';
+LOG 'DataBuffers per buffer: 14';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 15;
 affected: 0
 
-LOG 'Entries per buffer: 15';
+LOG 'DataBuffers per buffer: 15';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 16;
 affected: 0
 
-LOG 'Entries per buffer: 16';
+LOG 'DataBuffers per buffer: 16';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 17;
 affected: 0
 
-LOG 'Entries per buffer: 17';
+LOG 'DataBuffers per buffer: 17';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 18;
 affected: 0
 
-LOG 'Entries per buffer: 19';
+LOG 'DataBuffers per buffer: 19';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 20;
 affected: 0
 
-LOG 'Entries per buffer: 20';
+LOG 'DataBuffers per buffer: 20';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 21;
 affected: 0
 
-LOG 'Entries per buffer: 21';
+LOG 'DataBuffers per buffer: 21';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 22;
 affected: 0
 
-LOG 'Entries per buffer: 22';
+LOG 'DataBuffers per buffer: 22';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 23;
 affected: 0
 
-LOG 'Entries per buffer: 23';
+LOG 'DataBuffers per buffer: 23';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 24;
 affected: 0
 
-LOG 'Entries per buffer: 24';
+LOG 'DataBuffers per buffer: 24';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 25;
 affected: 0
 
-LOG 'Entries per buffer: 25';
+LOG 'DataBuffers per buffer: 25';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------
 indexEntries 26;
 affected: 0
 
-LOG 'Entries per buffer: 26';
+LOG 'DataBuffers per buffer: 26';
 INCLUDE 'exactKey_int.test';
 
 //------------------------------------------------------------------------------

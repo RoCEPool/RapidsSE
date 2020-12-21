@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Entries
+namespace DataBuffers
 {
   // the flattened layout for the int case
   #include "Ent_int.h"

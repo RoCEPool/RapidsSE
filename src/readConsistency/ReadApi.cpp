@@ -355,7 +355,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
   }
   
 #ifdef WITH_TRACE_PURGING
-  vTrace("Entries not deleted %lld\n"_Stz, iNotDeleted);
+  vTrace("DataBuffers not deleted %lld\n"_Stz, iNotDeleted);
 //  vTrace("-----------------------------------\n"_Stz);
 //  vTrace("IndexTree DUMP AFTER PURGING...\n"_Stz);
 //  m_pIndexTree->vDump(false);

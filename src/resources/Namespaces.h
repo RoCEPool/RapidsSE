@@ -43,7 +43,7 @@ class SP_Tme;
 class SP_Tsp;
                               template <i8 SPACE> class Datum_t;              }
 namespace Plans    { class Dynamo;                                   }
-namespace Entries           {                                                 }
+namespace DataBuffers           {                                                 }
 namespace Expressions       { class Expr;            class ExprVec;
                               class LogicUnit;                                }
 namespace Facts             { class Fact;            class Kbase;
@@ -110,7 +110,7 @@ using namespace ControlData;
 using namespace DataBuffers;
 using namespace Datums;
 using namespace Plans;
-using namespace Entries;
+using namespace DataBuffers;
 using namespace Expressions;
 using namespace Facts;
 using namespace Folders;

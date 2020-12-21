@@ -480,7 +480,7 @@ bool EntBuffer::bVerifyItems(void)
    
    {[Ent]|[FreeItem]...}[Wilderness]
    
-   The number of Entries must match the number of items in the buffer
+   The number of DataBuffers must match the number of items in the buffer
    */
   
   i8 nEntryItems = 0;

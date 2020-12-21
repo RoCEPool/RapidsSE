@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Entries
+namespace DataBuffers
 {
   class SP_Ent : public SPsmall
   {

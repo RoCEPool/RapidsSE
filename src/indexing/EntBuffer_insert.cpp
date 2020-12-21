@@ -1719,7 +1719,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
   // compact the left buffer and rebuild SkipListNL
   
   pThisLeftBuffer->vCompactLeft();
-  //vTrace("Entries in LeftBuffer %lld\n"_Stz,pThisLeftBuffer->nItems());
+  //vTrace("DataBuffers in LeftBuffer %lld\n"_Stz,pThisLeftBuffer->nItems());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the child buffer of any moved entry needs to have its higher buffer

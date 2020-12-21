@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Entries
+namespace DataBuffers
 {
   class Pay
   {

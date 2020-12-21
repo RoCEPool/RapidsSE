@@ -10,28 +10,28 @@ LOG 'Running indexEntry test with varying indexEntries per buffer.';
 indexEntries 100;
 affected: 0
 
-LOG 'Entries per buffer: 5';
+LOG 'DataBuffers per buffer: 5';
 INCLUDE 'operators2.test';
 
 //------------------------------------------------------------------------------
 indexEntries 500;
 affected: 0
 
-LOG 'Entries per buffer: 6';
+LOG 'DataBuffers per buffer: 6';
 INCLUDE 'operators2.test';
 
 //------------------------------------------------------------------------------
 indexEntries 2000;
 affected: 0
 
-LOG 'Entries per buffer: 7';
+LOG 'DataBuffers per buffer: 7';
 INCLUDE 'operators2.test';
 
 //------------------------------------------------------------------------------
 indexEntries 4000;
 affected: 0
 
-LOG 'Entries per buffer: 8';
+LOG 'DataBuffers per buffer: 8';
 INCLUDE 'operators2.test';
 
 //------------------------------------------------------------------------------

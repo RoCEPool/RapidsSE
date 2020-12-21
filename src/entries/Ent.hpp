@@ -5,7 +5,7 @@
 
 //#define __ENT_HEADER
 
-namespace Entries
+namespace DataBuffers
 {
   static const i8 C_ENT_QUANTA = 32;
 

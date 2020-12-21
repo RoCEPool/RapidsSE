@@ -10,7 +10,7 @@
 LOG 'Running supplierLoop test with varying indexEntries per buffer.';
 
 //------------------------------------------------------------------------------
-LOG 'Entries per buffer: default';
+LOG 'DataBuffers per buffer: default';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
@@ -18,14 +18,14 @@ INCLUDE 'supplierEntry.test';
 indexEntries 5;
 affected: 0
 
-LOG 'Entries per buffer: 5';
+LOG 'DataBuffers per buffer: 5';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 6;
 affected: 0
 
-LOG 'Entries per buffer: 6';
+LOG 'DataBuffers per buffer: 6';
 INCLUDE 'supplierEntry.test';
 
 */
@@ -33,362 +33,362 @@ INCLUDE 'supplierEntry.test';
 indexEntries 7;
 affected: 0
 
-LOG 'Entries per buffer: 7';
+LOG 'DataBuffers per buffer: 7';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 8;
 affected: 0
 
-LOG 'Entries per buffer: 8';
+LOG 'DataBuffers per buffer: 8';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 9;
 affected: 0
 
-LOG 'Entries per buffer: 9';
+LOG 'DataBuffers per buffer: 9';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 10;
 affected: 0
 
-LOG 'Entries per buffer: 10';
+LOG 'DataBuffers per buffer: 10';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 11;
 affected: 0
 
-LOG 'Entries per buffer: 11';
+LOG 'DataBuffers per buffer: 11';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 12;
 affected: 0
 
-LOG 'Entries per buffer: 12';
+LOG 'DataBuffers per buffer: 12';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 13;
 affected: 0
 
-LOG 'Entries per buffer: 13';
+LOG 'DataBuffers per buffer: 13';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 14;
 affected: 0
 
-LOG 'Entries per buffer: 14';
+LOG 'DataBuffers per buffer: 14';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 15;
 affected: 0
 
-LOG 'Entries per buffer: 15';
+LOG 'DataBuffers per buffer: 15';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 16;
 affected: 0
 
-LOG 'Entries per buffer: 16';
+LOG 'DataBuffers per buffer: 16';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 17;
 affected: 0
 
-LOG 'Entries per buffer: 17';
+LOG 'DataBuffers per buffer: 17';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 18;
 affected: 0
 
-LOG 'Entries per buffer: 18';
+LOG 'DataBuffers per buffer: 18';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 19;
 affected: 0
 
-LOG 'Entries per buffer: 19';
+LOG 'DataBuffers per buffer: 19';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 20;
 affected: 0
 
-LOG 'Entries per buffer: 20';
+LOG 'DataBuffers per buffer: 20';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 21;
 affected: 0
 
-LOG 'Entries per buffer: 21';
+LOG 'DataBuffers per buffer: 21';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 22;
 affected: 0
 
-LOG 'Entries per buffer: 22';
+LOG 'DataBuffers per buffer: 22';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 23;
 affected: 0
 
-LOG 'Entries per buffer: 23';
+LOG 'DataBuffers per buffer: 23';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 24;
 affected: 0
 
-LOG 'Entries per buffer: 24';
+LOG 'DataBuffers per buffer: 24';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 25;
 affected: 0
 
-LOG 'Entries per buffer: 25';
+LOG 'DataBuffers per buffer: 25';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 26;
 affected: 0
 
-LOG 'Entries per buffer: 26';
+LOG 'DataBuffers per buffer: 26';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 27;
 affected: 0
 
-LOG 'Entries per buffer: 27';
+LOG 'DataBuffers per buffer: 27';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 28;
 affected: 0
 
-LOG 'Entries per buffer: 28';
+LOG 'DataBuffers per buffer: 28';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 29;
 affected: 0
 
-LOG 'Entries per buffer: 20';
+LOG 'DataBuffers per buffer: 20';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 30;
 affected: 0
 
-LOG 'Entries per buffer: 30';
+LOG 'DataBuffers per buffer: 30';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 31;
 affected: 0
 
-LOG 'Entries per buffer: 31';
+LOG 'DataBuffers per buffer: 31';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 32;
 affected: 0
 
-LOG 'Entries per buffer: 32';
+LOG 'DataBuffers per buffer: 32';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 33;
 affected: 0
 
-LOG 'Entries per buffer: 33';
+LOG 'DataBuffers per buffer: 33';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 34;
 affected: 0
 
-LOG 'Entries per buffer: 34';
+LOG 'DataBuffers per buffer: 34';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 35;
 affected: 0
 
-LOG 'Entries per buffer: 35';
+LOG 'DataBuffers per buffer: 35';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 36;
 affected: 0
 
-LOG 'Entries per buffer: 36';
+LOG 'DataBuffers per buffer: 36';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 37;
 affected: 0
 
-LOG 'Entries per buffer: 37';
+LOG 'DataBuffers per buffer: 37';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 38;
 affected: 0
 
-LOG 'Entries per buffer: 38';
+LOG 'DataBuffers per buffer: 38';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 39;
 affected: 0
 
-LOG 'Entries per buffer: 39';
+LOG 'DataBuffers per buffer: 39';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 40;
 affected: 0
 
-LOG 'Entries per buffer: 40';
+LOG 'DataBuffers per buffer: 40';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 41;
 affected: 0
 
-LOG 'Entries per buffer: 41';
+LOG 'DataBuffers per buffer: 41';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 42;
 affected: 0
 
-LOG 'Entries per buffer: 42';
+LOG 'DataBuffers per buffer: 42';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 43;
 affected: 0
 
-LOG 'Entries per buffer: 43';
+LOG 'DataBuffers per buffer: 43';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 44;
 affected: 0
 
-LOG 'Entries per buffer: 44';
+LOG 'DataBuffers per buffer: 44';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 45;
 affected: 0
 
-LOG 'Entries per buffer: 45';
+LOG 'DataBuffers per buffer: 45';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 46;
 affected: 0
 
-LOG 'Entries per buffer: 46';
+LOG 'DataBuffers per buffer: 46';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 47;
 affected: 0
 
-LOG 'Entries per buffer: 47';
+LOG 'DataBuffers per buffer: 47';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 48;
 affected: 0
 
-LOG 'Entries per buffer: 48';
+LOG 'DataBuffers per buffer: 48';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 49;
 affected: 0
 
-LOG 'Entries per buffer: 49';
+LOG 'DataBuffers per buffer: 49';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 50;
 affected: 0
 
-LOG 'Entries per buffer: 50';
+LOG 'DataBuffers per buffer: 50';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 100;
 affected: 0
 
-LOG 'Entries per buffer: 100';
+LOG 'DataBuffers per buffer: 100';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 200;
 affected: 0
 
-LOG 'Entries per buffer: 200';
+LOG 'DataBuffers per buffer: 200';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 300;
 affected: 0
 
-LOG 'Entries per buffer: 300';
+LOG 'DataBuffers per buffer: 300';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 400;
 affected: 0
 
-LOG 'Entries per buffer: 400';
+LOG 'DataBuffers per buffer: 400';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 500;
 affected: 0
 
-LOG 'Entries per buffer: 500';
+LOG 'DataBuffers per buffer: 500';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 1000;
 affected: 0
 
-LOG 'Entries per buffer: 1000';
+LOG 'DataBuffers per buffer: 1000';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 2000;
 affected: 0
 
-LOG 'Entries per buffer: 2000';
+LOG 'DataBuffers per buffer: 2000';
 INCLUDE 'supplierEntry.test';
 
 //------------------------------------------------------------------------------
 indexEntries 0;
 affected: 0
 
-LOG 'Entries per buffer: default';
+LOG 'DataBuffers per buffer: default';
 INCLUDE 'supplierEntry.test';

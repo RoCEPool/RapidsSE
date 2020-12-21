@@ -104,7 +104,7 @@ void HashMap::vAnalysis(bool bBufferAnalysis)
   vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"
          "    DataBuffers %lld MaxDepth %lld "
          "manifested %lld%% of %lld buffers %lld entries\n"
-         "    Entries %lld ArcEntries %lld µ%lld%% full\n"
+         "    DataBuffers %lld ArcEntries %lld µ%lld%% full\n"
          "    DupBuffers %lld DupEntries %lld\n"_Stz,
          
          m_nEntriesPerBuffer,
