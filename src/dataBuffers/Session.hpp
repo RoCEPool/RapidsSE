@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Sessions.h"
+#include "DataBuffers.h"
 
 #include "eAC.h"
 #include "eSK.h"
 
-namespace Sessions
+namespace DataBuffers
 {
   class Session : public Focal
   {

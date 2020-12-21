@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* SP_Grid.cpp - Grid sprint helper                              (on c stack) */
+/* SP_Session.cpp -- Session sprint helper                       (on c stack) */
 /*============================================================================*/
 
-#include "Grids.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Grid::SP_Grid(void)
+SP_Session::SP_Session(void)
 : SP(CN_SPID)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
@@ -20,7 +20,7 @@ SP_Grid::SP_Grid(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Grid::~SP_Grid(void) noexcept(false)
+SP_Session::~SP_Session(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
 }
@@ -32,23 +32,27 @@ SP_Grid::~SP_Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Grid::sz(Grid* pGrid)
+Stz* SP_Session::sz(Session* pSession)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Session::sz_log(Session* pSession)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "%lld nodes %lld connected nodes %lld "
-                  "partitions/table %lld total partitions"_Stz,
-                  
-                  pGrid->nBootNodes(),
-                  pGrid->nConnectedNodes(),
-                  
-                  AM::nPtnsPerTable(),
-                  AM::nPtnsInGrid(),
+                  "{ Pid %lld }"_Stz,
 
-                  C_VARGS_END
-                  );
-  
+                  pSession->m_iPid,
+                  
+                  C_VARGS_END);
+
   return (Stz*) &m_caResult[0];
 }
 
@@ -56,7 +60,7 @@ Stz* SP_Grid::sz(Grid* pGrid)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(SP_Grid)
+__aFooterFunction(SP_Session)
 
 /*============================================================================*/
 /* end                                                                        */

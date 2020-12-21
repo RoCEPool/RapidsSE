@@ -54,7 +54,7 @@ namespace Folders           {                                                 }
 namespace Resources           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
-namespace Grids             { class Grid;            class Node;              }
+namespace DataBuffers             { class Grid;            class Node;              }
 
 namespace DataBuffers          { class EntBuffer;       class IndexTree;         }
 namespace DataBuffers          { class InfoSetBase;                              }
@@ -88,7 +88,7 @@ namespace Resources     { class RU_Cpu;          class RU_Memory;         }
 namespace Rows              { class Row;                                      }
 namespace SenVM             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
-namespace Sessions          { class Session;         class SessionState;      }
+namespace DataBuffers          { class Session;         class SessionState;      }
 namespace DataBuffers       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
@@ -115,7 +115,7 @@ using namespace Expressions;
 using namespace Facts;
 using namespace Folders;
 using namespace Resources;
-using namespace Grids;
+using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace Interface;
@@ -137,7 +137,7 @@ using namespace DataBuffers;
 using namespace Resources;
 using namespace Rows;
 using namespace SenVM;
-using namespace Sessions;
+using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace SqlValues;
 using namespace Steps;

@@ -51,7 +51,7 @@ SessionArray::SessionArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
-  m_nSessionsSoFar = 0;
+  m_nDataBuffersSoFar = 0;
   m_iFirstFree = 0;
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
@@ -200,7 +200,7 @@ Session* SessionArray::pAllocSession(eSK eSession)
   
   m_iFirstFree = pSession->m_i_NextFree;
   
-  m_nSessionsSoFar++;
+  m_nDataBuffersSoFar++;
 
   pSession->m_eSession = eSession;
   
@@ -222,21 +222,21 @@ void SessionArray::vDump(void)
   vTrace("SessionArray\n"_Stz);
   vTrace("------------\n"_Stz);
 
-  vTrace("%p: SessionsSoFar %lld:\n"_Stz,
+  vTrace("%p: DataBuffersSoFar %lld:\n"_Stz,
          this,
-         m_nSessionsSoFar);
+         m_nDataBuffersSoFar);
   
-  i8 iSessions = 0;
+  i8 iDataBuffers = 0;
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    if (iSessions == m_nSessionsSoFar)
+    if (iDataBuffers == m_nDataBuffersSoFar)
       break;
     
     Session* pSession = m_paSession[i_Session];
     if (pSession)
       pSession->vTraceSession();
     
-    iSessions++;
+    iDataBuffers++;
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);

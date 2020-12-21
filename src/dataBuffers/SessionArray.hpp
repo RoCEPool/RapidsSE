@@ -10,7 +10,7 @@ namespace Interface
   public:
   
     Lock m_okLock;
-    i8   m_nSessionsSoFar;
+    i8   m_nDataBuffersSoFar;
     i8   m_iFirstFree;
   
     Session* m_paSession[C_MAX_SESSIONS];
