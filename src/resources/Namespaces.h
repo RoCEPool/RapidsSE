@@ -13,7 +13,7 @@
 
 namespace Arguments         {                                                 }
 namespace Chunks            { class Format;                                   }
-namespace CompactBuffers    { class Crw;             class CrwBuffer;
+namespace DataBuffers    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
                               class HeadLine;        class Encoding_v2;
 class SP_Encoding_v2;
@@ -104,7 +104,7 @@ namespace Utilities         { class BPA;             class PoolHelper;        }
 
 using namespace Arguments;
 using namespace Chunks;
-using namespace CompactBuffers;
+using namespace DataBuffers;
 using namespace CompilerOperators;
 using namespace ControlData;
 using namespace DataBuffers;

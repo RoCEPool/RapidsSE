@@ -2,7 +2,7 @@
 /* HeadLine.hpp -- a head line                                                */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 extern EnvFlags gxEnvFlags;
 

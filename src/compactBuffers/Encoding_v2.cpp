@@ -2,13 +2,13 @@
 /* Encoding_v2.cpp -- Row Encoding_v2 (intermediate representation of compact row)  */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompactBuffers,Encoding_v2,CN_ENCODING_V2)
+__pCastFunction(DataBuffers,Encoding_v2,CN_ENCODING_V2)
 __aNewFunction(Encoding_v2,CN_ENCODING_V2)
 __vDeleteFunction(Encoding_v2,CN_ENCODING_V2)
 __aFooterFunction(Encoding_v2)

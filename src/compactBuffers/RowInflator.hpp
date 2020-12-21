@@ -5,7 +5,7 @@
 
 #include "eSI.h"
 
-namespace CompactBuffers
+namespace DataBuffers
 {
   class RowInflator : private RowCoder
   {

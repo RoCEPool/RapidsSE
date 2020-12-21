@@ -2,7 +2,7 @@
 /* RowInflator.cpp -- Compact Row Inflator                                    */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */

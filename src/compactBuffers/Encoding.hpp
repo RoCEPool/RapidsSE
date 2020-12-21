@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompactBuffers
+namespace DataBuffers
 {
   class Encoding : public Object
   {

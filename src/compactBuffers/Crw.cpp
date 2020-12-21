@@ -2,7 +2,7 @@
 /* Crw.hpp -- Compact Row                                                    */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 extern EnvFlags gxEnvFlags;
 

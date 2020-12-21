@@ -2,13 +2,13 @@
 /* CrwBuffer.cpp -- Compact Row Buffer                                        */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompactBuffers,CrwBuffer,CN_CRWBUFFER)
+__pCastFunction(DataBuffers,CrwBuffer,CN_CRWBUFFER)
 __aNewFunction(CrwBuffer,CN_CRWBUFFER)
 __vDeleteFunction(CrwBuffer,CN_CRWBUFFER)
 __aFooterFunction(CrwBuffer)

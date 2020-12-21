@@ -7,9 +7,9 @@ namespace Resources
 {
   class Dtm
   {
-  friend class CompactBuffers::Encoding_v2;
-  friend class CompactBuffers::SP_Encoding_v2;
-  friend class CompactBuffers::Packing_v2;
+  friend class DataBuffers::Encoding_v2;
+  friend class DataBuffers::SP_Encoding_v2;
+  friend class DataBuffers::Packing_v2;
   
   friend class Datums::SN_Bcd;
   friend class Datums::SN_Bol;

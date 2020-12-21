@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompactBuffers
+namespace DataBuffers
 {
   class SP_Encoding_v2 : public Sprint
   {

@@ -2,7 +2,7 @@
 /* RowCompactor.cpp -- Row Compactor Mark V                                   */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 static Numbat oNumBat("partKey"_Stz);
 
@@ -12,7 +12,7 @@ extern EnvFlags gxEnvFlags;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompactBuffers,RowCompactor,CN_ROWCOMPACTOR)
+__pCastFunction(DataBuffers,RowCompactor,CN_ROWCOMPACTOR)
 __aNewFunction(RowCompactor,CN_ROWCOMPACTOR)
 __vDeleteFunction(RowCompactor,CN_ROWCOMPACTOR)
 __aFooterFunction(RowCompactor)

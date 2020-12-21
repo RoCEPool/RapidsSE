@@ -2,7 +2,7 @@
 /* SP_Encoding_v2.cpp - Row Encoding_v2 sprint helper                         */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

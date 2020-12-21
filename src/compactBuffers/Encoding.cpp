@@ -2,7 +2,7 @@
 /* Encoding.cpp -- Row Encoding (intermediate representation of compact row)  */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "DataBuffers.h"
 
 extern EnvFlags gxEnvFlags;
 
@@ -10,7 +10,7 @@ extern EnvFlags gxEnvFlags;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(CompactBuffers,Encoding,CN_ENCODING)
+__pCastFunction(DataBuffers,Encoding,CN_ENCODING)
 __aNewFunction(Encoding,CN_ENCODING)
 __vDeleteFunction(Encoding,CN_ENCODING)
 __aFooterFunction(Encoding)
