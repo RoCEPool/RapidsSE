@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Node.hpp - node sprint helper                                           */
+/* SP_Grid.hpp - Grid sprint helper                                           */
 /*============================================================================*/
 #pragma once
 
-namespace Grids
+namespace DataBuffers
 {
-  class SP_Node : public SP
+  class SP_Grid : public SP
   {
   public:
 
@@ -13,10 +13,10 @@ namespace Grids
     Footer m_xFooter;
     
   public:
-    SP_Node(void);
-   ~SP_Node(void) noexcept(false);
+    SP_Grid(void);
+   ~SP_Grid(void) noexcept(false);
   
-    Stz* sz(Node* pNode);
+    Stz* sz(Grid* pGrid);
 
     Footer* aFooter(void);
   };

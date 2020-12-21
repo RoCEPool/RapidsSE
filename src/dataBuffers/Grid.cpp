@@ -2,7 +2,7 @@
 /* Grid.cpp -- Grid                                                           */
 /*============================================================================*/
 
-#include "Grids.h"
+#include "DataBuffers.h"
 
 extern Args gxArgs;
 
@@ -13,7 +13,7 @@ extern Args gxArgs;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Grid* Grids::_pGrid(void* aAddr)
+Grid* DataBuffers::_pGrid(void* aAddr)
 {
   Grid* pGrid = reinterpret_cast<Grid*>(aAddr);
   

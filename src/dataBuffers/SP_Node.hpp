@@ -1,11 +1,26 @@
 /*============================================================================*/
-/* Grids.h -- Grids namespace                                                 */
+/* SP_Node.hpp - node sprint helper                                           */
 /*============================================================================*/
 #pragma once
 
-#include "DataBuffers.h"
+namespace DataBuffers
+{
+  class SP_Node : public SP
+  {
+  public:
 
-//------------------------------------------------------------------------------
+    // must be last
+    Footer m_xFooter;
+    
+  public:
+    SP_Node(void);
+   ~SP_Node(void) noexcept(false);
+  
+    Stz* sz(Node* pNode);
+
+    Footer* aFooter(void);
+  };
+}
 
 /*============================================================================*/
 /* end                                                                        */

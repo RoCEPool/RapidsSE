@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Grids
+namespace DataBuffers
 {
   class Node_I : public Object
   {

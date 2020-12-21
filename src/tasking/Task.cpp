@@ -791,7 +791,7 @@ void Task::vSeedTask(void)
 /*----------------------------------------------------------------------------*/
 /* get send node                                                              */
 /*----------------------------------------------------------------------------*/
-Grids::Node* Task::pSendNode(void)
+DataBuffers::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -801,7 +801,7 @@ Grids::Node* Task::pSendNode(void)
 /*----------------------------------------------------------------------------*/
 /*set send node                                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSendNode(Grids::Node* pNode)
+void Task::vSendNode(DataBuffers::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

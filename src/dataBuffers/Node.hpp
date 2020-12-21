@@ -7,7 +7,7 @@ namespace Resources { class Socket; } //?
 
 #include "eNS.h"
 
-namespace Grids
+namespace DataBuffers
 {
   class Node : public Object,
                public ListItem_t<Node>

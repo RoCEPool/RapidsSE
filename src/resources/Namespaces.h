@@ -54,7 +54,7 @@ namespace Folders           {                                                 }
 namespace Resources           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
-namespace Grids             { class Grid;            class Node;              }
+namespace DataBuffers             { class Grid;            class Node;              }
 
 namespace DataBuffers          { class EntBuffer;       class IndexTree;         }
 namespace DataBuffers          { class InfoSetBase;                              }
@@ -115,7 +115,7 @@ using namespace Expressions;
 using namespace Facts;
 using namespace Folders;
 using namespace Resources;
-using namespace Grids;
+using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace Interface;
