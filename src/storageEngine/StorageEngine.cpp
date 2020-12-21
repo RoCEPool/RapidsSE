@@ -30,7 +30,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Sessions::vCheckAssumptions();
-  SortBuffers::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
   Tasking::vCheckAssumptions();

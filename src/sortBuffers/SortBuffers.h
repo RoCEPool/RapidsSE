@@ -7,20 +7,8 @@
 
 //------------------------------------------------------------------------------
 
-namespace SortBuffers
-{  
-  void vCheckAssumptions(void);
-}
-
 //------------------------------------------------------------------------------
 
-#include "SrtSet.hpp"
-#include "SrtBuffer.hpp"
-#include "QuickSort.hpp"
-#include "BufferCursor.hpp"
-#include "BufferSort.hpp"
-
-#include "IntBuffer.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

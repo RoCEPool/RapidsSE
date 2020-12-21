@@ -114,6 +114,17 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 
 #include "CrwToRow.hpp"
 
+
+
+
+#include "SrtSet.hpp"
+#include "SrtBuffer.hpp"
+#include "QuickSort.hpp"
+#include "BufferCursor.hpp"
+#include "BufferSort.hpp"
+
+#include "IntBuffer.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
