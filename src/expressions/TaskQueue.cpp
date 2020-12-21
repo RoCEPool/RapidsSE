@@ -1,17 +1,18 @@
 /*============================================================================*/
-/* TaskList.cpp - task list                                                   */
+/* TaskQueue.cpp - task queue                                                 */
 /*============================================================================*/
 
-#include "Tasking.h"
+#include "Expressions.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskList* Tasking::_pTaskList(void* aAddr)
+TaskQueue* Tasking::_pTaskQueue(void* aAddr)
 {
-  TaskList* pTaskQueue = reinterpret_cast<TaskList*>(aAddr);
+  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(aAddr);
   
-  RASSERT_TYPE(pTaskQueue,CN_TASKLIST);
+  RASSERT_TYPE(pTaskQueue,CN_TASKQUEUE);
   
   return pTaskQueue;
 }
@@ -19,9 +20,9 @@ TaskList* Tasking::_pTaskList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TaskList::operator new(size_t)
+void* TaskQueue::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TASKLIST);
+  void* pObject = HeapMem::pAllocate(CN_TASKQUEUE);
   
   return pObject;
 }
@@ -29,7 +30,7 @@ void* TaskList::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TaskList::operator new(size_t, TaskList* pTaskQueue)
+void* TaskQueue::operator new(size_t, TaskQueue* pTaskQueue)
 {
   return pTaskQueue;
 }
@@ -37,9 +38,9 @@ void* TaskList::operator new(size_t, TaskList* pTaskQueue)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TaskList::operator delete(void* pTaskQueueAddress)
+void TaskQueue::operator delete(void* pTaskQueueAddress)
 {
-  TaskList* pTaskQueue = reinterpret_cast<TaskList*>(pTaskQueueAddress);
+  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pTaskQueueAddress);
   
   HeapMem::vFree(pTaskQueue);
 }
@@ -47,43 +48,87 @@ void TaskList::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskList::TaskList(eQK eKind)
-: ListNL_t<Task>(CN_TASKLIST)
+TaskQueue::TaskQueue(eQK eKind, bool bUniqueKey, CompareFp fpCompare)
+: Object(CN_TASKQUEUE)
 , m_okLock(LK_TASK_QUEUE,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   m_eKind = eKind;
+  m_pTaskSkipList = new SkipListNL(bUniqueKey, fpCompare);
   
-  _checkInitialised_(CN_TASKLIST);
+  _checkInitialised_(CN_TASKQUEUE);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TaskList::~TaskList(void) noexcept(false)
+TaskQueue::~TaskQueue(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to list                                                           */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void TaskList::vAddTask(Task* pTask)
+
+/*----------------------------------------------------------------------------*/
+/* add task to the queue                                                      */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vAddTask(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  ListNL_t<Task>::vAppend(pTask);
+  ASSERT(m_okLock.bIsLocked());
+
+  bool bInserted = m_pTaskSkipList->bInsert(pTask);
+  ASSERT(bInserted);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert number of items in task queue                                       */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vAssertItems(i8 nItems)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  ASSERT(m_okLock.bIsLocked());
+  
+  ASSERT(nItems == m_pTaskSkipList->nObjects());
+  
+  ASSERT(nItems == m_pTaskSkipList->nRecount());
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vContentDump(void)
+{
+  //  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,
+  //         pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
+  
+  s256 sPortrait; // short text description of task
+
+  for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+       pNode;
+       pNode = m_pTaskSkipList->pNext(pNode,0)) {
+    
+    Task* pTask = _pTask(pNode->m_pObject);
+ 
+    pTask->vRenderPortrait(sPortrait);
+    
+    vTrace("%s\n"_Stz,sPortrait.azChar());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void TaskList::vDropLock(void)
+void TaskQueue::vDropLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   m_okLock.vDropWrite();
 }
@@ -91,9 +136,9 @@ void TaskList::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void TaskList::vGrabLock(void)
+void TaskQueue::vGrabLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   m_okLock.vGrabWrite();
 }
@@ -101,120 +146,114 @@ void TaskList::vGrabLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-bool TaskList::bGrabLock(void)
+bool TaskQueue::bGrabLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   return m_okLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
-/* is there a task in the list with given job class?                          */
-/*----------------------------------------------------------------------------*/
-bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
-{
-  //vDump(CN_TASKLIST, this, Stz::szTab(1));
-  
-  bool bHasJob = false;
-  
-  vGrabLock();
-  
-  for (Task* pTask = ListNL_t<Task>::pHead();
-       pTask;
-       pTask = pTask->pNextItem()) {
-    
-    if (! (pTask->pJob() && pTask->pJob()->eClass() == eJobClass))
-      continue;
-
-    if (! bWasReceived) {
-      bHasJob = true;
-      break;
-    }
-    
-    if (pTask->pJob()->bWasReceived()) {
-      bHasJob = true;
-      break;
-    }
- 
-  }
-
-  vDropLock();
-
-  return bHasJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is locked ?                                                                */
 /*----------------------------------------------------------------------------*/
-bool TaskList::bIsLocked(void)
+bool TaskQueue::bIsLocked(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at task at top of list                                                */
+/* peek at a task at the front of the queue                                   */
 /*----------------------------------------------------------------------------*/
-Task* TaskList::pPeekTask(void)
+Task* TaskQueue::pPeekTask(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
- 
+  Task* pTask = nullptr;
+  
   ASSERT(m_okLock.bIsLocked());
   
-  Task* pTask = ListNL_t<Task>::pHead();
-
+  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+  if (pNode)
+    pTask = _pTask(pNode->m_pObject);
+  
+  
   return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop task from top of list                                                  */
+/* pop a task from the front of the queue                                     */
 /*----------------------------------------------------------------------------*/
-Task* TaskList::pPopTask(void)
+Task* TaskQueue::pPopTask(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  //RJH vTrace("pPopTask\n"_Stz);
+
+  Task* pFirstTask = nullptr;
+  Task* pPoppedTask = nullptr;
   
   ASSERT(m_okLock.bIsLocked());
   
-  Task* pTask = ListNL_t<Task>::pPop();
+  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+  if (pNode) {
+    pFirstTask = _pTask(pNode->m_pObject);
+    RASSERT(pFirstTask);
+    pPoppedTask = _pTask(m_pTaskSkipList->pPop());
+    RASSERT(pPoppedTask == pFirstTask);
+  }
 
-  return pTask;
+  return pFirstTask;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the first queue                                                        */
 /*----------------------------------------------------------------------------*/
-void TaskList::vPortrait(s48K& sPortrait)
+void TaskQueue::vPortrait(s48K& sPortrait)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
+  
+  sPortrait.vSprint("%15 Portrait\n"_Stz,aQK[m_eKind]);
+  
+  vGrabLock();
+  
+  sPortrait.vSprintCat("%lld tasks\n"_Stz,nTasks());
+  
+  vDropLock();
+  
+  
   s48K sTaskPortrait;
   
   sPortrait.vSprint("%15s"_Stz,aQK[m_eKind]);
   
   vGrabLock();
   
-  sPortrait.vSprintCat(" %2lld "_Stz,nItems());
+  sPortrait.vSprintCat(" %2lld "_Stz,m_pTaskSkipList->nObjects());
   
   eCN eJobPrev = CN_NONE;
   i8  nPrev = 0;
   
-  for (Task* pTask = pHead(); pTask; pTask = pTask->pNextItem()) {
+  for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+       pNode;
+       pNode = m_pTaskSkipList->pNext(pNode,0)) {
     
-    if (! pTask->pJob())
-      continue;
+    Task* pTask = _pTask(pNode->m_pObject);
     
-    if (pTask == pHead()) {
+    if (pTask == _pTask(m_pTaskSkipList->pFirst(0)->m_pObject)) {
       sPortrait.vConcat("- "_Stz);
+      if (QK_SLEEPING_QUEUE == m_eKind) {
+        u8 uInUs = pTask->uWakeupInUsec();
+        sPortrait.vCatSprint("in %lldus "_Stz,uInUs);
+      }
       pTask->vMonitorPortrait(sTaskPortrait);
       sPortrait.vConcat(sTaskPortrait);
       eJobPrev = pTask->pJob()->eClass();
       nPrev = 0;
       continue;
     }
-
-    if (pTask->pJob() && pTask->pJob()->eClass() == eJobPrev) {
+    
+    if (pTask->pJob()->eClass() == eJobPrev) {
       nPrev++;
       continue;
     }
@@ -232,75 +271,37 @@ void TaskList::vPortrait(s48K& sPortrait)
   
   if (nPrev)
     sPortrait.vSprintCat("+%lld"_Stz,nPrev);
-
+  
   sPortrait.vConcat("\n"_Stz);
 
   vDropLock();
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove task from list                                                      */
+/* remove a task from queue                                                   */
 /*----------------------------------------------------------------------------*/
-void TaskList::vRemoveTask(Task* pTask)
+void TaskQueue::vRemoveTask(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  ListNL_t<Task>::vRemove(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of tasks in list                                                */
-/*----------------------------------------------------------------------------*/
-i8 TaskList::nTasks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
-
-  i8 nTasks = ListNL_t<Task>::nItems();
-
-  return nTasks;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void TaskList::vContentDump(void)
-{
-  //vDump(CN_TASKLIST, this, Stz::szTab(1));
+  bool bRemoved;
   
   ASSERT(m_okLock.bIsLocked());
-
-  //vTrace("ITEMS %lld\n"_Stz,nItems());
-
-  for (Task* pTask = ListNL_t<Task>::pHead();
-       pTask;
-       pTask = pTask->pNextItem()) {
-    
-    Job* pJob = pTask->pJob();
-    
-    vTrace("Task %p %s Job %p %s"_Stz,
-           pTask,
-           aTS[pTask->eState()],
-           
-           pJob,
-           aCN[pJob->eClass()]
-           );
-    
-    if (void* aThread = pTask->pvThread_DONT_DEREF()) {
-     vTrace(" Thread %p"_Stz,
-            aThread);
-
-    }
-
-    vTrace("\n"_Stz);
-  }
+  
+  bRemoved = m_pTaskSkipList->bRemove(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
+/* get number of tasks in queue                                               */
 /*----------------------------------------------------------------------------*/
-void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
+i8 TaskQueue::nTasks(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+
+  i8 nTasks = m_pTaskSkipList->nObjects();
   
+  return nTasks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,9 +311,9 @@ void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TaskList::aFooter(void)
+Footer* TaskQueue::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
   
   return &m_xFooter;
 }
