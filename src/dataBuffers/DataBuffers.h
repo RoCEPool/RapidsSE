@@ -150,6 +150,19 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
 
 
+
+
+
+
+
+#include "Crv.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
+
+
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
