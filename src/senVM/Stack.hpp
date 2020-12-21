@@ -16,33 +16,25 @@ namespace SenVM
   {
   public:
     union {
-    
-      byte*   ayByte;
-    
+      byte* ayStackPtr;
       TypedCell* aTypedCell;
     };
   
     i8   m_nValues; // number of values currently on stack
 
-    void vAdvance (i8 nBytes) { ayByte -= nBytes; }
-    void vRewind  (i8 nBytes) { ayByte += nBytes; }
+    void vAdvance (i8 nBytes) { ayStackPtr -= nBytes; }
+    void vRewind  (i8 nBytes) { ayStackPtr += nBytes; }
     void vRewind  (void)      { vRewind(aTypedCell->nStackUsage()); }
   };
 
   class Stack: public Object
   {
   private:
-    eKK     m_eKind;        // kind of stack
-  
-    StkTop  m_rTop;         // current top of stack
-
-    StkTop  m_rRetry;       // current top of stack
-
-    TypedCell* m_aRetryTop;    // reset to this top of stack
-    i8      m_nRetryValues; // reset with this many values on stack
+    eKK     m_eKind;  // kind of stack
+    StkTop  m_rTop;   // current top of stack
+    StkTop  m_rRetry; // retry point of stack
     
     Footer  m_xHazard;
-    
     Wsp_t<C_WSP_STACK> m_xWsp;
     
     // must be last

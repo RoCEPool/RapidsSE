@@ -48,16 +48,13 @@ Stack::Stack(eKK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_eKind        = eKind;
+  m_eKind = eKind;
   
   m_rTop.aTypedCell = aStackBase();
-  m_rTop.m_nValues      = 0;
+  m_rTop.m_nValues  = 0;
  
   m_rRetry.aTypedCell = aStackBase();
-  m_rRetry.m_nValues      = 0;
-
-  m_aRetryTop    = aStackBase();
-  m_nRetryValues = 0;
+  m_rRetry.m_nValues  = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vFill(0x00,CN_STACK);
@@ -341,7 +338,7 @@ void Stack::vPopVal(TypedCell* aTypedCell, const char* azFunNm)
   
   aTypedCell->vCopy(m_rTop.aTypedCell,nBytes);
   
-  m_rTop.vRewind(nBytes);
+  m_rTop.vRewind();
   
   m_rTop.m_nValues--;
   
@@ -460,8 +457,8 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_rTop.aTypedCell = m_aRetryTop;
-  m_rTop.m_nValues      = m_nRetryValues;
+  m_rTop.aTypedCell = m_rRetry.aTypedCell;
+  m_rTop.m_nValues  = m_rRetry.m_nValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,8 +468,8 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_aRetryTop    = m_rTop.aTypedCell;
-  m_nRetryValues = m_rTop.m_nValues;
+  m_rRetry.aTypedCell = m_rTop.aTypedCell;
+  m_rRetry.m_nValues  = m_rTop.m_nValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,7 +520,7 @@ TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
   i8 nAllotBytes = sizeof(_Header) + sizeof(Dtm) + nWithAdditionalBytes;
   
   m_rTop.vAdvance(nAllotBytes);
-  ASSERT(m_rTop.ayByte >= (byte*)aStackLimit());
+  ASSERT(m_rTop.ayStackPtr >= (byte*)aStackLimit());
   
   m_rTop.aTypedCell->vMagic();
 
