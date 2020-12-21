@@ -2,13 +2,13 @@
 /* ToRow.cpp -- Fast ToRow of Csv Record                                      */
 /*============================================================================*/
 
-#include "Load.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToRow,CN_TOROW)
+__pCastFunction(DataBuffers,ToRow,CN_TOROW)
 __aNewFunction(ToRow,CN_TOROW)
 __vDeleteFunction(ToRow,CN_TOROW)
 __aFooterFunction(ToRow)

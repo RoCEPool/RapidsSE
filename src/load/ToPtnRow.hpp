@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Load
+namespace DataBuffers
 {
   class ToPtnRow : public Object
   {

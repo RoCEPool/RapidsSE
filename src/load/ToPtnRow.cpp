@@ -2,13 +2,13 @@
 /* ToPtnRow.cpp -- Convert row buffers to partitioned row slab buffers        */
 /*============================================================================*/
 
-#include "Load.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToPtnRow,CN_TOPTNROW)
+__pCastFunction(DataBuffers,ToPtnRow,CN_TOPTNROW)
 __aNewFunction(ToPtnRow,CN_TOPTNROW)
 __vDeleteFunction(ToPtnRow,CN_TOPTNROW)
 __aFooterFunction(ToPtnRow)

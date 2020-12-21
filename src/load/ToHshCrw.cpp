@@ -2,13 +2,13 @@
 /* ToHshCrw.cpp -- Convert ptn nst row buffers to hashed crw buffers          */
 /*============================================================================*/
 
-#include "Load.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToHshCrw,CN_TOHSHCRW)
+__pCastFunction(DataBuffers,ToHshCrw,CN_TOHSHCRW)
 __aNewFunction(ToHshCrw,CN_TOHSHCRW)
 __vDeleteFunction(ToHshCrw,CN_TOHSHCRW)
 __aFooterFunction(ToHshCrw)

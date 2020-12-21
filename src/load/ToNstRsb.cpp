@@ -2,13 +2,13 @@
 /* ToNstRow.cpp -- Convert row to normalised string row slab buffers          */
 /*============================================================================*/
 
-#include "Load.h"
+#include "DataBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Load,ToNstRow,CN_TONSTROW)
+__pCastFunction(DataBuffers,ToNstRow,CN_TONSTROW)
 __aNewFunction(ToNstRow,CN_TONSTROW)
 __vDeleteFunction(ToNstRow,CN_TONSTROW)
 __aFooterFunction(ToNstRow)
