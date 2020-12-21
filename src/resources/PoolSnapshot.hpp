@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* ObjectsInPool.hpp - objects in the buffer pool                             */
+/* PoolSnapshot.hpp - objects in the buffer pool                             */
 /*============================================================================*/
 #pragma once
 
 namespace Resources
 {
   
-  class ObjectsInPool : public Object
+  class PoolSnapshot : public Object
   {
   
   public:
@@ -19,15 +19,15 @@ namespace Resources
     void* operator new(size_t);
     void  operator delete(void* pAddr);
     
-    ObjectsInPool(void);
-   ~ObjectsInPool(void) noexcept(false);
+    PoolSnapshot(void);
+   ~PoolSnapshot(void) noexcept(false);
     
   private:
 
     Footer* aFooter(void);
    };
   
-  ObjectsInPool* _pObjectsInPool(void* aAddr);
+  PoolSnapshot* _pObjectsInPool(void* aAddr);
 }
 
 /*============================================================================*/

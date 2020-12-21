@@ -395,7 +395,7 @@ void PoolHelper::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vObjectSnapshot(ObjectsInPool* pCountObjects)
+void PoolHelper::vObjectSnapshot(PoolSnapshot* pCountObjects)
 {
   i8 iCountObjects[CN_ENUMS];
   

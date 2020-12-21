@@ -76,6 +76,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ExprAtom),           HT_TRANSIENT_TINY    ,0 }, // CN_EXPRATOM
   { sizeof(ExprColumnRef),      HT_TRANSIENT_TINY    ,0 }, // CN_EXPRCOLUMNREF
   { sizeof(ExprList),           HT_TRANSIENT_TINY    ,0 }, // CN_EXPRLIST
+  { sizeof(ExprStack),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_EXPRSTACK
 
   { 'F' - ('A' - 1),            HT_INVALID           ,0 }, // CN__F__
   { sizeof(Fifo),               HT_TRANSIENT_TINY    ,0 }, // CN_FIFO
@@ -156,36 +157,37 @@ SizeHeap gxaSizeHeap[]
   { sizeof(NextGid),            HT_INVALID           ,0 }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_NMLSTR
   { sizeof(Node),               HT_TRANSIENT_TINY    ,0 }, // CN_NODE
+  { sizeof(NodeBuilderStack),   HT_TRANSIENT_MEDIUM  ,0 }, // CN_NODEBUILDERSTACK
   { sizeof(Node_I),             HT_TRANSIENT_TINY    ,0 }, // CN_NODE_I
   { sizeof(Now),                HT_TRANSIENT_TINY    ,0 }, // CN_NOW
   { sizeof(Numbat),             HT_TRANSIENT_LARGE   ,0 }, // CN_NUMBAT
 
   { 'O' - ('A' - 1),            HT_INVALID           ,0 }, // CN__O__
-  { sizeof(ObjectsInPool),      HT_TRANSIENT_SMALL   ,0 }, // CN_OBJECTSINPOOL
   { sizeof(Op),                 HT_TRANSIENT_LARGE   ,0 }, // CN_OP
   { sizeof(OperandQueue),       HT_TRANSIENT_TINY    ,0 }, // CN_OPERANDQUEUE
   { sizeof(OpSpec),             HT_TRANSIENT_LARGE   ,0 }, // CN_OPSPEC
 
   { 'P' - ('A' - 1),            HT_INVALID           ,0 }, // CN__P__
   { sizeof(PathVec),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PATHVEC
-  { sizeof(Peruse),               HT_TRANSIENT_MEDIUM  , 0 }, // CN_PERUSE
-  { sizeof(Pipeline),             HT_TRANSIENT_SMALL   , 0 }, // CN_PIPELINE
-  { sizeof(PipelineSpec),         HT_TRANSIENT_SMALL   , 0 }, // CN_PIPELINESPEC
-  { sizeof(Plan),                 HT_TRANSIENT_MEDIUM  , 0 }, // CN_PLAN
-  { sizeof(PlanDefinitionParser), HT_TRANSIENT_MEDIUM ,  -8 }, // CN_PLANDEFINITIONPARSER
-  { sizeof(Planner),              HT_TRANSIENT_MEDIUM  , 0 }, // CN_PLANNER
+  { sizeof(Peruse),               HT_TRANSIENT_MEDIUM  ,0 }, // CN_PERUSE
+  { sizeof(Pipeline),             HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINE
+  { sizeof(PipelineSpec),         HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINESPEC
+  { sizeof(Plan),                 HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLAN
+  { sizeof(PlanDefinitionParser), HT_TRANSIENT_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(Planner),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLANNER
   { sizeof(PlanNode),             HT_TRANSIENT_TINY    , -8 }, // CN_PLANNODE
-  { sizeof(PlanNodeBuilder),      HT_TRANSIENT_TINY    , 0 }, // CN_PLANNODEBUILDER
-  { sizeof(PlanNodeList),         HT_TRANSIENT_TINY    , 0 }, // CN_PLANNODELIST
-  { sizeof(PlanNodeBuilderList),  HT_TRANSIENT_TINY    , 0 }, // CN_PLANNODEBUILDERLIST
-  { sizeof(Pot),                  HT_TRANSIENT_LARGE   , 0 }, // CN_POT
-  { sizeof(Predicate),            HT_TRANSIENT_TINY    , 0 }, // CN_PREDICATE
-  { sizeof(PredicateVec),         HT_TRANSIENT_MEDIUM  , 0 }, // CN_PREDICATEVEC
+  { sizeof(PlanNodeBuilder),      HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDER
+  { sizeof(PlanNodeList),         HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODELIST
+  { sizeof(PlanNodeBuilderList),  HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
+  { sizeof(PoolSnapshot),         HT_TRANSIENT_SMALL   ,0 }, // CN_POOLSNAPSHOT
+  { sizeof(Pot),                  HT_TRANSIENT_LARGE   ,0 }, // CN_POT
+  { sizeof(Predicate),            HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
+  { sizeof(PredicateVec),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC
   { sizeof(PrimitiveNode),        HT_TRANSIENT_TINY    , -8 }, // CN_PRIMITIVENODE
-  { sizeof(Profile),              HT_TRANSIENT_MEDIUM  , 0 }, // CN_PROFILE
-  { sizeof(PsxThd),               HT_TRANSIENT_TINY    , 0 }, // CN_PSXTHD
-  { sizeof(PtnMap),               HT_TRANSIENT_LARGE   , 0 }, // CN_PTNMAP
-  { sizeof(PtnStream),            HT_TRANSIENT_TINY    , 0 }, // CN_PTNSTREAM
+  { sizeof(Profile),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_PROFILE
+  { sizeof(PsxThd),               HT_TRANSIENT_TINY    ,0 }, // CN_PSXTHD
+  { sizeof(PtnMap),               HT_TRANSIENT_LARGE   ,0 }, // CN_PTNMAP
+  { sizeof(PtnStream),            HT_TRANSIENT_TINY    ,0 }, // CN_PTNSTREAM
   { sizeof(TypedCell),/*yes*/   HT_INVALID           ,   0 }, // CN_PTRVAL
 
   { 'Q' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Q__
@@ -260,7 +262,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SqlPlanner),         HT_TRANSIENT_TINY    ,-8 }, // CN_SQLPLANNER
   { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_SRTBUFFER
   { sizeof(SrtSet),             HT_INVALID           ,0 }, // CN_SRTSET
-  { sizeof(TypedStack),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_STACK
+  { sizeof(TypedStack),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_STACK
   { sizeof(Stage),              HT_TRANSIENT_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_TRANSIENT_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID           ,0 }, // CN_STATISTICS
@@ -279,7 +281,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Table),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_TABLEDEF
   { sizeof(TablePtn),           HT_TRANSIENT_TINY    ,0 }, // CN_TABLEPTN
   { sizeof(TablePtnVec),        HT_TRANSIENT_SMALL   ,0 }, // CN_TABLEPTNVEC
-  { sizeof(TableRef),           HT_TRANSIENT_SMALL   ,0 }, // CN_TABLEREF
+  { sizeof(TableRef),           HT_TRANSIENT_TINY    ,0 }, // CN_TABLEREF
+  { sizeof(TableRefStack),      HT_TRANSIENT_MEDIUM  ,0 }, // CN_TABLEREFSTACK
   { sizeof(TagSet),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_TAGSET
   { sizeof(Task),               HT_TRANSIENT_TINY    ,0 }, // CN_TASK
   { sizeof(TaskList),           HT_TRANSIENT_TINY    ,0 }, // CN_TASKLIST

@@ -74,6 +74,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EXPRATOM,
   /* */ CN_EXPRCOLUMNREF,
   /* */ CN_EXPRLIST,
+  /* */ CN_EXPRSTACK,
 
   /* */ CN__F__,
   /* */ CN_FIFO,
@@ -154,12 +155,12 @@ enum eCN : u2 // Class Number
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
+  /* */ CN_NODEBUILDERSTACK,
   /* */ CN_NODE_I,
   /* */ CN_NOW,
   /* */ CN_NUMBAT,
   
   /* */ CN__O__,
-  /* */ CN_OBJECTSINPOOL,
   /* */ CN_OP,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPSPEC,
@@ -176,6 +177,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANNODEBUILDER,
   /* */ CN_PLANNODELIST,
   /* */ CN_PLANNODEBUILDERLIST,
+  /* */ CN_POOLSNAPSHOT,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
@@ -278,6 +280,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TABLEPTN,
   /* */ CN_TABLEPTNVEC,
   /* */ CN_TABLEREF,
+  /* */ CN_TABLEREFSTACK,
   /* */ CN_TAGSET,
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
@@ -334,320 +337,323 @@ enum eCN : u2 // Class Number
 /*----------------------------------------------------------------------------*/
 static Stz* aCN[]
 {
-  /* */ "NONE"_Stz,                // CN_NONE
-  
-  /* */ "_A__"_Stz,                // CN__A__
-  /* */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
-  /* */ "AGGTIMER"_Stz,            // CN_AGGTIMER
-  /* */ "ARG"_Stz,                 // CN_ARG
-  /* */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
-  /* */ "ARRANGE"_Stz,             // CN_ARRANGE
-  /* */ "ARTICLE"_Stz,             // CN_ARTICLE
-  /* */ "ATOMIC"_Stz,              // CN_ATOMIC
-  /* */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
-  
-  /* */ "_B__"_Stz,                // CN__B__
-  /* */ "BCDVAL"_Stz,              // CN_BCDVAL
-  /* */ "BIRTH"_Stz,               // CN_BIRTH
-  /* */ "BOLVAL"_Stz,              // CN_BOLVAL
-  /* */ "BPA"_Stz,                 // CN_BPA
-  /* */ "BUCKETMAP"_Stz,           // CN_BUCKETMAP
-  /* */ "BUFFERCURSOR"_Stz,        // CN_BUFFERCURSOR
-  /* */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
-  /* */ "BYTERATE"_Stz,            // CN_BYTERATE
-  /* */ "BYTES_T"_Stz,             // CN_BYTES_T
-  
-  /* */ "_C__"_Stz,                // CN__C__
-  /* */ "CATALOG"_Stz,             // CN_CATALOG
-  /* */ "CELLSEGMENT"_Stz,         // CN_CELLSEGMENT
-  /* */ "CELLSINGLE"_Stz,          // CN_CELLSINGLE
-  /* */ "CHARSER"_Stz,             // CN_CHARSER
-  /* */ "COLUMN"_Stz,              // CN_COLUMN
-  /* */ "COMPILER"_Stz,            // CN_COMPILER
-  /* */ "CRVBUFFER"_Stz,           // CN_CRVBUFFER
-  /* */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
-  /* */ "CRWTOROW"_Stz,            // CN_CRWTOROW
-  /* */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
-  /* */ "CSVMETA"_Stz,             // CN_CSVMETA
-
-  /* */ "_D__"_Stz,                // CN__D__
-  /* */ "DECACNT"_Stz,             // CN_DECACNT
-  /* */ "DECIDER"_Stz,             // CN_DECIDER
-  /* */ "DEFINITIONNODE"_Stz,      // CN_DEFINITIONNODE
-  /* */ "DEVIXT"_Stz,              // CN_DEVIXT
-  /* */ "DEVROW"_Stz,              // CN_DEVROW
-  /* */ "DIC"_Stz,                 // CN_DIC
-  /* */ "DICSTACK"_Stz,            // CN_DICSTACK
-  /* */ "DIR"_Stz,                 // CN_DIR
-  /* */ "DTEVAL"_Stz,              // CN_DTEVAL
-  /* */ "DYNAMO"_Stz,              // CN_DYNAMO
-
-  /* */ "_E__"_Stz,                // CN__E__
-  /* */ "EDTVAL"_Stz,              // CN_EDTVAL
-  /* */ "ENCODING"_Stz,            // CN_ENCODING
-  /* */ "ENCODING_V2"_Stz,         // CN_ENCODING_V2
-  /* */ "ENT"_Stz,                 // CN_ENT
-  /* */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
-  /* */ "ENTBUFSORTER"_Stz,        // CN_ENTBUFSORTER
-  /* */ "ENTWRK"_Stz,              // CN_ENTWRK
-  /* */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
-  /* */ "EXEMPLAR"_Stz,            // CN_EXEMPLAR
-  /* */ "EXPRATOM"_Stz,            // CN_EXPRATOM
-  /* */ "EXPRCOLUMNREF"_Stz,       // CN_EXPRCOLUMNREF
-  /* */ "EXPRLIST"_Stz,            // CN_EXPRLIST
-
-  /* */ "_F__"_Stz,                // CN__F__
-  /* */ "FIFO"_Stz,                // CN_FIFO
-  /* */ "FILE"_Stz,                // CN_FILE
-  /* */ "FIPVAL"_Stz,              // CN_FIPVAL
-  /* */ "FLTVAL"_Stz,              // CN_FLTVAL
-  /* */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS
-  /* */ "FORTH"_Stz,               // CN_FORTH
-  /* */ "FORMAT"_Stz,              // CN_FORMAT
-  /* */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
-  /* */ "FREECHUNK"_Stz,           // CN_FREECHUNK
-  /* */ "FREEDNOT"_Stz,            // CN_FREEDNOT
-  /* */ "FREEITEM"_Stz,            // CN_FREEITEM
-  /* */ "FREQDIST"_Stz,            // CN_FREQDIST
-  
-  /* */ "_G__"_Stz,                // CN__G__
-  /* */ "GRAPHEDITOR"_Stz,         // CN_GRAPHEDITOR
-  /* */ "GRAPHNAV"_Stz,            // CN_GRAPHNAV
-  /* */ "GRID"_Stz,                // CN_GRID
-
-  /* */ "_H__"_Stz,                // CN__H__
-  /* */ "HASHBUFFER"_Stz,          // CN_HASHBUFFER
-  /* */ "HASHSET"_Stz,             // CN_HASHSET
-  /* */ "HASHMAP"_Stz,             // CN_HASHMAP
-  /* */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER
-  
-  /* */ "_I__"_Stz,                // CN__I__
-  /* */ "INDEX"_Stz,               // CN_INDEX
-  /* */ "INDEXDEF"_Stz,            // CN_INDEXDEF
-  /* */ "INDEXSTREAM"_Stz,         // CN_INDEXSTREAM
-  /* */ "INDEXTREE"_Stz,           // CN_INDEXTREE
-  /* */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
-  /* */ "IDXVEC"_Stz,              // CN_IDXVEC
-  /* */ "INFOSET"_Stz,             // CN_INFOSET
-  /* */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
-  /* */ "INPUT"_Stz,               // CN_INPUT
-  /* */ "INTBUFFER"_Stz,           // CN_INTBUFFER
-  /* */ "INTSET"_Stz,              // CN_INTSET
-  /* */ "INTVAL"_Stz,              // CN_INTVAL
-  /* */ "IOCHUNK"_Stz,             // CN_IOCHUNK
-  /* */ "IOCOPY"_Stz,              // CN_IOCOPY
-  /* */ "IVLVAL"_Stz,              // CN_IVLVAL
-
-  /* */ "_J__"_Stz,                // CN__J__
-  /* */ "JOB"_Stz,                 // CN_JOB
-  /* */ "JOB__FIND"_Stz,           // CN_JOB__FIND
-  /* */ "JOBLIST"_Stz,             // CN_JOBLIST
-
-  /* */ "_K__"_Stz,                // CN__K__
-  /* */ "KEY"_Stz,                 // CN_KEY
-  
-  /* */ "_L__"_Stz,                // CN__L__
-  /* */ "LARGEPERSISTENT"_Stz,     // CN_LARGEPERSISTENT
-  /* */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
-  /* */ "LEXICON"_Stz,             // CN_LEXICON
-  /* */ "LICENCE"_Stz,             // CN_LICENCE
-  /* */ "LIMITS"_Stz,              // CN_LIMITS
-  /* */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
-  /* */ "LOCAL"_Stz,               // CN_LOCAL
-  /* */ "LOCALSCHAIN"_Stz,         // CN_LOCALSCHAIN
-  /* */ "LOCK"_Stz,                // CN_LOCK
-  /* */ "LOG"_Stz,                 // CN_LOG
-  /* */ "LOGENTRY"_Stz,            // CN_LOGENTRY
-  /* */ "LOGICCOMPILER"_Stz,       // CN_LOGICCOMPILER
-  /* */ "LOGICTIMER"_Stz,          // CN_LOGICTIMER
-  /* */ "LOGICUNIT"_Stz,           // CN_LOGICUNIT
-
-  /* */ "_M__"_Stz,                // CN__M__
-  /* */ "MARKER"_Stz,              // CN_MARKER
-  /* */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
-  /* */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
-  /* */ "MEMTEST"_Stz,             // CN_MEMTEST
-  /* */ "METADATANODE"_Stz,        // CN_METADATANODE
-  /* */ "MUTABLEPLANNODE"_Stz,     // CN_MUTABLEPLANNODE
-  /* */ "MUTEX"_Stz,               // CN_MUTEX
-
-  /* */ "_N__"_Stz,                // CN__N__
-  /* */ "NEXTGID"_Stz,             // CN_NEXTGID
-  /* */ "NMLSTR"_Stz,              // CN_NMLSTR
-  /* */ "NODE"_Stz,                // CN_NODE
-  /* */ "NODE_I"_Stz,              // CN_NODE_I
-  /* */ "NOW"_Stz,                 // CN_NOW
-  /* */ "NUMBAT"_Stz,              // CN_NUMBAT
-  
-  /* */ "_O__"_Stz,                // CN__O__
-  /* */ "OBJECTSINPOOL"_Stz,       // CN_OBJECTSINPOOL
-  /* */ "OP"_Stz,                  // CN_OP
-  /* */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
-  /* */ "OPSPEC"_Stz,              // CN_OPSPEC
-  
-  /* */ "_P__"_Stz,                // CN__P__
-  /* */ "PATHVEC"_Stz,             // CN_PATHVEC
-  /* */ "PERUSE"_Stz,              // CN_PERUSE
-  /* */ "PIPELINE"_Stz,            // CN_PIPELINE
-  /* */ "PIPELINESPEC"_Stz,        // CN_PIPELINESPEC
-  /* */ "PLAN"_Stz,                // CN_PLAN
+  /* */ "NONE"_Stz,                 // CN_NONE
+   
+  /* */ "_A__"_Stz,                 // CN__A__
+  /* */ "ACCESSPATH"_Stz,           // CN_ACCESSPATH
+  /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
+  /* */ "ARG"_Stz,                  // CN_ARG
+  /* */ "ARGUMENTS"_Stz,            // CN_ARGUMENTS
+  /* */ "ARRANGE"_Stz,              // CN_ARRANGE
+  /* */ "ARTICLE"_Stz,              // CN_ARTICLE
+  /* */ "ATOMIC"_Stz,               // CN_ATOMIC
+  /* */ "ATTACHMAP"_Stz,            // CN_ATTACHMAP
+   
+  /* */ "_B__"_Stz,                 // CN__B__
+  /* */ "BCDVAL"_Stz,               // CN_BCDVAL
+  /* */ "BIRTH"_Stz,                // CN_BIRTH
+  /* */ "BOLVAL"_Stz,               // CN_BOLVAL
+  /* */ "BPA"_Stz,                  // CN_BPA
+  /* */ "BUCKETMAP"_Stz,            // CN_BUCKETMAP
+  /* */ "BUFFERCURSOR"_Stz,         // CN_BUFFERCURSOR
+  /* */ "BUFFERPOOL"_Stz,           // CN_BUFFERPOOL
+  /* */ "BYTERATE"_Stz,             // CN_BYTERATE
+  /* */ "BYTES_T"_Stz,              // CN_BYTES_T
+   
+  /* */ "_C__"_Stz,                 // CN__C__
+  /* */ "CATALOG"_Stz,              // CN_CATALOG
+  /* */ "CELLSEGMENT"_Stz,          // CN_CELLSEGMENT
+  /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
+  /* */ "CHARSER"_Stz,              // CN_CHARSER
+  /* */ "COLUMN"_Stz,               // CN_COLUMN
+  /* */ "COMPILER"_Stz,             // CN_COMPILER
+  /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
+  /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
+  /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
+  /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
+  /* */ "CSVMETA"_Stz,              // CN_CSVMETA
+ 
+  /* */ "_D__"_Stz,                 // CN__D__
+  /* */ "DECACNT"_Stz,              // CN_DECACNT
+  /* */ "DECIDER"_Stz,              // CN_DECIDER
+  /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
+  /* */ "DEVIXT"_Stz,               // CN_DEVIXT
+  /* */ "DEVROW"_Stz,               // CN_DEVROW
+  /* */ "DIC"_Stz,                  // CN_DIC
+  /* */ "DICSTACK"_Stz,             // CN_DICSTACK
+  /* */ "DIR"_Stz,                  // CN_DIR
+  /* */ "DTEVAL"_Stz,               // CN_DTEVAL
+  /* */ "DYNAMO"_Stz,               // CN_DYNAMO
+ 
+  /* */ "_E__"_Stz,                 // CN__E__
+  /* */ "EDTVAL"_Stz,               // CN_EDTVAL
+  /* */ "ENCODING"_Stz,             // CN_ENCODING
+  /* */ "ENCODING_V2"_Stz,          // CN_ENCODING_V2
+  /* */ "ENT"_Stz,                  // CN_ENT
+  /* */ "ENTBUFFER"_Stz,            // CN_ENTBUFFER
+  /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
+  /* */ "ENTWRK"_Stz,               // CN_ENTWRK
+  /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
+  /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
+  /* */ "EXPRATOM"_Stz,             // CN_EXPRATOM
+  /* */ "EXPRCOLUMNREF"_Stz,        // CN_EXPRCOLUMNREF
+  /* */ "EXPRLIST"_Stz,             // CN_EXPRLIST
+  /* */ "EXPRSTACK"_Stz,            // CN_EXPRSTACK
+ 
+  /* */ "_F__"_Stz,                 // CN__F__
+  /* */ "FIFO"_Stz,                 // CN_FIFO
+  /* */ "FILE"_Stz,                 // CN_FILE
+  /* */ "FIPVAL"_Stz,               // CN_FIPVAL
+  /* */ "FLTVAL"_Stz,               // CN_FLTVAL
+  /* */ "FOCALOBJECTS"_Stz,         // CN_FOCALOBJECTS
+  /* */ "FORTH"_Stz,                // CN_FORTH
+  /* */ "FORMAT"_Stz,               // CN_FORMAT
+  /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER
+  /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK
+  /* */ "FREEDNOT"_Stz,             // CN_FREEDNOT
+  /* */ "FREEITEM"_Stz,             // CN_FREEITEM
+  /* */ "FREQDIST"_Stz,             // CN_FREQDIST
+   
+  /* */ "_G__"_Stz,                 // CN__G__
+  /* */ "GRAPHEDITOR"_Stz,          // CN_GRAPHEDITOR
+  /* */ "GRAPHNAV"_Stz,             // CN_GRAPHNAV
+  /* */ "GRID"_Stz,                 // CN_GRID
+ 
+  /* */ "_H__"_Stz,                 // CN__H__
+  /* */ "HASHBUFFER"_Stz,           // CN_HASHBUFFER
+  /* */ "HASHSET"_Stz,              // CN_HASHSET
+  /* */ "HASHMAP"_Stz,              // CN_HASHMAP
+  /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
+   
+  /* */ "_I__"_Stz,                 // CN__I__
+  /* */ "INDEX"_Stz,                // CN_INDEX
+  /* */ "INDEXDEF"_Stz,             // CN_INDEXDEF
+  /* */ "INDEXSTREAM"_Stz,          // CN_INDEXSTREAM
+  /* */ "INDEXTREE"_Stz,            // CN_INDEXTREE
+  /* */ "INDEXTREEVEC"_Stz,         // CN_INDEXTREEVEC
+  /* */ "IDXVEC"_Stz,               // CN_IDXVEC
+  /* */ "INFOSET"_Stz,              // CN_INFOSET
+  /* */ "INGESTCHUNK"_Stz,          // CN_INGESTCHUNK
+  /* */ "INPUT"_Stz,                // CN_INPUT
+  /* */ "INTBUFFER"_Stz,            // CN_INTBUFFER
+  /* */ "INTSET"_Stz,               // CN_INTSET
+  /* */ "INTVAL"_Stz,               // CN_INTVAL
+  /* */ "IOCHUNK"_Stz,              // CN_IOCHUNK
+  /* */ "IOCOPY"_Stz,               // CN_IOCOPY
+  /* */ "IVLVAL"_Stz,               // CN_IVLVAL
+ 
+  /* */ "_J__"_Stz,                 // CN__J__
+  /* */ "JOB"_Stz,                  // CN_JOB
+  /* */ "JOB__FIND"_Stz,            // CN_JOB__FIND
+  /* */ "JOBLIST"_Stz,              // CN_JOBLIST
+ 
+  /* */ "_K__"_Stz,                 // CN__K__
+  /* */ "KEY"_Stz,                  // CN_KEY
+   
+  /* */ "_L__"_Stz,                 // CN__L__
+  /* */ "LARGEPERSISTENT"_Stz,      // CN_LARGEPERSISTENT
+  /* */ "LARGETRANSIENT"_Stz,       // CN_LARGETRANSIENT
+  /* */ "LEXICON"_Stz,              // CN_LEXICON
+  /* */ "LICENCE"_Stz,              // CN_LICENCE
+  /* */ "LIMITS"_Stz,               // CN_LIMITS
+  /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
+  /* */ "LOCAL"_Stz,                // CN_LOCAL
+  /* */ "LOCALSCHAIN"_Stz,          // CN_LOCALSCHAIN
+  /* */ "LOCK"_Stz,                 // CN_LOCK
+  /* */ "LOG"_Stz,                  // CN_LOG
+  /* */ "LOGENTRY"_Stz,             // CN_LOGENTRY
+  /* */ "LOGICCOMPILER"_Stz,        // CN_LOGICCOMPILER
+  /* */ "LOGICTIMER"_Stz,           // CN_LOGICTIMER
+  /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
+ 
+  /* */ "_M__"_Stz,                 // CN__M__
+  /* */ "MARKER"_Stz,               // CN_MARKER
+  /* */ "MEDIUMPERSISTENT"_Stz,     // CN_MEDIUMPERSISTENT
+  /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
+  /* */ "MEMTEST"_Stz,              // CN_MEMTEST
+  /* */ "METADATANODE"_Stz,         // CN_METADATANODE
+  /* */ "MUTABLEPLANNODE"_Stz,      // CN_MUTABLEPLANNODE
+  /* */ "MUTEX"_Stz,                // CN_MUTEX
+ 
+  /* */ "_N__"_Stz,                 // CN__N__
+  /* */ "NEXTGID"_Stz,              // CN_NEXTGID
+  /* */ "NMLSTR"_Stz,               // CN_NMLSTR
+  /* */ "NODE"_Stz,                 // CN_NODE
+  /* */ "NODEBUILDERSTAACK"_Stz,    // CN_NODEBUILDERSTACK
+  /* */ "NODE_I"_Stz,               // CN_NODE_I
+  /* */ "NOW"_Stz,                  // CN_NOW
+  /* */ "NUMBAT"_Stz,               // CN_NUMBAT
+   
+  /* */ "_O__"_Stz,                 // CN__O__
+  /* */ "OP"_Stz,                   // CN_OP
+  /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
+  /* */ "OPSPEC"_Stz,               // CN_OPSPEC
+   
+  /* */ "_P__"_Stz,                 // CN__P__
+  /* */ "PATHVEC"_Stz,              // CN_PATHVEC
+  /* */ "PERUSE"_Stz,               // CN_PERUSE
+  /* */ "PIPELINE"_Stz,             // CN_PIPELINE
+  /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
+  /* */ "PLAN"_Stz,                 // CN_PLAN
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
-  /* */ "PLANNER"_Stz,             // CN_PLANNER
-  /* */ "PLANNODE"_Stz,            // CN_PLANNODE
-  /* */ "PLANNODEBUILDER"_Stz,     // CN_PLANNODEBUILDER
-  /* */ "PLANNODELIST"_Stz,        // CN_PLANNODELIST
-  /* */ "PLANNODEBUILDERLIST"_Stz, // CN_PLANNODEBUILDERLIST
-  /* */ "POT"_Stz,                 // CN_POT
-  /* */ "PREDICATE"_Stz,           // CN_PREDICATE
-  /* */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
-  /* */ "PRIMITIVENODE"_Stz,       // CN_PRIMITIVENODE
-  /* */ "PROFILE"_Stz,             // CN_PROFILE
-  /* */ "PSXTHD"_Stz,              // CN_PSXTHD
-  /* */ "PTNMAP"_Stz,              // CN_PTNMAP
-  /* */ "PTNSTREAM"_Stz,           // CN_PTNSTREAM
-  /* */ "PTRVAL"_Stz,              // CN_PTRVAL
-  
-  /* */ "_Q__"_Stz,                // CN__Q__
-  /* */ "QUERYNODE"_Stz,           // CN_QUERYNODE
-  /* */ "QUEUE"_Stz,               // CN_QUEUE
-  /* */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
-  /* */ "QUEUES"_Stz,              // CN_QUEUES
-  
-  /* */ "_R__"_Stz,                // CN__R__
-  /* */ "READAPI"_Stz,             // CN_READAPI
-  /* */ "READER"_Stz,              // CN_READER
-  /* */ "RECORD"_Stz,              // CN_RECORD
-  /* */ "RELOP"_Stz,               // CN_RELOP
-  /* */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
-  /* */ "RESPONSE"_Stz,            // CN_RESPONSE
-  /* */ "RESPONSEVEC"_Stz,         // CN_RESPONSEVEC
-  /* */ "RESULT"_Stz,              // CN_RESULT
-  /* */ "RLUDIARY"_Stz,            // CN_RLUDIARY
-  /* */ "RN_RAND"_Stz,             // CN_RN_RAND
-  /* */ "ROUTINE"_Stz,             // CN_ROUTINE
-  /* */ "ROW"_Stz,                 // CN_ROW
-  /* */ "ROWAGG"_Stz,              // CN_ROWAGG
-  /* */ "ROWBOX"_Stz,              // CN_ROWBOX
-  /* */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
-  /* */ "ROWCOMPACTOR"_Stz,        // CN_ROWCOMPACTOR
-  /* */ "ROWONCE"_Stz,             // CN_ROWONCE
-  /* */ "ROWSINGLE"_Stz,           // CN_ROWSINGLE
-  /* */ "ROWTRAY"_Stz,             // CN_ROWTRAY
-  /* */ "RUCPU"_Stz,               // CN_RUCPU
-  /* */ "RUDIR"_Stz,               // CN_RUDIR
-  /* */ "RUFILE"_Stz,              // CN_RUFILE
-  /* */ "RUMEMORY"_Stz,            // CN_RUMEMORY
-  /* */ "RUMUTEX"_Stz,             // CN_RUMUTEX
-  /* */ "RUPASS"_Stz,              // CN_RUPASS
-  /* */ "RUSOCKET"_Stz,            // CN_RUSOCKET
-  /* */ "RUTIME"_Stz,              // CN_RUTIME
-  /* */ "RUWORK"_Stz,              // CN_RUWORK
-
-  /* */ "_S__"_Stz,                // CN__S__
-  /* */ "SCHEMA"_Stz,              // CN_SCHEMA
-  /* */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
-  /* */ "SEDEPUTY"_Stz,            // CN_SEDEPUTY
-  /* */ "SEEME"_Stz,               // CN_SEEME
-  /* */ "SEPROMPT"_Stz,            // CN_SEPROMPT
-  /* */ "SESSION"_Stz,             // CN_SESSION
-  /* */ "SESSIONARRAY"_Stz,        // CN_SESSIONARRAY
-  /* */ "SHORTCUT"_Stz,            // CN_SHORTCUT
-  /* */ "SHORTCUTVEC"_Stz,         // CN_SHORTCUTVEC
-  /* */ "SINCE"_Stz,               // CN_SINCE
-  /* */ "SKIPLIST"_Stz,            // CN_SKIPLIST
-  /* */ "SKIPNODE"_Stz,            // CN_SKIPNODE
-  /* */ "SLAB"_Stz,                // CN_SLAB
-  /* */ "SLABALLOCATOR"_Stz,       // CN_SLABALLOCATOR
-  /* */ "SLEEP"_Stz,               // CN_SLEEP
-  /* */ "SMALLPERSISTENT"_Stz,     // CN_SMALLPERSISTENT
-  /* */ "SMALLTRANSIENT"_Stz,      // CN_SMALLTRANSIENT
-  /* */ "SNBCD"_Stz,               // CN_SNBCD
-  /* */ "SNBOL"_Stz,               // CN_SNBOL
-  /* */ "SNDTE"_Stz,               // CN_SNDTE
-  /* */ "SNFLT"_Stz,               // CN_SNFLT
-  /* */ "SNINT"_Stz,               // CN_SNINT
-  /* */ "SNIVL"_Stz,               // CN_SNIVL
-  /* */ "SNTME"_Stz,               // CN_SNTME
-  /* */ "SNTSP"_Stz,               // CN_SNTSP
-  /* */ "SNVCH"_Stz,               // CN_SNVCH
-  /* */ "SOCKET"_Stz,              // CN_SOCKET
-  /* */ "SPELAPSED"_Stz,           // CN_SPELAPSED
-  /* */ "SPID"_Stz,                // CN_SPID
-  /* */ "SPSTRING"_Stz,            // CN_SPSTRING
-  /* */ "SPMEDIUM"_Stz,            // CN_SPMEDIUM
-  /* */ "SPSMALL"_Stz,             // CN_SPSMALL
-  /* */ "SQLPLANNER"_Stz,          // CN_SQLPLANNER
-  /* */ "SRTBUFFER"_Stz,           // CN_SRTBUFFER
-  /* */ "SRTSET"_Stz,              // CN_SRTSET
-  /* */ "STACK"_Stz,               // CN_STACK
-  /* */ "STAGE"_Stz,               // CN_STAGE
-  /* */ "STAGESPEC"_Stz,           // CN_STAGESPEC
-  /* */ "STATISTICS"_Stz,          // CN_STATISTICS
-  /* */ "STATISTICSNODE"_Stz,      // CN_STATISTICSNODE
-  /* */ "STEPACCUM"_Stz,           // CN_STEPACCUM
-  /* */ "STEPTIMING"_Stz,          // CN_STEPTIMING
-  /* */ "STRAND"_Stz,              // CN_STRAND
-  /* */ "STREAMDEF"_Stz,           // CN_STREAMDEF
-  /* */ "STREAMSET"_Stz,           // CN_STREAMSET
-  /* */ "STRING_T"_Stz,            // CN_STRING_T
-  /* */ "STZVAL"_Stz,              // CN_STZVAL
-  /* */ "SYSCALL"_Stz,             // CN_SYSCALL
-  
-  /* */ "_T__"_Stz,                // CN__T__
-  /* */ "TABLE"_Stz,               // CN_TABLE
-  /* */ "TABLEDEF"_Stz,            // CN_TABLEDEF
-  /* */ "TABLEPTN"_Stz,            // CN_TABLEPTN
-  /* */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
-  /* */ "TABLEREF"_Stz,            // CN_TABLEREF
-  /* */ "TAGSET"_Stz,              // CN_TAGSET
-  /* */ "TASK"_Stz,                // CN_TASK
-  /* */ "TASKLIST"_Stz,            // CN_TASKLIST
-  /* */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE
-  /* */ "TEMPNAME"_Stz,            // CN_TEMPNAME
-  /* */ "TENANT"_Stz,              // CN_TENANT
-  /* */ "TENANTS"_Stz,             // CN_TENANTS
-  /* */ "TEXT"_Stz,                // CN_TEXT,
-  /* */ "TEXTLARGE"_Stz,           // CN_TEXTLARGE,
-  /* */ "TEXTMEDIUM"_Stz,          // CN_TEXTMEDIUM,
-  /* */ "TEXTSMALL"_Stz,           // CN_TEXTSMALL,
-  /* */ "TEXTSTACK"_Stz,           // CN_TEXTSTACK,
-  /* */ "TEXTTINY"_Stz,            // CN_TEXTTINY,
-  /* */ "THING"_Stz,               // CN_THING
-  /* */ "THREAD"_Stz,              // CN_THREAD
-  /* */ "THREADQUEUE"_Stz,         // CN_THREADQUEUE
-  /* */ "THREADVEC"_Stz,           // CN_THREADVEC
-  /* */ "TIMER"_Stz,               // CN_TIMER
-  /* */ "TINYPERSISTENT"_Stz,      // CN_TINYPERSISTENT
-  /* */ "TINYTRANSIENT"_Stz,       // CN_TINYTRANSIENT
-  /* */ "TMEVAL"_Stz,              // CN_TMEVAL
-  /* */ "TOHSHCRW"_Stz,            // CN_TOHSHCRW
-  /* */ "TOKEN"_Stz,               // CN_TOKEN
-  /* */ "TOKENVEC"_Stz,            // CN_TOKENVEC
-  /* */ "TONSTROW"_Stz,            // CN_TONSTROW
-  /* */ "TOPTNROW"_Stz,            // CN_TOPTNROW
-  /* */ "TOROW"_Stz,               // CN_TOROW
-  /* */ "TSPVAL"_Stz,              // CN_TSPVAL
-  /* */ "TX"_Stz,                  // CN_TX
-  /* */ "TXSET"_Stz,               // CN_TXSET
-  
-  /* */ "_U__"_Stz,                // CN__U__
-  
-  /* */ "_V__"_Stz,                // CN__V__
-
-  /* */ "_W__"_Stz,                // CN__W__
-  /* */ "WILDERNESS"_Stz,          // CN_WILDERNESS
-  /* */ "WORD"_Stz,                // CN_WORD
-  /* */ "WSPCONVERGENT_t"_Stz,     // CN_WSPCONVERGENT_t
-
-  /* */ "_X__"_Stz,                // CN__X__
-  /* */ "XmitOperand"_Stz,         // CN_XMITOPERAND
-  /* */ "Xmits"_Stz,               // CN_XMITS
-  
-  /* */ "_Y__"_Stz,                // CN__Y__
-  
-  /* */ "_Z__"_Stz,                // CN__Z__
-  
-  /* */ "ENUMS"_Stz,               // CN_ENUMS
+  /* */ "PLANNER"_Stz,              // CN_PLANNER
+  /* */ "PLANNODE"_Stz,             // CN_PLANNODE
+  /* */ "PLANNODEBUILDER"_Stz,      // CN_PLANNODEBUILDER
+  /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
+  /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST
+  /* */ "POOLSNAPSHOT"_Stz,         // CN_POOLSNAPSHOT
+  /* */ "POT"_Stz,                  // CN_POT
+  /* */ "PREDICATE"_Stz,            // CN_PREDICATE
+  /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
+  /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
+  /* */ "PROFILE"_Stz,              // CN_PROFILE
+  /* */ "PSXTHD"_Stz,               // CN_PSXTHD
+  /* */ "PTNMAP"_Stz,               // CN_PTNMAP
+  /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
+  /* */ "PTRVAL"_Stz,               // CN_PTRVAL
+   
+  /* */ "_Q__"_Stz,                 // CN__Q__
+  /* */ "QUERYNODE"_Stz,            // CN_QUERYNODE
+  /* */ "QUEUE"_Stz,                // CN_QUEUE
+  /* */ "QUEUEBUFFER"_Stz,          // CN_QUEUEBUFFER
+  /* */ "QUEUES"_Stz,               // CN_QUEUES
+   
+  /* */ "_R__"_Stz,                 // CN__R__
+  /* */ "READAPI"_Stz,              // CN_READAPI
+  /* */ "READER"_Stz,               // CN_READER
+  /* */ "RECORD"_Stz,               // CN_RECORD
+  /* */ "RELOP"_Stz,                // CN_RELOP
+  /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCETRACKER
+  /* */ "RESPONSE"_Stz,             // CN_RESPONSE
+  /* */ "RESPONSEVEC"_Stz,          // CN_RESPONSEVEC
+  /* */ "RESULT"_Stz,               // CN_RESULT
+  /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
+  /* */ "RN_RAND"_Stz,              // CN_RN_RAND
+  /* */ "ROUTINE"_Stz,              // CN_ROUTINE
+  /* */ "ROW"_Stz,                  // CN_ROW
+  /* */ "ROWAGG"_Stz,               // CN_ROWAGG
+  /* */ "ROWBOX"_Stz,               // CN_ROWBOX
+  /* */ "ROWBUFFER"_Stz,            // CN_ROWBUFFER
+  /* */ "ROWCOMPACTOR"_Stz,         // CN_ROWCOMPACTOR
+  /* */ "ROWONCE"_Stz,              // CN_ROWONCE
+  /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
+  /* */ "ROWTRAY"_Stz,              // CN_ROWTRAY
+  /* */ "RUCPU"_Stz,                // CN_RUCPU
+  /* */ "RUDIR"_Stz,                // CN_RUDIR
+  /* */ "RUFILE"_Stz,               // CN_RUFILE
+  /* */ "RUMEMORY"_Stz,             // CN_RUMEMORY
+  /* */ "RUMUTEX"_Stz,              // CN_RUMUTEX
+  /* */ "RUPASS"_Stz,               // CN_RUPASS
+  /* */ "RUSOCKET"_Stz,             // CN_RUSOCKET
+  /* */ "RUTIME"_Stz,               // CN_RUTIME
+  /* */ "RUWORK"_Stz,               // CN_RUWORK
+ 
+  /* */ "_S__"_Stz,                 // CN__S__
+  /* */ "SCHEMA"_Stz,               // CN_SCHEMA
+  /* */ "SCHEMATEST"_Stz,           // CN_SCHEMATEST
+  /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
+  /* */ "SEEME"_Stz,                // CN_SEEME
+  /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
+  /* */ "SESSION"_Stz,              // CN_SESSION
+  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONARRAY
+  /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
+  /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
+  /* */ "SINCE"_Stz,                // CN_SINCE
+  /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST
+  /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE
+  /* */ "SLAB"_Stz,                 // CN_SLAB
+  /* */ "SLABALLOCATOR"_Stz,        // CN_SLABALLOCATOR
+  /* */ "SLEEP"_Stz,                // CN_SLEEP
+  /* */ "SMALLPERSISTENT"_Stz,      // CN_SMALLPERSISTENT
+  /* */ "SMALLTRANSIENT"_Stz,       // CN_SMALLTRANSIENT
+  /* */ "SNBCD"_Stz,                // CN_SNBCD
+  /* */ "SNBOL"_Stz,                // CN_SNBOL
+  /* */ "SNDTE"_Stz,                // CN_SNDTE
+  /* */ "SNFLT"_Stz,                // CN_SNFLT
+  /* */ "SNINT"_Stz,                // CN_SNINT
+  /* */ "SNIVL"_Stz,                // CN_SNIVL
+  /* */ "SNTME"_Stz,                // CN_SNTME
+  /* */ "SNTSP"_Stz,                // CN_SNTSP
+  /* */ "SNVCH"_Stz,                // CN_SNVCH
+  /* */ "SOCKET"_Stz,               // CN_SOCKET
+  /* */ "SPELAPSED"_Stz,            // CN_SPELAPSED
+  /* */ "SPID"_Stz,                 // CN_SPID
+  /* */ "SPSTRING"_Stz,             // CN_SPSTRING
+  /* */ "SPMEDIUM"_Stz,             // CN_SPMEDIUM
+  /* */ "SPSMALL"_Stz,              // CN_SPSMALL
+  /* */ "SQLPLANNER"_Stz,           // CN_SQLPLANNER
+  /* */ "SRTBUFFER"_Stz,            // CN_SRTBUFFER
+  /* */ "SRTSET"_Stz,               // CN_SRTSET
+  /* */ "STACK"_Stz,                // CN_STACK
+  /* */ "STAGE"_Stz,                // CN_STAGE
+  /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
+  /* */ "STATISTICS"_Stz,           // CN_STATISTICS
+  /* */ "STATISTICSNODE"_Stz,       // CN_STATISTICSNODE
+  /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
+  /* */ "STEPTIMING"_Stz,           // CN_STEPTIMING
+  /* */ "STRAND"_Stz,               // CN_STRAND
+  /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
+  /* */ "STREAMSET"_Stz,            // CN_STREAMSET
+  /* */ "STRING_T"_Stz,             // CN_STRING_T
+  /* */ "STZVAL"_Stz,               // CN_STZVAL
+  /* */ "SYSCALL"_Stz,              // CN_SYSCALL
+   
+  /* */ "_T__"_Stz,                 // CN__T__
+  /* */ "TABLE"_Stz,                // CN_TABLE
+  /* */ "TABLEDEF"_Stz,             // CN_TABLEDEF
+  /* */ "TABLEPTN"_Stz,             // CN_TABLEPTN
+  /* */ "TABLEPTNVEC"_Stz,          // CN_TABLEPTNVEC
+  /* */ "TABLEREF"_Stz,             // CN_TABLEREF
+  /* */ "TABLEREFSTACK"_Stz,        // CN_TABLEREFSTACK
+  /* */ "TAGSET"_Stz,               // CN_TAGSET
+  /* */ "TASK"_Stz,                 // CN_TASK
+  /* */ "TASKLIST"_Stz,             // CN_TASKLIST
+  /* */ "TASKQUEUE"_Stz,            // CN_TASKQUEUE
+  /* */ "TEMPNAME"_Stz,             // CN_TEMPNAME
+  /* */ "TENANT"_Stz,               // CN_TENANT
+  /* */ "TENANTS"_Stz,              // CN_TENANTS
+  /* */ "TEXT"_Stz,                 // CN_TEXT,
+  /* */ "TEXTLARGE"_Stz,            // CN_TEXTLARGE,
+  /* */ "TEXTMEDIUM"_Stz,           // CN_TEXTMEDIUM,
+  /* */ "TEXTSMALL"_Stz,            // CN_TEXTSMALL,
+  /* */ "TEXTSTACK"_Stz,            // CN_TEXTSTACK,
+  /* */ "TEXTTINY"_Stz,             // CN_TEXTTINY,
+  /* */ "THING"_Stz,                // CN_THING
+  /* */ "THREAD"_Stz,               // CN_THREAD
+  /* */ "THREADQUEUE"_Stz,          // CN_THREADQUEUE
+  /* */ "THREADVEC"_Stz,            // CN_THREADVEC
+  /* */ "TIMER"_Stz,                // CN_TIMER
+  /* */ "TINYPERSISTENT"_Stz,       // CN_TINYPERSISTENT
+  /* */ "TINYTRANSIENT"_Stz,        // CN_TINYTRANSIENT
+  /* */ "TMEVAL"_Stz,               // CN_TMEVAL
+  /* */ "TOHSHCRW"_Stz,             // CN_TOHSHCRW
+  /* */ "TOKEN"_Stz,                // CN_TOKEN
+  /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
+  /* */ "TONSTROW"_Stz,             // CN_TONSTROW
+  /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
+  /* */ "TOROW"_Stz,                // CN_TOROW
+  /* */ "TSPVAL"_Stz,               // CN_TSPVAL
+  /* */ "TX"_Stz,                   // CN_TX
+  /* */ "TXSET"_Stz,                // CN_TXSET
+   
+  /* */ "_U__"_Stz,                 // CN__U__
+   
+  /* */ "_V__"_Stz,                 // CN__V__
+ 
+  /* */ "_W__"_Stz,                 // CN__W__
+  /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
+  /* */ "WORD"_Stz,                 // CN_WORD
+  /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
+ 
+  /* */ "_X__"_Stz,                 // CN__X__
+  /* */ "XmitOperand"_Stz,          // CN_XMITOPERAND
+  /* */ "Xmits"_Stz,                // CN_XMITS
+   
+  /* */ "_Y__"_Stz,                 // CN__Y__
+   
+  /* */ "_Z__"_Stz,                 // CN__Z__
+   
+  /* */ "ENUMS"_Stz,                // CN_ENUMS
 };
   
   class ClassNumbers

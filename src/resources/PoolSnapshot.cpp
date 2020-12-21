@@ -11,11 +11,11 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ObjectsInPool* Resources::_pObjectsInPool(void* aAddr)
+PoolSnapshot* Resources::_pObjectsInPool(void* aAddr)
 {
-  ObjectsInPool* pObjectsInPool = reinterpret_cast<ObjectsInPool*>(aAddr);
+  PoolSnapshot* pObjectsInPool = reinterpret_cast<PoolSnapshot*>(aAddr);
   
-  RASSERT_TYPE(pObjectsInPool,CN_OBJECTSINPOOL);
+  RASSERT_TYPE(pObjectsInPool,CN_POOLSNAPSHOT);
   
   return pObjectsInPool;
 }
@@ -23,9 +23,9 @@ ObjectsInPool* Resources::_pObjectsInPool(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* ObjectsInPool::operator new(size_t)
+void* PoolSnapshot::operator new(size_t)
 {
-  ObjectsInPool* pObjectsInPool = (ObjectsInPool*)HeapMem::pAllocate(CN_OBJECTSINPOOL);
+  PoolSnapshot* pObjectsInPool = (PoolSnapshot*)HeapMem::pAllocate(CN_POOLSNAPSHOT);
   
   return pPoolCheck<void*>(pObjectsInPool);
 }
@@ -33,9 +33,9 @@ void* ObjectsInPool::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void ObjectsInPool::operator delete(void* pObjectPoolAddress)
+void PoolSnapshot::operator delete(void* pObjectPoolAddress)
 {
-  ObjectsInPool* pObjectsInPool = static_cast<ObjectsInPool*>(pObjectPoolAddress);
+  PoolSnapshot* pObjectsInPool = static_cast<PoolSnapshot*>(pObjectPoolAddress);
   
   HeapMem::vFree(pObjectsInPool);
 }
@@ -43,23 +43,23 @@ void ObjectsInPool::operator delete(void* pObjectPoolAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
-ObjectsInPool::ObjectsInPool(void)
-: Object(CN_OBJECTSINPOOL)
+PoolSnapshot::PoolSnapshot(void)
+: Object(CN_POOLSNAPSHOT)
 {
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
     m_nObjects[i_enum] = 0;
   
-  _checkInitialised_(CN_OBJECTSINPOOL);
+  _checkInitialised_(CN_POOLSNAPSHOT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSINPOOL,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_POOLSNAPSHOT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ObjectsInPool::~ObjectsInPool(void) noexcept(false)
+PoolSnapshot::~PoolSnapshot(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSINPOOL,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POOLSNAPSHOT,_FOOTER_);
 
 }
 
@@ -75,9 +75,9 @@ ObjectsInPool::~ObjectsInPool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* ObjectsInPool::aFooter(void)
+Footer* PoolSnapshot::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSINPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POOLSNAPSHOT);
   
   return &m_xFooter;
 }

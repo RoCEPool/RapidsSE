@@ -7,6 +7,7 @@
 #include "sqlParser.h"
 #include "sqlBaseVisitor.h"
 #include "parser/common/ErrorListener.hpp"
+#include "stages/parser/TableRef.hpp"
 
 //using namespace antlr4;
 
@@ -24,7 +25,7 @@ __aFooterFunction(SqlPlanner)
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
-  m_pTableRefStack(new TypedStack(KK_PARSER_STACK)),
+  m_pTableRefStack(new TableRefStack()),
   m_pExprStack(nullptr),
   m_pSelectList(nullptr)
 {
@@ -44,8 +45,8 @@ SqlPlanner::~SqlPlanner(void) noexcept
    
   // Clean up the stack of TableRefs
   if (m_pTableRefStack) {
-    while (m_pTableRefStack->nValues() > 0) {
-      TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
+    while (m_pTableRefStack->nItems() > 0) {
+      TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPop());
       delete pTableRef;
     }
     
@@ -55,8 +56,8 @@ SqlPlanner::~SqlPlanner(void) noexcept
   
   // Clean up the expression stack
   if (m_pExprStack) {
-    while (m_pExprStack->nValues() > 0) {
-      ExprAtom* pAtom = (ExprAtom*) m_pExprStack->pPopPtr(__func__);
+    while (m_pExprStack->nItems() > 0) {
+      ExprAtom* pAtom = m_pExprStack->pPop();
       delete pAtom;
     }
     
@@ -181,7 +182,7 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
   pTableName = cleanId(ctx->tableName()->id);
 
   TableRef* pTableRef = new TableRef(pCatalogName, pSchemaName, pTableName);
-  m_pTableRefStack->vPushPtr(pTableRef);
+  m_pTableRefStack->vPush(pTableRef);
   
   return nullptr;
 }
@@ -199,11 +200,11 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
   
   antlrcpp::Any any = visitChildren(ctx);
   
-  if (m_pTableRefStack->nValues() > 0) {
+  if (m_pTableRefStack->nItems() > 0) {
     vTrace("  /from\n"_Stz);
     
     s256 ref;
-    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPopPtr(__func__));
+    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPop());
     pTableRef->vPrintInto(ref);
     
     vTrace("    /%s\n"_Stz, ref.szStz());
@@ -239,11 +240,11 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
   ASSERT(m_pSelectList);
   
   ASSERT(!m_pExprStack);
-  m_pExprStack = new TypedStack(KK_PARSER_STACK);
+  m_pExprStack = new ExprStack();
   
   visitChildren(ctx);
   
-  ASSERT(m_pExprStack->nValues() == 0);
+  ASSERT(m_pExprStack->nItems() == 0);
   delete m_pExprStack;
   m_pExprStack = nullptr;
   
@@ -262,7 +263,7 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   // pop the expr stack and add it to the select list.
   //ASSERT(m_pExprStack->nValues() == 1);
   
-  ExprAtom* pAtom = (ExprAtom*) (m_pExprStack->pPopPtr(__func__));
+  ExprAtom* pAtom = m_pExprStack->pPop();
   m_pSelectList->vAppend(pAtom);
   
   // Expr is a base class. Example subclasses:
@@ -298,7 +299,7 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
   ExprColumnRef* columnRef = new ExprColumnRef(pCatalogName, pSchemaName,
                                                pTableName, pColumnName);
   
-  m_pExprStack->vPushPtr(columnRef);
+  m_pExprStack->vPush(columnRef);
   
   return nullptr;
 }

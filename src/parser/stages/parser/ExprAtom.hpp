@@ -26,6 +26,7 @@ namespace Parser
   };
   
   ExprAtom* _pExprAtom(void* aAddr);
+  typedef StackNL_t<CN_EXPRSTACK,ExprAtom,1024> ExprStack;
 }
 
 /*============================================================================*/

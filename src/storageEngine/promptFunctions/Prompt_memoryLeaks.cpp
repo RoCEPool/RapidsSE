@@ -51,8 +51,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);
   }
   
-  ObjectsInPool* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
-  ObjectsInPool* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
+  PoolSnapshot* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
+  PoolSnapshot* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
   
   // NOTE: Need to wait for job to complete and cleanup
   // Loop C_ATTEMPTS times to wait for memory leaks to go away

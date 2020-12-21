@@ -28,6 +28,7 @@ namespace Parser
   };
   
   TableRef* _pTableRef(void* aAddr);
+  typedef StackNL_t<CN_TABLEREFSTACK,TableRef,1024> TableRefStack;
 }
 
 /*============================================================================*/

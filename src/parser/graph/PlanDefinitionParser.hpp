@@ -13,7 +13,7 @@ namespace Parser
     // The paths that the planner definition json5 file could be found
     static Stz* definitionPaths[];
 
-    TypedStack* m_pNodeBuilderStack; // A stack of JSON objects
+    NodeBuilderStack * m_pNodeBuilderStack; // A stack of PlanNodeBuilder objects
     Footer m_xFooter;
     
    public:

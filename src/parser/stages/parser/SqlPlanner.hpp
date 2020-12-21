@@ -4,15 +4,16 @@
 #pragma once
 
 #include "sqlBaseVisitor.h"
+#include "TableRef.hpp"
 
 namespace Parser
-{  
+{
   class SqlPlanner : public Object, public sqlBaseVisitor
   {
   private:
   
-    TypedStack* m_pTableRefStack;
-    TypedStack* m_pExprStack;
+    TableRefStack* m_pTableRefStack;
+    ExprStack* m_pExprStack;
     ExprList* m_pSelectList;
     Footer m_xFooter;
     

@@ -10,8 +10,7 @@ enum eKK // stack kind
   /* 2 */ KK_DATA_STACK,
   /* 3 */ KK_JOB_STACK,
   /* 4 */ KK_RETURN_STACK,
-  /* 5 */ KK_PARSER_STACK,
-  /* 6 */ KK_ENUMS
+  /* 5 */ KK_ENUMS
 };
 
 static Stz* aKK[]
