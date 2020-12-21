@@ -8,7 +8,7 @@ namespace Rows
   class Row : public Object
   {
   friend class RowSingle;
-  friend class InfoData::InfoSetBase;
+  friend class DataBuffers::InfoSetBase;
   friend class Steps::Step;
   friend class DataBuffers::RowBuffer;
 

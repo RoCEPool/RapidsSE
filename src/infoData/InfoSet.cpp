@@ -2,7 +2,7 @@
 /* InfoSet.cpp -- Information Set                                             */
 /*============================================================================*/
 
-#include "InfoData.h"
+#include "DataBuffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-InfoSet* InfoData::_pInfoSet(void* aAddr)
+InfoSet* DataBuffers::_pInfoSet(void* aAddr)
 {
   InfoSet* pInfoSet = reinterpret_cast<InfoSet*>(aAddr);
   

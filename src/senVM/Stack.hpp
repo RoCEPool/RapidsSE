@@ -36,6 +36,8 @@ namespace SenVM
   
     StkTop  m_rTop;         // current top of stack
 
+    StkTop  m_rRetry;       // current top of stack
+
     TypedCell* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
     

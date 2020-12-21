@@ -2,7 +2,7 @@
 /* StreamSet.cpp -- Stream Information Set                                    */
 /*============================================================================*/
 
-#include "InfoData.h"
+#include "DataBuffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StreamSet* InfoData::_pStreamSet(void* aAddr)
+StreamSet* DataBuffers::_pStreamSet(void* aAddr)
 {
   StreamSet* pStreamSet = reinterpret_cast<StreamSet*>(aAddr);
   

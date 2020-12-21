@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace InfoData
+namespace DataBuffers
 {
   static const i8 C_INFO_VALUES = 256;
   

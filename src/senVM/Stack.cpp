@@ -50,9 +50,12 @@ Stack::Stack(eKK eKind)
   
   m_eKind        = eKind;
   
-  m_rTop.aTypedCell = (TypedCell*)aStackBase();
+  m_rTop.aTypedCell = aStackBase();
   m_rTop.m_nValues      = 0;
-  
+ 
+  m_rRetry.aTypedCell = aStackBase();
+  m_rRetry.m_nValues      = 0;
+
   m_aRetryTop    = aStackBase();
   m_nRetryValues = 0;
   
@@ -446,7 +449,7 @@ void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_rTop.aTypedCell  = (TypedCell*)aStackBase();
+  m_rTop.aTypedCell  = aStackBase();
   m_rTop.m_nValues       = 0;
 }
 
@@ -457,7 +460,7 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_rTop.aTypedCell = (TypedCell*)m_aRetryTop;
+  m_rTop.aTypedCell = m_aRetryTop;
   m_rTop.m_nValues      = m_nRetryValues;
 }
 

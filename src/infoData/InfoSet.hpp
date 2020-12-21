@@ -5,7 +5,7 @@
 
 #include "eOI.h"
 
-namespace InfoData
+namespace DataBuffers
 {
   
   class InfoSet : public InfoSetBase

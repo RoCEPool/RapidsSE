@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace InfoData
+namespace DataBuffers
 {
   
   class StreamSet : public InfoSetBase

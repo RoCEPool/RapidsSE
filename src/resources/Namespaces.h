@@ -57,7 +57,7 @@ class Birth; class Now;
 namespace Grids             { class Grid;            class Node;              }
 
 namespace Indexing          { class EntBuffer;       class IndexTree;         }
-namespace InfoData          { class InfoSetBase;                              }
+namespace DataBuffers          { class InfoSetBase;                              }
 namespace Interface         { class SessionArray;                             }
 namespace Plans              { class Job;             
                               class JobList;         class Job_CreateTable;
@@ -117,7 +117,7 @@ using namespace Folders;
 using namespace Resources;
 using namespace Grids;
 using namespace Indexing;
-using namespace InfoData;
+using namespace DataBuffers;
 using namespace Interface;
 using namespace Plans;
 using namespace LexicalAnalysis;
