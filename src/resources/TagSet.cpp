@@ -272,7 +272,7 @@ void TagSet::vDumpSet(bool bCarriageReturns)
     if (i_Ename)
       vTrace(", "_Stz);
     
-    if (i_Ename && bCarriageReturns)
+    if (i_Ename || bCarriageReturns)
       vTrace("\n  "_Stz);
     
     if (bCarriageReturns)
@@ -489,7 +489,7 @@ void TagSet::vInsert(Stz* szName, Stz* szValue)
   m_nEnames++;
 
 //  if (szName->bSame("<param0>"_Stz)) {
-//    
+//
 //    vTrace("TagSet::vInsert s : %s %s\n"_Stz,szName,szValue);
 //    vDumpSet(true);
 //  }

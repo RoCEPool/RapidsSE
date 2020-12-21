@@ -7,35 +7,8 @@
 
 //------------------------------------------------------------------------------
 
-namespace Tasking
-{
-  void vCheckAssumptions(void);
-}
 
 //------------------------------------------------------------------------------
-
-#include "Profile.hpp"
-#include "Task.hpp"
-#include "TaskList.hpp"
-#include "TaskQueue.hpp"
-
-#include "EnterExit.h"
-
-#include "SP_Task.hpp"
-
-
-//------------------------------------------------------------------------------
-
-
-#include "Scheduler.hpp"
-
-#include "Thread.hpp"
-#include "ThreadQueue.hpp"
-#include "ThreadVec.hpp"
-
-#include "Queues.hpp"
-
-#include "SP_Thread.hpp"
 
 
 /*============================================================================*/

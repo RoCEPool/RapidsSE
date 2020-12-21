@@ -4,16 +4,6 @@
 
 #include "Tasking.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Tasking::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(Thread) < C_SIZE_SMALL_OBJECT);
-  
-  ALWAYS(sizeof(Queue)    < C_SIZE_SMALL_OBJECT);
-  ALWAYS(sizeof(Task)     < C_SIZE_MEDIUM_OBJECT);
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -96,15 +96,20 @@ void LogicUnit::vCollectOpcode(void)
 
       //vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
 
-      switch((i8)(EoArgs[i_OpCode].m_eArgument)) {
+      // debug
+      char* azEname;
+      
+      switch ((i8)(EoArgs[i_OpCode].m_eArgument)) {
           
         case EA_DATE:
           vAcceptToken();
+          azEname = m_pTkn->azChars();
           if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
             i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
             ASSERT(i_Ename != C_UNKNOWN);
             if (pJobTags->eToken(i_Ename) != TN_STRING) {
               pJobTags->vDumpSet(true);
+              vTrace("azEname : %s \n"_Stz,azEname);
               THROW_USER("vCollectOpcode"_Stz);
             }
             Stz* szParam = pJobTags->szValue(i_Ename);

@@ -28,7 +28,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   SenVM::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
-  Tasking::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Utilities::vCheckAssumptions();
 }
