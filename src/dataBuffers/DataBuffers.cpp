@@ -22,6 +22,16 @@ void DataBuffers::vCheckAssumptions(void)
   ALWAYS(sizeof(HeadLine) == sizeof(SingleWord));
   ALWAYS(sizeof(TailLine) == sizeof(SpaceUnit));
 
+#if defined(__ENT_HEADER)
+  ALWAYS(40 == sizeof(Ent));
+  ALWAYS(48 == sizeof(Ent_gen));
+  ALWAYS(40 == sizeof(Ent_int));
+#else
+  ALWAYS(32 == sizeof(Ent));
+  ALWAYS(40 == sizeof(Ent_gen));
+  ALWAYS(32 == sizeof(Ent_int));
+#endif
+
 }
 
 /*============================================================================*/
