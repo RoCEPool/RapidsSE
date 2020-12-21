@@ -24,7 +24,8 @@ namespace Resources
     void operator =(i8);
     void operator =(Stz*);
     void operator =(void*);
-  
+
+    b1    bBeginsWith(Stz* szArg);
     void  vCatSprint(Stz* szFormat, ...);
     char* azChar(void);
     i8    iCompare(Stz* szArg);

@@ -57,6 +57,8 @@ namespace Parser
     PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
              PlanNodeList* pProperties, PlanNodeList* pChildren);
 
+    PlanNode(eCN eClassNo, const PlanNode& oNode);
+
   public:
     Stz* getName();
     Stz* getType();

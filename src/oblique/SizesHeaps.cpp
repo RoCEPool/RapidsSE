@@ -92,6 +92,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(FreqDist),           HT_TRANSIENT_SMALL   ,0 }, // CN_FREQDIST
 
   { 'G' - ('A' - 1),            HT_INVALID           ,0 }, // CN__G__
+  { sizeof(GraphEditor),        HT_TRANSIENT_TINY    ,0 }, // CN_GRAPHEDITOR
+  { sizeof(GraphNav),           HT_TRANSIENT_TINY    ,0 }, // CN_GRAPHNAV
   { sizeof(Grid),               HT_TRANSIENT_SMALL   ,0 }, // CN_GRID
 
   { 'H' - ('A' - 1),            HT_INVALID           ,0 }, // CN__H__
@@ -166,26 +168,25 @@ SizeHeap gxaSizeHeap[]
 
   { 'P' - ('A' - 1),            HT_INVALID           ,0 }, // CN__P__
   { sizeof(PathVec),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PATHVEC
-  { sizeof(Peruse),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_PERUSE
-  { sizeof(Pipeline),           HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINE
-  { sizeof(PipelineSpec),       HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINESPEC
-  { sizeof(Plan),               HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLAN
-  { sizeof(PlanDefinitionParser),HT_TRANSIENT_MEDIUM ,-8 }, // CN_PLANDEFINITIONPARSER
-  { sizeof(Planner),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLANNER
-  { sizeof(PlanNode),           HT_TRANSIENT_TINY    ,-8 }, // CN_PLANNODE
-  { sizeof(PlanNodeBuilder),    HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDER
-  { sizeof(PlanNodeList),       HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODELIST
-  { sizeof(PlanNodeBuilderList),HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
-  { sizeof(PlanWalker),         HT_TRANSIENT_TINY    ,0 }, // CN_PLANWALKER
-  { sizeof(Pot),                HT_TRANSIENT_LARGE   ,0 }, // CN_POT
-  { sizeof(Predicate),          HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
-  { sizeof(PredicateVec),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC
-  { sizeof(PrimitiveNode),      HT_TRANSIENT_TINY    ,-8 }, // CN_PRIMITIVENODE
-  { sizeof(Profile),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PROFILE
-  { sizeof(PsxThd),             HT_TRANSIENT_TINY    ,0 }, // CN_PSXTHD
-  { sizeof(PtnMap),             HT_TRANSIENT_LARGE   ,0 }, // CN_PTNMAP
-  { sizeof(PtnStream),          HT_TRANSIENT_TINY    ,0 }, // CN_PTNSTREAM
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_PTRVAL
+  { sizeof(Peruse),               HT_TRANSIENT_MEDIUM  , 0 }, // CN_PERUSE
+  { sizeof(Pipeline),             HT_TRANSIENT_SMALL   , 0 }, // CN_PIPELINE
+  { sizeof(PipelineSpec),         HT_TRANSIENT_SMALL   , 0 }, // CN_PIPELINESPEC
+  { sizeof(Plan),                 HT_TRANSIENT_MEDIUM  , 0 }, // CN_PLAN
+  { sizeof(PlanDefinitionParser), HT_TRANSIENT_MEDIUM ,  -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(Planner),              HT_TRANSIENT_MEDIUM  , 0 }, // CN_PLANNER
+  { sizeof(PlanNode),             HT_TRANSIENT_TINY    , -8 }, // CN_PLANNODE
+  { sizeof(PlanNodeBuilder),      HT_TRANSIENT_TINY    , 0 }, // CN_PLANNODEBUILDER
+  { sizeof(PlanNodeList),         HT_TRANSIENT_TINY    , 0 }, // CN_PLANNODELIST
+  { sizeof(PlanNodeBuilderList),  HT_TRANSIENT_TINY    , 0 }, // CN_PLANNODEBUILDERLIST
+  { sizeof(Pot),                  HT_TRANSIENT_LARGE   , 0 }, // CN_POT
+  { sizeof(Predicate),            HT_TRANSIENT_TINY    , 0 }, // CN_PREDICATE
+  { sizeof(PredicateVec),         HT_TRANSIENT_MEDIUM  , 0 }, // CN_PREDICATEVEC
+  { sizeof(PrimitiveNode),        HT_TRANSIENT_TINY    , -8 }, // CN_PRIMITIVENODE
+  { sizeof(Profile),              HT_TRANSIENT_MEDIUM  , 0 }, // CN_PROFILE
+  { sizeof(PsxThd),               HT_TRANSIENT_TINY    , 0 }, // CN_PSXTHD
+  { sizeof(PtnMap),               HT_TRANSIENT_LARGE   , 0 }, // CN_PTNMAP
+  { sizeof(PtnStream),            HT_TRANSIENT_TINY    , 0 }, // CN_PTNSTREAM
+  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,   0 }, // CN_PTRVAL
 
   { 'Q' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Q__
   { sizeof(QueryNode),          HT_TRANSIENT_TINY    ,-8 }, // CN_QUERYNODE

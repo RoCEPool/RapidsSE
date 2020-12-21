@@ -30,6 +30,20 @@ MutablePlanNode::MutablePlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value x
 }
 
 /*----------------------------------------------------------------------------*/
+/* Copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+MutablePlanNode::MutablePlanNode(eCN eClassNo, const MutablePlanNode& oNode)
+    : PlanNode(eClassNo, oNode)
+{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTABLEPLANNODE,_FOOTER_);
+//
+//  _checkInitialised_(CN_MUTABLEPLANNODE);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTABLEPLANNODE,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 MutablePlanNode::~MutablePlanNode(void)
