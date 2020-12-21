@@ -120,10 +120,10 @@ void Step::vStrEqual(void)
   ENTRY();
   
   CellSingle xStringA;
-  m_pDataStack->vPopVal(xStringA,__func__);
+  m_pDataStack->vPopItem(xStringA,__func__);
   
   CellSingle xStringB;
-  m_pDataStack->vPopVal(xStringB,__func__);
+  m_pDataStack->vPopItem(xStringB,__func__);
 
   // get the arguments
   
@@ -278,10 +278,10 @@ void Step::vStrPrepend(void)
   
   //! the use of A and B here doesnt seem intuitive
   CellSingle xValB;
-  m_pDataStack->vPopVal(xValB,__func__);
+  m_pDataStack->vPopItem(xValB,__func__);
  
   CellSingle xValA;
-  m_pDataStack->vPopVal(xValA,__func__);
+  m_pDataStack->vPopItem(xValA,__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first string A
@@ -459,10 +459,10 @@ void Step::vStrSame(void)
   ENTRY();
   
   CellSingle xStringA;
-  m_pDataStack->vPopVal(xStringA,__func__);
+  m_pDataStack->vPopItem(xStringA,__func__);
   
   CellSingle xStringB;
-  m_pDataStack->vPopVal(xStringB,__func__);
+  m_pDataStack->vPopItem(xStringB,__func__);
 
   // get the arguments
   

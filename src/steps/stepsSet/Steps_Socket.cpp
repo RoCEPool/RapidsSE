@@ -89,7 +89,7 @@ void Step::vSocketConnect(void)
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
 
-  m_pDataStack->vPopVal(xNodeVar,__func__);
+  m_pDataStack->vPopItem(xNodeVar,__func__);
   
   i8 iPort = m_pDataStack->iPopInt(__func__);
   

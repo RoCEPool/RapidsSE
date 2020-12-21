@@ -169,15 +169,15 @@ void Step::vIndexStreamSeek(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the upper bound key
-  CellSingle xUpperVariable;
-  m_pDataStack->vPopVal(xUpperVariable,__func__);
-  Stz* szUpperKey = xUpperVariable.szStz();
+  CellSingle xUpperBound;
+  m_pDataStack->vPopItem(xUpperBound,__func__);
+  Stz* szUpperKey = xUpperBound.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower bound key
-  CellSingle xLowerVariable;
-  m_pDataStack->vPopVal(xLowerVariable,__func__);
-  Stz* szLowerKey = xLowerVariable.szStz();
+  CellSingle xLowerBound;
+  m_pDataStack->vPopItem(xLowerBound,__func__);
+  Stz* szLowerKey = xLowerBound.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the phrase

@@ -40,7 +40,7 @@ void Step::vDstackClass(void)
   
   CellSingle xVar;
   
-  m_pDataStack->vPeekVal(i_Val,xVar);
+  m_pDataStack->vPeekItem(i_Val,xVar);
   
   eCN eValClass = xVar.eAnyClass();
   
@@ -107,7 +107,7 @@ void Step::vDstackDup(void)
   //CellSingle xVarA;
   
   CellSingle xVarA;
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   
   m_pDataStack->vPushVal(xVarA);
   m_pDataStack->vPushVal(xVarA);
@@ -125,7 +125,7 @@ void Step::vDstackDupNonZero(void)
   // could just copy from stack back into stack
   
   CellSingle xVarA;
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   
   if (xVarA.iGetColVal()) {
     m_pDataStack->vPushVal(xVarA);
@@ -145,10 +145,10 @@ void Step::vDstackNip(void)
   ENTRY();
   
   CellSingle xVarA;
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   
   CellSingle xVarB;
-  m_pDataStack->vPopVal(xVarB,__func__);
+  m_pDataStack->vPopItem(xVarB,__func__);
   
   m_pDataStack->vPushVal(xVarA);
   
@@ -166,7 +166,7 @@ void Step::vDstackOver(void)
   
   CellSingle xVariable;
   
-  m_pDataStack->vPeekVal(1,xVariable);
+  m_pDataStack->vPeekItem(1,xVariable);
   
   m_pDataStack->vPushVal(xVariable);
   
@@ -186,7 +186,7 @@ void Step::vDstackPick(void)
   
   CellSingle xVariable;
   
-  m_pDataStack->vPeekVal(iPick,xVariable);
+  m_pDataStack->vPeekItem(iPick,xVariable);
   
   m_pDataStack->vPushVal(xVariable);
   
@@ -212,14 +212,14 @@ void Step::vDstackReverse(void)
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
   switch (nValues) {
-    case 8: m_pDataStack->vPopVal(xVal8,__func__);
-    case 7: m_pDataStack->vPopVal(xVal7,__func__);
-    case 6: m_pDataStack->vPopVal(xVal6,__func__);
-    case 5: m_pDataStack->vPopVal(xVal5,__func__);
-    case 4: m_pDataStack->vPopVal(xVal4,__func__);
-    case 3: m_pDataStack->vPopVal(xVal3,__func__);
-    case 2: m_pDataStack->vPopVal(xVal2,__func__);
-    case 1: m_pDataStack->vPopVal(xVal1,__func__);
+    case 8: m_pDataStack->vPopItem(xVal8,__func__);
+    case 7: m_pDataStack->vPopItem(xVal7,__func__);
+    case 6: m_pDataStack->vPopItem(xVal6,__func__);
+    case 5: m_pDataStack->vPopItem(xVal5,__func__);
+    case 4: m_pDataStack->vPopItem(xVal4,__func__);
+    case 3: m_pDataStack->vPopItem(xVal3,__func__);
+    case 2: m_pDataStack->vPopItem(xVal2,__func__);
+    case 1: m_pDataStack->vPopItem(xVal1,__func__);
   }
   
   switch (nValues) {
@@ -248,10 +248,10 @@ void Step::vDstackRoll(void)
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    m_pDataStack->vPopVal(xVarX,__func__);
+    m_pDataStack->vPopItem(xVarX,__func__);
     
     m_pReturnStack->vPushVal(xVarX);
   }
@@ -259,7 +259,7 @@ void Step::vDstackRoll(void)
   m_pDataStack->vPushVal(xVarA);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    m_pReturnStack->vPopVal(xVarX,__func__);
+    m_pReturnStack->vPopItem(xVarX,__func__);
     
     m_pDataStack->vPushVal(xVarX);
   }
@@ -280,16 +280,16 @@ void Step::vDstackRollInv(void)
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    m_pDataStack->vPopVal(xVarX,__func__);
+    m_pDataStack->vPopItem(xVarX,__func__);
     
     m_pReturnStack->vPushVal(xVarX);
   }
   
-  m_pDataStack->vPopVal(xVarZ,__func__);
+  m_pDataStack->vPopItem(xVarZ,__func__);
   
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    m_pReturnStack->vPopVal(xVarX,__func__);
+    m_pReturnStack->vPopItem(xVarX,__func__);
     
     m_pDataStack->vPushVal(xVarX);
   }
@@ -307,11 +307,11 @@ void Step::vDstackRot(void)
   ENTRY();
   
   CellSingle xVarA;
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   CellSingle xVarB;
-  m_pDataStack->vPopVal(xVarB,__func__);
+  m_pDataStack->vPopItem(xVarB,__func__);
   CellSingle xVarC;
-  m_pDataStack->vPopVal(xVarC,__func__);
+  m_pDataStack->vPopItem(xVarC,__func__);
 
   
   m_pDataStack->vPushVal(xVarB);
@@ -329,11 +329,11 @@ void Step::vDstackRotInv(void)
   ENTRY();
   
   CellSingle xVarA;
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   CellSingle xVarB;
-  m_pDataStack->vPopVal(xVarB,__func__);
+  m_pDataStack->vPopItem(xVarB,__func__);
   CellSingle xVarC;
-  m_pDataStack->vPopVal(xVarC,__func__);
+  m_pDataStack->vPopItem(xVarC,__func__);
 
   m_pDataStack->vPushVal(xVarA);
   m_pDataStack->vPushVal(xVarC);
@@ -362,10 +362,10 @@ void Step::vDstackSwap(void)
   ENTRY();
   
   CellSingle xVarA;
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   
   CellSingle xVarB;
-  m_pDataStack->vPopVal(xVarB,__func__);
+  m_pDataStack->vPopItem(xVarB,__func__);
   
   m_pDataStack->vPushVal(xVarA);
   m_pDataStack->vPushVal(xVarB);
@@ -381,10 +381,10 @@ void Step::vDstackTuck(void)
   ENTRY();
   
   CellSingle xVarA;
-  m_pDataStack->vPopVal(xVarA,__func__);
+  m_pDataStack->vPopItem(xVarA,__func__);
   
   CellSingle xVarB;
-  m_pDataStack->vPopVal(xVarB,__func__);
+  m_pDataStack->vPopItem(xVarB,__func__);
 
   m_pDataStack->vPushVal(xVarA);
   m_pDataStack->vPushVal(xVarB);

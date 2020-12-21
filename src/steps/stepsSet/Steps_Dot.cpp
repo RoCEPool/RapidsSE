@@ -23,7 +23,7 @@ void Step::vDot(void)
   ENTRY();
   
   CellSingle xVariable;
-  m_pDataStack->vPopVal(xVariable,__func__);
+  m_pDataStack->vPopItem(xVariable,__func__);
   
   if (xVariable.bIsIntVal()) {
 //    vTrace("[%s %s] %lld\n"_Stz,
@@ -51,7 +51,7 @@ void Step::vDot(void)
 //  ENTRY();
 //
 //  CellSingle xVariable;
-//  m_pDataStack->vPopVal(xVariable,__func__);
+//  m_pDataStack->vPopItem(xVariable,__func__);
 //
 //  s32 sSide;
 //
@@ -83,7 +83,7 @@ void Step::vDotPut(void)
   ENTRY();
   
   CellSingle xVariable;
-  m_pDataStack->vPopVal(xVariable,__func__);
+  m_pDataStack->vPopItem(xVariable,__func__);
   
   if (xVariable.bIsIntVal())
     vTrace("%lld"_Stz,xVariable.iGetColVal());
@@ -113,7 +113,7 @@ void Step::vDotVerbose(void)
   ENTRY();
   
   CellSingle xVariable;
-  m_pDataStack->vPopVal(xVariable,__func__);
+  m_pDataStack->vPopItem(xVariable,__func__);
   
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,

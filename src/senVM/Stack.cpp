@@ -197,7 +197,7 @@ TypedCell* Stack::aPeekItem(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekVal(i8 i_Item, TypedCell* aTypedCell)
+void Stack::vPeekItem(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -209,7 +209,7 @@ void Stack::vPeekVal(i8 i_Item, TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeVal(i8 i_Item, TypedCell* aTypedCell)
+void Stack::vPokeItem(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -319,7 +319,7 @@ void Stack::vPopStr(String* pString, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopVal(TypedCell* aTypedCell, const char* azCallingFunNm)
+void Stack::vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

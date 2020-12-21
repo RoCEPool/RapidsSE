@@ -22,10 +22,10 @@ void Step::vAddressEqual(void)
   ENTRY();
   
   CellSingle xAddressA;
-  m_pDataStack->vPopVal(xAddressA,__func__);
+  m_pDataStack->vPopItem(xAddressA,__func__);
   
   CellSingle xAddressB;
-  m_pDataStack->vPopVal(xAddressB,__func__);
+  m_pDataStack->vPopItem(xAddressB,__func__);
 
   i8 iA = xAddressA.iGetColVal();
   i8 iB = xAddressB.iGetColVal();
@@ -63,7 +63,7 @@ void Step::vAddressStore(void)
   TypedCell* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
 
   CellSingle xValToStore;
-  m_pDataStack->vPopVal(xValToStore,__func__);
+  m_pDataStack->vPopItem(xValToStore,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
