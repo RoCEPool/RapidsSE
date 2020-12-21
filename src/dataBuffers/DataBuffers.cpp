@@ -19,6 +19,9 @@ void DataBuffers::vCheckAssumptions(void)
   // dont change without correcting Ent
   ALWAYS(6 == C_MAX_LVL_LEVELS);
 
+  ALWAYS(sizeof(HeadLine) == sizeof(SingleWord));
+  ALWAYS(sizeof(TailLine) == sizeof(SpaceUnit));
+
 }
 
 /*============================================================================*/

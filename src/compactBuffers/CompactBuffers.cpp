@@ -4,14 +4,6 @@
 
 #include "SortBuffers.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void CompactBuffers::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(HeadLine) == sizeof(SingleWord));
-  ALWAYS(sizeof(TailLine) == sizeof(SpaceUnit));
-}
 
 /*============================================================================*/
 /* end                                                                        */
