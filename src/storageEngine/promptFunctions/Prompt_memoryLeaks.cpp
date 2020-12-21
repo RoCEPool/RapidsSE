@@ -93,7 +93,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
       goto L_REPORT;
     
     // we have memory leaks; sleep and try again!
-    AM::vNapMsec(100,CN_SEPROMPT);
+    AM::vNapMsec(200,CN_SEPROMPT);
   }
 
   // attempted C_ATTEMPTS to see if memory leaks settle down
