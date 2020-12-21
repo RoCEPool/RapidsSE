@@ -51,7 +51,7 @@ Stack::Stack(eKK eKind)
   m_eKind        = eKind;
   
   m_rTop.aTypedCell = (TypedCell*)aStackBase();
-  m_nValues      = 0;
+  m_rTop.m_nValues      = 0;
   
   m_aRetryTop    = aStackBase();
   m_nRetryValues = 0;
@@ -89,7 +89,7 @@ void Stack::vDiscardTop(void)
   _hazard_();
   
   m_rTop.vRewind();
-  m_nValues--;
+  m_rTop.m_nValues--;
   
   _hazard_();
 }
@@ -340,7 +340,7 @@ void Stack::vPopVal(TypedCell* aTypedCell, const char* azFunNm)
   
   m_rTop.vRewind(nBytes);
   
-  m_nValues--;
+  m_rTop.m_nValues--;
   
   _hazard_();
 }
@@ -432,7 +432,7 @@ void Stack::vPushVal(TypedCell* aTypedCell)
   
   m_rTop.aTypedCell->vCopy(aTypedCell,nBytes);
   
-  m_nValues++;
+  m_rTop.m_nValues++;
   
   _hazard_();
   
@@ -447,7 +447,7 @@ void Stack::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_rTop.aTypedCell  = (TypedCell*)aStackBase();
-  m_nValues       = 0;
+  m_rTop.m_nValues       = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,7 +458,7 @@ void Stack::vRetry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   m_rTop.aTypedCell = (TypedCell*)m_aRetryTop;
-  m_nValues      = m_nRetryValues;
+  m_rTop.m_nValues      = m_nRetryValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,7 +469,7 @@ void Stack::vRetryPoint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_aRetryTop    = m_rTop.aTypedCell;
-  m_nRetryValues = m_nValues;
+  m_nRetryValues = m_rTop.m_nValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,7 +503,7 @@ i8 Stack::nValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return m_nValues;
+  return m_rTop.m_nValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -526,7 +526,7 @@ TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
 
   m_rTop.aTypedCell->vType(eType);
 
-  m_nValues++;
+  m_rTop.m_nValues++;
   
   return m_rTop.aTypedCell;
 }
@@ -600,7 +600,7 @@ bool Stack::bGuard(i8 nValues)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (m_nValues < nValues)
+  if (m_rTop.m_nValues < nValues)
     return false;
   
   return true;

@@ -12,7 +12,7 @@ namespace SenVM
   //static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
   static const i8 C_WSP_STACK = C_SIZE_MEDIUM_OBJECT - 256;
 
-  class StkPtr
+  class StkTop
   {
   public:
     union {
@@ -22,6 +22,8 @@ namespace SenVM
       TypedCell* aTypedCell;
     };
   
+    i8   m_nValues; // number of values currently on stack
+
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
     void vRewind  (void)      { vRewind(aTypedCell->nStackUsage()); }
@@ -32,8 +34,7 @@ namespace SenVM
   private:
     eKK     m_eKind;        // kind of stack
   
-    StkPtr  m_rTop;         // current top of stack
-    i8      m_nValues;      // number of values currently on stack
+    StkTop  m_rTop;         // current top of stack
 
     TypedCell* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
