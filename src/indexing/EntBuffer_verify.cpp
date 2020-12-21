@@ -2,7 +2,7 @@
 /* EntBuffer_verify.cpp -- verify related functions for Entry Buffer          */
 /*============================================================================*/
 
-#include "Indexing.h"
+#include "DataBuffers.h"
 
 
 /*----------------------------------------------------------------------------*/

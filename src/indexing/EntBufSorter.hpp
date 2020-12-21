@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Indexing
+namespace DataBuffers
 {
   static const i8 C_SRT_ENT_INT = C_32KB;
 

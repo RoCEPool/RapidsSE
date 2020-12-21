@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Indexing
+namespace DataBuffers
 {
   class KeyBuilder
   {

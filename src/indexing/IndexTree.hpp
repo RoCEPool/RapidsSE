@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Indexing
+namespace DataBuffers
 {
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   

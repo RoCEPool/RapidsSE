@@ -2,7 +2,7 @@
 /* IndexTree.cpp -- Index Partition                                            */
 /*============================================================================*/
 
-#include "Indexing.h"
+#include "DataBuffers.h"
 
 bool mbCheckPriorVec = false;
 
@@ -15,7 +15,7 @@ extern EnvFlags gxEnvFlags;;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexTree* Indexing::_pIndexTree(void* pAddr)
+IndexTree* DataBuffers::_pIndexTree(void* pAddr)
 {
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pAddr);
   

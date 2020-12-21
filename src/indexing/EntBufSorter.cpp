@@ -2,14 +2,14 @@
 /* SkipRoots.cpp -- roots of the skips list in an entry buffer                */
 /*============================================================================*/
 
-#include "Indexing.h"
+#include "DataBuffers.h"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Indexing,EntBufSorter,CN_ENTBUFSORTER)
+__pCastFunction(DataBuffers,EntBufSorter,CN_ENTBUFSORTER)
 __aNewFunction(EntBufSorter,CN_ENTBUFSORTER)
 __vDeleteFunction(EntBufSorter,CN_ENTBUFSORTER)
 __aFooterFunction(EntBufSorter)
@@ -41,7 +41,7 @@ EntBufSorter::~EntBufSorter(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-int Indexing::iEntBufSortCompare_IntElm0(const void* aLeft, const void* aRight)
+int DataBuffers::iEntBufSortCompare_IntElm0(const void* aLeft, const void* aRight)
 {
   Ent_int* aEntLeft  = (Ent_int*)aLeft;
   Ent_int* aEntRight = (Ent_int*)aRight;
@@ -55,7 +55,7 @@ int Indexing::iEntBufSortCompare_IntElm0(const void* aLeft, const void* aRight)
     return 0;
 }
 
-int Indexing::iEntBufSortCompare_Lvl_IntElm0(const void* aLeft, const void* aRight)
+int DataBuffers::iEntBufSortCompare_Lvl_IntElm0(const void* aLeft, const void* aRight)
 {
   Ent_int* aEntLeft  = (Ent_int*)aLeft;
   Ent_int* aEntRight = (Ent_int*)aRight;
@@ -96,8 +96,8 @@ void EntBufSorter::vSort_int(EntBuffer* pEntBuffer)
   qsort(aItemArray,
         nItems,
         sizeof(Ent_int),
-        //Indexing::iEntBufSortCompare_IntElm0    // by IntElm0
-        Indexing::iEntBufSortCompare_Lvl_IntElm0  // by Level,IntElm0
+        //DataBuffers::iEntBufSortCompare_IntElm0    // by IntElm0
+        DataBuffers::iEntBufSortCompare_Lvl_IntElm0  // by Level,IntElm0
         );
   
   // for each entry in array, record its revised ticket

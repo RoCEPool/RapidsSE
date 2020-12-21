@@ -2,7 +2,7 @@
 /* EntBuffer.cpp -- Index Entry Buffer                                        */
 /*============================================================================*/
 
-#include "Indexing.h"
+#include "DataBuffers.h"
 
 
 bool mbWatch = false;
@@ -15,7 +15,7 @@ bool mbWatch = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntBuffer* Indexing::_pEntBuffer(void* aAddress)
+EntBuffer* DataBuffers::_pEntBuffer(void* aAddress)
 {
   EntBuffer* pEntBuffer = reinterpret_cast<EntBuffer*>(aAddress);
   

@@ -2,7 +2,7 @@
 /* EntBuffer_position_int.cpp -- position related functions for EntBuffer     */
 /*============================================================================*/
 
-#include "Indexing.h"
+#include "DataBuffers.h"
 
 
 #define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
