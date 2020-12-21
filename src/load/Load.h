@@ -7,19 +7,9 @@
 
 //------------------------------------------------------------------------------
 
-namespace Load
-{
-  void vCheckAssumptions(void);
-}
 
 //------------------------------------------------------------------------------
 
-#include "ToRow.hpp"
-#include "ToNstRow.hpp"
-#include "ToPtnRow.hpp"
-#include "ToHshCrw.hpp"
-
-#include "CrwToRow.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
