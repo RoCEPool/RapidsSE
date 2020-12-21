@@ -58,7 +58,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   // Loop C_ATTEMPTS times to wait for memory leaks to go away
   
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
-    
+
+    iRowsProcessed = 0;
     PoolHelper::vObjectSnapshot(pSnapshotObjects);
     
     for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {

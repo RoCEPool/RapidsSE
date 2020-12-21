@@ -288,6 +288,9 @@ void LogicUnit::vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName)
     case 7:
       vGenerateAsmTxt_Smt7(iQueryNo, iSubQueryNo, pFile);
       break;
+    case 8:
+      vGenerateAsmTxt_Smt8(iQueryNo, iSubQueryNo, pFile);
+      break;
 
 //    case 6:
 //      vGenerateAsmTxt_Query6(iQueryNo, iSubQueryNo, pFile);
@@ -957,8 +960,8 @@ void LogicUnit::vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for given query into a file                              */
-/* select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;           */
-/* index on orderkey
+/* select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;         */
+/* index on orderkey                                                          */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
@@ -1026,6 +1029,109 @@ void LogicUnit::vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select sum(l_extentedPrice) from lineitem                                  */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt8(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+
+  switch (iSubQueryNo) {
+    case 0:
+      vGenerateAsmTxt_Smt8_0(iQueryNo, iSubQueryNo, pFile);
+      break;
+    case 1:
+      vGenerateAsmTxt_Smt8_1(iQueryNo, iSubQueryNo, pFile);
+      break;
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;           */
+/* index on orderkey
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt8_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  TagSet oTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, iSubQueryNo);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // EOSMARKER HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // STARTMARKER HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_SRC_TABLENM, "lineitem"_Stz);
+  oTagSet.vAppend(C_TAG_SRC_INDEXNM, "lineitem_idx2"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_TABLENM, "null"_Stz);
+  oTagSet.vAppend(C_TAG_ALT_INDEXNM, "null"_Stz);
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_LOGICUNIT_HANDLER, "EOAsm2_StreamDef"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STARTMARKER_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // STREAMDEF HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_ADD_PTN_HASH, (i8)0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_STREAMDEF_FROM_SRC_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DATAPULSE HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   handler intiates tableScan
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "INDEX_RANGE_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INDEX_LBD_INTEGER routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the logicUnit handler to be executed once we step back into the sen code
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ALL_ROUTINE"_Stz);
+  oTagSet.vAppend(C_TAG_LBOUND_VALUE, 30);
+  oTagSet.vAppend(C_TAG_UBOUND_VALUE, 50);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INDEX_RANGE_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRW_PROJECT_ALL_ROUTINE
+  // - - - - - - - - - - - - - - - - - - - - Z- - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_ALL for each row
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ALL_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for given query into a file                              */
+/* select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;           */
+/* index on orderkey
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAsmTxt_Smt8_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

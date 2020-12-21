@@ -228,6 +228,9 @@ namespace Expressions
     void vGenerateAsmTxt_Smt5(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
     void vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
     void vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+    void vGenerateAsmTxt_Smt8(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+    void vGenerateAsmTxt_Smt8_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
+    void vGenerateAsmTxt_Smt8_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
 
     void vGenerateAsmTxt_Query6(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
     void vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
