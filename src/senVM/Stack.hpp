@@ -20,10 +20,10 @@ namespace SenVM
       TypedCell* m_aTypedCell;
     };
   
-    i8   m_nValues; // number of values currently on stack
+    i8   m_nItems; // number of items currently on stack
 
-    void vAdvance (i8 nBytes) { m_ayStackPtr -= nBytes; }
-    void vRewind  (i8 nBytes) { m_ayStackPtr += nBytes; }
+    void vAdvance (i8 nBytes) { m_ayStackPtr -= nBytes; m_nItems++;   }
+    void vRewind  (i8 nBytes) { m_ayStackPtr += nBytes; m_nItems--;   }
     void vRewind  (void)      { vRewind(m_aTypedCell->nStackUsage()); }
   };
 
@@ -88,7 +88,7 @@ namespace SenVM
     TypedCell* aAllotPtrVal(void);
     TypedCell* aAllotStzVal(i8 nStrSize);
   
-    bool bGuard(i8 nValues);
+    bool bGuard(i8 nItems);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);

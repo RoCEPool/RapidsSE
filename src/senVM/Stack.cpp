@@ -51,10 +51,10 @@ Stack::Stack(eKK eKind)
   m_eKind = eKind;
   
   m_rTop.m_aTypedCell = aStackBase();
-  m_rTop.m_nValues  = 0;
+  m_rTop.m_nItems     = 0;
  
   m_rRetry.m_aTypedCell = aStackBase();
-  m_rRetry.m_nValues  = 0;
+  m_rRetry.m_nItems     = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vFill(0x00,CN_STACK);
@@ -89,7 +89,6 @@ void Stack::vDiscardTop(void)
   _hazard_();
   
   m_rTop.vRewind();
-  m_rTop.m_nValues--;
   
   _hazard_();
 }
@@ -107,20 +106,20 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
     TypedCell* aTypedCell = aPeekVal(i_Val);
-    
-    eCN eValClass  = aTypedCell->eType();
+    eCN eType = aTypedCell->eType();
     i8 nStackUsage = aTypedCell->nStackUsage();
     
-    if (CN_STZVAL == eValClass)
+    if (CN_STZVAL == eType)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
-             i_Val,aTypedCell,nStackUsage,aCN[eValClass],
-             _aTypedCell(aTypedCell)->nStzSize());
+             i_Val,aTypedCell,nStackUsage,aCN[eType],
+             aTypedCell->nStzSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
-             i_Val,aTypedCell,nStackUsage,aCN[eValClass]);
+             i_Val,aTypedCell,nStackUsage,aCN[eType]);
     
-    switch(eValClass) {
+    switch (eType) {
         
+      // -- -- -- -- -- --
       case CN_FIPVAL: {
         ForthCell* aFip  = aTypedCell->aFip();
         if (pDicStack) {
@@ -136,6 +135,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
         break;
       }
         
+      // -- -- -- -- -- --
       case CN_INTVAL: {
         i8 iInt = aTypedCell->iInt();
         
@@ -143,6 +143,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
         break;
       }
         
+      // -- -- -- -- -- --
       case CN_PTRVAL: {
         Object* pObj  =aTypedCell->pObj();
         eCN ePtdClass = pObj->eClass();
@@ -157,6 +158,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
         break;
       }
         
+      // -- -- -- -- -- --
       case CN_STZVAL: {
         char* azChar = aTypedCell->azChar();
         
@@ -164,8 +166,8 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
         break;
       }
         
+      // -- -- -- -- -- --
       default: {
-        
         break;
       }
         
@@ -284,7 +286,6 @@ Object* Stack::pPopPtr(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  //Object* pObj = m_rTop.aPtrVal->pObj();
   Object* pObj = m_rTop.m_aTypedCell->pObj();
 
   vDiscardTop();
@@ -309,12 +310,7 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   TypedCell* aTypedCell = _aTypedCell(aTopVal());
   
   pString->vCopy(aTypedCell->szStz());
-  
-//  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
-//    vTrace("vPopStr: %s"_Stz,aStzVal->szStz());
-//    Resources::vDebugPoint();
-//  }
-  
+    
   vDiscardTop();
   
   _hazard_();
@@ -339,9 +335,7 @@ void Stack::vPopVal(TypedCell* aTypedCell, const char* azFunNm)
   aTypedCell->vCopy(m_rTop.m_aTypedCell,nBytes);
   
   m_rTop.vRewind();
-  
-  m_rTop.m_nValues--;
-  
+    
   _hazard_();
 }
 
@@ -394,9 +388,6 @@ void Stack::vPushStr(String* pStr)
   TypedCell* aTypedCell = aAllotStzVal(nSize);
 
   aTypedCell->vStz(pStr->szStz());
-  //aStzVal->vInspect();
-
-  //vDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,9 +403,6 @@ void Stack::vPushStz(Stz* szStz)
   TypedCell* aTypedCell = aAllotStzVal(nSize);
   
   aTypedCell->vStz(szStz);
-  //aStzVal->vInspect();
-  
-  //vDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,9 +419,7 @@ void Stack::vPushVal(TypedCell* aTypedCell)
   m_rTop.vAdvance(nBytes);
   
   m_rTop.m_aTypedCell->vCopy(aTypedCell,nBytes);
-  
-  m_rTop.m_nValues++;
-  
+    
   _hazard_();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
@@ -447,7 +433,7 @@ void Stack::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_rTop.m_aTypedCell  = aStackBase();
-  m_rTop.m_nValues       = 0;
+  m_rTop.m_nItems       = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,7 +444,7 @@ void Stack::vRetry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   m_rTop.m_aTypedCell = m_rRetry.m_aTypedCell;
-  m_rTop.m_nValues  = m_rRetry.m_nValues;
+  m_rTop.m_nItems  = m_rRetry.m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,7 +455,7 @@ void Stack::vRetryPoint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_rRetry.m_aTypedCell = m_rTop.m_aTypedCell;
-  m_rRetry.m_nValues  = m_rTop.m_nValues;
+  m_rRetry.m_nItems  = m_rTop.m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,7 +489,7 @@ i8 Stack::nValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return m_rTop.m_nValues;
+  return m_rTop.m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -525,8 +511,6 @@ TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
   m_rTop.m_aTypedCell->vMagic();
 
   m_rTop.m_aTypedCell->vType(eType);
-
-  m_rTop.m_nValues++;
   
   return m_rTop.m_aTypedCell;
 }
@@ -539,10 +523,7 @@ TypedCell* Stack::aAllotFipVal(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   TypedCell* aTypedCell = aAllotTypedCell(CN_FIPVAL,C_NO_ADDITIONAL_BYTES);
-  
-  //aTypedCell->vType(CN_FIPVAL);
-  //aFipVal->vMagic();
-  
+    
   return aTypedCell;
 }
 
@@ -554,10 +535,7 @@ TypedCell* Stack::aAllotIntVal(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   TypedCell* aTypedCell = aAllotTypedCell(CN_INTVAL,C_NO_ADDITIONAL_BYTES);
-  
-  //aTypedCell->vType(CN_INTVAL);
-  //aIntVal->vMagic();
-  
+    
   return aTypedCell;
 }
 
@@ -569,10 +547,7 @@ TypedCell* Stack::aAllotPtrVal(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   TypedCell* aTypedCell = aAllotTypedCell(CN_PTRVAL,C_NO_ADDITIONAL_BYTES);
-  
-  //aTypedCell->vType(CN_PTRVAL);
-  //aPtrVal->vMagic();
-  
+    
   return aTypedCell;
 }
 
@@ -586,21 +561,18 @@ TypedCell* Stack::aAllotStzVal(i8 nStrSize)
   i8 nWithAdditionalBytes = nStrSize;
   
   TypedCell* aTypedCell = aAllotTypedCell(CN_STZVAL,nWithAdditionalBytes);
-  
-  //aTypedCell->vType(CN_STZVAL);
-  //aStzVal->vMagic();
-  
+    
   return aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
 /* guard stack has at least nValues on it                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuard(i8 nValues)
+bool Stack::bGuard(i8 nItems)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (m_rTop.m_nValues < nValues)
+  if (m_rTop.m_nItems < nItems)
     return false;
   
   return true;
