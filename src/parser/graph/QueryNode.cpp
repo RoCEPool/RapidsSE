@@ -32,6 +32,20 @@ QueryNode::QueryNode(Stz* szName, Stz* szType, Value xValue,
 }
 
 /*----------------------------------------------------------------------------*/
+/* Copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+QueryNode::QueryNode(const QueryNode& oNode)
+    : MutablePlanNode(CN_QUERYNODE, oNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
+
+  _checkInitialised_(CN_QUERYNODE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 QueryNode::~QueryNode(void)

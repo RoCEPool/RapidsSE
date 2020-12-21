@@ -29,9 +29,9 @@ namespace Parser
     PlanNodeBuilder();
     ~PlanNodeBuilder(void);
 
-    PlanNode* pBuild();
-    
     Footer* aFooter(void);
+
+    PlanNode* pBuild();
 
   private:
     PlanNodeList* pBuildList(PlanNodeBuilderList* builderList);

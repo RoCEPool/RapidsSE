@@ -20,6 +20,7 @@ namespace Parser
 
     QueryNode(Stz* szName, Stz* szType, Value xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren);
+    QueryNode(const QueryNode& oNode);
     virtual ~QueryNode(void);
 
     Footer* aFooter(void);

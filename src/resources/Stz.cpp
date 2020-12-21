@@ -122,6 +122,14 @@ void Stz::operator =(void* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bBeginsWith: test if arg is a leading subset of the string                 */
+/*----------------------------------------------------------------------------*/
+b1 Stz::bBeginsWith(Stz* szArg)
+{
+  return StrLib::bBeginsWith(azChar(), szArg->azChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
 void Stz::vCatSprint(Stz* szFormat, ...)

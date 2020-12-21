@@ -28,15 +28,18 @@ bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
 
   PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
 
-  PlanNode* root = pPlanDefinitionParser->pParse();
+  PlanNode* pRoot = pPlanDefinitionParser->pParse();
 
   delete pPlanDefinitionParser;
 
-  if (root == nullptr) {
+  if (pRoot == nullptr) {
     return false;
   }
 
-  delete root;
+  PlanNode* pDup = GraphNav::pFind("/__root__/definitions/object/valueObject/floatObject:__constraints/valueType/valueTypeParam"_Stz, pRoot);
+  RASSERT(pDup);
+
+  delete pRoot;
 
 //  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 //

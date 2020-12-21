@@ -32,7 +32,8 @@ namespace Parser
 #include "graph/StatisticsNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
 
-#include "graphTools/PlanWalker.hpp"
+#include "graphTools/GraphNav.hpp"
+#include "graphTools/GraphEditor.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
