@@ -19,7 +19,7 @@ namespace SenVM
 #include "Local.hpp"
 #include "LocalChain.hpp"
 #include "Routine.hpp"
-#include "Stack.hpp"
+#include "TypedStack.hpp"
 
 #include "Compiler.hpp"
 #include "Forth.hpp"
