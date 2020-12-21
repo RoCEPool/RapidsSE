@@ -16,6 +16,44 @@ void vTest1(void)
   
   TextStack* pTextStack = new TextStack;
   
+  Text* pText0 = new Text;
+  Text* pText1 = new Text;
+  Text* pText2 = new Text;
+  
+  ASSERT(0 == pTextStack->nItems());
+  
+  pTextStack->vPush(pText0);
+  ASSERT(1 == pTextStack->nItems());
+  ASSERT(pText0 == pTextStack->pTop());
+  ASSERT(pText0 == pTextStack->pPeek(0));
+
+  pTextStack->vPush(pText1);
+  ASSERT(2 == pTextStack->nItems());
+  ASSERT(pText1 == pTextStack->pTop());
+  ASSERT(pText1 == pTextStack->pPeek(1));
+  
+  pTextStack->vPush(pText2);
+  ASSERT(3 == pTextStack->nItems());
+  ASSERT(pText2 == pTextStack->pTop());
+  ASSERT(pText2 == pTextStack->pPeek(2));
+
+  ASSERT(pText0 == pTextStack->pPeek(0));
+  ASSERT(pText1 == pTextStack->pPeek(1));
+  ASSERT(pText2 == pTextStack->pPeek(2));
+
+  ASSERT(pText2 == pTextStack->pPop());
+  ASSERT(2 == pTextStack->nItems());
+
+  ASSERT(pText1 == pTextStack->pPop());
+  ASSERT(1 == pTextStack->nItems());
+
+  ASSERT(pText0 == pTextStack->pPop());
+  ASSERT(0 == pTextStack->nItems());
+
+  delete pText2;
+  delete pText1;
+  delete pText0;
+
   delete pTextStack;
 }
 
