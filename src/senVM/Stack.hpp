@@ -16,15 +16,15 @@ namespace SenVM
   {
   public:
     union {
-      byte* ayStackPtr;
-      TypedCell* aTypedCell;
+      byte* m_ayStackPtr;
+      TypedCell* m_aTypedCell;
     };
   
     i8   m_nValues; // number of values currently on stack
 
-    void vAdvance (i8 nBytes) { ayStackPtr -= nBytes; }
-    void vRewind  (i8 nBytes) { ayStackPtr += nBytes; }
-    void vRewind  (void)      { vRewind(aTypedCell->nStackUsage()); }
+    void vAdvance (i8 nBytes) { m_ayStackPtr -= nBytes; }
+    void vRewind  (i8 nBytes) { m_ayStackPtr += nBytes; }
+    void vRewind  (void)      { vRewind(m_aTypedCell->nStackUsage()); }
   };
 
   class Stack: public Object

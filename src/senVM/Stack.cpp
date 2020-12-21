@@ -50,10 +50,10 @@ Stack::Stack(eKK eKind)
   
   m_eKind = eKind;
   
-  m_rTop.aTypedCell = aStackBase();
+  m_rTop.m_aTypedCell = aStackBase();
   m_rTop.m_nValues  = 0;
  
-  m_rRetry.aTypedCell = aStackBase();
+  m_rRetry.m_aTypedCell = aStackBase();
   m_rRetry.m_nValues  = 0;
   
 #ifdef WITH_CHECK_INITIALISED
@@ -228,7 +228,7 @@ i8 Stack::iPopAsInt(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  i8 iInt = m_rTop.aTypedCell->iAsInt();
+  i8 iInt = m_rTop.m_aTypedCell->iAsInt();
   vDiscardTop();
   
   return iInt;
@@ -246,7 +246,7 @@ ForthCell* Stack::aPopFip(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  ForthCell* aFip = m_rTop.aTypedCell->aFip();
+  ForthCell* aFip = m_rTop.m_aTypedCell->aFip();
   
   vDiscardTop();
   
@@ -265,7 +265,7 @@ i8 Stack::iPopInt(const char* azFunNm)
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
-  i8 iInt = m_rTop.aTypedCell->iInt();
+  i8 iInt = m_rTop.m_aTypedCell->iInt();
   
   vDiscardTop();
   
@@ -285,7 +285,7 @@ Object* Stack::pPopPtr(const char* azFunNm)
                         "Invalid d-stack"_Stz);
   
   //Object* pObj = m_rTop.aPtrVal->pObj();
-  Object* pObj = m_rTop.aTypedCell->pObj();
+  Object* pObj = m_rTop.m_aTypedCell->pObj();
 
   vDiscardTop();
   
@@ -336,7 +336,7 @@ void Stack::vPopVal(TypedCell* aTypedCell, const char* azFunNm)
   
   i8 nBytes = aTopVal()->nStackUsage();
   
-  aTypedCell->vCopy(m_rTop.aTypedCell,nBytes);
+  aTypedCell->vCopy(m_rTop.m_aTypedCell,nBytes);
   
   m_rTop.vRewind();
   
@@ -430,7 +430,7 @@ void Stack::vPushVal(TypedCell* aTypedCell)
   
   m_rTop.vAdvance(nBytes);
   
-  m_rTop.aTypedCell->vCopy(aTypedCell,nBytes);
+  m_rTop.m_aTypedCell->vCopy(aTypedCell,nBytes);
   
   m_rTop.m_nValues++;
   
@@ -446,7 +446,7 @@ void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_rTop.aTypedCell  = aStackBase();
+  m_rTop.m_aTypedCell  = aStackBase();
   m_rTop.m_nValues       = 0;
 }
 
@@ -457,7 +457,7 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_rTop.aTypedCell = m_rRetry.aTypedCell;
+  m_rTop.m_aTypedCell = m_rRetry.m_aTypedCell;
   m_rTop.m_nValues  = m_rRetry.m_nValues;
 }
 
@@ -468,7 +468,7 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_rRetry.aTypedCell = m_rTop.aTypedCell;
+  m_rRetry.m_aTypedCell = m_rTop.m_aTypedCell;
   m_rRetry.m_nValues  = m_rTop.m_nValues;
 }
 
@@ -479,8 +479,8 @@ bool Stack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (CN_INTVAL == m_rTop.aTypedCell->eType() &&
-      0 == m_rTop.aTypedCell->iInt())
+  if (CN_INTVAL == m_rTop.m_aTypedCell->eType() &&
+      0 == m_rTop.m_aTypedCell->iInt())
     return true;
   
   return false;
@@ -493,7 +493,7 @@ TypedCell* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return m_rTop.aTypedCell;
+  return m_rTop.m_aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -520,15 +520,15 @@ TypedCell* Stack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
   i8 nAllotBytes = sizeof(_Header) + sizeof(Dtm) + nWithAdditionalBytes;
   
   m_rTop.vAdvance(nAllotBytes);
-  ASSERT(m_rTop.ayStackPtr >= (byte*)aStackLimit());
+  ASSERT(m_rTop.m_ayStackPtr >= (byte*)aStackLimit());
   
-  m_rTop.aTypedCell->vMagic();
+  m_rTop.m_aTypedCell->vMagic();
 
-  m_rTop.aTypedCell->vType(eType);
+  m_rTop.m_aTypedCell->vType(eType);
 
   m_rTop.m_nValues++;
   
-  return m_rTop.aTypedCell;
+  return m_rTop.m_aTypedCell;
 }
 
 /*----------------------------------------------------------------------------*/
