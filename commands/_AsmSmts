@@ -36,7 +36,7 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
-/time load lineitem "/DATA/TPCH/lineitem10.csv";
+/time load lineitem "/DATA/TPCH/lineitem100.csv";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
 tableScan lineitem;
@@ -59,6 +59,10 @@ Smt4;
 // select * from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R' ;
 Smt5;
 
-// index filters
-//select * from lineitem where l_orderkey >= 2 ;
+// index filters LBOUND
+//select * from lineitem where l_orderkey >= 70 ;
 Smt6;
+
+// index filters RANGE
+//select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;
+Smt7;
