@@ -5,7 +5,7 @@
 
 #include "eHS.h"
 
-namespace Tasking
+namespace Expressions
 {
   class Thread : public Focal,
                  public ListItem_t<Thread>

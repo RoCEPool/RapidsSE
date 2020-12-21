@@ -19,7 +19,7 @@ extern pthread_key_t giTLS_TaskKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Tasking::_pTask(void* aAddr)
+Task* Expressions::_pTask(void* aAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(aAddr);
   
@@ -31,7 +31,7 @@ Task* Tasking::_pTask(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Tasking::_pTask(i8 iAddr)
+Task* Expressions::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
   
@@ -945,7 +945,7 @@ i8 Task::iTaskId(void)
 /*----------------------------------------------------------------------------*/
 /* get thread                                                                 */
 /*----------------------------------------------------------------------------*/
-Tasking::Thread* Task::pvThread_DONT_DEREF(void)
+Expressions::Thread* Task::pvThread_DONT_DEREF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -955,7 +955,7 @@ Tasking::Thread* Task::pvThread_DONT_DEREF(void)
 /*----------------------------------------------------------------------------*/
 /* set thread                                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThread(Tasking::Thread* pThread)
+void Task::vThread(Expressions::Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

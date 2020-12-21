@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskList* Tasking::_pTaskList(void* aAddr)
+TaskList* Expressions::_pTaskList(void* aAddr)
 {
   TaskList* pTaskQueue = reinterpret_cast<TaskList*>(aAddr);
   

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ThreadQueue* Tasking::_pThreadQueue(void* aAddr)
+ThreadQueue* Expressions::_pThreadQueue(void* aAddr)
 {
   ThreadQueue* pThreadQueue = reinterpret_cast<ThreadQueue*>(aAddr);
   

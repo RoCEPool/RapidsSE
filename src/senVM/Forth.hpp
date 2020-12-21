@@ -7,7 +7,7 @@ namespace SenVM
 {
   class Forth : public Object
   {
-    friend class Tasking::Task;
+    friend class Expressions::Task;
   
   protected:
     Task*     m_pTask;        // which task

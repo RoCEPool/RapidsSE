@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Tasking,Profile,CN_PROFILE)
+__pCastFunction(Expressions,Profile,CN_PROFILE)
 __aNewFunction(Profile,CN_PROFILE)
 __vDeleteFunction(Profile,CN_PROFILE)
 __aFooterFunction(Profile)

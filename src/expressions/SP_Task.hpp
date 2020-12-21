@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasking
+namespace Expressions
 {
   class SP_Task : public SP
   {
