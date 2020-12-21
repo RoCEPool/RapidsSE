@@ -906,7 +906,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n           };"
   "\n"
   "\n  #include \"../src/resources/EnumGroups.h\""
-  "\n  #include \"../src/entries/Ent_int.h\""
+  "\n  #include \"../src/dataBuffers/Ent_int.h\""
   "\n  #include \"../src/expressions/InflateSet.h\""
   "\n  #include \"../src/expressions/LIB_interface.h\""
   "\n  #include \"../src/expressions/DEV_interface.h\""
