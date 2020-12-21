@@ -32,7 +32,7 @@ void Step::vLocalFetch(void)
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->vPushVal(pLocal->aTypedCell());
+  m_pDataStack->vPushItem(pLocal->aTypedCell());
   
   EXIT();
 }

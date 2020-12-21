@@ -80,7 +80,7 @@ void Step::vDirGetCurrent(void)
   
   if (Dir::bGetCurrent(sDirPath)) {
     xDirPath = sDirPath;
-    m_pDataStack->vPushVal(xDirPath);
+    m_pDataStack->vPushItem(xDirPath);
   }
   else {
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,

@@ -61,7 +61,7 @@ void Step::vObjectFetch(void)
   
   m_pReturnStack->vPeekItem(iPick,xObjectVar);
   
-  m_pDataStack->vPushVal(xObjectVar);
+  m_pDataStack->vPushItem(xObjectVar);
   
   EXIT();
 }

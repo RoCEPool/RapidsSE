@@ -70,7 +70,7 @@ namespace SenVM
     void vPushPtr(Object* pObj);
     void vPushStr(String* pStr);
     void vPushStz(Stz* szStz);
-    void vPushVal(TypedCell* aTypedCell);
+    void vPushItem(TypedCell* aTypedCell);
   
     void vReset(void);
     void vRetry(void);

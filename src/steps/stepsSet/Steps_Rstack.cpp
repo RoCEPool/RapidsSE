@@ -56,7 +56,7 @@ void Step::vRstackCsPick(void)
   // copy n-th value onto top
   CellSingle xVariable;
   m_pReturnStack->vPeekItem(nThValue,xVariable);
-  m_pReturnStack->vPushVal(xVariable);
+  m_pReturnStack->vPushItem(xVariable);
   
   // push back the one return address
 //  m_pReturnStack->vPush(xRtnWsp);
@@ -78,7 +78,7 @@ void Step::vRstackCsRoll(void)
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pDataStack->vPopItem(xValMid,__func__);
     
-    m_pReturnStack->vPushVal(xValMid);
+    m_pReturnStack->vPushItem(xValMid);
   }
   
   ForthCell* aFipZ = m_pDataStack->aPopFip(__func__);
@@ -86,7 +86,7 @@ void Step::vRstackCsRoll(void)
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pReturnStack->vPopItem(xValMid,__func__);
     
-    m_pDataStack->vPushVal(xValMid);
+    m_pDataStack->vPushItem(xValMid);
   }
 
   m_pDataStack->vPushFip(aFipZ);
@@ -134,7 +134,7 @@ void Step::vRstackFetch(void)
   
   m_pReturnStack->vPeekItem(0,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -154,8 +154,8 @@ void Step::vRstackFetchTwo(void)
   m_pReturnStack->vPeekItem(0,xValX0);
   m_pReturnStack->vPeekItem(1,xValX1);
   
-  m_pDataStack->vPushVal(xValX1);
-  m_pDataStack->vPushVal(xValX0);
+  m_pDataStack->vPushItem(xValX1);
+  m_pDataStack->vPushItem(xValX0);
   
   EXIT();
 }
@@ -175,7 +175,7 @@ void Step::vRstackPick(void)
   
   m_pReturnStack->vPeekItem(iPick,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -210,14 +210,14 @@ void Step::vRstackReverse(void)
   }
  
   switch (nValues) {
-    case 8: m_pReturnStack->vPushVal(xVal8);
-    case 7: m_pReturnStack->vPushVal(xVal7);
-    case 6: m_pReturnStack->vPushVal(xVal6);
-    case 5: m_pReturnStack->vPushVal(xVal5);
-    case 4: m_pReturnStack->vPushVal(xVal4);
-    case 3: m_pReturnStack->vPushVal(xVal3);
-    case 2: m_pReturnStack->vPushVal(xVal2);
-    case 1: m_pReturnStack->vPushVal(xVal1);
+    case 8: m_pReturnStack->vPushItem(xVal8);
+    case 7: m_pReturnStack->vPushItem(xVal7);
+    case 6: m_pReturnStack->vPushItem(xVal6);
+    case 5: m_pReturnStack->vPushItem(xVal5);
+    case 4: m_pReturnStack->vPushItem(xVal4);
+    case 3: m_pReturnStack->vPushItem(xVal3);
+    case 2: m_pReturnStack->vPushItem(xVal2);
+    case 1: m_pReturnStack->vPushItem(xVal1);
   }
 
   EXIT();
@@ -240,15 +240,15 @@ void Step::vRstackRoll(void)
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pReturnStack->vPopItem(xValX,__func__);
     
-    m_pDataStack->vPushVal(xValX);
+    m_pDataStack->vPushItem(xValX);
   }
   
-  m_pReturnStack->vPushVal(xValA);
+  m_pReturnStack->vPushItem(xValA);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pDataStack->vPopItem(xValX,__func__);
     
-    m_pReturnStack->vPushVal(xValX);
+    m_pReturnStack->vPushItem(xValX);
   }
   
   EXIT();
@@ -269,7 +269,7 @@ void Step::vRstackRollInv(void)
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pReturnStack->vPopItem(xValX,__func__);
     
-    m_pDataStack->vPushVal(xValX);
+    m_pDataStack->vPushItem(xValX);
   }
   
   m_pReturnStack->vPopItem(xValZ,__func__);
@@ -278,10 +278,10 @@ void Step::vRstackRollInv(void)
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pDataStack->vPopItem(xValX,__func__);
     
-    m_pReturnStack->vPushVal(xValX);
+    m_pReturnStack->vPushItem(xValX);
   }
   
-  m_pReturnStack->vPushVal(xValZ);
+  m_pReturnStack->vPushItem(xValZ);
   
   EXIT();
 }
@@ -311,8 +311,8 @@ void Step::vRstackSwap(void)
   CellSingle xValB;
   m_pReturnStack->vPopItem(xValB,__func__);
 
-  m_pReturnStack->vPushVal(xValA);
-  m_pReturnStack->vPushVal(xValB);
+  m_pReturnStack->vPushItem(xValA);
+  m_pReturnStack->vPushItem(xValB);
   
   EXIT();
 }
@@ -327,7 +327,7 @@ void Step::vRstackToP(void)
   CellSingle xVal;
   m_pReturnStack->vPopItem(xVal,__func__);
   
-  m_pDataStack->vPushVal(xVal);
+  m_pDataStack->vPushItem(xVal);
   
   EXIT();
 }
@@ -342,7 +342,7 @@ void Step::vRstackToR(void)
   CellSingle xValOpaque;
   m_pDataStack->vPopItem(xValOpaque,__func__);
   
-  m_pReturnStack->vPushVal(xValOpaque);
+  m_pReturnStack->vPushItem(xValOpaque);
   
   EXIT();
 }
@@ -360,8 +360,8 @@ void Step::vRstackToRTwo(void)
   CellSingle xValX1;
   m_pDataStack->vPopItem(xValX1,__func__);
   
-  m_pReturnStack->vPushVal(xValX1);
-  m_pReturnStack->vPushVal(xValX0);
+  m_pReturnStack->vPushItem(xValX1);
+  m_pReturnStack->vPushItem(xValX0);
   
   EXIT();
 }
@@ -379,7 +379,7 @@ void Step::vRstack0(void)
   
   m_pReturnStack->vPeekItem(0,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -397,7 +397,7 @@ void Step::vRstack1(void)
   
   m_pReturnStack->vPeekItem(1,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -415,7 +415,7 @@ void Step::vRstack2(void)
   
   m_pReturnStack->vPeekItem(2,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -433,7 +433,7 @@ void Step::vRstack3(void)
   
   m_pReturnStack->vPeekItem(3,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -451,7 +451,7 @@ void Step::vRstack4(void)
   
   m_pReturnStack->vPeekItem(4,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -469,7 +469,7 @@ void Step::vRstack5(void)
   
   m_pReturnStack->vPeekItem(5,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -487,7 +487,7 @@ void Step::vRstack6(void)
   
   m_pReturnStack->vPeekItem(6,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -505,7 +505,7 @@ void Step::vRstack7(void)
   
   m_pReturnStack->vPeekItem(7,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -523,7 +523,7 @@ void Step::vRstack8(void)
   
   m_pReturnStack->vPeekItem(8,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }
@@ -541,7 +541,7 @@ void Step::vRstack9(void)
   
   m_pReturnStack->vPeekItem(9,xVariable);
   
-  m_pDataStack->vPushVal(xVariable);
+  m_pDataStack->vPushItem(xVariable);
   
   EXIT();
 }

@@ -48,7 +48,7 @@ void Step::vAddressFetch(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  m_pDataStack->vPushVal(aTypedCell);
+  m_pDataStack->vPushItem(aTypedCell);
   
   EXIT();
 }
