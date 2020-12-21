@@ -103,19 +103,19 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
   vTrace("%s:\n"_Stz,aTitle);
   
   i8 nValues = this->nValues();
-  for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
+  for (i8 i_Item = 0; i_Item < nValues; i_Item++) {
     
-    TypedCell* aTypedCell = aPeekVal(i_Val);
+    TypedCell* aTypedCell = aPeekVal(i_Item);
     eCN eType = aTypedCell->eType();
     i8 nStackUsage = aTypedCell->nStackUsage();
     
     if (CN_STZVAL == eType)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
-             i_Val,aTypedCell,nStackUsage,aCN[eType],
+             i_Item,aTypedCell,nStackUsage,aCN[eType],
              aTypedCell->nStzSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
-             i_Val,aTypedCell,nStackUsage,aCN[eType]);
+             i_Item,aTypedCell,nStackUsage,aCN[eType]);
     
     switch (eType) {
         
@@ -179,12 +179,12 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-TypedCell* Stack::aPeekVal(i8 i_Val)
+TypedCell* Stack::aPeekVal(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   TypedCell* aPeeked = aTopVal();
-  while (i_Val--) {
+  while (i_Item--) {
     char* aAddress = reinterpret_cast<char*>(aPeeked);
     i8 iSize = aPeeked->nStackUsage();
     aAddress += iSize;
@@ -197,11 +197,11 @@ TypedCell* Stack::aPeekVal(i8 i_Val)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekVal(i8 i_Val, TypedCell* aTypedCell)
+void Stack::vPeekVal(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPeeked = aPeekVal(i_Val);
+  TypedCell* aPeeked = aPeekVal(i_Item);
   
   aTypedCell->vCopy(aPeeked);
 }
@@ -209,11 +209,11 @@ void Stack::vPeekVal(i8 i_Val, TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeVal(i8 i_Val, TypedCell* aTypedCell)
+void Stack::vPokeVal(i8 i_Item, TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPoked = aPeekVal(i_Val);
+  TypedCell* aPoked = aPeekVal(i_Item);
   
   aPoked->vCopy(aTypedCell);
 }

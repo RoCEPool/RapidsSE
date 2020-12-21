@@ -53,10 +53,10 @@ namespace SenVM
   
     void vDump(DicStack* pDicStack, Stz* szTitle);
 
-    TypedCell* aPeekVal(i8 i_Val);
-    void vPeekVal(i8 i_Val, TypedCell* aTypedCell);
+    TypedCell* aPeekVal(i8 i_Item);
+    void vPeekVal(i8 i_Item, TypedCell* aTypedCell);
 
-    void vPokeVal(i8 i_Val, TypedCell* aTypedCell);
+    void vPokeVal(i8 i_Item, TypedCell* aTypedCell);
   
     i8   iPopAsInt(const char* azFunNm);
     ForthCell* aPopFip(const char* azFunNm);
@@ -88,7 +88,7 @@ namespace SenVM
     TypedCell* aAllotPtrVal(void);
     TypedCell* aAllotStzVal(i8 nStrSize);
   
-    bool bGuard(i8 nItems);
+    bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
