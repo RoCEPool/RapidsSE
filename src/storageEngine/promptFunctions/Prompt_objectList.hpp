@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_objects.hpp -- object list report                                   */
+/* Prompt_objectList.hpp -- object list report                                */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_objects(SePrompt* pPrompt);
+  bool bPrompt_objectList(SePrompt* pPrompt);
 }
 
 /*============================================================================*/
