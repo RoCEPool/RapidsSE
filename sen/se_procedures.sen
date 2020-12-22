@@ -2083,8 +2083,8 @@
     | stageD
 
   stage stageD on origin :
-    EOAsm2 ../eo_text/asmSmt8_s1.txt 1
-    | output
+    //EOAsm2 ../eo_text/asmSmt8_s1.txt 1
+    output
     | sink
     | stageA
 

@@ -41,9 +41,106 @@ macro AM_CRW_PROJECT_ROUTINE
   Label CRW_PROJECT_ROUTINE
   EO_SET_ITEMS <projectItems>
   EO_SET_COLUMNS <projectSrcColumns>
-  EO_ROW_DST_NEW
   EO_COL_SRC_PUSHSET
-  EO_DUMP
+  EO_ROW_DST_NEW
+  //EO_DUMP
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_POP_DST_COLUMNI                                                   //
+//----------------------------------------------------------------------------//
+macro AM_POP_DST_COLUMNI
+  // POP_DST_COLUMNI
+  EO_ROW_DST_POPCOLI <dstColumn>
+  EO_ROW_DST_PRINT
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_POP_DST_COLUMNS                                                   //
+//----------------------------------------------------------------------------//
+macro AM_POP_DST_COLUMNS
+  // POP_DST_COLUMNS
+  EO_ROW_DST_POPCOLS <dstColumn>
+  EO_ROW_DST_PRINT
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_PROJECT_END                                                       //
+//----------------------------------------------------------------------------//
+macro AM_PROJECT_END
+  // PROJECT_END
+  EO_ROW_DST_PRINT
+  EO_RETURN
+endMacro
+
+macro AM_CRWBUFFER_PROJECT_SUM_HANDLER
+//----------------------------------------------------------------------------//
+// macro AM_CRWBUFFER_PROJECT_SUM_HANDLER                                     //
+//----------------------------------------------------------------------------//
+  // CRWBUFFER_PROJECT_SUM_HANDLER
+  Label CRWBUFFER_HANDLER
+  EO_PRINTF "**CRWBUFFER_HANDLER**\n"
+  EO_POP
+  EO_ROW_DST_NEW
+  EO_CRW_SRC_BEGIN
+
+  // NEXT_CRW_SRC
+  Label NEXT_CRW_SRC
+  EO_CRW_SRC_NEXT
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <crwProjectRoutine>
+  EO_JMP NEXT_CRW_SRC
+  EO_JMP QUERY_DONE
+ endMacro
+
+macro AM_CRW_PROJECT_LOCALS_ROUTINE
+//----------------------------------------------------------------------------//
+// macro AM_CRW_PROJECT_LOCALS_ROUTINE                                        //
+//----------------------------------------------------------------------------//
+  // CRW_PROJECT_ROUTINE
+  Label CRW_PROJECT_LOCALS_ROUTINE
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMNS <projectSrcColumns>
+  EO_SET_LOCALS_SRC2
+endMacro
+
+macro AM_CRWBUFFER_SUM_HANDLER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// macro AM_CRWBUFFER_SUM_HANDLER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Label CRWBUFFER_SUM_HANDLER
+  EO_PUSH_LOCALI <localsColumn>
+  EO_ROW_DST_PUSHCOLI <dstColumn>
+  EO_ADD
+  EO_ROW_DST_POPCOLI <sumColumn>
+  EO_RETURN
+ endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_LCL_DST_COLUMNI                                                   //
+//----------------------------------------------------------------------------//
+macro AM_LCL_DST_COLUMNI
+  // LCL_DST_COLUMNI
+  EO_PUSH_LOCALI <localsColumn>
+  EO_ROW_DST_PUSHCOLI <dstColumn>
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_LCL_DST_COLUMNS                                                   //
+//----------------------------------------------------------------------------//
+macro AM_LCL_DST_COLUMNS
+  // POP_DST_COLUMNS
+  EO_PUSH_LOCALS <localsColumn>
+  EO_ROW_DST_PUSHCOLI <dstColumn>
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_PROJECT_END                                                       //
+//----------------------------------------------------------------------------//
+macro AM_CRWBUFFER_SUM_END
+  // CRWBUFFER_SUM_END
+  EO_ROW_DST_PRINT
+  EO_RETURN
 endMacro
 
 macro AM_CRWBUFFER_FILTER_HANDLER
@@ -68,33 +165,6 @@ macro AM_CRWBUFFER_FILTER_HANDLER
   EO_JMP NEXT_CRW_SRC
 
   EO_JMP QUERY_DONE
-endMacro
-
-//----------------------------------------------------------------------------//
-// macro AM_SET_DST_COLUMNI                                                   //
-//----------------------------------------------------------------------------//
-macro AM_SET_DST_COLUMNI
-  // SET_DST_COLUMNI
-  EO_ROW_DST_POPCOLI <projectDstColumn>
-  EO_ROW_DST_PRINT
-endMacro
-
-//----------------------------------------------------------------------------//
-// macro AM_SET_DST_COLUMNS                                                   //
-//----------------------------------------------------------------------------//
-macro AM_SET_DST_COLUMNS
-  // SET_DST_COLUMNS
-  EO_ROW_DST_POPCOLS <projectDstColumn>
-  EO_ROW_DST_PRINT
-endMacro
-
-//----------------------------------------------------------------------------//
-// macro AM_PROJECT_END                                                       //
-//----------------------------------------------------------------------------//
-macro AM_PROJECT_END
-  // PROJECT_END
-  EO_ROW_DST_PRINT
-  EO_RETURN
 endMacro
 
 //----------------------------------------------------------------------------//

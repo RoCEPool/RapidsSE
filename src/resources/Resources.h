@@ -397,14 +397,16 @@ static Stz* C_TAG_INDEX_RANGE_ROUTINE = "<indexRangeRoutine>"_Stz;
 
 static Stz* C_TAG_SRC_EXISTS_ALTIDX     = "<srcExistsAltIdx>"_Stz;
 
-static Stz* C_TAG_ROW_PROJECT_ROUTINE   = "<rowProjectRoutine>"_Stz;
-
 static Stz* C_TAG_ADD_PTN_HASH          = "<addPtnHash>"_Stz;
 
 static Stz* C_TAG_PROJECT_ITEMS         = "<projectItems>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMN    = "<projectSrcColumn>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMNS   = "<projectSrcColumns>"_Stz;
-static Stz* C_TAG_PROJECT_DST_COLUMN    = "<projectDstColumn>"_Stz;
+
+static Stz* C_TAG_LOCALS_COLUMN = "<localsColumn>"_Stz;
+static Stz* C_TAG_SUM_COLUMN    = "<sumColumn>"_Stz;
+
+static Stz* C_TAG_DST_COLUMN       = "<dstColumn>"_Stz;
 
 static Stz* C_TAG_PREDICATE_COLUMNS     = "<predicateColumns>"_Stz;
 static Stz* C_TAG_PREDICATE_SRC_COLUMN  = "<predicateSrcColumn>"_Stz;

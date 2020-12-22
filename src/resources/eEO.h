@@ -753,7 +753,7 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_SET_ITEMS
   { EA_INT,     8 },  // EO_SET_LOCALS_ALT
   { EA_INT,     8 },  // EO_SET_LOCALS_SRC
-  { EA_INT,     8 },  // EO_SET_LOCALS_SRC2
+  { EA_NONE,    0 },  // EO_SET_LOCALS_SRC2
 
   // table
   { EA_STRING, -1 },  // EO_TABLENM_ALT_SET

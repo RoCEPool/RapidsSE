@@ -1735,7 +1735,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_CELLARRAY_ADR,&giaVectorSet[iArg]);
         break;//+endCase
 
-      case EO_SET_LOCALS_SRC2: ArgGet(iArg); // inflate src columns direct into locals
+      case EO_SET_LOCALS_SRC2: ArgNil(); // inflate src columns direct into locals
         dLU0(EO_SET_LOCALS_SRC);
         aiLocals = aRluCommon->m_iaLocals - 1;
         vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_CELLARRAY_ADR,iaColSet);
