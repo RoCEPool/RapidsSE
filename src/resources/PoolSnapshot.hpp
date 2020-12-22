@@ -21,6 +21,8 @@ namespace Resources
     
     PoolSnapshot(void);
    ~PoolSnapshot(void) noexcept(false);
+  
+    void vTakeSnapshot(void);
     
   private:
 

@@ -93,12 +93,13 @@ namespace DataBuffers       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Steps             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
-namespace Resources        { class Article;         class Queue;             }
+namespace Resources        { class Article;         class Queue;
+class Heap; class PoolHelper; class PoolSnapshot;            }
 namespace Expressions             { class Task;                                     }
 namespace Expressions           { class Scheduler;       class Thread;
                               class Queues;                                   }
 namespace Transactions      { class Tx;              class TxSet;             }
-namespace Utilities         { class BPA;             class PoolHelper;        }
+namespace Utilities         { class BPA;                     }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

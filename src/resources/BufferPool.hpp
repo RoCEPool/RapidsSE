@@ -13,7 +13,7 @@ namespace Resources
   class BufferPool : public Object
   {
   friend class Utilities::BPA;
-  friend class Utilities::PoolHelper;
+  friend class Resources::PoolHelper;
   private:
     i8      m_nBuffers;   // number of buffers in pool
     PoolBuffer* m_pBase;  // starting address of pool (large section)

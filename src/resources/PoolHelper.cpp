@@ -2,7 +2,7 @@
 /* PoolHelper.cpp - buffer pool analyzer                                      */
 /*============================================================================*/
 
-#include "Utilities.h"
+#include "Resources.h"
 
 #include "ResourceTracker.hpp" //?
 #include "File.hpp" //?
@@ -70,7 +70,7 @@ void PoolHelper::vHeapDump(Heap* pHeap)
         continue;
       
       if (CN_WORD == eClass) {
-        Word* pWord = _pWord(aChunk);
+        //Word* pWord = _pWord(aChunk);
       
         continue;
       }
@@ -115,14 +115,14 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
       if (CN_WORD != eClass)
         continue;
       
-      Word* pWord = _pWord(aChunk);
+      //Word* pWord = _pWord(aChunk);
       
       // dump only the objects
       continue;
       
       // dump only object created in last epoch
-      if (pWord->iEpoch() != iEpoch)
-        continue;
+      //if (pWord->iEpoch() != iEpoch)
+      //  continue;
       
       //pDUMPFUN* pDumpFun = gpDump[eClass];
       

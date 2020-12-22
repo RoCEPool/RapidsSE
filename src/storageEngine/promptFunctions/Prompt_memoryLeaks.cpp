@@ -60,7 +60,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     iRowsProcessed = 0;
-    PoolHelper::vObjectSnapshot(pPoolSnapshot_curr);
+    //PoolHelper::vObjectSnapshot(pPoolSnapshot_curr);
+    pPoolSnapshot_curr->vTakeSnapshot();
     
     for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
       

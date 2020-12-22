@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Utilities
+namespace Resources
 {
   class PoolHelper
   {
