@@ -205,6 +205,9 @@ void TypedCell::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vToStz(Stz* szDst)
 {
+  if (CN_INTVAL == eType())
+    * szDst = iInt();
+  else
   if (CN_STZVAL == eType())
     StrLib::vCopy(szDst->azChar(),m_caStringArea);
   else
