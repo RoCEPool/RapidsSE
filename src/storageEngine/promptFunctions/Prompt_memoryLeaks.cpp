@@ -42,6 +42,10 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     return true;
   }
   
+  if (AM::bMetadata())
+    vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);
+
+
   if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("dump"_Stz)) {
     bPrompt_memoryLeaks_dump(pPrompt);
   }
@@ -93,7 +97,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     
     // no memory leaks ?
     if (0 == nLeaksDetected)
-      goto L_REPORT;
+      goto L_END;
     
     // we have memory leaks; sleep and try again!
     AM::vNapMsec(200,CN_SEPROMPT);
@@ -124,9 +128,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-L_REPORT:
-  if (AM::bMetadata())
-    vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);
+L_END:
   
   vTrace("\nsuccess: %lld rows affected\n"_Stz, nLeaksDetected);
   
@@ -150,6 +152,8 @@ L_REPORT:
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_memoryLeaks_dump(SePrompt* pPrompt)
 {
+  PoolHelper::vDumpObjects(0);
+  
   return true;
 }
 

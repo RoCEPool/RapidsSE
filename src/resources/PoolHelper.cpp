@@ -53,6 +53,8 @@ void PoolHelper::vDumpObjects(i8 iAfter)
 void PoolHelper::vDumpObjects(i8 iAfter, Heap* pHeap)
 {
   _static_
+  
+  vHeapDump(pHeap);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,9 +83,11 @@ void PoolHelper::vHeapDump(Heap* pHeap)
          
   pHeap->vGrabLock();
   
+  i8 iCount = 0;
   for (pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
        pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+    
     for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
          aChunk;
          aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
@@ -93,19 +97,23 @@ void PoolHelper::vHeapDump(Heap* pHeap)
       if (CN_FREECHUNK == eClass)
         continue;
       
-      if (CN_WORD == eClass) {
-        //Word* pWord = _pWord(aChunk);
-      
+      if (CN_WORD == eClass)
         continue;
-      }
-      
-      //pDUMPFUN* pDumpFun = gpDump[eClass];
-      
-      vTrace("%s%p %-12s: "_Stz,Stz::szTab(2),pHeap,aCN[eClass]);
+            
+      Footer* aFooter =
+        aAdd<Footer*>(aChunk,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
 
-      //(pDumpFun)(eClass, (Object*)aChunk, Stz::szTab(2));
+      i8 iWhenAllocated =
+        aFooter->bValidFooter() ? aFooter->iWhenAllocated() : -1;
+
+      vTrace("%s%p %-12s %16lld: "_Stz,
+             Stz::szTab(2),aChunk,aCN[eClass],iWhenAllocated);
+      if (! (++iCount % 4))
+        vTrace("\n"_Stz);
     }
   }
+  
+  vTrace("\n"_Stz);
   
   pHeap->vDropLock();
 }

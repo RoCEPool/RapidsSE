@@ -26,6 +26,7 @@ namespace Resources
     void vSetFooter(void);
     void vSprint(Stz* szHeader);
     bool bValidFooter(void);
+    i8   iWhenAllocated(void);
   };
 }
 
