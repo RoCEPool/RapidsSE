@@ -179,7 +179,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PlanNodeBuilder),      HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeList),         HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(PlanNodeBuilderList),  HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
-  { sizeof(PoolSnapshot),         HT_TRANSIENT_SMALL   ,0 }, // CN_POOLSNAPSHOT
+  { sizeof(ObjectSnapshot),         HT_TRANSIENT_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Pot),                  HT_TRANSIENT_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC

@@ -177,7 +177,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANNODEBUILDER,
   /* */ CN_PLANNODELIST,
   /* */ CN_PLANNODEBUILDERLIST,
-  /* */ CN_POOLSNAPSHOT,
+  /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
@@ -502,7 +502,7 @@ static Stz* aCN[]
   /* */ "PLANNODEBUILDER"_Stz,      // CN_PLANNODEBUILDER
   /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
   /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST
-  /* */ "POOLSNAPSHOT"_Stz,         // CN_POOLSNAPSHOT
+  /* */ "POOLSNAPSHOT"_Stz,         // CN_OBJECTSNAPSHOT
   /* */ "POT"_Stz,                  // CN_POT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
@@ -827,7 +827,7 @@ static Stz* aCN_memfmt[]
   /* */ "_none_"_Stz,               // CN_PLANNODEBUILDER
   /* */ "_none_"_Stz,               // CN_PLANNODELIST
   /* */ "_none_"_Stz,               // CN_PLANNODEBUILDERLIST
-  /* */ "_none_"_Stz,               // CN_POOLSNAPSHOT
+  /* */ "_none_"_Stz,               // CN_OBJECTSNAPSHOT
   /* */ "_none_"_Stz,               // CN_POT
   /* */ "_none_"_Stz,               // CN_PREDICATE
   /* */ "_none_"_Stz,               // CN_PREDICATEVEC

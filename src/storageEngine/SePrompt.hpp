@@ -49,8 +49,8 @@ namespace Prompt
    
     // object delta reporting
     BPA*           m_pBPA;
-    PoolSnapshot* m_pSnapshotAtTrackingMemory;
-    PoolSnapshot* m_pSnapshotAtMemoryLeaks;
+    ObjectSnapshot* m_pSnapshotAtTrackingMemory;
+    ObjectSnapshot* m_pSnapshotAtMemoryLeaks;
 
     // some debugging aids
     i8  d_iDebugMode; // debug mode?
@@ -125,8 +125,8 @@ namespace Prompt
     TagSet* pPmtTagSet(void);
     bool bShortCut(SeDeputy* pSeDeputy);
     ShortCutVec* pShortCutVec(void);
-    PoolSnapshot* pSnapshotAtTrackingMemory(void);
-    PoolSnapshot* pSnapshotAtMemoryLeaks(void);
+    ObjectSnapshot* pSnapshotAtTrackingMemory(void);
+    ObjectSnapshot* pSnapshotAtMemoryLeaks(void);
     bool bStdIn(void);
     bool bSubSsnTags(SeDeputy* pSeDeputy);
     void vTrackMemory(bool bTrackMemory);

@@ -11,11 +11,11 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PoolSnapshot* Resources::_pObjectsInPool(void* aAddr)
+ObjectSnapshot* Resources::_pObjectsInPool(void* aAddr)
 {
-  PoolSnapshot* pObjectsInPool = reinterpret_cast<PoolSnapshot*>(aAddr);
+  ObjectSnapshot* pObjectsInPool = reinterpret_cast<ObjectSnapshot*>(aAddr);
   
-  RASSERT_TYPE(pObjectsInPool,CN_POOLSNAPSHOT);
+  RASSERT_TYPE(pObjectsInPool,CN_OBJECTSNAPSHOT);
   
   return pObjectsInPool;
 }
@@ -23,9 +23,9 @@ PoolSnapshot* Resources::_pObjectsInPool(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* PoolSnapshot::operator new(size_t)
+void* ObjectSnapshot::operator new(size_t)
 {
-  PoolSnapshot* pObjectsInPool = (PoolSnapshot*)HeapMem::pAllocate(CN_POOLSNAPSHOT);
+  ObjectSnapshot* pObjectsInPool = (ObjectSnapshot*)HeapMem::pAllocate(CN_OBJECTSNAPSHOT);
   
   return pPoolCheck<void*>(pObjectsInPool);
 }
@@ -33,9 +33,9 @@ void* PoolSnapshot::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void PoolSnapshot::operator delete(void* pObjectPoolAddress)
+void ObjectSnapshot::operator delete(void* pObjectPoolAddress)
 {
-  PoolSnapshot* pObjectsInPool = static_cast<PoolSnapshot*>(pObjectPoolAddress);
+  ObjectSnapshot* pObjectsInPool = static_cast<ObjectSnapshot*>(pObjectPoolAddress);
   
   HeapMem::vFree(pObjectsInPool);
 }
@@ -43,23 +43,23 @@ void PoolSnapshot::operator delete(void* pObjectPoolAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
-PoolSnapshot::PoolSnapshot(void)
-: Object(CN_POOLSNAPSHOT)
+ObjectSnapshot::ObjectSnapshot(void)
+: Object(CN_OBJECTSNAPSHOT)
 {
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
     m_nObjects[i_enum] = 0;
   
-  _checkInitialised_(CN_POOLSNAPSHOT);
+  _checkInitialised_(CN_OBJECTSNAPSHOT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_POOLSNAPSHOT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PoolSnapshot::~PoolSnapshot(void) noexcept(false)
+ObjectSnapshot::~ObjectSnapshot(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POOLSNAPSHOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
 
 }
 
@@ -70,9 +70,9 @@ PoolSnapshot::~PoolSnapshot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* take snapshot                                                              */
 /*----------------------------------------------------------------------------*/
-void PoolSnapshot::vTakeSnapshot(void)
+void ObjectSnapshot::vTakeSnapshot(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POOLSNAPSHOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
   
   PoolHelper::vObjectSnapshot(this);
 }
@@ -86,9 +86,9 @@ void PoolSnapshot::vTakeSnapshot(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* PoolSnapshot::aFooter(void)
+Footer* ObjectSnapshot::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POOLSNAPSHOT);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT);
   
   return &m_xFooter;
 }

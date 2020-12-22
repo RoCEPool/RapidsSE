@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* PoolSnapshot.hpp - objects in the buffer pool                             */
+/* ObjectSnapshot.hpp -- count of objects by class in the buffer pool         */
 /*============================================================================*/
 #pragma once
 
 namespace Resources
 {
   
-  class PoolSnapshot : public Object
+  class ObjectSnapshot : public Object
   {
   
   public:
@@ -19,8 +19,8 @@ namespace Resources
     void* operator new(size_t);
     void  operator delete(void* pAddr);
     
-    PoolSnapshot(void);
-   ~PoolSnapshot(void) noexcept(false);
+    ObjectSnapshot(void);
+   ~ObjectSnapshot(void) noexcept(false);
   
     void vTakeSnapshot(void);
     
@@ -29,7 +29,7 @@ namespace Resources
     Footer* aFooter(void);
    };
   
-  PoolSnapshot* _pObjectsInPool(void* aAddr);
+  ObjectSnapshot* _pObjectsInPool(void* aAddr);
 }
 
 /*============================================================================*/

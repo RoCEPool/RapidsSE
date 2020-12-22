@@ -52,8 +52,8 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bOneRun     = false;
 
   m_pBPA = nullptr;
-  m_pSnapshotAtTrackingMemory = new PoolSnapshot;
-  m_pSnapshotAtMemoryLeaks = new PoolSnapshot;
+  m_pSnapshotAtTrackingMemory = new ObjectSnapshot;
+  m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
   
   d_iDebugMode = gxArgs.m_iPromptDebug;
 
@@ -991,7 +991,7 @@ i8 SePrompt::iNextSectionNo(void)
 /*----------------------------------------------------------------------------*/
 /* objects in pool                                                            */
 /*----------------------------------------------------------------------------*/
-PoolSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
+ObjectSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1311,7 +1311,7 @@ bool SePrompt::bShortCut(SeDeputy* pSeDeputy)
 /*----------------------------------------------------------------------------*/
 /* get snapshot objects                                                       */
 /*----------------------------------------------------------------------------*/
-PoolSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
+ObjectSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
