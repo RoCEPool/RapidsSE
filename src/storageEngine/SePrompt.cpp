@@ -1447,7 +1447,7 @@ void SePrompt::vTrackingMemory(bool bTrackMemory)
     m_oPmtTagSet.vDelete(C_PMT_MEMTRACK);
 
   if (bTrackingMemory())
-    PoolHelper::vObjectSnapshot(m_pSnapshotAtTrackingMemory);
+    m_pSnapshotAtTrackingMemory->vTakeSnapshot();
 }
 
 /*----------------------------------------------------------------------------*/

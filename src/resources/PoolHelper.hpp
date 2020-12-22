@@ -13,7 +13,7 @@ namespace Resources
     static void vHeapDump(Heap* pBuffer, i8 iEpoch);
     static void vObjectList(void);
     static void vObjectSummary(void);
-    static void vObjectSnapshot(PoolSnapshot* pCountObjects);
+    static void vObjectSnapshot(PoolSnapshot* pPoolSnapshot);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vPoolAnalyze(void);
     static void vPoolDump(void);

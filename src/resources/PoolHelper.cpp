@@ -395,12 +395,12 @@ void PoolHelper::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vObjectSnapshot(PoolSnapshot* pCountObjects)
+void PoolHelper::vObjectSnapshot(PoolSnapshot* pPoolSnapshot)
 {
   i8 iCountObjects[CN_ENUMS];
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
-    pCountObjects->m_nObjects[i_Index] = 0;
+    pPoolSnapshot->m_nObjects[i_Index] = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -415,7 +415,7 @@ void PoolHelper::vObjectSnapshot(PoolSnapshot* pCountObjects)
     if (CN_QUEUES == eClass)
       int iDebug = 1;
     
-    pCountObjects->m_nObjects[eClass]++;
+    pPoolSnapshot->m_nObjects[eClass]++;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -431,7 +431,7 @@ void PoolHelper::vObjectSnapshot(PoolSnapshot* pCountObjects)
     if (CN_QUEUES == eClass)
       int iDebug = 1;
     
-    pCountObjects->m_nObjects[eClass] += iCountObjects[eClass];
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -447,7 +447,7 @@ void PoolHelper::vObjectSnapshot(PoolSnapshot* pCountObjects)
     if (CN_QUEUES == eClass)
       int iDebug = 1;
     
-    pCountObjects->m_nObjects[eClass] += iCountObjects[eClass];
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -463,7 +463,7 @@ void PoolHelper::vObjectSnapshot(PoolSnapshot* pCountObjects)
     if (CN_QUEUES == eClass)
       int iDebug = 1;
 
-    pCountObjects->m_nObjects[eClass] += iCountObjects[eClass];
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -479,7 +479,7 @@ void PoolHelper::vObjectSnapshot(PoolSnapshot* pCountObjects)
     if (CN_QUEUES == eClass)
       int iDebug = 1;
 
-    pCountObjects->m_nObjects[eClass] += iCountObjects[eClass];
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
   }
 }
 
