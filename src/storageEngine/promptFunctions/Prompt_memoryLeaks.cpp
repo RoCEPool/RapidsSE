@@ -23,20 +23,23 @@ PromptFun __Prompt_memoryLeaks (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
 {
-  i8 iRowsProcessed = 0;
+  i8 nLeaksDetected = 0;
   
   // force memory leaks test
 //  Text* pText_leak = new Text;
 //  vTrace("Text_leak : %p\n"_Stz,pText_leak);
 
+  // are we tracking memory?
   if ( ! pPrompt->bTrackingMemory() ) {
     vTrace("error: Memory not being tracked; Run trackMemory;\n"_Stz);
     return true;
   }
   
-  // Wait for all jobs in the system to complete
-  // Note: the tracking of memory works with an assumption that
-  //  whatever was started after trackingMemory has completed
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for all jobs in the system to complete
+  
+  // note: the tracking of memory works with an assumption that
+  //       whatever was started after trackingMemory has completed
   Api::vSpinTillAllJobsCompleted();
   
   bool bFatal = false;
@@ -59,8 +62,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
-    iRowsProcessed = 0;
-     pPoolSnapshot_curr->vTakeSnapshot();
+    nLeaksDetected = 0;
+    pPoolSnapshot_curr->vTakeSnapshot();
     
     for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
       
@@ -77,27 +80,28 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
 //             pPoolSnapshot_then->m_nObjects[eClass],
 //             nDelta);
       
-      if ( nDelta == 0 )
+      if (0 == nDelta)
         continue;
       
       // we have a memory leak
-      iRowsProcessed++;
+      nLeaksDetected++;
       
       // lets retry
       break;
     }
     
     // no memory leaks ?
-    if ( iRowsProcessed == 0 )
+    if (0 == nLeaksDetected)
       goto L_REPORT;
     
     // we have memory leaks; sleep and try again!
     AM::vNapMsec(200,CN_SEPROMPT);
   }
 
-  // attempted C_ATTEMPTS to see if memory leaks settle down
-  // time to report
-  iRowsProcessed = 0;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // attempted C_ATTEMPTS to see if memory leaks settle down, now time to report
+  nLeaksDetected = 0;
   pPoolSnapshot_curr->vTakeSnapshot();
 
   for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
@@ -109,25 +113,24 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     
     i8 nDelta = pPoolSnapshot_curr->m_nObjects[eClass] -
                   pPoolSnapshot_then->m_nObjects[eClass];
-    if ( nDelta == 0 )
+    
+    if (0 == nDelta)
       continue;
     
-    vTrace("row: ('%s',  %lld)\n"_Stz,
-           aCN[eClass],
-           nDelta
-           );
-    iRowsProcessed++;
+    vTrace("row: ('%s',  %lld)\n"_Stz,aCN[eClass],nDelta);
+    nLeaksDetected++;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_REPORT:
-  vTrace("\nsuccess: %lld rows affected\n"_Stz, iRowsProcessed);
+  vTrace("\nsuccess: %lld rows affected\n"_Stz, nLeaksDetected);
   
-  if (iRowsProcessed && bFatal)
+  if (nLeaksDetected && bFatal)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "fatal: memory leaks detected"_Stz);
   
-  if (! iRowsProcessed)
+  if (! nLeaksDetected)
     vTrace("No memory leaks detected\n"_Stz);
   
   pPrompt->vTrackingMemory(false);
