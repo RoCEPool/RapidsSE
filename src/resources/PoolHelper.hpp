@@ -9,6 +9,8 @@ namespace Resources
   {
   public:
     static void vBufferDump(PoolBuffer* pBuffer);
+    static void vDumpObjects(i8 iAfter);
+    static void vDumpObjects(i8 iAfter, Heap* pHeap);
     static void vHeapDump(Heap* pBuffer);
     static void vHeapDump(Heap* pBuffer, i8 iEpoch);
     static void vObjectList(void);

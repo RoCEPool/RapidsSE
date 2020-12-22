@@ -29,30 +29,35 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
 //  Text* pText_leak = new Text;
 //  vTrace("Text_leak : %p\n"_Stz,pText_leak);
 
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
+
+  bool bFatal = false;
+  if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("fatal"_Stz))
+    bFatal = true;
+  
   // are we tracking memory?
   if ( ! pPrompt->bTrackingMemory() ) {
     vTrace("error: Memory not being tracked; Run trackMemory;\n"_Stz);
     return true;
   }
   
+  if (AM::bMetadata())
+    vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);
+
+
+  if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("dump"_Stz)) {
+    bPrompt_memoryLeaks_dump(pPrompt);
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for all jobs in the system to complete
   
   // note: the tracking of memory works with an assumption that
   //       whatever was started after trackingMemory has completed
   Api::vSpinTillAllJobsCompleted();
-  
-  bool bFatal = false;
-  
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
-  
-  if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("fatal"_Stz))
-    bFatal = true;
-  
-  if (AM::bMetadata()) {
-    vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);
-  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   PoolSnapshot* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
   PoolSnapshot* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
@@ -92,7 +97,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     
     // no memory leaks ?
     if (0 == nLeaksDetected)
-      goto L_REPORT;
+      goto L_END;
     
     // we have memory leaks; sleep and try again!
     AM::vNapMsec(200,CN_SEPROMPT);
@@ -123,8 +128,12 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-L_REPORT:
+L_END:
+  
   vTrace("\nsuccess: %lld rows affected\n"_Stz, nLeaksDetected);
+  
+  if (nLeaksDetected)
+    bPrompt_memoryLeaks_dump(pPrompt);
   
   if (nLeaksDetected && bFatal)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -133,7 +142,17 @@ L_REPORT:
   if (! nLeaksDetected)
     vTrace("No memory leaks detected\n"_Stz);
   
-  pPrompt->vTrackingMemory(false);
+  pPrompt->vTrackMemory(false);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_memoryLeaks_dump(SePrompt* pPrompt)
+{
+  PoolHelper::vDumpObjects(0);
   
   return true;
 }

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Footer::Footer(void)
 {
-  m__PadToDoubleWord = 0;
+  m_iWhenAllocated = Hardware::iReadTscp();
   m_uFooter = C_FOOTER;
 }
 
@@ -42,7 +42,7 @@ void Footer::vAssertFooter(void) const
 /*----------------------------------------------------------------------------*/
 void Footer::vSetFooter(void)
 {
-  m__PadToDoubleWord = 0;
+  m_iWhenAllocated = Hardware::iReadTscp();
   m_uFooter = C_FOOTER;
 }
 
@@ -74,6 +74,14 @@ bool Footer::bValidFooter(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid footer                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Footer::iWhenAllocated(void)
+{
+  return m_iWhenAllocated;
 }
 
 /*============================================================================*/

@@ -1437,7 +1437,7 @@ bool SePrompt::bTrackingMemory(void)
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vTrackingMemory(bool bTrackMemory)
+void SePrompt::vTrackMemory(bool bTrackMemory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 

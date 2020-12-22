@@ -38,18 +38,21 @@ mkdir -p "${LAYOUT_DIR}/src"
 mkdir -p "${LAYOUT_DIR}/src/expressions"
 mkdir -p "${LAYOUT_DIR}/src/resources"
 mkdir -p "${LAYOUT_DIR}/src/dataBuffers"
-cp "${ROOT_DIR}/src/expressions/LogicUnit.cpp"    "${LAYOUT_DIR}/src/expressions"
-cp "${ROOT_DIR}/src/resources/EnumGroups.h"       "${LAYOUT_DIR}/src/resources"
-cp "${ROOT_DIR}/src/resources/eEO.h"              "${LAYOUT_DIR}/src/resources"
-cp "${ROOT_DIR}/src/dataBuffers/Ent_int.h"        "${LAYOUT_DIR}/src/dataBuffers"
-cp "${ROOT_DIR}/src/expressions/InflateSet.h"     "${LAYOUT_DIR}/src/expressions"
-cp "${ROOT_DIR}/src/expressions/LIB_interface.h"  "${LAYOUT_DIR}/src/expressions"
-cp "${ROOT_DIR}/src/expressions/DEV_interface.h"  "${LAYOUT_DIR}/src/expressions"
-cp "${ROOT_DIR}/src/expressions/RLU_interface.h"  "${LAYOUT_DIR}/src/expressions"
-cp "${ROOT_DIR}/src/expressions/RluCommon.h"      "${LAYOUT_DIR}/src/expressions"
+cp "${ROOT_DIR}/src/expressions/LogicUnit.cpp"   "${LAYOUT_DIR}/src/expressions"
+cp "${ROOT_DIR}/src/resources/EnumGroups.h"      "${LAYOUT_DIR}/src/resources"
+cp "${ROOT_DIR}/src/resources/eEO.h"             "${LAYOUT_DIR}/src/resources"
+cp "${ROOT_DIR}/src/dataBuffers/Ent_int.h"       "${LAYOUT_DIR}/src/dataBuffers"
+cp "${ROOT_DIR}/src/expressions/InflateSet.h"    "${LAYOUT_DIR}/src/expressions"
+cp "${ROOT_DIR}/src/expressions/LIB_interface.h" "${LAYOUT_DIR}/src/expressions"
+cp "${ROOT_DIR}/src/expressions/DEV_interface.h" "${LAYOUT_DIR}/src/expressions"
+cp "${ROOT_DIR}/src/expressions/RLU_interface.h" "${LAYOUT_DIR}/src/expressions"
+cp "${ROOT_DIR}/src/expressions/RluCommon.h"     "${LAYOUT_DIR}/src/expressions"
 
-# eo_rtText
-cp -r "${ROOT_DIR}/eo_text"               "${LAYOUT_DIR}/eo_text"
+# Asm
+cp -r "${ROOT_DIR}/asm"                          "${LAYOUT_DIR}/asm"
+
+# eo_Text
+cp -r "${ROOT_DIR}/eo_text"                      "${LAYOUT_DIR}/eo_text"
 
 # Bootstrap
 cp "${ROOT_DIR}/bootstrap/setup.sh"              "${LAYOUT_DIR}"

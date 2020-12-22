@@ -49,6 +49,8 @@ Marker::Marker(void)
   _precondition_(_MAGIC_,CN_MARKER);
   
   m_eOpMarker = OM_NONE;
+  
+  //vTrace("new Marker() %p\n"_Stz,this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +62,8 @@ Marker::Marker(eOM eOpMarker)
   _precondition_(_MAGIC_,CN_MARKER);
   
   m_eOpMarker = eOpMarker;
+//  vTrace("new Marker(%s) %p @%lld\n"_Stz,
+//         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,6 +72,8 @@ Marker::Marker(eOM eOpMarker)
 Marker::~Marker(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+//  vTrace("delete Marker(%s) %p @%lld\n"_Stz,
+//         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
 }
 
 /*----------------------------------------------------------------------------*/

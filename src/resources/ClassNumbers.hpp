@@ -656,6 +656,337 @@ static Stz* aCN[]
   /* */ "ENUMS"_Stz,                // CN_ENUMS
 };
   
+/*----------------------------------------------------------------------------*/
+/* class memory formats                                                       */
+/*----------------------------------------------------------------------------*/
+static Stz* aCN_memfmt[]
+{
+  /* */ "_none_"_Stz,               // CN_NONE
+   
+  /* */ "_A__"_Stz,                 // CN__A__
+  /* */ "_none_"_Stz,               // CN_ACCESSPATH
+  /* */ "_none_"_Stz,               // CN_AGGTIMER
+  /* */ "_none_"_Stz,               // CN_ARG
+  /* */ "_none_"_Stz,               // CN_ARGUMENTS
+  /* */ "_none_"_Stz,               // CN_ARRANGE
+  /* */ "_none_"_Stz,               // CN_ARTICLE
+  /* */ "_none_"_Stz,               // CN_ATOMIC
+  /* */ "_none_"_Stz,               // CN_ATTACHMAP
+   
+  /* */ "_B__"_Stz,                 // CN__B__
+  /* */ "_none"_Stz,                // CN_BCDVAL
+  /* */ "_none"_Stz,                // CN_BIRTH
+  /* */ "_none"_Stz,                // CN_BOLVAL
+  /* */ "_none"_Stz,                // CN_BPA
+  /* */ "_none"_Stz,                // CN_BUCKETMAP
+  /* */ "_none"_Stz,                // CN_BUFFERCURSOR
+  /* */ "_none"_Stz,                // CN_BUFFERPOOL
+  /* */ "_none"_Stz,                // CN_BYTERATE
+  /* */ "_none"_Stz,                // CN_BYTES_T
+   
+  /* */ "_C__"_Stz,                 // CN__C__
+  /* */ "_none_"_Stz,               // CN_CATALOG
+  /* */ "_none_"_Stz,               // CN_CELLSEGMENT
+  /* */ "_none_"_Stz,               // CN_CELLSINGLE
+  /* */ "_none_"_Stz,               // CN_CHARSER
+  /* */ "_none_"_Stz,               // CN_COLUMN
+  /* */ "_none_"_Stz,               // CN_COMPILER
+  /* */ "_none_"_Stz,               // CN_CRVBUFFER
+  /* */ "_none_"_Stz,               // CN_CRWBUFFER
+  /* */ "_none_"_Stz,               // CN_CRWTOROW
+  /* */ "_none_"_Stz,               // CN_CSVBUFFER
+  /* */ "_none_"_Stz,               // CN_CSVMETA
+ 
+  /* */ "_D__"_Stz,                 // CN__D__
+  /* */ "_none_"_Stz,               // CN_DECACNT
+  /* */ "_none_"_Stz,               // CN_DECIDER
+  /* */ "_none_"_Stz,               // CN_DEFINITIONNODE
+  /* */ "_none_"_Stz,               // CN_DEVIXT
+  /* */ "_none_"_Stz,               // CN_DEVROW
+  /* */ "_none_"_Stz,               // CN_DIC
+  /* */ "_none_"_Stz,               // CN_DICSTACK
+  /* */ "_none_"_Stz,               // CN_DIR
+  /* */ "_none_"_Stz,               // CN_DTEVAL
+  /* */ "_none_"_Stz,               // CN_DYNAMO
+ 
+  /* */ "_E__"_Stz,                 // CN__E__
+  /* */ "_none_"_Stz,               // CN_EDTVAL
+  /* */ "_none_"_Stz,               // CN_ENCODING
+  /* */ "_none_"_Stz,               // CN_ENCODING_V2
+  /* */ "_none_"_Stz,               // CN_ENT
+  /* */ "_none_"_Stz,               // CN_ENTBUFFER
+  /* */ "_none_"_Stz,               // CN_ENTBUFSORTER
+  /* */ "_none_"_Stz,               // CN_ENTWRK
+  /* */ "_none_"_Stz,               // CN_ENUMFLAGS
+  /* */ "_none_"_Stz,               // CN_EXEMPLAR
+  /* */ "_none_"_Stz,               // CN_EXPRATOM
+  /* */ "_none_"_Stz,               // CN_EXPRCOLUMNREF
+  /* */ "_none_"_Stz,               // CN_EXPRLIST
+  /* */ "_none_"_Stz,               // CN_EXPRSTACK
+ 
+  /* */ "_F__"_Stz,                 // CN__F__
+  /* */ "_none_"_Stz,               // CN_FIFO
+  /* */ "_none_"_Stz,               // CN_FILE
+  /* */ "_none_"_Stz,               // CN_FIPVAL
+  /* */ "_none_"_Stz,               // CN_FLTVAL
+  /* */ "_none_"_Stz,               // CN_FOCALOBJECTS
+  /* */ "_none_"_Stz,               // CN_FORTH
+  /* */ "_none_"_Stz,               // CN_FORMAT
+  /* */ "_none_"_Stz,               // CN_FREEBUFFER
+  /* */ "_none_"_Stz,               // CN_FREECHUNK
+  /* */ "_none_"_Stz,               // CN_FREEDNOT
+  /* */ "_none_"_Stz,               // CN_FREEITEM
+  /* */ "_none_"_Stz,               // CN_FREQDIST
+   
+  /* */ "_G__"_Stz,                 // CN__G__
+  /* */ "_none_"_Stz,               // CN_GRAPHEDITOR
+  /* */ "_none_"_Stz,               // CN_GRAPHNAV
+  /* */ "_none_"_Stz,               // CN_GRID
+ 
+  /* */ "_H__"_Stz,                 // CN__H__
+  /* */ "_none_"_Stz,               // CN_HASHBUFFER
+  /* */ "_none_"_Stz,               // CN_HASHSET
+  /* */ "_none_"_Stz,               // CN_HASHMAP
+  /* */ "_none_"_Stz,               // CN_HEAPBUFFER
+   
+  /* */ "_I__"_Stz,                 // CN__I__
+  /* */ "_none_"_Stz,               // CN_INDEX
+  /* */ "_none_"_Stz,               // CN_INDEXDEF
+  /* */ "_none_"_Stz,               // CN_INDEXSTREAM
+  /* */ "_none_"_Stz,               // CN_INDEXTREE
+  /* */ "_none_"_Stz,               // CN_INDEXTREEVEC
+  /* */ "_none_"_Stz,               // CN_IDXVEC
+  /* */ "_none_"_Stz,               // CN_INFOSET
+  /* */ "_none_"_Stz,               // CN_INGESTCHUNK
+  /* */ "_none_"_Stz,               // CN_INPUT
+  /* */ "_none_"_Stz,               // CN_INTBUFFER
+  /* */ "_none_"_Stz,               // CN_INTSET
+  /* */ "_none_"_Stz,               // CN_INTVAL
+  /* */ "_none_"_Stz,               // CN_IOCHUNK
+  /* */ "_none_"_Stz,               // CN_IOCOPY
+  /* */ "_none_"_Stz,               // CN_IVLVAL
+ 
+  /* */ "_J__"_Stz,                 // CN__J__
+  /* */ "_none_"_Stz,               // CN_JOB
+  /* */ "_none_"_Stz,               // CN_JOB__FIND
+  /* */ "_none_"_Stz,               // CN_JOBLIST
+ 
+  /* */ "_K__"_Stz,                 // CN__K__
+  /* */ "_none_"_Stz,               // CN_KEY
+   
+  /* */ "_L__"_Stz,                 // CN__L__
+  /* */ "_none_"_Stz,               // CN_LARGEPERSISTENT
+  /* */ "_none_"_Stz,               // CN_LARGETRANSIENT
+  /* */ "_none_"_Stz,               // CN_LEXICON
+  /* */ "_none_"_Stz,               // CN_LICENCE
+  /* */ "_none_"_Stz,               // CN_LIMITS
+  /* */ "_none_"_Stz,               // CN_LOADCHUNK
+  /* */ "_none_"_Stz,               // CN_LOCAL
+  /* */ "_none_"_Stz,               // CN_LOCALSCHAIN
+  /* */ "_none_"_Stz,               // CN_LOCK
+  /* */ "_none_"_Stz,               // CN_LOG
+  /* */ "_none_"_Stz,               // CN_LOGENTRY
+  /* */ "_none_"_Stz,               // CN_LOGICCOMPILER
+  /* */ "_none_"_Stz,               // CN_LOGICTIMER
+  /* */ "_none_"_Stz,               // CN_LOGICUNIT
+ 
+  /* */ "_M__"_Stz,                 // CN__M__
+  /* */ "_none_"_Stz,               // CN_MARKER
+  /* */ "_none_"_Stz,               // CN_MEDIUMPERSISTENT
+  /* */ "_none_"_Stz,               // CN_MEDIUMTRANSIENT
+  /* */ "_none_"_Stz,               // CN_MEMTEST
+  /* */ "_none_"_Stz,               // CN_METADATANODE
+  /* */ "_none_"_Stz,               // CN_MUTABLEPLANNODE
+  /* */ "_none_"_Stz,               // CN_MUTEX
+ 
+  /* */ "_N__"_Stz,                 // CN__N__
+  /* */ "_none_"_Stz,               // CN_NEXTGID
+  /* */ "_none_"_Stz,               // CN_NMLSTR
+  /* */ "_none_"_Stz,               // CN_NODE
+  /* */ "_none_"_Stz,               // CN_NODEBUILDERSTACK
+  /* */ "_none_"_Stz,               // CN_NODE_I
+  /* */ "_none_"_Stz,               // CN_NOW
+  /* */ "_none_"_Stz,               // CN_NUMBAT
+   
+  /* */ "_O__"_Stz,                 // CN__O__
+  /* */ "_none_"_Stz,               // CN_OP
+  /* */ "_none_"_Stz,               // CN_OPERANDQUEUE
+  /* */ "_none_"_Stz,               // CN_OPSPEC
+   
+  /* */ "_P__"_Stz,                 // CN__P__
+  /* */ "_none_"_Stz,               // CN_PATHVEC
+  /* */ "_none_"_Stz,               // CN_PERUSE
+  /* */ "_none_"_Stz,               // CN_PIPELINE
+  /* */ "_none_"_Stz,               // CN_PIPELINESPEC
+  /* */ "_none_"_Stz,               // CN_PLAN
+  /* */ "_none_"_Stz,               // CN_PLANDEFINITIONPARSER
+  /* */ "_none_"_Stz,               // CN_PLANNER
+  /* */ "_none_"_Stz,               // CN_PLANNODE
+  /* */ "_none_"_Stz,               // CN_PLANNODEBUILDER
+  /* */ "_none_"_Stz,               // CN_PLANNODELIST
+  /* */ "_none_"_Stz,               // CN_PLANNODEBUILDERLIST
+  /* */ "_none_"_Stz,               // CN_POOLSNAPSHOT
+  /* */ "_none_"_Stz,               // CN_POT
+  /* */ "_none_"_Stz,               // CN_PREDICATE
+  /* */ "_none_"_Stz,               // CN_PREDICATEVEC
+  /* */ "_none_"_Stz,               // CN_PRIMITIVENODE
+  /* */ "_none_"_Stz,               // CN_PROFILE
+  /* */ "_none_"_Stz,               // CN_PSXTHD
+  /* */ "_none_"_Stz,               // CN_PTNMAP
+  /* */ "_none_"_Stz,               // CN_PTNSTREAM
+  /* */ "_none_"_Stz,               // CN_PTRVAL
+   
+  /* */ "_Q__"_Stz,                 // CN__Q__
+  /* */ "_none_"_Stz,               // CN_QUERYNODE
+  /* */ "_none_"_Stz,               // CN_QUEUE
+  /* */ "_none_"_Stz,               // CN_QUEUEBUFFER
+  /* */ "_none_"_Stz,               // CN_QUEUES
+   
+  /* */ "_R__"_Stz,                 // CN__R__
+  /* */ "_none_"_Stz,               // CN_READAPI
+  /* */ "_none_"_Stz,               // CN_READER
+  /* */ "_none_"_Stz,               // CN_RECORD
+  /* */ "_none_"_Stz,               // CN_RELOP
+  /* */ "_none_"_Stz,               // CN_RESOURCETRACKER
+  /* */ "_none_"_Stz,               // CN_RESPONSE
+  /* */ "_none_"_Stz,               // CN_RESPONSEVEC
+  /* */ "_none_"_Stz,               // CN_RESULT
+  /* */ "_none_"_Stz,               // CN_RLUDIARY
+  /* */ "_none_"_Stz,               // CN_RN_RAND
+  /* */ "_none_"_Stz,               // CN_ROUTINE
+  /* */ "_none_"_Stz,               // CN_ROW
+  /* */ "_none_"_Stz,               // CN_ROWAGG
+  /* */ "_none_"_Stz,               // CN_ROWBOX
+  /* */ "_none_"_Stz,               // CN_ROWBUFFER
+  /* */ "_none_"_Stz,               // CN_ROWCOMPACTOR
+  /* */ "_none_"_Stz,               // CN_ROWONCE
+  /* */ "_none_"_Stz,               // CN_ROWSINGLE
+  /* */ "_none_"_Stz,               // CN_ROWTRAY
+  /* */ "_none_"_Stz,               // CN_RUCPU
+  /* */ "_none_"_Stz,               // CN_RUDIR
+  /* */ "_none_"_Stz,               // CN_RUFILE
+  /* */ "_none_"_Stz,               // CN_RUMEMORY
+  /* */ "_none_"_Stz,               // CN_RUMUTEX
+  /* */ "_none_"_Stz,               // CN_RUPASS
+  /* */ "_none_"_Stz,               // CN_RUSOCKET
+  /* */ "_none_"_Stz,               // CN_RUTIME
+  /* */ "_none_"_Stz,               // CN_RUWORK
+ 
+  /* */ "_S__"_Stz,                 // CN__S__
+  /* */ "_none_"_Stz,               // CN_SCHEMA
+  /* */ "_none_"_Stz,               // CN_SCHEMATEST
+  /* */ "_none_"_Stz,               // CN_SEDEPUTY
+  /* */ "_none_"_Stz,               // CN_SEEME
+  /* */ "_none_"_Stz,               // CN_SEPROMPT
+  /* */ "_none_"_Stz,               // CN_SESSION
+  /* */ "_none_"_Stz,               // CN_SESSIONARRAY
+  /* */ "_none_"_Stz,               // CN_SHORTCUT
+  /* */ "_none_"_Stz,               // CN_SHORTCUTVEC
+  /* */ "_none_"_Stz,               // CN_SINCE
+  /* */ "_none_"_Stz,               // CN_SKIPLIST
+  /* */ "_none_"_Stz,               // CN_SKIPNODE
+  /* */ "_none_"_Stz,               // CN_SLAB
+  /* */ "_none_"_Stz,               // CN_SLABALLOCATOR
+  /* */ "_none_"_Stz,               // CN_SLEEP
+  /* */ "_none_"_Stz,               // CN_SMALLPERSISTENT
+  /* */ "_none_"_Stz,               // CN_SMALLTRANSIENT
+  /* */ "_none_"_Stz,               // CN_SNBCD
+  /* */ "_none_"_Stz,               // CN_SNBOL
+  /* */ "_none_"_Stz,               // CN_SNDTE
+  /* */ "_none_"_Stz,               // CN_SNFLT
+  /* */ "_none_"_Stz,               // CN_SNINT
+  /* */ "_none_"_Stz,               // CN_SNIVL
+  /* */ "_none_"_Stz,               // CN_SNTME
+  /* */ "_none_"_Stz,               // CN_SNTSP
+  /* */ "_none_"_Stz,               // CN_SNVCH
+  /* */ "_none_"_Stz,               // CN_SOCKET
+  /* */ "_none_"_Stz,               // CN_SPELAPSED
+  /* */ "_none_"_Stz,               // CN_SPID
+  /* */ "_none_"_Stz,               // CN_SPSTRING
+  /* */ "_none_"_Stz,               // CN_SPMEDIUM
+  /* */ "_none_"_Stz,               // CN_SPSMALL
+  /* */ "_none_"_Stz,               // CN_SQLPLANNER
+  /* */ "_none_"_Stz,               // CN_SRTBUFFER
+  /* */ "_none_"_Stz,               // CN_SRTSET
+  /* */ "_none_"_Stz,               // CN_STACK
+  /* */ "_none_"_Stz,               // CN_STAGE
+  /* */ "_none_"_Stz,               // CN_STAGESPEC
+  /* */ "_none_"_Stz,               // CN_STATISTICS
+  /* */ "_none_"_Stz,               // CN_STATISTICSNODE
+  /* */ "_none_"_Stz,               // CN_STEPACCUM
+  /* */ "_none_"_Stz,               // CN_STEPTIMING
+  /* */ "_none_"_Stz,               // CN_STRAND
+  /* */ "_none_"_Stz,               // CN_STREAMDEF
+  /* */ "_none_"_Stz,               // CN_STREAMSET
+  /* */ "_none_"_Stz,               // CN_STRING_T
+  /* */ "_none_"_Stz,               // CN_STZVAL
+  /* */ "_none_"_Stz,               // CN_SYSCALL
+   
+  /* */ "_T__"_Stz,                 // CN__T__
+  /* */ "_none_"_Stz,               // CN_TABLE
+  /* */ "_none_"_Stz,               // CN_TABLEDEF
+  /* */ "_none_"_Stz,               // CN_TABLEPTN
+  /* */ "_none_"_Stz,               // CN_TABLEPTNVEC
+  /* */ "_none_"_Stz,               // CN_TABLEREF
+  /* */ "_none_"_Stz,               // CN_TABLEREFSTACK
+  /* */ "_none_"_Stz,               // CN_TAGSET
+  /* */ "_none_"_Stz,               // CN_TASK
+  /* */ "_none_"_Stz,               // CN_TASKLIST
+  /* */ "_none_"_Stz,               // CN_TASKQUEUE
+  /* */ "_none_"_Stz,               // CN_TEMPNAME
+  /* */ "_none_"_Stz,               // CN_TENANT
+  /* */ "_none_"_Stz,               // CN_TENANTS
+  /* */ "_none_"_Stz,               // CN_TEXT,
+  /* */ "_none_"_Stz,               // CN_TEXTLARGE,
+  /* */ "_none_"_Stz,               // CN_TEXTMEDIUM,
+  /* */ "_none_"_Stz,               // CN_TEXTSMALL,
+  /* */ "_none_"_Stz,               // CN_TEXTSTACK,
+  /* */ "_none_"_Stz,               // CN_TEXTTINY,
+  /* */ "_none_"_Stz,               // CN_THING
+  /* */ "_none_"_Stz,               // CN_THREAD
+  /* */ "_none_"_Stz,               // CN_THREADQUEUE
+  /* */ "_none_"_Stz,               // CN_THREADVEC
+  /* */ "_none_"_Stz,               // CN_TIMER
+  /* */ "_none_"_Stz,               // CN_TINYPERSISTENT
+  /* */ "_none_"_Stz,               // CN_TINYTRANSIENT
+  /* */ "_none_"_Stz,               // CN_TMEVAL
+  /* */ "_none_"_Stz,               // CN_TOHSHCRW
+  /* */ "_none_"_Stz,               // CN_TOKEN
+  /* */ "_none_"_Stz,               // CN_TOKENVEC
+  /* */ "_none_"_Stz,               // CN_TONSTROW
+  /* */ "_none_"_Stz,               // CN_TOPTNROW
+  /* */ "_none_"_Stz,               // CN_TOROW
+  /* */ "_none_"_Stz,               // CN_TSPVAL
+  /* */ "_none_"_Stz,               // CN_TX
+  /* */ "_none_"_Stz,               // CN_TXSET
+   
+  /* */ "_U__"_Stz,                 // CN__U__
+   
+  /* */ "_V__"_Stz,                 // CN__V__
+ 
+  /* */ "_W__"_Stz,                 // CN__W__
+  /* */ "_none_"_Stz,               // CN_WILDERNESS
+  /* */ "_none_"_Stz,               // CN_WORD
+  /* */ "_none_"_Stz,               // CN_WSPCONVERGENT_t
+ 
+  /* */ "_X__"_Stz,                 // CN__X__
+  /* */ "_none_"_Stz,               // CN_XMITOPERAND
+  /* */ "_none_"_Stz,               // CN_XMITS
+   
+  /* */ "_Y__"_Stz,                 // CN__Y__
+   
+  /* */ "_Z__"_Stz,                 // CN__Z__
+   
+  /* */ "_none_"_Stz,               // CN_ENUMS
+};
+  
+
+
+
+
+
+
+
   class ClassNumbers
   {
   public:

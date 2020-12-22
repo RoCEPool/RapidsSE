@@ -11,7 +11,7 @@ namespace Resources
   class Footer
   {
   private:
-    i8 m__PadToDoubleWord;
+    i8 m_iWhenAllocated;
   
     union {
       u8   m_uFooter;
@@ -26,6 +26,7 @@ namespace Resources
     void vSetFooter(void);
     void vSprint(Stz* szHeader);
     bool bValidFooter(void);
+    i8   iWhenAllocated(void);
   };
 }
 
