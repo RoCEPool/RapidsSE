@@ -83,12 +83,12 @@ PlanNode* PlanNodeBuilder::pBuild(void)
 
   // Create DefinitionNode or PrimitiveNode depending on current path.
   if (m_sPath.bEqual(const_cast<Stz*>(PlanNode::C_ROOT_PATH))) {
-    pPlanNode = new PrimitiveNode(m_sName.szStz(),
-                                   m_sType.szStz(),
-                                   m_xValue,
-                                   pPropertiesList,
-                                   pChildrenList,
-                                   m_sPath.szStz());
+    pPlanNode = new RootNode(m_sName.szStz(),
+                             m_sType.szStz(),
+                             m_xValue,
+                             pPropertiesList,
+                             pChildrenList,
+                             m_sPath.szStz());
 
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(PlanNode::C_PRIMITIVES_PATH))) {
     pPlanNode = new PrimitiveNode(m_sName.szStz(),

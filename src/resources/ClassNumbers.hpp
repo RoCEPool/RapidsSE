@@ -205,6 +205,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RESULT,
   /* */ CN_RLUDIARY,
   /* */ CN_RN_RAND,
+  /* */ CN_ROOTNODE,
   /* */ CN_ROUTINE,
   /* */ CN_ROW,
   /* */ CN_ROWAGG,
@@ -529,6 +530,7 @@ static Stz* aCN[]
   /* */ "RESULT"_Stz,               // CN_RESULT
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
   /* */ "RN_RAND"_Stz,              // CN_RN_RAND
+  /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE
   /* */ "ROUTINE"_Stz,              // CN_ROUTINE
   /* */ "ROW"_Stz,                  // CN_ROW
   /* */ "ROWAGG"_Stz,               // CN_ROWAGG
