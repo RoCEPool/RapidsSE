@@ -122,6 +122,10 @@ enum eEC // error code
   /* */ EC_NULL_INTERFACE,
   /* */ EC_NULLPTR,
   
+  /* */ EC_OBJECT_CLASSNO_INVALID,
+  /* */ EC_OBJECT_FOOTER_INVALID,
+  /* */ EC_OBJECT_MAGIC_INVALID,
+
   /* */ EC_PIPELINE_PROTOCOL_ERROR,
   
   /* */ EC_RESPONSE_PENDING,
@@ -268,6 +272,9 @@ static Stz* aEC[]
   /* */ "null interface"_Stz,
   /* */ "nullptr"_Stz,
 
+  /* */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
+  /* */ "EC_OBJECT_FOOTER_INVALID"_Stz,
+  /* */ "EC_OBJECT_MAGIC_INVALID"_Stz,
   /* */ "pipeline protocol error"_Stz,
   
   /* */ "response pending"_Stz,
