@@ -10,6 +10,9 @@ namespace Resources
   {
   
   public:
+  
+    i8  m_iWhenSnapshot;
+  
     i8  m_nObjects[CN_ENUMS];
 
     // must be last
@@ -31,7 +34,7 @@ namespace Resources
     Footer* aFooter(void);
    };
   
-  ObjectSnapshot* _pObjectsInPool(void* aAddr);
+  ObjectSnapshot* _pObjectSnapshot(void* aAddr);
 }
 
 /*============================================================================*/
