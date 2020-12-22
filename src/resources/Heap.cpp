@@ -358,6 +358,14 @@ void Heap::vObjectValidate(void)
       if (CN_FREECHUNK == eClass)
         continue;
                 
+      Object* pObject = (Object*)aChunk;
+      
+      if (! pObject->bIsValidObject()) {
+        vTrace("Object %p is not valid : \n"_Stz,pObject);
+      }
+      else {
+        //vTrace("Object %p valid\n"_Stz,pObject);
+      }
     }
 
   }

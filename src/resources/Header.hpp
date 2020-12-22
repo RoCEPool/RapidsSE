@@ -99,6 +99,9 @@ namespace Resources
     ~Header(void);
 
     void vAssertHeader(void);
+    bool bIsValidClass(void);
+    bool bIsValidHeader(void);
+    bool bIsValidMagic(void);
     void vSprint(Stz* szHeader);
     
   /*--------------------------------------------------------------------------*/

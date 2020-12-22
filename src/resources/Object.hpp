@@ -12,6 +12,8 @@ namespace Resources
   public:
     Object(eCN eClass);
       
+    bool bIsValidObject(void);
+  
     Footer* aFooter(void);
   };
 }
