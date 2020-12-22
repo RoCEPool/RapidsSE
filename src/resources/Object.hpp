@@ -12,7 +12,7 @@ namespace Resources
   public:
     Object(eCN eClass);
       
-    bool bIsValidObject(void);
+    eEC eValidObject(void);
   
     Footer* aFooter(void);
   };

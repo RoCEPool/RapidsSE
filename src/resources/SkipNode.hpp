@@ -12,7 +12,7 @@ namespace Resources
   public:
     void*     m_pObject;    // ptr to object
     i8        m_nRight;     // number of right pointers in the node
-    SkipNode* m_pRight[1]; // variable set of right pointers
+    SkipNode* m_pRight[1];  // variable set of right pointers
 
     
   public:

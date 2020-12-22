@@ -19,22 +19,25 @@ Object::Object(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-bool Object::bIsValidObject(void)
+eEC Object::eValidObject(void)
 {
-  if (! this->bIsValidHeader())
-    return false;
+  eEC eError;
+  
+  if ((eError = this->eValidHeader()))
+    return eError;
   
   eCN eClass = this->eClass();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Footer* aFooter =
     aAdd<Footer*>(this,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
 
-  if (! aFooter->bIsValidFooter())
-    return false;
+  if ((eError = aFooter->eValidFooter()))
+    return eError;
 
-  return true;
+  return EC_NONE;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

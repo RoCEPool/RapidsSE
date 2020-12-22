@@ -40,12 +40,12 @@ void Footer::vAssertFooter(void) const
 /*----------------------------------------------------------------------------*/
 /* is a valid footer                                                          */
 /*----------------------------------------------------------------------------*/
-bool Footer::bIsValidFooter(void)
+eEC Footer::eValidFooter(void)
 {
   if (C_FOOTER == m_uFooter)
-    return true;
+    return EC_NONE;
   
-  return false;
+  return EC_OBJECT_FOOTER_INVALID;
 }
 
 /*----------------------------------------------------------------------------*/

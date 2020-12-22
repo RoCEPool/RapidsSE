@@ -341,6 +341,8 @@ void Heap::vObjectValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
+  eEC eError;
+  
   vGrabLock();
 
   i8 nSizeObject = nObjectSize();
@@ -360,8 +362,16 @@ void Heap::vObjectValidate(void)
                 
       Object* pObject = (Object*)aChunk;
       
-      if (! pObject->bIsValidObject()) {
-        vTrace("Object %p is not valid : \n"_Stz,pObject);
+      if ((eError = pObject->eValidObject())) {
+        
+        if (EC_OBJECT_FOOTER_INVALID == eError) {
+          vTrace("Object %p %s is not valid : %s\n"_Stz,
+                 pObject,aCN[pObject->eClass()],aEC[eError]);
+        }
+        else {
+          vTrace("Object %p is not valid : %s\n"_Stz,
+                 pObject,aEC[eError]);
+        }
       }
       else {
         //vTrace("Object %p valid\n"_Stz,pObject);
