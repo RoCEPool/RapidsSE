@@ -24,37 +24,31 @@ PromptFun __Prompt_antlr (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
 {
+  // TODO: This should be done once at system startup
   // Read in and parse the plan graph definitions
-
   PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
-
   PlanNode* pRoot = pPlanDefinitionParser->pParse();
-
   delete pPlanDefinitionParser;
 
   if (pRoot == nullptr) {
     return false;
   }
 
-  PlanNode* pDup = GraphNav::pFind("/__root__/definitions/object/valueObject/floatObject:__constraints/valueType/valueTypeParam"_Stz, pRoot);
-  RASSERT(pDup);
-
   delete pRoot;
 
-//  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-//
-//  s48K sAntlr;
-//
-//  pInpTknVec->vVecToString(sAntlr,1,true);
-//
-//  vTrace("antlr: %s\n"_Stz,sAntlr.azChar());
-//
-//  // antlr test here
-//  SqlPlanner* pPlanner = new SqlPlanner();
-//
-//  pPlanner->plan(sAntlr.szStz());
-//
-//  delete pPlanner;
+  // Parse the SQL command.
+
+  // First get the command from the prompt
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  s48K sAntlr;
+  pInpTknVec->vVecToString(sAntlr,0,true);
+
+  vTrace("%s\n"_Stz,sAntlr.azChar());
+
+
+  SqlPlanner* pPlanner = new SqlPlanner();
+  pPlanner->plan(sAntlr.szStz());
+  delete pPlanner;
   
   return true;
 }
