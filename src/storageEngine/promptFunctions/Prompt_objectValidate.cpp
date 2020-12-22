@@ -23,6 +23,8 @@ PromptFun __Prompt_objectValidate (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_objectValidate(SePrompt* pPrompt)
 {
+  PoolHelper::vObjectValidate();
+  
   return true;
 }
 /*----------------------------------------------------------------------------*/

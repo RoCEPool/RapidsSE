@@ -46,6 +46,7 @@ namespace Resources
     void    vMonitorPortrait(s48K& sPortrait);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      nObjectSize(void);
+    void    vObjectValidate(void);
     void    vSummaryReport(String* pReportString);
     i8      nTotalHeapSize(void);
         

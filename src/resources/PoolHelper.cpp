@@ -522,6 +522,19 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate all objects                                                       */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vObjectValidate(void)
+{
+  _static_
+  
+  AM::pHeapMem()->Transient.m_pTiny->vObjectValidate();
+  AM::pHeapMem()->Transient.m_pSmall->vObjectValidate();
+  AM::pHeapMem()->Transient.m_pMedium->vObjectValidate();
+  AM::pHeapMem()->Transient.m_pLarge->vObjectValidate();
+}
+
+/*----------------------------------------------------------------------------*/
 /* analyze the buffer pool                                                    */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vPoolAnalyze(void)

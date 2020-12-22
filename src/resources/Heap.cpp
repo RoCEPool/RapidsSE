@@ -335,6 +335,37 @@ i8 Heap::nObjectSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate all the objects in this heap                                      */
+/*----------------------------------------------------------------------------*/
+void Heap::vObjectValidate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  vGrabLock();
+
+  i8 nSizeObject = nObjectSize();
+  
+  for (HeapBuffer* pHeapBuffer = pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,nSizeObject)) {
+      
+      eCN eClass = aChunk->eClass();
+      
+      if (CN_FREECHUNK == eClass)
+        continue;
+                
+    }
+
+  }
+  
+  vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* form report string                                                         */
 /*----------------------------------------------------------------------------*/
 void Heap::vSummaryReport(String* pReportString)

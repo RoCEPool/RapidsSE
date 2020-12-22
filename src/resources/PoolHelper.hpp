@@ -16,6 +16,7 @@ namespace Resources
     static void vObjectList(void);
     static void vObjectSummary(void);
     static void vObjectSnapshot(ObjectSnapshot* pPoolSnapshot);
+    static void vObjectValidate(void);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vPoolAnalyze(void);
     static void vPoolDump(void);
