@@ -22,8 +22,10 @@ namespace Resources
     ObjectSnapshot(void);
    ~ObjectSnapshot(void) noexcept(false);
   
+    void vClassCounts(void);
+
     void vTakeSnapshot(void);
-    
+
   private:
 
     Footer* aFooter(void);

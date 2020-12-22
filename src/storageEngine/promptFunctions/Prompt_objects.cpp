@@ -24,17 +24,31 @@ PromptFun __Prompt_objects (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_objects(SePrompt* pPrompt)
 {
-  s48K sReport;
-  pPrompt->pBPA()->vObjectReport(sReport);
   
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Current Object Report\n"_Stz);
-  vTrace("------------------------------------\n"_Stz);
+  ObjectSnapshot* pObjectSnapshot = new ObjectSnapshot;
   
-  vTrace("%s"_Stz,sReport.szStz());
-  vTrace("====================================\n"_Stz);
+  pObjectSnapshot->vTakeSnapshot();
+  
+  pObjectSnapshot->vClassCounts();
+
+  delete pObjectSnapshot;
+  
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool Prompt::bPrompt_objects(SePrompt* pPrompt)
+//{
+//  s48K sReport;
+//  pPrompt->pBPA()->vObjectReport(sReport);
+//
+//  vTrace("------------------------------------\n"_Stz);
+//  vTrace("Current Object Report\n"_Stz);
+//  vTrace("------------------------------------\n"_Stz);
+//
+//  vTrace("%s"_Stz,sReport.szStz());
+//  vTrace("====================================\n"_Stz);
+//  return true;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

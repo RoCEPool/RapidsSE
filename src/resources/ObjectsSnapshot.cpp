@@ -68,6 +68,31 @@ ObjectSnapshot::~ObjectSnapshot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* print class couunts                                                        */
+/*----------------------------------------------------------------------------*/
+void ObjectSnapshot::vClassCounts(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
+  
+  i8 iCount = 0;
+  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
+    
+    eCN eClass = (eCN)i_Class;
+    
+    i8 nObjects = m_nObjects[eClass];
+    
+    if (!nObjects)
+      continue;
+    
+    vTrace("  %20s %6lld"_Stz,aCN[eClass],m_nObjects[eClass]);
+    if (! (++iCount % 4))
+      vTrace("\n"_Stz);
+  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* take snapshot                                                              */
 /*----------------------------------------------------------------------------*/
 void ObjectSnapshot::vTakeSnapshot(void)
