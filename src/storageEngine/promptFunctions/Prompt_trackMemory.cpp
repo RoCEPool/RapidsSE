@@ -23,7 +23,7 @@ PromptFun __Prompt_trackMemory (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_trackMemory(SePrompt* pPrompt)
 {
-  pPrompt->vTrackingMemory(true);
+  pPrompt->vTrackMemory(true);
 
   vTrace("\nsuccess: 0 rows affected\n"_Stz);
   

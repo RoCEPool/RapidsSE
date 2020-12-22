@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Footer::Footer(void)
 {
-  m__PadToDoubleWord = 0;
+  m_iWhenAllocated = Hardware::iReadTscp();
   m_uFooter = C_FOOTER;
 }
 
@@ -42,7 +42,7 @@ void Footer::vAssertFooter(void) const
 /*----------------------------------------------------------------------------*/
 void Footer::vSetFooter(void)
 {
-  m__PadToDoubleWord = 0;
+  m_iWhenAllocated = Hardware::iReadTscp();
   m_uFooter = C_FOOTER;
 }
 

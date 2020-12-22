@@ -14,6 +14,8 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vBufferDump(PoolBuffer* pBuffer)
 {
+  _static_
+
   eCN eClass = pBuffer->eClass();
   
   // dont dump FreeBuffer's
@@ -32,12 +34,34 @@ void PoolHelper::vBufferDump(PoolBuffer* pBuffer)
 //  }
 }
 
+/*----------------------------------------------------------------------------*/
+/* dump objects after given timepoint                                         */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vDumpObjects(i8 iAfter)
+{
+  _static_
+  
+  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pTiny);
+  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pSmall);
+  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pMedium);
+  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pLarge);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump objects after given timepoint                                         */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vDumpObjects(i8 iAfter, Heap* pHeap)
+{
+  _static_
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump all objects in given heap                                             */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vHeapDump(Heap* pHeap)
 {
+  _static_
+
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n"_Stz);
@@ -91,6 +115,8 @@ void PoolHelper::vHeapDump(Heap* pHeap)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
 {
+  _static_
+
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n"_Stz);
@@ -140,6 +166,8 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vObjectList(void)
 {
+  _static_
+
   vTrace("\n"_Stz);
   vTrace("%sObjects in PoolBuffer Pool:\n"_Stz,Stz::szTab(1));
   
@@ -220,6 +248,8 @@ void PoolHelper::vObjectList(void)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vObjectSummary(void)
 {
+  _static_
+
   s32 sFlag;
   s32 sMagObj;
   s32 sMagHeap;
@@ -488,6 +518,8 @@ void PoolHelper::vObjectSnapshot(PoolSnapshot* pPoolSnapshot)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vPoolAnalyze(void)
 {
+  _static_
+
   // increment the epoch
   AM::iNextEpoch();
   
@@ -508,6 +540,8 @@ void PoolHelper::vPoolAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vPoolDump(void)
 {
+  _static_
+
   // increment the epoch
   AM::iNextEpoch();
   
@@ -529,6 +563,8 @@ void PoolHelper::vPoolDump(void)
 /*----------------------------------------------------------------------------*/
 i8 PoolHelper::iPoolFree(void)
 {
+  _static_
+
   i8 iTransientTiny =
      AM::pHeapMem()->Transient.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
   
@@ -569,6 +605,8 @@ i8 PoolHelper::iPoolFree(void)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vReadBuffers(Stz* sFilePath)
 {
+  _static_
+
   File* pFile = new File(nullptr);
   pFile->bOpenRead(sFilePath);
   
@@ -588,6 +626,8 @@ void PoolHelper::vReadBuffers(Stz* sFilePath)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vRegionSummary()
 {
+  _static_
+
   // get MagLib of the various buffer pools
   s32 sMagTiny;   MagLib::vByteMag(C_SIZE_TINY_OBJECT,  sMagTiny);
   s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
@@ -664,6 +704,8 @@ void PoolHelper::vRegionSummary()
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vResourceSummary(void)
 {
+  _static_
+
   printf("\n");
   printf("****************************************************************\n");
   printf((char*)"  Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
@@ -680,6 +722,8 @@ void PoolHelper::vResourceSummary(void)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vWordList(i8 iEpoch)
 {
+  _static_
+
   PoolBuffer* pMediumTransient = nullptr;
   PoolBuffer* pSmallTransient  = nullptr;
   
@@ -708,6 +752,8 @@ void PoolHelper::vWordList(i8 iEpoch)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vWriteBuffers(Stz* sFilePath)
 {
+  _static_
+
   File* pFile = new File(nullptr);
   pFile->bOpenWrite(sFilePath);
   
@@ -738,6 +784,8 @@ void PoolHelper::vWriteBuffers(Stz* sFilePath)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vWriteHeap(Heap* pHeap, File* pFile)
 {
+  _static_
+
   Timer oTimer;
   oTimer.vStart();
   
@@ -765,6 +813,8 @@ void PoolHelper::vWriteHeap(Heap* pHeap, File* pFile)
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vWritePersistentHeapMem(Stz* sFilePath)
 {
+  _static_
+
   File* pFile = new File(nullptr);
   pFile->bOpenWrite(sFilePath);
   

@@ -9,6 +9,8 @@ namespace Prompt
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bool bPrompt_memoryLeaks(SePrompt* pPrompt);
+
+  bool bPrompt_memoryLeaks_dump(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

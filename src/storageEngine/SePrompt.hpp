@@ -129,7 +129,7 @@ namespace Prompt
     PoolSnapshot* pSnapshotAtMemoryLeaks(void);
     bool bStdIn(void);
     bool bSubSsnTags(SeDeputy* pSeDeputy);
-    void vTrackingMemory(bool bTrackMemory);
+    void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
 
