@@ -21,6 +21,8 @@ namespace Resources
     
     void  vAppend(ITEM* pItem);
     ITEM* pHead(void);
+    void  vInsertAfter(ITEM* pInsItem, ITEM* pRef);
+    void  vInsertBefore(ITEM* pInsItem, ITEM* pRef);
     i8    nItems(void);
     ITEM* pPop(void);
     void  vPush(ITEM* pItem);
@@ -85,6 +87,78 @@ ITEM* ListNL_t__<ITEM>::pHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Insert object after a given reference object                               */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListNL_t__<ITEM>::vInsertAfter(ITEM* pInsItem, ITEM* pRef)
+{
+  if (pRef == m_pTail) {
+    pInsItem->vPrevItem(pRef);
+    pRef->vNextItem(pInsItem);
+
+    m_pTail = pInsItem;
+    m_nItems++;
+    return;
+  }
+
+  // Verify that pRef is actually in this list
+  ITEM* pItem = m_pHead;
+  while (pItem) {
+
+    if (pItem == pRef) {
+      pInsItem->vNextItem(pRef->pNextItem());
+      pRef->pNextItem()->vPrevItem(pInsItem);
+
+      pRef->vNextItem(pInsItem);
+      pInsItem->vPrevItem(pRef);
+
+      m_nItems++;
+      return;
+    }
+
+    pItem = pItem->pNextItem();
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Insert object before a given reference object                              */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListNL_t__<ITEM>::vInsertBefore(ITEM* pInsItem, ITEM* pRef)
+{
+  if (pRef == m_pHead) {
+    pInsItem->vNextItem(pRef);
+    pRef->vPrevItem(pInsItem);
+
+    m_pHead = pInsItem;
+    m_nItems++;
+    return;
+  }
+
+  // Verify that pRef is actually in this list
+  ITEM* pItem = m_pHead;
+  while (pItem) {
+
+    if (pItem == pRef) {
+      pInsItem->vPrevItem(pRef->pPrevItem());
+      pRef->pPrevItem()->vNextItem(pInsItem);
+
+      pRef->vPrevItem(pInsItem);
+      pInsItem->vNextItem(pRef);
+
+      m_nItems++;
+      return;
+    }
+
+    pItem = pItem->pNextItem();
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of objects in list                                              */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
@@ -141,7 +215,7 @@ void ListNL_t__<ITEM>::vPush(ITEM* pItem)
   pItem->vNextItem(m_pHead);
   
   if (m_pHead)
-    m_pHead->vPrev(pItem);
+    m_pHead->vPrevItem(pItem);
   else
     m_pTail = pItem;
   
@@ -153,7 +227,7 @@ void ListNL_t__<ITEM>::vPush(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove object from head of list                                            */
+/* remove object from list                                                    */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vRemove(ITEM* pItem)
