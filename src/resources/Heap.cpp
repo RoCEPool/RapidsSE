@@ -337,7 +337,7 @@ i8 Heap::nObjectSize(void)
 /*----------------------------------------------------------------------------*/
 /* form report string                                                         */
 /*----------------------------------------------------------------------------*/
-void Heap::vReport(String* pReportString)
+void Heap::vSummaryReport(String* pReportString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   

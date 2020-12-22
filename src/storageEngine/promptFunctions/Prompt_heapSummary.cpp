@@ -1,30 +1,30 @@
 /*============================================================================*/
-/* Prompt_heapMem.cpp -- heap memory contents                                 */
+/* Prompt_heapSummary.cpp -- heap summary report                              */
 /*============================================================================*/
 
 #include "StorageEngine.h"
 
-PromptFun __Prompt_heapMem (
-  PF_HEAPMEM,           // prompt function
-  "Prompt_heapMem"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the function
-  "heapMem"_Stz,        // the prompt command
-  nullptr,              // the second word
-  bPrompt_heapMem,      // prompt function
-  true,                 // enabled
+PromptFun __Prompt_heapSummary (
+  PF_HEAPSUMMARY,           // prompt function
+  "Prompt_heapSummary"_Stz, // name of the prompt function
+  "comment"_Stz,            // comment about the function
+  "heapSummary"_Stz,        // the prompt command
+  nullptr,                  // the second word
+  bPrompt_heapSummary,      // prompt function
+  true,                     // enabled
 
-  true,                 // visible
-  "heapMem"_Stz,        // help
-  ""_Stz                // description
+  true,                     // visible
+  "heapSummary"_Stz,        // help
+  ""_Stz                    // description
 );
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_heapMem(SePrompt* pPrompt)
+bool Prompt::bPrompt_heapSummary(SePrompt* pPrompt)
 {
   
-  HeapMem::vReport();
+  HeapMem::vSummaryReport();
   
   return true;
 }

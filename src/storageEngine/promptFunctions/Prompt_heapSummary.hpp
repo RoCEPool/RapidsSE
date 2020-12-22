@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_heapMem.hpp -- heap memory contents                                 */
+/* Prompt_heapSummary.hpp -- heap summaryreport                               */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_heapMem(SePrompt* pPrompt);
+  bool bPrompt_heapSummary(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

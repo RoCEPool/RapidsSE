@@ -46,7 +46,7 @@ namespace Resources
     void    vMonitorPortrait(s48K& sPortrait);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      nObjectSize(void);
-    void    vReport(String* pReportString);
+    void    vSummaryReport(String* pReportString);
     i8      nTotalHeapSize(void);
         
   private:

@@ -52,7 +52,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_FUNS);
   gxPromptCatalog.vFuns(PF_GIVEMEM);
   gxPromptCatalog.vFuns(PF_HASHDEFS);
-  gxPromptCatalog.vFuns(PF_HEAPMEM);
+  gxPromptCatalog.vFuns(PF_HEAPSUMMARY);
   gxPromptCatalog.vFuns(PF_HELP);
   gxPromptCatalog.vFuns(PF_HEXDUMP);
   gxPromptCatalog.vFuns(PF_HW);
