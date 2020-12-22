@@ -207,6 +207,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Result),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_RESULT
   { sizeof(RluDiary),           HT_TRANSIENT_LARGE   ,0 }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID           ,0 }, // CN_RN_RAND
+  { sizeof(RootNode),           HT_TRANSIENT_TINY    ,-8 }, // CN_ROOTNODE
   { sizeof(Routine),            HT_TRANSIENT_SMALL   ,0 }, // CN_ROUTINE
   { sizeof(Row),                HT_TRANSIENT_LARGE   ,0 }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_TRANSIENT_MEDIUM  ,0 }, // CN_ROWAGG
