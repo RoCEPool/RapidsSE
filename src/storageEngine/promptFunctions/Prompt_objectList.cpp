@@ -35,20 +35,6 @@ bool Prompt::bPrompt_objectList(SePrompt* pPrompt)
   
   return true;
 }
-/*----------------------------------------------------------------------------*/
-//bool Prompt::bPrompt_objectList(SePrompt* pPrompt)
-//{
-//  s48K sReport;
-//  pPrompt->pBPA()->vObjectReport(sReport);
-//
-//  vTrace("------------------------------------\n"_Stz);
-//  vTrace("Current Object Report\n"_Stz);
-//  vTrace("------------------------------------\n"_Stz);
-//
-//  vTrace("%s"_Stz,sReport.szStz());
-//  vTrace("====================================\n"_Stz);
-//  return true;
-//}
 
 /*============================================================================*/
 /* end                                                                        */

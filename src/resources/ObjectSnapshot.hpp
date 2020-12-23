@@ -5,7 +5,6 @@
 
 namespace Resources
 {
-  
   class ObjectSnapshot : public Object
   {
   
@@ -26,6 +25,8 @@ namespace Resources
    ~ObjectSnapshot(void) noexcept(false);
   
     void vClassCounts(void);
+  
+    void vDeltaList(ObjectSnapshot* pWithObjectSnapshot);
 
     void vTakeSnapshot(void);
 

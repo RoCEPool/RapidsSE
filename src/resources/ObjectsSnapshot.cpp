@@ -67,6 +67,34 @@ void ObjectSnapshot::vClassCounts(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print class couunts                                                        */
+/*----------------------------------------------------------------------------*/
+void ObjectSnapshot::vDeltaList(ObjectSnapshot* pWithObjectSnapshot_newer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
+  
+  //i8 iCount = 0;
+  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
+    
+    eCN eClass = (eCN)i_Class;
+        
+    i8 nWas = m_nObjects[eClass];
+    i8 nNow = pWithObjectSnapshot_newer->m_nObjects[eClass];
+    i8 nDelta = nWas - nNow;
+        
+    if (0 == nDelta)
+      continue;
+
+    vTrace("  %20s was %lld now %lld delta %lld\n"_Stz,
+           aCN[eClass],nWas,nNow,nDelta);
+//    if (! (++iCount % 4))
+//      vTrace("\n"_Stz);
+  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* take snapshot                                                              */
 /*----------------------------------------------------------------------------*/
 void ObjectSnapshot::vTakeSnapshot(void)

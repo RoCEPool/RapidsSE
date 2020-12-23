@@ -54,7 +54,42 @@ void PoolHelper::vDumpObjects(i8 iAfter, Heap* pHeap)
 {
   _static_
   
-  vHeapDump(pHeap);
+  pHeap->vGrabLock();
+  
+  i8 iCount = 0;
+  for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+    
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
+      
+      eCN eClass = aChunk->eClass();
+      
+      if (CN_FREECHUNK == eClass)
+        continue;
+                  
+      Footer* aFooter =
+        aAdd<Footer*>(aChunk,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
+
+      i8 iWhenAllocated =
+        aFooter->bValidFooter() ? aFooter->iWhenAllocated() : -1;
+
+      if (iWhenAllocated <= iAfter)
+        continue;
+      
+      vTrace("%s%p %-12s %16lld: "_Stz,
+             Stz::szTab(2),aChunk,aCN[eClass],iWhenAllocated);
+      if (! (++iCount % 4))
+        vTrace("\n"_Stz);
+    }
+  }
+  if (iCount % 4)
+    vTrace("\n"_Stz);
+  
+  pHeap->vDropLock();
+
 }
 
 /*----------------------------------------------------------------------------*/
