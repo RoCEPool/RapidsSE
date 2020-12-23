@@ -165,15 +165,15 @@ Heap* HeapMem::pEachHeap(eHT& reLastHeap)
   }
   
   switch ((eHT) iNextHeap) {
-    case HT_PERSISTENT_TINY:   pNextHeap = Persistent.m_pTiny;
-    case HT_PERSISTENT_SMALL:  pNextHeap = Persistent.m_pSmall;
-    case HT_PERSISTENT_MEDIUM: pNextHeap = Persistent.m_pMedium;
-    case HT_PERSISTENT_LARGE:  pNextHeap = Persistent.m_pLarge;
+    case HT_PERSISTENT_TINY:   pNextHeap = Persistent.m_pTiny;    break;
+    case HT_PERSISTENT_SMALL:  pNextHeap = Persistent.m_pSmall;   break;
+    case HT_PERSISTENT_MEDIUM: pNextHeap = Persistent.m_pMedium;  break;
+    case HT_PERSISTENT_LARGE:  pNextHeap = Persistent.m_pLarge;   break;
       
-    case HT_TRANSIENT_TINY:    pNextHeap = Transient.m_pTiny;
-    case HT_TRANSIENT_SMALL:   pNextHeap = Transient.m_pSmall;
-    case HT_TRANSIENT_MEDIUM:  pNextHeap = Transient.m_pMedium;
-    case HT_TRANSIENT_LARGE:   pNextHeap = Transient.m_pLarge;
+    case HT_TRANSIENT_TINY:    pNextHeap = Transient.m_pTiny;     break;
+    case HT_TRANSIENT_SMALL:   pNextHeap = Transient.m_pSmall;    break;
+    case HT_TRANSIENT_MEDIUM:  pNextHeap = Transient.m_pMedium;   break;
+    case HT_TRANSIENT_LARGE:   pNextHeap = Transient.m_pLarge;    break;
     default:
       NEVER_REACH;
   }

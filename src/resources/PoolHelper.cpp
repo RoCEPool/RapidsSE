@@ -211,48 +211,44 @@ void PoolHelper::vInspectObjects(i8 iAfter)
 {
   _static_
   
-  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pTiny);
-  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pSmall);
-  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pMedium);
-  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pLarge);
-}
+  HeapMem* pHeapMem = AM::pHeapMem();
 
-/*----------------------------------------------------------------------------*/
-/* inspect objects after given timepoint                                      */
-/*----------------------------------------------------------------------------*/
-void PoolHelper::vInspectObjects(i8 iAfter, Heap* pHeap)
-{
-  _static_
+  eHT eHeap = HT_INVALID;
   
-  pHeap->vGrabLock();
+  for (Heap* pHeap = pHeapMem->pEachHeap(eHeap);
+       pHeap;
+       pHeap = pHeapMem->pEachHeap(eHeap)) {
   
-  for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
-       pHeapBuffer;
-       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+    pHeap->vGrabLock();
     
-    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
-         aChunk;
-         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
+    for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
+         pHeapBuffer;
+         pHeapBuffer = pHeapBuffer->pNextBuffer()) {
       
-      eCN eClass = aChunk->eClass();
-      
-      if (CN_FREECHUNK == eClass)
-        continue;
-      
-      Object* pObject = (Object*)aChunk;
-      
-      Footer* aFooter = pObject->aCalcFooterAddress();
+      for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+           aChunk;
+           aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
+        
+        eCN eClass = aChunk->eClass();
+        if (CN_FREECHUNK == eClass)
+          continue; // next chunk
+        
+        Object* pObject = (Object*)aChunk;
+        Footer* aFooter = pObject->aCalcFooterAddress();
 
-      i8 iWhenAllocated = pObject->iWhenAllocated();
-
-      if (iWhenAllocated <= iAfter)
-        continue;
-     
-      pObject->vInspectObject();
-     }
-  }
+        i8 iWhenAllocated = pObject->iWhenAllocated();
+        if (iWhenAllocated <= iAfter)
+          continue; // next object
+       
+        pObject->vInspectObject();
+        
+       } // each chunk/object in heapBuffer
+      
+    } // each heapBuffer in heap
+    
+    pHeap->vDropLock();
   
-  pHeap->vDropLock();
+  } // each heap in heapMem
 }
 
 /*----------------------------------------------------------------------------*/
