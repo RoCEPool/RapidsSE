@@ -22,13 +22,9 @@ namespace Resources
     static void vPoolAnalyze(void);
     static void vPoolDump(void);
     static i8   iPoolFree(void);
-    static void vReadBuffers(Stz* sFilePath);
     static void vRegionSummary(void);
     static void vResourceSummary(void);
     static void vWordList(i8 iEpoch);
-    static void vWriteBuffers(Stz* sFilePath);
-    static void vWriteHeap(Heap* pHeap, File* pFile);
-    static void vWritePersistentHeapMem(Stz* sFilePath);
   };
 }
 

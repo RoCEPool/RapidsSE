@@ -27,7 +27,7 @@ void Step::vPersistenceCheckpoint(void)
 
   BPA* pBPA = new BPA;
   
-  PoolHelper::vWritePersistentHeapMem(sFilePath);
+  PersistenceHelper::vWritePersistentHeapMem(sFilePath);
   
   delete pBPA;
   

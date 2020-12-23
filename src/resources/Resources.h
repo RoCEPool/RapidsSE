@@ -267,6 +267,7 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "FreeChunk.hpp"
 #include "BufferPool.hpp"
 #include "PoolHelper.hpp"
+#include "PersistenceHelper.hpp"
 
 #include "HeapBuffer.hpp"
 #include "HeapMem.hpp"
