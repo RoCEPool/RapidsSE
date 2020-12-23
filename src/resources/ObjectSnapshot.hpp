@@ -1,15 +1,17 @@
 /*============================================================================*/
-/* PoolSnapshot.hpp - objects in the buffer pool                             */
+/* ObjectSnapshot.hpp -- count of objects by class in the buffer pool         */
 /*============================================================================*/
 #pragma once
 
 namespace Resources
 {
-  
-  class PoolSnapshot : public Object
+  class ObjectSnapshot : public Object
   {
   
   public:
+  
+    i8  m_iWhenSnapshot;
+  
     i8  m_nObjects[CN_ENUMS];
 
     // must be last
@@ -19,17 +21,21 @@ namespace Resources
     void* operator new(size_t);
     void  operator delete(void* pAddr);
     
-    PoolSnapshot(void);
-   ~PoolSnapshot(void) noexcept(false);
+    ObjectSnapshot(void);
+   ~ObjectSnapshot(void) noexcept(false);
   
+    void vClassCounts(void);
+  
+    void vDeltaList(ObjectSnapshot* pWithObjectSnapshot);
+
     void vTakeSnapshot(void);
-    
+
   private:
 
     Footer* aFooter(void);
    };
   
-  PoolSnapshot* _pObjectsInPool(void* aAddr);
+  ObjectSnapshot* _pObjectSnapshot(void* aAddr);
 }
 
 /*============================================================================*/

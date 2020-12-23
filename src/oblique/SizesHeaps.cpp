@@ -73,8 +73,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID           ,0 }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_TRANSIENT_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_TRANSIENT_TINY    ,0 }, // CN_EXEMPLAR
-  { sizeof(ExprAtom),           HT_TRANSIENT_TINY    ,0 }, // CN_EXPRATOM
-  { sizeof(ExprColumnRef),      HT_TRANSIENT_TINY    ,0 }, // CN_EXPRCOLUMNREF
+  { sizeof(ExprAtom),           HT_TRANSIENT_TINY    ,-8 }, // CN_EXPRATOM
+  { sizeof(ExprColumnRef),      HT_TRANSIENT_TINY    ,-8 }, // CN_EXPRCOLUMNREF
   { sizeof(ExprList),           HT_TRANSIENT_TINY    ,0 }, // CN_EXPRLIST
   { sizeof(ExprStack),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_EXPRSTACK
 
@@ -179,7 +179,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PlanNodeBuilder),      HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeList),         HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(PlanNodeBuilderList),  HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
-  { sizeof(PoolSnapshot),         HT_TRANSIENT_SMALL   ,0 }, // CN_POOLSNAPSHOT
+  { sizeof(ObjectSnapshot),         HT_TRANSIENT_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Pot),                  HT_TRANSIENT_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC
@@ -207,6 +207,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Result),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_RESULT
   { sizeof(RluDiary),           HT_TRANSIENT_LARGE   ,0 }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID           ,0 }, // CN_RN_RAND
+  { sizeof(RootNode),           HT_TRANSIENT_TINY    ,-8 }, // CN_ROOTNODE
   { sizeof(Routine),            HT_TRANSIENT_SMALL   ,0 }, // CN_ROUTINE
   { sizeof(Row),                HT_TRANSIENT_LARGE   ,0 }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_TRANSIENT_MEDIUM  ,0 }, // CN_ROWAGG

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_objects.hpp -- object list report                                   */
+/* Prompt_heapSummary.hpp -- heap summaryreport                               */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_objects(SePrompt* pPrompt);
+  bool bPrompt_heapSummary(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

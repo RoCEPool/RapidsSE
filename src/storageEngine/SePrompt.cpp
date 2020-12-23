@@ -52,9 +52,10 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bOneRun     = false;
 
   m_pBPA = nullptr;
-  m_pSnapshotAtTrackingMemory = new PoolSnapshot;
-  m_pSnapshotAtMemoryLeaks = new PoolSnapshot;
-  
+  m_pSnapshotAtTrackingMemory = new ObjectSnapshot;
+  m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
+  m_pSnapshotObjects = nullptr;
+
   d_iDebugMode = gxArgs.m_iPromptDebug;
 
   m_pLitTknVec = new TokenVec;
@@ -89,6 +90,7 @@ SePrompt::~SePrompt(void) noexcept(false)
   delete m_pBPA;
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
+  delete m_pSnapshotObjects;
   
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
@@ -989,16 +991,6 @@ i8 SePrompt::iNextSectionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* objects in pool                                                            */
-/*----------------------------------------------------------------------------*/
-PoolSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotAtTrackingMemory;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the prompt settings tag set                                            */
 /*----------------------------------------------------------------------------*/
 TagSet* SePrompt::pPmtTagSet(void)
@@ -1309,16 +1301,6 @@ bool SePrompt::bShortCut(SeDeputy* pSeDeputy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get snapshot objects                                                       */
-/*----------------------------------------------------------------------------*/
-PoolSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotAtMemoryLeaks;
-}
-
-/*----------------------------------------------------------------------------*/
 /* are we currently reading from stdin?                                       */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bStdIn(void)
@@ -1474,6 +1456,49 @@ bool SePrompt::bTranslateProcedure(void)
   m_pInpTknVec->vTokenise(sPipelineSmt);
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotAtTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotAtMemoryLeaks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with snapshotObjects command)                 */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotObjects;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with snapshotObjects command)                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSnapshotObjects(ObjectSnapshot* pSnapshotObjects)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pSnapshotObjects = pSnapshotObjects;
 }
 
 /*============================================================================*/

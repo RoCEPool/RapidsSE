@@ -62,7 +62,7 @@ GraphNav::~GraphNav(void)
  *
  * Functions or C++11 lambdas can be passed to this function. Using lambdas
  * can often be easier than creating a new class to specifically overload
- * the operator().
+ * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalk(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor)
 {
@@ -94,7 +94,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor
  * NOTES:
  * Functions or C++11 lambdas can be passed to this function. Using lambdas
  * can often be easier than creating a new class to specifically overload
- * the operator().
+ * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor)
 {
@@ -143,7 +143,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
  * NOTES:
  * Functions or C++11 lambdas can be passed to this function. Using lambdas
  * can often be easier than creating a new class to specifically overload
- * the operator().
+ * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor, s256& sPath)
 {

@@ -252,41 +252,41 @@ void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 /* heap memory report                                                         */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vReport(void)
+void HeapMem::vSummaryReport(void)
 {
   s256 sReport;
 
   // tiny transient heap
-  AM::pHeapMem()->Transient.m_pTiny->vReport(sReport.pString());
+  AM::pHeapMem()->Transient.m_pTiny->vSummaryReport(sReport.pString());
   vTrace(" %s\n"_Stz,sReport.szStz());
   
   // small transient heap
-  AM::pHeapMem()->Transient.m_pSmall->vReport(sReport.pString());
+  AM::pHeapMem()->Transient.m_pSmall->vSummaryReport(sReport.pString());
   vTrace(" %s\n"_Stz,sReport.szStz());
   
   // medium transient heap
-  AM::pHeapMem()->Transient.m_pMedium->vReport(sReport.pString());
+  AM::pHeapMem()->Transient.m_pMedium->vSummaryReport(sReport.pString());
   vTrace(" %s\n"_Stz,sReport.szStz());
 
   // large transient heap
-  AM::pHeapMem()->Transient.m_pLarge->vReport(sReport.pString());
+  AM::pHeapMem()->Transient.m_pLarge->vSummaryReport(sReport.pString());
   vTrace(" %s\n"_Stz,sReport.szStz());
 
   
 //  // tiny persistent heap
-//  AM::pHeapMem()->Persistent.m_pTiny->vReport(sReport.pString());
+//  AM::pHeapMem()->Persistent.m_pTiny->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // small persistent heap
-//  AM::pHeapMem()->Persistent.m_pSmall->vReport(sReport.pString());
+//  AM::pHeapMem()->Persistent.m_pSmall->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // medium persistent heap
-//  AM::pHeapMem()->Persistent.m_pMedium->vReport(sReport.pString());
+//  AM::pHeapMem()->Persistent.m_pMedium->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // large persistent heap
-//  AM::pHeapMem()->Persistent.m_pLarge->vReport(sReport.pString());
+//  AM::pHeapMem()->Persistent.m_pLarge->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 }

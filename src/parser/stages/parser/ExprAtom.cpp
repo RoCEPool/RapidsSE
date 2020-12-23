@@ -19,12 +19,7 @@ ExprAtom::ExprAtom(eCN eClassNo)
 : Object(eClassNo),
   m_oChildren(CN_EXPRATOM)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPRATOM,_FOOTER_);
-  
-  _checkInitialised_(CN_EXPRATOM);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_EXPRATOM,_FOOTER_);
-  
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,8 +27,7 @@ ExprAtom::ExprAtom(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 ExprAtom::~ExprAtom(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPRATOM,_FOOTER_);
-  
+
 }
 
 /*----------------------------------------------------------------------------*/

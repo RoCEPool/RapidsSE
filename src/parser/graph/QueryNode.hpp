@@ -25,6 +25,37 @@ namespace Parser
 
     Footer* aFooter(void);
 
+
+    // Returns the number of children of this node
+    i8 iNumChildren(void);
+
+    // Returns true if the current node has a specific child
+    b1 bHasChild(QueryNode* pNode);
+
+    // Returns the zero-based index of the child, or -1 if the child doesn't exist
+    i8 bChildIndex(QueryNode* pNode);
+
+    // Adds a new child at the end of the list
+    void vAppendChild(QueryNode* pNode);
+
+    // Adds a child at the start of the list
+    void vPushChild(QueryNode* pNode);
+
+    // Insert a child after a given reference child
+    void vInsertChildAfter(QueryNode* pInsNode, QueryNode* pRefNode);
+
+    // Insert a child before a given reference child
+    void vInsertChildBefore(QueryNode* pInsNode, QueryNode* pRefNode);
+
+    // Removes a given child from the list. The removed node retains all of its children.
+    void vRemoveChild(QueryNode* pNode);
+
+    // Removes a given child from the list and merges the child's children into
+    // the children list of this node.
+    void vSnipChild(QueryNode* pNode);
+
+    // Removes and returns the first child. The removed node retains all of its children.
+    QueryNode* pPopChild();
   };
   
   QueryNode* _pQueryNode(void* aAddr);

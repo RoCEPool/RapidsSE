@@ -99,6 +99,9 @@ namespace Resources
     ~Header(void);
 
     void vAssertHeader(void);
+    eEC  eValidClass(void);
+    eEC  eValidHeader(void);
+    eEC  eValidMagic(void);
     void vSprint(Stz* szHeader);
     
   /*--------------------------------------------------------------------------*/

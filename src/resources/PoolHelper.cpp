@@ -54,7 +54,42 @@ void PoolHelper::vDumpObjects(i8 iAfter, Heap* pHeap)
 {
   _static_
   
-  vHeapDump(pHeap);
+  pHeap->vGrabLock();
+  
+  i8 iCount = 0;
+  for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+    
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
+      
+      eCN eClass = aChunk->eClass();
+      
+      if (CN_FREECHUNK == eClass)
+        continue;
+                  
+      Footer* aFooter =
+        aAdd<Footer*>(aChunk,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
+
+      i8 iWhenAllocated =
+        aFooter->bValidFooter() ? aFooter->iWhenAllocated() : -1;
+
+      if (iWhenAllocated <= iAfter)
+        continue;
+      
+      vTrace("%s%p %-12s %16lld: "_Stz,
+             Stz::szTab(2),aChunk,aCN[eClass],iWhenAllocated);
+      if (! (++iCount % 4))
+        vTrace("\n"_Stz);
+    }
+  }
+  if (iCount % 4)
+    vTrace("\n"_Stz);
+  
+  pHeap->vDropLock();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +468,7 @@ void PoolHelper::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vObjectSnapshot(PoolSnapshot* pPoolSnapshot)
+void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
 {
   i8 iCountObjects[CN_ENUMS];
   
@@ -519,6 +554,19 @@ void PoolHelper::vObjectSnapshot(PoolSnapshot* pPoolSnapshot)
 
     pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate all objects                                                       */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vObjectValidate(void)
+{
+  _static_
+  
+  AM::pHeapMem()->Transient.m_pTiny->vObjectValidate();
+  AM::pHeapMem()->Transient.m_pSmall->vObjectValidate();
+  AM::pHeapMem()->Transient.m_pMedium->vObjectValidate();
+  AM::pHeapMem()->Transient.m_pLarge->vObjectValidate();
 }
 
 /*----------------------------------------------------------------------------*/

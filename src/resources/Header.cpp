@@ -46,6 +46,44 @@ void Header::vAssertHeader(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is a valid class number                                                    */
+/*----------------------------------------------------------------------------*/
+eEC Header::eValidClass(void)
+{
+  if (m_eClass < CN_ENUMS)
+    return EC_NONE;
+  
+  return EC_OBJECT_CLASSNO_INVALID;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is a valid header                                                          */
+/*----------------------------------------------------------------------------*/
+eEC Header::eValidHeader(void)
+{
+  eEC eError;
+  
+  if ((eError = eValidMagic()))
+    return eError;
+  
+  if ((eError = eValidClass()))
+    return eError;
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is a valid class number                                                    */
+/*----------------------------------------------------------------------------*/
+eEC Header::eValidMagic(void)
+{
+  if (C_MAGIC == m_uMagic)
+    return EC_NONE;
+  
+  return EC_OBJECT_MAGIC_INVALID;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint the header into readable form                                       */
 /*----------------------------------------------------------------------------*/
 void Header::vSprint(Stz* szHeader)

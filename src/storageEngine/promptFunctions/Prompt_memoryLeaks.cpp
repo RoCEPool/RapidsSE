@@ -59,8 +59,8 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  PoolSnapshot* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
-  PoolSnapshot* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
+  ObjectSnapshot* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
   
   // NOTE: Need to wait for job to complete and cleanup
   // Loop C_ATTEMPTS times to wait for memory leaks to go away

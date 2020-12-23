@@ -23,6 +23,7 @@ namespace Resources
    ~Footer(void);
     
     void vAssertFooter(void) const;
+    eEC  eValidFooter(void);
     void vSetFooter(void);
     void vSprint(Stz* szHeader);
     bool bValidFooter(void);

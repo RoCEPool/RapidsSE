@@ -4,6 +4,8 @@
 
 #include "Resources.h"
 
+extern SizeHeap  gxaSizeHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
@@ -12,6 +14,29 @@ Object::Object(eCN eClassNo)
 {
   
   _precondition_(_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+eEC Object::eValidObject(void)
+{
+  eEC eError;
+  
+  if ((eError = this->eValidHeader()))
+    return eError;
+  
+  eCN eClass = this->eClass();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Footer* aFooter =
+    aAdd<Footer*>(this,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
+
+  if ((eError = aFooter->eValidFooter()))
+    return eError;
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
