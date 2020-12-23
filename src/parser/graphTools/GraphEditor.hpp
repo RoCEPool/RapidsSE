@@ -21,7 +21,7 @@ namespace Parser
     Footer* aFooter(void);
 
     // Create a new copy of the plan graph using the template
-    PlanNode* pNewFromTemplate(PlanNode* pRootNode);
+    static PlanNode* pNewFromTemplate(PlanNode* pRootNode);
   };
 
   GraphEditor* _pGraphEditor(void* aAddr);

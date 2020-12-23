@@ -4,7 +4,7 @@
 #pragma once
 
 namespace Parser
-{  
+{
   class PlanNodeList : public ListNL_t<PlanNode>
   {
   private:

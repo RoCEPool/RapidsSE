@@ -24,32 +24,32 @@ PromptFun __Prompt_antlr (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
 {
-  // TODO: This should be done once at system startup
   // Read in and parse the plan graph definitions
+  // TODO: This should be done once at system startup
   PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
-  PlanNode* pRoot = pPlanDefinitionParser->pParse();
+  PlanNode* pGraphTemplate = pPlanDefinitionParser->pParse();
   delete pPlanDefinitionParser;
 
-  if (pRoot == nullptr) {
+  if (pGraphTemplate == nullptr) {
     return false;
   }
 
-  delete pRoot;
 
   // Parse the SQL command.
 
   // First get the command from the prompt
+  // TODO: Ideally, get the raw command entered, not a tokenised reconstruction
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   s48K sAntlr;
   pInpTknVec->vVecToString(sAntlr,0,true);
-
   vTrace("%s\n"_Stz,sAntlr.azChar());
 
-
   SqlPlanner* pPlanner = new SqlPlanner();
-  pPlanner->plan(sAntlr.szStz());
+  pPlanner->plan(sAntlr.szStz(), pGraphTemplate);
   delete pPlanner;
-  
+
+  // TODO: Shouldn't need to be deleted once this is done on system startup
+  delete pGraphTemplate;
   return true;
 }
 

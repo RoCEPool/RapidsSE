@@ -66,3 +66,7 @@ Smt6;
 // index filters RANGE
 //select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;
 Smt7;
+
+// aggregate - sum
+//select l_orderkey, sum(l_extendedprice) from lineitem;
+//Smt8;
