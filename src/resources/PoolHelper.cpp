@@ -634,7 +634,7 @@ void PoolHelper::vPoolAnalyze(void)
   
   vRegionSummary();
   vObjectSummary();
-  vResourceSummary();
+  //vResourceSummary();
   
   printf("\n");
 }
@@ -657,7 +657,7 @@ void PoolHelper::vPoolDump(void)
   vRegionSummary();
   vObjectSummary();
   vObjectList();
-  vResourceSummary();
+  //vResourceSummary();
   
   vTrace("\n"_Stz);
 }
@@ -780,24 +780,6 @@ void PoolHelper::vRegionSummary()
          AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
          AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
          AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
-}
-
-/*----------------------------------------------------------------------------*/
-/* summarize resource usage                                                   */
-/*----------------------------------------------------------------------------*/
-void PoolHelper::vResourceSummary(void)
-{
-  _static_
-
-  printf("\n");
-  printf("****************************************************************\n");
-  printf((char*)"  Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
-         AM::pResourceTracker()->nDirOpen(),
-         AM::pResourceTracker()->nFileOpen(),
-         AM::pResourceTracker()->nShmOpen(),
-         AM::pResourceTracker()->nSocketOpen(),
-         AM::pResourceTracker()->nThreadOpen());
-  printf("****************************************************************\n");
 }
 
 /*----------------------------------------------------------------------------*/

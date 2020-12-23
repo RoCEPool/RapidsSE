@@ -23,7 +23,6 @@ namespace Resources
     static void vPoolDump(void);
     static i8   iPoolFree(void);
     static void vRegionSummary(void);
-    static void vResourceSummary(void);
     static void vWordList(i8 iEpoch);
   };
 }
