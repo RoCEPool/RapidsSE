@@ -23,6 +23,8 @@ namespace ControlData
     Marker(eOM eOpMarker);
    ~Marker(void) noexcept(false);
     
+    static bool bInspect(Object* pObject);
+  
     eOM eOpMarker(void);
   };
 

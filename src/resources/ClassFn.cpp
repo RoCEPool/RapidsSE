@@ -11,10 +11,21 @@ extern ClassCatalog gxClassCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ClassFn::ClassFn(i8 iKind, bool (*fClassFn)(void* aArg))
+ClassFn::ClassFn(eCF eKind, pCLASSFN* fpClassFn, i8)
 {
-
+  m_fpInspectFn = fpClassFn;
 }
+
+/*----------------------------------------------------------------------------*/
+/* default object inspector                                                   */
+/*----------------------------------------------------------------------------*/
+bool ClassFn::bInspect(Object* pObject)
+{
+  _static_
+  
+  return true;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -156,6 +156,8 @@ struct SizeHeap {
 #include "REF_t.hpp"
 #include "REG_t.hpp"
 
+typedef bool (pCLASSFN)(Object* pObject);
+
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 

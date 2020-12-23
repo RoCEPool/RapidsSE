@@ -4,6 +4,9 @@
 
 #include "ControlData.h"
 
+#include "eCF.h"
+
+ClassFn __Marker_fn (CF_INSPECT,reinterpret_cast<pCLASSFN*>(&Marker::bInspect),C_VARGS_END);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -75,6 +78,17 @@ Marker::~Marker(void) noexcept(false)
 //  vTrace("delete Marker(%s) %p @%lld\n"_Stz,
 //         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
 }
+
+/*----------------------------------------------------------------------------*/
+/* inspect the operator                                                       */
+/*----------------------------------------------------------------------------*/
+bool Marker::bInspect(Object* pObject)
+{
+  _static_
+  
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get the Op marker type                                                     */

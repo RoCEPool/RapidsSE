@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//#include "ePF.h"
+#include "eCF.h"
 
 namespace Resources
 {
@@ -11,8 +11,12 @@ namespace Resources
   {
   public:
 
+    pCLASSFN* m_fpInspectFn;  // array of inspect function
+
   public:
-    ClassFn(i8 iKind, bool (*fClassFn)(void* aArg));
+    ClassFn(eCF eKind, pCLASSFN* fpClassFn, i8);
+  
+    static bool bInspect(Object* pObject);
   };
 }
 

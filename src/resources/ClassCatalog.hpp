@@ -8,8 +8,7 @@ namespace Resources
   class ClassCatalog
   {
   public:
-    i8       m_nFunctions;          // number of  functions
-    ClassFn* m_aaClassFn[CN_ENUMS];  // array of function descriptions
+    ClassFn* m_aaIClassFn[CN_ENUMS];  // array of inspect function
 
   public:
     ClassFn* pFindFunction(eCN eClass, i8 iKind);
