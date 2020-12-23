@@ -302,9 +302,15 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
   
   if (eError) {
     RASSERT(! pSeDeputy->pJob());
-    vTrace("error: %s\n"_Stz,aEC[eError]);
-    if (AM::bDeveloper())
-      vDumpInpTknVec(true);
+    
+    if (EC_INVALID_COMMAND == eError) {
+      bool b = bPrompt_unknown(this);
+    }
+    else {
+      vTrace("error: %s\n"_Stz,aEC[eError]);
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
+    }
     return false;
   }
   

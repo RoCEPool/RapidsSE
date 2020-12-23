@@ -152,7 +152,7 @@ L_END:
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_memoryLeaks_dump(SePrompt* pPrompt)
 {
-  PoolHelper::vDumpObjects(0);
+  PoolHelper::vObjectDump(0);
   
   return true;
 }

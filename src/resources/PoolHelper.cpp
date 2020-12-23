@@ -13,20 +13,20 @@ extern ClassCatalog gxClassCatalog;
 /*----------------------------------------------------------------------------*/
 /* dump objects after given timepoint                                         */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vDumpObjects(i8 iAfter)
+void PoolHelper::vObjectDump(i8 iAfter)
 {
   _static_
   
-  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pTiny);
-  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pSmall);
-  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pMedium);
-  vDumpObjects(iAfter,AM::pHeapMem()->Transient.m_pLarge);
+  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pTiny);
+  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pSmall);
+  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pMedium);
+  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pLarge);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump objects after given timepoint                                         */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vDumpObjects(i8 iAfter, Heap* pHeap)
+void PoolHelper::vObjectDump(i8 iAfter, Heap* pHeap)
 {
   _static_
   

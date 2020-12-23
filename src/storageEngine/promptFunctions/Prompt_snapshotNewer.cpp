@@ -31,7 +31,7 @@ bool Prompt::bPrompt_snapshotNewer(SePrompt* pPrompt)
    
   i8 iAfter = pSnapshotObjects_then->m_iWhenSnapshot;
   
-  PoolHelper::vDumpObjects(iAfter);
+  PoolHelper::vObjectDump(iAfter);
   
   vTrace("\n"_Stz);
 

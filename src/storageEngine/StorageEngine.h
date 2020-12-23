@@ -166,6 +166,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_tpch.hpp"
 #include "Prompt_trackMemory.hpp"
 
+#include "Prompt_unknown.hpp"
 #include "Prompt_uptime.hpp"
 
 #include "Prompt_version.hpp"
