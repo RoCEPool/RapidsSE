@@ -12,7 +12,10 @@ namespace Resources
   public:
     Object(eCN eClass);
       
+    Footer* aCalcFooterAddress(void);
+  
     eEC eValidObject(void);
+  
   
     Footer* aFooter(void);
   };

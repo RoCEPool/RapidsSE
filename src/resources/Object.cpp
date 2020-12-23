@@ -19,6 +19,19 @@ Object::Object(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
+Footer* Object::aCalcFooterAddress(void)
+{
+  eCN eClass = this->eClass();
+
+  Footer* aFooter =
+    aAdd<Footer*>(this,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
+
+  return aFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
 eEC Object::eValidObject(void)
 {
   eEC eError;

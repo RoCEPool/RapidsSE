@@ -144,6 +144,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_sleepers.hpp"
 #include "Prompt_sleeping.hpp"
 #include "Prompt_snapshotDelta.hpp"
+#include "Prompt_snapshotInspect.hpp"
 #include "Prompt_snapshotList.hpp"
 #include "Prompt_snapshotNewer.hpp"
 #include "Prompt_snapshotObjects.hpp"

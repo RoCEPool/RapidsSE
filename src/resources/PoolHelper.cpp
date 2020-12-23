@@ -205,6 +205,61 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inspect objects after given timepoint                                      */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vInspectObjects(i8 iAfter)
+{
+  _static_
+  
+  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pTiny);
+  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pSmall);
+  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pMedium);
+  vInspectObjects(iAfter,AM::pHeapMem()->Transient.m_pLarge);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect objects after given timepoint                                      */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vInspectObjects(i8 iAfter, Heap* pHeap)
+{
+  _static_
+  
+  pHeap->vGrabLock();
+  
+  for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+    
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
+      
+      eCN eClass = aChunk->eClass();
+      
+      if (CN_FREECHUNK == eClass)
+        continue;
+      
+      Object* pObect = (Object*)aChunk;
+      
+      Footer* aFooter =
+        aAdd<Footer*>(pObect,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
+
+      i8 iWhenAllocated =
+        aFooter->bValidFooter() ? aFooter->iWhenAllocated() : -1;
+
+      if (iWhenAllocated <= iAfter)
+        continue;
+     
+      vTrace("%p %-12s %16lld: \n"_Stz,
+             pObect,aCN[eClass],iWhenAllocated);
+     }
+  }
+  
+  pHeap->vDropLock();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* list all objects                                                           */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vObjectList(void)
