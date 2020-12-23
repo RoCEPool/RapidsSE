@@ -29,6 +29,7 @@ namespace Resources
     void vMonitorPortrait(s48K& sPortrait);
 
     static Object* pAllocate(eCN eClass, bool bPersistent=false);
+    static Heap* pEachHeap(eHT& reLastHeap);
     static void vFree(Object* pObject, bool bPersistent=false);
     static void vFree_NonObject(PoolBuffer* pBuffer);
     static void vSummaryReport(void);

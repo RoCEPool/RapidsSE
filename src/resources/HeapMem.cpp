@@ -14,27 +14,36 @@ bool gbAddrAllocated = false;
 void HeapMem::vInit(void)
 {
   // create the transient heaps
-  Transient.m_pLarge  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
-  Transient.m_pMedium = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
-  Transient.m_pSmall  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
-  Transient.m_pTiny   = new Heap(CN_TINYTRANSIENT,   C_SIZE_TINY_OBJECT);
+  Transient.m_pLarge  =
+    new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_TRANSIENT_LARGE);
+  Transient.m_pMedium =
+    new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_TRANSIENT_MEDIUM);
+  Transient.m_pSmall  =
+    new Heap(CN_SMALLTRANSIENT, C_SIZE_SMALL_OBJECT, HT_TRANSIENT_SMALL);
+  Transient.m_pTiny   =
+    new Heap(CN_TINYTRANSIENT,  C_SIZE_TINY_OBJECT,  HT_TRANSIENT_TINY);
+
 
   if (AM::bVerboseProgress()) {
-    vInfo("Created large heap %p: %lldB objects\n"_Stz,
-          Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
-    vInfo("Created medium heap %p: %lldB objects\n"_Stz,
-          Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-    vInfo("Created small heap %p: %lldB objects\n"_Stz,
-          Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
     vInfo("Created tiny heap %p: %lldB objects\n"_Stz,
           Transient.m_pTiny, C_SIZE_TINY_OBJECT);
+    vInfo("Created small heap %p: %lldB objects\n"_Stz,
+          Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
+    vInfo("Created medium heap %p: %lldB objects\n"_Stz,
+          Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+    vInfo("Created large heap %p: %lldB objects\n"_Stz,
+          Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
   }
     
   // create the persistent heaps
-  Persistent.m_pLarge  = new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
-  Persistent.m_pMedium = new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
-  Persistent.m_pSmall  = new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
-  Persistent.m_pTiny   = new Heap(CN_TINYPERSISTENT,   C_SIZE_SMALL_OBJECT);
+//  Persistent.m_pTiny   =
+//    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_PERSISTENT_TINY);
+//  Persistent.m_pSmall  =
+//    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_PERSISTENT_SMALL);
+//  Persistent.m_pMedium =
+//    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_PERSISTENT_MEDIUM);
+//  Persistent.m_pLarge  =
+//    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_PERSISTENT_LARGE);
 }
 
 /*----------------------------------------------------------------------------*/

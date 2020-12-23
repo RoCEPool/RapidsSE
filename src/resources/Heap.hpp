@@ -10,6 +10,7 @@ namespace Resources
   friend class HeapMem;
   
   private:
+    eHT         m_eHeap;          // heap kind
     i8          m_nObjectSize;    // size of each object (e.g. 1KB or 16KB)
     bool        m_bFixedHeap;     // fixed size heap or able to extend?
   
@@ -28,7 +29,7 @@ namespace Resources
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Heap(eCN eClass, i8 iObjectSize);
+    Heap(eCN eClass, i8 iObjectSize, eHT eHeap);
     ~Heap(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

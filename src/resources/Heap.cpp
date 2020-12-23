@@ -36,12 +36,13 @@ void Heap::operator delete(void* pHeapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Heap::Heap(eCN eClassNo, i8 iObjectSize)
+Heap::Heap(eCN eClassNo, i8 iObjectSize, eHT eHeap)
 : PoolBuffer(eClassNo)
 , m_okLock(LK_HEAP,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  m_eHeap          = eHeap;
   m_nObjectSize    = iObjectSize;
   m_nCurrAllocated = 0;
   m_nBufferCount   = 0;
