@@ -11,25 +11,25 @@ namespace Resources
   {
   public:
     struct {
-      Heap* m_pLarge;
-      Heap* m_pMedium;
-      Heap* m_pSmall;
       Heap* m_pTiny;
+      Heap* m_pSmall;
+      Heap* m_pMedium;
+      Heap* m_pLarge;
     } Transient;
   
     struct {
-      Heap* m_pLarge;
-      Heap* m_pMedium;
-      Heap* m_pSmall;
       Heap* m_pTiny;
+      Heap* m_pSmall;
+      Heap* m_pMedium;
+      Heap* m_pLarge;
     } Persistent;
 
   public:
     void vInit(void);
     void vMonitorPortrait(s48K& sPortrait);
+    Heap* pEachHeap(eHT& reLastHeap);
 
     static Object* pAllocate(eCN eClass, bool bPersistent=false);
-    static Heap* pEachHeap(eHT& reLastHeap);
     static void vFree(Object* pObject, bool bPersistent=false);
     static void vFree_NonObject(PoolBuffer* pBuffer);
     static void vSummaryReport(void);
