@@ -239,24 +239,20 @@ void PoolHelper::vInspectObjects(i8 iAfter, Heap* pHeap)
       if (CN_FREECHUNK == eClass)
         continue;
       
-      Object* pObect = (Object*)aChunk;
+      Object* pObject = (Object*)aChunk;
       
-      Footer* aFooter =
-        aAdd<Footer*>(pObect,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
+      Footer* aFooter = pObject->aCalcFooterAddress();
 
-      i8 iWhenAllocated =
-        aFooter->bValidFooter() ? aFooter->iWhenAllocated() : -1;
+      i8 iWhenAllocated = pObject->iWhenAllocated();
 
       if (iWhenAllocated <= iAfter)
         continue;
      
-      vTrace("%p %-12s %16lld: \n"_Stz,
-             pObect,aCN[eClass],iWhenAllocated);
+      pObject->vInspectObject();
      }
   }
   
   pHeap->vDropLock();
-
 }
 
 /*----------------------------------------------------------------------------*/

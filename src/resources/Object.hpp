@@ -13,9 +13,12 @@ namespace Resources
     Object(eCN eClass);
       
     Footer* aCalcFooterAddress(void);
-  
+    Stz* szClassNm(void);
+    void vInspectObject(void);
+    void vMemoryDump(void);
+    i8 nSizeOfObject(void);
     eEC eValidObject(void);
-  
+    i8  iWhenAllocated(void);
   
     Footer* aFooter(void);
   };

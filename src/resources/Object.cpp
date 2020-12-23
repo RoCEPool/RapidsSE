@@ -7,13 +7,25 @@
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Object::Object(eCN eClassNo)
 : Header(eClassNo)
 {
   
   _precondition_(_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* Object::szClassNm(void)
+{
+  eCN eClass = this->eClass();
+
+  Stz* szName = aCN[eClass];
+  
+  return szName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +38,43 @@ Footer* Object::aCalcFooterAddress(void)
   Footer* aFooter =
     aAdd<Footer*>(this,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
 
-  return aFooter;
+  if (aFooter->bValidFooter())
+    return aFooter;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect object                                                             */
+/*----------------------------------------------------------------------------*/
+void Object::vInspectObject(void)
+{
+  vTrace("Inspecting %p %-12s:\n"_Stz,this,szClassNm());
+  
+  vMemoryDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* memory dump                                                                */
+/*----------------------------------------------------------------------------*/
+void Object::vMemoryDump(void)
+{
+  eCN eClass = this->eClass();
+  i8 nSize = nSizeOfObject();
+  
+  MemLib::vDumpWords(this,nSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of object                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Object::nSizeOfObject(void)
+{
+  eCN eClass = this->eClass();
+
+  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  
+  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,6 +98,18 @@ eEC Object::eValidObject(void)
     return eError;
 
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get when allocated                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Object::iWhenAllocated(void)
+{
+  Footer* aFooter = aCalcFooterAddress();
+  
+  i8 iWhen = aFooter ? aFooter->iWhenAllocated() : -1;
+  
+  return iWhen;
 }
 
 /*----------------------------------------------------------------------------*/
