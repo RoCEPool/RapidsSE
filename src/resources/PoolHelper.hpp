@@ -23,6 +23,7 @@ namespace Resources
     static void vPoolDump(void);
     static i8   iPoolFree(void);
     static void vRegionSummary(void);
+    static void vValidateEnums(void);
     static void vWordList(i8 iEpoch);
   };
 }

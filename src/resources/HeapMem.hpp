@@ -40,7 +40,6 @@ namespace Resources
     static void vFree_NonObject(PoolBuffer* pBuffer);
     static void vSummaryReport(void);
     static void vSearchFree(void);
-    static void vValidateEnums(void);
   
     Heap* pEachHeap(eHT& reLastHeap);
     Heap* pGetHeap(eHT eHeap);

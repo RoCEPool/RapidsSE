@@ -25,7 +25,7 @@ void Resources::vCheckAssumptions(void)
   ALWAYS(CacheLine::bMultipleCacheLines(C_SIZE_MEDIUM_OBJECT));
   ALWAYS(CacheLine::bMultipleCacheLines(C_SIZE_LARGE_OBJECT));
 
-  HeapMem::vValidateEnums();
+  PoolHelper::vValidateEnums();
   
   
   // shared memory

@@ -783,6 +783,94 @@ void PoolHelper::vRegionSummary()
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate enum tables                                                       */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vValidateEnums(void)
+{
+  // note: using i8 for i_Class instead of eCN because you cannot
+  //       increment (++) an enum
+  
+  for (i8 i_Class = CN_NONE; i_Class < CN_ENUMS; i_Class++) {
+    
+    eCN eClass = (eCN)i_Class;
+    
+    eHT eHeap = gxaSizeHeap[eClass].m_eWhichHeap;
+    i8  iSize = gxaSizeHeap[eClass].m_nClassSize;
+    
+    switch(eHeap) {
+      case HT_INVALID:
+        break;
+        
+      // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        
+      case HT_T_TINY:
+        if (iSize >= C_SIZE_TINY_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+        
+      case HT_T_SMALL:
+        if (iSize >= C_SIZE_SMALL_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+        
+      case HT_T_MEDIUM:
+        if (iSize >= C_SIZE_MEDIUM_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+        
+      case HT_T_LARGE:
+        if (iSize >= C_SIZE_LARGE_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+         
+      // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case HT_P_TINY:
+        if (iSize >= C_SIZE_SMALL_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+        
+      case HT_P_SMALL:
+        if (iSize >= C_SIZE_SMALL_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+        
+      case HT_P_MEDIUM:
+        if (iSize >= C_SIZE_MEDIUM_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+        
+      case HT_P_LARGE:
+        if (iSize >= C_SIZE_LARGE_OBJECT)
+          vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+                
+      default:
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+               "HeapMem::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
+               eHeap);
+    }
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* list all words created since last epoch                                    */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vWordList(i8 iEpoch)
