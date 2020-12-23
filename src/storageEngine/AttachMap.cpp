@@ -71,14 +71,14 @@ AttachMap::AttachMap(void)
   AM::vRootConstant(m_pRootDic->pFindWord("rootConstant"_Stz));
   
   // create the persistent heaps
-  m_xHeapMem.Persistent.m_pTiny  =
-    new Heap(CN_TINYPERSISTENT,   C_SIZE_TINY_OBJECT,   HT_P_TINY);
-  m_xHeapMem.Persistent.m_pSmall  =
-    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-  m_xHeapMem.Persistent.m_pMedium =
-    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-  m_xHeapMem.Persistent.m_pLarge  =
-    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
+//  m_xHeapMem.Persistent.m_pTiny  =
+//    new Heap(CN_TINYPERSISTENT,   C_SIZE_TINY_OBJECT,   HT_P_TINY);
+//  m_xHeapMem.Persistent.m_pSmall  =
+//    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
+//  m_xHeapMem.Persistent.m_pMedium =
+//    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
+//  m_xHeapMem.Persistent.m_pLarge  =
+//    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
   
   m_pTxSet = new TxSet;
 
@@ -272,13 +272,21 @@ void AttachMap::vRecordArguments(Args* pArgs)
   
   m_oFormatters.m_nMaxErrors = Arg.m_nMaxLoadErrors;
   
+  ASSERT(m_xHeapMem.Transient.m_pTiny);
+  ASSERT(m_xHeapMem.Transient.m_pSmall);
   ASSERT(m_xHeapMem.Transient.m_pMedium);
   ASSERT(m_xHeapMem.Transient.m_pLarge);
-  ASSERT(m_xHeapMem.Transient.m_pSmall);
+
   
-  ASSERT(m_xHeapMem.Persistent.m_pMedium);
-  ASSERT(m_xHeapMem.Persistent.m_pLarge);
-  ASSERT(m_xHeapMem.Persistent.m_pSmall);
+  ASSERT(m_xHeapMem.Virtual.m_pTiny);
+  ASSERT(m_xHeapMem.Virtual.m_pSmall);
+  ASSERT(m_xHeapMem.Virtual.m_pMedium);
+  ASSERT(m_xHeapMem.Virtual.m_pLarge);
+
+//  ASSERT(m_xHeapMem.Persistent.m_pTiny);
+//  ASSERT(m_xHeapMem.Persistent.m_pSmall);
+//  ASSERT(m_xHeapMem.Persistent.m_pMedium);
+//  ASSERT(m_xHeapMem.Persistent.m_pLarge);
   
     
   m_iStop       = 0;

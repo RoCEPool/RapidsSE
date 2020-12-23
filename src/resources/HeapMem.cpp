@@ -162,21 +162,30 @@ void HeapMem::vSummaryReport(void)
 {
   s256 sReport;
 
-  // tiny transient heap
-  AM::pHeapMem()->Transient.m_pTiny->vSummaryReport(sReport.pString());
-  vTrace(" %s\n"_Stz,sReport.szStz());
+  eHT eHeap = HT_INVALID;
   
-  // small transient heap
-  AM::pHeapMem()->Transient.m_pSmall->vSummaryReport(sReport.pString());
-  vTrace(" %s\n"_Stz,sReport.szStz());
+  for (Heap* pHeap = AM::pHeapMem()->pEachHeap(eHeap);
+       pHeap;
+       pHeap = AM::pHeapMem()->pEachHeap(eHeap)) {
+    pHeap->vSummaryReport(sReport.pString());
+    vTrace(" %s\n"_Stz,sReport.szStz());
+  }
   
-  // medium transient heap
-  AM::pHeapMem()->Transient.m_pMedium->vSummaryReport(sReport.pString());
-  vTrace(" %s\n"_Stz,sReport.szStz());
-
-  // large transient heap
-  AM::pHeapMem()->Transient.m_pLarge->vSummaryReport(sReport.pString());
-  vTrace(" %s\n"_Stz,sReport.szStz());
+//  // tiny transient heap
+//  AM::pHeapMem()->Transient.m_pTiny->vSummaryReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
+//
+//  // small transient heap
+//  AM::pHeapMem()->Transient.m_pSmall->vSummaryReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
+//
+//  // medium transient heap
+//  AM::pHeapMem()->Transient.m_pMedium->vSummaryReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
+//
+//  // large transient heap
+//  AM::pHeapMem()->Transient.m_pLarge->vSummaryReport(sReport.pString());
+//  vTrace(" %s\n"_Stz,sReport.szStz());
 
   
 //  // tiny persistent heap
@@ -265,10 +274,10 @@ Heap* HeapMem::pGetHeap(eHT eHeap)
     case HT_T_MEDIUM:  return Transient.m_pMedium;
     case HT_T_LARGE:   return Transient.m_pLarge;
       
-    case HT_V_TINY:    return Persistent.m_pTiny;
-    case HT_V_SMALL:   return Persistent.m_pSmall;
-    case HT_V_MEDIUM:  return Persistent.m_pMedium;
-    case HT_V_LARGE:   return Persistent.m_pLarge;
+    case HT_V_TINY:    return Virtual.m_pTiny;
+    case HT_V_SMALL:   return Virtual.m_pSmall;
+    case HT_V_MEDIUM:  return Virtual.m_pMedium;
+    case HT_V_LARGE:   return Virtual.m_pLarge;
       
     default:
       NEVER_REACH;

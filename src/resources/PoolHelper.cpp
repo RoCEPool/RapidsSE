@@ -11,31 +11,6 @@ extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
 
 /*----------------------------------------------------------------------------*/
-/* dump given buffer                                                          */
-/*----------------------------------------------------------------------------*/
-void PoolHelper::vBufferDump(PoolBuffer* pBuffer)
-{
-  _static_
-
-  eCN eClass = pBuffer->eClass();
-  
-  // dont dump FreeBuffer's
-  if (CN_FREEBUFFER == eClass)
-    return;
-  
-  //pDUMPFUN* pDumpFun = gpDump[eClass];
-  
-  vTrace("%s%p %-12s: "_Stz,Stz::szTab(2),pBuffer,aCN[eClass]);
-
-  //(pDumpFun)(pBuffer->eClass(), pBuffer, Stz::szTab(1));
-  
-//  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
-//      pBuffer->eClass() == SN_SMALLTRANSIENT ) {
-//    vHeapDump(reinterpret_cast<Heap*>(pBuffer));
-//  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump objects after given timepoint                                         */
 /*----------------------------------------------------------------------------*/
 void PoolHelper::vDumpObjects(i8 iAfter)
@@ -252,87 +227,6 @@ void PoolHelper::vInspectObjects(i8 iAfter)
   } // each heap in heapMem
 }
 
-/*----------------------------------------------------------------------------*/
-/* list all objects                                                           */
-/*----------------------------------------------------------------------------*/
-void PoolHelper::vObjectList(void)
-{
-  _static_
-
-  vTrace("\n"_Stz);
-  vTrace("%sObjects in PoolBuffer Pool:\n"_Stz,Stz::szTab(1));
-  
-  PoolBuffer* pTinyTransient   = nullptr;
-  PoolBuffer* pSmallTransient  = nullptr;
-  PoolBuffer* pMediumTransient = nullptr;
-  PoolBuffer* pLargeTransient  = nullptr;
-  
-  PoolBuffer* pTinyPersistent   = nullptr;
-  PoolBuffer* pSmallPersistent  = nullptr;
-  PoolBuffer* pMediumPersistent = nullptr;
-  PoolBuffer* pLargePersistent  = nullptr;
-  
-  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= gpBufferPool->iBufferLast();
-       i_Buffer++) {
-    
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
-    
-    if (CN_TINYTRANSIENT == pBuffer->eClass())
-      pTinyTransient = pBuffer;
-    
-    if (CN_SMALLTRANSIENT == pBuffer->eClass())
-      pSmallTransient = pBuffer;
-    
-    if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
-      pMediumTransient = pBuffer;
-    
-    if (CN_LARGETRANSIENT == pBuffer->eClass())
-      pLargeTransient = pBuffer;
-    
-    
-    if (CN_TINYPERSISTENT == pBuffer->eClass())
-      pTinyPersistent = pBuffer;
-    
-    if (CN_SMALLPERSISTENT == pBuffer->eClass())
-      pSmallPersistent = pBuffer;
-    
-    if (CN_MEDIUMPERSISTENT  == pBuffer->eClass())
-      pMediumPersistent = pBuffer;
-    
-    if (CN_LARGEPERSISTENT  == pBuffer->eClass())
-      pLargePersistent = pBuffer;
-        
-    vBufferDump(pBuffer);
-  }
-  
-  if (pTinyTransient)
-    vHeapDump(reinterpret_cast<Heap*>(pTinyTransient));
-  
-  if (pSmallTransient)
-    vHeapDump(reinterpret_cast<Heap*>(pSmallTransient));
-  
-  if (pMediumTransient)
-    vHeapDump(reinterpret_cast<Heap*>(pMediumTransient));
-  
-  if (pLargeTransient)
-    vHeapDump(reinterpret_cast<Heap*>(pLargeTransient));
-  
-  
-  
-  if (pTinyPersistent)
-    vHeapDump(reinterpret_cast<Heap*>(pTinyPersistent));
-  
-  if (pSmallPersistent)
-    vHeapDump(reinterpret_cast<Heap*>(pSmallPersistent));
-  
-  if (pMediumTransient)
-    vHeapDump(reinterpret_cast<Heap*>(pMediumPersistent));
-  
-  if (pLargePersistent)
-    vHeapDump(reinterpret_cast<Heap*>(pLargePersistent));
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool and heaps                            */
@@ -656,7 +550,6 @@ void PoolHelper::vPoolDump(void)
   
   vRegionSummary();
   vObjectSummary();
-  vObjectList();
   //vResourceSummary();
   
   vTrace("\n"_Stz);
