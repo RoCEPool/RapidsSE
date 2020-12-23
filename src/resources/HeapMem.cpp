@@ -9,20 +9,40 @@ extern SizeHeap  gxaSizeHeap[];
 bool gbAddrAllocated = false;
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+HeapMem::HeapMem(void)
+: Object(CN_HEAPMEM)
+{
+  _precondition_(_MAGIC_,CN_HEAPMEM);
+  
+  Transient.m_pTiny   = nullptr;
+  Transient.m_pSmall  = nullptr;
+  Transient.m_pMedium = nullptr;
+  Transient.m_pLarge  = nullptr;
+  
+  Persistent.m_pTiny   = nullptr;
+  Persistent.m_pSmall  = nullptr;
+  Persistent.m_pMedium = nullptr;
+  Persistent.m_pLarge  = nullptr;
+    
+  _postcondition_(_MAGIC_,CN_HEAPMEM);
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialise the various heaps                                               */
 /*----------------------------------------------------------------------------*/
 void HeapMem::vInit(void)
 {
   // create the transient heaps
-  Transient.m_pLarge  =
-    new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_TRANSIENT_LARGE);
-  Transient.m_pMedium =
-    new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_TRANSIENT_MEDIUM);
-  Transient.m_pSmall  =
-    new Heap(CN_SMALLTRANSIENT, C_SIZE_SMALL_OBJECT, HT_TRANSIENT_SMALL);
   Transient.m_pTiny   =
     new Heap(CN_TINYTRANSIENT,  C_SIZE_TINY_OBJECT,  HT_TRANSIENT_TINY);
-
+  Transient.m_pSmall  =
+    new Heap(CN_SMALLTRANSIENT, C_SIZE_SMALL_OBJECT, HT_TRANSIENT_SMALL);
+  Transient.m_pMedium =
+    new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_TRANSIENT_MEDIUM);
+  Transient.m_pLarge  =
+    new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_TRANSIENT_LARGE);
 
   if (AM::bVerboseProgress()) {
     vInfo("Created tiny heap %p: %lldB objects\n"_Stz,

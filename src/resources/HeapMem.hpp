@@ -7,7 +7,7 @@ namespace Resources
 {
   class Heap;
   
-  class HeapMem
+  class HeapMem : public Object
   {
   public:
     struct {
@@ -25,6 +25,8 @@ namespace Resources
     } Persistent;
 
   public:
+    HeapMem(void);
+
     void vInit(void);
     void vMonitorPortrait(s48K& sPortrait);
     Heap* pEachHeap(eHT& reLastHeap);

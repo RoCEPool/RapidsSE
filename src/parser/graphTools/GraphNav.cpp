@@ -106,7 +106,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
-  if (pNode->getName()->bEqual(const_cast<Stz*>(PlanNode::C_ROOT_NAME))) {
+  if (pNode->getName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
     sPath.vCopy("/"_Stz);
 
   } else {
@@ -169,7 +169,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
     while (pProp) {
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
-      sPath.vConcat(const_cast<Stz*>(PlanNode::C_PROPERTY_SEPARATOR));
+      sPath.vConcat(const_cast<Stz*>(C_PROPERTY_SEPARATOR));
 
       bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, sPath);
 
@@ -188,7 +188,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
     while (pChild) {
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
-      sPath.vConcat(const_cast<Stz*>(PlanNode::C_CHILD_SEPARATOR));
+      sPath.vConcat(const_cast<Stz*>(C_CHILD_SEPARATOR));
 
       bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, sPath);
 
@@ -232,7 +232,7 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
   // Corner case for handling an absolute path
   if (szPath->bBeginsWith("/"_Stz)) {
     // We've got an absolute path
-    if(!pNode->getName()->bEqual(const_cast<Stz*>(PlanNode::C_ROOT_NAME))) {
+    if(!pNode->getName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
       return nullptr;
     }
 
@@ -242,8 +242,8 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
     return pResult;
   }
 
-  ASSERT(!szPath->bEqual(const_cast<Stz*>(PlanNode::C_CHILD_SEPARATOR)));
-  ASSERT(!szPath->bEqual(const_cast<Stz*>(PlanNode::C_PROPERTY_SEPARATOR)));
+  ASSERT(!szPath->bEqual(const_cast<Stz*>(C_CHILD_SEPARATOR)));
+  ASSERT(!szPath->bEqual(const_cast<Stz*>(C_PROPERTY_SEPARATOR)));
 
   // Compare the leading edge of the path to the name of the current node.
   // To do so, find the next path separator (if any).

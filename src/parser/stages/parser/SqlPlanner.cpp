@@ -135,11 +135,15 @@ void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
   PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
 
   // Find the subpath where we will attach the parsed query plan
-  PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(PlanNode::C_PLAN_PATH), pRoot);
+  PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
   ASSERT(pItem);
   ASSERT(pItem->eClass() == CN_QUERYNODE);
   QueryNode* pQueryNode = static_cast<QueryNode*>(pItem);
-  // TODO: pQueryNode->vAppendChild(xxx);
+
+  // Attach the statement plan we created
+  ASSERT(m_pStatementStack->nItems() == 1);
+  QueryNode* pStatementNode = m_pStatementStack->pPop();
+  pQueryNode->vAppendChild(pStatementNode);
 }
 
 
@@ -152,6 +156,12 @@ void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitStatement(sqlParser::StatementContext *ctx)
 {
+  // Save the whole statement text
+  antlr4::misc::Interval interval(ctx->start->getStartIndex(), ctx->stop->getStopIndex());
+  std::string queryStlStr = ctx->start->getInputStream()->getText(interval);
+
+  m_sQueryStr.vCopy((Stz*) queryStlStr.c_str());
+
   return visitChildren(ctx);
 }
 
@@ -169,10 +179,10 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *ctx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
 {
-  antlrcpp::Any any = visitChildren(ctx);
+  QueryNode* pStmt = GraphEditor::pCreateStatement(ST_SELECT, "SELECT"_Stz, m_sQueryStr.szStz());
+  m_pStatementStack->vPush(pStmt);
 
-
-  
+  visitChildren(ctx);
   return nullptr;
 }
 

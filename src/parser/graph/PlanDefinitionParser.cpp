@@ -149,12 +149,12 @@ PlanNode* PlanDefinitionParser::pParse()
   delete rootBuilder;
 
   // Create a lambda function to walk each node and print its path and type.
-  auto fVisitor = [](PlanNode* pNode, s256& sPath) -> b1 {
-    vTrace("%s\t\t(%s)\n"_Stz, sPath.szStz(), aCN[pNode->eClass()]);
-    return true;
-  };
-
-  GraphNav::bWalk(pTemplatePlan, fVisitor);
+//  auto fVisitor = [](PlanNode* pNode, s256& sPath) -> b1 {
+//    vTrace("%s\t\t(%s)\n"_Stz, sPath.szStz(), aCN[pNode->eClass()]);
+//    return true;
+//  };
+//
+//  GraphNav::bWalk(pTemplatePlan, fVisitor);
 
   return pTemplatePlan;
 }
@@ -273,11 +273,11 @@ antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
 
 void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNodeBuilder* pNodeBuilder)
 {
-  pNodeBuilder->m_xValue.bMustFree = false;
+  pNodeBuilder->m_xValue.m_bMustFree = false;
 
   if (ctx->STRING() != nullptr) {
     pNodeBuilder->m_xValue.m_pText = pCleanString(ctx->STRING()->getText());
-    pNodeBuilder->m_xValue.bMustFree = true;
+    pNodeBuilder->m_xValue.m_bMustFree = true;
 
   } else if (ctx->NUMBER() != nullptr) {
     // TODO: handle floating point numbers and hexadecimal

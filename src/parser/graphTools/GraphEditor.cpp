@@ -47,7 +47,7 @@ GraphEditor::~GraphEditor(void)
 PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
 {
   ASSERT(pRootNode);
-  ASSERT(pRootNode->getName()->bEqual(const_cast<Stz*>(PlanNode::C_ROOT_NAME)));
+  ASSERT(pRootNode->getName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
 
   // Create a new copy of: /__root__/plan
   QueryNode* pPlanNode = (QueryNode*) GraphNav::pFind("/__root__/plan"_Stz, pRootNode);
@@ -92,12 +92,34 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
                                          pRootNode->getValue(),
                                          pNewPropertyList,
                                          pNewChildList,
-                                         const_cast<Stz*>(PlanNode::C_ROOT_PATH));
+                                         const_cast<Stz*>(C_ROOT_PATH));
 
   return pNewRoot;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Helper function to create statement nodes. These are the top level         */
+/* "headings" in a plan graph that identify what comes below them.            */
+/*----------------------------------------------------------------------------*/
+QueryNode* GraphEditor::pCreateStatement(eST eStmtType, Stz* szName, Stz* szQueryText)
+{
+  ASSERT(eStmtType > ST_NONE);
+  ASSERT(eStmtType < ST_ENUMS);
+  ASSERT(szName);
+  ASSERT(szQueryText);
 
+  // Get the definition of the statement we're creating
+  Stz* szDef = aST_definition[eStmtType];
+
+  Value xValue(szQueryText);
+
+  // Create the object with its queryText property
+  QueryNode* pStmt = new QueryNode(szName, szDef);
+  QueryNode* pQueryText = new QueryNode("queryText"_Stz, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xValue);
+  pStmt->vAppendProperty(pQueryText);
+
+  return pStmt;
+}
 
 /*============================================================================*/
 /* end                                                                        */

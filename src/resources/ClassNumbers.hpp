@@ -100,7 +100,8 @@ enum eCN : u2 // Class Number
   /* */ CN_HASHMAP,
   /* */ CN_HASHSET,
   /* */ CN_HEAPBUFFER,
-  
+  /* */ CN_HEAPMEM,
+
   /* */ CN__I__,
   /* */ CN_INDEX,
   /* */ CN_INDEXDEF,
@@ -426,7 +427,8 @@ static Stz* aCN[]
   /* */ "HASHSET"_Stz,              // CN_HASHSET
   /* */ "HASHMAP"_Stz,              // CN_HASHMAP
   /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
-   
+  /* */ "HEAPMEM"_Stz,              // CN_HEAPMEM
+
   /* */ "_I__"_Stz,                 // CN__I__
   /* */ "INDEX"_Stz,                // CN_INDEX
   /* */ "INDEXDEF"_Stz,             // CN_INDEXDEF
