@@ -5,18 +5,6 @@
 #include "parser/Parser.h"
 #include "PlanNode.hpp"
 
-const Stz* PlanNode::C_ROOT_NAME        = "__root__"_Stz;
-
-// Paths of nodes
-const Stz* PlanNode::C_ROOT_PATH        = "/__root__"_Stz;
-const Stz* PlanNode::C_PRIMITIVES_PATH  = "/__root__/primitives"_Stz;
-const Stz* PlanNode::C_DEFINITIONS_PATH = "/__root__/definitions"_Stz;
-const Stz* PlanNode::C_PLAN_PATH        = "/__root__/plan"_Stz;
-const Stz* PlanNode::C_METADATA_PATH    = "/__root__/metadata"_Stz;
-const Stz* PlanNode::C_STATISTICS_PATH  = "/__root__/statistics"_Stz;
-
-const Stz* PlanNode::C_PROPERTY_SEPARATOR = ":"_Stz;
-const Stz* PlanNode::C_CHILD_SEPARATOR    = "/"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -77,7 +65,7 @@ PlanNode::~PlanNode(void)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
 
-  if (m_xValue.bMustFree && m_xValue.m_pText) {
+  if (m_xValue.m_bMustFree && m_xValue.m_pText) {
     delete m_xValue.m_pText;
   }
 

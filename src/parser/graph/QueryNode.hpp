@@ -18,6 +18,8 @@ namespace Parser
     void* operator new(size_t);
     void  operator delete(void*);
 
+    QueryNode(Stz* szName, Stz* szType);
+    QueryNode(Stz* szName, Stz* szType, Value xValue);
     QueryNode(Stz* szName, Stz* szType, Value xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren);
     QueryNode(const QueryNode& oNode);

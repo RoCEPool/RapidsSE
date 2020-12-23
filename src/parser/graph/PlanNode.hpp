@@ -15,30 +15,21 @@ namespace Parser
       u8         m_uInt;       // unsigned 8-byte integer value
       d8         m_dFloat;     // 8-byte floating point value
       Text*      m_pText;      // text
-      //  //    PlanNode*  m_pXref;      // cross-ref to another PlanNode
     };
-    b1 bMustFree; // do we need to delete the object stored in the structure?
+    b1 m_bMustFree; // do we need to delete the object stored in the structure?
 
     // constructor initialisation
-    Value() : m_uInt(0), bMustFree(false) {/*noop*/}
+    Value() : m_uInt(0), m_bMustFree(false) {/*noop*/}
+
+    Value(Stz* szStz) {
+      m_pText = new Text(szStz);
+      m_bMustFree = true;
+    }
   };
 
   class PlanNode : public Object,
                    public ListItem_t<PlanNode>
   {
-  public:
-    // Constants.
-    static const Stz* C_ROOT_NAME;
-    static const Stz* C_ROOT_PATH;
-    static const Stz* C_PRIMITIVES_PATH;
-    static const Stz* C_DEFINITIONS_PATH;
-    static const Stz* C_PLAN_PATH;
-    static const Stz* C_METADATA_PATH;
-    static const Stz* C_STATISTICS_PATH;
-
-    static const Stz* C_PROPERTY_SEPARATOR;
-    static const Stz* C_CHILD_SEPARATOR;
-
   protected:
     s256  m_sName;
     s256  m_sType;

@@ -19,6 +19,36 @@ __aFooterFunction(QueryNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+QueryNode::QueryNode(Stz* szName, Stz* szType)
+    : MutablePlanNode(CN_QUERYNODE, szName, szType, {},
+                      new PlanNodeList(), new PlanNodeList())
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
+
+  _checkInitialised_(CN_QUERYNODE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+QueryNode::QueryNode(Stz* szName, Stz* szType, Value xValue)
+    : MutablePlanNode(CN_QUERYNODE, szName, szType, xValue,
+                      new PlanNodeList(), new PlanNodeList())
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
+
+  _checkInitialised_(CN_QUERYNODE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 QueryNode::QueryNode(Stz* szName, Stz* szType, Value xValue,
                                PlanNodeList* pProperties, PlanNodeList* pChildren)
     : MutablePlanNode(CN_QUERYNODE, szName, szType, xValue, pProperties, pChildren)

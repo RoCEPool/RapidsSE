@@ -15,6 +15,8 @@ namespace Parser
     ExprStack* m_pExprStack;
     ExprList* m_pSelectList;
 
+    // The query text that was entered by the user
+    s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     Footer m_xFooter;
     

@@ -22,6 +22,9 @@ namespace Parser
 
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(PlanNode* pRootNode);
+
+    // Helper function to create statement nodes
+    static QueryNode* pCreateStatement(eST eStmtType, Stz* szName, Stz* szQueryText);
   };
 
   GraphEditor* _pGraphEditor(void* aAddr);
