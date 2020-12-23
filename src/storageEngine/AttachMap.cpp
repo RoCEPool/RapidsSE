@@ -72,13 +72,13 @@ AttachMap::AttachMap(void)
   
   // create the persistent heaps
   m_xHeapMem.Persistent.m_pTiny  =
-    new Heap(CN_TINYPERSISTENT,   C_SIZE_TINY_OBJECT,   HT_PERSISTENT_TINY);
+    new Heap(CN_TINYPERSISTENT,   C_SIZE_TINY_OBJECT,   HT_P_TINY);
   m_xHeapMem.Persistent.m_pSmall  =
-    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_PERSISTENT_SMALL);
+    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
   m_xHeapMem.Persistent.m_pMedium =
-    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_PERSISTENT_MEDIUM);
+    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
   m_xHeapMem.Persistent.m_pLarge  =
-    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_PERSISTENT_LARGE);
+    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
   
   m_pTxSet = new TxSet;
 

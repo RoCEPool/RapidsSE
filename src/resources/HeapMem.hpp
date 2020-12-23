@@ -10,12 +10,20 @@ namespace Resources
   class HeapMem : public Object
   {
   public:
+  
     struct {
       Heap* m_pTiny;
       Heap* m_pSmall;
       Heap* m_pMedium;
       Heap* m_pLarge;
     } Transient;
+  
+    struct {
+      Heap* m_pTiny;
+      Heap* m_pSmall;
+      Heap* m_pMedium;
+      Heap* m_pLarge;
+    } Virtual;
   
     struct {
       Heap* m_pTiny;

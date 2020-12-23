@@ -1676,23 +1676,23 @@ void AM::vBootCheck(void)
       case HT_INVALID:
         continue;
         
-      case HT_PERSISTENT_TINY:
-      case HT_TRANSIENT_TINY:
+      case HT_P_TINY:
+      case HT_T_TINY:
         assert(iClassSize < C_SIZE_TINY_OBJECT);
         continue;
         
-      case HT_PERSISTENT_SMALL:
-      case HT_TRANSIENT_SMALL:
+      case HT_P_SMALL:
+      case HT_T_SMALL:
         assert(iClassSize < C_SIZE_SMALL_OBJECT);
         continue;
         
-      case HT_PERSISTENT_MEDIUM:
-      case HT_TRANSIENT_MEDIUM:
+      case HT_P_MEDIUM:
+      case HT_T_MEDIUM:
         assert(iClassSize < C_SIZE_MEDIUM_OBJECT);
         continue;
         
-      case HT_PERSISTENT_LARGE:
-      case HT_TRANSIENT_LARGE:
+      case HT_P_LARGE:
+      case HT_T_LARGE:
         assert(iClassSize < C_SIZE_LARGE_OBJECT);
         continue;
                 

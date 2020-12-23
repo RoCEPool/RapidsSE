@@ -15,326 +15,330 @@
 /*----------------------------------------------------------------------------*/
 SizeHeap gxaSizeHeap[]
 {
-  { 0,                          HT_INVALID           ,0 }, // CN_NONE
+  { 0,                          HT_INVALID   ,0 }, // CN_NONE
 
-  { 'A' - ('A' - 1),            HT_INVALID           ,0 }, // CN__A__
-  { sizeof(AccessPath),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_ACCESSPATH
-  { sizeof(AggTimer),           HT_TRANSIENT_TINY    ,0 }, // CN_AGGTIMER
-  { sizeof(Arg),                HT_TRANSIENT_TINY    ,0 }, // CN_ARG
-  { sizeof(Args),               HT_INVALID           ,0 }, // CN_ARGUMENTS
-  { sizeof(Arrange),            HT_TRANSIENT_TINY    ,0 }, // CN_ARRANGE
-  { sizeof(Article),            HT_TRANSIENT_TINY    ,0 }, // CN_ARTICLE
-  { sizeof(Atomic),             HT_INVALID           ,0 }, // CN_ATOMIC
-  { sizeof(AttachMap),          HT_INVALID           ,0 }, // CN_ATTACHMAP
+  { 'A' - ('A' - 1),            HT_INVALID   ,0 }, // CN__A__
+  { sizeof(AccessPath),         HT_T_MEDIUM  ,0 }, // CN_ACCESSPATH
+  { sizeof(AggTimer),           HT_T_TINY    ,0 }, // CN_AGGTIMER
+  { sizeof(Arg),                HT_T_TINY    ,0 }, // CN_ARG
+  { sizeof(Args),               HT_INVALID   ,0 }, // CN_ARGUMENTS
+  { sizeof(Arrange),            HT_T_TINY    ,0 }, // CN_ARRANGE
+  { sizeof(Article),            HT_T_TINY    ,0 }, // CN_ARTICLE
+  { sizeof(Atomic),             HT_INVALID   ,0 }, // CN_ATOMIC
+  { sizeof(AttachMap),          HT_INVALID   ,0 }, // CN_ATTACHMAP
 
-  { 'B' - ('A' - 1),            HT_INVALID           ,0 }, // CN__B__
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_BCDVAL
-  { sizeof(Birth),              HT_INVALID           ,0 }, // CN_BIRTH
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_BOLVAL
-  { sizeof(BPA),                HT_TRANSIENT_MEDIUM  ,0 }, // CN_BPA
-  { sizeof(BucketMap),          HT_TRANSIENT_LARGE   ,0 }, // CN_BUCKETMAP
-  { sizeof(BufferCursor),       HT_TRANSIENT_LARGE   ,0 }, // CN_BUFFERCURSOR
-  { sizeof(BufferPool),         HT_INVALID           ,0 }, // CN_BUFFERPOOL
-  { sizeof(ByteRate),           HT_TRANSIENT_TINY    ,0 }, // CN_BYTERATE
-  { sizeof(s32),                HT_INVALID           ,0 }, // CN_BYTES_T
+  { 'B' - ('A' - 1),            HT_INVALID   ,0 }, // CN__B__
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
+  { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
+  { sizeof(BPA),                HT_T_MEDIUM  ,0 }, // CN_BPA
+  { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
+  { sizeof(BufferCursor),       HT_T_LARGE   ,0 }, // CN_BUFFERCURSOR
+  { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
+  { sizeof(ByteRate),           HT_T_TINY    ,0 }, // CN_BYTERATE
+  { sizeof(s32),                HT_INVALID   ,0 }, // CN_BYTES_T
 
-  { 'C' - ('A' - 1),            HT_INVALID           ,0 }, // CN__C__
-  { sizeof(Catalog),            HT_INVALID           ,0 }, // CN_CATALOG
-  { sizeof(CellSegment),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_CELLSEGMENT
-  { sizeof(CellSingle),         HT_INVALID           ,0 }, // CN_CELLSIGN:E
-  { sizeof(Charser),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_CHARSER
-  { sizeof(Column),             HT_TRANSIENT_TINY    ,0 }, // CN_COLUMN
-  { sizeof(Compiler),           HT_TRANSIENT_TINY    ,0 }, // CN_COMPILER
-  { sizeof(CrvBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_CRVBUFFER
-  { sizeof(CrwBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_CRWBUFFER
-  { sizeof(CrwToRow),           HT_TRANSIENT_LARGE   ,0 }, // CN_CRWTOROW
-  { sizeof(CsvBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_CSVBUFFER
-  { sizeof(CsvMeta),            HT_TRANSIENT_TINY    ,0 }, // CN_CSVMETA
+  { 'C' - ('A' - 1),            HT_INVALID   ,0 }, // CN__C__
+  { sizeof(Catalog),            HT_INVALID   ,0 }, // CN_CATALOG
+  { sizeof(CellSegment),        HT_T_MEDIUM  ,0 }, // CN_CELLSEGMENT
+  { sizeof(CellSingle),         HT_INVALID   ,0 }, // CN_CELLSIGN:E
+  { sizeof(Charser),            HT_T_MEDIUM  ,0 }, // CN_CHARSER
+  { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
+  { sizeof(Compiler),           HT_T_TINY    ,0 }, // CN_COMPILER
+  { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
+  { sizeof(CrwBuffer),          HT_T_LARGE   ,0 }, // CN_CRWBUFFER
+  { sizeof(CrwToRow),           HT_T_LARGE   ,0 }, // CN_CRWTOROW
+  { sizeof(CsvBuffer),          HT_T_LARGE   ,0 }, // CN_CSVBUFFER
+  { sizeof(CsvMeta),            HT_T_TINY    ,0 }, // CN_CSVMETA
 
-  { 'D' - ('A' - 1),            HT_INVALID           ,0 }, // CN__D__
-  { sizeof(DecaCnt),            HT_TRANSIENT_TINY    ,0 }, // CN_DECACNT
-  { sizeof(Decider),            HT_TRANSIENT_TINY    ,0 }, // CN_DECIDER
-  { sizeof(DefinitionNode),     HT_TRANSIENT_TINY    ,-8 }, // CN_DEFINITIONNODE
-  { sizeof(DevIXT),             HT_TRANSIENT_TINY    ,0 }, // CN_DEVIXT
-  { sizeof(DevROW),             HT_TRANSIENT_TINY    ,0 }, // CN_DEVROW
-  { sizeof(Dic),                HT_TRANSIENT_TINY    ,0 }, // CN_DIC
-  { sizeof(DicStack),           HT_TRANSIENT_TINY    ,0 }, // CN_DICSTACK
-  { sizeof(Dir),                HT_TRANSIENT_TINY    ,0 }, // CN_DIR
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_DTEVAL
-  { sizeof(Dynamo),             HT_TRANSIENT_TINY    ,0 }, // CN_DYNAMO
+  { 'D' - ('A' - 1),            HT_INVALID   ,0 }, // CN__D__
+  { sizeof(DecaCnt),            HT_T_TINY    ,0 }, // CN_DECACNT
+  { sizeof(Decider),            HT_T_TINY    ,0 }, // CN_DECIDER
+  { sizeof(DefinitionNode),     HT_T_TINY    ,-8 }, // CN_DEFINITIONNODE
+  { sizeof(DevIXT),             HT_T_TINY    ,0 }, // CN_DEVIXT
+  { sizeof(DevROW),             HT_T_TINY    ,0 }, // CN_DEVROW
+  { sizeof(Dic),                HT_T_TINY    ,0 }, // CN_DIC
+  { sizeof(DicStack),           HT_T_TINY    ,0 }, // CN_DICSTACK
+  { sizeof(Dir),                HT_T_TINY    ,0 }, // CN_DIR
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_DTEVAL
+  { sizeof(Dynamo),             HT_T_TINY    ,0 }, // CN_DYNAMO
 
-  { 'E' - ('A' - 1),            HT_INVALID           ,0 }, // CN__E__
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_EDTVAL
-  { sizeof(Encoding),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_ENCODING
-  { sizeof(Encoding_v2),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_ENCODING_V2
-  { sizeof(Ent),                HT_INVALID           ,0 }, // CN_ENT
-  { sizeof(EntBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_ENTBUFFER
-  { sizeof(EntBufSorter),       HT_TRANSIENT_LARGE   ,0 }, // CN_ENTBUFSORTER
-  { sizeof(EntWrk),             HT_INVALID           ,0 }, // CN_ENTWRK
-  { sizeof(EnumFlags),          HT_TRANSIENT_TINY    ,0 }, // CN_ENUMFLAGS
-  { sizeof(Exemplar),           HT_TRANSIENT_TINY    ,0 }, // CN_EXEMPLAR
-  { sizeof(ExprAtom),           HT_TRANSIENT_TINY    ,-8 }, // CN_EXPRATOM
-  { sizeof(ExprColumnRef),      HT_TRANSIENT_TINY    ,-8 }, // CN_EXPRCOLUMNREF
-  { sizeof(ExprList),           HT_TRANSIENT_TINY    ,0 }, // CN_EXPRLIST
-  { sizeof(ExprStack),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_EXPRSTACK
+  { 'E' - ('A' - 1),            HT_INVALID   ,0 }, // CN__E__
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_EDTVAL
+  { sizeof(Encoding),           HT_T_MEDIUM  ,0 }, // CN_ENCODING
+  { sizeof(Encoding_v2),        HT_T_MEDIUM  ,0 }, // CN_ENCODING_V2
+  { sizeof(Ent),                HT_INVALID   ,0 }, // CN_ENT
+  { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
+  { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER
+  { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
+  { sizeof(EnumFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
+  { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
+  { sizeof(ExprAtom),           HT_T_TINY    ,-8 }, // CN_EXPRATOM
+  { sizeof(ExprColumnRef),      HT_T_TINY    ,-8 }, // CN_EXPRCOLUMNREF
+  { sizeof(ExprList),           HT_T_TINY    ,0 }, // CN_EXPRLIST
+  { sizeof(ExprStack),          HT_T_MEDIUM  ,0 }, // CN_EXPRSTACK
 
-  { 'F' - ('A' - 1),            HT_INVALID           ,0 }, // CN__F__
-  { sizeof(Fifo),               HT_TRANSIENT_TINY    ,0 }, // CN_FIFO
-  { sizeof(File),               HT_TRANSIENT_TINY    ,0 }, // CN_FILE
-  { sizeof(TypedCell), /*yes*/  HT_INVALID           ,0 }, // CN_FIPVAL
-  { sizeof(TypedCell), /*yes*/  HT_INVALID           ,0 }, // CN_FLTVAL
-  { sizeof(FocalObjects),       HT_TRANSIENT_LARGE   ,0 }, // CN_FOCALOBJECTS
-  { sizeof(Forth),              HT_TRANSIENT_TINY    ,0 }, // CN_FORTH
-  { sizeof(Format),             HT_TRANSIENT_TINY    ,0 }, // CN_FORMAT
-  { sizeof(PoolBuffer),/*yes*/  HT_INVALID           ,0 }, // CN_FREEBUFFER
-  { sizeof(FreeChunk),          HT_INVALID           ,0 }, // CN_FREECHUNK
-  { 0,                          HT_INVALID           ,0 }, // CN_FREEDNOT
-  { 0,                          HT_INVALID           ,0 }, // CN_FREEITEM
-  { sizeof(FreqDist),           HT_TRANSIENT_SMALL   ,0 }, // CN_FREQDIST
+  { 'F' - ('A' - 1),            HT_INVALID   ,0 }, // CN__F__
+  { sizeof(Fifo),               HT_T_TINY    ,0 }, // CN_FIFO
+  { sizeof(File),               HT_T_TINY    ,0 }, // CN_FILE
+  { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FIPVAL
+  { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FLTVAL
+  { sizeof(FocalObjects),       HT_T_LARGE   ,0 }, // CN_FOCALOBJECTS
+  { sizeof(Forth),              HT_T_TINY    ,0 }, // CN_FORTH
+  { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
+  { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER
+  { sizeof(FreeChunk),          HT_INVALID   ,0 }, // CN_FREECHUNK
+  { 0,                          HT_INVALID   ,0 }, // CN_FREEDNOT
+  { 0,                          HT_INVALID   ,0 }, // CN_FREEITEM
+  { sizeof(FreqDist),           HT_T_SMALL   ,0 }, // CN_FREQDIST
 
-  { 'G' - ('A' - 1),            HT_INVALID           ,0 }, // CN__G__
-  { sizeof(GraphEditor),        HT_TRANSIENT_TINY    ,0 }, // CN_GRAPHEDITOR
-  { sizeof(GraphNav),           HT_TRANSIENT_TINY    ,0 }, // CN_GRAPHNAV
-  { sizeof(Grid),               HT_TRANSIENT_SMALL   ,0 }, // CN_GRID
+  { 'G' - ('A' - 1),            HT_INVALID   ,0 }, // CN__G__
+  { sizeof(GraphEditor),        HT_T_TINY    ,0 }, // CN_GRAPHEDITOR
+  { sizeof(GraphNav),           HT_T_TINY    ,0 }, // CN_GRAPHNAV
+  { sizeof(Grid),               HT_T_SMALL   ,0 }, // CN_GRID
 
-  { 'H' - ('A' - 1),            HT_INVALID           ,0 }, // CN__H__
-  { sizeof(HashBuffer),         HT_TRANSIENT_LARGE   ,0 }, // CN_HASHBUFFER
-  { sizeof(HashSet),            HT_TRANSIENT_LARGE   ,0 }, // CN_HASHSET
-  { sizeof(HashMap),            HT_TRANSIENT_TINY    ,0 }, // CN_HASHMAP
-  { sizeof(HeapBuffer),         HT_INVALID           ,0 }, // CN_HEAPBUFFER
-  { sizeof(HeapMem),            HT_INVALID           ,0 }, // CN_HEAPMEM
+  { 'H' - ('A' - 1),            HT_INVALID   ,0 }, // CN__H__
+  { sizeof(HashBuffer),         HT_T_LARGE   ,0 }, // CN_HASHBUFFER
+  { sizeof(HashSet),            HT_T_LARGE   ,0 }, // CN_HASHSET
+  { sizeof(HashMap),            HT_T_TINY    ,0 }, // CN_HASHMAP
+  { sizeof(HeapBuffer),         HT_INVALID   ,0 }, // CN_HEAPBUFFER
+  { sizeof(HeapMem),            HT_INVALID   ,0 }, // CN_HEAPMEM
 
-  { 'I' - ('A' - 1),            HT_INVALID           ,0 }, // CN__I__
-  { sizeof(Index),              HT_TRANSIENT_TINY    ,0 }, // CN_INDEX
-  { sizeof(IndexDef),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_INDEXDEF
-  { sizeof(IndexStream),        HT_TRANSIENT_TINY    ,0 }, // CN_INDEXSTREAM
-  { sizeof(IndexTree),          HT_TRANSIENT_TINY    ,0 }, // CN_INDEXTREE
-  { sizeof(IndexTreeVec),       HT_TRANSIENT_MEDIUM  ,0 }, // CN_INDEXTREEVEC
-  { sizeof(IdxVec),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_IDXVEC
-  { sizeof(InfoSet),            HT_TRANSIENT_LARGE   ,0 }, // CN_INFOSET
-  { sizeof(IngestChunk),        HT_TRANSIENT_LARGE   ,0 }, // CN_INGESTCHUNK
-  { sizeof(Input),              HT_TRANSIENT_TINY    ,0 }, // CN_INPUT
-  { sizeof(IntBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_INTBUFFER
-  { sizeof(IntSet),             HT_TRANSIENT_TINY    ,0 }, // CN_INTSET
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_INTVAL
-  { sizeof(IoChunk),            HT_TRANSIENT_LARGE   ,0 }, // CN_IOCHUNK
-  { sizeof(IoCopy),             HT_TRANSIENT_TINY    ,0 }, // CN_IOCOPY
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_IVLVAL
+  { 'I' - ('A' - 1),            HT_INVALID   ,0 }, // CN__I__
+  { sizeof(Index),              HT_T_TINY    ,0 }, // CN_INDEX
+  { sizeof(IndexDef),           HT_T_MEDIUM  ,0 }, // CN_INDEXDEF
+  { sizeof(IndexStream),        HT_T_TINY    ,0 }, // CN_INDEXSTREAM
+  { sizeof(IndexTree),          HT_T_TINY    ,0 }, // CN_INDEXTREE
+  { sizeof(IndexTreeVec),       HT_T_MEDIUM  ,0 }, // CN_INDEXTREEVEC
+  { sizeof(IdxVec),             HT_T_MEDIUM  ,0 }, // CN_IDXVEC
+  { sizeof(InfoSet),            HT_T_LARGE   ,0 }, // CN_INFOSET
+  { sizeof(IngestChunk),        HT_T_LARGE   ,0 }, // CN_INGESTCHUNK
+  { sizeof(Input),              HT_T_TINY    ,0 }, // CN_INPUT
+  { sizeof(IntBuffer),          HT_T_LARGE   ,0 }, // CN_INTBUFFER
+  { sizeof(IntSet),             HT_T_TINY    ,0 }, // CN_INTSET
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_INTVAL
+  { sizeof(IoChunk),            HT_T_LARGE   ,0 }, // CN_IOCHUNK
+  { sizeof(IoCopy),             HT_T_TINY    ,0 }, // CN_IOCOPY
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_IVLVAL
 
-  { 'J' - ('A' - 1),            HT_INVALID           ,0 }, // CN__J__
-  { sizeof(Job),                HT_TRANSIENT_MEDIUM  ,0 }, // CN_JOB
-  { sizeof(Job__Find),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_JOB__FIND
-  { sizeof(JobList),            HT_TRANSIENT_TINY    ,0 }, // CN_JOBLIST
+  { 'J' - ('A' - 1),            HT_INVALID   ,0 }, // CN__J__
+  { sizeof(Job),                HT_T_MEDIUM  ,0 }, // CN_JOB
+  { sizeof(Job__Find),          HT_T_MEDIUM  ,0 }, // CN_JOB__FIND
+  { sizeof(JobList),            HT_T_TINY    ,0 }, // CN_JOBLIST
 
-  { 'K' - ('A' - 1),            HT_INVALID           ,0 }, // CN__K__
-  { sizeof(Key),                HT_INVALID           ,0 }, // CN_KEY
+  { 'K' - ('A' - 1),            HT_INVALID   ,0 }, // CN__K__
+  { sizeof(Key),                HT_INVALID   ,0 }, // CN_KEY
 
-  { 'L' - ('A' - 1),            HT_INVALID           ,0 }, // CN__L__
-  { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_LARGEPERSISTENT
-  { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_LARGETRANSIENT
-  { sizeof(Lexicon),            HT_TRANSIENT_TINY    ,0 }, // CN_LEXICON
-  { sizeof(Licence),            HT_TRANSIENT_TINY    ,0 }, // CN_LICENCE
-  { sizeof(Limits),             HT_TRANSIENT_TINY    ,0 }, // CN_LIMITS
-  { sizeof(LoadChunk),          HT_TRANSIENT_LARGE   ,0 }, // CN_LOADCHUNK
-  { sizeof(Local),              HT_INVALID           ,0 }, // CN_LOCAL
-  { sizeof(LocalChain),         HT_TRANSIENT_LARGE   ,0 }, // CN_LOCALSCHAIN
-  { sizeof(Lock),               HT_INVALID           ,0 }, // CN_LOCK
-  { sizeof(Log),                HT_INVALID           ,0 }, // CN_LOG
-  { sizeof(LogEntry),           HT_INVALID           ,0 }, // CN_LOGENTRY
-  { sizeof(LogicCompiler),      HT_TRANSIENT_LARGE   ,0 }, // CN_LOGICCOMPILER
-  { sizeof(LogicTimer),         HT_TRANSIENT_LARGE   ,0 }, // CN_LOGICTIMER
-  { sizeof(LogicUnit),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_LOGICUNIT
+  { 'L' - ('A' - 1),            HT_INVALID   ,0 }, // CN__L__
+  { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_LARGEPERSISTENT
+  { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_LARGETRANSIENT
+  { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_LARGEVIRTUAL
+  { sizeof(Lexicon),            HT_T_TINY    ,0 }, // CN_LEXICON
+  { sizeof(Licence),            HT_T_TINY    ,0 }, // CN_LICENCE
+  { sizeof(Limits),             HT_T_TINY    ,0 }, // CN_LIMITS
+  { sizeof(LoadChunk),          HT_T_LARGE   ,0 }, // CN_LOADCHUNK
+  { sizeof(Local),              HT_INVALID   ,0 }, // CN_LOCAL
+  { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALSCHAIN
+  { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
+  { sizeof(Log),                HT_INVALID   ,0 }, // CN_LOG
+  { sizeof(LogEntry),           HT_INVALID   ,0 }, // CN_LOGENTRY
+  { sizeof(LogicCompiler),      HT_T_LARGE   ,0 }, // CN_LOGICCOMPILER
+  { sizeof(LogicTimer),         HT_T_LARGE   ,0 }, // CN_LOGICTIMER
+  { sizeof(LogicUnit),          HT_T_MEDIUM  ,0 }, // CN_LOGICUNIT
 
-  { 'M' - ('A' - 1),            HT_INVALID           ,0 }, // CN__M__
-  { sizeof(Marker),             HT_TRANSIENT_TINY    ,0 }, // CN_MARKER
-  { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMPERSISTENT
-  { sizeof(Heap), /*correct*/   HT_INVALID           ,0 }, // CN_MEDIUMTRANSIENT
-  { sizeof(MemTest),            HT_TRANSIENT_TINY    ,0 }, // CN_MEMTEST
-  { sizeof(MetadataNode),       HT_TRANSIENT_TINY    ,-8 }, // CN_METADATANODE
-  { sizeof(MutablePlanNode),    HT_TRANSIENT_TINY    ,-8 }, // CN_MUTABLEPLANNODE
-  { sizeof(Mutex),              HT_TRANSIENT_TINY    ,0 }, // CN_MUTEX
+  { 'M' - ('A' - 1),            HT_INVALID   ,0 }, // CN__M__
+  { sizeof(Marker),             HT_T_TINY    ,0 }, // CN_MARKER
+  { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMPERSISTENT
+  { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTRANSIENT
+  { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
+  { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
+  { sizeof(MetadataNode),       HT_T_TINY    ,-8 }, // CN_METADATANODE
+  { sizeof(MutablePlanNode),    HT_T_TINY    ,-8 }, // CN_MUTABLEPLANNODE
+  { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
-  { 'N' - ('A' - 1),            HT_INVALID           ,0 }, // CN__N__
-  { sizeof(NextGid),            HT_INVALID           ,0 }, // CN_NEXTGID
-  { sizeof(NmlStr),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_NMLSTR
-  { sizeof(Node),               HT_TRANSIENT_TINY    ,0 }, // CN_NODE
-  { sizeof(NodeBuilderStack),   HT_TRANSIENT_MEDIUM  ,0 }, // CN_NODEBUILDERSTACK
-  { sizeof(Node_I),             HT_TRANSIENT_TINY    ,0 }, // CN_NODE_I
-  { sizeof(Now),                HT_TRANSIENT_TINY    ,0 }, // CN_NOW
-  { sizeof(Numbat),             HT_TRANSIENT_LARGE   ,0 }, // CN_NUMBAT
+  { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
+  { sizeof(NextGid),            HT_INVALID   ,0 }, // CN_NEXTGID
+  { sizeof(NmlStr),             HT_T_MEDIUM  ,0 }, // CN_NMLSTR
+  { sizeof(Node),               HT_T_TINY    ,0 }, // CN_NODE
+  { sizeof(NodeBuilderStack),   HT_T_MEDIUM  ,0 }, // CN_NODEBUILDERSTACK
+  { sizeof(Node_I),             HT_T_TINY    ,0 }, // CN_NODE_I
+  { sizeof(Now),                HT_T_TINY    ,0 }, // CN_NOW
+  { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
 
-  { 'O' - ('A' - 1),            HT_INVALID           ,0 }, // CN__O__
-  { sizeof(Op),                 HT_TRANSIENT_LARGE   ,0 }, // CN_OP
-  { sizeof(OperandQueue),       HT_TRANSIENT_TINY    ,0 }, // CN_OPERANDQUEUE
-  { sizeof(OpSpec),             HT_TRANSIENT_LARGE   ,0 }, // CN_OPSPEC
+  { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
+  { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
+  { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
+  { sizeof(OpSpec),             HT_T_LARGE   ,0 }, // CN_OPSPEC
 
-  { 'P' - ('A' - 1),            HT_INVALID           ,0 }, // CN__P__
-  { sizeof(PathVec),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_PATHVEC
-  { sizeof(Peruse),               HT_TRANSIENT_MEDIUM  ,0 }, // CN_PERUSE
-  { sizeof(Pipeline),             HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINE
-  { sizeof(PipelineSpec),         HT_TRANSIENT_SMALL   ,0 }, // CN_PIPELINESPEC
-  { sizeof(Plan),                 HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLAN
-  { sizeof(PlanDefinitionParser), HT_TRANSIENT_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
-  { sizeof(Planner),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_PLANNER
-  { sizeof(PlanNode),             HT_TRANSIENT_TINY    , -8 }, // CN_PLANNODE
-  { sizeof(PlanNodeBuilder),      HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDER
-  { sizeof(PlanNodeList),         HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODELIST
-  { sizeof(PlanNodeBuilderList),  HT_TRANSIENT_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
-  { sizeof(ObjectSnapshot),         HT_TRANSIENT_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
-  { sizeof(Pot),                  HT_TRANSIENT_LARGE   ,0 }, // CN_POT
-  { sizeof(Predicate),            HT_TRANSIENT_TINY    ,0 }, // CN_PREDICATE
-  { sizeof(PredicateVec),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_PREDICATEVEC
-  { sizeof(PrimitiveNode),        HT_TRANSIENT_TINY    , -8 }, // CN_PRIMITIVENODE
-  { sizeof(Profile),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_PROFILE
-  { sizeof(PsxThd),               HT_TRANSIENT_TINY    ,0 }, // CN_PSXTHD
-  { sizeof(PtnMap),               HT_TRANSIENT_LARGE   ,0 }, // CN_PTNMAP
-  { sizeof(PtnStream),            HT_TRANSIENT_TINY    ,0 }, // CN_PTNSTREAM
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,   0 }, // CN_PTRVAL
+  { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
+  { sizeof(PathVec),              HT_T_MEDIUM  ,0 }, // CN_PATHVEC
+  { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
+  { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
+  { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
+  { sizeof(Plan),                 HT_T_MEDIUM  ,0 }, // CN_PLAN
+  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(Planner),              HT_T_MEDIUM  ,0 }, // CN_PLANNER
+  { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
+  { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
+  { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
+  { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
+  { sizeof(ObjectSnapshot),       HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
+  { sizeof(Pot),                  HT_T_LARGE   ,0 }, // CN_POT
+  { sizeof(Predicate),            HT_T_TINY    ,0 }, // CN_PREDICATE
+  { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 }, // CN_PREDICATEVEC
+  { sizeof(PrimitiveNode),        HT_T_TINY    , -8 }, // CN_PRIMITIVENODE
+  { sizeof(Profile),              HT_T_MEDIUM  ,0 }, // CN_PROFILE
+  { sizeof(PsxThd),               HT_T_TINY    ,0 }, // CN_PSXTHD
+  { sizeof(PtnMap),               HT_T_LARGE   ,0 }, // CN_PTNMAP
+  { sizeof(PtnStream),            HT_T_TINY    ,0 }, // CN_PTNSTREAM
+  { sizeof(TypedCell),/*yes*/     HT_INVALID   ,0 }, // CN_PTRVAL
 
-  { 'Q' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Q__
-  { sizeof(QueryNode),          HT_TRANSIENT_TINY    ,-8 }, // CN_QUERYNODE
-  { sizeof(QueryNodeStack),     HT_TRANSIENT_MEDIUM  ,0 }, // CN_QUERYNODESTACK
-  { sizeof(Queue),              HT_TRANSIENT_TINY    ,0 }, // CN_QUEUE
-  { sizeof(QueueBuffer),        HT_INVALID           ,0 }, // CN_QUEUEBUFFER
-  { sizeof(Queues),             HT_TRANSIENT_TINY    ,0 }, // CN_QUEUES
+  { 'Q' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Q__
+  { sizeof(QueryNode),          HT_T_TINY    ,-8 }, // CN_QUERYNODE
+  { sizeof(QueryNodeStack),     HT_T_MEDIUM  ,0 }, // CN_QUERYNODESTACK
+  { sizeof(Queue),              HT_T_TINY    ,0 }, // CN_QUEUE
+  { sizeof(QueueBuffer),        HT_INVALID   ,0 }, // CN_QUEUEBUFFER
+  { sizeof(Queues),             HT_T_TINY    ,0 }, // CN_QUEUES
 
-  { 'R' - ('A' - 1),            HT_INVALID           ,0 }, // CN__R__
-  { sizeof(ReadApi),            HT_TRANSIENT_TINY    ,0 }, // CN_READAPI
-  { sizeof(Reader),             HT_TRANSIENT_TINY    ,0 }, // CN_READER
-  { sizeof(Record),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_RECORD
-  { sizeof(RelOp),              HT_TRANSIENT_TINY    ,0 }, // CN_RELOP
-  { sizeof(ResourceTracker),    HT_TRANSIENT_TINY    ,0 }, // CN_RESOURCETRACKER
-  { sizeof(Response),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_RESPONSE
-  { sizeof(ResponseVec),        HT_TRANSIENT_SMALL   ,0 }, // CN_RESPONSEVEC
-  { sizeof(Result),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_RESULT
-  { sizeof(RluDiary),           HT_TRANSIENT_LARGE   ,0 }, // CN_RLUDIARY
-  { sizeof(Rand),               HT_INVALID           ,0 }, // CN_RN_RAND
-  { sizeof(RootNode),           HT_TRANSIENT_TINY    ,-8 }, // CN_ROOTNODE
-  { sizeof(Routine),            HT_TRANSIENT_SMALL   ,0 }, // CN_ROUTINE
-  { sizeof(Row),                HT_TRANSIENT_LARGE   ,0 }, // CN_ROW
-  { sizeof(Row),/*correct*/     HT_TRANSIENT_MEDIUM  ,0 }, // CN_ROWAGG
-  { 0,                          HT_INVALID           ,0 }, // CN_ROWBOX
-  { sizeof(RowBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_ROWBUFFER
-  { sizeof(RowCompactor),       HT_TRANSIENT_SMALL   ,0 }, // CN_ROWCOMPACTOR
-  { sizeof(RowOnce),            HT_TRANSIENT_TINY    ,0 }, // CN_ROWONCE
-  { sizeof(RowSingle),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_ROWSINGLE
-  { sizeof(RowTray),            HT_TRANSIENT_LARGE   ,0 }, // CN_ROWTRAY
-  { sizeof(RU_Cpu),             HT_INVALID           ,0 }, // CN_RUCPU
-  { 0,/*sizeof(RU_Dir)*/        HT_INVALID           ,0 }, // CN_RUDIR
-  { 0,/*sizeof(RU_File)*/       HT_INVALID           ,0 }, // CN_RUFILE
-  { sizeof(RU_Memory),          HT_INVALID           ,0 }, // CN_RUMEMORY
-  { 0,/*sizeof(RU_Mutex)*/      HT_INVALID           ,0 }, // CN_RUMUTEX
-  { 0,/*sizeof(RU_Pass)*/       HT_INVALID           ,0 }, // CN_RUPASS
-  { 0,/*sizeof(RU_Socket)*/     HT_INVALID           ,0 }, // CN_RUSOCKET
-  { 0,/*sizeof(RU_Time)*/       HT_INVALID           ,0 }, // CN_RUTIME
-  { 0,/*sizeof(RU_Word)*/       HT_INVALID           ,0 }, // CN_RUWORK
+  { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
+  { sizeof(ReadApi),            HT_T_TINY    ,0 }, // CN_READAPI
+  { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
+  { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
+  { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
+  { sizeof(ResourceTracker),    HT_T_TINY    ,0 }, // CN_RESOURCETRACKER
+  { sizeof(Response),           HT_T_MEDIUM  ,0 }, // CN_RESPONSE
+  { sizeof(ResponseVec),        HT_T_SMALL   ,0 }, // CN_RESPONSEVEC
+  { sizeof(Result),             HT_T_MEDIUM  ,0 }, // CN_RESULT
+  { sizeof(RluDiary),           HT_T_LARGE   ,0 }, // CN_RLUDIARY
+  { sizeof(Rand),               HT_INVALID   ,0 }, // CN_RN_RAND
+  { sizeof(RootNode),           HT_T_TINY    ,-8 }, // CN_ROOTNODE
+  { sizeof(Routine),            HT_T_SMALL   ,0 }, // CN_ROUTINE
+  { sizeof(Row),                HT_T_LARGE   ,0 }, // CN_ROW
+  { sizeof(Row),/*correct*/     HT_T_MEDIUM  ,0 }, // CN_ROWAGG
+  { 0,                          HT_INVALID   ,0 }, // CN_ROWBOX
+  { sizeof(RowBuffer),          HT_T_LARGE   ,0 }, // CN_ROWBUFFER
+  { sizeof(RowCompactor),       HT_T_SMALL   ,0 }, // CN_ROWCOMPACTOR
+  { sizeof(RowOnce),            HT_T_TINY    ,0 }, // CN_ROWONCE
+  { sizeof(RowSingle),          HT_T_MEDIUM  ,0 }, // CN_ROWSINGLE
+  { sizeof(RowTray),            HT_T_LARGE   ,0 }, // CN_ROWTRAY
+  { sizeof(RU_Cpu),             HT_INVALID   ,0 }, // CN_RUCPU
+  { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 }, // CN_RUDIR
+  { 0,/*sizeof(RU_File)*/       HT_INVALID   ,0 }, // CN_RUFILE
+  { sizeof(RU_Memory),          HT_INVALID   ,0 }, // CN_RUMEMORY
+  { 0,/*sizeof(RU_Mutex)*/      HT_INVALID   ,0 }, // CN_RUMUTEX
+  { 0,/*sizeof(RU_Pass)*/       HT_INVALID   ,0 }, // CN_RUPASS
+  { 0,/*sizeof(RU_Socket)*/     HT_INVALID   ,0 }, // CN_RUSOCKET
+  { 0,/*sizeof(RU_Time)*/       HT_INVALID   ,0 }, // CN_RUTIME
+  { 0,/*sizeof(RU_Word)*/       HT_INVALID   ,0 }, // CN_RUWORK
 
-  { 'S' - ('A' - 1),            HT_INVALID           ,0 }, // CN__S__
-  { sizeof(Schema),             HT_TRANSIENT_TINY    ,0 }, // CN_SCHEMA
-  { sizeof(SchemaTest),         HT_TRANSIENT_LARGE   ,0 }, // CN_SCHEMATEST
-  { sizeof(SeDeputy),           HT_TRANSIENT_TINY    ,0 }, // CN_SEDEPUTY
-  { sizeof(SeeMe),              HT_INVALID           ,0 }, // CN_SEEME
-  { sizeof(SePrompt),           HT_TRANSIENT_LARGE   ,0 }, // CN_SEPROMPT
-  { sizeof(Session),            HT_TRANSIENT_MEDIUM  ,0 }, // CN_SESSION
-  { sizeof(SessionArray),       HT_TRANSIENT_TINY    ,0 }, // CN_SESSIONARRAY
-  { sizeof(ShortCut),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_SHORTCUT
-  { sizeof(ShortCutVec),        HT_TRANSIENT_MEDIUM  ,0 }, // CN_SHORTCUTVEC
-  { sizeof(Birth),              HT_INVALID           ,0 }, // CN_SINCE
-  { sizeof(SkipListNL),         HT_TRANSIENT_TINY    ,0 }, // CN_SKIPLIST
-  { sizeof(SkipNode),           HT_TRANSIENT_TINY    ,0 }, // CN_SKIPNODE
-  { sizeof(Slab),               HT_TRANSIENT_LARGE   ,0 }, // CN_SLAB
-  { sizeof(SlabAllocator),      HT_TRANSIENT_TINY    ,0 }, // CN_SLABALLOCATOR
-  { sizeof(Sleep),              HT_INVALID           ,0 }, // CN_SLEEP
-  { sizeof(Heap),/*correct*/    HT_INVALID           ,0 }, // SN_SMALLPERSISTENT
-  { sizeof(Heap),/*correct*/    HT_INVALID           ,0 }, // SN_SMALLTRANSIENT
-  { sizeof(SN_Bcd),             HT_INVALID           ,0 }, // CN_SNBCD
-  { sizeof(SN_Bol),             HT_INVALID           ,0 }, // CN_SNBOL
-  { sizeof(SN_Dte),             HT_INVALID           ,0 }, // CN_SNDTE
-  { sizeof(SN_Flt),             HT_INVALID           ,0 }, // CN_SNFLT
-  { sizeof(SN_Int),             HT_INVALID           ,0 }, // CN_SNINT
-  { sizeof(SN_Ivl),             HT_INVALID           ,0 }, // CN_SNIVL
-  { sizeof(SN_Tme),             HT_INVALID           ,0 }, // CN_SNTME
-  { sizeof(SN_Tsp),             HT_INVALID           ,0 }, // CN_SNTSP
-  { sizeof(SN_Vch),             HT_INVALID           ,0 }, // CN_SNVCH
-  { sizeof(Socket),             HT_TRANSIENT_TINY    ,0 }, // CN_SOCKET
-  { sizeof(SP_Elapsed),         HT_INVALID           ,0 }, // CN_SPELAPSED
-  { sizeof(SP_Gid),             HT_INVALID           ,0 }, // CN_SPID
-  { sizeof(SP_String),          HT_INVALID           ,0 }, // CN_SPSTRING
-  { sizeof(SPmedium),           HT_INVALID           ,0 }, // CN_SPMEDIUM
-  { sizeof(SPsmall),            HT_INVALID           ,0 }, // CN_SPSMALL
-  { sizeof(SqlPlanner),         HT_TRANSIENT_MEDIUM  ,-8 }, // CN_SQLPLANNER
-  { sizeof(SrtBuffer),          HT_TRANSIENT_LARGE   ,0 }, // CN_SRTBUFFER
-  { sizeof(SrtSet),             HT_INVALID           ,0 }, // CN_SRTSET
-  { sizeof(TypedStack),         HT_TRANSIENT_MEDIUM  ,0 }, // CN_STACK
-  { sizeof(Stage),              HT_TRANSIENT_SMALL   ,0 }, // CN_STAGE
-  { sizeof(StageSpec),          HT_TRANSIENT_SMALL   ,0 }, // CN_STAGESPEC
-  { sizeof(Statistics),         HT_INVALID           ,0 }, // CN_STATISTICS
-  { sizeof(StatisticsNode),     HT_TRANSIENT_TINY    ,-8 }, // CN_STATISTICSNODE
-  { sizeof(StepAccum),          HT_INVALID           ,0 }, // CN_STEPACCUM
-  { sizeof(StepTiming),         HT_TRANSIENT_LARGE   ,0 }, // CN_STEPTIMING
-  { sizeof(Strand),             HT_TRANSIENT_SMALL   ,0 }, // CN_STRAND
-  { sizeof(StreamDef),          HT_TRANSIENT_LARGE   ,0 }, // CN_STREAMDEF
-  { sizeof(StreamSet),          HT_TRANSIENT_LARGE   ,0 }, // CN_STREAMSET
-  { sizeof(s32),                HT_INVALID           ,0 }, // CN_STRING_T
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_STZVAL
-  { sizeof(SysCall),            HT_INVALID           ,0 }, // CN_SYSCALL
+  { 'S' - ('A' - 1),            HT_INVALID   ,0 }, // CN__S__
+  { sizeof(Schema),             HT_T_TINY    ,0 }, // CN_SCHEMA
+  { sizeof(SchemaTest),         HT_T_LARGE   ,0 }, // CN_SCHEMATEST
+  { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
+  { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
+  { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
+  { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
+  { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY
+  { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
+  { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
+  { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE
+  { sizeof(SkipListNL),         HT_T_TINY    ,0 }, // CN_SKIPLIST
+  { sizeof(SkipNode),           HT_T_TINY    ,0 }, // CN_SKIPNODE
+  { sizeof(Slab),               HT_T_LARGE   ,0 }, // CN_SLAB
+  { sizeof(SlabAllocator),      HT_T_TINY    ,0 }, // CN_SLABALLOCATOR
+  { sizeof(Sleep),              HT_INVALID   ,0 }, // CN_SLEEP
+  { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // SN_SMALLPERSISTENT
+  { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // SN_SMALLTRANSIENT
+  { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // SN_SMALLVIRTUAL
+  { sizeof(SN_Bcd),             HT_INVALID   ,0 }, // CN_SNBCD
+  { sizeof(SN_Bol),             HT_INVALID   ,0 }, // CN_SNBOL
+  { sizeof(SN_Dte),             HT_INVALID   ,0 }, // CN_SNDTE
+  { sizeof(SN_Flt),             HT_INVALID   ,0 }, // CN_SNFLT
+  { sizeof(SN_Int),             HT_INVALID   ,0 }, // CN_SNINT
+  { sizeof(SN_Ivl),             HT_INVALID   ,0 }, // CN_SNIVL
+  { sizeof(SN_Tme),             HT_INVALID   ,0 }, // CN_SNTME
+  { sizeof(SN_Tsp),             HT_INVALID   ,0 }, // CN_SNTSP
+  { sizeof(SN_Vch),             HT_INVALID   ,0 }, // CN_SNVCH
+  { sizeof(Socket),             HT_T_TINY    ,0 }, // CN_SOCKET
+  { sizeof(SP_Elapsed),         HT_INVALID   ,0 }, // CN_SPELAPSED
+  { sizeof(SP_Gid),             HT_INVALID   ,0 }, // CN_SPID
+  { sizeof(SP_String),          HT_INVALID   ,0 }, // CN_SPSTRING
+  { sizeof(SPmedium),           HT_INVALID   ,0 }, // CN_SPMEDIUM
+  { sizeof(SPsmall),            HT_INVALID   ,0 }, // CN_SPSMALL
+  { sizeof(SqlPlanner),         HT_T_MEDIUM  ,-8 }, // CN_SQLPLANNER
+  { sizeof(SrtBuffer),          HT_T_LARGE   ,0 }, // CN_SRTBUFFER
+  { sizeof(SrtSet),             HT_INVALID   ,0 }, // CN_SRTSET
+  { sizeof(TypedStack),         HT_T_MEDIUM  ,0 }, // CN_STACK
+  { sizeof(Stage),              HT_T_SMALL   ,0 }, // CN_STAGE
+  { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
+  { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
+  { sizeof(StatisticsNode),     HT_T_TINY    ,-8 }, // CN_STATISTICSNODE
+  { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
+  { sizeof(StepTiming),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
+  { sizeof(Strand),             HT_T_SMALL   ,0 }, // CN_STRAND
+  { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF
+  { sizeof(StreamSet),          HT_T_LARGE   ,0 }, // CN_STREAMSET
+  { sizeof(s32),                HT_INVALID   ,0 }, // CN_STRING_T
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
+  { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
 
-  { 'T' - ('A' - 1),            HT_INVALID           ,0 }, // CN__T__
-  { sizeof(Table),              HT_TRANSIENT_TINY    ,0 }, // CN_TABLE
-  { sizeof(Table),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_TABLEDEF
-  { sizeof(TablePtn),           HT_TRANSIENT_TINY    ,0 }, // CN_TABLEPTN
-  { sizeof(TablePtnVec),        HT_TRANSIENT_SMALL   ,0 }, // CN_TABLEPTNVEC
-  { sizeof(TableRef),           HT_TRANSIENT_TINY    ,0 }, // CN_TABLEREF
-  { sizeof(TableRefStack),      HT_TRANSIENT_MEDIUM  ,0 }, // CN_TABLEREFSTACK
-  { sizeof(TagSet),             HT_TRANSIENT_MEDIUM  ,0 }, // CN_TAGSET
-  { sizeof(Task),               HT_TRANSIENT_TINY    ,0 }, // CN_TASK
-  { sizeof(TaskList),           HT_TRANSIENT_TINY    ,0 }, // CN_TASKLIST
-  { sizeof(TaskQueue),          HT_TRANSIENT_TINY    ,0 }, // CN_TEMPNAME
-  { sizeof(TempName),           HT_TRANSIENT_TINY    ,0 }, // CN_TENANT
-  { sizeof(Tenant),             HT_TRANSIENT_TINY    ,0 }, // CN_TENANTS
-  { sizeof(Tenants),            HT_TRANSIENT_TINY    ,0 }, // CN_TASKQUEUE
-  { sizeof(Text),               HT_TRANSIENT_TINY    ,0 }, // CN_TEXT
-  { sizeof(TextLarge),          HT_TRANSIENT_LARGE   ,-8 }, // CN_TEXTLARGE
-  { sizeof(TextMedium),         HT_TRANSIENT_MEDIUM  ,-8 }, // CN_TEXTMEDIUM
-  { sizeof(TextSmall),          HT_TRANSIENT_SMALL   ,-8 }, // CN_TEXTSMALL
-  { sizeof(TextStack),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_TEXTSTACK
-  { sizeof(TextTiny),           HT_TRANSIENT_TINY    ,-8 }, // CN_TEXTTINY
-  { sizeof(Thing),              HT_TRANSIENT_TINY    ,0 }, // CN_THING
-  { sizeof(Thread),             HT_TRANSIENT_TINY    ,0 }, // CN_THREAD
-  { sizeof(ThreadQueue),        HT_TRANSIENT_TINY    ,0 }, // CN_THREADQUEUE
-  { sizeof(ThreadVec),          HT_TRANSIENT_MEDIUM  ,0 }, // CN_THREADVEC
-  { sizeof(Timer),              HT_TRANSIENT_TINY    ,0 }, // CN_TIMER
-  { sizeof(Heap),/*correct*/    HT_INVALID           ,0 }, // CN_TINYPERSISTENT
-  { sizeof(Heap),/*correct*/    HT_INVALID           ,0 }, // CN_TINYTRANSIENT
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_TMEVAL
-  { sizeof(ToHshCrw),           HT_TRANSIENT_LARGE   ,0 }, // CN_TOHSHCRW
-  { sizeof(Token),              HT_TRANSIENT_TINY    ,0 }, // CN_TOKEN
-  { sizeof(TokenVec),           HT_TRANSIENT_LARGE   ,0 }, // CN_TOKENVEC
-  { sizeof(ToNstRow),           HT_TRANSIENT_MEDIUM  ,0 }, // CN_TONSTROW
-  { sizeof(ToPtnRow),           HT_TRANSIENT_LARGE   ,0 }, // CN_TOPTNROW
-  { sizeof(ToRow),              HT_TRANSIENT_MEDIUM  ,0 }, // CN_TOROW
-  { sizeof(TypedCell),/*yes*/   HT_INVALID           ,0 }, // CN_TSPVAL
-  { sizeof(Tx),                 HT_TRANSIENT_TINY    ,0 }, // CN_TX
-  { sizeof(TxSet),              HT_TRANSIENT_TINY    ,0 }, // CN_TXSET
+  { 'T' - ('A' - 1),            HT_INVALID   ,0 }, // CN__T__
+  { sizeof(Table),              HT_T_TINY    ,0 }, // CN_TABLE
+  { sizeof(Table),              HT_T_MEDIUM  ,0 }, // CN_TABLEDEF
+  { sizeof(TablePtn),           HT_T_TINY    ,0 }, // CN_TABLEPTN
+  { sizeof(TablePtnVec),        HT_T_SMALL   ,0 }, // CN_TABLEPTNVEC
+  { sizeof(TableRef),           HT_T_TINY    ,0 }, // CN_TABLEREF
+  { sizeof(TableRefStack),      HT_T_MEDIUM  ,0 }, // CN_TABLEREFSTACK
+  { sizeof(TagSet),             HT_T_MEDIUM  ,0 }, // CN_TAGSET
+  { sizeof(Task),               HT_T_TINY    ,0 }, // CN_TASK
+  { sizeof(TaskList),           HT_T_TINY    ,0 }, // CN_TASKLIST
+  { sizeof(TaskQueue),          HT_T_TINY    ,0 }, // CN_TEMPNAME
+  { sizeof(TempName),           HT_T_TINY    ,0 }, // CN_TENANT
+  { sizeof(Tenant),             HT_T_TINY    ,0 }, // CN_TENANTS
+  { sizeof(Tenants),            HT_T_TINY    ,0 }, // CN_TASKQUEUE
+  { sizeof(Text),               HT_T_TINY    ,0 }, // CN_TEXT
+  { sizeof(TextLarge),          HT_T_LARGE   ,-8 }, // CN_TEXTLARGE
+  { sizeof(TextMedium),         HT_T_MEDIUM  ,-8 }, // CN_TEXTMEDIUM
+  { sizeof(TextSmall),          HT_T_SMALL   ,-8 }, // CN_TEXTSMALL
+  { sizeof(TextStack),          HT_T_MEDIUM  ,0 }, // CN_TEXTSTACK
+  { sizeof(TextTiny),           HT_T_TINY    ,-8 }, // CN_TEXTTINY
+  { sizeof(Thing),              HT_T_TINY    ,0 }, // CN_THING
+  { sizeof(Thread),             HT_T_TINY    ,0 }, // CN_THREAD
+  { sizeof(ThreadQueue),        HT_T_TINY    ,0 }, // CN_THREADQUEUE
+  { sizeof(ThreadVec),          HT_T_MEDIUM  ,0 }, // CN_THREADVEC
+  { sizeof(Timer),              HT_T_TINY    ,0 }, // CN_TIMER
+  { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYPERSISTENT
+  { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYTRANSIENT
+  { sizeof(Heap),/*correct*/    HT_INVALID   ,0 }, // CN_TINYVIRTUAL
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TMEVAL
+  { sizeof(ToHshCrw),           HT_T_LARGE   ,0 }, // CN_TOHSHCRW
+  { sizeof(Token),              HT_T_TINY    ,0 }, // CN_TOKEN
+  { sizeof(TokenVec),           HT_T_LARGE   ,0 }, // CN_TOKENVEC
+  { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 }, // CN_TONSTROW
+  { sizeof(ToPtnRow),           HT_T_LARGE   ,0 }, // CN_TOPTNROW
+  { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TSPVAL
+  { sizeof(Tx),                 HT_T_TINY    ,0 }, // CN_TX
+  { sizeof(TxSet),              HT_T_TINY    ,0 }, // CN_TXSET
 
-  { 'U' - ('A' - 1),            HT_INVALID           ,0 }, // CN__U__
+  { 'U' - ('A' - 1),            HT_INVALID   ,0 }, // CN__U__
 
-  { 'V' - ('A' - 1),            HT_INVALID           ,0 }, // CN__V__
+  { 'V' - ('A' - 1),            HT_INVALID   ,0 }, // CN__V__
 
-  { 'W' - ('A' - 1),            HT_INVALID           ,0 }, // CN__W__
-  { sizeof(Wilderness),         HT_INVALID           ,0 }, // CN_WILDERNESS
-  { sizeof(Word),               HT_TRANSIENT_TINY    ,0 }, // CN_WORD
-  { 0,                          HT_INVALID           ,0 }, // CN_WSPCONVERGENT_t
+  { 'W' - ('A' - 1),            HT_INVALID   ,0 }, // CN__W__
+  { sizeof(Wilderness),         HT_INVALID   ,0 }, // CN_WILDERNESS
+  { sizeof(Word),               HT_T_TINY    ,0 }, // CN_WORD
+  { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
 
-  { 'X' - ('A' - 1),            HT_INVALID           ,0 }, // CN__X__
-  { sizeof(XmitOperand),        HT_TRANSIENT_TINY    ,0 }, // CN_XMITIOPERAND
-  { sizeof(Xmits),              HT_TRANSIENT_TINY    ,0 }, // CN_XMITS
+  { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__
+  { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITIOPERAND
+  { sizeof(Xmits),              HT_T_TINY    ,0 }, // CN_XMITS
 
-  { 'Y' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Y__
+  { 'Y' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Y__
 
-  { 'Z' - ('A' - 1),            HT_INVALID           ,0 }, // CN__Z__
+  { 'Z' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Z__
 
-  { C_VARGS_END,                HT_INVALID           ,0 }, // CN_ENUMS
+  { C_VARGS_END,                HT_INVALID   ,0 }, // CN_ENUMS
 };
 
 /*============================================================================*/

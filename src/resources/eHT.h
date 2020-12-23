@@ -7,15 +7,20 @@ enum eHT // Heap type
 {
   /*  0 */ HT_INVALID=0,
   
-  /*  1 */ HT_PERSISTENT_TINY,
-  /*  2 */ HT_PERSISTENT_SMALL,
-  /*  3 */ HT_PERSISTENT_MEDIUM,
-  /*  4 */ HT_PERSISTENT_LARGE,
+  /*  1 */ HT_P_TINY,
+  /*  2 */ HT_P_SMALL,
+  /*  3 */ HT_P_MEDIUM,
+  /*  4 */ HT_P_LARGE,
   
-  /*  5 */ HT_TRANSIENT_TINY,
-  /*  6 */ HT_TRANSIENT_SMALL,
-  /*  7 */ HT_TRANSIENT_MEDIUM,
-  /*  8 */ HT_TRANSIENT_LARGE,
+  /*  5 */ HT_T_TINY,
+  /*  6 */ HT_T_SMALL,
+  /*  7 */ HT_T_MEDIUM,
+  /*  8 */ HT_T_LARGE,
+  
+  /*  5 */ HT_V_TINY,
+  /*  6 */ HT_V_SMALL,
+  /*  7 */ HT_V_MEDIUM,
+  /*  8 */ HT_V_LARGE,
   
   /*  9 */ HT_ENUMS
 };

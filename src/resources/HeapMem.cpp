@@ -21,6 +21,11 @@ HeapMem::HeapMem(void)
   Transient.m_pMedium = nullptr;
   Transient.m_pLarge  = nullptr;
   
+  Virtual.m_pTiny   = nullptr;
+  Virtual.m_pSmall  = nullptr;
+  Virtual.m_pMedium = nullptr;
+  Virtual.m_pLarge  = nullptr;
+  
   Persistent.m_pTiny   = nullptr;
   Persistent.m_pSmall  = nullptr;
   Persistent.m_pMedium = nullptr;
@@ -36,34 +41,63 @@ void HeapMem::vInit(void)
 {
   // create the transient heaps
   Transient.m_pTiny   =
-    new Heap(CN_TINYTRANSIENT,  C_SIZE_TINY_OBJECT,  HT_TRANSIENT_TINY);
+    new Heap(CN_TINYTRANSIENT,  C_SIZE_TINY_OBJECT,  HT_T_TINY);
   Transient.m_pSmall  =
-    new Heap(CN_SMALLTRANSIENT, C_SIZE_SMALL_OBJECT, HT_TRANSIENT_SMALL);
+    new Heap(CN_SMALLTRANSIENT, C_SIZE_SMALL_OBJECT, HT_T_SMALL);
   Transient.m_pMedium =
-    new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_TRANSIENT_MEDIUM);
+    new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_T_MEDIUM);
   Transient.m_pLarge  =
-    new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_TRANSIENT_LARGE);
+    new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_T_LARGE);
 
-  if (AM::bVerboseProgress()) {
-    vInfo("Created tiny heap %p: %lldB objects\n"_Stz,
-          Transient.m_pTiny, C_SIZE_TINY_OBJECT);
-    vInfo("Created small heap %p: %lldB objects\n"_Stz,
-          Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
-    vInfo("Created medium heap %p: %lldB objects\n"_Stz,
-          Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-    vInfo("Created large heap %p: %lldB objects\n"_Stz,
-          Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
-  }
-    
+  // create the virtual heaps
+  Virtual.m_pTiny   =
+    new Heap(CN_TINYVIRTUAL,  C_SIZE_TINY_OBJECT,  HT_V_TINY);
+  Virtual.m_pSmall  =
+    new Heap(CN_SMALLVIRTUAL, C_SIZE_SMALL_OBJECT, HT_V_SMALL);
+  Virtual.m_pMedium =
+    new Heap(CN_MEDIUMVIRTUAL,C_SIZE_MEDIUM_OBJECT,HT_V_MEDIUM);
+  Virtual.m_pLarge  =
+    new Heap(CN_LARGEVIRTUAL, C_SIZE_LARGE_OBJECT, HT_V_LARGE);
+
   // create the persistent heaps
 //  Persistent.m_pTiny   =
-//    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_PERSISTENT_TINY);
+//    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
 //  Persistent.m_pSmall  =
-//    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_PERSISTENT_SMALL);
+//    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
 //  Persistent.m_pMedium =
-//    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_PERSISTENT_MEDIUM);
+//    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
 //  Persistent.m_pLarge  =
-//    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_PERSISTENT_LARGE);
+//    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
+
+  if (AM::bVerboseProgress()) {
+    vInfo("Created transient tiny heap %p: %lldB objects\n"_Stz,
+          Transient.m_pTiny, C_SIZE_TINY_OBJECT);
+    vInfo("Created transient small heap %p: %lldB objects\n"_Stz,
+          Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
+    vInfo("Created transient medium heap %p: %lldB objects\n"_Stz,
+          Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+    vInfo("Created transient large heap %p: %lldB objects\n"_Stz,
+          Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
+    
+    vInfo("Created virtual tiny heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pTiny, C_SIZE_TINY_OBJECT);
+    vInfo("Created virtual small heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pSmall, C_SIZE_SMALL_OBJECT);
+    vInfo("Created virtual medium heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+    vInfo("Created virtual large heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pLarge, C_SIZE_LARGE_OBJECT);
+
+//    vInfo("Created persistent tiny heap %p: %lldB objects\n"_Stz,
+//          Persistent.m_pTiny, C_SIZE_TINY_OBJECT);
+//    vInfo("Created persistent small heap %p: %lldB objects\n"_Stz,
+//          Persistent.m_pSmall, C_SIZE_SMALL_OBJECT);
+//    vInfo("Created persistent medium heap %p: %lldB objects\n"_Stz,
+//          Persistent.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+//    vInfo("Created persistent large heap %p: %lldB objects\n"_Stz,
+//          Persistent.m_pLarge, C_SIZE_LARGE_OBJECT);
+  }
+    
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,10 +126,10 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
   
   if (bPersistent) {
     switch(eHeap) {
-      case HT_TRANSIENT_TINY:   eHeap = HT_PERSISTENT_TINY;   break;
-      case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
-      case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
-      case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
+      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
       default: break;
     }
   }
@@ -112,38 +146,38 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
       
       // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-      case HT_TRANSIENT_TINY:
+      case HT_T_TINY:
         pObject = pHeapMem->Transient.m_pTiny->pAllocObject(eAllocClass);
         break;
 
-      case HT_TRANSIENT_SMALL:
+      case HT_T_SMALL:
         pObject = pHeapMem->Transient.m_pSmall->pAllocObject(eAllocClass);
         break;
 
-      case HT_TRANSIENT_MEDIUM:
+      case HT_T_MEDIUM:
         pObject = pHeapMem->Transient.m_pMedium->pAllocObject(eAllocClass);
         break;
 
-      case HT_TRANSIENT_LARGE:
-        //vTrace("HT_TRANSIENT_LARGE: %s\n"_Stz,aCN[eAllocClass]);
+      case HT_T_LARGE:
+        //vTrace("HT_T_LARGE: %s\n"_Stz,aCN[eAllocClass]);
         pObject = pHeapMem->Transient.m_pLarge->pAllocObject(eAllocClass);
         break;
 
       // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       
-      case HT_PERSISTENT_TINY:
+      case HT_P_TINY:
         pObject = pHeapMem->Persistent.m_pTiny->pAllocObject(eAllocClass);
         break;
         
-      case HT_PERSISTENT_SMALL:
+      case HT_P_SMALL:
         pObject = pHeapMem->Persistent.m_pSmall->pAllocObject(eAllocClass);
         break;
         
-      case HT_PERSISTENT_MEDIUM:
+      case HT_P_MEDIUM:
         pObject = pHeapMem->Persistent.m_pMedium->pAllocObject(eAllocClass);
         break;
 
-      case HT_PERSISTENT_LARGE:
+      case HT_P_LARGE:
         pObject = pHeapMem->Persistent.m_pLarge->pAllocObject(eAllocClass);
         break;
       
@@ -173,7 +207,7 @@ Heap* HeapMem::pEachHeap(eHT& reLastHeap)
 
   i8 iNextHeap;
   if (HT_INVALID == reLastHeap)
-    iNextHeap = HT_TRANSIENT_TINY;
+    iNextHeap = HT_T_TINY;
   else
     iNextHeap = ++ iLastHeap;
 
@@ -185,15 +219,15 @@ Heap* HeapMem::pEachHeap(eHT& reLastHeap)
   }
   
   switch ((eHT) iNextHeap) {
-    case HT_PERSISTENT_TINY:   pNextHeap = Persistent.m_pTiny;    break;
-    case HT_PERSISTENT_SMALL:  pNextHeap = Persistent.m_pSmall;   break;
-    case HT_PERSISTENT_MEDIUM: pNextHeap = Persistent.m_pMedium;  break;
-    case HT_PERSISTENT_LARGE:  pNextHeap = Persistent.m_pLarge;   break;
+    case HT_P_TINY:   pNextHeap = Persistent.m_pTiny;    break;
+    case HT_P_SMALL:  pNextHeap = Persistent.m_pSmall;   break;
+    case HT_P_MEDIUM: pNextHeap = Persistent.m_pMedium;  break;
+    case HT_P_LARGE:  pNextHeap = Persistent.m_pLarge;   break;
       
-    case HT_TRANSIENT_TINY:    pNextHeap = Transient.m_pTiny;     break;
-    case HT_TRANSIENT_SMALL:   pNextHeap = Transient.m_pSmall;    break;
-    case HT_TRANSIENT_MEDIUM:  pNextHeap = Transient.m_pMedium;   break;
-    case HT_TRANSIENT_LARGE:   pNextHeap = Transient.m_pLarge;    break;
+    case HT_T_TINY:    pNextHeap = Transient.m_pTiny;     break;
+    case HT_T_SMALL:   pNextHeap = Transient.m_pSmall;    break;
+    case HT_T_MEDIUM:  pNextHeap = Transient.m_pMedium;   break;
+    case HT_T_LARGE:   pNextHeap = Transient.m_pLarge;    break;
     default:
       NEVER_REACH;
   }
@@ -242,10 +276,10 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   if (bPersistent) {
     switch(eHeap) {
-      case HT_TRANSIENT_TINY:   eHeap = HT_PERSISTENT_TINY;   break;
-      case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
-      case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
-      case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
+      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
       default: break;
     }
   }
@@ -263,37 +297,37 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
       
     // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       
-    case HT_TRANSIENT_TINY:
+    case HT_T_TINY:
       pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
       return;
       
-    case HT_TRANSIENT_SMALL:
+    case HT_T_SMALL:
       pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
       return;
       
-    case HT_TRANSIENT_MEDIUM:
+    case HT_T_MEDIUM:
       pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
       return;
       
-    case HT_TRANSIENT_LARGE:
+    case HT_T_LARGE:
       pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
       return;
             
     // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       
-    case HT_PERSISTENT_TINY:
+    case HT_P_TINY:
       pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
       return;
       
-    case HT_PERSISTENT_SMALL:
+    case HT_P_SMALL:
       pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
       return;
       
-    case HT_PERSISTENT_MEDIUM:
+    case HT_P_MEDIUM:
       pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
       return;
       
-    case HT_PERSISTENT_LARGE:
+    case HT_P_LARGE:
       pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
       return;
             
@@ -397,28 +431,28 @@ void HeapMem::vValidateEnums(void)
         
       // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         
-      case HT_TRANSIENT_TINY:
+      case HT_T_TINY:
         if (iSize >= C_SIZE_TINY_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
-      case HT_TRANSIENT_SMALL:
+      case HT_T_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
-      case HT_TRANSIENT_MEDIUM:
+      case HT_T_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
-      case HT_TRANSIENT_LARGE:
+      case HT_T_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
@@ -427,28 +461,28 @@ void HeapMem::vValidateEnums(void)
          
       // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
-      case HT_PERSISTENT_TINY:
+      case HT_P_TINY:
         if (iSize >= C_SIZE_SMALL_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
-      case HT_PERSISTENT_SMALL:
+      case HT_P_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
-      case HT_PERSISTENT_MEDIUM:
+      case HT_P_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
-      case HT_PERSISTENT_LARGE:
+      case HT_P_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                  "HeapMem::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
