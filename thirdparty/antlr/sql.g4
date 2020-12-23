@@ -7,7 +7,7 @@ grammar sql ;
 }
 
 // statement / query -----------------------------------------------------------
-statement         : statementChoice ';' ;
+statement         : (ANTLR ':')? statementChoice ';' ;
 statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
 
 queryStatement    : query ;
@@ -420,7 +420,7 @@ sql92TimeInterval :
 // lexer ------------------------------------------------------
 
 nonReservedWord   :
-                    ASC | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
+                    ANTLR | ASC | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
                   | CATALOG | CHARS | COALESCE | CONCAT | CORRESPONDING | COUNT | CREATE
                   | CURRENT_CATALOG | CURRENT_SCHEMA | CURRENT_TIMESTAMP | CURRENT_USER
                   | DATA | DATE | DAY | DAYS | DECODE | DELETE | DESC | DETAIL
@@ -440,6 +440,7 @@ nonReservedWord   :
 
 ALL                   : A L L;
 AND                   : A N D;
+ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
 ASC                   : A S C;
