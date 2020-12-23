@@ -156,6 +156,8 @@ struct SizeHeap {
 #include "REF_t.hpp"
 #include "REG_t.hpp"
 
+#include "ClassFn.hpp"
+#include "ClassCatalog.hpp"
 
 namespace Expressions {
   typedef void (Step::*StepFp)(void);
