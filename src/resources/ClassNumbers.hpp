@@ -190,6 +190,7 @@ enum eCN : u2 // Class Number
   
   /* */ CN__Q__,
   /* */ CN_QUERYNODE,
+  /* */ CN_QUERYNODESTACK,
   /* */ CN_QUEUE,
   /* */ CN_QUEUEBUFFER,
   /* */ CN_QUEUES,
@@ -515,6 +516,7 @@ static Stz* aCN[]
    
   /* */ "_Q__"_Stz,                 // CN__Q__
   /* */ "QUERYNODE"_Stz,            // CN_QUERYNODE
+  /* */ "QUERYNODESTACK"_Stz,       // CN_QUERYNODESTACK
   /* */ "QUEUE"_Stz,                // CN_QUEUE
   /* */ "QUEUEBUFFER"_Stz,          // CN_QUEUEBUFFER
   /* */ "QUEUES"_Stz,               // CN_QUEUES

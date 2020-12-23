@@ -8,6 +8,7 @@
 #include "sqlBaseVisitor.h"
 #include "parser/common/ErrorListener.hpp"
 #include "stages/parser/TableRef.hpp"
+#include "graph/QueryNode.hpp"
 
 //using namespace antlr4;
 
@@ -27,7 +28,8 @@ SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
   m_pTableRefStack(new TableRefStack()),
   m_pExprStack(nullptr),
-  m_pSelectList(nullptr)
+  m_pSelectList(nullptr),
+  m_pStatementStack(new QueryNodeStack())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -43,7 +45,7 @@ SqlPlanner::~SqlPlanner(void) noexcept
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
    
-  // Clean up the stack of TableRefs
+  // [OLD] Clean up the stack of TableRefs
   if (m_pTableRefStack) {
     while (m_pTableRefStack->nItems() > 0) {
       TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPop());
@@ -54,7 +56,7 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pTableRefStack = nullptr;
   }
   
-  // Clean up the expression stack
+  // [OLD] Clean up the expression stack
   if (m_pExprStack) {
     while (m_pExprStack->nItems() > 0) {
       ExprAtom* pAtom = m_pExprStack->pPop();
@@ -65,7 +67,7 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pExprStack = nullptr;
   }
   
-  // Clean up the select list
+  // [OLD] Clean up the select list
   if (m_pSelectList) {
     while (m_pSelectList->nItems() > 0) {
       ExprAtom* pAtom = m_pSelectList->pPop();
@@ -75,6 +77,18 @@ SqlPlanner::~SqlPlanner(void) noexcept
     delete m_pSelectList;
     m_pSelectList = nullptr;
   }
+
+  // Clean up the statement stack
+  if (m_pStatementStack) {
+    while (m_pStatementStack->nItems() > 0) {
+      QueryNode* pItem = m_pStatementStack->pPop();
+      delete pItem;
+    }
+
+    delete m_pStatementStack;
+    m_pStatementStack = nullptr;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,8 +98,8 @@ SqlPlanner::~SqlPlanner(void) noexcept
 /*----------------------------------------------------------------------------*/
 /* Parse and create an initial plan for a SQL statement                       */
 /*----------------------------------------------------------------------------*/
-void SqlPlanner::plan(Stz* pStr)
-{  
+void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
+{
   // We need to give the Lexer a CharStream, but that requires an STL-string...
   std::string sqlStr(pStr->azChar());
   antlr4::ANTLRInputStream stream(sqlStr);
@@ -115,7 +129,17 @@ void SqlPlanner::plan(Stz* pStr)
   
   // Visit the parse tree that resulted from the above parsing.
   this->visitStatement(pStatementCtx);
-  //vTrace("Finished visiting the parse tree.\n"_Stz);  
+  //vTrace("Finished visiting the parse tree.\n"_Stz);
+
+  // Create a new plan graph using the template
+  PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
+
+  // Find the subpath where we will attach the parsed query plan
+  PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(PlanNode::C_PLAN_PATH), pRoot);
+  ASSERT(pItem);
+  ASSERT(pItem->eClass() == CN_QUERYNODE);
+  QueryNode* pQueryNode = static_cast<QueryNode*>(pItem);
+  // TODO: pQueryNode->vAppendChild(xxx);
 }
 
 
@@ -146,6 +170,8 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *ctx)
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
 {
   antlrcpp::Any any = visitChildren(ctx);
+
+
   
   return nullptr;
 }

@@ -73,7 +73,8 @@ namespace MetaData          { class Table;           class IdxColVec;
 namespace Metrics           {                                                 }
 namespace Oblique           { class AM;                                       }
 namespace Chunks          { class Operand;                                  }
-namespace Parser            { class PlanNode;        class PlanNodeBuilder;   }
+namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
+                                                                              }
 namespace DataBuffers      {
                               class PtnStream;       class TablePtn;          }
 namespace Plans         { class Xmits;           class Op;

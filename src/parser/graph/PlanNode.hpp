@@ -5,6 +5,8 @@
 
 namespace Parser
 {
+  class PlanNodeList;
+
   struct Value {
     union {
       i8 (*m_afFun)(void *aArg);  // function pointer

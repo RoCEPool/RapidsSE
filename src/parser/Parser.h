@@ -14,14 +14,9 @@ namespace Parser
 
 //------------------------------------------------------------------------------
 
-#include "parser/stages/parser/ExprAtom.hpp"
-#include "parser/stages/parser/ExprColumnRef.hpp"
-#include "parser/stages/parser/ExprList.hpp"
-#include "parser/stages/parser/SqlPlanner.hpp"
-#include "parser/stages/parser/TableRef.hpp"
 
-#include "graph/PlanNodeList.hpp"
 #include "graph/PlanNode.hpp"
+#include "graph/PlanNodeList.hpp"
 #include "graph/PlanNodeBuilderList.hpp"
 #include "graph/PlanNodeBuilder.hpp"
 #include "graph/RootNode.hpp"
@@ -35,6 +30,12 @@ namespace Parser
 
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"
+
+#include "parser/stages/parser/ExprAtom.hpp"
+#include "parser/stages/parser/ExprColumnRef.hpp"
+#include "parser/stages/parser/ExprList.hpp"
+#include "parser/stages/parser/TableRef.hpp"
+#include "parser/stages/parser/SqlPlanner.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -59,6 +59,7 @@ namespace Parser
   };
   
   QueryNode* _pQueryNode(void* aAddr);
+  typedef StackNL_t<CN_QUERYNODESTACK,QueryNode,1024> QueryNodeStack;
 }
 
 /*============================================================================*/
