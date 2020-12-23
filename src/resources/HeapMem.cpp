@@ -95,8 +95,6 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   eCN eWasClass = pObject->eClass();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
   if (pRU_Memory)
@@ -123,68 +121,73 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   eHT eHeap = gxaSizeHeap[eWasClass].m_eWhichHeap;
   
-  if (bPersistent) {
-    switch(eHeap) {
-      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
-      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
-      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
-      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
-      default: break;
-    }
-  }
+  Heap* pHeap = pHeapMem->pGetHeap(eHeap);
+
+  
+//  if (bPersistent) {
+//    switch(eHeap) {
+//      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+//      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+//      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+//      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
+//      default: break;
+//    }
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pObject = aAdd<Object*>(pObject,gxaSizeHeap[eWasClass].m_nVtableAdjust);
   
-  switch(eHeap) {
-    case HT_INVALID:
-      MemLib::vWordDump(pObject,256,0);
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
-             eWasClass,aCN[eWasClass]);
-      
-    // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      
-    case HT_T_TINY:
-      pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
-      return;
-      
-    case HT_T_SMALL:
-      pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
-      return;
-      
-    case HT_T_MEDIUM:
-      pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
-      return;
-      
-    case HT_T_LARGE:
-      pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
-      return;
-            
-    // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      
-    case HT_P_TINY:
-      pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
-      return;
-      
-    case HT_P_SMALL:
-      pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
-      return;
-      
-    case HT_P_MEDIUM:
-      pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
-      return;
-      
-    case HT_P_LARGE:
-      pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
-      return;
-            
-    default:
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "HeapMem::vFree: Invalid heap free: eHeap %lld\n"_Stz,
-             eHeap);
-  }
+//  switch(eHeap) {
+//    case HT_INVALID:
+//      MemLib::vWordDump(pObject,256,0);
+//      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+//             "HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
+//             eWasClass,aCN[eWasClass]);
+//
+//    // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    case HT_T_TINY:
+//      pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
+//      return;
+//
+//    case HT_T_SMALL:
+//      pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
+//      return;
+//
+//    case HT_T_MEDIUM:
+//      pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
+//      return;
+//
+//    case HT_T_LARGE:
+//      pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
+//      return;
+//
+//    // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    case HT_P_TINY:
+//      pHeapMem->Transient.m_pTiny->vFreeObject(pObject);
+//      return;
+//
+//    case HT_P_SMALL:
+//      pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
+//      return;
+//
+//    case HT_P_MEDIUM:
+//      pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
+//      return;
+//
+//    case HT_P_LARGE:
+//      pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
+//      return;
+//
+//    default:
+//      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+//             "HeapMem::vFree: Invalid heap free: eHeap %lld\n"_Stz,
+//             eHeap);
+//  }
+  
+  pHeap->vFreeObject(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
