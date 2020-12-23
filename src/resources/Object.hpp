@@ -11,10 +11,13 @@ namespace Resources
   
   public:
     Object(eCN eClass);
+  
+    static bool bInspect(Object* pObject);
+
       
     Footer* aCalcFooterAddress(void);
     Stz* szClassNm(void);
-    void vInspectObject(void);
+    bool bInspectObject(void);
     void vMemoryDump(void);
     i8 nSizeOfObject(void);
     eEC eValidObject(void);

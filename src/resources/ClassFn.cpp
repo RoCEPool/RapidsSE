@@ -23,8 +23,11 @@ ClassFn::ClassFn(eCN eClass, eCF eFunction, pCLASSFN* fpClassFn, i8)
 /*----------------------------------------------------------------------------*/
 bool ClassFn::bCallClassFn(eCF eFunction, Object* pObject)
 {
-
+  _static_
   
+  bool b = m_fpInspectFn(pObject);
+  
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,11 +37,10 @@ bool ClassFn::bInspect(Object* pObject)
 {
   _static_
   
-  
+  pObject->bInspectObject();
   
   return true;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

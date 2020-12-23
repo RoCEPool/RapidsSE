@@ -80,15 +80,21 @@ Marker::~Marker(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect the operator                                                       */
+/* inspect the marker                                                         */
 /*----------------------------------------------------------------------------*/
 bool Marker::bInspect(Object* pObject)
 {
   _static_
   
+  Marker* pMarker = _pMarker(pObject);
+  
+  vTrace("Marker { %s } %p @%lld\n"_Stz,
+         aOM[pMarker->m_eOpMarker],
+         pMarker,
+         pMarker->m_xFooter.iWhenAllocated());
+
   return true;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get the Op marker type                                                     */
