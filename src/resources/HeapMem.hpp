@@ -35,16 +35,17 @@ namespace Resources
   public:
     HeapMem(void);
 
-    void vInit(void);
-    void vMonitorPortrait(s48K& sPortrait);
-    Heap* pEachHeap(eHT& reLastHeap);
-
     static Object* pAllocate(eCN eClass, bool bPersistent=false);
     static void vFree(Object* pObject, bool bPersistent=false);
     static void vFree_NonObject(PoolBuffer* pBuffer);
     static void vSummaryReport(void);
     static void vSearchFree(void);
     static void vValidateEnums(void);
+  
+    Heap* pEachHeap(eHT& reLastHeap);
+    Heap* pGetHeap(eHT eHeap);
+    void vInit(void);
+    void vMonitorPortrait(s48K& sPortrait);
   };
 }
 

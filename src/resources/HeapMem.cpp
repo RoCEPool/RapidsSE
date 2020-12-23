@@ -9,6 +9,10 @@ extern SizeHeap  gxaSizeHeap[];
 bool gbAddrAllocated = false;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 HeapMem::HeapMem(void)
@@ -34,159 +38,43 @@ HeapMem::HeapMem(void)
   _postcondition_(_MAGIC_,CN_HEAPMEM);
 }
 
-/*----------------------------------------------------------------------------*/
-/* initialise the various heaps                                               */
-/*----------------------------------------------------------------------------*/
-void HeapMem::vInit(void)
-{
-  // create the transient heaps
-  Transient.m_pTiny   =
-    new Heap(CN_TINYTRANSIENT,  C_SIZE_TINY_OBJECT,  HT_T_TINY);
-  Transient.m_pSmall  =
-    new Heap(CN_SMALLTRANSIENT, C_SIZE_SMALL_OBJECT, HT_T_SMALL);
-  Transient.m_pMedium =
-    new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_T_MEDIUM);
-  Transient.m_pLarge  =
-    new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_T_LARGE);
-
-  // create the virtual heaps
-  Virtual.m_pTiny   =
-    new Heap(CN_TINYVIRTUAL,  C_SIZE_TINY_OBJECT,  HT_V_TINY);
-  Virtual.m_pSmall  =
-    new Heap(CN_SMALLVIRTUAL, C_SIZE_SMALL_OBJECT, HT_V_SMALL);
-  Virtual.m_pMedium =
-    new Heap(CN_MEDIUMVIRTUAL,C_SIZE_MEDIUM_OBJECT,HT_V_MEDIUM);
-  Virtual.m_pLarge  =
-    new Heap(CN_LARGEVIRTUAL, C_SIZE_LARGE_OBJECT, HT_V_LARGE);
-
-  // create the persistent heaps
-//  Persistent.m_pTiny   =
-//    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
-//  Persistent.m_pSmall  =
-//    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-//  Persistent.m_pMedium =
-//    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-//  Persistent.m_pLarge  =
-//    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
-
-  if (AM::bVerboseProgress()) {
-    vInfo("Created transient tiny heap %p: %lldB objects\n"_Stz,
-          Transient.m_pTiny, C_SIZE_TINY_OBJECT);
-    vInfo("Created transient small heap %p: %lldB objects\n"_Stz,
-          Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
-    vInfo("Created transient medium heap %p: %lldB objects\n"_Stz,
-          Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-    vInfo("Created transient large heap %p: %lldB objects\n"_Stz,
-          Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
-    
-    vInfo("Created virtual tiny heap %p: %lldB objects\n"_Stz,
-          Virtual.m_pTiny, C_SIZE_TINY_OBJECT);
-    vInfo("Created virtual small heap %p: %lldB objects\n"_Stz,
-          Virtual.m_pSmall, C_SIZE_SMALL_OBJECT);
-    vInfo("Created virtual medium heap %p: %lldB objects\n"_Stz,
-          Virtual.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-    vInfo("Created virtual large heap %p: %lldB objects\n"_Stz,
-          Virtual.m_pLarge, C_SIZE_LARGE_OBJECT);
-
-//    vInfo("Created persistent tiny heap %p: %lldB objects\n"_Stz,
-//          Persistent.m_pTiny, C_SIZE_TINY_OBJECT);
-//    vInfo("Created persistent small heap %p: %lldB objects\n"_Stz,
-//          Persistent.m_pSmall, C_SIZE_SMALL_OBJECT);
-//    vInfo("Created persistent medium heap %p: %lldB objects\n"_Stz,
-//          Persistent.m_pMedium, C_SIZE_MEDIUM_OBJECT);
-//    vInfo("Created persistent large heap %p: %lldB objects\n"_Stz,
-//          Persistent.m_pLarge, C_SIZE_LARGE_OBJECT);
-  }
-    
-}
 
 /*----------------------------------------------------------------------------*/
-/* heap memory portrait                                                       */
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void HeapMem::vMonitorPortrait(s48K& sPortrait)
-{
-  s48K s;
-  
-  s = ""_Stz; Transient.m_pTiny->vMonitorPortrait(s);   sPortrait.vConcat(s);
-  s = ""_Stz; Transient.m_pSmall->vMonitorPortrait(s);  sPortrait.vConcat(s);
-  s = ""_Stz; Transient.m_pMedium->vMonitorPortrait(s); sPortrait.vConcat(s);
-  s = ""_Stz; Transient.m_pLarge->vMonitorPortrait(s);  sPortrait.vConcat(s);
-}
 
 /*----------------------------------------------------------------------------*/
 /* allocate a class of object from a heap                                     */
 /*----------------------------------------------------------------------------*/
 Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 {
+  _static_
+  
   HeapMem* pHeapMem = AM::pHeapMem();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   eHT eHeap = gxaSizeHeap[eAllocClass].m_eWhichHeap;
   
-  if (bPersistent) {
-    switch(eHeap) {
-      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
-      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
-      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
-      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
-      default: break;
-    }
-  }
+  Heap* pHeap = pHeapMem->pGetHeap(eHeap);
+  
+//  if (bPersistent) {
+//    switch(eHeap) {
+//      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+//      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+//      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+//      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
+//      default: break;
+//    }
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Object* pObject = nullptr;
   
-  switch(eHeap) {
-    case HT_INVALID:
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "HeapMem::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
-             eAllocClass,aCN[eAllocClass]);
-      
-      // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-      case HT_T_TINY:
-        pObject = pHeapMem->Transient.m_pTiny->pAllocObject(eAllocClass);
-        break;
-
-      case HT_T_SMALL:
-        pObject = pHeapMem->Transient.m_pSmall->pAllocObject(eAllocClass);
-        break;
-
-      case HT_T_MEDIUM:
-        pObject = pHeapMem->Transient.m_pMedium->pAllocObject(eAllocClass);
-        break;
-
-      case HT_T_LARGE:
-        //vTrace("HT_T_LARGE: %s\n"_Stz,aCN[eAllocClass]);
-        pObject = pHeapMem->Transient.m_pLarge->pAllocObject(eAllocClass);
-        break;
-
-      // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      
-      case HT_P_TINY:
-        pObject = pHeapMem->Persistent.m_pTiny->pAllocObject(eAllocClass);
-        break;
-        
-      case HT_P_SMALL:
-        pObject = pHeapMem->Persistent.m_pSmall->pAllocObject(eAllocClass);
-        break;
-        
-      case HT_P_MEDIUM:
-        pObject = pHeapMem->Persistent.m_pMedium->pAllocObject(eAllocClass);
-        break;
-
-      case HT_P_LARGE:
-        pObject = pHeapMem->Persistent.m_pLarge->pAllocObject(eAllocClass);
-        break;
-      
-    default:
-      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "HeapMem::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
-             eHeap);
-  }
-
+  pObject = pHeap->pAllocObject(eAllocClass);
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RU_Memory* pRU_Memory = AM::pRU_Memory();
@@ -197,45 +85,6 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
   return pObject;
 }
 
-/*----------------------------------------------------------------------------*/
-/* iterate each heap                                                          */
-/*----------------------------------------------------------------------------*/
-Heap* HeapMem::pEachHeap(eHT& reLastHeap)
-{
-  Heap* pNextHeap = nullptr;
-  i8 iLastHeap = reLastHeap;
-
-  i8 iNextHeap;
-  if (HT_INVALID == reLastHeap)
-    iNextHeap = HT_T_TINY;
-  else
-    iNextHeap = ++ iLastHeap;
-
-  // -- -- -- -- -- -- --
-  
-  if (HT_ENUMS == iNextHeap) {
-    reLastHeap = HT_INVALID;
-    return nullptr;
-  }
-  
-  switch ((eHT) iNextHeap) {
-    case HT_P_TINY:   pNextHeap = Persistent.m_pTiny;    break;
-    case HT_P_SMALL:  pNextHeap = Persistent.m_pSmall;   break;
-    case HT_P_MEDIUM: pNextHeap = Persistent.m_pMedium;  break;
-    case HT_P_LARGE:  pNextHeap = Persistent.m_pLarge;   break;
-      
-    case HT_T_TINY:    pNextHeap = Transient.m_pTiny;     break;
-    case HT_T_SMALL:   pNextHeap = Transient.m_pSmall;    break;
-    case HT_T_MEDIUM:  pNextHeap = Transient.m_pMedium;   break;
-    case HT_T_LARGE:   pNextHeap = Transient.m_pLarge;    break;
-    default:
-      NEVER_REACH;
-  }
-  
-  reLastHeap = (eHT) iNextHeap;
-  
-  return pNextHeap;
-}
 
 /*----------------------------------------------------------------------------*/
 /* free an object back to heap                                                */
@@ -495,6 +344,150 @@ void HeapMem::vValidateEnums(void)
                eHeap);
     }
   }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* iterate each heap                                                          */
+/*----------------------------------------------------------------------------*/
+Heap* HeapMem::pEachHeap(eHT& reLastHeap)
+{
+  Heap* pNextHeap = nullptr;
+  i8 iLastHeap = reLastHeap;
+
+  i8 iNextHeap;
+  if (HT_INVALID == reLastHeap)
+    iNextHeap = HT_T_TINY;
+  else
+    iNextHeap = ++ iLastHeap;
+
+  // -- -- -- -- -- -- --
+  
+  if (HT_ENUMS == iNextHeap) {
+    reLastHeap = HT_INVALID;
+    return nullptr;
+  }
+  
+  pNextHeap = pGetHeap((eHT) iNextHeap);
+  
+  reLastHeap = (eHT) iNextHeap;
+  
+  return pNextHeap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate each heap                                                          */
+/*----------------------------------------------------------------------------*/
+Heap* HeapMem::pGetHeap(eHT eHeap)
+{
+  _precondition_(_MAGIC_,CN_HEAPMEM);
+  
+  switch (eHeap) {
+      
+    case HT_P_TINY:    return Persistent.m_pTiny;
+    case HT_P_SMALL:   return Persistent.m_pSmall;
+    case HT_P_MEDIUM:  return Persistent.m_pMedium;
+    case HT_P_LARGE:   return Persistent.m_pLarge;
+      
+    case HT_T_TINY:    return Transient.m_pTiny;
+    case HT_T_SMALL:   return Transient.m_pSmall;
+    case HT_T_MEDIUM:  return Transient.m_pMedium;
+    case HT_T_LARGE:   return Transient.m_pLarge;
+      
+    case HT_V_TINY:    return Persistent.m_pTiny;
+    case HT_V_SMALL:   return Persistent.m_pSmall;
+    case HT_V_MEDIUM:  return Persistent.m_pMedium;
+    case HT_V_LARGE:   return Persistent.m_pLarge;
+      
+    default:
+      NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* initialise the various heaps                                               */
+/*----------------------------------------------------------------------------*/
+void HeapMem::vInit(void)
+{
+  // create the persistent heaps
+//  Persistent.m_pTiny   =
+//    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
+//  Persistent.m_pSmall  =
+//    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
+//  Persistent.m_pMedium =
+//    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
+//  Persistent.m_pLarge  =
+//    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
+  // create the transient heaps
+  
+  Transient.m_pTiny   =
+    new Heap(CN_TINYTRANSIENT,  C_SIZE_TINY_OBJECT,  HT_T_TINY);
+  Transient.m_pSmall  =
+    new Heap(CN_SMALLTRANSIENT, C_SIZE_SMALL_OBJECT, HT_T_SMALL);
+  Transient.m_pMedium =
+    new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_T_MEDIUM);
+  Transient.m_pLarge  =
+    new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_T_LARGE);
+
+  // create the virtual heaps
+  Virtual.m_pTiny   =
+    new Heap(CN_TINYVIRTUAL,  C_SIZE_TINY_OBJECT,  HT_V_TINY);
+  Virtual.m_pSmall  =
+    new Heap(CN_SMALLVIRTUAL, C_SIZE_SMALL_OBJECT, HT_V_SMALL);
+  Virtual.m_pMedium =
+    new Heap(CN_MEDIUMVIRTUAL,C_SIZE_MEDIUM_OBJECT,HT_V_MEDIUM);
+  Virtual.m_pLarge  =
+    new Heap(CN_LARGEVIRTUAL, C_SIZE_LARGE_OBJECT, HT_V_LARGE);
+
+
+  if (AM::bVerboseProgress()) {
+    
+    //    vInfo("Created persistent tiny heap %p: %lldB objects\n"_Stz,
+    //          Persistent.m_pTiny, C_SIZE_TINY_OBJECT);
+    //    vInfo("Created persistent small heap %p: %lldB objects\n"_Stz,
+    //          Persistent.m_pSmall, C_SIZE_SMALL_OBJECT);
+    //    vInfo("Created persistent medium heap %p: %lldB objects\n"_Stz,
+    //          Persistent.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+    //    vInfo("Created persistent large heap %p: %lldB objects\n"_Stz,
+    //          Persistent.m_pLarge, C_SIZE_LARGE_OBJECT);
+    
+    vInfo("Created transient tiny heap %p: %lldB objects\n"_Stz,
+          Transient.m_pTiny, C_SIZE_TINY_OBJECT);
+    vInfo("Created transient small heap %p: %lldB objects\n"_Stz,
+          Transient.m_pSmall, C_SIZE_SMALL_OBJECT);
+    vInfo("Created transient medium heap %p: %lldB objects\n"_Stz,
+          Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+    vInfo("Created transient large heap %p: %lldB objects\n"_Stz,
+          Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
+    
+    vInfo("Created virtual tiny heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pTiny, C_SIZE_TINY_OBJECT);
+    vInfo("Created virtual small heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pSmall, C_SIZE_SMALL_OBJECT);
+    vInfo("Created virtual medium heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pMedium, C_SIZE_MEDIUM_OBJECT);
+    vInfo("Created virtual large heap %p: %lldB objects\n"_Stz,
+          Virtual.m_pLarge, C_SIZE_LARGE_OBJECT);
+  }
+    
+}
+
+/*----------------------------------------------------------------------------*/
+/* heap memory portrait                                                       */
+/*----------------------------------------------------------------------------*/
+void HeapMem::vMonitorPortrait(s48K& sPortrait)
+{
+  s48K s;
+  
+  s = ""_Stz; Transient.m_pTiny->vMonitorPortrait(s);   sPortrait.vConcat(s);
+  s = ""_Stz; Transient.m_pSmall->vMonitorPortrait(s);  sPortrait.vConcat(s);
+  s = ""_Stz; Transient.m_pMedium->vMonitorPortrait(s); sPortrait.vConcat(s);
+  s = ""_Stz; Transient.m_pLarge->vMonitorPortrait(s);  sPortrait.vConcat(s);
 }
 
 /*============================================================================*/
