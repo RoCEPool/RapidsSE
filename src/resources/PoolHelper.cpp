@@ -7,7 +7,8 @@
 #include "ResourceTracker.hpp" //?
 #include "File.hpp" //?
 
-extern SizeHeap  gxaSizeHeap[];
+extern SizeHeap     gxaSizeHeap[];
+extern ClassCatalog gxClassCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* dump given buffer                                                          */
@@ -240,7 +241,9 @@ void PoolHelper::vInspectObjects(i8 iAfter)
         if (iWhenAllocated <= iAfter)
           continue; // next object
        
-        pObject->vInspectObject();
+        //pObject->vInspectObject();
+        
+        bool b = gxClassCatalog.bCallClassFn(CF_INSPECT,pObject);
         
        } // each chunk/object in heapBuffer
       

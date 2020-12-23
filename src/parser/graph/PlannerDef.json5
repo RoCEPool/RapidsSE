@@ -26,13 +26,13 @@
 {
   name: "__root__",
   value: "The root of the plan graph",
-  type: "/primitives/root",
+  type: "/__root__/primitives/root",
   children: [
 // Path: /__root__/primitives
     {
       name: "primitives",
       value: "Contains all of the apriori information about definitions",
-      type: "/primitives/branch",
+      type: "/__root__/primitives/branch",
       children: [
 // Path: /__root__/primitives/root
         {
@@ -155,7 +155,7 @@
     {
       name: "definitions",
       value: "A container of all definitions",
-      type: "/primitives/branch",
+      type: "/__root__/primitives/branch",
       children: [
 // Path: /__root__/definitions/object
         {
@@ -169,8 +169,8 @@
               value: "An object that only contains a simple value",
               properties: [
                 // Add a constraint that the valueObjects contain no children
-                { name: "__constraints", type: "/primitives/constraints", children: [
-                  {  name: "noChildren", type:  "/primitives/constraints/noChildren" }
+                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                  {  name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
                 ]}
               ],
               children: [
@@ -181,15 +181,15 @@
                   value: "A simple object that only contains a string value",
                   properties: [
                     // Add a constraint that the value of this object must be of a string primitive type
-                    {name: "__constraints", type: "/primitives/constraints", children: [
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "valueType",
-                        type:  "/primitives/constraints/valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
                         children: [
                           {
                             name: "valueTypeParam",
-                            type: "/definitions/object/valueObject/stringObject",  // yes, this is recursive
-                            value: "/primitives/types/scalarType/string"
+                            type: "/__root__/definitions/object/valueObject/stringObject",  // yes, this is recursive
+                            value: "/__root__/primitives/types/scalarType/string"
                           }
                         ]
                       }
@@ -202,8 +202,8 @@
                       name: "nonNullableStringObject",
                       value: "A simple object that only contains a non-nullable string value",
                       properties: [
-                        {name: "__constraints", type: "/primitives/constraints", children: [
-                          {name: "nonNullable", type:  "/primitives/constraints/nonNullable"}
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          {name: "nonNullable", type:  "/__root__/primitives/constraints/nonNullable"}
                         ]}
                       ]
                     } // EndPath: /__root__/definitions/object/valueObject/stringObject/nonNullableStringObject
@@ -215,15 +215,15 @@
                   value: "A simple object that only contains an integer value",
                   properties: [
                     // Add a constraint that the value of this object must be of an integer primitive type
-                    {name: "__constraints", type: "/primitives/constraints", children: [
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "valueType",
-                        type:  "/primitives/constraints/valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
                         children: [
                           {
                             name: "valueTypeParam",
-                            type: "/definitions/object/valueObject/stringObject",
-                            value: "/primitives/types/scalarType/integer"
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/primitives/types/scalarType/integer"
                           }
                         ]
                       }
@@ -237,15 +237,15 @@
                   value: "A simple object that only contains a floating-point value",
                   properties: [
                     // Add a constraint that the value of this object must be of a float primitive type
-                    {name: "__constraints", type: "/primitives/constraints", children: [
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "valueType",
-                        type:  "/primitives/constraints/valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
                         children: [
                           {
                             name: "valueTypeParam",
-                            type: "/definitions/object/valueObject/stringObject",
-                            value: "/primitives/types/scalarType/float"
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/primitives/types/scalarType/float"
                           }
                         ]
                       }
@@ -268,7 +268,7 @@
                     {
                       name: "queryText",
                       value: "The string that the user entered",
-                      type: "/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
                     }
                   ],
                   children: [
@@ -278,11 +278,11 @@
                       name: "ddl",
                       value: "A container of all DDL statement objects",
                       children: [
-// TODO Path: /definitions/object/planObject/statement/ddl/createTable
-// TODO Path: /definitions/object/planObject/statement/ddl/dropTable
-// TODO Path: /definitions/object/planObject/statement/ddl/createIndex
-// TODO Path: /definitions/object/planObject/statement/ddl/dropIndex
-// TODO Path: /definitions/object/planObject/statement/ddl/createTableAsSelect
+// TODO Path: /__root__/definitions/object/planObject/statement/ddl/createTable
+// TODO Path: /__root__/definitions/object/planObject/statement/ddl/dropTable
+// TODO Path: /__root__/definitions/object/planObject/statement/ddl/createIndex
+// TODO Path: /__root__/definitions/object/planObject/statement/ddl/dropIndex
+// TODO Path: /__root__/definitions/object/planObject/statement/ddl/createTableAsSelect
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/statement/ddl
 
@@ -297,10 +297,10 @@
                           value: "A SELECT statement query",
                           children: []
                         },
-// TODO Path: /definitions/object/planObject/statement/dml/insert
-// TODO Path: /definitions/object/planObject/statement/dml/update
-// TODO Path: /definitions/object/planObject/statement/dml/delete
-// TODO Path: /definitions/object/planObject/statement/dml/insertSelect
+// TODO Path: /__root__/definitions/object/planObject/statement/dml/insert
+// TODO Path: /__root__/definitions/object/planObject/statement/dml/update
+// TODO Path: /__root__/definitions/object/planObject/statement/dml/delete
+// TODO Path: /__root__/definitions/object/planObject/statement/dml/insertSelect
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/statement/dml
 
@@ -309,7 +309,7 @@
                       name: "dcl",
                       value: "A container of all DCL statement objects",
                       children: [
-// TODO Path: /definitions/object/planObject/statement/dcl/xxxx
+// TODO Path: /__root__/definitions/object/planObject/statement/dcl/xxxx
                       ]
                     } // EndPath: /__root__/definitions/object/planObject/statement/dcl
                   ]
@@ -329,7 +329,7 @@
                         {
                           name: "projectedExprs",
                           value: "A list of expressions to be projected and their aliases",
-                          type: "/definitions/object/list/projectedExprs",
+                          type: "/__root__/definitions/object/list/projectedExprs",
                           children: []
                         }
                       ],
@@ -344,24 +344,41 @@
                         {
                           name: "filterExpr",
                           value: "An expression to be evaluated against each input row",
-                          type: "/definitions/object/expr"
+                          type: "/__root__/definitions/object/expr"
                         }
                       ],
                       children: []
-                    }
-// TODO Path: /definitions/object/planObject/sqlOperator/join
-// TODO Path: /definitions/object/planObject/sqlOperator/join/sortMergeJoin
-// TODO Path: /definitions/object/planObject/sqlOperator/join/hashJoin
-// TODO Path: /definitions/object/planObject/sqlOperator/join/loopJoin
-// TODO Path: /definitions/object/planObject/sqlOperator/aggregation
-// TODO Path: /definitions/object/planObject/sqlOperator/order
-// TODO Path: /definitions/object/planObject/sqlOperator/limit
-// TODO Path: /definitions/object/planObject/sqlOperator/dataSource
-// TODO Path: /definitions/object/planObject/sqlOperator/dataSource/tableScan
-// TODO Path: /definitions/object/planObject/sqlOperator/dataSource/indexScan
-// TODO Path: /definitions/object/planObject/sqlOperator/dataSource/subquery
-// TODO Path: /definitions/object/planObject/sqlOperator/dataSource/subquery/scalar
-// TODO Path: /definitions/object/planObject/sqlOperator/dataSource/subquery/vector
+                    },
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoin
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoin
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/loopJoin
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/aggregation
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/order
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/limit
+
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource
+                    {
+                      name: "dataSource",
+                      value: "A source of row data into the query",
+                      children: [
+
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableScan
+                        {
+                          name: "tableScan",
+                          value: "Linearly reads all rows in a table",
+                          properties: [
+                            { name: "tableRef", type: "/__root__/definitions/object/tableRef" },
+                          ]
+                        },
+
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/indexScan
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/scalar
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/vector
+                      ]
+                    }, // EndPath: /definitions/object/planObject/sqlOperator/dataSource
+
                   ]
                 } // EndPath: /__root__/definitions/object/planObject/sqlOperator
               ],
@@ -381,19 +398,19 @@
                     // The value field of an instance of a columnRef object must be a non-nullable string type.
                     // We can't just say that columnRef is of type nonNullableStringObject because we
                     // have an inheritence hierarchy here. A columnRef is still derived from expr.
-                    {name: "__constraints", type: "/primitives/constraints", children: [
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "valueType",
-                        type:  "/primitives/constraints/valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
                         children: [{
                           name: "valueTypeParam",
-                          value: "/primitives/types/scalarType/string",
-                          type: "/definitions/object/valueObject/stringObject"
+                          value: "/__root__/primitives/types/scalarType/string",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
                         }]
                       },
                       {
                         name: "nonNullable",
-                        type: "/primitives/constraints/nonNullable"
+                        type: "/__root__/primitives/constraints/nonNullable"
                       }
                     ]}
                   ]
@@ -405,8 +422,8 @@
                   value: "A container for all literal expression values",
                   properties: [
                     // Add a constraint that no instantiations of literal values have children
-                    {name: "__constraints", type: "/primitives/constraints", children: [
-                      { name: "noChildren", type:  "/primitives/constraints/noChildren" }
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
                     ]}
                   ],
                   children: [
@@ -422,14 +439,14 @@
                       value: "A string expression literal",
                       properties: [
                         // The value field of an instance of a string literal object must be a string type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/string",
-                              type: "/definitions/object/valueObject/stringObject"
+                              value: "/__root__/primitives/types/scalarType/string",
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -441,14 +458,14 @@
                       value: "An integer expression literal",
                       properties: [
                         // The value field of an instance of a integer literal object must be an integer type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/integer",
-                              type: "/definitions/object/valueObject/integerObject"
+                              value: "/__root__/primitives/types/scalarType/integer",
+                              type: "/__root__/definitions/object/valueObject/integerObject"
                             }]
                           }
                         ]}
@@ -460,14 +477,14 @@
                       value: "A float expression literal",
                       properties: [
                         // The value field of an instance of a float literal object must be a float type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/float",
-                              type: "/definitions/object/valueObject/floatObject"
+                              value: "/__root__/primitives/types/scalarType/float",
+                              type: "/__root__/definitions/object/valueObject/floatObject"
                             }]
                           }
                         ]}
@@ -479,14 +496,14 @@
                       value: "An decimal expression literal",
                       properties: [
                         // The value field of an instance of a decimal literal object must be an string type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/decimal",
-                              type: "/definitions/object/valueObject/stringObject"
+                              value: "/__root__/primitives/types/scalarType/decimal",
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -498,14 +515,14 @@
                       value: "A boolean expression literal",
                       properties: [
                         // The value field of an instance of a boolean literal object must be a boolean type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/boolean",
-                              type: "/definitions/object/valueObject/booleanObject"
+                              value: "/__root__/primitives/types/scalarType/boolean",
+                              type: "/__root__/definitions/object/valueObject/booleanObject"
                             }]
                           }
                         ]}
@@ -517,14 +534,14 @@
                       value: "A date expression literal",
                       properties: [
                         // The value field of an instance of a date literal object must be a date type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/date",
-                              type: "/definitions/object/valueObject/dateObject"
+                              value: "/__root__/primitives/types/scalarType/date",
+                              type: "/__root__/definitions/object/valueObject/dateObject"
                             }]
                           }
                         ]}
@@ -536,14 +553,14 @@
                       value: "A time expression literal",
                       properties: [
                         // The value field of an instance of a time literal object must be a time type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/time",
-                              type: "/definitions/object/valueObject/timeObject"
+                              value: "/__root__/primitives/types/scalarType/time",
+                              type: "/__root__/definitions/object/valueObject/timeObject"
                             }]
                           }
                         ]}
@@ -555,14 +572,14 @@
                       value: "A timestamp expression literal",
                       properties: [
                         // The value field of an instance of a timestamp literal object must be a timestamp type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/timestamp",
-                              type: "/definitions/object/valueObject/timestampObject"
+                              value: "/__root__/primitives/types/scalarType/timestamp",
+                              type: "/__root__/definitions/object/valueObject/timestampObject"
                             }]
                           }
                         ]}
@@ -574,14 +591,14 @@
                       value: "A interval expression literal",
                       properties: [
                         // The value field of an instance of a interval literal object must be a interval type
-                        {name: "__constraints", type: "/primitives/constraints", children: [
+                        {name: "__constraints", type: "/__root__/primitives/constraints", children: [
                           {
                             name: "valueType",
-                            type:  "/primitives/constraints/valueType",
+                            type:  "/__root__/primitives/constraints/valueType",
                             children: [{
                               name: "valueTypeParam",
-                              value: "/primitives/types/scalarType/interval",
-                              type: "/definitions/object/valueObject/intervalObject"
+                              value: "/__root__/primitives/types/scalarType/interval",
+                              type: "/__root__/definitions/object/valueObject/intervalObject"
                             }]
                           }
                         ]}
@@ -596,15 +613,15 @@
                   value: "A container for SQL keywords that translate to literals",
                   properties: [
                     // Add a constraint that no instantiations of keywords have children
-                    {name: "__constraints", type: "/primitives/constraints", children: [
-                      { name: "noChildren", type:  "/primitives/constraints/noChildren" }
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
                     ]}
                   ],
                   children: [
-// TODO Path: /definitions/object/expr/keyword/current_timestamp
-// TODO Path: /definitions/object/expr/keyword/current_user
-// TODO Path: /definitions/object/expr/keyword/current_catalog
-// TODO Path: /definitions/object/expr/keyword/current_schema
+// TODO Path: /__root__/definitions/object/expr/keyword/current_timestamp
+// TODO Path: /__root__/definitions/object/expr/keyword/current_user
+// TODO Path: /__root__/definitions/object/expr/keyword/current_catalog
+// TODO Path: /__root__/definitions/object/expr/keyword/current_schema
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/keyword
 
@@ -614,14 +631,14 @@
                   value: "An expression operator",
                   properties: [
                     // Add a constraint that any children of an expression operator are of the type expr
-                    { name: "__constraints", type: "/primitives/constraints", children: [
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "childType",
-                        type:  "/primitives/constraints/childType",
+                        type:  "/__root__/primitives/constraints/childType",
                         children: [ {
                           name: "childTypeParam",
-                          type: "/definitions/object/valueObject/stringObject/nonNullableStringObject",
-                          value: "/definitions/object/expr"
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/expr"
                         } ]
                       }
                     ]} // end __constraints container
@@ -638,13 +655,13 @@
                           value: "Addition operator",
                           properties: [
                             // Add a constraint that the addition operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -657,13 +674,13 @@
                           value: "Subtraction operator",
                           properties: [
                             // Add a constraint that the subtraction operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -676,13 +693,13 @@
                           value: "Multiplication operator",
                           properties: [
                             // Add a constraint that the multiplication operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -695,24 +712,24 @@
                           value: "Division operator",
                           properties: [
                             // Add a constraint that the division operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /definitions/object/expr/operator/arithmetic/modulus
-// TODO Path: /definitions/object/expr/operator/arithmetic/identity   // unary +
-// TODO Path: /definitions/object/expr/operator/arithmetic/negation   // unary -
-// TODO Path: /definitions/object/expr/operator/arithmetic/pow
-// TODO Path: /definitions/object/expr/operator/arithmetic/log
+// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/modulus
+// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/identity   // unary +
+// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/negation   // unary -
+// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/pow
+// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/log
 
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/arithmetic
@@ -727,13 +744,13 @@
                           value: "Equals operator (=)",
                           properties: [
                             // Add a constraint that the equality operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -746,13 +763,13 @@
                           value: "Not equals operator (!=)",
                           properties: [
                             // Add a constraint that the not equals operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -765,13 +782,13 @@
                           value: "Greater than operator (>)",
                           properties: [
                             // Add a constraint that the > operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -784,13 +801,13 @@
                           value: "Less than operator (<)",
                           properties: [
                             // Add a constraint that the < operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -803,13 +820,13 @@
                           value: "Greater than or equals to operator (>=)",
                           properties: [
                             // Add a constraint that the >= operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -822,21 +839,21 @@
                           value: "Less than or equals to operator (<=)",
                           properties: [
                             // Add a constraint that the <= operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /definitions/object/expr/operator/relational/in
-// TODO Path: /definitions/object/expr/operator/relational/any
+// TODO Path: /__root__/definitions/object/expr/operator/relational/in
+// TODO Path: /__root__/definitions/object/expr/operator/relational/any
 
 // Path: /__root__/definitions/object/expr/operator/relational/between
                         {
@@ -846,37 +863,37 @@
                             {
                               name: "operandExpr",
                               value: "The expression to be compared against the lower and upper bounds",
-                              type: "/definitions/object/expr",
+                              type: "/__root__/definitions/object/expr",
                               properties: [
-                                { name: "__constraints", type: "/primitives/constraints", children: [
-                                  { name: "nonNullable", type:  "/primitives/constraints/nonNullable" }
+                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                                  { name: "nonNullable", type:  "/__root__/primitives/constraints/nonNullable" }
                                 ]} // end __constraints container
                               ]
                             },
                             {
                               name: "lowerExpr",
                               value: "The expression representing the lower bound to be compared against the operand",
-                              type: "/definitions/object/expr",
+                              type: "/__root__/definitions/object/expr",
                               properties: [
-                                { name: "__constraints", type: "/primitives/constraints", children: [
-                                  { name: "nonNullable", type:  "/primitives/constraints/nonNullable" }
+                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                                  { name: "nonNullable", type:  "/__root__/primitives/constraints/nonNullable" }
                                 ]} // end __constraints container
                               ]
                             },
                             {
                               name: "upperExpr",
                               value: "The expression representing the upper bound to be compared against the operand",
-                              type: "/definitions/object/expr",
+                              type: "/__root__/definitions/object/expr",
                               properties: [
-                                { name: "__constraints", type: "/primitives/constraints", children: [
-                                  { name: "nonNullable", type:  "/primitives/constraints/nonNullable" }
+                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                                  { name: "nonNullable", type:  "/__root__/primitives/constraints/nonNullable" }
                                 ]} // end __constraints container
                               ]
                             }
                           ]
                         },
-// TODO Path: /definitions/object/expr/operator/relational/exits
-// TODO Path: /definitions/object/expr/operator/relational/like
+// TODO Path: /__root__/definitions/object/expr/operator/relational/exits
+// TODO Path: /__root__/definitions/object/expr/operator/relational/like
                       ]
                     }, // Path: /__root__/definitions/object/expr/operator/relational
 // Path: /__root__/definitions/object/expr/operator/logical
@@ -890,13 +907,13 @@
                           value: "Logical AND operator",
                           properties: [
                             // Add a constraint that the AND operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -909,13 +926,13 @@
                           value: "Logical OR operator",
                           properties: [
                             // Add a constraint that the OR operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -928,13 +945,13 @@
                           value: "Logical exclusive-or (XOR) operator",
                           properties: [
                             // Add a constraint that the XOR operator must have two children
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               }
@@ -947,13 +964,13 @@
                           value: "Logical NOT operator",
                           properties: [
                             // Add a constraint that the NOT operator must have 1 child
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 1
                                 } ]
                               }
@@ -966,13 +983,13 @@
                           value: "Logical IS NULL operator",
                           properties: [
                             // Add a constraint that the IS NULL operator must have one child
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 1
                                 } ]
                               }
@@ -997,13 +1014,13 @@
                           value: "SUM() aggregation operator",
                           properties: [
                             // Add a constraint that the SUM operator must have one child
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 1
                                 } ]
                               }
@@ -1016,13 +1033,13 @@
                           value: "AVG() aggregation operator",
                           properties: [
                             // Add a constraint that the AVG operator must have one child
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 1
                                 } ]
                               }
@@ -1035,13 +1052,13 @@
                           value: "MIN() aggregation operator",
                           properties: [
                             // Add a constraint that the MIN operator must have one child
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 1
                                 } ]
                               }
@@ -1054,13 +1071,13 @@
                           value: "MAX() aggregation operator",
                           properties: [
                             // Add a constraint that the MAX operator must have one child
-                            { name: "__constraints", type: "/primitives/constraints", children: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
-                                type:  "/primitives/constraints/childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
                                 children: [ {
                                   name: "childCountParam",
-                                  type: "/definitions/object/valueObject/integerObject",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 1
                                 } ]
                               }
@@ -1074,10 +1091,10 @@
                       name: "function",
                       value: "A function expression operator",
                       children: [
-// TODO Path: /definitions/object/expr/operator/function/like
-// TODO Path: /definitions/object/expr/operator/function/case
-// TODO Path: /definitions/object/expr/operator/function/concat
-// TODO Path: /definitions/object/expr/operator/function/udf
+// TODO Path: /__root__/definitions/object/expr/operator/function/like
+// TODO Path: /__root__/definitions/object/expr/operator/function/case
+// TODO Path: /__root__/definitions/object/expr/operator/function/concat
+// TODO Path: /__root__/definitions/object/expr/operator/function/udf
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/function
 // Path: /__root__/definitions/object/expr/operator/set
@@ -1085,16 +1102,34 @@
                       name: "set",
                       value: "An expression set operator",
                       children: [
-// TODO Path: /definitions/object/expr/operator/set/union
-// TODO Path: /definitions/object/expr/operator/set/intersect
-// TODO Path: /definitions/object/expr/operator/set/minus
+// TODO Path: /__root__/definitions/object/expr/operator/set/union
+// TODO Path: /__root__/definitions/object/expr/operator/set/intersect
+// TODO Path: /__root__/definitions/object/expr/operator/set/minus
                       ]
                     } // EndPath: /__root__/definitions/object/expr/operator/set
-// TODO Path: /definitions/object/expr/operator/assignment  // e.g. to a variable
+// TODO Path: /__root__/definitions/object/expr/operator/assignment  // e.g. to a variable
                   ]
                 }
               ]
             }, // EndPath: /__root__/definitions/object/expr
+            
+// Path: /__root__/definitions/object/tableRef
+            {
+              name: "tableRef",
+              value: "A reference to a table",
+              properties: [
+                // Add a constraint that this object doesn't have any children
+                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                  {  name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
+                ]},
+
+                // Add properties for catalogname, schemaname and tablename
+                { name: "catalogName", type: "/__root__/definitions/object/valueObject/stringObject" },
+                { name: "schemaName",  type: "/__root__/definitions/object/valueObject/stringObject" },
+                { name: "tableName",   type: "/__root__/definitions/object/valueObject/stringObject" }
+              ]
+            },
+
 
 // Path: /__root__/definitions/object/list
             {
@@ -1108,14 +1143,14 @@
                   value: "A list of projectedExpr objects",
                   properties: [
                     // We add a constraint that all children must be of type /definitions/object/compound/projectedExpr
-                    { name: "__constraints", type: "/primitives/constraints", children: [
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "childType",
-                        type:  "/primitives/constraints/childType",
+                        type:  "/__root__/primitives/constraints/childType",
                         children: [ {
                           name: "childTypeParam",
-                          type: "/definitions/object/valueObject/stringObject/nonNullableStringObject",
-                          value: "/definitions/object/compound/projectedExpr"
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/projectedExpr"
                         } ]
                       }
                     ]} // end __constraints container
@@ -1139,12 +1174,12 @@
                     {
                       name: "alias",
                       value: "What this computed expression will be known as",
-                      type: "/definitions/object/valueObject/stringObject"
+                      type: "/__root__/definitions/object/valueObject/stringObject"
                     },
                     {
                       name: "expr",
                       value: "An expression to be computed",
-                      type: "/definitions/object/expr"
+                      type: "/__root__/definitions/object/expr"
                     }
                   ]
                 } // EndPath: /__root__/definitions/object/compound/projectedExpr
@@ -1154,7 +1189,7 @@
           ]
         }, // EndPath: /__root__/definitions/object
 
-// TODO Path: /definitions/enums
+// TODO Path: /__root__/definitions/enums
         {
 
         } // EndPath: /__root__/definitions/enums
@@ -1165,7 +1200,7 @@
 // Path: /__root__/plan
     {
       name: "plan",
-      type: "/primitives/branch",
+      type: "/__root__/primitives/branch",
       children: [
         // Note: Children will get populated when a query is being parsed.
       ]
@@ -1175,7 +1210,7 @@
 // Path: /__root__/metadata
     {
       name: "metadata",
-      type: "/primitives/branch",
+      type: "/__root__/primitives/branch",
       children: [
         // Note: Children will get populated when a query is being plannned.
       ]
@@ -1185,7 +1220,7 @@
 // Path: /__root__/statistics
     {
       name: "statistics",
-      type: "/primitives/branch",
+      type: "/__root__/primitives/branch",
       children: [
         // Note: Children will get populated when a query is being plannned.
       ]

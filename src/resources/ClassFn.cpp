@@ -11,9 +11,20 @@ extern ClassCatalog gxClassCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ClassFn::ClassFn(eCF eKind, pCLASSFN* fpClassFn, i8)
+ClassFn::ClassFn(eCN eClass, eCF eFunction, pCLASSFN* fpClassFn, i8)
 {
   m_fpInspectFn = fpClassFn;
+  
+  gxClassCatalog.vSetClassFn(eClass,this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* default object inspector                                                   */
+/*----------------------------------------------------------------------------*/
+bool ClassFn::bCallClassFn(eCF eFunction, Object* pObject)
+{
+
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,6 +33,8 @@ ClassFn::ClassFn(eCF eKind, pCLASSFN* fpClassFn, i8)
 bool ClassFn::bInspect(Object* pObject)
 {
   _static_
+  
+  
   
   return true;
 }

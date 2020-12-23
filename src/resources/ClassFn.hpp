@@ -14,8 +14,10 @@ namespace Resources
     pCLASSFN* m_fpInspectFn;  // array of inspect function
 
   public:
-    ClassFn(eCF eKind, pCLASSFN* fpClassFn, i8);
+    ClassFn(eCN eClass, eCF eFunction, pCLASSFN* fpClassFn, i8);
   
+    bool bCallClassFn(eCF eFunction, Object* pObject);
+
     static bool bInspect(Object* pObject);
   };
 }
