@@ -12,10 +12,12 @@ enum ePF // prompt function
   /*    */ PF_ARGS,
   /*    */ PF_ASCII,
   /*    */ PF_ATTACHMAP,
+  
   /*    */ PF_BG,
   /*    */ PF_BP,
   /*    */ PF_BPA,
   /*    */ PF_BYE,
+  
   /*    */ PF_CACHE,
   /*    */ PF_CALC,
   /*    */ PF_CANCEL,
@@ -24,14 +26,18 @@ enum ePF // prompt function
   /*    */ PF_CMDS,
   /*    */ PF_CONFIG,
   /*    */ PF_CONSTANTS,
+  
   /*    */ PF_DDLLOCK,
   /*    */ PF_DELTA,
   /*    */ PF_DELTARESET,
+  /*    */ PF_DESCRIBE,
   /*    */ PF_DSV,
   /*    */ PF_DUMPTOKENS,
+  
   /*    */ PF_ENUMS,
   /*    */ PF_ERRNO,
   /*    */ PF_EXECUTING,
+  
   /*    */ PF_FACT,
   /*    */ PF_FILECAT,
   /*    */ PF_FILEPROC,
@@ -39,17 +45,22 @@ enum ePF // prompt function
   /*    */ PF_FILESTATS,
   /*    */ PF_FLOATS,
   /*    */ PF_FUNS,
+  
   /*    */ PF_GIVEMEM,
   /*    */ PF_GLOBALS,
+  
   /*    */ PF_HASHDEFS,
   /*    */ PF_HEAPSUMMARY,
   /*    */ PF_HELP,
   /*    */ PF_HEXDUMP,
   /*    */ PF_HOW,
   /*    */ PF_HW,
+  
   /*    */ PF_INDEXENTRIES,
+  
   /*    */ PF_JOB,
   /*    */ PF_JOBCLASS,
+  
   /*    */ PF_LET,
   /*    */ PF_LIMITS,
   /*    */ PF_LOCKS,
@@ -59,6 +70,7 @@ enum ePF // prompt function
   /*    */ PF_LOGWRITE,
   /*    */ PF_LS,
   /*    */ PF_LVL,
+  
   /*    */ PF_MASKS,
   /*    */ PF_MEMORY,
   /*    */ PF_MEMORYLEAKS,
@@ -66,8 +78,10 @@ enum ePF // prompt function
   /*    */ PF_MKFIFO,
   /*    */ PF_MON,
   /*    */ PF_MRI,
+  
   /*    */ PF_NOW,
   /*    */ PF_NUMBERS,
+  
   /*    */ PF_OBJECTLIST,
   /*    */ PF_OBJECTVALIDATE,
   /*    */ PF_OLIST,
@@ -76,6 +90,7 @@ enum ePF // prompt function
   /*    */ PF_OPERANDS,
   /*    */ PF_OPS,
   /*    */ PF_OPSYS,
+  
   /*    */ PF_PLIST,
   /*    */ PF_PMC,
   /*    */ PF_POW2,
@@ -85,12 +100,15 @@ enum ePF // prompt function
   /*    */ PF_PROMPT,
   /*    */ PF_PROMPTDEBUG,
   /*    */ PF_PWD,
+  
   /*    */ PF_QUESTION,
+  
   /*    */ PF_RASSERT,
   /*    */ PF_READY,
   /*    */ PF_RESOURCES,
   /*    */ PF_RMFIFO,
   /*    */ PF_RND,
+  
   /*    */ PF_SE,
   /*    */ PF_SELECT,
   /*    */ PF_SETDBG,
@@ -113,6 +131,7 @@ enum ePF // prompt function
   /*    */ PF_SSNSTATE,
   /*    */ PF_ST,
   /*    */ PF_STORE,
+  
   /*    */ PF_TAG,
   /*    */ PF_TAGS,
   /*    */ PF_TAKEMEM,
@@ -121,11 +140,15 @@ enum ePF // prompt function
   /*    */ PF_THREADS,
   /*    */ PF_TIMEREND,
   /*    */ PF_TIMERSTART,
+  /*    */ PF_TOOLS,
   /*    */ PF_TPCH,
   /*    */ PF_TRACKMEMORY,
+  
   /*    */ PF_UNKNOWN,
   /*    */ PF_UPTIME,
+  
   /*    */ PF_VERSION,
+  
   /*    */ PF_WAIT_BG,
   /*    */ PF_WAITING,
   /*    */ PF_WITH,
@@ -137,15 +160,18 @@ enum ePF // prompt function
 static Stz* aPF[]
 {
   /*  0 */ "PF_NONE"_Stz,
+  
   /*    */ "PF_ANTLR"_Stz,
   /*    */ "PF_APIDEMO"_Stz,
   /*    */ "PF_ARGS"_Stz,
   /*    */ "PF_ASCII"_Stz,
   /*    */ "PF_ATTACHMAP"_Stz,
+  
   /*    */ "PF_BG"_Stz,
   /*    */ "PF_BP"_Stz,
   /*    */ "PF_BPA"_Stz,
   /*    */ "PF_BYE"_Stz,
+  
   /*    */ "PF_CACHE"_Stz,
   /*    */ "PF_CALC"_Stz,
   /*    */ "PF_CANCEL"_Stz,
@@ -154,14 +180,18 @@ static Stz* aPF[]
   /*    */ "PF_CMDS"_Stz,
   /*    */ "PF_CONFIG"_Stz,
   /*    */ "PF_CONSTANTS"_Stz,
+  
   /*    */ "PF_DDLLOCK"_Stz,
   /*    */ "PF_DELTA"_Stz,
   /*    */ "PF_DELTARESET"_Stz,
+  /*    */ "PF_DESCRIBE"_Stz,
   /*    */ "PF_DSV"_Stz,
   /*    */ "PF_DUMPTOKENS"_Stz,
+  
   /*    */ "PF_ENUMS"_Stz,
   /*    */ "PF_ERRNO"_Stz,
   /*    */ "PF_EXECUTING"_Stz,
+  
   /*    */ "PF_FACT"_Stz,
   /*    */ "PF_FILECAT"_Stz,
   /*    */ "PF_FILEPROC"_Stz,
@@ -169,17 +199,22 @@ static Stz* aPF[]
   /*    */ "PF_FILESTATS"_Stz,
   /*    */ "PF_FLOATS"_Stz,
   /*    */ "PF_FUNS"_Stz,
+  
   /*    */ "PF_GIVEMEM"_Stz,
   /*    */ "PF_GLOBALS"_Stz,
+  
   /*    */ "PF_HASHDEFS"_Stz,
   /*    */ "PF_HEAPSUMMARY"_Stz,
   /*    */ "PF_HELP"_Stz,
   /*    */ "PF_HEXDUMP"_Stz,
   /*    */ "PF_HOW"_Stz,
   /*    */ "PF_HW"_Stz,
+  
   /*    */ "PF_INDEXENTRIES"_Stz,
+  
   /*    */ "PF_JOB"_Stz,
   /*    */ "PF_JOBCLASS"_Stz,
+  
   /*    */ "PF_LET"_Stz,
   /*    */ "PF_LIMITS"_Stz,
   /*    */ "PF_LOCKS"_Stz,
@@ -189,6 +224,7 @@ static Stz* aPF[]
   /*    */ "PF_LOGWRITE"_Stz,
   /*    */ "PF_LS"_Stz,
   /*    */ "PF_LVL"_Stz,
+  
   /*    */ "PF_MASKS"_Stz,
   /*    */ "PF_MEMORY"_Stz,
   /*    */ "PF_MEMORYLEAKS"_Stz,
@@ -196,8 +232,10 @@ static Stz* aPF[]
   /*    */ "PF_MKFIFO"_Stz,
   /*    */ "PF_MON"_Stz,
   /*    */ "PF_MRI"_Stz,
+  
   /*    */ "PF_NOW"_Stz,
   /*    */ "PF_NUMBERS"_Stz,
+  
   /*    */ "PF_OBJECTLIST"_Stz,
   /*    */ "PF_OBJECTVALIDATE"_Stz,
   /*    */ "PF_OLIST"_Stz,
@@ -206,6 +244,7 @@ static Stz* aPF[]
   /*    */ "PF_OPERANDS"_Stz,
   /*    */ "PF_OPS"_Stz,
   /*    */ "PF_OPSYS"_Stz,
+  
   /*    */ "PF_PLIST"_Stz,
   /*    */ "PF_PMC"_Stz,
   /*    */ "PF_POW2"_Stz,
@@ -215,12 +254,15 @@ static Stz* aPF[]
   /*    */ "PF_PROMPT"_Stz,
   /*    */ "PF_PROMPTDEBUG"_Stz,
   /*    */ "PF_PWD"_Stz,
+  
   /*    */ "PF_QUESTION"_Stz,
+  
   /*    */ "PF_RASSERT"_Stz,
   /*    */ "PF_READY"_Stz,
   /*    */ "PF_RESOURCES"_Stz,
   /*    */ "PF_RMFIFO"_Stz,
   /*    */ "PF_RND"_Stz,
+  
   /*    */ "PF_SE"_Stz,
   /*    */ "PF_SELECT"_Stz,
   /*    */ "PF_SETDBG"_Stz,
@@ -243,6 +285,7 @@ static Stz* aPF[]
   /*    */ "PF_SSNSTATE"_Stz,
   /*    */ "PF_ST"_Stz,
   /*    */ "PF_STORE"_Stz,
+  
   /*    */ "PF_TAG"_Stz,
   /*    */ "PF_TAGS"_Stz,
   /*    */ "PF_TAKEMEM"_Stz,
@@ -251,11 +294,15 @@ static Stz* aPF[]
   /*    */ "PF_THREADS"_Stz,
   /*    */ "PF_TIMEREND"_Stz,
   /*    */ "PF_TIMERSTART"_Stz,
+  /*    */ "PF_TOOLS"_Stz,
   /*    */ "PF_TPCH"_Stz,
   /*    */ "PF_TRACKMEMORY"_Stz,
+  
   /*    */ "PF_UNKNOWN"_Stz,
   /*    */ "PF_UPTIME"_Stz,
+  
   /*    */ "PF_VERSION"_Stz,
+  
   /*    */ "PF_WAIT_BG"_Stz,
   /*    */ "PF_WAITING"_Stz,
   /*    */ "PF_WITH"_Stz,

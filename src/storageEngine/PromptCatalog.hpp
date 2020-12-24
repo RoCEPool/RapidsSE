@@ -14,6 +14,7 @@ namespace Prompt
   public:
     PromptFun* pFindFun(Stz* aCommand1, Stz* aCommand2);
     void vFuns(ePF ePromptFun);
+    void vHelp(void);
   };
 }
 

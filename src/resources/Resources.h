@@ -19,6 +19,7 @@ namespace Resources
 
 #define _static_ EndDefine
 #define _nonProper_ EndDefine
+#define _outsideOfPool_ EndDefine
 
 #include "CompiledWith.h"
 #include "MachineTypes.h"
