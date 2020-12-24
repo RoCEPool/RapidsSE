@@ -165,9 +165,13 @@ typedef void (fpSELFFN)(void* aSelfArg);
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 
-typedef void (fpSELFFN)(void* aSubSysArg);
 #include "SubSysFn.hpp"
 #include "SubSysCatalog.hpp"
+
+#include "GizmoFn.hpp"
+#include "GizmoCatalog.hpp"
+
+
 
 namespace Expressions {
   typedef void (Step::*StepFp)(void);

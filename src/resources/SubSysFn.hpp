@@ -11,8 +11,6 @@ namespace Resources
 
   public:
     SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, i8 iArg);
-  
-    void vDoSubSysFn(void);
   };
 }
 

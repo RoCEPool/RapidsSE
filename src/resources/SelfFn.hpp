@@ -13,8 +13,6 @@ namespace Resources
 
   public:
     SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, i8 iArg);
-  
-    void vDoSelfFn(void);
   };
 }
 

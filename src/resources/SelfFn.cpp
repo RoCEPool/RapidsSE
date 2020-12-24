@@ -4,8 +4,6 @@
 
 #include "Resources.h"
 
-//extern SubSysCatalog gxSubSysCatalog;
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -14,17 +12,6 @@ SelfFn::SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, i8)
   
   m_szSelfNm = szSelfNm;
   m_fpSelfFn = fpSelfFn;
-  
-  //gxSubSysCatalog.vAddSelfFn(this);
-}
-
-/*----------------------------------------------------------------------------*/
-/* subsystem function                                                         */
-/*----------------------------------------------------------------------------*/
-void SelfFn::vDoSelfFn(void)
-{
-  _static_
-  
 }
 
 /*============================================================================*/
