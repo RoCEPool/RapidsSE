@@ -157,10 +157,12 @@ struct SizeHeap {
 #include "REF_t.hpp"
 #include "REG_t.hpp"
 
-typedef bool (pCLASSFN)(Object* pObject);
-
+typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
+
+typedef void (fpSUBSYSFN)(void*);
+#include "SubSysFn.hpp"
 
 namespace Expressions {
   typedef void (Step::*StepFp)(void);

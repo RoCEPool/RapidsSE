@@ -6,7 +6,7 @@
 
 #include "eCF.h"
 
-ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(pCLASSFN*)Marker::bInspect,-1);
+ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

@@ -11,7 +11,7 @@ extern ClassCatalog gxClassCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ClassFn::ClassFn(eCN eClass, eCF eFunction, pCLASSFN* fpClassFn, i8)
+ClassFn::ClassFn(eCN eClass, eCF eFunction, fpCLASSFN* fpClassFn, i8)
 {
   m_fpInspectFn = fpClassFn;
   

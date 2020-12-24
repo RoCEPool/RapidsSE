@@ -15,7 +15,7 @@ ClassCatalog::ClassCatalog(void)
 {
   m_aDefaults = new ClassFn(CN_NONE,
                             CF_INSPECT,
-                            reinterpret_cast<pCLASSFN*>(&ClassFn::bInspect),
+                            reinterpret_cast<fpCLASSFN*>(&ClassFn::bInspect),
                             C_VARGS_END);
   
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
