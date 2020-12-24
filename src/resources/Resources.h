@@ -176,8 +176,8 @@ namespace Expressions {
 //typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 //extern pDUMPFUN *gpDump[];
 
-typedef void (pOUTLINEFUN)(Focal* pFocal, Stz*);
-extern pOUTLINEFUN *gpOutline[];
+//typedef void (pOUTLINEFUN)(Focal* pFocal, Stz*);
+//extern pOUTLINEFUN *gpOutline[];
 
 
 
