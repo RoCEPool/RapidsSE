@@ -16,7 +16,9 @@ void MetaData::vCheckAssumptions(void)
   
   ALWAYS(sizeof(Tx)           < C_SIZE_SMALL_OBJECT);
   ALWAYS(sizeof(TxSet)        < C_SIZE_SMALL_OBJECT);
-
+  
+  
+  ALWAYS(sizeof(Rrf) == 8);
 }
 
 /*============================================================================*/

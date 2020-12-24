@@ -7,32 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Rows
-{  
-  void vCheckAssumptions(void);
-}
 
-//------------------------------------------------------------------------------
-
-static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
-
-#include "Ref.hpp"
-
-#include "Row.hpp"
-#include "NmlStr.hpp"
-#include "Record.hpp"
-typedef HV<Record,RowPix>       HV_Record;
-#include "RowBox_t.hpp"
-
-
-#include "RowSingle.hpp"
-
-#include "CellSegment.hpp"
-#include "CellSingle.hpp"
-
-//------------------------------------------------------------------------------
-
-typedef HV<RowSingle,StreamDef> HV_RowSingle;
 
 /*============================================================================*/
 /* end                                                                        */
