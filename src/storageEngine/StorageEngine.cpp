@@ -15,7 +15,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Arguments::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   Expressions::vCheckAssumptions();
-  ControlData::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();
   Resources::vCheckAssumptions();
   Interface::vCheckAssumptions();

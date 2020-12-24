@@ -36,6 +36,10 @@ typedef VectorNL_t<CN_TABLEPTNVEC,DataBuffers::TablePtn,C_MAX_TABLEPTNS>TablePtn
 #include "Tenant.hpp"
 #include "Tenants.hpp"
 
+
+
+#include "Marker.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
