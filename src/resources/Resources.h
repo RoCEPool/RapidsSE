@@ -171,6 +171,8 @@ typedef void (fpSELFFN)(void* aSelfArg);
 #include "GizmoFn.hpp"
 #include "GizmoCatalog.hpp"
 
+#include "ToolFn.hpp"
+#include "ToolCatalog.hpp"
 
 
 namespace Expressions {
