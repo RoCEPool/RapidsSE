@@ -20,7 +20,7 @@ class SP_Encoding_v2;
 class Packing_v2;
                               class OverLine;        class TailLine;          }
 namespace CompilerOperators {                                                 }
-namespace ControlData       {                                                 }
+namespace MetaData       {                                                 }
 namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
 namespace Datums            { class Datum_h;
@@ -108,7 +108,7 @@ using namespace Arguments;
 using namespace Chunks;
 using namespace DataBuffers;
 using namespace CompilerOperators;
-using namespace ControlData;
+using namespace MetaData;
 using namespace DataBuffers;
 using namespace Datums;
 using namespace Plans;

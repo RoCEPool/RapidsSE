@@ -2,7 +2,7 @@
 /* Marker.cpp -- Marker                                                        */
 /*============================================================================*/
 
-#include "ControlData.h"
+#include "MetaData.h"
 
 #include "eCF.h"
 
@@ -15,7 +15,7 @@ ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Marker* ControlData::_pMarker(void* aAddr)
+Marker* MetaData::_pMarker(void* aAddr)
 {
   Marker* pMarker = reinterpret_cast<Marker*>(aAddr);
   

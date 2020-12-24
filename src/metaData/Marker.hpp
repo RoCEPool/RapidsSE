@@ -5,7 +5,7 @@
 
 #include "eOM.h"
 
-namespace ControlData
+namespace MetaData
 {
   class Marker : public Operand
   {
