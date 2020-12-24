@@ -161,6 +161,10 @@ typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
+typedef void (fpSELFFN)(void* aSelfArg);
+#include "SelfFn.hpp"
+#include "SelfCatalog.hpp"
+
 typedef void (fpSUBSYSFN)(void* aSubSysArg);
 #include "SubSysFn.hpp"
 #include "SubSysCatalog.hpp"
@@ -453,6 +457,7 @@ static Stz* C_TAG_UPPER_BOUND = "<upperBound>"_Stz;
 #include "TickingDevice.hpp"
 #include "Timer.hpp"
 #include "AggTimer.hpp"
+#include "Gizmos.hpp"
 
 #include "ByteRate.hpp"
 #include "Peruse.hpp"
