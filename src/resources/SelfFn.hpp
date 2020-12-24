@@ -12,7 +12,7 @@ namespace Resources
     fpSELFFN* m_fpSelfFn;  //
 
   public:
-    SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, i8);
+    SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, i8 iArg);
   
     void vDoSelfFn(void);
   };

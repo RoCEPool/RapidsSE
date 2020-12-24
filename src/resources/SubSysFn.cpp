@@ -12,10 +12,6 @@ extern SubSysCatalog gxSubSysCatalog;
 SubSysFn::SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, i8 iArg)
 : SelfFn(szSubSysNm,(fpSELFFN*)fpSubSysFn,iArg)
 {
-  
-  m_szSubSysNm = szSubSysNm;
-  m_fpSubSysFn = fpSubSysFn;
-  
   gxSubSysCatalog.vAddFn(this);
 }
 
@@ -25,7 +21,6 @@ SubSysFn::SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, i8 iArg)
 void SubSysFn::vDoSubSysFn(void)
 {
   _static_
-  
 }
 
 /*============================================================================*/
