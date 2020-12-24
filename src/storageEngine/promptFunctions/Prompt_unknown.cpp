@@ -4,7 +4,7 @@
 
 #include "StorageEngine.h"
 
-#include "eOC.h"
+extern SubSysCatalog gxSubSysCatalog;
 
 PromptFun __Prompt_unknown (
   PF_UNKNOWN,           // prompt function
@@ -28,6 +28,11 @@ bool Prompt::bPrompt_unknown(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 iNumTokens = pInpTknVec->nItems();
+  
+  Stz* szSubSysNm = pInpTknVec->pGet(0)->szChars();
+  
+  if (gxSubSysCatalog.bCallSubSysFn(szSubSysNm))
+    return true;
   
   vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
 

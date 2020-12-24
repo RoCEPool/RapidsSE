@@ -4,16 +4,18 @@
 
 #include "Resources.h"
 
-//extern ClassCatalog gxClassCatalog;
+extern SubSysCatalog gxSubSysCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SubSysFn::SubSysFn(Stz* szSubSysNm, fpSUBSYSFN* fpSubSysFn, i8)
 {
+  
+  m_szSubSysNm = szSubSysNm;
   m_fpSubSysFn = fpSubSysFn;
   
- //gxClassCatalog.vSetSubSysFn(eClass,this);
+  gxSubSysCatalog.vAddSubSysFn(this);
 }
 
 /*----------------------------------------------------------------------------*/
