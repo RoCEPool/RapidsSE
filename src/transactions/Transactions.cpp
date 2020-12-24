@@ -4,14 +4,6 @@
 
 #include "Transactions.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Transactions::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(Tx)           < C_SIZE_SMALL_OBJECT);
-  ALWAYS(sizeof(TxSet)        < C_SIZE_SMALL_OBJECT);
-}
 
 /*============================================================================*/
 /* end                                                                        */

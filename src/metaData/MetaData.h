@@ -40,6 +40,13 @@ typedef VectorNL_t<CN_TABLEPTNVEC,DataBuffers::TablePtn,C_MAX_TABLEPTNS>TablePtn
 
 #include "Marker.hpp"
 
+
+
+
+#include "Tx.hpp"
+#include "TxSet.hpp"
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
