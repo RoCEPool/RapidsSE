@@ -39,33 +39,62 @@ print "loading Lineitem...";
 /time load lineitem "/DATA/TPCH/lineitem100.csv";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
-tableScan lineitem;
-
 // select * from lineitem;
-Smt0;
+//Smt0;
+/*
+pipeline smt0
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end ;
+*/
 
 // select l_extendedPrice from lineitem;
-Smt1;
+//Smt1;
+
+pipeline smt1
+  begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | project 0 l_extendedPrice
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end ;
 
 // select * from lineitem where l_partkey >= 1000000;
-Smt2;
+//Smt2;
 
 // select * from lineitem where l_partkey < 1000000;
-Smt3;
+//Smt3;
 
 // select * from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
-Smt4;
+//Smt4;
 
 // select * from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R' ;
-Smt5;
+//Smt5;
 
 // index filters LBOUND
 //select * from lineitem where l_orderkey >= 70 ;
-Smt6;
+//Smt6;
 
 // index filters RANGE
 //select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;
-Smt7;
+//Smt7;
 
 // aggregate - sum
 //select l_orderkey, sum(l_extendedprice) from lineitem;

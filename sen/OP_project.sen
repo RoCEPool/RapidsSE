@@ -1,0 +1,138 @@
+/*============================================================================*/
+/* OP_project.sen -- Operator table scan                                    */
+/*============================================================================*/
+
+" OP_project.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: project_StartMarker \handler
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  // new the pot[]
+  Pot[].new
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: project_CrwBuffer \handler
+
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[].asSrcCrwBuffer
+  ZK_CRWBUFFER Counter0[] executeAsmArgs
+
+  Pot[].pipeoutAllCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_ROWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: project_RowBuffer \handler
+
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  //Pipein[] "GOT ROWBUFFER %v" .printf
+  Operand[].pipeIn
+  Operand[].asSrcRowBuffer
+  ZK_ROWBUFFER Counter0[] executeAsmArgs
+  Operand[].delete
+  Pot[].pipeoutAllCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: project_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // pipe out all pot[]
+  Pot[].pipeoutAllDanglingPtns
+  Pot[].delete
+
+  Counter0[] cleanUpAsm
+
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: project_StreamDef \handler
+
+  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  Pipein[] to StreamDef[]
+  nullptr to Pipein[]
+  <etc> StreamDef[] LogicUnit[].genProjection to StreamDefOut[]
+
+  StreamDef[].asSrcStreamDef
+  false pot[].useStreamDefOut
+
+  StreamDefOut[].pipeout
+
+  Counter0[] if
+    LogicCompiler[].new
+    LogicCompiler[].compile
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: project_req \operator
+
+  LogReqEntry SEED_REQ
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: project_CrwBuffer   ZK_CRWBUFFER   op[].handler!
+  find: project_EosMarker   ZK_EOSMARKER   op[].handler!
+  find: project_RowBuffer   ZK_ROWBUFFER   op[].handler!
+  find: project_StartMarker ZK_STARTMARKER op[].handler!
+  find: project_StreamDef   ZK_STREAMDEF   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: project :: project <compiled> <etc> ;
+
+: project _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
