@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Tenants.hpp -- Tenants                                                     */
+/* Catalog.hpp -- Catalog                                                     */
 /*============================================================================*/
 #pragma once
 
-namespace Folders
+namespace MetaData
 {
-  class Tenants : public Folder
+  class Catalog : public Folder
   {
   private:
   
@@ -16,13 +16,13 @@ namespace Folders
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Tenants(void);
-   ~Tenants(void) noexcept(false);
-  
+    Catalog(void);
+   ~Catalog(void) noexcept(false);
+   
     Footer* aFooter(void);
   };
   
-  Tenants* _pTenants(void* aAddr);
+  Catalog* _pCatalog(void* aAddr);
 }
 
 /*============================================================================*/

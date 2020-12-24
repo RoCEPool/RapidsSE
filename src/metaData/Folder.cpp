@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Tenants.cpp -- Tenants                                                     */
+/* Folder.cpp -- Folder                                                       */
 /*============================================================================*/
 
-#include "Folders.h"
+#include "MetaData.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -10,60 +10,39 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Tenants* Folders::_pTenants(void* aAddr)
-{
-  Tenants* pTenants = reinterpret_cast<Tenants*>(aAddr);
-  
-  if (pTenants && CN_TENANTS != pTenants->eClass())
-    vTrace("_pTenants got class %s\n"_Stz,aCN[pTenants->eClass()]);
-  
-  RASSERT_TYPE(pTenants,CN_TENANTS);
-  
-  return pTenants;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Tenants::operator new(size_t)
+void* Folder::operator new(size_t)
 {
-  Tenants* pTenants = (Tenants*)(HeapMem::pAllocate(CN_TENANTS));
+  Folder* pFolder = nullptr;
   
-  return pTenants;
+  return pFolder;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Tenants::operator delete(void* aAddr)
+void Folder::operator delete(void*)
 {
-   Tenants* pTenants = reinterpret_cast<Tenants*>(aAddr);
-  
-   HeapMem::vFree(pTenants);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Tenants::Tenants(void)
-: Folder(CN_TENANTS)
+Folder::Folder(eCN eClassNo)
+: Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TENANTS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  
-  _checkInitialised_(CN_TENANTS);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TENANTS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Tenants::~Tenants(void) noexcept(false)
+Folder::~Folder(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TENANTS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 }
 
 
@@ -71,19 +50,6 @@ Tenants::~Tenants(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Tenants::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TENANTS);
-  
-  return &m_xFooter;
-}
 
 
 /*============================================================================*/

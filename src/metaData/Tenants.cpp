@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Catalog.cpp -- Catalog                                                     */
+/* Tenants.cpp -- Tenants                                                     */
 /*============================================================================*/
 
-#include "Folders.h"
+#include "MetaData.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,55 +12,58 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Catalog* Folders::_pCatalog(void* aAddr)
+Tenants* MetaData::_pTenants(void* aAddr)
 {
-  Catalog* pCatalog = reinterpret_cast<Catalog*>(aAddr);
+  Tenants* pTenants = reinterpret_cast<Tenants*>(aAddr);
   
-  if (pCatalog && CN_CATALOG != pCatalog->eClass())
-    vTrace("_pCatalog got class %s\n"_Stz,aCN[pCatalog->eClass()]);
+  if (pTenants && CN_TENANTS != pTenants->eClass())
+    vTrace("_pTenants got class %s\n"_Stz,aCN[pTenants->eClass()]);
   
-  RASSERT_TYPE(pCatalog,CN_CATALOG);
+  RASSERT_TYPE(pTenants,CN_TENANTS);
   
-  return pCatalog;
+  return pTenants;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Catalog::operator new(size_t)
+void* Tenants::operator new(size_t)
 {
-  Catalog* pCatalog = nullptr;
+  Tenants* pTenants = (Tenants*)(HeapMem::pAllocate(CN_TENANTS));
   
-  return pCatalog;
+  return pTenants;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Catalog::operator delete(void*)
+void Tenants::operator delete(void* aAddr)
 {
+   Tenants* pTenants = reinterpret_cast<Tenants*>(aAddr);
+  
+   HeapMem::vFree(pTenants);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Catalog::Catalog(void)
-: Folder(CN_CATALOG)
+Tenants::Tenants(void)
+: Folder(CN_TENANTS)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CATALOG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TENANTS,_FOOTER_);
   
   
-  _checkInitialised_(CN_CATALOG);
+  _checkInitialised_(CN_TENANTS);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CATALOG,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TENANTS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Catalog::~Catalog(void) noexcept(false)
+Tenants::~Tenants(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CATALOG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TENANTS,_FOOTER_);
 }
 
 
@@ -75,9 +78,9 @@ Catalog::~Catalog(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Catalog::aFooter(void)
+Footer* Tenants::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CATALOG);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TENANTS);
   
   return &m_xFooter;
 }

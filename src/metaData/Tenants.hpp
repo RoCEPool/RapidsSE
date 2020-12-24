@@ -1,22 +1,28 @@
 /*============================================================================*/
-/* Folder.hpp -- Folder                                                       */
+/* Tenants.hpp -- Tenants                                                     */
 /*============================================================================*/
 #pragma once
 
-namespace Folders
+namespace MetaData
 {
-  class Folder : public Object
+  class Tenants : public Folder
   {
   private:
-      
+  
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Folder(eCN eClassNo);
-   ~Folder(void) noexcept(false);
-   
+    Tenants(void);
+   ~Tenants(void) noexcept(false);
+  
+    Footer* aFooter(void);
   };
+  
+  Tenants* _pTenants(void* aAddr);
 }
 
 /*============================================================================*/

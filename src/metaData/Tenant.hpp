@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Schema.hpp -- Schema                                                       */
+/* Tenant.hpp -- Tenant                                                       */
 /*============================================================================*/
 #pragma once
 
-namespace Folders
+namespace MetaData
 {
-  class Schema : public Folder
+  class Tenant : public Folder
   {
   private:
   
@@ -16,14 +16,13 @@ namespace Folders
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Schema(void);
-   ~Schema(void) noexcept(false);
+    Tenant(void);
+   ~Tenant(void) noexcept(false);
     
-   
     Footer* aFooter(void);
   };
   
-  Schema* _pSchema(void* aAddr);
+  Tenant* _pTenant(void* aAddr);
 }
 
 /*============================================================================*/

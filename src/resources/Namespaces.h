@@ -50,7 +50,7 @@ namespace Facts             { class Fact;            class Kbase;
                               class Method;        
                               class Question;        class Transform;         }
 
-namespace Folders           {                                                 }
+namespace MetaData           {                                                 }
 namespace Resources           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
@@ -115,7 +115,7 @@ using namespace Plans;
 using namespace DataBuffers;
 using namespace Expressions;
 using namespace Facts;
-using namespace Folders;
+using namespace MetaData;
 using namespace Resources;
 using namespace DataBuffers;
 using namespace DataBuffers;
