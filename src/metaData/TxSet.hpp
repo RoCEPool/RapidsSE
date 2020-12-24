@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transactions
+namespace MetaData
 {
   class TxSet : public Object
   {

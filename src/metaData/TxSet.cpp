@@ -2,7 +2,7 @@
 /* TxSet.cpp -- Transaction Set                                               */
 /*============================================================================*/
 
-#include "Transactions.h"
+#include "MetaData.h"
 
 /*----------------------------------------------------------------------------*/
 /* compare two tx's by their local tx id's                                    */
@@ -29,7 +29,7 @@ bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TxSet* Transactions::_pTxSet(void* aAddr)
+TxSet* MetaData::_pTxSet(void* aAddr)
 {
   TxSet* pTxSet = reinterpret_cast<TxSet*>(aAddr);
   

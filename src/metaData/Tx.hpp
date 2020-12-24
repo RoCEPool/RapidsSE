@@ -5,7 +5,7 @@
 
 #include "eXP.h"
 
-namespace Transactions
+namespace MetaData
 {    
   class Tx : public Focal
   {

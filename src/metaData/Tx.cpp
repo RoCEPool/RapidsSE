@@ -2,12 +2,12 @@
 /* Tx.cpp - Transaction                                                       */
 /*============================================================================*/
 
-#include "Transactions.h"
+#include "MetaData.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Tx* Transactions::_pTx(void* aAddr)
+Tx* MetaData::_pTx(void* aAddr)
 {
   Tx* pTx = reinterpret_cast<Tx*>(aAddr);
   

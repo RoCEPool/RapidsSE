@@ -99,7 +99,7 @@ class Heap; class PoolHelper; class ObjectSnapshot;            }
 namespace Expressions             { class Task;                                     }
 namespace Expressions           { class Scheduler;       class Thread;
                               class Queues;                                   }
-namespace Transactions      { class Tx;              class TxSet;             }
+namespace MetaData      { class Tx;              class TxSet;             }
 namespace Utilities         { class BPA;                     }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -147,7 +147,7 @@ using namespace StorageEngine;
 using namespace Resources;
 using namespace Expressions;
 using namespace Expressions;
-using namespace Transactions;
+using namespace MetaData;
 using namespace Utilities;
 
 /*============================================================================*/
