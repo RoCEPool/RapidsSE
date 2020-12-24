@@ -28,6 +28,14 @@ typedef VectorNL_t<CN_TABLEPTNVEC,DataBuffers::TablePtn,C_MAX_TABLEPTNS>TablePtn
 
 #include "Index.hpp"
 
+
+
+#include "Folder.hpp"
+#include "Schema.hpp"
+#include "Catalog.hpp"
+#include "Tenant.hpp"
+#include "Tenants.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

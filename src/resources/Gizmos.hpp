@@ -9,6 +9,7 @@ namespace Resources
   {
   public:
       
+  static void vAsciiTable(void* aGizmoArg);
   };
 }
 

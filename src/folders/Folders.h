@@ -5,20 +5,6 @@
 
 #include "MetaData.h"
 
-//------------------------------------------------------------------------------
-
-namespace Folders
-{
-  void vCheckAssumptions(void);
-}
-
-//------------------------------------------------------------------------------
-
-#include "Folder.hpp"
-#include "Schema.hpp"
-#include "Catalog.hpp"
-#include "Tenant.hpp"
-#include "Tenants.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
