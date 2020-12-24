@@ -163,6 +163,7 @@ typedef bool (fpCLASSFN)(Object* pObject);
 
 typedef void (fpSUBSYSFN)(void*);
 #include "SubSysFn.hpp"
+#include "SubSysCatalog.hpp"
 
 namespace Expressions {
   typedef void (Step::*StepFp)(void);

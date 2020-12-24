@@ -8,7 +8,8 @@ namespace Resources
   class SubSysFn
   {
   public:
-
+    Stz* m_szSubSysNm;
+  
     fpSUBSYSFN* m_fpSubSysFn;  //
 
   public:
