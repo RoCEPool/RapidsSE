@@ -261,6 +261,8 @@ namespace Expressions
     void vGenerate100000(void);
     void vGenerate100001(void);
 
+    void vGenerateProjection(StreamDef* pStreamDef, StreamDef* pStreamDefOut, Stz* sProjectColumns, Stz* sFileName);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     #include "RLU_interface.h"

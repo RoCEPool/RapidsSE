@@ -159,6 +159,7 @@ assert::stack_0
         "OP_populateIndex.sen"        include
         "OP_print.sen"                include
         "OP_progress.sen"             include
+        "OP_project.sen"              include
         "OP_purge.sen"                include
         "OP_pwf.sen"                  include
         "OP_python.sen"               include

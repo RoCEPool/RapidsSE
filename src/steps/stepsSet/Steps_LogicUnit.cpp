@@ -29,6 +29,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
+  vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
     
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
   vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
@@ -325,6 +326,34 @@ void Step::vLogicUnitGenCode(void)
       
   m_pLogicUnit->vGenCode(iTestNo);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genProjection -- generate projection asm text into file        */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenProjection(void)
+{
+  ENTRY();
+
+  StreamDef* pStreamDef;
+  pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  StreamDef* pStreamDefOut = new StreamDef;
+  pStreamDefOut->vAddDefSet();
+
+  s4K sProjectColumns;
+  m_pDataStack->vPopStr(sProjectColumns, __func__);
+
+  s256 sFileNm;
+  i8 iTaskId = m_pTask->iTaskId();
+  i8 iJobId = m_pTask->pJob()->iJobId();
+
+  sFileNm.vSprint("../eo_text/Job%lld_Task%lld_Projection.txt"_Stz, iJobId, iTaskId);
+  m_pLogicUnit->vGenerateProjection(pStreamDef, pStreamDefOut, sProjectColumns, sFileNm);
+
+  m_pDataStack->vPushPtr(pStreamDefOut);
+
   EXIT();
 }
 

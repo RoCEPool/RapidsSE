@@ -3635,6 +3635,135 @@ void LogicUnit::vGenerate100001(void)
   vDumpCode();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* generate asm text for projection                                           */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateProjection(StreamDef* pStreamDef, StreamDef* pStreamDefOut, Stz* sProjectColumns, Stz* sFileName) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+
+  TagSet oTagSet;
+  File *pFile = new File(nullptr);
+
+  bool b = pFile->bOpenWrite(sFileName);
+
+
+  // tokenise the projectColumns
+  TokenVec *pTknVec = TokenVec::pTokenise(sProjectColumns);
+  Token *pTkn = pTknVec->pNextToken();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the INIT code
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) 0);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // default handler for the EOSMARKER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for CRWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_CRW_PROJECT_ROUTINE, "CRW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
+
+  u8 uProjectColumns = 0;
+
+  for (i8 i_Col = 0; pTkn; i_Col++) {
+    if (i_Col) {
+      if (pTkn->bSame(","_Stz)) {
+        pTkn = pTknVec->pNextToken();
+      } else {
+        //eError = EC_INVALID_COMMAND;
+        //goto L_RETURN;
+        RASSERT(0);
+      }
+    }
+    Stz *sProjectColumn = pTkn->szChars();
+
+    // look for column in streamDef
+    Column *pColumn = nullptr;
+    bool bFound = false;
+    i8 nColumns = pStreamDef->nColumns(C_ALL);
+
+    for (i8 i_streamCol = 0; i_streamCol < nColumns; i_streamCol++) {
+      pColumn = pStreamDef->pGetColumn(i_streamCol);
+      if (pColumn->szColNm()->bSame(sProjectColumn)) {
+        bFound = true;
+        BitLib::vSetOn(uProjectColumns, i_streamCol);
+        break;
+      }
+    }
+    RASSERT(bFound);
+
+    pStreamDefOut->vAddColumn(sProjectColumn,
+                              pColumn->eColumnType(),
+                              pColumn->iColumnLength(),
+                              pColumn->iColumnScale());
+    pTkn = pTknVec->pNextToken();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns(C_ALL));
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
+  oTagSet.vReset();
+
+  for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
+    oTagSet.vAppend(C_TAG_DST_COLUMN, (i8) i_Col);
+    Column* pColumn = pStreamDefOut->pGetColumn(i_Col);
+    switch (pColumn->eColumnType()) {
+      case CT_INTEGER:
+      case CT_DECIMAL:
+        pFile->vPrint(LogicCompiler::szGetMacro(AM_POP_DST_COLUMNI, &oTagSet));
+        oTagSet.vReset();
+        break;
+      case CT_CHAR:
+      case CT_DATE:
+      case CT_VARCHAR:
+        pFile->vPrint(LogicCompiler::szGetMacro(AM_POP_DST_COLUMNS, &oTagSet));
+        oTagSet.vReset();
+        break;
+    }
+  }
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
+  pFile->vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Generate asm
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s16KB sText;
+  b = pFile->bOpenRead(sFileName);
+  RASSERT(b);
+  i8 nSize = pFile->iSize();
+  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+
+  // null terminate the read bytes
+  char* sReadStr = sText.azChar();
+  sReadStr[nSize] = '\0';
+
+  bool bResult = bGenerateAsm(sText);
+
+  pFile->vClose();
+  delete pFile;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
