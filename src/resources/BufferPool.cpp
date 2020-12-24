@@ -79,7 +79,7 @@ BufferPool::~BufferPool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vSubSystem(void)
+void BufferPool::vSubSystem(void* aSubSysArg)
 {
   _static_
   

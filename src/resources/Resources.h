@@ -161,7 +161,7 @@ typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
-typedef void (fpSUBSYSFN)(void*);
+typedef void (fpSUBSYSFN)(void* aSubSysArg);
 #include "SubSysFn.hpp"
 #include "SubSysCatalog.hpp"
 

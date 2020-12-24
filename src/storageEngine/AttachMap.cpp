@@ -128,7 +128,7 @@ AttachMap::~AttachMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vSubSystem(void)
+void AttachMap::vSubSystem(void* aSubSysArg)
 {
   _static_
   

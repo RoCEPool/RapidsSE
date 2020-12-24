@@ -15,7 +15,7 @@ namespace Resources
   public:
     SubSysCatalog(void);
   
-    bool bCallSubSysFn(Stz* szSubSysNm);
+    bool bCallSubSysFn(Stz* szSubSysNm, void* aSubSysArg);
   
     SubSysFn* pFindSubSysFn(Stz* szSubSysNm);
   

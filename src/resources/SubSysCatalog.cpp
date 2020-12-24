@@ -17,13 +17,13 @@ SubSysCatalog::SubSysCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
-bool SubSysCatalog::bCallSubSysFn(Stz* szSubSysNm)
+bool SubSysCatalog::bCallSubSysFn(Stz* szSubSysNm, void* aSubSysArg)
 {
   SubSysFn* pSubSysFn = pFindSubSysFn(szSubSysNm);
   if (! pSubSysFn)
     return false;
   
-  pSubSysFn->m_fpSubSysFn(nullptr);
+  pSubSysFn->m_fpSubSysFn(aSubSysArg);
   
   return true;
 }

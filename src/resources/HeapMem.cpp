@@ -48,7 +48,7 @@ HeapMem::HeapMem(void)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vSubSystem(void)
+void HeapMem::vSubSystem(void* aSubSysArg)
 {
   _static_
   
