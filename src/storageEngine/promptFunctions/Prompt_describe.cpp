@@ -6,6 +6,8 @@
 
 #include "eOC.h"
 
+extern SubSysCatalog gxSubSysCatalog;
+
 PromptFun __Prompt_describe (
   PF_DESCRIBE,           // prompt function
   "Prompt_describe"_Stz, // name of the prompt function
@@ -28,6 +30,8 @@ bool Prompt::bPrompt_describe(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 iNumTokens = pInpTknVec->nItems();
+  
+  gxSubSysCatalog.vListSubSystems();
   
   return true;
 }

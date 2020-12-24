@@ -45,6 +45,8 @@ namespace Resources
                bool bDontFree, bool bFreeCB);
    ~BufferPool(void) noexcept(false);
   
+    static void vSubSystem(void);
+  
     static void vReport(void);
     
     PoolBuffer* pAllocAttachMapBuffer(void);

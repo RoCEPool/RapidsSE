@@ -34,6 +34,9 @@ namespace Resources
 
   public:
     HeapMem(void);
+  
+    static void vSubSystem(void);
+
 
     static Object* pAllocate(eCN eClass, bool bPersistent=false);
     static void vFree(Object* pObject, bool bPersistent=false);
