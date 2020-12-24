@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SelfFn.hpp -- System-Self Function                                         */
+/* SelfFn.hpp --  System-Level Self-Describing Function                       */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,6 @@ namespace Resources
   {
   public:
     Stz* m_szSelfNm;
-  
     fpSELFFN* m_fpSelfFn;  //
 
   public:

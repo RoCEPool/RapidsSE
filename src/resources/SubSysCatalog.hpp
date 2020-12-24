@@ -5,7 +5,7 @@
 
 namespace Resources
 {
-  class SubSysCatalog
+  class SubSysCatalog : public SelfCatalog
   {
   public:
 

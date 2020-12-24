@@ -5,7 +5,7 @@
 
 namespace Resources
 {
-  class SubSysFn
+  class SubSysFn : public SelfFn
   {
   public:
     Stz* m_szSubSysNm;

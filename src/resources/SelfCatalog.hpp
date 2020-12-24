@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SelfCatalog.hpp -- System-Self Function Catalog                            */
+/* SelfCatalog.hpp -- System-Level Self-Describing Function Catalog           */
 /*============================================================================*/
 #pragma once
 

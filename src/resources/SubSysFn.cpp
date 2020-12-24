@@ -9,7 +9,8 @@ extern SubSysCatalog gxSubSysCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubSysFn::SubSysFn(Stz* szSubSysNm, fpSUBSYSFN* fpSubSysFn, i8)
+SubSysFn::SubSysFn(Stz* szSubSysNm, fpSUBSYSFN* fpSubSysFn, i8 iArg)
+: SelfFn(szSubSysNm,(fpSELFFN*)fpSubSysFn,iArg)
 {
   
   m_szSubSysNm = szSubSysNm;
