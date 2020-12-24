@@ -6,7 +6,7 @@
 
 extern BufferPool* gpBufferPool;
 
-SubSysFn __BufferPool("BufferPool"_Stz,(fpSUBSYSFN*)BufferPool::vSubSystem,-1);
+SubSysFn __BufferPool("BufferPool"_Stz,(fpSELFFN*)BufferPool::vSubSystem,-1);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

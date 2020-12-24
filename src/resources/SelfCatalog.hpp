@@ -15,13 +15,13 @@ namespace Resources
   public:
     SelfCatalog(void);
   
-    bool bCallSelfFn(Stz* szSelfNm, void* aSelfArg);
+    bool bCallFn(Stz* szSelfNm, void* aSelfArg);
   
-    SelfFn* pFindSelfFn(Stz* szSelfNm);
+    SelfFn* pFindFn(Stz* szSelfNm);
   
-    void vListSelftems(void);
+    void vListFn(void);
   
-    void vAddSelfFn(SelfFn* aSelfFn);
+    void vAddFn(SelfFn* aSelfFn);
   };
 }
 

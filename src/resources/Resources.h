@@ -165,7 +165,7 @@ typedef void (fpSELFFN)(void* aSelfArg);
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 
-typedef void (fpSUBSYSFN)(void* aSubSysArg);
+typedef void (fpSELFFN)(void* aSubSysArg);
 #include "SubSysFn.hpp"
 #include "SubSysCatalog.hpp"
 

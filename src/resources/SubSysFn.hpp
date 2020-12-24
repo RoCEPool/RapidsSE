@@ -10,10 +10,10 @@ namespace Resources
   public:
     Stz* m_szSubSysNm;
   
-    fpSUBSYSFN* m_fpSubSysFn;  //
+    fpSELFFN* m_fpSubSysFn;  //
 
   public:
-    SubSysFn(Stz* szSubSysNm, fpSUBSYSFN* fpSubSysFn, i8);
+    SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, i8);
   
     void vDoSubSysFn(void);
   };

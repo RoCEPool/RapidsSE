@@ -14,48 +14,6 @@ SubSysCatalog::SubSysCatalog(void)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/* find prompt function given command                                         */
-/*----------------------------------------------------------------------------*/
-bool SubSysCatalog::bCallSubSysFn(Stz* szSubSysNm, void* aSubSysArg)
-{
-  SubSysFn* pSubSysFn = pFindSubSysFn(szSubSysNm);
-  if (! pSubSysFn)
-    return false;
-  
-  pSubSysFn->m_fpSubSysFn(aSubSysArg);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find prompt function given command                                         */
-/*----------------------------------------------------------------------------*/
-SubSysFn* SubSysCatalog::pFindSubSysFn(Stz* szSubSysNm)
-{
-  for (i8 i_SubSys = 0; i_SubSys < m_nSubSys; i_SubSys++)
-    if (m_paSubSysFn[i_SubSys]->m_szSubSysNm->bSame(szSubSysNm))
-      return m_paSubSysFn[i_SubSys];
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* help                                                                       */
-/*----------------------------------------------------------------------------*/
-void SubSysCatalog::vListSubSystems(void)
-{
-  for (i8 i_SubSys = 0; i_SubSys < m_nSubSys; i_SubSys++)
-    vTrace("  %s\n"_Stz,m_paSubSysFn[i_SubSys]->m_szSubSysNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* help                                                                       */
-/*----------------------------------------------------------------------------*/
-void SubSysCatalog::vAddSubSysFn(SubSysFn* aSubSysFn)
-{
-  m_paSubSysFn[m_nSubSys ++] = aSubSysFn;
-}
 
 /*============================================================================*/
 /* end                                                                        */

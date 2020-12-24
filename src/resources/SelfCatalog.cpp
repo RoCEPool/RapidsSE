@@ -17,9 +17,9 @@ SelfCatalog::SelfCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
-bool SelfCatalog::bCallSelfFn(Stz* szSelfNm, void* aSelfArg)
+bool SelfCatalog::bCallFn(Stz* szSelfNm, void* aSelfArg)
 {
-  SelfFn* pSelfFn = pFindSelfFn(szSelfNm);
+  SelfFn* pSelfFn = pFindFn(szSelfNm);
   if (! pSelfFn)
     return false;
   
@@ -31,7 +31,7 @@ bool SelfCatalog::bCallSelfFn(Stz* szSelfNm, void* aSelfArg)
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
-SelfFn* SelfCatalog::pFindSelfFn(Stz* szSelfNm)
+SelfFn* SelfCatalog::pFindFn(Stz* szSelfNm)
 {
   for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
     if (m_paSelfFn[i_Self]->m_szSelfNm->bSame(szSelfNm))
@@ -43,7 +43,7 @@ SelfFn* SelfCatalog::pFindSelfFn(Stz* szSelfNm)
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-void SelfCatalog::vListSelftems(void)
+void SelfCatalog::vListFn(void)
 {
   for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
     vTrace("  %s\n"_Stz,m_paSelfFn[i_Self]->m_szSelfNm);
@@ -52,7 +52,7 @@ void SelfCatalog::vListSelftems(void)
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-void SelfCatalog::vAddSelfFn(SelfFn* aSelfFn)
+void SelfCatalog::vAddFn(SelfFn* aSelfFn)
 {
   m_paSelfFn[m_nSelf ++] = aSelfFn;
 }

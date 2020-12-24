@@ -31,7 +31,7 @@ bool Prompt::bPrompt_unknown(SePrompt* pPrompt)
   
   Stz* szSubSysNm = pInpTknVec->pGet(0)->szChars();
   
-  if (gxSubSysCatalog.bCallSubSysFn(szSubSysNm,pInpTknVec))
+  if (gxSubSysCatalog.bCallFn(szSubSysNm,pInpTknVec))
     return true;
   
   vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);

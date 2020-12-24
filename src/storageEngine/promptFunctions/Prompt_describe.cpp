@@ -31,7 +31,7 @@ bool Prompt::bPrompt_describe(SePrompt* pPrompt)
   
   i8 iNumTokens = pInpTknVec->nItems();
   
-  gxSubSysCatalog.vListSubSystems();
+  gxSubSysCatalog.vListFn();
   
   return true;
 }
