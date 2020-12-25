@@ -4,8 +4,6 @@
 
 #include "Resources.h"
 
-#include "File.hpp" //?
-
 #define __WITH_INPUT_CURSOR
 
 /*----------------------------------------------------------------------------*/

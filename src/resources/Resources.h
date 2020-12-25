@@ -583,6 +583,7 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 #include "TlsKeys.hpp" //?
 
+#include "ResourceTracker.hpp" //?
 
 
 #include "AnnChar.hpp"
