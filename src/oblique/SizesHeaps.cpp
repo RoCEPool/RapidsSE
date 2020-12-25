@@ -188,6 +188,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 }, // CN_PREDICATEVEC
   { sizeof(PrimitiveNode),        HT_T_TINY    , -8 }, // CN_PRIMITIVENODE
   { sizeof(Profile),              HT_T_MEDIUM  ,0 }, // CN_PROFILE
+  { sizeof(Project),              HT_T_LARGE   ,0 }, // CN_PROJECT
   { sizeof(PsxThd),               HT_T_TINY    ,0 }, // CN_PSXTHD
   { sizeof(PtnMap),               HT_T_LARGE   ,0 }, // CN_PTNMAP
   { sizeof(PtnStream),            HT_T_TINY    ,0 }, // CN_PTNSTREAM

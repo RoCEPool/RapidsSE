@@ -55,12 +55,13 @@ pipeline smt0
     output | sink | stageA
 
 end ;
-*/
+
 
 // select l_extendedPrice from lineitem;
 //Smt1;
 
-pipeline smt1
+procedure smt1
+  parameters $etc
   begin
 
   stage stageA on origin :
@@ -68,13 +69,18 @@ pipeline smt1
 
   stage stageB on all partitions :
     scan lineitem
-    | project 0 l_extendedPrice
+    | project 0 $etc
     | stageC
 
   stage stageC on origin :
     output | sink | stageA
 
 end ;
+Smt0 lineitem l_extendedPrice 2 * ;
+
+*/
+
+Smt0 lineitem l_extendedPrice, l_discount;
 
 // select * from lineitem where l_partkey >= 1000000;
 //Smt2;

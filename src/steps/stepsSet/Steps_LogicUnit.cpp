@@ -336,23 +336,15 @@ void Step::vLogicUnitGenProjection(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDef;
-  pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  StreamDef* pStreamDefOut = new StreamDef;
-  pStreamDefOut->vAddDefSet();
-
-  s4K sProjectColumns;
-  m_pDataStack->vPopStr(sProjectColumns, __func__);
+  Project* pProject;
+  pProject = _pProject(m_pDataStack->pPopPtr(__func__));
 
   s256 sFileNm;
   i8 iTaskId = m_pTask->iTaskId();
   i8 iJobId = m_pTask->pJob()->iJobId();
 
   sFileNm.vSprint("../eo_text/Job%lld_Task%lld_Projection.txt"_Stz, iJobId, iTaskId);
-  m_pLogicUnit->vGenerateProjection(pStreamDef, pStreamDefOut, sProjectColumns, sFileNm);
-
-  m_pDataStack->vPushPtr(pStreamDefOut);
+  m_pLogicUnit->vGenerateProjection(pProject, sFileNm);
 
   EXIT();
 }

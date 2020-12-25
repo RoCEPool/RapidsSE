@@ -25,6 +25,7 @@ namespace Expressions
 #include "LogicTimer.hpp"
 
 #include "LogicCompiler.hpp"
+#include "Project.hpp"
 
 #include "LogicUnit.hpp"
 

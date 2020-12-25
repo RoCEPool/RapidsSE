@@ -97,6 +97,8 @@ namespace Expressions
     REG<Operand>     m_xpOperandB;  // operand B
     REG<Operand>     m_xpOperandC;  // operand C
     REG<Operand>     m_xpOperandOoO; // operand OoO
+
+    REG<Project>     m_xpProject;   // project
     
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
@@ -261,7 +263,7 @@ namespace Expressions
     void vGenerate100000(void);
     void vGenerate100001(void);
 
-    void vGenerateProjection(StreamDef* pStreamDef, StreamDef* pStreamDefOut, Stz* sProjectColumns, Stz* sFileName);
+    void vGenerateProjection(Project* pProject, Stz* sFileName);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

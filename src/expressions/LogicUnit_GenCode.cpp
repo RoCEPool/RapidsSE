@@ -1165,8 +1165,8 @@ void LogicUnit::vGenerateAsmTxt_Smt8_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile)
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for given query into a file                              */
-/* select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;           */
-/* index on orderkey
+/* select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;         */
+/* index on orderkey                                                          */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateAsmTxt_Smt8_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile) {
 
@@ -3639,7 +3639,7 @@ void LogicUnit::vGenerate100001(void)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateProjection(StreamDef* pStreamDef, StreamDef* pStreamDefOut, Stz* sProjectColumns, Stz* sFileName) {
+void LogicUnit::vGenerateProjection(Project* pProject, Stz* sFileName) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -3647,11 +3647,6 @@ void LogicUnit::vGenerateProjection(StreamDef* pStreamDef, StreamDef* pStreamDef
   File *pFile = new File(nullptr);
 
   bool b = pFile->bOpenWrite(sFileName);
-
-
-  // tokenise the projectColumns
-  TokenVec *pTknVec = TokenVec::pTokenise(sProjectColumns);
-  Token *pTkn = pTknVec->pNextToken();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append the INIT code
@@ -3662,11 +3657,6 @@ void LogicUnit::vGenerateProjection(StreamDef* pStreamDef, StreamDef* pStreamDef
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // default handler for the EOSMARKER
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_EOSMARKER_HANDLER, &oTagSet));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handler for CRWBUFFER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
@@ -3674,69 +3664,25 @@ void LogicUnit::vGenerateProjection(StreamDef* pStreamDef, StreamDef* pStreamDef
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRWBUFFER_PROJECT_HANDLER, &oTagSet));
   oTagSet.vReset();
 
-  u8 uProjectColumns = 0;
-
-  for (i8 i_Col = 0; pTkn; i_Col++) {
-    if (i_Col) {
-      if (pTkn->bSame(","_Stz)) {
-        pTkn = pTknVec->pNextToken();
-      } else {
-        //eError = EC_INVALID_COMMAND;
-        //goto L_RETURN;
-        RASSERT(0);
-      }
-    }
-    Stz *sProjectColumn = pTkn->szChars();
-
-    // look for column in streamDef
-    Column *pColumn = nullptr;
-    bool bFound = false;
-    i8 nColumns = pStreamDef->nColumns(C_ALL);
-
-    for (i8 i_streamCol = 0; i_streamCol < nColumns; i_streamCol++) {
-      pColumn = pStreamDef->pGetColumn(i_streamCol);
-      if (pColumn->szColNm()->bSame(sProjectColumn)) {
-        bFound = true;
-        BitLib::vSetOn(uProjectColumns, i_streamCol);
-        break;
-      }
-    }
-    RASSERT(bFound);
-
-    pStreamDefOut->vAddColumn(sProjectColumn,
-                              pColumn->eColumnType(),
-                              pColumn->iColumnLength(),
-                              pColumn->iColumnScale());
-    pTkn = pTknVec->pNextToken();
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PROJECT_COLUMNS Routine
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_COLUMNS
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns(C_ALL));
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pProject->m_iColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pProject->m_uProjectColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_ROUTINE, &oTagSet));
   oTagSet.vReset();
 
-  for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    oTagSet.vAppend(C_TAG_DST_COLUMN, (i8) i_Col);
-    Column* pColumn = pStreamDefOut->pGetColumn(i_Col);
-    switch (pColumn->eColumnType()) {
-      case CT_INTEGER:
-      case CT_DECIMAL:
-        pFile->vPrint(LogicCompiler::szGetMacro(AM_POP_DST_COLUMNI, &oTagSet));
-        oTagSet.vReset();
-        break;
-      case CT_CHAR:
-      case CT_DATE:
-      case CT_VARCHAR:
-        pFile->vPrint(LogicCompiler::szGetMacro(AM_POP_DST_COLUMNS, &oTagSet));
-        oTagSet.vReset();
-        break;
-    }
-  }
+//  for (i8 i_Col = 0; i_Col < pProject->m_iColumns; i_Col++) {
+//    i8 i_Code = 0;
+//    for (i8 i_Code = 0; i_Code < pProject->m_i_Code[i_Col]; i_Code++) {
+//      pFile->vPrint("%s\n"_Stz, pProject->m_eaCode[i_Col][i_Code]);
+//    }
+//  }
 
+  for (i8 i_Col = 0; i_Col < pProject->m_iColumns; i_Col++) {
+    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText[i_Col].azChar());
+  }
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

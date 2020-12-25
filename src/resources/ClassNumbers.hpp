@@ -186,6 +186,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PREDICATEVEC,
   /* */ CN_PRIMITIVENODE,
   /* */ CN_PROFILE,
+  /* */ CN_PROJECT,
   /* */ CN_PSXTHD,
   /* */ CN_PTNMAP,
   /* */ CN_PTNSTREAM,
@@ -517,6 +518,7 @@ static Stz* aCN[]
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
   /* */ "PROFILE"_Stz,              // CN_PROFILE
+  /* */ "PROJECT"_Stz,              // CN_PROJECT
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNMAP"_Stz,               // CN_PTNMAP
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM

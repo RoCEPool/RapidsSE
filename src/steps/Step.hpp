@@ -110,6 +110,7 @@ namespace Steps
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);
+    static void vAddSteps_Project(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
     static void vAddSteps_Push(void);

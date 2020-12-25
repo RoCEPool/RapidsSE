@@ -31,6 +31,12 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
+  op.pipelineJob@ job.hasError if
+    Pipein[].delete
+    true
+    exit
+  then
+
   Operand[].pipeIn
   Operand[].asSrcCrwBuffer
   ZK_CRWBUFFER Counter0[] executeAsmArgs
@@ -81,9 +87,25 @@
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
+  EC_NONE locals| eError |
+
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
-  <etc> StreamDef[] LogicUnit[].genProjection to StreamDefOut[]
+
+  Project[].new
+  StreamDefOut[].new
+  <etc> StreamDef[] StreamDefOut[] Project[].projectColumns to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op.pipelineJob@ ERROR_JOB
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    true
+    exit
+  then
+
+  Project[] LogicUnit[].genProjection
 
   StreamDef[].asSrcStreamDef
   false pot[].useStreamDefOut

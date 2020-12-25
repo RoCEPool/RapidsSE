@@ -1824,6 +1824,27 @@
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
+  sPath
+  "
+  procedure smt0
+    parameters $table $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | project 0 $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt0 - select * from lineitem;
   sPath
@@ -2091,7 +2112,7 @@
   end ;
   "
   api::addProcedure
-
+*/
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -260,6 +260,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Project[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Project[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PtnStream[]"_Stz)) {
     pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
     EXIT();

@@ -1090,6 +1090,12 @@ public:
   void vProfileNameStore(void);
   void vProfileStart(void);
 
+  // project
+  void vProjectGet(void);
+  void vProjectNew(void);
+  void vProjectColumns(void);
+  void vProjectSet(void);
+
   // prompt
   void vPromptContinue(void);
   void vPromptExecuteFunction(void);
