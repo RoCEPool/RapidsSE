@@ -22,7 +22,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Plans::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
-  Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
 

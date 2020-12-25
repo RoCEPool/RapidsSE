@@ -73,6 +73,14 @@ namespace Expressions
 
 
 
+//------------------------------------------------------------------------------
+
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
+
+#include "Error.hpp"
+#include "Step.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */
