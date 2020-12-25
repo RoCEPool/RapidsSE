@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* MetricsHelper.hpp -- Lock Metrics                                            */
+/* MetricsHelper.hpp -- Lock Expressions                                            */
 /*============================================================================*/
 #pragma once
 
-namespace Metrics
+namespace Expressions
 {
   class MetricsHelper
   {

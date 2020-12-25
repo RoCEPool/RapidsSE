@@ -109,7 +109,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
   Step::vAddSteps_Memory();
-  Step::vAddSteps_Metrics();
+  Step::vAddSteps_Expressions();
 
   Step::vAddSteps_Node();
   Step::vAddSteps_Node_I();

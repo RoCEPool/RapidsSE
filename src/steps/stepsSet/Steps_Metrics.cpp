@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Metrics.cpp - Metrics step group                                     */
+/* Steps_Expressions.cpp - Expressions step group                                     */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,15 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Metrics(void)
+void Step::vAddSteps_Expressions(void)
 {
-  vAddStep("metrics::lockSample"_Stz,   &Step::vMetricsLockSample);
+  vAddStep("Expressions::lockSample"_Stz,   &Step::vExpressionsLockSample);
 }
 
 /*----------------------------------------------------------------------------*/
-/* metrics::lockSample -- sample the lock stats                               */
+/* Expressions::lockSample -- sample the lock stats                               */
 /*----------------------------------------------------------------------------*/
-void Step::vMetricsLockSample(void)
+void Step::vExpressionsLockSample(void)
 {
   ENTRY();
 

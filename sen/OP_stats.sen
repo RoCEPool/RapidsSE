@@ -30,7 +30,7 @@
   infoSetTable[] streamDef[].new
 
   //streamDef[].asStr .
-  metrics::lockSample to operandC[]
+  Expressions::lockSample to operandC[]
   OperandC[].pipeOut
 */
 
@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 : stats_ExitMarker \handler
 /*
-  metrics::lockSample // to operandC[]
+  Expressions::lockSample // to operandC[]
   //OperandC[].pipeOut
 
   PipeIn[].pipeOut

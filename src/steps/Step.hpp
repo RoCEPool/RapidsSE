@@ -90,7 +90,7 @@ namespace Steps
     static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);
     static void vAddSteps_Memory(void);
-    static void vAddSteps_Metrics(void);
+    static void vAddSteps_Expressions(void);
 
     static void vAddSteps_Node(void);
     static void vAddSteps_Node_I(void);

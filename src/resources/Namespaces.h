@@ -70,7 +70,7 @@ namespace StorageEngine           { class Log;             class LogEntry;      
 namespace MetaData          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
-namespace Metrics           {                                                 }
+namespace Expressions           {                                                 }
 namespace Oblique           { class AM;                                       }
 namespace Chunks          { class Operand;                                  }
 namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
@@ -100,7 +100,6 @@ namespace Expressions             { class Task;                                 
 namespace Expressions           { class Scheduler;       class Thread;
                               class Queues;                                   }
 namespace MetaData      { class Tx;              class TxSet;             }
-namespace Utilities         { class BPA;                     }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -126,7 +125,7 @@ using namespace Resources;
 using namespace Load;
 using namespace StorageEngine;
 using namespace MetaData;
-using namespace Metrics;
+using namespace Expressions;
 using namespace Oblique;
 using namespace Chunks;
 using namespace Parser;
@@ -148,7 +147,6 @@ using namespace Resources;
 using namespace Expressions;
 using namespace Expressions;
 using namespace MetaData;
-using namespace Utilities;
 
 /*============================================================================*/
 /* end                                                                        */

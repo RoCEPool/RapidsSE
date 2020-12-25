@@ -1,12 +1,17 @@
 /*============================================================================*/
-/* Metrics.h -- Metrics namespace                                             */
+/* LockMetrics.hpp -- Lock Expressions                                            */
 /*============================================================================*/
 #pragma once
 
-#include "Expressions.h"
+namespace Expressions
+{
+  class LockMetrics
+  {
+  public:
+    static Row* pSample(StreamDef* pStreamDef, InfoSet* pInfoSet);
+  };
 
-//------------------------------------------------------------------------------
-
+}
 
 /*============================================================================*/
 /* end                                                                        */

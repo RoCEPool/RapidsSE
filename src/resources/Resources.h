@@ -575,6 +575,7 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 
 
+#include "File.hpp"
 
 
 

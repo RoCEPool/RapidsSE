@@ -1408,7 +1408,7 @@ public:
   void vSsnTraceSession(void);
 
   // steps
-  void vMetricsLockSample(void);
+  void vExpressionsLockSample(void);
 
   // steps
   void vStepTimingReset(void);

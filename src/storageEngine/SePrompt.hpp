@@ -48,7 +48,6 @@ namespace Prompt
     ShortCutVec m_oShortCutVec; // vector of short cuts
    
     // object delta reporting
-    BPA*           m_pBPA;
     ObjectSnapshot* m_pSnapshotAtTrackingMemory;
     ObjectSnapshot* m_pSnapshotAtMemoryLeaks;
     ObjectSnapshot* m_pSnapshotObjects;
@@ -82,7 +81,6 @@ namespace Prompt
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
-    BPA* pBPA(void);
     void vDebugMode(i8 iDebugMode);
     bool bDemo(void);
     void vDivision(Stz* szDivision);

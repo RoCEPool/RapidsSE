@@ -51,7 +51,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
 
-  m_pBPA = nullptr;
   m_pSnapshotAtTrackingMemory = new ObjectSnapshot;
   m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
   m_pSnapshotObjects = nullptr;
@@ -87,7 +86,6 @@ SePrompt::~SePrompt(void) noexcept(false)
   
   delete m_pInput;
   
-  delete m_pBPA;
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
   delete m_pSnapshotObjects;
@@ -359,16 +357,6 @@ bool SePrompt::bBlankLine(void)
   bool bBlankLine = m_pInpTknVec->bBlankLine();
 
   return bBlankLine;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for blank line                                                        */
-/*----------------------------------------------------------------------------*/
-BPA* SePrompt::pBPA(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pBPA;
 }
 
 /*----------------------------------------------------------------------------*/

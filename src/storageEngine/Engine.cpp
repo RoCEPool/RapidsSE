@@ -811,9 +811,7 @@ void Engine::vKillPrev(void)
 /* get monitor portrait of system                                             */
 /*----------------------------------------------------------------------------*/
 void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
-{
-  static BPA* pBPA = nullptr;
-  
+{  
   s48K sPortrait;
   
   Now oNow;
