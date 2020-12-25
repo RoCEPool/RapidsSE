@@ -196,7 +196,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_TxSet();
   
   Step::vAddSteps_User();
-  Step::vAddSteps_Utility();
     
   Step::vAddSteps_Word();
 

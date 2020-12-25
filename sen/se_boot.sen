@@ -81,15 +81,18 @@ assert::stack_0
 
         // -- -- -- -- -- -- -- -- -- --
 
+"a" .put
         "OP_addNode.sen"              include
         "OP_adjustPartitions.sen"     include
         "OP_analyzeIndex.sen"         include
         "OP_analyzeTable.sen"         include
         "OP_answer.sen"               include
 
+"b" .put
         "OP_bufferGen.sen"            include
         "OP_burst.sen"                include
 
+"c" .put
         "OP_callPipeline.sen"         include
         "OP_catFile.sen"              include
         "OP_changeFolder.sen"         include
@@ -105,6 +108,7 @@ assert::stack_0
         "OP_createTenant.sen"         include
         "OP_crwToRow.sen"             include
 
+"d" .put
         "OP_defineTable.sen"          include
         "OP_delete.sen"               include
         "OP_docol.sen"                include
@@ -118,6 +122,7 @@ assert::stack_0
         "OP_dumpTable.sen"            include
         "OP_dupCrw.sen"               include
 
+"e" .put
         "OP_eatAll.sen"               include
         "OP_eatSome.sen"              include
         "OP_eachPath.sen"             include
@@ -125,15 +130,22 @@ assert::stack_0
         "OP_etcTest.sen"              include
         "OP_exemplar.sen"             include
 
+"f" .put
         "OP_fetch.sen"                include
 
+"g" .put
         "OP_genAsmTxt.sen"            include
         "OP_gridSanity.sen"           include
  
+"h" .put
+"i" .put
         "OP_input.sen"                include
         "OP_insDel.sen"               include
         "OP_insert.sen"               include
 
+"j" .put
+"k" .put
+"l" .put
         "OP_listFolders.sen"          include
         "OP_listCatalogs.sen"         include
         "OP_listColumns.sen"          include
@@ -148,11 +160,15 @@ assert::stack_0
         "OP_listTableDefs.sen"        include
         "OP_listTenants.sen"          include
 
+"m" .put
+"n" .put
         "OP_nodeInfo.sen"             include
         "OP_noop.sen"                 include
 
+"o" .put
         "OP_output.sen"               include
 
+"p" .put
         "OP_passThru.sen"             include
         "OP_periodic.sen"             include
         "OP_ping.sen"                 include
@@ -165,6 +181,8 @@ assert::stack_0
         "OP_python.sen"               include
         "OP_pythonShell.sen"          include
 
+"q" .put
+"r" .put
         "OP_rdCrwFile.sen"            include
         "OP_rdCsvChunk.sen"           include
         "OP_rdCsvCyclic.sen"          include
@@ -176,6 +194,7 @@ assert::stack_0
         "OP_report.sen"               include
         "OP_rowCount.sen"             include
 
+"s" .put
         "OP_scan.sen"                 include
         "OP_send.sen"                 include
         "OP_showCluster.sen"          include
@@ -195,6 +214,7 @@ assert::stack_0
         "OP_syntaxTable.sen"          include
         "OP_syntaxUniqueIndex.sen"    include
 
+"t" .put
         "OP_tableSizes.sen"           include
         "OP_toCsv.sen"                include
         "OP_toDemon.sen"              include
@@ -208,24 +228,33 @@ assert::stack_0
         "OP_truncateIndex.sen"        include
         "OP_truncateTable.sen"        include
 
+"u" .put
         "OP_unload.sen"               include
         "OP_upsert.sen"               include
 
+"v" .put
         "OP_verifyIndex.sen"          include
         "OP_verifyIndexPtn.sen"       include
         "OP_verifyTable.sen"          include
         "OP_visualizeIndex.sen"       include
         "OP_visualizeTable.sen"       include
 
+"w" .put
         "OP_waitPipeline.sen"         include
         "OP_waker.sen"                include
         "OP_wrFile.sen"               include
 
+"x" .put
         "OP_xmit.sen"                 include
 
+"y" .put
+"z" .put
+
+3 .put
         "OP_EOAsm.sen"                include
         "OP_EOAsm2.sen"               include
 
+2 .put
         "test_dData.sen"              include
         "test_encodingData.sen"       include
         "test_gGen.sen"               include
@@ -244,7 +273,6 @@ assert::stack_0
         "se_llc.sen"                  include
         "se_memoryStats.sen"          include
         "se_munge.sen"                include
-        "se_schemaTest.sen"           include
         "se_stepTests.sen"            include
         "se_stepTiming.sen"           include
 

@@ -19,10 +19,6 @@ namespace Utilities
 #include "Arrange.hpp"
 #include "BPA.hpp"
 #include "IntSet.hpp"
-#include "LlcTest.hpp"
-#include "PoolHelper.hpp"
-#include "Prefetch.hpp"
-#include "SchemaTest.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

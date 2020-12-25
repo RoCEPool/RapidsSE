@@ -85,9 +85,7 @@ void Step::vAddSteps_Test(void)
 void Step::vTestTest0(void)
 {
   ENTRY();
-  
-  LlcTest::vTest(this);
-  
+    
   EXIT();
 }
 
