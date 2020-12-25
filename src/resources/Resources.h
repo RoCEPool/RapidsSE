@@ -575,8 +575,13 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 
 
-#include "File.hpp"
+#include "Dir.hpp"    //?
+#include "Fifo.hpp"   //?
+#include "File.hpp"   //?
+#include "PsxThd.hpp" //?
+#include "Socket.hpp" //?
 
+#include "TlsKeys.hpp" //?
 
 
 
