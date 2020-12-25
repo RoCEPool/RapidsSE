@@ -22,7 +22,7 @@ namespace Expressions
   class Task : public Focal,
                public ListItem_t<Task>
   {
-  friend class Steps::Step;
+  friend class Expressions::Step;
 
   private:
     Lock         m_okLock;       // lock for this task

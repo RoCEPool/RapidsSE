@@ -2,9 +2,9 @@
 /* Step.cpp -- Step                                                           */
 /*============================================================================*/
 
-#include "Steps.h"
+#include "Expressions.h"
 
-StepFp gfpEntryStep = &Steps::Step::vEnterRoutine;
+StepFp gfpEntryStep = &Expressions::Step::vEnterRoutine;
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */

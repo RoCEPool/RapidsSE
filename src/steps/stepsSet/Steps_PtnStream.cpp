@@ -2,7 +2,7 @@
 /* Steps_PtnStream.cpp - partition stream step group                          */
 /*============================================================================*/
 
-#include "Steps.h"
+#include "Expressions.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

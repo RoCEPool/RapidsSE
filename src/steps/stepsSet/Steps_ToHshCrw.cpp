@@ -2,7 +2,7 @@
 /* Steps_ToHshCrw.cpp - Convert ptn nst row buffers to hashed crw buffers   */
 /*============================================================================*/
 
-#include "Steps.h"
+#include "Expressions.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

@@ -92,7 +92,7 @@ namespace SenVM             { class Dic;             class DicStack;
 namespace DataBuffers          { class Session;         class SessionState;      }
 namespace DataBuffers       {                                                 }
 namespace SqlValues         {                                                 }
-namespace Steps             { class Step;            class StepTiming;        }
+namespace Expressions             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
 namespace Resources        { class Article;         class Queue;
 class Heap; class PoolHelper; class ObjectSnapshot;            }
@@ -141,7 +141,7 @@ using namespace SenVM;
 using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace SqlValues;
-using namespace Steps;
+using namespace Expressions;
 using namespace StorageEngine;
 using namespace Resources;
 using namespace Expressions;

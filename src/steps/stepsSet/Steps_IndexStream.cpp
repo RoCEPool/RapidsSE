@@ -2,7 +2,7 @@
 /* Steps_IndexStream.cpp - index stream step group                            */
 /*============================================================================*/
 
-#include "Steps.h"
+#include "Expressions.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

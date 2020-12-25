@@ -9,7 +9,7 @@ namespace MetaData
   {
   friend class RowSingle;
   friend class DataBuffers::InfoSetBase;
-  friend class Steps::Step;
+  friend class Expressions::Step;
   friend class DataBuffers::RowBuffer;
 
   private:

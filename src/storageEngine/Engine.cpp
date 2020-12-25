@@ -1640,7 +1640,7 @@ void Engine::vStartSystem(void)
   
   
   if (AM::bVerboseProgress())
-    vInfo("  Adding Steps\n"_Stz);
+    vInfo("  Adding Expressions\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "adding steps"_Stz); //!format-LogSys
   Step::vAddSteps();

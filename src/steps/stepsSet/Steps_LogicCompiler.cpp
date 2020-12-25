@@ -2,7 +2,7 @@
 /* Steps_LogicCompiler.cpp -- LogicCompiler step group                        */
 /*============================================================================*/
 
-#include "Steps.h"
+#include "Expressions.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

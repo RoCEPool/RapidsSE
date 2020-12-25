@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Steps
+namespace Expressions
 {
   static const i8 C_STEPS = 2048;
   
