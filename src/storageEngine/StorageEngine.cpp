@@ -18,14 +18,12 @@ void StorageEngine::vCheckAllAssumptions(void)
   DataBuffers::vCheckAssumptions();
   Resources::vCheckAssumptions();
   MetaData::vCheckAssumptions();
-  Metrics::vCheckAssumptions();
   Parser::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
-  Utilities::vCheckAssumptions();
 }
 
 /*----------------------------------------------------------------------------*/
