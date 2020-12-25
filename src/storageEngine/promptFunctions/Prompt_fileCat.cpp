@@ -4,8 +4,6 @@
 
 #include "StorageEngine.h"
 
-#include "File.hpp" //?
-
 PromptFun __Prompt_fileCat (
   PF_FILECAT,           // prompt function
   "Prompt_fileCat"_Stz, // name of the prompt function

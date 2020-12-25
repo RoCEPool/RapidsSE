@@ -6,10 +6,6 @@
 
 #include "ePP.h"
 
-#include "Dir.hpp" //?
-#include "File.hpp" //?
-#include "PsxThd.hpp" //?
-
 extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;
