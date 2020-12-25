@@ -5,21 +5,6 @@
 
 #include "Expressions.h"
 
-//------------------------------------------------------------------------------
-
-namespace Interface
-{
-  void vCheckAssumptions(void);
-}
-
-//------------------------------------------------------------------------------
-
-#include "ApiMacros.h"
-
-#include "Api.hpp"
-#include "SessionArray.hpp"
-
-#include "RapidsSE.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

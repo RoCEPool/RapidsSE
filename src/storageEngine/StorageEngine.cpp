@@ -17,7 +17,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Expressions::vCheckAssumptions();
   DataBuffers::vCheckAssumptions();
   Resources::vCheckAssumptions();
-  Interface::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Metrics::vCheckAssumptions();
   Parser::vCheckAssumptions();

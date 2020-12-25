@@ -10,9 +10,12 @@ namespace Resources
   public:
     Stz* m_szSelfNm;
     fpSELFFN* m_fpSelfFn;  //
+  
+    Stz* m_szDescription;
+
 
   public:
-    SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, i8 iArg);
+    SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription, i8 iArg);
   };
 }
 

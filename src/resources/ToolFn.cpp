@@ -9,8 +9,8 @@ extern ToolCatalog gxToolCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToolFn::ToolFn(Stz* szToolNm, fpSELFFN* fpToolFn, i8 iArg)
-: SelfFn(szToolNm,(fpSELFFN*)fpToolFn,iArg)
+ToolFn::ToolFn(Stz* szToolNm, fpSELFFN* fpToolFn, Stz* szDescription, i8 iArg)
+: SelfFn(szToolNm,(fpSELFFN*)fpToolFn,szDescription,iArg)
 {
   gxToolCatalog.vAddFn(this);
 }

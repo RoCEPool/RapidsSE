@@ -8,7 +8,7 @@ extern SizeHeap  gxaSizeHeap[];
 
 bool gbAddrAllocated = false;
 
-SubSysFn __HeapMem("HeapMem"_Stz,(fpSELFFN*)HeapMem::vSubSystem,-1);
+SubSysFn __HeapMem("HeapMem"_Stz,(fpSELFFN*)HeapMem::vSubSystem,""_Stz,-1);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

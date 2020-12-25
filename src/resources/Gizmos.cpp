@@ -4,7 +4,7 @@
 
 #include "Resources.h"
 
-GizmoFn __AsciiTable("ascii"_Stz,(fpSELFFN*)Gizmos::vAsciiTable,-1);
+GizmoFn __AsciiTable("ascii"_Stz,(fpSELFFN*)Gizmos::vAsciiTable,""_Stz,-1);
 
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
