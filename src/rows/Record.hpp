@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace MetaData
 {
   class Record : public Object
   {

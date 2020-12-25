@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Rows,NmlStr,CN_NMLSTR)
+__pCastFunction(MetaData,NmlStr,CN_NMLSTR)
 __aNewFunction(NmlStr,CN_NMLSTR)
 __vDeleteFunction(NmlStr,CN_NMLSTR)
 __aFooterFunction(NmlStr)

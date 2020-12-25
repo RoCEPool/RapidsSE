@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowSingle* Rows::_pRowSingle(void* aAddr)
+RowSingle* MetaData::_pRowSingle(void* aAddr)
 {
   RowSingle* pRowSingle = reinterpret_cast<RowSingle*>(aAddr);
   

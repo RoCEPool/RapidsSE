@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Rows,CellSingle,CN_CELLSINGLE)
+__pCastFunction(MetaData,CellSingle,CN_CELLSINGLE)
 __aNewFunction(CellSingle,CN_CELLSINGLE)
 __vDeleteFunction(CellSingle,CN_CELLSINGLE)
 __aFooterFunction(CellSingle)

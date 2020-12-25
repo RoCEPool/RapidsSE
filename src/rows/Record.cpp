@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Rows,Record,CN_RECORD)
+__pCastFunction(MetaData,Record,CN_RECORD)
 __aNewFunction(Record,CN_RECORD)
 __vDeleteFunction(Record,CN_RECORD)
 __aFooterFunction(Record)

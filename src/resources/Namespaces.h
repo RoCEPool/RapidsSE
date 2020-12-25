@@ -86,7 +86,7 @@ namespace Plans             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
 namespace DataBuffers   { class Crv;                                      }
 namespace Resources     { class RU_Cpu;          class RU_Memory;         }
-namespace Rows              { class Row;                                      }
+namespace MetaData              { class Row;                                      }
 namespace SenVM             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace DataBuffers          { class Session;         class SessionState;      }
@@ -137,7 +137,7 @@ using namespace Plans;
 using namespace Prompt;
 using namespace DataBuffers;
 using namespace Resources;
-using namespace Rows;
+using namespace MetaData;
 using namespace SenVM;
 using namespace DataBuffers;
 using namespace DataBuffers;

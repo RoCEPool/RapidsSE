@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace MetaData
 {
   static const i8 C_WSP_NMLSTR = C_8KB - 128;
 

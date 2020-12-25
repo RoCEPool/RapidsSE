@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Rows,CellSegment,CN_CELLSEGMENT)
+__pCastFunction(MetaData,CellSegment,CN_CELLSEGMENT)
 __aNewFunction(CellSegment,CN_CELLSEGMENT)
 __vDeleteFunction(CellSegment,CN_CELLSEGMENT)
 __aFooterFunction(CellSegment)

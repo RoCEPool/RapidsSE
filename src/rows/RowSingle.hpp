@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace MetaData
 {
   static const i8 C_ROWSINGLE_WSP  = C_MAX_RECORD;
 

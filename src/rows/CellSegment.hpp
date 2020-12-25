@@ -5,7 +5,7 @@
 
 #include "eSI.h"
 
-namespace Rows
+namespace MetaData
 {
   class CellSegment : public Object
   {
