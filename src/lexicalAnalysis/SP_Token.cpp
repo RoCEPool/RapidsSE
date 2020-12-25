@@ -2,7 +2,7 @@
 /* SP_Token.cpp - Token sprint helper                            (on c stack) */
 /*============================================================================*/
 
-#include "LexicalAnalysis.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

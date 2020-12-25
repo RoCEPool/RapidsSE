@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace LexicalAnalysis
+namespace Resources
 {
   class TokenVec : public ArrayNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
   {

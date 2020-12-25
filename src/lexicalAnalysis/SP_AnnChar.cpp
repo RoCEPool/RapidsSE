@@ -2,7 +2,7 @@
 /* SP_AnnChar.cpp - AnnChar sprint helper                        (on c stack) */
 /*============================================================================*/
 
-#include "LexicalAnalysis.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

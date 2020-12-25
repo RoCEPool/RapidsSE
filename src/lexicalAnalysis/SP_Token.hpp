@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace LexicalAnalysis
+namespace Resources
 {
   class SP_Token : public SP
   {

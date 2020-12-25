@@ -2,7 +2,7 @@
 /* Input.cpp -- Input : collect input stream into tokens                      */
 /*============================================================================*/
 
-#include "LexicalAnalysis.h"
+#include "Resources.h"
 
 #include "File.hpp" //?
 
@@ -12,7 +12,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(LexicalAnalysis,Input,CN_INPUT)
+__pCastFunction(Resources,Input,CN_INPUT)
 __aNewFunction(Input,CN_INPUT)
 __vDeleteFunction(Input,CN_INPUT)
 __aFooterFunction(Input)

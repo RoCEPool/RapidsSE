@@ -2,7 +2,7 @@
 /* Charser.cpp -- read input as chars, removing line and block comments       */
 /*============================================================================*/
 
-#include "LexicalAnalysis.h"
+#include "Resources.h"
 
 #include "File.hpp" //?
 
@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(LexicalAnalysis,Charser,CN_CHARSER)
+__pCastFunction(Resources,Charser,CN_CHARSER)
 __aNewFunction(Charser,CN_CHARSER)
 __vDeleteFunction(Charser,CN_CHARSER)
 __aFooterFunction(Charser)

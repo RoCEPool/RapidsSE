@@ -6,7 +6,7 @@
 #include "eCS.h"
 #include "eIS.h"
 
-namespace LexicalAnalysis
+namespace Resources
 {
   const char C_END_OF_LINE = '\n';
   

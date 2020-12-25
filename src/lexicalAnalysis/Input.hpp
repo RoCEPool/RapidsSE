@@ -5,7 +5,7 @@
 
 #include "eUF.h"
 
-namespace LexicalAnalysis
+namespace Resources
 {
   class Input : public Object
   {

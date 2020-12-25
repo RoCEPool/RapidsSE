@@ -2,7 +2,7 @@
 /* SP_Charser.cpp - Charser sprint helper                        (on c stack) */
 /*============================================================================*/
 
-#include "LexicalAnalysis.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

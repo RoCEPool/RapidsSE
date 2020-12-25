@@ -2,12 +2,12 @@
 /* TokenVec.cpp -- vector of tokens                                           */
 /*============================================================================*/
 
-#include "LexicalAnalysis.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__pCastFunction(LexicalAnalysis,TokenVec,CN_TOKENVEC)
+__pCastFunction(Resources,TokenVec,CN_TOKENVEC)
 __aNewFunction(TokenVec,CN_TOKENVEC)
 __vDeleteFunction(TokenVec,CN_TOKENVEC)
 __aFooterFunction(TokenVec)

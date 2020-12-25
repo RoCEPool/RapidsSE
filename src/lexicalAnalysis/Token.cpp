@@ -2,13 +2,13 @@
 /* Token.hpp -- Tokens                                                        */
 /*============================================================================*/
 
-#include "LexicalAnalysis.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(LexicalAnalysis,Token,CN_TOKEN)
+__pCastFunction(Resources,Token,CN_TOKEN)
 __aNewFunction(Token,CN_TOKEN)
 __vDeleteFunction(Token,CN_TOKEN)
 __aFooterFunction(Token)

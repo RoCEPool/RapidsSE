@@ -63,7 +63,7 @@ namespace Plans              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }
-namespace LexicalAnalysis   { class Token;           class Charser;
+namespace Resources   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
 namespace Load              {                                                 }
 namespace StorageEngine           { class Log;             class LogEntry;          }
@@ -122,7 +122,7 @@ using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace Interface;
 using namespace Plans;
-using namespace LexicalAnalysis;
+using namespace Resources;
 using namespace Load;
 using namespace StorageEngine;
 using namespace MetaData;
