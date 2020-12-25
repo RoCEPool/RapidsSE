@@ -2,7 +2,7 @@
 /* SessionArray.cpp - SessionArray                                                    */
 /*============================================================================*/
 
-#include "Interface.h"
+#include "Expressions.h"
 
 #include "PsxThd.hpp"  //?
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SessionArray* Interface::_pSessionArray(void* aAddr)
+SessionArray* Expressions::_pSessionArray(void* aAddr)
 {
   SessionArray* pSessionArray = reinterpret_cast<SessionArray*>(aAddr);
   

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Interface
+namespace Expressions
 {
   class RapidsSE
   {

@@ -2,7 +2,7 @@
 /* Session.cpp - se session                                                   */
 /*============================================================================*/
 
-#include "Interface.h"
+#include "Expressions.h"
 
 Atomic gixSession;
 

@@ -2,7 +2,7 @@
 /* RapidsSE.cpp -- RapidsSE External Api functions                            */
 /*============================================================================*/
 
-#include "Interface.h"
+#include "Expressions.h"
 
 #include "ePP.h"
 

@@ -58,7 +58,7 @@ namespace DataBuffers             { class Grid;            class Node;          
 
 namespace DataBuffers          { class EntBuffer;       class IndexTree;         }
 namespace DataBuffers          { class InfoSetBase;                              }
-namespace Interface         { class SessionArray;                             }
+namespace Expressions         { class SessionArray;                             }
 namespace Plans              { class Job;             
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
@@ -120,7 +120,7 @@ using namespace Resources;
 using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace DataBuffers;
-using namespace Interface;
+using namespace Expressions;
 using namespace Plans;
 using namespace Resources;
 using namespace Load;
