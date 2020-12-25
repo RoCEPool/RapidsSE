@@ -599,6 +599,9 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 
 
+#include "Thing.hpp"
+#include "Arrange.hpp"
+#include "IntSet.hpp"
 
 
 

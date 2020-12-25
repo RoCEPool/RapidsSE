@@ -2,14 +2,14 @@
 /* IntSet.cpp -- Int Set                                                      */
 /*============================================================================*/
 
-#include "Utilities.h"
+#include "Resources.h"
 
-int Utilities::iSortCompare_ascend(const void * a, const void * b)
+int Resources::iSortCompare_ascend(const void * a, const void * b)
 {
   return (int) ( *(i8*)a - *(i8*)b );
 }
    
-int Utilities::iSortCompare_descend(const void * a, const void * b)
+int Resources::iSortCompare_descend(const void * a, const void * b)
 {
   return (int) ( *(i8*)b - *(i8*)a );
 }
@@ -18,7 +18,7 @@ int Utilities::iSortCompare_descend(const void * a, const void * b)
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Utilities,IntSet,CN_INTSET)
+__pCastFunction(Resources,IntSet,CN_INTSET)
 __aNewFunction(IntSet,CN_INTSET)
 __vDeleteFunction(IntSet,CN_INTSET)
 __aFooterFunction(IntSet)
@@ -237,7 +237,7 @@ void IntSet::vSort(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
    qsort(m_pIntAry->aItemArea(),nInts(),
-         sizeof(i8),Utilities::iSortCompare_ascend);
+         sizeof(i8),Resources::iSortCompare_ascend);
   
   if (m_sDesc.nLength())
     m_sDesc.vAppend(' ');
@@ -252,7 +252,7 @@ void IntSet::vSortDescend(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSET,_FOOTER_);
   
    qsort(m_pIntAry->aItemArea(),nInts(),
-         sizeof(i8),Utilities::iSortCompare_descend);
+         sizeof(i8),Resources::iSortCompare_descend);
   
   if (m_sDesc.nLength())
     m_sDesc.vAppend(' ');
@@ -345,7 +345,7 @@ bool IntSet::bSearch(i8 iInt)
   //
   
   void* aAddr = bsearch(&iInt,m_pIntAry->aItemArea(),nInts(),
-                          sizeof(i8),Utilities::iSortCompare_ascend);
+                          sizeof(i8),Resources::iSortCompare_ascend);
 
  if (aAddr)
    return true;

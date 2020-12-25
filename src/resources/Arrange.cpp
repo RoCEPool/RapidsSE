@@ -2,13 +2,13 @@
 /* Arrange.cpp -- Arrange things in alphabetic order                          */
 /*============================================================================*/
 
-#include "Utilities.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Utilities,Arrange,CN_ARRANGE)
+__pCastFunction(Resources,Arrange,CN_ARRANGE)
 __aNewFunction(Arrange,CN_ARRANGE)
 __vDeleteFunction(Arrange,CN_ARRANGE)
 __aFooterFunction(Arrange)

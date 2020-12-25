@@ -2,13 +2,13 @@
 /* Thing.cpp -- Arrangeable Thing                                             */
 /*============================================================================*/
 
-#include "Utilities.h"
+#include "Resources.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Utilities,Thing,CN_THING)
+__pCastFunction(Resources,Thing,CN_THING)
 __aNewFunction(Thing,CN_THING)
 __vDeleteFunction(Thing,CN_THING)
 __aFooterFunction(Thing)
