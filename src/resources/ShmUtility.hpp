@@ -1,18 +1,21 @@
 /*============================================================================*/
-/* GenMetaData.hpp - Generate Rows Utility                                        */
+/* ShmUtility.hpp -- shared memory utility                                    */
 /*============================================================================*/
 #pragma once
 
-namespace Utilities
+namespace Resources
 {
-  class GenData
+  class ShmUtility
   {
-  private:
-
   public:
- 
-  };
   
+  public:
+    static void vRun(int argc, Stz* argv[]);
+  
+    static void vAttach(void);
+    static void vCreate(void);
+    static void vDelete(void);
+  };
 }
 
 /*============================================================================*/

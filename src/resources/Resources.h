@@ -594,6 +594,7 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 
 
+#include "ShmUtility.hpp"
 
 
 
