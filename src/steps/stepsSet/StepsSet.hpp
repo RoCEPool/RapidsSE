@@ -121,8 +121,6 @@ public:
   void vAttachMapTenantsStore(void);
 
   // bp
-  void vBpEpochDump(void);
-  void vBpEpochTake(void);
   void vBpReadBufferPool(void);
   void vBpWriteBufferPool(void);
   void vBpFreeBuffers(void);

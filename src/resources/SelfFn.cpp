@@ -12,6 +12,9 @@ SelfFn::SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription, i8)
   m_szSelfNm = szSelfNm;
   m_fpSelfFn = fpSelfFn;
   m_szDescription = szDescription;
+  
+  m_nSeeAlso = 0;
+
 }
 
 /*============================================================================*/

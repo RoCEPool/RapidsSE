@@ -31,7 +31,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
-  { sizeof(BPA),                HT_T_MEDIUM  ,0 }, // CN_BPA
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
   { sizeof(BufferCursor),       HT_T_LARGE   ,0 }, // CN_BUFFERCURSOR
   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL

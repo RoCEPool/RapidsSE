@@ -275,7 +275,6 @@ void Constants::vAddConstantsCpp(void)
   /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
   
   /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
-  /* 17 */ vAddConstant("CN_BPA"_Stz,          CN_BPA);
   /*    */ vAddConstant("CN_BUFFERCURSOR"_Stz, CN_BUFFERCURSOR);
   /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
   /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
@@ -796,7 +795,6 @@ void Constants::vAddConstantsCpp(void)
   /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
   /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
-  /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
   /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
   /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
   /*    */ vAddConstant("SIZEOF_EntBUFFER"_Stz,    sizeof(EntBuffer));

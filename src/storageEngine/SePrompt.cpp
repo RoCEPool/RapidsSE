@@ -1185,17 +1185,17 @@ void SePrompt::vReportObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! m_oPmtTagSet.bHasName(C_PMT_OBJDELTA))
-    return;
-
-  if (m_pBPA) {
-    i8 nObjectDelta = m_pBPA->nObjectDelta();
-    vTrace("[Object Delta: %lld objects]\n"_Stz,nObjectDelta);
-  }
-  else {
-    m_pBPA = new BPA;
-    m_pBPA->vEpochTake();
-  }
+//  if (! m_oPmtTagSet.bHasName(C_PMT_OBJDELTA))
+//    return;
+//
+//  if (m_pBPA) {
+//    i8 nObjectDelta = m_pBPA->nObjectDelta();
+//    vTrace("[Object Delta: %lld objects]\n"_Stz,nObjectDelta);
+//  }
+//  else {
+//    m_pBPA = new BPA;
+//    m_pBPA->vEpochTake();
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

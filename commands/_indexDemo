@@ -2,8 +2,6 @@
 /* _indexDemo - create and oldLoad Supllier table for SF10                       */
 /*============================================================================*/
 
-docol epochTake;
-
 create table supplier (
 	 S_SUPPKEY       INTEGER NOT NULL,
 	 S_NAME          VARCHAR(25) NOT NULL,
@@ -96,7 +94,6 @@ szidx supplier idx1;
 //dumpidx supplier idx1;
 drop table supplier;
 
-docol epochDump;
 
 /*============================================================================*/
 /* end                                                                        */

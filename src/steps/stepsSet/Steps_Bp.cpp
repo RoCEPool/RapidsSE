@@ -21,43 +21,6 @@ void Step::vAddSteps_Bp(void)
 
   vAddStep("bpr"_Stz,                &Step::vBpReadBufferPool);
   vAddStep("bpw"_Stz,                &Step::vBpWriteBufferPool);
- 
-  vAddStep("epochDump"_Stz,          &Step::vBpEpochDump);
-  vAddStep("epochTake"_Stz,          &Step::vBpEpochTake);
-}
-
-/*----------------------------------------------------------------------------*/
-/* epochDump -- dump an epoch                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vBpEpochDump(void)
-{
-  ENTRY();
-  
-  if (! gpBPA)
-    gpBPA = new BPA;
-  
-  s48K sPortrait;
-  
-  gpBPA->vEpochDump(sPortrait);
-  
-  vTrace("%s\n"_Stz,sPortrait.szStz());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* epochTake -- take an epoch                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vBpEpochTake(void)
-{
-  ENTRY();
-  
-  if (! gpBPA)
-    gpBPA = new BPA;
-  
-  gpBPA->vEpochTake();
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -4,7 +4,6 @@
 
 bc;
 indexEntries 50;
-docol epochTake;
 
 create table jidxDte (
   jidx_key   INTEGER     NOT NULL,

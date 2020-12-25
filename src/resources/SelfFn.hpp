@@ -13,6 +13,9 @@ namespace Resources
   
     Stz* m_szDescription;
 
+    i8 m_nSeeAlso;
+    Stz* m_szaeeAlso[16];
+
 
   public:
     SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription, i8 iArg);

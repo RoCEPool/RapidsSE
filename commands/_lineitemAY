@@ -193,8 +193,6 @@ tableScan Lineitem;
 partitionScan lineitem 1;
 
 
-docol epochTake;
-
 
 
 /time pipeline python
@@ -249,7 +247,6 @@ output | sink | stageA
 end
 ;
 
-docol epochDump;
 
 --------
  pipeline lineItem_dyn
@@ -264,9 +261,7 @@ docol epochDump;
  end
  ;
 
-docol epochDump;
 
- docol epochDump;
  create table orders (
  O_ORDERKEY        INTEGER NOT NULL,
  O_CUSTKEY         INTEGER NOT NULL,
@@ -285,7 +280,7 @@ docol epochDump;
  //time oldLoad orders "/DATA/tpch/orders10k.csv" <max_errors> =  100;
  //time oldLoad orders "/tpch/SF1/orders.tbl" <field_delimiter> =  "|" <max_errors> =  100;
 
-//docol epochDump;
+
 /*
 
  pipeline lineItem_dyn
@@ -610,7 +605,6 @@ end
 
 //drop table lineitem;
 //drop table orders;
-//docol epochDump;
 
 /time predicateFetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"

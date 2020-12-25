@@ -57,8 +57,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_constants.hpp"
 
 #include "Prompt_ddlLock.hpp"
-#include "Prompt_delta.hpp"
-#include "Prompt_deltaReset.hpp"
+
 #include "Prompt_describe.hpp"
 #include "Prompt_dlist.hpp"
 #include "Prompt_dsv.hpp"

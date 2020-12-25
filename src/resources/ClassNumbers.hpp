@@ -29,7 +29,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BCDVAL,
   /* */ CN_BIRTH,
   /* */ CN_BOLVAL,
-  /* */ CN_BPA,
   /* */ CN_BUCKETMAP,
   /* */ CN_BUFFERCURSOR,
   /* */ CN_BUFFERPOOL,
@@ -360,7 +359,6 @@ static Stz* aCN[]
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
-  /* */ "BPA"_Stz,                  // CN_BPA
   /* */ "BUCKETMAP"_Stz,            // CN_BUCKETMAP
   /* */ "BUFFERCURSOR"_Stz,         // CN_BUFFERCURSOR
   /* */ "BUFFERPOOL"_Stz,           // CN_BUFFERPOOL

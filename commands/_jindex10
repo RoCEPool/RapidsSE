@@ -4,8 +4,6 @@
 
 bc;
 
-docol epochTake;
-
 create table j10 (
   j10_key   INTEGER,
   j10_name  VARCHAR(32) NOT NULL
@@ -127,7 +125,6 @@ vfytbl j10;
 
 //drop table j10;
 
-docol epochDump;
 
 /*
 create index idx2 on j10 (j10_name);

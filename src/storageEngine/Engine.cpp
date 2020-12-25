@@ -901,14 +901,6 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   AM::pSessionArray()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
-  if (1 == ++ gpAttachMap->m_inNextMonitor) {
-    pBPA = new BPA;
-    pBPA->vEpochTake();
-  }
-  else {
-    pBPA->vEpochDump(sRapidsPortrait);
-    pBPA->vEpochTake();
-  }
 }
 
 /*----------------------------------------------------------------------------*/

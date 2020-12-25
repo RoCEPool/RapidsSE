@@ -55,7 +55,6 @@ oldLoad lineitem "/tpch/SF10/lineitem.csv" ;
 //docol stepsList;
 
 //print "epoch take..." ;
-//docol epochTake;
 //print "fetching..." ;
 
 //docol stepsReset;
@@ -67,8 +66,6 @@ oldLoad lineitem "/tpch/SF10/lineitem.csv" ;
 //docol memoryList;
 //docol stepsList;
 
-//print "epoch dump..." ;
-//docol epochDump;
 
 predicateFetch lineitem "L_ORDERKEY 5 ==";
 predicateFetch lineitem "L_ORDERKEY 10 <=";

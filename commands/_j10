@@ -3,7 +3,6 @@
 /*============================================================================*/
 bc;
 
-docol epochTake;
 //ping ;
 
 create table j10 (
@@ -144,7 +143,6 @@ predicateFetch j10;
 
 drop table j10;
 
-docol epochDump;
 
 
 vfytbl j10;
@@ -164,7 +162,6 @@ timerStart;
 predicateFetch j10;
 timerEnd;
 //drop table j10;
-//docol epochDump;
 */
 /*============================================================================*/
 /* end                                                                        */

@@ -6,7 +6,7 @@
 
 assert::stack_0
 
-"Compilation progress: " .put
+"Sen Compilation Progress: " .put
 
 9 .put
         "se_core.sen"             include

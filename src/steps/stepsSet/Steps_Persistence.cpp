@@ -24,13 +24,9 @@ void Step::vPersistenceCheckpoint(void)
   m_pDataStack->vPopStr(sFilePath,__func__);
   
   vTrace("\nTaking checkpoint into file : '%s'\n"_Stz, sFilePath.azChar());
-
-  BPA* pBPA = new BPA;
   
   PersistenceHelper::vWritePersistentHeapMem(sFilePath);
-  
-  delete pBPA;
-  
+    
   EXIT();
 }
 

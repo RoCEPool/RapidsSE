@@ -467,8 +467,6 @@ print "dropping table j10 again...";
 print "=====================================================================";
 drop table j10;
 
-docol epochDump;
-
 //print "";
 //print "=====================================================================";
 //print "exiting prompt with bye...";
