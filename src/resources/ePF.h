@@ -111,6 +111,7 @@ enum ePF // prompt function
   
   /*    */ PF_SE,
   /*    */ PF_SELECT,
+  /*    */ PF_SELFIES,
   /*    */ PF_SETDBG,
   /*    */ PF_SHELL,
   /*    */ PF_SHORTCUT,
@@ -144,7 +145,6 @@ enum ePF // prompt function
   /*    */ PF_TPCH,
   /*    */ PF_TRACKMEMORY,
   
-  /*    */ PF_UNKNOWN,
   /*    */ PF_UPTIME,
   
   /*    */ PF_VERSION,
@@ -265,6 +265,7 @@ static Stz* aPF[]
   
   /*    */ "PF_SE"_Stz,
   /*    */ "PF_SELECT"_Stz,
+  /*    */ "PF_SELFIES"_Stz,
   /*    */ "PF_SETDBG"_Stz,
   /*    */ "PF_SHELL"_Stz,
   /*    */ "PF_SHORTCUT"_Stz,
@@ -298,7 +299,6 @@ static Stz* aPF[]
   /*    */ "PF_TPCH"_Stz,
   /*    */ "PF_TRACKMEMORY"_Stz,
   
-  /*    */ "PF_UNKNOWN"_Stz,
   /*    */ "PF_UPTIME"_Stz,
   
   /*    */ "PF_VERSION"_Stz,

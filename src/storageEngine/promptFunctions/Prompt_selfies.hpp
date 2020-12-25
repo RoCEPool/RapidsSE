@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_unknown.hpp -- Unkown prompt function                               */
+/* Prompt_selfies.hpp -- Unkown prompt function                               */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_unknown(SePrompt* pPrompt);
+  bool bPrompt_selfies(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

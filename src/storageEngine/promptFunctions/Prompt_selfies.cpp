@@ -1,18 +1,20 @@
 /*============================================================================*/
-/* Prompt_unknown.cpp -- Ascii Helper                                           */
+/* Prompt_selfies.cpp -- Ascii Helper                                           */
 /*============================================================================*/
 
 #include "StorageEngine.h"
 
 extern SubSysCatalog gxSubSysCatalog;
+extern ToolCatalog   gxToolCatalog;
+extern GizmoCatalog  gxGizmoCatalog;
 
-PromptFun __Prompt_unknown (
-  PF_UNKNOWN,           // prompt function
-  "Prompt_unknown"_Stz, // name of the prompt function
+PromptFun __Prompt_selfies (
+  PF_SELFIES,           // prompt function
+  "Prompt_selfies"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function
-  "__unknown"_Stz,      // the prompt command
+  "__selfies"_Stz,      // the prompt command
   nullptr,              // the second word
-  bPrompt_unknown,      // prompt function
+  bPrompt_selfies,      // prompt function
   true,                 // enabled
 
   false,                // visible
@@ -23,18 +25,24 @@ PromptFun __Prompt_unknown (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_unknown(SePrompt* pPrompt)
+bool Prompt::bPrompt_selfies(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 iNumTokens = pInpTknVec->nItems();
   
-  Stz* szSubSysNm = pInpTknVec->pGet(0)->szChars();
+  Stz* szCmd = pInpTknVec->pGet(0)->szChars();
   
-  if (gxSubSysCatalog.bCallFn(szSubSysNm,pInpTknVec))
+  if (gxSubSysCatalog.bCallFn(szCmd,pInpTknVec))
     return true;
   
-  vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
+  if (gxToolCatalog.bCallFn(szCmd,pInpTknVec))
+    return true;
+  
+  if (gxGizmoCatalog.bCallFn(szCmd,pInpTknVec))
+    return true;
+  
+  vTrace("error: %s : %s\n"_Stz,aEC[EC_INVALID_COMMAND],szCmd);
 
   return true;
 }

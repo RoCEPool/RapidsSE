@@ -9,7 +9,7 @@ PromptFun __Prompt_objectList (
   PF_OBJECTLIST,            // prompt function
   "Prompt_objectList"_Stz,  // name of the prompt function
   "comment"_Stz,            // comment about the function
-  "objectList"_Stz,         // the prompt command
+  "- objectList"_Stz,         // the prompt command
   nullptr,                  // the second word
   bPrompt_objectList,       // prompt function
   true,                     // enabled
@@ -29,7 +29,7 @@ bool Prompt::bPrompt_objectList(SePrompt* pPrompt)
   
   pObjectSnapshot->vTakeSnapshot();
   
-  pObjectSnapshot->vClassCounts();
+  pObjectSnapshot->vPrintCounts();
 
   delete pObjectSnapshot;
   

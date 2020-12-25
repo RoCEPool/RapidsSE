@@ -304,7 +304,7 @@ bool SePrompt::bPrepareJob(SeDeputy* pSeDeputy)
     RASSERT(! pSeDeputy->pJob());
     
     if (EC_INVALID_COMMAND == eError) {
-      bool b = bPrompt_unknown(this);
+      bool b = bPrompt_selfies(this);
     }
     else {
       vTrace("error: %s\n"_Stz,aEC[eError]);

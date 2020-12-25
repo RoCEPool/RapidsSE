@@ -27,7 +27,7 @@ bool Prompt::bPrompt_snapshotList(SePrompt* pPrompt)
   if (! pSnapshotObjects)
     return true;
   
-  pSnapshotObjects->vClassCounts();
+  pSnapshotObjects->vPrintCounts();
   
   return true;
 }

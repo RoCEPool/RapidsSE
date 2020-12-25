@@ -24,7 +24,9 @@ namespace Resources
     ObjectSnapshot(void);
    ~ObjectSnapshot(void) noexcept(false);
   
-    void vClassCounts(void);
+    static void vObjectCounts(void*);
+  
+    void vPrintCounts(void);
   
     void vDeltaList(ObjectSnapshot* pWithObjectSnapshot);
 

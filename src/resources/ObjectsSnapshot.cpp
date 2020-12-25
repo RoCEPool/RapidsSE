@@ -4,6 +4,11 @@
 
 #include "Resources.h"
 
+ToolFn __ObjectSnapshot_List
+   ("ObjectCounts"_Stz,(fpSELFFN*)ObjectSnapshot::vObjectCounts,
+                     ""_Stz,
+                     -1);
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -38,13 +43,28 @@ ObjectSnapshot::~ObjectSnapshot(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void ObjectSnapshot::vObjectCounts(void*)
+{
+  _static_
+  
+  ObjectSnapshot* pObjectSnapshot = new ObjectSnapshot;
+  
+  pObjectSnapshot->vTakeSnapshot();
+  pObjectSnapshot->vPrintCounts();
+
+  delete pObjectSnapshot;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* print class couunts                                                        */
 /*----------------------------------------------------------------------------*/
-void ObjectSnapshot::vClassCounts(void)
+void ObjectSnapshot::vPrintCounts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
   
