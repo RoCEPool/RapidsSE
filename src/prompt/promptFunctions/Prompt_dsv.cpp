@@ -21,7 +21,7 @@ PromptFun __Prompt_dsv (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_dsv(SePrompt* pPrompt)
+bool PROMPT::bPrompt_dsv(SePrompt* pPrompt)
 {
   AM::pGrid()->vDsv();
   

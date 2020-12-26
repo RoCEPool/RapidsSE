@@ -22,7 +22,7 @@ PromptFun __Prompt_executing (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_executing(SePrompt* pPrompt)
+bool PROMPT::bPrompt_executing(SePrompt* pPrompt)
 {
   AM::pQueues()->vDumpExecutingSet();
 

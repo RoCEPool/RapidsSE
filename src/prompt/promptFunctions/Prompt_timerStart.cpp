@@ -23,7 +23,7 @@ Timer gxPromptTimer;  // the timer
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_timerStart(SePrompt* pPrompt)
+bool PROMPT::bPrompt_timerStart(SePrompt* pPrompt)
 {
   gxPromptTimer.vStart();
 

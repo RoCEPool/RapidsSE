@@ -21,7 +21,7 @@ PromptFun __Prompt_calc (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_calc(SePrompt* pPrompt)
+bool PROMPT::bPrompt_calc(SePrompt* pPrompt)
 {
   TokenVec* pTknVec = pPrompt->pInpTknVec();
 

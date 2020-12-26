@@ -22,7 +22,7 @@ PromptFun __Prompt_taskQueues (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_taskQueues(SePrompt* pPrompt)
+bool PROMPT::bPrompt_taskQueues(SePrompt* pPrompt)
 {
   Queues* pQueues = AM::pQueues();
   

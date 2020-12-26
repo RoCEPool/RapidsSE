@@ -22,7 +22,7 @@ PromptFun __Prompt_locks (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_locks(SePrompt* pPrompt)
+bool PROMPT::bPrompt_locks(SePrompt* pPrompt)
 {
   AM::pLockTracker()->vReport();
   

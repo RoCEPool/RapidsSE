@@ -22,7 +22,7 @@ PromptFun __Prompt_args (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_args(SePrompt* pPrompt)
+bool PROMPT::bPrompt_args(SePrompt* pPrompt)
 {
   AM::vPrintArguments();
 

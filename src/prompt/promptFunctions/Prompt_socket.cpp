@@ -23,7 +23,7 @@ PromptFun __Prompt_socket (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_socket(SePrompt* pPrompt)
+bool PROMPT::bPrompt_socket(SePrompt* pPrompt)
 {  
   Socket::vStatistics();
   

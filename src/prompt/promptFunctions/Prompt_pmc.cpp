@@ -21,7 +21,7 @@ PromptFun __Prompt_pmc (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_pmc(SePrompt* pPrompt)
+bool PROMPT::bPrompt_pmc(SePrompt* pPrompt)
 {
   i8 iPmc = 0; //iPmc_Info();
   

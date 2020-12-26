@@ -23,7 +23,7 @@ PromptFun __Prompt_tags (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_tags(SePrompt* pPrompt)
+bool PROMPT::bPrompt_tags(SePrompt* pPrompt)
 {
 
   return true;

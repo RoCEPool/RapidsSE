@@ -15,7 +15,7 @@ extern Stz* gsBuildGitHash;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Prompt,SeDeputy,CN_SEDEPUTY)
+__pCastFunction(PROMPT,SeDeputy,CN_SEDEPUTY)
 __aNewFunction(SeDeputy,CN_SEDEPUTY)
 __vDeleteFunction(SeDeputy,CN_SEDEPUTY)
 __aFooterFunction(SeDeputy)

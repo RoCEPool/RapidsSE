@@ -22,7 +22,7 @@ PromptFun __Prompt_dlist (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_dlist(SePrompt* pPrompt)
+bool PROMPT::bPrompt_dlist(SePrompt* pPrompt)
 {
   vTrace("------------------------------------\n"_Stz);
   vTrace("Demon List\n"_Stz);

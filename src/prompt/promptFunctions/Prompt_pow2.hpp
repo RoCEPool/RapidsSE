@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Prompt
+namespace PROMPT
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bool bPrompt_pow2(SePrompt* pPrompt);

@@ -21,7 +21,7 @@ PromptFun __Prompt_limits (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_limits(SePrompt* pPrompt)
+bool PROMPT::bPrompt_limits(SePrompt* pPrompt)
 {
   vTrace("\n"_Stz);
   

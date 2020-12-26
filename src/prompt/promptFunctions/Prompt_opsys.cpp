@@ -21,7 +21,7 @@ PromptFun __Prompt_opsys (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_opsys(SePrompt* pPrompt)
+bool PROMPT::bPrompt_opsys(SePrompt* pPrompt)
 {
   
   OpSys::vGetInfo();

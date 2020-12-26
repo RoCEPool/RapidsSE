@@ -21,7 +21,7 @@ PromptFun __Prompt_threads (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_threads(SePrompt* pPrompt)
+bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 {  
   Queues::vThreadsReport();
   

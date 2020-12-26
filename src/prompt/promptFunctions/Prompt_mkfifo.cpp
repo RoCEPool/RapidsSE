@@ -23,7 +23,7 @@ PromptFun __Prompt_mkfifo (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_mkfifo(SePrompt* pPrompt)
+bool PROMPT::bPrompt_mkfifo(SePrompt* pPrompt)
 {
   s256 sFifoPath;
   

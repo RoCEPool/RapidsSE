@@ -31,7 +31,7 @@ PromptFun __Prompt_tag (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_tag(SePrompt* pPrompt)
+bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
 {
   TokenVec* pTknVec   = pPrompt->pInpTknVec();
   i8 nTokens = pTknVec->nTokens();

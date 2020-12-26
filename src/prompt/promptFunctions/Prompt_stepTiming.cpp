@@ -22,7 +22,7 @@ PromptFun __Prompt_st (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_stepTiming(SePrompt* pPrompt)
+bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

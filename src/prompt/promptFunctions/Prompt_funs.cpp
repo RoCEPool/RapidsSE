@@ -25,7 +25,7 @@ PromptFun __Prompt_funs (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_funs(SePrompt* pPrompt)
+bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
 {
   if (AM::bMetadata()) {
     vTrace("metadata: (function VARCHAR)\n"_Stz);

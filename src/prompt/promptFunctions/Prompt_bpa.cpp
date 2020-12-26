@@ -21,7 +21,7 @@ PromptFun __Prompt_bpa (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_bpa(SePrompt* pPrompt)
+bool PROMPT::bPrompt_bpa(SePrompt* pPrompt)
 {
   
   PoolHelper::vPoolAnalyze();

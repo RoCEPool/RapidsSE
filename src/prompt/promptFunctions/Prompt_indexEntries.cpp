@@ -23,7 +23,7 @@ PromptFun __Prompt_indexEntries (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
+bool PROMPT::bPrompt_indexEntries(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

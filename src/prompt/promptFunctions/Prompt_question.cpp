@@ -21,9 +21,9 @@ PromptFun __Prompt_question (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_question(SePrompt* pPrompt)
+bool PROMPT::bPrompt_question(SePrompt* pPrompt)
 {
-  Prompt::bPrompt_help(pPrompt);
+  PROMPT::bPrompt_help(pPrompt);
 
   return true;
 }

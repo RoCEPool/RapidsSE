@@ -21,7 +21,7 @@ PromptFun __Prompt_giveMem (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_giveMem(SePrompt* pPrompt)
+bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
 {
   while (AM::pTakenBuffers()) {
     

@@ -23,7 +23,7 @@ PromptFun __Prompt_ssnState (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_ssnState(SePrompt* pPrompt)
+bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
 {
   Token* pArg = nullptr;
   

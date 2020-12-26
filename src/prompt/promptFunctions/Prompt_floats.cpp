@@ -47,7 +47,7 @@ void vHuh(d8 d)
          x._i);
 }
 
-bool Prompt::bPrompt_floats(SePrompt* pPrompt)
+bool PROMPT::bPrompt_floats(SePrompt* pPrompt)
 {
   struct xConv x;
   

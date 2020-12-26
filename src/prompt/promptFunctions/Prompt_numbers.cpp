@@ -22,7 +22,7 @@ PromptFun __Prompt_numbers (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_numbers(SePrompt* pPrompt)
+bool PROMPT::bPrompt_numbers(SePrompt* pPrompt)
 {
   vTrace("\n"_Stz);
 

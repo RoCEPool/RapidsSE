@@ -8,7 +8,7 @@ struct _fileRand {
   char m_caLine[256];
 };
 
-namespace Prompt
+namespace PROMPT
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

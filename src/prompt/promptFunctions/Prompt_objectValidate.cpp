@@ -21,14 +21,14 @@ PromptFun __Prompt_objectValidate (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_objectValidate(SePrompt* pPrompt)
+bool PROMPT::bPrompt_objectValidate(SePrompt* pPrompt)
 {
   PoolHelper::vObjectValidate();
   
   return true;
 }
 /*----------------------------------------------------------------------------*/
-//bool Prompt::bPrompt_objectValidate(SePrompt* pPrompt)
+//bool PROMPT::bPrompt_objectValidate(SePrompt* pPrompt)
 //{
 //  s48K sReport;
 //  pPrompt->pBPA()->vObjectReport(sReport);

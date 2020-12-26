@@ -21,7 +21,7 @@ PromptFun __Prompt_now (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_now(SePrompt* pPrompt)
+bool PROMPT::bPrompt_now(SePrompt* pPrompt)
 {
   Now spNow;
 

@@ -22,7 +22,7 @@ PromptFun __Prompt_sleeping (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_sleeping(SePrompt* pPrompt)
+bool PROMPT::bPrompt_sleeping(SePrompt* pPrompt)
 {
   AM::pQueues()->vDumpSleepingQueue();
 

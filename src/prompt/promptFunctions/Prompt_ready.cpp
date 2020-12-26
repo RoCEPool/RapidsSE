@@ -22,7 +22,7 @@ PromptFun __Prompt_ready (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_ready(SePrompt* pPrompt)
+bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 {
   AM::pQueues()->vDumpReadyQueue();
   AM::pQueues()->vDumpReadyQueueLP();

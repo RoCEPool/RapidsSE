@@ -21,7 +21,7 @@ PromptFun __Prompt_print (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_print(SePrompt* pPrompt)
+bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 {
   Input* pInput = pPrompt->pInput();
   
@@ -105,7 +105,7 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
   return true;
 }
 /*----------------------------------------------------------------------------*/
-//bool Prompt::bPrompt_print(SePrompt* pPrompt)
+//bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 //{
 //  Session* pSession = pPrompt->pSession();
 //  Input* pInput = pSession->m_pInput;

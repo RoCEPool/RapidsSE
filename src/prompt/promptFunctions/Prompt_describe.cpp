@@ -25,7 +25,7 @@ PromptFun __Prompt_describe (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_describe(SePrompt* pPrompt)
+bool PROMPT::bPrompt_describe(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   

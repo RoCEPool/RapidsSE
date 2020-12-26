@@ -22,7 +22,7 @@ PromptFun __Prompt_constants (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_constants(SePrompt* pPrompt)
+bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
 {
   vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
   vTrace("  C_MAX_BCD_PRECISION = %lld\n"_Stz,C_MAX_BCD_PRECISION);

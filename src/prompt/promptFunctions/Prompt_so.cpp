@@ -21,7 +21,7 @@ PromptFun __Prompt_so (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_so(SePrompt* pPrompt)
+bool PROMPT::bPrompt_so(SePrompt* pPrompt)
 {
   SP_Gid spId;
   

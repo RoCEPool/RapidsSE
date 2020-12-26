@@ -22,7 +22,7 @@ PromptFun __Prompt_operands (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_operands(SePrompt* pPrompt)
+bool PROMPT::bPrompt_operands(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

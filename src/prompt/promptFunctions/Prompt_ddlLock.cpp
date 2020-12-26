@@ -22,7 +22,7 @@ PromptFun __Prompt_ddlLock (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_ddlLock(SePrompt* pPrompt)
+bool PROMPT::bPrompt_ddlLock(SePrompt* pPrompt)
 {
   vTrace("  DdlLock : %016x\n"_Stz,AM::pDdlLock()->uLockWord());
 

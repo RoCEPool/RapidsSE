@@ -22,7 +22,7 @@ PromptFun __Prompt_llist (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_llist(SePrompt* pPrompt)
+bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
 {
   vTrace("------------------------------------\n"_Stz);
   vTrace("Local List\n"_Stz);

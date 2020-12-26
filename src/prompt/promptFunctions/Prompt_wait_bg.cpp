@@ -21,7 +21,7 @@ PromptFun __Prompt_wait_bg (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_wait_bg(SePrompt* pPrompt)
+bool PROMPT::bPrompt_wait_bg(SePrompt* pPrompt)
 {
   pPrompt->vNapTillBgJobsCompleted();
   

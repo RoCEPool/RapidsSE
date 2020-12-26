@@ -18,7 +18,7 @@ PromptFun __Prompt_fileRand (
   ""_Stz                 // description
 );
 
-int Prompt::iFileRandCompare(const void* aLeft, const void* aRight)
+int PROMPT::iFileRandCompare(const void* aLeft, const void* aRight)
 {
   _fileRand* aFileRandLeft  = (_fileRand*)aLeft;
   _fileRand* aFileRandRight = (_fileRand*)aRight;
@@ -37,7 +37,7 @@ int Prompt::iFileRandCompare(const void* aLeft, const void* aRight)
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_fileRand(SePrompt* pPrompt)
+bool PROMPT::bPrompt_fileRand(SePrompt* pPrompt)
 {
   s256 sPathIn;
   s256 sPathOut;
@@ -92,7 +92,7 @@ bool Prompt::bPrompt_fileRand(SePrompt* pPrompt)
   qsort(aFileRand,
         nLines,
         sizeof(_fileRand),
-        Prompt::iFileRandCompare
+        PROMPT::iFileRandCompare
         );
   xTimer.vUpdate();
   vTrace("Sorted (%s)\n"_Stz,spTimer.sz(&xTimer));

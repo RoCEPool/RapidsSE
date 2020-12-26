@@ -21,7 +21,7 @@ PromptFun __Prompt_apiDemo (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_apiDemo(SePrompt* pPrompt)
+bool PROMPT::bPrompt_apiDemo(SePrompt* pPrompt)
 {
   if (pPrompt->pInpTknVec()->nItems() > 1 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("tableScan"_Stz))

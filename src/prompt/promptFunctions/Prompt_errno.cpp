@@ -21,7 +21,7 @@ PromptFun __Prompt_errno (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_errno(SePrompt* pPrompt)
+bool PROMPT::bPrompt_errno(SePrompt* pPrompt)
 {
   i8 iErrNo = 0;
 

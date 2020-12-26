@@ -21,7 +21,7 @@ PromptFun __Prompt_memoryLeaks (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
+bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 {
   i8 nLeaksDetected = 0;
   
@@ -150,7 +150,7 @@ L_END:
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_memoryLeaks_dump(SePrompt* pPrompt)
+bool PROMPT::bPrompt_memoryLeaks_dump(SePrompt* pPrompt)
 {
   PoolHelper::vObjectDump(0);
   

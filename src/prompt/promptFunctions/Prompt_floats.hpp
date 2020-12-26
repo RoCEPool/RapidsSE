@@ -5,7 +5,7 @@
 
 void vHuh(d8 d);
 
-namespace Prompt
+namespace PROMPT
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bool bPrompt_floats(SePrompt* pPrompt);

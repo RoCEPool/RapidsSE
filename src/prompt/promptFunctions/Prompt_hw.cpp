@@ -21,7 +21,7 @@ PromptFun __Prompt_hw (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_hw(SePrompt* pPrompt)
+bool PROMPT::bPrompt_hw(SePrompt* pPrompt)
 {
   s32 sMem;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);

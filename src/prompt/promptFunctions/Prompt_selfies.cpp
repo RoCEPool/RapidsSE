@@ -25,7 +25,7 @@ PromptFun __Prompt_selfies (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_selfies(SePrompt* pPrompt)
+bool PROMPT::bPrompt_selfies(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   

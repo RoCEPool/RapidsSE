@@ -21,7 +21,7 @@ PromptFun __Prompt_attachMap (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_attachMap(SePrompt* pPrompt)
+bool PROMPT::bPrompt_attachMap(SePrompt* pPrompt)
 {
   if (AM::bAttached())
     AM::vPrintAttachMap();

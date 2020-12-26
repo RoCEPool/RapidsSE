@@ -21,7 +21,7 @@ PromptFun __Prompt_mri (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_mri(SePrompt* pPrompt)
+bool PROMPT::bPrompt_mri(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   

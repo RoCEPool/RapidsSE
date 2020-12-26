@@ -21,7 +21,7 @@ PromptFun __Prompt_ssn (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_ssn(SePrompt* pPrompt)
+bool PROMPT::bPrompt_ssn(SePrompt* pPrompt)
 {
   Token* pArg0 = nullptr;
   Token* pArg1 = nullptr;

@@ -23,7 +23,7 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_classes(SePrompt* pPrompt)
+bool PROMPT::bPrompt_classes(SePrompt* pPrompt)
 {  
   char cGroup;
   s256 sName;

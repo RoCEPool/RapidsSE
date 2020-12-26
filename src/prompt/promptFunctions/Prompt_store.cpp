@@ -21,7 +21,7 @@ PromptFun __Prompt_store (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_store(SePrompt* pPrompt)
+bool PROMPT::bPrompt_store(SePrompt* pPrompt)
 {
   TokenVec* pTknVec = pPrompt->pInpTknVec();
   

@@ -23,7 +23,7 @@ PromptFun __Prompt_ls (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_ls(SePrompt* pPrompt)
+bool PROMPT::bPrompt_ls(SePrompt* pPrompt)
 {
   Dir* pDir;
   s256 sDirPath;

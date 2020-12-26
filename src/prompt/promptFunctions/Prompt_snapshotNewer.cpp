@@ -21,7 +21,7 @@ PromptFun __Prompt_snapshotNewer (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_snapshotNewer(SePrompt* pPrompt)
+bool PROMPT::bPrompt_snapshotNewer(SePrompt* pPrompt)
 {
   ObjectSnapshot* pSnapshotObjects_then = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects_then)

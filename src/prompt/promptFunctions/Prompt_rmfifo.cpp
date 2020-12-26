@@ -23,7 +23,7 @@ PromptFun __Prompt_rmfifo (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_rmfifo(SePrompt* pPrompt)
+bool PROMPT::bPrompt_rmfifo(SePrompt* pPrompt)
 {
   s256 sFifoPath;
   

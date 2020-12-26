@@ -22,7 +22,7 @@ PromptFun __Prompt_plist (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_plist(SePrompt* pPrompt)
+bool PROMPT::bPrompt_plist(SePrompt* pPrompt)
 {
   vTrace("------------------------------------\n"_Stz);
   vTrace("Participant List\n"_Stz);

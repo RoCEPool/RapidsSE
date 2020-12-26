@@ -21,7 +21,7 @@ PromptFun __Prompt_lvl (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_lvl(SePrompt* pPrompt)
+bool PROMPT::bPrompt_lvl(SePrompt* pPrompt)
 {
   i8 i_Next = 0;
   

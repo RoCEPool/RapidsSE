@@ -24,7 +24,7 @@ PromptFun __Prompt_config (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_config(SePrompt* pPrompt)
+bool PROMPT::bPrompt_config(SePrompt* pPrompt)
 {
   s32 sShmSize;
   MagLib::vByteMag(AM::iRegionSize(), sShmSize);

@@ -22,7 +22,7 @@ PromptFun __Prompt_tempName (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_tempName(SePrompt* pPrompt)
+bool PROMPT::bPrompt_tempName(SePrompt* pPrompt)
 {
   s32 sName;
   

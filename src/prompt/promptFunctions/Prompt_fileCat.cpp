@@ -21,7 +21,7 @@ PromptFun __Prompt_fileCat (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
+bool PROMPT::bPrompt_fileCat(SePrompt* pPrompt)
 {
   s256 sFile;
 

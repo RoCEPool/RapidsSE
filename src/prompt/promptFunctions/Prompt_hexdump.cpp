@@ -21,7 +21,7 @@ PromptFun __Prompt_hexdump (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_hexdump(SePrompt* pPrompt)
+bool PROMPT::bPrompt_hexdump(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

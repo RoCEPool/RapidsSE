@@ -21,7 +21,7 @@ PromptFun __Prompt_bye (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_bye(SePrompt* pPrompt)
+bool PROMPT::bPrompt_bye(SePrompt* pPrompt)
 {
   pPrompt->vContinue(false);
   

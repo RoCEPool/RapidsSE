@@ -21,7 +21,7 @@ PromptFun __Prompt_sizes (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
+bool PROMPT::bPrompt_sizes(SePrompt* pPrompt)
 {
   vTrace("  sizeof(Header) = %lu; \n"_Stz, sizeof(Header));
   vTrace("  sizeof(Object) = %lu; \n"_Stz, sizeof(Object));

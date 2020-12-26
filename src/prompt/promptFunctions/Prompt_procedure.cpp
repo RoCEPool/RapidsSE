@@ -21,7 +21,7 @@ PromptFun __Prompt_procedure (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_procedure(SePrompt* pPrompt)
+bool PROMPT::bPrompt_procedure(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   

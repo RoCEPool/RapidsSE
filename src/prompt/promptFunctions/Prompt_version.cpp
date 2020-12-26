@@ -22,7 +22,7 @@ PromptFun __Prompt_version (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_version(SePrompt* pPrompt)
+bool PROMPT::bPrompt_version(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   /*

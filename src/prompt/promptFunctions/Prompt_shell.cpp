@@ -21,7 +21,7 @@ PromptFun __Prompt_shell (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_shell(SePrompt* pPrompt)
+bool PROMPT::bPrompt_shell(SePrompt* pPrompt)
 {
   TokenVec* pTknVec = pPrompt->pInpTknVec();
   

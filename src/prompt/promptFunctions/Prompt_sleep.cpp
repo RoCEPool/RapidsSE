@@ -21,7 +21,7 @@ PromptFun __Prompt_sleep (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_sleep(SePrompt* pPrompt)
+bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

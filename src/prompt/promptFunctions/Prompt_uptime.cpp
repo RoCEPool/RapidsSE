@@ -23,7 +23,7 @@ PromptFun __Prompt_uptime (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_uptime(SePrompt* pPrompt)
+bool PROMPT::bPrompt_uptime(SePrompt* pPrompt)
 {
   i8 iUpTimeSsec = AM::iElapsedSsec();
 

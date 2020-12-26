@@ -21,7 +21,7 @@ PromptFun __Prompt_snapshotDelta (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_snapshotDelta(SePrompt* pPrompt)
+bool PROMPT::bPrompt_snapshotDelta(SePrompt* pPrompt)
 {
   ObjectSnapshot* pSnapshotObjects_then = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects_then)

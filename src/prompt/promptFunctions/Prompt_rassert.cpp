@@ -21,7 +21,7 @@ PromptFun __Prompt_rassert (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_rassert(SePrompt* pPrompt)
+bool PROMPT::bPrompt_rassert(SePrompt* pPrompt)
 {
   RASSERT(0);
   

@@ -21,7 +21,7 @@ PromptFun __Prompt_heapSummary (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_heapSummary(SePrompt* pPrompt)
+bool PROMPT::bPrompt_heapSummary(SePrompt* pPrompt)
 {
   
   HeapMem::vSummaryReport();

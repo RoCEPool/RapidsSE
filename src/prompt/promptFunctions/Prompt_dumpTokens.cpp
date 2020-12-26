@@ -21,7 +21,7 @@ PromptFun __Prompt_dumpTokens (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_dumpTokens(SePrompt* pPrompt)
+bool PROMPT::bPrompt_dumpTokens(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();

@@ -1484,7 +1484,7 @@ void Step::vJobSignalSession(void)
   }
   
   if (pJob->m_xReqTuple.m_iDetail)
-    JobLog::vNote(pJob,"Connector/Prompt signalled by %s"_Stz,
+    JobLog::vNote(pJob,"Connector/PROMPT signalled by %s"_Stz,
                        aCN[pJob->eClass()]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

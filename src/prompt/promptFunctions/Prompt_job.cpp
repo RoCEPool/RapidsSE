@@ -21,7 +21,7 @@ PromptFun __Prompt_job (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_job(SePrompt* pPrompt)
+bool PROMPT::bPrompt_job(SePrompt* pPrompt)
 {
   Token* pArg0 = nullptr;
   Token* pArg1 = nullptr;

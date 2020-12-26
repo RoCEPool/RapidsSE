@@ -12,7 +12,7 @@ namespace Arguments
     friend class BASE::Charser;
     friend class BASE::Input;
 
-    friend class Prompt::SePrompt;
+    friend class PROMPT::SePrompt;
 
   public:
   

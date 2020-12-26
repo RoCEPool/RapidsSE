@@ -15,7 +15,7 @@ namespace StorageEngine
   {
   friend class Oblique::AM;
   friend class Engine;
-  friend class Prompt::SePrompt;
+  friend class PROMPT::SePrompt;
 
   private:
     i8    m_iPid;

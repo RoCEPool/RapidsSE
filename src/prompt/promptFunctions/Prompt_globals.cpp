@@ -22,7 +22,7 @@ PromptFun __Prompt_globals (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_globals(SePrompt* pPrompt)
+bool PROMPT::bPrompt_globals(SePrompt* pPrompt)
 {
   AM::vPrintGlobals();
   

@@ -22,7 +22,7 @@ PromptFun __Prompt_waiting (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_waiting(SePrompt* pPrompt)
+bool PROMPT::bPrompt_waiting(SePrompt* pPrompt)
 {
   AM::pQueues()->vDumpWaitingSet();
 

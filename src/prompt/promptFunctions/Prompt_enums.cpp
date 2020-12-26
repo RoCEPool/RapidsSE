@@ -21,7 +21,7 @@ PromptFun __Prompt_enums (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_enums(SePrompt* pPrompt)
+bool PROMPT::bPrompt_enums(SePrompt* pPrompt)
 {
   vTrace("Enums:\n"_Stz);
 

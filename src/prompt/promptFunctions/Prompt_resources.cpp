@@ -22,7 +22,7 @@ PromptFun __Prompt_resources (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_resources(SePrompt* pPrompt)
+bool PROMPT::bPrompt_resources(SePrompt* pPrompt)
 {
   if (AM::bAttached()) AM::pResourceTracker()->vReport();
   

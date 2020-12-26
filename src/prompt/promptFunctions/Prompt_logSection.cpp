@@ -23,7 +23,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
+bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

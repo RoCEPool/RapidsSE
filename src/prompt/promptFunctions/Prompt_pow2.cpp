@@ -21,7 +21,7 @@ PromptFun __Prompt_pow2 (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_pow2(SePrompt* pPrompt)
+bool PROMPT::bPrompt_pow2(SePrompt* pPrompt)
 {  
   u8 uVal = 1;
   

@@ -21,7 +21,7 @@ PromptFun __Prompt_tpch (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_tpch(SePrompt* pPrompt)
+bool PROMPT::bPrompt_tpch(SePrompt* pPrompt)
 {
   printf("C_1_BYTE  %llu\n",C_1_BYTE);
   printf("C_2_BYTES %llu\n",C_2_BYTES);

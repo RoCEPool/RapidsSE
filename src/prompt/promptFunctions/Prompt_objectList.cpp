@@ -22,7 +22,7 @@ PromptFun __Prompt_objectList (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_objectList(SePrompt* pPrompt)
+bool PROMPT::bPrompt_objectList(SePrompt* pPrompt)
 {
   
   ObjectSnapshot* pObjectSnapshot = new ObjectSnapshot;

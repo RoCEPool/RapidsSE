@@ -22,7 +22,7 @@ PromptFun __Prompt_antlr (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_antlr(SePrompt* pPrompt)
+bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
 {
   // Read in and parse the plan graph definitions
   // TODO: This should be done once at system startup

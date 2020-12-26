@@ -23,7 +23,7 @@ PromptFun __Prompt_ascii (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
+bool PROMPT::bPrompt_ascii(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   

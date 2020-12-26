@@ -23,7 +23,7 @@ PromptFun __Prompt_sleepers (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_sleepers(SePrompt* pPrompt)
+bool PROMPT::bPrompt_sleepers(SePrompt* pPrompt)
 {
   bool bReset = false;
   

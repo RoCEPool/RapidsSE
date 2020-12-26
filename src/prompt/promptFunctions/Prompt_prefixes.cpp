@@ -21,7 +21,7 @@ PromptFun __Prompt_prefixes (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_prefixes(SePrompt* pPrompt)
+bool PROMPT::bPrompt_prefixes(SePrompt* pPrompt)
 {
   vTrace("time\n"_Stz);
   vTrace("mark\n"_Stz);

@@ -22,7 +22,7 @@ PromptFun __Prompt_olist (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_olist(SePrompt* pPrompt)
+bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
 {
   vTrace("------------------------------------\n"_Stz);
   vTrace("Originator List\n"_Stz);

@@ -23,7 +23,7 @@ PromptFun __Prompt_help (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_help(SePrompt* pPrompt)
+bool PROMPT::bPrompt_help(SePrompt* pPrompt)
 {
   vTrace("Help\n"_Stz);
   

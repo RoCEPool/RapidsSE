@@ -21,7 +21,7 @@ PromptFun __Prompt_bp (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_bp(SePrompt* pPrompt)
+bool PROMPT::bPrompt_bp(SePrompt* pPrompt)
 {
   
   BufferPool::vReport();

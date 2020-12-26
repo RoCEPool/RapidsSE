@@ -5,7 +5,7 @@
 
 #include "ePF.h"
 
-namespace Prompt
+namespace PROMPT
 {
   class PromptFun
   {

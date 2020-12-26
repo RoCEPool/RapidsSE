@@ -23,7 +23,7 @@ PromptFun __Prompt_cd (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_cd(SePrompt* pPrompt)
+bool PROMPT::bPrompt_cd(SePrompt* pPrompt)
 {
   s256 sDir;
   

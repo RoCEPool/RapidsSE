@@ -32,7 +32,7 @@ PromptFun __Prompt_setDbg (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_setDbg(SePrompt* pPrompt)
+bool PROMPT::bPrompt_setDbg(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

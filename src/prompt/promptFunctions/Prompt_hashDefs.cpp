@@ -22,7 +22,7 @@ PromptFun __Prompt_hashDefs (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
+bool PROMPT::bPrompt_hashDefs(SePrompt* pPrompt)
 {
   
   

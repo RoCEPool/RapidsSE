@@ -21,7 +21,7 @@ PromptFun __Prompt_trackMemory (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_trackMemory(SePrompt* pPrompt)
+bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 {
   pPrompt->vTrackMemory(true);
 

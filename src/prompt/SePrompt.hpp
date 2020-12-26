@@ -5,7 +5,7 @@
 
 #include "STORE.h"
 
-namespace Prompt
+namespace PROMPT
 {
   static const i8 C_MAX_DEPUTY = 16;
 

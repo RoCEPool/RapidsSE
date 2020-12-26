@@ -21,7 +21,7 @@ PromptFun __Prompt_logWrite (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_logWrite(SePrompt* pPrompt)
+bool PROMPT::bPrompt_logWrite(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();

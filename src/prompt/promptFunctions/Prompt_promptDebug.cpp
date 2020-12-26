@@ -21,7 +21,7 @@ PromptFun __Prompt_promptDebug (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_promptDebug(SePrompt* pPrompt)
+bool PROMPT::bPrompt_promptDebug(SePrompt* pPrompt)
 {
   TokenVec* pTknVec = pPrompt->pInpTknVec();
 

@@ -21,7 +21,7 @@ PromptFun __Prompt_file (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_file(SePrompt* pPrompt)
+bool PROMPT::bPrompt_file(SePrompt* pPrompt)
 {  
   File::vStatistics();
   

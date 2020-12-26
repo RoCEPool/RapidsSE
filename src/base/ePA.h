@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ePA.h -- Prompt Actions                                                    */
+/* ePA.h -- PROMPT Actions                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -37,13 +37,13 @@ static Stz* aPA_short[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "Prompt command"_Stz,
-  /*    */ "Prompt delete job"_Stz,
-  /*    */ "Prompt free space"_Stz,
-  /*    */ "Prompt log note"_Stz,
-  /*    */ "Prompt new job"_Stz,
-  /*    */ "Prompt resumes"_Stz,
-  /*    */ "Prompt waits"_Stz,
+  /*    */ "PROMPT command"_Stz,
+  /*    */ "PROMPT delete job"_Stz,
+  /*    */ "PROMPT free space"_Stz,
+  /*    */ "PROMPT log note"_Stz,
+  /*    */ "PROMPT new job"_Stz,
+  /*    */ "PROMPT resumes"_Stz,
+  /*    */ "PROMPT waits"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

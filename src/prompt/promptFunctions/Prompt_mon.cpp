@@ -22,7 +22,7 @@ PromptFun __Prompt_mon (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_mon(SePrompt* pPrompt)
+bool PROMPT::bPrompt_mon(SePrompt* pPrompt)
 {
   s48K sPortrait;
   

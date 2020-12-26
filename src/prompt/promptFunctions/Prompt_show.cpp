@@ -21,7 +21,7 @@ PromptFun __Prompt_show (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_show(SePrompt* pPrompt)
+bool PROMPT::bPrompt_show(SePrompt* pPrompt)
 {
   TokenVec* pTkVec = pPrompt->pInpTknVec();
 

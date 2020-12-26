@@ -21,7 +21,7 @@ PromptFun __Prompt_memTest (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_memTest(SePrompt* pPrompt)
+bool PROMPT::bPrompt_memTest(SePrompt* pPrompt)
 {
   MemTest* pMemTest = new MemTest;
   

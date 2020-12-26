@@ -21,7 +21,7 @@ PromptFun __Prompt_takeMem (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
+bool PROMPT::bPrompt_takeMem(SePrompt* pPrompt)
 {
   i8 nSpare = 0;
 

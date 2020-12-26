@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* PromptHelper.hpp -- A set of helper functions for Prompt                   */
+/* PromptHelper.hpp -- A set of helper functions for PROMPT                   */
 /*============================================================================*/
 #pragma once
 
-namespace Prompt
+namespace PROMPT
 {
   class PromptHelper
   {

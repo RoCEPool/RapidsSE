@@ -21,7 +21,7 @@ PromptFun __Prompt_masks (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_masks(SePrompt* pPrompt)
+bool PROMPT::bPrompt_masks(SePrompt* pPrompt)
 {
   vTrace("\n"_Stz);
 

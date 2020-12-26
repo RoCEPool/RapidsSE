@@ -21,7 +21,7 @@ PromptFun __Prompt_cache (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_cache(SePrompt* pPrompt)
+bool PROMPT::bPrompt_cache(SePrompt* pPrompt)
 {
   CacheLine xCacheLine;
   

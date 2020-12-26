@@ -83,7 +83,7 @@ namespace Arguments         { class Xmits;           class Op;
 namespace Arguments     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
 namespace Arguments             { class Planner;                                  }
-namespace Prompt            {   class SePrompt;                               }
+namespace PROMPT            {   class SePrompt;                               }
 namespace Arguments   { class Crv;                                      }
 namespace BASE     { class RU_Cpu;          class RU_Memory;         }
 namespace Arguments              { class Row;                                      }
@@ -133,7 +133,7 @@ using namespace Arguments;
 using namespace Arguments;
 using namespace Arguments;
 using namespace Arguments;
-using namespace Prompt;
+using namespace PROMPT;
 using namespace Arguments;
 using namespace BASE;
 using namespace Arguments;

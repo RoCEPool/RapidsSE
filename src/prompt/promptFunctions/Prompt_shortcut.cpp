@@ -21,7 +21,7 @@ PromptFun __Prompt_shortcut (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
+bool PROMPT::bPrompt_shortcut(SePrompt* pPrompt)
 {
   TokenVec* pTknVec = pPrompt->pInpTknVec();
 

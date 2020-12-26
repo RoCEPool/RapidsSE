@@ -21,7 +21,7 @@ PromptFun __Prompt_memory (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_memory(SePrompt* pPrompt)
+bool PROMPT::bPrompt_memory(SePrompt* pPrompt)
 {
   bool bReset = false;
   

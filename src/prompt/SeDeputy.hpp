@@ -5,7 +5,7 @@
 
 #include "STORE.h"
 
-namespace Prompt
+namespace PROMPT
 {
   class SeDeputy : public Object
   {

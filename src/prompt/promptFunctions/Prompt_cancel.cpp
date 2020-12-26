@@ -21,7 +21,7 @@ PromptFun __Prompt_cancel (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_cancel(SePrompt* pPrompt)
+bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
 {
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();

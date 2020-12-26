@@ -21,7 +21,7 @@ PromptFun __Prompt_fileProc (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_fileProc(SePrompt* pPrompt)
+bool PROMPT::bPrompt_fileProc(SePrompt* pPrompt)
 {
   s256 sFileInp;
   s256 sFileOut;

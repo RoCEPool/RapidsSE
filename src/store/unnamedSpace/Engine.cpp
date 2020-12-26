@@ -361,7 +361,7 @@ void Engine::vCallPrompt(void)
 //  delete pSePrompt;
   
   if (AM::bVerboseProgress())
-    vInfo("\n>\n> %lld) Calling Prompt\n>\n"_Stz,giProgressPoint++);
+    vInfo("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);
 
   AM::vPromptCall();
 }

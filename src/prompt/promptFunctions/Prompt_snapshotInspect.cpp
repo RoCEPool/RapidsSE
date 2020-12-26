@@ -21,7 +21,7 @@ PromptFun __Prompt_snapshotInspect (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_snapshotInspect(SePrompt* pPrompt)
+bool PROMPT::bPrompt_snapshotInspect(SePrompt* pPrompt)
 {
   ObjectSnapshot* pSnapshotObjects_then = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects_then)

@@ -23,7 +23,7 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
+bool PROMPT::bPrompt_cmds(SePrompt* pPrompt)
 {
   
   RASSERT(0);
