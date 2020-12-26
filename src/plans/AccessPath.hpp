@@ -5,7 +5,7 @@
 
 #include "eAT.h"
 
-namespace Plans
+namespace Arguments
 {
   class AccessPath : public Object
   {

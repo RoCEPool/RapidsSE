@@ -2,14 +2,14 @@
 /* Plan.cpp - plan                                                            */
 /*============================================================================*/
 
-#include "Plans.h"
+#include "Arguments.h"
 
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Plan* Plans::_pPlan(void* aAddr)
+Plan* Arguments::_pPlan(void* aAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(aAddr);
   
@@ -21,7 +21,7 @@ Plan* Plans::_pPlan(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Plan* Plans::_pPlan(i8 iAddr)
+Plan* Arguments::_pPlan(i8 iAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(iAddr);
   

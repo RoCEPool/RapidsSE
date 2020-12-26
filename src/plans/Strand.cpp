@@ -2,13 +2,13 @@
 /* Strand.cpp -- Strand of Stage of Pipeline                                  */
 /*============================================================================*/
 
-#include "Plans.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Plans,Strand,CN_STRAND)
+__pCastFunction(Arguments,Strand,CN_STRAND)
 __aNewFunction(Strand,CN_STRAND)
 __vDeleteFunction(Strand,CN_STRAND)
 __aFooterFunction(Strand)

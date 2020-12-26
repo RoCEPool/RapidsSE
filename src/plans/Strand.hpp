@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Plans
+namespace Arguments
 {
   class Strand : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
   {

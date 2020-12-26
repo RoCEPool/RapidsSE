@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Plans
+namespace Arguments
 {
   class SP_Job : public SP
   {

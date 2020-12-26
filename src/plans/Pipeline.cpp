@@ -2,13 +2,13 @@
 /* Pipeline.cpp -- Pipeline                                                   */
 /*============================================================================*/
 
-#include "Plans.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Plans,Pipeline,CN_PIPELINE)
+__pCastFunction(Arguments,Pipeline,CN_PIPELINE)
 __aNewFunction(Pipeline,CN_PIPELINE)
 __vDeleteFunction(Pipeline,CN_PIPELINE)
 __aFooterFunction(Pipeline)

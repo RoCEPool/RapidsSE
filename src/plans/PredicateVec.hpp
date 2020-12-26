@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Plans
+namespace Arguments
 {
   class PredicateVec : public VectorNL_t<CN_PREDICATEVEC,Predicate,C_MAX_PREDICATEVEC>
   {

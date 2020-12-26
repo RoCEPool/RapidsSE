@@ -372,7 +372,7 @@ void Engine::vCallPrompt(void)
 void Engine::vCallStart(void)
 {
   if (AM::bVerboseProgress())
-    vInfo("\n+\n+ %lld) Start System Plans\n+\n"_Stz,giProgressPoint++);
+    vInfo("\n+\n+ %lld) Start System Arguments\n+\n"_Stz,giProgressPoint++);
   
   PsxThd::vMarkNonSeThread();
   

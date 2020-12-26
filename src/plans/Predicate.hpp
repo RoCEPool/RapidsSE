@@ -5,7 +5,7 @@
 
 #include "ePK.h"
 
-namespace Plans
+namespace Arguments
 {  
   class Predicate : public Object
   {

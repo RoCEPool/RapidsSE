@@ -1803,7 +1803,7 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
   else if (CN_LOCK == eClassNo)
     _pLock(pFocal)->vFocalOutline(sOutline);
     
-  else if (Plans::_bIsValidJob(eClassNo))
+  else if (Arguments::_bIsValidJob(eClassNo))
     _pJob(pFocal)->vFocalOutline(sOutline);
   
   else

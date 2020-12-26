@@ -2,12 +2,12 @@
 /* RowOnce.cpp - row once                                                     */
 /*============================================================================*/
 
-#include "Plans.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowOnce* Plans::_pRowOnce(void* aAddr)
+RowOnce* Arguments::_pRowOnce(void* aAddr)
 {
   RowOnce* pRowOnce = reinterpret_cast<RowOnce*>(aAddr);
   

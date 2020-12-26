@@ -5,7 +5,7 @@
 
 #include "eXK.h"
 
-namespace Plans
+namespace Arguments
 {
   class OpSpec : public Object
   {

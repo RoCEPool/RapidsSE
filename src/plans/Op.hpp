@@ -5,7 +5,7 @@
 
 #include "eZK.h"
 
-namespace Plans
+namespace Arguments
 {
   class Op : public Focal
   {

@@ -42,7 +42,7 @@ class SP_Ivl;
 class SP_Tme;
 class SP_Tsp;
                               template <i8 SPACE> class Datum_t;              }
-namespace Plans    { class Dynamo;                                   }
+namespace Arguments    { class Dynamo;                                   }
 namespace Arguments           {                                                 }
 namespace Expressions       { class Expr;            class ExprVec;
                               class LogicUnit;                                }
@@ -59,7 +59,7 @@ namespace Arguments             { class Grid;            class Node;            
 namespace Arguments          { class EntBuffer;       class IndexTree;         }
 namespace Arguments          { class InfoSetBase;                              }
 namespace Expressions         { class SessionArray;                             }
-namespace Plans              { class Job;             
+namespace Arguments              { class Job;             
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }
@@ -77,12 +77,12 @@ namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
                                                                               }
 namespace Arguments      {
                               class PtnStream;       class TablePtn;          }
-namespace Plans         { class Xmits;           class Op;
+namespace Arguments         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
                               class StageVec;        class Strand;            }
-namespace Plans     { class OpSpec;          class PipelineSpec;
+namespace Arguments     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
-namespace Plans             { class Planner;                                  }
+namespace Arguments             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
 namespace Arguments   { class Crv;                                      }
 namespace Resources     { class RU_Cpu;          class RU_Memory;         }
@@ -110,7 +110,7 @@ using namespace CompilerOperators;
 using namespace Arguments;
 using namespace Arguments;
 using namespace Arguments;
-using namespace Plans;
+using namespace Arguments;
 using namespace Arguments;
 using namespace Expressions;
 using namespace Facts;
@@ -120,7 +120,7 @@ using namespace Arguments;
 using namespace Arguments;
 using namespace Arguments;
 using namespace Expressions;
-using namespace Plans;
+using namespace Arguments;
 using namespace Resources;
 using namespace Load;
 using namespace StorageEngine;
@@ -130,9 +130,9 @@ using namespace Oblique;
 using namespace Arguments;
 using namespace Parser;
 using namespace Arguments;
-using namespace Plans;
-using namespace Plans;
-using namespace Plans;
+using namespace Arguments;
+using namespace Arguments;
+using namespace Arguments;
 using namespace Prompt;
 using namespace Arguments;
 using namespace Resources;

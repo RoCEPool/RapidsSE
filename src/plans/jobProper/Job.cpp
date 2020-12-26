@@ -2,7 +2,7 @@
 /* Job.cpp -- a job in the system                                             */
 /*============================================================================*/
 
-#include "Plans.h"
+#include "Arguments.h"
 
 #include "File.hpp" //?
 
@@ -15,7 +15,7 @@ Atomic gixJob;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job* Plans::_pJob(void* aAddr)
+Job* Arguments::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
@@ -30,7 +30,7 @@ Job* Plans::_pJob(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job* Plans::_pJob(i8 iAddr)
+Job* Arguments::_pJob(i8 iAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(iAddr);
   
@@ -45,7 +45,7 @@ Job* Plans::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid job?                                                */
 /*----------------------------------------------------------------------------*/
-bool Plans::_bIsValidJob(eCN eClass)
+bool Arguments::_bIsValidJob(eCN eClass)
 {
   if (eClass >= CN_JOB && eClass <= CN_JOB__FIND)
     return true;
@@ -1366,7 +1366,7 @@ void Job::vWasReceived(bool bWasReceived)
 /*----------------------------------------------------------------------------*/
 /* check if the cluster has started                                           */
 /*----------------------------------------------------------------------------*/
-eEC Plans::eJob_checkCluster(void)
+eEC Arguments::eJob_checkCluster(void)
 {
   if (AM::pGrid()->bHasStarted())
     return EC_NONE;

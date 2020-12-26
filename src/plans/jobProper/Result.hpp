@@ -5,7 +5,7 @@
 
 #include "eRS.h"
 
-namespace Plans
+namespace Arguments
 {
   class Result : public Object
   {

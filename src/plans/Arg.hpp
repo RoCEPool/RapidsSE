@@ -5,7 +5,7 @@
 
 #include "eAK.h"
 
-namespace Plans
+namespace Arguments
 {  
   class Arg : public Object
   {
