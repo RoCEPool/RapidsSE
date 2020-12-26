@@ -30,7 +30,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStrand)
   
   m_sPipelineNm = pStrand->pPipeline()->szPipelineNm();
   m_sStageNm    = pStrand->pStage()->szStageNm();
-  m_sStrandNm   = pStrand->szStrandNm();
+  m_sStreamNm   = pStrand->szStreamNm();
   m_sOpNm       = pOpSpec->szOpNm();
   m_i_Op        = pOpSpec->i_OpSpec();
   

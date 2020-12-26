@@ -81,14 +81,14 @@ void Stream::vDump(void)
     vTrace("  [%02lld] (N%lld) Node-Stream %s:\n"_Stz,
            m_i_Strand,
            m_i_Node,
-           m_sStrandNm.szStz());
+           m_sStreamNm.szStz());
   }
   else {
     vTrace("  [%02lld] (N%lld,S%02lld) Partition-Stream %s:\n"_Stz,
            m_i_Strand,
            m_i_Node,
            m_i_Strand,
-           m_sStrandNm.szStz());
+           m_sStreamNm.szStz());
   }
 
   for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
@@ -176,11 +176,11 @@ void Stream::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
 /*----------------------------------------------------------------------------*/
 /* get stage spec for this strand                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Stream::szStrandNm(void)
+Stz* Stream::szStreamNm(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_sStrandNm;
+  return m_sStreamNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,12 +191,12 @@ void Stream::vSynthesiseName(void)
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
  
   if (m_pStageSpec->bNodeTopo()) {
-    m_sStrandNm.vSprint("_strand_N%lld_of_%s"_Stz,
+    m_sStreamNm.vSprint("_strand_N%lld_of_%s"_Stz,
                           m_i_Node,
                           m_pStageSpec->szStageNm());
   }
   else {
-    m_sStrandNm.vSprint("_strandv_N%lldS%lld_of_%s"_Stz,
+    m_sStreamNm.vSprint("_strandv_N%lldS%lld_of_%s"_Stz,
                           m_i_Node,
                           m_i_Strand,
                           m_pStageSpec->szStageNm());

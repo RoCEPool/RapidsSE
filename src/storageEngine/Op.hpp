@@ -12,7 +12,7 @@ namespace Arguments
   private:
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
-    s32  m_sStrandNm;   // strand name within strand within pipeline
+    s32  m_sStreamNm;   // strand name within strand within pipeline
     s32  m_sOpNm;       // name of this operator
     i8   m_i_Op;        // [op] in strand
   

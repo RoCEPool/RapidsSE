@@ -10,10 +10,10 @@ namespace Arguments
   private:
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
-    s32  m_sStrandNm;   // name of this strand
+    s32  m_sStreamNm;   // name of this stream
     i8   m_i_Strand;    // [strand] in stage
 
-    StageSpec* m_pStageSpec;  // specification of this stage strand
+    StageSpec* m_pStageSpec;  // stage specification for this stream
     Stage*     m_pStage;      // which stage of pipeline
     Pipeline*  m_pPipeline;   // which pipeline
 
@@ -45,7 +45,7 @@ namespace Arguments
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
     void vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
-    Stz* szStrandNm(void);
+    Stz* szStreamNm(void);
 
   private:
     void vCreateOps();
