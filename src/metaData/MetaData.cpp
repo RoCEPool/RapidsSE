@@ -4,22 +4,6 @@
 
 #include "MetaData.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void MetaData::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(Operand)      == sizeof(CacheLine));
-  ALWAYS(sizeof(LinkedBuffer) == 2 * sizeof(CacheLine));
-  
-  ALWAYS(sizeof(StreamDef)    < C_SIZE_LARGE_OBJECT);
-  
-  ALWAYS(sizeof(Tx)           < C_SIZE_SMALL_OBJECT);
-  ALWAYS(sizeof(TxSet)        < C_SIZE_SMALL_OBJECT);
-  
-  
-  ALWAYS(sizeof(Rrf) == 8);
-}
 
 /*============================================================================*/
 /* end                                                                        */
