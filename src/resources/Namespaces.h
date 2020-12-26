@@ -79,7 +79,7 @@ namespace Arguments      {
                               class PtnStream;       class TablePtn;          }
 namespace Arguments         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
-                              class StageVec;        class Strand;            }
+                              class StageVec;        class Stream;            }
 namespace Arguments     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
 namespace Arguments             { class Planner;                                  }

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op.cpp -- Operator of Strand of Stage of Pipeline                          */
+/* Op.cpp -- Operator of Stream of Stage of Pipeline                          */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -20,7 +20,7 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(OpSpec* pOpSpec, Strand* pStrand)
+Op::Op(OpSpec* pOpSpec, Stream* pStrand)
 : Focal(CN_OP,AM::iNextOpId()
 , AM::iJobUniqueId(pStrand->pPipeline()->pPipelineJob()))
 {
@@ -149,7 +149,7 @@ void Op::vDump(i8 i_Op)
   
   // get the next op
   i8 iNextOp = pTopologyTagSet->iValue(C_TAG_NEXTOP);
-  Strand* pNextStrand = pNextStage->pGet(0);
+  Stream* pNextStrand = pNextStage->pGet(0);
   Op* pNextOp = pNextStrand->pGet(iNextOp);
 
   // get the cross topology
@@ -1325,7 +1325,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      Strand* pStrand = pNextStage->pGetPartitionStrand(m_tPtnNo);
+      Stream* pStrand = pNextStage->pGetPartitionStrand(m_tPtnNo);
       tPN tPtnNo = pStrand->tPtnNo();
       vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, tPtnNo);
       break;
@@ -1686,7 +1686,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
       for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
         
-        Strand* pStrand = pNextStage->pGet(i_Strand);
+        Stream* pStrand = pNextStage->pGet(i_Strand);
         tPtnNo = pStrand->tPtnNo();
         
         // xmitNode is the partition node

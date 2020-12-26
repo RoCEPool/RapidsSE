@@ -5,7 +5,7 @@
 
 namespace Arguments
 {
-  class Stage : public VectorNL_t<CN_STAGE,Strand,C_MAX_STRANDS>
+  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STRANDS>
   {
   private:
     s32  m_sPipelineNm; // pipeline name
@@ -30,8 +30,8 @@ namespace Arguments
     void vDump(Pipeline* pPipeline);
     
     void    vCancelPipeline(Task* pTriggeringTask);
-    Strand* pGetPartitionStrand(i8 i_Ptn);
-    Strand* pGetNodeStrand(i8 i_Node);
+    Stream* pGetPartitionStrand(i8 i_Ptn);
+    Stream* pGetNodeStrand(i8 i_Node);
     i8      nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
     Op*     pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op);

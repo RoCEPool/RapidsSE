@@ -27,7 +27,7 @@ void Step::vPipelinePipeout(void)
 
   Pipeline* pPipeline = pPipelineJob->m_pPipeline;
   Stage*    pStage0   = pPipeline->pGet(0);
-  Strand*   pStand0   = pStage0->pGet(0);
+  Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 
   pOp0->vPipeOut_thisOp(pOperand,m_pTask);

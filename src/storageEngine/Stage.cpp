@@ -58,7 +58,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
   // would the start marker always be on ORIGIN???
   
   // get first stage from stageNdeVec
-  Strand*  pStrand = pGet(0);
+  Stream*  pStrand = pGet(0);
   StageSpec* pStageSpec = pStrand->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
@@ -75,11 +75,11 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get strand for given partition                                             */
 /*----------------------------------------------------------------------------*/
-Strand* Stage::pGetPartitionStrand(i8 i_Ptn)
+Stream* Stage::pGetPartitionStrand(i8 i_Ptn)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Strand* pStrand   = nullptr;
+  Stream* pStrand   = nullptr;
   StageSpec* pStageSpec = nullptr;
   
   for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
@@ -97,11 +97,11 @@ Strand* Stage::pGetPartitionStrand(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get strand for given node                                                  */
 /*----------------------------------------------------------------------------*/
-Strand* Stage::pGetNodeStrand(i8 i_Node)
+Stream* Stage::pGetNodeStrand(i8 i_Node)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Strand* pStrand   = nullptr;
+  Stream* pStrand   = nullptr;
   StageSpec* pStageSpec = nullptr;
   
   for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
@@ -130,7 +130,7 @@ void Stage::vDump(Pipeline* pPipeline)
          aPO[m_pStageSpec->eTopology()]);
 
   for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
-    Strand* pStrand = pGet(i_Strand);
+    Stream* pStrand = pGet(i_Strand);
   
     pStrand->vDump();
   }
@@ -146,7 +146,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
   i8 nOps = 0;
 
   for (i8 i_Node = 0; i_Node < nItems(); i_Node++) {
-    Strand* pStrand = pGet(i_Node);
+    Stream* pStrand = pGet(i_Node);
 
     if (m_pStageSpec->bNodeTopo()) {
       // skip if Op not for this node
@@ -181,8 +181,8 @@ Pipeline* Stage::pPipeline(void)
 Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
 {
   Op* pOp = nullptr;
-  Strand* pNdeStrand = nullptr;
-  Strand* pPtnStrand = nullptr;
+  Stream* pNdeStrand = nullptr;
+  Stream* pPtnStrand = nullptr;
   
   switch (eCrossTopo) {
       
@@ -266,7 +266,7 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
   // would the start marker always be on ORIGIN???
   
   // get first stage from stageNdeVec
-  Strand*  pStrand = pGet(0);
+  Stream*  pStrand = pGet(0);
   StageSpec* pStageSpec = pStrand->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
@@ -298,7 +298,7 @@ void Stage::vCreateStrands(void)
   tPN tPtnNo;
   i8 i_Node;
   i8 i_Strand;
-  Strand* pStrand;
+  Stream* pStrand;
   
   switch (m_pStageSpec->eTopology()) {
             
@@ -309,7 +309,7 @@ void Stage::vCreateStrands(void)
       i_Strand = 0;
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
-        pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
+        pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
         vAdd(pStrand);
       }
       break;
@@ -319,7 +319,7 @@ void Stage::vCreateStrands(void)
       i_Strand = 0;
       tPtnNo = C_UNKNOWN;
       i_Node = m_pPipeline->i_Origin();
-      pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
+      pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
       vAdd(pStrand);
       break;
         
@@ -335,7 +335,7 @@ void Stage::vCreateStrands(void)
       for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
-        pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
+        pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
         vAdd(pStrand);
       }
       break;
@@ -346,7 +346,7 @@ void Stage::vCreateStrands(void)
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if (i_Node == m_pPipeline->i_Origin()) {
           i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
-          pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
+          pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
           vAdd(pStrand);
         }
       }
@@ -357,7 +357,7 @@ void Stage::vCreateStrands(void)
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
       i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
-      pStrand = new Strand(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
+      pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
       vAdd(pStrand);
       break;
       

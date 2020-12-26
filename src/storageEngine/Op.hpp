@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op.hpp -- Operator of Strand of Stage of Pipeline                          */
+/* Op.hpp -- Operator of Stream of Stage of Pipeline                          */
 /*============================================================================*/
 #pragma once
 
@@ -19,7 +19,7 @@ namespace Arguments
     bool m_bTraceOp;    // tracing this operator
 
     OpSpec*   m_pOpSpec;   // specification of this operator
-    Strand*   m_pStrand;   // which strand of stage of pipleine
+    Stream*   m_pStrand;   // which strand of stage of pipleine
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_pPipeline; // which pipeline
   
@@ -63,7 +63,7 @@ namespace Arguments
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Strand* pStrand);
+    Op(OpSpec* pOpSpec, Stream* pStrand);
    ~Op(void) noexcept(false);
   
     void vDump(i8 i_Op);

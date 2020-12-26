@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Stream.hpp -- Stream (instance of StageSpec wwithing Pipeline)             */
+/* Stream.hpp -- Stream (instance of StageSpec within a Pipeline)             */
 /*============================================================================*/
 #pragma once
 
 namespace Arguments
 {
-  class Strand : public VectorNL_t<CN_STRAND,Op,C_MAX_OPS>
+  class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>
   {
   private:
     s32  m_sPipelineNm; // pipeline name
@@ -31,9 +31,9 @@ namespace Arguments
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Strand(StageSpec* pStageSpec, Stage* pStage,
+    Stream(StageSpec* pStageSpec, Stage* pStage,
            i8 i_Strand, tPN tPtnNo, i8 i_Node);
-   ~Strand(void) noexcept(false);
+   ~Stream(void) noexcept(false);
   
     void vDump(void);
   
@@ -53,7 +53,7 @@ namespace Arguments
     Footer* aFooter(void);
   };
   
-  Strand* _pStrand(void* aAddr);
+  Stream* _pStream(void* aAddr);
 }
 
 /*============================================================================*/

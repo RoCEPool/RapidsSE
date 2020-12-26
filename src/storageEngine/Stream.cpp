@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stream.cpp -- Stream (instance of StageSpec wwithing Pipeline)             */
+/* Stream.cpp -- Stream (instance of StageSpec within a Pipeline)             */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -8,18 +8,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Strand,CN_STRAND)
-__aNewFunction(Strand,CN_STRAND)
-__vDeleteFunction(Strand,CN_STRAND)
-__aFooterFunction(Strand)
+__pCastFunction(Arguments,Stream,CN_STREAM)
+__aNewFunction(Stream,CN_STREAM)
+__vDeleteFunction(Stream,CN_STREAM)
+__aFooterFunction(Stream)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Strand::Strand(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
+Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
                tPN tPtnNo, i8 i_Node)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
   m_sPipelineNm = pStage->pPipeline()->szPipelineNm();
   m_sStageNm    = pStage->szStageNm();
@@ -34,19 +34,19 @@ Strand::Strand(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
   
   vSynthesiseName();
 
-  _checkInitialised_(CN_STRAND);
+  _checkInitialised_(CN_STREAM);
   
   vCreateOps();
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Strand::~Strand(void) noexcept(false)
+Stream::~Stream(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,9 +56,9 @@ Strand::~Strand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create the ops for this strand                                             */
 /*----------------------------------------------------------------------------*/
-void Strand::vCreateOps(void)
+void Stream::vCreateOps(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
     
@@ -73,18 +73,18 @@ void Strand::vCreateOps(void)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-void Strand::vDump(void)
+void Stream::vDump(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   if (m_pStageSpec->bNodeTopo()) {
-    vTrace("  [%02lld] (N%lld) Node-Strand %s:\n"_Stz,
+    vTrace("  [%02lld] (N%lld) Node-Stream %s:\n"_Stz,
            m_i_Strand,
            m_i_Node,
            m_sStrandNm.szStz());
   }
   else {
-    vTrace("  [%02lld] (N%lld,S%02lld) Partition-Strand %s:\n"_Stz,
+    vTrace("  [%02lld] (N%lld,S%02lld) Partition-Stream %s:\n"_Stz,
            m_i_Strand,
            m_i_Node,
            m_i_Strand,
@@ -101,9 +101,9 @@ void Strand::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get partition this strand needs to run on                                  */
 /*----------------------------------------------------------------------------*/
-i8 Strand::i_Node(void)
+i8 Stream::i_Node(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_i_Node;
 }
@@ -111,9 +111,9 @@ i8 Strand::i_Node(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline for this strand                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Strand::pPipeline(void)
+Pipeline* Stream::pPipeline(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_pPipeline;
 }
@@ -121,9 +121,9 @@ Pipeline* Strand::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get partition in grid this strand needs to run on                          */
 /*----------------------------------------------------------------------------*/
-i8 Strand::tPtnNo(void)
+i8 Stream::tPtnNo(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_tPtnNo;
 }
@@ -131,9 +131,9 @@ i8 Strand::tPtnNo(void)
 /*----------------------------------------------------------------------------*/
 /* get stage for this strand                                                  */
 /*----------------------------------------------------------------------------*/
-Stage* Strand::pStage(void)
+Stage* Stream::pStage(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_pStage;
 }
@@ -141,9 +141,9 @@ Stage* Strand::pStage(void)
 /*----------------------------------------------------------------------------*/
 /* get stage spec for this strand                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec* Strand::pStageSpec(void)
+StageSpec* Stream::pStageSpec(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_pStageSpec;
 }
@@ -151,9 +151,9 @@ StageSpec* Strand::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
+void Stream::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   i8 i_OnNode;
   if (m_pStageSpec->bNodeTopo())
@@ -176,9 +176,9 @@ void Strand::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
 /*----------------------------------------------------------------------------*/
 /* get stage spec for this strand                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Strand::szStrandNm(void)
+Stz* Stream::szStrandNm(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_sStrandNm;
 }
@@ -186,9 +186,9 @@ Stz* Strand::szStrandNm(void)
 /*----------------------------------------------------------------------------*/
 /* synthesise name of this strand                                             */
 /*----------------------------------------------------------------------------*/
-void Strand::vSynthesiseName(void)
+void Stream::vSynthesiseName(void)
 {
-  _precondition_(_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
  
   if (m_pStageSpec->bNodeTopo()) {
     m_sStrandNm.vSprint("_strand_N%lld_of_%s"_Stz,

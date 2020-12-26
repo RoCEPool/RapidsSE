@@ -861,7 +861,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
     i8 nStrands = pStage->nItems();
     for (i8 i_Strand = 0; i_Strand < nStrands; i_Strand++) {
  
-      Strand* pStrand= pStage->pGet(i_Strand);
+      Stream* pStrand= pStage->pGet(i_Strand);
       
       i8 nOps = pStrand->nItems();
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
