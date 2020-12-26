@@ -10,7 +10,7 @@ PromptFun __Prompt_tools (
   PF_TOOLS,              // prompt function
   "Prompt_tools"_Stz,    // name of the prompt function
   "comment"_Stz,         // comment about the function
-  "tools"_Stz,           // the prompt command
+  "- tools"_Stz,           // the prompt command
   nullptr,               // the second word
   bPrompt_tools,         // prompt function
   true,                  // enabled
