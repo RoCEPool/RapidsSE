@@ -11,6 +11,10 @@ void Resources::vCheckAssumptions(void)
 {
   // resources
   
+  ALWAYS(4 == sizeof(u4));
+  ALWAYS(8 == sizeof(u8));
+  ALWAYS(8 == sizeof(i8));
+
   ALWAYS(sizeof(struct sockaddr_in) <= (8 * 16));
   
   // pool

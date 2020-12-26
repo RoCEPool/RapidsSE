@@ -23,7 +23,7 @@ namespace CompilerOperators {                                                 }
 namespace MetaData       {                                                 }
 namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
-namespace Datums            { class Datum_h;
+namespace Arguments            { class Datum_h;
 class SN_Bcd;
 class SN_Bol;
 class SN_Dte;
@@ -109,7 +109,7 @@ using namespace DataBuffers;
 using namespace CompilerOperators;
 using namespace MetaData;
 using namespace DataBuffers;
-using namespace Datums;
+using namespace Arguments;
 using namespace Plans;
 using namespace DataBuffers;
 using namespace Expressions;

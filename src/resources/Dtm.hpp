@@ -11,23 +11,23 @@ namespace Resources
   friend class DataBuffers::SP_Encoding_v2;
   friend class DataBuffers::Packing_v2;
   
-  friend class Datums::SN_Bcd;
-  friend class Datums::SN_Bol;
-  friend class Datums::SN_Dte;
-  friend class Datums::SN_Flt;
-  friend class Datums::SN_Int;
-  friend class Datums::SN_Ivl;
-  friend class Datums::SN_Tme;
-  friend class Datums::SN_Tsp;
+  friend class Arguments::SN_Bcd;
+  friend class Arguments::SN_Bol;
+  friend class Arguments::SN_Dte;
+  friend class Arguments::SN_Flt;
+  friend class Arguments::SN_Int;
+  friend class Arguments::SN_Ivl;
+  friend class Arguments::SN_Tme;
+  friend class Arguments::SN_Tsp;
 
-  friend class Datums::SP_Bcd;
-  friend class Datums::SP_Bol;
-  friend class Datums::SP_Dte;
-  friend class Datums::SP_Flt;
-  friend class Datums::SP_Int;
-  friend class Datums::SP_Ivl;
-  friend class Datums::SP_Tme;
-  friend class Datums::SP_Tsp;
+  friend class Arguments::SP_Bcd;
+  friend class Arguments::SP_Bol;
+  friend class Arguments::SP_Dte;
+  friend class Arguments::SP_Flt;
+  friend class Arguments::SP_Int;
+  friend class Arguments::SP_Ivl;
+  friend class Arguments::SP_Tme;
+  friend class Arguments::SP_Tsp;
 
   friend class Resources::Birth;
   friend class Resources::Now;
