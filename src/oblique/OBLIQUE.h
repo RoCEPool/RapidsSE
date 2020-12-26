@@ -16,7 +16,7 @@ namespace OBLIQUE
 #include "SizesHeaps.hpp"
 
 #include "Exemplar.hpp"
-#include "My.hpp"
+#include "MY.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
