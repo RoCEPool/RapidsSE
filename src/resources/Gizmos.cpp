@@ -8,6 +8,8 @@
 
 GizmoFn __AsciiTable("ascii"_Stz,(fpSELFFN*)Gizmos::vAsciiTable,""_Stz,-1);
 
+GizmoFn __Pow2("pow2"_Stz,(fpSELFFN*)Gizmos::vPow2,""_Stz,-1);
+
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
@@ -51,6 +53,21 @@ void Gizmos::vAsciiTable(void* aGizmoArg)
 //  vTrace("\n"_Stz);
     
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* the subsystem function                                                     */
+/*----------------------------------------------------------------------------*/
+void Gizmos::vPow2(void* aGizmoArg)
+{
+  _static_
+  
+  u8 uVal = 1;
+  
+  for (i8 i = 0; i < 64; i++) {
+    vTrace("%2lld: %llu\n"_Stz,i,uVal);
+    uVal *= 2;
+  }
 }
 
 /*============================================================================*/

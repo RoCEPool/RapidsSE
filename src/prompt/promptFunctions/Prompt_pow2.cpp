@@ -8,7 +8,7 @@ PromptFun __Prompt_pow2 (
   PF_POW2,           // prompt function
   "Prompt_pow2"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the function
-  "pow2"_Stz,        // the prompt command
+  "- pow2"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_pow2,      // prompt function
   true,              // enabled

@@ -10,6 +10,7 @@ namespace Resources
   public:
       
   static void vAsciiTable(void* aGizmoArg);
+  static void vPow2(void* aGizmoArg);
   };
 }
 
