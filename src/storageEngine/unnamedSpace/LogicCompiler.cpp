@@ -241,7 +241,7 @@ void LogicCompiler::vExtract(void)
   
   File* pFile = new File(nullptr);
   
-  bool b = pFile->bOpenRead("../src/storageEngine/LogicUnit.cpp"_Stz);
+  bool b = pFile->bOpenRead("../src/storageEngine/unnamedSpace/LogicUnit.cpp"_Stz);
   RASSERT(b);
   
   char* azCrs = gcaEoFragments;
@@ -905,11 +905,11 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "\n  #include \"../src/resources/EnumGroups.h\""
   "\n  #include \"../src/dataBuffers/Ent_int.h\""
-  "\n  #include \"../src/storageEngine/InflateSet.h\""
-  "\n  #include \"../src/storageEngine/LIB_interface.h\""
-  "\n  #include \"../src/storageEngine/DEV_interface.h\""
-  "\n  #include \"../src/storageEngine/RLU_interface.h\""
-  "\n  #include \"../src/storageEngine/RluCommon.h\""
+  "\n  #include \"../src/storageEngine/unnamedSpace/InflateSet.h\""
+  "\n  #include \"../src/storageEngine/unnamedSpace/LIB_interface.h\""
+  "\n  #include \"../src/storageEngine/unnamedSpace/DEV_interface.h\""
+  "\n  #include \"../src/storageEngine/unnamedSpace/RLU_interface.h\""
+  "\n  #include \"../src/storageEngine/unnamedSpace/RluCommon.h\""
   "\n  #include \"../src/resources/eEO.h\""
   "\n"
   "\n  #define ArgNil() "
