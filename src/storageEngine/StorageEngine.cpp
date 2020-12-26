@@ -20,7 +20,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Parser::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Resources::vCheckAssumptions();
-  SenVM::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
 

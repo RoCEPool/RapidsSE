@@ -4,17 +4,6 @@
 
 #include "SenVM.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void SenVM::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(ForthCell)   == 8);
-  
-  ALWAYS(sizeof(Dic)     < C_SIZE_SMALL_OBJECT);
-  
-  ALWAYS(sizeof(Dtm)    == sizeof(SingleWord));
-}
 
 /*============================================================================*/
 /* end                                                                        */

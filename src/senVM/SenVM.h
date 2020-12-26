@@ -7,27 +7,6 @@
 
 //------------------------------------------------------------------------------
 
-namespace SenVM
-{
-  void vCheckAssumptions(void);
-}
-
-//------------------------------------------------------------------------------
-
-#include "Dic.hpp"
-#include "DicStack.hpp"
-#include "Local.hpp"
-#include "LocalChain.hpp"
-#include "Routine.hpp"
-#include "TypedStack.hpp"
-
-#include "Compiler.hpp"
-#include "Forth.hpp"
-#include "Word.hpp"
-
-// -- -- -- -- -- -- -- --
-
-#include "SP_Word.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
