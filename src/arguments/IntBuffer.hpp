@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* IntBuffer.hpp -- Integer Buffer                                            */
+/*============================================================================*/
+#pragma once
+
+namespace Arguments
+{
+  static const i8 ELEMENTS = 100; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
+  
+  class IntBuffer : public DataBuffer
+  {
+
+  public:
+    i8 m_nInts;
+    i8 m_iIntArray[ELEMENTS];
+  
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+  
+    IntBuffer(void);
+    ~IntBuffer(void) noexcept(false);
+
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
+    ////////////////////////////////////////////////////////////////////////////
+    void       vAppendValue(i8 iValue);
+    i8         nCount(void);
+    void       vDump(void);
+    void       vBufferCount(i8& nBuffers);
+    i8         iGetValue(i8 i_Int);
+    i8*        aGetElement(i8 i_Int);
+    bool       bHasSpace(void);
+    IntBuffer* pLastBuffer(i8& iCount);
+    void       vLinkBuffer(IntBuffer* pIntBuffer);
+    IntBuffer* pNextBuffer(void);
+    void       vNextBuffer(IntBuffer* pNextBuffer);
+    IntBuffer* pPrevBuffer(void);
+    void       vPrevBuffer(IntBuffer* pPrevBuffer);
+    void       vShow(void);
+    bool       bVerifyNextPrev(void);
+    bool       bVerifyOrder(void);
+    
+    ////////////////////////////////////////////////////////////////////////////
+
+    public:
+    Footer* aFooter(void);
+  
+  };
+  
+  IntBuffer* _pIntBuffer(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

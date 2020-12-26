@@ -102,9 +102,9 @@ void HashMap::vAnalysis(bool bBufferAnalysis)
   i8 iFullTree = (i8)pow(m_nArcsPerBuffer,m_iMaxDepth);
   
   vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"
-         "    DataBuffers %lld MaxDepth %lld "
+         "    Arguments %lld MaxDepth %lld "
          "manifested %lld%% of %lld buffers %lld entries\n"
-         "    DataBuffers %lld ArcEntries %lld µ%lld%% full\n"
+         "    Arguments %lld ArcEntries %lld µ%lld%% full\n"
          "    DupBuffers %lld DupEntries %lld\n"_Stz,
          
          m_nEntriesPerBuffer,

@@ -1,0 +1,77 @@
+/*============================================================================*/
+/* RowCompactor.hpp -- Row Compactor Mark V                                   */
+/*============================================================================*/
+#pragma once
+
+namespace Arguments
+{
+  class RowCompactor : public  Object,
+                       private RowCoder,
+                       private Packing_v2
+  {
+  public:
+    CrwBuffer* m_pCrwBuffer;   // crw buffer
+    RowNub*    m_pCrwNub;      // nub of crw buffer
+    StreamDef* m_pStreamDef;   // stream def
+  
+    Encoding_v2* m_pEncoding_v2;  // encoding of row
+
+    HeadLine*  m_aHeadLine;    // head of crw
+    OverLine*  m_aOverLine;    // over of crw
+
+    // - - - - - - - - - - - -
+    
+    RowBuffer* m_pRowSamples;  // the set of sample rows
+    bool       m_bCollecting;  // has sample set been encoded?
+  
+    RowBuffer* m_pSampleSet;
+  
+    // - - - - - - - - - - - -
+    i8 m_nTotalBuffers;        // total number of crw buffers created
+    i8 m_nTotalCrws;           // total number of rows compacted
+    FreqDist m_oFreqDist;      // free space analysis
+
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
+    RowCompactor(void);
+   ~RowCompactor(void) noexcept(false);
+    
+    void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
+    void vCompactEnd(void);
+    bool bCompactRow(Row* aRow);
+    bool bCompactTail(Stz* szTailStr);
+
+  private:
+
+    // - - - - - - - - - - - - - - - - - - - - -
+    // Row Packing
+  
+    bool bAddRowAsCrw(Row* pRow);
+    bool bAllotCrw(void);
+    bool bCreateTail(Stz* szTailStr);
+    void vEncodeHeadForRow(Row* pRow);
+    void vEncodeTailsForRow(Row* pRow);
+
+    // - - - - - - - - - - - - - - - - - - - - -
+    // Row Sampling (structural order)
+    
+    void vPackSamples(void);
+    void vAnalyzeSamples(void);
+    void vCreateSampleTail(Column* pCol,
+                           Row* pOuterRowSample,
+                           Row* pInnerRowSample);
+  private:
+    Footer* aFooter(void);
+  };
+
+  RowCompactor* _pRowCompactor(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

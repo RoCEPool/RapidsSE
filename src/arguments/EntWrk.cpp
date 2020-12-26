@@ -1,0 +1,658 @@
+/*============================================================================*/
+/* EntWrk.cpp -- Working Index Entry                                          */
+/*============================================================================*/
+
+#include "Arguments.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__aFooterFunction(EntWrk)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+EntWrk::EntWrk(void)
+: StackObject(CN_ENTWRK),
+  m_xEnt(CN_ENT,sizeof(Ent))
+{
+  _precondition_(_MAGIC_,CN_ENTWRK);
+
+  m_pStreamDef = nullptr;
+  m_pIndexDef  = nullptr;
+  
+  // -- entry --
+  m_xEnt.vBuffer(0);
+  m_xEnt.vItem(0);
+  m_xEnt.vSkipLevels(0);
+  m_xEnt.vPayload(false);
+  m_xEnt.vFree(false);
+
+  m_xEnt.vElmSeqSize(0);
+  
+  //vPaySize(0);  CANT SET THIS YET
+  
+  // -- end entry --
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_ENTWRK);
+  MemLib::vZero(m_yaPaySpace,sizeof(m_yaPaySpace),CN_ENTWRK);
+#else
+  m_yaSpace[0] = '\0';
+#endif
+  
+  _checkInitialisedSize_(sizeof(EntWrk));
+  
+  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+EntWrk::~EntWrk(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get next element from key                                                  */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
+{
+  //byte* ayElm = pColumn->ayValue(nBytes,aayCursor);
+  
+  nBytes = sizeof(i8);
+  byte* ayElm = aAdd<byte*>(*aayCursor,nBytes);
+
+  return ayElm;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElement(RowSingle* pRowSingle, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  i8 iValue = pRowSingle->iColVal(i_Col);
+  
+  if (Null::bIsNull(iValue)) {
+//    byte* ayDst = (byte*)ayElmNext();
+//    nElmSize = Null::nCopy(ayDst);
+//    vIncElmSeqSize(nElmSize);
+    vAppendNull();
+    return;
+  }
+  
+  if (DM_VCH == pCol->eDatum()) {
+
+    Stz* szSrc = pRowSingle->szColVal(i_Col);
+    vAppendStz(szSrc);
+  }
+  
+  else {
+//    byte* ayDst = ayElmNext();
+//    nElmSize = Dtm::nCopy(ayDst,iValue);
+//    vIncElmSeqSize(nElmSize);
+    vAppendInt(iValue);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElement(Row* aRow, Column* pColumn)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 i_Col = pColumn->iColumnNo();
+  
+  if (aRow->bIsColNull(i_Col)) {
+    vAppendNull();
+    return;
+  }
+  
+  if (DM_VCH == pColumn->eDatum()) {
+      Stz* szSrc = aRow->szColVal_ofs(i_Col);
+      vAppendStz(szSrc);
+  }
+  else {
+    vAppendInt(aRow->iColVal_int(i_Col));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElement(Row* aRow, RowPix* pRowPix, i8 i_Col)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  eDM eDatum = (eDM)pRowPix->m_xaColPix[i_Col].m_uDatum;
+    
+  if (aRow->bIsColNull(i_Col)) {
+    vAppendNull();
+    return;
+  }
+  
+  if (DM_VCH == eDatum) {
+    Stz* szSrc = aRow->szColVal_ofs(i_Col);
+    vAppendStz(szSrc);
+  }
+  else {
+    vAppendInt(aRow->iColVal_int(i_Col));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElementInt(Row* aRow, i8 iInt)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  vAppendInt(iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element from row to key                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElementStz(Row* aRow, Stz* szStr)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  vAppendStz(szStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add int element to key                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendInt(i8 iArg)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  if (KE_GENERAL == m_xEnt.eKind()) {
+    Dtm* aDst = ayElmNext_dtm();
+  
+    //i8 nElmSize = Dtm::nCopy((byte*)ayDst,iArg);
+    aDst->vPutColVal(iArg);
+    
+    vIncElmSeqSize(sizeof(i8));
+  }
+  else {
+    ASSERT(KE_INT == m_xEnt.eKind());
+    m_xEnt.vIntElm0(iArg);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add min lower value to key                                                 */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendMinusInfinity(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Dtm* aDst = ayElmNext_dtm();
+  //Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_MINUS_INFINITY);
+  aDst->vPutColVal(C_DATUM_MINUS_INFINITY);
+
+  vIncElmSeqSize(C_BYTES_PER_WORD);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add null element to key                                                    */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendNull(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Dtm* aDst = ayElmNext_dtm();
+  
+  //i8 nElmSize = Null::nCopy(ayDst);
+  aDst->vPutColVal(C_DATUM_NULL);
+
+  vIncElmSeqSize(sizeof(i8));
+}
+
+/*----------------------------------------------------------------------------*/
+/* add max upper value to key                                                 */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendPlusInfinity(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+   
+  Dtm* aDst = ayElmNext_dtm();
+  //Dtm::vCopy((byte*)ayDst,(i8)C_DATUM_PLUS_INFINITY);
+  aDst->vPutColVal(C_DATUM_PLUS_INFINITY);
+
+  vIncElmSeqSize(C_BYTES_PER_WORD);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add ref element to key                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendRef(Rrf xwArg)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Dtm* ayDst = ayElmNext_dtm();
+  
+  MemLib::vCopy((byte*)ayDst,&xwArg,8,CN_ENTWRK);
+  
+  i8 nElmSize = 8;
+  vIncElmSeqSize(nElmSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add stz element to key                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendStz(Stz* szArg)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  char* aDst = (char*)ayElmNext_dtm();
+  
+  i8 nElmSize = StrLib::iWordFlip(aDst, szArg->azChar());
+  
+  vIncElmSeqSize(nElmSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get buffer no from ref                                                     */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::iBuffer(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 i_Buffer = m_xEnt.iBuffer();
+  
+  return i_Buffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set buffer no in re                                                        */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vBuffer(i8 iBuffer)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vBuffer(iBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address where next element would be added                              */
+/*----------------------------------------------------------------------------*/
+Dtm* EntWrk::ayElmNext_dtm(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 nElmSeqSize = m_xEnt.nElmSeqSize();
+
+  Dtm* ayNextElm = aAdd<Dtm*>(aElmSeq_dtm(),nElmSeqSize);
+
+  return ayNextElm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set element sequence size                                                  */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vElmSeqSize(i8 nElmSeqSize)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vElmSeqSize(nElmSeqSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get byte sequence of key                                                   */
+/*----------------------------------------------------------------------------*/
+Dtm* EntWrk::aElmSeq_dtm(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.aElmSeq_dtm();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get entry address                                                          */
+/*----------------------------------------------------------------------------*/
+Ent* EntWrk::aEnt(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return &m_xEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute hash of key byte sequence                                          */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::iHashKey(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 iHash = HshLib::iHash((byte*)aElmSeq_dtm(),m_xEnt.nElmSeqSize());
+  
+  return iHash;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get key address                                                            */
+/*----------------------------------------------------------------------------*/
+Key* EntWrk::aKey(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.aKey();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index column vector                                                    */
+/*----------------------------------------------------------------------------*/
+IndexDef* EntWrk::pIndexDef(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index column vector                                                    */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vIndexDef(IndexDef* pIndexDef)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_pIndexDef = pIndexDef;
+}
+/*----------------------------------------------------------------------------*/
+/* inc total element sequence size by the size of element                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vIncElmSeqSize(i8 nElementSize)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.aKey()->vIncElmSeqSize(nElementSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get item no from entry reference                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::iItem(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.iItem();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set item no in entry reference                                             */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vItem(i8 iItem)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vItem(iItem);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set element sequence size and element sequence of key                      */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vElmSeq_dtm(i8 nElmSeqSize, Dtm* aElmSeq)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vElmSeqSize(nElmSeqSize);
+  
+  MemLib::vCopy(this->aElmSeq_dtm(),aElmSeq,nElmSeqSize,CN_ENTWRK);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of levels                                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nOffsets(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.nSkipLevels();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of levels                                                       */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vOffsets(i8 nLevels)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vSkipLevels(nLevels);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pay address                                                            */
+/*----------------------------------------------------------------------------*/
+Pay* EntWrk::aPay(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  Pay* aPay = m_xEnt.aPay();
+  
+  return aPay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a payload?                                                        */
+/*----------------------------------------------------------------------------*/
+bool EntWrk::bPayload(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  bool bPayLoad = m_xEnt.bPayload();
+  
+  return bPayLoad;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get payload at cell                                                        */
+/*----------------------------------------------------------------------------*/
+i8* EntWrk::aiPayCell(i8 iCell)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = m_xEnt.aPay();
+  i8* aiPay = (i8*)&aPay[iCell];
+  
+  return aiPay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get payload                                                                */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayPayload(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = m_xEnt.aPay();
+  
+  return aPay->ayaPayload();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is there a payload                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPayload(bool bPayload)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  m_xEnt.vPayload(bPayload);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get payload size                                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nPayloadBytes(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = m_xEnt.aPay();
+
+  i8 nPayloadBytes = aPay->nPayloadBytes();
+  
+  return nPayloadBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload size                                                           */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPayloadBytes(i8 nPayloadBytes)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  Pay* aPay = m_xEnt.aPay();
+
+  aPay->vPayloadBytes(nPayloadBytes);
+  MemLib::vZero(&aPay[1],nPayloadBytes,CN_ENTWRK);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
+/*----------------------------------------------------------------------------*/
+Rrf& EntWrk::rxRef(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.rxRef();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vRef(Rrf& xRef)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vRef(xRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this entwrk                                                          */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this entwrk using given details                                        */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set id, transaction and offsets
+  
+  i8 nLevels = pEntry->nSkipLevels();
+  vOffsets(nLevels);
+  
+  Rrf xRef(iBufferNo,i_Item,nLevels);
+  
+  eKE eEntKind = pEntry->eKind();
+  xRef.vKind(eEntKind);
+  
+  vRef(xRef);
+  
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy key byte sequence into this entry
+  
+  if (KE_INT == eEntKind) {
+    i8 iVal = pEntry->iIntElm0();
+    *(i8*)aKey() = iVal;
+    return;
+  }
+  
+  Dtm* aElmSeq = pEntry->aElmSeq_dtm();
+  i8 nElmSeqSize = pEntry->nElmSeqSize();
+  RASSERT(nElmSeqSize % 8 == 0);
+  
+  vElmSeq_dtm(nElmSeqSize,aElmSeq);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vShow(IndexDef* pIndexDef)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  //Key* aKey = reinterpret_cast<Key*>(ayByteSeq());
+  Ent* aEnt = this->aEnt();
+  Key* aKey = aEnt->aKey();
+  
+  aKey->vShow(pIndexDef);
+  vTrace(" Buffer %lld Item %lld\n"_Stz,iBuffer(),iItem());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+StreamDef* EntWrk::pStreamDef(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_pStreamDef = pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the total size of this (Ent+Key)                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nTotalSize(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+    
+  i8 nSize = m_xEnt.nSizeBytes();
+  
+  return nSize;
+}
+/*----------------------------------------------------------------------------*/
+//i8 EntWrk::nTotalSize(void)
+//{
+//  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+//
+//  i8 nSizeEntProper = sizeof(Ent);
+//  i8 nSizeElmSeq    = m_xEnt.nElmSeqSize();
+//
+//  i8 nSize = nSizeEntProper + nSizeElmSeq;
+//
+//  return nSize;
+//}
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

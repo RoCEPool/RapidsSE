@@ -114,7 +114,7 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vAnalysis(void)
 {
-  vTrace("    %s DataBuffers %lld Full %lld%\n"_Stz,
+  vTrace("    %s Arguments %lld Full %lld%\n"_Stz,
          m_sDotNotation.azChar(),
          m_nEntries,
          IntLib::iPercent(m_nEntries, m_pHashMap->m_nEntriesPerBuffer));

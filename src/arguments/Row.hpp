@@ -8,9 +8,9 @@ namespace Arguments
   class Row : public Object
   {
   friend class RowSingle;
-  friend class DataBuffers::InfoSetBase;
+  friend class Arguments::InfoSetBase;
   friend class Expressions::Step;
-  friend class DataBuffers::RowBuffer;
+  friend class Arguments::RowBuffer;
 
   private:
     Dtm m_wxaColumnCell[1];

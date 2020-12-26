@@ -13,7 +13,7 @@
 
 namespace Arguments         {                                                 }
 namespace Arguments            { class Format;                                   }
-namespace DataBuffers    { class Crw;             class CrwBuffer;
+namespace Arguments    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
                               class HeadLine;        class Encoding_v2;
 class SP_Encoding_v2;
@@ -21,7 +21,7 @@ class Packing_v2;
                               class OverLine;        class TailLine;          }
 namespace CompilerOperators {                                                 }
 namespace Arguments       {                                                 }
-namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
+namespace Arguments       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
 namespace Arguments            { class Datum_h;
 class SN_Bcd;
@@ -43,7 +43,7 @@ class SP_Tme;
 class SP_Tsp;
                               template <i8 SPACE> class Datum_t;              }
 namespace Plans    { class Dynamo;                                   }
-namespace DataBuffers           {                                                 }
+namespace Arguments           {                                                 }
 namespace Expressions       { class Expr;            class ExprVec;
                               class LogicUnit;                                }
 namespace Facts             { class Fact;            class Kbase;
@@ -54,10 +54,10 @@ namespace Arguments           {                                                 
 namespace Resources           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
-namespace DataBuffers             { class Grid;            class Node;              }
+namespace Arguments             { class Grid;            class Node;              }
 
-namespace DataBuffers          { class EntBuffer;       class IndexTree;         }
-namespace DataBuffers          { class InfoSetBase;                              }
+namespace Arguments          { class EntBuffer;       class IndexTree;         }
+namespace Arguments          { class InfoSetBase;                              }
 namespace Expressions         { class SessionArray;                             }
 namespace Plans              { class Job;             
                               class JobList;         class Job_CreateTable;
@@ -75,7 +75,7 @@ namespace Oblique           { class AM;                                       }
 namespace Arguments          { class Operand;                                  }
 namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
                                                                               }
-namespace DataBuffers      {
+namespace Arguments      {
                               class PtnStream;       class TablePtn;          }
 namespace Plans         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
@@ -84,13 +84,13 @@ namespace Plans     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
 namespace Plans             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
-namespace DataBuffers   { class Crv;                                      }
+namespace Arguments   { class Crv;                                      }
 namespace Resources     { class RU_Cpu;          class RU_Memory;         }
 namespace Arguments              { class Row;                                      }
 namespace Arguments             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
-namespace DataBuffers          { class Session;         class SessionState;      }
-namespace DataBuffers       {                                                 }
+namespace Arguments          { class Session;         class SessionState;      }
+namespace Arguments       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Expressions             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
@@ -105,20 +105,20 @@ namespace Arguments      { class Tx;              class TxSet;             }
 
 using namespace Arguments;
 using namespace Arguments;
-using namespace DataBuffers;
+using namespace Arguments;
 using namespace CompilerOperators;
 using namespace Arguments;
-using namespace DataBuffers;
+using namespace Arguments;
 using namespace Arguments;
 using namespace Plans;
-using namespace DataBuffers;
+using namespace Arguments;
 using namespace Expressions;
 using namespace Facts;
 using namespace Arguments;
 using namespace Resources;
-using namespace DataBuffers;
-using namespace DataBuffers;
-using namespace DataBuffers;
+using namespace Arguments;
+using namespace Arguments;
+using namespace Arguments;
 using namespace Expressions;
 using namespace Plans;
 using namespace Resources;
@@ -129,17 +129,17 @@ using namespace Expressions;
 using namespace Oblique;
 using namespace Arguments;
 using namespace Parser;
-using namespace DataBuffers;
+using namespace Arguments;
 using namespace Plans;
 using namespace Plans;
 using namespace Plans;
 using namespace Prompt;
-using namespace DataBuffers;
+using namespace Arguments;
 using namespace Resources;
 using namespace Arguments;
 using namespace Arguments;
-using namespace DataBuffers;
-using namespace DataBuffers;
+using namespace Arguments;
+using namespace Arguments;
 using namespace SqlValues;
 using namespace Expressions;
 using namespace StorageEngine;
