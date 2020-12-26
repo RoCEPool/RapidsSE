@@ -57,6 +57,9 @@ void Arguments::vCheckAssumptions(void)
   ALWAYS(32 == sizeof(Ent_int));
 #endif
 
+  
+  ALWAYS(sizeof(Plan)      < C_SIZE_MEDIUM_OBJECT);
+
 }
 
 /*============================================================================*/

@@ -16,7 +16,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Expressions::vCheckAssumptions();
   Resources::vCheckAssumptions();
   Parser::vCheckAssumptions();
-  Plans::vCheckAssumptions();
   Resources::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
