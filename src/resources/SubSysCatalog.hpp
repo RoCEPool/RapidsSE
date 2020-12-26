@@ -12,6 +12,8 @@ namespace Resources
   public:
     SubSysCatalog(void);
   
+    static void vSubSystems(void*);
+
   };
 }
 
