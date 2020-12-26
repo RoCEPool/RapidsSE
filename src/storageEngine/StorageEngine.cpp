@@ -13,7 +13,6 @@ extern SizeHeap   gxaSizeHeap[];
 void StorageEngine::vCheckAllAssumptions(void)
 {
   Arguments::vCheckAssumptions();
-  Parser::vCheckAssumptions();
   Resources::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
