@@ -70,7 +70,7 @@ namespace StorageEngine
     Lock          m_okDicLock;
     i8            m_iEpoch;
     FocalObjects* m_pFocalObjects;
-    Format        m_oFormatters;
+    Format        m_oFormat;
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
     Article*      m_pLexiconArticle;

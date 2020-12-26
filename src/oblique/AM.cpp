@@ -101,7 +101,7 @@ JobList* AM::pDemonJobs(void) {
 Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
-Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormatters;          }
+Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->bHasStarted();   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }

@@ -10,7 +10,7 @@ PromptFun __Prompt_ascii (
   PF_ASCII,           // prompt function
   "Prompt_ascii"_Stz, // name of the prompt function
   "comment"_Stz,      // comment about the function
-  "ascii"_Stz,        // the prompt command
+  "- ascii"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_ascii,      // prompt function
   true,               // enabled
