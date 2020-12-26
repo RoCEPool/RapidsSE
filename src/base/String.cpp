@@ -48,7 +48,7 @@ void String::vCatSprint(Stz* szFormat, ...)
   
   va_list vaArgs;
   
-  char* aEnd = aAdd<char*>(m_caStr,nLength());
+  char* aEnd = aAdd<char*>(m_caCharArea,nLength());
   
   va_start(vaArgs,szFormat);
   vsprintf(aEnd,(char*)szFormat,vaArgs);
@@ -63,7 +63,7 @@ void String::vConcat(Stz* szArg)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
   
-  StrLib::vConcat(m_caStr,szArg->azChar());
+  StrLib::vConcat(m_caCharArea,szArg->azChar());
 }
 
 
@@ -75,7 +75,7 @@ void String::vCopy(Stz* szArg)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
-  StrLib::vCopyLen(m_caStr,szArg->azChar(),m_nSize - 1);
+  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),m_nArea - 1);
 
   aFooter()->vAssertFooter();
 }
@@ -88,7 +88,7 @@ i8 String::nLength(void)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
-  i8 nLen = StrLib::nLength(m_caStr);
+  i8 nLen = StrLib::nLength(m_caCharArea);
   
   return nLen;
 }
@@ -96,12 +96,12 @@ i8 String::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* get size of string                                                         */
 /*----------------------------------------------------------------------------*/
-i8 String::nSize(void)
+i8 String::nArea(void)
 {
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
-  return m_nSize;
+  return m_nArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@ void String::vSprint(Stz* szFormat, ...)
   va_list args;
   va_start(args,szFormat);
   
-  vsnprintf(m_caStr, m_nSize, szFormat->azChar(),args);
+  vsnprintf(m_caCharArea, m_nArea, szFormat->azChar(),args);
   
   va_end(args);
 }
@@ -125,7 +125,7 @@ i8 String::nStackUsage(void)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
   
-  i8 nBytes = sizeof(_Header) + sizeof(i8) + StrLib::nSize(m_caStr);
+  i8 nBytes = sizeof(_Header) + sizeof(i8) + StrLib::nSize(m_caCharArea);
   
   return nBytes;
 }
@@ -138,7 +138,7 @@ char* String::azStr(void)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
-  return (char*) m_caStr;
+  return (char*) m_caCharArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +149,7 @@ Stz* String::szStz(void)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
-  return (Stz*) m_caStr;
+  return (Stz*) m_caCharArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +163,7 @@ Footer* String::aFooter(void)
 {
   m_xHeader.vAssertHeader();
 
-  i8 nSizeHeaderBody = sizeof(m_xHeader) + sizeof(m_nSize) + m_nSize;
+  i8 nSizeHeaderBody = sizeof(m_xHeader) + sizeof(m_nArea) + m_nArea;
   
   Footer* aFooter = aAdd<Footer*>(this,nSizeHeaderBody);
   
