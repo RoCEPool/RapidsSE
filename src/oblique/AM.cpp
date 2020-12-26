@@ -2,7 +2,7 @@
 /* AM.cpp -- AttachMap helper                                                 */
 /*============================================================================*/
 
-#include "Oblique.h"
+#include "OBLIQUE.h"
 
 #include "eBO.h"
 #include "eCC.h"

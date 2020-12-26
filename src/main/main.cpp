@@ -2,7 +2,7 @@
 /* main.cpp - main entry                                                      */
 /*============================================================================*/
 
-#include "Oblique.h"
+#include "OBLIQUE.h"
 
 #include "Version.h"
 

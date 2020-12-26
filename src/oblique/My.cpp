@@ -2,7 +2,7 @@
 /* My.cpp -- My helper                                                        */
 /*============================================================================*/
 
-#include "Oblique.h"
+#include "OBLIQUE.h"
 
 extern Args          gxArgs;
 extern PromptCatalog gxPromptCatalog;
