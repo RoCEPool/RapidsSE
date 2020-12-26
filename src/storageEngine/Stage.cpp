@@ -58,14 +58,14 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
   // would the start marker always be on ORIGIN???
   
   // get first stage from stageNdeVec
-  Stream*  pStrand = pGet(0);
-  StageSpec* pStageSpec = pStrand->pStageSpec();
+  Stream*  pStream = pGet(0);
+  StageSpec* pStageSpec = pStream->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStrand->i_Node() == AM::pGrid()->iThisNode()) {
+      pStream->i_Node() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
-    Op* pOp = pStrand->pGet(0);
+    Op* pOp = pStream->pGet(0);
     RASSERT(AM::szJobName(pOp->pOpJob())->bSame("start"_Stz));
     // append a CANCELMARKER onto first operator
     pOp->vAppendLeft(new Marker(OM_CANCELMARKER),pTriggeringTask);
@@ -73,47 +73,47 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get strand for given partition                                             */
+/* get stream for given partition                                             */
 /*----------------------------------------------------------------------------*/
 Stream* Stage::pGetPartitionStrand(i8 i_Ptn)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Stream* pStrand   = nullptr;
+  Stream* pStream   = nullptr;
   StageSpec* pStageSpec = nullptr;
   
-  for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
-    pStrand  = pGet(i_Strand);
-    pStageSpec = pStrand->pStageSpec();
+  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+    pStream  = pGet(i_Stream);
+    pStageSpec = pStream->pStageSpec();
     
     if ( ! pStageSpec->bNodeTopo() &&
-        pStrand->tPtnNo() == i_Ptn)
-      return pStrand;
+        pStream->tPtnNo() == i_Ptn)
+      return pStream;
   }
   
-  return pStrand;
+  return pStream;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get strand for given node                                                  */
+/* get stream for given node                                                  */
 /*----------------------------------------------------------------------------*/
 Stream* Stage::pGetNodeStrand(i8 i_Node)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  Stream* pStrand   = nullptr;
+  Stream* pStream   = nullptr;
   StageSpec* pStageSpec = nullptr;
   
   for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
-    pStrand  = pGet(iNdeVec);
-    pStageSpec = pStrand->pStageSpec();
+    pStream  = pGet(iNdeVec);
+    pStageSpec = pStream->pStageSpec();
     
     if (pStageSpec->bNodeTopo() &&
-        pStrand->i_Node() == i_Node)
-      return pStrand;
+        pStream->i_Node() == i_Node)
+      return pStream;
   }
   
-  return pStrand;
+  return pStream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,10 +129,10 @@ void Stage::vDump(Pipeline* pPipeline)
          m_sStageNm.szStz(),
          aPO[m_pStageSpec->eTopology()]);
 
-  for (i8 i_Strand = 0; i_Strand < nItems(); i_Strand++) {
-    Stream* pStrand = pGet(i_Strand);
+  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+    Stream* pStream = pGet(i_Stream);
   
-    pStrand->vDump();
+    pStream->vDump();
   }
 }
 
@@ -146,18 +146,18 @@ i8 Stage::nOpsOnNode(i8 iNode)
   i8 nOps = 0;
 
   for (i8 i_Node = 0; i_Node < nItems(); i_Node++) {
-    Stream* pStrand = pGet(i_Node);
+    Stream* pStream = pGet(i_Node);
 
     if (m_pStageSpec->bNodeTopo()) {
       // skip if Op not for this node
-      if (pStrand->i_Node() == iNode) {
-        nOps += pStrand->nItems();
+      if (pStream->i_Node() == iNode) {
+        nOps += pStream->nItems();
       }
     }
     else {
-      i8 iNode_exe = AM::pPtnMap()->i_WhichNode(pStrand->tPtnNo());
+      i8 iNode_exe = AM::pPtnMap()->i_WhichNode(pStream->tPtnNo());
       if (iNode_exe == iNode) {
-        nOps += pStrand->nItems();
+        nOps += pStream->nItems();
       }
     }
   }
@@ -266,14 +266,14 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
   // would the start marker always be on ORIGIN???
   
   // get first stage from stageNdeVec
-  Stream*  pStrand = pGet(0);
-  StageSpec* pStageSpec = pStrand->pStageSpec();
+  Stream*  pStream = pGet(0);
+  StageSpec* pStageSpec = pStream->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStrand->i_Node() == AM::pGrid()->iThisNode()) {
+      pStream->i_Node() == AM::pGrid()->iThisNode()) {
     
     // get first operator of this first stage
-    Op* pOp = pStrand->pGet(0);
+    Op* pOp = pStream->pGet(0);
     if (! AM::szJobName(pOp->pOpJob())->bSame("eatAll"_Stz) &&
         ! AM::szJobName(pOp->pOpJob())->bSame("statWrite"_Stz)) {
 
@@ -289,7 +289,7 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the strands for this stage based on stage topology                  */
+/* create the streams for this stage based on stage topology                  */
 /*----------------------------------------------------------------------------*/
 void Stage::vCreateStrands(void)
 {
@@ -297,68 +297,68 @@ void Stage::vCreateStrands(void)
   
   tPN tPtnNo;
   i8 i_Node;
-  i8 i_Strand;
-  Stream* pStrand;
+  i8 i_Stream;
+  Stream* pStream;
   
   switch (m_pStageSpec->eTopology()) {
             
     //                      -- node topologies --                             //
       
-    case PO_ALL_NODES: // create a strand for all nodes
+    case PO_ALL_NODES: // create a stream for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
-      i_Strand = 0;
+      i_Stream = 0;
       tPtnNo = C_UNKNOWN;
       for (i_Node = 0; i_Node < AM::pGrid()->nConnectedNodes(); i_Node++) {
-        pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-        vAdd(pStrand);
+        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+        vAdd(pStream);
       }
       break;
       
-    case PO_ORIGIN: // create a strand for origin node only
+    case PO_ORIGIN: // create a stream for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
-      i_Strand = 0;
+      i_Stream = 0;
       tPtnNo = C_UNKNOWN;
       i_Node = m_pPipeline->i_Origin();
-      pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-      vAdd(pStrand);
+      pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+      vAdd(pStream);
       break;
         
-    case PO_SPECIFIC_NODE: // create a strand for a specific node only
+    case PO_SPECIFIC_NODE: // create a stream for a specific node only
       RASSERT(m_pStageSpec->bNodeTopo());
       RASSERT(0);
       break;
         
     //                    -- partition topologies --                          //
 
-    case PO_ALL_PARTITIONS: // create a strand for all partitions in grid
+    case PO_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
-        pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-        vAdd(pStrand);
+        i_Stream = AM::pPtnMap()->i_WhichStrand(tPtnNo);
+        pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+        vAdd(pStream);
       }
       break;
       
-    case PO_ALL_PARTITIONS_ON_ORIGIN: // create a strand for all ptns on origin
+    case PO_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if (i_Node == m_pPipeline->i_Origin()) {
-          i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
-          pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-          vAdd(pStrand);
+          i_Stream = AM::pPtnMap()->i_WhichStrand(tPtnNo);
+          pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+          vAdd(pStream);
         }
       }
       break;
       
-    case PO_SPECIFIC_PARTITION: // create a strand for a specific partition
+    case PO_SPECIFIC_PARTITION: // create a stream for a specific partition
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      i_Strand = AM::pPtnMap()->i_WhichStrand(tPtnNo);
-      pStrand = new Stream(m_pStageSpec,this,i_Strand,tPtnNo,i_Node);
-      vAdd(pStrand);
+      i_Stream = AM::pPtnMap()->i_WhichStrand(tPtnNo);
+      pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
+      vAdd(pStream);
       break;
       
     default:

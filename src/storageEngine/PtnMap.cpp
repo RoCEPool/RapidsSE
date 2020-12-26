@@ -85,13 +85,13 @@ void PtnMap::vRunningHash(i8* aiHash, i8 iMixIn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert i_Strand to logical partition number (in grid)                     */
+/* convert i_Stream to logical partition number (in grid)                     */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tStrandToLglPtnNo(i8 i_Strand)
+tPN PtnMap::tStrandToLglPtnNo(i8 i_Stream)
 {
   _static_
   
-  tPN tPtnNo = (i_Strand * AM::nConnectedNodes()) + AM::iThisNodeNo();
+  tPN tPtnNo = (i_Stream * AM::nConnectedNodes()) + AM::iThisNodeNo();
   
   return tPtnNo;
 }
@@ -160,17 +160,17 @@ i8 PtnMap::i_WhichNode(tPN tPtnNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which strand a logical partition is mapped to                          */
+/* get which stream a logical partition is mapped to                          */
 /*----------------------------------------------------------------------------*/
 i8 PtnMap::i_WhichStrand(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  i8 i_Strand = m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn;
+  i8 i_Stream = m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn;
    
-  //RASSERT(i_Strand == i_LglPtnNoToInitialStrand(tPtnNo));
+  //RASSERT(i_Stream == i_LglPtnNoToInitialStrand(tPtnNo));
 
-  return i_Strand;
+  return i_Stream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,9 +210,9 @@ i8 PtnMap::i_LglPtnNoToInitialStrand(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_Strand = tPtnNo / AM::nBootNodes();
+  i8 i_Stream = tPtnNo / AM::nBootNodes();
   
-  return i_Strand;
+  return i_Stream;
 }
 
 /*----------------------------------------------------------------------------*/

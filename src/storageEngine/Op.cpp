@@ -20,36 +20,36 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(OpSpec* pOpSpec, Stream* pStrand)
+Op::Op(OpSpec* pOpSpec, Stream* pStream)
 : Focal(CN_OP,AM::iNextOpId()
-, AM::iJobUniqueId(pStrand->pPipeline()->pPipelineJob()))
+, AM::iJobUniqueId(pStream->pPipeline()->pPipelineJob()))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   RASSERT(pOpSpec);
   
-  m_sPipelineNm = pStrand->pPipeline()->szPipelineNm();
-  m_sStageNm    = pStrand->pStage()->szStageNm();
-  m_sStreamNm   = pStrand->szStreamNm();
+  m_sPipelineNm = pStream->pPipeline()->szPipelineNm();
+  m_sStageNm    = pStream->pStage()->szStageNm();
+  m_sStreamNm   = pStream->szStreamNm();
   m_sOpNm       = pOpSpec->szOpNm();
   m_i_Op        = pOpSpec->i_OpSpec();
   
   m_bTraceOp    = false;
   
   m_pOpSpec   = pOpSpec;
-  m_pStrand   = pStrand;
-  m_pStage    = pStrand->pStage();
-  m_pPipeline = pStrand->pPipeline();
+  m_pStream   = pStream;
+  m_pStage    = pStream->pStage();
+  m_pPipeline = pStream->pPipeline();
 
   if (m_pStage->pStageSpec()->bNodeTopo()) {
     m_tPtnNo = C_UNKNOWN;
-    RASSERT(pStrand->tPtnNo() == m_tPtnNo);
-    m_i_Node = pStrand->i_Node();
+    RASSERT(pStream->tPtnNo() == m_tPtnNo);
+    m_i_Node = pStream->i_Node();
   }
   else {
-    m_tPtnNo = pStrand->tPtnNo();
+    m_tPtnNo = pStream->tPtnNo();
     m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-    RASSERT(pStrand->i_Node() == m_i_Node);
+    RASSERT(pStream->i_Node() == m_i_Node);
   }
   
   bool m_bDataBuffer  = false;
@@ -88,7 +88,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStrand)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pPipelineJob = pStrand->pPipeline()->pPipelineJob();
+  Job* pPipelineJob = pStream->pPipeline()->pPipelineJob();
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
   if (AM::bVerbose() || pJobTags->bHasName(C_TAG_TRACEOP)) {
@@ -1325,8 +1325,8 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      Stream* pStrand = pNextStage->pGetPartitionStrand(m_tPtnNo);
-      tPN tPtnNo = pStrand->tPtnNo();
+      Stream* pStream = pNextStage->pGetPartitionStrand(m_tPtnNo);
+      tPN tPtnNo = pStream->tPtnNo();
       vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, tPtnNo);
       break;
     }
@@ -1684,10 +1684,10 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     case XK_NORMAL: {
       
       ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
-      for (i8 i_Strand = 0; i_Strand < pNextStage->nItems(); i_Strand++) {
+      for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
         
-        Stream* pStrand = pNextStage->pGet(i_Strand);
-        tPtnNo = pStrand->tPtnNo();
+        Stream* pStream = pNextStage->pGet(i_Stream);
+        tPtnNo = pStream->tPtnNo();
         
         // xmitNode is the partition node
     

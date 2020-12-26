@@ -11,15 +11,15 @@ namespace Arguments
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
     s32  m_sStreamNm;   // name of this stream
-    i8   m_i_Strand;    // [strand] in stage
+    i8   m_i_Stream;    // [stream] in stage
 
     StageSpec* m_pStageSpec;  // stage specification for this stream
     Stage*     m_pStage;      // which stage of pipeline
     Pipeline*  m_pPipeline;   // which pipeline
 
-    tPN  m_tPtnNo; // this strand processes m_tPtnNo in grid
+    tPN  m_tPtnNo; // this stream processes m_tPtnNo in grid
                    //   will be C_UNKNOWN for stage with node topology
-    i8   m_i_Node; // this strand processes m_i_Node in grid
+    i8   m_i_Node; // this stream processes m_i_Node in grid
                    //   is PtnMap::i_PtnNoToNode(m_tPtnNo);
  
     // -- -- -- -- -- --
@@ -32,7 +32,7 @@ namespace Arguments
     void  operator delete(void*);
     
     Stream(StageSpec* pStageSpec, Stage* pStage,
-           i8 i_Strand, tPN tPtnNo, i8 i_Node);
+           i8 i_Stream, tPN tPtnNo, i8 i_Node);
    ~Stream(void) noexcept(false);
   
     void vDump(void);

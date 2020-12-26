@@ -859,14 +859,14 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
     Stage* pStage = m_pPipeline->pGet(i_Stage);
     
     i8 nStrands = pStage->nItems();
-    for (i8 i_Strand = 0; i_Strand < nStrands; i_Strand++) {
+    for (i8 i_Stream = 0; i_Stream < nStrands; i_Stream++) {
  
-      Stream* pStrand= pStage->pGet(i_Strand);
+      Stream* pStream= pStage->pGet(i_Stream);
       
-      i8 nOps = pStrand->nItems();
+      i8 nOps = pStream->nItems();
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
 
-        Op* pOp = pStrand->pGet(i_Op);
+        Op* pOp = pStream->pGet(i_Op);
         
         OperandQueue* pQueueLeft = pOp->pQueueLeft();
         
@@ -878,7 +878,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
           vTrace("%s %s[%lld] : %s%s ___ %lld\n"_Stz
                  ,m_pPipeline->szPipelineNm()
                  ,pStage->szStageNm()
-                 ,i_Strand
+                 ,i_Stream
                  
                  ,pOp->szOpNm()
                  ,sOpTags.szStz()
@@ -888,7 +888,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
         pFile->vPrint("%s %s[%lld] : %s%s ___ %lld\n"_Stz
           ,m_pPipeline->szPipelineNm()
           ,pStage->szStageNm()
-          ,i_Strand
+          ,i_Stream
           
           ,pOp->szOpNm()
           ,sOpTags.szStz()

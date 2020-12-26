@@ -106,7 +106,7 @@ Session::Session(void)
   
   m_iPid = Process::iGetPid();
 
-  m_i_Strand      = C_UNKNOWN;
+  m_i_Stream      = C_UNKNOWN;
   
   //m_oDicStack;
   m_pSsnJob     = nullptr;
@@ -203,10 +203,10 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Session* pSession = _pSession(pObject);
   
-  vTrace("pid %lld %s strand %lld"_Stz,
+  vTrace("pid %lld %s stream %lld"_Stz,
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
-         pSession->i_Strand());
+         pSession->i_Stream());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,21 +336,21 @@ Job* Session::pJob(void)
 /*----------------------------------------------------------------------------*/
 /* which partition                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Session::i_Strand(void)
+i8 Session::i_Stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return m_i_Strand;
+  return m_i_Stream;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set partition                                                              */
 /*----------------------------------------------------------------------------*/
-void Session::vStrand(i8 i_Strand)
+void Session::vStrand(i8 i_Stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_i_Strand = i_Strand;
+  m_i_Stream = i_Stream;
 }
 
 /*----------------------------------------------------------------------------*/

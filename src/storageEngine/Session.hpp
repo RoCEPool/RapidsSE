@@ -49,7 +49,7 @@ namespace Arguments
     
     i8       m_iPid;       // process which created this session
   
-    i8       m_i_Strand;   // which partition this session processes
+    i8       m_i_Stream;   // which partition this session processes
     DicStack m_oDicStack;  // dictionary stack
     TypedStack*   m_pJobStack;  // stack of jobs
 
@@ -84,8 +84,8 @@ namespace Arguments
     void      vEndTx(void);
     void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
-    i8        i_Strand(void);
-    void      vStrand(i8 i_Strand);
+    i8        i_Stream(void);
+    void      vStrand(i8 i_Stream);
     DicStack* pPathStack(void);
       
     void      vReport(void);

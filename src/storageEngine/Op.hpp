@@ -12,14 +12,14 @@ namespace Arguments
   private:
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
-    s32  m_sStreamNm;   // strand name within strand within pipeline
+    s32  m_sStreamNm;   // stream name within stream within pipeline
     s32  m_sOpNm;       // name of this operator
-    i8   m_i_Op;        // [op] in strand
+    i8   m_i_Op;        // [op] in stream
   
     bool m_bTraceOp;    // tracing this operator
 
     OpSpec*   m_pOpSpec;   // specification of this operator
-    Stream*   m_pStrand;   // which strand of stage of pipleine
+    Stream*   m_pStream;   // which stream of stage of pipleine
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_pPipeline; // which pipeline
   
@@ -63,7 +63,7 @@ namespace Arguments
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Stream* pStrand);
+    Op(OpSpec* pOpSpec, Stream* pStream);
    ~Op(void) noexcept(false);
   
     void vDump(i8 i_Op);

@@ -35,7 +35,7 @@ namespace Arguments
     static i8   iHashToBucketId(i8 iHash);
     static tPN  tHashToPtnNo(i8 iHash, i8 nPtnsInGrid);
     static void vRunningHash(i8* aiHash, i8 iMixIn);
-    static tPN  tStrandToLglPtnNo(i8 i_Strand);
+    static tPN  tStrandToLglPtnNo(i8 i_Stream);
 
     void vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar);
     void vDumpDataBuffers(void);

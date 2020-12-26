@@ -16,7 +16,7 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
+Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
                tPN tPtnNo, i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
@@ -30,7 +30,7 @@ Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Strand,
   
   m_tPtnNo     = tPtnNo;
   m_i_Node     = i_Node;
-  m_i_Strand   = i_Strand;
+  m_i_Stream   = i_Stream;
   
   vSynthesiseName();
 
@@ -54,7 +54,7 @@ Stream::~Stream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the ops for this strand                                             */
+/* create the ops for this stream                                             */
 /*----------------------------------------------------------------------------*/
 void Stream::vCreateOps(void)
 {
@@ -79,15 +79,15 @@ void Stream::vDump(void)
   
   if (m_pStageSpec->bNodeTopo()) {
     vTrace("  [%02lld] (N%lld) Node-Stream %s:\n"_Stz,
-           m_i_Strand,
+           m_i_Stream,
            m_i_Node,
            m_sStreamNm.szStz());
   }
   else {
     vTrace("  [%02lld] (N%lld,S%02lld) Partition-Stream %s:\n"_Stz,
-           m_i_Strand,
+           m_i_Stream,
            m_i_Node,
-           m_i_Strand,
+           m_i_Stream,
            m_sStreamNm.szStz());
   }
 
@@ -99,7 +99,7 @@ void Stream::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition this strand needs to run on                                  */
+/* get partition this stream needs to run on                                  */
 /*----------------------------------------------------------------------------*/
 i8 Stream::i_Node(void)
 {
@@ -109,7 +109,7 @@ i8 Stream::i_Node(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipeline for this strand                                               */
+/* get pipeline for this stream                                               */
 /*----------------------------------------------------------------------------*/
 Pipeline* Stream::pPipeline(void)
 {
@@ -119,7 +119,7 @@ Pipeline* Stream::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition in grid this strand needs to run on                          */
+/* get partition in grid this stream needs to run on                          */
 /*----------------------------------------------------------------------------*/
 i8 Stream::tPtnNo(void)
 {
@@ -129,7 +129,7 @@ i8 Stream::tPtnNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage for this strand                                                  */
+/* get stage for this stream                                                  */
 /*----------------------------------------------------------------------------*/
 Stage* Stream::pStage(void)
 {
@@ -139,7 +139,7 @@ Stage* Stream::pStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage spec for this strand                                             */
+/* get stage spec for this stream                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* Stream::pStageSpec(void)
 {
@@ -174,7 +174,7 @@ void Stream::vSpawnOperatorJobs(i8 iSessionId, i8 i_ThisNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage spec for this strand                                             */
+/* get stage spec for this stream                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Stream::szStreamNm(void)
 {
@@ -184,21 +184,21 @@ Stz* Stream::szStreamNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* synthesise name of this strand                                             */
+/* synthesise name of this stream                                             */
 /*----------------------------------------------------------------------------*/
 void Stream::vSynthesiseName(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
  
   if (m_pStageSpec->bNodeTopo()) {
-    m_sStreamNm.vSprint("_strand_N%lld_of_%s"_Stz,
+    m_sStreamNm.vSprint("_stream_N%lld_of_%s"_Stz,
                           m_i_Node,
                           m_pStageSpec->szStageNm());
   }
   else {
-    m_sStreamNm.vSprint("_strandv_N%lldS%lld_of_%s"_Stz,
+    m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
                           m_i_Node,
-                          m_i_Strand,
+                          m_i_Stream,
                           m_pStageSpec->szStageNm());
   }
 }

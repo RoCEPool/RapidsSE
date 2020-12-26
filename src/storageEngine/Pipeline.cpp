@@ -273,12 +273,12 @@ void Pipeline::vSetupJob(void)
   Stage* pStage = pGet(0);
   
   i8 nDivs = pStage->nItems();
-  for (i8 i_Strand = 0; i_Strand < nDivs; i_Strand++) {
-    Stream* pStrand = pStage->pGet(i_Strand);
+  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
+    Stream* pStream = pStage->pGet(i_Stream);
 
-    i8 nOps = pStrand->nItems();
+    i8 nOps = pStream->nItems();
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-      Op* pOp = pStrand->pGet(i_Op);
+      Op* pOp = pStream->pGet(i_Op);
       
       if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
         m_bPulsedLimit = true;
@@ -289,12 +289,12 @@ void Pipeline::vSetupJob(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Strand = 0; i_Strand < nDivs; i_Strand++) {
-    Stream* pStrand = pStage->pGet(i_Strand);
+  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
+    Stream* pStream = pStage->pGet(i_Stream);
 
-    i8 nOps = pStrand->nItems();
+    i8 nOps = pStream->nItems();
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-      Op* pOp = pStrand->pGet(i_Op);
+      Op* pOp = pStream->pGet(i_Op);
 
       if (AM::szJobName(pOp->pOpJob())->bSame("scan"_Stz)) {
         m_pOpToPulse = pOp;
@@ -317,10 +317,10 @@ void Pipeline::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
     
     Stage* pStage = pGet(i_Stage);
     
-    for (i8 i_Strand = 0; i_Strand < pStage->nItems(); i_Strand++) {
-      Stream* pStrand = pStage->pGet(i_Strand);
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
 
-      pStrand->vSpawnOperatorJobs(iSessionId, iNode);
+      pStream->vSpawnOperatorJobs(iSessionId, iNode);
     }
   }
   
