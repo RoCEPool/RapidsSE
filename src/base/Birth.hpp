@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   class Birth : public Object
   {

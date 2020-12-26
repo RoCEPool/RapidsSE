@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-AggTimer* Resources::_pAggTimer(void* aAddr)
+AggTimer* BASE::_pAggTimer(void* aAddr)
 {
   AggTimer* pAggTimer = reinterpret_cast<AggTimer*>(aAddr);
   

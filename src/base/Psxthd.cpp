@@ -18,7 +18,7 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PsxThd* Resources::_pPsxThd(void* aAddr)
+PsxThd* BASE::_pPsxThd(void* aAddr)
 {
   PsxThd* pPsxThd = reinterpret_cast<PsxThd*>(aAddr);
   

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   class FreeBuffer : public PoolBuffer
   {

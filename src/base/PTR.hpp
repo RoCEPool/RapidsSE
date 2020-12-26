@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   template <class CLASSNM>
   class PTR

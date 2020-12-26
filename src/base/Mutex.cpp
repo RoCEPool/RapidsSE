@@ -15,7 +15,7 @@ Atomic gixMutex_err;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Mutex* Resources::_pMutex(void* aAddr)
+Mutex* BASE::_pMutex(void* aAddr)
 {
   Mutex* pMutex = reinterpret_cast<Mutex*>(aAddr);
   

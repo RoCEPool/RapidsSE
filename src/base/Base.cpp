@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Resources::vCheckAssumptions(void)
+void BASE::vCheckAssumptions(void)
 {
   // resources
   
@@ -105,7 +105,7 @@ void Resources::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 /* test with                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Resources::bTraceWith(Stz* szWith)
+bool BASE::bTraceWith(Stz* szWith)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
@@ -253,7 +253,7 @@ bool Resources::bTraceWith(Stz* szWith)
 /*----------------------------------------------------------------------------*/
 /* trace with                                                                 */
 /*----------------------------------------------------------------------------*/
-void Resources::vTraceWith(void)
+void BASE::vTraceWith(void)
 {
   vTrace("\nWith:\n"_Stz);
 
@@ -374,7 +374,7 @@ void Resources::vTraceWith(void)
 /*----------------------------------------------------------------------------*/
 /* test without                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Resources::bTraceWithout(Stz* szWith)
+bool BASE::bTraceWithout(Stz* szWith)
 {
 #ifndef WITH_ACTION_SEQUENCE
   if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
@@ -522,7 +522,7 @@ bool Resources::bTraceWithout(Stz* szWith)
 /*----------------------------------------------------------------------------*/
 /* trace what hasn't been compiled with                                       */
 /*----------------------------------------------------------------------------*/
-void Resources::vTraceWithout(void)
+void BASE::vTraceWithout(void)
 {
   vTrace("\nWithout:\n"_Stz);
 

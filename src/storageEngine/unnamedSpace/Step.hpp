@@ -190,19 +190,19 @@ namespace Expressions
 }
 
 #define THROW_ASTACK() \
-  Resources::vThrow(FK_ASTACK,VL_FATAL,\
+  BASE::vThrow(FK_ASTACK,VL_FATAL,\
                       __func__,__FILE__,__LINE__, \
                       "Invalid a-stack"_Stz); \
 EndDefine
 
 #define THROW_DSTACK() \
-  Resources::vThrow(FK_DSTACK,VL_FATAL,\
+  BASE::vThrow(FK_DSTACK,VL_FATAL,\
                       __func__,__FILE__,__LINE__, \
                       "Invalid d-stack"_Stz); \
 EndDefine
 
 #define THROW_RSTACK() \
-  Resources::vThrow(FK_RSTACK,VL_FATAL,\
+  BASE::vThrow(FK_RSTACK,VL_FATAL,\
                       __func__,__FILE__,__LINE__, \
                       "Invalid r-stack"_Stz); \
 EndDefine

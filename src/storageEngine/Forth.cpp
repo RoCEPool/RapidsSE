@@ -119,7 +119,7 @@ void Forth::vCheckBreakPt(void)
   if (! pThisWord->bBreakPt())
     return;
   
-  Resources::vDebugPoint();
+  BASE::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

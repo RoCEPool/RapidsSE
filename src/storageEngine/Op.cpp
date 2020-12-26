@@ -415,7 +415,7 @@ void Op::vInitOperandHandlers(void)
     m_paOperandHandler[i_Kind] = pHandler;
   }
   
-  Resources::vDebugPoint();
+  BASE::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

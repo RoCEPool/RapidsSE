@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Timer* Resources::_pTimer(void* aAddr)
+Timer* BASE::_pTimer(void* aAddr)
 {
   Timer* pTimer = reinterpret_cast<Timer*>(aAddr);
   

@@ -8,7 +8,7 @@
 #include <netdb.h>
 #include <stdexcept>
 #include "MachineTypes.h"
-using namespace Resources;
+using namespace BASE;
 
 
 class Heartbeat {

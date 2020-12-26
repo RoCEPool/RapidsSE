@@ -5,7 +5,7 @@
 
 #include "Base.h"
 
-namespace Resources
+namespace BASE
 {
 
 /*----------------------------------------------------------------------------*/

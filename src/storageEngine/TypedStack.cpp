@@ -240,7 +240,7 @@ i8 TypedStack::iPopAsInt(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
-    Resources::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,VL_FATAL,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -258,7 +258,7 @@ ForthCell* TypedStack::aPopFip(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_FIPVAL) )
-    Resources::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,VL_FATAL,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -277,7 +277,7 @@ i8 TypedStack::iPopInt(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_INTVAL) )
-    Resources::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,VL_FATAL,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -296,7 +296,7 @@ Object* TypedStack::pPopPtr(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (! bGuard(CN_PTRVAL) && ! bTopIsZero() )
-    Resources::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,VL_FATAL,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -315,7 +315,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_STZVAL) )
-    Resources::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,VL_FATAL,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   
@@ -338,7 +338,7 @@ void TypedStack::vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
-    Resources::vThrow(FK_DSTACK,VL_FATAL,
+    BASE::vThrow(FK_DSTACK,VL_FATAL,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
   

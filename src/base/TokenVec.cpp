@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__pCastFunction(Resources,TokenVec,CN_TOKENVEC)
+__pCastFunction(BASE,TokenVec,CN_TOKENVEC)
 __aNewFunction(TokenVec,CN_TOKENVEC)
 __vDeleteFunction(TokenVec,CN_TOKENVEC)
 __aFooterFunction(TokenVec)
@@ -254,7 +254,7 @@ void TokenVec::vCollectEnd(Token* pToken)
   
   //if (pToken->szChars()->bSame("catalog"_Stz))
   //if (pToken->szChars()->bSame(""_Stz))
-  //  Resources::vDebugPoint();
+  //  BASE::vDebugPoint();
   
   vIntegrityCheck();
 }
@@ -1298,7 +1298,7 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
 
   vIntegrityCheck();
 
-  //Resources::vDebugPoint();
+  //BASE::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

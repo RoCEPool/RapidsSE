@@ -5,7 +5,7 @@
 
 #include "eTN.h"
 
-namespace Resources
+namespace BASE
 {
   static const i8 C_ENAME_SET = 256;
   

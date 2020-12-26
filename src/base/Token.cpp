@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Resources,Token,CN_TOKEN)
+__pCastFunction(BASE,Token,CN_TOKEN)
 __aNewFunction(Token,CN_TOKEN)
 __vDeleteFunction(Token,CN_TOKEN)
 __aFooterFunction(Token)

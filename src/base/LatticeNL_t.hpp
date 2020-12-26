@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {  
   template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
   class LatticeNL_t : public Object
@@ -57,7 +57,7 @@ namespace Resources
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>* Resources::_pLatticeNL(void* aAddr)
+LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>* BASE::_pLatticeNL(void* aAddr)
 {
   LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>* pVector =
     reinterpret_cast<LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>*>(aAddr);

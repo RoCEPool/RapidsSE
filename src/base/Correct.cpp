@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* debug point                                                                */
 /*----------------------------------------------------------------------------*/
-void Resources::vDebugPoint(void)
+void BASE::vDebugPoint(void)
 {
   sleep(0);
 }
@@ -15,7 +15,7 @@ void Resources::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 /* dump current thread's call stack                                           */
 /*----------------------------------------------------------------------------*/
-void Resources::vThreadCallStackDump(void)
+void BASE::vThreadCallStackDump(void)
 {
   // get void*'s for all frames on the stack
   void* aaFramePtr[C_STACK_BACKTRACE];
@@ -35,7 +35,7 @@ void Resources::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* abort the process                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Resources::vAbortProcess(void)
+[[ noreturn ]] void BASE::vAbortProcess(void)
 {
   // dump the call stack
   vThreadCallStackDump();
@@ -56,7 +56,7 @@ void Resources::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* throw anexception                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Resources::vThrow(eFK   eKind,
+[[ noreturn ]] void BASE::vThrow(eFK   eKind,
                                         eVL   eSeverity,
                                         const char* azFunc,
                                         const char* azFilePath,
@@ -64,7 +64,7 @@ void Resources::vThreadCallStackDump(void)
                                         Stz*  szFormat,...)
 {
   fprintf(stderr,
-          "Resources::vThrow:\n"
+          "BASE::vThrow:\n"
           "eKind = %lld\n"
           "eSeverity = %lld\n"
           "azFunc = %s\n"
@@ -111,7 +111,7 @@ void Resources::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* throw a user exception                                                     */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Resources::vThrowUser(eFK   eKind,
+[[ noreturn ]] void BASE::vThrowUser(eFK   eKind,
                                         eVL   eSeverity,
                                         const char* azFunc,
                                         const char* azFilePath,
@@ -120,7 +120,7 @@ void Resources::vThreadCallStackDump(void)
 {
   if (AM::bDeveloper()) {
     fprintf(stderr,
-            "Resources::vThrow:\n"
+            "BASE::vThrow:\n"
             "eKind = %lld\n"
             "eSeverity = %lld\n"
             "azFunc = %s\n"
@@ -158,7 +158,7 @@ void Resources::vThreadCallStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Resources::vThrowType(eFK   eKind,
+[[ noreturn ]] void BASE::vThrowType(eFK   eKind,
                                             eVL   eSeverity,
                                             const char* azFunc,
                                             const char* azFilePath,

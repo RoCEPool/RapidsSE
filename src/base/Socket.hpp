@@ -7,7 +7,7 @@ static Stz* C_LOOPBACK_IP  = "127.0.0.1"_Stz;
 
 #include "Resource.hpp"
 
-namespace Resources
+namespace BASE
 {
   class Socket : public Resource
   {

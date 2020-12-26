@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TextBuffer* Resources::_pTextBuffer(void* aAddr)
+TextBuffer* BASE::_pTextBuffer(void* aAddr)
 {
   TextBuffer* pTextBuffer = reinterpret_cast<TextBuffer*>(aAddr);
   

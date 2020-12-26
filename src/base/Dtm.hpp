@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   class Dtm
   {
@@ -29,11 +29,11 @@ namespace Resources
   friend class Arguments::SP_Tme;
   friend class Arguments::SP_Tsp;
 
-  friend class Resources::Birth;
-  friend class Resources::Now;
+  friend class BASE::Birth;
+  friend class BASE::Now;
   
-  friend class Resources::Mutex;
-  friend class Resources::IvlLib;
+  friend class BASE::Mutex;
+  friend class BASE::IvlLib;
   
   friend class Arguments::Row;
 

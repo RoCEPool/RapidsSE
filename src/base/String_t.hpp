@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   template <int SIZE>
   class String_t : public Object
@@ -68,7 +68,7 @@ namespace Resources
   void* _pStrVar(void* aAddr);
 }
 
-using namespace Resources;
+using namespace BASE;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

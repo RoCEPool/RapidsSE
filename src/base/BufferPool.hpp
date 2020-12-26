@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   static const void* C_ADR_REGION   = (void*)0x204800000000;
 
@@ -12,7 +12,7 @@ namespace Resources
 
   class BufferPool : public Object
   {
-  friend class Resources::PoolHelper;
+  friend class BASE::PoolHelper;
   private:
     i8      m_nBuffers;   // number of buffers in pool
     PoolBuffer* m_pBase;  // starting address of pool (large section)

@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Resources,Charser,CN_CHARSER)
+__pCastFunction(BASE,Charser,CN_CHARSER)
 __aNewFunction(Charser,CN_CHARSER)
 __vDeleteFunction(Charser,CN_CHARSER)
 __aFooterFunction(Charser)
@@ -112,25 +112,25 @@ void Charser::vGetAnnChar(AnnChar& rxAnnChar, bool bStrip)
   // debug
 
 //  if (IS_FILE == m_eSource) {
-//    Resources::vDebugPoint();
+//    BASE::vDebugPoint();
 //    if (m_bSingleLineCmd)
-//      Resources::vDebugPoint();
+//      BASE::vDebugPoint();
 //    else
-//      Resources::vDebugPoint();
+//      BASE::vDebugPoint();
 //  }
 //  else if (IS_STDIN == m_eSource) {
-//    Resources::vDebugPoint();
+//    BASE::vDebugPoint();
 //    if (m_bSingleLineCmd)
-//      Resources::vDebugPoint();
+//      BASE::vDebugPoint();
 //    else
-//      Resources::vDebugPoint();
+//      BASE::vDebugPoint();
 //  }
 //  else if (IS_STRING == m_eSource) {
-//    Resources::vDebugPoint();
+//    BASE::vDebugPoint();
 //    if (m_bSingleLineCmd)
-//      Resources::vDebugPoint();
+//      BASE::vDebugPoint();
 //    else
-//      Resources::vDebugPoint();
+//      BASE::vDebugPoint();
 //  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

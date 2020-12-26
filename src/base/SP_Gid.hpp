@@ -6,7 +6,7 @@
 #include "eIK.h"
 #include "eLG.h"
 
-namespace Resources
+namespace BASE
 {
   class SP_Gid : public SPsmall
   {

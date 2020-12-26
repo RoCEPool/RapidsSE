@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipNode* Resources::_pSkipNode(void* aAddr)
+SkipNode* BASE::_pSkipNode(void* aAddr)
 {
   SkipNode* pSkipNode = reinterpret_cast<SkipNode*>(aAddr);
   

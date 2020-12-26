@@ -5,11 +5,11 @@
 
 
 
-namespace Resources {
+namespace BASE {
   template <class CLASSNM> class CRM;
 }
 
-namespace Resources
+namespace BASE
 {
   template <class CLASSNM>
   class REF

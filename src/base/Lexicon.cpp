@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Lexicon* Resources::_pLexicon(void* aAddr)
+Lexicon* BASE::_pLexicon(void* aAddr)
 {
   Lexicon* pLexicon = reinterpret_cast<Lexicon*>(aAddr);
   

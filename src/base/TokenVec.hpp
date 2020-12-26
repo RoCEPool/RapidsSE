@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   class TokenVec : public ArrayNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS>
   {

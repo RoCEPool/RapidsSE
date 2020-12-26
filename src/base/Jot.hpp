@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   void  vJot1(char cFlag, Stz* szFormat,...);
   void  vJot2(char cFlag, Stz* szFun, Stz* szFormat,...);

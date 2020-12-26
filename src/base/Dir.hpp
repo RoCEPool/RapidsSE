@@ -14,7 +14,7 @@ static const i8 C_EXIST_NOCHECK   = -1;
 static const i8 C_EXIST_EXISTS    = 1;
 static const i8 C_EXIST_NOTEXISTS = 2;
 
-namespace Resources
+namespace BASE
 {
   class Dir : public Resource
   {

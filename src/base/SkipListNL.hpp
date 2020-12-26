@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   typedef bool (*CompareFp)(void* pSearchEntry, void* pListEntry, bool& bMatch);
   

@@ -23,7 +23,7 @@
 #include "eXA.h"
 #include "eYA.h"
 
-namespace Resources { class File;  class PsxThd; class Resource; class ResourceTracker;}
+namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracker;}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

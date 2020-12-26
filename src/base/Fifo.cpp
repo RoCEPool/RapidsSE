@@ -11,7 +11,7 @@ Atomic gixFifo;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Fifo* Resources::_pFifo(void* aAddr)
+Fifo* BASE::_pFifo(void* aAddr)
 {
   Fifo* pFifo = reinterpret_cast<Fifo*>(aAddr);
   

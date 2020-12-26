@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   // variables for Welford's Online Algorithm for computing variance
   // refer: https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance

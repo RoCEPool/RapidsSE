@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* report an information message                                              */
 /*----------------------------------------------------------------------------*/
-void Resources::vInfo(Stz* aFormat, ...)
+void BASE::vInfo(Stz* aFormat, ...)
 {
   va_list xVaArgs;
   
@@ -19,7 +19,7 @@ void Resources::vInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Resources::vTrace(Stz* aFormat, ...)
+void BASE::vTrace(Stz* aFormat, ...)
 {
   va_list xVaArgs;
 
@@ -31,7 +31,7 @@ void Resources::vTrace(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message (and optionally write to file)                      */
 /*----------------------------------------------------------------------------*/
-void Resources::vTraceF(File* pFile, Stz* aFormat, ...)
+void BASE::vTraceF(File* pFile, Stz* aFormat, ...)
 {
   va_list xVaArgs;
 
@@ -48,7 +48,7 @@ void Resources::vTraceF(File* pFile, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a warning message                                                   */
 /*----------------------------------------------------------------------------*/
-void Resources::vWarn(Stz* aFormat, ...)
+void BASE::vWarn(Stz* aFormat, ...)
 {
   va_list xVaArgs;
   

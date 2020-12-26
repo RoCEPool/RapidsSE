@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Resources,Input,CN_INPUT)
+__pCastFunction(BASE,Input,CN_INPUT)
 __aNewFunction(Input,CN_INPUT)
 __vDeleteFunction(Input,CN_INPUT)
 __aFooterFunction(Input)
@@ -885,7 +885,7 @@ void Input::vCollectVecFirstLine(void)
 //    m_pTknVec->vListTokens();
 //  }
 //
-//  Resources::vDebugPoint();
+//  BASE::vDebugPoint();
 }
 #endif
 
@@ -1488,7 +1488,7 @@ void Input::vCollectSen(void)
     case TN_TAG:
 //      if (m_pCurrTkn->szChars()->bSame(""_Stz)) {
 //        vInspect();
-//        Resources::vDebugPoint();
+//        BASE::vDebugPoint();
 //      }
       break;
       

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TextMedium* Resources::_pTextMedium(void* aAddr)
+TextMedium* BASE::_pTextMedium(void* aAddr)
 {
   TextMedium* pText = reinterpret_cast<TextMedium*>(aAddr);
   

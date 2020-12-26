@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   static const i8 C_SP_FORMAT = 32;
   static const i8 C_SP_RESULT = C_MAX_STATEMENT;

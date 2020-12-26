@@ -16,7 +16,7 @@ Atomic gixLock;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Lock* Resources::_pLock(void* aAddr)
+Lock* BASE::_pLock(void* aAddr)
 {
   Lock* pLock = reinterpret_cast<Lock*>(aAddr);
   

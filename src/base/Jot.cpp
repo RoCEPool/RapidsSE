@@ -39,7 +39,7 @@ i8    _g_iDisableDebug    = 0;
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Resources::vJot1(char cFlag, Stz* szFormat, ...)
+void BASE::vJot1(char cFlag, Stz* szFormat, ...)
 {
   if (! _g_iDebug)
     return;
@@ -91,7 +91,7 @@ void Resources::vJot1(char cFlag, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Resources::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
+void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 {
   if (! _g_iDebug)
     return;
@@ -153,7 +153,7 @@ void Resources::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
      _g_nDepth++;
 }
 /*----------------------------------------------------------------------------*/
-//void Resources::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
+//void BASE::vJot2(char cFlag, Stz* szFun, Stz* aFormat, ...)
 //{
 //  if (! _g_bJotting)
 //    return;
@@ -190,7 +190,7 @@ void Resources::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get current jot section                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Resources::iJotSection(void)
+i8 BASE::iJotSection(void)
 {
   return _g_iSection;
 }
@@ -198,7 +198,7 @@ i8 Resources::iJotSection(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Resources::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
+i8 BASE::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
 {
   _g_sSection = szFun->azChar();
   
@@ -224,7 +224,7 @@ i8 Resources::iJotSection(char cFlag, Stz* szFun, Stz* szInfo)
 /*----------------------------------------------------------------------------*/
 /* get current jot section                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Resources::iJotSummary(void)
+i8 BASE::iJotSummary(void)
 {
   return _g_iSummary;
 }
@@ -232,7 +232,7 @@ i8 Resources::iJotSummary(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Resources::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
+i8 BASE::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
 {
   _g_sSummary = szFun->azChar();
   
@@ -259,7 +259,7 @@ i8 Resources::iJotSummary(char cFlag, Stz* szFun, Stz* szInfo)
 /*----------------------------------------------------------------------------*/
 /* get current jot division                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Resources::iJotDivision(void)
+i8 BASE::iJotDivision(void)
 {
   return _g_iDivision;
 }
@@ -267,7 +267,7 @@ i8 Resources::iJotDivision(void)
 /*----------------------------------------------------------------------------*/
 /* new jot section                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Resources::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
+i8 BASE::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
 {
   _g_sArea     = szArea->azChar();
   _g_sDivision = szFun->azChar();
@@ -306,7 +306,7 @@ i8 Resources::iJotDivision(char cFlag, Stz* szArea, Stz* szFun, Stz* SzInfo)
 /*----------------------------------------------------------------------------*/
 /* get jot debug                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Resources::iJotDebug(void)
+i8 BASE::iJotDebug(void)
 {
   return _g_iDebug;
 }
@@ -314,7 +314,7 @@ i8 Resources::iJotDebug(void)
 /*----------------------------------------------------------------------------*/
 /* set jot debug                                                              */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDebug(i8 iDebug)
+void BASE::vJotDebug(i8 iDebug)
 {
   _g_iDebug = iDebug;
 }
@@ -322,7 +322,7 @@ void Resources::vJotDebug(i8 iDebug)
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotFilter(Stz* szPhrase)
+void BASE::vJotFilter(Stz* szPhrase)
 {
   _g_sPhrase = szPhrase->azChar();
 }
@@ -332,7 +332,7 @@ void Resources::vJotFilter(Stz* szPhrase)
 /*----------------------------------------------------------------------------*/
 /* tab in for next jotting                                                    */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotTabIn(void)
+void BASE::vJotTabIn(void)
 {
   //_g_nDepth++;
 }
@@ -340,7 +340,7 @@ void Resources::vJotTabIn(void)
 /*----------------------------------------------------------------------------*/
 /* tab out for next jotting                                                   */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotTabOut(void)
+void BASE::vJotTabOut(void)
 {
 //  if (_g_nDepth)
 //    _g_nDepth--;
@@ -349,7 +349,7 @@ void Resources::vJotTabOut(void)
 /*----------------------------------------------------------------------------*/
 /* tab out for next jotting                                                   */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotTrigger(i8 iDivision, i8 iDebug)
+void BASE::vJotTrigger(i8 iDivision, i8 iDebug)
 {
   _g_iTriggerDivision = iDivision;
   _g_iTriggerDebug    = iDebug;
@@ -358,7 +358,7 @@ void Resources::vJotTrigger(i8 iDivision, i8 iDebug)
 /*----------------------------------------------------------------------------*/
 /* tab out for next jotting                                                   */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDisable(i8 iDivision, i8 iDebug)
+void BASE::vJotDisable(i8 iDivision, i8 iDebug)
 {
   _g_iDisableDivision = iDivision;
   _g_iDisableDebug    = iDebug;
@@ -373,7 +373,7 @@ void Resources::vJotDisable(i8 iDivision, i8 iDebug)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line 1                                                        */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDiv1(void)
+void BASE::vJotDiv1(void)
 {
   if (! _g_iDebug)
     return;
@@ -388,7 +388,7 @@ void Resources::vJotDiv1(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line 2                                                        */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDiv2(void)
+void BASE::vJotDiv2(void)
 {
   if (! _g_iDebug)
     return;
@@ -403,7 +403,7 @@ void Resources::vJotDiv2(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line equals&space                                             */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDivES(void)
+void BASE::vJotDivES(void)
 {
   if (! _g_iDebug)
     return;
@@ -418,7 +418,7 @@ void Resources::vJotDivES(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line minus&space                                               */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDivMS(void)
+void BASE::vJotDivMS(void)
 {
   if (! _g_iDebug)
     return;
@@ -433,7 +433,7 @@ void Resources::vJotDivMS(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line minus&space                                               */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDivPS(void)
+void BASE::vJotDivPS(void)
 {
   if (! _g_iDebug)
     return;
@@ -449,7 +449,7 @@ void Resources::vJotDivPS(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line A                                                        */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDivA(void)
+void BASE::vJotDivA(void)
 {
   if (! _g_iDebug)
     return;
@@ -464,7 +464,7 @@ void Resources::vJotDivA(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line B                                                        */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDivB(void)
+void BASE::vJotDivB(void)
 {
   if (! _g_iDebug)
     return;
@@ -479,7 +479,7 @@ void Resources::vJotDivB(void)
 /*----------------------------------------------------------------------------*/
 /* jot dividing line B                                                        */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDivC(void)
+void BASE::vJotDivC(void)
 {
   if (! _g_iDebug)
     return;
@@ -494,7 +494,7 @@ void Resources::vJotDivC(void)
 /*----------------------------------------------------------------------------*/
 /* jot section                                                                */
 /*----------------------------------------------------------------------------*/
-void Resources::vJotDivX(void)
+void BASE::vJotDivX(void)
 {
   if (! _g_iDebug)
     return;

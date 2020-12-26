@@ -5,7 +5,7 @@
 
 #include "eMK.h"
 
-namespace Resources
+namespace BASE
 {
   class Mutex : public Object
   {

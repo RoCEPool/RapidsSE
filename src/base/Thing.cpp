@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Resources,Thing,CN_THING)
+__pCastFunction(BASE,Thing,CN_THING)
 __aNewFunction(Thing,CN_THING)
 __vDeleteFunction(Thing,CN_THING)
 __aFooterFunction(Thing)

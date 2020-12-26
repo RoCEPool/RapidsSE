@@ -5,7 +5,7 @@
 
 
 
-namespace Resources
+namespace BASE
 {
   template <class CLASSNM>
   class REG

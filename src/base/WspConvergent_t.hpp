@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   template<i8 SIZE, class HEAD, class TAIL>
   class WspConvergent_t

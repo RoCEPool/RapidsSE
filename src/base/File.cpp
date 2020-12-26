@@ -10,7 +10,7 @@ Atomic gixFile;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-File* Resources::_pFile(void* aAddr)
+File* BASE::_pFile(void* aAddr)
 {
   File* pFile = reinterpret_cast<File*>(aAddr);
   

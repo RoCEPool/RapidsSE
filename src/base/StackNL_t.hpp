@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {  
   template <
     eCN CLASSNO,  // class number of the concrete stack, e.g. CN_TEXTSTACK

@@ -5,7 +5,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Resources
+namespace BASE
 {
   void vCheckAssumptions(void);
 }
@@ -30,7 +30,7 @@ namespace Resources
 
 //------------------------------------------------------------------------------
 
-namespace Resources {
+namespace BASE {
 
   template <int BYTES> class String_t;
   typedef String_t<32>     s32;
@@ -54,12 +54,12 @@ namespace Resources {
   typedef Bytes_t<C_256K>  b256K; // note: K, not KB
 }
 
-namespace Resources       { class ForthCell;            class Focal;
+namespace BASE       { class ForthCell;            class Focal;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
-namespace Resources            { class ReqTuple;                              }
-namespace Resources           { class Lock;            class LockTracker;       }
-namespace Resources              { class BufferPool;      class HeapBuffer;
+namespace BASE            { class ReqTuple;                              }
+namespace BASE           { class Lock;            class LockTracker;       }
+namespace BASE              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;
 
 class IvlLib;
@@ -67,7 +67,7 @@ class IvlLib;
 }
 
 
-using namespace Resources;
+using namespace BASE;
 
 
 //------------------------------------------------------------------------------
@@ -305,7 +305,7 @@ static const i8 C_VIA_MALLOC         = 1;
 
 
 
-namespace Resources
+namespace BASE
 {
   static const i8 C_TPCH_CUSTOMER =  150 * C_1K;
   static const i8 C_TPCH_LINEITEM = 6000 * C_1K;
@@ -629,7 +629,7 @@ static OBJECT pPoolCheck(void* aAddress)
   return static_cast<OBJECT>(aAddress);
 }
 
-namespace Resources
+namespace BASE
 {
   bool bTraceWith(Stz* szWith);
   void vTraceWith(void);

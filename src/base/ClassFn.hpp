@@ -5,7 +5,7 @@
 
 #include "eCF.h"
 
-namespace Resources
+namespace BASE
 {
   class ClassFn
   {

@@ -4,7 +4,7 @@
 #pragma once
 
 
-namespace Resources
+namespace BASE
 {
   template<int LENGTH>
   class Wsp_t

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Resource* Resources::_pResource(void* aAddress)
+Resource* BASE::_pResource(void* aAddress)
 {
   Resource* pResource = reinterpret_cast<Resource*>(aAddress);
   

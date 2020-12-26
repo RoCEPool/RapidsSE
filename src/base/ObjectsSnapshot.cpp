@@ -13,7 +13,7 @@ ToolFn __ObjectSnapshot_List
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Resources,ObjectSnapshot,CN_OBJECTSNAPSHOT)
+__pCastFunction(BASE,ObjectSnapshot,CN_OBJECTSNAPSHOT)
 __aNewFunction(ObjectSnapshot,CN_OBJECTSNAPSHOT)
 __vDeleteFunction(ObjectSnapshot,CN_OBJECTSNAPSHOT)
 __aFooterFunction(ObjectSnapshot)

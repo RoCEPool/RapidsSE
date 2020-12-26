@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-QueueBuffer* Resources::_pQueueBuffer(void* aAddr)
+QueueBuffer* BASE::_pQueueBuffer(void* aAddr)
 {
   QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(aAddr);
   

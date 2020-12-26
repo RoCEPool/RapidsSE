@@ -5,7 +5,7 @@
 
 #include "Resource.hpp"
 
-namespace Resources
+namespace BASE
 {
   static const i8 C_THREAD_BOOST = 8;
   

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queue* Resources::_pQueue(void* aAddr)
+Queue* BASE::_pQueue(void* aAddr)
 {
   Queue* pQueue = reinterpret_cast<Queue*>(aAddr);
   

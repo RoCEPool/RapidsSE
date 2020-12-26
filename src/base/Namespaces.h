@@ -51,7 +51,7 @@ namespace Facts             { class Fact;            class Kbase;
                               class Question;        class Transform;         }
 
 namespace Arguments           {                                                 }
-namespace Resources           { class EnumFlags;       class TagSet;
+namespace BASE           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
 namespace Arguments             { class Grid;            class Node;              }
@@ -63,7 +63,7 @@ namespace Arguments              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }
-namespace Resources   { class Token;           class Charser;
+namespace BASE   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
 namespace Load              {                                                 }
 namespace StorageEngine           { class Log;             class LogEntry;          }
@@ -85,7 +85,7 @@ namespace Arguments     { class OpSpec;          class PipelineSpec;
 namespace Arguments             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
 namespace Arguments   { class Crv;                                      }
-namespace Resources     { class RU_Cpu;          class RU_Memory;         }
+namespace BASE     { class RU_Cpu;          class RU_Memory;         }
 namespace Arguments              { class Row;                                      }
 namespace Arguments             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
@@ -94,7 +94,7 @@ namespace Arguments       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Expressions             { class Step;            class StepTiming;        }
 namespace StorageEngine     { class AttachMap;       class Engine;            }
-namespace Resources        { class Article;         class Queue;
+namespace BASE        { class Article;         class Queue;
 class Heap; class PoolHelper; class ObjectSnapshot;            }
 namespace Expressions             { class Task;                                     }
 namespace Expressions           { class Scheduler;       class Thread;
@@ -115,13 +115,13 @@ using namespace Arguments;
 using namespace Expressions;
 using namespace Facts;
 using namespace Arguments;
-using namespace Resources;
+using namespace BASE;
 using namespace Arguments;
 using namespace Arguments;
 using namespace Arguments;
 using namespace Expressions;
 using namespace Arguments;
-using namespace Resources;
+using namespace BASE;
 using namespace Load;
 using namespace StorageEngine;
 using namespace Arguments;
@@ -135,7 +135,7 @@ using namespace Arguments;
 using namespace Arguments;
 using namespace Prompt;
 using namespace Arguments;
-using namespace Resources;
+using namespace BASE;
 using namespace Arguments;
 using namespace Arguments;
 using namespace Arguments;
@@ -143,7 +143,7 @@ using namespace Arguments;
 using namespace SqlValues;
 using namespace Expressions;
 using namespace StorageEngine;
-using namespace Resources;
+using namespace BASE;
 using namespace Expressions;
 using namespace Expressions;
 using namespace Arguments;

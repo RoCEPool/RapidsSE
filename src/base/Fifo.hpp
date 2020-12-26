@@ -5,7 +5,7 @@
 
 #include "Resource.hpp"
 
-namespace Resources
+namespace BASE
 {
   class Fifo : public Resource
   {

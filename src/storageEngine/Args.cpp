@@ -1040,7 +1040,7 @@ void Args::vPrintStartupInfo(void)
     
 
   
-  Resources::vTraceWith();
+  BASE::vTraceWith();
 }
 
 /*----------------------------------------------------------------------------*/

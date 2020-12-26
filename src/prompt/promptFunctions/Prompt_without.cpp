@@ -29,13 +29,13 @@ bool Prompt::bPrompt_without(SePrompt* pPrompt)
   i8 nTokens = pInpTknVec->nTokens();
   
   if (1 == nTokens) {
-    Resources::vTraceWithout();
+    BASE::vTraceWithout();
     return true;
   }
   
   Stz* szWith = pInpTknVec->pGet(1)->szChars();
   
-  if (! Resources::bTraceWithout(szWith))
+  if (! BASE::bTraceWithout(szWith))
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Without: Code was compiled with: %s"_Stz,szWith);
 

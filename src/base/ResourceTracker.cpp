@@ -237,7 +237,7 @@ void ResourceTracker::vMonitorPortrait(s48K& sPortrait)
   
   s = ""_Stz;
 
-  sPortrait.vSprintCat("Resources: "_Stz);
+  sPortrait.vSprintCat("BASE: "_Stz);
   sPortrait.vSprintCat("dir %lld file %lld malloc %lldB mutex %lld "
                        "shm %lld socket %lld thread %lld\n"_Stz,
                        nDirOpen(),
@@ -254,7 +254,7 @@ void ResourceTracker::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vReport(void)
 {
-  vTrace("Resources:\n"_Stz);
+  vTrace("BASE:\n"_Stz);
 
   vTrace("  dir %lld\n"_Stz,     nDirOpen());
   vTrace("  file %lld\n"_Stz,    nFileOpen());

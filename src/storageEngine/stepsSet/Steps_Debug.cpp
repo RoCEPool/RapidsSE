@@ -46,7 +46,7 @@ void Step::vDebugTrap(void)
 {
   ENTRY();
 
-  Resources::vDebugPoint();
+  BASE::vDebugPoint();
   
   EXIT();
 }

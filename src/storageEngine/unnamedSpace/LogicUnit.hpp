@@ -7,7 +7,7 @@
 
 #include "eLH.h"
 
-namespace Resources { class Dir; } //?
+namespace BASE { class Dir; } //?
 
 namespace Expressions
 {

@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EnumFlags* Resources::_pEnumFlags(void* aAddr)
+EnumFlags* BASE::_pEnumFlags(void* aAddr)
 {
   EnumFlags* pEnumFlags = reinterpret_cast<EnumFlags*>(aAddr);
   

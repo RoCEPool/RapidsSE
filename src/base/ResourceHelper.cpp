@@ -15,7 +15,7 @@ void ResourceHelper::vResourceSummary(void)
 
   printf("\n");
   printf("****************************************************************\n");
-  printf((char*)"  Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
+  printf((char*)"  BASE: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
          AM::pResourceTracker()->nDirOpen(),
          AM::pResourceTracker()->nFileOpen(),
          AM::pResourceTracker()->nShmOpen(),

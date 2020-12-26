@@ -5,7 +5,7 @@
 
 #include "eVL.h"
 
-namespace Resources
+namespace BASE
 {
   class Exception
   {

@@ -5,7 +5,7 @@
 
 #include "Resource.hpp"
 
-namespace Resources
+namespace BASE
 {
   static const i8 C_NO_BUFFERING = 0;
 

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ByteRate* Resources::_pByteRate(void* aAddr)
+ByteRate* BASE::_pByteRate(void* aAddr)
 {
   ByteRate* pByteRate = reinterpret_cast<ByteRate*>(aAddr);
   

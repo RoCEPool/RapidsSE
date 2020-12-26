@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-HeapBuffer* Resources::_pHeapBuffer(void* aAddr)
+HeapBuffer* BASE::_pHeapBuffer(void* aAddr)
 {
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(aAddr);
   

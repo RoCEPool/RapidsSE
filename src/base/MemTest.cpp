@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-MemTest* Resources::_pMemTest(void* aAddr)
+MemTest* BASE::_pMemTest(void* aAddr)
 {
   MemTest* pMemTest = reinterpret_cast<MemTest*>(aAddr);
   

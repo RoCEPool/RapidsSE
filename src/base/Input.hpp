@@ -5,7 +5,7 @@
 
 #include "eUF.h"
 
-namespace Resources
+namespace BASE
 {
   class Input : public Object
   {

@@ -16,7 +16,7 @@ Atomic gixDir;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dir* Resources::_pDir(void* aAddr)
+Dir* BASE::_pDir(void* aAddr)
 {
   Dir* pDir = reinterpret_cast<Dir*>(aAddr);
   

@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Statistics* Resources::_pStatistics(void* aAddr)
+Statistics* BASE::_pStatistics(void* aAddr)
 {
   Statistics* pStatistics = reinterpret_cast<Statistics*>(aAddr);
   

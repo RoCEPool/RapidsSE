@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources { class Socket; } //?
+namespace BASE { class Socket; } //?
 
 #include "eNS.h"
 
@@ -23,8 +23,8 @@ namespace Arguments
   
     eNS m_eState;     // node state
   
-    Resources::Socket* m_pRecvSocket;  // socket used for receiving from node
-    Resources::Socket* m_pSendSocket;  // socket used for sending to node
+    BASE::Socket* m_pRecvSocket;  // socket used for receiving from node
+    BASE::Socket* m_pSendSocket;  // socket used for sending to node
     
     i8 m_qRegionSize;  // last known region size
     i8 m_qFreeSpace;   // last known free space

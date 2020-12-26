@@ -16,7 +16,7 @@ Atomic gixSocket;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Socket* Resources::_pSocket(void* aAddr)
+Socket* BASE::_pSocket(void* aAddr)
 {
   Socket* pSocket = reinterpret_cast<Socket*>(aAddr);
   

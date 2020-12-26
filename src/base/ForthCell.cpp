@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ForthCell* Resources::_aCell(void* aAddr)
+ForthCell* BASE::_aCell(void* aAddr)
 {
   ForthCell* aCell = reinterpret_cast<ForthCell*>(aAddr);
   

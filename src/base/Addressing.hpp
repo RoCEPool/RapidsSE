@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Resources
+namespace BASE
 {
   i8 nDifference(void* aAddress0, void* aAddress1);
   

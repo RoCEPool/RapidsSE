@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TagSet* Resources::_pTagSet(void* aAddr)
+TagSet* BASE::_pTagSet(void* aAddr)
 {
   TagSet* pTagSet = reinterpret_cast<TagSet*>(aAddr);
   

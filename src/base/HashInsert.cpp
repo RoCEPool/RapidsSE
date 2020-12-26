@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-HashInsert* Resources::_pHashInsert(void* aAddr)
+HashInsert* BASE::_pHashInsert(void* aAddr)
 {
   HashInsert* pHashInsert = reinterpret_cast<HashInsert*>(aAddr);
   
