@@ -2,7 +2,7 @@
 /* TlsKeys.cpp -- Thread Local Storage Keys                                   */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "TlsKeys.hpp" //?
 #include "PsxThd.hpp"  //?

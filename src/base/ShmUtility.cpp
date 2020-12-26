@@ -2,7 +2,7 @@
 /* ShmUtility.cpp - share memory utility                                      */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 bool  mbCreate = false;
 bool  mbAttach = false;

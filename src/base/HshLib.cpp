@@ -2,7 +2,7 @@
 /* HshLib.cpp -- hash utility                                                 */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "xxhash.hpp"
 

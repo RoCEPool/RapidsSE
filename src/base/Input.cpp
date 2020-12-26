@@ -2,7 +2,7 @@
 /* Input.cpp -- Input : collect input stream into tokens                      */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #define __WITH_INPUT_CURSOR
 

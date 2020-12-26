@@ -2,7 +2,7 @@
 /* PsxThd.cpp - a posix thread                                                */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "PsxThd.hpp" //?
 #include "ResourceTracker.hpp" //?

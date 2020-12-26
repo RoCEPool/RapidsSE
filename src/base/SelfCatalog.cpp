@@ -2,7 +2,7 @@
 /* SelfCatalog.cpp -- System-Self Function Catalog                            */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 SelfCatalog gxSelfCatalog;
 

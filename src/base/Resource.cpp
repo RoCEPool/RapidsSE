@@ -2,7 +2,7 @@
 /* Resource.cpp -- Operating Library Resource                                  */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "Resource.hpp"
 

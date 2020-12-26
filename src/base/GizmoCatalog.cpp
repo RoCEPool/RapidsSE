@@ -2,7 +2,7 @@
 /* GizmoCatalog.cpp -- Gizmo Command Catalog                                  */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 GizmoCatalog gxGizmoCatalog;
 

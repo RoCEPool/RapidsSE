@@ -2,7 +2,7 @@
 /* PersistenceHelper.cpp -- Persistence Helper                                */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;

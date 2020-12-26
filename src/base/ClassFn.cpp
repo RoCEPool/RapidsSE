@@ -2,7 +2,7 @@
 /* ClassFn.cpp -- description of a class support function                     */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "eCF.h"
 

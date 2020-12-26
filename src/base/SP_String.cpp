@@ -2,7 +2,7 @@
 /* SP_String.cpp - String sprint helper                          (on c stack) */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "eOC.h"
 

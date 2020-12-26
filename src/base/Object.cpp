@@ -2,7 +2,7 @@
 /* Object.cpp -- Proper Object in system                                      */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern SizeHeap  gxaSizeHeap[];
 

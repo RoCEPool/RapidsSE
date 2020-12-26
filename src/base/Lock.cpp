@@ -2,7 +2,7 @@
 /* Lock.cpp -- Shared Read / Exclusive Write Lock                             */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 
 #include "Timer.hpp"

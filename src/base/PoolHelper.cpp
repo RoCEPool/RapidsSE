@@ -2,7 +2,7 @@
 /* PoolHelper.cpp - buffer pool analyzer                                      */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;

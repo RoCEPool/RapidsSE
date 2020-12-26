@@ -2,7 +2,7 @@
 /* Fifo.cpp -- os fifo                                                        */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "Fifo.hpp" //?
 

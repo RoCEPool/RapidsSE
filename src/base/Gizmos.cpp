@@ -2,7 +2,7 @@
 /* Gizmos.cpp -- Useful Gizmos                                                */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "eOC.h"
 

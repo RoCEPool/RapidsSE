@@ -2,7 +2,7 @@
 /* FnDesc.cpp -- description of a named function                              */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern FnCatalog gxFnCatalog;
 

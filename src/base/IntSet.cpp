@@ -2,7 +2,7 @@
 /* IntSet.cpp -- Int Set                                                      */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 int Resources::iSortCompare_ascend(const void * a, const void * b)
 {

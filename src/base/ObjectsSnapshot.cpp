@@ -2,7 +2,7 @@
 /* ObjectSnapshot.cpp -- count of objects by class in the buffer pool         */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 ToolFn __ObjectSnapshot_List
    ("ObjectCounts"_Stz,(fpSELFFN*)ObjectSnapshot::vObjectCounts,

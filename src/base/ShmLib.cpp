@@ -2,7 +2,7 @@
 /* ShmLib.cpp -- shared memory library                                        */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 
 

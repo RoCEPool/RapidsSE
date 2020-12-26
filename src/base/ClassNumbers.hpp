@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Resources.h"
+#include "Base.h"
 
 namespace Resources
 {

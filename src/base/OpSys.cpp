@@ -2,7 +2,7 @@
 /* OpSys.cpp -- operating system utility                                      */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 static struct utsname gxUtsName;
 

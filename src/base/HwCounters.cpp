@@ -2,7 +2,7 @@
 /* HwCounters.cpp -- Hardware Counters                                        */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "Asm.h"
 

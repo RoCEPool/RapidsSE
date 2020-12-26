@@ -2,7 +2,7 @@
 /* Null.cpp -- SQL Null Value                                                 */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 i8 gi_NullValue = C_DATUM_NULL;
 

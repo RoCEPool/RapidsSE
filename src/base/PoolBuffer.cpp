@@ -2,7 +2,7 @@
 /* PoolBuffer.cpp - head portion of a buffer in buffer pool                   */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern BufferPool* gpBufferPool;
 

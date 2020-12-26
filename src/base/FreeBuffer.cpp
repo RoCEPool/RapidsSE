@@ -2,7 +2,7 @@
 /* FreeBuffer.cpp -- buffer when its in the buffer pool free chain            */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
   
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

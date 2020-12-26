@@ -2,7 +2,7 @@
 /* File.cpp -- os file                                                        */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 
 Atomic gixFile;

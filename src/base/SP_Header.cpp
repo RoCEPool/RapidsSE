@@ -2,7 +2,7 @@
 /* SP_Header.cpp - Header sprint helper                          (on c stack) */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern SizeHeap  gxaSizeHeap[];
 

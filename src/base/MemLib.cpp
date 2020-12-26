@@ -2,7 +2,7 @@
 /* MemLib.cpp -- Memory Library                                               */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern SizeHeap  gxaSizeHeap[];
 

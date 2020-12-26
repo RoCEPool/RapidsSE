@@ -2,7 +2,7 @@
 /* MagLib.cpp -- Magnitude Conversions                                        */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 /*----------------------------------------------------------------------------*/
 /* convert magnitude to equivalent bytes                                      */

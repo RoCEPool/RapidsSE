@@ -2,7 +2,7 @@
 /* SubSysFn.cpp -- description of a subsystem                                 */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 extern SubSysCatalog gxSubSysCatalog;
 

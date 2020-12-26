@@ -2,7 +2,7 @@
 /* WspConvergent_t.cpp -- fixed-sized workspace that converges from both ends */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 /*============================================================================*/
 /* end                                                                        */

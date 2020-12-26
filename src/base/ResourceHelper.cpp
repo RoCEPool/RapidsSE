@@ -2,7 +2,7 @@
 /* ResourceHelper.cpp -- Resource Helper                                      */
 /*============================================================================*/
 
-#include "Resources.h"
+#include "Base.h"
 
 #include "ResourceTracker.hpp" //?
 
