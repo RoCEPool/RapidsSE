@@ -71,7 +71,7 @@ namespace Arguments          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
 namespace Expressions           {                                                 }
-namespace Oblique           { class AM;                                       }
+namespace OBLIQUE           { class AM;                                       }
 namespace Arguments          { class Operand;                                  }
 namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
                                                                               }
@@ -126,7 +126,7 @@ using namespace Load;
 using namespace StorageEngine;
 using namespace Arguments;
 using namespace Expressions;
-using namespace Oblique;
+using namespace OBLIQUE;
 using namespace Arguments;
 using namespace Parser;
 using namespace Arguments;

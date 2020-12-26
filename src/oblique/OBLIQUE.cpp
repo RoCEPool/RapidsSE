@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Oblique.cpp - Oblique namespace functions                                  */
+/* OBLIQUE.cpp - OBLIQUE namespace functions                                  */
 /*============================================================================*/
 
 #include "OBLIQUE.h"

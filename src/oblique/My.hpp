@@ -7,7 +7,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-namespace Oblique
+namespace OBLIQUE
 {
   class My
   {

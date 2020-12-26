@@ -27,7 +27,7 @@ namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracke
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-namespace Oblique
+namespace OBLIQUE
 {
   class AM
   {

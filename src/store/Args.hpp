@@ -7,7 +7,7 @@ namespace Arguments
 {
   class Args : public Object
   {
-    friend class Oblique::AM;
+    friend class OBLIQUE::AM;
     friend class StorageEngine::Engine;
     friend class BASE::Charser;
     friend class BASE::Input;

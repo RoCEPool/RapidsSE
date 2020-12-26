@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Oblique
+namespace OBLIQUE
 {
   class Exemplar : public Object
   {

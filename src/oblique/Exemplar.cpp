@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Oblique,Exemplar,CN_EXEMPLAR)
+__pCastFunction(OBLIQUE,Exemplar,CN_EXEMPLAR)
 __aNewFunction(Exemplar,CN_EXEMPLAR)
 __vDeleteFunction(Exemplar,CN_EXEMPLAR)
 __aFooterFunction(Exemplar)
