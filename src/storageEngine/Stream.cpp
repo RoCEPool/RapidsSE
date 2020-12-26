@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Strand.cpp -- Strand of Stage of Pipeline                                  */
+/* Stream.cpp -- Stream (instance of StageSpec wwithing Pipeline)             */
 /*============================================================================*/
 
 #include "StorageEngine.h"

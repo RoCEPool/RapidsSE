@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Strand.hpp -- Strand of Stage of Pipeline                                  */
+/* Stream.hpp -- Stream (instance of StageSpec wwithing Pipeline)             */
 /*============================================================================*/
 #pragma once
 
