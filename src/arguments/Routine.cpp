@@ -2,13 +2,13 @@
 /* Routine.hpp -- Forth Routine                                               */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(SenVM,Routine,CN_ROUTINE)
+__pCastFunction(Arguments,Routine,CN_ROUTINE)
 __aNewFunction(Routine,CN_ROUTINE)
 __vDeleteFunction(Routine,CN_ROUTINE)
 __aFooterFunction(Routine)

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace SenVM
+namespace Arguments
 {
   static const i8 C_LOCALS = 32;
   

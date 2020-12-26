@@ -2,7 +2,7 @@
 /* TypedStack.cpp -- Push/Pop TypedStack of Typed Cells                                 */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 /*
 

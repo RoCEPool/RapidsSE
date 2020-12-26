@@ -87,7 +87,7 @@ namespace Prompt            {   class SePrompt;                               }
 namespace DataBuffers   { class Crv;                                      }
 namespace Resources     { class RU_Cpu;          class RU_Memory;         }
 namespace MetaData              { class Row;                                      }
-namespace SenVM             { class Dic;             class DicStack;
+namespace Arguments             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace DataBuffers          { class Session;         class SessionState;      }
 namespace DataBuffers       {                                                 }
@@ -137,7 +137,7 @@ using namespace Prompt;
 using namespace DataBuffers;
 using namespace Resources;
 using namespace MetaData;
-using namespace SenVM;
+using namespace Arguments;
 using namespace DataBuffers;
 using namespace DataBuffers;
 using namespace SqlValues;

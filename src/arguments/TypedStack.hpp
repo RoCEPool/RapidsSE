@@ -5,7 +5,7 @@
 
 #include "eKK.h"
 
-namespace SenVM
+namespace Arguments
 {
   static const i8 C_NO_ADDITIONAL_BYTES = 0;
   

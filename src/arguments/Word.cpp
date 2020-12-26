@@ -2,7 +2,7 @@
 /* Word.cpp -- Forth Word in Dictionary                                       */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 extern StepFp gfpEntryStep;
 
@@ -13,7 +13,7 @@ extern StepFp gfpEntryStep;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Word* SenVM::_pWord(void* aAddr)
+Word* Arguments::_pWord(void* aAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(aAddr);
   

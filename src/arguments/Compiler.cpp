@@ -2,13 +2,13 @@
 /* Compiler.cpp -- Sen Word Compiler                                          */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(SenVM,Compiler,CN_COMPILER)
+__pCastFunction(Arguments,Compiler,CN_COMPILER)
 __aNewFunction(Compiler,CN_COMPILER)
 __vDeleteFunction(Compiler,CN_COMPILER)
 __aFooterFunction(Compiler)

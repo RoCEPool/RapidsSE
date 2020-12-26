@@ -2,12 +2,12 @@
 /* Dic.cpp - dictionary of words                                              */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dic* SenVM::_pDic(void* aAddr)
+Dic* Arguments::_pDic(void* aAddr)
 {
   RASSERT(aAddr);
   Dic* pDic = reinterpret_cast<Dic*>(aAddr);

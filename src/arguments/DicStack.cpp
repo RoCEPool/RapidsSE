@@ -2,12 +2,12 @@
 /* DicStack.cpp - dictionary stack                                            */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicStack* SenVM::_pDicStack(void* aAddr)
+DicStack* Arguments::_pDicStack(void* aAddr)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   

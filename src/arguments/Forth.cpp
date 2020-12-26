@@ -2,12 +2,12 @@
 /* Forth.cpp -- Forth                                                         */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Forth* SenVM::_pForth(void* aAddr)
+Forth* Arguments::_pForth(void* aAddr)
 {
   Forth* pForth = reinterpret_cast<Forth*>(aAddr);
   

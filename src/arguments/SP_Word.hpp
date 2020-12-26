@@ -1,31 +1,27 @@
 /*============================================================================*/
-/* Local.hpp -- Forth Local                                                   */
+/* SP_Word.hpp - Word sprint helper                                           */
 /*============================================================================*/
 #pragma once
 
-namespace SenVM
+namespace Arguments
 {
-  class Local : public Object
+  class SP_Word : public SP
   {
-  private:
-    TypedCell m_xTypeCell;
-  
+  public:
+
     // must be last
     Footer m_xFooter;
-  
+    
   public:
-    void* operator new(size_t);
-    Local(void);
+    SP_Word(void);
+   ~SP_Word(void) noexcept(false);
   
-    operator TypedCell*(void); // auto conversion operator
+    Stz* sz(Word* pWord);
+    Stz* szSeeDoes(Word* pWord);
+    Stz* szSeeWord(Word* pWord);
 
-    TypedCell* aTypedCell(void);
-
-  private:
     Footer* aFooter(void);
   };
-  
-  Local* _pLocal(void* aAddr);
 }
 
 /*============================================================================*/

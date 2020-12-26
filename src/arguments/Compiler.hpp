@@ -5,7 +5,7 @@
 
 #include "eCM.h"
 
-namespace SenVM
+namespace Arguments
 {
   class Compiler : public Object
   {

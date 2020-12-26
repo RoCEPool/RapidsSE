@@ -2,12 +2,12 @@
 /* LocalChain.cpp -- Locals Frame Chain                                       */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LocalChain* SenVM::_pLocalSet(void* aAddr)
+LocalChain* Arguments::_pLocalSet(void* aAddr)
 {
   LocalChain* pLocalSet = reinterpret_cast<LocalChain*>(aAddr);
   
