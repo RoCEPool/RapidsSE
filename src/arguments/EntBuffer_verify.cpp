@@ -2,7 +2,7 @@
 /* EntBuffer_verify.cpp -- verify related functions for Entry Buffer          */
 /*============================================================================*/
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
 
 /*----------------------------------------------------------------------------*/

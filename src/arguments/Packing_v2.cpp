@@ -2,7 +2,7 @@
 /* Packing_v2.cpp -- Compact Row Packing_v2                                   */
 /*============================================================================*/
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */

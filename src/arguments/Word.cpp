@@ -2,7 +2,7 @@
 /* Word.cpp -- Forth Word in Dictionary                                       */
 /*============================================================================*/
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
 extern StepFp gfpEntryStep;
 

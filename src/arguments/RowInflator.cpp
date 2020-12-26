@@ -2,7 +2,7 @@
 /* RowInflator.cpp -- Compact Row Inflator                                    */
 /*============================================================================*/
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */

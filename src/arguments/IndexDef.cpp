@@ -2,9 +2,9 @@
 /* IndexDef.cpp -- Index Definition                                           */
 /*============================================================================*/
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
 extern EnvFlags gxEnvFlags;
 

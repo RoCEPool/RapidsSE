@@ -2,7 +2,7 @@
 /* RowCompactor.cpp -- Row Compactor Mark V                                   */
 /*============================================================================*/
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
 static Numbat oNumBat("partKey"_Stz);
 

@@ -2,7 +2,7 @@
 /* Ent_flat.cpp -- flattened representations of Index Entry                   */
 /*============================================================================*/
 
-#include "Arguments.h"
+#include "StorageEngine.h"
 
 /*============================================================================*/
 /* end                                                                        */
