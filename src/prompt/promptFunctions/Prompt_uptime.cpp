@@ -2,7 +2,7 @@
 /* Prompt_uptime.cpp -- uptime prompt function                                */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_uptime (

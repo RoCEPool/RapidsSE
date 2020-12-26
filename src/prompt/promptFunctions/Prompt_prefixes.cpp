@@ -2,7 +2,7 @@
 /* Prompt_prefixes.cpp -- list of available prompt prefixes                   */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_prefixes (
   PF_PREFIXES,            // prompt function

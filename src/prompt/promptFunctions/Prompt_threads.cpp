@@ -2,7 +2,7 @@
 /* Prompt_threads.cpp -- threads report                                       */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_threads (
   PF_THREADS,           // prompt function

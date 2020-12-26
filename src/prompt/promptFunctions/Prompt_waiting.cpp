@@ -2,7 +2,7 @@
 /* Prompt_waiting.cpp -- waiting queue report                                 */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_waiting (

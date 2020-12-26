@@ -2,7 +2,7 @@
 /* Prompt_dumpTokens.cpp -- dump tokens on/off                                */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_dumpTokens (
   PF_DUMPTOKENS,           // prompt function

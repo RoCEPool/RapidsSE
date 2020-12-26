@@ -2,7 +2,7 @@
 /* Prompt_prompt.cpp -- prompt settings managememnt                           */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_prompt (

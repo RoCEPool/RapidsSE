@@ -2,7 +2,7 @@
 /* Prompt_mon.hpp -- Print Monitor Information                                */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_mon (

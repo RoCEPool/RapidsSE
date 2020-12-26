@@ -2,7 +2,7 @@
 /* Prompt_masks.cpp -- masks report                                           */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_masks (
   PF_MASKS,             // prompt function

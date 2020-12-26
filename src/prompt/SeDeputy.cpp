@@ -2,7 +2,7 @@
 /* SeDeputy.cpp -- the se> prompt deputy                                      */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 extern Args          gxArgs;
 

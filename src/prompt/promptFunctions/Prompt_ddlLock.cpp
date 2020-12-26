@@ -2,7 +2,7 @@
 /* Prompt_ddlLock.cpp -- ddlLock inspection                                   */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_ddlLock (
   PF_DDLLOCK,            // prompt function

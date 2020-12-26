@@ -2,7 +2,7 @@
 /* Prompt_rmfifo.cpp -- remove fifo                                           */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 #include "Fifo.hpp" //?
 

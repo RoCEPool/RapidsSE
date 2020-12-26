@@ -2,7 +2,7 @@
 /* Prompt_memTest.cpp -- memory pattern test                                  */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_memTest (
   PF_MEMTEST,           // prompt function

@@ -2,7 +2,7 @@
 /* Prompt_rnd.cpp -- random number helper                                     */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 #include "Mersenne.hpp"
 

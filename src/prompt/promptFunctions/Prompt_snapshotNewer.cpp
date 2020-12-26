@@ -2,7 +2,7 @@
 /* Prompt_snapshotNewer.cpp -- snapshot newer                                 */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_snapshotNewer (
   PF_SNAPSHOTNEWER,            // prompt function

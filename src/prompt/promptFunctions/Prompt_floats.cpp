@@ -2,7 +2,7 @@
 /* Prompt_floats.cpp -- prompt floats function                                */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_floats (
   PF_FLOATS,             // prompt function

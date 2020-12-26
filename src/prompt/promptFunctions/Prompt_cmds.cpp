@@ -2,7 +2,7 @@
 /* Prompt_cmds.cpp -- prompt cmds function                                    */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_cmds (
   PF_CMDS,               // prompt function

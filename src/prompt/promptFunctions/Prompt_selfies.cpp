@@ -2,7 +2,7 @@
 /* Prompt_selfies.cpp -- Ascii Helper                                           */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 extern SubSysCatalog gxSubSysCatalog;
 extern ToolCatalog   gxToolCatalog;

@@ -2,7 +2,7 @@
 /* Prompt_fileCat.cpp -- file cat                                             */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_fileCat (
   PF_FILECAT,           // prompt function

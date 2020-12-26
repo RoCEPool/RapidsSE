@@ -2,7 +2,7 @@
 /* Prompt_heapSummary.cpp -- heap summary report                              */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_heapSummary (
   PF_HEAPSUMMARY,           // prompt function

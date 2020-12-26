@@ -2,7 +2,7 @@
 /* Prompt_objectList.cpp -- objects list report                               */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_objectList (

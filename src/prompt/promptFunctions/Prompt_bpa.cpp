@@ -2,7 +2,7 @@
 /* Prompt_bpa.cpp -- buffer pool analysis                                     */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_bpa (
   PF_BPA,               // prompt function

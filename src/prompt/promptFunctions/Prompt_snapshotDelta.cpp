@@ -2,7 +2,7 @@
 /* Prompt_snapshotDelta.cpp -- snapshot delta                                 */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_snapshotDelta (
   PF_SNAPSHOTDELTA,            // prompt function

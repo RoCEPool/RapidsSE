@@ -2,7 +2,7 @@
 /* Prompt_errno.cpp -- errno print                                            */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_errno (
   PF_ERRNO,             // prompt function

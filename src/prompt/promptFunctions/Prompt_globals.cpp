@@ -2,7 +2,7 @@
 /* Prompt_globals.cpp -- print globals                                        */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_globals (

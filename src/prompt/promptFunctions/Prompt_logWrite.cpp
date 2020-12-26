@@ -2,7 +2,7 @@
 /* Prompt_logWrite.cpp -- Write Log to csv file                               */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_logWrite (
   PF_LOGWRITE,              // prompt function

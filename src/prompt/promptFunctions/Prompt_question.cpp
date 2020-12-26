@@ -2,7 +2,7 @@
 /* Prompt_quesiton.cpp -- print prompt help                                   */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_question (
   PF_QUESTION,           // prompt function

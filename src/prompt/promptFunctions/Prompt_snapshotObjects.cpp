@@ -2,7 +2,7 @@
 /* Prompt_snapshotObjects.cpp -- snapshot objects                             */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_snapshotObjects (
   PF_SNAPSHOTOBJECTS,            // prompt function

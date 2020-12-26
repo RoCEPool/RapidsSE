@@ -2,7 +2,7 @@
 /* Prompt_setDbg.cpp -- set debug                                             */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_setDbg (
   PF_SETDBG,           // prompt function

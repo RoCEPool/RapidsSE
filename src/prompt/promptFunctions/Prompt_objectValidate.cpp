@@ -2,7 +2,7 @@
 /* Prompt_objectValidate.cpp -- object validation                             */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_objectValidate (
   PF_OBJECTVALIDATE,            // prompt function

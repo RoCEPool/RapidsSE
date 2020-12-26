@@ -2,7 +2,7 @@
 /* Prompt_stepTiming.cpp -- step timing                                       */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_st (

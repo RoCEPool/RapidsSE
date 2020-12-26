@@ -1,0 +1,65 @@
+/*============================================================================*/
+/* RowUte.cpp -- Row Ute helper                                               */
+/*============================================================================*/
+
+#include "STORE.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a row single to row slab                                               */
+/*----------------------------------------------------------------------------*/
+bool RowUte::bAddSingleToSampleSet(RowBuffer* pSampleSet,
+                                   RowSingle* pRowSingle,
+                                   StreamDef* pStreamDef)
+{
+  _static_
+  
+  // begin a new slab row, return false if no space
+  
+  if (! pSampleSet->aAllotNewRow())
+    return false;
+
+  
+  // copy values from row single into row slab
+  
+  i8 nCol = pStreamDef->nColumns(C_ALL);
+  for (i8 i_Col = 0; i_Col < nCol; i_Col++) {
+    
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
+    
+    // -- single word values --
+    
+    if (DM_VCH != pCol->eDatum()) {
+      
+      // copy word from row single to row slab
+      pSampleSet->vDepositColVal(pRowSingle->iColVal(i_Col));
+      
+      continue;
+    }
+
+    // -- vch string values --
+    
+    // check for null
+    if (pRowSingle->bIsColNull(i_Col)) {
+      pSampleSet->vDepositColVal(C_DATUM_NULL);
+      continue;
+    }
+        
+    // copy vch from row single to row slab
+    char* azTgt = pSampleSet->azDepositString_begin();
+    
+    char* azSrc = pRowSingle->azColVal(i_Col);
+    i8 nLen = StrLib::nCopy(azTgt,azSrc);
+
+    pSampleSet->vDepositString_end(nLen + 1);
+  }
+  
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

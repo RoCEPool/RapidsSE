@@ -2,7 +2,7 @@
 /* Prompt_memoryLeaks.cpp -- memory leaks                                     */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_memoryLeaks (
   PF_MEMORYLEAKS,              // prompt function

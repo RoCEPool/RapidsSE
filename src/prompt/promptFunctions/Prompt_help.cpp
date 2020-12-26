@@ -2,7 +2,7 @@
 /* Prompt_help.cpp -- print prompt help                                       */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 extern PromptCatalog gxPromptCatalog;
 

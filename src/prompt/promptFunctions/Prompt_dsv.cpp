@@ -2,7 +2,7 @@
 /* Prompt_dsv.cpp -- buffer pool report                                        */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_dsv (
   PF_BP,                // prompt function

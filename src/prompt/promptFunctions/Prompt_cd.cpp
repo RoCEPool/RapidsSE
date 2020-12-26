@@ -2,7 +2,7 @@
 /* Prompt_cd.cpp -- change working directory                                  */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 #include "Dir.hpp" //?
 

@@ -2,7 +2,7 @@
 /* Prompt_snapshotInspect.cpp -- snapshot inspect                             */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_snapshotInspect (
   PF_SNAPSHOTINSPECT,            // prompt function

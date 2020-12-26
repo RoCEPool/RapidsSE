@@ -2,7 +2,7 @@
 /* Prompt_ssn.hpp -- Print Session Information                                */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_ssn (
   PF_SSN,                 // prompt function

@@ -2,7 +2,7 @@
 /* Prompt_ascii.cpp -- Ascii Helper                                           */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 #include "eOC.h"
 

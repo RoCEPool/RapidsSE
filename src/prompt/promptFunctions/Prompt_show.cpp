@@ -2,7 +2,7 @@
 /* Prompt_show.cpp -- show                                                    */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_show (
   PF_SHOW,           // prompt function

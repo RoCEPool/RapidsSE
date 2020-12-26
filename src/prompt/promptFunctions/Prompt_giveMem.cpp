@@ -2,7 +2,7 @@
 /* Prompt_giveMem.cpp -- give heap memory                                     */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_giveMem (
   PF_GIVEMEM,           // prompt function

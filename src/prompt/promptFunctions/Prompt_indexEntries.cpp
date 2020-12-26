@@ -2,7 +2,7 @@
 /* Prompt_indexEntries.cpp -- set index entries                               */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 

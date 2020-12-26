@@ -2,7 +2,7 @@
 /* Prompt_version.cpp -- get SE version                                       */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 
 PromptFun __Prompt_version (

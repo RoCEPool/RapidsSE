@@ -2,7 +2,7 @@
 /* Prompt_limits.cpp -- system limits                                         */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "STORE.h"
 
 PromptFun __Prompt_limits (
   PF_LIMITS,            // prompt function

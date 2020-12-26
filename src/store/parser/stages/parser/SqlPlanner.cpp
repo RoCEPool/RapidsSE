@@ -1,0 +1,377 @@
+/*============================================================================*/
+/* SqlPlanner.cpp - Parses SQL statements & produces an initial knowledgebase */
+/*============================================================================*/
+
+#include "STORE.h"
+#include "sqlLexer.h"
+#include "sqlParser.h"
+#include "sqlBaseVisitor.h"
+#include "parser/common/ErrorListener.hpp"
+#include "stages/parser/TableRef.hpp"
+#include "graph/QueryNode.hpp"
+
+//using namespace antlr4;
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__pCastFunction(Parser,SqlPlanner,CN_SQLPLANNER)
+__aNewFunction(SqlPlanner,CN_SQLPLANNER)
+__vDeleteFunction(SqlPlanner,CN_SQLPLANNER)
+__aFooterFunction(SqlPlanner)
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SqlPlanner::SqlPlanner(void)
+: Object(CN_SQLPLANNER),
+  m_pTableRefStack(new TableRefStack()),
+  m_pExprStack(nullptr),
+  m_pSelectList(nullptr),
+  m_pStatementStack(new QueryNodeStack())
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
+  
+  _checkInitialised_(CN_SQLPLANNER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+SqlPlanner::~SqlPlanner(void) noexcept
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
+   
+  // [OLD] Clean up the stack of TableRefs
+  if (m_pTableRefStack) {
+    while (m_pTableRefStack->nItems() > 0) {
+      TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPop());
+      delete pTableRef;
+    }
+    
+    delete m_pTableRefStack;
+    m_pTableRefStack = nullptr;
+  }
+  
+  // [OLD] Clean up the expression stack
+  if (m_pExprStack) {
+    while (m_pExprStack->nItems() > 0) {
+      ExprAtom* pAtom = m_pExprStack->pPop();
+      delete pAtom;
+    }
+    
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
+  }
+  
+  // [OLD] Clean up the select list
+  if (m_pSelectList) {
+    while (m_pSelectList->nItems() > 0) {
+      ExprAtom* pAtom = m_pSelectList->pPop();
+      delete pAtom;
+    }
+    
+    delete m_pSelectList;
+    m_pSelectList = nullptr;
+  }
+
+  // Clean up the statement stack
+  if (m_pStatementStack) {
+    while (m_pStatementStack->nItems() > 0) {
+      QueryNode* pItem = m_pStatementStack->pPop();
+      delete pItem;
+    }
+
+    delete m_pStatementStack;
+    m_pStatementStack = nullptr;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Parse and create an initial plan for a SQL statement                       */
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
+{
+  // We need to give the Lexer a CharStream, but that requires an STL-string...
+  std::string sqlStr(pStr->azChar());
+  antlr4::ANTLRInputStream stream(sqlStr);
+  
+  // Create the lexer and get the stream of tokens representing the input command.
+  sqlLexer lexer(&stream);
+  antlr4::CommonTokenStream tokens(&lexer);
+  
+  // The thing that gets told of parsing errors.
+  ErrorListener errorListener;
+  
+  // Create a parser from the stream of tokens.
+  sqlParser parser(&tokens);
+  
+  // Add our own error listener so that we can be notified if there is a parsing error.
+  parser.removeErrorListeners();
+  parser.addErrorListener(&errorListener);
+  
+  // Parse the token stream.
+  sqlParser::StatementContext* pStatementCtx = parser.statement();
+  
+  // Check for any syntax errors
+  if (errorListener.bGotError()) {
+    vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
+    return;
+  }
+  
+  // Visit the parse tree that resulted from the above parsing.
+  this->visitStatement(pStatementCtx);
+  //vTrace("Finished visiting the parse tree.\n"_Stz);
+
+  // Create a new plan graph using the template
+  PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
+
+  // Find the subpath where we will attach the parsed query plan
+  PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
+  ASSERT(pItem);
+  ASSERT(pItem->eClass() == CN_QUERYNODE);
+  QueryNode* pQueryNode = static_cast<QueryNode*>(pItem);
+
+  // Attach the statement plan we created
+  ASSERT(m_pStatementStack->nItems() == 1);
+  QueryNode* pStatementNode = m_pStatementStack->pPop();
+  pQueryNode->vAppendChild(pStatementNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Visit functions for parse tree nodes                                       */
+/*----------------------------------------------------------------------------*/
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Statement node (top-most level of the parse tree)                          */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitStatement(sqlParser::StatementContext *ctx)
+{
+  // Save the whole statement text
+  antlr4::misc::Interval interval(ctx->start->getStartIndex(), ctx->stop->getStopIndex());
+  std::string queryStlStr = ctx->start->getInputStream()->getText(interval);
+
+  m_sQueryStr.vCopy((Stz*) queryStlStr.c_str());
+
+  return visitChildren(ctx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Query node (Called for the main query and each subquery)                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *ctx)
+{
+   return visitChildren(ctx);
+ }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select node (for each select of each query/subquery)                       */
+/* Contains WITH / ORDER BY / LIMIT                                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
+{
+  QueryNode* pStmt = GraphEditor::pCreateStatement(ST_SELECT, "SELECT"_Stz, m_sQueryStr.szStz());
+  m_pStatementStack->vPush(pStmt);
+
+  visitChildren(ctx);
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* (Table) Fetch node                                                         */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitFetch(sqlParser::FetchContext *ctx)
+{
+  visitChildren(ctx);
+  
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Table Reference node                                                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *ctx)
+{
+  visitChildren(ctx);
+  Text* pCatalogName = nullptr;
+  Text* pSchemaName = nullptr;
+  Text* pTableName = nullptr;
+  
+  if (ctx->catalogName() != nullptr) {
+    pCatalogName = cleanId(ctx->catalogName()->id);
+  }
+  
+  if (ctx->schemaName() != nullptr) {
+    pSchemaName = cleanId(ctx->schemaName()->id);
+  }
+  
+  ASSERT(ctx->tableName() != nullptr);
+  pTableName = cleanId(ctx->tableName()->id);
+
+  TableRef* pTableRef = new TableRef(pCatalogName, pSchemaName, pTableName);
+  m_pTableRefStack->vPush(pTableRef);
+  
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select Expression node (for each select of each query/subquery)            */
+/* Contains select list / FROM / WHERE / GROUP BY / HAVING                    */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
+{
+  // TODO: Parse out ALL and DISTINCT here.
+  
+  ASSERT(!m_pSelectList);
+  m_pSelectList = new ExprList();
+  
+  antlrcpp::Any any = visitChildren(ctx);
+  
+  if (m_pTableRefStack->nItems() > 0) {
+    vTrace("  /from\n"_Stz);
+    
+    s256 ref;
+    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPop());
+    pTableRef->vPrintInto(ref);
+    
+    vTrace("    /%s\n"_Stz, ref.szStz());
+    delete pTableRef;
+  }
+  
+  ASSERT(m_pSelectList->nItems() > 0);
+  vTrace("  /project\n"_Stz);
+  
+  while (m_pSelectList->nItems() > 0) {
+    ExprAtom* atom = m_pSelectList->pPop();
+    s2K buf;
+    
+    buf.vCopy("    /"_Stz);
+    atom->vDescribe(buf);
+   
+    buf.vConcat("\n"_Stz);
+    vTrace(buf.szStz());
+  }
+  
+  
+  delete m_pSelectList;
+  m_pSelectList = nullptr;
+  
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select List node                                                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
+{
+  ASSERT(m_pSelectList);
+  
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new ExprStack();
+  
+  visitChildren(ctx);
+  
+  ASSERT(m_pExprStack->nItems() == 0);
+  delete m_pExprStack;
+  m_pExprStack = nullptr;
+  
+  ASSERT(m_pSelectList->nItems() > 0);
+  
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Select List Item node                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* ctx)
+{
+  visitChildren(ctx);
+  
+  // pop the expr stack and add it to the select list.
+  //ASSERT(m_pExprStack->nValues() == 1);
+  
+  ExprAtom* pAtom = m_pExprStack->pPop();
+  m_pSelectList->vAppend(pAtom);
+  
+  // Expr is a base class. Example subclasses:
+  //    columnRef
+  //    columnWildcard
+  //    literal
+  //    variable  (e.g. CURRENT_TIMESTAMP)
+  //    function (some simply have children, some have children and parameters)
+  //      Add
+  //      Divide
+  //      AND
+  //      IF
+  //      SUBSTRING, etc
+  //
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Column Reference node                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
+{
+  visitChildren(ctx);
+  
+  Text* pCatalogName = ctx->catalogName() == nullptr ? nullptr : cleanId(ctx->catalogName()->id);
+  
+  Text* pSchemaName = ctx->schemaName() == nullptr ? nullptr : cleanId(ctx->schemaName()->id);
+  
+  Text* pTableName = ctx->tableName() == nullptr ? nullptr : cleanId(ctx->tableName()->id);
+  
+  Text* pColumnName = cleanId(ctx->columnName()->id);
+  
+  ExprColumnRef* columnRef = new ExprColumnRef(pCatalogName, pSchemaName,
+                                               pTableName, pColumnName);
+  
+  m_pExprStack->vPush(columnRef);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a name of an object. Returned string is dynamically allocated.    */
+/*----------------------------------------------------------------------------*/
+Text* SqlPlanner::cleanId(sqlParser::IdentifierContext *ctx)
+{
+  std::string idStr = ctx->getText();
+  
+  i8 idLen = idStr.length();
+  
+  if (idLen == 0) {
+    return new Text(""_Stz);
+  }
+      
+  // Remove double quotes
+  if (idStr.at(0) == '"' && idStr.at(idLen - 1) == '"') {
+    // Not great, substr() makes a another copy of the string.
+    return new Text((Stz*) idStr.substr(1, idLen - 2).c_str());
+  }
+  
+  // Remove backticks
+  if (idStr.at(0) == '`' && idStr.at(idLen - 1) == '`') {
+    // Not great, substr() makes a another copy of the string.
+    return new Text((Stz*) idStr.substr(1, idLen - 2).c_str());
+  }
+  
+  return new Text((Stz*) idStr.c_str());
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
