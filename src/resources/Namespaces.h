@@ -12,7 +12,7 @@
  
 
 namespace Arguments         {                                                 }
-namespace Chunks            { class Format;                                   }
+namespace Arguments            { class Format;                                   }
 namespace DataBuffers    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
                               class HeadLine;        class Encoding_v2;
@@ -72,7 +72,7 @@ namespace MetaData          { class Table;           class IdxColVec;
                               class BucketMap;       class PtnMap;            }
 namespace Expressions           {                                                 }
 namespace Oblique           { class AM;                                       }
-namespace Chunks          { class Operand;                                  }
+namespace Arguments          { class Operand;                                  }
 namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
                                                                               }
 namespace DataBuffers      {
@@ -104,7 +104,7 @@ namespace MetaData      { class Tx;              class TxSet;             }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 using namespace Arguments;
-using namespace Chunks;
+using namespace Arguments;
 using namespace DataBuffers;
 using namespace CompilerOperators;
 using namespace MetaData;
@@ -127,7 +127,7 @@ using namespace StorageEngine;
 using namespace MetaData;
 using namespace Expressions;
 using namespace Oblique;
-using namespace Chunks;
+using namespace Arguments;
 using namespace Parser;
 using namespace DataBuffers;
 using namespace Plans;

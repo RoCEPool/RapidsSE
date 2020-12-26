@@ -1,34 +1,35 @@
 /*============================================================================*/
-/* IngestChunk.hpp -- Ingest Chunk                                            */
+/* OperandQueue.hpp -- queue of operand buffers to be processed by an op      */
 /*============================================================================*/
 #pragma once
 
-namespace Chunks
+namespace Arguments
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IngestChunk : public RecordChunk,
-                      public ListItem_t<IngestChunk>
+  class OperandQueue : public ListNL_t<Operand>
   {
-  public:
-    i8 m_iChunkNo;
-
+  private:
+  
     // must be last
     Footer m_xFooter;
-  
-  public: //$ functions:
+    
+  public:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IngestChunk(Format* pFmt);
-    ~IngestChunk(void) noexcept(false);
-  
-    i8 nReadMore(File& oFile);
-  
-  private:
+    OperandQueue(void);
+    ~OperandQueue(void) noexcept(false);
+    
+    void vAppendOperand(Operand* pOperand);
+    bool      bPeekQueueOoO(void);
+    bool      bPeekQueue(void);
+    Operand*  pPopQueue(void);
+    Operand*  pPopQueueOoO(void);
+    i8   nQueuedOperands(void);
+      
     Footer* aFooter(void);
   };
   
-  IngestChunk* _pIngestChunk(void* aAddr);
+  OperandQueue* _pOperandQueue(void* aAddr);
 }
 
 /*============================================================================*/

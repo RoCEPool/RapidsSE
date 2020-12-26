@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Chunks
+namespace Arguments
 {
   class RecordChunk : public DataChunk
   {

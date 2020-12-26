@@ -21,6 +21,29 @@ namespace Arguments
 #include "Limits.hpp"
 #include "Licence.hpp"
 
+
+//------------------------------------------------------------------------------
+
+#include "Format.hpp"
+
+#include "DataChunk.hpp"
+#include "RecordChunk.hpp"
+#include "FileChunk.hpp"
+
+#include "IngestChunk.hpp"
+#include "IoChunk.hpp"
+#include "IoCopy.hpp"
+#include "LoadChunk.hpp"
+
+
+
+#include "Operand.hpp"
+#include "LinkedBuffer.hpp"
+#include "Definition.hpp"
+#include "OperandQueue.hpp"
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

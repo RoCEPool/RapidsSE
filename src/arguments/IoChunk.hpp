@@ -1,34 +1,32 @@
 /*============================================================================*/
-/* FileChunk.hpp -- File Chunk                                                */
+/* IoChunk.hpp -- I/O Chunk                                                   */
 /*============================================================================*/
 #pragma once
 
-namespace Chunks
+namespace Arguments
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class FileChunk : public RecordChunk
+  class IoChunk : public FileChunk
   {
-  protected:
-    File* m_pFile; // file being used
+  private:
+  
+    // must be last
+    Footer m_xFooter;
   
   public: //$ functions:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    FileChunk(eCN eClassNo, Format* pFmt);
-    ~FileChunk(void) noexcept(false);
-  
-    void  vCloseFile(void);
-    bool  bOpenRead(s256& sPath);
-    bool  bOpenWrite(s256& sPath);
-    i8    nReadBytes(i8 nBytes);
-    void  vReadSpecificChunk(i8 iSeek, i8 nBytes);
-    void  vRewindFile(void);
-    i8    nWriteBytes(i8 nBytes);
-    void  vWriteData(void);
+    IoChunk(Format* pFmt);
+    ~IoChunk(void) noexcept(false);
+
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+        
+  private:
+    Footer* aFooter(void);
   };
   
-  FileChunk* _pFileChunk(void* aAddr);
+  IoChunk* _pIoChunk(void* aAddr);
 }
 
 /*============================================================================*/

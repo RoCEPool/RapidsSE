@@ -5,7 +5,7 @@
 
 #include "eLE.h"
 
-namespace Chunks
+namespace Arguments
 {
   class Format : public Object
   {

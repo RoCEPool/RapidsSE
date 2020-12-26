@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* IngestChunk.cpp -- Ingest Chunk                                            */
+/* LoadChunk.cpp -- LoadChunk                                                 */
 /*============================================================================*/
 
-#include "Chunks.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,88 +11,65 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IngestChunk* Chunks::_pIngestChunk(void* aAddr)
+LoadChunk* Arguments::_pLoadChunk(void* aAddr)
 {
-  IngestChunk* pIngestChunk = reinterpret_cast<IngestChunk*>(aAddr);
+  LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(aAddr);
   
-  return pIngestChunk;
+  RASSERT_TYPE(pLoadChunk,CN_LOADCHUNK);
+  
+  return pLoadChunk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* IngestChunk::operator new(size_t)
+void* LoadChunk::operator new(size_t)
 {
-  IngestChunk* pIngestChunk = (IngestChunk*)HeapMem::pAllocate(CN_IOCHUNK);
+  LoadChunk* pLoadChunk = (LoadChunk*)HeapMem::pAllocate(CN_LOADCHUNK);
   
-  return pPoolCheck<void*>(pIngestChunk);
+  return pPoolCheck<void*>(pLoadChunk);
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void IngestChunk::operator delete(void* pIngestChunkAddress)
+void LoadChunk::operator delete(void* pLoadChunkAddress)
 {
-  IngestChunk* pIngestChunk = static_cast<IngestChunk*>(pIngestChunkAddress);
+  LoadChunk* pLoadChunk = static_cast<LoadChunk*>(pLoadChunkAddress);
   
-  HeapMem::vFree(pIngestChunk);
+  HeapMem::vFree(pLoadChunk);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IngestChunk::IngestChunk(Format* pFmt)
-: RecordChunk(CN_INGESTCHUNK,pFmt)
+LoadChunk::LoadChunk(Format* pFmt)
+: FileChunk(CN_LOADCHUNK,pFmt)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
-
-  m_iChunkNo = 0;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
+ 
+  _checkInitialised_(CN_LOADCHUNK);
   
-  //m_oFile
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-IngestChunk::~IngestChunk(void) noexcept(false)
+LoadChunk::~LoadChunk(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/* dump SubLoader                                                             */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-i8 IngestChunk::nReadMore(File& oFile)
+void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK);
+  //LoadChunk* pLoadChunk = _pLoadChunk(pObject);
   
-  i8 nCarryOverBytes = m_nDataBytes;
-  
-  void* aReadDst = aAdd<void*>(aDataArea(),nCarryOverBytes);
-  
-  i8 nBytesToRead = C_WSP_DATACHUNK - nCarryOverBytes;
-  
-  i8 nBytesRead = oFile.nReadBytes(aReadDst,nBytesToRead);
-  
-  vSetBytes(nCarryOverBytes + nBytesRead);
-  
-  m_szNextRecord = (Stz*)aDataArea();
-  
-  if (! nBytesRead)
-    return 0;
-
-  return nBytesRead;
+  //vTrace("\n"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Protected ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
@@ -101,9 +78,9 @@ i8 IngestChunk::nReadMore(File& oFile)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* IngestChunk::aFooter(void)
+Footer* LoadChunk::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK);
   
   return &m_xFooter;
 }

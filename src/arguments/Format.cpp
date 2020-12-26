@@ -2,13 +2,13 @@
 /* Format.cpp -- set of formatting characters and rules                       */
 /*============================================================================*/
 
-#include "Chunks.h"
+#include "Arguments.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Chunks,Format,CN_FORMAT)
+__pCastFunction(Arguments,Format,CN_FORMAT)
 __aNewFunction(Format,CN_FORMAT)
 __vDeleteFunction(Format,CN_FORMAT)
 __aFooterFunction(Format)

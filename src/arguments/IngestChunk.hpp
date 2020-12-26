@@ -1,38 +1,34 @@
 /*============================================================================*/
-/* IoCopy.hpp -- I/O Copy                                                     */
+/* IngestChunk.hpp -- Ingest Chunk                                            */
 /*============================================================================*/
 #pragma once
 
-namespace Chunks
+namespace Arguments
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IoCopy : public Object
+  class IngestChunk : public RecordChunk,
+                      public ListItem_t<IngestChunk>
   {
-  private:
-    IoChunk*  m_pInChunk;
-    IoChunk*  m_pOutChunk;
-  
+  public:
+    i8 m_iChunkNo;
+
     // must be last
     Footer m_xFooter;
   
-  public:
+  public: //$ functions:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IoCopy(void);
-    ~IoCopy(void) noexcept(false);
+    IngestChunk(Format* pFmt);
+    ~IngestChunk(void) noexcept(false);
   
-    void  vCloseBoth(void);
-    i8    nCopyChunk(void);
-    bool  bOpenRead(s256& sPath);
-    bool  bOpenWrite(s256& sPath);
-    void  vRewindInput(void);
+    i8 nReadMore(File& oFile);
   
   private:
     Footer* aFooter(void);
   };
   
-  IoCopy* _pIoCopy(void* aAddr);
+  IngestChunk* _pIngestChunk(void* aAddr);
 }
 
 /*============================================================================*/
