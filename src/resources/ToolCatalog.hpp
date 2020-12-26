@@ -12,7 +12,7 @@ namespace Resources
   public:
     ToolCatalog(void);
   
-  static void vTools(void*);
+    static void vTools(void*);
   };
 }
 

@@ -11,6 +11,9 @@ namespace Resources
 
   public:
     GizmoCatalog(void);
+  
+    static void vGizmos(void*);
+
   };
 }
 
