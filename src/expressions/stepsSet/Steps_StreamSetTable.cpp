@@ -2,7 +2,7 @@
 /* Steps_StreamSetTable.cpp - StreamSet table step group                      */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

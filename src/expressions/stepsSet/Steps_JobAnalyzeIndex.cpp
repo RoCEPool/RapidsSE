@@ -2,7 +2,7 @@
 /* Steps_JobAnalyzeIndex.cpp - jobAnalyzeIndex step group                     */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

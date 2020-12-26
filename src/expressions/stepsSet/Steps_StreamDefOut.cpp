@@ -2,7 +2,7 @@
 /* Steps_StreamDefOut.cpp -- Stream Definition (out-going) step group         */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

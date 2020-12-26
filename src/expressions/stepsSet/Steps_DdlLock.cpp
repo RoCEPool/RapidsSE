@@ -2,7 +2,7 @@
 /* Steps_DdlLock.cpp - ddl lock step group                                    */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

@@ -13,7 +13,6 @@ extern SizeHeap   gxaSizeHeap[];
 void StorageEngine::vCheckAllAssumptions(void)
 {
   Arguments::vCheckAssumptions();
-  Expressions::vCheckAssumptions();
   Parser::vCheckAssumptions();
   Resources::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
@@ -25,6 +24,12 @@ void StorageEngine::vCheckAllAssumptions(void)
 void StorageEngine::vCheckAssumptions(void)
 {
   ALWAYS(sizeof(AttachMap) < C_SIZE_POOL_BUFFER);
+  
+  
+  ALWAYS(sizeof(Thread) < C_SIZE_SMALL_OBJECT);
+  
+  ALWAYS(sizeof(Queue)    < C_SIZE_SMALL_OBJECT);
+  ALWAYS(sizeof(Task)     < C_SIZE_MEDIUM_OBJECT);
 }
 
 /*----------------------------------------------------------------------------*/

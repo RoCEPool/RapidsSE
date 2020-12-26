@@ -2,7 +2,7 @@
 /* Steps_IndexDef.cpp - index definition step group                           */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

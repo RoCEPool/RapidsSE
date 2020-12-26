@@ -2,7 +2,7 @@
 /* Steps_StreamSet.cpp -- Register StreamSet step group                       */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

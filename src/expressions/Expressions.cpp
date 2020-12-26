@@ -2,19 +2,8 @@
 /* Expressions.cpp - Expressions namespace functions                          */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Expressions::vCheckAssumptions(void)
-{
-  ALWAYS(sizeof(Thread) < C_SIZE_SMALL_OBJECT);
-  
-  ALWAYS(sizeof(Queue)    < C_SIZE_SMALL_OBJECT);
-  ALWAYS(sizeof(Task)     < C_SIZE_MEDIUM_OBJECT);
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -2,7 +2,7 @@
 /* Steps_ActivityLog.cpp -- Activity Log step group                           */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

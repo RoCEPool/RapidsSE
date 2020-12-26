@@ -2,7 +2,7 @@
 /* Steps_TablePtn.cpp -- Table Partition Step Group                           */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

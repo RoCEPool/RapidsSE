@@ -2,7 +2,7 @@
 /* Steps_StreamDef.cpp -- StreamDef step group                                */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

@@ -3,7 +3,7 @@
 /* LogicCompiler.cpp -- Logic Compiler                                        */
 /*============================================================================*/
 
-#include "Expressions.h"
+#include "StorageEngine.h"
 
 #ifdef __TINYC
 #include "libtcc.h"
