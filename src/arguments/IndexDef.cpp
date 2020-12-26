@@ -1,0 +1,691 @@
+/*============================================================================*/
+/* IndexDef.cpp -- Index Definition                                           */
+/*============================================================================*/
+
+#include "Arguments.h"
+
+#include "Plans.h"
+
+extern EnvFlags gxEnvFlags;
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+IndexDef* Arguments::_pIndexDef(void* pAddr)
+{
+  IndexDef* pIndex = reinterpret_cast<IndexDef*>(pAddr);
+  
+  RASSERT_TYPE(pIndex,CN_INDEXDEF);
+  
+  return pIndex;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* IndexDef::operator new(size_t)
+{
+  Object* pIndexDef = HeapMem::pAllocate(CN_INDEXDEF);
+  
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexDef::operator delete(void* pAddress)
+{
+  IndexDef* pIndexDef = reinterpret_cast<IndexDef*>(pAddress);
+  
+  HeapMem::vFree(pIndexDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+IndexDef::IndexDef(void)
+: Definition(CN_INDEXDEF)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_sIndexNm      = C_NO_NAME;
+  m_sTableNm      = C_NO_NAME;
+  m_eIndexType    = IT_SKIP_LIST;
+  m_eKeyKind      = KE_GENERAL;
+
+  m_bIsPrimaryKey = false;
+  m_bIsUnique     = false;
+  
+  m_nColumns      = 0;
+  //m_xaColumn[C_MAX_INDEXCOLUMNS];
+  
+  MemLib::vZero(m_iaColSet,sizeof(m_iaColSet),CN_INDEXDEF);
+  m_iaColSet[0] = -1;
+
+  _checkInitialised_(CN_INDEXDEF);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+IndexDef::IndexDef(IndexDef* pIndexDef)
+: Definition(CN_INDEXDEF)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_sIndexNm      = pIndexDef->szIndexNm();
+  m_sTableNm      = pIndexDef->szTableNm();
+  m_eIndexType    = pIndexDef->eIndexType();
+  m_eKeyKind      = pIndexDef->eKeyKind();
+
+  m_bIsPrimaryKey = pIndexDef->bIsPrimaryKey();
+  m_bIsUnique     = pIndexDef->bIsUnique();
+  
+  m_nColumns      = pIndexDef->nColumns();
+  
+  MemLib::vZero(m_iaColSet,sizeof(m_iaColSet),CN_INDEXDEF);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    m_xaColumn[i_Col].vCopy(pIndexDef->pGetColumn(i_Col));
+
+    m_iaColSet[i_Col] = pIndexDef->pGetColumn(i_Col)->iColumnNo();
+    m_iaColSet[i_Col + 1] = -1;
+  }
+  
+  _checkInitialised_(CN_INDEXDEF);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+IndexDef::~IndexDef(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  // Since the column is picked from the ColVec of table
+  // we don not need to delete them
+  //! ALKA CHECK
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a column to the indexDef                                               */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
+  m_xaColumn[m_nColumns].vColumnNm(szColumnNm);
+  m_xaColumn[m_nColumns].vColumnType(eColumnType);
+  m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
+  
+  m_iaColSet[m_nColumns] = m_nColumns;
+  m_iaColSet[m_nColumns+1] = -1;
+
+  m_nColumns++;
+  
+  if (m_nColumns > 1) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+  
+  if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+
+  m_eKeyKind = KE_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the no of columns in the index                                         */
+/*----------------------------------------------------------------------------*/
+i8 IndexDef::nColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the colset array                                                       */
+/*----------------------------------------------------------------------------*/
+i8* IndexDef::aiaColSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_iaColSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine key kind                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vDetermineKeyKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  if (nColumns() > 1) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+  
+  eCT eColumnType = m_xaColumn[0].eColumnType();
+  
+  if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
+    m_eKeyKind = KE_GENERAL;
+    return;
+  }
+
+  m_eKeyKind = KE_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the index name                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* IndexDef::szIndexNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_sIndexNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the index name                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vIndexNm(Stz* szIndexNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_sIndexNm = szIndexNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the index type                                                         */
+/*----------------------------------------------------------------------------*/
+eIT IndexDef::eIndexType(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_eIndexType;
+}
+                            
+/*----------------------------------------------------------------------------*/
+/* get the key kind                                                           */
+/*----------------------------------------------------------------------------*/
+eKE IndexDef::eKeyKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_eKeyKind;
+}
+                            
+/*----------------------------------------------------------------------------*/
+/* set the key kind                                                           */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vKeyKind(eKE eKeyKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_eKeyKind = eKeyKind;
+}
+                           
+/*----------------------------------------------------------------------------*/
+/* get the table name                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* IndexDef::szTableNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_sTableNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table name                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vTableNm(Stz* szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_sTableNm = szTableNm;
+}
+
+//#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+#define dPT()
+
+/*----------------------------------------------------------------------------*/
+/* parse Create Index command                                                 */
+/*----------------------------------------------------------------------------*/
+eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  eEC eError = EC_NONE;
+
+  // tokenise the command
+  TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Index <indexNm>
+  
+  // -- -- -- -- -- -- -- -- -- --
+  // assert we got an index table
+  // -- -- -- -- -- -- -- -- -- --
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz));
+  
+  if (pTkn->bSame("unique"_Stz)) {
+    
+    m_bIsUnique = true;
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    ASSERT(pTkn->bSame("index"_Stz));
+  }
+  
+  // -- -- -- --
+  // index name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  m_sIndexNm = pTkn->szChars();
+  
+  // -- -- -- --
+  // ON
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("on"_Stz));
+
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  m_sTableNm = pTkn->szChars();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: ( <colNm> ,... )
+  
+  // -- -- -- -- --
+  // open parenth (
+  // -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (! pTkn->bSame("("_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- --
+  // iterate from first column till )
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // subsequent column names, skipping over comma
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    if (i_Col) {
+      if (pTkn->bSame(","_Stz)) {
+        pTkn = pTknVec->pNextToken(); dPT();
+      }
+      else {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+    }
+    
+    // -- -- -- -- --
+    // process column
+    // -- -- -- -- --
+    bool bResult = bAddIdxCol(pTable,i_Col,pTkn->szChars());
+    if ( ! bResult ) {
+      eError = EC_INVALID_INDEX_COLUMN;
+      goto L_RETURN;
+    }
+    m_nColumns++;
+    
+    // -- -- -- --
+    // next token
+    // -- -- -- --
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vDetermineKeyKind();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+L_RETURN:
+  
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+
+  delete pTknVec;
+  
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check the syntax of the Create Index command                               */
+/*----------------------------------------------------------------------------*/
+eEC IndexDef::eParseTableName(Stz* szCmd, Stz* szTableNm)
+{
+  eEC eError = EC_NONE;
+  
+  // tokenise the command
+  TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Index <indexNm>
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz));
+  
+  if (pTkn->bSame("unique"_Stz)) {
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    ASSERT(pTkn->bSame("index"_Stz));
+  }
+  
+  // -- -- -- --
+  // index name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // ON
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn || ! pTkn->bSame("on"_Stz) ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  if ( ! pTkn || pTkn->bSame("("_Stz) || pTkn->bSame(";"_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  StrLib::vCopy((char*)szTableNm,(const char*)pTkn->szChars());
+  
+L_RETURN:
+  delete pTknVec;
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a primary key  index                                               */
+/*----------------------------------------------------------------------------*/
+bool IndexDef::bIsPrimaryKey(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_bIsPrimaryKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index as a primary key index                                           */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vIsPrimaryKey(bool bPrimaryKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_bIsPrimaryKey = bPrimaryKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this index unique?                                                      */
+/*----------------------------------------------------------------------------*/
+bool IndexDef::bIsUnique(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_bIsUnique;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index unique                                                           */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vIsUnique(bool bUnique)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_bIsUnique = bUnique;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index column vector                                                    */
+/*----------------------------------------------------------------------------*/
+Column* IndexDef::pGetColumn(i8 iColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return &m_xaColumn[iColumn];
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the size of sort key datum                                         */
+/*----------------------------------------------------------------------------*/
+i8 IndexDef::iSortKeyDatum(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  i8 nKeyDatumSize = 0;
+  for (i8 i_IdxCol = 0; i_IdxCol < m_nColumns; i_IdxCol++) {
+    nKeyDatumSize += sizeof(i8);
+  }
+  
+  return nKeyDatumSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check the syntax of the Create Index command                               */
+/*----------------------------------------------------------------------------*/
+eEC IndexDef::eSyntax(Stz* szCmd)
+{
+  eEC eError = EC_NONE;
+  i8 iIndexColumns;
+  
+  // tokenise the command
+  TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Index <indexNm>
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz));
+  
+  if (pTkn->bSame("unique"_Stz)) {
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    ASSERT(pTkn->bSame("index"_Stz));
+  }
+  
+  // -- -- -- --
+  // index name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // ON
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn || ! pTkn->bSame("on"_Stz) ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: ( <colNm> ,... )
+  
+  // -- -- -- -- --
+  // open parenth (
+  // -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn || ! pTkn->bSame("("_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // iterate from first column till )
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  iIndexColumns = 0;
+  for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // subsequent column names, skipping over comma
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    iIndexColumns++;
+    
+    if (i_Col) {
+      if (pTkn->bSame(","_Stz)) {
+        pTkn = pTknVec->pNextToken(); dPT();
+        if ( ! pTkn ) {
+          eError = EC_INVALID_COMMAND;
+          goto L_RETURN;
+        }
+      }
+      else {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+    }
+    
+    // -- -- -- --
+    // next token
+    // -- -- -- --
+    pTkn = pTknVec->pNextToken(); dPT();
+    if ( ! pTkn ) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+  }
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  if ( ! pTkn->bSame(";"_Stz) ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  if ( iIndexColumns == 0 ) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+L_RETURN:
+  
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  
+  delete pTknVec;
+  
+  return eError;
+}
+
+#undef dPT
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add column to the index column vector                                      */
+/*----------------------------------------------------------------------------*/
+bool IndexDef::bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  Column* pColumn = pTable->pFindColumn(szColNm);
+
+  if (! pColumn)
+    return false;
+  
+  m_xaColumn[iCol].vCopy(pColumn);
+  
+  m_iaColSet[iCol] = pColumn->iColumnNo();
+  m_iaColSet[iCol+1] = -1;
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(IndexDef)
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

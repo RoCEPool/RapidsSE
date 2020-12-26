@@ -20,7 +20,7 @@ class SP_Encoding_v2;
 class Packing_v2;
                               class OverLine;        class TailLine;          }
 namespace CompilerOperators {                                                 }
-namespace MetaData       {                                                 }
+namespace Arguments       {                                                 }
 namespace DataBuffers       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
 namespace Arguments            { class Datum_h;
@@ -50,7 +50,7 @@ namespace Facts             { class Fact;            class Kbase;
                               class Method;        
                               class Question;        class Transform;         }
 
-namespace MetaData           {                                                 }
+namespace Arguments           {                                                 }
 namespace Resources           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
@@ -67,7 +67,7 @@ namespace Resources   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
 namespace Load              {                                                 }
 namespace StorageEngine           { class Log;             class LogEntry;          }
-namespace MetaData          { class Table;           class IdxColVec;
+namespace Arguments          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
 namespace Expressions           {                                                 }
@@ -86,7 +86,7 @@ namespace Plans             { class Planner;                                  }
 namespace Prompt            {   class SePrompt;                               }
 namespace DataBuffers   { class Crv;                                      }
 namespace Resources     { class RU_Cpu;          class RU_Memory;         }
-namespace MetaData              { class Row;                                      }
+namespace Arguments              { class Row;                                      }
 namespace Arguments             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace DataBuffers          { class Session;         class SessionState;      }
@@ -99,7 +99,7 @@ class Heap; class PoolHelper; class ObjectSnapshot;            }
 namespace Expressions             { class Task;                                     }
 namespace Expressions           { class Scheduler;       class Thread;
                               class Queues;                                   }
-namespace MetaData      { class Tx;              class TxSet;             }
+namespace Arguments      { class Tx;              class TxSet;             }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -107,14 +107,14 @@ using namespace Arguments;
 using namespace Arguments;
 using namespace DataBuffers;
 using namespace CompilerOperators;
-using namespace MetaData;
+using namespace Arguments;
 using namespace DataBuffers;
 using namespace Arguments;
 using namespace Plans;
 using namespace DataBuffers;
 using namespace Expressions;
 using namespace Facts;
-using namespace MetaData;
+using namespace Arguments;
 using namespace Resources;
 using namespace DataBuffers;
 using namespace DataBuffers;
@@ -124,7 +124,7 @@ using namespace Plans;
 using namespace Resources;
 using namespace Load;
 using namespace StorageEngine;
-using namespace MetaData;
+using namespace Arguments;
 using namespace Expressions;
 using namespace Oblique;
 using namespace Arguments;
@@ -136,7 +136,7 @@ using namespace Plans;
 using namespace Prompt;
 using namespace DataBuffers;
 using namespace Resources;
-using namespace MetaData;
+using namespace Arguments;
 using namespace Arguments;
 using namespace DataBuffers;
 using namespace DataBuffers;
@@ -146,7 +146,7 @@ using namespace StorageEngine;
 using namespace Resources;
 using namespace Expressions;
 using namespace Expressions;
-using namespace MetaData;
+using namespace Arguments;
 
 /*============================================================================*/
 /* end                                                                        */

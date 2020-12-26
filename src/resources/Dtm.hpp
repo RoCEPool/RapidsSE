@@ -35,7 +35,7 @@ namespace Resources
   friend class Resources::Mutex;
   friend class Resources::IvlLib;
   
-  friend class MetaData::Row;
+  friend class Arguments::Row;
 
   private:
   
