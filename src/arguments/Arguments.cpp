@@ -18,6 +18,8 @@ void Arguments::vCheckAssumptions(void)
   
   ALWAYS(sizeof(Dtm)    == sizeof(SingleWord));
 
+  ALWAYS(4 == sizeof(u4));
+  ALWAYS(sizeof(u4) == sizeof(ColPix));
 }
 
 /*============================================================================*/

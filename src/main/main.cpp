@@ -27,7 +27,7 @@ extern i8   giProgressPoint;
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
-//  printf("sizeof(Object) %lld\n",       (i8)sizeof(Object));
+  //printf("sizeof(ColPix) %lld\n",       (i8)sizeof(ColPix));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
