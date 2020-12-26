@@ -858,8 +858,8 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
     
     Stage* pStage = m_pPipeline->pGet(i_Stage);
     
-    i8 nStrands = pStage->nItems();
-    for (i8 i_Stream = 0; i_Stream < nStrands; i_Stream++) {
+    i8 nStreams = pStage->nItems();
+    for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
  
       Stream* pStream= pStage->pGet(i_Stream);
       

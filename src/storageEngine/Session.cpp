@@ -346,7 +346,7 @@ i8 Session::i_Stream(void)
 /*----------------------------------------------------------------------------*/
 /* set partition                                                              */
 /*----------------------------------------------------------------------------*/
-void Session::vStrand(i8 i_Stream)
+void Session::vStream(i8 i_Stream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   

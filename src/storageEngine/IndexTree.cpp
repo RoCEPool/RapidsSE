@@ -118,7 +118,7 @@ Stz* IndexTree::pAnalyze(void)
   
   i8 nRowsTotal = 0;
   i8 nBuffersTotal = 0;
-  i8 nStrandsTotal = 0;
+  i8 nStreamsTotal = 0;
   s48K sAnalysis;
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,

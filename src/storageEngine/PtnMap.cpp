@@ -87,7 +87,7 @@ void PtnMap::vRunningHash(i8* aiHash, i8 iMixIn)
 /*----------------------------------------------------------------------------*/
 /* convert i_Stream to logical partition number (in grid)                     */
 /*----------------------------------------------------------------------------*/
-tPN PtnMap::tStrandToLglPtnNo(i8 i_Stream)
+tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 {
   _static_
   
@@ -162,13 +162,13 @@ i8 PtnMap::i_WhichNode(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* get which stream a logical partition is mapped to                          */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichStrand(tPN tPtnNo)
+i8 PtnMap::i_WhichStream(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   i8 i_Stream = m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn;
    
-  //RASSERT(i_Stream == i_LglPtnNoToInitialStrand(tPtnNo));
+  //RASSERT(i_Stream == i_LglPtnNoToInitialStream(tPtnNo));
 
   return i_Stream;
 }
@@ -182,7 +182,7 @@ i8 PtnMap::i_WhichTablePtn(tPN tPtnNo)
   
   i8 i_TablePtn = m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn;
    
-  RASSERT(i_TablePtn == i_LglPtnNoToInitialStrand(tPtnNo));
+  RASSERT(i_TablePtn == i_LglPtnNoToInitialStream(tPtnNo));
 
   return i_TablePtn;
 }
@@ -206,7 +206,7 @@ i8 PtnMap::i_LglPtnNoToInitialNode(tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* convert grid partition number to initial node it is to be mapped to        */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_LglPtnNoToInitialStrand(tPN tPtnNo)
+i8 PtnMap::i_LglPtnNoToInitialStream(tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -238,7 +238,7 @@ void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
       (i4)tPtnNo % nNodes;
     
     m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
-      //(i4)i_LglPtnNoToInitialStrand(tPtnNo);
+      //(i4)i_LglPtnNoToInitialStream(tPtnNo);
       (i4)tPtnNo / nNodes;
   }
   

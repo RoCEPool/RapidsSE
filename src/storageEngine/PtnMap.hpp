@@ -35,7 +35,7 @@ namespace Arguments
     static i8   iHashToBucketId(i8 iHash);
     static tPN  tHashToPtnNo(i8 iHash, i8 nPtnsInGrid);
     static void vRunningHash(i8* aiHash, i8 iMixIn);
-    static tPN  tStrandToLglPtnNo(i8 i_Stream);
+    static tPN  tStreamToLglPtnNo(i8 i_Stream);
 
     void vAdjustDataBuffers(i8 nConnectedNodes, i8 nDegOfPar);
     void vDumpDataBuffers(void);
@@ -43,12 +43,12 @@ namespace Arguments
     i8 nPtnsInGrid(void);
     i8 nPtnsPerTable(void);
     i8 i_WhichNode(tPN tPtnNo);
-    i8 i_WhichStrand(tPN tPtnNo);
+    i8 i_WhichStream(tPN tPtnNo);
     i8 i_WhichTablePtn(tPN tPtnNo);
 
   private:
     i8 i_LglPtnNoToInitialNode(tPN tPtnNo);
-    i8 i_LglPtnNoToInitialStrand(tPN tPtnNo);
+    i8 i_LglPtnNoToInitialStream(tPN tPtnNo);
     Footer* aFooter(void);
     void vPartition(i8 nNodes, i8 nDegOfPar);
   };

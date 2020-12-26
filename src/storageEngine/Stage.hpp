@@ -30,8 +30,8 @@ namespace Arguments
     void vDump(Pipeline* pPipeline);
     
     void    vCancelPipeline(Task* pTriggeringTask);
-    Stream* pGetPartitionStrand(i8 i_Ptn);
-    Stream* pGetNodeStrand(i8 i_Node);
+    Stream* pGetPartitionStream(i8 i_Ptn);
+    Stream* pGetNodeStream(i8 i_Node);
     i8      nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
     Op*     pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op);
@@ -40,7 +40,7 @@ namespace Arguments
     void    vStartPipeline(Task* pTriggeringTask);
   
   private:
-    void    vCreateStrands(void);
+    void    vCreateStreams(void);
 
     Footer* aFooter(void);
   };

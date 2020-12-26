@@ -149,8 +149,8 @@ void Op::vDump(i8 i_Op)
   
   // get the next op
   i8 iNextOp = pTopologyTagSet->iValue(C_TAG_NEXTOP);
-  Stream* pNextStrand = pNextStage->pGet(0);
-  Op* pNextOp = pNextStrand->pGet(iNextOp);
+  Stream* pNextStream = pNextStage->pGet(0);
+  Op* pNextOp = pNextStream->pGet(iNextOp);
 
   // get the cross topology
   ePX eTopology = (ePX)(pTopologyTagSet->iValue(C_TAG_TOPOLOGY));
@@ -1325,7 +1325,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      Stream* pStream = pNextStage->pGetPartitionStrand(m_tPtnNo);
+      Stream* pStream = pNextStage->pGetPartitionStream(m_tPtnNo);
       tPN tPtnNo = pStream->tPtnNo();
       vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, tPtnNo);
       break;
@@ -1633,7 +1633,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     case XK_ROBIN : {
       m_iRobin++;
       i_TablePtn = m_iRobin % AM::nPtnsPerTable();
-      tPtnNo = PtnMap::tStrandToLglPtnNo(i_TablePtn);
+      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // xmitNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
@@ -1810,7 +1810,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
     case XK_LOCALROBIN : {
       m_iLocalRobin++;
       i_TablePtn = m_iLocalRobin % AM::nPtnsPerTable();
-      tPtnNo = PtnMap::tStrandToLglPtnNo(i_TablePtn);
+      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // xmitNode is this node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);

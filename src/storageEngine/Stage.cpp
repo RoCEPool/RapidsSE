@@ -31,7 +31,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeline)
 
   _checkInitialised_(CN_STAGE);
 
-  vCreateStrands();
+  vCreateStreams();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
 }
@@ -75,7 +75,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get stream for given partition                                             */
 /*----------------------------------------------------------------------------*/
-Stream* Stage::pGetPartitionStrand(i8 i_Ptn)
+Stream* Stage::pGetPartitionStream(i8 i_Ptn)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -97,7 +97,7 @@ Stream* Stage::pGetPartitionStrand(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get stream for given node                                                  */
 /*----------------------------------------------------------------------------*/
-Stream* Stage::pGetNodeStrand(i8 i_Node)
+Stream* Stage::pGetNodeStream(i8 i_Node)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -181,8 +181,8 @@ Pipeline* Stage::pPipeline(void)
 Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
 {
   Op* pOp = nullptr;
-  Stream* pNdeStrand = nullptr;
-  Stream* pPtnStrand = nullptr;
+  Stream* pNdeStream = nullptr;
+  Stream* pPtnStream = nullptr;
   
   switch (eCrossTopo) {
       
@@ -192,41 +192,41 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
     case PX_ORIGIN_TO_ALL_NODES:
-      pNdeStrand = this->pGetNodeStrand(i_Node);
-      pOp = pNdeStrand->pGet(i_Op);
+      pNdeStream = this->pGetNodeStream(i_Node);
+      pOp = pNdeStream->pGet(i_Op);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStrand = pGet(tPtnNo);
-      pOp = pPtnStrand->pGet(i_Op);
+      pPtnStream = pGet(tPtnNo);
+      pOp = pPtnStream->pGet(i_Op);
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-      pPtnStrand = pGetPartitionStrand(tPtnNo);
-      pOp = pPtnStrand->pGet(i_Op);
+      pPtnStream = pGetPartitionStream(tPtnNo);
+      pOp = pPtnStream->pGet(i_Op);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pNdeStrand = this->pGetNodeStrand(i_Node);
-      pOp = pNdeStrand->pGet(i_Op);
+      pNdeStream = this->pGetNodeStream(i_Node);
+      pOp = pNdeStream->pGet(i_Op);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pPtnStrand = pGetPartitionStrand(tPtnNo);
-      pOp = pPtnStrand->pGet(i_Op);
+      pPtnStream = pGetPartitionStream(tPtnNo);
+      pOp = pPtnStream->pGet(i_Op);
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStrand = pGetPartitionStrand(tPtnNo);
-      pOp = pPtnStrand->pGet(i_Op);
+      pPtnStream = pGetPartitionStream(tPtnNo);
+      pOp = pPtnStream->pGet(i_Op);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
-      pPtnStrand = pGet(0);
-      ASSERT(pPtnStrand->tPtnNo() == tPtnNo);
-      pOp = pPtnStrand->pGet(i_Op);
+      pPtnStream = pGet(0);
+      ASSERT(pPtnStream->tPtnNo() == tPtnNo);
+      pOp = pPtnStream->pGet(i_Op);
       break;
       
     default:
@@ -291,7 +291,7 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* create the streams for this stage based on stage topology                  */
 /*----------------------------------------------------------------------------*/
-void Stage::vCreateStrands(void)
+void Stage::vCreateStreams(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -334,7 +334,7 @@ void Stage::vCreateStrands(void)
       RASSERT(! m_pStageSpec->bNodeTopo());
       for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        i_Stream = AM::pPtnMap()->i_WhichStrand(tPtnNo);
+        i_Stream = AM::pPtnMap()->i_WhichStream(tPtnNo);
         pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
         vAdd(pStream);
       }
@@ -345,7 +345,7 @@ void Stage::vCreateStrands(void)
       for (tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++) {
         i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if (i_Node == m_pPipeline->i_Origin()) {
-          i_Stream = AM::pPtnMap()->i_WhichStrand(tPtnNo);
+          i_Stream = AM::pPtnMap()->i_WhichStream(tPtnNo);
           pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
           vAdd(pStream);
         }
@@ -356,7 +356,7 @@ void Stage::vCreateStrands(void)
       RASSERT(! m_pStageSpec->bNodeTopo());
       tPtnNo = m_pStageSpec->tSpecificPtnNo();
       i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      i_Stream = AM::pPtnMap()->i_WhichStrand(tPtnNo);
+      i_Stream = AM::pPtnMap()->i_WhichStream(tPtnNo);
       pStream = new Stream(m_pStageSpec,this,i_Stream,tPtnNo,i_Node);
       vAdd(pStream);
       break;

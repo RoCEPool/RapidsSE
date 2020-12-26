@@ -85,7 +85,7 @@ namespace Arguments
     void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
     i8        i_Stream(void);
-    void      vStrand(i8 i_Stream);
+    void      vStream(i8 i_Stream);
     DicStack* pPathStack(void);
       
     void      vReport(void);
