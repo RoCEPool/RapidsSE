@@ -79,7 +79,7 @@ BufferPool::~BufferPool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vSubSystem(void* aSubSysArg)
+void BufferPool::vSubSystem(TokenVec* pTokenVec)
 {
   _static_
   

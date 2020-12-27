@@ -25,7 +25,7 @@ ToolCatalog::ToolCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* flist gizmos                                                                */
 /*----------------------------------------------------------------------------*/
-void ToolCatalog::vTools(void*)
+void ToolCatalog::vTools(TokenVec* pTokenVec)
 {
   _static_
   

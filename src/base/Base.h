@@ -161,7 +161,8 @@ typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
-typedef void (fpSELFFN)(void* aSelfArg);
+namespace BASE { class TokenVec; }
+typedef void (fpSELFFN)(TokenVec* pTokenVec);
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 

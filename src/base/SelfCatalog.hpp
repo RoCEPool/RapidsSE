@@ -15,7 +15,7 @@ namespace BASE
   public:
     SelfCatalog(void);
   
-    bool bCallFn(Stz* szSelfNm, void* aSelfArg);
+    bool bCallFn(Stz* szSelfNm, TokenVec* pTokenVec);
   
     SelfFn* pFindFn(Stz* szSelfNm);
   

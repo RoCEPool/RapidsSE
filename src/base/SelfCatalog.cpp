@@ -17,13 +17,13 @@ SelfCatalog::SelfCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
-bool SelfCatalog::bCallFn(Stz* szSelfNm, void* aSelfArg)
+bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
 {
   SelfFn* pSelfFn = pFindFn(szSelfNm);
   if (! pSelfFn)
     return false;
   
-  pSelfFn->m_fpSelfFn(aSelfArg);
+  pSelfFn->m_fpSelfFn(pTokenVec);
   
   return true;
 }

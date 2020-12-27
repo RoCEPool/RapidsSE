@@ -13,7 +13,7 @@ GizmoFn __Pow2("pow2"_Stz,(fpSELFFN*)Gizmos::vPow2,""_Stz,-1);
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void Gizmos::vAsciiTable(void* aGizmoArg)
+void Gizmos::vAsciiTable(TokenVec* pTokenVec)
 {
   _static_
   
@@ -58,7 +58,7 @@ void Gizmos::vAsciiTable(void* aGizmoArg)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void Gizmos::vPow2(void* aGizmoArg)
+void Gizmos::vPow2(TokenVec* pTokenVec)
 {
   _static_
   

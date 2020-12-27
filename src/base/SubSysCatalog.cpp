@@ -35,7 +35,7 @@ SubSysCatalog::SubSysCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* list gizmos                                                                */
 /*----------------------------------------------------------------------------*/
-void SubSysCatalog::vSubSystems(void*)
+void SubSysCatalog::vSubSystems(TokenVec* pTokenVec)
 {
   _static_
   

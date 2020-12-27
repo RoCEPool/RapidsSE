@@ -12,7 +12,7 @@ namespace BASE
   public:
     ToolCatalog(void);
   
-    static void vTools(void*);
+    static void vTools(TokenVec* pTokenVec);
   };
 }
 

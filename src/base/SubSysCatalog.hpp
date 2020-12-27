@@ -12,7 +12,7 @@ namespace BASE
   public:
     SubSysCatalog(void);
   
-    static void vSubSystems(void*);
+    static void vSubSystems(TokenVec* pTokenVec);
 
   };
 }

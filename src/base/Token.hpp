@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eTN.h"
+
 namespace BASE
 {
   class Token : public Object
