@@ -10,7 +10,7 @@ namespace BASE
   public:
 
   public:
-    SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, Stz* szDescription, i8 iArg);
+    SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, Stz* szDescription, ...);
   };
 }
 

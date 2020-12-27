@@ -9,7 +9,7 @@ ToolCatalog gxToolCatalog;
 ToolFn __ToolCatalog_Tools
    ("Tools"_Stz,(fpSELFFN*)ToolCatalog::vTools,
                  ""_Stz,
-                 -1);
+                 nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */

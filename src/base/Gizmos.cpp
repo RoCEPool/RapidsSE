@@ -6,9 +6,9 @@
 
 #include "eOC.h"
 
-GizmoFn __AsciiTable("ascii"_Stz,(fpSELFFN*)Gizmos::vAsciiTable,""_Stz,-1);
+GizmoFn __AsciiTable("ascii"_Stz,(fpSELFFN*)Gizmos::vAsciiTable,""_Stz,nullptr);
 
-GizmoFn __Pow2("pow2"_Stz,(fpSELFFN*)Gizmos::vPow2,""_Stz,-1);
+GizmoFn __Pow2("pow2"_Stz,(fpSELFFN*)Gizmos::vPow2,""_Stz,nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */

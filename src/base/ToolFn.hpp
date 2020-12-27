@@ -11,7 +11,7 @@ namespace BASE
 
   public:
     ToolFn(Stz* szToolNm, fpSELFFN* fpToolFn,
-           Stz* szDescription, i8 iArg);
+           Stz* szDescription, ...);
   };
 }
 

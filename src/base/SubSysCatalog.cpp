@@ -9,12 +9,12 @@ SubSysCatalog gxSubSysCatalog;
 SubSysFn __SubSysCatalog_SubSys
    ("SubSys"_Stz,(fpSELFFN*)SubSysCatalog::vSubSystems,
                   ""_Stz,
-                  -1);
+    nullptr);
 
 SubSysFn __SubSysCatalog_SubSystems
    ("SubSystems"_Stz,(fpSELFFN*)SubSysCatalog::vSubSystems,
                       ""_Stz,
-                      -1);
+    nullptr);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

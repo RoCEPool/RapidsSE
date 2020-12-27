@@ -7,7 +7,7 @@
 ToolFn __ObjectSnapshot_List
    ("ObjectCounts"_Stz,(fpSELFFN*)ObjectSnapshot::vObjectCounts,
                      ""_Stz,
-                     -1);
+                     nullptr);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

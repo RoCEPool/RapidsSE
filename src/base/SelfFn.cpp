@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SelfFn::SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription, i8)
+SelfFn::SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription)
 {
   m_szSelfNm = szSelfNm;
   m_fpSelfFn = fpSelfFn;
@@ -16,6 +16,21 @@ SelfFn::SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription, i8)
   m_nSeeAlso = 0;
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* help                                                                       */
+/*----------------------------------------------------------------------------*/
+void SelfFn::vAddSeeAlso(va_list xVarArgs)
+{
+
+  for (;;) {
+    Stz* szVal = va_arg(xVarArgs,Stz*);
+
+    if (!szVal)
+      break;
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

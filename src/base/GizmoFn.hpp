@@ -10,7 +10,7 @@ namespace BASE
   public:
 
   public:
-    GizmoFn(Stz* szGizmoNm, fpSELFFN* fpGizmoFn, Stz* szDescription, i8 iArg);
+    GizmoFn(Stz* szGizmoNm, fpSELFFN* fpGizmoFn, Stz* szDescription, ...);
   };
 }
 

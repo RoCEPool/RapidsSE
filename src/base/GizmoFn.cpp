@@ -9,10 +9,15 @@ extern GizmoCatalog gxGizmoCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GizmoFn::GizmoFn(Stz* szGizmoNm, fpSELFFN* fpGizmoFn, Stz* szDescription, i8 iArg)
-: SelfFn(szGizmoNm,(fpSELFFN*)fpGizmoFn,szDescription,iArg)
+GizmoFn::GizmoFn(Stz* szGizmoNm, fpSELFFN* fpGizmoFn, Stz* szDescription, ...)
+: SelfFn(szGizmoNm,(fpSELFFN*)fpGizmoFn,szDescription)
 {
   gxGizmoCatalog.vAddFn(this);
+  
+  va_list xVarArgs;
+  va_start(xVarArgs,szDescription);
+  vAddSeeAlso(xVarArgs);
+  va_end(xVarArgs);
 }
 
 /*============================================================================*/
