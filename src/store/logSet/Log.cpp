@@ -520,14 +520,14 @@ void Log::vWriteCsv(bool bShortForm)
 /* add a information log entry                                                */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryFyi(eCN eClassNo,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogFyi)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(SL_INF,eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(SL_INF,eClassNo,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -543,14 +543,14 @@ i8 Log::iEntryFyi(eCN eClassNo,
 /* add a ddl log entry                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryDdl(eSL eSeverity, Job* pJob, eDA eDdlAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogDdl)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -566,14 +566,14 @@ i8 Log::iEntryDdl(eSL eSeverity, Job* pJob, eDA eDdlAct,
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryJob(eSL eSeverity, Job* pJob, eJA eJobAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogJob)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -589,14 +589,14 @@ i8 Log::iEntryJob(eSL eSeverity, Job* pJob, eJA eJobAct,
 /* add a lock log entry                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryLck(eSL eSeverity, Lock* pLck, eLA eLckAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogLck)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pLck,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pLck,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -612,14 +612,14 @@ i8 Log::iEntryLck(eSL eSeverity, Lock* pLck, eLA eLckAct,
 /* add a log log entry                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryLog(eSL eSeverity, Log* pLog, eGA eLogAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogLog)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pLog,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pLog,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -635,14 +635,14 @@ i8 Log::iEntryLog(eSL eSeverity, Log* pLog, eGA eLogAct,
 /* add a management log entry                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryMgt(eSL eSeverity, Job* pJob, eMA eMgtAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogMgt)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -658,14 +658,14 @@ i8 Log::iEntryMgt(eSL eSeverity, Job* pJob, eMA eMgtAct,
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryOpr(eSL eSeverity, Op* pOpr, eOA eOprAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogOpr)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pOpr,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pOpr,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -681,14 +681,14 @@ i8 Log::iEntryOpr(eSL eSeverity, Op* pOpr, eOA eOprAct,
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogPrm)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pPrm,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pPrm,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -704,14 +704,14 @@ i8 Log::iEntryPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct,
 /* add a queues log entry                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryQue(eSL eSeverity, Queues* pQue, eQA eQueAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogQue)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pQue,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pQue,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -727,7 +727,7 @@ i8 Log::iEntryQue(eSL eSeverity, Queues* pQue, eQA eQueAct,
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryRes(eSL eSeverity, Resource* pRes, eRA eResAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -752,7 +752,7 @@ i8 Log::iEntryRes(eSL eSeverity, Resource* pRes, eRA eResAct,
 //      NEVER_REACH;
 //  }
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pRes,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pRes,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -768,14 +768,14 @@ i8 Log::iEntryRes(eSL eSeverity, Resource* pRes, eRA eResAct,
 /* add a api log entry                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntrySsn(eSL eSeverity, Session* pSsn, eAA eApiAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogSsn)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pSsn,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pSsn,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -791,14 +791,14 @@ i8 Log::iEntrySsn(eSL eSeverity, Session* pSsn, eAA eApiAct,
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntrySvc(eSL eSeverity, Job* pJob, eVA eSvcAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogSvc)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -814,14 +814,14 @@ i8 Log::iEntrySvc(eSL eSeverity, Job* pJob, eVA eSvcAct,
 /* add a system log entry                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntrySys(eSL eSeverity, AttachMap* pSys, eYA eSysAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogSys)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pSys,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pSys,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -837,14 +837,14 @@ i8 Log::iEntrySys(eSL eSeverity, AttachMap* pSys, eYA eSysAct,
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryThd(eSL eSeverity, Thread* pThd, eHA eThdAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogThd)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pThd,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pThd,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -860,14 +860,14 @@ i8 Log::iEntryThd(eSL eSeverity, Thread* pThd, eHA eThdAct,
 /* add a task log entry                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryTsk(eSL eSeverity, Task* pTsk, eTA eTskAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogTsk)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pTsk,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pTsk,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -883,14 +883,14 @@ i8 Log::iEntryTsk(eSL eSeverity, Task* pTsk, eTA eTskAct,
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct,
-                  Stz* szFormat, va_list xVaArgs)
+                  Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (! m_bLogTxn)
     return C_UNKNOWN;
   
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pTxn,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pTxn,szFormat,xVarArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -936,12 +936,12 @@ LogEntry* Log::pGetEntry(i8 i_Entry)
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewEntry(eSL eSeverity, eCN eClassNo,
-                         Stz* szFormat, va_list xVaArgs)
+                         Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
   char caText[1024];
-  vsnprintf(caText,sizeof(caText)-1,szFormat->azChar(),xVaArgs);
+  vsnprintf(caText,sizeof(caText)-1,szFormat->azChar(),xVarArgs);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
@@ -962,12 +962,12 @@ LogEntry* Log::pNewEntry(eSL eSeverity, eCN eClassNo,
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewEntry(eSL eSeverity, Focal* pFocal,
-                         Stz* szFormat, va_list xVaArgs)
+                         Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   char caText[1024];
-  vsnprintf(caText,sizeof(caText)-1,szFormat->azChar(),xVaArgs);
+  vsnprintf(caText,sizeof(caText)-1,szFormat->azChar(),xVarArgs);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();

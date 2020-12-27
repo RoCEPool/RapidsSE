@@ -24,13 +24,14 @@ void SelfFn::vAddSeeAlso(va_list xVarArgs)
 {
 
   for (;;) {
-    Stz* szVal = va_arg(xVarArgs,Stz*);
+    Stz* szSeeAlso = va_arg(xVarArgs,Stz*);
 
-    if (!szVal)
+    if (!szSeeAlso)
       break;
+    
+    m_szaSeeAlso[m_nSeeAlso ++] = szSeeAlso;
   }
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

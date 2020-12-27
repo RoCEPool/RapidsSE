@@ -13,6 +13,11 @@ SubSysFn::SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, Stz* szDescription, ..
 : SelfFn(szSubSysNm,(fpSELFFN*)fpSubSysFn,szDescription)
 {
   gxSubSysCatalog.vAddFn(this);
+  
+  va_list xVarArgs;
+  va_start(xVarArgs,szDescription);
+  vAddSeeAlso(xVarArgs);
+  va_end(xVarArgs);
 }
 
 /*============================================================================*/

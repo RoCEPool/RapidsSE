@@ -10,7 +10,8 @@ extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
 SubSysFn __AttachMap("AttachMap"_Stz,(fpSELFFN*)AttachMap::vSubSystem,
-                     ""_Stz,nullptr);
+                     ""_Stz,
+                     "BufferPool"_Stz,"HeapMem"_Stz,nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* -- LifeCycle --------------------------------------------------------------*/

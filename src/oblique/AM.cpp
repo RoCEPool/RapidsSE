@@ -766,11 +766,11 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 {
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
-  va_end(xVaArgs);
+  va_start(xVarArgs,aFormat);
+  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
+  va_end(xVarArgs);
 
 }
 
@@ -913,14 +913,14 @@ void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pJob))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryDdl(eSeverity,pJob,eDdlAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pJob->m_i_Log = i_Entry;
 #endif
@@ -938,14 +938,14 @@ void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pJob))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryJob(eSeverity,pJob,eJobAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pJob->m_i_Log = i_Entry;
 #endif
@@ -963,14 +963,14 @@ void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pLock))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryLck(eSeverity,pLock,eLckAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pLock->m_i_Log = i_Entry;
 #endif
@@ -988,14 +988,14 @@ void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pLog))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryLog(eSeverity,pLog,eLogAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pLog->m_i_Log = i_Entry;
 #endif
@@ -1013,14 +1013,14 @@ void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pJob))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryMgt(eSeverity,pJob,eMgtAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pJob->m_i_Log = i_Entry;
 #endif
@@ -1038,14 +1038,14 @@ void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pOpr))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryOpr(eSeverity,pOpr,eOprAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pOpr->m_i_Log = i_Entry;
 #endif
@@ -1063,14 +1063,14 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pPrm))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryPrm(eSeverity,pPrm,ePrmAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pPrm->m_i_Log = i_Entry;
 #endif
@@ -1088,14 +1088,14 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pQue))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
 
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
 
   i8 i_Entry = gpLog->iEntryQue(eSeverity,pQue,eQueAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
 
   pQue->m_i_Log = i_Entry;
 #endif
@@ -1113,14 +1113,14 @@ void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pRes))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryRes(eSeverity,pRes,eResAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pRes->m_i_Log = i_Entry;
 #endif
@@ -1138,14 +1138,14 @@ void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pSsn))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntrySsn(eSeverity,pSsn,eApiAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pSsn->m_i_Log = i_Entry;
 #endif
@@ -1163,14 +1163,14 @@ void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pJob))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntrySvc(eSeverity,pJob,eSvcAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pJob->m_i_Log = i_Entry;
 #endif
@@ -1188,14 +1188,14 @@ void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(gpAttachMap))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntrySys(eSeverity,gpAttachMap,eSysAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   gpAttachMap->m_i_Log = i_Entry;
 
@@ -1214,14 +1214,14 @@ void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...
   if (! gpLog->bIsLoggable(pThread))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryThd(eSeverity,pThread,eThdAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
 
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pThread->m_i_Log = i_Entry;
 #endif
@@ -1239,14 +1239,14 @@ void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pTask))
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
     
   i8 i_Entry = gpLog->iEntryTsk(eSeverity,pTask,eTskAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pTask->m_i_Log = i_Entry;
 #endif
@@ -1264,14 +1264,14 @@ void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
   if (! gpLog->bIsLoggable(pTxn))
     return;
 
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryTxn(eSeverity,pTxn,eTxnAct,
-                                szFormat,xVaArgs);
+                                szFormat,xVarArgs);
 
-  va_end(xVaArgs);
+  va_end(xVarArgs);
   
   pTxn->m_i_Log = i_Entry;
 #endif

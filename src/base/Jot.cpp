@@ -44,7 +44,7 @@ void BASE::vJot1(char cFlag, Stz* szFormat, ...)
   if (! _g_iDebug)
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
   char caBuff[C_JOT_BUFF];
 
@@ -70,9 +70,9 @@ void BASE::vJot1(char cFlag, Stz* szFormat, ...)
   if ('r' == cFlag)
     StrLib::vSprintCat((Stz*)caBuff,"- "_Stz);
 
-  va_start(xVaArgs,szFormat);
-  StrLib::vSprintCat(caBuff,xVaArgs,szFormat->azChar());
-  va_end(xVaArgs);
+  va_start(xVarArgs,szFormat);
+  StrLib::vSprintCat(caBuff,xVarArgs,szFormat->azChar());
+  va_end(xVarArgs);
   
   if ('>' == cFlag || '<' == cFlag)
     StrLib::vSprintCat((Stz*)caBuff,"()"_Stz,szFormat);
@@ -96,7 +96,7 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
   if (! _g_iDebug)
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
   char caBuff[C_JOT_BUFF];
 
@@ -138,9 +138,9 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
   
     StrLib::vSprintCat((Stz*)caBuff,"+ "_Stz,szFun);
   
-    va_start(xVaArgs,szFormat);
-    StrLib::vSprintCat(caBuff,xVaArgs,szFormat->azChar());
-    va_end(xVaArgs);
+    va_start(xVarArgs,szFormat);
+    StrLib::vSprintCat(caBuff,xVarArgs,szFormat->azChar());
+    va_end(xVarArgs);
   }
   
   if (! _g_sPhrase)
@@ -158,7 +158,7 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 //  if (! _g_bJotting)
 //    return;
 //
-//  va_list xVaArgs;
+//  va_list xVarArgs;
 //
 //  AM::vWriteTrace(YA_SYS_TRACE,"#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
 //                  _g_sArea,
@@ -180,9 +180,9 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  va_start(xVaArgs,aFormat);
-//  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
-//  va_end(xVaArgs);
+//  va_start(xVarArgs,aFormat);
+//  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
+//  va_end(xVarArgs);
 //
 //  AM::vWriteTrace(YA_SYS_TRACE,"\n"_Stz, Stz::szTab(_g_nDepth));
 //}

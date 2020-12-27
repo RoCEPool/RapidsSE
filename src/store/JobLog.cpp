@@ -18,9 +18,9 @@ void JobLog::vNote(Arguments::Job* pJob, Stz* szFormat, ...)
   if ( ! gpLog )
     return;
   
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,szFormat);
+  va_start(xVarArgs,szFormat);
   
   s4K szCombinedFormat;
   
@@ -47,9 +47,9 @@ void JobLog::vNote(Arguments::Job* pJob, Stz* szFormat, ...)
   i8 iJobId = pJob->iJobId();
   bool bForeign = pJob->bWasReceived();
 //  pJob->m_i_Activity = gpLog->iEntryJob_arg(iJobId,bForeign,
-//                                          szCombinedFormat,xVaArgs);
+//                                          szCombinedFormat,xVarArgs);
   
-  va_end(xVaArgs);
+  va_end(xVarArgs);
 #endif
 }
 

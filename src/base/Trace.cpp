@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void BASE::vInfo(Stz* aFormat, ...)
 {
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_INFO,aFormat,xVaArgs);
-  va_end(xVaArgs);
+  va_start(xVarArgs,aFormat);
+  AM::vWriteTrace_vargs(YA_SYS_INFO,aFormat,xVarArgs);
+  va_end(xVarArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,11 +21,11 @@ void BASE::vInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void BASE::vTrace(Stz* aFormat, ...)
 {
-  va_list xVaArgs;
+  va_list xVarArgs;
 
-  va_start(xVaArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
-  va_end(xVaArgs);
+  va_start(xVarArgs,aFormat);
+  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
+  va_end(xVarArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,16 +33,16 @@ void BASE::vTrace(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void BASE::vTraceF(File* pFile, Stz* aFormat, ...)
 {
-  va_list xVaArgs;
+  va_list xVarArgs;
 
-  va_start(xVaArgs,aFormat);
+  va_start(xVarArgs,aFormat);
   if (pFile) {
-    AM::vWriteTrace_vargs(pFile,YA_SYS_TRACE,aFormat,xVaArgs);
+    AM::vWriteTrace_vargs(pFile,YA_SYS_TRACE,aFormat,xVarArgs);
   }
   else {
-    AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVaArgs);
+    AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
   }
-  va_end(xVaArgs);
+  va_end(xVarArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,11 +50,11 @@ void BASE::vTraceF(File* pFile, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void BASE::vWarn(Stz* aFormat, ...)
 {
-  va_list xVaArgs;
+  va_list xVarArgs;
   
-  va_start(xVaArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_WARN,aFormat,xVaArgs);
-  va_end(xVaArgs);
+  va_start(xVarArgs,aFormat);
+  AM::vWriteTrace_vargs(YA_SYS_WARN,aFormat,xVarArgs);
+  va_end(xVarArgs);
 }
 
 /*============================================================================*/

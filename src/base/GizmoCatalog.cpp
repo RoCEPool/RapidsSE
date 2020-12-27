@@ -9,7 +9,7 @@ GizmoCatalog gxGizmoCatalog;
 GizmoFn __GizmoCatalog_Gizmos
    ("Gizmos"_Stz,(fpSELFFN*)GizmoCatalog::vGizmos,
                  ""_Stz,
-                 -1);
+                 nullptr);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
