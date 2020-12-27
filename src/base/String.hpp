@@ -10,8 +10,9 @@ namespace BASE
   public:
     Header m_xHeader;
   
-    i8     m_nArea;          // size of char area
-    char   m_caCharArea[1];  // char area
+    i8     m_nArea;          // byte length of char area/array
+    i8     m__reserved__;    // reserved for size
+    char   m_caCharArea[1];  // area to hold chars
 
     // m_xFooter which is :
     //   this + sizeof(m_xHeader) + sizeof(m_nSize) + m_nSize

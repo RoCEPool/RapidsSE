@@ -32,7 +32,7 @@ namespace BASE
 
 namespace BASE {
 
-  template <int BYTES> class String_t;
+  template <i8 BYTES> class String_t;
   typedef String_t<32>     s32;
   typedef String_t<256>    s256;
   typedef String_t<C_2K>   s2K;   // note: 2K not 2KB

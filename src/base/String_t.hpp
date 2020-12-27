@@ -5,13 +5,13 @@
 
 namespace BASE
 {
-  template <int AREA>
+  template <i8 AREA>
   class String_t : public Object
   {
   private:
-    i8   m_nArea;       // size of char area
-  
-    char m_caCharArea[AREA]; // str area
+    i8   m_nArea;            // byte length of char area/array
+    i8   m__reserved__;      // reserved for size
+    char m_caCharArea[AREA]; // area to hold chars
     
     // must be last
     Footer m_xFooter;
@@ -72,14 +72,14 @@ using namespace BASE;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 String_t<AREA>::String_t(void)
 : Object(CN_STRING_T)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   m_nArea = AREA;
-  
+  m__reserved__ = C_UNKNOWN;
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
 #else
@@ -92,7 +92,7 @@ String_t<AREA>::String_t(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 String_t<AREA>::String_t(Stz* szArg)
 : Object(CN_STRING_T)
 {
@@ -112,7 +112,7 @@ String_t<AREA>::String_t(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 String_t<AREA>::~String_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
@@ -125,7 +125,7 @@ String_t<AREA>::~String_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : as String*                                      */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 String_t<AREA>::operator String*(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
@@ -136,7 +136,7 @@ String_t<AREA>::operator String*(void)
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : get address of m_castr area                     */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 String_t<AREA>::operator Stz*(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
@@ -147,7 +147,7 @@ String_t<AREA>::operator Stz*(void)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
@@ -158,7 +158,7 @@ void String_t<AREA>::operator =(i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::operator =(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
@@ -173,7 +173,7 @@ void String_t<AREA>::operator =(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* append given char                                                          */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vAppend(const char cChar)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -188,7 +188,7 @@ void String_t<AREA>::vAppend(const char cChar)
 /*----------------------------------------------------------------------------*/
 /* append given string argument using given cursor                            */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -203,7 +203,7 @@ void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* test if arg is a leading sub-string of this string                         */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 bool String_t<AREA>::bBeginsWith(Stz* szArg)
 {
   return StrLib::bBeginsWith(m_caCharArea,szArg->azChar());
@@ -212,7 +212,7 @@ bool String_t<AREA>::bBeginsWith(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* break at this length                                                       */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 bool String_t<AREA>::bBreak(i8 iBreakAt, i8& iPrevBreak)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -230,7 +230,7 @@ bool String_t<AREA>::bBreak(i8 iBreakAt, i8& iPrevBreak)
 /*----------------------------------------------------------------------------*/
 /* get byte pointer to str area                                               */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 byte* String_t<AREA>::ayByte(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -241,7 +241,7 @@ byte* String_t<AREA>::ayByte(void)
 /*----------------------------------------------------------------------------*/
 /* cat given variable sequence of stz* arguments                              */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vCat(Stz* szArg, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -263,7 +263,7 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
 /*----------------------------------------------------------------------------*/
 /* concatenated sprint                                                        */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vCatSprint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -279,7 +279,7 @@ void String_t<AREA>::vCatSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get char pointer to str area                                               */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 char* String_t<AREA>::azChar(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -290,7 +290,7 @@ char* String_t<AREA>::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* clip                                                                       */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vClip(i8 i_Char)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -304,7 +304,7 @@ void String_t<AREA>::vClip(i8 i_Char)
 /*----------------------------------------------------------------------------*/
 /* concat given stz*                                                          */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vConcat(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -317,7 +317,7 @@ void String_t<AREA>::vConcat(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* test if arg is a sub-string in this string                                 */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 bool String_t<AREA>::bContains(Stz* szArg)
 {
   return StrLib::bContains(m_caCharArea,szArg->azChar());
@@ -326,7 +326,7 @@ bool String_t<AREA>::bContains(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* copy given stz* into this string                                           */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vCopy(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -339,7 +339,7 @@ void String_t<AREA>::vCopy(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* copy given stz* argument up till (but not including)                       */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vCopyTill(Stz* szArg, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -352,7 +352,7 @@ void String_t<AREA>::vCopyTill(Stz* szArg, char cTill)
 /*----------------------------------------------------------------------------*/
 /* is equal to given argument? (same case)                                    */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 bool String_t<AREA>::bEqual(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -365,7 +365,7 @@ bool String_t<AREA>::bEqual(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this string a number?                                                   */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 bool String_t<AREA>::bIsNumeric(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -378,7 +378,7 @@ bool String_t<AREA>::bIsNumeric(void)
 /*----------------------------------------------------------------------------*/
 /* get length of this str                                                     */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 i8 String_t<AREA>::nLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -389,7 +389,7 @@ i8 String_t<AREA>::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* put max value into this str                                                */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vMaxValue(void)
 {
   StrLib::vCopy(m_caCharArea,"Z");
@@ -398,7 +398,7 @@ void String_t<AREA>::vMaxValue(void)
 /*----------------------------------------------------------------------------*/
 /* put mid value into this str                                                */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vMidValue(void)
 {
   StrLib::vCopy(m_caCharArea,"M");
@@ -407,7 +407,7 @@ void String_t<AREA>::vMidValue(void)
 /*----------------------------------------------------------------------------*/
 /* put min value into this str                                                */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vMinValue(void)
 {
   StrLib::vCopy(m_caCharArea,"A");
@@ -416,7 +416,7 @@ void String_t<AREA>::vMinValue(void)
 /*----------------------------------------------------------------------------*/
 /* null value                                                                 */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vNullValue(void)
 {
 }
@@ -424,7 +424,7 @@ void String_t<AREA>::vNullValue(void)
 /*----------------------------------------------------------------------------*/
 /* reset string                                                               */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vReset(void)
 {
   m_caCharArea[0] = '\0';
@@ -433,7 +433,7 @@ void String_t<AREA>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* is same as given argument?  (ignores case)                                 */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 bool String_t<AREA>::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -446,7 +446,7 @@ bool String_t<AREA>::bSame(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* get size of str in data area                                               */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 i8 String_t<AREA>::nSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -457,7 +457,7 @@ i8 String_t<AREA>::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* ensure max size of string                                                  */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vSizeMax(i8 nChars)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -468,7 +468,7 @@ void String_t<AREA>::vSizeMax(i8 nChars)
 /*----------------------------------------------------------------------------*/
 /* get space of data area                                                     */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 i8 String_t<AREA>::nSpace(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -479,7 +479,7 @@ i8 String_t<AREA>::nSpace(void)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vSprint(Stz* szFormat, ...)
 {
   va_list vaArgs;
@@ -492,7 +492,7 @@ void String_t<AREA>::vSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vSprint(va_list vaArgs, Stz* szFormat)
 {
   StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
@@ -501,7 +501,7 @@ void String_t<AREA>::vSprint(va_list vaArgs, Stz* szFormat)
 /*----------------------------------------------------------------------------*/
 /* concatenated sprint                                                        */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vSprintCat(Stz* szFormat, ...)
 {
   va_list vaArgs;
@@ -514,7 +514,7 @@ void String_t<AREA>::vSprintCat(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get pString                                                                */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 String* String_t<AREA>::pString(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -525,7 +525,7 @@ String* String_t<AREA>::pString(void)
 /*----------------------------------------------------------------------------*/
 /* get m_caCharArea                                                                */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 Stz* String_t<AREA>::szStz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -536,7 +536,7 @@ Stz* String_t<AREA>::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* convert to i8                                                              */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 i8 String_t<AREA>::iToI8(void)
 {
   i8 i = StrLib::iToI8(m_caCharArea);
@@ -547,7 +547,7 @@ i8 String_t<AREA>::iToI8(void)
 /*----------------------------------------------------------------------------*/
 /* convert to lower case                                                      */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 void String_t<AREA>::vToLower(void)
 {
   StrLib::vToLower(m_caCharArea);
@@ -560,7 +560,7 @@ void String_t<AREA>::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <int AREA>
+template <i8 AREA>
 Footer* String_t<AREA>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T);

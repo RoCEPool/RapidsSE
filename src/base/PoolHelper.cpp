@@ -572,24 +572,25 @@ i8 PoolHelper::iPoolFree(void)
      AM::pHeapMem()->Transient.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
   
   
-  i8 iPersistentTiny =
-     AM::pHeapMem()->Persistent.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
-  
-  i8 iPersistentSmall =
-     AM::pHeapMem()->Persistent.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
-  
-  i8 iPersistentMedium =
-     AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
-  
-  i8 iPersistentLarge =
-     AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
+//  i8 iPersistentTiny =
+//     AM::pHeapMem()->Persistent.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
+//
+//  i8 iPersistentSmall =
+//     AM::pHeapMem()->Persistent.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
+//
+//  i8 iPersistentMedium =
+//     AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
+//
+//  i8 iPersistentLarge =
+//     AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
 
   
   i8 iTotalFree =
        iTransientTiny
-         + iTransientSmall  + iTransientMedium  + iTransientLarge +
-       iPersistentTiny
-         + iPersistentSmall + iPersistentMedium + iPersistentLarge;
+         + iTransientSmall  + iTransientMedium  + iTransientLarge
+//         + iPersistentTiny
+//         + iPersistentSmall + iPersistentMedium + iPersistentLarge
+  ;
   
   return iTotalFree;
 }
