@@ -61,12 +61,21 @@ SelfFn* SelfCatalog::pFindFn(Stz* szSelfNm)
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
-void SelfCatalog::vDescribeRecursively(TokenVec* pTokenVec)
+void SelfCatalog::vDescribeRecursively(Stz* szSelfNm, i8 iDepth)
 {
   _nonProper_
 
-  for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
-    vTrace("  %s\n"_Stz,m_paSelfFn[i_Self]->m_szSelfNm);
+  SelfFn* pSelfFn = pFindFn(szSelfNm);
+  if (! pSelfFn)
+    return;
+
+  vTrace("%s  %s\n"_Stz,Stz::szTab(iDepth),pSelfFn->m_szSelfNm);
+
+  for (i8 i_SeeAlso = 0; i_SeeAlso < pSelfFn->m_nSeeAlso; i_SeeAlso++) {
+    Stz* szSeeAlso = pSelfFn->m_szaSeeAlso[i_SeeAlso];
+    vDescribeRecursively(szSeeAlso,iDepth+1);
+  }
+  
 }
 
 

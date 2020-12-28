@@ -55,7 +55,7 @@ void SubSysCatalog::vDescribe(TokenVec* pTokenVec)
 {
   _static_
 
-  gxSubSysCatalog.vDescribeRecursively(pTokenVec);
+  gxSubSysCatalog.vDescribeRecursively("AttachMap"_Stz,0);
 }
 
 /*============================================================================*/

@@ -21,7 +21,7 @@ namespace BASE
     SelfFn* pFindFn(Stz* szSelfNm);
   
   
-    void vDescribeRecursively(TokenVec* pTokenVec);
+    void vDescribeRecursively(Stz* szSelfNm, i8 iDepth);
     void vList(void);
 
   };
