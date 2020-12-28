@@ -183,6 +183,7 @@ assert::stack_0
 
 "q" .put
 "r" .put
+        "OP_range.sen"                include
         "OP_rdCrwFile.sen"            include
         "OP_rdCsvChunk.sen"           include
         "OP_rdCsvCyclic.sen"          include

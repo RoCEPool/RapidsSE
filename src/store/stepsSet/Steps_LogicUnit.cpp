@@ -28,6 +28,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
+  vAddStep("LogicUnit[].genRange"_Stz,      &Step::vLogicUnitGenRange);
     
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
   vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
@@ -340,6 +341,23 @@ void Step::vLogicUnitGenProjection(void)
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
   m_pLogicUnit->vGenerateProjection(pProject, pStreamDefOut);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genRange -- generate projection asm text into file        */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenRange(void)
+{
+  ENTRY();
+
+  Project* pProject;
+  pProject = _pProject(m_pDataStack->pPopPtr(__func__));
+
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  m_pLogicUnit->vGenerateRange(pProject, pStreamDefOut);
 
   EXIT();
 }

@@ -263,6 +263,7 @@ namespace Expressions
     void vGenerate100001(void);
 
     void vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut);
+    void vGenerateRange(Project* pProject, StreamDef* pStreamDefOut);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
