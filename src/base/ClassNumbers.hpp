@@ -164,6 +164,7 @@ enum eCN : u2 // Class Number
   
   /* */ CN__O__,
   /* */ CN_OP,
+  /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPSPEC,
   
@@ -494,6 +495,7 @@ static Stz* aCN[]
    
   /* */ "_O__"_Stz,                 // CN__O__
   /* */ "OP"_Stz,                   // CN_OP
+  /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
    

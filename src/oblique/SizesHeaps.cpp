@@ -160,6 +160,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
+  { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
   { sizeof(OpSpec),             HT_T_LARGE   ,0 }, // CN_OPSPEC
 
