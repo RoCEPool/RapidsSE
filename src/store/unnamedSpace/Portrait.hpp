@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
+namespace STORE
 {
   class Portrait : public Object
   {

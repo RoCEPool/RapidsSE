@@ -515,6 +515,8 @@ namespace BASE
 
   bool bTraceWithout(Stz* szWith);
   void vTraceWithout(void);
+
+  void vInitAllGlobals(void);
 }
 
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StorageEngine.h -- StorageEngine namespace                                 */
+/* STORE.h -- STORE namespace                                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace StorageEngine
+namespace STORE
 {
   void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);
@@ -537,13 +537,17 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 #include "graph/StatisticsNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
 
+#include "graphNodes/LogicalNode.hpp"
+#include "graphNodes/TableRef.hpp"
+#include "graphNodes/Statement.hpp"
+#include "graphNodes/Expr.hpp"
+
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"
 
 #include "parser/stages/parser/ExprAtom.hpp"
 #include "parser/stages/parser/ExprColumnRef.hpp"
 #include "parser/stages/parser/ExprList.hpp"
-#include "parser/stages/parser/TableRef.hpp"
 #include "parser/stages/parser/SqlPlanner.hpp"
 
 //------------------------------------------------------------------------------

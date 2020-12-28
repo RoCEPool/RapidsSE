@@ -100,7 +100,7 @@ void Engine::vPreliminary(void)
   
   if (AM::bVerboseProgress())
      vInfo("Checking assumptions...\n"_Stz);
-  StorageEngine::vCheckAllAssumptions();
+  STORE::vCheckAllAssumptions();
 
   if (AM::bVerboseProgress())
      vInfo("Boot check...\n"_Stz);
@@ -122,6 +122,8 @@ void Engine::vPreliminary(void)
 //  gpAttachMap->m_bMarkResource[RK_FILE] = true;
 //  gpAttachMap->m_bMarkResource[RK_DIR] = true;
   
+  BASE::vInitAllGlobals();
+
   if (AM::bVerboseProgress())
      vInfo("\n*\n* %lld) Synthesise Names\n*\n"_Stz,giProgressPoint++);
   vCreateFileNames();

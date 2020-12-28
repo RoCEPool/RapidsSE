@@ -160,6 +160,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
+  { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
   { sizeof(OpSpec),             HT_T_LARGE   ,0 }, // CN_OPSPEC
 
@@ -280,8 +281,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Table),              HT_T_MEDIUM  ,0 }, // CN_TABLEDEF
   { sizeof(TablePtn),           HT_T_TINY    ,0 }, // CN_TABLEPTN
   { sizeof(TablePtnVec),        HT_T_SMALL   ,0 }, // CN_TABLEPTNVEC
-  { sizeof(TableRef),           HT_T_TINY    ,0 }, // CN_TABLEREF
-  { sizeof(TableRefStack),      HT_T_MEDIUM  ,0 }, // CN_TABLEREFSTACK
   { sizeof(TagSet),             HT_T_MEDIUM  ,0 }, // CN_TAGSET
   { sizeof(Task),               HT_T_TINY    ,0 }, // CN_TASK
   { sizeof(TaskList),           HT_T_TINY    ,0 }, // CN_TASKLIST

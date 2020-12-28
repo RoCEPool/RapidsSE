@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
+namespace STORE
 {
   class FocalObjects : public LatticeNL_t<CN_FOCALOBJECTS,Focal,C_64KB>
   {

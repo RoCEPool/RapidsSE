@@ -164,6 +164,7 @@ enum eCN : u2 // Class Number
   
   /* */ CN__O__,
   /* */ CN_OP,
+  /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPSPEC,
   
@@ -284,8 +285,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TABLEDEF,
   /* */ CN_TABLEPTN,
   /* */ CN_TABLEPTNVEC,
-  /* */ CN_TABLEREF,
-  /* */ CN_TABLEREFSTACK,
   /* */ CN_TAGSET,
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
@@ -494,6 +493,7 @@ static Stz* aCN[]
    
   /* */ "_O__"_Stz,                 // CN__O__
   /* */ "OP"_Stz,                   // CN_OP
+  /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
    
@@ -614,8 +614,6 @@ static Stz* aCN[]
   /* */ "TABLEDEF"_Stz,             // CN_TABLEDEF
   /* */ "TABLEPTN"_Stz,             // CN_TABLEPTN
   /* */ "TABLEPTNVEC"_Stz,          // CN_TABLEPTNVEC
-  /* */ "TABLEREF"_Stz,             // CN_TABLEREF
-  /* */ "TABLEREFSTACK"_Stz,        // CN_TABLEREFSTACK
   /* */ "TAGSET"_Stz,               // CN_TAGSET
   /* */ "TASK"_Stz,                 // CN_TASK
   /* */ "TASKLIST"_Stz,             // CN_TASKLIST

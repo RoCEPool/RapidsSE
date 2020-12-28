@@ -7,6 +7,7 @@ namespace Parser
 {
   class PlanNodeList;
 
+  // A multi-value struct used in every PlanNode
   struct Value {
     union {
       i8 (*m_afFun)(void *aArg);  // function pointer
@@ -18,12 +19,29 @@ namespace Parser
     };
     b1 m_bMustFree; // do we need to delete the object stored in the structure?
 
-    // constructor initialisation
-    Value() : m_uInt(0), m_bMustFree(false) {/*noop*/}
+    // Default constructor initialisation
+    Value()
+      : m_uInt(0), m_bMustFree(false)
+      {
+        /* noop */
+      }
 
-    Value(Stz* szStz) {
-      m_pText = new Text(szStz);
-      m_bMustFree = true;
+    // Constructor (copy stz)
+    Value(Stz* szStz)
+    {
+      if (szStz) {
+        m_pText = new Text(szStz);
+        m_bMustFree = true;
+      }
+    }
+
+    // Constructor (take ownership of Text*)
+    Value(Text* pText)
+    {
+      if (pText) {
+        m_pText = pText;
+        m_bMustFree = true;
+      }
     }
   };
 
@@ -53,8 +71,8 @@ namespace Parser
     PlanNode(eCN eClassNo, const PlanNode& oNode);
 
   public:
-    Stz* getName();
-    Stz* getType();
+    Stz* szName();
+    Stz* szType();
 
     // Convenience methods for accessing the value object
     Value getValue();

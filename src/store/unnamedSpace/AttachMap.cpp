@@ -17,7 +17,7 @@ SubSysFn __AttachMap("AttachMap"_Stz,(fpSELFFN*)AttachMap::vSubSystem,
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(StorageEngine,AttachMap,CN_ATTACHMAP)
+__pCastFunction(STORE,AttachMap,CN_ATTACHMAP)
 __vDeleteFunction(AttachMap,CN_ATTACHMAP)
 __aFooterFunction(AttachMap)
 

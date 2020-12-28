@@ -44,8 +44,7 @@ class SP_Tsp;
                               template <i8 SPACE> class Datum_t;              }
 namespace Arguments    { class Dynamo;                                   }
 namespace Arguments           {                                                 }
-namespace Expressions       { class Expr;            class ExprVec;
-                              class LogicUnit;                                }
+namespace Expressions       { class LogicUnit;                                }
 namespace Facts             { class Fact;            class Kbase;
                               class Method;        
                               class Question;        class Transform;         }
@@ -66,7 +65,7 @@ namespace Arguments              { class Job;
 namespace BASE   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
 namespace Load              {                                                 }
-namespace StorageEngine           { class Log;             class LogEntry;          }
+namespace STORE           { class Log;             class LogEntry;          }
 namespace Arguments          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
@@ -93,7 +92,7 @@ namespace Arguments          { class Session;         class SessionState;      }
 namespace Arguments       {                                                 }
 namespace SqlValues         {                                                 }
 namespace Expressions             { class Step;            class StepTiming;        }
-namespace StorageEngine     { class AttachMap;       class Engine;            }
+namespace STORE     { class AttachMap;       class Engine;            }
 namespace BASE        { class Article;         class Queue;
 class Heap; class PoolHelper; class ObjectSnapshot;            }
 namespace Expressions             { class Task;                                     }
@@ -123,7 +122,7 @@ using namespace Expressions;
 using namespace Arguments;
 using namespace BASE;
 using namespace Load;
-using namespace StorageEngine;
+using namespace STORE;
 using namespace Arguments;
 using namespace Expressions;
 using namespace OBLIQUE;
@@ -142,7 +141,7 @@ using namespace Arguments;
 using namespace Arguments;
 using namespace SqlValues;
 using namespace Expressions;
-using namespace StorageEngine;
+using namespace STORE;
 using namespace BASE;
 using namespace Expressions;
 using namespace Expressions;

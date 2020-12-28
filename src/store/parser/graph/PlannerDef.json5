@@ -549,7 +549,7 @@
                     },
 // Path: /__root__/definitions/object/expr/literal/time
                     {
-                      name: "boolean",
+                      name: "time",
                       value: "A time expression literal",
                       properties: [
                         // The value field of an instance of a time literal object must be a time type

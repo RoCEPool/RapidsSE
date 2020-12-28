@@ -5,7 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace StorageEngine
+namespace STORE
 {
   class Constants
   {
