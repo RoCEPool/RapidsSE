@@ -99,10 +99,12 @@ void BASE::vThreadCallStackDump(void)
   
   // dump the call stack
   
-  if (AM::bDeveloper()) {
+  if (AM::bDeveloper() || AM::bDebugMode()) {
     xException.vPrint();
     AM::vTaskDump();
     vThreadCallStackDump();
+    
+    vDebugPoint();
   }
   
   throw xException;
