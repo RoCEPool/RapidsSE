@@ -88,6 +88,8 @@ ListExoNode_t<ITEM>::~ListExoNode_t(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXONODE_t,_FOOTER_);
 
+  ASSERT(! m_pNextNode);
+  ASSERT(! m_pPrevNode);
 }
 
 
@@ -353,38 +355,25 @@ template <eCN CLASSNO, class ITEM>
 ITEM* ListExo_t<CLASSNO,ITEM>::pPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-  
+     
   m_okLock.vGrabWrite();
   
-  if ( ! m_pHead ) {
-    ASSERT( ! m_nItems );
+  if (! m_pHeadNode) {
+    ASSERT(! m_nItems);
     m_okLock.vDropWrite();
     return nullptr;
   }
 
-  ITEM* pItem = m_pHead;
+  ListExoNode_t<ITEM>* pWasHeadNode = m_pHeadNode;
+  ITEM* pWasHeadItem = pWasHeadNode->pItem();
+  
+  vCutExoNode(pWasHeadNode);
 
-  m_pHead = m_pHead->pNextItem();
-  if (m_pHead)
-    m_pHead->vPrevItem(nullptr);
-  else
-    m_pTail = nullptr;
-  
-  m_nItems--;
-  if (m_nItems) {
-    ASSERT(m_pHead);
-    ASSERT(m_pTail);
-  }
-  else {
-    ASSERT(!m_pHead);
-    ASSERT(!m_pTail)
-  }
   m_okLock.vDropWrite();
+
+  delete pWasHeadNode;
   
-  pItem->vPrevItem(nullptr);
-  pItem->vNextItem(nullptr);
-  
-  return pItem;
+  return pWasHeadItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -488,7 +477,12 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  return m_pHead;
+  ITEM* pItem;
+  
+  if (m_pHeadNode)
+    pItem = m_pHeadNode->pItem();
+  
+  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,7 +493,12 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  return m_pTail;
+  ITEM* pItem;
+  
+  if (m_pTailNode)
+    pItem = m_pTailNode->pItem();
+  
+  return pItem;
 }
 
 
@@ -554,6 +553,9 @@ void ListExo_t<CLASSNO,ITEM>::vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode)
     pPrevOfCut->vNextNode(pNextOfCut);
     pNextOfCut->vPrevNode(pPrevOfCut);
   }
+  
+  pCutThisNode->vNextNode(nullptr);
+  pCutThisNode->vPrevNode(nullptr);
   
   m_nItems--;
 }
