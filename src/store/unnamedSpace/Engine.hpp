@@ -5,7 +5,7 @@
 
 #include "eBO.h"
 
-namespace StorageEngine
+namespace STORE
 {
   class Engine
   {

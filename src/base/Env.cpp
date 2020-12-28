@@ -2,7 +2,7 @@
 /* Env.cpp -- Environment Variable Utility                                    */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* translate environment variable                                             */

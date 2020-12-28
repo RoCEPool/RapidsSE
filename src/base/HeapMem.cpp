@@ -2,7 +2,7 @@
 /* HeapMem.cpp -- Set of Heaps in Pool                                        */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -49,7 +49,7 @@ HeapMem::HeapMem(void)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vSubSystem(TokenVec* pTokenVec)
+void HeapMem::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   

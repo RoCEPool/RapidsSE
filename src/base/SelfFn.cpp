@@ -2,19 +2,20 @@
 /* SelfFn.cpp -- System Self Function                                         */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SelfFn::SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
+  
   m_szSelfNm = szSelfNm;
   m_fpSelfFn = fpSelfFn;
   m_szDescription = szDescription;
   
   m_nSeeAlso = 0;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,6 +23,7 @@ SelfFn::SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription)
 /*----------------------------------------------------------------------------*/
 void SelfFn::vAddSeeAlso(va_list xVarArgs)
 {
+  _nonProper_
 
   for (;;) {
     Stz* szSeeAlso = va_arg(xVarArgs,Stz*);

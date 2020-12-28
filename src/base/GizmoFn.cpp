@@ -2,7 +2,7 @@
 /* GizmoFn.cpp -- Gizmo Command Function                                      */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 extern GizmoCatalog gxGizmoCatalog;
 
@@ -12,6 +12,8 @@ extern GizmoCatalog gxGizmoCatalog;
 GizmoFn::GizmoFn(Stz* szGizmoNm, fpSELFFN* fpGizmoFn, Stz* szDescription, ...)
 : SelfFn(szGizmoNm,(fpSELFFN*)fpGizmoFn,szDescription)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
+  
   gxGizmoCatalog.vAddFn(this);
   
   va_list xVarArgs;

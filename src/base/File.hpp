@@ -65,6 +65,10 @@ namespace BASE
     static i8   nSize(Stz* szFilePath);
     static void vStatistics(void);
   
+    static void vInitGlobals(void);
+    static void vListOfOpenFiles(SelfFn* aSelfFn, TokenVec* pTokenVec);
+
+  
     void vClose(void);
     char cGetChar(void);
     void vFileDump(void);
@@ -103,6 +107,9 @@ namespace BASE
   
   File* _pFile(void* aAddr);
 }
+
+
+typedef ListExo_t<CN_OPENFILES,File> OpenFiles;
 
 /*============================================================================*/
 /* end                                                                        */

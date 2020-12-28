@@ -2,10 +2,15 @@
 /* File.cpp -- os file                                                        */
 /*============================================================================*/
 
-#include "Base.h"
-
+#include "BASE.h"
 
 Atomic gixFile;
+
+OpenFiles* gpOpenFiles;
+
+SubSysFn __File_List("Files"_Stz,(fpSELFFN*)File::vListOfOpenFiles,
+                     "list of open files"_Stz,
+                     nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -114,6 +119,28 @@ File::~File(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* describe function : list of open functions                                 */
+/*----------------------------------------------------------------------------*/
+void File::vInitGlobals(void)
+{
+  _static_
+  
+  if (! gpOpenFiles)
+    gpOpenFiles = new OpenFiles;
+}
+
+/*----------------------------------------------------------------------------*/
+/* describe function : list of open functions                                 */
+/*----------------------------------------------------------------------------*/
+void File::vListOfOpenFiles(SelfFn* aSelfFn, TokenVec* pTokenVec)
+{
+  _static_
+  
+  vTrace("File::vListOfOpenFiles\n"_Stz);
+}
 
 /*---------------------------------------------------------------------------*/
 /* test if given file has access permissions                                 */

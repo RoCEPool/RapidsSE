@@ -1816,10 +1816,6 @@ public:
   // user
   void vUserName(void);
 
-  // utility
-  void vUtilityPrefetch(void);
-  void vUtilitySchemaTest(void);
-
   // word
   void vWord(void);
   void vWordAllot(void);

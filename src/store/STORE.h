@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* StorageEngine.h -- StorageEngine namespace                                 */
+/* STORE.h -- STORE namespace                                                 */
 /*============================================================================*/
 #pragma once
 
-#include "Base.h"
+#include "BASE.h"
 
 //------------------------------------------------------------------------------
 
-namespace StorageEngine
+namespace STORE
 {
   void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);

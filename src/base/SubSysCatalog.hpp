@@ -12,8 +12,8 @@ namespace BASE
   public:
     SubSysCatalog(void);
   
-    static void vSubSystems(TokenVec* pTokenVec);
-
+    static void vDescribe(SelfFn* aSelfFn, TokenVec* pTokenVec);
+    static void vSubSystems(SelfFn* aSelfFn, TokenVec* pTokenVec);
   };
 }
 

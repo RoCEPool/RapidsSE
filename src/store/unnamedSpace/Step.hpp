@@ -7,7 +7,7 @@ namespace Expressions
 {
   class Step : public Forth
   {
-  friend class StorageEngine::AttachMap;
+  friend class STORE::AttachMap;
   friend class Expressions::Task;
   friend class Word;
 

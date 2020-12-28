@@ -15,13 +15,15 @@ namespace BASE
   public:
     SelfCatalog(void);
   
-    bool bCallFn(Stz* szSelfNm, TokenVec* pTokenVec);
-  
-    SelfFn* pFindFn(Stz* szSelfNm);
-  
-    void vListFn(void);
   
     void vAddFn(SelfFn* aSelfFn);
+    bool bCallFn(Stz* szSelfNm, TokenVec* pTokenVec);
+    SelfFn* pFindFn(Stz* szSelfNm);
+  
+  
+    void vDescribeRecursively(Stz* szSelfNm, i8 iDepth);
+    void vList(void);
+
   };
 }
 

@@ -2,7 +2,7 @@
 /* FocalDesc.cpp -- the class which populates the focal catalog               */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

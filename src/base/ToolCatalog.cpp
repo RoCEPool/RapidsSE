@@ -2,7 +2,7 @@
 /* ToolCatalog.cpp -- Tool Command Catalog                                    */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 ToolCatalog gxToolCatalog;
 
@@ -16,6 +16,7 @@ ToolFn __ToolCatalog_Tools
 /*----------------------------------------------------------------------------*/
 ToolCatalog::ToolCatalog(void)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,11 +26,11 @@ ToolCatalog::ToolCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* flist gizmos                                                                */
 /*----------------------------------------------------------------------------*/
-void ToolCatalog::vTools(TokenVec* pTokenVec)
+void ToolCatalog::vTools(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   
-  gxToolCatalog.vListFn();
+  gxToolCatalog.vList();
 }
 
 /*============================================================================*/

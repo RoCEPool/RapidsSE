@@ -2,7 +2,7 @@
 /* SubSysFn.cpp -- description of a subsystem                                 */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 extern SubSysCatalog gxSubSysCatalog;
 
@@ -12,6 +12,8 @@ extern SubSysCatalog gxSubSysCatalog;
 SubSysFn::SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, Stz* szDescription, ...)
 : SelfFn(szSubSysNm,(fpSELFFN*)fpSubSysFn,szDescription)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
+  
   gxSubSysCatalog.vAddFn(this);
   
   va_list xVarArgs;

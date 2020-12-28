@@ -2,7 +2,7 @@
 /* Focal.cpp - Focal Object                                                   */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-tracked focal objects -- mainly locks in HeapBuffer)  */

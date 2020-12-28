@@ -2,7 +2,7 @@
 /* GizmoCatalog.cpp -- Gizmo Command Catalog                                  */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 GizmoCatalog gxGizmoCatalog;
 
@@ -20,6 +20,7 @@ GizmoFn __GizmoCatalog_Gizmos
 /*----------------------------------------------------------------------------*/
 GizmoCatalog::GizmoCatalog(void)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
 }
 
 
@@ -34,7 +35,7 @@ void GizmoCatalog::vGizmos(void*)
 {
   _static_
   
-  gxGizmoCatalog.vListFn();
+  gxGizmoCatalog.vList();
 }
 
 /*============================================================================*/

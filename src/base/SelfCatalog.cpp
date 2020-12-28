@@ -2,28 +2,39 @@
 /* SelfCatalog.cpp -- System-Self Function Catalog                            */
 /*============================================================================*/
 
-#include "Base.h"
-
-SelfCatalog gxSelfCatalog;
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
 SelfCatalog::SelfCatalog(void)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* help                                                                       */
+/*----------------------------------------------------------------------------*/
+void SelfCatalog::vAddFn(SelfFn* aSelfFn)
+{
+  _nonProper_
+
+  m_paSelfFn[m_nSelf ++] = aSelfFn;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
 bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
 {
-  SelfFn* pSelfFn = pFindFn(szSelfNm);
-  if (! pSelfFn)
+  _nonProper_
+
+  SelfFn* aSelfFn = pFindFn(szSelfNm);
+  if (! aSelfFn)
     return false;
   
-  pSelfFn->m_fpSelfFn(pTokenVec);
+  aSelfFn->m_fpSelfFn(aSelfFn,pTokenVec);
   
   return true;
 }
@@ -33,6 +44,8 @@ bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 SelfFn* SelfCatalog::pFindFn(Stz* szSelfNm)
 {
+  _nonProper_
+
   for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
     if (m_paSelfFn[i_Self]->m_szSelfNm->bSame(szSelfNm))
       return m_paSelfFn[i_Self];
@@ -40,21 +53,44 @@ SelfFn* SelfCatalog::pFindFn(Stz* szSelfNm)
   return nullptr;
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* help                                                                       */
 /*----------------------------------------------------------------------------*/
-void SelfCatalog::vListFn(void)
+
+
+/*----------------------------------------------------------------------------*/
+/* find prompt function given command                                         */
+/*----------------------------------------------------------------------------*/
+void SelfCatalog::vDescribeRecursively(Stz* szSelfNm, i8 iDepth)
 {
-  for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
-    vTrace("  %s\n"_Stz,m_paSelfFn[i_Self]->m_szSelfNm);
+  _nonProper_
+
+  SelfFn* aSelfFn = pFindFn(szSelfNm);
+  if (! aSelfFn)
+    return;
+
+  vTrace("%s  %s -- %s\n"_Stz,
+         Stz::szTab(iDepth),
+         aSelfFn->m_szSelfNm,
+         aSelfFn->m_szDescription);
+
+  for (i8 i_SeeAlso = 0; i_SeeAlso < aSelfFn->m_nSeeAlso; i_SeeAlso++) {
+    Stz* szSeeAlso = aSelfFn->m_szaSeeAlso[i_SeeAlso];
+    vDescribeRecursively(szSeeAlso,iDepth+1);
+  }
+  
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-void SelfCatalog::vAddFn(SelfFn* aSelfFn)
+void SelfCatalog::vList(void)
 {
-  m_paSelfFn[m_nSelf ++] = aSelfFn;
+  _nonProper_
+
+  for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
+    vTrace("  %s\n"_Stz,m_paSelfFn[i_Self]->m_szSelfNm);
 }
 
 /*============================================================================*/

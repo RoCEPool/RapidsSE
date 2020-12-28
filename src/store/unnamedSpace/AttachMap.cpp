@@ -11,13 +11,13 @@ extern BufferPool* gpBufferPool;
 
 SubSysFn __AttachMap("AttachMap"_Stz,(fpSELFFN*)AttachMap::vSubSystem,
                      ""_Stz,
-                     "BufferPool"_Stz,"HeapMem"_Stz,nullptr);
+                     "BufferPool"_Stz,"HeapMem"_Stz,"Base"_Stz,nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(StorageEngine,AttachMap,CN_ATTACHMAP)
+__pCastFunction(STORE,AttachMap,CN_ATTACHMAP)
 __vDeleteFunction(AttachMap,CN_ATTACHMAP)
 __aFooterFunction(AttachMap)
 
@@ -130,7 +130,7 @@ AttachMap::~AttachMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vSubSystem(TokenVec* pTokenVec)
+void AttachMap::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   

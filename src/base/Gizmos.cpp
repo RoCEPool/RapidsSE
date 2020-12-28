@@ -2,7 +2,7 @@
 /* Gizmos.cpp -- Useful Gizmos                                                */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 #include "eOC.h"
 
@@ -13,7 +13,7 @@ GizmoFn __Pow2("pow2"_Stz,(fpSELFFN*)Gizmos::vPow2,""_Stz,nullptr);
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void Gizmos::vAsciiTable(TokenVec* pTokenVec)
+void Gizmos::vAsciiTable(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   
@@ -58,7 +58,7 @@ void Gizmos::vAsciiTable(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void Gizmos::vPow2(TokenVec* pTokenVec)
+void Gizmos::vPow2(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   

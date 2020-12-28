@@ -6,7 +6,7 @@
 #include "ResourceTracker.hpp" //?
 
 
-namespace StorageEngine
+namespace STORE
 {
   static const u8 C_CREATED = 0x2444455441455243;   // $CREATED
   static const u8 C_READY   = 0x2424594441455224;   // $READY$$
@@ -131,7 +131,7 @@ namespace StorageEngine
     AttachMap(void);
     ~AttachMap(void) noexcept(false);
     
-    static void vSubSystem(TokenVec* pTokenVec);
+    static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StorageEngine.cpp - StorageEngine namespace functions                      */
+/* PROMPT.cpp -- PROMPT namespace functions                                   */
 /*============================================================================*/
 
 #include "PROMPT.h"

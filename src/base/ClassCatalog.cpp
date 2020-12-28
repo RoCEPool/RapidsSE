@@ -2,7 +2,7 @@
 /* ClasstCatalog.cpp -- the catalog of class functions                        */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 #include "eCF.h"
 

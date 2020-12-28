@@ -4,6 +4,8 @@
 
 #include "STORE.h"
 
+extern Atomic gixQueryNo;
+
 /*----------------------------------------------------------------------------*/
 /* generate code for given test                                               */
 /*----------------------------------------------------------------------------*/
@@ -3637,19 +3639,24 @@ void LogicUnit::vGenerate100001(void)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateProjection(Project* pProject, Stz* sFileName) {
+void LogicUnit::vGenerateProjection(Project* pProject) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
   File *pFile = new File(nullptr);
 
+  s256 sFileName;
+
+  ++gixQueryNo;
+  sFileName.vSprint("../tmp/Query%lld.txt"_Stz, *gixQueryNo);
+
   bool b = pFile->bOpenWrite(sFileName);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append the INIT code
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) 0);
+  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) *gixQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet));
   oTagSet.vReset();

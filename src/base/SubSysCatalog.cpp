@@ -2,29 +2,35 @@
 /* SubSysCatalog.cpp -- the subsystem catalog                                 */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 SubSysCatalog gxSubSysCatalog;
+
+SubSysFn __SubSysCatalog_Descrive
+   ("Describe"_Stz,(fpSELFFN*)SubSysCatalog::vDescribe,
+                    ""_Stz,
+                    nullptr);
 
 SubSysFn __SubSysCatalog_SubSys
    ("SubSys"_Stz,(fpSELFFN*)SubSysCatalog::vSubSystems,
                   ""_Stz,
-    nullptr);
+                  nullptr);
 
 SubSysFn __SubSysCatalog_SubSystems
    ("SubSystems"_Stz,(fpSELFFN*)SubSysCatalog::vSubSystems,
                       ""_Stz,
-    nullptr);
+                      nullptr);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* find prompt function given command                                         */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SubSysCatalog::SubSysCatalog(void)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
 }
 
 
@@ -33,13 +39,23 @@ SubSysCatalog::SubSysCatalog(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* list gizmos                                                                */
+/* list subsystems                                                            */
 /*----------------------------------------------------------------------------*/
-void SubSysCatalog::vSubSystems(TokenVec* pTokenVec)
+void SubSysCatalog::vSubSystems(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   
-  gxSubSysCatalog.vListFn();
+  gxSubSysCatalog.vList();
+}
+
+/*----------------------------------------------------------------------------*/
+/* describe susbsystems recursively                                           */
+/*----------------------------------------------------------------------------*/
+void SubSysCatalog::vDescribe(SelfFn* aSelfFn, TokenVec* pTokenVec)
+{
+  _static_
+
+  gxSubSysCatalog.vDescribeRecursively("AttachMap"_Stz,0);
 }
 
 /*============================================================================*/

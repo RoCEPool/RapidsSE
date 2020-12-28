@@ -2,7 +2,7 @@
 /* SP_TknVecStr.cpp - Token VEctor to String sprint helper       (on c stack) */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

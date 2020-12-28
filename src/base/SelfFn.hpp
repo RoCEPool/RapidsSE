@@ -19,8 +19,8 @@ namespace BASE
 
   public:
     SelfFn(Stz* szSelfNm, fpSELFFN* fpSelfFn, Stz* szDescription);
+  
     void vAddSeeAlso(va_list xVarArgs);
-
   };
 }
 

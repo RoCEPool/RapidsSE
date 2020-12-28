@@ -16,7 +16,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LogEntry* StorageEngine::_pLogEntry(void* aAddr)
+LogEntry* STORE::_pLogEntry(void* aAddr)
 {
   LogEntry* pLogEntry = reinterpret_cast<LogEntry*>(aAddr);
   
