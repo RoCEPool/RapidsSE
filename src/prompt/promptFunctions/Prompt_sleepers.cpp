@@ -2,7 +2,9 @@
 /* Prompt_sleepers.cpp -- sleepers statistics                                 */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "PsxThd.hpp"  //?
 

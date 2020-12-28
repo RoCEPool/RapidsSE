@@ -2,7 +2,9 @@
 /* Steps_ToPtnRow.cpp - Convert row buffers to partitioned row slab buffers   */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

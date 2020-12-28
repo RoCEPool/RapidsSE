@@ -2,7 +2,9 @@
 /* Log.cpp - Log                                                              */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Log* gpLog;
 

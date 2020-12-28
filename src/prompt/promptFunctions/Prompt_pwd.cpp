@@ -2,7 +2,9 @@
 /* Prompt_pwd.cpp -- print working directory                                  */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "Dir.hpp" //?
 

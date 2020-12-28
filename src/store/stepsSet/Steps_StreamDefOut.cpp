@@ -2,7 +2,9 @@
 /* Steps_StreamDefOut.cpp -- Stream Definition (out-going) step group         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

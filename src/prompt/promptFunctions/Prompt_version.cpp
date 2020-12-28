@@ -2,7 +2,9 @@
 /* Prompt_version.cpp -- get SE version                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_version (

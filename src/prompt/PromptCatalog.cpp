@@ -2,7 +2,9 @@
 /* PromptCatalog.cpp -- the catalog of prompt functions                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptCatalog gxPromptCatalog;
 

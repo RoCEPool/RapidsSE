@@ -2,7 +2,9 @@
 /* Prompt_tag.cpp -- session tag managememnt                                  */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_tag (

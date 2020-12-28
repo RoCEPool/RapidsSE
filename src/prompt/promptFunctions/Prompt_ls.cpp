@@ -2,7 +2,9 @@
 /* Prompt_ls.cpp -- list directory contents                                   */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "Dir.hpp" //?
 

@@ -2,7 +2,9 @@
 /* Prompt_cancel.cpp -- cancel a pipeline job                                 */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_cancel (
   PF_CANCEL,            // prompt function

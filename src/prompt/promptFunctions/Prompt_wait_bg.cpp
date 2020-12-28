@@ -2,7 +2,9 @@
 /* Prompt_wait_bg.cpp -- wait on bg jobs                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_wait_bg (
   PF_WAIT_BG,        // prompt function

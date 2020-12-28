@@ -2,7 +2,9 @@
 /* SePrompt.cpp -- the se> prompt                                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "ePP.h"
 

@@ -2,6 +2,7 @@
 /* Expr.hpp - a generic expression                                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
 
 

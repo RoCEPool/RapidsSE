@@ -2,7 +2,9 @@
 /* TypedStack.cpp -- Push/Pop TypedStack of Typed Cells                                 */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 /*
 

@@ -2,7 +2,9 @@
 /* Steps_Build.cpp - build step group                                         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;

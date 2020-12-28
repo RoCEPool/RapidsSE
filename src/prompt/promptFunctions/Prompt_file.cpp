@@ -2,7 +2,9 @@
 /* Prompt_file.cpp -- file statistics                                         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_file (
   PF_FILESTATS,      // prompt function

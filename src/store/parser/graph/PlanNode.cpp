@@ -2,7 +2,9 @@
 /* PlanNode.cpp - A generic node in the plan graph                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "PlanNode.hpp"
 
 

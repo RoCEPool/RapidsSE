@@ -2,7 +2,9 @@
 /* Steps_Socket.cpp - socket step group                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "Socket.hpp"
 

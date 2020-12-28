@@ -2,7 +2,9 @@
 /* Api.cpp -- Api functions                                                   */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 extern BufferPool*  gpBufferPool;

@@ -2,7 +2,9 @@
 /* LogEntryPrm.cpp - Log Entry for PROMPT                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eOC.h"
 

@@ -2,7 +2,9 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "PsxThd.hpp" //?
 

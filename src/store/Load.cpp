@@ -2,7 +2,9 @@
 /* Load.cpp - Load namespace functions                                        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 

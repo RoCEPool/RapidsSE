@@ -2,7 +2,9 @@
 /* Prompt_stepTiming.cpp -- step timing                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_st (

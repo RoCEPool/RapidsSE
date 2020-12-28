@@ -2,7 +2,9 @@
 /* PrimitiveNode.cpp - A node that holds definitions of base primitives       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "PrimitiveNode.hpp"
 
 

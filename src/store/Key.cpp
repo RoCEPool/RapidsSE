@@ -2,7 +2,9 @@
 /* Key.cpp -- key part of an index entry                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "Sprint.hpp"
 

@@ -2,7 +2,9 @@
 /* Prompt_without.cpp -- compiled without report                              */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_without (

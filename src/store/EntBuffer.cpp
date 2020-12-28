@@ -2,7 +2,9 @@
 /* EntBuffer.cpp -- Index Entry Buffer                                        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 bool mbWatch = false;

@@ -2,7 +2,9 @@
 /* Prompt_indexEntries.cpp -- set index entries                               */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 

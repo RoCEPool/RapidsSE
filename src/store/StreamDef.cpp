@@ -2,7 +2,9 @@
 /* StreamDef.cpp -- Stream Definition                                         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eCX.h"
 

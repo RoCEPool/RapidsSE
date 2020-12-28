@@ -2,7 +2,9 @@
 /* Encoding.cpp -- Row Encoding (intermediate representation of compact row)  */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern EnvFlags gxEnvFlags;
 

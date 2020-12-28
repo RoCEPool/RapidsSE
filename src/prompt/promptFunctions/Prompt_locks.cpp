@@ -2,7 +2,9 @@
 /* Prompt_locks.cpp -- locks report                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_locks (

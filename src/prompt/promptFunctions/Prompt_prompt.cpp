@@ -2,7 +2,9 @@
 /* Prompt_prompt.cpp -- prompt settings managememnt                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_prompt (

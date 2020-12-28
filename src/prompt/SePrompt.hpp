@@ -3,7 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 namespace PROMPT
 {

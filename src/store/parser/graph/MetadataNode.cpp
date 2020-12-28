@@ -2,7 +2,9 @@
 /* MetadataNode.cpp - An mutable node that holds metadata for the user's query*/
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "MetadataNode.hpp"
 
 

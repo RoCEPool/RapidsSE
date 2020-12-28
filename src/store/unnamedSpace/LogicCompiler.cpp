@@ -3,7 +3,9 @@
 /* LogicCompiler.cpp -- Logic Compiler                                        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #ifdef __TINYC
 #include "libtcc.h"

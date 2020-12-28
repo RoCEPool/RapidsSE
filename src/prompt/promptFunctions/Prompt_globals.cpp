@@ -2,7 +2,9 @@
 /* Prompt_globals.cpp -- print globals                                        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_globals (

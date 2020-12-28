@@ -2,7 +2,9 @@
 /* Prompt_lvl.cpp -- random number helper                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_lvl (
   PF_LVL,           // prompt function

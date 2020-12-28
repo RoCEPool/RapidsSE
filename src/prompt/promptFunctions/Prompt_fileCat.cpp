@@ -2,7 +2,9 @@
 /* Prompt_fileCat.cpp -- file cat                                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_fileCat (
   PF_FILECAT,           // prompt function

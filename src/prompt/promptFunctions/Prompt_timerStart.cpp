@@ -2,7 +2,9 @@
 /* Prompt_timerStart.cpp -- timer start                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_timerStart (
   PF_TIMERSTART,           // prompt function

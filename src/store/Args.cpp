@@ -2,7 +2,9 @@
 /* Args.cpp - command line arguments                                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Args       gxArgs;
 extern AttachMap* gpAttachMap;

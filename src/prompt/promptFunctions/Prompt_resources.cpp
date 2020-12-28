@@ -2,7 +2,9 @@
 /* Prompt_resources.cpp -- print resource report                              */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_resources (

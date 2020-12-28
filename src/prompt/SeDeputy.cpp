@@ -2,7 +2,9 @@
 /* SeDeputy.cpp -- the se> prompt deputy                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Args          gxArgs;
 

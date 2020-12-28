@@ -2,10 +2,14 @@
 /* Index.cpp - index portion of table partition                               */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
 
 
+
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 Index*  gpReadApiIndex;

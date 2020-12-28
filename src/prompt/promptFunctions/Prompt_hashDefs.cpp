@@ -2,7 +2,9 @@
 /* Prompt_hashDefs.cpp -- hash define report                                  */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_hashDefs (
   PF_HASHDEFS,          // prompt function

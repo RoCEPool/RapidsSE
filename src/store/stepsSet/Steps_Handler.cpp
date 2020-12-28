@@ -2,7 +2,9 @@
 /* Steps_Handler.cpp - handler group                                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "PsxThd.hpp"  //?
 

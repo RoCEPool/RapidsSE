@@ -2,7 +2,9 @@
 /* Grid.cpp -- Grid                                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Args gxArgs;
 

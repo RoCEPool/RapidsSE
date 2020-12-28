@@ -2,9 +2,13 @@
 /* IndexDef.cpp -- Index Definition                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
 
+
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern EnvFlags gxEnvFlags;
 

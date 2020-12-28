@@ -2,7 +2,9 @@
 /* Prompt_timerEnd.cpp -- timer end                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_timerEnd (
   PF_TIMEREND,           // prompt function

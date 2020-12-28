@@ -3,7 +3,9 @@
 /*============================================================================*/
 
 #include "ErrorListener.hpp"
+#include "BASE.h"
 #include "STORE.h"
+
 
 using namespace Parser;
 

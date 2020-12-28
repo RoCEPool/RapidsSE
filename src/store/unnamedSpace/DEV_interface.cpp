@@ -2,7 +2,9 @@
 /* DEV_interface.cpp -- RLU Dev Interface                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "DEV_interface.h"
 

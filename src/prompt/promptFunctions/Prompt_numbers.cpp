@@ -2,7 +2,9 @@
 /* Prompt_numbers.cpp -- numbers report                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_numbers (
   PF_NUMBERS,           // prompt function

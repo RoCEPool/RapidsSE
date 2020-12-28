@@ -2,7 +2,9 @@
 /* Prompt_show.cpp -- show                                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_show (
   PF_SHOW,           // prompt function

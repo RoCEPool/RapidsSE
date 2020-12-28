@@ -2,7 +2,9 @@
 /* Prompt_attachMap.hpp -- Print AttachMap Information                        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_attachMap (
   PF_ATTACHMAP,           // prompt function

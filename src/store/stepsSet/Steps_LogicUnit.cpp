@@ -2,7 +2,9 @@
 /* Steps_LogicUnit.cpp -- LogicUnit step group                                */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern EnvFlags gxEnvFlags;;
 

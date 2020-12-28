@@ -2,7 +2,9 @@
 /* STORE.cpp -- STORE namespace functions                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Args       gxArgs;
 extern SizeHeap   gxaSizeHeap[];

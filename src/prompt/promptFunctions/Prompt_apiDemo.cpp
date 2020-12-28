@@ -2,7 +2,9 @@
 /* Prompt_apiDemo.cpp -- RapidsSE Api Demo                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_apiDemo (
   PF_APIDEMO,           // prompt function

@@ -2,7 +2,9 @@
 /* Prompt_so.cpp -- print so information                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_so (
   PF_SO,           // prompt function

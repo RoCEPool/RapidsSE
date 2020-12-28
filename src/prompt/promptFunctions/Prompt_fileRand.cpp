@@ -2,7 +2,9 @@
 /* Prompt_fileRand.cpp -- file randomise                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_fileRand (
   PF_FILERAND,           // prompt function

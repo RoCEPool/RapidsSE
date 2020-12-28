@@ -2,7 +2,9 @@
 /* Prompt_calc.cpp -- calc                                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_calc (
   PF_BYE,            // prompt function

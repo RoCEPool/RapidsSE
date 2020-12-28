@@ -2,7 +2,9 @@
 /* Prompt_log.cpp -- log                                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_log (
   PF_LOG,             // prompt function

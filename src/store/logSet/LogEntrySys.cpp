@@ -2,7 +2,9 @@
 /* LogEntrySys.cpp - Log Entry for System                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eOC.h"
 

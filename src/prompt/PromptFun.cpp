@@ -2,7 +2,9 @@
 /* PromptFun.cpp -- description of a prompt function                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern PromptCatalog gxPromptCatalog;
 

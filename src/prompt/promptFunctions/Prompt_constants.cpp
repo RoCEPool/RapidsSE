@@ -2,7 +2,9 @@
 /* Prompt_constants.cpp -- important constants report                         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_constants (
   PF_CONSTANTS,            // prompt function

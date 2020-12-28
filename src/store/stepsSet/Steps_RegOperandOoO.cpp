@@ -2,7 +2,9 @@
 /* Steps_RegOperandOoO.cpp -- Register Operand Out-of_Order step group        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

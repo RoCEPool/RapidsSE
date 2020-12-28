@@ -2,7 +2,9 @@
 /* MutablePlanNode.cpp - An node of the plan graph that can be modified       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "MutablePlanNode.hpp"
 
 

@@ -2,7 +2,9 @@
 /* Queues.cpp -- Collection of the Systems' Queues                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "PsxThd.hpp"  //?
 

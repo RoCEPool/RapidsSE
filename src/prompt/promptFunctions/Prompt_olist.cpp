@@ -2,7 +2,9 @@
 /* Prompt_olist.cpp -- originator list report                                 */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_olist (

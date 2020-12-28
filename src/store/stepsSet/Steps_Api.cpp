@@ -2,7 +2,9 @@
 /* Steps_Api.cpp - Api step group                                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "ePP.h"
 

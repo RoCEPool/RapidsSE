@@ -2,7 +2,9 @@
 /* Prompt_bye.cpp -- bye from prompt                                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_bye (
   PF_BYE,            // prompt function

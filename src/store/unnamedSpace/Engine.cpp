@@ -2,7 +2,9 @@
 /* Engine.cpp -- Rapids Storage Engine                                        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eBO.h"
 

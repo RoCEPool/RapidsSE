@@ -2,7 +2,9 @@
 /* Steps_Dir.cpp - dir step group                                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "Dir.hpp" //?
 

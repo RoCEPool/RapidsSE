@@ -2,7 +2,9 @@
 /* Prompt_uptime.cpp -- uptime prompt function                                */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_uptime (

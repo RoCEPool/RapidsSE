@@ -2,7 +2,9 @@
 /* AttachMap.cpp - map of addresses when process attaches                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "ResourceTracker.hpp" //?
 

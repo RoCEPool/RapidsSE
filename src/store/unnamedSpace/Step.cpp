@@ -2,7 +2,9 @@
 /* Step.cpp -- Step                                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 StepFp gfpEntryStep = &Expressions::Step::vEnterRoutine;
 

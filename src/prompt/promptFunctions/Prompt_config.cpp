@@ -2,7 +2,9 @@
 /* Prompt_config.cpp -- simple configuration report                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Args gxArgs;
 

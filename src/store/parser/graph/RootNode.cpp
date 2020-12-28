@@ -2,7 +2,9 @@
 /* RootNode.cpp - An immutable node that is the top of the plan graph         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "RootNode.hpp"
 
 

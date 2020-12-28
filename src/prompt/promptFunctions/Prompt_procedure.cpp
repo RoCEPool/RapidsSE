@@ -2,7 +2,9 @@
 /* Prompt_procedure.cpp -- define a stored procedure                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_procedure (
   PF_PROCEDURE,           // prompt function

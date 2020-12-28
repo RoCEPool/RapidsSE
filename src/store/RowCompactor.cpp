@@ -2,7 +2,9 @@
 /* RowCompactor.cpp -- Row Compactor Mark V                                   */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 static Numbat oNumBat("partKey"_Stz);
 

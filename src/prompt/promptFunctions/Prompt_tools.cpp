@@ -2,7 +2,9 @@
 /* Prompt_tools.cpp -- System Tools                                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eOC.h"
 

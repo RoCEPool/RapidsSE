@@ -2,7 +2,9 @@
 /* Task_Axioms.cpp - functions which add axioms during the boot of system     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eWK.h"
 

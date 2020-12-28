@@ -2,7 +2,9 @@
 /* Prompt_errno.cpp -- errno print                                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_errno (
   PF_ERRNO,             // prompt function

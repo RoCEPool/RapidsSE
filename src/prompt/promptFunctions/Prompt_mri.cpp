@@ -2,7 +2,9 @@
 /* Prompt_mri.cpp -- mri                                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_mri (
   PF_MRI,              // prompt function

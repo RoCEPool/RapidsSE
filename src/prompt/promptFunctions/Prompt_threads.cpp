@@ -2,7 +2,9 @@
 /* Prompt_threads.cpp -- threads report                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_threads (
   PF_THREADS,           // prompt function

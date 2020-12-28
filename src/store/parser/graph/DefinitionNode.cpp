@@ -2,7 +2,9 @@
 /* DefinitionNode.cpp - A node that holds definitions of other nodes          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "DefinitionNode.hpp"
 
 

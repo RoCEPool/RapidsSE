@@ -2,7 +2,9 @@
 /* LogicUnit_GenCode.hpp -- Logic Unit (generate code functions)              */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Atomic gixQueryNo;
 

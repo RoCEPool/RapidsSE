@@ -2,7 +2,9 @@
 /* Prompt_how.cpp -- how was a request executed                               */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_how (
   PF_HOW,               // prompt function

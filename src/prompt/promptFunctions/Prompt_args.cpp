@@ -2,7 +2,9 @@
 /* Prompt_args.cpp -- show command line arguments                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_args (
   PF_ARGS,           // prompt function

@@ -2,7 +2,9 @@
 /* LIB_interface.cpp -- RLU Lib Interface                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "LIB_interface.h"
 

@@ -2,7 +2,9 @@
 /* Prompt_socket.cpp -- socket statistics                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "Socket.hpp" //?
 

@@ -2,7 +2,9 @@
 /* Stage.cpp -- Stage of Pipeline                                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern AttachMap gxAttachMap;
 

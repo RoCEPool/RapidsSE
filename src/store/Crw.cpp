@@ -2,7 +2,9 @@
 /* Crw.hpp -- Compact Row                                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern EnvFlags gxEnvFlags;
 

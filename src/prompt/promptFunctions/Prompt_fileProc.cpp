@@ -2,7 +2,9 @@
 /* Prompt_fileProc.cpp -- file proc                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_fileProc (
   PF_FILEPROC,           // prompt function

@@ -2,7 +2,9 @@
 /* IndexTree.cpp -- Index Partition                                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 bool mbCheckPriorVec = false;
 

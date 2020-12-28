@@ -2,7 +2,9 @@
 /* TablePtn.cpp -- Table Partition                                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 

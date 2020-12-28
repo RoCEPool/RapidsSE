@@ -2,7 +2,9 @@
 /* Op.cpp -- Operator of Stream of Stage of Pipeline                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eTS.h"
 

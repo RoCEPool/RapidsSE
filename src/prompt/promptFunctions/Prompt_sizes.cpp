@@ -2,7 +2,9 @@
 /* Prompt_sizes.cpp -- sizes report                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_sizes (
   PF_SIZES,             // prompt function

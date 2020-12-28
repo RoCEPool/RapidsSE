@@ -2,7 +2,9 @@
 /* Prompt_with.cpp -- compiled with report                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_with (

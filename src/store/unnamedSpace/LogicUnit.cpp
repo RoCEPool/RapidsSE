@@ -2,7 +2,9 @@
 /* LogicUnit.hpp -- Logic Unit                                                */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "EnumGroups.h"
 

@@ -2,7 +2,9 @@
 /* LogEntry.cpp - Shared Log Entry                                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eOC.h"
 

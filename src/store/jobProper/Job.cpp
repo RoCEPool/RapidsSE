@@ -2,7 +2,9 @@
 /* Job.cpp -- a job in the system                                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "File.hpp" //?
 

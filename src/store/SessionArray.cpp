@@ -2,7 +2,9 @@
 /* SessionArray.cpp - SessionArray                                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "PsxThd.hpp"  //?
 

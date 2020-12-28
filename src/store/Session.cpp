@@ -2,7 +2,9 @@
 /* Session.cpp - se session                                                   */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 Atomic gixSession;
 

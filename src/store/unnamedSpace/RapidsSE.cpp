@@ -2,7 +2,9 @@
 /* RapidsSE.cpp -- RapidsSE External Api functions                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "ePP.h"
 

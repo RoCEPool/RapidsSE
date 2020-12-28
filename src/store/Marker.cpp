@@ -2,7 +2,9 @@
 /* Marker.cpp -- Marker                                                        */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eCF.h"
 

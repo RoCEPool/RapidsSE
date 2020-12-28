@@ -2,7 +2,9 @@
 /* Prompt_dlist.cpp -- demon list report                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_dlist (

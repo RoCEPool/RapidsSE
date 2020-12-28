@@ -2,7 +2,9 @@
 /* StatisticsNode.cpp - An mutable node that holds stats for the user's query */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "StatisticsNode.hpp"
 
 

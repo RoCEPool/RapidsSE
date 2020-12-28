@@ -2,7 +2,9 @@
 /* Prompt_cache.cpp -- cache helper                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_cache (
   PF_CACHE,           // prompt function

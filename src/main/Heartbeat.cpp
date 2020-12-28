@@ -2,7 +2,9 @@
 /* Heartbeat.cpp - heartbeat message                                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "Heart.h"
 #include "Heartbeat.hpp"
 #include <string.h>

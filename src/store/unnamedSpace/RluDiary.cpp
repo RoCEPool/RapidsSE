@@ -2,7 +2,9 @@
 /* RluDiary.cpp -- Rlu Diary                                                  */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "ePP.h"
 

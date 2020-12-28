@@ -2,7 +2,9 @@
 /* Prompt_plist.cpp -- participant list report                                */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_plist (

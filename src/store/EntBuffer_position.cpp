@@ -2,7 +2,9 @@
 /* EntBuffer_position.cpp -- position related functions for EntBuffer         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */

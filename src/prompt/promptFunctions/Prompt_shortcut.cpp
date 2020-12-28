@@ -2,7 +2,9 @@
 /* Prompt_shortcut.cpp -- shortcut                                            */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_shortcut (
   PF_SHORTCUT,        // prompt function

@@ -2,7 +2,9 @@
 /* Prompt_llist.cpp -- local list report                                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 
 PromptFun __Prompt_llist (

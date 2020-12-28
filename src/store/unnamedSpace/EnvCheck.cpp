@@ -2,7 +2,9 @@
 /* EnvCheck.cpp -- Environment Check                                          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Args gxArgs;
 

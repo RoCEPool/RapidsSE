@@ -2,7 +2,9 @@
 /* HeadLine.hpp -- a head line                                                */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern EnvFlags gxEnvFlags;
 

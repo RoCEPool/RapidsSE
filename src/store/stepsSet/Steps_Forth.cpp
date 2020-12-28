@@ -2,7 +2,9 @@
 /* Steps_Forth.cpp - forth step group                                         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern Stz* gszaMungedText[];
 

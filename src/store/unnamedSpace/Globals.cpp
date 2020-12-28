@@ -2,7 +2,9 @@
 /* Globals.cpp -- Globals                                                     */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 Args          gxArgs;
 EnvFlags      gxEnvFlags;

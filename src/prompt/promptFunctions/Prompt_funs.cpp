@@ -2,7 +2,9 @@
 /* Prompt_funs.cpp -- prompt funs function                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern PromptCatalog gxPromptCatalog;
 extern PromptFun     __Prompt_actionSequence;

@@ -2,7 +2,9 @@
 /* JobLog.cpp -- job log helper                                               */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eQK.h"
 #include "eTS.h"

@@ -2,7 +2,9 @@
 /* QueryNode.cpp - An mutable node that holds the plan of the user's query    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "QueryNode.hpp"
 
 

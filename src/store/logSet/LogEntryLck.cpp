@@ -2,7 +2,9 @@
 /* LogEntryLck.cpp - Log Entry for Lock                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eOC.h"
 

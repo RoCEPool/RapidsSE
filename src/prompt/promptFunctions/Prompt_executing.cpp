@@ -2,7 +2,9 @@
 /* Prompt_executing.cpp -- executing queue report                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_executing (
   PF_EXECUTING,           // prompt function

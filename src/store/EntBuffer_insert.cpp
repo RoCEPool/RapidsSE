@@ -2,7 +2,9 @@
 /* EntBuffer_insert.cpp -- insert related functions for Entry Buffer          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */

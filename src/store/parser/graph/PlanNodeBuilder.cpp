@@ -2,7 +2,9 @@
 /* PlanNodeBuilder.cpp - A way to build PlanNodes                             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "PlanNodeBuilder.hpp"
 
 /*----------------------------------------------------------------------------*/

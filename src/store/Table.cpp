@@ -2,11 +2,17 @@
 /* Table.cpp -- Table                                                         */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
 
 
+
+#include "BASE.h"
 #include "STORE.h"
+
+#include "BASE.h"
 #include "STORE.h"
+
 
 Atomic gixTable;
 

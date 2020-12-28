@@ -2,7 +2,9 @@
 /* Constants.cpp -- add constants into main dictionary at startup             */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "EnumGroups.h"
 #include "eAN.h"

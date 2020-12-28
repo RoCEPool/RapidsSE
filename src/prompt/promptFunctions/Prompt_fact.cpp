@@ -2,7 +2,9 @@
 /* Prompt_fact.cpp -- fact prompt function                                    */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_fact (
   PF_FACT,            // prompt function

@@ -2,7 +2,9 @@
 /* PlanDefinitionParser.cpp - Parses SQL statements & produces an initial knowledgebase */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 #include "json5Lexer.h"
 #include "json5Parser.h"
 #include "json5BaseVisitor.h"

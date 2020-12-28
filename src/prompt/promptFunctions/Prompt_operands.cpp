@@ -2,7 +2,9 @@
 /* Prompt_operands.cpp -- show / change max operands arg                      */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_operands (
   PF_OPERANDS,       // prompt function

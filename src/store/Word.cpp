@@ -2,7 +2,9 @@
 /* Word.cpp -- Forth Word in Dictionary                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 extern StepFp gfpEntryStep;
 

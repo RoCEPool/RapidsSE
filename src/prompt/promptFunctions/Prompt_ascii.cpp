@@ -2,7 +2,9 @@
 /* Prompt_ascii.cpp -- Ascii Helper                                           */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "eOC.h"
 

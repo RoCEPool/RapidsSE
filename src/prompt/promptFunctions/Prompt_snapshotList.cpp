@@ -2,7 +2,9 @@
 /* Prompt_snapshotList.cpp -- objects list report                               */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 PromptFun __Prompt_snapshotList (
   PF_SNAPSHOTLIST,            // prompt function

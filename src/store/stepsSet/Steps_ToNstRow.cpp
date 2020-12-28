@@ -2,7 +2,9 @@
 /* Steps_ToNstRow.cpp - Convert row to normalised string row buffers          */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

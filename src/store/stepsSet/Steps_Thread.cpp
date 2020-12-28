@@ -2,7 +2,9 @@
 /* Steps_Thread.cpp - thread step group                                       */
 /*============================================================================*/
 
+#include "BASE.h"
 #include "STORE.h"
+
 
 #include "PsxThd.hpp"  //?
 
