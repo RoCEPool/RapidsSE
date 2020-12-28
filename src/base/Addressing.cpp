@@ -2,7 +2,7 @@
 /* Addressing.cpp -- Functions for Manipulating Addresses                     */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 extern BufferPool* gpBufferPool;
 

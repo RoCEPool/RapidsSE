@@ -2,7 +2,7 @@
 /* ToolCatalog.cpp -- Tool Command Catalog                                    */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 ToolCatalog gxToolCatalog;
 

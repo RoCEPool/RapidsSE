@@ -2,7 +2,7 @@
 /* GizmoFn.cpp -- Gizmo Command Function                                      */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 extern GizmoCatalog gxGizmoCatalog;
 

@@ -2,7 +2,11 @@
 /* Base.cpp -- Base namespace                                                 */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
+
+SubSysFn __Base_SubSystem("Base"_Stz,(fpSELFFN*)BASE::vSubSystem,
+                          ""_Stz,
+                          nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
@@ -99,6 +103,16 @@ void BASE::vCheckAssumptions(void)
   // base
   
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* the subsystem function                                                     */
+/*----------------------------------------------------------------------------*/
+void BASE::vSubSystem(TokenVec* pTokenVec)
+{
+  _static_
+  
+  vTrace("BASE::vSubSystem\n"_Stz);
 }
 
 

@@ -2,7 +2,7 @@
 /* SubSysCatalog.cpp -- the subsystem catalog                                 */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 SubSysCatalog gxSubSysCatalog;
 

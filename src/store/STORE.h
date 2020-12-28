@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Base.h"
+#include "BASE.h"
 
 //------------------------------------------------------------------------------
 
@@ -313,7 +313,7 @@ typedef HV<RowSingle,StreamDef> HV_RowSingle;
 
 
 
-#include "InfoSetBase.hpp"
+#include "InfoSetBASE.hpp"
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
 

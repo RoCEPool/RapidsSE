@@ -2,7 +2,7 @@
 /* IntSet.cpp -- Int Set                                                      */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 int BASE::iSortCompare_ascend(const void * a, const void * b)
 {

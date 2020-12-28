@@ -65,6 +65,9 @@ namespace BASE
     static i8   nSize(Stz* szFilePath);
     static void vStatistics(void);
   
+    static void vListOfOpenFiles(TokenVec* pTokenVec);
+
+  
     void vClose(void);
     char cGetChar(void);
     void vFileDump(void);

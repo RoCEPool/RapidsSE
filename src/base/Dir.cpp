@@ -2,7 +2,7 @@
 /* Dir.cpp -- directory services                                              */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 #include "Dir.hpp" //?
 #include "ResourceTracker.hpp" //?

@@ -2,7 +2,7 @@
 /* Region.cpp -- Region                                                       */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 
 extern Header*    gaSeShmRegion;

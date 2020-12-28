@@ -2,7 +2,7 @@
 /* socket.cpp - tcp/ip sockets                                                */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 #include "Socket.hpp" //?
 #include "ResourceTracker.hpp" //?

@@ -2,7 +2,7 @@
 /* SelfCatalog.cpp -- System-Self Function Catalog                            */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */

@@ -2,7 +2,7 @@
 /* ClassNumbers.cpp -- Functions for Class Numbers                            */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
 /* find eCN for given class name                                              */

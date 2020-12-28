@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Base.h -- Base namespace                                                   */
+/* BASE.h -- Base namespace                                                   */
 /*============================================================================*/
 #pragma once
 
@@ -8,6 +8,7 @@
 namespace BASE
 {
   void vCheckAssumptions(void);
+
 }
 
 //------------------------------------------------------------------------------
@@ -486,6 +487,10 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 
 
+namespace BASE
+{
+  static void vSubSystem(TokenVec* pTokenVec);
+}
 
 
 /*---------------------------------------------------------------------------*/

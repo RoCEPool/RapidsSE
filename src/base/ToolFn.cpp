@@ -2,7 +2,7 @@
 /* ToolFn.cpp -- Tool Command Function                                        */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 extern ToolCatalog gxToolCatalog;
 

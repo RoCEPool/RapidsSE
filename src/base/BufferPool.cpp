@@ -2,7 +2,7 @@
 /* BufferPool.cpp - buffer allocator                                          */
 /*============================================================================*/
 
-#include "Base.h"
+#include "BASE.h"
 
 extern BufferPool* gpBufferPool;
 
