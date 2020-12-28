@@ -130,7 +130,7 @@ AttachMap::~AttachMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vSubSystem(TokenVec* pTokenVec)
+void AttachMap::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   

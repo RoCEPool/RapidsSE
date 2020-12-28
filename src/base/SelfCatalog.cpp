@@ -30,11 +30,11 @@ bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
 {
   _nonProper_
 
-  SelfFn* pSelfFn = pFindFn(szSelfNm);
-  if (! pSelfFn)
+  SelfFn* aSelfFn = pFindFn(szSelfNm);
+  if (! aSelfFn)
     return false;
   
-  pSelfFn->m_fpSelfFn(pTokenVec);
+  aSelfFn->m_fpSelfFn(aSelfFn,pTokenVec);
   
   return true;
 }
@@ -65,14 +65,17 @@ void SelfCatalog::vDescribeRecursively(Stz* szSelfNm, i8 iDepth)
 {
   _nonProper_
 
-  SelfFn* pSelfFn = pFindFn(szSelfNm);
-  if (! pSelfFn)
+  SelfFn* aSelfFn = pFindFn(szSelfNm);
+  if (! aSelfFn)
     return;
 
-  vTrace("%s  %s\n"_Stz,Stz::szTab(iDepth),pSelfFn->m_szSelfNm);
+  vTrace("%s  %s -- %s\n"_Stz,
+         Stz::szTab(iDepth),
+         aSelfFn->m_szSelfNm,
+         aSelfFn->m_szDescription);
 
-  for (i8 i_SeeAlso = 0; i_SeeAlso < pSelfFn->m_nSeeAlso; i_SeeAlso++) {
-    Stz* szSeeAlso = pSelfFn->m_szaSeeAlso[i_SeeAlso];
+  for (i8 i_SeeAlso = 0; i_SeeAlso < aSelfFn->m_nSeeAlso; i_SeeAlso++) {
+    Stz* szSeeAlso = aSelfFn->m_szaSeeAlso[i_SeeAlso];
     vDescribeRecursively(szSeeAlso,iDepth+1);
   }
   

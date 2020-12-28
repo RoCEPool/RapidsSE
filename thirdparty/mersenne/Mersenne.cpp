@@ -4,7 +4,7 @@
 
 #include "Mersenne.hpp"
 
-#include "Base.h"
+#include "BASE.h"
 
 /*
    from wikipedia:

@@ -49,7 +49,7 @@ HeapMem::HeapMem(void)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vSubSystem(TokenVec* pTokenVec)
+void HeapMem::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   

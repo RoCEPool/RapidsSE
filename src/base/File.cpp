@@ -123,7 +123,7 @@ File::~File(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* describe function : list of open functions                                 */
 /*----------------------------------------------------------------------------*/
-void File::vListOfOpenFiles(TokenVec* pTokenVec)
+void File::vListOfOpenFiles(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   

@@ -35,7 +35,7 @@ namespace BASE
   public:
     HeapMem(void);
   
-    static void vSubSystem(TokenVec* pTokenVec);
+    static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 
     static Object* pAllocate(eCN eClass, bool bPersistent=false);

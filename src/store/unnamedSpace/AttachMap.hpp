@@ -131,7 +131,7 @@ namespace StorageEngine
     AttachMap(void);
     ~AttachMap(void) noexcept(false);
     
-    static void vSubSystem(TokenVec* pTokenVec);
+    static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   

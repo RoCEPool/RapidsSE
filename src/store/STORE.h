@@ -313,7 +313,7 @@ typedef HV<RowSingle,StreamDef> HV_RowSingle;
 
 
 
-#include "InfoSetBASE.hpp"
+#include "InfoSetBase.hpp"
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
 

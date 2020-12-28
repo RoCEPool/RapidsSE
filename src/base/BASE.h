@@ -163,8 +163,8 @@ typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
-namespace BASE { class TokenVec; }
-typedef void (fpSELFFN)(TokenVec* pTokenVec);
+namespace BASE { class TokenVec; class SelfFn; }
+typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 
@@ -412,6 +412,7 @@ extern BufferPool* gpBufferPool;
 #include "Link_t.hpp"
 #include "ListItem_t.hpp"
 #include "List_t.hpp"
+#include "ListExo_t.hpp"
 #include "ListNL_t__.hpp"
 #include "ListNL_t.hpp"
 
@@ -489,7 +490,7 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 namespace BASE
 {
-  static void vSubSystem(TokenVec* pTokenVec);
+  static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 }
 
 
