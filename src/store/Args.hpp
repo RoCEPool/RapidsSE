@@ -8,7 +8,7 @@ namespace Arguments
   class Args : public Object
   {
     friend class OBLIQUE::AM;
-    friend class StorageEngine::Engine;
+    friend class STORE::Engine;
     friend class BASE::Charser;
     friend class BASE::Input;
 

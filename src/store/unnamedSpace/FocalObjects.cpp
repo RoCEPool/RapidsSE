@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FocalObjects* StorageEngine::_pFocalObjects(void* aAddr)
+FocalObjects* STORE::_pFocalObjects(void* aAddr)
 {
   FocalObjects* pFocalObjects = reinterpret_cast<FocalObjects*>(aAddr);
   

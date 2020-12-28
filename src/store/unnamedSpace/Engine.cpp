@@ -100,7 +100,7 @@ void Engine::vPreliminary(void)
   
   if (AM::bVerboseProgress())
      vInfo("Checking assumptions...\n"_Stz);
-  StorageEngine::vCheckAllAssumptions();
+  STORE::vCheckAllAssumptions();
 
   if (AM::bVerboseProgress())
      vInfo("Boot check...\n"_Stz);

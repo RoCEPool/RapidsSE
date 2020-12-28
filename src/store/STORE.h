@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StorageEngine.h -- StorageEngine namespace                                 */
+/* STORE.h -- STORE namespace                                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace StorageEngine
+namespace STORE
 {
   void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StorageEngine.cpp - StorageEngine namespace functions                      */
+/* STORE.cpp -- STORE namespace functions                                     */
 /*============================================================================*/
 
 #include "STORE.h"
@@ -10,16 +10,16 @@ extern SizeHeap   gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 /* check assumptions                                                          */
 /*----------------------------------------------------------------------------*/
-void StorageEngine::vCheckAllAssumptions(void)
+void STORE::vCheckAllAssumptions(void)
 {
   BASE::vCheckAssumptions();
-  StorageEngine::vCheckAssumptions();
+  STORE::vCheckAssumptions();
 }
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void StorageEngine::vCheckAssumptions(void)
+void STORE::vCheckAssumptions(void)
 {
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(Operand)));
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
@@ -85,7 +85,7 @@ void StorageEngine::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 /* set signal Scheduler                                                        */
 /*----------------------------------------------------------------------------*/
-void StorageEngine::vSetSignalHandlers(void)
+void STORE::vSetSignalHandlers(void)
 {
   // Segmentation Violation
   signal(SIGSEGV, Engine::vSignalHandler);

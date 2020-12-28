@@ -13,7 +13,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Log* StorageEngine::_pLog(void* aAddr)
+Log* STORE::_pLog(void* aAddr)
 {
   Log* pLog = reinterpret_cast<Log*>(aAddr);
   

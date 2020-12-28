@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
+namespace STORE
 {
   class EnvCheck : public Object
   {

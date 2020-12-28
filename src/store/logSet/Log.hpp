@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
+namespace STORE
 {
   static const i8    C_JOB_GROUP = 0;
   static const i8    C_INF_GROUP = -1;
