@@ -41,7 +41,7 @@ SubSysCatalog::SubSysCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* list subsystems                                                            */
 /*----------------------------------------------------------------------------*/
-void SubSysCatalog::vSubSystems(TokenVec* pTokenVec)
+void SubSysCatalog::vSubSystems(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   
@@ -51,7 +51,7 @@ void SubSysCatalog::vSubSystems(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* describe susbsystems recursively                                           */
 /*----------------------------------------------------------------------------*/
-void SubSysCatalog::vDescribe(TokenVec* pTokenVec)
+void SubSysCatalog::vDescribe(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
 

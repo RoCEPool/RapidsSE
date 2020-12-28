@@ -163,8 +163,8 @@ typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
-namespace BASE { class TokenVec; }
-typedef void (fpSELFFN)(TokenVec* pTokenVec);
+namespace BASE { class TokenVec; class SelfFn; }
+typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 
@@ -489,7 +489,7 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 namespace BASE
 {
-  static void vSubSystem(TokenVec* pTokenVec);
+  static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 }
 
 

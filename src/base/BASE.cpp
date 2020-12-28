@@ -6,7 +6,7 @@
 
 SubSysFn __Base_SubSystem("Base"_Stz,(fpSELFFN*)BASE::vSubSystem,
                           ""_Stz,
-                          nullptr);
+                          "Files"_Stz,nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
@@ -108,7 +108,7 @@ void BASE::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void BASE::vSubSystem(TokenVec* pTokenVec)
+void BASE::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   

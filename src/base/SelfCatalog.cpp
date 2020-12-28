@@ -30,11 +30,11 @@ bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
 {
   _nonProper_
 
-  SelfFn* pSelfFn = pFindFn(szSelfNm);
-  if (! pSelfFn)
+  SelfFn* aSelfFn = pFindFn(szSelfNm);
+  if (! aSelfFn)
     return false;
   
-  pSelfFn->m_fpSelfFn(pTokenVec);
+  aSelfFn->m_fpSelfFn(aSelfFn,pTokenVec);
   
   return true;
 }
