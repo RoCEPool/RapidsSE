@@ -44,7 +44,7 @@ Project::Project(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECT,_FOOTER_);
 
-  m_iColumns = 0;
+  m_iStreamInColumns = 0;
   m_uProjectColumns = 0;
   //m_sAsmText;
 
@@ -158,12 +158,7 @@ eEC Project::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
 
     pTkn = pTknVec->pGet(i_Tkn);
     if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
-      if (m_iColumns)
-        continue;
-      else {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
+      continue;
     }
 
     // alias ?
@@ -173,16 +168,26 @@ eEC Project::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
       i_Tkn++;
       pTkn = pTknVec->pGet(i_Tkn);
 
+      // should be a name
       if (!pTkn->bIsName()) {
         eError = EC_INVALID_COMMAND;
         break;
       }
 
-      // move to the next token
+      // move on
       continue;
     }
 
-    // skip any token other than a column name
+    // skip any arithmetic operators
+    if (pTkn->bIsArithmetic())
+      continue;
+
+    // skip any numerics
+    if (pTkn->bIsNumeric()) {
+      continue;
+    }
+
+    // skip any other token that is not a name
     if (!pTkn->bIsName()) {
       continue;
     }
@@ -196,19 +201,26 @@ eEC Project::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
     for (i8 i_StreamInCol = 0; i_StreamInCol < nColumns; i_StreamInCol++) {
       pColumn = pStreamDefIn->pGetColumn(i_StreamInCol);
       if (pColumn->szColNm()->bSame(sColumnNm)) {
-        //bFound = true;
+        bFound = true;
 
-        // set bit on for the column in m_uProjectColumns
-        BitLib::vSetOn(m_uProjectColumns, i_StreamInCol);
-        m_iColumns++;
+        // already selected column ?
+        if ( ! BitLib::bIsOn(m_uProjectColumns, i_StreamInCol) ) {
+
+          // set bit on for the column in m_uProjectColumns
+          BitLib::vSetOn(m_uProjectColumns, i_StreamInCol);
+          m_pStreamInCol[m_iStreamInColumns] = pColumn;
+          m_iStreamInColumns++;
+
+        }
         break;
       }
     }
+    m_pStreamInCol[m_iStreamInColumns] = nullptr;
 
-    //if (!bFound) {
-    //  eError = EC_INVALID_COMMAND;
-    //  break;
-    //}
+    if (!bFound) {
+      eError = EC_INVALID_COMMAND;
+      break;
+    }
 
     continue;
   }
@@ -234,6 +246,9 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
   Token* pTkn = pTknVec->pCurrToken();
 
   Stz* azCrs = m_sAsmText[i_DstColumn].szStz();
+  eCT eColumnType = CT_NONE;
+  i8 iColumnLength = C_UNKNOWN;
+  i8 iColumnScale = C_UNKNOWN;
 
   while ( pTkn && ! pTkn->bSame(","_Stz) ) {
 
@@ -254,37 +269,40 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
     // arithmetic operators
     if (pTkn->bSame("+"_Stz)) {
       //vAddCode(i_DstColumn, EO_ADD);
-      StrLib::vSprintCat(azCrs,"EO_ADD\n"_Stz);
+      StrLib::vSprintCat(azCrs,"  EO_ADD\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
     if (pTkn->bSame("/"_Stz)) {
       //vAddCode(i_DstColumn, EO_DIVIDE);
-      StrLib::vSprintCat(azCrs,"EO_DIVIDE\n"_Stz);
+      StrLib::vSprintCat(azCrs,"  EO_DIVIDE\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
     if (pTkn->bSame("%"_Stz)) {
       //vAddCode(i_DstColumn, EO_MODULO);
-      StrLib::vSprintCat(azCrs,"EO_MODULO\n"_Stz);
+      StrLib::vSprintCat(azCrs,"  EO_MODULO\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
     if (pTkn->bSame("*"_Stz)) {
       //vAddCode(i_DstColumn, EO_MULTIPLY);
-      StrLib::vSprintCat(azCrs,"EO_MULTIPLY\n"_Stz);
+      StrLib::vSprintCat(azCrs,"  EO_MULTIPLY\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
     if (pTkn->bSame("-"_Stz)) {
       //vAddCode(i_DstColumn, EO_SUBTRACT);
-      StrLib::vSprintCat(azCrs,"EO_SUBTRACT\n"_Stz);
+      StrLib::vSprintCat(azCrs,"  EO_SUBTRACT\n"_Stz);
       continue;
     }
 
     // is it an integer ?
     if ( pTkn->bIsInteger() ) {
-      StrLib::vSprintCat(azCrs,"EO_INTEGER %lld\n"_Stz,pTkn->iToI8());
+      StrLib::vSprintCat(azCrs,"  EO_INTEGER %lld\n"_Stz,pTkn->iToI8());
+      eColumnType = CT_INTEGER;
+      iColumnLength = 19;
+      iColumnScale = 0;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -297,52 +315,53 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
     // found a src column
     Stz* sColumnNm = pTkn->szChars();
 
-    // look for column in streamDef
-    bool bFound = false;
-    i8 nColumns = pStreamDefIn->nColumns(C_ALL);
-
+    // get in column from m_iStreamInCol ~ to out column
+    //i8 i_Local = -1;
     pColumn = nullptr;
     i8 i_StreamInCol;
-    for (i_StreamInCol = 0; i_StreamInCol < nColumns; i_StreamInCol++) {
-      pColumn = pStreamDefIn->pGetColumn(i_StreamInCol);
+    for (i_StreamInCol = 0; m_pStreamInCol[i_StreamInCol] != nullptr; i_StreamInCol++) {
+      pColumn = m_pStreamInCol[i_StreamInCol];
+      //i_Local++;
       if (pColumn->szColNm()->bSame(sColumnNm)) {
         break;
       }
     }
+    RASSERT(pColumn);
 
-    // add the column to the streamDefOut
+    StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,i_StreamInCol);
+    pTkn = pTknVec->pNextToken();
+  }
+
+  // add the column to the streamDefOut
+  if (pColumn) {
     pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? pColumn->szColNm() : sAliasName,
                               pColumn->eColumnType(),
                               pColumn->iColumnLength(),
                               pColumn->iColumnScale());
-
-    // find the column in the ProjectColumns
-    i8 i_Local = -1;
-    for (i8 i_Bit = 0; i_Bit <= i_StreamInCol; i_Bit++) {
-      if (BitLib::bIsOn(m_uProjectColumns, i_Bit))
-        i_Local++;
-    }
-    //vAddCodeArg(i_DstColumn, EO_PUSH_LOCALI, i_Local);
-    StrLib::vSprintCat(azCrs,"EO_PUSH_LOCALI %lld\n"_Stz,i_Local);
-    pTkn = pTknVec->pNextToken();
+  }
+  else {
+    pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? "NONE"_Stz : sAliasName,
+                              eColumnType,
+                              iColumnLength,
+                              iColumnScale);
   }
 
-    pColumn = pStreamDefOut->pGetColumn(i_DstColumn);
-    switch (pColumn->eColumnType()) {
-      case CT_INTEGER:
-      case CT_DECIMAL:
-        //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLI, i_Col);
-        StrLib::vSprintCat(azCrs,"EO_ROW_DST_POPCOLI %lld\n"_Stz,i_DstColumn);
-        break;
-      case CT_CHAR:
-      case CT_DATE:
-      case CT_VARCHAR:
-        //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLS, i_Col);
-        StrLib::vSprintCat(azCrs,"EO_ROW_DST_POPCOLS %lld\n"_Stz,i_DstColumn);
-        break;
-      default:
-        RASSERT(0);
-    }
+  pColumn = pStreamDefOut->pGetColumn(i_DstColumn);
+  switch (pColumn->eColumnType()) {
+    case CT_INTEGER:
+    case CT_DECIMAL:
+      //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLI, i_Col);
+      StrLib::vSprintCat(azCrs,"  EO_ROW_DST_POPCOLI %lld\n"_Stz,i_DstColumn);
+      break;
+    case CT_CHAR:
+    case CT_DATE:
+    case CT_VARCHAR:
+      //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLS, i_Col);
+      StrLib::vSprintCat(azCrs,"  EO_ROW_DST_POPCOLS %lld\n"_Stz,i_DstColumn);
+      break;
+    default:
+      RASSERT(0);
+  }
 
   L_RETURN:
     return eError;

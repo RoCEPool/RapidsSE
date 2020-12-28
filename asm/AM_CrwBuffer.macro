@@ -46,6 +46,16 @@ macro AM_CRW_PROJECT_ROUTINE
   //EO_DUMP
 endMacro
 
+macro AM_CRW_PROJECT_NOSRC_ROUTINE
+//----------------------------------------------------------------------------//
+// macro AM_CRW_PROJECT_NOSRC_ROUTINE                                            //
+//----------------------------------------------------------------------------//
+  // CRW_PROJECT_ROUTINE
+  Label CRW_PROJECT_ROUTINE
+  EO_ROW_DST_NEW
+  //EO_DUMP
+endMacro
+
 //----------------------------------------------------------------------------//
 // macro AM_POP_DST_COLUMNI                                                   //
 //----------------------------------------------------------------------------//

@@ -46,6 +46,7 @@ namespace BASE
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
     bool  bHasChars(void);
+    bool bIsArithmetic(void);
     bool  bIsAssign(void);
     bool  bIsInteger(void);
     bool  bIsGreaterThan(void);

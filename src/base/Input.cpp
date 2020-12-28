@@ -1561,7 +1561,7 @@ void Input::vCollectSenInteger(void)
   // - handle the case where we have a name like 1_ugh
   
   // just a number?
-  if (m_xAnnChar.bIsWhite() || bStartSenString() ) {
+  if (m_xAnnChar.bIsNull() || m_xAnnChar.bIsWhite() || bStartSenString() ) {
     
     // push back the unconsumed char
     vUngetAnnCharStripped();
