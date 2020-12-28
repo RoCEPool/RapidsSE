@@ -40,6 +40,45 @@ GraphNav::~GraphNav(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Returns the leaf element of a type definition path.                        */
+/* e.g. given a definition path of /a/b/c this will return 'c'.               */
+/* This path must not contain a property separator (':').                     */
+/*----------------------------------------------------------------------------*/
+Stz* GraphNav::szLeafType(Stz* szTypePath)
+{
+  char* ps;
+
+  // This is a type definition path. It should not contain the property separator.
+  ASSERT(!StrLib::bBackward(&ps, szTypePath->azChar(), ':'));
+
+  b1 bFound = StrLib::bBackward(&ps, szTypePath->azChar(), '/');
+  ASSERT(bFound);
+
+  return (Stz*) (ps + 1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the parent of the type definition path given.                      */
+/* e.g. given a defn path of /a/b/c this will write '/a/b' into the buffer.   */
+/* This path must not contain a property separator (':').                     */
+/*----------------------------------------------------------------------------*/
+void GraphNav::vParentType(Stz* szTypePath, s256& buf)
+{
+  char* ps;
+
+  // This is a type definition path. It should not contain the property separator.
+  ASSERT(!StrLib::bBackward(&ps, szTypePath->azChar(), ':'));
+
+  b1 bFound = StrLib::bBackward(&ps, szTypePath->azChar(), '/');
+
+  if (bFound && ps != szTypePath->azChar()) {
+    i8 nLen = ps - szTypePath->azChar();
+    buf.vCopy(szTypePath, nLen);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Walks a node graph (including all properties and children) and calls a
  * function for each PlanNode visited (i.e., it's a visitor pattern).
  * This function returns a boolean where true indicates that it walked every
@@ -106,7 +145,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
 
   // We may not be starting with the root node. If we are then set the path to "/"
   // so that each node can append its name appropriately.
-  if (pNode->getName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
+  if (pNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
     sPath.vCopy("/"_Stz);
 
   } else {
@@ -151,7 +190,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
     return true;
   }
 
-  sPath.vConcat(pNode->getName());
+  sPath.vConcat(pNode->szName());
   i8 nLen = sPath.nLength();
 
   // Visit the current node
@@ -232,7 +271,7 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
   // Corner case for handling an absolute path
   if (szPath->bBeginsWith("/"_Stz)) {
     // We've got an absolute path
-    if(!pNode->getName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
+    if(!pNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
       return nullptr;
     }
 
@@ -251,7 +290,7 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
 
   if (iEnd == -1) {
     // There is no end separator. This szPath should compare to the name of the node.
-    if (pNode->getName()->bEqual(szPath)) {
+    if (pNode->szName()->bEqual(szPath)) {
       return pNode;
 
     } else {
@@ -261,7 +300,7 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
 
   // There is a subpath to be checked. But first confirm that the name
   // of pNode matches the leading subset of szPath.
-  if (!(szPath->bBeginsWith(pNode->getName()) && pNode->getName()->nLength() == iEnd)) {
+  if (!(szPath->bBeginsWith(pNode->szName()) && pNode->szName()->nLength() == iEnd)) {
     // No match, so there's no point checking any further subpaths
     return nullptr;
   }

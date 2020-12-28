@@ -87,7 +87,7 @@ PlanNode::~PlanNode(void)
 /*----------------------------------------------------------------------------*/
 /* Get the name of this PlanNode                                              */
 /*----------------------------------------------------------------------------*/
-Stz* PlanNode::getName()
+Stz* PlanNode::szName()
 {
   return m_sName.szStz();
 }
@@ -95,7 +95,7 @@ Stz* PlanNode::getName()
 /*----------------------------------------------------------------------------*/
 /* Get the hierarchical path of type of PlanNode this instance represents     */
 /*----------------------------------------------------------------------------*/
-Stz* PlanNode::getType()
+Stz* PlanNode::szType()
 {
   return m_sType.szStz();
 }

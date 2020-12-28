@@ -47,7 +47,7 @@ GraphEditor::~GraphEditor(void)
 PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
 {
   ASSERT(pRootNode);
-  ASSERT(pRootNode->getName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
+  ASSERT(pRootNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
 
   // Create a new copy of: /__root__/plan
   QueryNode* pPlanNode = (QueryNode*) GraphNav::pFind("/__root__/plan"_Stz, pRootNode);
@@ -87,8 +87,8 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
   }
 
   // Now we can create a new copy of: /__root__
-  PlanNode* pNewRoot = new PrimitiveNode(pRootNode->getName(),
-                                         pRootNode->getType(),
+  PlanNode* pNewRoot = new PrimitiveNode(pRootNode->szName(),
+                                         pRootNode->szType(),
                                          pRootNode->getValue(),
                                          pNewPropertyList,
                                          pNewChildList,

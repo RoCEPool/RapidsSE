@@ -21,7 +21,7 @@ b1 LogicalNode::bValidate(PlanNode* pPlanNode)
 {
   ASSERT(pPlanNode);
 
-  Stz* szDefnPath = pPlanNode->getType();
+  Stz* szDefnPath = pPlanNode->szType();
   ASSERT(szDefnPath);
   ASSERT(szDefnPath->nLength() > 0);
 

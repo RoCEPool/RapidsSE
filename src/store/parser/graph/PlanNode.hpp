@@ -71,8 +71,8 @@ namespace Parser
     PlanNode(eCN eClassNo, const PlanNode& oNode);
 
   public:
-    Stz* getName();
-    Stz* getType();
+    Stz* szName();
+    Stz* szType();
 
     // Convenience methods for accessing the value object
     Value getValue();
