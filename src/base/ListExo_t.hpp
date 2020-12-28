@@ -213,7 +213,9 @@ namespace BASE
     ITEM* pTail(void);
     
   private:
-    ListExoNode_t<ITEM>* pFindNode(ITEM* pItem);
+    ListExoNode_t<ITEM>* pFindExoNode(ITEM* pItem);
+
+    void vCutExoNode(ListExoNode_t<ITEM>* pExoNode);
 
     void vValidateList(void);
   
@@ -427,7 +429,7 @@ void ListExo_t<CLASSNO,ITEM>::vRemove(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-  ListExoNode_t<ITEM>* pRemovingNode = pFindNode(pItem);
+  ListExoNode_t<ITEM>* pRemovingNode = pFindExoNode(pItem);
   
   if (! pRemovingNode) {
     m_okLock.vDropWrite();
@@ -497,7 +499,6 @@ void ListExo_t<CLASSNO,ITEM>::vRemove(ITEM* pItem)
 //  pItem->vPrevItem(nullptr);
 //  pItem->vNextItem(nullptr);
 }
-
 /*----------------------------------------------------------------------------*/
 /* remove all items in list                                                   */
 /*----------------------------------------------------------------------------*/
@@ -560,10 +561,62 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* cut exo-node from list, dec m_ntems (exo-node is not deletes)              */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  // assert m_okLock
+  
+  if (! pCutThisNode) {
+    return;
+  }
+  
+  ASSERT(m_nItems);
+
+  ListExoNode_t<ITEM>* pNextOfCut = pCutThisNode->pNextNode();
+  ListExoNode_t<ITEM>* pPrevOfCut = pCutThisNode->pPrevNode();
+
+  if (pCutThisNode == m_pHeadNode && pCutThisNode == m_pTailNode) {
+    // cut only node
+    
+    m_pHeadNode = nullptr;
+    m_pTailNode = nullptr;
+  }
+  else
+  if (pCutThisNode == m_pHeadNode) {
+    // cut head node
+    
+    pNextOfCut->vPrevNode(nullptr);
+
+    m_pHeadNode = pNextOfCut;
+  }
+  else
+  if (pCutThisNode == m_pTailNode) {
+    // cut tail node
+
+    pPrevOfCut->vNextNode(nullptr);
+
+    m_pTailNode = pPrevOfCut;
+  }
+  else {
+    // cut body node
+    
+    pPrevOfCut->vNextNode(pNextOfCut);
+    pNextOfCut->vPrevNode(pPrevOfCut);
+  }
+  
+  m_nItems--;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* find node given item                                                       */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pFindNode(ITEM* pItem)
+ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pFindExoNode(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
