@@ -1,0 +1,163 @@
+/*============================================================================*/
+/* OP_range.sen -- Operator range columns                                 */
+/*============================================================================*/
+
+" OP_range.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: range_CancelMarker \handler
+
+  nullptr to Operand[]
+  PipeIn[].pipeOut
+  Op.ackPipelineJob
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: range_StartMarker \handler
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  <tableNm> <indexNm> op__table_index not if
+    false
+    exit
+  then
+
+  index[].indexTree to indexTree[]
+  indexTree[].asSrc
+  Table[].asSrcStreamDef
+
+  // new a stream def
+  table[] StreamDef[].new
+  StreamDef[].duplicate to streamDefOut[]
+
+/*
+  range[].new
+  <etc> StreamDef[] StreamDefOut[] range[].rangeColumns to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op.pipelineJob@ ERROR_JOB
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    true
+    exit
+  then
+*/
+
+  ZK_STARTMARKER_handler
+
+  project[].new
+  StreamDefOut[] project[] LogicUnit[].genRange
+
+  // new the pot[]
+  Pot[].new
+  false pot[].useStreamDefOut
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  StreamDef[].pipeOut
+
+  Counter0[] if
+    LogicCompiler[].new
+    LogicCompiler[].compile
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: range_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // pipe out all pot[]
+  Pot[].pipeoutAllDanglingPtns
+  Pot[].delete
+
+  Pipein[].isNull if
+    // create a new eos marker
+    Operand[].newEosMarker
+    Operand[] to Pipein[]
+  then
+
+  Counter0[] cleanUpAsm
+
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_DATAPULSE ...                                              DATAPULSE */
+/*----------------------------------------------------------------------------*/
+: range_Datapulse \handler
+
+  0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryNote
+
+  Pipein[].isNull if
+    // create a new eos marker
+    Operand[].newEosMarker
+    Operand[] to Pipein[]
+  then
+
+  PipeIn[].pipeOut
+  ZK_DATAPULSE Counter0[] executeAsmArgs
+
+  LogicUnit[].callAgain@ not if
+
+    // force op loop to call EOAsm_EosMarker to end
+    "range_EosMarker" word::find LogicUnit[].handler!
+    true LogicUnit[].callAgain!
+
+  then
+
+  Pot[].pipeoutAllCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: range_req \operator
+
+  LogReqEntry SEED_REQ
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: range_CancelMarker ZK_CANCELMARKER  op[].handler!
+  find: range_DataPulse    ZK_DATAPULSE     op[].handler!
+  find: range_StartMarker  ZK_STARTMARKER   op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: range :: range <compiled> <tableNm> by <indexNm> <etc> ;
+
+: range _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
