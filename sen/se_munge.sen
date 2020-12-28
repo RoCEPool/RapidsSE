@@ -208,7 +208,7 @@
   pCppFile file.writeLine
   "/*============================================================================*/\n"
   pCppFile file.writeLine
-  "#include \"StorageEngine.h\"\n"
+  "#include \"STORE.h\"\n"
   pCppFile file.writeLine
 
   "\n"

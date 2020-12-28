@@ -1,7 +1,7 @@
 /*============================================================================*/
 /* MungedSen.cpp - munged sen files                                           */
 /*============================================================================*/
-#include "StorageEngine.h"
+#include "STORE.h"
 
 Stz* gszaMungedText[1024];
 
@@ -7742,7 +7742,7 @@ void Task::vAddMunged(Forth* pForth)
     "  pCppFile file.writeLine\n"
     "  \"/*============================================================================*/\\n\"\n"
     "  pCppFile file.writeLine\n"
-    "  \"#include \\\"StorageEngine.h\\\"\\n\"\n"
+    "  \"#include \\\"STORE.h\\\"\\n\"\n"
     "  pCppFile file.writeLine\n"
     "\n"
     "  \"\\n\"\n"
