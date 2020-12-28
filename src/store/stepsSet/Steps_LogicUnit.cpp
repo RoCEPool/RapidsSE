@@ -337,7 +337,9 @@ void Step::vLogicUnitGenProjection(void)
   Project* pProject;
   pProject = _pProject(m_pDataStack->pPopPtr(__func__));
 
-  m_pLogicUnit->vGenerateProjection(pProject);
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  m_pLogicUnit->vGenerateProjection(pProject, pStreamDefOut);
 
   EXIT();
 }

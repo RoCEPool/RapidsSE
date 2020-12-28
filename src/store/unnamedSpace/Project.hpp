@@ -11,9 +11,10 @@ namespace Expressions
   {
   public:
 
-    i8      m_iColumns;
     u8      m_uProjectColumns;
     s4K     m_sAsmText[C_MAX_COLUMNS];
+    i8      m_iStreamInColumns;
+    Column* m_pStreamInCol[C_MAX_COLUMNS];
 
     // must be last
     Footer m_xFooter;

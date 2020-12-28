@@ -234,6 +234,32 @@ bool Token::bHasChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token an arithmetic operator?                                      */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsArithmetic(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  // arithmetic operators
+  if (TN_NAME == m_eToken && bSame("+"_Stz))
+    return true;
+
+  if (TN_NAME == m_eToken && bSame("/"_Stz))
+    return true;
+
+  if (TN_NAME == m_eToken && bSame("%"_Stz))
+    return true;
+
+  if (TN_NAME == m_eToken && bSame("*"_Stz))
+    return true;
+
+  if (TN_NAME == m_eToken && bSame("-"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token a = ?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsAssign(void)
