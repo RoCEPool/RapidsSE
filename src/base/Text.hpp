@@ -24,6 +24,7 @@ namespace BASE
    ~Text(void) noexcept(false);
   
     Stz* szGet(void);
+    i8   nLength(void);
     void vSet(Stz* szArg);
     void vSizeText(void);
 

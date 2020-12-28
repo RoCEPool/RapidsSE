@@ -37,24 +37,31 @@ PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
 /* copy constructor                                                           */
 /*----------------------------------------------------------------------------*/
 PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
-    : Object(eClassNo)
-{
-  m_sName.vCopy(const_cast<PlanNode&>(oNode).m_sName.szStz());
-  m_sType.vCopy(const_cast<PlanNode&>(oNode).m_sType.szStz());
-  m_xValue = const_cast<PlanNode&>(oNode).m_xValue;
+    : Object(eClassNo) {
+  m_sName.vCopy(const_cast<PlanNode &>(oNode).m_sName.szStz());
+  m_sType.vCopy(const_cast<PlanNode &>(oNode).m_sType.szStz());
+  m_xValue = const_cast<PlanNode &>(oNode).m_xValue;
 
-  m_pProperties = new PlanNodeList();
-  PlanNode* pItem = oNode.m_pProperties->pHead();
-  while (pItem) {
-    m_pProperties->vAppend(pItem);
-    pItem = pItem->pNextItem();
+  if (oNode.m_pProperties) {
+    m_pProperties = new PlanNodeList();
+    PlanNode *pItem = oNode.m_pProperties->pHead();
+    while (pItem) {
+      m_pProperties->vAppend(pItem);
+      pItem = pItem->pNextItem();
+    }
+  } else {
+    m_pProperties = nullptr;
   }
 
-  m_pChildren = new PlanNodeList();
-  pItem = oNode.m_pChildren->pHead();
-  while (pItem) {
-    m_pChildren->vAppend(pItem);
-    pItem = pItem->pNextItem();
+  if (oNode.m_pChildren) {
+    m_pChildren = new PlanNodeList();
+    PlanNode *pItem = oNode.m_pChildren->pHead();
+    while (pItem) {
+      m_pChildren->vAppend(pItem);
+      pItem = pItem->pNextItem();
+    }
+  } else {
+    m_pChildren = nullptr;
   }
 }
 

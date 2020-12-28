@@ -7,7 +7,6 @@
 #include "sqlParser.h"
 #include "sqlBaseVisitor.h"
 #include "parser/common/ErrorListener.hpp"
-#include "stages/parser/TableRef.hpp"
 #include "graph/QueryNode.hpp"
 
 //using namespace antlr4;
@@ -26,7 +25,7 @@ __aFooterFunction(SqlPlanner)
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
-  m_pTableRefStack(new TableRefStack()),
+  m_pTableRefStack(new QueryNodeStack()),
   m_pExprStack(nullptr),
   m_pSelectList(nullptr),
   m_pStatementStack(new QueryNodeStack())
@@ -48,8 +47,8 @@ SqlPlanner::~SqlPlanner(void) noexcept
   // [OLD] Clean up the stack of TableRefs
   if (m_pTableRefStack) {
     while (m_pTableRefStack->nItems() > 0) {
-      TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPop());
-      delete pTableRef;
+      QueryNode* pItem = m_pTableRefStack->pPop();
+      delete pItem;
     }
     
     delete m_pTableRefStack;
@@ -132,7 +131,9 @@ void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
   //vTrace("Finished visiting the parse tree.\n"_Stz);
 
   // Create a new plan graph using the template
-  PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
+  // TODO: Uncomment this when we have a list class with separate node pointers
+  //PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
+  PlanNode* pRoot = pTemplate;
 
   // Find the subpath where we will attach the parsed query plan
   PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
@@ -179,7 +180,7 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *ctx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
 {
-  QueryNode* pStmt = GraphEditor::pCreateStatement(ST_SELECT, "SELECT"_Stz, m_sQueryStr.szStz());
+  QueryNode* pStmt = Statement::pCreate(Statement::ST_SELECT, "SELECT"_Stz, m_sQueryStr.szStz());
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(ctx);
@@ -217,7 +218,7 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
   ASSERT(ctx->tableName() != nullptr);
   pTableName = cleanId(ctx->tableName()->id);
 
-  TableRef* pTableRef = new TableRef(pCatalogName, pSchemaName, pTableName);
+  QueryNode* pTableRef = TableRef::pCreate(pCatalogName, pSchemaName, pTableName);
   m_pTableRefStack->vPush(pTableRef);
   
   return nullptr;
@@ -240,8 +241,8 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
     vTrace("  /from\n"_Stz);
     
     s256 ref;
-    TableRef* pTableRef = _pTableRef(m_pTableRefStack->pPop());
-    pTableRef->vPrintInto(ref);
+    QueryNode* pTableRef = m_pTableRefStack->pPop();
+    TableRef::vPrint(pTableRef, ref);
     
     vTrace("    /%s\n"_Stz, ref.szStz());
     delete pTableRef;
