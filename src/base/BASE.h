@@ -412,6 +412,7 @@ extern BufferPool* gpBufferPool;
 #include "Link_t.hpp"
 #include "ListItem_t.hpp"
 #include "List_t.hpp"
+#include "ListExo_t.hpp"
 #include "ListNL_t__.hpp"
 #include "ListNL_t.hpp"
 
