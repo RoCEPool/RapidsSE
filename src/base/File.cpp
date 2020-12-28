@@ -7,6 +7,7 @@
 Atomic gixFile;
 
 OpenFiles* gpOpenFiles;
+extern File* gpTraceFile;
 
 SubSysFn __File_List("Files"_Stz,(fpSELFFN*)File::vListOfOpenFiles,
                      "list of open files"_Stz,
@@ -43,11 +44,14 @@ void* File::operator new(size_t, i8 iViaMalloc)
 {
   File* pFile;
   
+  RASSERT(iViaMalloc);
+  
   if (iViaMalloc)
     pFile = (File*)MemLib::aMallocBlock(sizeof(File));
-  else
-    pFile = (File*)HeapMem::pAllocate(CN_FILE);
-
+  else {
+    NEVER_REACH;
+  }
+  
   pFile->m_iViaMalloc = iViaMalloc;
   
   return pFile;
@@ -80,7 +84,7 @@ File::File(Focal* bIsFor)
   
   //m_sFilePath
   //m_sOpenMode
-  m_aFile    = nullptr;
+  m_aFile = nullptr;
   
   m_oSysCall.vClear();
 
@@ -114,6 +118,9 @@ File::~File(void) noexcept(false)
   AM::vLogRes(SL_INF,this,RA_FIL_DESTRUCT,
               "File destruct |gixFile=%lld|"_Stz, //!format-LogRes
               * gixFile);
+  
+  if (m_iViaMalloc)
+    vTrace("~File was via mallocs\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
