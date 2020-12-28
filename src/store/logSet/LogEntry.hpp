@@ -20,7 +20,6 @@ namespace STORE
   friend class _LogEntryMgt;
   friend class _LogEntryObj;
   friend class _LogEntryOp;
-  friend class _LogEntryPrm;
   friend class _LogEntryReq;
   friend class _LogEntryQue;
   friend class _LogEntryRes;
@@ -68,7 +67,6 @@ namespace STORE
       _LogEntryLog m_xLog;  // when m_eKind == LG_LOG
       _LogEntryMgt m_xMgt;  // when m_eKind == LG_MGT
       _LogEntryOp  m_xOpr;  // when m_eKind == LG_OPR
-      _LogEntryPrm m_xPrm;  // when m_eKind == LG_PRM
       _LogEntryQue m_xQue;  // when m_eKind == LG_QUE
       _LogEntryRes m_xRes;  // when m_eKind == LG_RES
       _LogEntrySsn m_xSsn;  // when m_eKind == LG_SSN

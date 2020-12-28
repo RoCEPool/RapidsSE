@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "PROMPT.h"
+
 
 
 PromptFun __Prompt_logWrite (

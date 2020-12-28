@@ -273,7 +273,6 @@ namespace OBLIQUE
     static void vPoolAnalyze(void);
     static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);
     static void vPrintGlobals(void);
-    static void vPromptCall(void);
     static PtnMap* pPtnMap(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

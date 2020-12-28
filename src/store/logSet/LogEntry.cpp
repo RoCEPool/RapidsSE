@@ -114,7 +114,7 @@ void LogEntry::vAsTxt(s4K& sString)
     case LG_LCK: m_xLck.vToTxt(sInf,this); break;
     case LG_LOG: m_xLog.vToTxt(sInf,this); break;
     case LG_OPR: m_xOpr.vToTxt(sInf,this); break;
-    case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
+    //case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
     case LG_QUE: m_xQue.vToTxt(sInf,this); break;
     case LG_RES: m_xRes.vToTxt(sInf,this); break;
     case LG_SSN: m_xSsn.vToTxt(sInf,this); break;
@@ -232,7 +232,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
     case LG_LCK: m_xLck.vOutline(sString); break;
     case LG_LOG: m_xLog.vOutline(sString); break;
     case LG_OPR: m_xOpr.vOutline(sString); break;
-    case LG_PRM: m_xPrm.vOutline(sString); break;
+    //case LG_PRM: m_xPrm.vOutline(sString); break;
     case LG_QUE: m_xQue.vOutline(sString); break;
     case LG_RES: m_xRes.vOutline(sString); break;
     case LG_SSN: m_xSsn.vOutline(sString); break;
@@ -295,7 +295,7 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
     case LG_LCK: m_xLck.vWriteCsv(pFile,this); break;
     case LG_LOG: m_xLog.vWriteCsv(pFile,this); break;
     case LG_OPR: m_xOpr.vWriteCsv(pFile,this); break;
-    case LG_PRM: m_xPrm.vWriteCsv(pFile,this); break;
+    //case LG_PRM: m_xPrm.vWriteCsv(pFile,this); break;
     case LG_QUE: m_xQue.vWriteCsv(pFile,this); break;
     case LG_RES: m_xRes.vWriteCsv(pFile,this); break;
     case LG_SSN: m_xSsn.vWriteCsv(pFile,this); break;
@@ -362,7 +362,7 @@ void LogEntry::vWriteTxt(File* pFile)
     case LG_LCK: m_xLck.vToTxt(sInf,this); break;
     case LG_LOG: m_xLog.vToTxt(sInf,this); break;
     case LG_OPR: m_xOpr.vToTxt(sInf,this); break;
-    case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
+    //case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
     case LG_QUE: m_xQue.vToTxt(sInf,this); break;
     case LG_RES: m_xRes.vToTxt(sInf,this); break;
     case LG_SSN: m_xSsn.vToTxt(sInf,this); break;

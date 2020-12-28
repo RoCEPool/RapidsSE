@@ -682,25 +682,25 @@ i8 Log::iEntryOpr(eSL eSeverity, Op* pOpr, eOA eOprAct,
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct,
-                  Stz* szFormat, va_list xVarArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  if (! m_bLogPrm)
-    return C_UNKNOWN;
-  
-  LogEntry* pLogEntry = pNewEntry(eSeverity,pPrm,szFormat,xVarArgs);
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pLogEntry->m_xPrm.vSet(pLogEntry,pPrm,ePrmAct);
-  
-  return pLogEntry->m_i_Entry;
-}
+//i8 Log::iEntryPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct,
+//                  Stz* szFormat, va_list xVarArgs)
+//{
+//  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+//  
+//  if (! m_bLogPrm)
+//    return C_UNKNOWN;
+//  
+//  LogEntry* pLogEntry = pNewEntry(eSeverity,pPrm,szFormat,xVarArgs);
+//  
+//  if (! pLogEntry)
+//    return C_UNKNOWN;
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  
+//  pLogEntry->m_xPrm.vSet(pLogEntry,pPrm,ePrmAct);
+//  
+//  return pLogEntry->m_i_Entry;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* add a queues log entry                                                     */

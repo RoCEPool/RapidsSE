@@ -21,6 +21,7 @@
 #include "eOK.h"
 #include "eOP.h"
 #include "eOR.h"
+#include "ePF.h"
 #include "ePP.h"
 #include "ePY.h"
 #include "eRG.h"
@@ -34,7 +35,6 @@
 
 
 extern Args          gxArgs;
-extern PromptCatalog gxPromptCatalog;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
@@ -1056,24 +1056,24 @@ void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 {
-#ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pPrm))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryPrm(eSeverity,pPrm,ePrmAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pPrm->m_i_Log = i_Entry;
-#endif
+//#ifdef WITH_SHARED_LOG
+//  if (! AM::bLogging())
+//    return;
+//  
+//  if (! gpLog->bIsLoggable(pPrm))
+//    return;
+//  
+//  va_list xVarArgs;
+//  
+//  va_start(xVarArgs,szFormat);
+//  
+//  i8 i_Entry = gpLog->iEntryPrm(eSeverity,pPrm,ePrmAct,
+//                                szFormat,xVarArgs);
+//  
+//  va_end(xVarArgs);
+//  
+//  pPrm->m_i_Log = i_Entry;
+//#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1764,8 +1764,8 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
   else if (CN_LOG == eClassNo)
     _pLog(pFocal)->vFocalOutline(sOutline);
   
-  else if (CN_SEPROMPT == eClassNo)
-    _pSePrompt(pFocal)->vFocalOutline(sOutline);
+//  else if (CN_SEPROMPT == eClassNo)
+//    _pSePrompt(pFocal)->vFocalOutline(sOutline);
   
   else if (CN_QUEUES == eClassNo)
     _pQueues(pFocal)->vFocalOutline(sOutline);
@@ -1841,7 +1841,6 @@ i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     
 void AM::vPrintGlobals(void)
 {
   printf("gxArgs     @%p\n",&gxArgs);
-  printf("gxPromptCatalog @%p\n",&gxPromptCatalog);
   printf("\n");
 
   printf("gpAttachMap     @%p : %p\n",&gpAttachMap,  gpAttachMap);
@@ -1849,14 +1848,6 @@ void AM::vPrintGlobals(void)
   printf("gpLog           @%p : %p\n",&gpLog,        gpLog);
   printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
-}
-void AM::vPromptCall(void)
-{
-  SePrompt* pSePrompt = new SePrompt(gxArgs.m_bCommand, gxArgs.m_bSethScript);
-  
-  pSePrompt->vPromptLoop();
-  
-  delete pSePrompt;
 }
 
 Index* AM::pReadApiIndex(void) { return gpReadApiIndex; }

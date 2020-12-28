@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "PROMPT.h"
+
 
 
 extern SubSysCatalog gxSubSysCatalog;

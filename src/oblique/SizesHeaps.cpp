@@ -2,7 +2,10 @@
 /* SizesHeaps.cpp -- Class Sizes and Heaps                                    */
 /*============================================================================*/
 
+#include "BASE.h"
+#include "STORE.h"
 #include "OBLIQUE.h"
+#include "PROMPT.h"
 
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */

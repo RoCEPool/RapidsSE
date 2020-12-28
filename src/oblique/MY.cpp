@@ -5,7 +5,6 @@
 #include "OBLIQUE.h"
 
 extern Args          gxArgs;
-extern PromptCatalog gxPromptCatalog;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;

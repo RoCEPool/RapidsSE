@@ -2,7 +2,8 @@
 /* main.cpp - main entry                                                      */
 /*============================================================================*/
 
-#include "OBLIQUE.h"
+#include "BASE.h"
+#include "STORE.h"
 
 #include "Version.h"
 

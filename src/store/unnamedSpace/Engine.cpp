@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "PROMPT.h"
 
 
 #include "eBO.h"
@@ -367,7 +368,14 @@ void Engine::vCallPrompt(void)
   if (AM::bVerboseProgress())
     vInfo("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);
 
-  AM::vPromptCall();
+  //AM::vPromptCall();
+  
+  SePrompt* pSePrompt = new SePrompt(gxArgs.m_bCommand, gxArgs.m_bSethScript);
+  
+  pSePrompt->vPromptLoop();
+  
+  delete pSePrompt;
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -4,6 +4,11 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "PROMPT.h"
+
+#include "STORE.h"
+#include "PROMPT.h"
+
 
 
 #include "Dir.hpp" //?
