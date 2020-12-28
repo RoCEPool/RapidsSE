@@ -437,68 +437,15 @@ void ListExo_t<CLASSNO,ITEM>::vRemove(ITEM* pItem)
     return;
   }
   
-  ListExoNode_t<ITEM>* pNextOfRemoving = pRemovingNode->pNextNode();
-  ListExoNode_t<ITEM>* pPrevToRemoving = pRemovingNode->pPrevNode();
-
-  if (pRemovingNode == m_pHeadNode && pRemovingNode == m_pTailNode) {
-    // remove only node
-    
-    m_pHeadNode = nullptr;
-    m_pTailNode = nullptr;
-  }
-  else
-  if (pRemovingNode == m_pHeadNode) {
-    // remove head node
-    
-    pNextOfRemoving->vPrevNode(nullptr);
-
-    m_pHeadNode = pNextOfRemoving;
-  }
-  else
-  if (pRemovingNode == m_pTailNode) {
-    // remove tail node
-
-    pPrevToRemoving->vNextNode(nullptr);
-
-    m_pTailNode = pPrevToRemoving;
-  }
-  else {
-    // remove body node
-    
-    pPrevToRemoving->vNextNode(pNextOfRemoving);
-    pNextOfRemoving->vPrevNode(pPrevToRemoving);
-  }
+  vCutExoNode(pRemovingNode);
   
-  
-  
-//
-//  ITEM* pPrev = pItem->pPrevItem();
-//  ITEM* pNext = pItem->pNextItem();
-//
-//  if (pPrev)
-//    pPrev->vNextItem(pNext);
-//
-//  if (pNext)
-//    pNext->vPrevItem(pPrev);
-//
-//  if (pItem == m_pHead)
-//    m_pHead = pNext;
-//
-//  if (pItem == m_pTail)
-//    m_pTail = pPrev;
-//
-  m_nItems--;
-
   m_okLock.vDropWrite();
   
   delete pRemovingNode;
   
   vValidateList();
-
-//
-//  pItem->vPrevItem(nullptr);
-//  pItem->vNextItem(nullptr);
 }
+
 /*----------------------------------------------------------------------------*/
 /* remove all items in list                                                   */
 /*----------------------------------------------------------------------------*/
