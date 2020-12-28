@@ -96,6 +96,10 @@ File::File(Focal* bIsFor)
               * gixFile);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  
+  if (! m_iViaMalloc)
+    gpOpenFiles->vAppend(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +125,10 @@ File::~File(void) noexcept(false)
   
   if (m_iViaMalloc)
     vTrace("~File was via mallocs\n"_Stz);
+  
+  if (! m_iViaMalloc)
+    gpOpenFiles->vRemove(this);
+
 }
 
 /*----------------------------------------------------------------------------*/

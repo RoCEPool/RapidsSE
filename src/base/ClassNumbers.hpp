@@ -133,6 +133,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LEXICON,
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
+  /* */ CN_LISTEXONODE_t,
   /* */ CN_LOADCHUNK,
   /* */ CN_LOCAL,
   /* */ CN_LOCALSCHAIN,
@@ -462,6 +463,7 @@ static Stz* aCN[]
   /* */ "LEXICON"_Stz,              // CN_LEXICON
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
+  /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
   /* */ "LOCAL"_Stz,                // CN_LOCAL
   /* */ "LOCALSCHAIN"_Stz,          // CN_LOCALSCHAIN

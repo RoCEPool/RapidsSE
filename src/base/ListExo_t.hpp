@@ -11,6 +11,7 @@ namespace BASE
   class ListExoNode_t : public Object
   {
   private:
+    ITEM* m_pItem; // item
     ListExoNode_t<ITEM>* m_pPrevItem;   // prev node/item
     ListExoNode_t<ITEM>* m_pNextItem;   // next node/item
    
@@ -18,14 +19,64 @@ namespace BASE
     void* operator new(size_t);
     void operator delete(void* aListExoNode);
 
-    ListExoNode_t<ITEM>(void);
-    
+    ListExoNode_t<ITEM>(ITEM* pItem);
+  ~ListExoNode_t(void) noexcept(false);
+
+    ITEM* pItem(void);
+  
     ListExoNode_t<ITEM>* pNextItem(void);
     void vNextItem(ListExoNode_t<ITEM>* pNext);
   
     ListExoNode_t<ITEM>* pPrevItem(void);
     void vPrevItem(ListExoNode_t<ITEM>* pPrev);
   };
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void* ListExoNode_t<ITEM>::operator new(size_t)
+{
+  ListExoNode_t<ITEM>* pListExoNode_t;
+  
+  pListExoNode_t = (ListExoNode_t<ITEM>*)HeapMem::pAllocate(CN_LISTEXONODE_t);
+  
+  return pListExoNode_t;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExoNode_t<ITEM>::operator delete(void* aListExoNode_t)
+{
+  ListExoNode_t<ITEM>* pListExoNode_t = (ListExoNode_t<ITEM>*)aListExoNode_t;
+
+  HeapMem::vFree(pListExoNode_t);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ListExoNode_t<ITEM>::ListExoNode_t(ITEM* pItem)
+: Object(CN_LISTEXONODE_t)
+{
+  m_pItem = pItem;
+  
+  m_pPrevItem = nullptr;
+  m_pNextItem = nullptr;
+  
+  _checkInitialised_(CN_LISTEXONODE_t);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ListExoNode_t<ITEM>::~ListExoNode_t(void) noexcept(false)
+{
+}
 
 }
 
@@ -142,25 +193,25 @@ ListExo_t<CLASSNO,ITEM>::~ListExo_t(void) noexcept(false)
 template <eCN CLASSNO, class ITEM>
 void ListExo_t<CLASSNO,ITEM>::vAppend(ITEM* pItem)
 {
-  ASSERT(NULL == pItem->pPrevItem());
-  ASSERT(NULL == pItem->pNextItem());
   
-  m_okLock.vGrabWrite();
+  //ListExoNode_t<ITEM>* pNewNode = new ListExoNode_t<ITEM>(pItem);
   
-  if (m_pTail)
-    m_pTail->vNextItem(pItem);
-  
-  pItem->vPrevItem(m_pTail);
-  pItem->vNextItem(nullptr);
-  
-  m_pTail = pItem;
-  
-  if (! m_pHead)
-    m_pHead = pItem;
-  
-  m_nItems++;
-  
-  m_okLock.vDropWrite();
+//  m_okLock.vGrabWrite();
+//
+//  if (m_pTail)
+//    m_pTail->vNextItem(pItem);
+//
+//  pItem->vPrevItem(m_pTail);
+//  pItem->vNextItem(nullptr);
+//
+//  m_pTail = pItem;
+//
+//  if (! m_pHead)
+//    m_pHead = pItem;
+//
+//  m_nItems++;
+//
+//  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,29 +306,29 @@ void ListExo_t<CLASSNO,ITEM>::vPush(ITEM* pItem)
 template <eCN CLASSNO, class ITEM>
 void ListExo_t<CLASSNO,ITEM>::vRemove(ITEM* pItem)
 {
-  m_okLock.vGrabWrite();
-  
-  ITEM* pPrev = pItem->pPrevItem();
-  ITEM* pNext = pItem->pNextItem();
-
-  if (pPrev)
-    pPrev->vNextItem(pNext);
-
-  if (pNext)
-    pNext->vPrevItem(pPrev);
-  
-  if (pItem == m_pHead)
-    m_pHead = pNext;
-  
-  if (pItem == m_pTail)
-    m_pTail = pPrev;
-  
-  m_nItems--;
-  
-  m_okLock.vDropWrite();
-  
-  pItem->vPrevItem(nullptr);
-  pItem->vNextItem(nullptr);
+//  m_okLock.vGrabWrite();
+//
+//  ITEM* pPrev = pItem->pPrevItem();
+//  ITEM* pNext = pItem->pNextItem();
+//
+//  if (pPrev)
+//    pPrev->vNextItem(pNext);
+//
+//  if (pNext)
+//    pNext->vPrevItem(pPrev);
+//
+//  if (pItem == m_pHead)
+//    m_pHead = pNext;
+//
+//  if (pItem == m_pTail)
+//    m_pTail = pPrev;
+//
+//  m_nItems--;
+//
+//  m_okLock.vDropWrite();
+//
+//  pItem->vPrevItem(nullptr);
+//  pItem->vNextItem(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
