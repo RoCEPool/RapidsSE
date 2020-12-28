@@ -40,6 +40,7 @@ namespace BASE
     void vConcat(Stz* szArg);
     bool bContains(Stz* szArg);
     void vCopy(Stz* szArg);
+    void vCopy(Stz* szArg, i8 iLen);
     void vCopyTill(Stz* szArg, char cTill);
     bool bEqual(Stz* szArg);
     bool bIsNumeric(void);
@@ -333,6 +334,21 @@ void String_t<AREA>::vCopy(Stz* szArg)
   
   StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
   
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given stz* up to a given length into this string                      */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::vCopy(Stz* szArg, i8 iLen)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  i8 nBytes = (iLen > AREA-1 ? AREA-1 : iLen);
+
+  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),nBytes);
+
   _postcondition_(_MAGIC_,_FOOTER_);
 }
 

@@ -43,18 +43,19 @@ RootNode::~RootNode(void)
   // Don't delete the /primitives and /definitions children because they
   // will be reused by other plan graphs.
 
-  PlanNode* pItem = m_pChildren->pHead();
-
-  while (pItem) {
-    if (pItem->bIsClass(CN_DEFINITIONNODE) || pItem->bIsClass(CN_PRIMITIVENODE)) {
-      PlanNode* pNext = pItem->pNextItem();
-      m_pChildren->vRemove(pItem);
-      pItem = pNext;
-      continue;
-    }
-
-    pItem = pItem->pNextItem();
-  }
+  // TODO: Uncomment this when we have a list class with separate node pointers
+//  PlanNode* pItem = m_pChildren->pHead();
+//
+//  while (pItem) {
+//    if (pItem->bIsClass(CN_DEFINITIONNODE) || pItem->bIsClass(CN_PRIMITIVENODE)) {
+//      PlanNode* pNext = pItem->pNextItem();
+//      m_pChildren->vRemove(pItem);
+//      pItem = pNext;
+//      continue;
+//    }
+//
+//    pItem = pItem->pNextItem();
+//  }
 
 }
 

@@ -44,8 +44,7 @@ class SP_Tsp;
                               template <i8 SPACE> class Datum_t;              }
 namespace Arguments    { class Dynamo;                                   }
 namespace Arguments           {                                                 }
-namespace Expressions       { class Expr;            class ExprVec;
-                              class LogicUnit;                                }
+namespace Expressions       { class LogicUnit;                                }
 namespace Facts             { class Fact;            class Kbase;
                               class Method;        
                               class Question;        class Transform;         }

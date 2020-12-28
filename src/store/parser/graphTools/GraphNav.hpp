@@ -20,6 +20,13 @@ namespace Parser
 
     Footer* aFooter(void);
 
+    // Returns the leaf element of a type definition path.
+    // e.g. given a definition path of /a/b/c this will return 'c'.
+    static Stz* szLeafType(Stz* szTypePath);
+
+    // Returns the parent of the type definition path given.
+    static void vParentType(Stz* szTypePath, s256& buf);
+
     // Methods for walking a plan graph.
     // The following functions require a visitor function with the definition:
     //   b1 func(PlanNode* pNode, s256& sPath)
