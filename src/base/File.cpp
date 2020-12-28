@@ -128,7 +128,9 @@ void File::vInitGlobals(void)
 {
   _static_
   
-  if (! gpOpenFiles)
+  vTrace("File::vInitGlobals\n"_Stz);
+  
+   if (! gpOpenFiles)
     gpOpenFiles = new OpenFiles;
 }
 

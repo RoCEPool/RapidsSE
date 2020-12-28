@@ -122,6 +122,8 @@ void Engine::vPreliminary(void)
 //  gpAttachMap->m_bMarkResource[RK_FILE] = true;
 //  gpAttachMap->m_bMarkResource[RK_DIR] = true;
   
+  BASE::vInitAllGlobals();
+
   if (AM::bVerboseProgress())
      vInfo("\n*\n* %lld) Synthesise Names\n*\n"_Stz,giProgressPoint++);
   vCreateFileNames();
