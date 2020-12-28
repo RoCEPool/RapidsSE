@@ -407,6 +407,8 @@ void PoolHelper::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
 /*----------------------------------------------------------------------------*/
+HACK(PoolHelper,"vObjectSnapshot() is ignoring tiny heap : Ray 28-Dec-2020)");
+
 void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
 {
   i8 iCountObjects[CN_ENUMS];
@@ -432,19 +434,19 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::pHeapMem()->Transient.m_pTiny->vAnalyse(iCountObjects);
-  
-  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
-    eCN eClass = (eCN)i_Index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    if (CN_QUEUES == eClass)
-      int iDebug = 1;
-    
-    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
-  }
+//  AM::pHeapMem()->Transient.m_pTiny->vAnalyse(iCountObjects);
+//
+//  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+//    eCN eClass = (eCN)i_Index;
+//
+//    if (iCountObjects[eClass] == 0)
+//      continue;
+//
+//    if (CN_QUEUES == eClass)
+//      int iDebug = 1;
+//
+//    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
