@@ -8,7 +8,8 @@
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
+// Static
+Atomic* LogicalNode::ms_pObjId = new Atomic();
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -29,6 +30,17 @@ b1 LogicalNode::bValidate(PlanNode* pPlanNode)
 //  PlanNode* pDefn = pFind(szDefnPath, pRoot);
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Creates a unique ID for an object name so that the names of siblings       */
+/* do not conflict and are unique.                                            */
+/*----------------------------------------------------------------------------*/
+void LogicalNode::vObjName(Stz *szPrefix, s256 &sBuf)
+{
+  ASSERT(szPrefix);
+
+  sBuf.vSprint("%s%04lld"_Stz, szPrefix, ms_pObjId->iInc());
 }
 
 /*============================================================================*/

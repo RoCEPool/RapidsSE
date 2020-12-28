@@ -9,6 +9,8 @@ namespace Parser
   {
 
   private:
+    static Atomic* ms_pObjId;
+
     // Shalt never be instantiated. Static functions only.
     LogicalNode();
 
@@ -16,8 +18,9 @@ namespace Parser
     // Validate a node against its definition
     static b1 bValidate(PlanNode* pPlanNode);
 
-  public:
-
+  protected:
+    // Creates a unique ID for an object name
+    static void vObjName(Stz* szPrefix, s256& sBuf);
 
   };
 

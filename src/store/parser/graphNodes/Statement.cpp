@@ -25,6 +25,7 @@ static Stz* aST_definition[] {
   /*ST_ENUMS        */ ""_Stz
 };
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -33,11 +34,10 @@ static Stz* aST_definition[] {
 /* Helper function to create statement nodes. These are the top level         */
 /* "headings" in a plan graph that identify what comes below them.            */
 /*----------------------------------------------------------------------------*/
-QueryNode* Statement::pCreate(eST eStmtType, Stz* szName, Stz* szQueryText)
+QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
 {
   ASSERT(eStmtType > ST_NONE);
   ASSERT(eStmtType < ST_ENUMS);
-  ASSERT(szName);
   ASSERT(szQueryText);
 
   // Get the definition of the statement we're creating
@@ -45,8 +45,12 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szName, Stz* szQueryText)
 
   Value xValue(szQueryText);
 
+  // Create a unique name for this object
+  s256 sName;
+  LogicalNode::vObjName(GraphNav::szLeafType(szDef), sName);
+
   // Create the object with its queryText property
-  QueryNode* pStmt = new QueryNode(szName, szDef);
+  QueryNode* pStmt = new QueryNode(sName, szDef);
   QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xValue);
   pStmt->vAppendProperty(pQueryText);
 

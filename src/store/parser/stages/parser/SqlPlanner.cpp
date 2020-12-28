@@ -180,7 +180,7 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *ctx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *ctx)
 {
-  QueryNode* pStmt = Statement::pCreate(Statement::ST_SELECT, "SELECT"_Stz, m_sQueryStr.szStz());
+  QueryNode* pStmt = Statement::pCreate(Statement::ST_SELECT, m_sQueryStr.szStz());
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(ctx);

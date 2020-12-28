@@ -14,7 +14,7 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName);
-    static void       vPrint(QueryNode* pTableRef, s256& buf);
+    static void       vPrint(QueryNode* pTableRef, s256& sBuf);
     static b1         bIsResolved(QueryNode* pTableRef);
   };
 

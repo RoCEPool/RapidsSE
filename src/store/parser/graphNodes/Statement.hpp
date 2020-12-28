@@ -30,8 +30,8 @@ namespace Parser
     Statement();
 
   public:
-    static QueryNode* pCreate(eST eStmtType, Stz* szName, Stz* szQueryText);
-    static void       vPrint(QueryNode* pStmt, s256& buf);
+    static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
+    static void       vPrint(QueryNode* pStmt, s256& sBuf);
   };
 
 }

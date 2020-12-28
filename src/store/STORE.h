@@ -540,6 +540,7 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 #include "graphNodes/LogicalNode.hpp"
 #include "graphNodes/TableRef.hpp"
 #include "graphNodes/Statement.hpp"
+#include "graphNodes/Expr.hpp"
 
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"
