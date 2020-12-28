@@ -12,7 +12,7 @@ PromptFun __Prompt_describe (
   PF_DESCRIBE,           // prompt function
   "Prompt_describe"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the function
-  "describe"_Stz,        // the prompt command
+  "- describe"_Stz,        // the prompt command
   nullptr,               // the second word
   bPrompt_describe,      // prompt function
   true,                  // enabled
@@ -31,7 +31,7 @@ bool PROMPT::bPrompt_describe(SePrompt* pPrompt)
   
   i8 iNumTokens = pInpTknVec->nItems();
   
-  gxSubSysCatalog.vListFn();
+  gxSubSysCatalog.vList();
   
   return true;
 }

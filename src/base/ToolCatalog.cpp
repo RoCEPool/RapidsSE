@@ -16,6 +16,7 @@ ToolFn __ToolCatalog_Tools
 /*----------------------------------------------------------------------------*/
 ToolCatalog::ToolCatalog(void)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
 }
 
 /*----------------------------------------------------------------------------*/
@@ -29,7 +30,7 @@ void ToolCatalog::vTools(TokenVec* pTokenVec)
 {
   _static_
   
-  gxToolCatalog.vListFn();
+  gxToolCatalog.vList();
 }
 
 /*============================================================================*/

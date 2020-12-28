@@ -12,6 +12,8 @@ extern SubSysCatalog gxSubSysCatalog;
 SubSysFn::SubSysFn(Stz* szSubSysNm, fpSELFFN* fpSubSysFn, Stz* szDescription, ...)
 : SelfFn(szSubSysNm,(fpSELFFN*)fpSubSysFn,szDescription)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
+  
   gxSubSysCatalog.vAddFn(this);
   
   va_list xVarArgs;

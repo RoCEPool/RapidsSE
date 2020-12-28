@@ -4,21 +4,32 @@
 
 #include "Base.h"
 
-SelfCatalog gxSelfCatalog;
-
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
 SelfCatalog::SelfCatalog(void)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* help                                                                       */
+/*----------------------------------------------------------------------------*/
+void SelfCatalog::vAddFn(SelfFn* aSelfFn)
+{
+  _nonProper_
+
+  m_paSelfFn[m_nSelf ++] = aSelfFn;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
 bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
 {
+  _nonProper_
+
   SelfFn* pSelfFn = pFindFn(szSelfNm);
   if (! pSelfFn)
     return false;
@@ -33,6 +44,8 @@ bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 SelfFn* SelfCatalog::pFindFn(Stz* szSelfNm)
 {
+  _nonProper_
+
   for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
     if (m_paSelfFn[i_Self]->m_szSelfNm->bSame(szSelfNm))
       return m_paSelfFn[i_Self];
@@ -40,21 +53,32 @@ SelfFn* SelfCatalog::pFindFn(Stz* szSelfNm)
   return nullptr;
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* help                                                                       */
 /*----------------------------------------------------------------------------*/
-void SelfCatalog::vListFn(void)
+
+
+/*----------------------------------------------------------------------------*/
+/* find prompt function given command                                         */
+/*----------------------------------------------------------------------------*/
+void SelfCatalog::vDescribeRecursively(TokenVec* pTokenVec)
 {
+  _nonProper_
+
   for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
     vTrace("  %s\n"_Stz,m_paSelfFn[i_Self]->m_szSelfNm);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-void SelfCatalog::vAddFn(SelfFn* aSelfFn)
+void SelfCatalog::vList(void)
 {
-  m_paSelfFn[m_nSelf ++] = aSelfFn;
+  _nonProper_
+
+  for (i8 i_Self = 0; i_Self < m_nSelf; i_Self++)
+    vTrace("  %s\n"_Stz,m_paSelfFn[i_Self]->m_szSelfNm);
 }
 
 /*============================================================================*/

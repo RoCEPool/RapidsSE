@@ -19,6 +19,7 @@ namespace BASE
 
 #define _static_ EndDefine
 #define _nonProper_ EndDefine
+#define _nonLocalStatic_ EndDefine
 #define _outsideOfPool_ EndDefine
 
 #include "CompiledWith.h"

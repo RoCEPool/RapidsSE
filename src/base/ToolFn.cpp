@@ -12,6 +12,8 @@ extern ToolCatalog gxToolCatalog;
 ToolFn::ToolFn(Stz* szToolNm, fpSELFFN* fpToolFn, Stz* szDescription, ...)
 : SelfFn(szToolNm,(fpSELFFN*)fpToolFn,szDescription)
 {
+  _nonLocalStatic_ // memory is automatically zero'd
+  
   gxToolCatalog.vAddFn(this);
   
   va_list xVarArgs;
