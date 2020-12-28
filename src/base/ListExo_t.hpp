@@ -88,10 +88,22 @@ using namespace BASE;
 template <eCN CLASSNO, class ITEM>
 void* ListExo_t<CLASSNO,ITEM>::operator new(size_t)
 {
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: List_t class cannot be new'd"_Stz);
+  ListExo_t<CLASSNO,ITEM>* pListExo_t;
   
-  NEVER_REACH;
+  pListExo_t = (ListExo_t<CLASSNO,ITEM>*)HeapMem::pAllocate(CLASSNO);
+  
+  return pListExo_t;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
+{
+  ListExo_t<CLASSNO,ITEM>* pListExo_t = (ListExo_t<CLASSNO,ITEM>*)aListExo_t;
+
+  HeapMem::vFree(pListExo_t);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +111,8 @@ void* ListExo_t<CLASSNO,ITEM>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
-: m_okLock(LK_LIST,nullptr)
+: Object(CLASSNO)
+, m_okLock(LK_LIST,nullptr)
 {
   m_nItems = 0;
   
@@ -118,7 +131,7 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::~ListExo_t(void) noexcept(false)
 {
-  vDeleteAll();
+  vRemoveAll();
   
   RASSERT(! m_nItems);
 }

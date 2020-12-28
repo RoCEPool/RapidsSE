@@ -6,6 +6,7 @@
 
 Atomic gixFile;
 
+OpenFiles* gpOpenFiles;
 
 SubSysFn __File_List("Files"_Stz,(fpSELFFN*)File::vListOfOpenFiles,
                      "list of open files"_Stz,
@@ -119,6 +120,17 @@ File::~File(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* describe function : list of open functions                                 */
+/*----------------------------------------------------------------------------*/
+void File::vInitGlobals(void)
+{
+  _static_
+  
+  if (! gpOpenFiles)
+    gpOpenFiles = new OpenFiles;
+}
 
 /*----------------------------------------------------------------------------*/
 /* describe function : list of open functions                                 */
