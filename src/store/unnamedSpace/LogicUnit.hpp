@@ -17,7 +17,6 @@ namespace Expressions
   static const i8 C_LOGIC_LABEL = 64;
   static const i8 C_LOCALS      = 8;
 
-
   struct JumpLabel
   {
     s32  m_sLabelNm;
@@ -46,7 +45,7 @@ namespace Expressions
     REG<Word>        m_xpHandler;  // which handler is to be/was called
   
     i8               m_iDebugFlag; // general purpose debug flag
-  
+
     REF<Job>         m_xpJobRef;   // job reference
     REF<Node>        m_xpNodeRef;  // node reference
 
@@ -263,7 +262,7 @@ namespace Expressions
     void vGenerate100000(void);
     void vGenerate100001(void);
 
-    void vGenerateProjection(Project* pProject, Stz* sFileName);
+    void vGenerateProjection(Project* pProject);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

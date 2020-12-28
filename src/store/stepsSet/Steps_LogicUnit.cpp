@@ -337,12 +337,7 @@ void Step::vLogicUnitGenProjection(void)
   Project* pProject;
   pProject = _pProject(m_pDataStack->pPopPtr(__func__));
 
-  s256 sFileNm;
-  i8 iTaskId = m_pTask->iTaskId();
-  i8 iJobId = m_pTask->pJob()->iJobId();
-
-  sFileNm.vSprint("../eo_text/Job%lld_Task%lld_Projection.txt"_Stz, iJobId, iTaskId);
-  m_pLogicUnit->vGenerateProjection(pProject, sFileNm);
+  m_pLogicUnit->vGenerateProjection(pProject);
 
   EXIT();
 }
