@@ -10,7 +10,6 @@
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_EXPR_DEFN = "/__root__/definitions/object/expr"_Stz;
-static Stz* C_COLREF_DEFN = "/__root__/definitions/object/expr/columnRef"_Stz;
 
 static Stz* aTypeDefinitions[] = {
   /* 00 ET_NONE      */ "<INVALID>"_Stz,
@@ -27,61 +26,11 @@ static Stz* aTypeDefinitions[] = {
   /* 11 ET_NENUMS    */ "<INVALID>"_Stz,
 };
 
-static Stz* C_LITERAL_NAME_PREFIX = "ExprLiteral"_Stz;
-static Stz* C_COLUMNREF_NAME_PREFIX = "ExprColRef"_Stz;
-
-static Stz* C_CATALOG_NAME_PROP = "catalogName"_Stz;
-static Stz* C_SCHEMA_NAME_PROP  = "schemaName"_Stz;
-static Stz* C_TABLE_NAME_PROP   = "tableName"_Stz;
-static Stz* C_COLUMN_NAME_PROP  = "columnName"_Stz;
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* Helper function to create expression literal nodes.                        */
-/*----------------------------------------------------------------------------*/
-QueryNode* Expr::pCreateLiteral(eET eType, Value xVal)
-{
-  _static_
 
-  ASSERT(eType > ET_NONE && eType < ET_NENUMS);
-
-  // Create a unique name for this object
-  s256 sName;
-  ShadowNode::vObjName(C_LITERAL_NAME_PREFIX, sName);
-
-  QueryNode* pExpr = new QueryNode(sName, aTypeDefinitions[eType], xVal);
-  return pExpr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Helper function to create expression column reference nodes.               */
-/*----------------------------------------------------------------------------*/
-QueryNode* Expr::pCreateColumnRef(Text* pCatalogName, Text* pSchemaName,
-                                  Text* pTableName, Text* pColumnName)
-{
-  _static_
-
-  // Create a unique name for this object
-  s256 sName;
-  ShadowNode::vObjName(C_COLUMNREF_NAME_PREFIX, sName);
-
-  // These Value instances will take ownership of the Text*s.
-  Value xCatalogName(pCatalogName);
-  Value xSchemaName(pSchemaName);
-  Value xTableName(pTableName);
-  Value xColumnName(pColumnName);
-
-  QueryNode* pExpr = new QueryNode(sName, C_COLREF_DEFN);
-  pExpr->vAppendChild(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogName));
-  pExpr->vAppendChild(new QueryNode(C_SCHEMA_NAME_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaName));
-  pExpr->vAppendChild(new QueryNode(C_TABLE_NAME_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableName));
-  pExpr->vAppendChild(new QueryNode(C_COLUMN_NAME_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xColumnName));
-
-  return pExpr;
-}
 
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
@@ -94,6 +43,16 @@ void Expr::vPrint(QueryNode* pStmt, s256& sBuf)
   sBuf.vConcat(pStmt->szName());
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return the definition path for a given expression type                     */
+/*----------------------------------------------------------------------------*/
+Stz* Expr::szTypeDefinition(eET eExprType)
+{
+  ASSERT(eExprType > ET_NONE);
+  ASSERT(eExprType < ET_NENUMS);
+
+  return aTypeDefinitions[eExprType];
+}
 
 
 /*============================================================================*/

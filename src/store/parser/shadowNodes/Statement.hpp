@@ -5,7 +5,7 @@
 
 namespace Parser
 {
-  class Statement : ShadowNode
+  class Statement : public ShadowNode
   {
   public:
     // Statement types

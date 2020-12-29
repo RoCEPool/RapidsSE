@@ -334,8 +334,8 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
   
   Text* pColumnName = cleanId(ctx->columnName()->id);
 
-  QueryNode* pColumnRef = Expr::pCreateColumnRef(pCatalogName, pSchemaName,
-                                                 pTableName, pColumnName);
+  QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
+                                             pTableName, pColumnName);
 
   m_pExprStack->vPush(pColumnRef);
   

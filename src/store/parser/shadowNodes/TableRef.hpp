@@ -5,7 +5,7 @@
 
 namespace Parser
 {
-  class TableRef : ShadowNode
+  class TableRef : public ShadowNode
   {
 
   private:

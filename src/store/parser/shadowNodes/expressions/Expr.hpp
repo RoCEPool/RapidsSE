@@ -5,7 +5,7 @@
 
 namespace Parser
 {
-  class Expr : ShadowNode
+  class Expr : public ShadowNode
   {
   public:
     // Expression Type
@@ -29,12 +29,10 @@ namespace Parser
     Expr();
 
   public:
-    static QueryNode* pCreateLiteral(eET eType, Value xVal);
-    static QueryNode* pCreateColumnRef(Text* pCatalogName, Text* pSchemaName,
-                                       Text* pTableName, Text* pColumnName);
-
     static void       vPrint(QueryNode* pStmt, s256& sBuf);
 
+  protected:
+    static Stz* szTypeDefinition(eET eExprType);
 
   };
 
