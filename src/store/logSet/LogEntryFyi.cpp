@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "LogEntryFyi.hpp"
+#include "LogEntry.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */

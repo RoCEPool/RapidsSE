@@ -3,6 +3,22 @@
 /*============================================================================*/
 #pragma once
 
+#include "LogEntryDdl.hpp"
+#include "LogEntryFyi.hpp"
+#include "LogEntryJob.hpp"
+#include "LogEntryLck.hpp"
+#include "LogEntryLog.hpp"
+#include "LogEntryMgt.hpp"
+#include "LogEntryOp.hpp"
+#include "LogEntryQue.hpp"
+#include "LogEntryRes.hpp"
+#include "LogEntrySsn.hpp"
+#include "LogEntrySvc.hpp"
+#include "LogEntrySys.hpp"
+#include "LogEntryThd.hpp"
+#include "LogEntryTsk.hpp"
+#include "LogEntryTxn.hpp"
+
 namespace STORE
 {
   static Stz* C_ENTRY_FMT_TXT = "%-16s %20s %s %s: %s"_Stz;

@@ -386,12 +386,11 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 
 
 
-#include "ToRow.hpp"
-#include "ToNstRow.hpp"
-#include "ToPtnRow.hpp"
-#include "ToHshCrw.hpp"
-
-#include "CrwToRow.hpp"
+//#include "ToRow.hpp"
+//#include "ToNstRow.hpp"
+//#include "ToPtnRow.hpp"
+//#include "ToHshCrw.hpp"
+//#include "CrwToRow.hpp"
 
 
 
@@ -514,7 +513,7 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 
 #include "Procedure.hpp"
 
-#include "Dynamo.hpp"
+//#include "Dynamo.hpp"
 
 
 
@@ -607,10 +606,10 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 
 //------------------------------------------------------------------------------
 
+#include "Error.hpp"
+
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
-
-#include "Error.hpp"
 #include "Step.hpp"
 
 //------------------------------------------------------------------------------
@@ -628,25 +627,25 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 
 
 
-#include "ShmLog.hpp"
+//#include "ShmLog.hpp"
 
-#include "LogEntryDdl.hpp"
-#include "LogEntryFyi.hpp"
-#include "LogEntryJob.hpp"
-#include "LogEntryLck.hpp"
-#include "LogEntryLog.hpp"
-#include "LogEntryMgt.hpp"
-#include "LogEntryOp.hpp"
-#include "LogEntryQue.hpp"
-#include "LogEntryRes.hpp"
-#include "LogEntrySsn.hpp"
-#include "LogEntrySvc.hpp"
-#include "LogEntrySys.hpp"
-#include "LogEntryThd.hpp"
-#include "LogEntryTsk.hpp"
-#include "LogEntryTxn.hpp"
-#include "LogEntry.hpp"
-#include "Log.hpp"
+//#include "LogEntryDdl.hpp"
+//#include "LogEntryFyi.hpp"
+//#include "LogEntryJob.hpp"
+//#include "LogEntryLck.hpp"
+//#include "LogEntryLog.hpp"
+//#include "LogEntryMgt.hpp"
+//#include "LogEntryOp.hpp"
+//#include "LogEntryQue.hpp"
+//#include "LogEntryRes.hpp"
+//#include "LogEntrySsn.hpp"
+//#include "LogEntrySvc.hpp"
+//#include "LogEntrySys.hpp"
+//#include "LogEntryThd.hpp"
+//#include "LogEntryTsk.hpp"
+//#include "LogEntryTxn.hpp"
+//#include "LogEntry.hpp"
+//#include "Log.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

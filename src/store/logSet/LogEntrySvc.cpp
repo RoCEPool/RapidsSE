@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "LogEntrySvc.hpp"
+#include "LogEntry.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */

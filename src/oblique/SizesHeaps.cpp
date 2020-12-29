@@ -7,6 +7,33 @@
 #include "OBLIQUE.h"
 #include "PROMPT.h"
 
+#include "CrwToRow.hpp"
+
+#include "Dynamo.hpp"
+
+#include "LogEntryDdl.hpp"
+#include "LogEntryFyi.hpp"
+#include "LogEntryJob.hpp"
+#include "LogEntryLck.hpp"
+#include "LogEntryLog.hpp"
+#include "LogEntryMgt.hpp"
+#include "LogEntryOp.hpp"
+#include "LogEntryQue.hpp"
+#include "LogEntryRes.hpp"
+#include "LogEntrySsn.hpp"
+#include "LogEntrySvc.hpp"
+#include "LogEntrySys.hpp"
+#include "LogEntryThd.hpp"
+#include "LogEntryTsk.hpp"
+#include "LogEntryTxn.hpp"
+#include "LogEntry.hpp"
+#include "Log.hpp"
+
+#include "ToHshCrw.hpp"
+#include "ToNstRow.hpp"
+#include "ToPtnRow.hpp"
+#include "ToRow.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */
 /*----------------------------------------------------------------------------*/
