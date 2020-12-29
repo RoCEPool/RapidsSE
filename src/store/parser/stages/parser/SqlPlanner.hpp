@@ -11,14 +11,13 @@ namespace Parser
   {
   private:
     // old
-    //TableRefStack* m_pTableRefStack;
-    ExprStack* m_pExprStack;
     ExprList* m_pSelectList;
 
     // The query text that was entered by the user
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableRefStack;
+    QueryNodeStack* m_pExprStack;
     Footer m_xFooter;
     
    public:

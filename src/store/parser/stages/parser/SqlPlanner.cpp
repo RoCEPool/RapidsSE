@@ -27,10 +27,10 @@ __aFooterFunction(SqlPlanner)
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
-  m_pTableRefStack(new QueryNodeStack()),
-  m_pExprStack(nullptr),
   m_pSelectList(nullptr),
-  m_pStatementStack(new QueryNodeStack())
+  m_pStatementStack(new QueryNodeStack()),
+  m_pTableRefStack(new QueryNodeStack()),
+  m_pExprStack(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -45,28 +45,6 @@ SqlPlanner::SqlPlanner(void)
 SqlPlanner::~SqlPlanner(void) noexcept
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
-   
-  // [OLD] Clean up the stack of TableRefs
-  if (m_pTableRefStack) {
-    while (m_pTableRefStack->nItems() > 0) {
-      QueryNode* pItem = m_pTableRefStack->pPop();
-      delete pItem;
-    }
-    
-    delete m_pTableRefStack;
-    m_pTableRefStack = nullptr;
-  }
-  
-  // [OLD] Clean up the expression stack
-  if (m_pExprStack) {
-    while (m_pExprStack->nItems() > 0) {
-      ExprAtom* pAtom = m_pExprStack->pPop();
-      delete pAtom;
-    }
-    
-    delete m_pExprStack;
-    m_pExprStack = nullptr;
-  }
   
   // [OLD] Clean up the select list
   if (m_pSelectList) {
@@ -79,7 +57,7 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pSelectList = nullptr;
   }
 
-  // Clean up the statement stack
+  // Clean up the statement, tableref and expression stacks
   if (m_pStatementStack) {
     while (m_pStatementStack->nItems() > 0) {
       QueryNode* pItem = m_pStatementStack->pPop();
@@ -88,6 +66,26 @@ SqlPlanner::~SqlPlanner(void) noexcept
 
     delete m_pStatementStack;
     m_pStatementStack = nullptr;
+  }
+
+  if (m_pTableRefStack) {
+    while (m_pTableRefStack->nItems() > 0) {
+      QueryNode* pItem = m_pTableRefStack->pPop();
+      delete pItem;
+    }
+
+    delete m_pTableRefStack;
+    m_pTableRefStack = nullptr;
+  }
+
+  if (m_pExprStack) {
+    while (m_pExprStack->nItems() > 0) {
+      QueryNode* pItem = m_pExprStack->pPop();
+      delete pItem;
+    }
+
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
   }
 
 }
@@ -279,7 +277,7 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
   ASSERT(m_pSelectList);
   
   ASSERT(!m_pExprStack);
-  m_pExprStack = new ExprStack();
+  m_pExprStack = new QueryNodeStack();
   
   visitChildren(ctx);
   
@@ -302,8 +300,9 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   // pop the expr stack and add it to the select list.
   //ASSERT(m_pExprStack->nValues() == 1);
   
-  ExprAtom* pAtom = m_pExprStack->pPop();
-  m_pSelectList->vAppend(pAtom);
+  QueryNode* pNode = m_pExprStack->pPop();
+  // TODO
+  //m_pSelectList->vAppend(pNode);
   
   // Expr is a base class. Example subclasses:
   //    columnRef
@@ -334,11 +333,11 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
   Text* pTableName = ctx->tableName() == nullptr ? nullptr : cleanId(ctx->tableName()->id);
   
   Text* pColumnName = cleanId(ctx->columnName()->id);
-  
-  ExprColumnRef* columnRef = new ExprColumnRef(pCatalogName, pSchemaName,
-                                               pTableName, pColumnName);
-  
-  m_pExprStack->vPush(columnRef);
+
+  QueryNode* pColumnRef = Expr::pCreateColumnRef(pCatalogName, pSchemaName,
+                                                 pTableName, pColumnName);
+
+  m_pExprStack->vPush(pColumnRef);
   
   return nullptr;
 }

@@ -30,7 +30,9 @@ namespace Parser
 
   public:
     static QueryNode* pCreateLiteral(eET eType, Value xVal);
-    static QueryNode* pCreateColumnRef(Text* pColName);
+    static QueryNode* pCreateColumnRef(Text* pCatalogName, Text* pSchemaName,
+                                       Text* pTableName, Text* pColumnName);
+
     static void       vPrint(QueryNode* pStmt, s256& sBuf);
 
 

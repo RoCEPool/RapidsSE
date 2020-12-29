@@ -30,6 +30,11 @@ static Stz* aTypeDefinitions[] = {
 static Stz* C_LITERAL_NAME_PREFIX = "ExprLiteral"_Stz;
 static Stz* C_COLUMNREF_NAME_PREFIX = "ExprColRef"_Stz;
 
+static Stz* C_CATALOG_NAME_PROP = "catalogName"_Stz;
+static Stz* C_SCHEMA_NAME_PROP  = "schemaName"_Stz;
+static Stz* C_TABLE_NAME_PROP   = "tableName"_Stz;
+static Stz* C_COLUMN_NAME_PROP  = "columnName"_Stz;
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -54,7 +59,8 @@ QueryNode* Expr::pCreateLiteral(eET eType, Value xVal)
 /*----------------------------------------------------------------------------*/
 /* Helper function to create expression column reference nodes.               */
 /*----------------------------------------------------------------------------*/
-QueryNode* Expr::pCreateColumnRef(Text* pColumnName)
+QueryNode* Expr::pCreateColumnRef(Text* pCatalogName, Text* pSchemaName,
+                                  Text* pTableName, Text* pColumnName)
 {
   _static_
 
@@ -62,9 +68,18 @@ QueryNode* Expr::pCreateColumnRef(Text* pColumnName)
   s256 sName;
   LogicalNode::vObjName(C_COLUMNREF_NAME_PREFIX, sName);
 
-  Value xVal(pColumnName);
+  // These Value instances will take ownership of the Text*s.
+  Value xCatalogName(pCatalogName);
+  Value xSchemaName(pSchemaName);
+  Value xTableName(pTableName);
+  Value xColumnName(pColumnName);
 
-  QueryNode* pExpr = new QueryNode(sName, C_COLREF_DEFN, xVal);
+  QueryNode* pExpr = new QueryNode(sName, C_COLREF_DEFN);
+  pExpr->vAppendChild(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogName));
+  pExpr->vAppendChild(new QueryNode(C_SCHEMA_NAME_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaName));
+  pExpr->vAppendChild(new QueryNode(C_TABLE_NAME_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableName));
+  pExpr->vAppendChild(new QueryNode(C_COLUMN_NAME_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xColumnName));
+
   return pExpr;
 }
 
