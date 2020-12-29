@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "LogEntryLck.hpp"
+#include "LogEntry.hpp"
 
 #include "eOC.h"
 

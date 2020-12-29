@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "LogEntryTxn.hpp"
+#include "LogEntry.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* set transaction entry                                                      */
