@@ -226,26 +226,6 @@ namespace Expressions
     void vGenCode(i8 iTestNo);
   
     bool bGenerateAsm(Stz* sText);
-    void vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName);
-    void vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt2(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt3(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt4(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt5(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt8(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt8_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt8_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-
-    void vGenerateAsmTxt_Query6(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query6_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-
-    void vGenerateAsmTxt_Query20(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
 
     // TPCH Queries
     void vGenerateQuery100(void);
