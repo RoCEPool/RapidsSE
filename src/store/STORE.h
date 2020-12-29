@@ -545,9 +545,6 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"
 
-#include "parser/stages/parser/ExprAtom.hpp"
-#include "parser/stages/parser/ExprColumnRef.hpp"
-#include "parser/stages/parser/ExprList.hpp"
 #include "parser/stages/parser/SqlPlanner.hpp"
 
 //------------------------------------------------------------------------------

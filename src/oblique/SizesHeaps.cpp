@@ -69,10 +69,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
-  { sizeof(ExprAtom),           HT_T_TINY    ,-8 }, // CN_EXPRATOM
-  { sizeof(ExprColumnRef),      HT_T_TINY    ,-8 }, // CN_EXPRCOLUMNREF
-  { sizeof(ExprList),           HT_T_TINY    ,0 }, // CN_EXPRLIST
-  { sizeof(ExprStack),          HT_T_MEDIUM  ,0 }, // CN_EXPRSTACK
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 }, // CN_FIFO
