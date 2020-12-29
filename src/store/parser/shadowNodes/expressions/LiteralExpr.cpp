@@ -36,7 +36,7 @@ QueryNode* LiteralExpr::pCreate(eET eType, Value xVal)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void LiteralExpr::vPrint(QueryNode* pStmt, s256& sBuf)
+void LiteralExpr::vDescribe(QueryNode* pStmt, s2K& sBuf)
 {
   _static_
   ASSERT(bValidate(pStmt));

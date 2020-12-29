@@ -35,10 +35,12 @@ static Stz* aTypeDefinitions[] = {
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void Expr::vPrint(QueryNode* pStmt, s256& sBuf)
+void Expr::vDescribe(QueryNode* pStmt, s2K& sBuf)
 {
   _static_
   ASSERT(bValidate(pStmt));
+
+  // TODO: manual polymorphism here
 
   sBuf.vConcat(pStmt->szName());
 }

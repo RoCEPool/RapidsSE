@@ -44,6 +44,14 @@ void ShadowNode::vObjName(Stz *szPrefix, s256 &sBuf)
   sBuf.vSprint("%s%04lld"_Stz, szPrefix, ms_pObjId->iInc());
 }
 
+/*----------------------------------------------------------------------------*/
+/* Describe the object and write it into the buffer                           */
+/*----------------------------------------------------------------------------*/
+void ShadowNode::vDescribe(PlanNode* planNode, s2K& sBuf)
+{
+  // TODO: manual polymorphism here
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

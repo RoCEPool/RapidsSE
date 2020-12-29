@@ -14,7 +14,7 @@ namespace Parser
   public:
     static QueryNode* pCreate(eET eType, Value xVal);
 
-    static void       vPrint(QueryNode* pStmt, s256& sBuf);
+    static void       vDescribe(QueryNode* pStmt, s2K& sBuf);
 
 
   };

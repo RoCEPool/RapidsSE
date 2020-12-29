@@ -18,6 +18,9 @@ namespace Parser
     // Validate a node against its definition
     static b1 bValidate(PlanNode* pPlanNode);
 
+    // Describe the object and write it into the buffer
+    static void vDescribe(PlanNode* pPlanNode, s2K& sBuf);
+
   protected:
     // Creates a unique ID for an object name
     static void vObjName(Stz* szPrefix, s256& sBuf);

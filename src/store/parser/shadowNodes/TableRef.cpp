@@ -51,7 +51,7 @@ QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTable
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void TableRef::vPrint(QueryNode* pTableRef, s256& buf)
+void TableRef::vDescribe(QueryNode* pTableRef, s2K& buf)
 {
   _static_
 

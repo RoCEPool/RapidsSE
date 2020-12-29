@@ -10,14 +10,12 @@ namespace Parser
   class SqlPlanner : public Object, public sqlBaseVisitor
   {
   private:
-    // old
-    ExprList* m_pSelectList;
-
     // The query text that was entered by the user
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableRefStack;
     QueryNodeStack* m_pExprStack;
+    QueryNodeList* m_pSelectList;
     Footer m_xFooter;
     
    public:

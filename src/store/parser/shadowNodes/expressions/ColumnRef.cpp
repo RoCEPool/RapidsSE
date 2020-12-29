@@ -52,7 +52,7 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void ColumnRef::vPrint(QueryNode* pStmt, s256& sBuf)
+void ColumnRef::vDescribe(QueryNode* pStmt, s2K& sBuf)
 {
   _static_
   ASSERT(bValidate(pStmt));

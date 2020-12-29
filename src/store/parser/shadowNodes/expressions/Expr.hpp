@@ -29,7 +29,7 @@ namespace Parser
     Expr();
 
   public:
-    static void       vPrint(QueryNode* pStmt, s256& sBuf);
+    static void vDescribe(QueryNode* pStmt, s2K& sBuf);
 
   protected:
     static Stz* szTypeDefinition(eET eExprType);

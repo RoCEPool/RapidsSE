@@ -31,7 +31,7 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
-    static void       vPrint(QueryNode* pStmt, s256& sBuf);
+    static void       vDescribe(QueryNode* pStmt, s2K& sBuf);
   };
 
 }

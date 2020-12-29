@@ -194,6 +194,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'Q' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Q__
   { sizeof(QueryNode),          HT_T_TINY    ,-8 }, // CN_QUERYNODE
+  { sizeof(QueryNodeList),      HT_T_TINY    ,0 }, // CN_QUERYNODELIST
   { sizeof(QueryNodeStack),     HT_T_MEDIUM  ,0 }, // CN_QUERYNODESTACK
   { sizeof(Queue),              HT_T_TINY    ,0 }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID   ,0 }, // CN_QUEUEBUFFER

@@ -61,7 +61,7 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void Statement::vPrint(QueryNode* pStmt, s256& buf)
+void Statement::vDescribe(QueryNode* pStmt, s2K& buf)
 {
   _static_
   ASSERT(bValidate(pStmt));
