@@ -35,11 +35,10 @@ namespace Arguments
     bool bIsStdCsv(void);
     void vReset(void);
     void vSet(Format* pFmt);
-    bool bSetFormat(TagSet* pFmtTagSet);
     void vShow(void);
     
-  private:
     bool bExtractDateFormat(Stz* dateFormat);
+  private:
     Footer* aFooter(void);
   };
   

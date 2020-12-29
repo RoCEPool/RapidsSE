@@ -69,7 +69,7 @@ void Step::vToRowRegCreate(void)
   Format* pFmt = new Format;
   pFmt->vSet(pFmt);
   
-  bool b = pFmt->bSetFormat(pJobTags);
+  bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
 
   StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
   BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();

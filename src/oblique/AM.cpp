@@ -2377,6 +2377,148 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
   }
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* set format from given tag set                                              */
+/*----------------------------------------------------------------------------*/
+bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
+{
+  s32 sTagValue;
+  i8 iTagValue;
+  i8 i_Tag;
+
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_RECORD_TERMINATOR
+  i_Tag = pTagSet->i_Find(C_TAG_LD_RECORD_TERMINATOR);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pTagSet->szValue(i_Tag);
+    pFormat->m_cRecordTerminator = *sTagValue.azChar();
+    if (pFormat->m_cRecordTerminator == '0')
+      pFormat->m_cRecordTerminator = '\0';
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_RECORD_ENDS
+  i_Tag = pTagSet->i_Find(C_TAG_LD_RECORD_ENDS);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pTagSet->szValue(i_Tag);
+    char cRecordEnds = *sTagValue.azChar();
+    
+    // is record_ends 1 character ?
+    if (sTagValue.nLength() == 1) {
+      if (cRecordEnds == '0') {
+        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return false;
+      }
+      else if (cRecordEnds == '\n') {
+        pFormat->m_eLineEnd = LE_NL;
+      }
+      else if (cRecordEnds == '\r') {
+        pFormat->m_eLineEnd = LE_CR;
+      }
+      else {
+        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return false;
+      }
+    }
+    // record_ends is 2 characters
+    else if (sTagValue.nLength() == 2) {
+      
+      if (sTagValue.bSame("\r\n"_Stz)) {
+        pFormat->m_eLineEnd = LE_CRNL;
+      }
+      else {
+        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        return false;
+      }
+    }
+    else {
+      vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+      return false;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_FIELD_DELIMITER
+  i_Tag = pTagSet->i_Find(C_TAG_LD_FIELD_DELIMITER);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pTagSet->szValue(i_Tag);
+    if (sTagValue.bSame("\\t"_Stz))
+      pFormat->m_cFieldDelimiter = '\t';
+    else
+      pFormat->m_cFieldDelimiter = *sTagValue.azChar();
+    if (pFormat->m_cFieldDelimiter == '0')
+      pFormat->m_cFieldDelimiter = '\0';
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_ENCLOSED_BY_LEADING
+  i_Tag = pTagSet->i_Find(C_TAG_LD_ENCLOSED_BY_LEADING);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pTagSet->szValue(i_Tag);
+    pFormat->m_cEnclosedBy_Leading = *sTagValue.azChar();
+    if (pFormat->m_cEnclosedBy_Leading == '0')
+      pFormat->m_cEnclosedBy_Leading = '\0';
+        
+    // default set trailing same as leading
+    pFormat->m_cEnclosedBy_Trailing =
+    pFormat->m_cEnclosedBy_Leading;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_ENCLOSED_BY_TRAILING
+  i_Tag = pTagSet->i_Find(C_TAG_LD_ENCLOSED_BY_TRAILING);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pTagSet->szValue(i_Tag);
+    // if trailing is specified, leading should also have been specified
+    if (pFormat->m_cEnclosedBy_Trailing == '\0') {
+      if (! AM::bMetadata())
+        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+      return false;
+    }
+    pFormat->m_cEnclosedBy_Trailing = *sTagValue.azChar();
+    if (pFormat->m_cEnclosedBy_Trailing == '0')
+      pFormat->m_cEnclosedBy_Trailing = '\0';
+  }
+  //
+  //    DATE_FORMAT='YYYY.MM.DD’
+  //
+  //
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_DATE_FORMAT
+  i_Tag = pTagSet->i_Find(C_TAG_LD_DATE_FORMAT);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pTagSet->szValue(i_Tag);
+    // extract date format
+    if ( ! pFormat->bExtractDateFormat(sTagValue.szStz()) ) {
+      if ( ! AM::bMetadata())
+        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+      return false;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_ESCAPE_CHAR
+  i_Tag = pTagSet->i_Find(C_TAG_LD_ESCAPE_CHAR);
+  if (i_Tag != C_UNKNOWN) {
+    sTagValue = pTagSet->szValue(i_Tag);
+    pFormat->m_cEscapeChar = *sTagValue.azChar();
+    if (pFormat->m_cEscapeChar == '0')
+      pFormat->m_cEscapeChar = '\0';
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // C_MAX_ERRORS
+  i_Tag = pTagSet->i_Find(C_TAG_LD_MAX_ERRORS);
+  if (i_Tag != C_UNKNOWN) {
+    iTagValue = pTagSet->iValue(i_Tag);
+    
+    pFormat->m_nMaxErrors = iTagValue;
+  }
+        
+  return true;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
