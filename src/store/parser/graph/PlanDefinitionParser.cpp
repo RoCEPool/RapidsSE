@@ -166,15 +166,15 @@ PlanNode* PlanDefinitionParser::pParse()
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Json5 node (top-most level of the parse tree)                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any PlanDefinitionParser::visitJson5(json5Parser::Json5Context *ctx)
-{
-  // We always start off with an object
-  ASSERT(ctx->value()->obj() != nullptr);
-
-  antlrcpp::Any any = visitObj(ctx->value()->obj());
-
-  return any;
-}
+//antlrcpp::Any PlanDefinitionParser::visitJson5(json5Parser::Json5Context *ctx)
+//{
+//  // We always start off with an object
+//  ASSERT(ctx->value()->obj() != nullptr);
+//
+//  antlrcpp::Any any = visitObj(ctx->value()->obj());
+//
+//  return any;
+//}
 
 antlrcpp::Any PlanDefinitionParser::visitObj(json5Parser::ObjContext *ctx)
 {
