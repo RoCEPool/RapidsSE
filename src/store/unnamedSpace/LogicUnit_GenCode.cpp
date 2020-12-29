@@ -2354,7 +2354,7 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
   for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
     pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText[i_Col].azChar());
   }
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handler for ROWBUFFER
@@ -2388,7 +2388,7 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
   for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
     pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText[i_Col].azChar());
   }
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
@@ -2443,7 +2443,7 @@ void LogicUnit::vGenerateRange(Project* pProject, StreamDef* pStreamDefOut) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DATAPULSE HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //   handler intiates index iteration
+  //   handler initiates index iteration
   oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "INDEX_RANGE_ROUTINE"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_HANDLER, &oTagSet));
 

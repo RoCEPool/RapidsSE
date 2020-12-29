@@ -35,23 +35,12 @@ macro AM_ROW_PROJECT_ROUTINE
 endMacro
 
 //----------------------------------------------------------------------------//
-// macro AM_ROW_DST_COLUMNI                                                   //
+// macro AM_ROW_PROJECT_END                                                   //
 //----------------------------------------------------------------------------//
-macro AM_ROW_DST_COLUMNI
-  // ROW_DST_COLUMNI
-  EO_ROW_SRC_PUSHCOLI <srcColumn>
-  EO_ROW_DST_POPCOLI <dstColumn>
+macro AM_ROW_PROJECT_END
+  // PROJECT_END
   EO_ROW_DST_PRINT
-endMacro
-
-//----------------------------------------------------------------------------//
-// macro AM_ROW_DST_COLUMNS                                                   //
-//----------------------------------------------------------------------------//
-macro AM_ROW_DST_COLUMNS
-  // ROW_DST_COLUMNS
-  EO_ROW_SRC_PUSHCOLS <srcColumn>
-  EO_ROW_DST_POPCOLS <dstColumn>
-  EO_ROW_DST_PRINT
+  EO_RETURN
 endMacro
 
 /*============================================================================*/
