@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-
-
 namespace BASE
 {
   template <class ITEM>
@@ -36,6 +34,8 @@ namespace BASE
   private:
     Footer* aFooter(void);
   };
+
+} // namespace BASE
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -92,8 +92,6 @@ ListExoNode_t<ITEM>::~ListExoNode_t(void) noexcept(false)
   ASSERT(! m_pPrevNode);
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* get item of node                                                           */
 /*----------------------------------------------------------------------------*/
@@ -104,8 +102,6 @@ ITEM* ListExoNode_t<ITEM>::pItem(void)
 
   return m_pItem;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get next node                                                              */
@@ -165,9 +161,6 @@ Footer* ListExoNode_t<ITEM>::aFooter(void)
 }
 
 
-}
-
-
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
@@ -180,15 +173,10 @@ namespace BASE
   class ListExo_t : public Object
   {
   protected:
-    Lock  m_okLock;  // lock
-    i8    m_nItems;  // number of items
-    ITEM* m_pHead;   // head item
-    ITEM* m_pTail;   // tail item
-  
-  
+    Lock  m_okLock;
+    i8    m_nItems;
     ListExoNode_t<ITEM>* m_pHeadNode;
     ListExoNode_t<ITEM>* m_pTailNode;
-
 
     // must be last
     Footer m_xFooter;
@@ -202,16 +190,19 @@ namespace BASE
 
     void  vAppend(ITEM* pItem);
     void  vDeleteAll(void);
+    ITEM* pHead(void);
+    void  vInsertAfter(ITEM* pInsItem, ITEM* pRef);
+    void  vInsertBefore(ITEM* pInsItem, ITEM* pRef);
     i8    nItems(void);
+    ITEM* pPeek(i8 nThItem);
     ITEM* pPop(void);
+    ITEM* pPopTail(void);
     void  vPush(ITEM* pItem);
+    void  vPushTail(ITEM* pItem);
+    //void  vReadLock(void);
+    //void  vReadUnlock(void);
     void  vRemove(ITEM* pItem);
     void  vRemoveAll(void);
-  
-    void  vReadLock(void);
-    void  vReadUnlock(void);
-
-    ITEM* pHead(void);
     ITEM* pTail(void);
     
   private:
@@ -229,13 +220,9 @@ namespace BASE
   
     Footer* aFooter(void);
   };
-}
 
-using namespace BASE;
+} // namespace BASE
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -272,9 +259,6 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
   m_nItems = 0;
-  
-  m_pHead  = nullptr;
-  m_pTail  = nullptr;
   
   m_pHeadNode  = nullptr;
   m_pTailNode  = nullptr;
@@ -313,19 +297,6 @@ void ListExo_t<CLASSNO,ITEM>::vAppend(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-//  if (m_pTailNode) {
-//    m_pTailNode->vNextNode(pAppendingNode);
-//    pAppendingNode->vPrevNode(m_pTailNode);
-//
-//    m_pTailNode = pAppendingNode;
-//  }
-//  else {
-//    m_pHeadNode = pAppendingNode;
-//    m_pTailNode = pAppendingNode;
-//  }
-
-  //m_nItems++;
-
   vInsertExoNodeAfter(pAppendingNode,m_pTailNode);
   
   m_okLock.vDropWrite();
@@ -346,6 +317,82 @@ void ListExo_t<CLASSNO,ITEM>::vDeleteAll(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get head item of list                                                      */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ITEM* ListExo_t<CLASSNO,ITEM>::pHead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+    
+  if (! m_pHeadNode)
+    return nullptr;
+  
+  ITEM* pItem = m_pHeadNode->pItem();
+  
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert item after given item                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::vInsertAfter(ITEM* pInsertThisItem,
+                                           ITEM* pAfterThisItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  ListExoNode_t<ITEM>* pInsertThisNode = new ListExoNode_t<ITEM>(pInsertThisItem);
+  ASSERT(! pInsertThisNode->pNextNode());
+  ASSERT(! pInsertThisNode->pPrevNode());
+
+  m_okLock.vGrabWrite();
+
+  ListExoNode_t<ITEM>* pAfterThisNode = pFindExoNode(pAfterThisItem);
+  
+  if (! pAfterThisNode) {
+    m_okLock.vDropWrite();
+    NEVER_REACH;
+    return;
+  }
+  
+  vInsertExoNodeAfter(pInsertThisNode,pAfterThisNode);
+  
+  m_okLock.vDropWrite();
+
+  vValidateList();
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert item before given item                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::vInsertBefore(ITEM* pInsertThisItem,
+                                            ITEM* pBeforeThisItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  ListExoNode_t<ITEM>* pInsertThisNode = new ListExoNode_t<ITEM>(pInsertThisItem);
+  ASSERT(! pInsertThisNode->pNextNode());
+  ASSERT(! pInsertThisNode->pPrevNode());
+
+  m_okLock.vGrabWrite();
+
+  ListExoNode_t<ITEM>* pBeforeThisNode = pFindExoNode(pBeforeThisItem);
+  
+  if (! pBeforeThisNode) {
+    m_okLock.vDropWrite();
+    NEVER_REACH;
+    return;
+  }
+  
+  vInsertExoNodeBefore(pInsertThisNode,pBeforeThisNode);
+  
+  m_okLock.vDropWrite();
+
+  vValidateList();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of items in list                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
@@ -354,6 +401,36 @@ i8 ListExo_t<CLASSNO,ITEM>::nItems(void)
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
   return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek at nth item of list                                                   */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ITEM* ListExo_t<CLASSNO,ITEM>::pPeek(i8 nThItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  ListExoNode_t<ITEM>* pScanNode = nullptr;
+  ITEM* pScanItem = nullptr;
+
+  m_okLock.vGrabWrite();
+  
+  i8 i_Scan = 0;
+  for (pScanNode = m_pHeadNode;
+       pScanNode;
+       pScanNode = pScanNode->pNextNode()) {
+    
+    if (i_Scan == nThItem)
+      break;
+  }
+
+  if (pScanNode)
+    pScanItem = pScanNode->pItem();
+  
+  m_okLock.vDropWrite();
+
+  return pScanItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,7 +458,39 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pPop(void)
 
   delete pWasHeadNode;
   
+  vValidateList();
+
   return pWasHeadItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop/remove item from tail of list                                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ITEM* ListExo_t<CLASSNO,ITEM>::pPopTail(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+     
+  m_okLock.vGrabWrite();
+  
+  if (! m_pTailNode) {
+    ASSERT(! m_nItems);
+    m_okLock.vDropWrite();
+    return nullptr;
+  }
+
+  ListExoNode_t<ITEM>* pWasTailNode = m_pTailNode;
+  ITEM* pWasTailItem = pWasTailNode->pItem();
+  
+  vCutExoNode(pWasTailNode);
+
+  m_okLock.vDropWrite();
+
+  delete pWasTailNode;
+  
+  vValidateList();
+
+  return pWasTailItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -392,27 +501,61 @@ void ListExo_t<CLASSNO,ITEM>::vPush(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  ASSERT(NULL == pItem->pPrevItem());
-  ASSERT(NULL == pItem->pNextItem());
-  
+  ListExoNode_t<ITEM>* pPushingNode = new ListExoNode_t<ITEM>(pItem);
+  ASSERT(! pPushingNode->pNextNode());
+  ASSERT(! pPushingNode->pPrevNode());
+
   m_okLock.vGrabWrite();
   
-  pItem->vPrevItem(nullptr);
-  pItem->vNextItem(m_pHead);
-  
-  if (m_pHead)
-    m_pHead->vPrev(pItem);
-  else
-    m_pTail = pItem;
-  
-  m_pHead = pItem;
-  
-  m_nItems++;
-  ASSERT(m_pHead);
-  ASSERT(m_pTail)
+  vInsertExoNodeBefore(pPushingNode,m_pHeadNode);
 
   m_okLock.vDropWrite();
+
+  vValidateList();
 }
+
+/*----------------------------------------------------------------------------*/
+/* push item onto end of list                                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::vPushTail(ITEM* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  ListExoNode_t<ITEM>* pPushingNode = new ListExoNode_t<ITEM>(pItem);
+  ASSERT(! pPushingNode->pNextNode());
+  ASSERT(! pPushingNode->pPrevNode());
+
+  m_okLock.vGrabWrite();
+  
+  vInsertExoNodeAfter(pPushingNode,m_pTailNode);
+  
+  m_okLock.vDropWrite();
+  
+  vValidateList();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get read lock on list                                                      */
+/*----------------------------------------------------------------------------*/
+//template <eCN CLASSNO, class ITEM>
+//void ListExo_t<CLASSNO,ITEM>::vReadLock(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+//
+//  m_okLock.vGrabRead();
+//}
+
+/*----------------------------------------------------------------------------*/
+/* release read lock on list                                                  */
+/*----------------------------------------------------------------------------*/
+//template <eCN CLASSNO, class ITEM>
+//void ListExo_t<CLASSNO,ITEM>::vReadUnlock(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+//
+//  m_okLock.vDropRead();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* remove item from list                                                      */
@@ -422,8 +565,6 @@ void ListExo_t<CLASSNO,ITEM>::vRemove(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  // ?validate item is a sound object
-
   m_okLock.vGrabWrite();
   
   ListExoNode_t<ITEM>* pRemovingNode = pFindExoNode(pItem);
@@ -456,55 +597,17 @@ void ListExo_t<CLASSNO,ITEM>::vRemoveAll(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get read lock on list                                                      */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-void ListExo_t<CLASSNO,ITEM>::vReadLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-  
-  m_okLock.vGrabRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* release read lock on list                                                  */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-void ListExo_t<CLASSNO,ITEM>::vReadUnlock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-  
-  m_okLock.vDropRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get head item of list                                                      */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ITEM* ListExo_t<CLASSNO,ITEM>::pHead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-  
-  ITEM* pItem;
-  
-  if (m_pHeadNode)
-    pItem = m_pHeadNode->pItem();
-  
-  return pItem;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get tail item of list                                                      */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
 ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+    
+  if (! m_pTailNode)
+    return nullptr;
   
-  ITEM* pItem;
-  
-  if (m_pTailNode)
-    pItem = m_pTailNode->pItem();
+  ITEM* pItem = m_pTailNode->pItem();
   
   return pItem;
 }
@@ -522,7 +625,7 @@ void ListExo_t<CLASSNO,ITEM>::vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  // assert m_okLock
+  m_okLock.vAssertWrite();
   
   if (! pCutThisNode) {
     return;
@@ -578,6 +681,8 @@ void ListExo_t<CLASSNO,ITEM>::
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
+  m_okLock.vAssertWrite();
+
   if (pAfterThisNode) {
     
     if (pAfterThisNode->pNextNode())
@@ -611,7 +716,8 @@ void ListExo_t<CLASSNO,ITEM>::
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  
+  m_okLock.vAssertWrite();
+
   if (pBeforeThisNode) {
     
     if (pBeforeThisNode->pPrevNode())
@@ -632,7 +738,6 @@ void ListExo_t<CLASSNO,ITEM>::
     m_pTailNode = pInsertThisNode;
 
   m_nItems++;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -642,6 +747,8 @@ template <eCN CLASSNO, class ITEM>
 ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pFindExoNode(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  m_okLock.vAssertWrite();
   
   ListExoNode_t<ITEM>* pScanNode;
 
@@ -669,7 +776,6 @@ void ListExo_t<CLASSNO,ITEM>::vValidateList(void)
 
   m_okLock.vGrabWrite();
 
-  
   nItemsCheck = 0;
   for (pScanNode = m_pHeadNode;
        pScanNode;
@@ -683,7 +789,6 @@ void ListExo_t<CLASSNO,ITEM>::vValidateList(void)
   }
 
   RASSERT(nItemsCheck == m_nItems);
-  
   
   nItemsCheck = 0;
   for (pScanNode = m_pTailNode;
