@@ -1,9 +1,7 @@
 /*============================================================================*/
 /* MungedSen.cpp - munged sen files                                           */
 /*============================================================================*/
-#include "BASE.h"
 #include "STORE.h"
-
 
 Stz* gszaMungedText[1024];
 
@@ -25301,7 +25299,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  sPath\n"
     "  \"\n"
-    "  procedure project\n"
+    "  procedure projection\n"
     "    parameters $table $etc\n"
     "    begin\n"
     "\n"
@@ -25322,7 +25320,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  sPath\n"
     "    \"\n"
-    "    procedure range\n"
+    "    procedure rangeScan\n"
     "      parameters $table $index $etc\n"
     "      begin\n"
     "\n"

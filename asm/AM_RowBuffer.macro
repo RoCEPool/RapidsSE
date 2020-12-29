@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* AM_RowBuffer.macro -- ASM Macros for ROWBUFFER Handler                     */
+/*============================================================================*/
+
+macro AM_ROWBUFFER_PROJECT_HANDLER
+//----------------------------------------------------------------------------//
+// macro AM_ROWBUFFER_PROJECT_HANDLER                                         //
+//----------------------------------------------------------------------------//
+  // ROWBUFFER_PROJECT_HANDLER
+  Label ROWBUFFER_HANDLER
+  EO_PRINTF "**ROWBUFFER_HANDLER**\n"
+  EO_POP
+  EO_ROW_SRC_BEGIN
+
+  // NEXT_ROW_SRC
+  Label NEXT_ROW_SRC
+  EO_ROW_SRC_NEXT
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <rowProjectRoutine>
+  EO_JMP NEXT_ROW_SRC
+  EO_JMP QUERY_DONE
+ endMacro
+
+macro AM_ROW_PROJECT_ROUTINE
+//----------------------------------------------------------------------------//
+// macro AM_ROW_PROJECT_ROUTINE                                               //
+//----------------------------------------------------------------------------//
+  // ROW_PROJECT_ROUTINE
+  Label ROW_PROJECT_ROUTINE
+  EO_ROW_DST_NEW
+  //EO_DUMP
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_DST_COLUMNI                                                   //
+//----------------------------------------------------------------------------//
+macro AM_ROW_DST_COLUMNI
+  // ROW_DST_COLUMNI
+  EO_ROW_SRC_PUSHCOLI <srcColumn>
+  EO_ROW_DST_POPCOLI <dstColumn>
+  EO_ROW_DST_PRINT
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_DST_COLUMNS                                                   //
+//----------------------------------------------------------------------------//
+macro AM_ROW_DST_COLUMNS
+  // ROW_DST_COLUMNS
+  EO_ROW_DST_PUSHCOLS <srcColumn>
+  EO_ROW_DST_POPCOLS <dstColumn>
+  EO_ROW_DST_PRINT
+endMacro
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

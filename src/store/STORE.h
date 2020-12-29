@@ -109,6 +109,7 @@ static Stz* C_TAG_COLUMN_NAME   = "<columnName>"_Stz;
 
 static Stz* C_TAG_LOGICUNIT_HANDLER     = "<logicUnitHandler>"_Stz;
 static Stz* C_TAG_CRW_PROJECT_ROUTINE   = "<crwProjectRoutine>"_Stz;
+static Stz* C_TAG_ROW_PROJECT_ROUTINE   = "<rowProjectRoutine>"_Stz;
 static Stz* C_TAG_CRW_FILTER_ROUTINE    = "<crwFilterRoutine>"_Stz;
 static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
 
@@ -125,6 +126,7 @@ static Stz* C_TAG_PROJECT_SRC_COLUMNS   = "<projectSrcColumns>"_Stz;
 static Stz* C_TAG_LOCALS_COLUMN = "<localsColumn>"_Stz;
 static Stz* C_TAG_SUM_COLUMN    = "<sumColumn>"_Stz;
 
+static Stz* C_TAG_SRC_COLUMN       = "<srcColumn>"_Stz;
 static Stz* C_TAG_DST_COLUMN       = "<dstColumn>"_Stz;
 
 static Stz* C_TAG_PREDICATE_COLUMNS     = "<predicateColumns>"_Stz;

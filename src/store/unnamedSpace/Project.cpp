@@ -331,6 +331,7 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
     RASSERT(pColumn);
 
     StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,i_StreamInCol);
+    //StrLib::vSprintCat(azCrs,"  EO_ROW_SRC_PUSHCOLI %lld\n"_Stz,pColumn->iColumnNo());
     pTkn = pTknVec->pNextToken();
   }
 
