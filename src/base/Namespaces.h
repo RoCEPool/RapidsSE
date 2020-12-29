@@ -11,7 +11,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
 
-namespace Arguments         {                                                 }
 namespace BASE            { class Format;                                   }
 namespace Arguments    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
@@ -19,8 +18,6 @@ namespace Arguments    { class Crw;             class CrwBuffer;
 class SP_Encoding_v2;
 class Packing_v2;
                               class OverLine;        class TailLine;          }
-namespace CompilerOperators {                                                 }
-namespace Arguments       {                                                 }
 namespace Arguments       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
 namespace BASE {
@@ -47,13 +44,8 @@ template <i8 SPACE> class Datum_t;
 
 
 namespace Arguments    { class Dynamo;                                   }
-namespace Arguments           {                                                 }
 namespace Expressions       { class LogicUnit;                                }
-namespace Facts             { class Fact;            class Kbase;
-                              class Method;        
-                              class Question;        class Transform;         }
 
-namespace Arguments           {                                                 }
 namespace BASE           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
@@ -68,12 +60,10 @@ namespace Arguments              { class Job;
                               class Job_Distributed;                          }
 namespace BASE   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
-namespace Load              {                                                 }
 namespace STORE           { class Log;             class LogEntry;          }
 namespace Arguments          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
-namespace Expressions           {                                                 }
 namespace OBLIQUE           { class AM;                                       }
 namespace Arguments          { class Operand;                                  }
 namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
@@ -93,8 +83,6 @@ namespace Arguments              { class Row;                                   
 namespace Arguments             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace Arguments          { class Session;         class SessionState;      }
-namespace Arguments       {                                                 }
-namespace SqlValues         {                                                 }
 namespace Expressions             { class Step;            class StepTiming;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 namespace BASE        { class Article;         class Queue;
@@ -107,49 +95,11 @@ namespace Arguments      { class Tx;              class TxSet;             }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
-using namespace CompilerOperators;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
 using namespace Expressions;
-using namespace Facts;
-using namespace Arguments;
 using namespace BASE;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Expressions;
-using namespace Arguments;
-using namespace BASE;
-using namespace Load;
 using namespace STORE;
-using namespace Arguments;
-using namespace Expressions;
 using namespace OBLIQUE;
-using namespace Arguments;
-using namespace Parser;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
 using namespace PROMPT;
-using namespace Arguments;
-using namespace BASE;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
-using namespace Arguments;
-using namespace SqlValues;
-using namespace Expressions;
-using namespace STORE;
-using namespace BASE;
-using namespace Expressions;
-using namespace Expressions;
-using namespace Arguments;
 
 /*============================================================================*/
 /* end                                                                        */

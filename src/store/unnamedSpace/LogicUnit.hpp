@@ -64,14 +64,12 @@ namespace Expressions
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
     REG<CrwToRow>    m_xpCrwToRow;
-    REG<Fact>        m_xpFact;
     REG<Index>       m_xpIndex;
     REG<IndexDef>    m_xpIndexDef;
     REG<IndexStream> m_xpIndexStream;
     REG<IndexTree>   m_xpIndexTree;
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;
-    REG<Kbase>       m_xpKbase;
     REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
     REG<Planner>     m_xpPlanner;

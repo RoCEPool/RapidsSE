@@ -308,6 +308,8 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 
 #include "parser/stages/parser/SqlPlanner.hpp"
 
+using namespace Parser;
+
 //------------------------------------------------------------------------------
 
 #include "RluCommon.h"
