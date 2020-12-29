@@ -7,6 +7,10 @@
 #include "OBLIQUE.h"
 #include "PROMPT.h"
 
+#include "CrwToRow.hpp"
+
+#include "Dynamo.hpp"
+
 #include "LogEntryDdl.hpp"
 #include "LogEntryFyi.hpp"
 #include "LogEntryJob.hpp"
@@ -24,6 +28,11 @@
 #include "LogEntryTxn.hpp"
 #include "LogEntry.hpp"
 #include "Log.hpp"
+
+#include "ToHshCrw.hpp"
+#include "ToNstRow.hpp"
+#include "ToPtnRow.hpp"
+#include "ToRow.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */

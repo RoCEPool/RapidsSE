@@ -3,6 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#include "CrwToRow.hpp"
+#include "ToHshCrw.hpp"
+#include "ToNstRow.hpp"
+#include "ToPtnRow.hpp"
+#include "ToRow.hpp"
+
 #include "InflateSet.h"
 
 #include "eLH.h"
