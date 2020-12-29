@@ -5,7 +5,7 @@
 
 #include "eLE.h"
 
-namespace Arguments
+namespace BASE
 {
   class Format : public Object
   {

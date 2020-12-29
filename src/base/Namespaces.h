@@ -12,7 +12,7 @@
  
 
 namespace Arguments         {                                                 }
-namespace Arguments            { class Format;                                   }
+namespace BASE            { class Format;                                   }
 namespace Arguments    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
                               class HeadLine;        class Encoding_v2;

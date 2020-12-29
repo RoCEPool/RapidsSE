@@ -486,6 +486,7 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 #include "IntSet.hpp"
 
 
+#include "Format.hpp"
 
 
 //------------------------------------------------------------------------------

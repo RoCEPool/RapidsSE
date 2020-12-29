@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "TagConstants.h"
 
@@ -11,7 +10,7 @@
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Format,CN_FORMAT)
+__pCastFunction(BASE,Format,CN_FORMAT)
 __aNewFunction(Format,CN_FORMAT)
 __vDeleteFunction(Format,CN_FORMAT)
 __aFooterFunction(Format)

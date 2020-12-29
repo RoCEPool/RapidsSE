@@ -36,7 +36,6 @@ static const i8 C_TPCH_REGION   = 5;
 
 //------------------------------------------------------------------------------
 
-#include "Format.hpp"
 
 #include "DataChunk.hpp"
 #include "RecordChunk.hpp"
