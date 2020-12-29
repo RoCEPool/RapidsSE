@@ -1826,7 +1826,7 @@
 
   sPath
   "
-  procedure project
+  procedure projection
     parameters $table $etc
     begin
 
@@ -1847,7 +1847,7 @@
 
   sPath
     "
-    procedure range
+    procedure rangeScan
       parameters $table $index $etc
       begin
 

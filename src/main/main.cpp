@@ -8,6 +8,7 @@
 #include "Version.h"
 
 #include "Heart.h"
+#include "Engine.hpp"
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;

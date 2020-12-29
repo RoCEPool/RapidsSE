@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

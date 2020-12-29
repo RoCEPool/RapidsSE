@@ -35,6 +35,12 @@ macro AM_QUERY_INIT
   EO_EQUAL                      
   EO_JMP_TRUE CRWBUFFER_HANDLER 
 
+  // check for ZK_ROWBUFFER
+  EO_DUP
+  EO_INTEGER ZK_ROWBUFFER
+  EO_EQUAL
+  EO_JMP_TRUE ROWBUFFER_HANDLER
+
   // check for ZK_EOSMARKER
   EO_DUP                        
   EO_INTEGER  ZK_EOSMARKER      

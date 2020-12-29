@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "TagConstants.h"
 
 extern Atomic gixQueryNo;
 
@@ -3685,7 +3686,25 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
     pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NOSRC_ROUTINE, &oTagSet));
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handler for ROWBUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  oTagSet.vAppend(C_TAG_ROW_PROJECT_ROUTINE, "ROW_PROJECT_ROUTINE"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROWBUFFER_PROJECT_HANDLER, &oTagSet));
+  oTagSet.vReset();
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT_COLUMNS Routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  if (pProject->m_iStreamInColumns) {
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_ROUTINE, &oTagSet));
+    oTagSet.vReset();
+  }
+  else {
+    RASSERT(0);
+  }
 //  for (i8 i_Col = 0; i_Col < pProject->m_iColumns; i_Col++) {
 //    i8 i_Code = 0;
 //    for (i8 i_Code = 0; i_Code < pProject->m_i_Code[i_Col]; i_Code++) {
