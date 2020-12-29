@@ -7,6 +7,7 @@
 
 
 #include "PsxThd.hpp" //?
+#include "TagConstants.h"
 
 Atomic gixTask;
 

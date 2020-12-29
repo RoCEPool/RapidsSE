@@ -7,6 +7,7 @@
 
 
 #include "File.hpp" //?
+#include "TagConstants.h"
 
 Atomic gixJob;
 

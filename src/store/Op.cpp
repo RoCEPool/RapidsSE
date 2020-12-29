@@ -7,6 +7,7 @@
 
 
 #include "eTS.h"
+#include "TagConstants.h"
 
 Atomic gixOp;
 

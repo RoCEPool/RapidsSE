@@ -8,6 +8,7 @@
 
 
 #include "eBO.h"
+#include "TagConstants.h"
 
 extern Args         gxArgs;
 

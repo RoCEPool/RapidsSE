@@ -4,6 +4,7 @@
 
 #include "OBLIQUE.h"
 
+#include "TagConstants.h"
 
 #include "LogEntryDdl.hpp"
 #include "LogEntryFyi.hpp"
