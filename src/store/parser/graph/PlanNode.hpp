@@ -45,8 +45,7 @@ namespace Parser
     }
   };
 
-  class PlanNode : public Object,
-                   public ListItem_t<PlanNode>
+  class PlanNode : public Object
   {
   protected:
     s256  m_sName;
@@ -85,8 +84,11 @@ namespace Parser
     b1 bHasProperties();
     b1 bHasChildren();
 
-    PlanNode* pFirstProperty();
-    PlanNode* pFirstChild();
+    i8 nProperties();
+    i8 nChildren();
+
+    PlanNode* pNthProperty(i8 idx);
+    PlanNode* pNthChild(i8 idx);
   };
   
   PlanNode* _pPlanNode(void* aAddr);

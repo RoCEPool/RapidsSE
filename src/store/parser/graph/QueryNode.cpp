@@ -115,12 +115,11 @@ b1 QueryNode::bHasChild(QueryNode* pNode)
     return false;
   }
 
-  PlanNode* pItem = m_pChildren->pHead();
-  while (pItem) {
+  for (i8 i=0; i<m_pChildren->nItems(); i++) {
+    PlanNode* pItem = m_pChildren->pPeek(i);
     if (pItem == pNode) {
       return true;
     }
-    pItem = pItem->pNextItem();
   }
 
   return false;
@@ -133,22 +132,18 @@ i8 QueryNode::bChildIndex(QueryNode* pNode)
 {
   ASSERT(pNode);
 
-  i8 idx = -1;
-
   if (!m_pChildren) {
-    return idx;
+    return -1;
   }
 
-  PlanNode* pItem = m_pChildren->pHead();
-  while (pItem) {
-    ++idx;
+  for (i8 i=0; i<m_pChildren->nItems(); i++) {
+    PlanNode* pItem = m_pChildren->pPeek(i);
     if (pItem == pNode) {
-      return idx;
+      return i;
     }
-    pItem = pItem->pNextItem();
   }
 
-  return idx;
+  return -1;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,28 +11,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __pCastFunction(Parser,PlanNodeBuilder,CN_PLANNODEBUILDER)
+__aNewFunction(PlanNodeBuilder,CN_PLANNODEBUILDER)
+__vDeleteFunction(PlanNodeBuilder,CN_PLANNODEBUILDER)
 __aFooterFunction(PlanNodeBuilder)
 
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* PlanNodeBuilder::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_PLANNODEBUILDER);
-
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void PlanNodeBuilder::operator delete(void* pAddress)
-{
-  PlanNodeBuilder* pObject = reinterpret_cast<PlanNodeBuilder*>(pAddress);
-
-  HeapMem::vFree(pObject);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -148,11 +130,12 @@ PlanNodeList* PlanNodeBuilder::pBuildList(PlanNodeBuilderList* builderList)
 
   PlanNodeList *pPlanNodeList = new PlanNodeList();
 
-  PlanNodeBuilder* builder = builderList->pHead();
-  while (builder) {
+  i8 nBuilders = builderList->nItems();
+  for (i8 i=0; i<nBuilders; i++) {
+    PlanNodeBuilder* builder = builderList->pPeek(i);
+
     PlanNode* planNode = builder->pBuild();
     pPlanNodeList->vAppend(planNode);
-    builder = builder->pNextItem();
   }
 
   return pPlanNodeList;
@@ -171,24 +154,28 @@ void PlanNodeBuilder::vSetPath(s256& sParentPath)
   i8 pathSize = sParentPath.nLength();
 
   if (m_pProperties) {
-    PlanNodeBuilder* builder = m_pProperties->pHead();
-    while (builder) {
+    i8 nProperties = m_pProperties->nItems();
+
+    for (i8 i=0; i<nProperties; i++) {
+      // TODO: use something more efficient
+      PlanNodeBuilder* builder = m_pProperties->pPeek(i);
       sParentPath.vClip(pathSize);
       sParentPath.vAppend(':');
 
       builder->vSetPath(sParentPath);
-      builder = builder->pNextItem();
     }
   }
 
   if (m_pChildren) {
-    PlanNodeBuilder* builder = m_pChildren->pHead();
-    while (builder) {
+    i8 nChildren = m_pChildren->nItems();
+
+    for (i8 i=0; i<nChildren; i++) {
+      // TODO: use something more efficient
+      PlanNodeBuilder* builder = m_pChildren->pPeek(i);
       sParentPath.vClip(pathSize);
       sParentPath.vAppend('/');
 
       builder->vSetPath(sParentPath);
-      builder = builder->pNextItem();
     }
   }
 

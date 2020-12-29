@@ -62,9 +62,11 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
   // replace the /plan child with the new one we've created.
   PlanNodeList* pNewChildList = new PlanNodeList();
 
-  PlanNode* pItem = pRootNode->pFirstChild();
+  i8 nChildren = pRootNode->nChildren();
 
-  while (pItem) {
+  for (i8 i=0; i<nChildren; i++) {
+    PlanNode* pItem = pRootNode->pNthChild(i);
+
     if (pItem == pPlanNode) {
       // Copy in the new /plan child, not the old one
       pNewChildList->vAppend(pNewPlanChild);
@@ -72,19 +74,19 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
     } else {
       pNewChildList->vAppend(pItem);
     }
-
-    pItem = pItem->pNextItem();
   }
+
 
   // Create a new list of properties for the new root node.
   PlanNodeList* pNewPropertyList = nullptr;
 
   if (pRootNode->bHasProperties()) {
-    pItem = pRootNode->pFirstProperty();
 
-    while (pItem) {
-      pNewPropertyList->vAppend(pItem);
-      pItem = pItem->pNextItem();
+    pNewPropertyList = new PlanNodeList();
+
+    i8 nProperties = pRootNode->nProperties();
+    for (i8 i=0; i<nProperties; i++) {
+      pNewPropertyList->vAppend(pRootNode->pNthProperty(i));
     }
   }
 

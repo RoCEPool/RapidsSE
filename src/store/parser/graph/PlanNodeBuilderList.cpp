@@ -20,7 +20,7 @@ __aFooterFunction(PlanNodeBuilderList)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PlanNodeBuilderList::PlanNodeBuilderList()
-: ListNL_t<PlanNodeBuilder>(CN_PLANNODEBUILDERLIST)
+: ListExo_t<CN_PLANNODEBUILDERLIST, PlanNodeBuilder>()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODEBUILDERLIST,_FOOTER_);
   

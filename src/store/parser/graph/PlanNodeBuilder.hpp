@@ -7,8 +7,7 @@ namespace Parser
 {
   class PlanNodeBuilderList;
 
-  class PlanNodeBuilder : public Object,
-                          public ListItem_t<PlanNodeBuilder>
+  class PlanNodeBuilder : public Object
   {
   public:
     s256  m_sName;
@@ -22,10 +21,9 @@ namespace Parser
     Footer m_xFooter;
     
    public:
-    // Overriding these because we inherited from ListItem_t
     void* operator new(size_t);
     void  operator delete(void*);
-    
+
     PlanNodeBuilder();
     ~PlanNodeBuilder(void);
 

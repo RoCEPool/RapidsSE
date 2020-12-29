@@ -7,7 +7,7 @@
 
 namespace Parser
 {  
-  class PlanNodeBuilderList : public ListNL_t<PlanNodeBuilder>
+  class PlanNodeBuilderList : public ListExo_t<CN_PLANNODEBUILDERLIST, PlanNodeBuilder>
   {
   private:
     // must be last

@@ -204,10 +204,13 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
   }
 
   // Any properties to walk down?
-  if (bWalkProperties && pNode->bHasProperties()) {
-    PlanNode* pProp = pNode->pFirstProperty();
+  if (bWalkProperties) {
+    i8 nProperties = pNode->nProperties();
 
-    while (pProp) {
+    // TODO: replace with something more efficient
+    for (i8 i=0; i<nProperties; i++) {
+      PlanNode* pProp = pNode->pNthProperty(i);
+
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
       sPath.vConcat(const_cast<Stz*>(C_PROPERTY_SEPARATOR));
@@ -217,16 +220,17 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
       if (!bRetVal) {
         return false;
       }
-
-      pProp = pProp->pNextItem();
     }
   }
 
   // Any children to walk down?
-  if (bWalkChildren && pNode->bHasChildren()) {
-    PlanNode* pChild = pNode->pFirstChild();
+  if (bWalkChildren) {
+    i8 nChildren = pNode->nChildren();
 
-    while (pChild) {
+    // TODO: replace with something more efficient
+    for (i8 i=0; i<nChildren; i++) {
+      PlanNode* pChild = pNode->pNthChild(i);
+
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
       sPath.vConcat(const_cast<Stz*>(C_CHILD_SEPARATOR));
@@ -236,8 +240,6 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
       if (!bRetVal) {
         return false;
       }
-
-      pChild = pChild->pNextItem();
     }
   }
 
@@ -319,29 +321,34 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
   }
 
   PlanNode* pItem;
+  PlanNode* pResult;
 
   // Check against the children
   if (cSep == '/') {
-    pItem = pNode->pFirstChild();
+    i8 nChildren = pNode->nChildren();
+    for (i8 i=0; i<nChildren; i++) {
+      pItem = pNode->pNthChild(i);
+
+      pResult = pFind(szNextPath, pItem);
+      if (pResult) {
+        return pResult;
+      }
+    }
 
     // Check against the properties
   } else if (cSep == ':') {
-    pItem = pNode->pFirstProperty();
+    i8 nProperties = pNode->nProperties();
+    for (i8 i=0; i<nProperties; i++) {
+      pItem = pNode->pNthProperty(i);
+
+      pResult = pFind(szNextPath, pItem);
+      if (pResult) {
+        return pResult;
+      }
+    }
 
   } else {
     NEVER_REACH
-  }
-
-  // We need to check all properties or children before giving up
-  PlanNode* pResult;
-
-  while (pItem) {
-    pResult = pFind(szNextPath, pItem);
-    if (pResult) {
-      return pResult;
-    }
-
-    pItem = pItem->pNextItem();
   }
 
   // No matches found
