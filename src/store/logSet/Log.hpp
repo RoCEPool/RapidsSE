@@ -3,6 +3,25 @@
 /*============================================================================*/
 #pragma once
 
+#include "LogEntryDdl.hpp"
+#include "LogEntryFyi.hpp"
+#include "LogEntryJob.hpp"
+#include "LogEntryLck.hpp"
+#include "LogEntryLog.hpp"
+#include "LogEntryMgt.hpp"
+#include "LogEntryOp.hpp"
+#include "LogEntryQue.hpp"
+#include "LogEntryRes.hpp"
+#include "LogEntrySsn.hpp"
+#include "LogEntrySvc.hpp"
+#include "LogEntrySys.hpp"
+#include "LogEntryThd.hpp"
+#include "LogEntryTsk.hpp"
+#include "LogEntryTxn.hpp"
+#include "LogEntry.hpp"
+
+#include "ShmLog.hpp"
+
 namespace STORE
 {
   static const i8    C_JOB_GROUP = 0;

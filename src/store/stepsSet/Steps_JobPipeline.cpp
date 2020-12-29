@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Dynamo.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

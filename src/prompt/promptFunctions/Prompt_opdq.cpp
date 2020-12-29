@@ -6,6 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "Engine.hpp"
 
 
 PromptFun __Prompt_opdq (

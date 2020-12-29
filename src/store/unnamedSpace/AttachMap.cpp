@@ -7,6 +7,7 @@
 
 
 #include "ResourceTracker.hpp" //?
+#include "TagConstants.h"
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;

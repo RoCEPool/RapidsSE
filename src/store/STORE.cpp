@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Engine.hpp"
 
 extern Args       gxArgs;
 extern SizeHeap   gxaSizeHeap[];
