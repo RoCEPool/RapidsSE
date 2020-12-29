@@ -5,6 +5,8 @@
 
 #include "eMC.h"
 
+#include "MetaCodeMacros.h"
+
 namespace Arguments
 {
   static const i8 C_METABITS = 8;
