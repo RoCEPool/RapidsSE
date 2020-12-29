@@ -6,6 +6,8 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "Engine.hpp"
+
 
 #include "eBO.h"
 #include "TagConstants.h"

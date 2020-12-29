@@ -4,6 +4,8 @@
 
 #include "OBLIQUE.h"
 
+#include "Engine.hpp"
+
 #include "TagConstants.h"
 
 #include "LogEntryDdl.hpp"
