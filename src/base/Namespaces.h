@@ -23,7 +23,8 @@ namespace CompilerOperators {                                                 }
 namespace Arguments       {                                                 }
 namespace Arguments       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
-namespace Arguments            { class Datum_h;
+namespace BASE {
+class Datum_h;
 class SN_Bcd;
 class SN_Bol;
 class SN_Dte;
@@ -41,7 +42,10 @@ class SP_Int;
 class SP_Ivl;
 class SP_Tme;
 class SP_Tsp;
-                              template <i8 SPACE> class Datum_t;              }
+template <i8 SPACE> class Datum_t;
+}
+
+
 namespace Arguments    { class Dynamo;                                   }
 namespace Arguments           {                                                 }
 namespace Expressions       { class LogicUnit;                                }

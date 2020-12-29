@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Column,CN_COLUMN)
+__pCastFunction(BASE,Column,CN_COLUMN)
 __aNewFunction(Column,CN_COLUMN)
 __vDeleteFunction(Column,CN_COLUMN)
 __aFooterFunction(Column)

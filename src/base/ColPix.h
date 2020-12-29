@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
   // the ColPix structure is 32b / u4
 

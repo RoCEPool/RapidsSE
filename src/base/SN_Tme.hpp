@@ -1,20 +1,20 @@
 /*============================================================================*/
-/* SN_Int.hpp - Int scan helper                                               */
+/* SN_Tme.hpp - Tme scan helper                                               */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SN_Int : public Scan
+  class SN_Tme : public Scan
   {
   public:
-  
-   // must be last
+    
+    // must be last
     Footer m_xFooter;
     
   public:
-    SN_Int(void);
-    ~SN_Int(void) noexcept(false);
+    SN_Tme(void);
+    ~SN_Tme(void) noexcept(false);
   
     i8 i(char** aacCrs, Format* pFmt);
   

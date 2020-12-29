@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
   class SP_Vch : public SPsmall
   {

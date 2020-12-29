@@ -1,22 +1,28 @@
 /*============================================================================*/
-/* SN_Flt.hpp - Flt scan helper                                               */
+/* SN_Vch.hpp - Vch scan helper                                               */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SN_Flt : public Scan
+  class SN_Vch : public Scan
   {
   public:
+    
+    char m_caVch[C_MAX_VCH];
   
     // must be last
     Footer m_xFooter;
     
   public:
-    SN_Flt(void);
-    ~SN_Flt(void) noexcept(false);
-  
-    d8 d(char** aacCrs, Format* pFmt);
+    SN_Vch(void);
+    ~SN_Vch(void) noexcept(false);
+    
+    Stz* sz(char** aacCrs,
+            i8 iLength,
+            Format* pFmt,
+            bool bSawLeadingEnclosed,
+            i8& nChars_);
   
     Footer* aFooter(void);
   };

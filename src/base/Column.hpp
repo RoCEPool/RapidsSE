@@ -6,7 +6,7 @@
 #include "eCT.h"
 #include "eDM.h"
 
-namespace Arguments
+namespace BASE
 {
   class Column : public Object
   {

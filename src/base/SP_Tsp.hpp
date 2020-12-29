@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Flt.hpp - Flt sprint helper                                             */
+/* SP_Tsp.hpp - Tsp sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SP_Flt : public SPsmall
+  class SP_Tsp : public SPsmall
   {
   public:
   
@@ -13,11 +13,11 @@ namespace Arguments
     Footer m_xFooter;
     
   public:
-    SP_Flt(void);
-    ~SP_Flt(void) noexcept(false);
+    SP_Tsp(void);
+    ~SP_Tsp(void) noexcept(false);
   
-    Stz* sz(d8 dFlt);
-
+    Stz* sz(i8 iTme);
+  
     Stz* szMax(void);
     Stz* szMid(void);
     Stz* szMin(void);

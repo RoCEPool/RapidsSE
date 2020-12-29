@@ -5,7 +5,7 @@
 
 #include "eDM.h"
 
-namespace Arguments
+namespace BASE
 {
   class RowPix // condensed stream def
   {

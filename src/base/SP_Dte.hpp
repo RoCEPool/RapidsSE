@@ -1,28 +1,26 @@
 /*============================================================================*/
-/* SN_Vch.hpp - Vch scan helper                                               */
+/* SP_Dte.hpp - Dte sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SN_Vch : public Scan
+  class SP_Dte : public SPsmall
   {
   public:
-    
-    char m_caVch[C_MAX_VCH];
   
     // must be last
     Footer m_xFooter;
     
   public:
-    SN_Vch(void);
-    ~SN_Vch(void) noexcept(false);
-    
-    Stz* sz(char** aacCrs,
-            i8 iLength,
-            Format* pFmt,
-            bool bSawLeadingEnclosed,
-            i8& nChars_);
+    SP_Dte(void);
+    ~SP_Dte(void) noexcept(false);
+  
+    Stz* sz(i8 iDte);
+  
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
   
     Footer* aFooter(void);
   };

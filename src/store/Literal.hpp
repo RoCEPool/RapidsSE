@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
   
   class Literal

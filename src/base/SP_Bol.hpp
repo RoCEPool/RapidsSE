@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Dte.hpp - Dte sprint helper                                             */
+/* SP_Bol.hpp - Bol sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SP_Dte : public SPsmall
+  class SP_Bol : public SPsmall
   {
   public:
   
@@ -13,11 +13,11 @@ namespace Arguments
     Footer m_xFooter;
     
   public:
-    SP_Dte(void);
-    ~SP_Dte(void) noexcept(false);
+    SP_Bol(void);
+    ~SP_Bol(void) noexcept(false);
   
-    Stz* sz(i8 iDte);
-  
+    Stz* sz(i8 iBol);
+
     Stz* szMax(void);
     Stz* szMid(void);
     Stz* szMin(void);

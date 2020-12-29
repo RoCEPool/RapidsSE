@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SN_Bcd.hpp - Bcd scan helper                                               */
+/* SP_Bcd.hpp - Bcd sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SN_Bcd : public Scan
+  class SP_Bcd : public SPsmall
   {
   public:
   
@@ -13,11 +13,16 @@ namespace Arguments
     Footer m_xFooter;
     
   public:
-    SN_Bcd(void);
-    ~SN_Bcd(void) noexcept(false);
+    SP_Bcd(void);
+    ~SP_Bcd(void) noexcept(false);
   
-    i8 i(char** aacCrs, i8 iLength, i8 iScale, Format* pFmt);
+    Stz* sz(i8 iBcd);
+    Stz* sz(i8 iBcd, i8 iScale);
   
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
+
     Footer* aFooter(void);
   };
 }

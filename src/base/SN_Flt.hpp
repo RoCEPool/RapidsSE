@@ -1,23 +1,22 @@
 /*============================================================================*/
-/* SN_Bol.hpp - Bol scan helper                                               */
+/* SN_Flt.hpp - Flt scan helper                                               */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
-
+namespace BASE
 {
-  class SN_Bol : public Scan
+  class SN_Flt : public Scan
   {
   public:
-    
-   // must be last
+  
+    // must be last
     Footer m_xFooter;
     
   public:
-    SN_Bol(void);
-    ~SN_Bol(void) noexcept(false);
+    SN_Flt(void);
+    ~SN_Flt(void) noexcept(false);
   
-    i8 i(char** aacCrs, Format* pFmt);
+    d8 d(char** aacCrs, Format* pFmt);
   
     Footer* aFooter(void);
   };

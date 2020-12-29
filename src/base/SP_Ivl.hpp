@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Bcd.hpp - Bcd sprint helper                                             */
+/* SP_Ivl.hpp - Ivl sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SP_Bcd : public SPsmall
+  class SP_Ivl : public SPsmall
   {
   public:
   
@@ -13,16 +13,16 @@ namespace Arguments
     Footer m_xFooter;
     
   public:
-    SP_Bcd(void);
-    ~SP_Bcd(void) noexcept(false);
+    SP_Ivl(void);
+    ~SP_Ivl(void) noexcept(false);
   
-    Stz* sz(i8 iBcd);
-    Stz* sz(i8 iBcd, i8 iScale);
-  
+    Stz* sz(i8 iIvl);
+    Stz* sz(i8 iIvl, i8 iScale);
+
     Stz* szMax(void);
     Stz* szMid(void);
     Stz* szMin(void);
-
+   
     Footer* aFooter(void);
   };
 }

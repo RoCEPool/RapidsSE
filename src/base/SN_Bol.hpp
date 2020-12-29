@@ -1,26 +1,23 @@
 /*============================================================================*/
-/* SP_Bol.hpp - Bol sprint helper                                             */
+/* SN_Bol.hpp - Bol scan helper                                               */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
+
 {
-  class SP_Bol : public SPsmall
+  class SN_Bol : public Scan
   {
   public:
-  
-    // must be last
+    
+   // must be last
     Footer m_xFooter;
     
   public:
-    SP_Bol(void);
-    ~SP_Bol(void) noexcept(false);
+    SN_Bol(void);
+    ~SN_Bol(void) noexcept(false);
   
-    Stz* sz(i8 iBol);
-
-    Stz* szMax(void);
-    Stz* szMid(void);
-    Stz* szMin(void);
+    i8 i(char** aacCrs, Format* pFmt);
   
     Footer* aFooter(void);
   };

@@ -1,28 +1,23 @@
 /*============================================================================*/
-/* SP_Ivl.hpp - Ivl sprint helper                                             */
+/* SN_Dte.hpp - Dte scan helper                                               */
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace BASE
 {
-  class SP_Ivl : public SPsmall
+  class SN_Dte : public Scan
   {
   public:
-  
+    
     // must be last
     Footer m_xFooter;
     
   public:
-    SP_Ivl(void);
-    ~SP_Ivl(void) noexcept(false);
+    SN_Dte(void);
+    ~SN_Dte(void) noexcept(false);
   
-    Stz* sz(i8 iIvl);
-    Stz* sz(i8 iIvl, i8 iScale);
-
-    Stz* szMax(void);
-    Stz* szMid(void);
-    Stz* szMin(void);
-   
+    i8 i(char** aacCrs, Format* pFmt);
+  
     Footer* aFooter(void);
   };
 }
