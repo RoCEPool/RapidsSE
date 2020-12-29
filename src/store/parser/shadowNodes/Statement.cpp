@@ -48,7 +48,7 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
 
   // Create a unique name for this object
   s256 sName;
-  LogicalNode::vObjName(GraphNav::szLeafType(szDef), sName);
+  ShadowNode::vObjName(GraphNav::szLeafType(szDef), sName);
 
   // Create the object with its queryText property
   QueryNode* pStmt = new QueryNode(sName, szDef);

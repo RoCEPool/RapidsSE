@@ -1,41 +1,37 @@
 /*============================================================================*/
-/* Expr.hpp - a generic expression                                            */
+/* Statement.hpp - identifies the type of query being planned                 */
 /*============================================================================*/
 #pragma once
 
 namespace Parser
 {
-  class Expr : LogicalNode
+  class Statement : ShadowNode
   {
   public:
-    // Expression Type
-    enum eET {
-      ET_NONE = 0,
-      ET_NULL,
-      ET_BOOLEAN,
-      ET_STRING,
-      ET_INTEGER,
-      ET_FLOAT,
-      ET_DECIMAL,
-      ET_DATE,
-      ET_TIME,
-      ET_TIMESTAMP,
-      ET_INTERVAL,
-      ET_NENUMS
+    // Statement types
+    enum eST {
+      ST_NONE = 0,
+      ST_CREATETABLE,
+      ST_DROPTABLE,
+      ST_CREATEINDEX,
+      ST_DROPINDEX,
+      ST_CTAS,
+      ST_SELECT,
+      ST_INSERT,
+      ST_UPDATE,
+      ST_DELETE,
+      ST_INSERTSELECT,
+
+      ST_ENUMS
     };
 
   private:
     // Shalt never be instantiated. Static functions only.
-    Expr();
+    Statement();
 
   public:
-    static QueryNode* pCreateLiteral(eET eType, Value xVal);
-    static QueryNode* pCreateColumnRef(Text* pCatalogName, Text* pSchemaName,
-                                       Text* pTableName, Text* pColumnName);
-
+    static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
     static void       vPrint(QueryNode* pStmt, s256& sBuf);
-
-
   };
 
 }

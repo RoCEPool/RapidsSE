@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LogicalNode.hpp - a base class of all logical graph nodes                  */
+/* ShadowNode.cpp - a base class of all logical graph nodes                   */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 
 // Static
-Atomic* LogicalNode::ms_pObjId = new Atomic();
+Atomic* ShadowNode::ms_pObjId = new Atomic();
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -19,7 +19,7 @@ Atomic* LogicalNode::ms_pObjId = new Atomic();
 /*----------------------------------------------------------------------------*/
 /* Validates that a node is correctly built                                   */
 /*----------------------------------------------------------------------------*/
-b1 LogicalNode::bValidate(PlanNode* pPlanNode)
+b1 ShadowNode::bValidate(PlanNode* pPlanNode)
 {
   ASSERT(pPlanNode);
 
@@ -37,7 +37,7 @@ b1 LogicalNode::bValidate(PlanNode* pPlanNode)
 /* Creates a unique ID for an object name so that the names of siblings       */
 /* do not conflict and are unique.                                            */
 /*----------------------------------------------------------------------------*/
-void LogicalNode::vObjName(Stz *szPrefix, s256 &sBuf)
+void ShadowNode::vObjName(Stz *szPrefix, s256 &sBuf)
 {
   ASSERT(szPrefix);
 

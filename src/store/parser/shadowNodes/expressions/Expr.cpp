@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Expr.hpp - a generic expression                                            */
+/* Expr.cpp - a generic expression                                            */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -50,7 +50,7 @@ QueryNode* Expr::pCreateLiteral(eET eType, Value xVal)
 
   // Create a unique name for this object
   s256 sName;
-  LogicalNode::vObjName(C_LITERAL_NAME_PREFIX, sName);
+  ShadowNode::vObjName(C_LITERAL_NAME_PREFIX, sName);
 
   QueryNode* pExpr = new QueryNode(sName, aTypeDefinitions[eType], xVal);
   return pExpr;
@@ -66,7 +66,7 @@ QueryNode* Expr::pCreateColumnRef(Text* pCatalogName, Text* pSchemaName,
 
   // Create a unique name for this object
   s256 sName;
-  LogicalNode::vObjName(C_COLUMNREF_NAME_PREFIX, sName);
+  ShadowNode::vObjName(C_COLUMNREF_NAME_PREFIX, sName);
 
   // These Value instances will take ownership of the Text*s.
   Value xCatalogName(pCatalogName);

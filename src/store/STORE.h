@@ -535,10 +535,10 @@ typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 #include "graph/StatisticsNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
 
-#include "graphNodes/LogicalNode.hpp"
-#include "graphNodes/TableRef.hpp"
-#include "graphNodes/Statement.hpp"
-#include "graphNodes/Expr.hpp"
+#include "shadowNodes/ShadowNode.hpp"
+#include "shadowNodes/TableRef.hpp"
+#include "shadowNodes/Statement.hpp"
+#include "shadowNodes/expressions/Expr.hpp"
 
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"

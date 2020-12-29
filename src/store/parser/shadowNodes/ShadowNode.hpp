@@ -1,21 +1,27 @@
 /*============================================================================*/
-/* TableRef.hpp - a reference to a named table                                */
+/* ShadowNode.hpp - a base class of all logical graph nodes                   */
 /*============================================================================*/
 #pragma once
 
 namespace Parser
 {
-  class TableRef : LogicalNode
+  class ShadowNode
   {
 
   private:
+    static Atomic* ms_pObjId;
+
     // Shalt never be instantiated. Static functions only.
-    TableRef();
+    ShadowNode();
 
   public:
-    static QueryNode* pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName);
-    static void       vPrint(QueryNode* pTableRef, s256& sBuf);
-    static b1         bIsResolved(QueryNode* pTableRef);
+    // Validate a node against its definition
+    static b1 bValidate(PlanNode* pPlanNode);
+
+  protected:
+    // Creates a unique ID for an object name
+    static void vObjName(Stz* szPrefix, s256& sBuf);
+
   };
 
 }

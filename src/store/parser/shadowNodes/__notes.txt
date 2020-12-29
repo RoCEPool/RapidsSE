@@ -24,7 +24,7 @@ grouped into classes for commonality. e.g. tableRefs, expressions, etc.
 Some basic rules about adding/modifying these classes:
  - They are never instantiated. Their constructor should be private.
  - Don't add member variables. All functions should be static.
- - All classes should be derived from LogicalNode.hpp/cpp.
+ - All classes should be derived from ShadowNode.hpp/cpp.
  - Always validate that the plan node passed in represents the right
    object. You can use its definition type to confirm this.
  - Be careful with subclasses of objects. Think of this as C programming,
