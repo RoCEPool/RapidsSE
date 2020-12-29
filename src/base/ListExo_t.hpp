@@ -217,7 +217,13 @@ namespace BASE
   private:
     ListExoNode_t<ITEM>* pFindExoNode(ITEM* pItem);
 
-    void vCutExoNode(ListExoNode_t<ITEM>* pExoNode);
+    void vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode);
+  
+    void vInsertExoNodeAfter(ListExoNode_t<ITEM>* pInsertThisNode,
+                             ListExoNode_t<ITEM>* pAfterThisNode);
+  
+    void vInsertExoNodeBefore(ListExoNode_t<ITEM>* pInsertThisNode,
+                              ListExoNode_t<ITEM>* pBeforeThisNode);
 
     void vValidateList(void);
   
@@ -307,19 +313,21 @@ void ListExo_t<CLASSNO,ITEM>::vAppend(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-  if (m_pTailNode) {
-    m_pTailNode->vNextNode(pAppendingNode);
-    pAppendingNode->vPrevNode(m_pTailNode);
+//  if (m_pTailNode) {
+//    m_pTailNode->vNextNode(pAppendingNode);
+//    pAppendingNode->vPrevNode(m_pTailNode);
+//
+//    m_pTailNode = pAppendingNode;
+//  }
+//  else {
+//    m_pHeadNode = pAppendingNode;
+//    m_pTailNode = pAppendingNode;
+//  }
 
-    m_pTailNode = pAppendingNode;
-  }
-  else {
-    m_pHeadNode = pAppendingNode;
-    m_pTailNode = pAppendingNode;
-  }
+  //m_nItems++;
 
-  m_nItems++;
-
+  vInsertExoNodeAfter(pAppendingNode,m_pTailNode);
+  
   m_okLock.vDropWrite();
   
   vValidateList();
@@ -560,6 +568,72 @@ void ListExo_t<CLASSNO,ITEM>::vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode)
   m_nItems--;
 }
 
+/*----------------------------------------------------------------------------*/
+/* insert node after given node                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::
+  vInsertExoNodeAfter(ListExoNode_t<ITEM>* pInsertThisNode,
+                      ListExoNode_t<ITEM>* pAfterThisNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  if (pAfterThisNode) {
+    
+    if (pAfterThisNode->pNextNode())
+      pAfterThisNode->pNextNode()->vPrevNode(pInsertThisNode); // (1)
+    
+    pInsertThisNode->vNextNode(pAfterThisNode->pNextNode()); // (2)
+    
+    pInsertThisNode->vPrevNode(pAfterThisNode); // (3)
+    
+    pAfterThisNode->vNextNode(pInsertThisNode); // (4)
+  }
+  
+  
+  if (! m_pHeadNode)
+    m_pHeadNode = pInsertThisNode;
+  
+  if (! m_pTailNode || m_pTailNode == pAfterThisNode)
+    m_pTailNode = pInsertThisNode;
+
+  m_nItems++;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert node before given node                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::
+  vInsertExoNodeBefore(ListExoNode_t<ITEM>* pInsertThisNode,
+                       ListExoNode_t<ITEM>* pBeforeThisNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  
+  if (pBeforeThisNode) {
+    
+    if (pBeforeThisNode->pPrevNode())
+      pBeforeThisNode->pPrevNode()->vNextNode(pInsertThisNode); // (1)
+    
+    pInsertThisNode->vPrevNode(pBeforeThisNode->pPrevNode()); // (2)
+    
+    pInsertThisNode->vNextNode(pBeforeThisNode); // (3)
+    
+    pBeforeThisNode->vPrevNode(pInsertThisNode); // (4)
+  }
+  
+  
+  if (! m_pHeadNode || m_pHeadNode == pBeforeThisNode)
+    m_pHeadNode = pInsertThisNode;
+  
+  if (! m_pTailNode)
+    m_pTailNode = pInsertThisNode;
+
+  m_nItems++;
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* find node given item                                                       */
