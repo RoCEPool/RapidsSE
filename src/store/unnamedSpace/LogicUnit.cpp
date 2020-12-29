@@ -1744,6 +1744,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_CELLARRAY_ADR,iaColSet);
         break;//+endCase
 
+      case EO_SET_LOCALS_ROW: ArgNil(); // row buffer columns into locals
+        dLU0(EO_SET_LOCALS_ROW);
+        aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_ROW_COL_PUSHSET(pLU,&aiLocals,aRluCommon->m_pDevSrcRow,iaColSet);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // table
       case EO_TABLENM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals

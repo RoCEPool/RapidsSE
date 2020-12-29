@@ -3686,6 +3686,11 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
     pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NOSRC_ROUTINE, &oTagSet));
   }
 
+  for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
+    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText[i_Col].azChar());
+  }
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PROJECT_END, &oTagSet));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handler for ROWBUFFER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3694,11 +3699,14 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROWBUFFER_PROJECT_HANDLER, &oTagSet));
   oTagSet.vReset();
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PROJECT_COLUMNS Routine
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_COLUMNS
   if (pProject->m_iStreamInColumns) {
+    oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pProject->m_iStreamInColumns);
+    oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pProject->m_uProjectColumns);
     pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_ROUTINE, &oTagSet));
     oTagSet.vReset();
   }

@@ -40,7 +40,7 @@ print "loading Lineitem...";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
 //projection lineitem l_extendedPrice, 2;
-//projection lineitem l_extendedPrice, l_discount;
+//projection lineitem l_extendedPrice, l_discount, L_COMMENT;
 //rangeScan lineitem lineitem_idx2 xyz;
 
 
@@ -51,13 +51,27 @@ begin
 
    stage stageB on all partitions :
      range 0 lineitem by lineitem_idx2 x
-     | project 0 l_extendedPrice
+     | project 0 "l_extendedPrice , l_comment"
      | stageC
 
    stage stageC on origin :
      output | sink | stageA
 end;
+/*
+pipeline x
+  begin
 
+  stage stageA on origin :
+    start | periodic once | syntaxTable x "(y integer)" | stageB
+
+  stage stageB on all nodes :
+    createTable | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+*/
 //Smt0 lineitem l_extendedPrice, l_discount;
 //Smt0 lineitem as revenue l_extendedPrice 2 * ;
 //Smt0 lineitem l_extendedPrice, l_discount, l_extendedPrice 2 *;

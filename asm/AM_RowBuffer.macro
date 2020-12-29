@@ -27,6 +27,9 @@ macro AM_ROW_PROJECT_ROUTINE
 //----------------------------------------------------------------------------//
   // ROW_PROJECT_ROUTINE
   Label ROW_PROJECT_ROUTINE
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMNS <projectSrcColumns>
+  EO_SET_LOCALS_ROW
   EO_ROW_DST_NEW
   //EO_DUMP
 endMacro
@@ -46,7 +49,7 @@ endMacro
 //----------------------------------------------------------------------------//
 macro AM_ROW_DST_COLUMNS
   // ROW_DST_COLUMNS
-  EO_ROW_DST_PUSHCOLS <srcColumn>
+  EO_ROW_SRC_PUSHCOLS <srcColumn>
   EO_ROW_DST_POPCOLS <dstColumn>
   EO_ROW_DST_PRINT
 endMacro

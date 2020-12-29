@@ -112,6 +112,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_SET_COLUMNS,      // add columns to set
   /*    */ EO_SET_ITEMS,        // set number of column items
   /*    */ EO_SET_LOCALS_ALT,   // inflate alt columns direct into locals
+  /*    */ EO_SET_LOCALS_ROW,   // row columns into locals
   /*    */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
   /*    */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
 
@@ -429,6 +430,7 @@ static Stz* aEO[]
   /*    */ "EO_SET_COLUMNS"_Stz,
   /*    */ "EO_SET_ITEMS"_Stz,
   /*    */ "EO_SET_LOCALS_ALT"_Stz,
+  /*    */ "EO_SET_LOCALS_ROW"_Stz,
   /*    */ "EO_SET_LOCALS_SRC"_Stz,
   /*    */ "EO_SET_LOCALS_SRC2"_Stz,
 
@@ -752,6 +754,7 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_SET_COLUMNS
   { EA_INT,     8 },  // EO_SET_ITEMS
   { EA_INT,     8 },  // EO_SET_LOCALS_ALT
+  { EA_NONE,    0 },  // EO_SET_LOCALS_ROW
   { EA_INT,     8 },  // EO_SET_LOCALS_SRC
   { EA_NONE,    0 },  // EO_SET_LOCALS_SRC2
 

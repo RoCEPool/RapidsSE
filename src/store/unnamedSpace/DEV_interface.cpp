@@ -1252,27 +1252,52 @@ void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE) {
   return;
 }
 
+#define S_PushStr(__azStr) \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
+  nSize = StrLib::nSize((char*)__azStr); \
+  azDst = (char*)(++aiDstk); \
+  StrLib::vCopy(azDst,(char*)__azStr); \
+  aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
+  *(++aiDstk) = nSize;
+
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaColSet)
+void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, void* aROWDEVICE, i8* iaColSet)
 {
   _static_
-  RASSERT(0); // check with ALka
   
-  char* acStrArea_null = nullptr;
-
   LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
-    
-  RowInflator::vInflate_ColumnSet_into_CellArray
-  (
-    aaiDstk,
-    acStrArea_null,
-    (eSI)ieStrInflateRule,
-    pLogicUnit->m_pDevSrcIxt->m_aCrw,
-    iaColSet,
-    pLogicUnit->m_pDevSrcRow->m_pStreamDef
-  );
+
+  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  i8* aiDstk_lcl = *aaiDstk;
+  i8* ayDst = ++aiDstk_lcl;
+
+  i8 i_ColSet = 0;
+  i8 i_ColToRetrieve = iaColSet[i_ColSet];
+  Stz* szSrc;
+  i8 nSize;
+
+  for (i8 i_ColSet = 0; iaColSet[i_ColSet] != -1; i_ColSet++) {
+    Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(iaColSet[i_ColSet]);
+    switch (pColumn->eColumnType()) {
+      case CT_INTEGER:
+      case CT_DATE:
+      case CT_TIMESTAMP:
+      case CT_DECIMAL:
+        *ayDst = pDevRow->m_aRow->iColVal_int(iaColSet[i_ColSet]);
+        ayDst++;
+        break;
+      case CT_CHAR:
+      case CT_VARCHAR:
+        *ayDst = (i8)pDevRow->m_aRow->szColVal_ofs(iaColSet[i_ColSet]);
+        ayDst++;
+        break;
+      default:
+        ASSERT(0);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

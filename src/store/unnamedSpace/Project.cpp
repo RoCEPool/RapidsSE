@@ -330,8 +330,10 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
     }
     RASSERT(pColumn);
 
-    StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,i_StreamInCol);
-    //StrLib::vSprintCat(azCrs,"  EO_ROW_SRC_PUSHCOLI %lld\n"_Stz,pColumn->iColumnNo());
+    if (pColumn->eColumnType() == CT_VARCHAR || pColumn->eColumnType() == CT_CHAR)
+      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALS %lld\n"_Stz,i_StreamInCol);
+    else
+      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,i_StreamInCol);
     pTkn = pTknVec->pNextToken();
   }
 
