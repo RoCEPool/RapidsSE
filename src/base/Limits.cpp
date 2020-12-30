@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "Limits.hpp"
 
@@ -11,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Limits,CN_LIMITS)
+__pCastFunction(BASE,Limits,CN_LIMITS)
 __aNewFunction(Limits,CN_LIMITS)
 __vDeleteFunction(Limits,CN_LIMITS)
 __aFooterFunction(Limits)

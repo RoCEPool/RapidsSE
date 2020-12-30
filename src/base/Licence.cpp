@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "Licence.hpp"
 
@@ -11,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Licence,CN_LICENCE)
+__pCastFunction(BASE,Licence,CN_LICENCE)
 __aNewFunction(Licence,CN_LICENCE)
 __vDeleteFunction(Licence,CN_LICENCE)
 __aFooterFunction(Licence)
