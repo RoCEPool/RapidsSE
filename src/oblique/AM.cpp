@@ -885,10 +885,10 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
 void AM::vLogAll(void)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  gpLog->vMarkAll(true);
+//  if (! AM::bLogging())
+//    return;
+//
+//  gpLog->vMarkAll(true);
 #endif
 }
 
@@ -898,10 +898,10 @@ void AM::vLogAll(void)
 void AM::vLogHow(i8 iRequestId, i8 iDetail)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  gpLog->vHow(iRequestId,iDetail);
+//  if (! AM::bLogging())
+//    return;
+//
+//  gpLog->vHow(iRequestId,iDetail);
 #endif
 }
 
@@ -911,16 +911,16 @@ void AM::vLogHow(i8 iRequestId, i8 iDetail)
 void AM::vLogFyi(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryFyi(CN_NONE,szFormat,xArgs);
-  
-  va_end(xArgs);
+//  if (! AM::bLogging())
+//    return;
+//
+//  va_list xArgs;
+//
+//  va_start(xArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryFyi(CN_NONE,szFormat,xArgs);
+//
+//  va_end(xArgs);
 #endif
 }
 
@@ -930,22 +930,22 @@ void AM::vLogFyi(Stz* szFormat, ...)
 void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pJob))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryDdl(eSeverity,pJob,eDdlAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pJob->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pJob))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryDdl(eSeverity,pJob,eDdlAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pJob->m_i_Log = i_Entry;
 #endif
 }
 
@@ -955,22 +955,22 @@ void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
 void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pJob))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryJob(eSeverity,pJob,eJobAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pJob->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pJob))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryJob(eSeverity,pJob,eJobAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pJob->m_i_Log = i_Entry;
 #endif
 }
 
@@ -980,22 +980,22 @@ void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pLock))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryLck(eSeverity,pLock,eLckAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pLock->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pLock))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryLck(eSeverity,pLock,eLckAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pLock->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1005,22 +1005,22 @@ void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pLog))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryLog(eSeverity,pLog,eLogAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pLog->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pLog))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryLog(eSeverity,pLog,eLogAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pLog->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1030,22 +1030,22 @@ void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pJob))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryMgt(eSeverity,pJob,eMgtAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pJob->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pJob))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryMgt(eSeverity,pJob,eMgtAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pJob->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1055,22 +1055,22 @@ void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
 void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pOpr))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryOpr(eSeverity,pOpr,eOprAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pOpr->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pOpr))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryOpr(eSeverity,pOpr,eOprAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pOpr->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1105,22 +1105,22 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-
-  if (! gpLog->bIsLoggable(pQue))
-    return;
-  
-  va_list xVarArgs;
-
-  va_start(xVarArgs,szFormat);
-
-  i8 i_Entry = gpLog->iEntryQue(eSeverity,pQue,eQueAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-
-  pQue->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pQue))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryQue(eSeverity,pQue,eQueAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pQue->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1130,22 +1130,22 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-    
-  if (! gpLog->bIsLoggable(pRes))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryRes(eSeverity,pRes,eResAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pRes->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pRes))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryRes(eSeverity,pRes,eResAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pRes->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1155,22 +1155,22 @@ void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pSsn))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntrySsn(eSeverity,pSsn,eApiAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pSsn->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pSsn))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntrySsn(eSeverity,pSsn,eApiAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pSsn->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1180,22 +1180,22 @@ void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pJob))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntrySvc(eSeverity,pJob,eSvcAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pJob->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pJob))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntrySvc(eSeverity,pJob,eSvcAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pJob->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1205,23 +1205,23 @@ void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(gpAttachMap))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntrySys(eSeverity,gpAttachMap,eSysAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  gpAttachMap->m_i_Log = i_Entry;
-
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(gpAttachMap))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntrySys(eSeverity,gpAttachMap,eSysAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  gpAttachMap->m_i_Log = i_Entry;
+//
 #endif
 }
 
@@ -1231,22 +1231,22 @@ void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pThread))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryThd(eSeverity,pThread,eThdAct,
-                                szFormat,xVarArgs);
-
-  va_end(xVarArgs);
-  
-  pThread->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pThread))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryThd(eSeverity,pThread,eThdAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pThread->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1256,22 +1256,22 @@ void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...
 void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pTask))
-    return;
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-    
-  i8 i_Entry = gpLog->iEntryTsk(eSeverity,pTask,eTskAct,
-                                szFormat,xVarArgs);
-  
-  va_end(xVarArgs);
-  
-  pTask->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! gpLog->bIsLoggable(pTask))
+//    return;
+//
+//  va_list xVarArgs;
+//
+//  va_start(xVarArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryTsk(eSeverity,pTask,eTskAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//
+//  pTask->m_i_Log = i_Entry;
 #endif
 }
 
@@ -1281,22 +1281,22 @@ void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! gpLog->bIsLoggable(pTxn))
-    return;
-
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryTxn(eSeverity,pTxn,eTxnAct,
-                                szFormat,xVarArgs);
-
-  va_end(xVarArgs);
-  
-  pTxn->m_i_Log = i_Entry;
+//  if (! AM::bLogging())
+//    return;
+//  
+//  if (! gpLog->bIsLoggable(pTxn))
+//    return;
+//
+//  va_list xVarArgs;
+//  
+//  va_start(xVarArgs,szFormat);
+//  
+//  i8 i_Entry = gpLog->iEntryTxn(eSeverity,pTxn,eTxnAct,
+//                                szFormat,xVarArgs);
+//
+//  va_end(xVarArgs);
+//  
+//  pTxn->m_i_Log = i_Entry;
 #endif
 }
 
