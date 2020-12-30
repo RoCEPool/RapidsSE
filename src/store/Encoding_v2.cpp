@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Encoding_v2,CN_ENCODING_V2)
+__pCastFunction(STORE,Encoding_v2,CN_ENCODING_V2)
 __aNewFunction(Encoding_v2,CN_ENCODING_V2)
 __vDeleteFunction(Encoding_v2,CN_ENCODING_V2)
 __aFooterFunction(Encoding_v2)

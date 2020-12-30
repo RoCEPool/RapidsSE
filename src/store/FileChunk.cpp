@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FileChunk* Arguments::_pFileChunk(void* aAddr)
+FileChunk* STORE::_pFileChunk(void* aAddr)
 {
   FileChunk* pFileChunk = reinterpret_cast<FileChunk*>(aAddr);
   

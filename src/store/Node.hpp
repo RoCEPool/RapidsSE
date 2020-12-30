@@ -7,7 +7,7 @@ namespace BASE { class Socket; } //?
 
 #include "eNS.h"
 
-namespace Arguments
+namespace STORE
 {
   class Node : public Object,
                public ListItem_t<Node>

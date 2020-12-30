@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,ToHshCrw,CN_TOHSHCRW)
+__pCastFunction(STORE,ToHshCrw,CN_TOHSHCRW)
 __aNewFunction(ToHshCrw,CN_TOHSHCRW)
 __vDeleteFunction(ToHshCrw,CN_TOHSHCRW)
 __aFooterFunction(ToHshCrw)

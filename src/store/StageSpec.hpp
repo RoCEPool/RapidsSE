@@ -6,7 +6,7 @@
 #include "ePO.h"
 #include "ePX.h"
 
-namespace Arguments
+namespace STORE
 {
   class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
   {

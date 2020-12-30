@@ -12,13 +12,13 @@
  
 
 namespace BASE            { class Format;                                   }
-namespace Arguments    { class Crw;             class CrwBuffer;
+namespace STORE    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
                               class HeadLine;        class Encoding_v2;
 class SP_Encoding_v2;
 class Packing_v2;
                               class OverLine;        class TailLine;          }
-namespace Arguments       { class DataBuffer;      class CsvBuffer;
+namespace STORE       { class DataBuffer;      class CsvBuffer;
                               class RowBuffer;       class RowBuffer;         }
 namespace BASE {
 class Datum_h;
@@ -43,44 +43,44 @@ template <i8 SPACE> class Datum_t;
 }
 
 
-namespace Arguments    { class Dynamo;                                   }
+namespace STORE    { class Dynamo;                                   }
 namespace STORE       { class LogicUnit;                                }
 
 namespace BASE           { class EnumFlags;       class TagSet;
 class Birth; class Now;
 }
-namespace Arguments             { class Grid;            class Node;              }
+namespace STORE             { class Grid;            class Node;              }
 
-namespace Arguments          { class EntBuffer;       class IndexTree;         }
-namespace Arguments          { class InfoSetBase;                              }
+namespace STORE          { class EntBuffer;       class IndexTree;         }
+namespace STORE          { class InfoSetBase;                              }
 namespace STORE         { class SessionArray;                             }
-namespace Arguments              { class Job;             
+namespace STORE              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }
 namespace BASE   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
 namespace STORE           { class Log;             class LogEntry;          }
-namespace Arguments          { class Table;           class IdxColVec;
+namespace STORE          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
 namespace OBLIQUE           { class AM;                                       }
-namespace Arguments          { class Operand;                                  }
-namespace Arguments      {
+namespace STORE          { class Operand;                                  }
+namespace STORE      {
                               class PtnStream;       class TablePtn;          }
-namespace Arguments         { class Xmits;           class Op;
+namespace STORE         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
                               class StageVec;        class Stream;            }
-namespace Arguments     { class OpSpec;          class PipelineSpec;
+namespace STORE     { class OpSpec;          class PipelineSpec;
                               class StageSpec;                                }
-namespace Arguments             { class Planner;                                  }
+namespace STORE             { class Planner;                                  }
 namespace PROMPT            {   class SePrompt;                               }
-namespace Arguments   { class Crv;                                      }
+namespace STORE   { class Crv;                                      }
 namespace BASE     { class RU_Cpu;          class RU_Memory;         }
-namespace Arguments              { class Row;                                      }
-namespace Arguments             { class Dic;             class DicStack;
+namespace STORE              { class Row;                                      }
+namespace STORE             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
-namespace Arguments          { class Session;         class SessionState;      }
+namespace STORE          { class Session;         class SessionState;      }
 namespace STORE             { class Step;            class StepTiming;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 namespace BASE        { class Article;         class Queue;
@@ -88,12 +88,10 @@ class Heap; class PoolHelper; class ObjectSnapshot;            }
 namespace STORE             { class Task;                                     }
 namespace STORE           { class Scheduler;       class Thread;
                               class Queues;                                   }
-namespace Arguments      { class Tx;              class TxSet;             }
+namespace STORE      { class Tx;              class TxSet;             }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-using namespace Arguments;
-using namespace STORE;
 using namespace BASE;
 using namespace STORE;
 using namespace OBLIQUE;

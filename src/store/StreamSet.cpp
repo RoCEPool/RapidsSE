@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StreamSet* Arguments::_pStreamSet(void* aAddr)
+StreamSet* STORE::_pStreamSet(void* aAddr)
 {
   StreamSet* pStreamSet = reinterpret_cast<StreamSet*>(aAddr);
   

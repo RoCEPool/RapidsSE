@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicStack* Arguments::_pDicStack(void* aAddr)
+DicStack* STORE::_pDicStack(void* aAddr)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Planner* Arguments::_pPlanner(void* aAddr)
+Planner* STORE::_pPlanner(void* aAddr)
 {
   Planner* pPlanner = reinterpret_cast<Planner*>(aAddr);
   

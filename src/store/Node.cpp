@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Node* Arguments::_pNode(void* aAddr)
+Node* STORE::_pNode(void* aAddr)
 {
   Node* pNode = reinterpret_cast<Node*>(aAddr);
   

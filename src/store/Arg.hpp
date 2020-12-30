@@ -5,7 +5,7 @@
 
 #include "eAK.h"
 
-namespace Arguments
+namespace STORE
 {  
   class Arg : public Object
   {

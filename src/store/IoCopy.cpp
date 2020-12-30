@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IoCopy* Arguments::_pIoCopy(void* aAddr)
+IoCopy* STORE::_pIoCopy(void* aAddr)
 {
   IoCopy* pIoCopy = reinterpret_cast<IoCopy*>(aAddr);
   

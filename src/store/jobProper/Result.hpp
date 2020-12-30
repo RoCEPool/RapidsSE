@@ -5,7 +5,7 @@
 
 #include "eRS.h"
 
-namespace Arguments
+namespace STORE
 {
   class Result : public Object
   {

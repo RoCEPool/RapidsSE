@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SrtSet* Arguments::_pSrtSet(void* aAddr)
+SrtSet* STORE::_pSrtSet(void* aAddr)
 {
   SrtSet* pSrtSet = reinterpret_cast<SrtSet*>(aAddr);
   

@@ -6,7 +6,7 @@
 #include "eRA.h"
 #include "eRO.h"
 
-namespace Arguments
+namespace STORE
 {
   class IndexStream : public Object
   {

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LocalChain* Arguments::_pLocalSet(void* aAddr)
+LocalChain* STORE::_pLocalSet(void* aAddr)
 {
   LocalChain* pLocalSet = reinterpret_cast<LocalChain*>(aAddr);
   

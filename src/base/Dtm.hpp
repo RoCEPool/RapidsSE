@@ -7,9 +7,9 @@ namespace BASE
 {
   class Dtm
   {
-  friend class Arguments::Encoding_v2;
-  friend class Arguments::SP_Encoding_v2;
-  friend class Arguments::Packing_v2;
+  friend class STORE::Encoding_v2;
+  friend class STORE::SP_Encoding_v2;
+  friend class STORE::Packing_v2;
   
   friend class BASE::SN_Bcd;
   friend class BASE::SN_Bol;
@@ -35,7 +35,7 @@ namespace BASE
   friend class BASE::Mutex;
   friend class BASE::IvlLib;
   
-  friend class Arguments::Row;
+  friend class STORE::Row;
 
   private:
   

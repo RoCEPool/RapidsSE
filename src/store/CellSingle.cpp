@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,CellSingle,CN_CELLSINGLE)
+__pCastFunction(STORE,CellSingle,CN_CELLSINGLE)
 __aNewFunction(CellSingle,CN_CELLSINGLE)
 __vDeleteFunction(CellSingle,CN_CELLSINGLE)
 __aFooterFunction(CellSingle)

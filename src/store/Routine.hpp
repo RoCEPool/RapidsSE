@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_WSP_ROUTINE = C_SIZE_SMALL_OBJECT - 128;
 

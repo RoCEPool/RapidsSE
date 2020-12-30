@@ -15,7 +15,7 @@ extern Args gxArgs;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Grid* Arguments::_pGrid(void* aAddr)
+Grid* STORE::_pGrid(void* aAddr)
 {
   Grid* pGrid = reinterpret_cast<Grid*>(aAddr);
   

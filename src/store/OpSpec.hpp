@@ -5,7 +5,7 @@
 
 #include "eXK.h"
 
-namespace Arguments
+namespace STORE
 {
   class OpSpec : public Object
   {

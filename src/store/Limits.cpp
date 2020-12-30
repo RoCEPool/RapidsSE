@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Limits,CN_LIMITS)
+__pCastFunction(STORE,Limits,CN_LIMITS)
 __aNewFunction(Limits,CN_LIMITS)
 __vDeleteFunction(Limits,CN_LIMITS)
 __aFooterFunction(Limits)

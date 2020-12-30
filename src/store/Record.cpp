@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Record,CN_RECORD)
+__pCastFunction(STORE,Record,CN_RECORD)
 __aNewFunction(Record,CN_RECORD)
 __vDeleteFunction(Record,CN_RECORD)
 __aFooterFunction(Record)

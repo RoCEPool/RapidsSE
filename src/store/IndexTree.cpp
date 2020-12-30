@@ -17,7 +17,7 @@ extern EnvFlags gxEnvFlags;;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexTree* Arguments::_pIndexTree(void* pAddr)
+IndexTree* STORE::_pIndexTree(void* pAddr)
 {
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pAddr);
   

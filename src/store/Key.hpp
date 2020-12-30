@@ -5,7 +5,7 @@
 
 #include "eKC.h"
 
-namespace Arguments
+namespace STORE
 {
   class Key
   {

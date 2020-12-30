@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LoadChunk* Arguments::_pLoadChunk(void* aAddr)
+LoadChunk* STORE::_pLoadChunk(void* aAddr)
 {
   LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(aAddr);
   

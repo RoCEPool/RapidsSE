@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,CrwBuffer,CN_CRWBUFFER)
+__pCastFunction(STORE,CrwBuffer,CN_CRWBUFFER)
 __aNewFunction(CrwBuffer,CN_CRWBUFFER)
 __vDeleteFunction(CrwBuffer,CN_CRWBUFFER)
 __aFooterFunction(CrwBuffer)

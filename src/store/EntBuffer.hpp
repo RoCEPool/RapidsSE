@@ -6,7 +6,7 @@
 #include "eDU.h"
 #include "eIU.h"
 
-namespace Arguments
+namespace STORE
 {
   static const bool C_NOT_FINAL    = false;
   static const bool C_FINAL        = true;

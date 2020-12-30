@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class RowBuffer : public DataBuffer,
                     public RowBox_t<C_WSP_ROWBUFFER>

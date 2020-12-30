@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class Plan : public Object,
                public ListItem_t<Plan>

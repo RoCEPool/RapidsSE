@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   template <i8 SIZE>
   class RowBox_t : public WspConvergent_t<SIZE,Stz,Row>

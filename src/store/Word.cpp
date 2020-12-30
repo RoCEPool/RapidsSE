@@ -15,7 +15,7 @@ extern StepFp gfpEntryStep;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Word* Arguments::_pWord(void* aAddr)
+Word* STORE::_pWord(void* aAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(aAddr);
   

@@ -5,7 +5,7 @@
 
 #include "eOI.h"
 
-namespace Arguments
+namespace STORE
 {
   
   class InfoSet : public InfoSetBase

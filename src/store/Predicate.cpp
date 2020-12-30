@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Predicate* Arguments::_pPredicate(void* aAddr)
+Predicate* STORE::_pPredicate(void* aAddr)
 {
   Predicate* pPredicate = reinterpret_cast<Predicate*>(aAddr);
   

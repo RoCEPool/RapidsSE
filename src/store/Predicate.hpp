@@ -5,7 +5,7 @@
 
 #include "ePK.h"
 
-namespace Arguments
+namespace STORE
 {  
   class Predicate : public Object
   {

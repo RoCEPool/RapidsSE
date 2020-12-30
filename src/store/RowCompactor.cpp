@@ -14,7 +14,7 @@ extern EnvFlags gxEnvFlags;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,RowCompactor,CN_ROWCOMPACTOR)
+__pCastFunction(STORE,RowCompactor,CN_ROWCOMPACTOR)
 __aNewFunction(RowCompactor,CN_ROWCOMPACTOR)
 __vDeleteFunction(RowCompactor,CN_ROWCOMPACTOR)
 __aFooterFunction(RowCompactor)

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,BucketMap,CN_BUCKETMAP)
+__pCastFunction(STORE,BucketMap,CN_BUCKETMAP)
 __aNewFunction(BucketMap,CN_BUCKETMAP)
 __vDeleteFunction(BucketMap,CN_BUCKETMAP)
 __aFooterFunction(BucketMap);

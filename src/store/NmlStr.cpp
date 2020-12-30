@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,NmlStr,CN_NMLSTR)
+__pCastFunction(STORE,NmlStr,CN_NMLSTR)
 __aNewFunction(NmlStr,CN_NMLSTR)
 __vDeleteFunction(NmlStr,CN_NMLSTR)
 __aFooterFunction(NmlStr)

@@ -5,7 +5,7 @@
 
 #include "eAT.h"
 
-namespace Arguments
+namespace STORE
 {
   class AccessPath : public Object
   {

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Reader,CN_READER)
+__pCastFunction(STORE,Reader,CN_READER)
 __aNewFunction(Reader,CN_READER)
 __vDeleteFunction(Reader,CN_READER)
 __aFooterFunction(Reader)

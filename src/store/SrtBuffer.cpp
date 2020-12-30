@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* Arguments::_pSrtBuffer(void* aAddress)
+SrtBuffer* STORE::_pSrtBuffer(void* aAddress)
 {
   SrtBuffer* pSrtBuffer = reinterpret_cast<SrtBuffer*>(aAddress);
   

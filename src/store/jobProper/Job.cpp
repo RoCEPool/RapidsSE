@@ -18,7 +18,7 @@ Atomic gixJob;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job* Arguments::_pJob(void* aAddr)
+Job* STORE::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
@@ -33,7 +33,7 @@ Job* Arguments::_pJob(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job* Arguments::_pJob(i8 iAddr)
+Job* STORE::_pJob(i8 iAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(iAddr);
   
@@ -48,7 +48,7 @@ Job* Arguments::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid job?                                                */
 /*----------------------------------------------------------------------------*/
-bool Arguments::_bIsValidJob(eCN eClass)
+bool STORE::_bIsValidJob(eCN eClass)
 {
   if (eClass >= CN_JOB && eClass <= CN_JOB__FIND)
     return true;
@@ -1369,7 +1369,7 @@ void Job::vWasReceived(bool bWasReceived)
 /*----------------------------------------------------------------------------*/
 /* check if the cluster has started                                           */
 /*----------------------------------------------------------------------------*/
-eEC Arguments::eJob_checkCluster(void)
+eEC STORE::eJob_checkCluster(void)
 {
   if (AM::pGrid()->bHasStarted())
     return EC_NONE;

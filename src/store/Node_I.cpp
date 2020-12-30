@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Node_I,CN_NODE_I)
+__pCastFunction(STORE,Node_I,CN_NODE_I)
 __aNewFunction(Node_I,CN_NODE_I)
 __vDeleteFunction(Node_I,CN_NODE_I)
 __aFooterFunction(Node_I);

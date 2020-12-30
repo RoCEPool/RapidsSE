@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Xmits* Arguments::_pXmits(void* aAddr)
+Xmits* STORE::_pXmits(void* aAddr)
 {
   Xmits* pXmits = reinterpret_cast<Xmits*>(aAddr);
   

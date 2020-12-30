@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IngestChunk* Arguments::_pIngestChunk(void* aAddr)
+IngestChunk* STORE::_pIngestChunk(void* aAddr)
 {
   IngestChunk* pIngestChunk = reinterpret_cast<IngestChunk*>(aAddr);
   

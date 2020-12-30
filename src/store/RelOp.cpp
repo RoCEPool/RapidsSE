@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RelOp* Arguments::_pRelOp(void* aAddr)
+RelOp* STORE::_pRelOp(void* aAddr)
 {
   RelOp* pRelOp = reinterpret_cast<RelOp*>(aAddr);
   

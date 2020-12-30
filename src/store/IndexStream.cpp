@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,IndexStream,CN_INDEXSTREAM)
+__pCastFunction(STORE,IndexStream,CN_INDEXSTREAM)
 __aNewFunction(IndexStream,CN_INDEXSTREAM)
 __vDeleteFunction(IndexStream,CN_INDEXSTREAM)
 __aFooterFunction(IndexStream)

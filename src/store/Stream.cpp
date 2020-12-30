@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Stream,CN_STREAM)
+__pCastFunction(STORE,Stream,CN_STREAM)
 __aNewFunction(Stream,CN_STREAM)
 __vDeleteFunction(Stream,CN_STREAM)
 __aFooterFunction(Stream)

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,ToPtnRow,CN_TOPTNROW)
+__pCastFunction(STORE,ToPtnRow,CN_TOPTNROW)
 __aNewFunction(ToPtnRow,CN_TOPTNROW)
 __vDeleteFunction(ToPtnRow,CN_TOPTNROW)
 __aFooterFunction(ToPtnRow)

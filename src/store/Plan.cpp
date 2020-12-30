@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Plan* Arguments::_pPlan(void* aAddr)
+Plan* STORE::_pPlan(void* aAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(aAddr);
   
@@ -23,7 +23,7 @@ Plan* Arguments::_pPlan(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Plan* Arguments::_pPlan(i8 iAddr)
+Plan* STORE::_pPlan(i8 iAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(iAddr);
   

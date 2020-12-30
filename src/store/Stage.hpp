@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STRANDS>
   {

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dic* Arguments::_pDic(void* aAddr)
+Dic* STORE::_pDic(void* aAddr)
 {
   RASSERT(aAddr);
   Dic* pDic = reinterpret_cast<Dic*>(aAddr);

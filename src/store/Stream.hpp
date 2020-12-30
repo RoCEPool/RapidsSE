@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>
   {

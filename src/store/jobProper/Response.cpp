@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Response* Arguments::_pResponse(void* aAddr)
+Response* STORE::_pResponse(void* aAddr)
 {
   Response* pResponse = reinterpret_cast<Response*>(aAddr);
   

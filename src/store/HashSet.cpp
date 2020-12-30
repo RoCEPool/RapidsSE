@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,HashSet,CN_HASHSET)
+__pCastFunction(STORE,HashSet,CN_HASHSET)
 __aNewFunction(HashSet,CN_HASHSET)
 __vDeleteFunction(HashSet,CN_HASHSET)
 __aFooterFunction(HashSet)

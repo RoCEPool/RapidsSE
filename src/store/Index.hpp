@@ -5,7 +5,7 @@
 
 static Stz* S_READAPI_I = "__READAPI_I"_Stz;
 
-namespace Arguments
+namespace STORE
 {
   class Index : public Object
   {

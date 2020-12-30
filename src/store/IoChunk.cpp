@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IoChunk* Arguments::_pIoChunk(void* aAddr)
+IoChunk* STORE::_pIoChunk(void* aAddr)
 {
   IoChunk* pIoChunk = reinterpret_cast<IoChunk*>(aAddr);
   

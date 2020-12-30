@@ -794,7 +794,7 @@ void Task::vSeedTask(void)
 /*----------------------------------------------------------------------------*/
 /* get send node                                                              */
 /*----------------------------------------------------------------------------*/
-Arguments::Node* Task::pSendNode(void)
+STORE::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -804,7 +804,7 @@ Arguments::Node* Task::pSendNode(void)
 /*----------------------------------------------------------------------------*/
 /*set send node                                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSendNode(Arguments::Node* pNode)
+void Task::vSendNode(STORE::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

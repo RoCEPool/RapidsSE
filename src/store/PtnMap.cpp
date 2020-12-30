@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,PtnMap,CN_PTNMAP)
+__pCastFunction(STORE,PtnMap,CN_PTNMAP)
 __aNewFunction(PtnMap,CN_PTNMAP)
 __vDeleteFunction(PtnMap,CN_PTNMAP)
 __aFooterFunction(PtnMap)

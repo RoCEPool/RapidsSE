@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowOnce* Arguments::_pRowOnce(void* aAddr)
+RowOnce* STORE::_pRowOnce(void* aAddr)
 {
   RowOnce* pRowOnce = reinterpret_cast<RowOnce*>(aAddr);
   

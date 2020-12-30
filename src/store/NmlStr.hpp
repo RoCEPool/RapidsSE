@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_WSP_NMLSTR = C_8KB - 128;
 

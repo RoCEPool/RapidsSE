@@ -10,7 +10,7 @@
 #include "eAC.h"
 #include "eSK.h"
 
-namespace Arguments
+namespace STORE
 {
   class Session : public Focal
   {

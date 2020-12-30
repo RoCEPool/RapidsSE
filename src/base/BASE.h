@@ -365,9 +365,9 @@ EndDefine
 
 #define JOBS_fn(FNNAME) \
   \
-  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Arguments::FNNAME); \
+  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)STORE::FNNAME); \
   \
-  void Arguments::FNNAME(Job* pJob) \
+  void STORE::FNNAME(Job* pJob) \
 EndDefine
 
 

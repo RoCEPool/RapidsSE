@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Pipeline,CN_PIPELINE)
+__pCastFunction(STORE,Pipeline,CN_PIPELINE)
 __aNewFunction(Pipeline,CN_PIPELINE)
 __vDeleteFunction(Pipeline,CN_PIPELINE)
 __aFooterFunction(Pipeline)

@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class JobLog
   {
   public:
-    static void vNote(Arguments::Job* pJob, Stz* szFormat, ...);
-    static void vNoteState(Arguments::Job* pJob, Stz* szPoint);
+    static void vNote(STORE::Job* pJob, Stz* szFormat, ...);
+    static void vNoteState(STORE::Job* pJob, Stz* szPoint);
   };
 }
 

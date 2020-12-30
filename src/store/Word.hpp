@@ -5,7 +5,7 @@
 
 #include "eWK.h"
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_WSP_WORD = C_SIZE_MEDIUM_OBJECT - C_1KB;
   

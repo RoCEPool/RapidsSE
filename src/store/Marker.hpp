@@ -5,7 +5,7 @@
 
 #include "eOM.h"
 
-namespace Arguments
+namespace STORE
 {
   class Marker : public Operand
   {

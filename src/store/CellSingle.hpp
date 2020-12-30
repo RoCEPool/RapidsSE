@@ -5,7 +5,7 @@
 
 #include "eSI.h"
 
-namespace Arguments
+namespace STORE
 {
   class CellSingle : public Object
   {
