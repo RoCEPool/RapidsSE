@@ -14,22 +14,6 @@ namespace STORE
 
 //------------------------------------------------------------------------------
 
-static const i8 C_DEF_LVL_LEVELS = 3;
-static const i8 C_DEF_LVL_RATIO  = 3; // this means 1/2^3 i.e. reducing by 8
-
-
-static const i8 C_TPCH_CUSTOMER =  150 * C_1K;
-static const i8 C_TPCH_LINEITEM = 6000 * C_1K;
-static const i8 C_TPCH_ORDERS   = 1500 * C_1K;
-static const i8 C_TPCH_PART     =  200 * C_1K;
-static const i8 C_TPCH_PARTSUPP =  800 * C_1K;
-static const i8 C_TPCH_SUPPLIER =   10 * C_1K;
-
-static const i8 C_TPCH_NATION   = 25;
-static const i8 C_TPCH_REGION   = 5;
-
-//------------------------------------------------------------------------------
-
 #include "Args.hpp"
 //#include "Limits.hpp"
 //#include "Licence.hpp"
