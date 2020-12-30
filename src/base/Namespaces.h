@@ -64,7 +64,6 @@ namespace STORE           { class Log;             class LogEntry;          }
 namespace STORE          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
-namespace OBLIQUE           { class AM;                                       }
 namespace STORE          { class Operand;                                  }
 namespace STORE      {
                               class PtnStream;       class TablePtn;          }
@@ -90,11 +89,11 @@ namespace STORE           { class Scheduler;       class Thread;
                               class Queues;                                   }
 namespace STORE      { class Tx;              class TxSet;             }
 
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 using namespace BASE;
 using namespace STORE;
-using namespace OBLIQUE;
 using namespace PROMPT;
 
 /*============================================================================*/

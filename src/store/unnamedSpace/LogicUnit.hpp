@@ -13,15 +13,12 @@
 
 #include "eLH.h"
 
-//namespace BASE { class Dir; } //?
-
 namespace STORE
 {
   static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
   static const i8 C_LOGIC_COND  = 8;
   static const i8 C_LOGIC_LABEL = 64;
-//  static const i8 C_LOGIC_LOCALS      = 8;
 
   struct JumpLabel
   {
