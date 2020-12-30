@@ -824,7 +824,7 @@ template <i8 SIZE>
 i8 RowBox_t<SIZE>::iOffsetInWsp(Row* aRow)
 {
   
-  i8 iOfs = WspConvergent_t<C_WSP_ROWBUFFER,Stz,Row>::iOffsetInWsp((byte*)aRow);
+  i8 iOfs = WspConvergent_t<SIZE,Stz,Row>::iOffsetInWsp((byte*)aRow);
   
   return iOfs;
 }
