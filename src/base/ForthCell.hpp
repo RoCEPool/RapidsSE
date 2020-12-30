@@ -5,6 +5,9 @@
 
 namespace BASE
 {
+  typedef void (Step::*StepFp)(void);
+  typedef void (Forth::*fpFORTHFN)(void);
+
   class ForthCell
   {
   public:
@@ -19,8 +22,10 @@ namespace BASE
       //   - Step::vXyz for primitives
       //
       
-      StepFp* m_afpStep;   // address of an intrinsic function
+      StepFp* m_afpStep;      // indirect address of a function
       
+      fpFORTHFN* m_afpForth;  // indirect address of a function
+
       //
       // additionally cells can be an argument to a another cell
       //

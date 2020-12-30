@@ -222,9 +222,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "ToolCatalog.hpp"
 
 
-namespace STORE {
-  typedef void (Step::*StepFp)(void);
-}
 
 
 #include "ForthCell.hpp"
