@@ -42,7 +42,7 @@ void Step::vEncodeCurrentCall(void)
   
   Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+  fpSTEPFN* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
   pCurrentWord->vEncodeCall(afpCalledEntryStep);
 
@@ -77,7 +77,7 @@ void Step::vEncodeCall(void)
   
   Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+  fpSTEPFN* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
   pTargetWord->vEncodeCall(afpCalledEntryStep);
 

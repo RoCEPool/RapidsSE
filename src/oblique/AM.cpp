@@ -1909,7 +1909,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
   ForthCell* aLastCell = pDoesWord->aLastCell();
   for (ForthCell* aCell = aDoes; aCell < aLastCell; ) {
     
-    StepFp fpStep = *aCell->m_afpStep;
+    fpSTEPFN fpStep = *aCell->m_afpStep;
     Word* pStepWord = pDicStack->pLocateStepWord(fpStep);
     Stz* szStepNm = pStepWord->szWordNm();
     

@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  typedef void (Step::*StepFp)(void);
+  typedef void (Step::*fpSTEPFN)(void);
   typedef void (Forth::*fpFORTHFN)(void);
 
   class ForthCell
@@ -22,7 +22,7 @@ namespace BASE
       //   - Step::vXyz for primitives
       //
       
-      StepFp* m_afpStep;      // indirect address of a function
+      fpSTEPFN* m_afpStep;    // indirect address of a function
       
       fpFORTHFN* m_afpForth;  // indirect address of a function
 
@@ -30,9 +30,9 @@ namespace BASE
       // additionally cells can be an argument to a another cell
       //
       
-      ForthCell*    m_aJumpTo;  // a pointer to another cell within same routine
+      ForthCell* m_aJumpTo;  // a pointer to another cell within same routine
       
-      _Header  m_xEmbVal;  // or marker for embedded value (for PushValue)
+      _Header m_xEmbVal;  // or marker for embedded value (for PushValue)
     };
   };
   

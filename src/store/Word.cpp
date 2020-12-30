@@ -6,7 +6,7 @@
 #include "STORE.h"
 
 
-extern StepFp gfpEntryStep;
+extern fpSTEPFN gfpEntryStep;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -297,7 +297,7 @@ void* Word::aEncodeArg(ForthCell* aArgCell)
 /*----------------------------------------------------------------------------*/
 /* encode call of entry step                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncodeCall(StepFp* afpEntryStep)
+void Word::vEncodeCall(fpSTEPFN* afpEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -357,7 +357,7 @@ void Word::vEncodePush(TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* get entry step                                                             */
 /*----------------------------------------------------------------------------*/
-StepFp Word::fpEntryStep(void)
+fpSTEPFN Word::fpEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -367,7 +367,7 @@ StepFp Word::fpEntryStep(void)
 /*----------------------------------------------------------------------------*/
 /* set entry step                                                             */
 /*----------------------------------------------------------------------------*/
-void Word::vEntryStep(StepFp fpIntrinsic)
+void Word::vEntryStep(fpSTEPFN fpIntrinsic)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -397,7 +397,7 @@ void Word::vEntryCell(ForthCell* aInxPtr)
 /*----------------------------------------------------------------------------*/
 /* get address of this words entry step                                       */
 /*----------------------------------------------------------------------------*/
-StepFp* Word::afpEntryStep(void)
+fpSTEPFN* Word::afpEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

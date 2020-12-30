@@ -105,7 +105,7 @@ void Step::vFlowExecute(void)
 {
   ENTRY();
   
-  StepFp fpStep;
+  fpSTEPFN fpStep;
   Object* pObject;
 
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
@@ -259,7 +259,7 @@ void Step::vPostpone(void)
     // put call to immediate word into this current definition
     
     // get indirect pointer to entry step of called word
-    StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+    fpSTEPFN* afpCalledEntryStep = pCalledWord->afpEntryStep();
     
     // copy indirect pointer into the current word
     pCurrentWord->vEncodeCall(afpCalledEntryStep);

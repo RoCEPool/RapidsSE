@@ -34,7 +34,7 @@ namespace STORE
     void* aAppend(ForthCell* aCell);
     void  vAppend(ForthCell* aCell);
     void  vAppend(i8 iInt);
-    void  vAppend(StepFp* afpStep);
+    void  vAppend(fpSTEPFN* afpStep);
     void  vAppend(TypedCell* aTypedCell);
   
     void  vReset(void);

@@ -33,7 +33,7 @@ namespace STORE
     Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
-    Word* pFindStep(StepFp fpStep);
+    Word* pFindStep(fpSTEPFN fpStep);
     bool  bHasWords(void);
     void  vInit(void);
     bool  bIsName(Stz* szDicNm);
