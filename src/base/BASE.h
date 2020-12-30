@@ -259,6 +259,9 @@ namespace STORE {
 #include "MagLib.hpp"
 #include "Dtm.hpp"
 #include "TypedCell.hpp"
+#include "CellSingle.hpp"
+
+
 #include "HshLib.hpp"
 
 #include "SP_Bits.hpp"

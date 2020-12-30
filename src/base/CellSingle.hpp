@@ -5,7 +5,7 @@
 
 #include "eSI.h"
 
-namespace STORE
+namespace BASE
 {
   class CellSingle : public Object
   {
