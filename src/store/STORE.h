@@ -80,7 +80,6 @@ namespace STORE
 
 #include "RowSingle.hpp"
 
-#include "CellSegment.hpp"
 #include "CellSingle.hpp"
 
 //------------------------------------------------------------------------------

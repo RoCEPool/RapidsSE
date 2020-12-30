@@ -37,7 +37,6 @@ enum eCN : u2 // Class Number
   
   /* */ CN__C__,
   /* */ CN_CATALOG,
-  /* */ CN_CELLSEGMENT,
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
   /* */ CN_COLUMN,
@@ -363,7 +362,6 @@ static Stz* aCN[]
    
   /* */ "_C__"_Stz,                 // CN__C__
   /* */ "CATALOG"_Stz,              // CN_CATALOG
-  /* */ "CELLSEGMENT"_Stz,          // CN_CELLSEGMENT
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
   /* */ "COLUMN"_Stz,               // CN_COLUMN
