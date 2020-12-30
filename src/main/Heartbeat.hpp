@@ -36,11 +36,11 @@ public:
                              // 496 bytes
 };
 
-/*---------------------------------------------------------------------------------*/
-/* RingBuffer class contains to receive for heartbeat                              */
-/* If our system is a single producer - single consumer, we can get away with lock */
-/* For now, to be safe...                                                          */
-/*---------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------*/
+/* RingBuffer class contains to receive for heartbeat                                 */
+/* If our system is a single producer - single consumer, we can get away without lock */
+/* For now, to be safe...                                                             */
+/*------------------------------------------------------------------------------------*/
 template<class T>
 class RingBuffer {
 private:
@@ -87,6 +87,21 @@ public:
     m_iReadIdx = (m_iReadIdx + 1) % m_iMaxSize;
 
     return val;
+  } // Lock is automatically released here
+
+  bool bRead(T& tItem) {
+    std::lock_guard<std::mutex> lock(m_mutexHB);
+
+    if (bEmpty()) {
+      return false;// return false for empty
+    }
+
+    //Read data and advance the tail (we now have a free space)
+    tItem = m_tBuffer[m_iReadIdx];
+    m_bFull = false;
+    m_iReadIdx = (m_iReadIdx + 1) % m_iMaxSize;
+
+    return true;
   } // Lock is automatically released here
 
   void vReset() {

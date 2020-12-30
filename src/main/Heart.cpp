@@ -170,8 +170,10 @@ void vHeartInit(void) {
 
     memset(&hbHeartbeat, 0x00, sizeof(Heartbeat));
 
-    if (gxHeartbeatBuffer.iSize() > 0) {
-      hbHeartbeat = gxHeartbeatBuffer.tRead();
+    usleep(500*1000);
+
+    if (gxHeartbeatBuffer.bRead(hbHeartbeat))  {
+      //hbHeartbeat = gxHeartbeatBuffer.tRead();
       tmTimeInfo = localtime((const time_t *) &hbHeartbeat.m_iSincePosixEpoch);
       strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
 
