@@ -184,6 +184,8 @@ namespace STORE
 
 //------------------------------------------------------------------------------
 
+#include "LogEntry.hpp"
+
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"

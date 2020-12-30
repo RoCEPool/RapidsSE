@@ -110,22 +110,22 @@ void LogEntry::vAsTxt(s4K& sString)
   s4K sInf;
 
   switch (m_eKind) {
-    case LG_DDL: m_xDdl.vToTxt(sInf,this); break;
-    case LG_FYI: m_xFyi.vToTxt(sInf,this); break;
-    case LG_JOB: m_xJob.vToTxt(sInf,this); break;
-    case LG_LCK: m_xLck.vToTxt(sInf,this); break;
-    case LG_LOG: m_xLog.vToTxt(sInf,this); break;
-    case LG_OPR: m_xOpr.vToTxt(sInf,this); break;
-    //case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
-    case LG_QUE: m_xQue.vToTxt(sInf,this); break;
-    case LG_RES: m_xRes.vToTxt(sInf,this); break;
-    case LG_SSN: m_xSsn.vToTxt(sInf,this); break;
-    case LG_SVC: m_xSvc.vToTxt(sInf,this); break;
-    case LG_SYS: m_xSys.vToTxt(sInf,this); break;
-    case LG_TSK: m_xTsk.vToTxt(sInf,this); break;
-    case LG_THD: m_xThd.vToTxt(sInf,this); break;
-    case LG_TXN: m_xTxn.vToTxt(sInf,this); break;
-    default:
+//    case LG_DDL: m_xDdl.vToTxt(sInf,this); break;
+//    case LG_FYI: m_xFyi.vToTxt(sInf,this); break;
+//    case LG_JOB: m_xJob.vToTxt(sInf,this); break;
+//    case LG_LCK: m_xLck.vToTxt(sInf,this); break;
+//    case LG_LOG: m_xLog.vToTxt(sInf,this); break;
+//    case LG_OPR: m_xOpr.vToTxt(sInf,this); break;
+//    //case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
+//    case LG_QUE: m_xQue.vToTxt(sInf,this); break;
+//    case LG_RES: m_xRes.vToTxt(sInf,this); break;
+//    case LG_SSN: m_xSsn.vToTxt(sInf,this); break;
+//    case LG_SVC: m_xSvc.vToTxt(sInf,this); break;
+//    case LG_SYS: m_xSys.vToTxt(sInf,this); break;
+//    case LG_TSK: m_xTsk.vToTxt(sInf,this); break;
+//    case LG_THD: m_xThd.vToTxt(sInf,this); break;
+//    case LG_TXN: m_xTxn.vToTxt(sInf,this); break;
+//    default:
       NEVER_REACH;
   }
 
@@ -229,20 +229,20 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vSprintCsv(sString,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case LG_FYI: m_xFyi.vOutline(sString); break;
-    case LG_JOB: m_xJob.vOutline(sString); break;
-    case LG_LCK: m_xLck.vOutline(sString); break;
-    case LG_LOG: m_xLog.vOutline(sString); break;
-    case LG_OPR: m_xOpr.vOutline(sString); break;
-    //case LG_PRM: m_xPrm.vOutline(sString); break;
-    case LG_QUE: m_xQue.vOutline(sString); break;
-    case LG_RES: m_xRes.vOutline(sString); break;
-    case LG_SSN: m_xSsn.vOutline(sString); break;
-    case LG_SVC: m_xSvc.vOutline(sString); break;
-    case LG_SYS: m_xSys.vOutline(sString); break;
-    case LG_TSK: m_xTsk.vOutline(sString); break;
-    case LG_THD: m_xThd.vOutline(sString); break;
-    case LG_TXN: m_xTxn.vOutline(sString); break;
+//    case LG_FYI: m_xFyi.vOutline(sString); break;
+//    case LG_JOB: m_xJob.vOutline(sString); break;
+//    case LG_LCK: m_xLck.vOutline(sString); break;
+//    case LG_LOG: m_xLog.vOutline(sString); break;
+//    case LG_OPR: m_xOpr.vOutline(sString); break;
+//    //case LG_PRM: m_xPrm.vOutline(sString); break;
+//    case LG_QUE: m_xQue.vOutline(sString); break;
+//    case LG_RES: m_xRes.vOutline(sString); break;
+//    case LG_SSN: m_xSsn.vOutline(sString); break;
+//    case LG_SVC: m_xSvc.vOutline(sString); break;
+//    case LG_SYS: m_xSys.vOutline(sString); break;
+//    case LG_TSK: m_xTsk.vOutline(sString); break;
+//    case LG_THD: m_xThd.vOutline(sString); break;
+//    case LG_TXN: m_xTxn.vOutline(sString); break;
     default:
       NEVER_REACH;
   }
@@ -291,21 +291,21 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vWriteCsvEntry(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case LG_DDL: m_xDdl.vWriteCsv(pFile,this); break;
-    case LG_FYI: m_xFyi.vWriteCsv(pFile,this); break;
-    case LG_JOB: m_xJob.vWriteCsv(pFile,this); break;
-    case LG_LCK: m_xLck.vWriteCsv(pFile,this); break;
-    case LG_LOG: m_xLog.vWriteCsv(pFile,this); break;
-    case LG_OPR: m_xOpr.vWriteCsv(pFile,this); break;
-    //case LG_PRM: m_xPrm.vWriteCsv(pFile,this); break;
-    case LG_QUE: m_xQue.vWriteCsv(pFile,this); break;
-    case LG_RES: m_xRes.vWriteCsv(pFile,this); break;
-    case LG_SSN: m_xSsn.vWriteCsv(pFile,this); break;
-    case LG_SVC: m_xSvc.vWriteCsv(pFile,this); break;
-    case LG_SYS: m_xSys.vWriteCsv(pFile,this); break;
-    case LG_TSK: m_xTsk.vWriteCsv(pFile,this); break;
-    case LG_THD: m_xThd.vWriteCsv(pFile,this); break;
-    case LG_TXN: m_xTxn.vWriteCsv(pFile,this); break;
+//    case LG_DDL: m_xDdl.vWriteCsv(pFile,this); break;
+//    case LG_FYI: m_xFyi.vWriteCsv(pFile,this); break;
+//    case LG_JOB: m_xJob.vWriteCsv(pFile,this); break;
+//    case LG_LCK: m_xLck.vWriteCsv(pFile,this); break;
+//    case LG_LOG: m_xLog.vWriteCsv(pFile,this); break;
+//    case LG_OPR: m_xOpr.vWriteCsv(pFile,this); break;
+//    //case LG_PRM: m_xPrm.vWriteCsv(pFile,this); break;
+//    case LG_QUE: m_xQue.vWriteCsv(pFile,this); break;
+//    case LG_RES: m_xRes.vWriteCsv(pFile,this); break;
+//    case LG_SSN: m_xSsn.vWriteCsv(pFile,this); break;
+//    case LG_SVC: m_xSvc.vWriteCsv(pFile,this); break;
+//    case LG_SYS: m_xSys.vWriteCsv(pFile,this); break;
+//    case LG_TSK: m_xTsk.vWriteCsv(pFile,this); break;
+//    case LG_THD: m_xThd.vWriteCsv(pFile,this); break;
+//    case LG_TXN: m_xTxn.vWriteCsv(pFile,this); break;
     default:
       NEVER_REACH;
   }
@@ -358,21 +358,21 @@ void LogEntry::vWriteTxt(File* pFile)
   vWriteTxtEntry(pFile);
   
   switch (m_eKind) {
-    case LG_DDL: m_xDdl.vToTxt(sInf,this); break;
-    case LG_FYI: m_xFyi.vToTxt(sInf,this); break;
-    case LG_JOB: m_xJob.vToTxt(sInf,this); break;
-    case LG_LCK: m_xLck.vToTxt(sInf,this); break;
-    case LG_LOG: m_xLog.vToTxt(sInf,this); break;
-    case LG_OPR: m_xOpr.vToTxt(sInf,this); break;
-    //case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
-    case LG_QUE: m_xQue.vToTxt(sInf,this); break;
-    case LG_RES: m_xRes.vToTxt(sInf,this); break;
-    case LG_SSN: m_xSsn.vToTxt(sInf,this); break;
-    case LG_SVC: m_xSvc.vToTxt(sInf,this); break;
-    case LG_SYS: m_xSys.vToTxt(sInf,this); break;
-    case LG_TSK: m_xTsk.vToTxt(sInf,this); break;
-    case LG_THD: m_xThd.vToTxt(sInf,this); break;
-    case LG_TXN: m_xTxn.vToTxt(sInf,this); break;
+//    case LG_DDL: m_xDdl.vToTxt(sInf,this); break;
+//    case LG_FYI: m_xFyi.vToTxt(sInf,this); break;
+//    case LG_JOB: m_xJob.vToTxt(sInf,this); break;
+//    case LG_LCK: m_xLck.vToTxt(sInf,this); break;
+//    case LG_LOG: m_xLog.vToTxt(sInf,this); break;
+//    case LG_OPR: m_xOpr.vToTxt(sInf,this); break;
+//    //case LG_PRM: m_xPrm.vToTxt(sInf,this); break;
+//    case LG_QUE: m_xQue.vToTxt(sInf,this); break;
+//    case LG_RES: m_xRes.vToTxt(sInf,this); break;
+//    case LG_SSN: m_xSsn.vToTxt(sInf,this); break;
+//    case LG_SVC: m_xSvc.vToTxt(sInf,this); break;
+//    case LG_SYS: m_xSys.vToTxt(sInf,this); break;
+//    case LG_TSK: m_xTsk.vToTxt(sInf,this); break;
+//    case LG_THD: m_xThd.vToTxt(sInf,this); break;
+//    case LG_TXN: m_xTxn.vToTxt(sInf,this); break;
     default:
       NEVER_REACH;
   }

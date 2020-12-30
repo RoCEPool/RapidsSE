@@ -197,7 +197,6 @@ namespace OBLIQUE
     static void vDropTaskLock(Task* pTask);
     static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
-    static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(StepTiming* pStepTiming);

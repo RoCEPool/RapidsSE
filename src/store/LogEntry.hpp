@@ -3,21 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "LogEntryDdl.hpp"
-#include "LogEntryFyi.hpp"
-#include "LogEntryJob.hpp"
-#include "LogEntryLck.hpp"
-#include "LogEntryLog.hpp"
-#include "LogEntryMgt.hpp"
-#include "LogEntryOp.hpp"
-#include "LogEntryQue.hpp"
-#include "LogEntryRes.hpp"
-#include "LogEntrySsn.hpp"
-#include "LogEntrySvc.hpp"
-#include "LogEntrySys.hpp"
-#include "LogEntryThd.hpp"
-#include "LogEntryTsk.hpp"
-#include "LogEntryTxn.hpp"
 
 namespace STORE
 {
@@ -28,23 +13,6 @@ namespace STORE
   class LogEntry : public Object
   {
   friend class Log;
-  friend class _LogEntryDdl;
-  friend class _LogEntryFyi;
-  friend class _LogEntryJob;
-  friend class _LogEntryLck;
-  friend class _LogEntryLog;
-  friend class _LogEntryMgt;
-  friend class _LogEntryObj;
-  friend class _LogEntryOp;
-  friend class _LogEntryReq;
-  friend class _LogEntryQue;
-  friend class _LogEntryRes;
-  friend class _LogEntrySsn;
-  friend class _LogEntrySvc;
-  friend class _LogEntrySys;
-  friend class _LogEntryThd;
-  friend class _LogEntryTsk;
-  friend class _LogEntryTxn;
 
   private:
     i8   m_i_Entry;    // this entry no
@@ -75,23 +43,6 @@ namespace STORE
     char m_caNote[C_MAX_LOG_NOTE]; // comment
   
     eLG  m_eKind;      // log entry kind.  one of the following
-    union {
-      _LogEntryDdl m_xDdl;  // when m_eKind == LG_DDL
-      _LogEntryFyi m_xFyi;  // when m_eKind == LG_FYI
-      _LogEntryJob m_xJob;  // when m_eKind == LG_JOB
-      _LogEntryLck m_xLck;  // when m_eKind == LG_LCK
-      _LogEntryLog m_xLog;  // when m_eKind == LG_LOG
-      _LogEntryMgt m_xMgt;  // when m_eKind == LG_MGT
-      _LogEntryOp  m_xOpr;  // when m_eKind == LG_OPR
-      _LogEntryQue m_xQue;  // when m_eKind == LG_QUE
-      _LogEntryRes m_xRes;  // when m_eKind == LG_RES
-      _LogEntrySsn m_xSsn;  // when m_eKind == LG_SSN
-      _LogEntrySvc m_xSvc;  // when m_eKind == LG_SVC
-      _LogEntrySys m_xSys;  // when m_eKind == LG_SYS
-      _LogEntryTsk m_xTsk;  // when m_eKind == LG_TSK
-      _LogEntryThd m_xThd;  // when m_eKind == LG_THD
-      _LogEntryTxn m_xTxn;  // when m_eKind == LG_TXN
-    };
   
   
     // must be last
