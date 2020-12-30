@@ -21,7 +21,7 @@ void Step::vEnterRoutine(void)
 {
   ENTRY();
   
-  fpSTEPFN* afpEntryCell = (m_aInxPtr - 1)->m_afpStep + 1;
+  fpSTEPFN* afpEntryCell = (fpSTEPFN*) ((m_aInxPtr - 1)->m_afpObjectFn + 1);
   
   m_pReturnStack->vPushFip(m_aInxPtr);
   m_aInxPtr = *(ForthCell**)afpEntryCell;
