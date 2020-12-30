@@ -308,7 +308,6 @@ using namespace Parser;
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "EnvCheck.hpp"
-#include "Portrait.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
