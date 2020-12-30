@@ -6,25 +6,33 @@
 enum eAM // ASM Macros
 {
   /*  0 */ AM_NONE=0,
+
+  /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_END,
-  /*    */ AM_CRW_PROJECT_ALL_ROUTINE,
-  /*    */ AM_CRW_PROJECT_NOSRC_ROUTINE,
-  /*    */ AM_CRW_PROJECT_ROUTINE,
-  /*    */ AM_CRWBUFFER_HANDLER,
-  /*    */ AM_CRWBUFFER_PROJECT_HANDLER,
-  /*    */ AM_DATAPULSE_HANDLER,
-  /*    */ AM_DEFAULT_CRWBUFFER_HANDLER,
-  /*    */ AM_DEFAULT_DATAPULSE_HANDLER,
-  /*    */ AM_DEFAULT_EOSMARKER_HANDLER,
-  /*    */ AM_DEFAULT_ROWBUFFER_HANDLER,
-  /*    */ AM_DEFAULT_STARTMARKER_HANDLER,
-  /*    */ AM_DEFAULT_STREAMDEF_HANDLER,
-  /*    */ AM_INDEX_RANGE_ROUTINE,
+  /*    */ AM_CRW_PROJECT_NONE,
+  /*    */ AM_CRW_PROJECT_STAR,
+
+  /*    */ AM_DATAPULSE_INDEXRANGE,
+
+  /*    */ AM_DEFAULT_HANDLER_CRWBUFFER,
+  /*    */ AM_DEFAULT_HANDLER_DATAPULSE,
+  /*    */ AM_DEFAULT_HANDLER_EOSMARKER,
+  /*    */ AM_DEFAULT_HANDLER_ROWBUFFER,
+  /*    */ AM_DEFAULT_HANDLER_STARTMARKER,
+  /*    */ AM_DEFAULT_HANDLER_STREAMDEF,
+
+  /*    */ AM_HANDLER_CRWBUFFER,
+  /*    */ AM_HANDLER_DATAPULSE,
+  /*    */ AM_HANDLER_ROWBUFFER,
+
   /*    */ AM_QUERY_DONE,
   /*    */ AM_QUERY_INIT,
+
+  /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_END,
-  /*    */ AM_ROW_PROJECT_ROUTINE,
-  /*    */ AM_ROWBUFFER_PROJECT_HANDLER,
+  /*    */ AM_ROW_PROJECT_NONE,
+  /*    */ AM_ROW_PROJECT_STAR,
+
   /*    */ AM_ENUMS
 };
 
@@ -34,25 +42,33 @@ enum eAM // ASM Macros
 static Stz* aAM[]
 {
     /*  0 */ "AM_NONE"_Stz,
+
+    /*    */ "AM_CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "AM_CRW_PROJECT_END"_Stz,
-    /*    */ "AM_CRW_PROJECT_ALL_ROUTINE"_Stz,
-    /*    */ "AM_CRW_PROJECT_NOSRC_ROUTINE"_Stz,
-    /*    */ "AM_CRW_PROJECT_ROUTINE"_Stz,
-    /*    */ "AM_CRWBUFFER_HANDLER"_Stz,
-    /*    */ "AM_CRWBUFFER_PROJECT_HANDLER"_Stz,
-    /*    */ "AM_DATAPULSE_HANDLER"_Stz,
-    /*    */ "AM_DEFAULT_CRWBUFFER_HANDLER"_Stz,
-    /*    */ "AM_DEFAULT_DATAPULSE_HANDLER"_Stz,
-    /*    */ "AM_DEFAULT_EOSMARKER_HANDLER"_Stz,
-    /*    */ "AM_DEFAULT_ROWBUFFER_HANDLER"_Stz,
-    /*    */ "AM_DEFAULT_STARTMARKER_HANDLER"_Stz,
-    /*    */ "AM_DEFAULT_STREAMDEF_HANDLER"_Stz,
-    /*    */ "AM_INDEX_RANGE_ROUTINE"_Stz,
+    /*    */ "AM_CRW_PROJECT_NONE"_Stz,
+    /*    */ "AM_CRW_PROJECT_STAR"_Stz,
+
+    /*    */ "AM_DATAPULSE_INDEXRANGE"_Stz,
+
+    /*    */ "AM_DEFAULT_HANDLER_CRWBUFFER"_Stz,
+    /*    */ "AM_DEFAULT_HANDLER_DATAPULSE"_Stz,
+    /*    */ "AM_DEFAULT_HANDLER_EOSMARKER"_Stz,
+    /*    */ "AM_DEFAULT_HANDLER_ROWBUFFER"_Stz,
+    /*    */ "AM_DEFAULT_HANDLER_STARTMARKER"_Stz,
+    /*    */ "AM_DEFAULT_HANDLER_STREAMDEF"_Stz,
+
+    /*    */ "AM_HANDLER_CRWBUFFER"_Stz,
+    /*    */ "AM_HANDLER_DATAPULSE"_Stz,
+    /*    */ "AM_HANDLER_ROWBUFFER"_Stz,
+
     /*    */ "AM_QUERY_DONE"_Stz,
     /*    */ "AM_QUERY_INIT"_Stz,
+
+    /*    */ "AM_ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "AM_ROW_PROJECT_END"_Stz,
-    /*    */ "AM_ROW_PROJECT_ROUTINE"_Stz,
-    /*    */ "AM_ROWBUFFER_PROJECT_HANDLER"_Stz,
+    /*    */ "AM_ROW_PROJECT_NONE"_Stz,
+    /*    */ "AM_ROW_PROJECT_STAR"_Stz,
+
     /*    */ "AM_ENUMS"_Stz
 };
 
