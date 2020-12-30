@@ -124,7 +124,7 @@ Local* LocalChain::pLocal(i8 i_Local)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
   
-  ASSERT(i_Local >= 0 && i_Local < C_LOCALS);
+  ASSERT(i_Local >= 0 && i_Local < C_LOGIC_LOCALS);
   
   return &m_xLocal[i_Local];
 }

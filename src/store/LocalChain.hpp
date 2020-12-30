@@ -5,14 +5,14 @@
 
 namespace Arguments
 {
-  static const i8 C_LOCALS = 32;
+  static const i8 C_LOCALS_arguments = 32;
   
   class LocalChain : public Object
   {
   public:
     LocalChain* m_pNext;             // nest frame in chain
     TypedCell*  m_aDiscardPoint;     // discard point (when in call stack)
-    Local       m_xLocal[C_LOCALS];  // set of local values
+    Local       m_xLocal[C_LOCALS_arguments];  // set of local values
     
     // must be last
     Footer m_xFooter;

@@ -52,7 +52,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_sStringA  = ""_Stz;
   
-  for (i8 i_Local = 0; i_Local < C_LOCALS; i_Local++)
+  for (i8 i_Local = 0; i_Local < C_LOGIC_LOCALS; i_Local++)
     m_xRluCommon.m_iaLocals[i_Local] = C_UNKNOWN;
 
    for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
@@ -1803,27 +1803,27 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_POP_LOCALI: ArgGet(iArg); // pop into a local reg
         dLU1(EO_POP_LOCALI, iArg);
-        //ASSERT(iArg < C_LOCALS);
+        //ASSERT(iArg < C_LOGIC_LOCALS);
         iTopA = *(aiDstk--);
         vLib_SET_LOCAL(pLU, iArg, iTopA);
         break;//+endCase
         
       case EO_POP_LOCALS: ArgGet(iArg); // pop into a local reg
         dLU1(EO_POP_LOCALS, iArg);
-        //if (iArg >= C_LOCALS)
+        //if (iArg >= C_LOGIC_LOCALS)
         //  vLib_ASSERT(pLU,0);
         S_PopStr(sLib_GET_LOCALS(pLU, iArg));
         break;//+endCase
         
       case EO_PUSH_LOCALI: ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALI, iArg);
-        //ASSERT(iArg < C_LOCALS);
+        //ASSERT(iArg < C_LOGIC_LOCALS);
         *(++aiDstk) = aRluCommon->m_iaLocals[iArg]; //iLib_GET_LOCAL(pLU, iArg);
         break;//+endCase
         
       case EO_PUSH_LOCALS: ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALS, iArg);
-        //ASSERT(iArg < C_LOCALS);
+        //ASSERT(iArg < C_LOGIC_LOCALS);
         S_PushStr(sLib_GET_LOCALS(pLU, iArg));
         break;//+endCase
         
