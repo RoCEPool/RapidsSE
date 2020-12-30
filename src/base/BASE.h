@@ -3,11 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace OBLIQUE { class AM; }
-using namespace OBLIQUE;
-
-namespace PROMPT { class SePrompt; }
-using namespace PROMPT;
 
 //------------------------------------------------------------------------------
 
@@ -35,6 +30,50 @@ namespace BASE
 #include "UsefulConstants.h"
 #include "UserStrSizes.h"
 #include "Namespaces.h"
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace BASE            { class Format;                                   }
+namespace BASE {
+                            class Datum_h;
+                            class SN_Bcd;
+                            class SN_Bol;
+                            class SN_Dte;
+                            class SN_Flt;
+                            class SN_Int;
+                            class SN_Ivl;
+                            class SN_Tme;
+                            class SN_Tsp;
+
+                            class SP_Bcd;
+                            class SP_Bol;
+                            class SP_Dte;
+                            class SP_Flt;
+                            class SP_Int;
+                            class SP_Ivl;
+                            class SP_Tme;
+                            class SP_Tsp;
+                            template <i8 SPACE> class Datum_t;                 }
+namespace BASE           { class EnumFlags;       class TagSet;
+                            class Birth; class Now;                            }
+namespace BASE   { class Token;           class Charser;
+                              class Input;           class TokenVec;          }
+namespace BASE     { class RU_Cpu;          class RU_Memory;         }
+namespace BASE        { class Article;         class Queue;
+        class Heap; class PoolHelper; class ObjectSnapshot;            }
+
+using namespace BASE;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+namespace OBLIQUE { class AM; }
+using namespace OBLIQUE;
+
+namespace PROMPT { class SePrompt; }
+using namespace PROMPT;
 
 //------------------------------------------------------------------------------
 
