@@ -220,6 +220,8 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Procedure.hpp"
 
+#include "Dynamo.hpp"
+
 //------------------------------------------------------------------------------
 
 #include "graph/PlanConstants.hpp"
