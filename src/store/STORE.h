@@ -157,18 +157,6 @@ static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 #include "TailStr.hpp"
 #include "Crw.hpp"
 
-//------------------------------------------------------------------------------
-
-static const i8 C_CRW_HEADBYTES = 32;
-
-static const i8 C_CRW_FIRSTHEAD  = 0x210;
-
-static const i8 C_TRAY_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
-
-typedef    Nub_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef> RowNub;
-
-typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
-                  (C_TRAY_ROWS * sizeof(HeadLine))>               RowTray;
 
 //------------------------------------------------------------------------------
 
