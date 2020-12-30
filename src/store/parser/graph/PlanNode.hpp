@@ -5,7 +5,8 @@
 
 namespace Parser
 {
-  class PlanNodeList;
+  class PlanNode;
+  typedef ListExo_t<CN_PLANNODELIST, PlanNode> PlanNodeList;
 
   // A multi-value struct used in every PlanNode
   struct Value {
@@ -32,6 +33,9 @@ namespace Parser
       if (szStz) {
         m_pText = new Text(szStz);
         m_bMustFree = true;
+      } else {
+        m_pText = nullptr;
+        m_bMustFree = false;
       }
     }
 
@@ -41,6 +45,9 @@ namespace Parser
       if (pText) {
         m_pText = pText;
         m_bMustFree = true;
+      } else {
+        m_pText = nullptr;
+        m_bMustFree = false;
       }
     }
   };

@@ -41,9 +41,19 @@ namespace Parser
     // Returns a PlanNode* for a given path if one is found. Otherwise null.
     // The path may be absolute (starts with a '/') or relative.
     // If relative then the first name in the path must match the name of the
-    // node being passed in.
+    // node being passed in. e.g. if the current node is named "foo"
+    // then we can get specific children and properties by using the following
+    // paths:  "foo/child3", "foo:property81"
     // Use '/' to separate children and ':' to denote a property.
     static PlanNode* pFind(Stz* szPath, PlanNode* pNode);
+
+    // Looks for a property with a given name of the specified node and returns
+    // it if found. Otherwise returns nullptr.
+    static PlanNode* pFindProperty(Stz* szPropName, PlanNode* pNode);
+
+    // Looks for a child with a given name of the specified node and returns
+    // it if found. Otherwise returns nullptr.
+    static PlanNode* pFindChild(Stz* szChildName, PlanNode* pNode);
 
   private:
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,

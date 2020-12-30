@@ -57,9 +57,9 @@ void TableRef::vDescribe(QueryNode* pTableRef, s2K& buf)
 
   ASSERT(bValidate(pTableRef));
 
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFind(C_CATALOG_PROP, pTableRef));
-  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFind(C_SCHEMA_PROP, pTableRef));
-  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFind(C_TABLE_PROP, pTableRef));
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
+  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
+  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
 
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
@@ -72,16 +72,17 @@ void TableRef::vDescribe(QueryNode* pTableRef, s2K& buf)
   if (szCatalogName) {
     buf.vConcat(szCatalogName);
     buf.vAppend('.');
+    ASSERT(szSchemaName);
   }
 
   if (szSchemaName) {
     buf.vConcat(szSchemaName);
     buf.vAppend('.');
+    ASSERT(szTableName);
   }
 
   if (szTableName) {
     buf.vConcat(szTableName);
-    buf.vAppend('.');
   }
 }
 
@@ -92,9 +93,9 @@ b1 TableRef::bIsResolved(QueryNode* pTableRef)
 {
   ASSERT(bValidate(pTableRef));
 
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFind(C_CATALOG_PROP, pTableRef));
-  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFind(C_SCHEMA_PROP, pTableRef));
-  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFind(C_TABLE_PROP, pTableRef));
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
+  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
+  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
 
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);

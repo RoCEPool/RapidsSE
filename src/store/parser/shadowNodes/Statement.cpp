@@ -11,18 +11,18 @@
 static Stz* C_QUERYTEXT_PROP = "queryText"_Stz;
 
 // Definition paths of the above statement types
-static Stz* aST_definition[] {
-  /*ST_NONE         */ ""_Stz
-  /*ST_CREATETABLE  */ ""_Stz
-  /*ST_DROPTABLE    */ ""_Stz
-  /*ST_CREATEINDEX  */ ""_Stz
-  /*ST_DROPINDEX    */ ""_Stz
-  /*ST_CTAS         */ ""_Stz
-  /*ST_SELECT       */ "/__root__/definitions/object/planObject/statement/dml/select"_Stz
-  /*ST_INSERT       */ ""_Stz
-  /*ST_UPDATE       */ ""_Stz
-  /*ST_DELETE       */ ""_Stz
-  /*ST_INSERTSELECT */ ""_Stz
+static Stz* aST_definition[] = {
+  /*ST_NONE         */ ""_Stz,
+  /*ST_CREATETABLE  */ ""_Stz,
+  /*ST_DROPTABLE    */ ""_Stz,
+  /*ST_CREATEINDEX  */ ""_Stz,
+  /*ST_DROPINDEX    */ ""_Stz,
+  /*ST_CTAS         */ ""_Stz,
+  /*ST_SELECT       */ "/__root__/definitions/object/planObject/statement/dml/select"_Stz,
+  /*ST_INSERT       */ ""_Stz,
+  /*ST_UPDATE       */ ""_Stz,
+  /*ST_DELETE       */ ""_Stz,
+  /*ST_INSERTSELECT */ ""_Stz,
   /*ST_ENUMS        */ ""_Stz
 };
 

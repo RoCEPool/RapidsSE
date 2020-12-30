@@ -26,9 +26,9 @@ __aFooterFunction(PlanDefinitionParser)
 /* constants                                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* PlanDefinitionParser::definitionPaths[] = {
-    "../src/parser/graph/PlannerDef.json5"_Stz,
-    "../PlannerDef.json5"_Stz,
-    "../res/PlannerDef.json5"_Stz,
+    "../src/store/parser/graph/PlannerDef.json5"_Stz, // For development
+    "../PlannerDef.json5"_Stz,                        // For installation directory
+    "../res/PlannerDef.json5"_Stz,                    // Eventually for a tidier installation directory
     nullptr};
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ b1 PlanDefinitionParser::bFindDefinitionFile(s2K& pBuf)
       break;
     }
 
-    if (File::bExists(sPath), true) {
+    if (File::bExists(sPath, true)) {
       // We found it. Copy the path into the buffer
       pBuf = sPath;
       return true;
@@ -166,15 +166,17 @@ PlanNode* PlanDefinitionParser::pParse()
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Json5 node (top-most level of the parse tree)                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-//antlrcpp::Any PlanDefinitionParser::visitJson5(json5Parser::Json5Context *ctx)
-//{
-//  // We always start off with an object
-//  ASSERT(ctx->value()->obj() != nullptr);
-//
-//  antlrcpp::Any any = visitObj(ctx->value()->obj());
-//
-//  return any;
-//}
+antlrcpp::Any PlanDefinitionParser::visitJson5(json5Parser::Json5Context *ctx)
+{
+  // We always start off with an object
+  ASSERT(ctx);
+  ASSERT(ctx->value());
+  ASSERT(ctx->value()->obj());
+
+  antlrcpp::Any any = visitObj(ctx->value()->obj());
+
+  return any;
+}
 
 antlrcpp::Any PlanDefinitionParser::visitObj(json5Parser::ObjContext *ctx)
 {

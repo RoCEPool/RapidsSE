@@ -31,7 +31,7 @@ namespace Parser
     Footer* aFooter(void);
     
   private:
-//    virtual antlrcpp::Any visitJson5(json5Parser::Json5Context *ctx)      override;
+    virtual antlrcpp::Any visitJson5(json5Parser::Json5Context *ctx)      override;
     virtual antlrcpp::Any visitObj(json5Parser::ObjContext *ctx)          override;
     virtual antlrcpp::Any visitArr(json5Parser::ArrContext *ctx)          override;
     virtual antlrcpp::Any visitPair(json5Parser::PairContext *ctx)        override;
