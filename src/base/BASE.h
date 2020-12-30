@@ -6,6 +6,9 @@
 namespace OBLIQUE { class AM; }
 using namespace OBLIQUE;
 
+namespace PROMPT { class SePrompt; }
+using namespace PROMPT;
+
 //------------------------------------------------------------------------------
 
 namespace BASE
