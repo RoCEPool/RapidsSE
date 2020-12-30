@@ -100,7 +100,9 @@ void Engine::vPreliminary(void)
 
   if (AM::bVerboseProgress())
      vInfo("Setting signal handlers...\n"_Stz);
-  vSetSignalHandlers();
+  
+  // Segmentation Violation
+  signal(SIGSEGV, Engine::vSignalHandler);
   
   if (AM::bVerboseProgress())
      vInfo("Init TLS keys...\n"_Stz);
@@ -112,7 +114,9 @@ void Engine::vPreliminary(void)
   
   if (AM::bVerboseProgress())
      vInfo("Checking assumptions...\n"_Stz);
-  STORE::vCheckAllAssumptions();
+  
+  BASE::vCheckAssumptions();
+  STORE::vCheckAssumptions();
 
   if (AM::bVerboseProgress())
      vInfo("Boot check...\n"_Stz);

@@ -6,6 +6,13 @@
 #include "eDU.h"
 #include "eIU.h"
 
+//#define TRACE_COMPACT(x) x EndDefine
+#define TRACE_COMPACT(x) EndDefine
+
+//#define EB_TRACE_INSERT
+//#define EB_LOCAL_VERIFY
+//#define EB_SPLIT_RIGHT
+
 namespace STORE
 {
   static const bool C_NOT_FINAL    = false;

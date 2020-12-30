@@ -7,16 +7,12 @@
 
 namespace STORE
 {
-  void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);
-  void vSetSignalHandlers(void);
 }
 
 //------------------------------------------------------------------------------
 
 #include "Args.hpp"
-//#include "Limits.hpp"
-//#include "Licence.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -48,12 +44,9 @@ namespace STORE
 #include "Forth.hpp"
 #include "Word.hpp"
 
-// -- -- -- -- -- -- -- --
-
 #include "SP_Word.hpp"
 
 //------------------------------------------------------------------------------
-
 
 #include "Literal.hpp"
 
@@ -67,9 +60,6 @@ namespace STORE
 #include "IndexDef.hpp"
 
 #include "Index.hpp"
-
-
-
 
 #include "Folder.hpp"
 #include "Schema.hpp"
@@ -95,8 +85,6 @@ namespace STORE
 
 #include "CellSegment.hpp"
 #include "CellSingle.hpp"
-
-//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 
@@ -139,7 +127,6 @@ namespace STORE
 #include "TailStr.hpp"
 #include "Crw.hpp"
 
-
 //------------------------------------------------------------------------------
 
 #include "Encoding_v2.hpp"
@@ -160,20 +147,11 @@ namespace STORE
 
 #include "IntBuffer.hpp"
 
-//#define TRACE_COMPACT(x) x EndDefine
-#define TRACE_COMPACT(x) EndDefine
-
-// - - - - - - - - - - - -
-
 #include "KeyBuilder.hpp"
 
 #include "SkipRoots.hpp"
 
-//#define EB_TRACE_INSERT
-//#define EB_LOCAL_VERIFY
-//#define EB_SPLIT_RIGHT
 #include "EntBuffer.hpp"
-
 
 #include "EntBufSorter.hpp"
 
@@ -182,9 +160,6 @@ namespace STORE
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
-
-//#define TRACE_UPSERT(smt) smt EndDefine
-#define TRACE_UPSERT(smt) EndDefine
 
 //------------------------------------------------------------------------------
 
@@ -195,7 +170,6 @@ namespace STORE
 #include "PtnStream.hpp"
 
 #include "Table.hpp"
-
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -215,12 +189,10 @@ namespace STORE
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
 
-
 #include "AccessPath.hpp"
 
 #include "Plan.hpp"
 #include "Planner.hpp"
-
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
@@ -323,11 +295,6 @@ using namespace Parser;
 
 //------------------------------------------------------------------------------
 
-//#include "LockMetrics.hpp"
-//#include "MetricsHelper.hpp"
-
-//------------------------------------------------------------------------------
-
 #include "Error.hpp"
 
 #include "StepAccum.hpp"
@@ -341,8 +308,6 @@ using namespace Parser;
 #include "Constants.hpp"
 #include "EnvCheck.hpp"
 #include "Portrait.hpp"
-
-//#include "Engine.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
