@@ -65,6 +65,9 @@ namespace STORE
   };
   
   AccessPath* _pAccessPath(void* aAddr);
+
+
+  typedef VectorNL_t<CN_PATHVEC,AccessPath,128> PathVec;
 }
 
 /*============================================================================*/

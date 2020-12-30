@@ -31,6 +31,9 @@ namespace STORE
   };
   
   Response* _pResponse(void* aAddr);
+
+
+  typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 }
 
 /*============================================================================*/

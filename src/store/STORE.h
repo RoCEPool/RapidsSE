@@ -249,7 +249,6 @@ typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
 
 
 #include "AccessPath.hpp"
-typedef VectorNL_t<CN_PATHVEC,AccessPath,128> PathVec;
 
 #include "Plan.hpp"
 #include "Planner.hpp"
@@ -266,7 +265,6 @@ typedef VectorNL_t<CN_PATHVEC,AccessPath,128> PathVec;
 #include "Pipeline.hpp"
 
 #include "Response.hpp"
-typedef Vector_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 
 #include "Result.hpp"
 #include "JobFilePath.hpp"
