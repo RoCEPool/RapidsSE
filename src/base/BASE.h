@@ -559,6 +559,9 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 #include "Literal.hpp"
 
 
+#include "Licence.hpp"
+#include "Limits.hpp"
+
 //------------------------------------------------------------------------------
 
 
