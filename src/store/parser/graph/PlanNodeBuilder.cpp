@@ -20,8 +20,7 @@ __aFooterFunction(PlanNodeBuilder)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PlanNodeBuilder::PlanNodeBuilder()
-: Object(CN_PLANNODEBUILDER), m_sName(""_Stz), m_sType(""_Stz),
-  m_pProperties(nullptr), m_pChildren(nullptr), m_sPath(""_Stz)
+: Object(CN_PLANNODEBUILDER), m_pProperties(nullptr), m_pChildren(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODEBUILDER,_FOOTER_);
   

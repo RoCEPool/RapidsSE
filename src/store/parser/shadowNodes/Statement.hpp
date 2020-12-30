@@ -21,7 +21,6 @@ namespace Parser
       ST_UPDATE,
       ST_DELETE,
       ST_INSERTSELECT,
-
       ST_ENUMS
     };
 

@@ -51,8 +51,12 @@ Stz* GraphNav::szLeafType(Stz* szTypePath)
   char* ps;
 
   // This is a type definition path. It should not contain the property separator.
+#ifdef WITH_ASSERT_MACRO
+  ps = StrLib::acLast(szTypePath->azChar());
   ASSERT(!StrLib::bBackward(&ps, szTypePath->azChar(), ':'));
+#endif
 
+  ps = StrLib::acLast(szTypePath->azChar());
   b1 bFound = StrLib::bBackward(&ps, szTypePath->azChar(), '/');
   ASSERT(bFound);
 
@@ -352,6 +356,58 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
   }
 
   // No matches found
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Looks for a property with a given name of the specified node and returns   */
+/* it if found. Otherwise returns nullptr.                                    */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pFindProperty(Stz* szPropName, PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(szPropName);
+  ASSERT(szPropName->nLength() > 0);
+  ASSERT(!szPropName->bContains("/"_Stz));
+  ASSERT(!szPropName->bContains(":"_Stz));
+
+  i8 nProperties = pNode->nProperties();
+
+  // TODO: Use a more efficient mechanism here
+  for (i8 i=0; i<nProperties; i++) {
+    PlanNode* pItem = pNode->pNthProperty(i);
+
+    if (pItem->szName()->bEqual(szPropName)) {
+      return pItem;
+    }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Looks for a child with a given name of the specified node and returns      */
+/* it if found. Otherwise returns nullptr.                                    */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pFindChild(Stz* szChildName, PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(szChildName);
+  ASSERT(szChildName->nLength() > 0);
+  ASSERT(!szChildName->bContains("/"_Stz));
+  ASSERT(!szChildName->bContains(":"_Stz));
+
+  i8 nChildren = pNode->nChildren();
+
+  // TODO: Use a more efficient mechanism here
+  for (i8 i=0; i<nChildren; i++) {
+    PlanNode* pItem = pNode->pNthChild(i);
+
+    if (pItem->szName()->bEqual(szChildName)) {
+      return pItem;
+    }
+  }
+
   return nullptr;
 }
 
