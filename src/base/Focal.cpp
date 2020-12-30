@@ -40,8 +40,6 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
 
   m_iStepNo   = C_UNKNOWN;
   m_iStepTk   = AM::iRdTimePoint();
-
-  AM::vFocalAdd(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,8 +47,6 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
 /*----------------------------------------------------------------------------*/
 Focal::~Focal(void) noexcept(false)
 {
-  if (C_UNKNOWN != m_i_Focal)
-    AM::vFocalRemove(this);
 }
 
 

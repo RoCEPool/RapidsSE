@@ -76,7 +76,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FILE,
   /* */ CN_FIPVAL,
   /* */ CN_FLTVAL,
-  /* */ CN_FOCALOBJECTS,
   /* */ CN_FORTH,
   /* */ CN_FORMAT,
   /* */ CN_FREEBUFFER,
@@ -403,7 +402,6 @@ static Stz* aCN[]
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
-  /* */ "FOCALOBJECTS"_Stz,         // CN_FOCALOBJECTS
   /* */ "FORTH"_Stz,                // CN_FORTH
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER

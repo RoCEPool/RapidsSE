@@ -1748,16 +1748,6 @@ void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
   Log::vEntrySprint(sString,i_Entry);
 }
 
-void AM::vFocalAdd(Focal* pFocal)      {
-  if (! gpAttachMap || !gpAttachMap->m_pFocalObjects)
-    return;
-  gpAttachMap->m_pFocalObjects->vAdd(pFocal);
-}
-void AM::vFocalRemove(Focal* pFocal)   {
-  if (C_UNKNOWN == pFocal->m_i_Focal)
-    return;
-  gpAttachMap->m_pFocalObjects->vRemove(pFocal);
-}
 void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
   
   va_list xArgs;
@@ -1767,71 +1757,8 @@ void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
   
 }
 
-void AM::vMri(TokenVec *pTknVec) { gpAttachMap->m_pFocalObjects->vMri(pTknVec); }
 void AM::vLog(TokenVec *pTknVec) { gpLog->vLog(pTknVec);                        }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
-/*----------------------------------------------------------------------------*/
-void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
-
-  eCN eClassNo = pFocal->eClass();
-  
-  if (CN_ATTACHMAP == eClassNo)
-    _pAttachMap(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_LOG == eClassNo)
-    _pLog(pFocal)->vFocalOutline(sOutline);
-  
-//  else if (CN_SEPROMPT == eClassNo)
-//    _pSePrompt(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_QUEUES == eClassNo)
-    _pQueues(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_TASK == eClassNo)
-    _pTask(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_THREAD == eClassNo)
-    _pThread(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_TX == eClassNo)
-    _pTx(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_SESSION == eClassNo)
-    _pSession(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_DIR == eClassNo)
-    _pDir(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_FILE == eClassNo)
-    _pFile(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_FIFO == eClassNo)
-    _pFifo(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_MUTEX == eClassNo)
-    _pMutex(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_PSXTHD == eClassNo)
-    _pPsxThd(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_SOCKET == eClassNo)
-    _pSocket(pFocal)->vFocalOutline(sOutline);
-  
-  else if (CN_LOCK == eClassNo)
-    _pLock(pFocal)->vFocalOutline(sOutline);
-    
-  else if (STORE::_bIsValidJob(eClassNo))
-    _pJob(pFocal)->vFocalOutline(sOutline);
-  
-  else
-    sOutline.vSprint("<%s focal>"_Stz,aCN[eClassNo]);
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

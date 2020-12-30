@@ -247,9 +247,6 @@ namespace OBLIQUE
     static TagSet* pJobTags(Job* pJob);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vFocalAdd(Focal* pFocal);
-    static void vFocalOutline(s4K& sString, Focal* pFocal);
-    static void vFocalRemove(Focal* pFocal);
   
     static void vFilePrint(File* pFile, Stz* szFormat,...);
     
@@ -296,9 +293,6 @@ namespace OBLIQUE
     static bool bLogEntryExists(i8 i_Entry);
     static i8   iLogEntryPrev(i8 i_Entry);
     static void vLogEntrySprint(s4K& sString, i8 i_Entry);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vMri(TokenVec* pTknVec);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);

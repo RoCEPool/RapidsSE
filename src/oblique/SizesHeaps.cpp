@@ -115,7 +115,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(File),               HT_T_TINY    ,0 }, // CN_FILE
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FIPVAL
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FLTVAL
-  { sizeof(FocalObjects),       HT_T_LARGE   ,0 }, // CN_FOCALOBJECTS
   { sizeof(Forth),              HT_T_TINY    ,0 }, // CN_FORTH
   { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER

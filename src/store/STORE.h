@@ -303,7 +303,6 @@ using namespace Parser;
 
 //------------------------------------------------------------------------------
 
-#include "FocalObjects.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "EnvCheck.hpp"
