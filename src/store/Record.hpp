@@ -41,6 +41,8 @@ namespace STORE
 
   Record* _pRecord(void* aAddr);
 
+
+  typedef HV<Record,RowPix>       HV_Record;
 }
 
 /*============================================================================*/

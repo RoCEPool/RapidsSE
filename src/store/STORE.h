@@ -109,7 +109,6 @@ static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 #include "Row.hpp"
 #include "NmlStr.hpp"
 #include "Record.hpp"
-typedef HV<Record,RowPix>       HV_Record;
 #include "RowBox_t.hpp"
 
 #include "RowSingle.hpp"
@@ -118,8 +117,6 @@ typedef HV<Record,RowPix>       HV_Record;
 #include "CellSingle.hpp"
 
 //------------------------------------------------------------------------------
-
-typedef HV<RowSingle,StreamDef> HV_RowSingle;
 
 //------------------------------------------------------------------------------
 
@@ -213,7 +210,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 #include "EntBufSorter.hpp"
 
 #include "IndexTree.hpp"
-typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
