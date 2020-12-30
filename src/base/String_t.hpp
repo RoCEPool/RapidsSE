@@ -100,6 +100,7 @@ String_t<AREA>::String_t(Stz* szArg)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   m_nArea = AREA;
+  m__reserved__ = C_UNKNOWN;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
