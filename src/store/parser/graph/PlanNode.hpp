@@ -5,7 +5,8 @@
 
 namespace Parser
 {
-  class PlanNodeList;
+  class PlanNode;
+  typedef ListExo_t<CN_PLANNODELIST, PlanNode> PlanNodeList;
 
   // A multi-value struct used in every PlanNode
   struct Value {

@@ -268,8 +268,6 @@ static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
-#include "graph/PlanNodeList.hpp"
-#include "graph/PlanNodeBuilderList.hpp"
 #include "graph/PlanNodeBuilder.hpp"
 #include "graph/RootNode.hpp"
 #include "graph/DefinitionNode.hpp"

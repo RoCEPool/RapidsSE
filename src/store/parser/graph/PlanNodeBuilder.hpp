@@ -5,7 +5,8 @@
 
 namespace Parser
 {
-  class PlanNodeBuilderList;
+  class PlanNodeBuilder;
+  typedef ListExo_t<CN_PLANNODEBUILDERLIST, PlanNodeBuilder> PlanNodeBuilderList;
 
   class PlanNodeBuilder : public Object
   {
