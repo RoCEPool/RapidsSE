@@ -29,7 +29,6 @@ namespace BASE
 #include "SystemIncludes.h"
 #include "UsefulConstants.h"
 #include "UserStrSizes.h"
-#include "Namespaces.h"
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
