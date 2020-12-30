@@ -6,7 +6,7 @@
 
 #define C_LOGIC_STACK 4096
 
-static const i8 C_LOGIC_LOCALS = 8;
+static const i8 C_LOGIC_LOCALS = 32;
 
 typedef struct Ent_int _Ent_int;
 
