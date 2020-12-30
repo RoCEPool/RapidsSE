@@ -84,10 +84,7 @@ static const i8 C_TPCH_REGION   = 5;
 
 #include "Index.hpp"
 
-typedef VectorNL_t<CN_TABLEPTNVEC,STORE::TablePtn,C_MAX_TABLEPTNS>TablePtnVec;
 
-
-#include "Table.hpp"
 
 
 #include "Folder.hpp"
@@ -222,9 +219,13 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,StreamDef,
 //------------------------------------------------------------------------------
 
 #include "TablePtn.hpp"
+
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "PtnStream.hpp"
+
+#include "Table.hpp"
+
 
 #include "Node.hpp"
 #include "Node_I.hpp"
