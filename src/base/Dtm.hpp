@@ -7,10 +7,11 @@ namespace BASE
 {
   class Dtm
   {
-  friend class STORE::Encoding_v2;
-  friend class STORE::SP_Encoding_v2;
-  friend class STORE::Packing_v2;
-  
+//  friend class S T O R E::Encoding_v2;
+//  friend class S T O R E::SP_Encoding_v2;
+//  friend class S T O R E::Packing_v2;
+//  friend class S  TO R E::Row;
+
   friend class BASE::SN_Bcd;
   friend class BASE::SN_Bol;
   friend class BASE::SN_Dte;
@@ -35,9 +36,8 @@ namespace BASE
   friend class BASE::Mutex;
   friend class BASE::IvlLib;
   
-  friend class STORE::Row;
 
-  private:
+  public:
   
     union {
 

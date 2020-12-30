@@ -403,12 +403,6 @@ namespace BASE
 
 typedef void (*FNADDR)(void*);
 
-#define INTRINSIC(FNNAME) \
-  \
-  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Step::FNNAME); \
-  \
-  void Step::FNNAME(Forth* pForth) \
-EndDefine
 
 #define JOBS_fn(FNNAME) \
   \
