@@ -11,6 +11,9 @@
 
 #include "Dynamo.hpp"
 
+#include "Licence.hpp"
+#include "Limits.hpp"
+
 #include "LogEntryDdl.hpp"
 #include "LogEntryFyi.hpp"
 #include "LogEntryJob.hpp"

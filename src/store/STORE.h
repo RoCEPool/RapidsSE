@@ -31,8 +31,8 @@ static const i8 C_TPCH_REGION   = 5;
 //------------------------------------------------------------------------------
 
 #include "Args.hpp"
-#include "Limits.hpp"
-#include "Licence.hpp"
+//#include "Limits.hpp"
+//#include "Licence.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -359,8 +359,8 @@ using namespace Parser;
 
 //------------------------------------------------------------------------------
 
-#include "LockMetrics.hpp"
-#include "MetricsHelper.hpp"
+//#include "LockMetrics.hpp"
+//#include "MetricsHelper.hpp"
 
 //------------------------------------------------------------------------------
 
