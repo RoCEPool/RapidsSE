@@ -2,7 +2,7 @@
 /* Heartbeat.cpp - heartbeat message                                          */
 /*============================================================================*/
 
-#include "BASE.h"
+#include <base/BASE.h>
 #include "STORE.h"
 
 #include "Heart.h"
@@ -43,7 +43,8 @@ HeartbeatSnd::HeartbeatSnd(char *szAddr, int iPort)
 
   if (m_sAddr.compare("BROADCAST") == 0) {
     // BROADCAST
-    addr.sin_addr.s_addr = inet_addr("192.168.0.255");
+    //addr.sin_addr.s_addr = inet_addr("192.168.0.255");
+    addr.sin_addr.s_addr = INADDR_BROADCAST;
   } else {
     // Unicast
     addr.sin_addr.s_addr = inet_addr(m_sAddr.c_str());
@@ -112,7 +113,6 @@ HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort)
   // Port no.
   m_AddrIn.sin_port = htons(m_iPort);
   // From all interface (0.0.0.0)
-  m_AddrIn.sin_addr.s_addr = htonl(INADDR_ANY);
   m_AddrIn.sin_addr.s_addr = INADDR_ANY;
 
 

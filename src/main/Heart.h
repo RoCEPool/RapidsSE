@@ -5,9 +5,11 @@
 
 void vHeartInit(void);
 
-void* vHeartSndLoop(void*);
+[[noreturn]] void* vHeartSndLoop(void*);
 
-void* vHeartRcvLoop(void*);
+[[noreturn]] void* vHeartRcvLoop(void*);
+
+[[noreturn]] void* vHeartReadLoop(void*);
 
 /*============================================================================*/
 /* end                                                                        */
