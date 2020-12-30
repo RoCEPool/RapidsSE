@@ -54,6 +54,9 @@ namespace STORE
   };
   
   Index* _pIndex(void* pAddr);
+
+
+  typedef VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES> IdxVec;
 }
 
 /*============================================================================*/

@@ -82,12 +82,13 @@ static const i8 C_TPCH_REGION   = 5;
 
 #include "IndexDef.hpp"
 
-typedef VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES> IdxVec;
+#include "Index.hpp"
+
 typedef VectorNL_t<CN_TABLEPTNVEC,STORE::TablePtn,C_MAX_TABLEPTNS>TablePtnVec;
+
 
 #include "Table.hpp"
 
-#include "Index.hpp"
 
 #include "Folder.hpp"
 #include "Schema.hpp"
