@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Expressions
+namespace STORE
 {
   class SP_Thread : public SP
   {

@@ -509,7 +509,7 @@ t8 AM::tThisTLSPespective(void)
   return tPerspective;
 }
 
-//Expressions::Task* AM::pThisTLSTask(void) {
+//STORE::Task* AM::pThisTLSTask(void) {
 //  Thread* pThread = Thread::pThisTLSThread();
 //  if (! pThread)
 //    return nullptr;
@@ -523,7 +523,7 @@ LogicUnit* AM::pThisTLSLogicUnit(void) {
   return pLogicUnit;
 }
 
-Expressions::Task* AM::pThisTLSTask(void) {
+STORE::Task* AM::pThisTLSTask(void) {
   Task* pTask = Task::pThisTLSTask();
   return pTask;
 }

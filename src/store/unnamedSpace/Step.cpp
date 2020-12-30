@@ -6,7 +6,7 @@
 #include "STORE.h"
 
 
-StepFp gfpEntryStep = &Expressions::Step::vEnterRoutine;
+StepFp gfpEntryStep = &STORE::Step::vEnterRoutine;
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */

@@ -185,7 +185,7 @@ DynamicSymbol gxaDynamicSymbol[]
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,LogicCompiler,CN_LOGICCOMPILER)
+__pCastFunction(STORE,LogicCompiler,CN_LOGICCOMPILER)
 __aNewFunction(LogicCompiler,CN_LOGICCOMPILER)
 __vDeleteFunction(LogicCompiler,CN_LOGICCOMPILER)
 __aFooterFunction(LogicCompiler)

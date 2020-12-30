@@ -21,7 +21,7 @@ Atomic gixQueryNo;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,LogicUnit,CN_LOGICUNIT)
+__pCastFunction(STORE,LogicUnit,CN_LOGICUNIT)
 __aNewFunction(LogicUnit,CN_LOGICUNIT)
 __vDeleteFunction(LogicUnit,CN_LOGICUNIT)
 __aFooterFunction(LogicUnit)

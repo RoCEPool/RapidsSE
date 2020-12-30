@@ -7,7 +7,7 @@ namespace Arguments
 {
   class Forth : public Object
   {
-    friend class Expressions::Task;
+    friend class STORE::Task;
   
   protected:
     Task*     m_pTask;        // which task

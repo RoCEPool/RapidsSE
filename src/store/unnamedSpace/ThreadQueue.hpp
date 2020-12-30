@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Expressions
+namespace STORE
 {
   class ThreadQueue : public ListNL_t<Thread>
   {

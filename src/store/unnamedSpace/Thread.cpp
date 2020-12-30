@@ -19,7 +19,7 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Thread* Expressions::_pThread(void* aAddr)
+Thread* STORE::_pThread(void* aAddr)
 {
   Thread* pThread = reinterpret_cast<Thread*>(aAddr);
   

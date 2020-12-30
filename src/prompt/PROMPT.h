@@ -13,6 +13,8 @@ namespace PROMPT
 {
 }
 
+using namespace PROMPT;
+
 //------------------------------------------------------------------------------
 
 #include "ShortCut.hpp"

@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-namespace Expressions
+namespace STORE
 {
   class Step : public Forth
   {
   friend class STORE::AttachMap;
-  friend class Expressions::Task;
+  friend class STORE::Task;
   friend class Word;
 
   public:

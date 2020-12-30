@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskQueue* Expressions::_pTaskQueue(void* aAddr)
+TaskQueue* STORE::_pTaskQueue(void* aAddr)
 {
   TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(aAddr);
   

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,DevIXT,CN_DEVIXT)
+__pCastFunction(STORE,DevIXT,CN_DEVIXT)
 __aNewFunction(DevIXT,CN_DEVIXT)
 __vDeleteFunction(DevIXT,CN_DEVIXT)
 __aFooterFunction(DevIXT)

@@ -44,7 +44,7 @@ template <i8 SPACE> class Datum_t;
 
 
 namespace Arguments    { class Dynamo;                                   }
-namespace Expressions       { class LogicUnit;                                }
+namespace STORE       { class LogicUnit;                                }
 
 namespace BASE           { class EnumFlags;       class TagSet;
 class Birth; class Now;
@@ -53,7 +53,7 @@ namespace Arguments             { class Grid;            class Node;            
 
 namespace Arguments          { class EntBuffer;       class IndexTree;         }
 namespace Arguments          { class InfoSetBase;                              }
-namespace Expressions         { class SessionArray;                             }
+namespace STORE         { class SessionArray;                             }
 namespace Arguments              { class Job;             
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
@@ -66,8 +66,6 @@ namespace Arguments          { class Table;           class IdxColVec;
                               class BucketMap;       class PtnMap;            }
 namespace OBLIQUE           { class AM;                                       }
 namespace Arguments          { class Operand;                                  }
-namespace Parser            { //class PlanNode;        class PlanNodeBuilder;
-                                                                              }
 namespace Arguments      {
                               class PtnStream;       class TablePtn;          }
 namespace Arguments         { class Xmits;           class Op;
@@ -83,19 +81,19 @@ namespace Arguments              { class Row;                                   
 namespace Arguments             { class Dic;             class DicStack;
                               class Forth;           class Word;              }
 namespace Arguments          { class Session;         class SessionState;      }
-namespace Expressions             { class Step;            class StepTiming;        }
+namespace STORE             { class Step;            class StepTiming;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 namespace BASE        { class Article;         class Queue;
 class Heap; class PoolHelper; class ObjectSnapshot;            }
-namespace Expressions             { class Task;                                     }
-namespace Expressions           { class Scheduler;       class Thread;
+namespace STORE             { class Task;                                     }
+namespace STORE           { class Scheduler;       class Thread;
                               class Queues;                                   }
 namespace Arguments      { class Tx;              class TxSet;             }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 using namespace Arguments;
-using namespace Expressions;
+using namespace STORE;
 using namespace BASE;
 using namespace STORE;
 using namespace OBLIQUE;

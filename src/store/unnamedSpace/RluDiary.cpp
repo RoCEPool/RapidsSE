@@ -12,7 +12,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,RluDiary,CN_RLUDIARY)
+__pCastFunction(STORE,RluDiary,CN_RLUDIARY)
 __aNewFunction(RluDiary,CN_RLUDIARY)
 __vDeleteFunction(RluDiary,CN_RLUDIARY)
 __aFooterFunction(RluDiary)

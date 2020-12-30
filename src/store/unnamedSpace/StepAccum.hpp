@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Expressions
+namespace STORE
 {
   class StepAccum : public Object
   {

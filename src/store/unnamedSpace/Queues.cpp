@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queues* Expressions::_pQueues(void* aAddr)
+Queues* STORE::_pQueues(void* aAddr)
 {
   Queues* pQueues = reinterpret_cast<Queues*>(aAddr);
   

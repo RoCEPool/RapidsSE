@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ThreadQueue* Expressions::_pThreadQueue(void* aAddr)
+ThreadQueue* STORE::_pThreadQueue(void* aAddr)
 {
   ThreadQueue* pThreadQueue = reinterpret_cast<ThreadQueue*>(aAddr);
   

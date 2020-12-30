@@ -15,7 +15,7 @@
 
 namespace BASE { class Dir; } //?
 
-namespace Expressions
+namespace STORE
 {
   static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
@@ -39,7 +39,7 @@ namespace Expressions
 
   class LogicUnit : public Object
   {
-  friend class Expressions::Task;
+  friend class STORE::Task;
   
   public:
     Task* m_pTask; // which task

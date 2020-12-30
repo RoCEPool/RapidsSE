@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Project* Expressions::_pProject(void* aAddr)
+Project* STORE::_pProject(void* aAddr)
 {
   Project* pProject = reinterpret_cast<Project*>(aAddr);
   

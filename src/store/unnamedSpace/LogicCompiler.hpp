@@ -6,7 +6,7 @@
 #include "eAM.h"
 #include "eEO.h"
 
-namespace Expressions
+namespace STORE
 {
   static const i8 C_LOGIC_SOURCE  = C_SIZE_LARGE_OBJECT - C_1KB;
 

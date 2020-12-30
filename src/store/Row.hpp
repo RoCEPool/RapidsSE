@@ -9,7 +9,7 @@ namespace Arguments
   {
   friend class RowSingle;
   friend class Arguments::InfoSetBase;
-  friend class Expressions::Step;
+  friend class STORE::Step;
   friend class Arguments::RowBuffer;
 
   private:
