@@ -17,7 +17,7 @@ ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Marker* Arguments::_pMarker(void* aAddr)
+Marker* STORE::_pMarker(void* aAddr)
 {
   Marker* pMarker = reinterpret_cast<Marker*>(aAddr);
   

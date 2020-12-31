@@ -5,7 +5,9 @@
 
 #include "eMC.h"
 
-namespace Arguments
+#include "MetaCodeMacros.h"
+
+namespace STORE
 {
   static const i8 C_METABITS = 8;
   static const i8 C_MIN_HEAD_BYTES = 24;

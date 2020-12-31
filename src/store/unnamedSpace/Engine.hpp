@@ -39,7 +39,6 @@ namespace STORE
     static void vGetCopyright(s256& sCopyright);
     static void vGetWelcome(s256& sWelcome);
     static void vKillPrev(void);
-    static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vMonitorProfile(s48K& sPortrait);
     static void vMungeCheck(void);
     static void vOperandQueueReport(bool bStdOut);

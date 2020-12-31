@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Pot,CN_POT)
+__pCastFunction(STORE,Pot,CN_POT)
 __aNewFunction(Pot,CN_POT)
 __vDeleteFunction(Pot,CN_POT)
 __aFooterFunction(Pot)

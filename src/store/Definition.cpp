@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Definition* Arguments::_pDefinition(void* aAddr)
+Definition* STORE::_pDefinition(void* aAddr)
 {
   Definition* pDefinition = reinterpret_cast<Definition*>(aAddr);
   

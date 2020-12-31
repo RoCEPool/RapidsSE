@@ -3,19 +3,22 @@
 /*============================================================================*/
 #pragma once
 
+#include "CrwToRow.hpp"
+#include "ToHshCrw.hpp"
+#include "ToNstRow.hpp"
+#include "ToPtnRow.hpp"
+#include "ToRow.hpp"
+
 #include "InflateSet.h"
 
 #include "eLH.h"
 
-namespace BASE { class Dir; } //?
-
-namespace Expressions
+namespace STORE
 {
   static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
   static const i8 C_LOGIC_COND  = 8;
   static const i8 C_LOGIC_LABEL = 64;
-  static const i8 C_LOCALS      = 8;
 
   struct JumpLabel
   {
@@ -33,7 +36,7 @@ namespace Expressions
 
   class LogicUnit : public Object
   {
-  friend class Expressions::Task;
+  friend class STORE::Task;
   
   public:
     Task* m_pTask; // which task
@@ -58,14 +61,12 @@ namespace Expressions
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
     REG<CrwToRow>    m_xpCrwToRow;
-    REG<Fact>        m_xpFact;
     REG<Index>       m_xpIndex;
     REG<IndexDef>    m_xpIndexDef;
     REG<IndexStream> m_xpIndexStream;
     REG<IndexTree>   m_xpIndexTree;
     REG<Operand>     m_xpInfoSet;
     REG<Table>       m_xpInfoSetTable;
-    REG<Kbase>       m_xpKbase;
     REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
     REG<Planner>     m_xpPlanner;
@@ -220,26 +221,6 @@ namespace Expressions
     void vGenCode(i8 iTestNo);
   
     bool bGenerateAsm(Stz* sText);
-    void vGenerateAsmTxt(i8 iQueryNo, i8 iSubQueryNo, Stz* sFileName);
-    void vGenerateAsmTxt_Smt0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt2(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt3(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt4(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt5(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt6(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt7(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt8(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt8_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Smt8_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-
-    void vGenerateAsmTxt_Query6(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query6_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query6_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-
-    void vGenerateAsmTxt_Query20(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query20_0(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
-    void vGenerateAsmTxt_Query20_1(i8 iQueryNo, i8 iSubQueryNo, File* pFile);
 
     // TPCH Queries
     void vGenerateQuery100(void);

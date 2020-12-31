@@ -5,7 +5,7 @@
 
 #include "eZK.h"
 
-namespace Arguments
+namespace STORE
 {
   class Op : public Focal
   {

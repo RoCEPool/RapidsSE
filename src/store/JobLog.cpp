@@ -14,7 +14,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 /* add a log entry for job                                                    */
 /*----------------------------------------------------------------------------*/
-void JobLog::vNote(Arguments::Job* pJob, Stz* szFormat, ...)
+void JobLog::vNote(STORE::Job* pJob, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if ( ! gpLog )
@@ -58,7 +58,7 @@ void JobLog::vNote(Arguments::Job* pJob, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for job state at some point in the code                    */
 /*----------------------------------------------------------------------------*/
-void JobLog::vNoteState(Arguments::Job* pJob, Stz* szPoint)
+void JobLog::vNoteState(STORE::Job* pJob, Stz* szPoint)
 {
 #ifdef WITH_SHARED_LOG
   if (! gpLog)
@@ -67,7 +67,7 @@ void JobLog::vNoteState(Arguments::Job* pJob, Stz* szPoint)
   if (! pJob)
     return;
 
-  if (! Arguments::_bIsValidJob(pJob->eClass()))
+  if (! STORE::_bIsValidJob(pJob->eClass()))
     return;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

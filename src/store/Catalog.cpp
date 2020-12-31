@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Catalog* Arguments::_pCatalog(void* aAddr)
+Catalog* STORE::_pCatalog(void* aAddr)
 {
   Catalog* pCatalog = reinterpret_cast<Catalog*>(aAddr);
   

@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+
 //------------------------------------------------------------------------------
 
 namespace BASE
@@ -28,7 +29,50 @@ namespace BASE
 #include "SystemIncludes.h"
 #include "UsefulConstants.h"
 #include "UserStrSizes.h"
-#include "Namespaces.h"
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace BASE            { class Format;                                   }
+namespace BASE {
+                            class Datum_h;
+                            class SN_Bcd;
+                            class SN_Bol;
+                            class SN_Dte;
+                            class SN_Flt;
+                            class SN_Int;
+                            class SN_Ivl;
+                            class SN_Tme;
+                            class SN_Tsp;
+
+                            class SP_Bcd;
+                            class SP_Bol;
+                            class SP_Dte;
+                            class SP_Flt;
+                            class SP_Int;
+                            class SP_Ivl;
+                            class SP_Tme;
+                            class SP_Tsp;
+                            template <i8 SPACE> class Datum_t;                 }
+namespace BASE           { class EnumFlags;       class TagSet;
+                            class Birth; class Now;                            }
+namespace BASE   { class Token;           class Charser;
+                              class Input;           class TokenVec;          }
+namespace BASE     { class RU_Cpu;          class RU_Memory;         }
+namespace BASE        { class Article;         class Queue;
+        class Heap; class PoolHelper; class ObjectSnapshot;            }
+
+using namespace BASE;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+namespace OBLIQUE { class AM; }
+using namespace OBLIQUE;
+
+namespace PROMPT { class SePrompt; }
+using namespace PROMPT;
 
 //------------------------------------------------------------------------------
 
@@ -178,9 +222,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "ToolCatalog.hpp"
 
 
-namespace Expressions {
-  typedef void (Step::*StepFp)(void);
-}
 
 
 #include "ForthCell.hpp"
@@ -215,6 +256,9 @@ namespace Expressions {
 #include "MagLib.hpp"
 #include "Dtm.hpp"
 #include "TypedCell.hpp"
+#include "CellSingle.hpp"
+
+
 #include "HshLib.hpp"
 
 #include "SP_Bits.hpp"
@@ -356,18 +400,12 @@ namespace BASE
 
 typedef void (*FNADDR)(void*);
 
-#define INTRINSIC(FNNAME) \
-  \
-  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Step::FNNAME); \
-  \
-  void Step::FNNAME(Forth* pForth) \
-EndDefine
 
 #define JOBS_fn(FNNAME) \
   \
-  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Arguments::FNNAME); \
+  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)STORE::FNNAME); \
   \
-  void Arguments::FNNAME(Job* pJob) \
+  void STORE::FNNAME(Job* pJob) \
 EndDefine
 
 
@@ -484,6 +522,47 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 #include "Thing.hpp"
 #include "Arrange.hpp"
 #include "IntSet.hpp"
+
+
+#include "Format.hpp"
+
+
+//------------------------------------------------------------------------------
+
+#include "ColPix.h"
+#include "RowPix.h"
+#include "Column.hpp"
+
+#include "SN_Bcd.hpp"
+#include "SN_Bol.hpp"
+#include "SN_Dte.hpp"
+#include "SN_Flt.hpp"
+#include "SN_Int.hpp"
+#include "SN_Ivl.hpp"
+#include "SN_Tme.hpp"
+#include "SN_Tsp.hpp"
+#include "SN_Vch.hpp"
+
+#include "SP_Bcd.hpp"
+#include "SP_Bol.hpp"
+#include "SP_Dte.hpp"
+#include "SP_Flt.hpp"
+#include "SP_Int.hpp"
+#include "SP_Ivl.hpp"
+#include "SP_Tme.hpp"
+#include "SP_Tsp.hpp"
+#include "SP_Vch.hpp"
+
+
+//------------------------------------------------------------------------------
+
+#include "Literal.hpp"
+
+
+#include "Licence.hpp"
+#include "Limits.hpp"
+
+//------------------------------------------------------------------------------
 
 
 

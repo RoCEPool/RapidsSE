@@ -311,7 +311,7 @@ void Step::vLogicUnitGenAsmTxt(void)
   i8 iSubQueryNo = m_pDataStack->iPopInt(__func__);
   i8 iQueryNo = m_pDataStack->iPopInt(__func__);
 
-  m_pLogicUnit->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
+  //m_pLogicUnit->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
   
   EXIT();
 }

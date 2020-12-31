@@ -3,8 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
+  static const i8 C_DEF_LVL_LEVELS = 3;
+  static const i8 C_DEF_LVL_RATIO  = 3; // this means 1/2^3 i.e. reducing by 8
+
   class Args : public Object
   {
     friend class OBLIQUE::AM;

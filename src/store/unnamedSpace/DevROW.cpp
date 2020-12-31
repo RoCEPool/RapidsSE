@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,DevROW,CN_DEVROW)
+__pCastFunction(STORE,DevROW,CN_DEVROW)
 __aNewFunction(DevROW,CN_DEVROW)
 __vDeleteFunction(DevROW,CN_DEVROW)
 __aFooterFunction(DevROW)

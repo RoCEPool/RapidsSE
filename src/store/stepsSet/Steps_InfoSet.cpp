@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "MetricsHelper.hpp"
+#include "LockMetrics.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

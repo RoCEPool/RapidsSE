@@ -11,7 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,EntBufSorter,CN_ENTBUFSORTER)
+__pCastFunction(STORE,EntBufSorter,CN_ENTBUFSORTER)
 __aNewFunction(EntBufSorter,CN_ENTBUFSORTER)
 __vDeleteFunction(EntBufSorter,CN_ENTBUFSORTER)
 __aFooterFunction(EntBufSorter)
@@ -43,7 +43,7 @@ EntBufSorter::~EntBufSorter(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-int Arguments::iEntBufSortCompare_IntElm0(const void* aLeft, const void* aRight)
+int STORE::iEntBufSortCompare_IntElm0(const void* aLeft, const void* aRight)
 {
   Ent_int* aEntLeft  = (Ent_int*)aLeft;
   Ent_int* aEntRight = (Ent_int*)aRight;
@@ -57,7 +57,7 @@ int Arguments::iEntBufSortCompare_IntElm0(const void* aLeft, const void* aRight)
     return 0;
 }
 
-int Arguments::iEntBufSortCompare_Lvl_IntElm0(const void* aLeft, const void* aRight)
+int STORE::iEntBufSortCompare_Lvl_IntElm0(const void* aLeft, const void* aRight)
 {
   Ent_int* aEntLeft  = (Ent_int*)aLeft;
   Ent_int* aEntRight = (Ent_int*)aRight;
@@ -98,8 +98,8 @@ void EntBufSorter::vSort_int(EntBuffer* pEntBuffer)
   qsort(aItemArray,
         nItems,
         sizeof(Ent_int),
-        //Arguments::iEntBufSortCompare_IntElm0    // by IntElm0
-        Arguments::iEntBufSortCompare_Lvl_IntElm0  // by Level,IntElm0
+        //STORE::iEntBufSortCompare_IntElm0    // by IntElm0
+        STORE::iEntBufSortCompare_Lvl_IntElm0  // by Level,IntElm0
         );
   
   // for each entry in array, record its revised ticket

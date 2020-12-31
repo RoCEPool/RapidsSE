@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Arguments::_pRowBuffer(void* aAddress)
+RowBuffer* STORE::_pRowBuffer(void* aAddress)
 {
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(aAddress);
   

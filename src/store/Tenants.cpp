@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Tenants* Arguments::_pTenants(void* aAddr)
+Tenants* STORE::_pTenants(void* aAddr)
 {
   Tenants* pTenants = reinterpret_cast<Tenants*>(aAddr);
   

@@ -5,7 +5,7 @@
 
 #include "eAT.h"
 
-namespace Arguments
+namespace STORE
 {
   class AccessPath : public Object
   {
@@ -65,6 +65,9 @@ namespace Arguments
   };
   
   AccessPath* _pAccessPath(void* aAddr);
+
+
+  typedef VectorNL_t<CN_PATHVEC,AccessPath,128> PathVec;
 }
 
 /*============================================================================*/

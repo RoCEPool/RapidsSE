@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,CsvMeta,CN_CSVMETA)
+__pCastFunction(STORE,CsvMeta,CN_CSVMETA)
 __aNewFunction(CsvMeta,CN_CSVMETA)
 __vDeleteFunction(CsvMeta,CN_CSVMETA)
 __aFooterFunction(CsvMeta)

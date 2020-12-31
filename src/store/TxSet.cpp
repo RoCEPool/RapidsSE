@@ -31,7 +31,7 @@ bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TxSet* Arguments::_pTxSet(void* aAddr)
+TxSet* STORE::_pTxSet(void* aAddr)
 {
   TxSet* pTxSet = reinterpret_cast<TxSet*>(aAddr);
   

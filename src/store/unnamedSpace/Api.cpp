@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 
+#include "TagConstants.h"
 
 extern BufferPool*  gpBufferPool;
 extern Log* gpLog;

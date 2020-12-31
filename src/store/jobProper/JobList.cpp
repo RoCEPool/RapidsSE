@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobList* Arguments::_pJobs(void* aAddr)
+JobList* STORE::_pJobs(void* aAddr)
 {
   JobList* pJobs = reinterpret_cast<JobList*>(aAddr);
   

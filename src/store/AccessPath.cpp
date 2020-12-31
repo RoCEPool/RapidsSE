@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-AccessPath* Arguments::_pAccessPath(void* aAddr)
+AccessPath* STORE::_pAccessPath(void* aAddr)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(aAddr);
   

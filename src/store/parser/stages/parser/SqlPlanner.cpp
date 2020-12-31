@@ -3,15 +3,29 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+#include "SqlPlanner.hpp"
 
 #include "sqlLexer.h"
 #include "sqlParser.h"
 #include "sqlBaseVisitor.h"
-#include "parser/common/ErrorListener.hpp"
-#include "graph/QueryNode.hpp"
 
-//using namespace antlr4;
+#include "QueryNode.hpp"
+#include "QueryNodeStack.hpp"
+#include "QueryNodeList.hpp"
+
+#include "PlanConstants.hpp"
+#include "parser/common/ErrorListener.hpp"
+#include "GraphNav.hpp"
+
+#include "ShadowNode.hpp"
+#include "Statement.hpp"
+#include "TableRef.hpp"
+
+
+#include "ColumnRef.hpp"
+#include "LiteralExpr.hpp"
+
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,10 +41,10 @@ __aFooterFunction(SqlPlanner)
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
+  m_pStatementStack(new QueryNodeStack()),
   m_pTableRefStack(new QueryNodeStack()),
   m_pExprStack(nullptr),
-  m_pSelectList(nullptr),
-  m_pStatementStack(new QueryNodeStack())
+  m_pSelectList(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -45,51 +59,43 @@ SqlPlanner::SqlPlanner(void)
 SqlPlanner::~SqlPlanner(void) noexcept
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
-   
-  // [OLD] Clean up the stack of TableRefs
-  if (m_pTableRefStack) {
-    while (m_pTableRefStack->nItems() > 0) {
-      QueryNode* pItem = m_pTableRefStack->pPop();
-      delete pItem;
-    }
-    
-    delete m_pTableRefStack;
-    m_pTableRefStack = nullptr;
-  }
   
-  // [OLD] Clean up the expression stack
-  if (m_pExprStack) {
-    while (m_pExprStack->nItems() > 0) {
-      ExprAtom* pAtom = m_pExprStack->pPop();
-      delete pAtom;
-    }
-    
-    delete m_pExprStack;
-    m_pExprStack = nullptr;
-  }
-  
-  // [OLD] Clean up the select list
-  if (m_pSelectList) {
-    while (m_pSelectList->nItems() > 0) {
-      ExprAtom* pAtom = m_pSelectList->pPop();
-      delete pAtom;
-    }
-    
-    delete m_pSelectList;
-    m_pSelectList = nullptr;
-  }
-
-  // Clean up the statement stack
+  // Clean up the statement, tableref and expression stacks
   if (m_pStatementStack) {
     while (m_pStatementStack->nItems() > 0) {
       QueryNode* pItem = m_pStatementStack->pPop();
       delete pItem;
     }
-
     delete m_pStatementStack;
     m_pStatementStack = nullptr;
   }
 
+  if (m_pTableRefStack) {
+    while (m_pTableRefStack->nItems() > 0) {
+      QueryNode* pItem = m_pTableRefStack->pPop();
+      delete pItem;
+    }
+    delete m_pTableRefStack;
+    m_pTableRefStack = nullptr;
+  }
+
+  if (m_pExprStack) {
+    while (m_pExprStack->nItems() > 0) {
+      QueryNode* pItem = m_pExprStack->pPop();
+      delete pItem;
+    }
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
+  }
+
+  if (m_pSelectList) {
+    while (m_pSelectList->nItems() > 0) {
+      QueryNode* pItem = m_pSelectList->pPop();
+      delete pItem;
+    }
+    delete m_pSelectList;
+    m_pSelectList = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -235,18 +241,18 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
   // TODO: Parse out ALL and DISTINCT here.
   
   ASSERT(!m_pSelectList);
-  m_pSelectList = new ExprList();
+  m_pSelectList = new QueryNodeList();
   
   antlrcpp::Any any = visitChildren(ctx);
   
   if (m_pTableRefStack->nItems() > 0) {
     vTrace("  /from\n"_Stz);
     
-    s256 ref;
+    s2K sBuf;
     QueryNode* pTableRef = m_pTableRefStack->pPop();
-    TableRef::vPrint(pTableRef, ref);
+    ShadowNode::vDescribe(pTableRef, sBuf);
     
-    vTrace("    /%s\n"_Stz, ref.szStz());
+    vTrace("    /%s\n"_Stz, sBuf.szStz());
     delete pTableRef;
   }
   
@@ -254,11 +260,11 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
   vTrace("  /project\n"_Stz);
   
   while (m_pSelectList->nItems() > 0) {
-    ExprAtom* atom = m_pSelectList->pPop();
+    QueryNode* pSelectItem = m_pSelectList->pPop();
     s2K buf;
     
     buf.vCopy("    /"_Stz);
-    atom->vDescribe(buf);
+    ShadowNode::vDescribe(pSelectItem, buf);
    
     buf.vConcat("\n"_Stz);
     vTrace(buf.szStz());
@@ -279,7 +285,7 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
   ASSERT(m_pSelectList);
   
   ASSERT(!m_pExprStack);
-  m_pExprStack = new ExprStack();
+  m_pExprStack = new QueryNodeStack();
   
   visitChildren(ctx);
   
@@ -300,10 +306,10 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   visitChildren(ctx);
   
   // pop the expr stack and add it to the select list.
-  //ASSERT(m_pExprStack->nValues() == 1);
+  ASSERT(m_pExprStack->nItems() == 1);
   
-  ExprAtom* pAtom = m_pExprStack->pPop();
-  m_pSelectList->vAppend(pAtom);
+  QueryNode* pNode = m_pExprStack->pPop();
+  m_pSelectList->vAppend(pNode);
   
   // Expr is a base class. Example subclasses:
   //    columnRef
@@ -325,6 +331,8 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
 {
+  ASSERT(m_pExprStack);
+
   visitChildren(ctx);
   
   Text* pCatalogName = ctx->catalogName() == nullptr ? nullptr : cleanId(ctx->catalogName()->id);
@@ -334,11 +342,11 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
   Text* pTableName = ctx->tableName() == nullptr ? nullptr : cleanId(ctx->tableName()->id);
   
   Text* pColumnName = cleanId(ctx->columnName()->id);
-  
-  ExprColumnRef* columnRef = new ExprColumnRef(pCatalogName, pSchemaName,
-                                               pTableName, pColumnName);
-  
-  m_pExprStack->vPush(columnRef);
+
+  QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
+                                             pTableName, pColumnName);
+
+  m_pExprStack->vPush(pColumnRef);
   
   return nullptr;
 }

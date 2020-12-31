@@ -20,15 +20,13 @@ Stz* gszaEoFragments[EO_ENUMS];
 char gcaAmMacros[C_128K];
 Stz* gszaAmMacros[AM_ENUMS];
 
-const i8 C_MACRO_FILES = 7;
+const i8 C_MACRO_FILES = 5;
 char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_CrwBuffer.macro",
     "../asm/AM_DataPulse.macro",
     "../asm/AM_DefaultHandlers.macro",
-    "../asm/AM_Filters.macro",
     "../asm/AM_QueryMisc.macro",
-    "../asm/AM_StartMarker.macro",
-    "../asm/AM_StreamDef.macro"
+    "../asm/AM_RowBuffer.macro"
 };
 #include "DEV_interface.h"
 #include "LIB_interface.h"
@@ -187,7 +185,7 @@ DynamicSymbol gxaDynamicSymbol[]
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,LogicCompiler,CN_LOGICCOMPILER)
+__pCastFunction(STORE,LogicCompiler,CN_LOGICCOMPILER)
 __aNewFunction(LogicCompiler,CN_LOGICCOMPILER)
 __vDeleteFunction(LogicCompiler,CN_LOGICCOMPILER)
 __aFooterFunction(LogicCompiler)
@@ -895,7 +893,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n"
   "\n  #define C_MAX_LVL_LEVELS 6"
-  "\n  #define C_LOCALS 8"
+  "\n  #define C_LOGIC_LOCALS 32"
   "\n  #define C_UNKNOWN -1"
   "\n"
   "\n  enum eKC { KC_BEFORE=1, KC_SAME, KC_AFTER };"

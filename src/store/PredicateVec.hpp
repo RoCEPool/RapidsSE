@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class PredicateVec : public VectorNL_t<CN_PREDICATEVEC,Predicate,C_MAX_PREDICATEVEC>
   {

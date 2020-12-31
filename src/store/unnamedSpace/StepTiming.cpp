@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StepTiming* Expressions::_pStepTiming(void* aAddr)
+StepTiming* STORE::_pStepTiming(void* aAddr)
 {
   StepTiming* pStepTiming = reinterpret_cast<StepTiming*>(aAddr);
   

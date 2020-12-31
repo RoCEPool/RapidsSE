@@ -6,7 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
-
+#include "TpchRatios.h"
 
 PromptFun __Prompt_tpch (
   PF_TPCH,           // prompt function

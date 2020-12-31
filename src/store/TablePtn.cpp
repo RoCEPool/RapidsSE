@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TablePtn* Arguments::_pTablePtn(void* aAddr)
+TablePtn* STORE::_pTablePtn(void* aAddr)
 {
   TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
   

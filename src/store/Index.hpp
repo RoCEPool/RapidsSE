@@ -5,7 +5,7 @@
 
 static Stz* S_READAPI_I = "__READAPI_I"_Stz;
 
-namespace Arguments
+namespace STORE
 {
   class Index : public Object
   {
@@ -54,6 +54,9 @@ namespace Arguments
   };
   
   Index* _pIndex(void* pAddr);
+
+
+  typedef VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES> IdxVec;
 }
 
 /*============================================================================*/

@@ -5,7 +5,7 @@
 
 #include "eWK.h"
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_WSP_WORD = C_SIZE_MEDIUM_OBJECT - C_1KB;
   
@@ -37,7 +37,7 @@ namespace Arguments
     //*
     //* the following two must be together in this order
     //
-    StepFp    m_fpIntrinsic;  // intrinsic function for this word
+    fpSTEPFN    m_fpIntrinsic;  // intrinsic function for this word
                               //  IMPORTANT:
                               //  the address of this member
                               //    (and *not* the value of the member)
@@ -83,15 +83,15 @@ namespace Arguments
     void  vContentDump(void);
     Dic*  pDic(void);
     void* aEncodeArg(ForthCell* aArgCell);
-    void  vEncodeCall(StepFp* afpEntryStep);
+    void  vEncodeCall(fpSTEPFN* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
     void  vEncodeJump(Stz* aWordNm, ForthCell* aArgCell);
     void  vEncodePush(TypedCell* aTypedCell);
     void  vEntryCell(ForthCell* aInxPtr);
     ForthCell* aEntryCell(void);
-    void  vEntryStep(StepFp fpIntrinsic);
-    StepFp fpEntryStep(void);
-    StepFp* afpEntryStep(void);
+    void  vEntryStep(fpSTEPFN fpIntrinsic);
+    fpSTEPFN fpEntryStep(void);
+    fpSTEPFN* afpEntryStep(void);
     i8    iEpoch(void);
     Stz*  szExceptionHook(void);
     void  vExceptionHook(Stz* szExceptionHook);

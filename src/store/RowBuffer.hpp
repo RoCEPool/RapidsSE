@@ -3,8 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
+  static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_16KB; // ref NmlStr
+
+
   class RowBuffer : public DataBuffer,
                     public RowBox_t<C_WSP_ROWBUFFER>
   {

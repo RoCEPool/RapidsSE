@@ -5,7 +5,8 @@
 
 namespace Parser
 {
-  class PlanNodeList;
+  class PlanNode;
+  typedef ListExo_t<CN_PLANNODELIST, PlanNode> PlanNodeList;
 
   // A multi-value struct used in every PlanNode
   struct Value {
@@ -32,6 +33,9 @@ namespace Parser
       if (szStz) {
         m_pText = new Text(szStz);
         m_bMustFree = true;
+      } else {
+        m_pText = nullptr;
+        m_bMustFree = false;
       }
     }
 
@@ -41,12 +45,14 @@ namespace Parser
       if (pText) {
         m_pText = pText;
         m_bMustFree = true;
+      } else {
+        m_pText = nullptr;
+        m_bMustFree = false;
       }
     }
   };
 
-  class PlanNode : public Object,
-                   public ListItem_t<PlanNode>
+  class PlanNode : public Object
   {
   protected:
     s256  m_sName;
@@ -85,8 +91,11 @@ namespace Parser
     b1 bHasProperties();
     b1 bHasChildren();
 
-    PlanNode* pFirstProperty();
-    PlanNode* pFirstChild();
+    i8 nProperties();
+    i8 nChildren();
+
+    PlanNode* pNthProperty(i8 idx);
+    PlanNode* pNthChild(i8 idx);
   };
   
   PlanNode* _pPlanNode(void* aAddr);

@@ -5,7 +5,7 @@
 
 #include "eCM.h"
 
-namespace Arguments
+namespace STORE
 {
   class Compiler : public Object
   {

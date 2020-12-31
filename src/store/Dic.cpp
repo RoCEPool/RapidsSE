@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dic* Arguments::_pDic(void* aAddr)
+Dic* STORE::_pDic(void* aAddr)
 {
   RASSERT(aAddr);
   Dic* pDic = reinterpret_cast<Dic*>(aAddr);
@@ -211,7 +211,7 @@ Word* Dic::pFindWord(Stz* szWordNm)
 /*----------------------------------------------------------------------------*/
 /* find a word given pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFindStep(StepFp fpStep)
+Word* Dic::pFindStep(fpSTEPFN fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

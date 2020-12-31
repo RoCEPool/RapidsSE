@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,Profile,CN_PROFILE)
+__pCastFunction(STORE,Profile,CN_PROFILE)
 __aNewFunction(Profile,CN_PROFILE)
 __vDeleteFunction(Profile,CN_PROFILE)
 __aFooterFunction(Profile)

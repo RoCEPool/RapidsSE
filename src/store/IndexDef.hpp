@@ -6,7 +6,7 @@
 #include "eIT.h"
 #include "eKE.h"
 
-namespace Arguments
+namespace STORE
 {
   class IndexDef : public Definition
   {

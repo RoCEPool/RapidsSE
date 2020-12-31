@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Forth* Arguments::_pForth(void* aAddr)
+Forth* STORE::_pForth(void* aAddr)
 {
   Forth* pForth = reinterpret_cast<Forth*>(aAddr);
   

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Compiler,CN_COMPILER)
+__pCastFunction(STORE,Compiler,CN_COMPILER)
 __aNewFunction(Compiler,CN_COMPILER)
 __vDeleteFunction(Compiler,CN_COMPILER)
 __aFooterFunction(Compiler)

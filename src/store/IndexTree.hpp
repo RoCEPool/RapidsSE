@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   
@@ -84,6 +84,9 @@ namespace Arguments
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+
+  typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
+
  }
 
 /*============================================================================*/

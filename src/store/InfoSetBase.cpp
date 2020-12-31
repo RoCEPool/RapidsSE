@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-InfoSetBase* Arguments::_pInfoSetBase(void* aAddr)
+InfoSetBase* STORE::_pInfoSetBase(void* aAddr)
 {
   InfoSetBase* pInfoSetBase = reinterpret_cast<InfoSetBase*>(aAddr);
   

@@ -343,7 +343,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   //vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
   Word*     pNewWord;
-  StepFp    fpStep;
+  fpSTEPFN    fpStep;
   Word*     pCalledWord;
   CellSingle xVariable;
   TokenVec* pTokenVec;
@@ -411,7 +411,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
           }
         }
         else if (WK_ROUTINE == pCalledWord->eWord()) {
-          StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+          fpSTEPFN* afpCalledEntryStep = pCalledWord->afpEntryStep();
           pNewWord->vEncodeCall(afpCalledEntryStep);
         }
         else {

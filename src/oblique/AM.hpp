@@ -25,6 +25,61 @@
 
 namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracker;}
 
+
+namespace STORE    { class Crw;             class CrwBuffer;
+                              class RowCompactor;    class RowInflator;
+                              class HeadLine;        class Encoding_v2;
+                     class SP_Encoding_v2;
+                      class Packing_v2;
+                              class OverLine;        class TailLine;          }
+namespace STORE       { class DataBuffer;      class CsvBuffer;
+                              class RowBuffer;       class RowBuffer;         }
+
+
+namespace STORE    { class Dynamo;                                   }
+namespace STORE       { class LogicUnit;                                }
+
+namespace STORE             { class Grid;            class Node;              }
+
+namespace STORE          { class EntBuffer;       class IndexTree;         }
+namespace STORE          { class InfoSetBase;                              }
+namespace STORE         { class SessionArray;                             }
+namespace STORE              { class Job;
+                              class JobList;         class Job_CreateTable;
+                              class Job_CreateIndex; class XmitOperand;
+                              class Job_Distributed;                          }
+namespace STORE           { class Log;             class LogEntry;          }
+namespace STORE          { class Table;           class IdxColVec;
+                              class Index;
+                              class BucketMap;       class PtnMap;            }
+namespace STORE          { class Operand;                                  }
+namespace STORE      {
+                              class PtnStream;       class TablePtn;          }
+namespace STORE         { class Xmits;           class Op;
+                              class Pipeline;        class Stage;
+                              class StageVec;        class Stream;            }
+namespace STORE     { class OpSpec;          class PipelineSpec;
+                              class StageSpec;                                }
+namespace STORE             { class Planner;                                  }
+namespace STORE   { class Crv;                                      }
+namespace STORE              { class Row;                                      }
+namespace STORE             { class Dic;             class DicStack;
+                              class Forth;           class Word;              }
+namespace STORE          { class Session;         class SessionState;      }
+namespace STORE             { class Step;            class StepTiming;        }
+namespace STORE     { class AttachMap;       class Engine;            }
+
+
+namespace STORE             { class Task;                                     }
+namespace STORE           { class Scheduler;       class Thread;
+                              class Queues;                                   }
+namespace STORE      { class Tx;              class TxSet;             }
+
+
+using namespace STORE;
+
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace OBLIQUE
@@ -142,7 +197,6 @@ namespace OBLIQUE
     static void vDropTaskLock(Task* pTask);
     static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
-    static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(StepTiming* pStepTiming);
@@ -192,9 +246,6 @@ namespace OBLIQUE
     static TagSet* pJobTags(Job* pJob);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vFocalAdd(Focal* pFocal);
-    static void vFocalOutline(s4K& sString, Focal* pFocal);
-    static void vFocalRemove(Focal* pFocal);
   
     static void vFilePrint(File* pFile, Stz* szFormat,...);
     
@@ -241,9 +292,6 @@ namespace OBLIQUE
     static bool bLogEntryExists(i8 i_Entry);
     static i8   iLogEntryPrev(i8 i_Entry);
     static void vLogEntrySprint(s4K& sString, i8 i_Entry);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vMri(TokenVec* pTknVec);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
@@ -339,6 +387,9 @@ namespace OBLIQUE
   
   
     static Stz* szEnumText(i8 i_EnumGroup, i8 i_Enum);
+  
+  
+    static bool bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet);
 
   };
 }

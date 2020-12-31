@@ -3,15 +3,15 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
+#include "PlanDefinitionParser.hpp"
 #include "json5Lexer.h"
 #include "json5Parser.h"
-#include "json5BaseVisitor.h"
 #include "ErrorListener.hpp"
 #include "PlanNodeBuilder.hpp"
+#include "PlanNodeBuilderStack.hpp"
 
-//using namespace antlr4;
+
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -26,9 +26,9 @@ __aFooterFunction(PlanDefinitionParser)
 /* constants                                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* PlanDefinitionParser::definitionPaths[] = {
-    "../src/parser/graph/PlannerDef.json5"_Stz,
-    "../PlannerDef.json5"_Stz,
-    "../res/PlannerDef.json5"_Stz,
+    "../src/store/parser/graph/PlannerDef.json5"_Stz, // For development
+    "../PlannerDef.json5"_Stz,                        // For installation directory
+    "../res/PlannerDef.json5"_Stz,                    // Eventually for a tidier installation directory
     nullptr};
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ Stz* PlanDefinitionParser::definitionPaths[] = {
 /*----------------------------------------------------------------------------*/
 PlanDefinitionParser::PlanDefinitionParser(void)
 : Object(CN_PLANDEFINITIONPARSER),
-  m_pNodeBuilderStack(new NodeBuilderStack())
+  m_pNodeBuilderStack(new PlanNodeBuilderStack())
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
   
@@ -77,7 +77,7 @@ b1 PlanDefinitionParser::bFindDefinitionFile(s2K& pBuf)
       break;
     }
 
-    if (File::bExists(sPath), true) {
+    if (File::bExists(sPath, true)) {
       // We found it. Copy the path into the buffer
       pBuf = sPath;
       return true;
@@ -169,7 +169,9 @@ PlanNode* PlanDefinitionParser::pParse()
 antlrcpp::Any PlanDefinitionParser::visitJson5(json5Parser::Json5Context *ctx)
 {
   // We always start off with an object
-  ASSERT(ctx->value()->obj() != nullptr);
+  ASSERT(ctx);
+  ASSERT(ctx->value());
+  ASSERT(ctx->value()->obj());
 
   antlrcpp::Any any = visitObj(ctx->value()->obj());
 
@@ -286,9 +288,6 @@ void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNod
 
   } else if (ctx->obj() != nullptr) {
     NEVER_REACH
-    // Use the visit function on this child
-//    visitObj(ctx->obj());
-//    pNodeBuilder->m_xValue.m_pXref = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
 
   } else if (ctx->arr() != nullptr) {
      // Can't have an array in a value field

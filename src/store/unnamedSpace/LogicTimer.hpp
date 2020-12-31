@@ -5,7 +5,7 @@
 
 #include "eEO.h"
 
-namespace Expressions
+namespace STORE
 {
   class LogicTimer : public Object
   {

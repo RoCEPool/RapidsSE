@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_ROWSINGLE_WSP  = C_MAX_RECORD;
 
@@ -61,6 +61,8 @@ namespace Arguments
   };
   
   RowSingle* _pRowSingle(void* aAddr);
+
+  typedef HV<RowSingle,StreamDef> HV_RowSingle;
 }
 
 /*============================================================================*/

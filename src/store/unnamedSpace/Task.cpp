@@ -7,6 +7,7 @@
 
 
 #include "PsxThd.hpp" //?
+#include "TagConstants.h"
 
 Atomic gixTask;
 
@@ -21,7 +22,7 @@ extern pthread_key_t giTLS_TaskKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Expressions::_pTask(void* aAddr)
+Task* STORE::_pTask(void* aAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(aAddr);
   
@@ -33,7 +34,7 @@ Task* Expressions::_pTask(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Expressions::_pTask(i8 iAddr)
+Task* STORE::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
   
@@ -194,7 +195,7 @@ void Task::vTaskLoop(void)
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
     //   dereference it to get the intrinsic function to be called
-    StepFp fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpStep );
+    fpSTEPFN fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpObjectFn );
     
     // call the intinsic
     try {
@@ -793,7 +794,7 @@ void Task::vSeedTask(void)
 /*----------------------------------------------------------------------------*/
 /* get send node                                                              */
 /*----------------------------------------------------------------------------*/
-Arguments::Node* Task::pSendNode(void)
+STORE::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -803,7 +804,7 @@ Arguments::Node* Task::pSendNode(void)
 /*----------------------------------------------------------------------------*/
 /*set send node                                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSendNode(Arguments::Node* pNode)
+void Task::vSendNode(STORE::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -947,7 +948,7 @@ i8 Task::iTaskId(void)
 /*----------------------------------------------------------------------------*/
 /* get thread                                                                 */
 /*----------------------------------------------------------------------------*/
-Expressions::Thread* Task::pvThread_DONT_DEREF(void)
+STORE::Thread* Task::pvThread_DONT_DEREF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -957,7 +958,7 @@ Expressions::Thread* Task::pvThread_DONT_DEREF(void)
 /*----------------------------------------------------------------------------*/
 /* set thread                                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThread(Expressions::Thread* pThread)
+void Task::vThread(STORE::Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

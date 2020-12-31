@@ -7,6 +7,35 @@
 #include "OBLIQUE.h"
 #include "PROMPT.h"
 
+#include "LogEntry.hpp"
+#include "Log.hpp"
+
+
+#include "graph/PlanConstants.hpp"
+#include "graph/PlanNode.hpp"
+#include "graph/PlanNodeBuilder.hpp"
+#include "graph/RootNode.hpp"
+#include "graph/DefinitionNode.hpp"
+#include "graph/PrimitiveNode.hpp"
+#include "graph/MutablePlanNode.hpp"
+#include "graph/QueryNode.hpp"
+#include "graph/MetadataNode.hpp"
+#include "graph/StatisticsNode.hpp"
+#include "graph/PlanDefinitionParser.hpp"
+
+#include "shadowNodes/ShadowNode.hpp"
+#include "shadowNodes/TableRef.hpp"
+#include "shadowNodes/Statement.hpp"
+#include "shadowNodes/expressions/Expr.hpp"
+#include "shadowNodes/expressions/LiteralExpr.hpp"
+#include "shadowNodes/expressions/ColumnRef.hpp"
+
+#include "graphTools/GraphNav.hpp"
+#include "graphTools/GraphEditor.hpp"
+
+#include "parser/stages/parser/SqlPlanner.hpp"
+using namespace Parser;
+
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */
 /*----------------------------------------------------------------------------*/
@@ -36,7 +65,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'C' - ('A' - 1),            HT_INVALID   ,0 }, // CN__C__
   { sizeof(Catalog),            HT_INVALID   ,0 }, // CN_CATALOG
-  { sizeof(CellSegment),        HT_T_MEDIUM  ,0 }, // CN_CELLSEGMENT
+
   { sizeof(CellSingle),         HT_INVALID   ,0 }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_MEDIUM  ,0 }, // CN_CHARSER
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
@@ -69,17 +98,12 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
-  { sizeof(ExprAtom),           HT_T_TINY    ,-8 }, // CN_EXPRATOM
-  { sizeof(ExprColumnRef),      HT_T_TINY    ,-8 }, // CN_EXPRCOLUMNREF
-  { sizeof(ExprList),           HT_T_TINY    ,0 }, // CN_EXPRLIST
-  { sizeof(ExprStack),          HT_T_MEDIUM  ,0 }, // CN_EXPRSTACK
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 }, // CN_FIFO
   { sizeof(File),               HT_T_TINY    ,0 }, // CN_FILE
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FIPVAL
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FLTVAL
-  { sizeof(FocalObjects),       HT_T_LARGE   ,0 }, // CN_FOCALOBJECTS
   { sizeof(Forth),              HT_T_TINY    ,0 }, // CN_FORTH
   { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER
@@ -157,7 +181,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(NextGid),            HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 }, // CN_NMLSTR
   { sizeof(Node),               HT_T_TINY    ,0 }, // CN_NODE
-  { sizeof(NodeBuilderStack),   HT_T_MEDIUM  ,0 }, // CN_NODEBUILDERSTACK
   { sizeof(Node_I),             HT_T_TINY    ,0 }, // CN_NODE_I
   { sizeof(Now),                HT_T_TINY    ,0 }, // CN_NOW
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
@@ -178,8 +201,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Planner),              HT_T_MEDIUM  ,0 }, // CN_PLANNER
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
-  { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
+  { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM  ,0 }, // CN_PLANNODEBUILDERSTACK
+  { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(ObjectSnapshot),       HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Pot),                  HT_T_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_T_TINY    ,0 }, // CN_PREDICATE
@@ -194,6 +218,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'Q' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Q__
   { sizeof(QueryNode),          HT_T_TINY    ,-8 }, // CN_QUERYNODE
+  { sizeof(QueryNodeList),      HT_T_TINY    ,0 }, // CN_QUERYNODELIST
   { sizeof(QueryNodeStack),     HT_T_MEDIUM  ,0 }, // CN_QUERYNODESTACK
   { sizeof(Queue),              HT_T_TINY    ,0 }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID   ,0 }, // CN_QUEUEBUFFER

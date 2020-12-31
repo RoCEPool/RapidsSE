@@ -5,7 +5,7 @@
 
 //! entry work is used to form an entry which is then inserted into an index
 
-namespace Arguments
+namespace STORE
 {
   class EntWrk : public StackObject
   {

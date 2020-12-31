@@ -4,21 +4,22 @@
 #pragma once
 
 #include "sqlBaseVisitor.h"
+#include "QueryNodeStack.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
+  class PlanNode;
+
   class SqlPlanner : public Object, public sqlBaseVisitor
   {
   private:
-    // old
-    //TableRefStack* m_pTableRefStack;
-    ExprStack* m_pExprStack;
-    ExprList* m_pSelectList;
-
     // The query text that was entered by the user
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableRefStack;
+    QueryNodeStack* m_pExprStack;
+    QueryNodeList* m_pSelectList;
     Footer m_xFooter;
     
    public:

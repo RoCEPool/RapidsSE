@@ -4,16 +4,20 @@
 #pragma once
 
 #include "json5BaseVisitor.h"
+#include "PlanNodeBuilderStack.hpp"
 
 namespace Parser
-{  
+{
+  class PlanNode;
+  class PlanNodeBuilder;
+
   class PlanDefinitionParser : public Object, public json5BaseVisitor
   {
   private:
     // The paths that the planner definition json5 file could be found
     static Stz* definitionPaths[];
 
-    NodeBuilderStack * m_pNodeBuilderStack; // A stack of PlanNodeBuilder objects
+    PlanNodeBuilderStack * m_pNodeBuilderStack; // A stack of PlanNodeBuilder objects
     Footer m_xFooter;
     
    public:

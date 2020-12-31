@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_HEADLINE_OFS_WORDS = 0;
   static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;

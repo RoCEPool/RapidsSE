@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_WSP_ROUTINE = C_SIZE_SMALL_OBJECT - 128;
 
@@ -34,7 +34,7 @@ namespace Arguments
     void* aAppend(ForthCell* aCell);
     void  vAppend(ForthCell* aCell);
     void  vAppend(i8 iInt);
-    void  vAppend(StepFp* afpStep);
+    void  vAppend(fpSTEPFN* afpStep);
     void  vAppend(TypedCell* aTypedCell);
   
     void  vReset(void);

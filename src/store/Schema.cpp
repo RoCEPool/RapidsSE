@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Schema* Arguments::_pSchema(void* aAddr)
+Schema* STORE::_pSchema(void* aAddr)
 {
   Schema* pSchema = reinterpret_cast<Schema*>(aAddr);
   

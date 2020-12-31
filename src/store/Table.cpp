@@ -20,7 +20,7 @@ Atomic gixTable;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Table,CN_TABLE)
+__pCastFunction(STORE,Table,CN_TABLE)
 __aNewFunction(Table,CN_TABLE)
 __vDeleteFunction(Table,CN_TABLE)
 __aFooterFunction(Table)

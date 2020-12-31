@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Project* Expressions::_pProject(void* aAddr)
+Project* STORE::_pProject(void* aAddr)
 {
   Project* pProject = reinterpret_cast<Project*>(aAddr);
   
@@ -330,7 +330,10 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
     }
     RASSERT(pColumn);
 
-    StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,i_StreamInCol);
+    if (pColumn->eColumnType() == CT_VARCHAR || pColumn->eColumnType() == CT_CHAR)
+      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALS %lld\n"_Stz,i_StreamInCol);
+    else
+      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,i_StreamInCol);
     pTkn = pTknVec->pNextToken();
   }
 

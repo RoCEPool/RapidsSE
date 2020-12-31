@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DataChunk* Arguments::_pDataChunk(void* aAddr)
+DataChunk* STORE::_pDataChunk(void* aAddr)
 {
   DataChunk* pDataChunk = reinterpret_cast<DataChunk*>(aAddr);
     

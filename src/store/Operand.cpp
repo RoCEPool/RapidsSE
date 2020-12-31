@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Operand* Arguments::_pOperand(void* aAddress)
+Operand* STORE::_pOperand(void* aAddress)
 {
   Operand* pOperand = reinterpret_cast<Operand*>(aAddress);
   
@@ -24,7 +24,7 @@ Operand* Arguments::_pOperand(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid operand?                                            */
 /*----------------------------------------------------------------------------*/
-bool Arguments::_bIsValidOperand(eCN eClass)
+bool STORE::_bIsValidOperand(eCN eClass)
 {
   switch(eClass) {
     case CN_CRWBUFFER:

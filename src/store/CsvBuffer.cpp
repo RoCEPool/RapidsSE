@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,CsvBuffer,CN_CSVBUFFER)
+__pCastFunction(STORE,CsvBuffer,CN_CSVBUFFER)
 __aNewFunction(CsvBuffer,CN_CSVBUFFER)
 __vDeleteFunction(CsvBuffer,CN_CSVBUFFER)
 __aFooterFunction(CsvBuffer)

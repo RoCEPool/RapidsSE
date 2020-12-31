@@ -69,7 +69,6 @@ namespace STORE
     Lock          m_okDdlLock;
     Lock          m_okDicLock;
     i8            m_iEpoch;
-    FocalObjects* m_pFocalObjects;
     Format        m_oFormat;
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;

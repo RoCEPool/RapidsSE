@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicStack* Arguments::_pDicStack(void* aAddr)
+DicStack* STORE::_pDicStack(void* aAddr)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   
@@ -222,7 +222,7 @@ Word* DicStack::pLocateRoutineWord(ForthCell* aCell)
 /*----------------------------------------------------------------------------*/
 /* locate word that has given step                                            */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pLocateStepWord(StepFp fpStep)
+Word* DicStack::pLocateStepWord(fpSTEPFN fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   

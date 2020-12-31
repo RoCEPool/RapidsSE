@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "TagConstants.h"
 
 Atomic gixSession;
 
@@ -15,7 +16,7 @@ Atomic gixSession;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Session* Arguments::_pSession(void* aAddr)
+Session* STORE::_pSession(void* aAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(aAddr);
   
@@ -32,7 +33,7 @@ Session* Arguments::_pSession(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Session* Arguments::_pSession(i8 iAddr)
+Session* STORE::_pSession(i8 iAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(iAddr);
   

@@ -6,6 +6,8 @@
 
 #define C_LOGIC_STACK 4096
 
+#define C_LOGIC_LOCALS 32
+
 typedef struct Ent_int _Ent_int;
 
 struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
@@ -67,7 +69,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 
   i8 m_iaDataStack[C_LOGIC_STACK];
   
-  i8 m_iaLocals[C_LOCALS]; // locals regs []
+  i8 m_iaLocals[C_LOGIC_LOCALS]; // locals regs []
   
 
 

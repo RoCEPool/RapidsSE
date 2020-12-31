@@ -6,6 +6,8 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "TagConstants.h"
+
 
 extern Args          gxArgs;
 

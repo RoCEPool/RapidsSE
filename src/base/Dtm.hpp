@@ -7,27 +7,28 @@ namespace BASE
 {
   class Dtm
   {
-  friend class Arguments::Encoding_v2;
-  friend class Arguments::SP_Encoding_v2;
-  friend class Arguments::Packing_v2;
-  
-  friend class Arguments::SN_Bcd;
-  friend class Arguments::SN_Bol;
-  friend class Arguments::SN_Dte;
-  friend class Arguments::SN_Flt;
-  friend class Arguments::SN_Int;
-  friend class Arguments::SN_Ivl;
-  friend class Arguments::SN_Tme;
-  friend class Arguments::SN_Tsp;
+//  friend class S T O R E::Encoding_v2;
+//  friend class S T O R E::SP_Encoding_v2;
+//  friend class S T O R E::Packing_v2;
+//  friend class S  TO R E::Row;
 
-  friend class Arguments::SP_Bcd;
-  friend class Arguments::SP_Bol;
-  friend class Arguments::SP_Dte;
-  friend class Arguments::SP_Flt;
-  friend class Arguments::SP_Int;
-  friend class Arguments::SP_Ivl;
-  friend class Arguments::SP_Tme;
-  friend class Arguments::SP_Tsp;
+  friend class BASE::SN_Bcd;
+  friend class BASE::SN_Bol;
+  friend class BASE::SN_Dte;
+  friend class BASE::SN_Flt;
+  friend class BASE::SN_Int;
+  friend class BASE::SN_Ivl;
+  friend class BASE::SN_Tme;
+  friend class BASE::SN_Tsp;
+
+  friend class BASE::SP_Bcd;
+  friend class BASE::SP_Bol;
+  friend class BASE::SP_Dte;
+  friend class BASE::SP_Flt;
+  friend class BASE::SP_Int;
+  friend class BASE::SP_Ivl;
+  friend class BASE::SP_Tme;
+  friend class BASE::SP_Tsp;
 
   friend class BASE::Birth;
   friend class BASE::Now;
@@ -35,9 +36,8 @@ namespace BASE
   friend class BASE::Mutex;
   friend class BASE::IvlLib;
   
-  friend class Arguments::Row;
 
-  private:
+  public:
   
     union {
 

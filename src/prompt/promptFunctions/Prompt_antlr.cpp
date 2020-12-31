@@ -3,10 +3,13 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "PROMPT.h"
 
+#include "PlanNode.hpp"
+#include "PlanDefinitionParser.hpp"
+#include "SqlPlanner.hpp"
 
+using namespace Parser;
 
 PromptFun __Prompt_antlr (
   PF_ANTLR,           // prompt function

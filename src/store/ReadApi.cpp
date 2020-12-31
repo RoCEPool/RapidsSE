@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,ReadApi,CN_READAPI)
+__pCastFunction(STORE,ReadApi,CN_READAPI)
 __aNewFunction(ReadApi,CN_READAPI)
 __vDeleteFunction(ReadApi,CN_READAPI)
 __aFooterFunction(ReadApi)

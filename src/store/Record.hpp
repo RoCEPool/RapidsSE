@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class Record : public Object
   {
@@ -41,6 +41,8 @@ namespace Arguments
 
   Record* _pRecord(void* aAddr);
 
+
+  typedef HV<Record,RowPix>       HV_Record;
 }
 
 /*============================================================================*/

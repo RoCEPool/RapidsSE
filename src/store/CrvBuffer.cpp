@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CrvBuffer* Arguments::_pCrvBuffer(void* aAddress)
+CrvBuffer* STORE::_pCrvBuffer(void* aAddress)
 {
   CrvBuffer* pCrvBuffer = reinterpret_cast<CrvBuffer*>(aAddress);
   

@@ -8,6 +8,7 @@
 
 
 #include "ePP.h"
+#include "TagConstants.h"
 
 extern Args          gxArgs;
 

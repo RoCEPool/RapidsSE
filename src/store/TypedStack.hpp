@@ -5,7 +5,7 @@
 
 #include "eKK.h"
 
-namespace Arguments
+namespace STORE
 {
   static const i8 C_NO_ADDITIONAL_BYTES = 0;
   

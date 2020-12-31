@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StreamDef* Arguments::_pStreamDef(void* aAddr)
+StreamDef* STORE::_pStreamDef(void* aAddr)
 {
   StreamDef* pStreamDef = reinterpret_cast<StreamDef*>(aAddr);
   

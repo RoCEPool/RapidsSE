@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DataBuffer* Arguments::_pDataBuffer(void* aAddress)
+DataBuffer* STORE::_pDataBuffer(void* aAddress)
 {
   DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(aAddress);
   

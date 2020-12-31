@@ -3,19 +3,19 @@
 /*============================================================================*/
 #pragma once
 
-namespace Expressions
+namespace STORE
 {
   class Step : public Forth
   {
   friend class STORE::AttachMap;
-  friend class Expressions::Task;
+  friend class STORE::Task;
   friend class Word;
 
   public:
     static void vAddSteps(void);
   
   private:
-    static void vAddStep(Stz* aName, StepFp fpStep, bool bImmediate=false);
+    static void vAddStep(Stz* aName, fpSTEPFN fpStep, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Address(void);

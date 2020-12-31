@@ -8,7 +8,7 @@
 #include "eTR.h"
 #include "eTS.h"
 
-namespace Expressions
+namespace STORE
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tracing masks
@@ -22,7 +22,7 @@ namespace Expressions
   class Task : public Focal,
                public ListItem_t<Task>
   {
-  friend class Expressions::Step;
+  friend class STORE::Step;
 
   private:
     Lock         m_okLock;       // lock for this task

@@ -3,10 +3,9 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 #include "PlanNode.hpp"
 
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,11 +26,7 @@ PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
   m_pProperties(pProperties),
   m_pChildren(pChildren)
 {
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
-//
-//  _checkInitialised_(CN_PLANNODE);
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
+
 
 }
 
@@ -46,10 +41,10 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
 
   if (oNode.m_pProperties) {
     m_pProperties = new PlanNodeList();
-    PlanNode *pItem = oNode.m_pProperties->pHead();
-    while (pItem) {
+    // TODO: slow to iterate
+    for (i8 i=0; i<oNode.m_pProperties->nItems(); i++) {
+      PlanNode* pItem = oNode.m_pProperties->pPeek(i);
       m_pProperties->vAppend(pItem);
-      pItem = pItem->pNextItem();
     }
   } else {
     m_pProperties = nullptr;
@@ -57,10 +52,9 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
 
   if (oNode.m_pChildren) {
     m_pChildren = new PlanNodeList();
-    PlanNode *pItem = oNode.m_pChildren->pHead();
-    while (pItem) {
+    for (i8 i=0; i<oNode.m_pChildren->nItems(); i++) {
+      PlanNode* pItem = oNode.m_pChildren->pPeek(i);
       m_pChildren->vAppend(pItem);
-      pItem = pItem->pNextItem();
     }
   } else {
     m_pChildren = nullptr;
@@ -159,7 +153,7 @@ Stz* PlanNode::getStringValue()
 /*----------------------------------------------------------------------------*/
 b1 PlanNode::bHasProperties()
 {
-  return (m_pProperties && m_pProperties->pHead());
+  return (nProperties() > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,31 +161,53 @@ b1 PlanNode::bHasProperties()
 /*----------------------------------------------------------------------------*/
 b1 PlanNode::bHasChildren()
 {
-  return (m_pChildren && m_pChildren->pHead());
+  return (nChildren() > 0);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the first property of this node. May be null.                      */
+/* Returns the number of properties in this object.                           */
 /*----------------------------------------------------------------------------*/
-PlanNode* PlanNode::pFirstProperty()
+i8 PlanNode::nProperties()
 {
   if (!m_pProperties) {
-    return nullptr;
+    return 0;
   }
 
-  return m_pProperties->pHead();
+  return m_pProperties->nItems();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the first child of this node. May be null.                         */
+/* Returns the number of children in this object.                             */
 /*----------------------------------------------------------------------------*/
-PlanNode* PlanNode::pFirstChild()
+i8 PlanNode::nChildren()
 {
   if (!m_pChildren) {
-    return nullptr;
+    return 0;
   }
 
-  return m_pChildren->pHead();
+  return m_pChildren->nItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the nth property of this node.                                     */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pNthProperty(i8 idx)
+{
+  // TODO: replace this method with something more efficient
+  ASSERT(m_pProperties);
+  ASSERT(idx >= 0 && idx < nProperties());
+  return m_pProperties->pPeek(idx);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the nth child of this node.                                        */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pNthChild(i8 idx)
+{
+  // TODO: replace this method with something more efficient
+  ASSERT(m_pChildren);
+  ASSERT(idx >= 0 && idx < nChildren());
+  return m_pChildren->pPeek(idx);
 }
 
 /*----------------------------------------------------------------------------*/

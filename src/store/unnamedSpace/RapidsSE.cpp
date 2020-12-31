@@ -7,6 +7,7 @@
 
 
 #include "ePP.h"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* allocate a session                                                         */

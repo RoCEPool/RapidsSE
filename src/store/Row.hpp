@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   class Row : public Object
   {
   friend class RowSingle;
-  friend class Arguments::InfoSetBase;
-  friend class Expressions::Step;
-  friend class Arguments::RowBuffer;
+  friend class STORE::InfoSetBase;
+  friend class STORE::Step;
+  friend class STORE::RowBuffer;
 
   private:
     Dtm m_wxaColumnCell[1];

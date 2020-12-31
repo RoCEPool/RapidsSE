@@ -20,7 +20,7 @@ extern EnvFlags gxEnvFlags;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexDef* Arguments::_pIndexDef(void* pAddr)
+IndexDef* STORE::_pIndexDef(void* pAddr)
 {
   IndexDef* pIndex = reinterpret_cast<IndexDef*>(pAddr);
   

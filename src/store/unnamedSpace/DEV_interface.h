@@ -87,7 +87,7 @@ void vDev_TABLEPTN_GRABREAD(void* aLU);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void vDev_ALT_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
-void vDev_ROW_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
+void vDev_ROW_COL_PUSHSET(void* aLU, i8** aamDstk, void* aROWDEVICE, i8* iaColSet);
 void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE);
 void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 

@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Expressions,LogicTimer,CN_LOGICTIMER)
+__pCastFunction(STORE,LogicTimer,CN_LOGICTIMER)
 __aNewFunction(LogicTimer,CN_LOGICTIMER)
 __vDeleteFunction(LogicTimer,CN_LOGICTIMER)
 __aFooterFunction(LogicTimer)

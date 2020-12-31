@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   // {i_Node,i_TablePtn} pair
   struct NodeTablePtn {

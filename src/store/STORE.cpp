@@ -5,18 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
-
-extern Args       gxArgs;
-extern SizeHeap   gxaSizeHeap[];
-
-/*----------------------------------------------------------------------------*/
-/* check assumptions                                                          */
-/*----------------------------------------------------------------------------*/
-void STORE::vCheckAllAssumptions(void)
-{
-  BASE::vCheckAssumptions();
-  STORE::vCheckAssumptions();
-}
+//#include "Engine.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
@@ -82,15 +71,6 @@ void STORE::vCheckAssumptions(void)
   
   ALWAYS(sizeof(Queue)    < C_SIZE_SMALL_OBJECT);
   ALWAYS(sizeof(Task)     < C_SIZE_MEDIUM_OBJECT);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set signal Scheduler                                                        */
-/*----------------------------------------------------------------------------*/
-void STORE::vSetSignalHandlers(void)
-{
-  // Segmentation Violation
-  signal(SIGSEGV, Engine::vSignalHandler);
 }
 
 /*============================================================================*/

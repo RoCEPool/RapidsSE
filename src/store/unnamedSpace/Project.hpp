@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Expressions
+namespace STORE
 {
   static const i8 C_PROJECT_CODE  = C_4KB;
 

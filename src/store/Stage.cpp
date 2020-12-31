@@ -12,7 +12,7 @@ extern AttachMap gxAttachMap;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Stage,CN_STAGE)
+__pCastFunction(STORE,Stage,CN_STAGE)
 __aNewFunction(Stage,CN_STAGE)
 __vDeleteFunction(Stage,CN_STAGE)
 __aFooterFunction(Stage)

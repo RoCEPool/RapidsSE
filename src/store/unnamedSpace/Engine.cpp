@@ -6,22 +6,29 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "Engine.hpp"
+
 
 #include "eBO.h"
+#include "TagConstants.h"
 
-extern Args         gxArgs;
+Args      gxArgs;
+EnvFlags  gxEnvFlags;
+FnCatalog gxFnCatalog;
 
-extern AttachMap*   gpAttachMap;
-extern BufferPool*  gpBufferPool;
+AttachMap*   gpAttachMap;
+BufferPool*  gpBufferPool;
+Header*      gaSeShmRegion;
+File*        gpTraceFile;
+Log*          gpLog;
+
+Stz* gsBuildGitHash;
+Stz* gsBuildDate;
+Stz* gsBuildHostName;
+Stz* gsBuildUserName;
+Stz* gsBuildBranch;
+
 extern SizeHeap     gxaSizeHeap[];
-extern Header*      gaSeShmRegion;
-extern File*        gpTraceFile;
-
-extern Stz* gsBuildGitHash;
-extern Stz* gsBuildDate;
-extern Stz* gsBuildHostName;
-extern Stz* gsBuildUserName;
-extern Stz* gsBuildBranch;
 
 extern Atomic gixDir;
 extern Atomic gixFile;
@@ -29,13 +36,15 @@ extern Atomic gixMutex;
 extern Atomic gixPsxThd;
 extern Atomic gixSocket;
 
-extern i8     giProgressPoint;
-extern i8     giProgressSubPoint;
+char giProgressPoint    = 1;
+i8   giProgressSubPoint = 0;
 
 extern i8     gi_argc;
 extern s256   gi_szaArgv[];
 
-extern EnvFlags gxEnvFlags;
+pthread_key_t giTLS_TaskKey   = C_UNKNOWN;
+pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
+
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -91,7 +100,9 @@ void Engine::vPreliminary(void)
 
   if (AM::bVerboseProgress())
      vInfo("Setting signal handlers...\n"_Stz);
-  vSetSignalHandlers();
+  
+  // Segmentation Violation
+  signal(SIGSEGV, Engine::vSignalHandler);
   
   if (AM::bVerboseProgress())
      vInfo("Init TLS keys...\n"_Stz);
@@ -103,7 +114,9 @@ void Engine::vPreliminary(void)
   
   if (AM::bVerboseProgress())
      vInfo("Checking assumptions...\n"_Stz);
-  STORE::vCheckAllAssumptions();
+  
+  BASE::vCheckAssumptions();
+  STORE::vCheckAssumptions();
 
   if (AM::bVerboseProgress())
      vInfo("Boot check...\n"_Stz);
@@ -812,99 +825,6 @@ void Engine::vKillPrev(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* get monitor portrait of system                                             */
-/*----------------------------------------------------------------------------*/
-void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
-{  
-  s48K sPortrait;
-  
-  Now oNow;
-  
-  sRapidsPortrait.vSprint("\nSystem Monitor #%lld %s\n"_Stz,
-                          gpAttachMap->m_oStatistics.m_nMonitorTake++,
-                          oNow.sz());
-  sRapidsPortrait.vConcat("------------------------------------------------------\n"_Stz);
-
-
-  sPortrait = ""_Stz;
-  vMonitorProfile(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  AM::pQueues()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  AM::pLockTracker()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  AM::pBufferPool()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  AM::pHeapMem()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  if (AM::bAttached())
-    AM::pResourceTracker()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  AM::pQueues()->vMonitorThread(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  File::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Socket::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Portrait::vMemoryPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-//  sPortrait = ""_Stz;
-//  Log::vMonitorPortrait(sPortrait);
-//  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Mutex::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Task::vMonitorProfile_stats(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  PsxThd::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Api::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Table::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Index::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  Index::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-  sPortrait = ""_Stz;
-  AM::pSessionArray()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.szStz());
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* get monitor portrait profile of system                                     */
@@ -1573,8 +1493,7 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
   
-  gpAttachMap->m_pFocalObjects = new FocalObjects;
-  gpAttachMap->m_pQueues = new Queues;
+   gpAttachMap->m_pQueues = new Queues;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes

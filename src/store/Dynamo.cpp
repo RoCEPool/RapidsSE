@@ -5,12 +5,14 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Dynamo.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Dynamo,CN_DYNAMO)
+__pCastFunction(STORE,Dynamo,CN_DYNAMO)
 __aNewFunction(Dynamo,CN_DYNAMO)
 __vDeleteFunction(Dynamo,CN_DYNAMO)
 __aFooterFunction(Dynamo)

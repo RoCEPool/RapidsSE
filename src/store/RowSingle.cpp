@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowSingle* Arguments::_pRowSingle(void* aAddr)
+RowSingle* STORE::_pRowSingle(void* aAddr)
 {
   RowSingle* pRowSingle = reinterpret_cast<RowSingle*>(aAddr);
   

@@ -11,11 +11,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Expressions(void)
 {
-  vAddStep("Expressions::lockSample"_Stz,   &Step::vExpressionsLockSample);
+  vAddStep("STORE::lockSample"_Stz,   &Step::vExpressionsLockSample);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Expressions::lockSample -- sample the lock stats                               */
+/* STORE::lockSample -- sample the lock stats                               */
 /*----------------------------------------------------------------------------*/
 void Step::vExpressionsLockSample(void)
 {

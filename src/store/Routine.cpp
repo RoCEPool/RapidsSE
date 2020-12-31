@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Routine,CN_ROUTINE)
+__pCastFunction(STORE,Routine,CN_ROUTINE)
 __aNewFunction(Routine,CN_ROUTINE)
 __vDeleteFunction(Routine,CN_ROUTINE)
 __aFooterFunction(Routine)
@@ -129,11 +129,11 @@ void Routine::vAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
-void Routine::vAppend(StepFp* afpStepFp)
+void Routine::vAppend(fpSTEPFN* afpStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
 
-  StepFp** aafpStepFp = (StepFp**)ayAllot(sizeof(StepFp*));
+  fpSTEPFN** aafpStepFp = (fpSTEPFN**)ayAllot(sizeof(fpSTEPFN*));
 
   * aafpStepFp = afpStepFp;
 }

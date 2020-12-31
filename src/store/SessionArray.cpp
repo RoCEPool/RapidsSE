@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SessionArray* Expressions::_pSessionArray(void* aAddr)
+SessionArray* STORE::_pSessionArray(void* aAddr)
 {
   SessionArray* pSessionArray = reinterpret_cast<SessionArray*>(aAddr);
   

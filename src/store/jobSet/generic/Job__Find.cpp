@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job__Find* Arguments::_pJob__Find(void* aAddress)
+Job__Find* STORE::_pJob__Find(void* aAddress)
 {
   Job__Find* pJob__Find = reinterpret_cast<Job__Find*>(aAddress);
   

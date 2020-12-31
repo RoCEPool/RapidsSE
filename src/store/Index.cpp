@@ -21,7 +21,7 @@ Index*  gpReadApiIndex;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Index* Arguments::_pIndex(void* pAddr)
+Index* STORE::_pIndex(void* pAddr)
 {
   Index* pIndex = reinterpret_cast<Index*>(pAddr);
   

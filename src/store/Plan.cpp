@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Plan* Arguments::_pPlan(void* aAddr)
+Plan* STORE::_pPlan(void* aAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(aAddr);
   
@@ -23,7 +23,7 @@ Plan* Arguments::_pPlan(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Plan* Arguments::_pPlan(i8 iAddr)
+Plan* STORE::_pPlan(i8 iAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(iAddr);
   
@@ -131,7 +131,7 @@ void Plan::vAppendToLambda(s48K& sText)
 /*----------------------------------------------------------------------------*/
 /* get execute task                                                           */
 /*----------------------------------------------------------------------------*/
-Expressions::Task* Plan::pExecutingTask(void)
+STORE::Task* Plan::pExecutingTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
@@ -141,7 +141,7 @@ Expressions::Task* Plan::pExecutingTask(void)
 /*----------------------------------------------------------------------------*/
 /* set execute task                                                           */
 /*----------------------------------------------------------------------------*/
-void Plan::vExecutingTask(Expressions::Task* pExecutingTask)
+void Plan::vExecutingTask(STORE::Task* pExecutingTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   

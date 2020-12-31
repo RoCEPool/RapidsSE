@@ -14,7 +14,7 @@ __aFooterFunction(Local)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Local* Arguments::_pLocal(void* aAddr)
+Local* STORE::_pLocal(void* aAddr)
 {
   Local* pLocal = reinterpret_cast<Local*>(aAddr);
   

@@ -230,7 +230,7 @@ bool StrLib::bBackward(char** ps, char* pBegin, const char c)
 
   while (*p-- != c)
   {
-    if (p == pBegin)
+    if (p <= pBegin)
       return false;
   }
   

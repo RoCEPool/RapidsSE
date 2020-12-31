@@ -6,12 +6,12 @@
 #include "STORE.h"
 
 
-StepFp gfpEntryStep = &Expressions::Step::vEnterRoutine;
+fpSTEPFN gfpEntryStep = &STORE::Step::vEnterRoutine;
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
+void Step::vAddStep(Stz* aName, fpSTEPFN fpStep, bool bImmediate)
 {
   //vTrace("%s Size = %lld\n"_Stz, aName, aName->nSize());
   RASSERT(aName->nSize() <= 32);

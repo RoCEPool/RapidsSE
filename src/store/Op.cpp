@@ -7,6 +7,7 @@
 
 
 #include "eTS.h"
+#include "TagConstants.h"
 
 Atomic gixOp;
 
@@ -14,7 +15,7 @@ Atomic gixOp;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Op,CN_OP)
+__pCastFunction(STORE,Op,CN_OP)
 __aNewFunction(Op,CN_OP)
 __vDeleteFunction(Op,CN_OP)
 __aFooterFunction(Op);

@@ -12,7 +12,7 @@ extern EnvFlags gxEnvFlags;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Arguments,Encoding,CN_ENCODING)
+__pCastFunction(STORE,Encoding,CN_ENCODING)
 __aNewFunction(Encoding,CN_ENCODING)
 __vDeleteFunction(Encoding,CN_ENCODING)
 __aFooterFunction(Encoding)

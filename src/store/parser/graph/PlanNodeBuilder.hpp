@@ -3,12 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+#include "PlanNode.hpp"
+#include "PlanNodeBuilderList.hpp"
+
 namespace Parser
 {
-  class PlanNodeBuilderList;
+  class PlanNodeBuilder;
 
-  class PlanNodeBuilder : public Object,
-                          public ListItem_t<PlanNodeBuilder>
+  class PlanNodeBuilder : public Object
   {
   public:
     s256  m_sName;
@@ -22,10 +24,9 @@ namespace Parser
     Footer m_xFooter;
     
    public:
-    // Overriding these because we inherited from ListItem_t
     void* operator new(size_t);
     void  operator delete(void*);
-    
+
     PlanNodeBuilder();
     ~PlanNodeBuilder(void);
 
@@ -39,8 +40,6 @@ namespace Parser
   };
   
   PlanNodeBuilder* _pPlanNodeBuilder(void* aAddr);
-
-  typedef StackNL_t<CN_NODEBUILDERSTACK,PlanNodeBuilder,1024> NodeBuilderStack;
 }
 
 /*============================================================================*/

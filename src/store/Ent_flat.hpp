@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Arguments
+namespace STORE
 {
   // the flattened layout for the int case
   #include "Ent_int.h"

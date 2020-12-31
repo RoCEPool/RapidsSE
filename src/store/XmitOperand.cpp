@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-XmitOperand* Arguments::_pXmitOperand(void* aAddress)
+XmitOperand* STORE::_pXmitOperand(void* aAddress)
 {
   XmitOperand* pXmitOperand= reinterpret_cast<XmitOperand*>(aAddress);
   

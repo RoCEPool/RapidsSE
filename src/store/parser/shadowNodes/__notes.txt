@@ -1,0 +1,32 @@
+Note about the classes in this directory:
+
+The structure of the plan graph is separate from any logic to manipulate it.
+
+The structure of the nodes in the plan graph is defined in the file
+PlanNode.hpp/cpp. There are a few subclasses of this that use the same
+structure but apply different semantics or meanings to some of the fields.
+e.g. for a node definition object the 'value' field contain a description
+of the definition.
+
+The files in this folder represent logical concepts that may be represented
+by a collection of nodes in a graph. e.g. a table reference may structurally
+be represented by one node with 3 property nodes (for the catalog, schema
+and table names). But where do we add logic to more easily extract values,
+properties and children from such objects and where do we add logic for
+manipulating them also. That occurs in these shadow classes in this folder.
+
+These classes are never meant to be instantiated. Instead they operate on
+nodes in the plan graph in a functional C-style way. i.e., the functions
+are static and always involve passing in a contextual object (in this case
+the relevant pointer to a node in the plan graph). These functions are
+grouped into classes for commonality. e.g. tableRefs, expressions, etc.
+
+Some basic rules about adding/modifying these classes:
+ - They are never instantiated. Their constructor should be private.
+ - Don't add member variables. All functions should be static.
+ - All classes should be derived from ShadowNode.hpp/cpp.
+ - Always validate that the plan node passed in represents the right
+   object. You can use its definition type to confirm this.
+ - Be careful with subclasses of objects. Think of this as C programming,
+   not C++. There is no polymorphism here so any subclass-like
+   behaviour has to be handled manually.
