@@ -236,7 +236,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
     
     s2K sBuf;
     QueryNode* pTableRef = m_pTableRefStack->pPop();
-    TableRef::vDescribe(pTableRef, sBuf);
+    ShadowNode::vDescribe(pTableRef, sBuf);
     
     vTrace("    /%s\n"_Stz, sBuf.szStz());
     delete pTableRef;
@@ -250,7 +250,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
     s2K buf;
     
     buf.vCopy("    /"_Stz);
-    Expr::vDescribe(pSelectItem, buf);
+    ShadowNode::vDescribe(pSelectItem, buf);
    
     buf.vConcat("\n"_Stz);
     vTrace(buf.szStz());

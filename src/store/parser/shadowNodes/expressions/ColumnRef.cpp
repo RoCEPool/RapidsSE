@@ -52,15 +52,21 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void ColumnRef::vDescribe(QueryNode* pStmt, s2K& sBuf)
+void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pStmt));
+  ASSERT(bValidate(pNode));
 
-  sBuf.vConcat(pStmt->szName());
+  sBuf.vConcat(pNode->szName());
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the expr definition         */
+/*----------------------------------------------------------------------------*/
+b1 ColumnRef::bIsOfType(PlanNode *pNode)
+{
+  return ShadowNode::bIsOfType(pNode, C_COLREF_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

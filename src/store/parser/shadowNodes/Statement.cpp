@@ -9,6 +9,7 @@
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_QUERYTEXT_PROP = "queryText"_Stz;
+static Stz* C_STATEMENT_DEFN = "/__root__/definitions/object/planObject/statement"_Stz;
 
 // Definition paths of the above statement types
 static Stz* aST_definition[] = {
@@ -61,15 +62,24 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void Statement::vDescribe(QueryNode* pStmt, s2K& buf)
+void Statement::vDescribe(PlanNode* pNode, s2K& buf)
 {
   _static_
-  ASSERT(bValidate(pStmt));
+  ASSERT(bValidate(pNode));
 
-  buf.vConcat(GraphNav::szLeafType(pStmt->szType()));
+  QueryNode* pStmt = static_cast<QueryNode*>(pNode);
+
+  buf.vConcat(GraphNav::szLeafType(pNode->szType()));
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the statement definition    */
+/*----------------------------------------------------------------------------*/
+b1 Statement::bIsOfType(PlanNode *pNode)
+{
+  return ShadowNode::bIsOfType(pNode, C_STATEMENT_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */
