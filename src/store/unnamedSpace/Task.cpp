@@ -76,7 +76,8 @@ Task::Task(Job* pJob)
 
   m_pJob         = pJob;
   m_pThread      = nullptr;
-  
+  m_pLogicUnit   = nullptr;
+
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
@@ -85,8 +86,6 @@ Task::Task(Job* pJob)
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
-  m_pForth       = nullptr;
-  m_pLogicUnit   = nullptr;
 
   m_iTraceMask   = C_TRACE_NONE;
   m_eWhatJob     = pJob->eClass();
@@ -176,9 +175,6 @@ Task::~Task(void) noexcept(false)
   delete m_pInput;
 
   
-  
-  delete m_pForth;
-  
   delete m_pLogicUnit;
   
   if (m_pJob) {
@@ -228,7 +224,7 @@ void Task::vTaskLoop(void)
 
   ASSERT(! m_pJob || ! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
   
-  if (! m_pForth)
+  if (! m_aInxPtr)
     vInitExeContext();
 
   if (! bSeeded())
@@ -244,11 +240,14 @@ void Task::vTaskLoop(void)
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
     //   dereference it to get the intrinsic function to be called
-    fpSTEPFN fpStep = * ( (m_aInxPtr ++)->m_afpObjectFn );
+    fpSTEPFN fpStep = * ( (m_aInxPtr ++)->m_afpMemberFn );
     
     // call the intinsic
     try {
-      ( ((Step*) (*m_pForth))->*fpStep)();
+      //( ((Step*) (*m_pForth))->*fpStep)();
+      
+      ( ((Step*)this)->*fpStep ) ();
+
     }
     
     // catch any exception
@@ -277,7 +276,6 @@ void Task::vAssertStructure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   // must have these
-  RASSERT(m_pForth);
   RASSERT(m_pLogicUnit);
 }
 
@@ -641,16 +639,6 @@ void Task::vFocalOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get forth                                                                  */
-/*----------------------------------------------------------------------------*/
-Forth* Task::pForth(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pForth;
-}
-
-/*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vGrabTaskLock(void)
@@ -665,12 +653,11 @@ void Task::vGrabTaskLock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vInitExeContext(void)
 {
-  if (m_pForth)
+  if (m_aInxPtr)
     return;
   
   m_pProfile = new Profile(m_pJob->m_pOp ? m_pJob->m_pOp->szOpNm() : ""_Stz);
   m_pLogicUnit  = new LogicUnit(this);
-  m_pForth   = new Forth(this,m_pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -947,7 +934,7 @@ bool Task::bSeeded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pForth && m_aInxPtr)
+  if (m_aInxPtr)
     return true;
   else
     return false;

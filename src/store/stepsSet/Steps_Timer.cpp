@@ -35,7 +35,7 @@ void Step::vTimerDelete(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   Object* pTimerObject = reinterpret_cast<Object*>(pTimer);
@@ -54,7 +54,7 @@ void Step::vTimerInit(void)
 {
   ENTRY();
   
-//  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+//  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
 //  ASSERT(CN_TIMER == pTimer->eClass());
 //
 //  new(pTimer) Timer;
@@ -69,12 +69,12 @@ void Step::vTimerMicrosecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  m_pTask->m_pDataStack->vPushInt(iMicroseconds);
+  m_pDataStack->vPushInt(iMicroseconds);
   
   EXIT();
 }
@@ -86,12 +86,12 @@ void Step::vTimerMillisecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  m_pTask->m_pDataStack->vPushInt(iMilliseconds);
+  m_pDataStack->vPushInt(iMilliseconds);
   
   EXIT();
 }
@@ -103,12 +103,12 @@ void Step::vTimerNanosecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  m_pTask->m_pDataStack->vPushInt(iNanoseconds);
+  m_pDataStack->vPushInt(iNanoseconds);
   
   EXIT();
 }
@@ -122,7 +122,7 @@ void Step::vTimerNew(void)
 
   Timer* pTimer = new Timer;
      
-  m_pTask->m_pDataStack->vPushPtr(pTimer);
+  m_pDataStack->vPushPtr(pTimer);
   
   EXIT();
 }
@@ -134,12 +134,12 @@ void Step::vTimerReportStr(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   SP_Timer spTimer;
   
-  m_pTask->m_pDataStack->vPushStz(spTimer.sz(pTimer));
+  m_pDataStack->vPushStz(spTimer.sz(pTimer));
 
   EXIT();
 }
@@ -151,7 +151,7 @@ void Step::vTimerReset(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vReset();
@@ -166,12 +166,12 @@ void Step::vTimerSecs(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iSeconds = pTimer->iSeconds();
   
-  m_pTask->m_pDataStack->vPushInt(iSeconds);
+  m_pDataStack->vPushInt(iSeconds);
   
   EXIT();
 }
@@ -183,7 +183,7 @@ void Step::vTimerStart(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vStart();
@@ -198,12 +198,12 @@ void Step::vTimerTicks(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iTicks = pTimer->iTickDelta();
   
-  m_pTask->m_pDataStack->vPushInt(iTicks);
+  m_pDataStack->vPushInt(iTicks);
   
   EXIT();
 }
@@ -215,7 +215,7 @@ void Step::vTimerUpdate(void)
 {
   ENTRY();
   
-  Timer* pTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Timer* pTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vUpdate();
@@ -235,7 +235,7 @@ void Step::vTimeCurrent(void)
   
   s32 s = xNow.sz();
   
-  m_pTask->m_pDataStack->vPushStr(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

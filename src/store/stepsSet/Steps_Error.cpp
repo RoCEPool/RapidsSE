@@ -22,7 +22,7 @@ void Step::vErrorMsg(void)
   ENTRY();
   
   
-  i8 iErrorCode = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iErrorCode = m_pDataStack->iPopInt(__func__);
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,"error.msg"_Stz);
@@ -30,7 +30,7 @@ void Step::vErrorMsg(void)
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];
   
-  m_pTask->m_pDataStack->vPushStr(sErrorMsg);
+  m_pDataStack->vPushStr(sErrorMsg);
   
   EXIT();
 }

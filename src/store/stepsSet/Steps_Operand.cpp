@@ -21,11 +21,11 @@ void Step::vOperandKind(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
   
-  m_pTask->m_pDataStack->vPushInt(eOperand);
+  m_pDataStack->vPushInt(eOperand);
 }
 
 /*============================================================================*/

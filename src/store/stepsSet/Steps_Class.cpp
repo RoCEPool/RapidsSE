@@ -21,13 +21,13 @@ void Step::vClassName(void)
 {
   ENTRY();
   
-  i8 iClassNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iClassNo = m_pDataStack->iPopInt(__func__);
   
   s32 sClassName;
   
   sClassName = aCN[iClassNo];
   
-  m_pTask->m_pDataStack->vPushStr(sClassName);
+  m_pDataStack->vPushStr(sClassName);
   
   EXIT();
 }

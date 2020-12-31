@@ -22,7 +22,7 @@ void Step::vTextDelete(void)
 {
   ENTRY();
   
-  Text* pText = _pText(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Text* pText = _pText(m_pDataStack->pPopPtr(__func__));
 
   delete pText;
     
@@ -38,7 +38,7 @@ void Step::vTextNew(void)
 
   Text* pText = new Text(C_SIZE_LARGE_TEXT);
   
-  m_pTask->m_pDataStack->vPushPtr(pText);
+  m_pDataStack->vPushPtr(pText);
   
   EXIT();
 }

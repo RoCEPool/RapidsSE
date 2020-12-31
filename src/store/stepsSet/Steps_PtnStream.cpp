@@ -33,11 +33,11 @@ void Step::vPtnStreamBufferNo(void)
 {
   ENTRY();
   
-  PtnStream* pPtnStream = _pPtnStream(m_pTask->m_pDataStack->pPopPtr(__func__));
+  PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   i8 iBufferNo = pPtnStream->iBufferNo();
   
-  m_pTask->m_pDataStack->vPushInt(iBufferNo);
+  m_pDataStack->vPushInt(iBufferNo);
     
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vPtnStreamClose(void)
 {
   ENTRY();
     
-  PtnStream* pPtnStream = _pPtnStream(m_pTask->m_pDataStack->pPopPtr(__func__));
+  PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   pPtnStream->vClose();
   
@@ -63,7 +63,7 @@ void Step::vPtnStreamDelete(void)
 {
   ENTRY();
     
-  PtnStream* pPtnStream = _pPtnStream(m_pTask->m_pDataStack->pPopPtr(__func__));
+  PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   delete pPtnStream;
   
@@ -77,7 +77,7 @@ void Step::vPtnStreamGet(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpPtnStream);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPtnStream);
   
   EXIT();
 }
@@ -89,7 +89,7 @@ void Step::vPtnStreamIsNull(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpPtnStream.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPtnStream.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -101,11 +101,11 @@ void Step::vPtnStreamNew(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   PtnStream* pPtnStream = new PtnStream(pTablePtn);
   
-  m_pTask->m_pDataStack->vPushPtr(pPtnStream);
+  m_pDataStack->vPushPtr(pPtnStream);
   
   EXIT();
 }
@@ -117,11 +117,11 @@ void Step::vPtnStreamOpen(void)
 {
   ENTRY();
     
-  PtnStream* pPtnStream = _pPtnStream(m_pTask->m_pDataStack->pPopPtr(__func__));
+  PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   bool bOpened = pPtnStream->bOpen();
   
-  m_pTask->m_pDataStack->vPushInt(bOpened);
+  m_pDataStack->vPushInt(bOpened);
   
   EXIT();
 }
@@ -133,11 +133,11 @@ void Step::vPtnStreamRead(void)
 {
   ENTRY();
     
-  PtnStream* pPtnStream = _pPtnStream(m_pTask->m_pDataStack->pPopPtr(__func__));
+  PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   CrwBuffer* pCrwBuffer = pPtnStream->pRead();
 
-  m_pTask->m_pDataStack->vPushPtr(pCrwBuffer);
+  m_pDataStack->vPushPtr(pCrwBuffer);
 
   EXIT();
 }
@@ -149,13 +149,13 @@ void Step::vPtnStreamSeek(void)
 {
   ENTRY();
     
-  PtnStream* pPtnStream = _pPtnStream(m_pTask->m_pDataStack->pPopPtr(__func__));
+  PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
-  i8 iBufferNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iBufferNo = m_pDataStack->iPopInt(__func__);
 
   bool bSeeked = pPtnStream->bSeek(iBufferNo);
   
-  m_pTask->m_pDataStack->vPushInt(bSeeked);
+  m_pDataStack->vPushInt(bSeeked);
   
   EXIT();
 }
@@ -167,7 +167,7 @@ void Step::vPtnStreamSet(void)
 {
   ENTRY();
   
-  m_pTask->m_pLogicUnit->m_xpPtnStream = _pPtnStream(m_pTask->m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -23,7 +23,7 @@ void Step::vRegTimerGet(void)
 {
   ENTRY();
     
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpTimer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTimer);
 
   EXIT();
 }
@@ -35,7 +35,7 @@ void Step::vRegTimerSet(void)
 {
   ENTRY();
     
-  m_pTask->m_pLogicUnit->m_xpTimer = _pTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

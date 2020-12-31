@@ -27,7 +27,7 @@ void Step::vTx0Begin(void)
   
   Tx* pTx = new Tx;
     
-  m_pTask->m_pLogicUnit->m_xpTx = pTx;
+  m_pLogicUnit->m_xpTx = pTx;
   
   // add tnx to the tnxSet
   AM::pTxSet()->vAddTx(pTx);
@@ -42,8 +42,8 @@ void Step::vTx0Commit(void)
 {
   ENTRY();
   
-  Tx* pTx = *m_pTask->m_pLogicUnit->m_xpTx;
-  m_pTask->m_pLogicUnit->m_xpTx = nullptr;
+  Tx* pTx = *m_pLogicUnit->m_xpTx;
+  m_pLogicUnit->m_xpTx = nullptr;
 
   pTx->vPhase(XP_COMMITTED);
   
@@ -62,11 +62,11 @@ void Step::vTx0Perspective(void)
 {
   ENTRY();
   
-  Tx* pTx = *m_pTask->m_pLogicUnit->m_xpTx;
+  Tx* pTx = *m_pLogicUnit->m_xpTx;
   
   t8 tPerspective = pTx->tPerspective();
 
-  m_pTask->m_pDataStack->vPushInt(tPerspective);
+  m_pDataStack->vPushInt(tPerspective);
 
   EXIT();
 }

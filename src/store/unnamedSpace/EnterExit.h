@@ -32,10 +32,10 @@
     \
   } \
   \
-  if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
-    m_pTask->vTraceStep((Stz*)__func__); \
+  if (C_TRACE_STEPS && m_iTraceMask) \
+    vTraceStep((Stz*)__func__); \
   \
-  m_pTask->vCheckBreakPt(); \
+  vCheckBreakPt(); \
   \
 EndDefine
 

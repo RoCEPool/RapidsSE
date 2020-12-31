@@ -23,7 +23,7 @@ void Step::vTenantsDelete(void)
 {
   ENTRY();
   
-  Tenants* pTenants = _pTenants(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Tenants* pTenants = _pTenants(m_pDataStack->pPopPtr(__func__));
   
   delete pTenants;
 
@@ -39,7 +39,7 @@ void Step::vTenantsNew(void)
   
   Tenants* pTenants = new Tenants;
   
-  m_pTask->m_pDataStack->vPushPtr(pTenants);
+  m_pDataStack->vPushPtr(pTenants);
 
   EXIT();
 }

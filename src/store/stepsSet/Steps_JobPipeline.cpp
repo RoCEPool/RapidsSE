@@ -32,14 +32,14 @@ void Step::vJob_PipelineBegin(void)
 {
   ENTRY();
   
-  Job* pJob_Pipeline = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   pJob_Pipeline->m_pPipeline =
     new Pipeline(pJob_Pipeline,
-                 m_pTask->m_pLogicUnit->m_xpDynamo->pPipelineSpec(),
+                 m_pLogicUnit->m_xpDynamo->pPipelineSpec(),
                  pJob_Pipeline->iOriginatorNode());
   
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
@@ -54,8 +54,8 @@ void Step::vJob_PipelineBegin(void)
        pPipeline->vDump();
   }
   
-  delete *m_pTask->m_pLogicUnit->m_xpDynamo;
-  m_pTask->m_pLogicUnit->m_xpDynamo = nullptr;
+  delete *m_pLogicUnit->m_xpDynamo;
+  m_pLogicUnit->m_xpDynamo = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
@@ -74,11 +74,11 @@ void Step::vJob_PipelineCancelled(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Pipeline* pPipeline = pOp->pPipeline();
   
-  pPipeline->vCancelled(m_pTask->m_pDataStack->iPopInt(__func__));
+  pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -91,34 +91,34 @@ void Step::vJob_PipelineCompile(void)
   ENTRY();
   
   sSTMT sCmd;
-  m_pTask->m_pDataStack->vPopStr(sCmd,__func__);
+  m_pDataStack->vPopStr(sCmd,__func__);
   
-  m_pTask->m_pLogicUnit->m_xpDynamo = new Dynamo(sCmd,m_pTask->m_pJob);
+  m_pLogicUnit->m_xpDynamo = new Dynamo(sCmd,m_pJob);
   
-  bool bResult = m_pTask->m_pLogicUnit->m_xpDynamo->bCompile();
+  bool bResult = m_pLogicUnit->m_xpDynamo->bCompile();
   
   if ( ! bResult) {
-    PipelineSpec* pPipelineSpec = m_pTask->m_pLogicUnit->m_xpDynamo->pPipelineSpec();
+    PipelineSpec* pPipelineSpec = m_pLogicUnit->m_xpDynamo->pPipelineSpec();
     delete pPipelineSpec;
     
-    delete *m_pTask->m_pLogicUnit->m_xpDynamo;
-    m_pTask->m_pLogicUnit->m_xpDynamo = nullptr;
-    m_pTask->m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+    delete *m_pLogicUnit->m_xpDynamo;
+    m_pLogicUnit->m_xpDynamo = nullptr;
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
   }
   else {
     
-    if (! AM::bPassesLowMem(m_pTask->m_pJob)) {
-      PipelineSpec* pPipelineSpec = m_pTask->m_pLogicUnit->m_xpDynamo->pPipelineSpec();
+    if (! AM::bPassesLowMem(m_pJob)) {
+      PipelineSpec* pPipelineSpec = m_pLogicUnit->m_xpDynamo->pPipelineSpec();
       delete pPipelineSpec;
       
-      delete *m_pTask->m_pLogicUnit->m_xpDynamo;
-      m_pTask->m_pLogicUnit->m_xpDynamo = nullptr;
-      m_pTask->m_pDataStack->vPushInt(EC_LOW_MEMORY);
+      delete *m_pLogicUnit->m_xpDynamo;
+      m_pLogicUnit->m_xpDynamo = nullptr;
+      m_pDataStack->vPushInt(EC_LOW_MEMORY);
     }
     else {
-      m_pTask->m_pDataStack->vPushInt(EC_NONE);
+      m_pDataStack->vPushInt(EC_NONE);
       if (AM::bVerbose()) {
-        m_pTask->m_pLogicUnit->m_xpDynamo->vShow();
+        m_pLogicUnit->m_xpDynamo->vShow();
       }
     }
   }
@@ -133,11 +133,11 @@ void Step::vJob_PipelineDeleteDynamo(void)
 {
   ENTRY();
   
-  PipelineSpec* pPipelineSpec = m_pTask->m_pLogicUnit->m_xpDynamo->pPipelineSpec();
+  PipelineSpec* pPipelineSpec = m_pLogicUnit->m_xpDynamo->pPipelineSpec();
   delete pPipelineSpec;
   
-  delete *m_pTask->m_pLogicUnit->m_xpDynamo;
-  m_pTask->m_pLogicUnit->m_xpDynamo = nullptr;
+  delete *m_pLogicUnit->m_xpDynamo;
+  m_pLogicUnit->m_xpDynamo = nullptr;
   
   EXIT();
 }
@@ -149,11 +149,11 @@ void Step::vJob_PipelineErrored(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Pipeline* pPipeline = pOp->pPipeline();
   
-  pPipeline->vErrored(m_pTask->m_pDataStack->iPopInt(__func__));
+  pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -165,7 +165,7 @@ void Step::vJob_PipelineExecute(void)
 {
   ENTRY();
   
-  Job* pJob_Pipeline = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
   i8 iThisNode = AM::pGrid()->iThisNode();
@@ -185,14 +185,14 @@ void Step::vJob_PipelineExecute(void)
     Stage* pStage = pPipeline->pGet(0);
     
     // send startMarker to the start Op of the first stage of the pipeline
-    pStage->vStartPipeline(m_pTask);
+    pStage->vStartPipeline(this);
     
     // pipeline job to wait for acks
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(true);
   }
   else {
     // pipeline job has no operators to wait for
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   }
   
   EXIT();
@@ -205,12 +205,12 @@ void Step::vJob_PipelineIsCancelled(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Pipeline* pPipeline = pOp->pPipeline();
   
   // return if pipeline has been cancelled
-  m_pTask->m_pDataStack->vPushInt(pPipeline->bCancelled());
+  m_pDataStack->vPushInt(pPipeline->bCancelled());
   
   EXIT();
 }
@@ -222,12 +222,12 @@ void Step::vJob_PipelineIsErrored(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Pipeline* pPipeline = pOp->pPipeline();
   
   // return if pipeline has been errored
-  m_pTask->m_pDataStack->vPushInt(pPipeline->bErrored());
+  m_pDataStack->vPushInt(pPipeline->bErrored());
   
   EXIT();
 }
@@ -239,12 +239,12 @@ void Step::vJob_PipelineIsPulsed(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Pipeline* pPipeline = pOp->pPipeline();
   
   // return if pipeline has been pulsed
-  m_pTask->m_pDataStack->vPushInt(pPipeline->bPulsed());
+  m_pDataStack->vPushInt(pPipeline->bPulsed());
 
 EXIT();
 }
@@ -256,11 +256,11 @@ void Step::vJob_PipelinePulsed(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Pipeline* pPipeline = pOp->pPipeline();
   
-  pPipeline->vPulsed(m_pTask->m_pDataStack->iPopInt(__func__));
+  pPipeline->vPulsed(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

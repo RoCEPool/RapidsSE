@@ -22,15 +22,15 @@ void Step::vRegFolderFindSymbol(void)
   ENTRY();
   
   s256 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
-  if (m_pTask->m_iTraceMask) {
+  if (m_iTraceMask) {
     i8 i = 0; i++;
   }
   
-  Word* pWord = m_pTask->m_oDicStack.pFindInCurrent(sName);
+  Word* pWord = m_oDicStack.pFindInCurrent(sName);
   
-  m_pTask->m_pDataStack->vPushPtr(pWord);
+  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }

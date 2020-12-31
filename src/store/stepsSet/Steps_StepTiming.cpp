@@ -75,7 +75,7 @@ void Step::vStepTimingWrite(void)
 #else
 
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
   
   if (AM::pStepTiming())
     AM::pStepTiming()->vWrite(sPath);

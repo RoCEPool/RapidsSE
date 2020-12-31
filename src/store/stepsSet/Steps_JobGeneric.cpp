@@ -28,7 +28,7 @@ void Step::vJob__BegunNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   Job* pJobBegun = new Job(&pDistJob->m_xReqTuple);
   pJobBegun->m_iFocalId = pDistJob->m_iFocalId;
@@ -46,9 +46,9 @@ void Step::vJob__BegunNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
 
-  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
+  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobBegun);
   
-  m_pTask->m_pDataStack->vPushPtr(pJobBegun);
+  m_pDataStack->vPushPtr(pJobBegun);
   
   EXIT();
 }
@@ -60,7 +60,7 @@ void Step::vJob__CancelNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobCancel = new Job(&pDistJob->m_xReqTuple);
   pJobCancel->m_iFocalId = pDistJob->m_iFocalId;
@@ -77,9 +77,9 @@ void Step::vJob__CancelNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
+  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobCancel);
   
-  m_pTask->m_pDataStack->vPushPtr(pJobCancel);
+  m_pDataStack->vPushPtr(pJobCancel);
   
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vJob__CancelledNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   Job* pJobCancelled = new Job(&pDistJob->m_xReqTuple);
   pJobCancelled->m_iFocalId = pDistJob->m_iFocalId;
@@ -99,7 +99,7 @@ void Step::vJob__CancelledNew(void)
   pJobCancelled->vNormalSides(false);
   pJobCancelled->vJobKind(JK_GENERIC);
   
-  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
+  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobCancelled);
   
   pJobCancelled->vJobNm("_cancelled"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"_cancelled"_Stz);
@@ -111,7 +111,7 @@ void Step::vJob__CancelledNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancelled->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  m_pTask->m_pDataStack->vPushPtr(pJobCancelled);
+  m_pDataStack->vPushPtr(pJobCancelled);
   
   EXIT();
 }
@@ -123,14 +123,14 @@ void Step::vJob__EndNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobEnd = new Job(&pDistJob->m_xReqTuple); // new Job__End(pDistJob);
   pJobEnd->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnd->vParticipantNode(AM::pGrid()->iThisNode());
   pJobEnd->vJobKind(JK_GENERIC);
   
-  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
+  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobEnd);
   
   pJobEnd->vJobNm("_end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"_end"_Stz);
@@ -142,7 +142,7 @@ void Step::vJob__EndNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnd->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  m_pTask->m_pDataStack->vPushPtr(pJobEnd);
+  m_pDataStack->vPushPtr(pJobEnd);
   
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vJob__EndedNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobEnded = new Job(&pDistJob->m_xReqTuple);
   pJobEnded->m_iFocalId = pDistJob->m_iFocalId;
@@ -172,9 +172,9 @@ void Step::vJob__EndedNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
+  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobEnded);
   
-  m_pTask->m_pDataStack->vPushPtr(pJobEnded);
+  m_pDataStack->vPushPtr(pJobEnded);
   
   EXIT();
 }
@@ -186,14 +186,14 @@ void Step::vJob__ExecuteNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobExecute = new Job(&pDistJob->m_xReqTuple);
   pJobExecute->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecute->vParticipantNode(AM::pGrid()->iThisNode());
   pJobExecute->vJobKind(JK_GENERIC);
   
-  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
+  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobExecute);
   
   pJobExecute->vJobNm("_execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"_execute"_Stz);
@@ -205,7 +205,7 @@ void Step::vJob__ExecuteNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecute->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  m_pTask->m_pDataStack->vPushPtr(pJobExecute);
+  m_pDataStack->vPushPtr(pJobExecute);
   
   EXIT();
 }
@@ -217,7 +217,7 @@ void Step::vJob__ExecutedNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple); 
   pJobExecuted->m_iFocalId = pDistJob->m_iFocalId;
@@ -232,12 +232,12 @@ void Step::vJob__ExecutedNew(void)
   pJobExecuted->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobExecuted->pJobTags()->vInsert(C_TAG_SEEDRUN,"_executed_run"_Stz);
 
-  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecuted);
+  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobExecuted);
   
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  m_pTask->m_pDataStack->vPushPtr(pJobExecuted);
+  m_pDataStack->vPushPtr(pJobExecuted);
   
   EXIT();
 }

@@ -21,9 +21,9 @@ void Step::vSeekOffsetsOperandDump(void)
 {
   ENTRY();
   
-  InfoSet* pInfoSet = _pInfoSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  InfoSet* pInfoSet = _pInfoSet(m_pDataStack->pPopPtr(__func__));
 
-  i8 iDetail = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iDetail = m_pDataStack->iPopInt(__func__);
   
   if (iDetail) {
     i8 i_Ofs = 0;

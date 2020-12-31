@@ -22,13 +22,13 @@ void Step::vEnterRoutine(void)
   ENTRY();
   
   fpSTEPFN* afpEntryCell =
-    (fpSTEPFN*) ((m_pTask->m_aInxPtr - 1)->m_afpObjectFn + 1);
+    (fpSTEPFN*) ((m_aInxPtr - 1)->m_afpMemberFn + 1);
   
-  m_pTask->m_pReturnStack->vPushFip(m_pTask->m_aInxPtr);
-  m_pTask->m_aInxPtr = *(ForthCell**)afpEntryCell;
+  m_pReturnStack->vPushFip(m_aInxPtr);
+  m_aInxPtr = *(ForthCell**)afpEntryCell;
 
-   if ( (m_pTask->m_iTraceMask & C_TRACE_ROUTINES) )
-    m_pTask->vTracePoint(">"_Stz);
+   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
+    Task::vTracePoint(">"_Stz);
   
   EXIT();
 }

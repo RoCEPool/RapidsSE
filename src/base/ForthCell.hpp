@@ -28,7 +28,7 @@ namespace BASE
       //   - Step::vXyz for primitives
       //
       
-      fpOBJECTFN* m_afpObjectFn;  // indirect address of a function
+      fpOBJECTFN* m_afpMemberFn;  // indirect address of a function
 
       //
       // additionally cells can be an argument to a another cell

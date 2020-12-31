@@ -24,10 +24,10 @@ void Step::vSubsetGet(void)
 {
   ENTRY();
   
-  if (m_pTask->m_pLogicUnit->m_xpSubset.bIsNull())
-    m_pTask->m_pDataStack->vPushPtr(nullptr);
+  if (m_pLogicUnit->m_xpSubset.bIsNull())
+    m_pDataStack->vPushPtr(nullptr);
   else
-    m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpSubset);
+    m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSubset);
   
   EXIT();
 }
@@ -41,10 +41,10 @@ void Step::vSubsetNext(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*m_pTask->m_pLogicUnit->m_xpSubset)
-    pNextOperand = m_pTask->m_pLogicUnit->m_xpSubset->pNextItem();
+  if (*m_pLogicUnit->m_xpSubset)
+    pNextOperand = m_pLogicUnit->m_xpSubset->pNextItem();
   
-  m_pTask->m_pDataStack->vPushPtr(pNextOperand);
+  m_pDataStack->vPushPtr(pNextOperand);
   
   EXIT();
 }
@@ -58,25 +58,25 @@ void Step::vSubsetNextBuffer(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*m_pTask->m_pLogicUnit->m_xpSubset) {
-    if (m_pTask->m_pLogicUnit->m_xpSubset->eClass() == CN_CRWBUFFER) {
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pTask->m_pLogicUnit->m_xpSubset);
+  if (*m_pLogicUnit->m_xpSubset) {
+    if (m_pLogicUnit->m_xpSubset->eClass() == CN_CRWBUFFER) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpSubset);
       pNextOperand = pCrwBuffer->pNextBuffer();
-      //m_pTask->m_pLogicUnit->m_xpSubset = pNextOperand;
+      //m_pLogicUnit->m_xpSubset = pNextOperand;
     }
     else
-      if (m_pTask->m_pLogicUnit->m_xpSubset->eClass() == CN_CSVBUFFER) {
-      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pTask->m_pLogicUnit->m_xpSubset);
+      if (m_pLogicUnit->m_xpSubset->eClass() == CN_CSVBUFFER) {
+      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpSubset);
       pNextOperand = pCsvBuffer->pNextBuffer();
-      //m_pTask->m_pLogicUnit->m_xpSubset = pNextOperand;
+      //m_pLogicUnit->m_xpSubset = pNextOperand;
     }
     else {
-      vTrace("Subset class %s\n"_Stz, aCN[m_pTask->m_pLogicUnit->m_xpSubset->eClass()]);
+      vTrace("Subset class %s\n"_Stz, aCN[m_pLogicUnit->m_xpSubset->eClass()]);
       ASSERT(0);
     }
   }
   
-  m_pTask->m_pDataStack->vPushPtr(pNextOperand);
+  m_pDataStack->vPushPtr(pNextOperand);
   
   EXIT();
 }
@@ -88,14 +88,14 @@ void Step::vSubsetSet(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   if (pOperand && CN_CRWBUFFER == pOperand->eClass()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
     vDebugPoint();
   }
   
-  m_pTask->m_pLogicUnit->m_xpSubset = pOperand;
+  m_pLogicUnit->m_xpSubset = pOperand;
   
   EXIT();
 }

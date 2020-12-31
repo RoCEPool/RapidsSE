@@ -27,11 +27,11 @@ void Step::vPotCompleted(void)
 {
   ENTRY();
   
-  Pot* pPot = *m_pTask->m_pLogicUnit->m_xpPot;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
     
   DataBuffer* pCompletedBuffer = pPot->pCompleted(0);
 
-  m_pTask->m_pDataStack->vPushPtr(pCompletedBuffer);
+  m_pDataStack->vPushPtr(pCompletedBuffer);
 
   EXIT();
 }
@@ -43,13 +43,13 @@ void Step::vPotCompletedPtn(void)
 {
   ENTRY();
   
-  i8 i_Ptn = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  Pot* pPot = *m_pTask->m_pLogicUnit->m_xpPot;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
     
   DataBuffer* pCompletedBuffer = pPot->pCompleted(i_Ptn);
 
-  m_pTask->m_pDataStack->vPushPtr(pCompletedBuffer);
+  m_pDataStack->vPushPtr(pCompletedBuffer);
 
   EXIT();
 }
@@ -61,11 +61,11 @@ void Step::vPotDangling(void)
 {
   ENTRY();
   
-  Pot* pPot = *m_pTask->m_pLogicUnit->m_xpPot;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
     
   DataBuffer* pDanglingBuffer = pPot->pDangling(0);
 
-  m_pTask->m_pDataStack->vPushPtr(pDanglingBuffer);
+  m_pDataStack->vPushPtr(pDanglingBuffer);
 
   EXIT();
 }
@@ -77,13 +77,13 @@ void Step::vPotDanglingPtn(void)
 {
   ENTRY();
   
-  i8 i_Ptn = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  Pot* pPot = *m_pTask->m_pLogicUnit->m_xpPot;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
     
   DataBuffer* pDanglingBuffer = pPot->pDangling(i_Ptn);
 
-  m_pTask->m_pDataStack->vPushPtr(pDanglingBuffer);
+  m_pDataStack->vPushPtr(pDanglingBuffer);
 
   EXIT();
 }
@@ -95,8 +95,8 @@ void Step::vPotDelete(void)
 {
   ENTRY();
   
-  Pot* pPot = *m_pTask->m_pLogicUnit->m_xpPot;
-  m_pTask->m_pLogicUnit->m_xpPot = nullptr;
+  Pot* pPot = *m_pLogicUnit->m_xpPot;
+  m_pLogicUnit->m_xpPot = nullptr;
   
   delete pPot;
   
@@ -112,7 +112,7 @@ void Step::vPotNew(void)
     
   Pot* pPot = new Pot;
       
-  m_pTask->m_pLogicUnit->m_xpPot = pPot;
+  m_pLogicUnit->m_xpPot = pPot;
 
   EXIT();
 }
@@ -124,12 +124,12 @@ void Step::vPotUseStreamDefOut(void)
 {
   ENTRY();
     
-  i8 iAddPtnHsh = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iAddPtnHsh = m_pDataStack->iPopInt(__func__);
   
-  m_pTask->m_pLogicUnit->m_xpStreamDefOut->vToRowPix(&m_pTask->m_pLogicUnit->m_oRowPix,
+  m_pLogicUnit->m_xpStreamDefOut->vToRowPix(&m_pLogicUnit->m_oRowPix,
                                                (bool)iAddPtnHsh);
   
-  m_pTask->m_pLogicUnit->m_xpPot->vRowPix(&m_pTask->m_pLogicUnit->m_oRowPix);
+  m_pLogicUnit->m_xpPot->vRowPix(&m_pLogicUnit->m_oRowPix);
 
   EXIT();
 }

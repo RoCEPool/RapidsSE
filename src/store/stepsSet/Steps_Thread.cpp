@@ -37,9 +37,9 @@ void Step::vThreadBind(void)
   ENTRY();
   
   
-  i8 iCpu = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iCpu = m_pDataStack->iPopInt(__func__);
   
-  Thread* pThread = _pThread(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   pThread->vBind(iCpu);
   
@@ -53,9 +53,9 @@ void Step::vThreadCpu(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
-  m_pTask->m_pDataStack->vPushInt(pThread->iCpu());
+  m_pDataStack->vPushInt(pThread->iCpu());
   
   EXIT();
 }
@@ -67,9 +67,9 @@ void Step::vThreadDedicatedFetch(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
-  m_pTask->m_pDataStack->vPushInt(pThread->m_eDedicated);
+  m_pDataStack->vPushInt(pThread->m_eDedicated);
 
   EXIT();
 }
@@ -81,9 +81,9 @@ void Step::vThreadDedicatedStore(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
-  i8 iDedicated = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iDedicated = m_pDataStack->iPopAsInt(__func__);
 
   pThread->m_eDedicated = (eCN)iDedicated;
   
@@ -111,7 +111,7 @@ void Step::vThreadDump(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   pThread->vContentDump();
   
@@ -139,9 +139,9 @@ void Step::vThreadId(void)
 {
   ENTRY();
   
-  Thread* pThread = _pThread(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
-  m_pTask->m_pDataStack->vPushInt(pThread->m_pPsxThd->m_iOsThdId);
+  m_pDataStack->vPushInt(pThread->m_pPsxThd->m_iOsThdId);
   
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vThreadSleepMsec(void)
 {
   ENTRY();
   
-  i8 nMilliseconds = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 nMilliseconds = m_pDataStack->iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -170,7 +170,7 @@ void Step::vThreadSleepNsec(void)
 {
   ENTRY();
   
-  i8 nNanoseconds = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 nNanoseconds = m_pDataStack->iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -186,7 +186,7 @@ void Step::vThreadSleepSsec(void)
 {
   ENTRY();
   
-  i8 nSeconds = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 nSeconds = m_pDataStack->iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -202,7 +202,7 @@ void Step::vThreadSleepUsec(void)
 {
   ENTRY();
   
-  i8 nMicroseconds = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 nMicroseconds = m_pDataStack->iPopInt(__func__);
   
   Thread* pThread = Thread::pThisTLSThread();
   

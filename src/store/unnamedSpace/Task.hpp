@@ -29,6 +29,7 @@ namespace STORE
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread
+    SMA<LogicUnit> m_pLogicUnit;      // set of registers for the task steps
 
     eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // schedulre transition request
@@ -38,9 +39,7 @@ namespace STORE
     Decider      m_oAcksRmg;     // number of acks still waiting for
     Sleep        m_oWakeup;      // wakeup time from sleeping
 
-    SMA<Forth>   m_pForth;       // forth execution context
-    SMA<LogicUnit>  m_pLogicUnit;      // set of registers for the task steps
-
+  
     i8           m_iTraceMask;   // tracing mask
     eCN          m_eWhatJob;     // what job this task is/was for (debugging)
   
@@ -111,7 +110,6 @@ namespace STORE
     void vEntryPoint(eEP eEntryPoint);
     eEP  eEntryPoint(void);
     void vFocalOutline(s4K& sOutline);
-    Forth* pForth(void);
     void vGrabTaskLock(void);
     void vInitExeContext(void);
     bool bIsLocked(void);

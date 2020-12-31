@@ -24,7 +24,7 @@ void Step::vRangeGet(void)
 {
   ENTRY();
 
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpRange);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRange);
 
   EXIT();
 }
@@ -36,7 +36,7 @@ void Step::vRangeNew(void)
 {
   ENTRY();
 
-  m_pTask->m_pLogicUnit->m_xpRange = new Range;
+  m_pLogicUnit->m_xpRange = new Range;
   
   EXIT();
 }
@@ -48,15 +48,15 @@ void Step::vRangeBounds(void)
 {
   ENTRY();
 
-  Range* pRange = *m_pTask->m_pLogicUnit->m_xpRange;
+  Range* pRange = *m_pLogicUnit->m_xpRange;
 
-  Index* pIndex = _pIndex(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
 
   s4K sRange;
-  m_pTask->m_pDataStack->vPopStr(sRange, __func__);
+  m_pDataStack->vPopStr(sRange, __func__);
 
   eEC eError = pRange->eRangeValues(pIndex, sRange);
-  m_pTask->m_pDataStack->vPushInt(eError);
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -68,7 +68,7 @@ void Step::vRangeSet(void)
 {
   ENTRY();
 
-  m_pTask->m_pLogicUnit->m_xpRange = _pRange(m_pTask->m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpRange = _pRange(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

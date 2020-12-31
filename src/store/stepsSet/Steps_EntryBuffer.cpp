@@ -26,7 +26,7 @@ void Step::vEntBufferDump(void)
 {
   ENTRY();
   
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   pIndexBuffer->vShow();
   
@@ -41,9 +41,9 @@ void Step::vEntBufferIndexFetch(void)
   ENTRY();
   
   Object* pPtrIndex;
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  m_pTask->m_pDataStack->vPushPtr(pIndexBuffer->pIndex());
+  m_pDataStack->vPushPtr(pIndexBuffer->pIndex());
   
   EXIT();
 }
@@ -56,13 +56,13 @@ void Step::vEntBufferNextBuffer(void)
   ENTRY();
   
   Object* pPtrEntry = nullptr;
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   if (pIndexBuffer->pNextBuffer()) {
     i8 nBuffer = pIndexBuffer->pNextBuffer()->iBufferNo();
   }
   
-  m_pTask->m_pDataStack->vPushPtr(pIndexBuffer->pNextBuffer());
+  m_pDataStack->vPushPtr(pIndexBuffer->pNextBuffer());
   
   EXIT();
 }
@@ -75,9 +75,9 @@ void Step::vEntBufferPartitionFetch(void)
   ENTRY();
   
   Object* pPtrEntry = nullptr;
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  m_pTask->m_pDataStack->vPushInt(pIndexBuffer->tPtnNo());
+  m_pDataStack->vPushInt(pIndexBuffer->tPtnNo());
   
   EXIT();
 }
@@ -90,9 +90,9 @@ void Step::vEntBufferPartitionStore(void)
   ENTRY();
   
   Object* pPtrEntry = nullptr;
-  EntBuffer* pIndexBuffer = _pEntBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  tPN tPtnNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
   pIndexBuffer->vPtnNo(tPtnNo);
   
@@ -108,11 +108,11 @@ void Step::vEntBufferToEntBuffer(void)
   
   s48K sString;
   
-  m_pTask->m_pDataStack->vPopStr(sString,__func__);
+  m_pDataStack->vPopStr(sString,__func__);
   
   EntBuffer* pEntBuffer = _pEntBuffer((void*)sString.iToI8());
   
-  m_pTask->m_pDataStack->vPushPtr(pEntBuffer);
+  m_pDataStack->vPushPtr(pEntBuffer);
   
   EXIT();
 }

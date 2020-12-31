@@ -26,7 +26,7 @@ void Task::vAddMunged(void)
     vNewInput();
     m_pInput->vFormSenTokens();
     
-    vAddMunged(m_pForth);
+    vAddMunged(nullptr);
     
     vDeleteInput();
   }
@@ -405,7 +405,8 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
         if (WK_INTRINSIC == pCalledWord->eWord()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
-            ((Step*)(*m_pForth)->*fpStep)();
+            //((Step*)( * m_pForth  )->*fpStep)();
+            ( ((Step*)this)->*fpStep )();
           else {
             pNewWord->vEncodeCall(pCalledWord->afpEntryStep());
           }

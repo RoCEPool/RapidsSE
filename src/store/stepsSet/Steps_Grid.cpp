@@ -37,7 +37,7 @@ void Step::vGridBootNodes(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(AM::nBootNodes());
+  m_pDataStack->vPushInt(AM::nBootNodes());
   
   EXIT();
 }
@@ -51,7 +51,7 @@ void Step::vGridConnectedNodes(void)
   
   i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
 
-  m_pTask->m_pDataStack->vPushInt(nConnectedNodes);
+  m_pDataStack->vPushInt(nConnectedNodes);
   
   EXIT();
 }
@@ -64,11 +64,11 @@ void Step::vGridFindNode(void)
   ENTRY();
   
   s256 sNodeNm;
-  m_pTask->m_pDataStack->vPopStr(sNodeNm,__func__);
+  m_pDataStack->vPopStr(sNodeNm,__func__);
   
   Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
   
-  m_pTask->m_pDataStack->vPushPtr(pNode);
+  m_pDataStack->vPushPtr(pNode);
   
   EXIT();
 }
@@ -92,11 +92,11 @@ void Step::vGridListNodes(void)
 {
   ENTRY();
   
-  Table* pStreamSetTable = _pTable(*m_pTask->m_pLogicUnit->m_xpStreamSetTable);
+  Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
   StreamDef* pStreamDef  = pStreamSetTable->pStreamDef();
-  StreamSet* pStreamSet  = _pStreamSet(*m_pTask->m_pLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet  = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
-  i8 i_Node = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 i_Node = m_pDataStack->iPopAsInt(__func__);
   for (Node_I oNode_I(i_Node,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
 
     Row* pRow = pStreamSet->aAllotRow(pStreamDef,
@@ -111,14 +111,14 @@ void Step::vGridListNodes(void)
   
     if (! pRow) {
       // call again
-      m_pTask->m_pDataStack->vPushInt(oNode_I.i_Node());
+      m_pDataStack->vPushInt(oNode_I.i_Node());
       break;
     }
     
   }
   
   // done (dont call again)
-  m_pTask->m_pDataStack->vPushInt(0);
+  m_pDataStack->vPushInt(0);
 
   EXIT();
 }
@@ -130,11 +130,11 @@ void Step::vGridNode(void)
 {
   ENTRY();
   
-  i8 iNode = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iNode = m_pDataStack->iPopInt(__func__);
   
   Node* pNode = AM::pGrid()->pGetNode(iNode);
   
-  m_pTask->m_pDataStack->vPushPtr(pNode);
+  m_pDataStack->vPushPtr(pNode);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ void Step::vGridPartitions(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(AM::nPtnsInGrid());
+  m_pDataStack->vPushInt(AM::nPtnsInGrid());
   
   EXIT();
 }
@@ -187,7 +187,7 @@ void Step::vGridTablePtns(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(AM::nPtnsPerTable());
+  m_pDataStack->vPushInt(AM::nPtnsPerTable());
   
   EXIT();
 }
@@ -199,11 +199,11 @@ void Step::vGridTablePtnToPtnNo(void)
 {
   ENTRY();
   
-  i8 i_TablePtn = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
   tPN tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
   
-  m_pTask->m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
+  m_pDataStack->vPushInt(tPtnNo);              //! DISCUSS WITH ALKA
   
   EXIT();
 }
@@ -219,7 +219,7 @@ void Step::vGridThisNodeFetch(void)
   
   i8 iNodeNo = AM::pGrid()->iThisNode();
   
-  m_pTask->m_pDataStack->vPushInt(iNodeNo);
+  m_pDataStack->vPushInt(iNodeNo);
   
   EXIT();
 }
@@ -234,7 +234,7 @@ void Step::vGridThisNodeNameFetch(void)
   s256 sName;
   sName = AM::pGrid()->pThisNode()->szNodeNm();
   
-  m_pTask->m_pDataStack->vPushStr(sName);
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }
@@ -246,7 +246,7 @@ void Step::vGridStartedStore(void)
 {
   ENTRY();
   
-  i8 iStarted = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iStarted = m_pDataStack->iPopInt(__func__);
   
   AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
   
@@ -260,7 +260,7 @@ void Step::vGridStartNodeFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(AM::pGrid()->iStartNode());
+  m_pDataStack->vPushInt(AM::pGrid()->iStartNode());
   
   EXIT();
 }
@@ -272,7 +272,7 @@ void Step::vGridStartNodeStore(void)
 {
   ENTRY();
   
-  i8 iStartNode = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iStartNode = m_pDataStack->iPopInt(__func__);
   
   AM::pGrid()->vStartNode(iStartNode);
   
@@ -286,7 +286,7 @@ void Step::vGridStartedFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(AM::pGrid()->bHasStarted());
+  m_pDataStack->vPushInt(AM::pGrid()->bHasStarted());
   
   EXIT();
 }
@@ -298,14 +298,14 @@ void Step::vGridToNode(void)
 {
   ENTRY();
   
-  tPN tPtnNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
-  //m_pTask->m_pDataStack->vPush((i8)0);
+  //m_pDataStack->vPush((i8)0);
   
   i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
   
-  m_pTask->m_pDataStack->vPushInt(i_Node);
+  m_pDataStack->vPushInt(i_Node);
   
   EXIT();
 }

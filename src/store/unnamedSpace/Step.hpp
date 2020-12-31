@@ -5,7 +5,7 @@
 
 namespace STORE
 {
-  class Step : public Forth
+  class Step : public Task
   {
   friend class STORE::AttachMap;
   friend class STORE::Task;
