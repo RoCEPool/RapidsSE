@@ -67,35 +67,6 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* seed forth execution context                                               */
-/*----------------------------------------------------------------------------*/
-void Forth::vSeedForth(Word* pSeedWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  m_pTask->m_pSeedWord = pSeedWord;
-  m_pTask->m_aInxPtr   = pSeedWord->aFirstCell();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Dic* pRootDic = AM::pRootDic();
-
-  Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
-  if (pExceptionWord) {
-    m_pTask->m_pExceptionWord = pExceptionWord;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Word* pExceptionDef = pRootDic->pFindWord("std_exceptionHook"_Stz);
-  if (pExceptionDef) {
-    m_pTask->m_pExceptionWord = pExceptionDef;
-    return;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Task* Forth::pTask(void)

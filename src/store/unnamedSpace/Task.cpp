@@ -971,7 +971,28 @@ void Task::vSeedTask(void)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);
   
-  m_pForth->vSeedForth(pSeedWord);
+
+
+  m_pSeedWord = pSeedWord;
+  m_aInxPtr   = pSeedWord->aFirstCell();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
+  if (pExceptionWord) {
+    m_pExceptionWord = pExceptionWord;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Word* pExceptionDef = pRootDic->pFindWord("std_exceptionHook"_Stz);
+  if (pExceptionDef) {
+    m_pExceptionWord = pExceptionDef;
+    return;
+  }
+
+
 }
 
 /*----------------------------------------------------------------------------*/
