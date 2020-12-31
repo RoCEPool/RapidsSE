@@ -21,7 +21,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-
 #include "DataChunk.hpp"
 #include "RecordChunk.hpp"
 #include "FileChunk.hpp"
@@ -50,7 +49,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Word.hpp"
 
 #include "SP_Word.hpp"
-
 
 //------------------------------------------------------------------------------
 
@@ -85,10 +83,10 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "RowSingle.hpp"
 
-
 //------------------------------------------------------------------------------
 
 #include "DataBuffer.hpp"
+#include "SP_DataBuffer.hpp"
 
 #include "RowUte.hpp"
 
@@ -100,8 +98,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Pot.hpp"
 
 #include "Reader.hpp"
-
-#include "SP_DataBuffer.hpp"
 
 #include "InfoSetBase.hpp"
 #include "InfoSet.hpp"
@@ -174,12 +170,10 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
+#include "Session.hpp"
 
 #include "SP_Grid.hpp"
 #include "SP_Node.hpp"
-
-#include "Session.hpp"
-
 #include "SP_Session.hpp"
 
 //------------------------------------------------------------------------------
