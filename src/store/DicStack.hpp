@@ -34,7 +34,7 @@ namespace STORE
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
     Word* pLocateRoutineWord(ForthCell* aCell);
-    Word* pLocateStepWord(fpSTEPFN fpStep);
+    Word* pLocateStepWord(fpSTEPFN fpStepFn);
     Word* pRemoveWord(Stz* szWordNm);
     Dic*  pPick(i8 iDic);
     void  vPop(void);

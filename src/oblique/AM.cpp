@@ -1909,16 +1909,16 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
   ForthCell* aLastCell = pDoesWord->aLastCell();
   for (ForthCell* aCell = aDoes; aCell < aLastCell; ) {
     
-    fpSTEPFN fpStep = *aCell->m_afpMemberFn;
-    Word* pStepWord = pDicStack->pLocateStepWord(fpStep);
+    fpSTEPFN fpStepFn = *aCell->m_afpStepFn;
+    Word* pStepWord = pDicStack->pLocateStepWord(fpStepFn);
     Stz* szStepNm = pStepWord->szWordNm();
     
     // -- -- -- -- -- -- -- -- -- --
     // step is: jump / jump false / jump true
     
-    if (fpStep == &Step::vFlowJump ||
-        fpStep == &Step::vFlowJumpFalse ||
-        fpStep == &Step::vFlowJumpTrue ) {
+    if (fpStepFn == &Step::vFlowJump ||
+        fpStepFn == &Step::vFlowJumpFalse ||
+        fpStepFn == &Step::vFlowJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1932,7 +1932,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: push intval
     
-    if (fpStep == &Step::vPushIntVal) {
+    if (fpStepFn == &Step::vPushIntVal) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1950,7 +1950,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: push ptrval
     
-    if (fpStep == &Step::vPushPtrVal) {
+    if (fpStepFn == &Step::vPushPtrVal) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1977,7 +1977,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: push stzval
     
-    if (fpStep == &Step::vPushStzVal) {
+    if (fpStepFn == &Step::vPushStzVal) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1994,9 +1994,9 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: enter routine
     
-    if (fpStep == &Step::vEnterRoutine) {
+    if (fpStepFn == &Step::vEnterRoutine) {
       
-      ForthCell* aEnterCell = *(ForthCell**)(aCell->m_afpMemberFn + 1);
+      ForthCell* aEnterCell = *(ForthCell**)(aCell->m_afpStepFn + 1);
       Word* pEnterWord = Routine::pToWord(aEnterCell);
 
       vTrace("%p: %s %s\n"_Stz,

@@ -8,9 +8,9 @@ namespace BASE
   //
   // declare a function pointer to any member function of Object
   //   n.b. Object is non-virtual,
-  //        so fpOBJECTFN can be cast to a sub-class of Object
+  //        so fpMEMBERFN can be cast to a sub-class of Object
   //
-  typedef void (Object::*fpOBJECTFN)(void);
+  typedef void (Object::*fpMEMBERFN)(void);
 
   class ForthCell
   {
@@ -28,7 +28,7 @@ namespace BASE
       //   - Step::vXyz for primitives
       //
       
-      fpOBJECTFN* m_afpMemberFn;  // indirect address of a function
+      fpMEMBERFN* m_afpStepFn;  // indirect address of a member function
 
       //
       // additionally cells can be an argument to a another cell

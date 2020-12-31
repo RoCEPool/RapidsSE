@@ -15,7 +15,7 @@ namespace STORE
     static void vAddSteps(void);
   
   private:
-    static void vAddStep(Stz* aName, fpSTEPFN fpStep, bool bImmediate=false);
+    static void vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Address(void);

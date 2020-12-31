@@ -11,7 +11,7 @@ fpSTEPFN gfpEntryStep = &STORE::Step::vEnterRoutine;
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddStep(Stz* aName, fpSTEPFN fpStep, bool bImmediate)
+void Step::vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate)
 {
   //vTrace("%s Size = %lld\n"_Stz, aName, aName->nSize());
   RASSERT(aName->nSize() <= 32);
@@ -22,7 +22,7 @@ void Step::vAddStep(Stz* aName, fpSTEPFN fpStep, bool bImmediate)
   //m_pCompiler->vCurrentWord(pNewWord);
   
   pNewWord->vWord(WK_INTRINSIC);
-  pNewWord->vEntryStep(fpStep);
+  pNewWord->vEntryStep(fpStepFn);
   pNewWord->vImmediate(bImmediate);
 }
 

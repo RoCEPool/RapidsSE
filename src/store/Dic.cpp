@@ -211,14 +211,14 @@ Word* Dic::pFindWord(Stz* szWordNm)
 /*----------------------------------------------------------------------------*/
 /* find a word given pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFindStep(fpSTEPFN fpStep)
+Word* Dic::pFindStep(fpSTEPFN fpStepFn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pArticle->vGrabRead();
   
   for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
-    if (WK_INTRINSIC == pWord->eWord() && fpStep == pWord->fpEntryStep()) {
+    if (WK_INTRINSIC == pWord->eWord() && fpStepFn == pWord->fpEntryStep()) {
       m_pArticle->vDropRead();
       return pWord;
     }

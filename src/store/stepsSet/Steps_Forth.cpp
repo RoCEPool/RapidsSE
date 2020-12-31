@@ -105,7 +105,7 @@ void Step::vFlowExecute(void)
 {
   ENTRY();
   
-  fpSTEPFN fpStep;
+  fpSTEPFN fpStepFn;
   Object* pObject;
 
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
@@ -119,8 +119,8 @@ void Step::vFlowExecute(void)
       break;
           
     case WK_INTRINSIC:
-      fpStep = pWord->fpEntryStep();
-      ((Step*)this->*fpStep)();
+      fpStepFn = pWord->fpEntryStep();
+      ((Step*)this->*fpStepFn)();
       break;
           
     case WK_LOCAL:

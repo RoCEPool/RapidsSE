@@ -343,7 +343,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   //vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
   
   Word*     pNewWord;
-  fpSTEPFN    fpStep;
+  fpSTEPFN    fpStepFn;
   Word*     pCalledWord;
   CellSingle xVariable;
   TokenVec* pTokenVec;
@@ -403,10 +403,10 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
       case TN_NAME:
         pCalledWord = m_oDicStack.pFindWord(szChars);
         if (WK_INTRINSIC == pCalledWord->eWord()) {
-          fpStep = pCalledWord->fpEntryStep();
+          fpStepFn = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
-            //((Step*)( * m_pForth  )->*fpStep)();
-            ( ((Step*)this)->*fpStep )();
+            //((Step*)( * m_pForth  )->*fpStepFn)();
+            ( ((Step*)this)->*fpStepFn )();
           else {
             pNewWord->vEncodeCall(pCalledWord->afpEntryStep());
           }

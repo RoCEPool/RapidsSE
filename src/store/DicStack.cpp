@@ -222,7 +222,7 @@ Word* DicStack::pLocateRoutineWord(ForthCell* aCell)
 /*----------------------------------------------------------------------------*/
 /* locate word that has given step                                            */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pLocateStepWord(fpSTEPFN fpStep)
+Word* DicStack::pLocateStepWord(fpSTEPFN fpStepFn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -234,7 +234,7 @@ Word* DicStack::pLocateStepWord(fpSTEPFN fpStep)
     
     for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (WK_INTRINSIC == pWord->eWord() &&
-          fpStep == pWord->fpEntryStep())
+          fpStepFn == pWord->fpEntryStep())
         return pWord;
   }
   
@@ -243,7 +243,7 @@ Word* DicStack::pLocateStepWord(fpSTEPFN fpStep)
        pWord;
        pWord = pWord->pPrevWord())
     if (WK_INTRINSIC == pWord->eWord() &&
-        fpStep == pWord->fpEntryStep())
+        fpStepFn == pWord->fpEntryStep())
       return pWord;
   
   return nullptr;
