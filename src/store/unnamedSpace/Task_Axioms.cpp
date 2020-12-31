@@ -23,7 +23,7 @@ void Task::vAddMunged(void)
     if (AM::bVerbose())
       vTrace("[[mainThread]] Adding munged routines...\n"_Stz);
 
-    m_pForth->vNewInput();
+    vNewInput();
     m_pInput->vFormSenTokens();
     
     vAddMunged(m_pForth);
@@ -43,7 +43,7 @@ void Task::vAddAxioms(void)
   if (AM::bVerbose())
     vTrace("[[mainThread]] Adding axiomatic routines...\n"_Stz);
   
-  m_pForth->vNewInput();
+  vNewInput();
   
   s48K sDefinition;
   

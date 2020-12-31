@@ -67,40 +67,6 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new input                                                                  */
-/*----------------------------------------------------------------------------*/
-void Forth::vNewInput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  RASSERT(! m_pTask->m_pInput);
-    
-  m_pTask->m_pInput = new Input;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset forth execution context                                              */
-/*----------------------------------------------------------------------------*/
-void Forth::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-   m_pTask->m_pAuxStack->vReset();
-  m_pTask->m_pDataStack->vReset();
-  m_pTask->m_pReturnStack->vReset();
-  
-  while (m_pTask->m_pLocalsFrame) {
-    
-    LocalChain* pLocalsFrame = m_pTask->m_pLocalsFrame;
-    m_pTask->m_pLocalsFrame = m_pTask->m_pLocalsFrame->pNext();
-    
-    delete pLocalsFrame;
-  }
-  
-  m_pTask->m_aInxPtr = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* seed forth execution context                                               */
 /*----------------------------------------------------------------------------*/
 void Forth::vSeedForth(Word* pSeedWord)

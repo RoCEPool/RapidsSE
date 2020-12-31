@@ -22,8 +22,6 @@ namespace STORE
     Forth(Task* pTask, LogicUnit* pLogicUnit);
    ~Forth(void) noexcept(false);
   
-    void vNewInput(void);
-    void vReset(void);
     void vSeedForth(Word* pSeedWord);
     
     bool bCorrectLayout(void);

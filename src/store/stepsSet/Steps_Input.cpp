@@ -168,7 +168,7 @@ void Step::vInputPush(void)
   ENTRY();
   
   if (! m_pTask->m_pInput) {
-    vNewInput();
+    m_pTask->vNewInput();
     ASSERT(0 == m_pTask->m_pInput->iDepth());
   }
   

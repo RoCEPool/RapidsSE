@@ -440,7 +440,7 @@ void Task::vCaught(Exception xException)
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pForth->vReset();
+  vReset();
   
   m_aInxPtr = m_pExceptionWord->aFirstCell();
 
@@ -774,7 +774,9 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 void Task::vMonitorPortrait(s48K& sPortrait)
 {
-  if (JL_NONE == m_pJob->eJobList())
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+ if (JL_NONE == m_pJob->eJobList())
     sPortrait.vSprint("%s"_Stz,aCN[m_pJob->eClass()]);
   else
   if (JL_ORIGINATING == m_pJob->eJobList())
@@ -791,10 +793,24 @@ void Task::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new input                                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vNewInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  RASSERT(! m_pInput);
+    
+  m_pInput = new Input;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next repeatable random number subscript                                */
 /*----------------------------------------------------------------------------*/
 i8& Task::i_NextRnd(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   return m_pLogicUnit->m_i_NextRnd;
 }
 
@@ -887,9 +903,31 @@ void Task::vReseed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  m_pForth->vReset();
+  vReset();
 
   vSeedTask();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset forth execution context                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+  m_pReturnStack->vReset();
+  
+  while (m_pLocalsFrame) {
+    
+    LocalChain* pLocalsFrame = m_pLocalsFrame;
+    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    
+    delete pLocalsFrame;
+  }
+  
+  m_aInxPtr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

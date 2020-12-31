@@ -126,6 +126,7 @@ namespace STORE
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);
+    void vNewInput(void);
     i8&  i_NextRnd(void);
     Profile* pProfile(void);
     void vProfile(Profile* pProfile);
@@ -133,6 +134,7 @@ namespace STORE
     void vQueue(eQK eQueue);
     LogicUnit* pLogicUnit(void);
     void vRenderPortrait(s256& sTaskPortrait);
+    void vReset(void);
     void vReseed(void);
     DicStack* pSaveDicStack(void);
     bool bSeeded(void);
