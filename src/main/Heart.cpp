@@ -103,7 +103,7 @@ void vHeartInit(void) {
     pSender->iSend((char *) &gxHeartbeat, sizeof(Heartbeat));
 
     if (iCnt++ == 0) // debug only: print once
-      printf(azHeartbeat);
+      printf("%s",azHeartbeat);
 
     sleep(3);
   }
@@ -145,7 +145,7 @@ void vHeartInit(void) {
       );
 
       if (iCnt++ == 0) // debug print once
-        printf(azHeartbeat);
+        printf("%s",azHeartbeat);
     }
   }
 
@@ -186,7 +186,7 @@ void vHeartInit(void) {
       );
 
       if (iCnt++ == 0) // debug print once
-        printf(azHeartbeat);
+        printf("%s",azHeartbeat);
     }
   }
 
