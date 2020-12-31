@@ -2,6 +2,7 @@
 /* GraphNav.hpp - a utility for walking plan graphs                           */
 /*============================================================================*/
 #pragma once
+#include <functional> // for std::function
 
 namespace Parser
 {
