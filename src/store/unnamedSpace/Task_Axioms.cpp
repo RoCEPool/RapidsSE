@@ -24,7 +24,7 @@ void Task::vAddMunged(void)
       vTrace("[[mainThread]] Adding munged routines...\n"_Stz);
 
     m_pForth->vNewInput();
-    m_pForth->pInput()->vFormSenTokens();
+    m_pInput->vFormSenTokens();
     
     vAddMunged(m_pForth);
     
@@ -348,8 +348,8 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   CellSingle xVariable;
   TokenVec* pTokenVec;
   
-  Compiler*  pCompiler = m_pForth->pCompiler();
-  Input* pInput = m_pForth->pInput();
+  Compiler*  pCompiler = m_pCompiler;
+  Input* pInput = m_pInput;
   
   pInput->vUseString(sDefinition);
   pInput->vFormSenTokens();
@@ -471,8 +471,8 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   s48K sValue;
   
-  Compiler* pCompiler = m_pForth->pCompiler();
-  Input* pInput = m_pForth->pInput();
+  Compiler* pCompiler = m_pCompiler;
+  Input* pInput = m_pInput;
 
   pInput->vUseString(szDefinition);
   pInput->vUseBegin();

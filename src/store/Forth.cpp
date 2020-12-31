@@ -85,16 +85,6 @@ void Forth::vCheckBreakPt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get compiler                                                               */
-/*----------------------------------------------------------------------------*/
-Compiler* Forth::pCompiler(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  return m_pTask->m_pCompiler;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set compiler                                                               */
 /*----------------------------------------------------------------------------*/
 void Forth::vCompiler(Compiler* pCompiler)
@@ -162,16 +152,6 @@ DicStack* Forth::pDicStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
   return & m_pTask->m_oDicStack;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get input stream                                                           */
-/*----------------------------------------------------------------------------*/
-Input* Forth::pInput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  return m_pTask->m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/

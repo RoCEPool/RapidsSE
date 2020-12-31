@@ -281,6 +281,9 @@ void Task::vAssertStructure(void)
   RASSERT(m_pLogicUnit);
 }
 
+
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -460,7 +463,7 @@ Compiler* Task::pCompiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pForth->pCompiler();
+  return m_pCompiler;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -597,6 +600,17 @@ void Task::vInitExeContext(void)
   m_pLogicUnit  = new LogicUnit(this);
   m_pForth   = new Forth(this,m_pLogicUnit);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get input stream                                                           */
+/*----------------------------------------------------------------------------*/
+Input* Task::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return m_pInput;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* is task locked?                                                            */

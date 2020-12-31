@@ -171,6 +171,9 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  
+    Input* pInput(void);
+
   private:
     Footer* aFooter(void);
   };

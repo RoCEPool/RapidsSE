@@ -23,7 +23,6 @@ namespace STORE
    ~Forth(void) noexcept(false);
   
     void vCheckBreakPt(void);
-    Compiler* pCompiler(void);
     void vCompiler(Compiler* pCompiler);
     void vContentDump(void);
     bool bCorrectLayout(void);
@@ -34,7 +33,6 @@ namespace STORE
     DicStack* pSaveDicStack(void);
     void vSeedForth(Word* pSeedWord);
     Task* pTask(void);
-    Input* pInput(void);
 
   private:
     Footer* aFooter(void);
