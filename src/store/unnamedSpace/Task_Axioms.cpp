@@ -28,7 +28,7 @@ void Task::vAddMunged(void)
     
     vAddMunged(m_pForth);
     
-    m_pForth->vDeleteInput();
+    vDeleteInput();
   }
 #endif
 }
@@ -330,7 +330,7 @@ void Task::vAddAxioms(void)
   
   pCompileAxiomaticColon(sDefinition);
   
-  m_pForth->vDeleteInput();
+  vDeleteInput();
 }
 
 /*----------------------------------------------------------------------------*/

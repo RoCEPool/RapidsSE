@@ -155,7 +155,7 @@ void Step::vInputPop(void)
   ASSERT(bPopped);
   
   if (-1 == m_pTask->m_pInput->iDepth())
-    vDeleteInput();
+    m_pTask->vDeleteInput();
 
   EXIT();
 }

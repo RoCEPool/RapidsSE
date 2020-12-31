@@ -434,8 +434,6 @@ void Task::vCaught(Exception xException)
   AM::vJobContentDump(m_pJob);
   
   m_pLogicUnit->vContentDump();
-
-  m_pForth->vContentDump();
   
   AM::pGrid()->vDsv();
 
@@ -520,6 +518,18 @@ void Task::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete input                                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDeleteInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  delete m_pInput;
+  
+  m_pInput = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vDump(void)
@@ -542,9 +552,43 @@ void Task::vDump(void)
   
   m_pLogicUnit->vContentDump();
   
-  m_pForth->vContentDump();
+  
+  
+  
+  
+  Word* pWord = m_oDicStack.pLocateRoutineWord(m_aInxPtr);
+
+  vTrace("\n"_Stz);
+  vTrace("Execution Context\n"_Stz);
+  vTrace("-----------------\n"_Stz);
+
+  vTrace("%p:\n"
+         "m_aInxPtr=%s %p\n"_Stz,
+         
+         this,
+         
+         pWord ? pWord->szWordNm() : C_NO_WORD,
+         m_aInxPtr);
+
+  vTrace("m_pSeedWord=%s %p\n"_Stz,
+         m_pSeedWord->szWordNm(),
+         m_pSeedWord);
+  vTrace("m_pExceptionWord=%s %p\n"_Stz,
+         m_pExceptionWord ? m_pExceptionWord->szWordNm() : C_NO_NAME,
+         m_pExceptionWord);
+
+  m_pDataStack->vDump(&m_oDicStack,  "m_pDataStack:"_Stz);
+  m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
+  m_pAuxStack->vDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
+
+  m_oDicStack.vContentDump();
+  
+  if (pWord)
+    AM::vWordSee(pWord,&m_oDicStack);
+
   
   vTrace("== End Task Dump ============================================\n"_Stz);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -846,6 +890,16 @@ void Task::vReseed(void)
   m_pForth->vReset();
 
   vSeedTask();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get save path stack                                                       */
+/*----------------------------------------------------------------------------*/
+DicStack* Task::pSaveDicStack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return & m_oSaveDicStack;
 }
 
 /*----------------------------------------------------------------------------*/

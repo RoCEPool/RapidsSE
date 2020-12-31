@@ -67,56 +67,6 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump execution context                                                     */
-/*----------------------------------------------------------------------------*/
-void Forth::vContentDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  Word* pWord = m_pTask->m_oDicStack.pLocateRoutineWord(m_pTask->m_aInxPtr);
-
-  vTrace("\n"_Stz);
-  vTrace("Execution Context\n"_Stz);
-  vTrace("-----------------\n"_Stz);
-
-  vTrace("%p:\n"
-         "m_aInxPtr=%s %p\n"_Stz,
-         
-         this,
-         
-         pWord ? pWord->szWordNm() : C_NO_WORD,
-         m_pTask->m_aInxPtr);
-
-  vTrace("m_pSeedWord=%s %p\n"_Stz,
-         m_pTask->m_pSeedWord->szWordNm(),
-         m_pTask->m_pSeedWord);
-  vTrace("m_pExceptionWord=%s %p\n"_Stz,
-         m_pTask->m_pExceptionWord ? m_pTask->m_pExceptionWord->szWordNm() : C_NO_NAME,
-         m_pTask->m_pExceptionWord);
-
-  m_pTask->m_pDataStack->vDump(&m_pTask->m_oDicStack,  "m_pDataStack:"_Stz);
-  m_pTask->m_pReturnStack->vDump(&m_pTask->m_oDicStack,"m_pReturnStack:"_Stz);
-   m_pTask->m_pAuxStack->vDump(&m_pTask->m_oDicStack,   "m_pAuxStack:"_Stz);
-
-  m_pTask->m_oDicStack.vContentDump();
-  
-  if (pWord)
-    AM::vWordSee(pWord,&m_pTask->m_oDicStack);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete input                                                               */
-/*----------------------------------------------------------------------------*/
-void Forth::vDeleteInput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  delete m_pTask->m_pInput;
-  
-  m_pTask->m_pInput = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* new input                                                                  */
 /*----------------------------------------------------------------------------*/
 void Forth::vNewInput(void)
@@ -148,16 +98,6 @@ void Forth::vReset(void)
   }
   
   m_pTask->m_aInxPtr = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get save path stack                                                       */
-/*----------------------------------------------------------------------------*/
-DicStack* Forth::pSaveDicStack(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  return & m_pTask->m_oSaveDicStack;
 }
 
 /*----------------------------------------------------------------------------*/

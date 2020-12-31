@@ -22,13 +22,11 @@ namespace STORE
     Forth(Task* pTask, LogicUnit* pLogicUnit);
    ~Forth(void) noexcept(false);
   
-    void vContentDump(void);
-    bool bCorrectLayout(void);
-    void vDeleteInput(void);
     void vNewInput(void);
     void vReset(void);
-    DicStack* pSaveDicStack(void);
     void vSeedForth(Word* pSeedWord);
+    
+    bool bCorrectLayout(void);
     Task* pTask(void);
 
   private:

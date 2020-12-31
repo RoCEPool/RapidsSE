@@ -103,6 +103,7 @@ namespace STORE
     bool bCorrectLayout(void);
     Compiler* pCompiler(void);
     void vContentDump(void);
+    void vDeleteInput(void);
     static void vDebug(void);
     DicStack* pDicStack(void);
     void vDropTaskLock(void);
@@ -133,6 +134,7 @@ namespace STORE
     LogicUnit* pLogicUnit(void);
     void vRenderPortrait(s256& sTaskPortrait);
     void vReseed(void);
+    DicStack* pSaveDicStack(void);
     bool bSeeded(void);
     void vSeedTask(void);
     Node* pSendNode(void);

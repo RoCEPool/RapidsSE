@@ -204,7 +204,7 @@ void Step::vAssertStack_0(void)
   
   if ( ! (0 == iStackValues)  ) {
     
-    m_pTask->m_pForth->vContentDump();
+    m_pTask->vContentDump();
 
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "assert::stack_0 in word"_Stz);
