@@ -23,7 +23,6 @@ namespace STORE
    ~Forth(void) noexcept(false);
   
     
-    bool bCorrectLayout(void);
     Task* pTask(void);
 
   private:
