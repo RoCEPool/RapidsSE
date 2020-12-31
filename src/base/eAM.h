@@ -25,6 +25,13 @@ enum eAM // ASM Macros
   /*    */ AM_HANDLER_DATAPULSE,
   /*    */ AM_HANDLER_ROWBUFFER,
 
+  /*    */ AM_INDEX_EQ,
+  /*    */ AM_INDEX_RANGE_LOWER_GT,
+  /*    */ AM_INDEX_RANGE_LOWER_GE,
+  /*    */ AM_INDEX_LOWER_BOUND_GE,
+  /*    */ AM_INDEX_LOWER_BOUND_GT,
+  /*    */ AM_INDEX_UPPER_BOUND,
+
   /*    */ AM_QUERY_DONE,
   /*    */ AM_QUERY_INIT,
 
@@ -60,6 +67,13 @@ static Stz* aAM[]
     /*    */ "AM_HANDLER_CRWBUFFER"_Stz,
     /*    */ "AM_HANDLER_DATAPULSE"_Stz,
     /*    */ "AM_HANDLER_ROWBUFFER"_Stz,
+
+    /*    */ "AM_INDEX_EQ"_Stz,
+    /*    */ "AM_INDEX_RANGE_LOWER_GT"_Stz,
+    /*    */ "AM_INDEX_RANGE_LOWER_GE"_Stz,
+    /*    */ "AM_INDEX_LOWER_BOUND_GE"_Stz,
+    /*    */ "AM_INDEX_LOWER_BOUND_GT"_Stz,
+    /*    */ "AM_INDEX_UPPER_BOUND"_Stz,
 
     /*    */ "AM_QUERY_DONE"_Stz,
     /*    */ "AM_QUERY_INIT"_Stz,

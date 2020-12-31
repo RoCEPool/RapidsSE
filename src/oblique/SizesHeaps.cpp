@@ -225,6 +225,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Queues),             HT_T_TINY    ,0 }, // CN_QUEUES
 
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
+  { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE
   { sizeof(ReadApi),            HT_T_TINY    ,0 }, // CN_READAPI
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD

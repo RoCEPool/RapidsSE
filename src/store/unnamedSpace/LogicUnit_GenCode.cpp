@@ -2420,7 +2420,7 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for range (index)                                        */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateRange(Project* pProject, StreamDef* pStreamDefOut) {
+void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 

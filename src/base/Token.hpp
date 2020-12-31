@@ -46,7 +46,7 @@ namespace BASE
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
     bool  bHasChars(void);
-    bool bIsArithmetic(void);
+    bool  bIsArithmetic(void);
     bool  bIsAssign(void);
     bool  bIsInteger(void);
     bool  bIsGreaterThan(void);
@@ -59,6 +59,7 @@ namespace BASE
     bool  bIsString(void);
     i8    iLineNo(void);
     void  vLineNo(i8 iLineNo);
+    bool  bIsRelational(void);
     void  vReset(void);
     bool  bSame(Stz*);
     void  vSetNull(void);

@@ -1142,6 +1142,12 @@ public:
   void vQueuesSleepingLength(void);
   void vQueuesWaitingLength(void);
 
+  // range
+  void vRangeGet(void);
+  void vRangeNew(void);
+  void vRangeBounds(void);
+  void vRangeSet(void);
+
   // rbCursor
   void vRbCursorBegin(void);
   void vRbCursorDelete(void);

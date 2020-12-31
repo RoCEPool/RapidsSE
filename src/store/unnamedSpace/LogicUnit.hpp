@@ -99,7 +99,8 @@ namespace STORE
     REG<Operand>     m_xpOperandOoO; // operand OoO
 
     REG<Project>     m_xpProject;   // project
-    
+    REG<Range>       m_xpRange;     // range
+
     i8               m_iCounter0;   // counter
     i8               m_iCounter1;   // counter
     i8               m_iCounter2;   // counter
@@ -244,7 +245,7 @@ namespace STORE
     void vGenerate100001(void);
 
     void vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut);
-    void vGenerateRange(Project* pProject, StreamDef* pStreamDefOut);
+    void vGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -39,9 +39,12 @@ print "loading Lineitem...";
 /time load lineitem "/DATA/TPCH/lineitem100.csv";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
-//projection lineitem l_extendedPrice, 2;
-//projection lineitem l_extendedPrice, l_discount, L_COMMENT;
-//rangeScan lineitem lineitem_idx2 xyz;
+rangeScan lineitem lineitem_idx2 "30 >= 50 <";
+
+/*
+projection lineitem l_extendedPrice, 2;
+projection lineitem l_extendedPrice, l_discount, L_COMMENT;
+rangeScan lineitem lineitem_idx2 "30 >= 50 <";
 
 
 pipeline Query6
@@ -50,27 +53,14 @@ begin
     start | periodic once | stageB
 
    stage stageB on all partitions :
-     range 0 lineitem by lineitem_idx2 x
+     range 0 lineitem by lineitem_idx2 "30 >= 50 <"
      | project 0 "l_extendedPrice , l_comment"
      | stageC
 
    stage stageC on origin :
      output | sink | stageA
 end;
-/*
-pipeline x
-  begin
 
-  stage stageA on origin :
-    start | periodic once | syntaxTable x "(y integer)" | stageB
-
-  stage stageB on all nodes :
-    createTable | stageC
-
-  stage stageC on origin :
-    sink | stageA
-
-  end ;
 */
 //Smt0 lineitem l_extendedPrice, l_discount;
 //Smt0 lineitem as revenue l_extendedPrice 2 * ;
@@ -101,20 +91,3 @@ pipeline x
 // aggregate - sum
 //select l_orderkey, sum(l_extendedprice) from lineitem;
 //Smt8;
-/*
-pipeline smt0
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan lineitem
-      | project 0 l_extendedPrice, l_discount
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-*/

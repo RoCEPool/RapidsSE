@@ -354,12 +354,11 @@ void Step::vLogicUnitGenRange(void)
 {
   ENTRY();
 
-  Project* pProject;
-  pProject = _pProject(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Range* pRange = _pRange(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pTask->m_pDataStack->pPopPtr(__func__));
 
-  m_pTask->m_pLogicUnit->vGenerateRange(pProject, pStreamDefOut);
+  m_pTask->m_pLogicUnit->vGenerateRange(pRange, pStreamDefOut);
 
   EXIT();
 }

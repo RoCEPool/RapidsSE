@@ -116,7 +116,8 @@ namespace STORE
     static void vAddSteps_Push(void);
   
     static void vAddSteps_Queues(void);
-  
+
+    static void vAddSteps_Range(void);
     static void vAddSteps_Register(void);
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
