@@ -3,15 +3,15 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
+#include "PlanDefinitionParser.hpp"
 #include "json5Lexer.h"
 #include "json5Parser.h"
-#include "json5BaseVisitor.h"
 #include "ErrorListener.hpp"
 #include "PlanNodeBuilder.hpp"
+#include "PlanNodeBuilderStack.hpp"
 
-//using namespace antlr4;
+
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -36,7 +36,7 @@ Stz* PlanDefinitionParser::definitionPaths[] = {
 /*----------------------------------------------------------------------------*/
 PlanDefinitionParser::PlanDefinitionParser(void)
 : Object(CN_PLANDEFINITIONPARSER),
-  m_pNodeBuilderStack(new NodeBuilderStack())
+  m_pNodeBuilderStack(new PlanNodeBuilderStack())
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_PLANDEFINITIONPARSER,_FOOTER_);
   

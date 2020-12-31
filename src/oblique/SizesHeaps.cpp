@@ -10,6 +10,32 @@
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
+
+#include "graph/PlanConstants.hpp"
+#include "graph/PlanNode.hpp"
+#include "graph/PlanNodeBuilder.hpp"
+#include "graph/RootNode.hpp"
+#include "graph/DefinitionNode.hpp"
+#include "graph/PrimitiveNode.hpp"
+#include "graph/MutablePlanNode.hpp"
+#include "graph/QueryNode.hpp"
+#include "graph/MetadataNode.hpp"
+#include "graph/StatisticsNode.hpp"
+#include "graph/PlanDefinitionParser.hpp"
+
+#include "shadowNodes/ShadowNode.hpp"
+#include "shadowNodes/TableRef.hpp"
+#include "shadowNodes/Statement.hpp"
+#include "shadowNodes/expressions/Expr.hpp"
+#include "shadowNodes/expressions/LiteralExpr.hpp"
+#include "shadowNodes/expressions/ColumnRef.hpp"
+
+#include "graphTools/GraphNav.hpp"
+#include "graphTools/GraphEditor.hpp"
+
+#include "parser/stages/parser/SqlPlanner.hpp"
+using namespace Parser;
+
 /*----------------------------------------------------------------------------*/
 /* sizes & heaps                                                              */
 /*----------------------------------------------------------------------------*/
@@ -155,7 +181,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(NextGid),            HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 }, // CN_NMLSTR
   { sizeof(Node),               HT_T_TINY    ,0 }, // CN_NODE
-  { sizeof(NodeBuilderStack),   HT_T_MEDIUM  ,0 }, // CN_NODEBUILDERSTACK
   { sizeof(Node_I),             HT_T_TINY    ,0 }, // CN_NODE_I
   { sizeof(Now),                HT_T_TINY    ,0 }, // CN_NOW
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
@@ -176,8 +201,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Planner),              HT_T_MEDIUM  ,0 }, // CN_PLANNER
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
-  { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
+  { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM  ,0 }, // CN_PLANNODEBUILDERSTACK
+  { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(ObjectSnapshot),       HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Pot),                  HT_T_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_T_TINY    ,0 }, // CN_PREDICATE

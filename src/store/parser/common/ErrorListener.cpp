@@ -2,10 +2,9 @@
 /* ErrorListener.cpp - Listens for errors when a grammar is parsed.           */
 /*============================================================================*/
 
-#include "ErrorListener.hpp"
 #include "BASE.h"
-#include "STORE.h"
-
+#include "ErrorListener.hpp"
+#include "../thirdparty/antlr/include/Token.h"
 
 using namespace Parser;
 

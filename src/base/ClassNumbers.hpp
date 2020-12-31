@@ -152,7 +152,6 @@ enum eCN : u2 // Class Number
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
-  /* */ CN_NODEBUILDERSTACK,
   /* */ CN_NODE_I,
   /* */ CN_NOW,
   /* */ CN_NUMBAT,
@@ -173,8 +172,9 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANNER,
   /* */ CN_PLANNODE,
   /* */ CN_PLANNODEBUILDER,
-  /* */ CN_PLANNODELIST,
   /* */ CN_PLANNODEBUILDERLIST,
+  /* */ CN_PLANNODEBUILDERSTACK,
+  /* */ CN_PLANNODELIST,
   /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
@@ -477,7 +477,6 @@ static Stz* aCN[]
   /* */ "NEXTGID"_Stz,              // CN_NEXTGID
   /* */ "NMLSTR"_Stz,               // CN_NMLSTR
   /* */ "NODE"_Stz,                 // CN_NODE
-  /* */ "NODEBUILDERSTAACK"_Stz,    // CN_NODEBUILDERSTACK
   /* */ "NODE_I"_Stz,               // CN_NODE_I
   /* */ "NOW"_Stz,                  // CN_NOW
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
@@ -498,8 +497,9 @@ static Stz* aCN[]
   /* */ "PLANNER"_Stz,              // CN_PLANNER
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
   /* */ "PLANNODEBUILDER"_Stz,      // CN_PLANNODEBUILDER
-  /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
   /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST
+  /* */ "PLANNODEBUILDERSTAACK"_Stz,// CN_PLANNODEBUILDERSTACK
+  /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
   /* */ "POOLSNAPSHOT"_Stz,         // CN_OBJECTSNAPSHOT
   /* */ "POT"_Stz,                  // CN_POT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE

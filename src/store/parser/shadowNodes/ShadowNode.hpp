@@ -5,6 +5,8 @@
 
 namespace Parser
 {
+  class PlanNode;
+
   class ShadowNode
   {
 

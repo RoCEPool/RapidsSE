@@ -3,8 +3,13 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+#include "ColumnRef.hpp"
 
+#include "PlanNode.hpp"
+#include "QueryNode.hpp"
+#include "PlanConstants.hpp"
+
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/

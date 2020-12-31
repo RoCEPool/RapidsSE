@@ -3,15 +3,29 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+#include "SqlPlanner.hpp"
 
 #include "sqlLexer.h"
 #include "sqlParser.h"
 #include "sqlBaseVisitor.h"
-#include "parser/common/ErrorListener.hpp"
-#include "graph/QueryNode.hpp"
 
-//using namespace antlr4;
+#include "QueryNode.hpp"
+#include "QueryNodeStack.hpp"
+#include "QueryNodeList.hpp"
+
+#include "PlanConstants.hpp"
+#include "parser/common/ErrorListener.hpp"
+#include "GraphNav.hpp"
+
+#include "ShadowNode.hpp"
+#include "Statement.hpp"
+#include "TableRef.hpp"
+
+
+#include "ColumnRef.hpp"
+#include "LiteralExpr.hpp"
+
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

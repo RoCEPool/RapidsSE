@@ -3,10 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#include "PlanNode.hpp"
+#include "PlanNodeBuilderList.hpp"
+
 namespace Parser
 {
   class PlanNodeBuilder;
-  typedef ListExo_t<CN_PLANNODEBUILDERLIST, PlanNodeBuilder> PlanNodeBuilderList;
 
   class PlanNodeBuilder : public Object
   {
@@ -38,8 +40,6 @@ namespace Parser
   };
   
   PlanNodeBuilder* _pPlanNodeBuilder(void* aAddr);
-
-  typedef StackNL_t<CN_NODEBUILDERSTACK,PlanNodeBuilder,1024> NodeBuilderStack;
 }
 
 /*============================================================================*/

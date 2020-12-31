@@ -3,8 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+#include "Expr.hpp"
+#include "PlanNode.hpp"
+
 namespace Parser
 {
+  class QueryNode;
+  class PlanNode;
+
   class LiteralExpr : public Expr
   {
   private:
