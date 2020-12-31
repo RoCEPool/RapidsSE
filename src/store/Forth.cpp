@@ -67,34 +67,6 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* check for break point                                                      */
-/*----------------------------------------------------------------------------*/
-void Forth::vCheckBreakPt(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  if (! m_pTask->m_aInxPtr)
-    return;
-  
-  Word* pThisWord = Routine::pToWord(m_pTask->m_aInxPtr);
-  
-  if (! pThisWord->bBreakPt())
-    return;
-  
-  BASE::vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set compiler                                                               */
-/*----------------------------------------------------------------------------*/
-void Forth::vCompiler(Compiler* pCompiler)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-  
-  m_pTask->m_pCompiler = pCompiler;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump execution context                                                     */
 /*----------------------------------------------------------------------------*/
 void Forth::vContentDump(void)
@@ -142,16 +114,6 @@ void Forth::vDeleteInput(void)
   delete m_pTask->m_pInput;
   
   m_pTask->m_pInput = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get dictionary stack                                                       */
-/*----------------------------------------------------------------------------*/
-DicStack* Forth::pDicStack(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
-
-  return & m_pTask->m_oDicStack;
 }
 
 /*----------------------------------------------------------------------------*/

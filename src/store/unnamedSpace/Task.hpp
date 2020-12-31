@@ -99,10 +99,12 @@ namespace STORE
     void vAssertStructure(void);
     void vBeginOp(void);
     void vCaught(Exception xException);
+    void vCheckBreakPt(void);
     bool bCorrectLayout(void);
     Compiler* pCompiler(void);
     void vContentDump(void);
     static void vDebug(void);
+    DicStack* pDicStack(void);
     void vDropTaskLock(void);
     void vDump(void);
     void vEntryPoint(eEP eEntryPoint);

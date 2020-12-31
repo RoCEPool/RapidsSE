@@ -450,10 +450,38 @@ void Task::vCaught(Exception xException)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check for break point                                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vCheckBreakPt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  if (! m_aInxPtr)
+    return;
+  
+  Word* pThisWord = Routine::pToWord(m_aInxPtr);
+  
+  if (! pThisWord->bBreakPt())
+    return;
+  
+  BASE::vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* debug                                                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vDebug(void)
 {
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dictionary stack                                                       */
+/*----------------------------------------------------------------------------*/
+DicStack* Task::pDicStack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return & m_oDicStack;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1799,7 +1799,7 @@ bool AM::bTaskIsLocked(Task* pTask) {
 }
 
 DicStack* AM::pTaskDicStack(void) {
-  return pThisTLSTask()->pForth()->pDicStack();
+  return pThisTLSTask()->pDicStack();
 }
 Job* AM::pTaskJob(void) {
   return pThisTLSTask()->pJob();
