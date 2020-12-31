@@ -30,10 +30,14 @@ HeartbeatSnd::HeartbeatSnd(char *szAddr, int iPort)
   hints.ai_socktype = SOCK_DGRAM;
   hints.ai_protocol = IPPROTO_UDP;
 
-  int iRet = getaddrinfo(szAddr, szPort.c_str(), &hints, &m_pAddrInfo);
+  if (m_sAddr.compare("BROADCAST") == 0) {
+    m_sAddr = "255.255.255.255";
+  }
+  int iRet = getaddrinfo(m_sAddr.c_str(), szPort.c_str(), &hints, &m_pAddrInfo);
   if (iRet != 0 || m_pAddrInfo == NULL) {
     throw Heartbeat_RTE(("Invalid address or port: \"" + m_sAddr + ":" + szPort + "\"").c_str());
   }
+
 
   // set up destination address
   //
@@ -41,14 +45,8 @@ HeartbeatSnd::HeartbeatSnd(char *szAddr, int iPort)
   memset(&addr, 0, sizeof(addr));
   addr.sin_family = AF_INET;
 
-  if (m_sAddr.compare("BROADCAST") == 0) {
-    // BROADCAST
-    //addr.sin_addr.s_addr = inet_addr("192.168.0.255");
-    addr.sin_addr.s_addr = INADDR_BROADCAST;
-  } else {
-    // Unicast
-    addr.sin_addr.s_addr = inet_addr(m_sAddr.c_str());
-  }
+  addr.sin_addr.s_addr = inet_addr(m_sAddr.c_str());
+
   addr.sin_port = htons(m_iPort);
 
   // create socket

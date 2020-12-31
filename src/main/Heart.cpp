@@ -59,7 +59,7 @@ void vHeartInit(void) {
     strncpy(szAddr, gxArgs.m_xHeartbeatNode[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
     szAddr[sizeof(szAddr) - 1] = 0;
 
-    //User can put on the command line argument as --heartbeat BROADCAST 8888
+    //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
 
     //strcpy(szAddr, "192.168.0.255"); // for DEBUG
     HeartbeatSnd *pSender = new HeartbeatSnd(szAddr, iPort);
