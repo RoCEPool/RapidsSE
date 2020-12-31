@@ -37,7 +37,7 @@ void Step::vAssert(void)
 {
   ENTRY();
   
-  i8 iTrue = m_pDataStack->iPopAsInt(__func__);
+  i8 iTrue = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   RASSERT(iTrue);
   
@@ -51,9 +51,9 @@ void Step::vAssertClass(void)
 {
   ENTRY();
   
-  i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
+  i8 iAssertClassNo = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aTopVal();
+  TypedCell* aTypedCell = m_pTask->m_pDataStack->aTopVal();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -76,9 +76,9 @@ void Step::vAssertClass_0(void)
 {
   ENTRY();
   
-  i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
+  i8 iAssertClassNo = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(0);
+  TypedCell* aTypedCell = m_pTask->m_pDataStack->aPeekItem(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -101,9 +101,9 @@ void Step::vAssertClass_1(void)
 {
   ENTRY();
   
-  i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
+  i8 iAssertClassNo = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(1);
+  TypedCell* aTypedCell = m_pTask->m_pDataStack->aPeekItem(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -125,9 +125,9 @@ void Step::vAssertClass_2(void)
 {
   ENTRY();
   
-  i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
+  i8 iAssertClassNo = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(2);
+  TypedCell* aTypedCell = m_pTask->m_pDataStack->aPeekItem(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -150,9 +150,9 @@ void Step::vAssertClass_3(void)
 {
   ENTRY();
   
-  i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
+  i8 iAssertClassNo = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(3);
+  TypedCell* aTypedCell = m_pTask->m_pDataStack->aPeekItem(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -175,9 +175,9 @@ void Step::vAssertClass_4(void)
 {
   ENTRY();
   
-  i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
+  i8 iAssertClassNo = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(4);
+  TypedCell* aTypedCell = m_pTask->m_pDataStack->aPeekItem(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -200,7 +200,7 @@ void Step::vAssertStack_0(void)
 {
   ENTRY();
 
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  ) {
     
@@ -220,7 +220,7 @@ void Step::vAssertStack_0more(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (0 <= iStackValues) )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -236,7 +236,7 @@ void Step::vAssertStack_1(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (1 == iStackValues)  )
     vThrow(FK_CHECK,VL_FATAL,
@@ -252,7 +252,7 @@ void Step::vAssertStack_1more(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (1 <= iStackValues) )
     vThrow(FK_CHECK,VL_FATAL,
@@ -268,7 +268,7 @@ void Step::vAssertStack_2(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (2 == iStackValues)  )
     vThrow(FK_CHECK,VL_FATAL,
@@ -284,7 +284,7 @@ void Step::vAssertStack_2more(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (2 <= iStackValues) )
     vThrow(FK_CHECK,VL_FATAL,
@@ -300,7 +300,7 @@ void Step::vAssertStack_3(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (3 == iStackValues)  )
     vThrow(FK_CHECK,VL_FATAL,
@@ -316,7 +316,7 @@ void Step::vAssertStack_3more(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (3 <= iStackValues) )
     vThrow(FK_CHECK,VL_FATAL,
@@ -332,7 +332,7 @@ void Step::vAssertStack_4(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (4 == iStackValues)  )
     vThrow(FK_CHECK,VL_FATAL,
@@ -348,7 +348,7 @@ void Step::vAssertStack_4more(void)
 {
   ENTRY();
   
-  i8 iStackValues = m_pDataStack->nValues();
+  i8 iStackValues = m_pTask->m_pDataStack->nValues();
   
   if ( ! (4 <= iStackValues) )
     vThrow(FK_CHECK,VL_FATAL,

@@ -48,7 +48,7 @@ void Step::vTaskAck(void)
 {
   ENTRY();
   
-  Task* pTaskWaiting = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pTaskWaiting = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pTaskWaiting,m_pTask);
   
@@ -67,7 +67,7 @@ void Step::vTaskAcksStore(void)
 {
   ENTRY();
     
-  i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
+  i8 nAcksRequired = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   ASSERT(0 == m_pTask->m_oAcksRmg.iPrintOnlyValue());
 
@@ -105,7 +105,7 @@ void Step::vTaskDoneFinally(void)
 {
   ENTRY();
   
-  m_bDoneFinally = true;
+  m_pTask->m_bDoneFinally = true;
   
   EXIT();
 }
@@ -117,7 +117,7 @@ void Step::vTaskDropLock(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   pThatTask->vDropTaskLock();
   
@@ -158,7 +158,7 @@ void Step::vTaskGrabLock(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   pThatTask->vGrabTaskLock();
 
@@ -172,7 +172,7 @@ void Step::vTaskIsAckSet(void)
 {
   ENTRY();
   
-  Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pTaskBeingAcked = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
   Job* pJob = pTaskBeingAcked->m_pJob;
@@ -183,7 +183,7 @@ void Step::vTaskIsAckSet(void)
                        iIsAckSet);
   }
   
-  m_pDataStack->vPushInt(iIsAckSet);
+  m_pTask->m_pDataStack->vPushInt(iIsAckSet);
 
   EXIT();
 }
@@ -195,12 +195,12 @@ void Step::vTaskIsWaiting(void)
 {
   ENTRY();
 
-  Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   // should never s=check for DEDICATED tasks
   RASSERT(pTask->eEntryPoint() != EP_DEDICATED);
   
-  m_pDataStack->vPushInt(pTask->eState() == TS_WAITING ? true : false);
+  m_pTask->m_pDataStack->vPushInt(pTask->eState() == TS_WAITING ? true : false);
   
   EXIT();
 }
@@ -212,11 +212,11 @@ void Step::vTaskJobFetch(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   Job* pJob = pThatTask->m_pJob;
   
-  m_pDataStack->vPushPtr(pJob);
+  m_pTask->m_pDataStack->vPushPtr(pJob);
   
   EXIT();
 }
@@ -228,9 +228,9 @@ void Step::vTaskJobStore(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = _pJob(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   pThatTask->m_pJob = pJob;
   
@@ -244,11 +244,11 @@ void Step::vTaskNameFetch(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   s256 sName((Stz*)pThatTask->szJobName());
   
-  m_pDataStack->vPushStr(sName);
+  m_pTask->m_pDataStack->vPushStr(sName);
   
   EXIT();
 }
@@ -260,7 +260,7 @@ void Step::vTaskOperandYieldFetch(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushInt(m_pTask->m_nOperandYield);
+  m_pTask->m_pDataStack->vPushInt(m_pTask->m_nOperandYield);
   
   EXIT();
 }
@@ -272,7 +272,7 @@ void Step::vTaskOperandYieldStore(void)
 {
   ENTRY();
     
-  m_pTask->m_nOperandYield = m_pDataStack->iPopInt(__func__);
+  m_pTask->m_nOperandYield = m_pTask->m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }
@@ -284,9 +284,9 @@ void Step::vTaskProfileFetch(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushPtr(pThatTask->pProfile());
+  m_pTask->m_pDataStack->vPushPtr(pThatTask->pProfile());
   pThatTask->vProfile(nullptr);
    
   EXIT();
@@ -299,8 +299,8 @@ void Step::vTaskProfileStore(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  Profile* pProfile = _pProfile(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Profile* pProfile = _pProfile(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   pThatTask->vProfile(pProfile);
   
@@ -314,7 +314,7 @@ void Step::vTaskSeedInitially(void)
 {
   ENTRY();
   
-  m_bSeedInitially = true;
+  m_pTask->m_bSeedInitially = true;
 
   EXIT();
 }
@@ -326,13 +326,13 @@ void Step::vTaskSendNodeFetch(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   Node* pSendNode = pThatTask->pSendNode();
   
   Object* pPtrSendNode = pSendNode;
   
-  m_pDataStack->vPushPtr(pPtrSendNode);
+  m_pTask->m_pDataStack->vPushPtr(pPtrSendNode);
   
   EXIT();
 }
@@ -344,9 +344,9 @@ void Step::vTaskSendNodeStore(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
-  Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
+  Node* pSendNode = _pNode(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   pThatTask->vSendNode(pSendNode);
   
@@ -360,7 +360,7 @@ void Step::vTaskSleepMsec(void)
 {
   ENTRY();
   
-  i8 nMilliSeconds = m_pDataStack->iPopInt(__func__);
+  i8 nMilliSeconds = m_pTask->m_pDataStack->iPopInt(__func__);
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
@@ -378,7 +378,7 @@ void Step::vTaskSleepSsec(void)
 {
   ENTRY();
   
-  i8 nSeconds = m_pDataStack->iPopInt(__func__);
+  i8 nSeconds = m_pTask->m_pDataStack->iPopInt(__func__);
   i8 nMicroSeconds = nSeconds * C_1M;
   
   m_pTask->vSleepUsec(nMicroSeconds);
@@ -395,7 +395,7 @@ void Step::vTaskSleepUsec(void)
 {
   ENTRY();
   
-  i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
+  i8 nMicroSeconds = m_pTask->m_pDataStack->iPopInt(__func__);
   
   m_pTask->vSleepUsec(nMicroSeconds);
   m_pTask->vGrabTaskLock();
@@ -411,11 +411,11 @@ void Step::vTaskStateFetch(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   eTS eState = pThatTask->m_eState;
   
-  m_pDataStack->vPushInt((i8)eState);
+  m_pTask->m_pDataStack->vPushInt((i8)eState);
   
   EXIT();
 }
@@ -427,10 +427,10 @@ void Step::vTaskThread(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   Thread* pThread = pThatTask->m_pThread;
-  m_pDataStack->vPushPtr(pThread);
+  m_pTask->m_pDataStack->vPushPtr(pThread);
   ASSERT(pThread);
   
   EXIT();

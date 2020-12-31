@@ -23,13 +23,13 @@ void Step::vShellExecute(void)
   
   CellSingle xCommand;
   
-  m_pDataStack->vPopItem(xCommand,__func__);
+  m_pTask->m_pDataStack->vPopItem(xCommand,__func__);
   
   SysCall oSysCall;
   
   i8 iExitStatus = Shell::iExecute(xCommand.szStz(),oSysCall);
   
-  m_pDataStack->vPushInt(iExitStatus);
+  m_pTask->m_pDataStack->vPushInt(iExitStatus);
   
   EXIT();
 }

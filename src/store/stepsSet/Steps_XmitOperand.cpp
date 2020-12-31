@@ -22,9 +22,9 @@ void Step::vXmitOperandOperandStore(void)
 {
   ENTRY();
   
-  XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
+  XmitOperand* pXmitOperand = _pXmitOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   pXmitOperand->m_pOperand = pOperand;
   
@@ -38,7 +38,7 @@ void Step::vXmitOperandPipeOut(void)
 {
   ENTRY();
   
-  XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
+  XmitOperand* pXmitOperand = _pXmitOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   // find the pipeline participant job
   i8 iPipelineJob = pXmitOperand->m_iPipelineJobId;

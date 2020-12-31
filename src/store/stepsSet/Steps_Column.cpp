@@ -26,13 +26,13 @@ void Step::vColumnIsNullableFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_pTask->m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sColumnIsNullable;
   sColumnIsNullable = pColumn->bIsNullable() ? "true"_Stz : "false"_Stz;
   
-  m_pDataStack->vPushStr(sColumnIsNullable);
+  m_pTask->m_pDataStack->vPushStr(sColumnIsNullable);
   
   EXIT();
 }
@@ -44,13 +44,13 @@ void Step::vColumnIsPartitionKeyFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_pTask->m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sIsPartitionKey;
   sIsPartitionKey = pColumn->bIsPtnKey() ? "true"_Stz : "false"_Stz;
   
-  m_pDataStack->vPushStr(sIsPartitionKey);
+  m_pTask->m_pDataStack->vPushStr(sIsPartitionKey);
   
   EXIT();
 }
@@ -62,10 +62,10 @@ void Step::vColumnLengthFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_pTask->m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  m_pDataStack->vPushInt(pColumn->iColumnLength());
+  m_pTask->m_pDataStack->vPushInt(pColumn->iColumnLength());
   
   EXIT();
 }
@@ -77,12 +77,12 @@ void Step::vColumnNameFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_pTask->m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sColNm(pColumn->szColNm());
   
-  m_pDataStack->vPushStr(sColNm);
+  m_pTask->m_pDataStack->vPushStr(sColNm);
   
   EXIT();
 }
@@ -94,10 +94,10 @@ void Step::vColumnScaleFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_pTask->m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  m_pDataStack->vPushInt(pColumn->iColumnScale());
+  m_pTask->m_pDataStack->vPushInt(pColumn->iColumnScale());
   
   EXIT();
 }
@@ -109,10 +109,10 @@ void Step::vColumnTypeFetch(void)
 {
   ENTRY();
   
-  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
+  Column* pColumn = _pColumn(m_pTask->m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  m_pDataStack->vPushInt(pColumn->eColumnType());
+  m_pTask->m_pDataStack->vPushInt(pColumn->eColumnType());
   
   EXIT();
 }

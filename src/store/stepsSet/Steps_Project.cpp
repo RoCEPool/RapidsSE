@@ -24,7 +24,7 @@ void Step::vProjectGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpProject);
+  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpProject);
 
   EXIT();
 }
@@ -36,7 +36,7 @@ void Step::vProjectNew(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpProject = new Project;
+  m_pTask->m_pLogicUnit->m_xpProject = new Project;
   
   EXIT();
 }
@@ -48,16 +48,16 @@ void Step::vProjectColumns(void)
 {
   ENTRY();
 
-  Project* pProject = *m_pLogicUnit->m_xpProject;
+  Project* pProject = *m_pTask->m_pLogicUnit->m_xpProject;
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefOut = _pStreamDef(m_pTask->m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefIn = _pStreamDef(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   s4K sProjectColumns;
-  m_pDataStack->vPopStr(sProjectColumns, __func__);
+  m_pTask->m_pDataStack->vPopStr(sProjectColumns, __func__);
 
   eEC eError = pProject->eProjectColumns(pStreamDefIn, pStreamDefOut, sProjectColumns);
-  m_pDataStack->vPushInt(eError);
+  m_pTask->m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vProjectSet(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpProject = _pProject(m_pDataStack->pPopPtr(__func__));
+  m_pTask->m_pLogicUnit->m_xpProject = _pProject(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

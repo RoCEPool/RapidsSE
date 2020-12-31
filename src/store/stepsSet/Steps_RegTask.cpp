@@ -21,7 +21,7 @@ void Step::vRegTaskGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(m_pTask);
+  m_pTask->m_pDataStack->vPushPtr(m_pTask);
 
   EXIT();
 }

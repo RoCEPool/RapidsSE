@@ -32,7 +32,7 @@ void Step::vIndexStreamClose(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pTask->m_pLogicUnit->m_xpIndexStream);
   
   pIndexStream->vClose();
   
@@ -46,7 +46,7 @@ void Step::vIndexStreamDelete(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pTask->m_pLogicUnit->m_xpIndexStream);
   
   delete pIndexStream;
   
@@ -60,11 +60,11 @@ void Step::vIndexStreamDeleteNext(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pTask->m_pLogicUnit->m_xpIndexStream);
   
   bool bMoreToDelete = pIndexStream->bDelete();
   
-  m_pDataStack->vPushInt(bMoreToDelete);
+  m_pTask->m_pDataStack->vPushInt(bMoreToDelete);
   
   EXIT();
 }
@@ -75,7 +75,7 @@ void Step::vIndexStreamGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexStream);
+  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpIndexStream);
   
   EXIT();
 }
@@ -87,7 +87,7 @@ void Step::vIndexStreamIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndexStream.bIsNull() ? 1 : 0);
+  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpIndexStream.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -99,12 +99,12 @@ void Step::vIndexStreamNew(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   IndexStream* pIndexStream = new IndexStream(pTablePtn, pIndex);
   
-  m_pDataStack->vPushPtr(pIndexStream);
+  m_pTask->m_pDataStack->vPushPtr(pIndexStream);
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vIndexStreamOpen(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pTask->m_pLogicUnit->m_xpIndexStream);
   
   bool bOpened = pIndexStream->bOpen();
   ASSERT(bOpened);
@@ -131,15 +131,15 @@ void Step::vIndexStreamRead(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pTask->m_pLogicUnit->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the rowOnce skipList
-  RowOnce* pRowOnce = _pRowOnce(m_pDataStack->pPopPtr(__func__));
+  RowOnce* pRowOnce = _pRowOnce(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   CrwBuffer* pCrwBuffer = pIndexStream->pRead_idxstm(pRowOnce);
 
-  m_pDataStack->vPushPtr(pCrwBuffer);
+  m_pTask->m_pDataStack->vPushPtr(pCrwBuffer);
 
   EXIT();
 }
@@ -151,7 +151,7 @@ void Step::vIndexStreamSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpIndexStream = _pIndexStream(m_pDataStack->pPopPtr(__func__));
+  m_pTask->m_pLogicUnit->m_xpIndexStream = _pIndexStream(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -163,27 +163,27 @@ void Step::vIndexStreamSeek(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pTask->m_pLogicUnit->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the planner
-  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  Planner* pPlanner = _pPlanner(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the upper bound key
   CellSingle xUpperBound;
-  m_pDataStack->vPopItem(xUpperBound,__func__);
+  m_pTask->m_pDataStack->vPopItem(xUpperBound,__func__);
   Stz* szUpperKey = xUpperBound.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower bound key
   CellSingle xLowerBound;
-  m_pDataStack->vPopItem(xLowerBound,__func__);
+  m_pTask->m_pDataStack->vPopItem(xLowerBound,__func__);
   Stz* szLowerKey = xLowerBound.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the phrase
-  i8 iPhrase = m_pDataStack->iPopInt(__func__);
+  i8 iPhrase = m_pTask->m_pDataStack->iPopInt(__func__);
   eRO eLowerRelnOp = RO_NONE;
   eRO eUpperRelnOp = RO_NONE;
   

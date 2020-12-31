@@ -25,8 +25,8 @@ void Step::vNode_IDelete(void)
 {
   ENTRY();
   
-  Node_I* pNode_I = *m_pLogicUnit->m_xpNode_I;
-  m_pLogicUnit->m_xpNode_I = nullptr;
+  Node_I* pNode_I = *m_pTask->m_pLogicUnit->m_xpNode_I;
+  m_pTask->m_pLogicUnit->m_xpNode_I = nullptr;
   
   delete pNode_I;
   
@@ -40,9 +40,9 @@ void Step::vNode_IMore(void)
 {
   ENTRY();
   
-  bool bMore = m_pLogicUnit->m_xpNode_I->bMore();
+  bool bMore = m_pTask->m_pLogicUnit->m_xpNode_I->bMore();
   
-  m_pDataStack->vPushInt(bMore);
+  m_pTask->m_pDataStack->vPushInt(bMore);
   
   EXIT();
 }
@@ -54,11 +54,11 @@ void Step::vNode_INew(void)
 {
   ENTRY();
   
-  i8 iStipulate = m_pDataStack->iPopInt(__func__);
+  i8 iStipulate = m_pTask->m_pDataStack->iPopInt(__func__);
   
   Node_I* pNode_I = new Node_I(0,iStipulate);
       
-  m_pLogicUnit->m_xpNode_I = pNode_I;
+  m_pTask->m_pLogicUnit->m_xpNode_I = pNode_I;
 
   EXIT();
 }
@@ -70,7 +70,7 @@ void Step::vNode_INext(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpNode_I->vNext();
+  m_pTask->m_pLogicUnit->m_xpNode_I->vNext();
 
   EXIT();
 }
@@ -82,9 +82,9 @@ void Step::vNode_INode(void)
 {
   ENTRY();
   
-  Node* pNode = m_pLogicUnit->m_xpNode_I->pNode();
+  Node* pNode = m_pTask->m_pLogicUnit->m_xpNode_I->pNode();
 
-  m_pDataStack->vPushPtr(pNode);
+  m_pTask->m_pDataStack->vPushPtr(pNode);
 
   EXIT();
 }

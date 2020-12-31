@@ -31,7 +31,7 @@ void Step::vDicDelete(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   delete pDic;
   
@@ -45,12 +45,12 @@ void Step::vDicKindGet(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  m_pDataStack->vPushPtr(pPtrKind);
+  m_pTask->m_pDataStack->vPushPtr(pPtrKind);
   
   EXIT();
 }
@@ -62,9 +62,9 @@ void Step::vDicKindSet(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
 
-  Word* pKind = _pWord(m_pDataStack->pPopPtr(__func__));
+  Word* pKind = _pWord(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   pDic->vDicKind(pKind);
   
@@ -78,11 +78,11 @@ void Step::vDicLastWord(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   Word* pLastWord = pDic->pLastWord();
   
-  m_pDataStack->vPushPtr(pLastWord);
+  m_pTask->m_pDataStack->vPushPtr(pLastWord);
   
   EXIT();
 }
@@ -94,11 +94,11 @@ void Step::vDicNameFetch(void)
 {
   ENTRY();
  
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   s32 sName(pDic->szDicNm());
   
-  m_pDataStack->vPushStr(sName);
+  m_pTask->m_pDataStack->vPushStr(sName);
   
   EXIT();
 }
@@ -110,10 +110,10 @@ void Step::vDicNameStore(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
+  m_pTask->m_pDataStack->vPopStr(sName,__func__);
   
   pDic->vDicNm(sName);
   
@@ -129,11 +129,11 @@ void Step::vDicNew(void)
   ENTRY();
     
   s32 szDicNm;
-  m_pDataStack->vPopStr(szDicNm,__func__);
+  m_pTask->m_pDataStack->vPopStr(szDicNm,__func__);
   
   Dic* pDic = new Dic(szDicNm);
   
-  m_pDataStack->vPushPtr(pDic);
+  m_pTask->m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }
@@ -145,11 +145,11 @@ void Step::vDicRef(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   bool bRef = pDic->bRefOut();
   
-  m_pDataStack->vPushInt(bRef);
+  m_pTask->m_pDataStack->vPushInt(bRef);
   
   EXIT();
 }
@@ -162,7 +162,7 @@ void Step::vDicRoot(void)
   ENTRY();
   
   Dic* pRootDic = AM::pRootDic();
-  m_pDataStack->vPushPtr(pRootDic);
+  m_pTask->m_pDataStack->vPushPtr(pRootDic);
   
   EXIT();
 }
@@ -174,11 +174,11 @@ void Step::vDicWordCount(void)
 {
   ENTRY();
   
-  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  Dic* pDic = _pDic(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   i8 nWords = pDic->nWords();
   
-  m_pDataStack->vPushInt(nWords);
+  m_pTask->m_pDataStack->vPushInt(nWords);
   
   EXIT();
 }

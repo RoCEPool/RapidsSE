@@ -28,10 +28,10 @@ void Step::vApiAddProcedure(void)
   ENTRY();
   
   s48K sRequest;
-  m_pDataStack->vPopStr(sRequest,__func__);
+  m_pTask->m_pDataStack->vPopStr(sRequest,__func__);
   
   s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
+  m_pTask->m_pDataStack->vPopStr(sWithTagStr,__func__);
   
   if (AM::bVerbose()) {
     vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
@@ -59,19 +59,19 @@ void Step::vApiExecuteNested(void)
 {
   ENTRY();
 
-  //m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
+  //m_pTask->m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
   
   eEC eError;
   ReqTuple xReqTuple;
 
   s48K sRequest;
-  m_pDataStack->vPopStr(sRequest,__func__);
+  m_pTask->m_pDataStack->vPopStr(sRequest,__func__);
 
-  i8 iReqNo = m_pDataStack->iPopInt(__func__);
-  i8 iReqOf = m_pDataStack->iPopInt(__func__);
+  i8 iReqNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iReqOf = m_pTask->m_pDataStack->iPopInt(__func__);
 
 //  s48K sWithTagStr;
-//  m_pDataStack->vPopStr(sWithTagStr,__func__);
+//  m_pTask->m_pDataStack->vPopStr(sWithTagStr,__func__);
 //
 //  if (AM::bVerbose()) {
 //    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
@@ -96,8 +96,8 @@ void Step::vApiExecuteNested(void)
   eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
   if (eError) {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(eError);
+    m_pTask->m_pDataStack->vPushInt(false);
     EXIT();
   }
     
@@ -118,8 +118,8 @@ void Step::vApiExecuteNested(void)
 //  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
 //  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
-  m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
-  pJobTagSet->vCopy(m_pLogicUnit->m_xpOp->pOpTagSet());
+  m_pTask->m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
+  pJobTagSet->vCopy(m_pTask->m_pLogicUnit->m_xpOp->pOpTagSet());
   
   if (AM::bVerbose())
     pJobTagSet->vDumpSet();
@@ -140,7 +140,7 @@ void Step::vApiExecuteNested(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pDataStack->vPushInt(true);
+  m_pTask->m_pDataStack->vPushInt(true);
   
 //  Api::vFreeSession(pSession);
   
@@ -162,10 +162,10 @@ void Step::vApiExecuteRequest(void)
   ReqTuple xReqTuple;
 
   s48K sRequest;
-  m_pDataStack->vPopStr(sRequest,__func__);
+  m_pTask->m_pDataStack->vPopStr(sRequest,__func__);
 
   s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
+  m_pTask->m_pDataStack->vPopStr(sWithTagStr,__func__);
 
   if (AM::bVerbose()) {
     vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
@@ -190,8 +190,8 @@ void Step::vApiExecuteRequest(void)
   eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
   if (eError) {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(eError);
+    m_pTask->m_pDataStack->vPushInt(false);
     EXIT();
   }
     
@@ -225,7 +225,7 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pDataStack->vPushInt(true);
+  m_pTask->m_pDataStack->vPushInt(true);
   
   Api::vFreeSession(pSession);
   
@@ -244,12 +244,12 @@ void Step::vApiSpawnDemon(void)
   ENTRY();
   
   s48K sPipeline;
-  m_pDataStack->vPopStr(sPipeline,__func__);
+  m_pTask->m_pDataStack->vPopStr(sPipeline,__func__);
  
-  bool bDedicated = m_pDataStack->iPopInt(__func__);
+  bool bDedicated = m_pTask->m_pDataStack->iPopInt(__func__);
   
   s48K sTagStr;
-  m_pDataStack->vPopStr(sTagStr,__func__);
+  m_pTask->m_pDataStack->vPopStr(sTagStr,__func__);
 
   if (AM::bVerbose()) {
     vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
@@ -272,8 +272,8 @@ void Step::vApiSpawnDemon(void)
 
   if (eError) {
     Api::vFreeSession(pSession);
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(eError);
+    m_pTask->m_pDataStack->vPushInt(false);
     EXIT();
   }
     
@@ -302,7 +302,7 @@ void Step::vApiSpawnDemon(void)
   
   Api::vFreeSession(pSession);
 
-  m_pDataStack->vPushInt(true);
+  m_pTask->m_pDataStack->vPushInt(true);
   
   delete pDmnTknVec;
   delete pTagStrTknVec;

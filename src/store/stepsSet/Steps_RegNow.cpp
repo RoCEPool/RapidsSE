@@ -21,7 +21,7 @@ void Step::vRegNowGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpNow);
+  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpNow);
 
   EXIT();
 }

@@ -33,13 +33,13 @@ void Step::vStreamDefOutAddColumn(void)
   ENTRY();
     
   s32 sColNm;
-  m_pDataStack->vPopStr(sColNm,__func__);
+  m_pTask->m_pDataStack->vPopStr(sColNm,__func__);
 
-  eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
-  i8 eColLength = (eCT)m_pDataStack->iPopInt(__func__);
-  i8 eColScale = (eCT)m_pDataStack->iPopInt(__func__);
+  eCT eColType = (eCT)m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 eColLength = (eCT)m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 eColScale = (eCT)m_pTask->m_pDataStack->iPopInt(__func__);
   
-  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pTask->m_pLogicUnit->m_xpStreamDefOut;
   
   pStreamDefOut->vAddColumn(sColNm,eColType,eColLength,eColScale);
   
@@ -53,9 +53,9 @@ void Step::vStreamDefOutAddColumns(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDefSrc = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefSrc = _pStreamDef(m_pTask->m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pTask->m_pLogicUnit->m_xpStreamDefOut;
   
   pStreamDefOut->vAddColumns(pStreamDefSrc);
   
@@ -69,9 +69,9 @@ void Step::vStreamDefOutDelete(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pTask->m_pLogicUnit->m_xpStreamDefOut;
   
-  m_pLogicUnit->m_xpStreamDefOut = nullptr;
+  m_pTask->m_pLogicUnit->m_xpStreamDefOut = nullptr;
   
   delete pStreamDefOut;
 
@@ -85,11 +85,11 @@ void Step::vStreamDefOutDuplicate(void)
 {
   ENTRY();
   
-  ASSERT (* m_pLogicUnit->m_xpStreamDefOut);
+  ASSERT (* m_pTask->m_pLogicUnit->m_xpStreamDefOut);
   
-  StreamDef* pStreamDef = new StreamDef(* m_pLogicUnit->m_xpStreamDefOut);
+  StreamDef* pStreamDef = new StreamDef(* m_pTask->m_pLogicUnit->m_xpStreamDefOut);
   
-  m_pDataStack->vPushPtr(pStreamDef);
+  m_pTask->m_pDataStack->vPushPtr(pStreamDef);
   
   EXIT();
 }
@@ -101,7 +101,7 @@ void Step::vStreamDefOutGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStreamDefOut);
+  m_pTask->m_pDataStack->vPushPtr(* m_pTask->m_pLogicUnit->m_xpStreamDefOut);
 
   EXIT();
 }
@@ -113,7 +113,7 @@ void Step::vStreamDefOutIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
+  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -125,9 +125,9 @@ void Step::vStreamDefOutNameFetch(void)
 {
   ENTRY();
     
-  s32 sName = m_pLogicUnit->m_xpStreamDefOut->szName();
+  s32 sName = m_pTask->m_pLogicUnit->m_xpStreamDefOut->szName();
   
-  m_pDataStack->vPushStz(sName);
+  m_pTask->m_pDataStack->vPushStz(sName);
   
   EXIT();
 }
@@ -140,9 +140,9 @@ void Step::vStreamDefOutNameStore(void)
   ENTRY();
     
   s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
+  m_pTask->m_pDataStack->vPopStr(sName,__func__);
 
-  m_pLogicUnit->m_xpStreamDefOut->vName(sName);
+  m_pTask->m_pLogicUnit->m_xpStreamDefOut->vName(sName);
   
   EXIT();
 }
@@ -154,8 +154,8 @@ void Step::vStreamDefOutNew(void)
 {
   ENTRY();
     
-  m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
-  (* m_pLogicUnit->m_xpStreamDefOut)->vAddDefSet();
+  m_pTask->m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
+  (* m_pTask->m_pLogicUnit->m_xpStreamDefOut)->vAddDefSet();
   
   EXIT();
 }
@@ -167,13 +167,13 @@ void Step::vStreamDefOutPipeout(void)
 {
   ENTRY();
   
-  ASSERT(*m_pLogicUnit->m_xpStreamDefOut);
+  ASSERT(*m_pTask->m_pLogicUnit->m_xpStreamDefOut);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pLogicUnit->m_xpStreamDefOut,m_pTask);
+  pOp->vPipeOut_nextOp(*m_pTask->m_pLogicUnit->m_xpStreamDefOut,m_pTask);
   
-  m_pLogicUnit->m_xpStreamDefOut = nullptr;
+  m_pTask->m_pLogicUnit->m_xpStreamDefOut = nullptr;
   
   EXIT();
 }
@@ -185,7 +185,7 @@ void Step::vStreamDefOutPrint(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDefOut = _pStreamDef(*m_pLogicUnit->m_xpStreamDefOut);
+  StreamDef* pStreamDefOut = _pStreamDef(*m_pTask->m_pLogicUnit->m_xpStreamDefOut);
   
   pStreamDefOut->vPrint();
 
@@ -199,7 +199,7 @@ void Step::vStreamDefOutSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  m_pTask->m_pLogicUnit->m_xpStreamDefOut = _pStreamDef(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -26,12 +26,12 @@ void Step::vZeroLess(void)
 {
   ENTRY();
   
-  i8 iZero = m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   if (iZero < 0)
-    m_pDataStack->vPushInt(true);
+    m_pTask->m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -43,12 +43,12 @@ void Step::vZeroLessEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   if (iZero <= 0)
-    m_pDataStack->vPushInt(true);
+    m_pTask->m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -60,12 +60,12 @@ void Step::vZeroEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   if (iZero == 0)
-    m_pDataStack->vPushInt(true);
+    m_pTask->m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -77,12 +77,12 @@ void Step::vZeroNotEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   if (iZero != 0)
-    m_pDataStack->vPushInt(true);
+    m_pTask->m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -94,12 +94,12 @@ void Step::vZeroGreaterEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   if (iZero >= 0)
-    m_pDataStack->vPushInt(true);
+    m_pTask->m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -111,12 +111,12 @@ void Step::vZeroGreater(void)
 {
   ENTRY();
   
-  i8 iZero = m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   if (iZero > 0)
-    m_pDataStack->vPushInt(true);
+    m_pTask->m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(false);
   
   EXIT();
 }

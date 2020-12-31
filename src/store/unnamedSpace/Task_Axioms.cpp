@@ -369,8 +369,8 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Dic* pDic;
-  if (m_pForth->m_oDicStack.iCount())
-    pDic = m_pForth->m_oDicStack.pTop();
+  if (m_oDicStack.iCount())
+    pDic = m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
 
@@ -401,7 +401,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
         
       // -- -- -- -- -- -- -- -- -- --
       case TN_NAME:
-        pCalledWord = m_pForth->m_oDicStack.pFindWord(szChars);
+        pCalledWord = m_oDicStack.pFindWord(szChars);
         if (WK_INTRINSIC == pCalledWord->eWord()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
@@ -432,7 +432,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
         xVariable = szChars;
         pNewWord->vEncodePush(xVariable);
         
-        pCalledWord = m_pForth->m_oDicStack.pFindWord("tag::get"_Stz);
+        pCalledWord = m_oDicStack.pFindWord("tag::get"_Stz);
         pNewWord->vEncodeCall(pCalledWord->afpEntryStep());
         break;
       }

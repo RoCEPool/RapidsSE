@@ -23,7 +23,7 @@ void Step::vUserName(void)
   
   s32 sUserNme( (Stz*)getenv("USER") );
   
-  m_pDataStack->vPushStr(sUserNme);
+  m_pTask->m_pDataStack->vPushStr(sUserNme);
 
   EXIT();
 }

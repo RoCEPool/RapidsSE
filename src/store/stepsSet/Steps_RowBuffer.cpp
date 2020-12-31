@@ -21,9 +21,9 @@ void Step::vRowBufferOperandDump(void)
 {
   ENTRY();
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
 
-  i8 iDetail = m_pDataStack->iPopInt(__func__);
+  i8 iDetail = m_pTask->m_pDataStack->iPopInt(__func__);
   
   if (iDetail)
     pRowBuffer->vDumpAllRows();

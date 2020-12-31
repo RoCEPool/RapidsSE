@@ -65,15 +65,15 @@ void Step::vStrCat(void)
   s48K sStrB;
   s48K sStrA;
   
-  m_pDataStack->vPopStr(sStrB,__func__);
+  m_pTask->m_pDataStack->vPopStr(sStrB,__func__);
 
-  m_pDataStack->vPopStr(sStrA,__func__);
+  m_pTask->m_pDataStack->vPopStr(sStrA,__func__);
 
   sStrR = sStrA;
   
   sStrR.vConcat(sStrB);
   
-  m_pDataStack->vPushStr(sStrR);
+  m_pTask->m_pDataStack->vPushStr(sStrR);
   
   EXIT();
 }
@@ -89,9 +89,9 @@ void Step::vStrClip(void)
   
   // get the arguments
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
   
-  i8 iLength = m_pDataStack->iPopInt(__func__);
+  i8 iLength = m_pTask->m_pDataStack->iPopInt(__func__);
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -109,7 +109,7 @@ void Step::vStrClip(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,llabs(iLength));
   
-  m_pDataStack->vPushStr(sSubStr);
+  m_pTask->m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -122,10 +122,10 @@ void Step::vStrEqual(void)
   ENTRY();
   
   CellSingle xStringA;
-  m_pDataStack->vPopItem(xStringA,__func__);
+  m_pTask->m_pDataStack->vPopItem(xStringA,__func__);
   
   CellSingle xStringB;
-  m_pDataStack->vPopItem(xStringB,__func__);
+  m_pTask->m_pDataStack->vPopItem(xStringB,__func__);
 
   // get the arguments
   
@@ -133,7 +133,7 @@ void Step::vStrEqual(void)
   i8 iEqual = StrLib::bEqualTo(xStringA.azChar(),
                                xStringB.azChar());
   
-  m_pDataStack->vPushInt(iEqual);
+  m_pTask->m_pDataStack->vPushInt(iEqual);
   
   EXIT();
 }
@@ -149,11 +149,11 @@ void Step::vStrEscape(void)
   s48K xEscaped;
   
   // get the arguments
-  m_pDataStack->vPopStr(xArg,__func__);
+  m_pTask->m_pDataStack->vPopStr(xArg,__func__);
   
   StrLib::vEscapeDblQuote(xArg.azChar(),xEscaped.azChar());
   
-  m_pDataStack->vPushStr(xEscaped);
+  m_pTask->m_pDataStack->vPushStr(xEscaped);
   
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vStrFirstCsv(void)
   ENTRY();
   
   s48K sStr;
-  m_pDataStack->vPopStr(sStr,__func__);
+  m_pTask->m_pDataStack->vPopStr(sStr,__func__);
   
   s48K sFirstValue;
   
@@ -175,7 +175,7 @@ void Step::vStrFirstCsv(void)
   if (! StrLib::bExtractItem(&aValue,sFirstValue.azChar(), ','))
     sFirstValue = ""_Stz;
   
-  m_pDataStack->vPushStr(sFirstValue);
+  m_pTask->m_pDataStack->vPushStr(sFirstValue);
   
   EXIT();
 }
@@ -188,13 +188,13 @@ void Step::vStrFormat(void)
   ENTRY();
   
   s48K sFormat;
-  m_pDataStack->vPopStr(sFormat,__func__);
+  m_pTask->m_pDataStack->vPopStr(sFormat,__func__);
   
   s48K sString;
   
   m_pTask->vValSprint(sFormat,sString);
   
-  m_pDataStack->vPushStr(sString);
+  m_pTask->m_pDataStack->vPushStr(sString);
   
   EXIT();
 }
@@ -207,11 +207,11 @@ void Step::vStrGleanInt(void)
   ENTRY();
   
   s48K sArg;
-  m_pDataStack->vPopStr(sArg,__func__);
+  m_pTask->m_pDataStack->vPopStr(sArg,__func__);
   
   i8 iInt = StrLib::iGleanInt(sArg.azChar());
   
-  m_pDataStack->vPushInt(iInt);
+  m_pTask->m_pDataStack->vPushInt(iInt);
   
   EXIT();
 }
@@ -227,9 +227,9 @@ void Step::vStrLeft(void)
   
   // get the arguments
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
   
-  i8 iLength = m_pDataStack->iPopInt(__func__);
+  i8 iLength = m_pTask->m_pDataStack->iPopInt(__func__);
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -242,7 +242,7 @@ void Step::vStrLeft(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
-  m_pDataStack->vPushStr(sSubStr);
+  m_pTask->m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -258,11 +258,11 @@ void Step::vStrLength(void)
   s48K sString;
   
   // get the arguments
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
   
   iLength = sString.nLength();
   
-  m_pDataStack->vPushInt(iLength);
+  m_pTask->m_pDataStack->vPushInt(iLength);
   
   EXIT();
 }
@@ -280,10 +280,10 @@ void Step::vStrPrepend(void)
   
   //! the use of A and B here doesnt seem intuitive
   CellSingle xValB;
-  m_pDataStack->vPopItem(xValB,__func__);
+  m_pTask->m_pDataStack->vPopItem(xValB,__func__);
  
   CellSingle xValA;
-  m_pDataStack->vPopItem(xValA,__func__);
+  m_pTask->m_pDataStack->vPopItem(xValA,__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first string A
@@ -314,7 +314,7 @@ void Step::vStrPrepend(void)
   
   xStrR.vConcat(xStrA);
   
-  m_pDataStack->vPushStr(xStrR);
+  m_pTask->m_pDataStack->vPushStr(xStrR);
   
   EXIT();
 }
@@ -326,13 +326,13 @@ void Step::vStrRandom(void)
 {
   ENTRY();
   
-  i8 iLength = m_pDataStack->iPopInt(__func__);
+  i8 iLength = m_pTask->m_pDataStack->iPopInt(__func__);
   
   s256 sRnd;
   
   RndLib::vString(sRnd,iLength);
   
-  m_pDataStack->vPushStr(sRnd);
+  m_pTask->m_pDataStack->vPushStr(sRnd);
   
   EXIT();
 }
@@ -345,14 +345,14 @@ void Step::vStrRemovePrefix(void)
   ENTRY();
   
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
   
   s32 sIntro;
-  m_pDataStack->vPopStr(sIntro,__func__);
+  m_pTask->m_pDataStack->vPopStr(sIntro,__func__);
   
   StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
   
-  m_pDataStack->vPushStr(sString);
+  m_pTask->m_pDataStack->vPushStr(sString);
   
   EXIT();
 }
@@ -365,14 +365,14 @@ void Step::vStrRemoveSuffix(void)
   ENTRY();
   
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
   
   s32 sIntro;
-  m_pDataStack->vPopStr(sIntro,__func__);
+  m_pTask->m_pDataStack->vPopStr(sIntro,__func__);
   
   StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
   
-  m_pDataStack->vPushStr(sString);
+  m_pTask->m_pDataStack->vPushStr(sString);
 
   EXIT();
 }
@@ -385,11 +385,11 @@ void Step::vStrRemoveTailInt(void)
   ENTRY();
   
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
   
   StrLib::vRemoveTailInt(sString.azChar());
   
-  m_pDataStack->vPushStr(sString);
+  m_pTask->m_pDataStack->vPushStr(sString);
 
   EXIT();
 }
@@ -405,17 +405,17 @@ void Step::vStrReplace(void)
   s48K sThat;
   s48K sThis;
   
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
 
-  m_pDataStack->vPopStr(sThat,__func__);
+  m_pTask->m_pDataStack->vPopStr(sThat,__func__);
   
-  m_pDataStack->vPopStr(sThis,__func__);
+  m_pTask->m_pDataStack->vPopStr(sThis,__func__);
   
   s48K sReplaced;
   
   StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
   
-  m_pDataStack->vPushStr(sReplaced);
+  m_pTask->m_pDataStack->vPushStr(sReplaced);
   
   EXIT();
 }
@@ -431,8 +431,8 @@ void Step::vStrRight(void)
   
   // get the arguments
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
-  i8 iLength = m_pDataStack->iPopInt(__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
+  i8 iLength = m_pTask->m_pDataStack->iPopInt(__func__);
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -448,7 +448,7 @@ void Step::vStrRight(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
-  m_pDataStack->vPushStr(sSubStr);
+  m_pTask->m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -461,17 +461,17 @@ void Step::vStrSame(void)
   ENTRY();
   
   CellSingle xStringA;
-  m_pDataStack->vPopItem(xStringA,__func__);
+  m_pTask->m_pDataStack->vPopItem(xStringA,__func__);
   
   CellSingle xStringB;
-  m_pDataStack->vPopItem(xStringB,__func__);
+  m_pTask->m_pDataStack->vPopItem(xStringB,__func__);
 
   // get the arguments
   
   i8 iEqual = StrLib::bSame(xStringA.azChar(),
                             xStringB.azChar());
   
-  m_pDataStack->vPushInt(iEqual);
+  m_pTask->m_pDataStack->vPushInt(iEqual);
   
   EXIT();
 }
@@ -487,9 +487,9 @@ void Step::vStrSub(void)
   
   // get the arguments
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
-  i8 iStart = m_pDataStack->iPopInt(__func__);
-  i8 iLength = m_pDataStack->iPopInt(__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
+  i8 iStart = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iLength = m_pTask->m_pDataStack->iPopInt(__func__);
 
   i8 iHasLength = sString.nLength();
   
@@ -512,7 +512,7 @@ void Step::vStrSub(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
-  m_pDataStack->vPushStr(sSubStr);
+  m_pTask->m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -526,14 +526,14 @@ void Step::vStrTailInt(void)
   
   // get the string
   s48K sString;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pTask->m_pDataStack->vPopStr(sString,__func__);
   
   // get last char in string
   char* acLast = StrLib::acLast(sString.azChar());
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*acLast) ) {
-    m_pDataStack->vPushInt(false);
+    m_pTask->m_pDataStack->vPushInt(false);
     return;
   }
   
@@ -549,8 +549,8 @@ void Step::vStrTailInt(void)
     iInt = (iInt * 10) + (*acDigit++ - '0');
   
   // return ( int true )
-  m_pDataStack->vPushInt(iInt);
-  m_pDataStack->vPushInt(true);
+  m_pTask->m_pDataStack->vPushInt(iInt);
+  m_pTask->m_pDataStack->vPushInt(true);
   
   EXIT();
 }
@@ -564,7 +564,7 @@ void Step::vStrToStrVec(void)
   
   // get the path string
   s256 sPath;
-  m_pDataStack->vPopStr(sPath,__func__);
+  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
   
   i8 nStrings = 0;
   
@@ -578,16 +578,16 @@ void Step::vStrToStrVec(void)
     if (! StrLib::bExtractName(&azPath,azDicNm))
       break;
     
-    m_pAuxStack->vPushStr(sDicNm);
+     m_pTask->m_pAuxStack->vPushStr(sDicNm);
   }
   
   for (i8 iMove = 0; iMove < nStrings; iMove++) {
     
-    m_pAuxStack->vPopStr(sDicNm,__func__);
-    m_pDataStack->vPushStr(sDicNm);
+     m_pTask->m_pAuxStack->vPopStr(sDicNm,__func__);
+    m_pTask->m_pDataStack->vPushStr(sDicNm);
   }
 
-  m_pDataStack->vPushInt(nStrings);
+  m_pTask->m_pDataStack->vPushInt(nStrings);
 
   EXIT();
 }

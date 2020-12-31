@@ -24,7 +24,7 @@ void Step::vDebugFlagFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_iDebugFlag);
+  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_iDebugFlag);
   
   EXIT();
 }
@@ -36,7 +36,7 @@ void Step::vDebugFlagStore(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
+  m_pTask->m_pLogicUnit->m_iDebugFlag = m_pTask->m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

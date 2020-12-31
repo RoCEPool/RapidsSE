@@ -25,11 +25,11 @@ void Step::vToRowRegCompleted(void)
 {
   ENTRY();
   
-  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
+  ToRow* pToRow = *m_pTask->m_pLogicUnit->m_xpToRow;
   
   RowBuffer* pRowBuffer = pToRow->pFullRowBuffer();
   
-  m_pDataStack->vPushPtr(pRowBuffer);
+  m_pTask->m_pDataStack->vPushPtr(pRowBuffer);
 
   EXIT();
 }
@@ -41,9 +41,9 @@ void Step::vToRowRegConvert(void)
 {
   ENTRY();
 
-  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
+  ToRow* pToRow = *m_pTask->m_pLogicUnit->m_xpToRow;
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpOperandA);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pTask->m_pLogicUnit->m_xpOperandA);
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
 
   char* azCsvChunk  = (char*)pCsvBuffer->ayDataArea();
@@ -71,13 +71,13 @@ void Step::vToRowRegCreate(void)
   
   bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
 
-  StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
-  BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
+  StreamDef* pStreamDef = m_pTask->m_pLogicUnit->m_xpTable->pStreamDef();
+  BucketMap* pBucketMap = m_pTask->m_pLogicUnit->m_xpTable->pBucketMap();
 
   bool bPtnHash = true;
   ToRow* pToRow = new ToRow(pStreamDef,pBucketMap,pFmt,bPtnHash);
       
-  m_pLogicUnit->m_xpToRow = pToRow;
+  m_pTask->m_pLogicUnit->m_xpToRow = pToRow;
   
   delete pFmt;
   
@@ -91,13 +91,13 @@ void Step::vToRowRegDangling(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpToRow.bIsNull()) {
-    m_pDataStack->vPushPtr(nullptr);
+  if (m_pTask->m_pLogicUnit->m_xpToRow.bIsNull()) {
+    m_pTask->m_pDataStack->vPushPtr(nullptr);
   }
   else {
-    ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
+    ToRow* pToRow = *m_pTask->m_pLogicUnit->m_xpToRow;
     RowBuffer* pRowBuffer = pToRow->pDanglingRowBuffer();
-    m_pDataStack->vPushPtr(pRowBuffer);
+    m_pTask->m_pDataStack->vPushPtr(pRowBuffer);
   }
   
   EXIT();
@@ -110,8 +110,8 @@ void Step::vToRowRegDelete(void)
 {
   ENTRY();
   
-  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
-  m_pLogicUnit->m_xpToRow = nullptr;
+  ToRow* pToRow = *m_pTask->m_pLogicUnit->m_xpToRow;
+  m_pTask->m_pLogicUnit->m_xpToRow = nullptr;
   
   delete pToRow;
   

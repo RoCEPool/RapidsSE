@@ -23,13 +23,13 @@ void Step::vToNstRowRegConvert(void)
 {
   ENTRY();
 
-  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToNstRow* pToNstRow = *m_pTask->m_pLogicUnit->m_xpToNstRow;
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
 
   pToNstRow->vConvert(pRowBuffer);
   
-  m_pDataStack->vPushPtr(pRowBuffer);
+  m_pTask->m_pDataStack->vPushPtr(pRowBuffer);
 
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vToNstRowRegCreate(void)
     
   ToNstRow* pToNstRow = new ToNstRow;
       
-  m_pLogicUnit->m_xpToNstRow = pToNstRow;
+  m_pTask->m_pLogicUnit->m_xpToNstRow = pToNstRow;
 
   EXIT();
 }
@@ -55,9 +55,9 @@ void Step::vToNstRowRegDelete(void)
 {
   ENTRY();
   
-  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToNstRow* pToNstRow = *m_pTask->m_pLogicUnit->m_xpToNstRow;
   
-  m_pLogicUnit->m_xpToNstRow = nullptr;
+  m_pTask->m_pLogicUnit->m_xpToNstRow = nullptr;
   
   delete pToNstRow;
   

@@ -30,10 +30,10 @@ void Step::vTablePtnAppendBuffer(void)
   ENTRY();
   
   // get the CrwBuffer
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pTask->m_pLogicUnit->m_xpTablePtn);
   
   // append the buffer to the tablePtn
   pTablePtn->vAppendBuffer(pCrwBuffer);
@@ -48,7 +48,7 @@ void Step::vTablePtnGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTablePtn);
+  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpTablePtn);
   
   EXIT();
 }
@@ -60,16 +60,16 @@ void Step::vTablePtnPopulateIndex(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_pTask->m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndexNo = pIndex->iIndexNo();
   
-  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pTask->m_pLogicUnit->m_xpTablePtn;
   
   bool bPopulated = pTablePtn->bPopulateIndex(iIndexNo);
   
-  m_pDataStack->vPushInt(bPopulated ? 1 : 0);
+  m_pTask->m_pDataStack->vPushInt(bPopulated ? 1 : 0);
   
   EXIT();
 }
@@ -81,7 +81,7 @@ void Step::vTablePtnPurge(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pTask->m_pLogicUnit->m_xpTablePtn;
   
   // get the oldest perspective
   t8 tOldestPsp = AM::pTxSet()->tOldestPsp();
@@ -97,9 +97,9 @@ void Step::vTablePtnRoot(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pTask->m_pLogicUnit->m_xpTablePtn);
   
-  m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
+  m_pTask->m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vTablePtnSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  m_pTask->m_pLogicUnit->m_xpTablePtn = _pTablePtn(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -123,7 +123,7 @@ void Step::vTablePtnTruncate(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pTask->m_pLogicUnit->m_xpTablePtn;
   pTablePtn->vTruncate();
   
   EXIT();
@@ -137,9 +137,9 @@ void Step::vTablePtnTruncateIndex(void)
   ENTRY();
   
   // get the index to be truncated
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  Index* pIndex = _pIndex(m_pTask->m_pDataStack->pPopPtr(__func__));
   
-  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pTask->m_pLogicUnit->m_xpTablePtn;
   pTablePtn->vTruncateIndex(pIndex);
   
   EXIT();

@@ -23,7 +23,7 @@ void Step::vNowAsOf(void)
 {
   ENTRY();
   
-  Now* pNow = _pNow(m_pDataStack->pPopPtr(__func__));
+  Now* pNow = _pNow(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -41,7 +41,7 @@ void Step::vNowSinceEpoch(void)
 {
   ENTRY();
   
-  Now* pNow = _pNow(m_pDataStack->pPopPtr(__func__));
+  Now* pNow = _pNow(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -49,7 +49,7 @@ void Step::vNowSinceEpoch(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pDataStack->vPushInt(iSinceEpoch);
+  m_pTask->m_pDataStack->vPushInt(iSinceEpoch);
   
   EXIT();
 }
@@ -61,7 +61,7 @@ void Step::vNowTimestampStr(void)
 {
   ENTRY();
   
-  Now* pNow = _pNow(m_pDataStack->pPopPtr(__func__));
+  Now* pNow = _pNow(m_pTask->m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -69,7 +69,7 @@ void Step::vNowTimestampStr(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pDataStack->vPushStz(szTimestamp);
+  m_pTask->m_pDataStack->vPushStz(szTimestamp);
   
   EXIT();
 }

@@ -38,10 +38,10 @@ void Step::vQueuesExecutingLength(void)
 {
   ENTRY();
   
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_pTask->m_pDataStack->iPopInt(__func__);
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksExecuting());
+  m_pTask->m_pDataStack->vPushInt(pQueues->nTasksExecuting());
   
   EXIT();
 }
@@ -53,10 +53,10 @@ void Step::vQueuesReadyLength(void)
 {
   ENTRY();
   
-  i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  i8 i_TablePtn = m_pTask->m_pDataStack->iPopInt(__func__);
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksReady());
+  m_pTask->m_pDataStack->vPushInt(pQueues->nTasksReady());
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vQueuesSleepingLength(void)
   ENTRY();
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksSleeping());
+  m_pTask->m_pDataStack->vPushInt(pQueues->nTasksSleeping());
   
   EXIT();
 }
@@ -82,7 +82,7 @@ void Step::vQueuesWaitingLength(void)
   ENTRY();
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksWaiting());
+  m_pTask->m_pDataStack->vPushInt(pQueues->nTasksWaiting());
   
   EXIT();
 }

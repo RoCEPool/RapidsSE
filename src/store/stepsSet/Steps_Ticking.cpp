@@ -24,7 +24,7 @@ void Step::vTickingGetTick(void)
   
   i8 iTick = TickingDevice::iGetTick();
   
-  m_pDataStack->vPushInt(iTick);
+  m_pTask->m_pDataStack->vPushInt(iTick);
   
   EXIT();
 }
@@ -38,7 +38,7 @@ void Step::vTickingTicksPerSec(void)
   
   i8 iTicksPerSec = TickingDevice::iTicksPerSec();
   
-  m_pDataStack->vPushInt(iTicksPerSec);
+  m_pTask->m_pDataStack->vPushInt(iTicksPerSec);
   
   EXIT();
 }

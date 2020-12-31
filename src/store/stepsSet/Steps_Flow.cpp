@@ -40,7 +40,7 @@ void Step::vFlowJump(void)
 {
   ENTRY();
   
-  m_aInxPtr = m_aInxPtr->m_aJumpTo;
+  m_pTask->m_aInxPtr = m_pTask->m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -52,16 +52,16 @@ void Step::vFlowJumpFalse(void)
 {
   ENTRY();
   
-  i8 iVal = m_pDataStack->iPopAsInt(__func__);
+  i8 iVal = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   // n.b. the IP points to the jump arg
   
   if (! iVal)
     // jump to location
-    m_aInxPtr = m_aInxPtr->m_aJumpTo;
+    m_pTask->m_aInxPtr = m_pTask->m_aInxPtr->m_aJumpTo;
   else
     // do not jump, skip over argument
-    m_aInxPtr++;
+    m_pTask->m_aInxPtr++;
   
   EXIT();
 }
@@ -73,16 +73,16 @@ void Step::vFlowJumpTrue(void)
 {
   ENTRY();
   
-  i8 iVal = m_pDataStack->iPopAsInt(__func__);
+  i8 iVal = m_pTask->m_pDataStack->iPopAsInt(__func__);
   
   // n.b. the IP points to the jump arg
   
   if (iVal)
     // jump to location
-    m_aInxPtr = m_aInxPtr->m_aJumpTo;
+    m_pTask->m_aInxPtr = m_pTask->m_aInxPtr->m_aJumpTo;
   else
     // do not jump, skip over argument
-    m_aInxPtr++;
+    m_pTask->m_aInxPtr++;
   
   EXIT();
 }
@@ -104,9 +104,9 @@ void Step::vFlowReenter(void)
 {
   ENTRY();
   
-  Word* pExecuting = Routine::pToWord(m_aInxPtr);
+  Word* pExecuting = Routine::pToWord(m_pTask->m_aInxPtr);
   
-  m_aInxPtr = pExecuting->aEntryCell();
+  m_pTask->m_aInxPtr = pExecuting->aEntryCell();
   
   EXIT();
 }

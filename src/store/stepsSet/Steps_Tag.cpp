@@ -23,7 +23,7 @@ void Step::vTagGet(void)
   ENTRY();
   
   s32 sTagNm;
-  m_pDataStack->vPopStr(sTagNm,__func__);
+  m_pTask->m_pDataStack->vPopStr(sTagNm,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -44,11 +44,11 @@ void Step::vTagGet(void)
   
   if (TN_STRING == pJobTags->eToken(i_Tag)) {
     Stz* szValue = pJobTags->szValue(i_Tag);
-    m_pDataStack->vPushStz(szValue);
+    m_pTask->m_pDataStack->vPushStz(szValue);
   }
   else {
     i8 iValue = pJobTags->iValue(i_Tag);
-    m_pDataStack->vPushInt(iValue);
+    m_pTask->m_pDataStack->vPushInt(iValue);
   }
 
   EXIT();
@@ -62,10 +62,10 @@ void Step::vTagSet(void)
   ENTRY();
   
   s32 sTagNm;
-  m_pDataStack->vPopStr(sTagNm,__func__);
+  m_pTask->m_pDataStack->vPopStr(sTagNm,__func__);
 
   sSTMT sTagValue;
-  m_pDataStack->vPopStr(sTagValue,__func__);
+  m_pTask->m_pDataStack->vPopStr(sTagValue,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

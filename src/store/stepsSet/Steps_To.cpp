@@ -26,12 +26,12 @@ void Step::vToInt(void)
   
   s32 sInt;
   
-  m_pDataStack->vPopStr(sInt,__func__);
-//  m_pDataStack->vPopStr(sInt,__func__);
+  m_pTask->m_pDataStack->vPopStr(sInt,__func__);
+//  m_pTask->m_pDataStack->vPopStr(sInt,__func__);
 
   i8 i = sInt.iToI8();
   
-  m_pDataStack->vPushInt(i);
+  m_pTask->m_pDataStack->vPushInt(i);
   
   EXIT();
 }
@@ -43,11 +43,11 @@ void Step::vToPtr(void)
 {
   ENTRY();
   
-  i8 iPtr = m_pDataStack->iPopInt(__func__);
+  i8 iPtr = m_pTask->m_pDataStack->iPopInt(__func__);
   
   Object* pPtr = (Object*)iPtr;
   
-  m_pDataStack->vPushPtr(pPtr);
+  m_pTask->m_pDataStack->vPushPtr(pPtr);
   
   EXIT();
 }
@@ -60,13 +60,13 @@ void Step::vToStr(void)
   ENTRY();
   
   CellSingle xVar;
-  m_pDataStack->vPopItem(xVar,__func__);
+  m_pTask->m_pDataStack->vPopItem(xVar,__func__);
   
   s48K sString;
   
   xVar.vToString(sString);
   
-  m_pDataStack->vPushStr(sString);
+  m_pTask->m_pDataStack->vPushStr(sString);
   
   EXIT();
 }

@@ -29,13 +29,13 @@ void Step::vLocalFetch(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalsFrame ) THROW_DSTACK();
+  if ( ! m_pTask->m_pLocalsFrame ) THROW_DSTACK();
   
-  i8 iLocal = m_pDataStack->iPopInt(__func__);
+  i8 iLocal = m_pTask->m_pDataStack->iPopInt(__func__);
   
-  Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  Local* pLocal = m_pTask->m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->vPushItem(pLocal->aTypedCell());
+  m_pTask->m_pDataStack->vPushItem(pLocal->aTypedCell());
   
   EXIT();
 }
@@ -47,13 +47,13 @@ void Step::vLocalStore(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalsFrame ) THROW_DSTACK();
+  if ( ! m_pTask->m_pLocalsFrame ) THROW_DSTACK();
   
-  i8 iLocal = m_pDataStack->iPopInt(__func__);
+  i8 iLocal = m_pTask->m_pDataStack->iPopInt(__func__);
   
-  Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  Local* pLocal = m_pTask->m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->vPopItem(pLocal->aTypedCell(),__func__);
+  m_pTask->m_pDataStack->vPopItem(pLocal->aTypedCell(),__func__);
  
   EXIT();
 }
@@ -65,35 +65,35 @@ void Step::vLocalsBar(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
   
-  Dic* pDic = m_oDicStack.pPick(0);
+  Dic* pDic = m_pTask->m_oDicStack.pPick(0);
 
   CellSingle xVariable;
   
   for (;;) {
     
     // get name of local variable
-    m_pInput->vReadToken();
+    m_pTask->m_pInput->vReadToken();
 
     // end of locals declaration?
-    if (m_pInput->szChars()->bEqual("|"_Stz))
+    if (m_pTask->m_pInput->szChars()->bEqual("|"_Stz))
       break;
 
     // test for first use of locals|
-    i8 nLcl = m_pCompiler->nLocals();
+    i8 nLcl = m_pTask->m_pCompiler->nLocals();
     if ( ! nLcl ) {
       
       // create a locals dictionary
       pDic = new Dic("<localsDic>"_Stz);
-      m_oDicStack.vPush(pDic);
+      m_pTask->m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
       pCurrentWord->vEncodeCall("locals.push"_Stz);
     }
     
     // create new word for local variable in current dictionary
-    Word* pWordLocal = new(pDic) Word(m_pInput->szChars());
+    Word* pWordLocal = new(pDic) Word(m_pTask->m_pInput->szChars());
     // ** do not set as current word **
     
     // set word as local variable
@@ -111,7 +111,7 @@ void Step::vLocalsBar(void)
     pCurrentWord->vEncodeCall("local.store"_Stz);
     
     nLcl++;
-    m_pCompiler->vLocals(nLcl);
+    m_pTask->m_pCompiler->vLocals(nLcl);
   }
   
   EXIT();
@@ -124,11 +124,11 @@ void Step::vLocalsPop(void)
 {
   ENTRY();
   
-  LocalChain* pLocalsFrame = m_pLocalsFrame;
+  LocalChain* pLocalsFrame = m_pTask->m_pLocalsFrame;
   
   if ( ! pLocalsFrame ) THROW_DSTACK();
   
-  m_pLocalsFrame = m_pLocalsFrame->pNext();
+  m_pTask->m_pLocalsFrame = m_pTask->m_pLocalsFrame->pNext();
   
   delete pLocalsFrame;
   
@@ -144,11 +144,11 @@ void Step::vLocalsPush(void)
   
   LocalChain* pLocalsFrame = new LocalChain;
   
-  pLocalsFrame->vDiscardPoint((TypedCell*)m_pReturnStack->aTopVal());
+  pLocalsFrame->vDiscardPoint((TypedCell*)m_pTask->m_pReturnStack->aTopVal());
   
-  pLocalsFrame->vNext(m_pLocalsFrame);
+  pLocalsFrame->vNext(m_pTask->m_pLocalsFrame);
   
-  m_pLocalsFrame = pLocalsFrame;
+  m_pTask->m_pLocalsFrame = pLocalsFrame;
   
   EXIT();
 }
@@ -162,21 +162,21 @@ void Step::vLocalsTo(void)
   
   bool bSessionLevelTag = false;
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
   
   // advance to token after to
-  m_pInput->vReadToken();
+  m_pTask->m_pInput->vReadToken();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // is is a semantic ename?
   
-  Stz* szTerm = m_pInput->szChars();
+  Stz* szTerm = m_pTask->m_pInput->szChars();
   
   if (szTerm->bSame("/session"_Stz)) {
     
     bSessionLevelTag = true;
-    m_pInput->vReadToken();
+    m_pTask->m_pInput->vReadToken();
   }
   else if (szTerm->bSame("AggTimer[]"_Stz)) {
     pCurrentWord->vEncodeCall("AggTimer[].set"_Stz);
@@ -336,10 +336,10 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get name of local from token stream
-  s32 sLocalNm(m_pInput->szChars());
+  s32 sLocalNm(m_pTask->m_pInput->szChars());
   
   // attempt to find the word describing the local
-  Word* pLocalWord = m_oDicStack.pFindWord(sLocalNm);
+  Word* pLocalWord = m_pTask->m_oDicStack.pFindWord(sLocalNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no such local or <metaSymbol>
@@ -355,7 +355,7 @@ void Step::vLocalsTo(void)
     
     RASSERT(szTerm->bSame(C_TAG_PATH));
 
-    Word* pCurrentWord = m_pCompiler->pCurrentWord();
+    Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
     
     CellSingle xMetaNm;
     xMetaNm = sLocalNm;

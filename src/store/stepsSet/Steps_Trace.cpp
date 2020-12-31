@@ -50,7 +50,7 @@ void Step::vTracePoint(void)
   
   s256 sPointName;
   
-  m_pDataStack->vPopStr(sPointName,__func__);
+  m_pTask->m_pDataStack->vPopStr(sPointName,__func__);
   
   if (AM::bTracepoint())
     m_pTask->vTracePoint(sPointName);
@@ -65,7 +65,7 @@ void Step::vTraceSet(void)
 {
   ENTRY();
   
-  i8 iTrace = m_pDataStack->iPopInt(__func__);
+  i8 iTrace = m_pTask->m_pDataStack->iPopInt(__func__);
   
   m_pTask->m_iTraceMask = iTrace;
   

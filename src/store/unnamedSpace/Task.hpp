@@ -47,6 +47,33 @@ namespace STORE
     i8           m_nOperandYield;  //
   
     Profile*     m_pProfile;     // runtime profile
+  
+  
+  
+    // -- from Forth --
+    //LogicUnit*   m_pLogicUnit;      // associated register set
+
+  public:
+    Word*     m_pSeedWord;      // seed
+    Word*     m_pExceptionWord; // seed
+
+    bool      m_bSeedInitially; // seed_initially sentinel has been executed
+    bool      m_bDoneFinally;   // done_finally sentinel has been executed
+
+    DicStack  m_oDicStack;      // dictionary stack
+    DicStack  m_oSaveDicStack;  // save dictionary stack
+
+    ForthCell*     m_aInxPtr;      // instruction/cell pointer
+
+    TypedStack*    m_pAuxStack;    // auxiliary stack
+    TypedStack*    m_pDataStack;   // data stack
+    TypedStack*    m_pReturnStack; // return stack
+
+    LocalChain* m_pLocalsFrame; // locals| | register frame chain
+
+    Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
+    Input*      m_pInput;       // input stream
+
 
     // always last
     Footer m_xFooter;

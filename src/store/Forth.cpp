@@ -47,27 +47,6 @@ Forth::Forth(Task* pTask, LogicUnit* pLogicUnit)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
   
   m_pTask        = pTask;
-  m_pLogicUnit      = pLogicUnit;
-  
-  m_pSeedWord       = nullptr;
-  m_pExceptionWord  = nullptr;
-  
-  m_bSeedInitially  = false;
-  m_bDoneFinally    = false;
-
-  // m_oDicStack
-  // m_oSaveDicStack
-
-  m_aInxPtr      = nullptr;
-  
-  m_pAuxStack    = new TypedStack(KK_AUX_STACK);
-  m_pDataStack   = new TypedStack(KK_DATA_STACK);
-  m_pReturnStack = new TypedStack(KK_RETURN_STACK);
-
-  m_pLocalsFrame = nullptr;
-
-  m_pCompiler    = new Compiler;
-  m_pInput       = nullptr; // new Input;
 
   _checkInitialised_(CN_FORTH);
  
@@ -81,25 +60,6 @@ Forth::~Forth(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
   
-  RASSERT(m_bSeedInitially);
-  RASSERT(m_bDoneFinally);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  delete m_pDataStack;
-  delete m_pReturnStack;
-  delete m_pAuxStack;
-  
-  while (m_pLocalsFrame) {
-    
-    LocalChain* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
-    
-    delete pLocalsFrame;
-  }
-  
-  delete m_pCompiler;
-  delete m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,10 +73,10 @@ void Forth::vCheckBreakPt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  if (! m_aInxPtr)
+  if (! m_pTask->m_aInxPtr)
     return;
   
-  Word* pThisWord = Routine::pToWord(m_aInxPtr);
+  Word* pThisWord = Routine::pToWord(m_pTask->m_aInxPtr);
   
   if (! pThisWord->bBreakPt())
     return;
@@ -131,7 +91,7 @@ Compiler* Forth::pCompiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  return m_pCompiler;
+  return m_pTask->m_pCompiler;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +101,7 @@ void Forth::vCompiler(Compiler* pCompiler)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
   
-  m_pCompiler = pCompiler;
+  m_pTask->m_pCompiler = pCompiler;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,7 +111,7 @@ void Forth::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  Word* pWord = m_oDicStack.pLocateRoutineWord(m_aInxPtr);
+  Word* pWord = m_pTask->m_oDicStack.pLocateRoutineWord(m_pTask->m_aInxPtr);
 
   vTrace("\n"_Stz);
   vTrace("Execution Context\n"_Stz);
@@ -163,23 +123,23 @@ void Forth::vContentDump(void)
          this,
          
          pWord ? pWord->szWordNm() : C_NO_WORD,
-         m_aInxPtr);
+         m_pTask->m_aInxPtr);
 
   vTrace("m_pSeedWord=%s %p\n"_Stz,
-         m_pSeedWord->szWordNm(),
-         m_pSeedWord);
+         m_pTask->m_pSeedWord->szWordNm(),
+         m_pTask->m_pSeedWord);
   vTrace("m_pExceptionWord=%s %p\n"_Stz,
-         m_pExceptionWord ? m_pExceptionWord->szWordNm() : C_NO_NAME,
-         m_pExceptionWord);
+         m_pTask->m_pExceptionWord ? m_pTask->m_pExceptionWord->szWordNm() : C_NO_NAME,
+         m_pTask->m_pExceptionWord);
 
-  m_pDataStack->vDump(&m_oDicStack,  "m_pDataStack:"_Stz);
-  m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
-  m_pAuxStack->vDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
+  m_pTask->m_pDataStack->vDump(&m_pTask->m_oDicStack,  "m_pDataStack:"_Stz);
+  m_pTask->m_pReturnStack->vDump(&m_pTask->m_oDicStack,"m_pReturnStack:"_Stz);
+   m_pTask->m_pAuxStack->vDump(&m_pTask->m_oDicStack,   "m_pAuxStack:"_Stz);
 
-  m_oDicStack.vContentDump();
+  m_pTask->m_oDicStack.vContentDump();
   
   if (pWord)
-    AM::vWordSee(pWord,&m_oDicStack);
+    AM::vWordSee(pWord,&m_pTask->m_oDicStack);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,9 +149,9 @@ void Forth::vDeleteInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  delete m_pInput;
+  delete m_pTask->m_pInput;
   
-  m_pInput = nullptr;
+  m_pTask->m_pInput = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +161,7 @@ DicStack* Forth::pDicStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  return & m_oDicStack;
+  return & m_pTask->m_oDicStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,7 +171,7 @@ Input* Forth::pInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  return m_pInput;
+  return m_pTask->m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,9 +181,9 @@ void Forth::vNewInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  RASSERT(! m_pInput);
+  RASSERT(! m_pTask->m_pInput);
     
-  m_pInput = new Input;
+  m_pTask->m_pInput = new Input;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,19 +193,19 @@ void Forth::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  m_pAuxStack->vReset();
-  m_pDataStack->vReset();
-  m_pReturnStack->vReset();
+   m_pTask->m_pAuxStack->vReset();
+  m_pTask->m_pDataStack->vReset();
+  m_pTask->m_pReturnStack->vReset();
   
-  while (m_pLocalsFrame) {
+  while (m_pTask->m_pLocalsFrame) {
     
-    LocalChain* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    LocalChain* pLocalsFrame = m_pTask->m_pLocalsFrame;
+    m_pTask->m_pLocalsFrame = m_pTask->m_pLocalsFrame->pNext();
     
     delete pLocalsFrame;
   }
   
-  m_aInxPtr = nullptr;
+  m_pTask->m_aInxPtr = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +215,7 @@ DicStack* Forth::pSaveDicStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  return & m_oSaveDicStack;
+  return & m_pTask->m_oSaveDicStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,8 +225,8 @@ void Forth::vSeedForth(Word* pSeedWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 
-  m_pSeedWord = pSeedWord;
-  m_aInxPtr   = pSeedWord->aFirstCell();
+  m_pTask->m_pSeedWord = pSeedWord;
+  m_pTask->m_aInxPtr   = pSeedWord->aFirstCell();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -274,7 +234,7 @@ void Forth::vSeedForth(Word* pSeedWord)
 
   Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
   if (pExceptionWord) {
-    m_pExceptionWord = pExceptionWord;
+    m_pTask->m_pExceptionWord = pExceptionWord;
     return;
   }
   
@@ -282,7 +242,7 @@ void Forth::vSeedForth(Word* pSeedWord)
   
   Word* pExceptionDef = pRootDic->pFindWord("std_exceptionHook"_Stz);
   if (pExceptionDef) {
-    m_pExceptionWord = pExceptionDef;
+    m_pTask->m_pExceptionWord = pExceptionDef;
     return;
   }
 }

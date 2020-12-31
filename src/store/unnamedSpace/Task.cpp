@@ -93,6 +93,33 @@ Task::Task(Job* pJob)
 
   m_nOperandYield = 10;
 
+  
+  // -- from Forth --
+  //m_pTask        = pTask;
+  //m_pLogicUnit      = pLogicUnit;
+  
+  m_pSeedWord       = nullptr;
+  m_pExceptionWord  = nullptr;
+  
+  m_bSeedInitially  = false;
+  m_bDoneFinally    = false;
+
+  // m_oDicStack
+  // m_oSaveDicStack
+
+  m_aInxPtr      = nullptr;
+  
+  m_pAuxStack    = new TypedStack(KK_AUX_STACK);
+  m_pDataStack   = new TypedStack(KK_DATA_STACK);
+  m_pReturnStack = new TypedStack(KK_RETURN_STACK);
+
+  m_pLocalsFrame = nullptr;
+
+  m_pCompiler    = new Compiler;
+  m_pInput       = nullptr; // new Input;
+
+
+  
   _checkInitialised_(CN_TASK);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,6 +155,28 @@ Task::~Task(void) noexcept(false)
 
   //RASSERT(! m_pJob);
 
+  RASSERT(m_bSeedInitially);
+  RASSERT(m_bDoneFinally);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  delete m_pDataStack;
+  delete m_pReturnStack;
+  delete m_pAuxStack;
+  
+  while (m_pLocalsFrame) {
+    
+    LocalChain* pLocalsFrame = m_pLocalsFrame;
+    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    
+    delete pLocalsFrame;
+  }
+  
+  delete m_pCompiler;
+  delete m_pInput;
+
+  
+  
   delete m_pForth;
   
   delete m_pLogicUnit;
@@ -195,7 +244,7 @@ void Task::vTaskLoop(void)
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
     //   dereference it to get the intrinsic function to be called
-    fpSTEPFN fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpObjectFn );
+    fpSTEPFN fpStep = * ( (m_aInxPtr ++)->m_afpObjectFn );
     
     // call the intinsic
     try {
@@ -328,7 +377,7 @@ void Task::vAdjustFIP(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pForth->m_aInxPtr = aAdd<ForthCell*>(m_pForth->m_aInxPtr,nBytes);
+  m_aInxPtr = aAdd<ForthCell*>(m_aInxPtr,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,7 +387,7 @@ Object* Task::pArgObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Object* pObject = reinterpret_cast<Object*>(m_pForth->m_aInxPtr);
+  Object* pObject = reinterpret_cast<Object*>(m_aInxPtr);
   
   return pObject;
 }
@@ -392,7 +441,7 @@ void Task::vCaught(Exception xException)
   
   m_pForth->vReset();
   
-  m_pForth->m_aInxPtr = m_pForth->m_pExceptionWord->aFirstCell();
+  m_aInxPtr = m_pExceptionWord->aFirstCell();
 
   //vAbortProcess();
 }
@@ -615,9 +664,9 @@ void Task::vLocalsPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  LocalChain* pLocalsframe = m_pForth->m_pLocalsFrame;
+  LocalChain* pLocalsframe = m_pLocalsFrame;
   
-  m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
+  m_pLocalsFrame = m_pLocalsFrame->pNext();
   
   delete pLocalsframe;
 }
@@ -629,9 +678,9 @@ void Task::vLocalsPush(void)
 {
   LocalChain* pLocalsframe = new LocalChain;
   
-  pLocalsframe->vNext(m_pForth->m_pLocalsFrame);
+  pLocalsframe->vNext(m_pLocalsFrame);
   
-  m_pForth->m_pLocalsFrame = pLocalsframe;
+  m_pLocalsFrame = pLocalsframe;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,7 +813,7 @@ bool Task::bSeeded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pForth && m_pForth->m_aInxPtr)
+  if (m_pForth && m_aInxPtr)
     return true;
   else
     return false;
@@ -977,17 +1026,17 @@ void Task::vTracePoint(Stz* aMark)
   
   s256 sRoutine;
   
-  ForthCell* aHasCell = m_pForth->m_aInxPtr;
+  ForthCell* aHasCell = m_aInxPtr;
   
-  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateRoutineWord(aHasCell);
+  Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->szWordNm();
   else
     sRoutine = "<unknown>"_Stz;
   
-  i8 iAuxValues    = m_pForth->m_pAuxStack->nValues();
-  i8 iDataValues   = m_pForth->m_pDataStack->nValues();
-  i8 iReturnValues = m_pForth->m_pReturnStack->nValues();
+  i8 iAuxValues    = m_pAuxStack->nValues();
+  i8 iDataValues   = m_pDataStack->nValues();
+  i8 iReturnValues = m_pReturnStack->nValues();
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
@@ -1001,13 +1050,13 @@ void Task::vTracePoint(Stz* aMark)
          iAuxValues);
          
   s48K sStackContents;
-  vStackContents(m_pForth->m_pAuxStack, sStackContents);
+  vStackContents(m_pAuxStack, sStackContents);
   
   vTrace("%s"_Stz,sStackContents.azChar());
   
   vTrace(" r%2lld  d%2lld="_Stz, iReturnValues, iDataValues);
 
-  vStackContents(m_pForth->m_pDataStack, sStackContents);
+  vStackContents(m_pDataStack, sStackContents);
   
   vTrace("%s\n"_Stz,sStackContents.azChar());
 }
@@ -1021,15 +1070,15 @@ void Task::vTraceStep(Stz* aStepNm)
   
   s256 sRoutine;
   
-  ForthCell* aHasCell = m_pForth->m_aInxPtr;
-  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateRoutineWord(aHasCell);
+  ForthCell* aHasCell = m_aInxPtr;
+  Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->szWordNm();
   else
     sRoutine = "<unknown>"_Stz;
   
-  i8 iDataValues   = m_pForth->m_pDataStack->nValues();
-  i8 iReturnValues = m_pForth->m_pReturnStack->nValues();
+  i8 iDataValues   = m_pDataStack->nValues();
+  i8 iReturnValues = m_pReturnStack->nValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
          sRoutine.azChar(),
          aStepNm,
@@ -1037,7 +1086,7 @@ void Task::vTraceStep(Stz* aStepNm)
          iDataValues);
   
   s48K sStackContents;
-  vStackContents(m_pForth->m_pDataStack, sStackContents);
+  vStackContents(m_pDataStack, sStackContents);
   vTrace("%s\n"_Stz,sStackContents.azChar());
 }
 
@@ -1234,14 +1283,14 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // handle a StzVal, IntVal or a PtrVal
     
-    TypedCell* aTypedCell0 = m_pForth->m_pDataStack->aPeekItem(0);
+    TypedCell* aTypedCell0 = m_pDataStack->aPeekItem(0);
     eCN eClass = aTypedCell0->eType();
     
     // test for StzVal
     if (CN_STZVAL == eClass) {
       
       s48K sStr;
-      m_pForth->m_pDataStack->vPopStr(sStr,__func__);
+      m_pDataStack->vPopStr(sStr,__func__);
       
       if ('V' == *acFmt)
         *acDst++ = '"';
@@ -1259,7 +1308,7 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     else
     if (CN_INTVAL == eClass) {
       
-      i8 iInt = m_pForth->m_pDataStack->iPopInt(__func__);
+      i8 iInt = m_pDataStack->iPopInt(__func__);
       
       char caValue[32];
       StrLib::wToString(iInt,caValue);
@@ -1274,7 +1323,7 @@ void Task::vValSprint(s48K& sFormat, s48K& sString)
     else
     if (CN_PTRVAL == eClass) {
       
-      Object* pObject = m_pForth->m_pDataStack->pPopPtr(__func__);
+      Object* pObject = m_pDataStack->pPopPtr(__func__);
       
       char caValue[32];
       StrLib::wToPointer(pObject,caValue);

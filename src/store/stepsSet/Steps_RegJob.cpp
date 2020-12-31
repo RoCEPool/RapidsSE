@@ -23,7 +23,7 @@ void Step::vRegJobGet(void)
     
   Job* pJob = m_pTask->m_pJob;
 
-  m_pDataStack->vPushPtr(pJob);
+  m_pTask->m_pDataStack->vPushPtr(pJob);
 
   EXIT();
 }
