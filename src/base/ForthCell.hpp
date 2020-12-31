@@ -36,7 +36,7 @@ namespace BASE
       
       ForthCell* m_aJumpTo;  // a pointer to another cell within same routine
       
-      _Header m_xEmbVal;     // or marker for embedded value (for PushValue)
+      _Header m_xTypedValue; // or header for embedded typed value (PushValue)
     };
   };
   
