@@ -11,7 +11,8 @@
 /*----------------------------------------------------------------------------*/
 static Stz* C_EXPR_DEFN = "/__root__/definitions/object/expr"_Stz;
 
-static Stz* aTypeDefinitions[] = {
+// The path of the definition within the graph for each SQL expression type.
+static Stz* aExprTypeDefns[] = {
   /* 00 ET_NONE      */ "<INVALID>"_Stz,
   /* 01 ET_NULL      */ "/__root__/definitions/object/expr/literal/null"_Stz,
   /* 02 ET_BOOLEAN   */ "/__root__/definitions/object/expr/literal/boolean"_Stz,
@@ -35,14 +36,25 @@ static Stz* aTypeDefinitions[] = {
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void Expr::vDescribe(QueryNode* pStmt, s2K& sBuf)
+void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pStmt));
+  ASSERT(bValidate(pNode));
 
-  // TODO: manual polymorphism here
+  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
-  sBuf.vConcat(pStmt->szName());
+  // TODO: manual expression polymorphism here
+
+  // Literals
+  if      (LiteralExpr::bIsOfType(pNode)) { LiteralExpr::vDescribe(pNode, sBuf); }
+
+  // ColumnRefs
+  else if (ColumnRef::bIsOfType(pNode))   { ColumnRef::vDescribe(pNode, sBuf);   }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +65,15 @@ Stz* Expr::szTypeDefinition(eET eExprType)
   ASSERT(eExprType > ET_NONE);
   ASSERT(eExprType < ET_NENUMS);
 
-  return aTypeDefinitions[eExprType];
+  return aExprTypeDefns[eExprType];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the expr definition         */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsOfType(PlanNode *pNode)
+{
+  return ShadowNode::bIsOfType(pNode, C_EXPR_DEFN);
 }
 
 

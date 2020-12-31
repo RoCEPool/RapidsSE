@@ -288,9 +288,6 @@ void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNod
 
   } else if (ctx->obj() != nullptr) {
     NEVER_REACH
-    // Use the visit function on this child
-//    visitObj(ctx->obj());
-//    pNodeBuilder->m_xValue.m_pXref = static_cast<PlanNodeBuilder*>(m_pNodeBuilderStack->pPopPtr(__FUNCTION__));
 
   } else if (ctx->arr() != nullptr) {
      // Can't have an array in a value field

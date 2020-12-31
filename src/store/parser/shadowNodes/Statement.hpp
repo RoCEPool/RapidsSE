@@ -30,7 +30,13 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
-    static void       vDescribe(QueryNode* pStmt, s2K& sBuf);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+
+    // Returns true if a given node is a given type ** or is derived from that type **
+    static b1 bIsOfType(PlanNode* pNode);
+
+  protected:
+
   };
 
 }

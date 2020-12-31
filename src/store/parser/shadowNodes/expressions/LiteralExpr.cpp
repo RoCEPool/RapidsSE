@@ -10,6 +10,7 @@
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_LITERAL_NAME_PREFIX = "ExprLiteral"_Stz;
+static Stz* C_LITERAL_DEFN = "/__root__/definitions/object/expr/literal"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -36,15 +37,21 @@ QueryNode* LiteralExpr::pCreate(eET eType, Value xVal)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the statement into a buffer                       */
 /*----------------------------------------------------------------------------*/
-void LiteralExpr::vDescribe(QueryNode* pStmt, s2K& sBuf)
+void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pStmt));
+  ASSERT(bValidate(pNode));
 
-  sBuf.vConcat(pStmt->szName());
+  sBuf.vConcat(pNode->szName());
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the expr definition         */
+/*----------------------------------------------------------------------------*/
+b1 LiteralExpr::bIsOfType(PlanNode *pNode)
+{
+  return ShadowNode::bIsOfType(pNode, C_LITERAL_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

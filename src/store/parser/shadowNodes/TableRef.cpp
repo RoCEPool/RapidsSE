@@ -51,11 +51,13 @@ QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTable
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void TableRef::vDescribe(QueryNode* pTableRef, s2K& buf)
+void TableRef::vDescribe(PlanNode* pNode, s2K& buf)
 {
   _static_
 
-  ASSERT(bValidate(pTableRef));
+  ASSERT(bValidate(pNode));
+
+  QueryNode* pTableRef = static_cast<QueryNode*>(pNode);
 
   QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
   QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
@@ -84,6 +86,14 @@ void TableRef::vDescribe(QueryNode* pTableRef, s2K& buf)
   if (szTableName) {
     buf.vConcat(szTableName);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the tableRef definition     */
+/*----------------------------------------------------------------------------*/
+b1 TableRef::bIsOfType(PlanNode *pNode)
+{
+  return ShadowNode::bIsOfType(pNode, C_TABLEREF_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

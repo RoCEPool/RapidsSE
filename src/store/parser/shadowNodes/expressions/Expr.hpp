@@ -8,7 +8,7 @@ namespace Parser
   class Expr : public ShadowNode
   {
   public:
-    // Expression Type
+    // Sql Expression Type
     enum eET {
       ET_NONE = 0,
       ET_NULL,
@@ -29,7 +29,10 @@ namespace Parser
     Expr();
 
   public:
-    static void vDescribe(QueryNode* pStmt, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+
+    // Returns true if a given node is a given type ** or is derived from that type **
+    static b1 bIsOfType(PlanNode* pNode);
 
   protected:
     static Stz* szTypeDefinition(eET eExprType);

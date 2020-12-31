@@ -47,9 +47,56 @@ void ShadowNode::vObjName(Stz *szPrefix, s256 &sBuf)
 /*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
-void ShadowNode::vDescribe(PlanNode* planNode, s2K& sBuf)
+void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
-  // TODO: manual polymorphism here
+  // manual polymorphism here
+
+  // Statements
+  if      (Statement::bIsOfType(pNode)) { Statement::vDescribe(pNode, sBuf); }
+
+  // Expressions
+  else if (Expr::bIsOfType(pNode))      { Expr::vDescribe(pNode, sBuf);      }
+
+  // TableRefs
+  else if (TableRef::bIsOfType(pNode))  { TableRef::vDescribe(pNode, sBuf);  }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if a given node is a given type or is derived from that type. */
+/* e.g. a node with the following type:                                       */
+/*    /__root__/definitions/object/expr/literal/string                        */
+/* will return true when compared to the following type path:                 */
+/*    /__root__/definitions/object/expr                                       */
+/*----------------------------------------------------------------------------*/
+b1 ShadowNode::bIsOfType(PlanNode* pNode, Stz* szTypePath)
+{
+  ASSERT(pNode);
+  ASSERT(szTypePath);
+  ASSERT(szTypePath->nLength() > 0);
+
+  return pNode->szType()->bBeginsWith(szTypePath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if a given node is of an exact given type only.               */
+/* e.g. a node with the following type:                                       */
+/*    /__root__/definitions/object/expr/literal/string                        */
+/* will return false when compared to the following type path:                */
+/*    /__root__/definitions/object/expr                                       */
+/*----------------------------------------------------------------------------*/
+b1 ShadowNode::bIsExactType(PlanNode* pNode, Stz* szTypePath)
+{
+  ASSERT(pNode);
+  ASSERT(szTypePath);
+  ASSERT(szTypePath->nLength() > 0);
+
+  return pNode->szType()->bEqual(szTypePath);
 }
 
 /*============================================================================*/
