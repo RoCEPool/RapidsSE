@@ -3,9 +3,17 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 #include "PlanNodeBuilder.hpp"
+#include "PlanConstants.hpp"
+#include "PlanNode.hpp"
+#include "RootNode.hpp"
+#include "PrimitiveNode.hpp"
+#include "DefinitionNode.hpp"
+#include "QueryNode.hpp"
+#include "MetadataNode.hpp"
+#include "StatisticsNode.hpp"
+
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

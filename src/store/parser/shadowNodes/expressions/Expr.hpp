@@ -3,8 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#include "ShadowNode.hpp"
+
 namespace Parser
 {
+  class PlanNode;
+
   class Expr : public ShadowNode
   {
   public:

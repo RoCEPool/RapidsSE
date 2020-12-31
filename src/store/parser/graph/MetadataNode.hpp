@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "MutablePlanNode.hpp"
+
 namespace Parser
 {
   class MetadataNode : public MutablePlanNode

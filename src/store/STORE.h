@@ -216,33 +216,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Dynamo.hpp"
 
-//------------------------------------------------------------------------------
-
-#include "graph/PlanConstants.hpp"
-#include "graph/PlanNode.hpp"
-#include "graph/PlanNodeBuilder.hpp"
-#include "graph/RootNode.hpp"
-#include "graph/DefinitionNode.hpp"
-#include "graph/PrimitiveNode.hpp"
-#include "graph/MutablePlanNode.hpp"
-#include "graph/QueryNode.hpp"
-#include "graph/MetadataNode.hpp"
-#include "graph/StatisticsNode.hpp"
-#include "graph/PlanDefinitionParser.hpp"
-
-#include "shadowNodes/ShadowNode.hpp"
-#include "shadowNodes/TableRef.hpp"
-#include "shadowNodes/Statement.hpp"
-#include "shadowNodes/expressions/Expr.hpp"
-#include "shadowNodes/expressions/LiteralExpr.hpp"
-#include "shadowNodes/expressions/ColumnRef.hpp"
-
-#include "graphTools/GraphNav.hpp"
-#include "graphTools/GraphEditor.hpp"
-
-#include "parser/stages/parser/SqlPlanner.hpp"
-
-using namespace Parser;
 
 //------------------------------------------------------------------------------
 

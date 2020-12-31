@@ -3,7 +3,15 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+#include "ShadowNode.hpp"
+
+#include "PlanNode.hpp"
+
+#include "Statement.hpp"
+#include "TableRef.hpp"
+#include "Expr.hpp"
+
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/

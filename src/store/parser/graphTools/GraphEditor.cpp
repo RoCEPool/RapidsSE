@@ -3,9 +3,14 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+#include "GraphEditor.hpp"
+#include "PlanNode.hpp"
+#include "PrimitiveNode.hpp"
+#include "PlanConstants.hpp"
+#include "QueryNode.hpp"
+#include "GraphNav.hpp"
 
-
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

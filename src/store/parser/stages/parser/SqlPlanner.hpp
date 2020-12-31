@@ -4,9 +4,13 @@
 #pragma once
 
 #include "sqlBaseVisitor.h"
+#include "QueryNodeStack.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
+  class PlanNode;
+
   class SqlPlanner : public Object, public sqlBaseVisitor
   {
   private:

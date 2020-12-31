@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "PlanNode.hpp"
+
 namespace Parser
 {
   class DefinitionNode : public PlanNode
