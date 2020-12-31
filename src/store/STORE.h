@@ -45,7 +45,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "TypedStack.hpp"
 
 #include "Compiler.hpp"
-#include "Forth.hpp"
 #include "Word.hpp"
 
 #include "SP_Word.hpp"
