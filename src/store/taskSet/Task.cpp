@@ -7,7 +7,6 @@
 
 
 #include "PsxThd.hpp" //?
-#include "TagConstants.h"
 
 Atomic gixTask;
 
@@ -221,8 +220,6 @@ void Task::vTaskLoop(void)
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
 
   //RASSERT(! bIsLocked());
-
-  ASSERT(! m_pJob || ! m_pJob->pJobTags()->szValue(C_TAG_PATH)->bSame(""_Stz));
   
   if (! m_aInxPtr)
     vInitExeContext();

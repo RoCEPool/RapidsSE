@@ -132,7 +132,7 @@ namespace STORE
   Word* _pWord(void* aAddr);
 }
 
-void vEnterRoutine(Forth* pForth);
+void vEnterRoutine(Step* pStep);
 
 /*============================================================================*/
 /* end                                                                        */

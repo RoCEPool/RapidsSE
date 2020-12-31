@@ -167,7 +167,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddMunged(void);
-    void vAddMunged(Forth* pForth);
+    void vAddMunged(Task* pTask);
     void vAddAxioms(void);
     Word* pCompileAxiomaticColon(s48K& sDefinition);
     void  vCompileMungedColon(Stz* szDefinition);
