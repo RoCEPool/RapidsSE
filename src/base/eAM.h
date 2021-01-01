@@ -48,42 +48,42 @@ enum eAM // ASM Macros
 
 static Stz* aAM[]
 {
-    /*  0 */ "AM_NONE"_Stz,
+    /*  0 */ "NONE"_Stz,
 
-    /*    */ "AM_CRW_PROJECT_COLUMNS"_Stz,
-    /*    */ "AM_CRW_PROJECT_END"_Stz,
-    /*    */ "AM_CRW_PROJECT_NONE"_Stz,
-    /*    */ "AM_CRW_PROJECT_STAR"_Stz,
+    /*    */ "CRW_PROJECT_COLUMNS"_Stz,
+    /*    */ "CRW_PROJECT_END"_Stz,
+    /*    */ "CRW_PROJECT_NONE"_Stz,
+    /*    */ "CRW_PROJECT_STAR"_Stz,
 
-    /*    */ "AM_DATAPULSE_INDEXRANGE"_Stz,
+    /*    */ "DATAPULSE_INDEXRANGE"_Stz,
 
-    /*    */ "AM_DEFAULT_HANDLER_CRWBUFFER"_Stz,
-    /*    */ "AM_DEFAULT_HANDLER_DATAPULSE"_Stz,
-    /*    */ "AM_DEFAULT_HANDLER_EOSMARKER"_Stz,
-    /*    */ "AM_DEFAULT_HANDLER_ROWBUFFER"_Stz,
-    /*    */ "AM_DEFAULT_HANDLER_STARTMARKER"_Stz,
-    /*    */ "AM_DEFAULT_HANDLER_STREAMDEF"_Stz,
+    /*    */ "DEFAULT_HANDLER_CRWBUFFER"_Stz,
+    /*    */ "DEFAULT_HANDLER_DATAPULSE"_Stz,
+    /*    */ "DEFAULT_HANDLER_EOSMARKER"_Stz,
+    /*    */ "DEFAULT_HANDLER_ROWBUFFER"_Stz,
+    /*    */ "DEFAULT_HANDLER_STARTMARKER"_Stz,
+    /*    */ "DEFAULT_HANDLER_STREAMDEF"_Stz,
 
-    /*    */ "AM_HANDLER_CRWBUFFER"_Stz,
-    /*    */ "AM_HANDLER_DATAPULSE"_Stz,
-    /*    */ "AM_HANDLER_ROWBUFFER"_Stz,
+    /*    */ "HANDLER_CRWBUFFER"_Stz,
+    /*    */ "HANDLER_DATAPULSE"_Stz,
+    /*    */ "HANDLER_ROWBUFFER"_Stz,
 
-    /*    */ "AM_INDEX_EQ"_Stz,
-    /*    */ "AM_INDEX_RANGE_LOWER_GT"_Stz,
-    /*    */ "AM_INDEX_RANGE_LOWER_GE"_Stz,
-    /*    */ "AM_INDEX_LOWER_BOUND_GE"_Stz,
-    /*    */ "AM_INDEX_LOWER_BOUND_GT"_Stz,
-    /*    */ "AM_INDEX_UPPER_BOUND"_Stz,
+    /*    */ "INDEX_EQ"_Stz,
+    /*    */ "INDEX_RANGE_LOWER_GT"_Stz,
+    /*    */ "INDEX_RANGE_LOWER_GE"_Stz,
+    /*    */ "INDEX_LOWER_BOUND_GE"_Stz,
+    /*    */ "INDEX_LOWER_BOUND_GT"_Stz,
+    /*    */ "INDEX_UPPER_BOUND"_Stz,
 
-    /*    */ "AM_QUERY_DONE"_Stz,
-    /*    */ "AM_QUERY_INIT"_Stz,
+    /*    */ "QUERY_DONE"_Stz,
+    /*    */ "QUERY_INIT"_Stz,
 
-    /*    */ "AM_ROW_PROJECT_COLUMNS"_Stz,
-    /*    */ "AM_ROW_PROJECT_END"_Stz,
-    /*    */ "AM_ROW_PROJECT_NONE"_Stz,
-    /*    */ "AM_ROW_PROJECT_STAR"_Stz,
+    /*    */ "ROW_PROJECT_COLUMNS"_Stz,
+    /*    */ "ROW_PROJECT_END"_Stz,
+    /*    */ "ROW_PROJECT_NONE"_Stz,
+    /*    */ "ROW_PROJECT_STAR"_Stz,
 
-    /*    */ "AM_ENUMS"_Stz
+    /*    */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
