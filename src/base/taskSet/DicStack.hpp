@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   static const i8 C_DIC_STACKDEPTH = 16;
 

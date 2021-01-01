@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 extern fpSTEPFN gfpEntryStep;
@@ -15,7 +14,7 @@ extern fpSTEPFN gfpEntryStep;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Word* STORE::_pWord(void* aAddr)
+Word* BASE::_pWord(void* aAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(aAddr);
   

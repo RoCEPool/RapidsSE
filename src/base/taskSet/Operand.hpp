@@ -6,7 +6,7 @@
 #include "ePT.h"
 #include "eZK.h"
 
-namespace STORE
+namespace BASE
 {
   class Operand : public AlignedObject,
                   public ListItem_t<Operand>

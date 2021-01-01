@@ -24,6 +24,11 @@
 #include "eYA.h"
 
 namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracker;}
+namespace BASE { class Operand;                                  }
+namespace BASE { class Dic;             class DicStack;
+                 class Word;              }
+
+namespace STORE          { class Session;         class SessionState;      }
 
 
 namespace STORE    { class Crw;             class CrwBuffer;
@@ -52,7 +57,6 @@ namespace STORE           { class Log;             class LogEntry;          }
 namespace STORE          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
-namespace STORE          { class Operand;                                  }
 namespace STORE      {
                               class PtnStream;       class TablePtn;          }
 namespace STORE         { class Xmits;           class Op;
@@ -63,9 +67,6 @@ namespace STORE     { class OpSpec;          class PipelineSpec;
 namespace STORE             { class Planner;                                  }
 namespace STORE   { class Crv;                                      }
 namespace STORE              { class Row;                                      }
-namespace STORE             { class Dic;             class DicStack;
-                              class Forth;           class Word;              }
-namespace STORE          { class Session;         class SessionState;      }
 namespace STORE             { class Step;            class StepTiming;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 

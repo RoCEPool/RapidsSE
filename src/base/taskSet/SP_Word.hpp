@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   class SP_Word : public SP
   {

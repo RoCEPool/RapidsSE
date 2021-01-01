@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 
@@ -14,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Operand* STORE::_pOperand(void* aAddress)
+Operand* BASE::_pOperand(void* aAddress)
 {
   Operand* pOperand = reinterpret_cast<Operand*>(aAddress);
   
@@ -24,7 +23,7 @@ Operand* STORE::_pOperand(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid operand?                                            */
 /*----------------------------------------------------------------------------*/
-bool STORE::_bIsValidOperand(eCN eClass)
+bool BASE::_bIsValidOperand(eCN eClass)
 {
   switch(eClass) {
     case CN_CRWBUFFER:

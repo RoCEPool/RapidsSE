@@ -3,13 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicStack* STORE::_pDicStack(void* aAddr)
+DicStack* BASE::_pDicStack(void* aAddr)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   

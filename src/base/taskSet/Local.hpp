@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   class Local : public Object
   {

@@ -3,13 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LocalChain* STORE::_pLocalSet(void* aAddr)
+LocalChain* BASE::_pLocalSet(void* aAddr)
 {
   LocalChain* pLocalSet = reinterpret_cast<LocalChain*>(aAddr);
   
@@ -124,7 +123,7 @@ Local* LocalChain::pLocal(i8 i_Local)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
   
-  ASSERT(i_Local >= 0 && i_Local < C_LOGIC_LOCALS);
+  ASSERT(i_Local >= 0 && i_Local < C_LOCALS_arguments);
   
   return &m_xLocal[i_Local];
 }

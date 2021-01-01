@@ -3,13 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Compiler,CN_COMPILER)
+__pCastFunction(BASE,Compiler,CN_COMPILER)
 __aNewFunction(Compiler,CN_COMPILER)
 __vDeleteFunction(Compiler,CN_COMPILER)
 __aFooterFunction(Compiler)
