@@ -1887,6 +1887,19 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 
 void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
 
+
+void AM::vJobInitExeContext(Job* pJob) {
+  
+  if (! pJob->pLogicUnit_job()) {
+    LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
+    pJob->vLogicUnit_job( & pLogicUnit );
+  }
+
+}
+
+
+
+
 Task* AM::pTaskNew(Job* pJob) {
   Task* pTask = new Task(pJob,pJob->m_iFocalId);
   pJob->vTask(pTask);
@@ -1907,6 +1920,11 @@ Job* AM::pTaskJob(void) {
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
   pJob->pJobTags()->vInsert(C_TAG_TABLENM,szObjectName);
 }
+
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

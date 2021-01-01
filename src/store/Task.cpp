@@ -208,10 +208,12 @@ void Task::vTaskLoop(void)
   if (! bSeeded()) {
     vInitExeContext();
     
-    if (! pLogicUnit_task()) {
-      LogicUnit* pLogicUnit = new LogicUnit(this);
-      vLogicUnit_task( & pLogicUnit );
-    }
+//    if (! pLogicUnit_task()) {
+//      LogicUnit* pLogicUnit = new LogicUnit(this);
+//      vLogicUnit_task( & pLogicUnit );
+//    }
+    AM::vJobInitExeContext(pJob());
+    
     vSeedTask();
   }
   

@@ -258,6 +258,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
+    static void vJobInitExeContext(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
 
     static bool bIsOperandOoO(Operand* pOperand);
