@@ -459,7 +459,10 @@ i8 AM::nRndSkipLevel(void) {
   i8 nLevels;
   if (AM::bDeveloper()) {
     Task* pTask = Task::pThisTLSTask();
-    nLevels = RndLib::iSkipLevel(nLvlLevels,iLvlRatio,pTask->i_NextRnd());
+    nLevels =
+      RndLib::iSkipLevel(nLvlLevels,
+                         iLvlRatio,
+                         pTask->pJob()->pLogicUnit_job()->m_i_NextRnd);
   }
   else {
     nLevels = RndLib::iSkipLevel(nLvlLevels,iLvlRatio);

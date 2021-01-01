@@ -120,7 +120,6 @@ namespace STORE
     void vMutexUnlock(void);
     void vMutexWait(void);
     void vNewInput(void);
-    i8&  i_NextRnd(void);
     Profile* pProfile(void);
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);

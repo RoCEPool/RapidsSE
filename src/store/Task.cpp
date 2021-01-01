@@ -668,16 +668,6 @@ void Task::vNewInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next repeatable random number subscript                                */
-/*----------------------------------------------------------------------------*/
-i8& Task::i_NextRnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return pLogicUnit_task()->m_i_NextRnd;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get register set                                                           */
 /*----------------------------------------------------------------------------*/
 Profile* Task::pProfile(void)
