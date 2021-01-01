@@ -111,7 +111,6 @@ Task::Task(Job* pJob, i8 iFocalId)
   m_pCompiler    = new Compiler;
   m_pInput       = nullptr; // new Input;
 
-
   
   _checkInitialised_(CN_TASK);
     
@@ -209,11 +208,10 @@ void Task::vTaskLoop(void)
 
   //RASSERT(! bIsLocked());
   
-  if (! m_aInxPtr)
+  if (! bSeeded()) {
     vInitExeContext();
-
-  if (! bSeeded())
     vSeedTask();
+  }
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -598,7 +596,7 @@ void Task::vInitExeContext(void)
     szProfileNm = AM::szJobNm(m_pJob);
   
   m_pProfile = new Profile(szProfileNm);
-  m__pLogicUnit  = new LogicUnit(this);
+  vLogicUnit( new LogicUnit(this) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -767,6 +765,17 @@ LogicUnit* Task::pLogicUnit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m__pLogicUnit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get register set                                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicUnit(LogicUnit* pLogicUnit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  ASSERT(! m__pLogicUnit);
+  m__pLogicUnit = pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/

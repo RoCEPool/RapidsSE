@@ -29,7 +29,7 @@ namespace STORE
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread
-    SMA<LogicUnit> m__pLogicUnit;      // set of registers for the task steps
+    LogicUnit* m__pLogicUnit;      // set of registers for the task steps
 
     eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // schedulre transition request
@@ -127,6 +127,7 @@ namespace STORE
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     LogicUnit* pLogicUnit(void);
+    void vLogicUnit(LogicUnit* pLogicUnit);
     void vReset(void);
     void vReseed(void);
     DicStack* pSaveDicStack(void);
