@@ -210,6 +210,7 @@ void Task::vTaskLoop(void)
   
   if (! bSeeded()) {
     vInitExeContext();
+    vLogicUnit( new LogicUnit(this) );
     vSeedTask();
   }
   
@@ -596,7 +597,6 @@ void Task::vInitExeContext(void)
     szProfileNm = AM::szJobNm(m_pJob);
   
   m_pProfile = new Profile(szProfileNm);
-  vLogicUnit( new LogicUnit(this) );
 }
 
 /*----------------------------------------------------------------------------*/
