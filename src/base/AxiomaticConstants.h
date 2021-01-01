@@ -3,14 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_ALL          = -1;
-static const i8 C_VARGS_BEGIN  = -1;
-static const i8 C_VARGS_END    = -1;
-static const i8 C_NEVER_THROWN = -1;
-static const i8 C_NIL          = -1;
-static const i8 C_UNKNOWN      = -1;
-static const i8 C_IGNORED      = -1;
-
 static const i8 C_DATUM_NULL           = LLONG_MIN + 1;
 static const i8 C_DATUM_MINUS_INFINITY = LLONG_MIN;
 static const i8 C_DATUM_PLUS_INFINITY  = LLONG_MAX;
@@ -24,6 +16,18 @@ static const d8 C_D8_MAX = DBL_MAX;
 static const d8 C_D8_MID = DBL_MAX / 2.0;
 
 
+
+
+static const i8 C_ALL          = -1;
+static const i8 C_VARGS_BEGIN  = -1;
+static const i8 C_VARGS_END    = -1;
+static const i8 C_NEVER_THROWN = -1;
+static const i8 C_NIL          = -1;
+static const i8 C_UNKNOWN      = -1;
+static const i8 C_IGNORED      = -1;
+
+
+
 static const bool B_CALL_AGAIN      = true;
 static const bool B_DONT_CALL_AGAIN = false;
 
@@ -33,23 +37,9 @@ static const i8 C_SET_OFFSETS       = 128;
 static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
 static const i8 C_CHUNKBLOCK        = 2048;
 
-static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 
 
-
-static const i8 C_ERA_0 =  0; // 1900
-static const i8 C_ERA_1 = 92; // 1992
-static const i8 C_ERA_2 = 99; // 1999
-
-static const u8 C_YEAR_BASE  = 1900;
-static const u8 C_YEAR_RANGE = 255;
-static const u8 C_YEAR_MAX   = C_YEAR_BASE + C_YEAR_RANGE;
-static const u8 C_YEAR_MIN   = C_YEAR_BASE;
-
-static const u8 C_IVL_SEC_MAX    = 999999999;
-static const u8 C_IVL_USEC_MAX   = 999999;
-static const u8 C_IVL_USEC_SHIFT = 1000000;
 
 
 

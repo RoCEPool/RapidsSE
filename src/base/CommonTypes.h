@@ -6,6 +6,20 @@
 typedef i8 tPN; // opaque type for partition number in grid
 typedef i8 tXN; // opaque type for transaction number
 
+
+static const i8 C_ERA_0 =  0; // 1900
+static const i8 C_ERA_1 = 92; // 1992
+static const i8 C_ERA_2 = 99; // 1999
+
+static const u8 C_YEAR_BASE  = 1900;
+static const u8 C_YEAR_RANGE = 255;
+static const u8 C_YEAR_MAX   = C_YEAR_BASE + C_YEAR_RANGE;
+static const u8 C_YEAR_MIN   = C_YEAR_BASE;
+
+static const u8 C_IVL_SEC_MAX    = 999999999;
+static const u8 C_IVL_USEC_MAX   = 999999;
+static const u8 C_IVL_USEC_SHIFT = 1000000;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // bcd / decimal
 class Bcd
