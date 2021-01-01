@@ -76,7 +76,7 @@ Task::Task(Job* pJob, i8 iFocalId)
 
   m_pJob         = pJob;
   m_pThread      = nullptr;
-  m_pLogicUnit   = nullptr;
+  m__pLogicUnit   = nullptr;
 
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
@@ -162,7 +162,7 @@ Task::~Task(void) noexcept(false)
   delete m_pInput;
 
   
-  delete m_pLogicUnit;
+  delete m__pLogicUnit;
   
   if (m_pJob) {
     Job* pJob = _pJob(m_pJob);
@@ -254,8 +254,6 @@ void Task::vAssertStructure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  // must have these
-  RASSERT(m_pLogicUnit);
 }
 
 
@@ -389,7 +387,7 @@ void Task::vCaught(Exception xException)
 
   AM::vJobContentDump(m_pJob);
   
-  m_pLogicUnit->vContentDump();
+  pLogicUnit()->vContentDump();
   
   AM::pGrid()->vDsv();
 
@@ -503,10 +501,10 @@ void Task::vDump(void)
   
   AM::vJobContentDump(m_pJob);
   
-  if (m_pLogicUnit->m_xpOp.bIsNotNull())
-    m_pLogicUnit->m_xpOp->vDump();
+  if (pLogicUnit()->m_xpOp.bIsNotNull())
+    pLogicUnit()->m_xpOp->vDump();
   
-  m_pLogicUnit->vContentDump();
+  pLogicUnit()->vContentDump();
   
   
   
@@ -600,7 +598,7 @@ void Task::vInitExeContext(void)
     szProfileNm = AM::szJobNm(m_pJob);
   
   m_pProfile = new Profile(szProfileNm);
-  m_pLogicUnit  = new LogicUnit(this);
+  m__pLogicUnit  = new LogicUnit(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -718,7 +716,7 @@ i8& Task::i_NextRnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pLogicUnit->m_i_NextRnd;
+  return pLogicUnit()->m_i_NextRnd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -768,7 +766,7 @@ LogicUnit* Task::pLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pLogicUnit;
+  return m__pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -877,7 +875,7 @@ STORE::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pLogicUnit->m_pSendNode;
+  return pLogicUnit()->m_pSendNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -887,7 +885,7 @@ void Task::vSendNode(STORE::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pLogicUnit->m_pSendNode = pNode;
+  pLogicUnit()->m_pSendNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/

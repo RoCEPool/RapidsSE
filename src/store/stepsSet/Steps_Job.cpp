@@ -446,9 +446,9 @@ void Step::vJobBideOperand(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pLogicUnit->m_xpOperandA = pJob->m_pOp->pPopQueue();
+  pLogicUnit()->m_xpOperandA = pJob->m_pOp->pPopQueue();
   
-  if (m_pLogicUnit->m_xpOperandA.bIsNull()) {
+  if (pLogicUnit()->m_xpOperandA.bIsNull()) {
     vScheduleBide();
   }
   
@@ -625,7 +625,7 @@ void Step::vJobFindOriginator(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&pLogicUnit()->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -647,7 +647,7 @@ void Step::vJobFindParticipant(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&pLogicUnit()->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -806,9 +806,9 @@ void Step::vJobNextOperand(void)
   
   Op* pOp = pJob->m_pOp;
   
-  if (m_pLogicUnit->m_xpOperandA.bIsNull())
-    m_pLogicUnit->m_xpOperandA = pOp->pPopQueue();
-  ASSERT(*m_pLogicUnit->m_xpOperandA);
+  if (pLogicUnit()->m_xpOperandA.bIsNull())
+    pLogicUnit()->m_xpOperandA = pOp->pPopQueue();
+  ASSERT(*pLogicUnit()->m_xpOperandA);
   
   EXIT();
 }

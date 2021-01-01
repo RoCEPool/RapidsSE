@@ -27,7 +27,7 @@ void Step::vRegAggTimerGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpAggTimer);
+  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpAggTimer);
 
   EXIT();
 }
@@ -39,7 +39,7 @@ void Step::vRegAggTimerSet(void)
 {
   ENTRY();
     
-  m_pLogicUnit->m_xpAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
+  pLogicUnit()->m_xpAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

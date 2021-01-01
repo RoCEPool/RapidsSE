@@ -127,6 +127,9 @@ Job::Job(eCN eClassNo)
   m_pOp       = nullptr;
   m_pOuterOp  = nullptr;
   m_pInputOp  = nullptr;
+  
+  
+  m_pLogicUnit = nullptr;
 
   //m_xResult
   // -- -- -- -- -- --
@@ -758,6 +761,26 @@ TagSet* Job::pJobTags(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return & m_oJobTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the logic unit                                                         */
+/*----------------------------------------------------------------------------*/
+LogicUnit* Job::pLogicUnit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pLogicUnit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the logic unit                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vLogicUnit(LogicUnit* pLogicUnit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pLogicUnit = pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/

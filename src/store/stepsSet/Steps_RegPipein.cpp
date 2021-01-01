@@ -35,9 +35,9 @@ void Step::vRegPipeinBide(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpPipein = m_pJob->m_pOp->pPopQueue();
+  pLogicUnit()->m_xpPipein = m_pJob->m_pOp->pPopQueue();
   
-  if (m_pLogicUnit->m_xpPipein.bIsNull()) {
+  if (pLogicUnit()->m_xpPipein.bIsNull()) {
     vScheduleBide();
   }
   
@@ -51,9 +51,9 @@ void Step::vRegPipeinDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpPipein);
+  AM::vDeleteOperand(*pLogicUnit()->m_xpPipein);
   
-  m_pLogicUnit->m_xpPipein = nullptr;
+  pLogicUnit()->m_xpPipein = nullptr;
   
   EXIT();
 }
@@ -65,7 +65,7 @@ void Step::vRegPipeinGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPipein);
+  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpPipein);
   
   EXIT();
 }
@@ -77,7 +77,7 @@ void Step::vRegPipeinIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPipein.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(pLogicUnit()->m_xpPipein.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -89,7 +89,7 @@ void Step::vRegPipeinKind(void)
 {
   ENTRY();
   
-  Operand* pOperand = *m_pLogicUnit->m_xpPipein;
+  Operand* pOperand = *pLogicUnit()->m_xpPipein;
   
   eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
     
@@ -105,9 +105,9 @@ void Step::vRegPipeinNext(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpPipein.bIsNull())
-    m_pLogicUnit->m_xpPipein = m_pJob->m_pOp->pPopQueue();
-  ASSERT(*m_pLogicUnit->m_xpPipein);
+  if (pLogicUnit()->m_xpPipein.bIsNull())
+    pLogicUnit()->m_xpPipein = m_pJob->m_pOp->pPopQueue();
+  ASSERT(*pLogicUnit()->m_xpPipein);
   
   EXIT();
 }
@@ -131,13 +131,13 @@ void Step::vRegPipeinPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*m_pLogicUnit->m_xpPipein);
+  ASSERT(*pLogicUnit()->m_xpPipein);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
-  pOp->vPipeOut_nextOp(*m_pLogicUnit->m_xpPipein,this);
+  pOp->vPipeOut_nextOp(*pLogicUnit()->m_xpPipein,this);
   
-  m_pLogicUnit->m_xpPipein = nullptr;
+  pLogicUnit()->m_xpPipein = nullptr;
   
   EXIT();
 }
@@ -149,13 +149,13 @@ void Step::vRegPipeinPipeToJob(void)
 {
   ENTRY();
   
-  ASSERT(*m_pLogicUnit->m_xpPipein);
+  ASSERT(*pLogicUnit()->m_xpPipein);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeToJob(*m_pLogicUnit->m_xpPipein);
+  pOp->vPipeToJob(*pLogicUnit()->m_xpPipein);
   
-  m_pLogicUnit->m_xpPipein = nullptr;
+  pLogicUnit()->m_xpPipein = nullptr;
   
   EXIT();
 }
@@ -168,8 +168,8 @@ void Step::vRegPipeinSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || m_pLogicUnit->m_xpPipein.bIsNull());
-  m_pLogicUnit->m_xpPipein = _pOperand(pOperand);
+  ASSERT(! pOperand || pLogicUnit()->m_xpPipein.bIsNull());
+  pLogicUnit()->m_xpPipein = _pOperand(pOperand);
   
   EXIT();
 }
@@ -181,11 +181,11 @@ void Step::vRegPipeinWriteProfile(void)
 {
   ENTRY();
   
-  ASSERT(*m_pLogicUnit->m_xpPipein);
+  ASSERT(*pLogicUnit()->m_xpPipein);
   
-  Profile* pProfile = _pProfile(*m_pLogicUnit->m_xpPipein);
+  Profile* pProfile = _pProfile(*pLogicUnit()->m_xpPipein);
   
-  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
+  File* pFile = _pFile(*pLogicUnit()->m_xpFile0);
   
   pProfile->vWriteReport(pFile);
   

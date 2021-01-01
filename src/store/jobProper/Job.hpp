@@ -31,7 +31,7 @@ namespace STORE
 
   public:
   
-    //SMA<LogicUnit> m_pLogicUnit;      // set of registers for the task steps
+    LogicUnit* m_pLogicUnit;      // set of registers for the task steps
 
     TagSet    m_oJobTags;     // tags for the job
   
@@ -117,6 +117,8 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
+    LogicUnit* pLogicUnit(void);
+    void vLogicUnit(LogicUnit* pLogicUnit);
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);

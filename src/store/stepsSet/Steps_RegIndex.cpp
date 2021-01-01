@@ -26,7 +26,7 @@ void Step::vRegIndexGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndex);
+  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpIndex);
   
   EXIT();
 }
@@ -38,7 +38,7 @@ void Step::vRegIndexSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  pLogicUnit()->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

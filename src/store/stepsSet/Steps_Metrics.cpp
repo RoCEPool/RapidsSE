@@ -25,7 +25,7 @@ void Step::vExpressionsLockSample(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDef = *m_pLogicUnit->m_xpStreamDef;
+  StreamDef* pStreamDef = *pLogicUnit()->m_xpStreamDef;
     
   //InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   
