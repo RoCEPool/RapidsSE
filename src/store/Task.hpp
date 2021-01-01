@@ -152,7 +152,6 @@ namespace STORE
     void vScheduleWait(void);
     eTR  eTranstionRequest(void);
     void vTranstionRequestClear(void);
-    void vUnlinkJob(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);
     bool bWakeupNow(void);

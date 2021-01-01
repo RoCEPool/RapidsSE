@@ -146,8 +146,12 @@ void Step::vTaskDump(void)
 void Step::vTaskDelete(void)
 {
   ENTRY();
-  
-  vUnlinkJob();
+    
+  // unlink task and job
+  if (m_pJob) {
+    m_pJob->vTask(nullptr);
+    m_pJob = nullptr;
+  }
   
   vGrabTaskLock();
   vScheduleDelete();
