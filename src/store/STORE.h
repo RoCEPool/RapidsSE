@@ -256,7 +256,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "AttachMap.hpp"
 #include "Constants.hpp"
-#include "EnvCheck.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

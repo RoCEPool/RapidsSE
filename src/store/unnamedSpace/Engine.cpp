@@ -7,6 +7,7 @@
 #include "PROMPT.h"
 
 #include "Engine.hpp"
+#include "EnvCheck.hpp"
 
 #include "Step.hpp"
 
