@@ -32,7 +32,7 @@ void Step::vRegOperandBAppendClose(void)
 {
   ENTRY();
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*pLogicUnit_task()->m_xpOperandB);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   pCrwBuffer->vAppendClose();
   
   EXIT();
@@ -45,9 +45,9 @@ void Step::vRegOperandBDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*pLogicUnit_task()->m_xpOperandB);
+  AM::vDeleteOperand(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   
-  pLogicUnit_task()->m_xpOperandB = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = nullptr;
   
   EXIT();
 }
@@ -59,7 +59,7 @@ void Step::vRegOperandBGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpOperandB);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vRegOperandBIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpOperandB.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -83,7 +83,7 @@ void Step::vRegOperandBIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpOperandB.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -95,13 +95,13 @@ void Step::vRegOperandBPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*pLogicUnit_task()->m_xpOperandB);
+  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeOut_nextOp(*pLogicUnit_task()->m_xpOperandB,this);
+  pOp->vPipeOut_nextOp(*( m_pJob->pLogicUnit_job() )->m_xpOperandB,this);
   
-  pLogicUnit_task()->m_xpOperandB = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = nullptr;
   
   EXIT();
 }
@@ -113,8 +113,8 @@ void Step::vRegOperandBSet(void)
 {
   ENTRY();
   
-  ASSERT(pLogicUnit_task()->m_xpOperandB.bIsNull());
-  pLogicUnit_task()->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));
+  ASSERT(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull());
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

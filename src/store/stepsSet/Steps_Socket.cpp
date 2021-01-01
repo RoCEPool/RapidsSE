@@ -956,8 +956,8 @@ void Step::vSocketSendObject(void)
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
-              pLogicUnit_task()->m_pSendNode ?
-                pLogicUnit_task()->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
+              ( m_pJob->pLogicUnit_job() )->m_pSendNode ?
+                ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
               C_VARGS_END);
 
     

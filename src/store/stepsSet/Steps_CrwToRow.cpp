@@ -29,7 +29,7 @@ void Step::vCrwToRowCompleted(void)
 {
   ENTRY();
   
-  CrwToRow* pCrwToRow = *pLogicUnit_task()->m_xpCrwToRow;
+  CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
 
   RowBuffer* pRowBuffer = pCrwToRow->pFullRowBuffer();
   
@@ -45,9 +45,9 @@ void Step::vCrwToRowConvert(void)
 {
   ENTRY();
 
-  CrwToRow* pCrwToRow = *pLogicUnit_task()->m_xpCrwToRow;
+  CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*pLogicUnit_task()->m_xpOperandA);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
   bool bResult = pCrwToRow->bConvertCrwToRow(pCrwBuffer);
   
@@ -61,11 +61,11 @@ void Step::vCrwToRowCreate(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDef = * pLogicUnit_task()->m_xpStreamDef;
+  StreamDef* pStreamDef = * ( m_pJob->pLogicUnit_job() )->m_xpStreamDef;
 
   CrwToRow* pCrwToRow = new CrwToRow(pStreamDef);
       
-  pLogicUnit_task()->m_xpCrwToRow = pCrwToRow;
+  ( m_pJob->pLogicUnit_job() )->m_xpCrwToRow = pCrwToRow;
     
   EXIT();
 }
@@ -77,11 +77,11 @@ void Step::vCrwToRowDangling(void)
 {
   ENTRY();
   
-  if (pLogicUnit_task()->m_xpCrwToRow.bIsNull()) {
+  if (( m_pJob->pLogicUnit_job() )->m_xpCrwToRow.bIsNull()) {
     m_pDataStack->vPushPtr(nullptr);
   }
   else {
-    CrwToRow* pCrwToRow = *pLogicUnit_task()->m_xpCrwToRow;
+    CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
     RowBuffer* pRowBuffer = pCrwToRow->pDanglingRowBuffer();
     m_pDataStack->vPushPtr(pRowBuffer);
   }
@@ -96,8 +96,8 @@ void Step::vCrwToRowDelete(void)
 {
   ENTRY();
   
-  CrwToRow* pCrwToRow = *pLogicUnit_task()->m_xpCrwToRow;
-  pLogicUnit_task()->m_xpCrwToRow = nullptr;
+  CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
+  ( m_pJob->pLogicUnit_job() )->m_xpCrwToRow = nullptr;
   
   delete pCrwToRow;
   

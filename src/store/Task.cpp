@@ -345,15 +345,6 @@ Object* Task::pArgObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin operator functionality                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vBeginOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
 void Task::vCaught(Exception xException)
@@ -705,16 +696,6 @@ void Task::vQueue(eQK eQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eQueue = eQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get register set                                                           */
-/*----------------------------------------------------------------------------*/
-LogicUnit* Task::pLogicUnit_task(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  return m_pJob->pLogicUnit_job();
 }
 
 /*----------------------------------------------------------------------------*/

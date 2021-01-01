@@ -32,7 +32,7 @@ void Step::vPlistFindJob(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&pLogicUnit_task()->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&( m_pJob->pLogicUnit_job() )->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);

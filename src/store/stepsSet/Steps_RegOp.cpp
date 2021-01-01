@@ -31,7 +31,7 @@ void Step::vRegOpGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpOp);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOp);
 
   EXIT();
 }
@@ -45,7 +45,7 @@ void Step::vRegOpHandlerFetch(void)
 
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
 
-  Word* pHandler = pLogicUnit_task()->m_xpOp->pOperandHandler(i_OperandKind);
+  Word* pHandler = ( m_pJob->pLogicUnit_job() )->m_xpOp->pOperandHandler(i_OperandKind);
     
   m_pDataStack->vPushPtr(pHandler);
 
@@ -63,7 +63,7 @@ void Step::vRegOpHandlerStore(void)
   
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  pLogicUnit_task()->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+  ( m_pJob->pLogicUnit_job() )->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vRegOpHandlerAllStore(void)
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
   for (i8 i_OpKind = 0; i_OpKind < ZK_ENUMS; i_OpKind++)
-    pLogicUnit_task()->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+    ( m_pJob->pLogicUnit_job() )->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vRegOpInit(void)
 
   Op* pOp = m_pJob->m_pOp;
 
-  pLogicUnit_task()->m_xpOp = pOp;
+  ( m_pJob->pLogicUnit_job() )->m_xpOp = pOp;
 
   EXIT();
 }
@@ -109,8 +109,8 @@ void Step::vRegOpIsOperandValid(void)
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
   
   // skip consumeOp operand validation
-  if ( ! pLogicUnit_task()->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
-    bValid = pLogicUnit_task()->m_xpOp->bIsOperandValid(i_OperandKind);
+  if ( ! ( m_pJob->pLogicUnit_job() )->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
+    bValid = ( m_pJob->pLogicUnit_job() )->m_xpOp->bIsOperandValid(i_OperandKind);
   
   if ( ! bValid )
     RASSERT(0);
@@ -129,7 +129,7 @@ void Step::vRegOpIncOperandCount(void)
   
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
   
-  pLogicUnit_task()->m_xpOp->vIncOperandCount(i_OperandKind);
+  ( m_pJob->pLogicUnit_job() )->m_xpOp->vIncOperandCount(i_OperandKind);
   
   EXIT();
 }

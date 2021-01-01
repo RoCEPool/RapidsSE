@@ -365,7 +365,6 @@ namespace OBLIQUE
     static Table* pTableFind(Stz* szTableNm);
 
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
-    static void vTaskBeginOp(Task* pTask);
     static DicStack* pTaskDicStack(void);
     static void vTaskDump(void);
     static void vTaskDump(Task* pTask);

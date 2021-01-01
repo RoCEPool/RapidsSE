@@ -29,7 +29,7 @@ void Step::vRowOnceDelete(void)
 {
   ENTRY();
   
-  RowOnce* pRowOnce = _pRowOnce(*pLogicUnit_task()->m_xpRowOnce);
+  RowOnce* pRowOnce = _pRowOnce(*( m_pJob->pLogicUnit_job() )->m_xpRowOnce);
   
   delete pRowOnce;
   
@@ -43,7 +43,7 @@ void Step::vRowOnceGet(void)
 {
   ENTRY();
   
-  RowOnce* pRowOnce = _pRowOnce(*pLogicUnit_task()->m_xpRowOnce);
+  RowOnce* pRowOnce = _pRowOnce(*( m_pJob->pLogicUnit_job() )->m_xpRowOnce);
   
   m_pDataStack->vPushPtr(pRowOnce);
   
@@ -57,7 +57,7 @@ void Step::vRowOnceIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpRowOnce.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpRowOnce.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vRowOnceNew(void)
 {
   ENTRY();
   
-  pLogicUnit_task()->m_xpRowOnce = new RowOnce;
+  ( m_pJob->pLogicUnit_job() )->m_xpRowOnce = new RowOnce;
   
   EXIT();
 }

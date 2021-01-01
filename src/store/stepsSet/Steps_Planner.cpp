@@ -71,7 +71,7 @@ void Step::vPlannerChoosePathsN(void)
   
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   for (i8 i_Phrase = 0; i_Phrase < pPlanner->nPhrases(); i_Phrase++)
     pPlanner->vChoosePath(i_Phrase);
@@ -86,7 +86,7 @@ void Step::vPlannerChosenPathN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* pChosenPlan = pPlanner->pChosenPath(i_Phrase);
@@ -103,7 +103,7 @@ void Step::vPlannerDeleteN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   delete pPlanner;
   
@@ -117,7 +117,7 @@ void Step::vPlannerFetchTechniqueFetchN(void)
 {
   ENTRY();
   
-  Planner* mpPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
@@ -134,7 +134,7 @@ void Step::vPlannerGenPathsN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   pPlanner->vGenPaths();
   
@@ -148,7 +148,7 @@ void Step::vPlannerGetN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   m_pDataStack->vPushPtr(pPlanner);
   
@@ -162,7 +162,7 @@ void Step::vPlannerHighKeyFetchN(void)
 {
   ENTRY();
   
-  Planner* mpPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -183,7 +183,7 @@ void Step::vPlannerIndexNmFetchN(void)
 {
   ENTRY();
   
-  Planner* mpPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -203,7 +203,7 @@ void Step::vPlannerIsNullN(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpPlanner.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpPlanner.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -215,7 +215,7 @@ void Step::vPlannerKeyFetchN(void)
 {
   ENTRY();
   
-  Planner* mpPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -236,7 +236,7 @@ void Step::vPlannerLowKeyFetchN(void)
 {
   ENTRY();
   
-  Planner* mpPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -257,7 +257,7 @@ void Step::vPlannerMatchPathsN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   pPlanner->vMatchPaths();
   
@@ -271,7 +271,7 @@ void Step::vPlannerNewN(void)
 {
   ENTRY();
   
-  pLogicUnit_task()->m_xpPlanner = new Planner;
+  ( m_pJob->pLogicUnit_job() )->m_xpPlanner = new Planner;
   
   EXIT();
 }
@@ -283,7 +283,7 @@ void Step::vPlannerParseWhereN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   s48K sWhere;
   m_pDataStack->vPopStr(sWhere,__func__);
@@ -311,7 +311,7 @@ void Step::vPlannerPhrasesFetchN(void)
 {
   ENTRY();
   
-  Planner* mpPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   i8 nPhrases = mpPlanner->nPhrases();
   
@@ -327,7 +327,7 @@ void Step::vPlannerScorePathsN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   pPlanner->vScorePaths();
   
@@ -341,9 +341,9 @@ void Step::vPlannerSetN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
-  ASSERT(! pPlanner || pLogicUnit_task()->m_xpPlanner.bIsNull());
-  pLogicUnit_task()->m_xpPlanner = _pPlanner(pPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  ASSERT(! pPlanner || ( m_pJob->pLogicUnit_job() )->m_xpPlanner.bIsNull());
+  ( m_pJob->pLogicUnit_job() )->m_xpPlanner = _pPlanner(pPlanner);
   
   EXIT();
 }
@@ -355,7 +355,7 @@ void Step::vPlannerShowPathsN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   pPlanner->vShowPaths();
   
@@ -369,7 +369,7 @@ void Step::vPlannerTableFetchN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   Table* pTable = pPlanner->pTable();
   
@@ -385,7 +385,7 @@ void Step::vPlannerTableStoreN(void)
 {
   ENTRY();
   
-  Planner* pPlanner = _pPlanner(*pLogicUnit_task()->m_xpPlanner);
+  Planner* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   

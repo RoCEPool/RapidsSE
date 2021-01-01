@@ -63,7 +63,7 @@ void Step::vLogicUnitAltIndexFetch(void)
 {
   ENTRY();
   
-  DevIXT* pDevIxt = _pDevIXT(pLogicUnit_task()->m_xRluCommon.m_pDevAltIxt);
+  DevIXT* pDevIxt = _pDevIXT(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevAltIxt);
   
   m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
   
@@ -77,7 +77,7 @@ void Step::vLogicUnitAltTableFetch(void)
 {
   ENTRY();
   
-  DevROW* pDevRow = _pDevROW(pLogicUnit_task()->m_xRluCommon.m_pDevAltRow);
+  DevROW* pDevRow = _pDevROW(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevAltRow);
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
@@ -104,12 +104,12 @@ void Step::vLogicUnitDiaryAction(void)
     return;
   }
   
-  pLogicUnit_task()->m_oSince.vUpdate();
-  i8 nNanoSeconds = pLogicUnit_task()->m_oSince.iNanoseconds();
+  ( m_pJob->pLogicUnit_job() )->m_oSince.vUpdate();
+  i8 nNanoSeconds = ( m_pJob->pLogicUnit_job() )->m_oSince.iNanoseconds();
   
-  i8 nQueueLength = pLogicUnit_task()->m_xpOp->nQueueLength();
+  i8 nQueueLength = ( m_pJob->pLogicUnit_job() )->m_xpOp->nQueueLength();
 
-  pLogicUnit_task()->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
+  ( m_pJob->pLogicUnit_job() )->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
                            i_Action,i_ActEnumGroup,i_ActEnum,nQueueLength);
   
   EXIT();
@@ -122,7 +122,7 @@ void Step::vLogicUnitDiaryFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(pLogicUnit_task()->m_pRluDiary);
+  m_pDataStack->vPushPtr(( m_pJob->pLogicUnit_job() )->m_pRluDiary);
 
   EXIT();
 }
@@ -142,7 +142,7 @@ void Step::vLogicUnitDiaryJobNote(void)
     return;
   }
   
-  pLogicUnit_task()->vDiaryJobNote(sJobNote);
+  ( m_pJob->pLogicUnit_job() )->vDiaryJobNote(sJobNote);
 
   EXIT();
 }
@@ -162,7 +162,7 @@ void Step::vLogicUnitDiaryName(void)
     return;
   }
   
-  pLogicUnit_task()->vDiaryName(sName);
+  ( m_pJob->pLogicUnit_job() )->vDiaryName(sName);
 
   EXIT();
 }
@@ -183,13 +183,13 @@ void Step::vLogicUnitDiaryNote(void)
     return;
   }
   
-  pLogicUnit_task()->m_oSince.vUpdate();
-  i8 nNanoSeconds = pLogicUnit_task()->m_oSince.iNanoseconds();
+  ( m_pJob->pLogicUnit_job() )->m_oSince.vUpdate();
+  i8 nNanoSeconds = ( m_pJob->pLogicUnit_job() )->m_oSince.iNanoseconds();
   
   
-  i8 nQueueLength = pLogicUnit_task()->m_xpOp->nQueueLength();
+  i8 nQueueLength = ( m_pJob->pLogicUnit_job() )->m_xpOp->nQueueLength();
   
-  pLogicUnit_task()->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
+  ( m_pJob->pLogicUnit_job() )->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
                            0,0,0,nQueueLength);
   
   EXIT();
@@ -210,7 +210,7 @@ void Step::vLogicUnitDiaryDir(void)
     return;
   }
   
-  pLogicUnit_task()->vDiaryDir(sDir);
+  ( m_pJob->pLogicUnit_job() )->vDiaryDir(sDir);
 
   EXIT();
 }
@@ -230,7 +230,7 @@ void Step::vLogicUnitDiaryTitle(void)
     return;
   }
   
-  pLogicUnit_task()->vDiaryTitle(sTitle);
+  ( m_pJob->pLogicUnit_job() )->vDiaryTitle(sTitle);
 
   EXIT();
 }
@@ -242,7 +242,7 @@ void Step::vLogicUnitDynFun(void)
 {
   ENTRY();
   
-  i8 iRes = pLogicUnit_task()->iDynFun(0,C_UNKNOWN);
+  i8 iRes = ( m_pJob->pLogicUnit_job() )->iDynFun(0,C_UNKNOWN);
   
   EXIT();
 }
@@ -261,7 +261,7 @@ void Step::vLogicUnitDynFunArgs(void)
   }
   i8 iArg0 = m_pDataStack->iPopInt(__func__);
 
-  i8 iRes = pLogicUnit_task()->iDynFun(nArgs,iArg0);
+  i8 iRes = ( m_pJob->pLogicUnit_job() )->iDynFun(nArgs,iArg0);
   
   EXIT();
 }
@@ -293,7 +293,7 @@ void Step::vLogicUnitGenAsm(void)
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
-  bool bResult = pLogicUnit_task()->bGenerateAsm(sText);
+  bool bResult = ( m_pJob->pLogicUnit_job() )->bGenerateAsm(sText);
   
   m_pDataStack->vPushInt(bResult);
   
@@ -315,7 +315,7 @@ void Step::vLogicUnitGenAsmTxt(void)
   i8 iSubQueryNo = m_pDataStack->iPopInt(__func__);
   i8 iQueryNo = m_pDataStack->iPopInt(__func__);
 
-  //pLogicUnit_task()->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
+  //( m_pJob->pLogicUnit_job() )->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
   
   EXIT();
 }
@@ -329,7 +329,7 @@ void Step::vLogicUnitGenCode(void)
   
   i8 iTestNo = m_pDataStack->iPopInt(__func__);
       
-  pLogicUnit_task()->vGenCode(iTestNo);
+  ( m_pJob->pLogicUnit_job() )->vGenCode(iTestNo);
   
   EXIT();
 }
@@ -346,7 +346,7 @@ void Step::vLogicUnitGenProjection(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  pLogicUnit_task()->vGenerateProjection(pProject, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->vGenerateProjection(pProject, pStreamDefOut);
 
   EXIT();
 }
@@ -362,7 +362,7 @@ void Step::vLogicUnitGenRange(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  pLogicUnit_task()->vGenerateRange(pRange, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->vGenerateRange(pRange, pStreamDefOut);
 
   EXIT();
 }
@@ -374,7 +374,7 @@ void Step::vLogicUnitCallAgainFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit_task()->m_xRluCommon.m_bCallAgain);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCallAgain);
   
   EXIT();
 }
@@ -388,7 +388,7 @@ void Step::vLogicUnitCallAgainStore(void)
 
   i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
-  pLogicUnit_task()->m_xRluCommon.m_bCallAgain = iCallAgain;
+  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCallAgain = iCallAgain;
   
   EXIT();
 }
@@ -400,7 +400,7 @@ void Step::vLogicUnitCalledAgainFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit_task()->m_xRluCommon.m_bCalledAgain);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCalledAgain);
   
   EXIT();
 }
@@ -414,7 +414,7 @@ void Step::vLogicUnitCalledAgainStore(void)
 
   i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
-  pLogicUnit_task()->m_xRluCommon.m_bCalledAgain = iCallAgain;
+  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCalledAgain = iCallAgain;
   
   EXIT();
 }
@@ -428,7 +428,7 @@ void Step::vLogicUnitDevFetch(void)
 
   i8 i_Dev = m_pDataStack->iPopInt(__func__);
   
-  void* aDev = pLogicUnit_task()->m_aaDev[i_Dev];
+  void* aDev = ( m_pJob->pLogicUnit_job() )->m_aaDev[i_Dev];
   
   m_pDataStack->vPushPtr((Object*)aDev);
 
@@ -446,7 +446,7 @@ void Step::vLogicUnitDevStore(void)
   
   void* aDev = m_pDataStack->pPopPtr(__func__);
   
-  pLogicUnit_task()->m_aaDev[i_Dev] = aDev;
+  ( m_pJob->pLogicUnit_job() )->m_aaDev[i_Dev] = aDev;
   
   EXIT();
 }
@@ -458,7 +458,7 @@ void Step::vLogicUnitHandlerFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpHandler);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpHandler);
 
   EXIT();
 }
@@ -472,7 +472,7 @@ void Step::vLogicUnitHandlerStore(void)
 
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  pLogicUnit_task()->m_xpHandler = pHandler;
+  ( m_pJob->pLogicUnit_job() )->m_xpHandler = pHandler;
   
   EXIT();
 }
@@ -484,7 +484,7 @@ void Step::vLogicUnitInit(void)
 {
   ENTRY();
   
-  pLogicUnit_task()->vInit();
+  ( m_pJob->pLogicUnit_job() )->vInit();
   
   EXIT();
 }
@@ -496,7 +496,7 @@ void Step::vLogicUnitSrcIndexFetch(void)
 {
   ENTRY();
   
-  DevIXT* pDevIxt = _pDevIXT(pLogicUnit_task()->m_xRluCommon.m_pDevSrcIxt);
+  DevIXT* pDevIxt = _pDevIXT(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevSrcIxt);
   
   m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
   
@@ -510,7 +510,7 @@ void Step::vLogicUnitSrcTableFetch(void)
 {
   ENTRY();
   
-  DevROW* pDevRow = _pDevROW(pLogicUnit_task()->m_xRluCommon.m_pDevSrcRow);
+  DevROW* pDevRow = _pDevROW(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevSrcRow);
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
@@ -524,7 +524,7 @@ void Step::vLogicUnitTransform(void)
 {
   ENTRY();
   
-  i8 bResult = pLogicUnit_task()->iTransform(0,C_UNKNOWN);
+  i8 bResult = ( m_pJob->pLogicUnit_job() )->iTransform(0,C_UNKNOWN);
   
   EXIT();
 }
@@ -543,7 +543,7 @@ void Step::vLogicUnitTransformArgs(void)
   }
   i8 iArg0 = m_pDataStack->iPopInt(__func__);
 
-  i8 bResult = pLogicUnit_task()->iTransform(nArgs,iArg0);
+  i8 bResult = ( m_pJob->pLogicUnit_job() )->iTransform(nArgs,iArg0);
   
   EXIT();
 }

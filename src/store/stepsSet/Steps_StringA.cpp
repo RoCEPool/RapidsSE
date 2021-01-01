@@ -27,7 +27,7 @@ void Step::vStringAGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(pLogicUnit_task()->m_sStringA);
+  m_pDataStack->vPushStr(( m_pJob->pLogicUnit_job() )->m_sStringA);
 
   EXIT();
 }
@@ -39,7 +39,7 @@ void Step::vStringASet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(pLogicUnit_task()->m_sStringA, __func__);
+  m_pDataStack->vPopStr(( m_pJob->pLogicUnit_job() )->m_sStringA, __func__);
 
   EXIT();
 }

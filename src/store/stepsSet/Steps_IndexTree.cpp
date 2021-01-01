@@ -34,7 +34,7 @@ void Step::vIndexTreeAsAlt(void)
 {
   ENTRY();
   
-  pLogicUnit_task()->m_pDevAltIxt->m_pIdxTree = * pLogicUnit_task()->m_xpIndexTree;
+  ( m_pJob->pLogicUnit_job() )->m_pDevAltIxt->m_pIdxTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
   
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vIndexTreeAsSrc(void)
 {
   ENTRY();
   
-  pLogicUnit_task()->m_pDevSrcIxt->m_pIdxTree = * pLogicUnit_task()->m_xpIndexTree;
+  ( m_pJob->pLogicUnit_job() )->m_pDevSrcIxt->m_pIdxTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vIndexTreeAsTmp(void)
 {
   ENTRY();
   
-  pLogicUnit_task()->m_pDevTmpIxt->m_pIdxTree = * pLogicUnit_task()->m_xpIndexTree;
+  ( m_pJob->pLogicUnit_job() )->m_pDevTmpIxt->m_pIdxTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
   
   EXIT();
 }
@@ -70,9 +70,9 @@ void Step::vIndexTreeDelete(void)
 {
   ENTRY();
   
-  IndexTree* pIndexTree = * pLogicUnit_task()->m_xpIndexTree;
+  IndexTree* pIndexTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
   
-  pLogicUnit_task()->m_xpIndexTree = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexTree = nullptr;
   
   delete pIndexTree;
   
@@ -86,7 +86,7 @@ void Step::vIndexTreeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpIndexTree);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpIndexTree);
   
   EXIT();
 }
@@ -98,7 +98,7 @@ void Step::vIndexTreeIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpIndexTree.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpIndexTree.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vIndexTreeNew(void)
   ENTRY();
   
   IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
-  pLogicUnit_task()->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   
   EXIT();
 }
@@ -123,7 +123,7 @@ void Step::vIndexTreeSet(void)
 {
   ENTRY();
   
-  pLogicUnit_task()->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -362,7 +362,7 @@ void Step::vTestTest22(void)
   i8 nSize = pFile->iSize();
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
   
-  pLogicUnit_task()->bGenerateAsm(sText);
+  ( m_pJob->pLogicUnit_job() )->bGenerateAsm(sText);
   
   EXIT();
 }

@@ -93,7 +93,6 @@ namespace STORE
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
     void vAssertStructure(void);
-    void vBeginOp(void);
     void vCaught(Exception xException);
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
@@ -124,7 +123,6 @@ namespace STORE
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
-    LogicUnit* pLogicUnit_task(void);
     void vReset(void);
     void vReseed(void);
     DicStack* pSaveDicStack(void);
