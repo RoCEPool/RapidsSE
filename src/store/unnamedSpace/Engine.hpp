@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class Error; }
+
 #include "eBO.h"
 
 namespace STORE

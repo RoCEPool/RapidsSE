@@ -30,6 +30,9 @@ namespace STORE
     eJS       m_eJobState;    // current state of the job
 
   public:
+  
+    //SMA<LogicUnit> m_pLogicUnit;      // set of registers for the task steps
+
     TagSet    m_oJobTags;     // tags for the job
   
     Result    m_xResult;      // result of this job

@@ -8,6 +8,7 @@
 
 #include "Engine.hpp"
 #include "EnvCheck.hpp"
+#include "Error.hpp"
 
 #include "Step.hpp"
 
