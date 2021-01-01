@@ -878,16 +878,6 @@ void Task::vSeedTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*set send node                                                               */
-/*----------------------------------------------------------------------------*/
-//void Task::vSendNode(STORE::Node* pNode)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-//  
-//  pLogicUnit_task()->m_pSendNode = pNode;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* sleep for microseconds                                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vSleepUsec(i8 iMicroseconds)
@@ -999,7 +989,7 @@ void Task::vState(eTS eState)
   
   switch (eState) {
     case TS_EXECUTING: pStats->Task.m_nExecuting++; break;
-    case TS_COMPLETED:    pStats->Task.m_nExited++;    break;
+    case TS_COMPLETED: pStats->Task.m_nExited++;    break;
     case TS_READY:     pStats->Task.m_nReady++;     break;
     case TS_SLEEPING:  pStats->Task.m_nSleeping++;  break;
     case TS_WAITING:   pStats->Task.m_nWaiting++;   break;
@@ -1248,133 +1238,6 @@ u8 Task::uWakeupTime(void)
   
   return uMicroseconds;
 }
-
-/*----------------------------------------------------------------------------*/
-/* sprint of stack using given format string                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vValSprint(s48K& sFormat, s48K& sString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  char* acFmt = sFormat.azChar();
-  char* acDst = sString.azChar();
-  
-  while (*acFmt) {
-  
-    // test for ordinary character
-    if ('%' != *acFmt) {
-      *acDst++ = *acFmt++;
-      continue;
-    }
-        
-    // we have a '%'
-    acFmt++;
-    
-    // test for the %% case
-    if ('%' == *acFmt) {
-      *acDst++ = *acFmt++;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // we have a %[width]v field
-    
-    i8 nWidth = 0;
-
-    // record where output for this value began
-    char* acFieldBegan = acDst;
-    
-    // do we have a %v of the form: %widthV ?
-    if (StrLib::bIsDigit( * acFmt )) {
-      i8 nDigits = 0;
-      StrLib::bExtractInteger(&acFmt,&nWidth,nDigits);
-      ASSERT(nDigits);
-    }
-        
-    // should be %v or %V
-    ASSERT('v' == *acFmt || 'V' == *acFmt);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // handle a StzVal, IntVal or a PtrVal
-    
-    TypedCell* aTypedCell0 = m_pDataStack->aPeekItem(0);
-    eCN eClass = aTypedCell0->eType();
-    
-    // test for StzVal
-    if (CN_STZVAL == eClass) {
-      
-      s48K sStr;
-      m_pDataStack->vPopStr(sStr,__func__);
-      
-      if ('V' == *acFmt)
-        *acDst++ = '"';
-      
-      for (char* pv = sStr.azChar(); *pv; )
-        *acDst++ = *pv++;
-      
-      if ('V' == *acFmt)
-        *acDst++ = '"';
-      
-      acFmt++;
-    }
-    
-    // test for IntVal
-    else
-    if (CN_INTVAL == eClass) {
-      
-      i8 iInt = m_pDataStack->iPopInt(__func__);
-      
-      char caValue[32];
-      StrLib::wToString(iInt,caValue);
-      
-      for (char* pv = caValue; *pv; )
-        *acDst++ = *pv++;
-      
-      acFmt++;
-    }
-    
-    // test for PtrVal
-    else
-    if (CN_PTRVAL == eClass) {
-      
-      Object* pObject = m_pDataStack->pPopPtr(__func__);
-      
-      char caValue[32];
-      StrLib::wToPointer(pObject,caValue);
-      
-      for (char* pv = caValue; *pv; )
-        *acDst++ = *pv++;
-      
-      acFmt++;
-    }
-    
-    // just copy % ???
-    else {
-      *acDst++ = '%';
-      *acDst++ = *acFmt++;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // handle optional field width case
-    
-    // test for field width
-    if (! nWidth)
-      continue;
-    
-    i8 nDiff = nDifference(acDst,acFieldBegan);
-    
-    if (nDiff >= nWidth)
-      continue;
-    
-    i8 nPad = nWidth - nDiff;
-    StrLib::vPad(acDst,nPad,' ');
-    acDst += nPad;
-  }
-  
-  // final termination
-  *acDst = '\0';
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

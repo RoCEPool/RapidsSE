@@ -79,6 +79,8 @@ namespace BASE
     bool bTopIsZero(void);
     TypedCell* aTopVal(void);
   
+    void vValSprint(s48K& sFormat, s48K& sString);
+
     i8   nValues(void);
   
   private:

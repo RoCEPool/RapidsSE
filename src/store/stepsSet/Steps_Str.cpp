@@ -196,7 +196,7 @@ void Step::vStrFormat(void)
   
   s48K sString;
   
-  vValSprint(sFormat,sString);
+  m_pDataStack->vValSprint(sFormat,sString);
   
   m_pDataStack->vPushStr(sString);
   
