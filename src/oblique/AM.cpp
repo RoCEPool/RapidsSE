@@ -608,7 +608,7 @@ LogicUnit* AM::pThisTLSLogicUnit(void) {
   return pLogicUnit;
 }
 
-STORE::Task* AM::pThisTLSTask(void) {
+Task* AM::pThisTLSTask(void) {
   Task* pTask = Task::pThisTLSTask();
   return pTask;
 }
@@ -1896,6 +1896,12 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 
 void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
 
+void AM::vJobDelete(Job** ppJob) {
+  
+  delete * ppJob;
+  
+  * ppJob = nullptr;
+}
 
 void AM::vJobInitExeContext(Job* pJob) {
   

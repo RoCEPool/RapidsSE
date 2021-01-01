@@ -218,7 +218,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "LogicUnit.hpp"
 
-#include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskQueue.hpp"
 

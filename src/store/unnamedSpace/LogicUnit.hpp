@@ -35,9 +35,7 @@ namespace STORE
   //----------------------------------------------------------------------------
 
   class LogicUnit : public Object
-  {
-  friend class STORE::Task;
-  
+  {  
   public:
     Task* m_pTask; // which task
   

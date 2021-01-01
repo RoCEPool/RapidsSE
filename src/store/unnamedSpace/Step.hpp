@@ -8,7 +8,6 @@ namespace STORE
   class Step : public Task
   {
   friend class STORE::AttachMap;
-  friend class STORE::Task;
   friend class Word;
 
   public:

@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "PsxThd.hpp" //?
 
@@ -20,7 +19,7 @@ extern pthread_key_t giTLS_TaskKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* STORE::_pTask(void* aAddr)
+Task* BASE::_pTask(void* aAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(aAddr);
   
@@ -32,7 +31,7 @@ Task* STORE::_pTask(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* STORE::_pTask(i8 iAddr)
+Task* BASE::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
   
@@ -159,8 +158,9 @@ Task::~Task(void) noexcept(false)
 
     
   if (m_pJob) {
-    Job* pJob = _pJob(m_pJob);
-    delete pJob;
+    Job* pJob = *m_pJob;
+    m_pJob = nullptr;
+    AM::vJobDelete(&pJob);
   }
     
   delete m_pProfile;

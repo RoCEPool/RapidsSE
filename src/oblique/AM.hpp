@@ -27,6 +27,8 @@ namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracke
 namespace BASE { class Operand;                                  }
 namespace BASE { class Dic;             class DicStack;
                  class Word;              }
+namespace BASE             { class Task;                                     }
+
 
 namespace STORE          { class Session;         class SessionState;      }
 
@@ -71,7 +73,6 @@ namespace STORE             { class Step;            class StepTiming;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 
 
-namespace STORE             { class Task;                                     }
 namespace STORE           { class Scheduler;       class Thread;
                               class Queues;                                   }
 namespace STORE      { class Tx;              class TxSet;             }
@@ -258,6 +259,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
+    static void vJobDelete(Job** ppJob);
     static void vJobInitExeContext(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
 

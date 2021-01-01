@@ -581,7 +581,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "SP_Word.hpp"
 
 #include "Profile.hpp"
-//#include "Task.hpp"
+#include "Task.hpp"
 //
 //#include "SP_Task.hpp"
 

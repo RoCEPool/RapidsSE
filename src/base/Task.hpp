@@ -8,7 +8,7 @@
 #include "eTR.h"
 #include "eTS.h"
 
-namespace STORE
+namespace BASE
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tracing masks
