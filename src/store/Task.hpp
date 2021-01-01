@@ -126,7 +126,7 @@ namespace STORE
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     LogicUnit* pLogicUnit(void);
-    void vLogicUnit(LogicUnit** ppLogicUnit);
+    void vLogicUnit_task(LogicUnit** ppLogicUnit);
     void vReset(void);
     void vReseed(void);
     DicStack* pSaveDicStack(void);

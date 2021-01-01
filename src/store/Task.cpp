@@ -210,7 +210,7 @@ void Task::vTaskLoop(void)
     
     if (! pLogicUnit()) {
       LogicUnit* pLogicUnit = new LogicUnit(this);
-      vLogicUnit( & pLogicUnit );
+      vLogicUnit_task( & pLogicUnit );
     }
     vSeedTask();
   }
@@ -771,7 +771,7 @@ LogicUnit* Task::pLogicUnit(void)
 /*----------------------------------------------------------------------------*/
 /* get register set                                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicUnit(LogicUnit** ppLogicUnit)
+void Task::vLogicUnit_task(LogicUnit** ppLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
