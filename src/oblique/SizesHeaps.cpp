@@ -11,6 +11,11 @@
 #include "Log.hpp"
 
 
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
+
+
+
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
 #include "graph/PlanNodeBuilder.hpp"

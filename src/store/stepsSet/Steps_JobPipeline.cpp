@@ -6,6 +6,8 @@
 #include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 #include "Dynamo.hpp"
 #include "TagConstants.h"

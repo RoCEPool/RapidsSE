@@ -17,6 +17,9 @@
 #include "eUF.h"
 #include "eUK.h"
 
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
+
 extern Args  gxArgs;
 
 extern Stz* gsBuildGitHash;

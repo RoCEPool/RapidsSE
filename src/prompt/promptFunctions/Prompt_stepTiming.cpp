@@ -7,6 +7,8 @@
 #include "PROMPT.h"
 
 
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 PromptFun __Prompt_st (

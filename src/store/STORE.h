@@ -249,9 +249,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Error.hpp"
 
-#include "StepAccum.hpp"
-#include "StepTiming.hpp"
-
 //------------------------------------------------------------------------------
 
 #include "AttachMap.hpp"
