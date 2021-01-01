@@ -171,6 +171,8 @@ Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
   m_oTimer.vStart();
   //m_oAcksRmg
   
+  m_pLogicUnit = nullptr;
+  
   m_pTaskJ = nullptr;
   m_pOriginatingTask = nullptr;
   m_iOriginatingId = C_UNKNOWN;
@@ -237,6 +239,8 @@ Job::~Job(void) noexcept(false)
   
   if (m_pPipeline)
     delete m_pPipeline;
+  
+  delete m_pLogicUnit;
   
   //if (m_pTaskJ)
   //  vDebugPoint();
