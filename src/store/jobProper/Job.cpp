@@ -779,7 +779,7 @@ LogicUnit* Job::pLogicUnit(void)
 /*----------------------------------------------------------------------------*/
 /* set the logic unit                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vLogicUnit(LogicUnit** ppLogicUnit)
+void Job::vLogicUnit_job(LogicUnit** ppLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1429,7 +1429,7 @@ JOBS_fn(vJob_recv)
   pJob->m_i_Focal        = C_UNKNOWN;
   
   LogicUnit* pLogicUnit = nullptr;
-  pJob->vLogicUnit( & pLogicUnit);
+  pJob->vLogicUnit_job( & pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/

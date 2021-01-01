@@ -126,7 +126,7 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
     LogicUnit* pLogicUnit(void);
-    void vLogicUnit(LogicUnit** ppLogicUnit);
+    void vLogicUnit_job(LogicUnit** ppLogicUnit);
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);

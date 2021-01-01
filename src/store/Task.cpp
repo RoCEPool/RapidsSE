@@ -775,7 +775,7 @@ void Task::vLogicUnit_task(LogicUnit** ppLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pJob->vLogicUnit(ppLogicUnit);
+  m_pJob->vLogicUnit_job(ppLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/
