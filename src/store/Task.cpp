@@ -76,7 +76,6 @@ Task::Task(Job* pJob, i8 iFocalId)
 
   m_pJob         = pJob;
   m_pThread      = nullptr;
-  m__pLogicUnit   = nullptr;
 
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
@@ -160,9 +159,7 @@ Task::~Task(void) noexcept(false)
   delete m_pCompiler;
   delete m_pInput;
 
-  
-  delete m__pLogicUnit;
-  
+    
   if (m_pJob) {
     Job* pJob = _pJob(m_pJob);
     delete pJob;
@@ -764,7 +761,7 @@ LogicUnit* Task::pLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m__pLogicUnit;
+  return m_pJob->pLogicUnit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -774,8 +771,7 @@ void Task::vLogicUnit(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(! m__pLogicUnit);
-  m__pLogicUnit = pLogicUnit;
+  m_pJob->vLogicUnit(pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -91,6 +91,11 @@ void Step::vDdlLockNone(void)
 {
   ENTRY();
 
+  if (! pJob() || ! pJob()->pLogicUnit()) {
+    EXIT();
+    return;
+  }
+
   if (LH_HAVE_NO_LOCK != pLogicUnit()->m_eDdlLocked)
     THROW("DdlLock[].none : register still has ddl locked"_Stz);
 
@@ -103,6 +108,11 @@ void Step::vDdlLockNone(void)
 void Step::vDdlLockTestDrop(void)
 {
   ENTRY();
+  
+  if (! pJob() || ! pJob()->pLogicUnit()) {
+    EXIT();
+    return;
+  }
   
   if (LH_HAVE_READ_LOCK == pLogicUnit()->m_eDdlLocked) {
     

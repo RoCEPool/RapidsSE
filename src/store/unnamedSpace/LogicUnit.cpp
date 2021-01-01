@@ -137,6 +137,19 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  
+  if (LH_HAVE_READ_LOCK == m_eDdlLocked) {
+    
+    AM::pDdlLock()->vDropRead();
+    m_eDdlLocked = LH_HAVE_NO_LOCK;
+  }
+  else
+  if (LH_HAVE_WRITE_LOCK == m_eDdlLocked) {
+    
+    AM::pDdlLock()->vDropWrite();
+    m_eDdlLocked = LH_HAVE_NO_LOCK;
+  }
+
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
   
   if (! m_xpAggTimer.bIsNull())

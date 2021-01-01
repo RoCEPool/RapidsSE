@@ -57,6 +57,11 @@ void Step::vJobRefNone(void)
 {
   ENTRY();
   
+  if (! pJob() || ! pJob()->pLogicUnit()) {
+    EXIT();
+    return;
+  }
+
   if (pLogicUnit()->m_xpJobRef.pReferencedObject())
     THROW("JobRef[].none : register still has reference to a job"_Stz);
   
