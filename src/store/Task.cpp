@@ -90,11 +90,6 @@ Task::Task(Job* pJob, i8 iFocalId)
  
   m_nOperandYield = 10;
 
-  
-  // -- from Forth --
-  //m_pTask        = pTask;
-  //m_pLogicUnit      = pLogicUnit;
-  
   m_pSeedWord       = nullptr;
   m_pExceptionWord  = nullptr;
   
@@ -118,12 +113,7 @@ Task::Task(Job* pJob, i8 iFocalId)
 
   
   _checkInitialised_(CN_TASK);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the executing task in job
-  
-  //m_pJob->vTask(this);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //if (pJob->m_bWasReceived)
@@ -133,7 +123,7 @@ Task::Task(Job* pJob, i8 iFocalId)
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
               "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
               aCN[m_pJob->eClass()],
-              pJob->bWasReceived() ? " was-received"_Stz : ""_Stz,
+              m_pJob->bWasReceived() ? " was-received"_Stz : ""_Stz,
               * gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
