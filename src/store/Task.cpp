@@ -5,8 +5,6 @@
 #include "BASE.h"
 #include "STORE.h"
 
-#include "Step.hpp"
-
 #include "PsxThd.hpp" //?
 
 Atomic gixTask;
@@ -208,10 +206,6 @@ void Task::vTaskLoop(void)
   if (! bSeeded()) {
     vInitExeContext();
     
-//    if (! pLogicUnit_task()) {
-//      LogicUnit* pLogicUnit = new LogicUnit(this);
-//      vLogicUnit_task( & pLogicUnit );
-//    }
     AM::vJobInitExeContext(pJob());
     
     vSeedTask();
@@ -227,17 +221,16 @@ void Task::vTaskLoop(void)
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
     //   dereference it to get the intrinsic function to be called
-    fpSTEPFN fpStepFn = * ( (m_aInxPtr ++)->m_afpStepFn );
+    fpMEMBERFN fpStepFn = * ( (m_aInxPtr ++)->m_afpStepFn );
     
     // call the intinsic
     try {
-      //( ((Step*) (*m_pForth))->*fpStepFn)();
       
-      ( ((Step*)this)->*fpStepFn ) ();
+      ( ((Object*)this)->*fpStepFn ) ();
 
     }
     
-    // catch any exception
+    // catch exception
     catch (Exception xException) {
       xException.vJob(m_pJob);
       vCaught(xException);
