@@ -222,8 +222,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "TaskList.hpp"
 #include "TaskQueue.hpp"
 
-#include "EnterExit.h"
-
 #include "SP_Task.hpp"
 
 //------------------------------------------------------------------------------
@@ -253,7 +251,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
-#include "Step.hpp"
 
 //------------------------------------------------------------------------------
 

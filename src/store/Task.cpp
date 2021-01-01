@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Step.hpp"
 
 #include "PsxThd.hpp" //?
 

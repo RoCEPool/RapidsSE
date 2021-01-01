@@ -41,6 +41,7 @@
 
 #include "EnumGroups.h"
 
+#include "Step.hpp"
 
 extern Args          gxArgs;
 
