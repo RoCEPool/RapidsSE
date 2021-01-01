@@ -567,24 +567,24 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 // declare a function pointer to any member function of Step
 typedef void (Step::*fpSTEPFN)(void);
 
-//#include "Operand.hpp"
-//
-//#include "Dic.hpp"
-//#include "DicStack.hpp"
-//#include "Local.hpp"
-//#include "LocalChain.hpp"
-//#include "Routine.hpp"
-//#include "TypedStack.hpp"
-//
-//#include "Compiler.hpp"
-//#include "Word.hpp"
-//
-//#include "Profile.hpp"
+#include "Operand.hpp"
+
+#include "Dic.hpp"
+#include "DicStack.hpp"
+#include "Local.hpp"
+#include "LocalChain.hpp"
+#include "Routine.hpp"
+#include "TypedStack.hpp"
+
+#include "Compiler.hpp"
+#include "Word.hpp"
+#include "SP_Word.hpp"
+
+#include "Profile.hpp"
 //#include "Task.hpp"
 //
 //#include "SP_Task.hpp"
-//
-//#include "SP_Word.hpp"
+
 
 
 
