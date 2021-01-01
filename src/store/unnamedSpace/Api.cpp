@@ -786,7 +786,7 @@ void Api::vCreateTaskForJob(Job* pJob)
     RASSERT(TR_NONE == pTask->eTranstionRequest());
   }
   else {
-    pTask = new Task(pJob);
+    pTask = AM::pTaskNew(pJob);
     RASSERT(QK_NONE == pTask->eQueue());
     RASSERT(TR_NONE == pTask->eTranstionRequest());
   }

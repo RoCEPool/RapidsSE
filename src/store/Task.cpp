@@ -65,8 +65,8 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob)
-: Focal(CN_TASK,AM::iNextTaskId(),pJob->m_iFocalId)
+Task::Task(Job* pJob, i8 iFocalId)
+: Focal(CN_TASK,AM::iNextTaskId(),iFocalId)
 , m_okLock(LK_TASK,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -87,8 +87,7 @@ Task::Task(Job* pJob)
   
 
   m_iTraceMask   = C_TRACE_NONE;
-  m_eWhatJob     = pJob->eClass();
-
+ 
   m_nOperandYield = 10;
 
   
@@ -123,7 +122,7 @@ Task::Task(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
-  m_pJob->vTask(this);
+  //m_pJob->vTask(this);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -338,7 +338,7 @@ void Engine::vCallBoot(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
-  Task* pBootTask = new Task(pJob);
+  Task* pBootTask = AM::pTaskNew(pJob);
   pBootTask->vInitExeContext();
 
   pBootTask->vAddAxioms();
@@ -411,7 +411,7 @@ void Engine::vCallStart(void)
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
-  Task* pStartTask = new Task(pJob);
+  Task* pStartTask = AM::pTaskNew(pJob);
   pStartTask->vInitExeContext();
   
   pJob->vTimerStart();

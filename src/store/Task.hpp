@@ -41,7 +41,6 @@ namespace STORE
 
   
     i8           m_iTraceMask;   // tracing mask
-    eCN          m_eWhatJob;     // what job this task is/was for (debugging)
   
     i8           m_nOperandYield;  //
   
@@ -81,7 +80,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(Job* pJob);
+    Task(Job* pJob, i8 iFocalId);
     ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);

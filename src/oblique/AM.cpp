@@ -1791,7 +1791,9 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
 
 Task* AM::pTaskNew(Job* pJob) {
-  return new Task(pJob);
+  Task* pTask = new Task(pJob,pJob->m_iFocalId);
+  pJob->vTask(pTask);
+  return pTask;
 }
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
