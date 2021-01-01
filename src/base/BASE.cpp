@@ -670,6 +670,7 @@ void BASE::vInitAllGlobals(void)
   vTrace("BASE::vInitAllGlobals\n"_Stz);
   
   File::vInitGlobals();
+  
 }
 
 /*============================================================================*/

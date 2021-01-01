@@ -1,8 +1,18 @@
 /*============================================================================*/
-/* IntLib.hpp -- integer utility                                              */
+/* IntLib.hpp -- integer library                                              */
 /*============================================================================*/
 
 #include "BASE.h"
+
+#include <limits.h>
+
+i8 C_DATUM_NULL;
+i8 C_DATUM_MINUS_INFINITY;
+i8 C_DATUM_PLUS_INFINITY;
+
+i8 C_I8_MIN;
+i8 C_I8_MAX;
+i8 C_I8_MID;
 
 /*----------------------------------------------------------------------------*/
 /*-- VLQ Support -------------------------------------------------------------*/
@@ -473,6 +483,23 @@ char* IntLib::sAsText(i8 iValue)
   }
   
   //return (char*)"other";
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* init all globals                                                           */
+/*----------------------------------------------------------------------------*/
+void IntLib::vInitGlobals(void)
+{
+  _static_
+  
+  C_DATUM_NULL           = LLONG_MIN + 1;
+  C_DATUM_MINUS_INFINITY = LLONG_MIN;
+  C_DATUM_PLUS_INFINITY  = LLONG_MAX;
+
+  C_I8_MIN = LLONG_MIN + 2;
+  C_I8_MAX = LLONG_MAX - 1;
+  C_I8_MID = C_I8_MAX / 2;
 }
 
 /*============================================================================*/
