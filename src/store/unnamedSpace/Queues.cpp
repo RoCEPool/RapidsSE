@@ -758,25 +758,25 @@ void Queues::vMonitorPortrait(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  s48K sTasksPortrait;
-  
-  sPortrait = ""_Stz;
-  sPortrait.vConcat("Queues:\n"_Stz);
-  
-  m_pExecutingSet->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pReadyQueue->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pReadyQueueLP->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pWaitingSet->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pSleepingQueue->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
+//  s48K sTasksPortrait;
+//  
+//  sPortrait = ""_Stz;
+//  sPortrait.vConcat("Queues:\n"_Stz);
+//  
+//  m_pExecutingSet->vPortrait(sTasksPortrait);
+//  sPortrait.vConcat(sTasksPortrait);
+//  
+//  m_pReadyQueue->vPortrait(sTasksPortrait);
+//  sPortrait.vConcat(sTasksPortrait);
+//  
+//  m_pReadyQueueLP->vPortrait(sTasksPortrait);
+//  sPortrait.vConcat(sTasksPortrait);
+//  
+//  m_pWaitingSet->vPortrait(sTasksPortrait);
+//  sPortrait.vConcat(sTasksPortrait);
+//  
+//  m_pSleepingQueue->vPortrait(sTasksPortrait);
+//  sPortrait.vConcat(sTasksPortrait);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -119,7 +119,7 @@ void TaskQueue::vContentDump(void)
     
     Task* pTask = _pTask(pNode->m_pObject);
  
-    pTask->vRenderPortrait(sPortrait);
+    //pTask->vRenderPortrait(sPortrait);
     
     vTrace("%s\n"_Stz,sPortrait.azChar());
   }
@@ -207,77 +207,6 @@ Task* TaskQueue::pPopTask(void)
   }
 
   return pFirstTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the first queue                                                        */
-/*----------------------------------------------------------------------------*/
-void TaskQueue::vPortrait(s48K& sPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
-  
-  sPortrait.vSprint("%15 Portrait\n"_Stz,aQK[m_eKind]);
-  
-  vGrabLock();
-  
-  sPortrait.vSprintCat("%lld tasks\n"_Stz,nTasks());
-  
-  vDropLock();
-  
-  
-  s48K sTaskPortrait;
-  
-  sPortrait.vSprint("%15s"_Stz,aQK[m_eKind]);
-  
-  vGrabLock();
-  
-  sPortrait.vSprintCat(" %2lld "_Stz,m_pTaskSkipList->nObjects());
-  
-  eCN eJobPrev = CN_NONE;
-  i8  nPrev = 0;
-  
-  for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
-       pNode;
-       pNode = m_pTaskSkipList->pNext(pNode,0)) {
-    
-    Task* pTask = _pTask(pNode->m_pObject);
-    
-    if (pTask == _pTask(m_pTaskSkipList->pFirst(0)->m_pObject)) {
-      sPortrait.vConcat("- "_Stz);
-      if (QK_SLEEPING_QUEUE == m_eKind) {
-        u8 uInUs = pTask->uWakeupInUsec();
-        sPortrait.vCatSprint("in %lldus "_Stz,uInUs);
-      }
-      pTask->vMonitorPortrait(sTaskPortrait);
-      sPortrait.vConcat(sTaskPortrait);
-      eJobPrev = pTask->pJob()->eClass();
-      nPrev = 0;
-      continue;
-    }
-    
-    if (pTask->pJob()->eClass() == eJobPrev) {
-      nPrev++;
-      continue;
-    }
-    
-    if (nPrev) {
-      sPortrait.vSprintCat("+%lld"_Stz,nPrev);
-      nPrev = 0;
-    }
-    
-    sPortrait.vConcat(" "_Stz);
-    pTask->vMonitorPortrait(sTaskPortrait);
-    sPortrait.vConcat(sTaskPortrait);
-    eJobPrev = pTask->pJob()->eClass();
-  }
-  
-  if (nPrev)
-    sPortrait.vSprintCat("+%lld"_Stz,nPrev);
-  
-  sPortrait.vConcat("\n"_Stz);
-
-  vDropLock();
-
 }
 
 /*----------------------------------------------------------------------------*/

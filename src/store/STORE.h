@@ -30,24 +30,9 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "IoCopy.hpp"
 #include "LoadChunk.hpp"
 
-//#include "Operand.hpp"
 #include "LinkedBuffer.hpp"
 #include "Definition.hpp"
 #include "OperandQueue.hpp"
-
-//------------------------------------------------------------------------------
-
-//#include "Dic.hpp"
-//#include "DicStack.hpp"
-//#include "Local.hpp"
-//#include "LocalChain.hpp"
-//#include "Routine.hpp"
-//#include "TypedStack.hpp"
-//
-//#include "Compiler.hpp"
-//#include "Word.hpp"
-//
-//#include "SP_Word.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -215,7 +200,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Dynamo.hpp"
 
-
 //------------------------------------------------------------------------------
 
 #include "RluCommon.h"
@@ -234,7 +218,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "LogicUnit.hpp"
 
-//#include "Profile.hpp"
 #include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskQueue.hpp"

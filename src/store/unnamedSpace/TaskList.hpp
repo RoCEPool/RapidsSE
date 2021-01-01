@@ -30,7 +30,6 @@ namespace STORE
     bool   bIsLocked(void);
     Task*  pPeekTask(void);
     Task*  pPopTask(void);
-    void   vPortrait(s48K& sPortrait);
     void   vRemoveTask(Task* pTask);
     i8     nTasks(void);
   

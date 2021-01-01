@@ -87,7 +87,6 @@ namespace STORE
     static Task* pThisTLSTask(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vMonitorProfile_stats(s48K& sPortrait);
   
     i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
@@ -109,7 +108,6 @@ namespace STORE
     void vDump(void);
     void vEntryPoint(eEP eEntryPoint);
     eEP  eEntryPoint(void);
-    void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vInitExeContext(void);
     bool bIsLocked(void);
@@ -119,7 +117,6 @@ namespace STORE
     Stz* szJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
-    void vMonitorPortrait(s48K& sPortrait);
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
@@ -131,7 +128,6 @@ namespace STORE
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     LogicUnit* pLogicUnit(void);
-    void vRenderPortrait(s256& sTaskPortrait);
     void vReset(void);
     void vReseed(void);
     DicStack* pSaveDicStack(void);

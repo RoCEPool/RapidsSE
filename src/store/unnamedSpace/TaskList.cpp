@@ -185,62 +185,6 @@ Task* TaskList::pPopTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the first queue                                                        */
-/*----------------------------------------------------------------------------*/
-void TaskList::vPortrait(s48K& sPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
-
-  s48K sTaskPortrait;
-  
-  sPortrait.vSprint("%15s"_Stz,aQK[m_eKind]);
-  
-  vGrabLock();
-  
-  sPortrait.vSprintCat(" %2lld "_Stz,nItems());
-  
-  eCN eJobPrev = CN_NONE;
-  i8  nPrev = 0;
-  
-  for (Task* pTask = pHead(); pTask; pTask = pTask->pNextItem()) {
-    
-    if (! pTask->pJob())
-      continue;
-    
-    if (pTask == pHead()) {
-      sPortrait.vConcat("- "_Stz);
-      pTask->vMonitorPortrait(sTaskPortrait);
-      sPortrait.vConcat(sTaskPortrait);
-      eJobPrev = pTask->pJob()->eClass();
-      nPrev = 0;
-      continue;
-    }
-
-    if (pTask->pJob() && pTask->pJob()->eClass() == eJobPrev) {
-      nPrev++;
-      continue;
-    }
-    
-    if (nPrev) {
-      sPortrait.vSprintCat("+%lld"_Stz,nPrev);
-      nPrev = 0;
-    }
-    
-    sPortrait.vConcat(" "_Stz);
-    pTask->vMonitorPortrait(sTaskPortrait);
-    sPortrait.vConcat(sTaskPortrait);
-    eJobPrev = pTask->pJob()->eClass();
-  }
-  
-  if (nPrev)
-    sPortrait.vSprintCat("+%lld"_Stz,nPrev);
-
-  sPortrait.vConcat("\n"_Stz);
-
-  vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove task from list                                                      */
 /*----------------------------------------------------------------------------*/
 void TaskList::vRemoveTask(Task* pTask)

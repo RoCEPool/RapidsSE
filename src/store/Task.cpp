@@ -298,25 +298,6 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor profile (for statistics)                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vMonitorProfile_stats(s48K& sPortrait)
-{
-  Statistics* pStats = AM::pStatistics();
-  
-  sPortrait.vSprint("Task: acks %lld executing %lld exited %lld ready %lld "
-                          "sleeping %lld waiting %lld\n"_Stz,
-                    pStats->Task.m_nAcks,
-                    pStats->Task.m_nExecuting,
-                    pStats->Task.m_nExited,
-                    pStats->Task.m_nReady,
-                    pStats->Task.m_nSleeping,
-                    pStats->Task.m_nWaiting
-                    );
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -617,25 +598,6 @@ void Task::vDropTaskLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vFocalOutline(s4K& sOutline)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vGrabTaskLock();
-  
-  sOutline.vSprint("%s %s%s"_Stz,
-                                      
-                   aTS[m_eState],
-                   aQK[m_eQueue],
-                   m_pLogicUnit->m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
-                   );
-  
-  vDropTaskLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vGrabTaskLock(void)
@@ -754,29 +716,6 @@ void Task::vLocalsPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor portrait                                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vMonitorPortrait(s48K& sPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
- if (JL_NONE == m_pJob->eJobList())
-    sPortrait.vSprint("%s"_Stz,aCN[m_pJob->eClass()]);
-  else
-  if (JL_ORIGINATING == m_pJob->eJobList())
-    sPortrait.vSprint("%s:o"_Stz,aCN[m_pJob->eClass()]);
-  else
-  if (JL_PARTICIPATING == m_pJob->eJobList())
-    sPortrait.vSprint("%s:p"_Stz,aCN[m_pJob->eClass()]);
-
-
-//  sPortrait.vSprint("%s %p"_Stz,
-//                    aCN[m_pJob->eClass()],
-//                    m_pJob
-//                    );
-}
-
-/*----------------------------------------------------------------------------*/
 /* new input                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vNewInput(void)
@@ -846,38 +785,6 @@ LogicUnit* Task::pLogicUnit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_pLogicUnit;
-}
-
-/*----------------------------------------------------------------------------*/
-/* render text portrait of task                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vRenderPortrait(s256& sTaskPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (TS_SLEEPING == m_eState) {
-    
-    Now sDateTime;
-    
-    sTaskPortrait.vSprint("Task %p %s %s wakeup %lld"_Stz,
-                          this,
-                          aCN[m_pJob->eClass()],
-                          aTS[m_eState],
-                          m_oWakeup.m_wWakeupIvl.m_iAsI8);
-  }
-  else if (QK_NONE != m_eQueue) {
-    sTaskPortrait.vSprint("Task %p %s %s"_Stz,
-                          this,
-                          aCN[m_pJob->eClass()],
-                          aTS[m_eState]);
-  }
-  else {
-    sTaskPortrait.vSprint("Task %p %s %s"_Stz,
-                          this,
-                          aCN[m_pJob->eClass()],
-                          aTS[m_eState]
-                          );
-  }
 }
 
 /*----------------------------------------------------------------------------*/
