@@ -603,7 +603,8 @@ t8 AM::tThisTLSPespective(void)
 //}
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit_task();
+  Job* pJob = pTask->pJob();
+  LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
 
   return pLogicUnit;
 }
@@ -630,7 +631,10 @@ Tx* AM::pThisTLSTx(void) {
   if (! pTask)
     return nullptr;
   
-  Tx* pTx = *pTask->pLogicUnit_task()->m_xpTx;
+  Job* pJob = pTask->pJob();
+  LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
+
+  Tx* pTx = *pLogicUnit->m_xpTx;
   return pTx;
 }
 
