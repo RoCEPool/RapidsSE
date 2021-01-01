@@ -33,7 +33,7 @@ void Step::vRegCounter0Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushInt(pLogicUnit()->m_iCounter0);
+  m_pDataStack->vPushInt(pLogicUnit_task()->m_iCounter0);
 
   EXIT();
 }
@@ -45,7 +45,7 @@ void Step::vRegCounter0Set(void)
 {
   ENTRY();
     
-  pLogicUnit()->m_iCounter0 = m_pDataStack->iPopInt(__func__);
+  pLogicUnit_task()->m_iCounter0 = m_pDataStack->iPopInt(__func__);
 
   EXIT();
 }
@@ -57,7 +57,7 @@ void Step::vRegCounter1Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushInt(pLogicUnit()->m_iCounter1);
+  m_pDataStack->vPushInt(pLogicUnit_task()->m_iCounter1);
 
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vRegCounter1Set(void)
 {
   ENTRY();
     
-  pLogicUnit()->m_iCounter1 = m_pDataStack->iPopInt(__func__);
+  pLogicUnit_task()->m_iCounter1 = m_pDataStack->iPopInt(__func__);
 
   EXIT();
 }
@@ -81,7 +81,7 @@ void Step::vRegCounter2Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushInt(pLogicUnit()->m_iCounter2);
+  m_pDataStack->vPushInt(pLogicUnit_task()->m_iCounter2);
 
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vRegCounter2Set(void)
 {
   ENTRY();
     
-  pLogicUnit()->m_iCounter2 = m_pDataStack->iPopInt(__func__);
+  pLogicUnit_task()->m_iCounter2 = m_pDataStack->iPopInt(__func__);
 
   EXIT();
 }

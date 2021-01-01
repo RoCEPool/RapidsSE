@@ -29,8 +29,8 @@ void Step::vNode_IDelete(void)
 {
   ENTRY();
   
-  Node_I* pNode_I = *pLogicUnit()->m_xpNode_I;
-  pLogicUnit()->m_xpNode_I = nullptr;
+  Node_I* pNode_I = *pLogicUnit_task()->m_xpNode_I;
+  pLogicUnit_task()->m_xpNode_I = nullptr;
   
   delete pNode_I;
   
@@ -44,7 +44,7 @@ void Step::vNode_IMore(void)
 {
   ENTRY();
   
-  bool bMore = pLogicUnit()->m_xpNode_I->bMore();
+  bool bMore = pLogicUnit_task()->m_xpNode_I->bMore();
   
   m_pDataStack->vPushInt(bMore);
   
@@ -62,7 +62,7 @@ void Step::vNode_INew(void)
   
   Node_I* pNode_I = new Node_I(0,iStipulate);
       
-  pLogicUnit()->m_xpNode_I = pNode_I;
+  pLogicUnit_task()->m_xpNode_I = pNode_I;
 
   EXIT();
 }
@@ -74,7 +74,7 @@ void Step::vNode_INext(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_xpNode_I->vNext();
+  pLogicUnit_task()->m_xpNode_I->vNext();
 
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vNode_INode(void)
 {
   ENTRY();
   
-  Node* pNode = pLogicUnit()->m_xpNode_I->pNode();
+  Node* pNode = pLogicUnit_task()->m_xpNode_I->pNode();
 
   m_pDataStack->vPushPtr(pNode);
 

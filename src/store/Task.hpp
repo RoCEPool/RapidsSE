@@ -125,7 +125,7 @@ namespace STORE
     void vProfile(Profile* pProfile);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
-    LogicUnit* pLogicUnit(void);
+    LogicUnit* pLogicUnit_task(void);
     void vLogicUnit_task(LogicUnit** ppLogicUnit);
     void vReset(void);
     void vReseed(void);

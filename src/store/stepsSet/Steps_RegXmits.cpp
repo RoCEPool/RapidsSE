@@ -37,10 +37,10 @@ void Step::vRegXmitsDelete(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   delete pXmits;
   
-  pLogicUnit()->m_xpXmits = nullptr;
+  pLogicUnit_task()->m_xpXmits = nullptr;
   
   EXIT();
 }
@@ -52,7 +52,7 @@ void Step::vRegXmitsGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpXmits);
+  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpXmits);
   
   EXIT();
 }
@@ -64,7 +64,7 @@ void Step::vRegXmitsHandleCancel(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
  
   pXmits->vIncExit();
   
@@ -80,7 +80,7 @@ void Step::vRegXmitsHandleDestroy(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   pXmits->vIncDestroy();
   
@@ -96,7 +96,7 @@ void Step::vRegXmitsHandleEos(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   pXmits->vIncEos();
   
@@ -112,7 +112,7 @@ void Step::vRegXmitsHandleError(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   pXmits->vIncError();
   
@@ -128,7 +128,7 @@ void Step::vRegXmitsHandleExit(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   pXmits->vIncExit();
   
@@ -144,7 +144,7 @@ void Step::vRegXmitsHandleDataPulse(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   m_pDataStack->vPushInt(pXmits->bDataPulseDone());
   pXmits->vIncDataPulse();
@@ -159,7 +159,7 @@ void Step::vRegXmitsHandlePulsed(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   pXmits->vIncPulsed();
   
@@ -175,7 +175,7 @@ void Step::vRegXmitsHandleStart(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   bool bStartDone = pXmits->bStartDone();
   pXmits->vIncStart();
@@ -192,7 +192,7 @@ void Step::vRegXmitsHandleStreamDef(void)
 {
   ENTRY();
   
-  Xmits* pXmits = _pXmits(*pLogicUnit()->m_xpXmits);
+  Xmits* pXmits = _pXmits(*pLogicUnit_task()->m_xpXmits);
   
   bool bStreamDefDone = pXmits->bStreamDefDone();
   
@@ -210,7 +210,7 @@ void Step::vRegXmitsIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit()->m_xpXmits.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpXmits.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -222,11 +222,11 @@ void Step::vRegXmitsNew(void)
 {
   ENTRY();
   
-  ASSERT (pLogicUnit()->m_xpXmits.bIsNull());
+  ASSERT (pLogicUnit_task()->m_xpXmits.bIsNull());
   
   i8 iXmits = m_pDataStack->iPopInt(__func__);
   
-  pLogicUnit()->m_xpXmits = new Xmits(iXmits);
+  pLogicUnit_task()->m_xpXmits = new Xmits(iXmits);
   
   EXIT();
 }

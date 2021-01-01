@@ -37,7 +37,7 @@ void Step::vTablePtnAppendBuffer(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
   
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*pLogicUnit()->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*pLogicUnit_task()->m_xpTablePtn);
   
   // append the buffer to the tablePtn
   pTablePtn->vAppendBuffer(pCrwBuffer);
@@ -52,7 +52,7 @@ void Step::vTablePtnGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpTablePtn);
+  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpTablePtn);
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vTablePtnPopulateIndex(void)
   
   i8 iIndexNo = pIndex->iIndexNo();
   
-  TablePtn* pTablePtn = *pLogicUnit()->m_xpTablePtn;
+  TablePtn* pTablePtn = *pLogicUnit_task()->m_xpTablePtn;
   
   bool bPopulated = pTablePtn->bPopulateIndex(iIndexNo);
   
@@ -85,7 +85,7 @@ void Step::vTablePtnPurge(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = *pLogicUnit()->m_xpTablePtn;
+  TablePtn* pTablePtn = *pLogicUnit_task()->m_xpTablePtn;
   
   // get the oldest perspective
   t8 tOldestPsp = AM::pTxSet()->tOldestPsp();
@@ -101,7 +101,7 @@ void Step::vTablePtnRoot(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(*pLogicUnit()->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*pLogicUnit_task()->m_xpTablePtn);
   
   m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   
@@ -115,7 +115,7 @@ void Step::vTablePtnSet(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  pLogicUnit_task()->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Step::vTablePtnTruncate(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = *pLogicUnit()->m_xpTablePtn;
+  TablePtn* pTablePtn = *pLogicUnit_task()->m_xpTablePtn;
   pTablePtn->vTruncate();
   
   EXIT();
@@ -143,7 +143,7 @@ void Step::vTablePtnTruncateIndex(void)
   // get the index to be truncated
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
-  TablePtn* pTablePtn = *pLogicUnit()->m_xpTablePtn;
+  TablePtn* pTablePtn = *pLogicUnit_task()->m_xpTablePtn;
   pTablePtn->vTruncateIndex(pIndex);
   
   EXIT();

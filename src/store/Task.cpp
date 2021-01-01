@@ -208,7 +208,7 @@ void Task::vTaskLoop(void)
   if (! bSeeded()) {
     vInitExeContext();
     
-    if (! pLogicUnit()) {
+    if (! pLogicUnit_task()) {
       LogicUnit* pLogicUnit = new LogicUnit(this);
       vLogicUnit_task( & pLogicUnit );
     }
@@ -387,7 +387,7 @@ void Task::vCaught(Exception xException)
 
   AM::vJobContentDump(m_pJob);
   
-  pLogicUnit()->vContentDump();
+  pLogicUnit_task()->vContentDump();
   
   AM::pGrid()->vDsv();
 
@@ -501,10 +501,10 @@ void Task::vDump(void)
   
   AM::vJobContentDump(m_pJob);
   
-  if (pLogicUnit()->m_xpOp.bIsNotNull())
-    pLogicUnit()->m_xpOp->vDump();
+  if (pLogicUnit_task()->m_xpOp.bIsNotNull())
+    pLogicUnit_task()->m_xpOp->vDump();
   
-  pLogicUnit()->vContentDump();
+  pLogicUnit_task()->vContentDump();
   
   
   
@@ -715,7 +715,7 @@ i8& Task::i_NextRnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return pLogicUnit()->m_i_NextRnd;
+  return pLogicUnit_task()->m_i_NextRnd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -761,7 +761,7 @@ void Task::vQueue(eQK eQueue)
 /*----------------------------------------------------------------------------*/
 /* get register set                                                           */
 /*----------------------------------------------------------------------------*/
-LogicUnit* Task::pLogicUnit(void)
+LogicUnit* Task::pLogicUnit_task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -884,7 +884,7 @@ STORE::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return pLogicUnit()->m_pSendNode;
+  return pLogicUnit_task()->m_pSendNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -894,7 +894,7 @@ void Task::vSendNode(STORE::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  pLogicUnit()->m_pSendNode = pNode;
+  pLogicUnit_task()->m_pSendNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/

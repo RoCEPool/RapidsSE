@@ -28,10 +28,10 @@ void Step::vSubsetGet(void)
 {
   ENTRY();
   
-  if (pLogicUnit()->m_xpSubset.bIsNull())
+  if (pLogicUnit_task()->m_xpSubset.bIsNull())
     m_pDataStack->vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(*pLogicUnit()->m_xpSubset);
+    m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpSubset);
   
   EXIT();
 }
@@ -45,8 +45,8 @@ void Step::vSubsetNext(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*pLogicUnit()->m_xpSubset)
-    pNextOperand = pLogicUnit()->m_xpSubset->pNextItem();
+  if (*pLogicUnit_task()->m_xpSubset)
+    pNextOperand = pLogicUnit_task()->m_xpSubset->pNextItem();
   
   m_pDataStack->vPushPtr(pNextOperand);
   
@@ -62,20 +62,20 @@ void Step::vSubsetNextBuffer(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*pLogicUnit()->m_xpSubset) {
-    if (pLogicUnit()->m_xpSubset->eClass() == CN_CRWBUFFER) {
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(*pLogicUnit()->m_xpSubset);
+  if (*pLogicUnit_task()->m_xpSubset) {
+    if (pLogicUnit_task()->m_xpSubset->eClass() == CN_CRWBUFFER) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(*pLogicUnit_task()->m_xpSubset);
       pNextOperand = pCrwBuffer->pNextBuffer();
-      //pLogicUnit()->m_xpSubset = pNextOperand;
+      //pLogicUnit_task()->m_xpSubset = pNextOperand;
     }
     else
-      if (pLogicUnit()->m_xpSubset->eClass() == CN_CSVBUFFER) {
-      CsvBuffer* pCsvBuffer = _pCsvBuffer(*pLogicUnit()->m_xpSubset);
+      if (pLogicUnit_task()->m_xpSubset->eClass() == CN_CSVBUFFER) {
+      CsvBuffer* pCsvBuffer = _pCsvBuffer(*pLogicUnit_task()->m_xpSubset);
       pNextOperand = pCsvBuffer->pNextBuffer();
-      //pLogicUnit()->m_xpSubset = pNextOperand;
+      //pLogicUnit_task()->m_xpSubset = pNextOperand;
     }
     else {
-      vTrace("Subset class %s\n"_Stz, aCN[pLogicUnit()->m_xpSubset->eClass()]);
+      vTrace("Subset class %s\n"_Stz, aCN[pLogicUnit_task()->m_xpSubset->eClass()]);
       ASSERT(0);
     }
   }
@@ -99,7 +99,7 @@ void Step::vSubsetSet(void)
     vDebugPoint();
   }
   
-  pLogicUnit()->m_xpSubset = pOperand;
+  pLogicUnit_task()->m_xpSubset = pOperand;
   
   EXIT();
 }

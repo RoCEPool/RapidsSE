@@ -36,7 +36,7 @@ void Step::vIndexStreamClose(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit()->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit_task()->m_xpIndexStream);
   
   pIndexStream->vClose();
   
@@ -50,7 +50,7 @@ void Step::vIndexStreamDelete(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit()->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit_task()->m_xpIndexStream);
   
   delete pIndexStream;
   
@@ -64,7 +64,7 @@ void Step::vIndexStreamDeleteNext(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit()->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit_task()->m_xpIndexStream);
   
   bool bMoreToDelete = pIndexStream->bDelete();
   
@@ -79,7 +79,7 @@ void Step::vIndexStreamGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpIndexStream);
+  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpIndexStream);
   
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vIndexStreamIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit()->m_xpIndexStream.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpIndexStream.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -120,7 +120,7 @@ void Step::vIndexStreamOpen(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit()->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit_task()->m_xpIndexStream);
   
   bool bOpened = pIndexStream->bOpen();
   ASSERT(bOpened);
@@ -135,7 +135,7 @@ void Step::vIndexStreamRead(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit()->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit_task()->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the rowOnce skipList
@@ -155,7 +155,7 @@ void Step::vIndexStreamSet(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_xpIndexStream = _pIndexStream(m_pDataStack->pPopPtr(__func__));
+  pLogicUnit_task()->m_xpIndexStream = _pIndexStream(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -167,7 +167,7 @@ void Step::vIndexStreamSeek(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit()->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*pLogicUnit_task()->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the planner

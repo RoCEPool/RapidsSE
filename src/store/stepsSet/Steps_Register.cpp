@@ -26,7 +26,7 @@ void Step::vRegister0Get(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpRegister0);
+  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpRegister0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ void Step::vRegister0Set(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_xpRegister0 = m_pDataStack->pPopPtr(__func__);
+  pLogicUnit_task()->m_xpRegister0 = m_pDataStack->pPopPtr(__func__);
 }
 
 /*============================================================================*/

@@ -487,7 +487,7 @@ void AM::vTaskDump(void) {
     AM::pThisTLSTask()->vDump();
 }
 
-LogicUnit* AM::pTaskLogicUnit(Task* pTask)   { return pTask->pLogicUnit(); }
+LogicUnit* AM::pTaskLogicUnit(Task* pTask)   { return pTask->pLogicUnit_task(); }
 
 i8 AM::iTaskQueue(Task* pTask) {
   eQK eQueue = pTask->eQueue();
@@ -530,7 +530,7 @@ t8 AM::tThisTLSPespective(void)
 //}
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit_task();
 
   return pLogicUnit;
 }
@@ -557,7 +557,7 @@ Tx* AM::pThisTLSTx(void) {
   if (! pTask)
     return nullptr;
   
-  Tx* pTx = *pTask->pLogicUnit()->m_xpTx;
+  Tx* pTx = *pTask->pLogicUnit_task()->m_xpTx;
   return pTx;
 }
 

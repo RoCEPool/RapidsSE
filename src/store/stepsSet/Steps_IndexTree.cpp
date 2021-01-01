@@ -34,7 +34,7 @@ void Step::vIndexTreeAsAlt(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_pDevAltIxt->m_pIdxTree = * pLogicUnit()->m_xpIndexTree;
+  pLogicUnit_task()->m_pDevAltIxt->m_pIdxTree = * pLogicUnit_task()->m_xpIndexTree;
   
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vIndexTreeAsSrc(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_pDevSrcIxt->m_pIdxTree = * pLogicUnit()->m_xpIndexTree;
+  pLogicUnit_task()->m_pDevSrcIxt->m_pIdxTree = * pLogicUnit_task()->m_xpIndexTree;
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vIndexTreeAsTmp(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_pDevTmpIxt->m_pIdxTree = * pLogicUnit()->m_xpIndexTree;
+  pLogicUnit_task()->m_pDevTmpIxt->m_pIdxTree = * pLogicUnit_task()->m_xpIndexTree;
   
   EXIT();
 }
@@ -70,9 +70,9 @@ void Step::vIndexTreeDelete(void)
 {
   ENTRY();
   
-  IndexTree* pIndexTree = * pLogicUnit()->m_xpIndexTree;
+  IndexTree* pIndexTree = * pLogicUnit_task()->m_xpIndexTree;
   
-  pLogicUnit()->m_xpIndexTree = nullptr;
+  pLogicUnit_task()->m_xpIndexTree = nullptr;
   
   delete pIndexTree;
   
@@ -86,7 +86,7 @@ void Step::vIndexTreeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpIndexTree);
+  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpIndexTree);
   
   EXIT();
 }
@@ -98,7 +98,7 @@ void Step::vIndexTreeIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit()->m_xpIndexTree.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpIndexTree.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vIndexTreeNew(void)
   ENTRY();
   
   IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
-  pLogicUnit()->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
+  pLogicUnit_task()->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   
   EXIT();
 }
@@ -123,7 +123,7 @@ void Step::vIndexTreeSet(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+  pLogicUnit_task()->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

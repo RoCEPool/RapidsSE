@@ -28,7 +28,7 @@ void Step::vStreamSetTableColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*pLogicUnit()->m_xpStreamSetTable);
+  Table* pTable = _pTable(*pLogicUnit_task()->m_xpStreamSetTable);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -48,7 +48,7 @@ void Step::vStreamSetTableDump(void)
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*pLogicUnit()->m_xpStreamSetTable);
+  Table* pTable = _pTable(*pLogicUnit_task()->m_xpStreamSetTable);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -66,7 +66,7 @@ void Step::vStreamSetTableGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpStreamSetTable);
+  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpStreamSetTable);
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vStreamSetTableSet(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_xpStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  pLogicUnit_task()->m_xpStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

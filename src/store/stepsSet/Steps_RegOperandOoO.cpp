@@ -31,9 +31,9 @@ void Step::vRegOperandOoODelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*pLogicUnit()->m_xpOperandOoO);
+  AM::vDeleteOperand(*pLogicUnit_task()->m_xpOperandOoO);
   
-  pLogicUnit()->m_xpOperandOoO = nullptr;
+  pLogicUnit_task()->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -45,7 +45,7 @@ void Step::vRegOperandOoOGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*pLogicUnit()->m_xpOperandOoO);
+  m_pDataStack->vPushPtr(*pLogicUnit_task()->m_xpOperandOoO);
   
   EXIT();
 }
@@ -57,7 +57,7 @@ void Step::vRegOperandOoOIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(pLogicUnit()->m_xpOperandOoO.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(pLogicUnit_task()->m_xpOperandOoO.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -69,11 +69,11 @@ void Step::vRegOperandNextOoO(void)
 {
   ENTRY();
   
-  ASSERT(pLogicUnit()->m_xpOperandOoO.bIsNull());
+  ASSERT(pLogicUnit_task()->m_xpOperandOoO.bIsNull());
   
-  pLogicUnit()->m_xpOperandOoO = m_pJob->m_pOp->pPopQueueOoO();
+  pLogicUnit_task()->m_xpOperandOoO = m_pJob->m_pOp->pPopQueueOoO();
   
-  if (pLogicUnit()->m_xpOperandOoO.bIsNull())
+  if (pLogicUnit_task()->m_xpOperandOoO.bIsNull())
     m_pDataStack->vPushInt(false);
   else
     m_pDataStack->vPushInt(true);
@@ -87,13 +87,13 @@ void Step::vRegOperandOoOPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*pLogicUnit()->m_xpOperandOoO);
+  ASSERT(*pLogicUnit_task()->m_xpOperandOoO);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
-  pOp->vPipeOut_nextOp(*pLogicUnit()->m_xpOperandOoO,this);
+  pOp->vPipeOut_nextOp(*pLogicUnit_task()->m_xpOperandOoO,this);
   
-  pLogicUnit()->m_xpOperandOoO = nullptr;
+  pLogicUnit_task()->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -105,13 +105,13 @@ void Step::vRegOperandOoOPipeToJob(void)
 {
   ENTRY();
   
-  ASSERT(*pLogicUnit()->m_xpOperandOoO);
+  ASSERT(*pLogicUnit_task()->m_xpOperandOoO);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeToJob(*pLogicUnit()->m_xpOperandOoO);
+  pOp->vPipeToJob(*pLogicUnit_task()->m_xpOperandOoO);
   
-  pLogicUnit()->m_xpOperandOoO = nullptr;
+  pLogicUnit_task()->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -124,8 +124,8 @@ void Step::vRegOperandOoOSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || pLogicUnit()->m_xpOperandOoO.bIsNull());
-  pLogicUnit()->m_xpOperandOoO = _pOperand(pOperand);
+  ASSERT(! pOperand || pLogicUnit_task()->m_xpOperandOoO.bIsNull());
+  pLogicUnit_task()->m_xpOperandOoO = _pOperand(pOperand);
   
   EXIT();
 }

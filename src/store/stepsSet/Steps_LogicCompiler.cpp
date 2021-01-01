@@ -30,7 +30,7 @@ void Step::vLogicCompilerCompile(void)
   ENTRY();
       
   i8 iResult =
-    pLogicUnit()->m_xpLogicCompiler->iCompile(pLogicUnit(),pLogicUnit());
+    pLogicUnit_task()->m_xpLogicCompiler->iCompile(pLogicUnit_task(),pLogicUnit_task());
   
   EXIT();
 }
@@ -42,8 +42,8 @@ void Step::vLogicCompilerDelete(void)
 {
   ENTRY();
   
-  LogicCompiler* pLogicCompiler = * pLogicUnit()->m_xpLogicCompiler;
-  pLogicUnit()->m_xpLogicCompiler = nullptr;
+  LogicCompiler* pLogicCompiler = * pLogicUnit_task()->m_xpLogicCompiler;
+  pLogicUnit_task()->m_xpLogicCompiler = nullptr;
   
   delete pLogicCompiler;
       
@@ -85,7 +85,7 @@ void Step::vLogicCompilerNew(void)
 {
   ENTRY();
   
-  pLogicUnit()->m_xpLogicCompiler = new LogicCompiler;
+  pLogicUnit_task()->m_xpLogicCompiler = new LogicCompiler;
   
   EXIT();
 }
