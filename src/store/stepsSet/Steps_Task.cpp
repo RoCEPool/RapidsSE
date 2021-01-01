@@ -336,7 +336,7 @@ void Step::vTaskSendNodeFetch(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  Node* pSendNode = pThatTask->pSendNode();
+  Node* pSendNode = pThatTask->pJob()->pLogicUnit_job()->m_pSendNode;
   
   Object* pPtrSendNode = pSendNode;
   
@@ -356,8 +356,8 @@ void Step::vTaskSendNodeStore(void)
   
   Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  pThatTask->vSendNode(pSendNode);
-  
+  pThatTask->pJob()->pLogicUnit_job()->m_pSendNode = pSendNode;
+
   EXIT();
 }
 

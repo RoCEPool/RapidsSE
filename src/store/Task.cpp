@@ -878,24 +878,14 @@ void Task::vSeedTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get send node                                                              */
-/*----------------------------------------------------------------------------*/
-STORE::Node* Task::pSendNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return pLogicUnit_task()->m_pSendNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /*set send node                                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSendNode(STORE::Node* pNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  pLogicUnit_task()->m_pSendNode = pNode;
-}
+//void Task::vSendNode(STORE::Node* pNode)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+//  
+//  pLogicUnit_task()->m_pSendNode = pNode;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* sleep for microseconds                                                     */

@@ -132,8 +132,7 @@ namespace STORE
     DicStack* pSaveDicStack(void);
     bool bSeeded(void);
     void vSeedTask(void);
-    Node* pSendNode(void);
-    void vSendNode(Node* pSendNode);
+//    void vSendNode(Node* pSendNode);
     void vSleepUsec(i8 iMicroSeconds);
     void vValSprint(s48K& sFormat, s48K& sString);
     void vStackContents(TypedStack* pStack, s48K& sStackContents);
