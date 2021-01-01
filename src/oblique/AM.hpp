@@ -367,11 +367,13 @@ namespace OBLIQUE
     static void vTaskBeginOp(Task* pTask);
     static DicStack* pTaskDicStack(void);
     static void vTaskDump(void);
+    static void vTaskDump(Task* pTask);
     static Job* pTaskJob(void);
     static void vTaskMutexLock(Task* pTask);
     static void vTaskMutexSignal(Task* pTask);
     static void vTaskMutexUnlock(Task* pTask);
     static void vTaskMutexWait(Task* pTask);
+    static void vTaskOnExceptionTrace(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);

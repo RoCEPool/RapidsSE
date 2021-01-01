@@ -363,36 +363,9 @@ void Task::vBeginOp(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCaught(Exception xException)
 {
-  vTrace("\n\n"_Stz);
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
-         AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
-         aCN[AM::eJobClass(m_pJob)]
-         );
-  
   xException.vCaught();
-
-  // dump the call stack
-  vThreadCallStackDump();
   
-  // write activity log
-  AM::vWriteLog();
-  
-  // dump api state
-  //AM::vDumpApi();
-
-  vContentDump();
-  
-  if (AM::aReqTuple_tls()) AM::aReqTuple_tls()->vContentDump();
-
-  AM::vJobContentDump(m_pJob);
-  
-  pLogicUnit_task()->vContentDump();
-  
-  AM::pGrid()->vDsv();
-
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  AM::vTaskOnExceptionTrace(this);
   
   vReset();
   
@@ -496,18 +469,9 @@ void Task::vDump(void)
   
   vContentDump();
   
-  if (AM::aReqTuple_tls())
-    AM::aReqTuple_tls()->vContentDump();
+ 
   
-  AM::vJobContentDump(m_pJob);
-  
-  if (pLogicUnit_task()->m_xpOp.bIsNotNull())
-    pLogicUnit_task()->m_xpOp->vDump();
-  
-  pLogicUnit_task()->vContentDump();
-  
-  
-  
+  AM::vTaskDump(this);
   
   
   Word* pWord = m_oDicStack.pLocateRoutineWord(m_aInxPtr);
@@ -888,86 +852,6 @@ void Task::vSleepUsec(i8 iMicroseconds)
 }
 
 /*----------------------------------------------------------------------------*/
-/* stack contents as string                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vStackContents(TypedStack* pStack, s48K& sStackContents)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  sStackContents = ""_Stz;
-  
-  i8 iParamValues = pStack->nValues();
-  
-  sStackContents.vCatSprint("("_Stz);
-  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
-    
-    sStackContents.vCatSprint(" "_Stz);
-    
-    TypedCell* aTypedCell = pStack->aPeekItem(iValue);
-    
-    eCN eClass = aTypedCell->eType();
-    
-    if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Stz,aTypedCell->iInt());
-    }
-    else if (CN_PTRVAL == eClass) {
-      if (aTypedCell->pObj()) {
-        
-        Object* pPtr = aTypedCell->pObj();
-        
-        eCN ePtrClass = aTypedCell->pObj()->eClass();
-        
-        if (CN_WORD == ePtrClass)
-          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
-                                    aCN[ePtrClass],
-                                    pPtr,
-                                    ((Word*)pPtr)->szWordNm());
-        else if (CN_QUEUE == ePtrClass) {
-          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
-                                    aCN[ePtrClass],
-                                    pPtr,
-                                    "queue"_Stz);
-        }
-        else if (CN_TASK == ePtrClass) {
-          Task* pTask = _pTask(pPtr);
-          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
-                                    aCN[ePtrClass],
-                                    pPtr,
-                                    pTask->szJobName());
-        }
-        else {
-          if (pPtr->bValidMagic() && pPtr->eClass() < CN_ENUMS)
-            sStackContents.vCatSprint("^%s=%p"_Stz,
-                                      aCN[ePtrClass],
-                                      pPtr);
-          //else
-          //  sStackContents.vCatSprint("%p"_Stz,
-          //                     pValWrk->pPtr());
-        }
-      }
-      else
-        sStackContents.vCatSprint("^%s=%p"_Stz,
-                                  aCN[aTypedCell->eType()],
-                                  aTypedCell->pObj());
-    }
-    else if (CN_FIPVAL == eClass) {                                      
-      sStackContents.vCatSprint("%p"_Stz,
-                                aTypedCell->aFip());
-    }
-    else if (CN_STZVAL == eClass) {
-      sStackContents.vCatSprint("\"%lls\""_Stz,
-                                aTypedCell->azChar());
-    }
-    else {
-      sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
-                                aTypedCell->eType());
-    }
-  }
-  
-  sStackContents.vCatSprint(" )"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task state                                                             */
 /*----------------------------------------------------------------------------*/
 eTS Task::eState(void)
@@ -1067,13 +951,13 @@ void Task::vTracePoint(Stz* aMark)
          iAuxValues);
          
   s48K sStackContents;
-  vStackContents(m_pAuxStack, sStackContents);
+  m_pAuxStack->vStackContents(sStackContents);
   
   vTrace("%s"_Stz,sStackContents.azChar());
   
   vTrace(" r%2lld  d%2lld="_Stz, iReturnValues, iDataValues);
 
-  vStackContents(m_pDataStack, sStackContents);
+  m_pDataStack->vStackContents(sStackContents);
   
   vTrace("%s\n"_Stz,sStackContents.azChar());
 }
@@ -1103,7 +987,7 @@ void Task::vTraceStep(Stz* aStepNm)
          iDataValues);
   
   s48K sStackContents;
-  vStackContents(m_pDataStack, sStackContents);
+  m_pDataStack->vStackContents(sStackContents);
   vTrace("%s\n"_Stz,sStackContents.azChar());
 }
 

@@ -472,6 +472,86 @@ void TypedStack::vRetryPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* stack contents as string                                                   */
+/*----------------------------------------------------------------------------*/
+void TypedStack::vStackContents(s48K& sStackContents)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  sStackContents = ""_Stz;
+  
+  i8 iParamValues = nValues();
+  
+  sStackContents.vCatSprint("("_Stz);
+  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
+    
+    sStackContents.vCatSprint(" "_Stz);
+    
+    TypedCell* aTypedCell = aPeekItem(iValue);
+    
+    eCN eClass = aTypedCell->eType();
+    
+    if (CN_INTVAL == eClass) {
+      sStackContents.vCatSprint("%lld"_Stz,aTypedCell->iInt());
+    }
+    else if (CN_PTRVAL == eClass) {
+      if (aTypedCell->pObj()) {
+        
+        Object* pPtr = aTypedCell->pObj();
+        
+        eCN ePtrClass = aTypedCell->pObj()->eClass();
+        
+        if (CN_WORD == ePtrClass)
+          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
+                                    aCN[ePtrClass],
+                                    pPtr,
+                                    ((Word*)pPtr)->szWordNm());
+        else if (CN_QUEUE == ePtrClass) {
+          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
+                                    aCN[ePtrClass],
+                                    pPtr,
+                                    "queue"_Stz);
+        }
+//        else if (CN_TASK == ePtrClass) {
+//          Task* pTask = _pTask(pPtr);
+//          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
+//                                    aCN[ePtrClass],
+//                                    pPtr,
+//                                    pTask->szJobName());
+//        }
+        else {
+          if (pPtr->bValidMagic() && pPtr->eClass() < CN_ENUMS)
+            sStackContents.vCatSprint("^%s=%p"_Stz,
+                                      aCN[ePtrClass],
+                                      pPtr);
+          //else
+          //  sStackContents.vCatSprint("%p"_Stz,
+          //                     pValWrk->pPtr());
+        }
+      }
+      else
+        sStackContents.vCatSprint("^%s=%p"_Stz,
+                                  aCN[aTypedCell->eType()],
+                                  aTypedCell->pObj());
+    }
+    else if (CN_FIPVAL == eClass) {
+      sStackContents.vCatSprint("%p"_Stz,
+                                aTypedCell->aFip());
+    }
+    else if (CN_STZVAL == eClass) {
+      sStackContents.vCatSprint("\"%lls\""_Stz,
+                                aTypedCell->azChar());
+    }
+    else {
+      sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
+                                aTypedCell->eType());
+    }
+  }
+  
+  sStackContents.vCatSprint(" )"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is top value a zero?                                                       */
 /*----------------------------------------------------------------------------*/
 bool TypedStack::bTopIsZero(void)

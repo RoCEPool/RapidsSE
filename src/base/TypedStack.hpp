@@ -76,6 +76,8 @@ namespace BASE
     void vRetry(void);
     void vRetryPoint(void);
   
+    void vStackContents(s48K& sStackContents);
+
     bool bTopIsZero(void);
     TypedCell* aTopVal(void);
   

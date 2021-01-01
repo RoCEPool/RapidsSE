@@ -487,7 +487,74 @@ void AM::vTaskDump(void) {
     AM::pThisTLSTask()->vDump();
 }
 
+
+
+
+
+void AM::vTaskDump(Task* pTask)
+{
+  Job* pJob = pTask->pJob();
+  
+  if (AM::aReqTuple_tls())
+    AM::aReqTuple_tls()->vContentDump();
+  
+  AM::vJobContentDump(pJob);
+  
+  if (pJob->pLogicUnit_job()->m_xpOp.bIsNotNull())
+    pJob->pLogicUnit_job()->m_xpOp->vDump();
+  
+  pJob->pLogicUnit_job()->vContentDump();
+
+}
+
+
+
+
+
+
+
+
+
 LogicUnit* AM::pTaskLogicUnit(Task* pTask)   { return pTask->pLogicUnit_task(); }
+
+
+
+void AM::vTaskOnExceptionTrace(Task* pTask)
+{
+  Job* pJob = pTask->pJob();
+  
+  vTrace("\n\n"_Stz);
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
+         AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
+         aCN[AM::eJobClass(pJob)]
+         );
+  
+
+  // dump the call stack
+  vThreadCallStackDump();
+  
+  // write activity log
+  AM::vWriteLog();
+  
+  // dump api state
+  //AM::vDumpApi();
+
+  pTask->vContentDump();
+  
+  if (AM::aReqTuple_tls()) AM::aReqTuple_tls()->vContentDump();
+
+  AM::vJobContentDump(pJob);
+  
+  pJob->pLogicUnit_job()->vContentDump();
+  
+  AM::pGrid()->vDsv();
+
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+}
+
+
 
 i8 AM::iTaskQueue(Task* pTask) {
   eQK eQueue = pTask->eQueue();

@@ -133,7 +133,6 @@ namespace STORE
     bool bSeeded(void);
     void vSeedTask(void);
     void vSleepUsec(i8 iMicroSeconds);
-    void vStackContents(TypedStack* pStack, s48K& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
     i8   iTaskId(void);
