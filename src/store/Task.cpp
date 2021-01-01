@@ -117,14 +117,12 @@ Task::Task(Job* pJob, i8 iFocalId)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //if (pJob->m_bWasReceived)
-  //  vDebugPoint();
   
   vIncStepNo(); ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
               "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
               aCN[ AM::eJobClass(m_pJob) ],
-              m_pJob->bWasReceived() ? " was-received"_Stz : ""_Stz,
+              AM::bJobWasReceived(m_pJob) ? " was-received"_Stz : ""_Stz,
               * gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);

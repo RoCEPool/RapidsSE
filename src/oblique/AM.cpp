@@ -362,6 +362,11 @@ TagSet* AM::pJobTags(Job* pJob)
   return pJob->pJobTags();
 }
 
+bool AM::bJobWasReceived(Job* pJob)
+{
+  return pJob->bWasReceived();
+}
+
 
 void AM::vDumpApi(void) {
   pSessionArray()->vDump();

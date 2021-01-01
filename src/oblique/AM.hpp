@@ -246,7 +246,8 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static eCN eJobClass(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
-  
+    static bool bJobWasReceived(Job* pJob);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static void vFilePrint(File* pFile, Stz* szFormat,...);
