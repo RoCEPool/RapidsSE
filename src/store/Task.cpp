@@ -713,18 +713,8 @@ void Task::vQueue(eQK eQueue)
 LogicUnit* Task::pLogicUnit_task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pJob->pLogicUnit_job();
-}
 
-/*----------------------------------------------------------------------------*/
-/* get register set                                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vLogicUnit_task(LogicUnit** ppLogicUnit)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pJob->vLogicUnit_job(ppLogicUnit);
+  return m_pJob->pLogicUnit_job();
 }
 
 /*----------------------------------------------------------------------------*/
