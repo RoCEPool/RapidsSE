@@ -207,7 +207,11 @@ void Task::vTaskLoop(void)
   
   if (! bSeeded()) {
     vInitExeContext();
-    vLogicUnit( new LogicUnit(this) );
+    
+    if (! pLogicUnit()) {
+      LogicUnit* pLogicUnit = new LogicUnit(this);
+      vLogicUnit( & pLogicUnit );
+    }
     vSeedTask();
   }
   
@@ -767,11 +771,11 @@ LogicUnit* Task::pLogicUnit(void)
 /*----------------------------------------------------------------------------*/
 /* get register set                                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicUnit(LogicUnit* pLogicUnit)
+void Task::vLogicUnit(LogicUnit** ppLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pJob->vLogicUnit(pLogicUnit);
+  m_pJob->vLogicUnit(ppLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/

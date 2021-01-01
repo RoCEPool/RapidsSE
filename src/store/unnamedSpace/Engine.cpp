@@ -343,7 +343,9 @@ void Engine::vCallBoot(void)
   
   Task* pBootTask = AM::pTaskNew(pJob);
   pBootTask->vInitExeContext();
-  pBootTask->vLogicUnit( new LogicUnit(pBootTask) );
+  
+  LogicUnit* pLogicUnit = new LogicUnit(pBootTask);
+  pBootTask->vLogicUnit(  & pLogicUnit );
 
   pBootTask->vAddAxioms();
 
@@ -417,7 +419,9 @@ void Engine::vCallStart(void)
   
   Task* pStartTask = AM::pTaskNew(pJob);
   pStartTask->vInitExeContext();
-  pStartTask->vLogicUnit( new LogicUnit(pStartTask) );
+  LogicUnit* pLogicUnit = new LogicUnit(pStartTask);
+
+  pStartTask->vLogicUnit( & pLogicUnit );
 
   pJob->vTimerStart();
   

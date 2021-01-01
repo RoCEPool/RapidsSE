@@ -2455,17 +2455,15 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   // DATAPULSE HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   handler initiates index iteration
-  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, "DATAPULSE_INDEXRANGE"_Stz);
+  oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, aAM[pRange->m_eMacro]);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_DATAPULSE, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DATAPULSE_INDEXRANGE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   handler intiates index iteration
-  oTagSet.vAppend(C_TAG_LBOUND_VALUE, 30);
-  oTagSet.vAppend(C_TAG_UBOUND_VALUE, 50);
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_STAR"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DATAPULSE_INDEXRANGE, &oTagSet));
+  pFile->vPrint(LogicCompiler::szGetMacro(pRange->m_eMacro, &pRange->m_oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

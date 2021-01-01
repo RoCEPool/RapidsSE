@@ -379,9 +379,11 @@ eAM LogicCompiler::eFindAM(Stz* szEOname)
 {
   _static_
 
-  for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++)
-    if (StrLib::bSame(aAM[i_AM]->azChar(), szEOname->azChar()))
-      return (eAM)i_AM;
+  for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++) {
+    char* azMacro = szEOname->azChar() + 3;
+    if (StrLib::bSame(aAM[i_AM]->azChar(), azMacro))
+      return (eAM) i_AM;
+  }
 
   return AM_NONE;
 }

@@ -94,7 +94,7 @@ Job::Job(eCN eClassNo)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
+
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
@@ -129,7 +129,7 @@ Job::Job(eCN eClassNo)
   m_pInputOp  = nullptr;
   
   
-  m_pLogicUnit = nullptr;
+  m_pLogicUnit_job = nullptr;
 
   //m_xResult
   // -- -- -- -- -- --
@@ -171,7 +171,7 @@ Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
   m_oTimer.vStart();
   //m_oAcksRmg
   
-  m_pLogicUnit = nullptr;
+  m_pLogicUnit_job = nullptr;
   
   m_pTaskJ = nullptr;
   m_pOriginatingTask = nullptr;
@@ -205,7 +205,6 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
@@ -240,7 +239,7 @@ Job::~Job(void) noexcept(false)
   if (m_pPipeline)
     delete m_pPipeline;
   
-  delete m_pLogicUnit;
+  delete m_pLogicUnit_job;
   
   //if (m_pTaskJ)
   //  vDebugPoint();
@@ -774,17 +773,21 @@ LogicUnit* Job::pLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_pLogicUnit;
+  return m_pLogicUnit_job;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the logic unit                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vLogicUnit(LogicUnit* pLogicUnit)
+void Job::vLogicUnit(LogicUnit** ppLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pLogicUnit = pLogicUnit;
+  ASSERT(! * ppLogicUnit || ! m_pLogicUnit_job);
+  
+  m_pLogicUnit_job = *ppLogicUnit;
+  
+  *ppLogicUnit = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1424,6 +1427,9 @@ JOBS_fn(vJob_recv)
   pJob->vTask(nullptr);
   
   pJob->m_i_Focal        = C_UNKNOWN;
+  
+  LogicUnit* pLogicUnit = nullptr;
+  pJob->vLogicUnit( & pLogicUnit);
 }
 
 /*----------------------------------------------------------------------------*/

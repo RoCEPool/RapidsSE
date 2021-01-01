@@ -104,13 +104,16 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
     goto L_RETURN;
   }
 
+  // all a project start  for each crw row
+  m_oTagSet.vInsert(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_STAR"_Stz);
+
   // get the column type
   eColumnType = pIndex->pIndexDef()->pGetColumn(0)->eColumnType();
 
   pTkn = pTknVec->pNextToken();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now get he range
+  // now get the range
   while (pTkn) {
 
     pTkn = pTknVec->pCurrToken();
@@ -152,6 +155,8 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         break;
       }
       eLower = EO_EQUAL;
+      iLowerValue = iValue;
+      sLowerValue = sValue;
     }
     else if (pTkn->bSame(">="_Stz)) {
       if (eLower != EO_NONE) {
@@ -159,6 +164,8 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         break;
       }
       eLower = EO_GREATEREQUAL;
+      iLowerValue = iValue;
+      sLowerValue = sValue;
     }
     else if (pTkn->bSame(">"_Stz)) {
       if (eLower != EO_NONE) {
@@ -166,6 +173,8 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         break;
       }
       eLower = EO_GREATERTHAN;
+      iLowerValue = iValue;
+      sLowerValue = sValue;
     }
     else if (pTkn->bSame("<"_Stz)) {
       if (eUpper != EO_NONE) {
@@ -173,6 +182,8 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         break;
       }
       eUpper = EO_LESSTHAN;
+      iUpperValue = iValue;
+      sUpperValue = sValue;
     }
     else if (pTkn->bSame("<="_Stz)) {
       if (eUpper != EO_NONE) {
@@ -180,19 +191,12 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         break;
       }
       eUpper = EO_LESSEQUAL;
+      iUpperValue = iValue;
+      sUpperValue = sValue;
     }
     else {
       eError = EC_INVALID_COMMAND;
       break;
-    }
-
-    if (eLower != EO_NONE) {
-      iLowerValue = iValue;
-      sLowerValue = sValue;
-    }
-    else if (eUpper != EO_NONE){
-      iUpperValue = iValue;
-      sUpperValue = sValue;
     }
 
     pTkn = pTknVec->pNextToken();

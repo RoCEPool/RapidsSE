@@ -15,6 +15,14 @@ namespace STORE
   class Job : public Focal,
               public CRM<Job>
   {
+  
+  /*                      IMPORTANT NOTE
+   
+      If you add a pointer member into this class then modify
+        JOBS_fn(vJob_recv) to set it to null when the job is received
+   
+   */
+  
   private:
     s32       m_sJobNm;       // name of job
     i8        m_iParentId;    // job id of parent job which spawned this job
@@ -31,7 +39,7 @@ namespace STORE
 
   public:
   
-    LogicUnit* m_pLogicUnit;      // set of registers for the task steps
+    LogicUnit* m_pLogicUnit_job;      // set of registers for the task steps
 
     TagSet    m_oJobTags;     // tags for the job
   
@@ -118,7 +126,7 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
     LogicUnit* pLogicUnit(void);
-    void vLogicUnit(LogicUnit* pLogicUnit);
+    void vLogicUnit(LogicUnit** ppLogicUnit);
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
