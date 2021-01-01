@@ -123,7 +123,7 @@ Task::Task(Job* pJob, i8 iFocalId)
   vIncStepNo(); ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
               "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
-              aCN[m_pJob->eClass()],
+              aCN[ AM::eJobClass(m_pJob) ],
               m_pJob->bWasReceived() ? " was-received"_Stz : ""_Stz,
               * gixTask);
 
@@ -249,7 +249,7 @@ void Task::vTaskLoop(void)
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(m_pJob,
                           "Returned from task call: %s %p"_Stz,
-                          aCN[m_pJob->eClass()],
+                          aCN[AM::eJobClass(m_pJob)],
                           m_pJob);
   
   PsxThd::vTlsSet(giTLS_TaskKey,nullptr);
@@ -379,7 +379,7 @@ void Task::vCaught(Exception xException)
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
          AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
-         aCN[m_pJob->eClass()]
+         aCN[AM::eJobClass(m_pJob)]
          );
   
   xException.vCaught();
@@ -672,7 +672,7 @@ Stz* Task::szJobName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_pJob)
-    return aCN[m_pJob->eClass()];
+    return aCN[AM::eJobClass(m_pJob)];
   else if (! m_pJob)
     return "<no job>"_Stz;
   else

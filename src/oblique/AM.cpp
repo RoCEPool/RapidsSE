@@ -352,6 +352,11 @@ void AM::vAppendJobTags(Job* pJob, TagSet* pTagSet)
   pJob->pJobTags()->vCopy(pTagSet);
 }
 
+eCN AM::eJobClass(Job* pJob)
+{
+  return pJob->eClass();
+}
+
 TagSet* AM::pJobTags(Job* pJob)
 {
   return pJob->pJobTags();

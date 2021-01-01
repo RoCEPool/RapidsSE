@@ -244,6 +244,7 @@ namespace OBLIQUE
     static void vDumpApi(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static eCN eJobClass(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
