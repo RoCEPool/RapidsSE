@@ -91,7 +91,7 @@ void Step::vDdlLockNone(void)
 {
   ENTRY();
 
-  if (! pJob() || ! pJob()->pLogicUnit()) {
+  if (! pJob() || ! pJob()->pLogicUnit_job()) {
     EXIT();
     return;
   }
@@ -109,7 +109,7 @@ void Step::vDdlLockTestDrop(void)
 {
   ENTRY();
   
-  if (! pJob() || ! pJob()->pLogicUnit()) {
+  if (! pJob() || ! pJob()->pLogicUnit_job()) {
     EXIT();
     return;
   }

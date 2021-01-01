@@ -57,7 +57,7 @@ void Step::vJobRefNone(void)
 {
   ENTRY();
   
-  if (! pJob() || ! pJob()->pLogicUnit()) {
+  if (! pJob() || ! pJob()->pLogicUnit_job()) {
     EXIT();
     return;
   }

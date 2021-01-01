@@ -769,7 +769,7 @@ TagSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* get the logic unit                                                         */
 /*----------------------------------------------------------------------------*/
-LogicUnit* Job::pLogicUnit(void)
+LogicUnit* Job::pLogicUnit_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
