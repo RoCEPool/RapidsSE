@@ -243,13 +243,7 @@ void Task::vTaskLoop(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
-    JobLog::vNote(m_pJob,
-                          "Returned from task call: %s %p"_Stz,
-                          aCN[AM::eJobClass(m_pJob)],
-                          m_pJob);
-  
+    
   PsxThd::vTlsSet(giTLS_TaskKey,nullptr);
 }
 
@@ -263,8 +257,6 @@ void Task::vAssertStructure(void)
   // must have these
   RASSERT(m_pLogicUnit);
 }
-
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -603,7 +595,11 @@ void Task::vInitExeContext(void)
   if (m_aInxPtr)
     return;
   
-  m_pProfile = new Profile(m_pJob->m_pOp ? m_pJob->m_pOp->szOpNm() : ""_Stz);
+  Stz* szProfileNm = AM::szJobOpNm(m_pJob);
+  if (!szProfileNm)
+    szProfileNm = AM::szJobNm(m_pJob);
+  
+  m_pProfile = new Profile(szProfileNm);
   m_pLogicUnit  = new LogicUnit(this);
 }
 
@@ -841,7 +837,7 @@ void Task::vSeedTask(void)
   
   Dic* pRootDic = AM::pRootDic();
   
-  Stz* szSeed = m_pJob->szSeed();
+  Stz* szSeed = AM::szJobSeed(m_pJob);
   
   //vTrace("SEED %s\n"_Stz,szSeed);
   Word* pSeedWord = pRootDic->pFindWord(szSeed);

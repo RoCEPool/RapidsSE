@@ -357,6 +357,25 @@ eCN AM::eJobClass(Job* pJob)
   return pJob->eClass();
 }
 
+Stz* AM::szJobNm(Job* pJob)
+{
+  return pJob->szJobNm();
+}
+
+Stz* AM::szJobOpNm(Job* pJob)
+{
+  if (pJob->m_pOp)
+    return pJob->m_pOp->szOpNm();
+  else
+    return nullptr;
+}
+
+Stz* AM::szJobSeed(Job* pJob)
+{
+  return pJob->szSeed();
+}
+
+
 TagSet* AM::pJobTags(Job* pJob)
 {
   return pJob->pJobTags();

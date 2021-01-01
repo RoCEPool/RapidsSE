@@ -245,6 +245,9 @@ namespace OBLIQUE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static eCN eJobClass(Job* pJob);
+    static Stz* szJobNm(Job* pJob);
+    static Stz* szJobOpNm(Job* pJob);
+    static Stz* szJobSeed(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
     static bool bJobWasReceived(Job* pJob);
 
