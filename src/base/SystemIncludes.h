@@ -11,10 +11,10 @@
 #include <iostream>
 //#include <limits.h>
 //#include <math.h>
-#include <memory.h>
+//#include <memory.h>
 #include <netdb.h>
 #include <pthread.h>
-#include <pwd.h>
+//#include <pwd.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdlib.h>
