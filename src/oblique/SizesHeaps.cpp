@@ -15,6 +15,8 @@
 #include "StepTiming.hpp"
 
 #include "SP_Gid.hpp"
+#include "SP_Elapsed.hpp"
+#include "SP_String.hpp"
 
 
 #include "graph/PlanConstants.hpp"

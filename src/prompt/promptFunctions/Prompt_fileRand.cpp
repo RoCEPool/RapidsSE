@@ -6,6 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "SP_Timer.hpp"
 
 
 PromptFun __Prompt_fileRand (

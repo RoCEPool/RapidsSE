@@ -7,6 +7,7 @@
 #include "eIK.h"
 
 #include "SP_Gid.hpp"
+#include "SP_ReqTuple.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

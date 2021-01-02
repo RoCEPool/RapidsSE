@@ -5,7 +5,10 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "SP_Footer.hpp"
+#include "SP_Header.hpp"
 #include "SP_Job.hpp"
+#include "SP_ReqTuple.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

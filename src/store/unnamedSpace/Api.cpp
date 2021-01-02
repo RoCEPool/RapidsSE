@@ -8,6 +8,8 @@
 
 #include "TagConstants.h"
 
+#include "SP_TagSet.hpp"
+
 extern BufferPool*  gpBufferPool;
 extern Log* gpLog;
 

@@ -402,17 +402,8 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "Peruse.hpp"
 #include "Numbat.hpp"
 
-#include "SP_AggTimer.hpp"
-#include "SP_Bytes.hpp"
-#include "SP_Char.hpp"
-#include "SP_Elapsed.hpp"
-#include "SP_Footer.hpp"
-#include "SP_Header.hpp"
-#include "SP_ReqTuple.hpp"
-#include "SP_String.hpp"
-#include "SP_TagSet.hpp"
-#include "SP_Timer.hpp"
-
+ 
+ 
 typedef void (*FNADDR)(void*);
 
 

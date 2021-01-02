@@ -10,6 +10,8 @@
 #include "TpchRatios.h"
 
 #include "SP_Bits.hpp"
+#include "SP_Bytes.hpp"
+#include "SP_Timer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */

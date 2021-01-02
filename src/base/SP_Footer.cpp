@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "SP_Footer.hpp"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/

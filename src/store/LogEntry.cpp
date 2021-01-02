@@ -10,6 +10,7 @@
 
 #include "eOC.h"
 
+#include "SP_Elapsed.hpp"
 #include "SP_Gid.hpp"
 
 

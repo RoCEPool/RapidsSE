@@ -10,6 +10,7 @@
 #include "TagConstants.h"
 
 #include "SP_Gid.hpp"
+#include "SP_Timer.hpp"
 
 Atomic gixJob;
 

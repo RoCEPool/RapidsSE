@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "SP_AggTimer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

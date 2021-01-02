@@ -12,6 +12,7 @@
 
 #include "Socket.hpp"
 
+#include "SP_Header.hpp"
 #include "SP_Job.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
