@@ -463,16 +463,7 @@ bool Result::bProcessOperand(Operand* pOperand)
     }
       
     // -- -- -- -- -- --
-      
-    case CN_SRTBUFFER: {
-      SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-      m_xJobResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
-      vTrace("\n"_Stz);
-      pSrtBuffer->vPrintRows(m_pStreamDef);
-      AM::vDeleteOperand(pOperand);
-      break;
-    }
-      
+            
     // -- -- -- -- -- --
 
     case CN_STREAMDEF: {

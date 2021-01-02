@@ -30,7 +30,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BIRTH,
   /* */ CN_BOLVAL,
   /* */ CN_BUCKETMAP,
-  /* */ CN_BUFFERCURSOR,
   /* */ CN_BUFFERPOOL,
   /* */ CN_BYTERATE,
   /* */ CN_BYTES_T,
@@ -104,7 +103,7 @@ enum eCN : u2 // Class Number
   /* */ CN_INFOSET,
   /* */ CN_INGESTCHUNK,
   /* */ CN_INPUT,
-  /* */ CN_INTBUFFER,
+
   /* */ CN_INTSET,
   /* */ CN_INTVAL,
   /* */ CN_IOCHUNK,
@@ -260,8 +259,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SPMEDIUM,
   /* */ CN_SPSMALL,
   /* */ CN_SQLPLANNER,
-  /* */ CN_SRTBUFFER,
-  /* */ CN_SRTSET,
   /* */ CN_STACK,
   /* */ CN_STAGE,
   /* */ CN_STAGESPEC,
@@ -355,7 +352,6 @@ static Stz* aCN[]
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
   /* */ "BUCKETMAP"_Stz,            // CN_BUCKETMAP
-  /* */ "BUFFERCURSOR"_Stz,         // CN_BUFFERCURSOR
   /* */ "BUFFERPOOL"_Stz,           // CN_BUFFERPOOL
   /* */ "BYTERATE"_Stz,             // CN_BYTERATE
   /* */ "BYTES_T"_Stz,              // CN_BYTES_T
@@ -429,7 +425,6 @@ static Stz* aCN[]
   /* */ "INFOSET"_Stz,              // CN_INFOSET
   /* */ "INGESTCHUNK"_Stz,          // CN_INGESTCHUNK
   /* */ "INPUT"_Stz,                // CN_INPUT
-  /* */ "INTBUFFER"_Stz,            // CN_INTBUFFER
   /* */ "INTSET"_Stz,               // CN_INTSET
   /* */ "INTVAL"_Stz,               // CN_INTVAL
   /* */ "IOCHUNK"_Stz,              // CN_IOCHUNK

@@ -1651,7 +1651,6 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       
     case CN_PROFILE:   eOperand = ZK_PROFILE;   break;
     case CN_ROWBUFFER: eOperand = ZK_ROWBUFFER; break;
-    case CN_SRTBUFFER: eOperand = ZK_SRTBUFFER; break;
     case CN_STREAMDEF: eOperand = ZK_STREAMDEF; break;
     case CN_STREAMSET: eOperand = ZK_STREAMSET; break;
       

@@ -83,6 +83,10 @@ void vTest62(void);
 void vTest63(void);
 void vTest64(void);
 
+
+#if 0
+
+
 static const i8 C_ARRAY_ELEMENTS = 100;
 
 /*----------------------------------------------------------------------------*/
@@ -310,6 +314,13 @@ public:
   
 };
 
+#endif
+  
+  
+
+
+
+#if 0
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Quicksort using indexes to array elements
 i8 iPartition(i8* A, i8 iLow, i8 iHigh);
@@ -336,6 +347,8 @@ void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLow, BufCursor& xHi
 BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
 void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
   
+#endif
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

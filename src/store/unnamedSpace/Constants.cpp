@@ -278,7 +278,6 @@ void Constants::vAddConstantsCpp(void)
   /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
   
   /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
-  /*    */ vAddConstant("CN_BUFFERCURSOR"_Stz, CN_BUFFERCURSOR);
   /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
   /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
 

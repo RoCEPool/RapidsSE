@@ -102,13 +102,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "SP_Encoding_v2.hpp"
 
-#include "SrtSet.hpp"
-#include "SrtBuffer.hpp"
-#include "QuickSort.hpp"
-#include "BufferCursor.hpp"
-#include "BufferSort.hpp"
-#include "IntBuffer.hpp"
-
 #include "KeyBuilder.hpp"
 
 #include "SkipRoots.hpp"

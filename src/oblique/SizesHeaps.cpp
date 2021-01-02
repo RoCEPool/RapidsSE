@@ -63,8 +63,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
-  { sizeof(BufferCursor),       HT_T_LARGE   ,0 }, // CN_BUFFERCURSOR
-  { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
+   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
   { sizeof(ByteRate),           HT_T_TINY    ,0 }, // CN_BYTERATE
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_BYTES_T
 
@@ -138,7 +137,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(InfoSet),            HT_T_LARGE   ,0 }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_T_LARGE   ,0 }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_T_TINY    ,0 }, // CN_INPUT
-  { sizeof(IntBuffer),          HT_T_LARGE   ,0 }, // CN_INTBUFFER
   { sizeof(IntSet),             HT_T_TINY    ,0 }, // CN_INTSET
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_INTVAL
   { sizeof(IoChunk),            HT_T_LARGE   ,0 }, // CN_IOCHUNK
@@ -294,8 +292,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SPmedium),           HT_INVALID   ,0 }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID   ,0 }, // CN_SPSMALL
   { sizeof(SqlPlanner),         HT_T_MEDIUM  ,-8 }, // CN_SQLPLANNER
-  { sizeof(SrtBuffer),          HT_T_LARGE   ,0 }, // CN_SRTBUFFER
-  { sizeof(SrtSet),             HT_INVALID   ,0 }, // CN_SRTSET
   { sizeof(TypedStack),         HT_T_MEDIUM  ,0 }, // CN_STACK
   { sizeof(Stage),              HT_T_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
