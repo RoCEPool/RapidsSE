@@ -46,7 +46,7 @@ RowCompactor::RowCompactor(void)
   m_nTotalCrws    = 0;
   
 #ifdef WITH_ANALYSE_FREE
-  m_oFreqDist.vInit(7,15,23,31,39,47,55,63,INT_MAX);
+  m_oFreqDist.vInit(7,15,23,31,39,47,55,63,C_DATUM_NULL);
 #endif
   
   _checkInitialised_(CN_ROWCOMPACTOR);

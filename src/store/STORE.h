@@ -30,9 +30,12 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "IoCopy.hpp"
 #include "LoadChunk.hpp"
 
-#include "LinkedBuffer.hpp"
-#include "Definition.hpp"
 #include "OperandQueue.hpp"
+
+#include "LinkedBuffer.hpp"
+
+
+#include "Definition.hpp"
 
 //------------------------------------------------------------------------------
 

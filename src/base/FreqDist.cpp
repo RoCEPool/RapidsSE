@@ -84,7 +84,7 @@ void FreqDist::vInit(i8 i_Bucket, ...)
     i_Bucket = va_arg(args, int);
     m_nBucket[i_Index++] = i_Bucket;
     
-  } while (i_Bucket != INT_MAX);
+  } while (i_Bucket != C_DATUM_NULL);
   
   m_nBuckets = i_Index;
           
