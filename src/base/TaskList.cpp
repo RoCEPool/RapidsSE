@@ -3,13 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskList* STORE::_pTaskList(void* aAddr)
+TaskList* BASE::_pTaskList(void* aAddr)
 {
   TaskList* pTaskQueue = reinterpret_cast<TaskList*>(aAddr);
   
@@ -125,7 +124,7 @@ bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
        pTask;
        pTask = pTask->pNextItem()) {
     
-    if (! (pTask->pJob() && pTask->pJob()->eClass() == eJobClass))
+    if (! (pTask->pJob() && AM::eJobClass(pTask->pJob()) == eJobClass))
       continue;
 
     if (! bWasReceived) {
@@ -133,7 +132,7 @@ bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
       break;
     }
     
-    if (pTask->pJob()->bWasReceived()) {
+    if (AM::bJobWasReceived(pTask->pJob())) {
       bHasJob = true;
       break;
     }
@@ -228,7 +227,7 @@ void TaskList::vContentDump(void)
            aTS[pTask->eState()],
            
            pJob,
-           aCN[pJob->eClass()]
+           aCN[AM::eJobClass(pJob)]
            );
     
     if (void* aThread = pTask->pvThread_DONT_DEREF()) {

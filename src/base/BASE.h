@@ -623,9 +623,11 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Profile.hpp"
 #include "Task.hpp"
-//
-//#include "SP_Task.hpp"
 
+#include "TaskList.hpp"
+#include "TaskQueue.hpp"
+
+#include "SP_Task.hpp"
 
 
 

@@ -3,14 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskQueue* STORE::_pTaskQueue(void* aAddr)
+TaskQueue* BASE::_pTaskQueue(void* aAddr)
 {
   TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(aAddr);
   
