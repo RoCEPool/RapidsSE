@@ -5,7 +5,6 @@
 #include "BASE.h"
 #include "STORE.h"
 
-
 #include "EnumGroups.h"
 
 #include "eED.h"
@@ -14,6 +13,7 @@
 #include "LIB_interface.h"
 #include "DEV_interface.h"
 
+#include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
 
 extern EoArg EoArgs[];

@@ -7,6 +7,16 @@
 
 #include "SP_Encoding_v2.hpp"
 
+#include "SP_Bcd.hpp"
+#include "SP_Bol.hpp"
+#include "SP_Dte.hpp"
+#include "SP_Flt.hpp"
+#include "SP_Int.hpp"
+#include "SP_Ivl.hpp"
+#include "SP_Tme.hpp"
+#include "SP_Tsp.hpp"
+#include "SP_Vch.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
