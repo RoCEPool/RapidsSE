@@ -4,13 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
-
 #include "Socket.hpp"
+
+#include "SP_Job.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 

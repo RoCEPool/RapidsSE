@@ -154,7 +154,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Job__Find.hpp"
 #include "XmitOperand.hpp"
 #include "JobList.hpp"
-#include "SP_Job.hpp"
 
 #include "Procedure.hpp"
 

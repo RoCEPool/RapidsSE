@@ -45,6 +45,8 @@
 
 #include "Step.hpp"
 
+#include "SP_Word.hpp"
+
 extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;

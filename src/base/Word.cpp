@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "SP_Word.hpp"
 
 extern fpSTEPFN gfpEntryStep;
 

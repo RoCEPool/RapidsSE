@@ -593,7 +593,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Compiler.hpp"
 #include "Word.hpp"
-#include "SP_Word.hpp"
 
 #include "Profile.hpp"
 #include "Task.hpp"
@@ -601,11 +600,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "TaskList.hpp"
 #include "TaskQueue.hpp"
 
-#include "SP_Task.hpp"
-
-
 //------------------------------------------------------------------------------
-
 
 #include "DataChunk.hpp"
 #include "RecordChunk.hpp"
@@ -620,17 +615,13 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "LinkedBuffer.hpp"
 
-
-
 //------------------------------------------------------------------------------
 
 #include "Tx.hpp"
 #include "TxSet.hpp"
 
 #include "Ref.hpp"
-#include "SP_Ref.hpp"
 #include "DataBuffer.hpp"
-#include "SP_DataBuffer.hpp"
 
 #include "CsvMeta.hpp"
 #include "CsvBuffer.hpp"
