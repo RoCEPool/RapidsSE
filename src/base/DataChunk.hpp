@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   static const i8 C_WSP_DATACHUNK = C_1M; // its 1M not 1MB (i.e. < 1MB)
   

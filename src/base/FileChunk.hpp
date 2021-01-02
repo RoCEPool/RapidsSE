@@ -1,34 +1,34 @@
 /*============================================================================*/
-/* IngestChunk.hpp -- Ingest Chunk                                            */
+/* FileChunk.hpp -- File Chunk                                                */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IngestChunk : public RecordChunk,
-                      public ListItem_t<IngestChunk>
+  class FileChunk : public RecordChunk
   {
-  public:
-    i8 m_iChunkNo;
-
-    // must be last
-    Footer m_xFooter;
+  protected:
+    File* m_pFile; // file being used
   
   public: //$ functions:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IngestChunk(Format* pFmt);
-    ~IngestChunk(void) noexcept(false);
+    FileChunk(eCN eClassNo, Format* pFmt);
+    ~FileChunk(void) noexcept(false);
   
-    i8 nReadMore(File& oFile);
-  
-  private:
-    Footer* aFooter(void);
+    void  vCloseFile(void);
+    bool  bOpenRead(s256& sPath);
+    bool  bOpenWrite(s256& sPath);
+    i8    nReadBytes(i8 nBytes);
+    void  vReadSpecificChunk(i8 iSeek, i8 nBytes);
+    void  vRewindFile(void);
+    i8    nWriteBytes(i8 nBytes);
+    void  vWriteData(void);
   };
   
-  IngestChunk* _pIngestChunk(void* aAddr);
+  FileChunk* _pFileChunk(void* aAddr);
 }
 
 /*============================================================================*/

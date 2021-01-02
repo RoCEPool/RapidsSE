@@ -1,15 +1,17 @@
 /*============================================================================*/
-/* IoChunk.hpp -- I/O Chunk                                                   */
+/* IngestChunk.hpp -- Ingest Chunk                                            */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IoChunk : public FileChunk
+  class IngestChunk : public RecordChunk,
+                      public ListItem_t<IngestChunk>
   {
-  private:
-  
+  public:
+    i8 m_iChunkNo;
+
     // must be last
     Footer m_xFooter;
   
@@ -17,16 +19,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IoChunk(Format* pFmt);
-    ~IoChunk(void) noexcept(false);
-
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-        
+    IngestChunk(Format* pFmt);
+    ~IngestChunk(void) noexcept(false);
+  
+    i8 nReadMore(File& oFile);
+  
   private:
     Footer* aFooter(void);
   };
   
-  IoChunk* _pIoChunk(void* aAddr);
+  IngestChunk* _pIngestChunk(void* aAddr);
 }
 
 /*============================================================================*/

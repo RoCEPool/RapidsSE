@@ -630,6 +630,22 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "SP_Task.hpp"
 
 
+//------------------------------------------------------------------------------
+
+
+#include "DataChunk.hpp"
+#include "RecordChunk.hpp"
+#include "FileChunk.hpp"
+
+#include "IngestChunk.hpp"
+#include "IoChunk.hpp"
+#include "IoCopy.hpp"
+#include "LoadChunk.hpp"
+
+#include "OperandQueue.hpp"
+
+#include "LinkedBuffer.hpp"
+
 
 namespace BASE
 {

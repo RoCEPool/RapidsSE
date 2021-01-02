@@ -1,38 +1,32 @@
 /*============================================================================*/
-/* IoCopy.hpp -- I/O Copy                                                     */
+/* IoChunk.hpp -- I/O Chunk                                                   */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IoCopy : public Object
+  class IoChunk : public FileChunk
   {
   private:
-    IoChunk*  m_pInChunk;
-    IoChunk*  m_pOutChunk;
   
     // must be last
     Footer m_xFooter;
   
-  public:
+  public: //$ functions:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IoCopy(void);
-    ~IoCopy(void) noexcept(false);
-  
-    void  vCloseBoth(void);
-    i8    nCopyChunk(void);
-    bool  bOpenRead(s256& sPath);
-    bool  bOpenWrite(s256& sPath);
-    void  vRewindInput(void);
-  
+    IoChunk(Format* pFmt);
+    ~IoChunk(void) noexcept(false);
+
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+        
   private:
     Footer* aFooter(void);
   };
   
-  IoCopy* _pIoCopy(void* aAddr);
+  IoChunk* _pIoChunk(void* aAddr);
 }
 
 /*============================================================================*/
