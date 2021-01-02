@@ -6,7 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
-
+#include <float.h>
 
 PromptFun __Prompt_floats (
   PF_FLOATS,             // prompt function

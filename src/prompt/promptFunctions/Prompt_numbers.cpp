@@ -6,7 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
-
+#include <float.h>
 
 PromptFun __Prompt_numbers (
   PF_NUMBERS,           // prompt function
