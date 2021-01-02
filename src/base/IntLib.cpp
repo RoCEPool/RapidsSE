@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include <limits.h>
+#include <math.h>
 
 i8 C_DATUM_NULL;
 i8 C_DATUM_MINUS_INFINITY;
