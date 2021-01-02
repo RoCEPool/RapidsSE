@@ -7,6 +7,7 @@
 #include "PROMPT.h"
 
 #include <float.h>
+#include <limits.h>
 
 PromptFun __Prompt_numbers (
   PF_NUMBERS,           // prompt function

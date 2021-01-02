@@ -6,7 +6,8 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
-
+#include "SP_Grid.hpp"
+#include "SP_Node.hpp"
 
 PromptFun __Prompt_show (
   PF_SHOW,           // prompt function

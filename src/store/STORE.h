@@ -120,10 +120,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Grid.hpp"
 #include "Session.hpp"
 
-#include "SP_Grid.hpp"
-#include "SP_Node.hpp"
-#include "SP_Session.hpp"
-
 //------------------------------------------------------------------------------
 
 #include "LogEntry.hpp"
