@@ -13,7 +13,7 @@
 //#include <math.h>
 //#include <memory.h>
 #include <netdb.h>
-#include <pthread.h>
+//#include <pthread.h>
 //#include <pwd.h>
 //#include <signal.h>
 #include <stdarg.h>
