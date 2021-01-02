@@ -5,7 +5,7 @@
 
 #include "eXP.h"
 
-namespace STORE
+namespace BASE
 {    
   class Tx : public Focal
   {

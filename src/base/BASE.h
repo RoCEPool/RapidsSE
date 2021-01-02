@@ -647,6 +647,24 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "LinkedBuffer.hpp"
 
 
+
+//------------------------------------------------------------------------------
+
+#include "Tx.hpp"
+#include "TxSet.hpp"
+
+#include "Ref.hpp"
+#include "DataBuffer.hpp"
+#include "CsvMeta.hpp"
+#include "CsvBuffer.hpp"
+#include "Reader.hpp"
+
+//------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
+
+
 namespace BASE
 {
   static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);

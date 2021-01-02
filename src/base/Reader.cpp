@@ -3,14 +3,13 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Reader,CN_READER)
+__pCastFunction(BASE,Reader,CN_READER)
 __aNewFunction(Reader,CN_READER)
 __vDeleteFunction(Reader,CN_READER)
 __aFooterFunction(Reader)

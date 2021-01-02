@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +30,7 @@ bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TxSet* STORE::_pTxSet(void* aAddr)
+TxSet* BASE::_pTxSet(void* aAddr)
 {
   TxSet* pTxSet = reinterpret_cast<TxSet*>(aAddr);
   

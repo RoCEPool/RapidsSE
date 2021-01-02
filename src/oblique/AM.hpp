@@ -28,7 +28,9 @@ namespace BASE { class Operand;                                  }
 namespace BASE { class Dic;             class DicStack;
                  class Word;              }
 namespace BASE             { class Task;                                     }
+namespace BASE      { class Tx;              class TxSet;             }
 
+namespace BASE       { class DataBuffer;      class CsvBuffer;       }
 
 namespace STORE          { class Session;         class SessionState;      }
 
@@ -39,8 +41,7 @@ namespace STORE    { class Crw;             class CrwBuffer;
                      class SP_Encoding_v2;
                       class Packing_v2;
                               class OverLine;        class TailLine;          }
-namespace STORE       { class DataBuffer;      class CsvBuffer;
-                              class RowBuffer;       class RowBuffer;         }
+namespace STORE       { class RowBuffer;       class RowBuffer;         }
 
 
 namespace STORE    { class Dynamo;                                   }
@@ -75,7 +76,6 @@ namespace STORE     { class AttachMap;       class Engine;            }
 
 namespace STORE           { class Scheduler;       class Thread;
                               class Queues;                                   }
-namespace STORE      { class Tx;              class TxSet;             }
 
 
 using namespace STORE;

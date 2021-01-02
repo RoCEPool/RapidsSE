@@ -3,14 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,CsvMeta,CN_CSVMETA)
+__pCastFunction(BASE,CsvMeta,CN_CSVMETA)
 __aNewFunction(CsvMeta,CN_CSVMETA)
 __vDeleteFunction(CsvMeta,CN_CSVMETA)
 __aFooterFunction(CsvMeta)

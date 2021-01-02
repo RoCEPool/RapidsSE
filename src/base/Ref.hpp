@@ -3,7 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+#include "eKE.h"
+
+namespace BASE
 {
   class Rrf : public NonProper
   {
