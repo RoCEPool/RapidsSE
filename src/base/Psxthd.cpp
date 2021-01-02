@@ -4,8 +4,26 @@
 
 #include "BASE.h"
 
-#include "PsxThd.hpp" //?
-#include "ResourceTracker.hpp" //?
+#include "PsxThd.hpp"
+
+#ifdef WITH_APPLE
+  #include <mach/mach_time.h>
+  #include <mach/message.h>
+  #include <mach/mach.h>
+  #include <mach/thread_policy.h>
+
+  //#include <mach/thread_act.h>
+  //#include <libkern/OSAtomic.h>
+  //#include <mach/vm_map.h>
+  //#include <mach/mach_time.h>
+  //#include <mach/thread_policy.h>
+  //#include <mach/mach.h>
+  //#include <mach/message.h>
+  //#include <mach/kern_return.h>
+  //#include <mach/task_info.h>
+#endif
+
+#include "ResourceTracker.hpp"
 
 Atomic gixPsxThd;
 

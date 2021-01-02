@@ -42,25 +42,7 @@
 #include <execinfo.h>
 #include <signal.h>
 
-#ifdef WITH_APPLE
-  #include <mach/thread_act.h>
-  #include <libkern/OSAtomic.h>
-  #include <mach/vm_map.h>
-  #include <mach/mach_time.h>
-  #include <mach/thread_policy.h>
-  #include <mach/mach.h>
-  #include <mach/message.h>
-  #include <mach/kern_return.h>
-  #include <mach/task_info.h>
-#endif
 
-#include <netinet/in.h>
-//#include <pcap/pcap.h>
-#include <arpa/inet.h>
-
-#ifdef WITH_PYTHON_SUPPORT
-  #include "/usr/include/python2.7/Python.h"
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

@@ -27,6 +27,8 @@ namespace BASE
 #include "CompiledWith.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
+//typedef unsigned long size_t;
+
 #include "UsefulConstants.h"
 #include "UserStrSizes.h"
 

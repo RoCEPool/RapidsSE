@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 
+#ifdef WITH_APPLE
+  #include <mach/mach.h>
+#endif
+
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/

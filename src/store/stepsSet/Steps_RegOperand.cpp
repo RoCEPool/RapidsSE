@@ -9,6 +9,9 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#ifdef WITH_PYTHON_SUPPORT
+  #include "/usr/include/python2.7/Python.h"
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
