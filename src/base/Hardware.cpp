@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include <sys/sysctl.h>
+#include <sys/time.h>
 
 /*----------------------------------------------------------------------------*/
 /* get byte order                                                             */

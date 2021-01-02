@@ -27,8 +27,8 @@
 
 #include <sys/errno.h>
 #include <sys/mman.h>
-#include <sys/param.h>
-#include <sys/socket.h>
+//#include <sys/param.h>
+//#include <sys/socket.h>
 //#include <sys/stat.h>
 //#include <sys/statvfs.h>
 //#include <sys/syscall.h>
