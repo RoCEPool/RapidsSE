@@ -21,11 +21,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <syslog.h>
-#include <time.h>
+//#include <time.h>
 #include <unistd.h>
-#include <typeinfo>
+//#include <typeinfo>
 
-#include <sys/errno.h>
+//#include <sys/errno.h>
 //#include <sys/mman.h>
 //#include <sys/param.h>
 //#include <sys/socket.h>
