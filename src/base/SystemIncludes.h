@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <syslog.h>
+//#include <syslog.h>
 //#include <time.h>
 #include <unistd.h>
 //#include <typeinfo>
