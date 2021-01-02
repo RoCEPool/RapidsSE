@@ -8,6 +8,8 @@
   #include <mach/mach.h>
 #endif
 
+#include <signal.h>
+
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/

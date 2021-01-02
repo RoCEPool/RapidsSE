@@ -15,7 +15,7 @@
 #include <netdb.h>
 #include <pthread.h>
 //#include <pwd.h>
-#include <signal.h>
+//#include <signal.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
