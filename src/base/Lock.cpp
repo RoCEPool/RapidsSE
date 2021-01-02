@@ -113,7 +113,7 @@ u8 Lock::iLockDropRead(u8* pWord)
     u8 uCurrent = *pWord;
     
     // must have a read lock
-    assert(uCurrent && uCurrent != C_WRITELOCK);
+    ASSERT(uCurrent && uCurrent != C_WRITELOCK);
     
     u8 uRemoveReadLock = uCurrent - 1;
     
@@ -166,7 +166,7 @@ u8 Lock::iLockDropWrite(u8* pWord)
   
   u8 uCurrent = *pWord;
   
-  assert (uCurrent == C_WRITELOCK);
+  ASSERT (uCurrent == C_WRITELOCK);
   
   bool bWasSet = Atomic::bTestAndSet(pWord,uCurrent,0);
   

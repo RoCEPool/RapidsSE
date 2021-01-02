@@ -107,7 +107,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "QuickSort.hpp"
 #include "BufferCursor.hpp"
 #include "BufferSort.hpp"
-
 #include "IntBuffer.hpp"
 
 #include "KeyBuilder.hpp"
