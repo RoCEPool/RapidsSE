@@ -23,6 +23,8 @@
   //#include <mach/task_info.h>
 #endif
 
+#include <sys/syscall.h>
+
 #include "ResourceTracker.hpp"
 
 Atomic gixPsxThd;

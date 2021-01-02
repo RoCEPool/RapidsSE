@@ -29,20 +29,12 @@
 #include <sys/mman.h>
 #include <sys/param.h>
 #include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/statvfs.h>
-#include <sys/syscall.h>
-#include <sys/sysctl.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/unistd.h>
-#include <sys/utsname.h>
-#include <sys/wait.h>
-
-#include <execinfo.h>
-#include <signal.h>
-
-
+//#include <sys/stat.h>
+//#include <sys/statvfs.h>
+//#include <sys/syscall.h>
+//#include <sys/sysctl.h>
+//#include <sys/time.h>
+//#include <sys/types.h>
 
 /*============================================================================*/
 /* end                                                                        */

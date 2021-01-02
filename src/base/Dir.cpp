@@ -7,6 +7,8 @@
 #include "Dir.hpp" //?
 #include "ResourceTracker.hpp" //?
 
+#include <sys/stat.h>
+
 Atomic gixDir;
 
 /*----------------------------------------------------------------------------*/
