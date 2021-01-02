@@ -580,8 +580,6 @@ static Stz* aCN[]
   /* */ "SPMEDIUM"_Stz,             // CN_SPMEDIUM
   /* */ "SPSMALL"_Stz,              // CN_SPSMALL
   /* */ "SQLPLANNER"_Stz,           // CN_SQLPLANNER
-  /* */ "SRTBUFFER"_Stz,            // CN_SRTBUFFER
-  /* */ "SRTSET"_Stz,               // CN_SRTSET
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
