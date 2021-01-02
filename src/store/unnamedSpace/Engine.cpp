@@ -6,6 +6,8 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include <signal.h>
+
 #include "Engine.hpp"
 #include "EnvCheck.hpp"
 #include "Error.hpp"

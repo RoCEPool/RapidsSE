@@ -290,7 +290,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 #include "NamedObject.hpp"
 #include "ReqTuple.hpp"
-//#include "SP_Gid.hpp"
 
 
 #include "IntLib.hpp"
@@ -301,8 +300,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 
 #include "HshLib.hpp"
-
-#include "SP_Bits.hpp"
 
 #include "IvlLib.hpp"
 #include "RndLib.hpp"
@@ -322,10 +319,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "Lock.hpp"
 #include "LockTracker.hpp"
 #include "Mutex.hpp"
-
-#include "SP_Lock.hpp"
-#include "SP_Mutex.hpp"
-
 
 #include "SingleWord.hpp"
 #include "AlignedObject.hpp"
@@ -379,24 +372,6 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "Slab.hpp"
 #include "SlabAllocator.hpp"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-namespace BASE
-{
-
-  void vCheckAssumptions(void);
-}
 
 //------------------------------------------------------------------------------
 
