@@ -76,47 +76,47 @@ void vTest3(void)
   
   i8 nBytes = IntLib::iIntToVlq(C_DATUM_NULL,xVlq);
   i8 i = IntLib::iVlqToInt(xVlq);
-  assert(C_DATUM_NULL == i);
+  ASSERT(C_DATUM_NULL == i);
   
   nBytes = IntLib::iIntToVlq(0,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(0 == i);
+  ASSERT(0 == i);
   
   nBytes = IntLib::iIntToVlq(30,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(30 == i);
+  ASSERT(30 == i);
   
   nBytes = IntLib::iIntToVlq(-30,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(-30 == i);
+  ASSERT(-30 == i);
   
   nBytes = IntLib::iIntToVlq(31,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(31 == i);
+  ASSERT(31 == i);
   
   nBytes = IntLib::iIntToVlq(32,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(32 == i);
+  ASSERT(32 == i);
   
   nBytes = IntLib::iIntToVlq(127,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(127 == i);
+  ASSERT(127 == i);
   
   nBytes = IntLib::iIntToVlq(128,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(128 == i);
+  ASSERT(128 == i);
   
   nBytes = IntLib::iIntToVlq(-130,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(-130 == i);
+  ASSERT(-130 == i);
   
   nBytes = IntLib::iIntToVlq(-130,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(-130 == i);
+  ASSERT(-130 == i);
   
   nBytes = IntLib::iIntToVlq(4096,xVlq);
   i = IntLib::iVlqToInt(xVlq);
-  assert(4096 == i);
+  ASSERT(4096 == i);
   
 }
 

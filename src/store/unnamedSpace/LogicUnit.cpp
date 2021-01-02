@@ -14,6 +14,8 @@
 #include "LIB_interface.h"
 #include "DEV_interface.h"
 
+#include "SP_Ent.hpp"
+
 extern EoArg EoArgs[];
 Atomic gixQueryNo;
 

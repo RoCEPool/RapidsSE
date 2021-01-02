@@ -76,9 +76,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Ent_flat.hpp"
 #include "EntWrk.hpp"
 
-#include "SP_Ent.hpp"
-#include "SP_Key.hpp"
-
 //------------------------------------------------------------------------------
 
 #include "RowCoder.hpp"

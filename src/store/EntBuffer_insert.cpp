@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "SP_Key.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */

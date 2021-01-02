@@ -5,8 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
-
 #include "DEV_interface.h"
+
+#include "SP_Ent.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* begin row traverse                                                         */
