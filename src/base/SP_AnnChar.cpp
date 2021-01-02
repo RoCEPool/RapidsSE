@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "SP_AnnChar.hpp"
 #include "SP_Char.hpp"
 
 /*----------------------------------------------------------------------------*/

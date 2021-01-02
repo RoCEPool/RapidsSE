@@ -491,9 +491,6 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 #include "SP_Article.hpp"
 
-
-
-
 #include "Dir.hpp"    //?
 #include "Fifo.hpp"   //?
 #include "File.hpp"   //?
@@ -512,23 +509,11 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 #include "Charser.hpp"
 #include "Input.hpp"
 
-#include "SP_AnnChar.hpp"
-#include "SP_Charser.hpp"
-#include "SP_Token.hpp"
-#include "SP_TknVecStr.hpp"
-
-
-
-
 #include "ShmUtility.hpp"
-
-
-
 
 #include "Thing.hpp"
 #include "Arrange.hpp"
 #include "IntSet.hpp"
-
 
 #include "Format.hpp"
 

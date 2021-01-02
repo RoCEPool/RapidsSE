@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "SP_Char.hpp"
+#include "SP_Charser.hpp"
 #include "SP_String.hpp"
 
 /*----------------------------------------------------------------------------*/
