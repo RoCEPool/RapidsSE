@@ -56,7 +56,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-#include "SP_DataBuffer.hpp"
 
 #include "RowUte.hpp"
 
@@ -79,7 +78,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "SP_Ent.hpp"
 #include "SP_Key.hpp"
-#include "SP_Ref.hpp"
 
 //------------------------------------------------------------------------------
 

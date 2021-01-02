@@ -654,7 +654,10 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "TxSet.hpp"
 
 #include "Ref.hpp"
+#include "SP_Ref.hpp"
 #include "DataBuffer.hpp"
+#include "SP_DataBuffer.hpp"
+
 #include "CsvMeta.hpp"
 #include "CsvBuffer.hpp"
 #include "Reader.hpp"

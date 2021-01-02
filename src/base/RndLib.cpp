@@ -56,8 +56,8 @@ i8 RndLib::iInteger(i8 iLow, i8 iHigh)
   i8 v = r % m;
   i8 n = v + iLow;
   
-  assert (n >= iLow);
-  assert (n <= iHigh);
+  ASSERT (n >= iLow);
+  ASSERT (n <= iHigh);
   
   return n;
 }
@@ -93,8 +93,8 @@ u8 RndLib::uInteger(u8 uLow, u8 uHigh)
   u8 v = r % m;
   u8 n = v + uLow;
   
-  assert (n >= uLow);
-  assert (n <= uHigh);
+  ASSERT (n >= uLow);
+  ASSERT (n <= uHigh);
   
   return n;
 }
