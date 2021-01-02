@@ -21,8 +21,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-
-
 #include "Definition.hpp"
 
 //------------------------------------------------------------------------------
@@ -46,7 +44,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-
 #include "Row.hpp"
 #include "NmlStr.hpp"
 #include "Record.hpp"
@@ -55,7 +52,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "RowSingle.hpp"
 
 //------------------------------------------------------------------------------
-
 
 #include "RowUte.hpp"
 
@@ -94,8 +90,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "RowInflator.hpp"
-
-#include "SP_Encoding_v2.hpp"
 
 #include "KeyBuilder.hpp"
 
@@ -188,7 +182,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "LogicUnit.hpp"
 
-
 //------------------------------------------------------------------------------
 
 #include "Scheduler.hpp"
@@ -198,8 +191,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "ThreadVec.hpp"
 
 #include "Queues.hpp"
-
-#include "SP_Thread.hpp"
 
 //------------------------------------------------------------------------------
 

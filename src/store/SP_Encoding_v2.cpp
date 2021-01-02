@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "SP_Encoding_v2.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
