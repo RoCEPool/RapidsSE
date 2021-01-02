@@ -10,6 +10,8 @@
 
 #include "eOC.h"
 
+#include "SP_Gid.hpp"
+
 
 extern AttachMap* gpAttachMap;
 

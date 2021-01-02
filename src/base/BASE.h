@@ -290,7 +290,7 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 #include "NamedObject.hpp"
 #include "ReqTuple.hpp"
-#include "SP_Gid.hpp"
+//#include "SP_Gid.hpp"
 
 
 #include "IntLib.hpp"
@@ -304,7 +304,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 #include "SP_Bits.hpp"
 
-//#include "Compress.hpp"
 #include "IvlLib.hpp"
 #include "RndLib.hpp"
 #include "TspLib.hpp"

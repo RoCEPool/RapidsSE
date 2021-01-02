@@ -9,6 +9,8 @@
 #include "File.hpp" //?
 #include "TagConstants.h"
 
+#include "SP_Gid.hpp"
+
 Atomic gixJob;
 
 /*----------------------------------------------------------------------------*/

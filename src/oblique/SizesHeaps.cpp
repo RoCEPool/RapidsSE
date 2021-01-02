@@ -14,6 +14,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "SP_Gid.hpp"
 
 
 #include "graph/PlanConstants.hpp"

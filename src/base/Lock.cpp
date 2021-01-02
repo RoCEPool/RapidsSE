@@ -4,8 +4,9 @@
 
 #include "BASE.h"
 
-
 #include "Timer.hpp"
+
+#include "SP_Gid.hpp"
 
 Atomic gixLock;
 

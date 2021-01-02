@@ -6,7 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
-
+#include "SP_Gid.hpp"
 
 PromptFun __Prompt_so (
   PF_SO,           // prompt function
