@@ -5,7 +5,6 @@
 #include "BASE.h"
 #include "STORE.h"
 #include "OBLIQUE.h"
-#include "PROMPT.h"
 
 #include "LogEntry.hpp"
 #include "Log.hpp"
