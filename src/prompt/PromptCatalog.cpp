@@ -6,6 +6,9 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "PromptFun.hpp"
+#include "PromptCatalog.hpp"
+
 
 PromptCatalog gxPromptCatalog;
 

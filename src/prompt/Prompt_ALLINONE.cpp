@@ -6,6 +6,14 @@
 #include "PROMPT.h"
 #include "Prompt_ALLINONE.hpp"
 
+#include "ShortCut.hpp"
+#include "SeDeputy.hpp"
+#include "SePrompt.hpp"
+#include "PromptHelper.hpp"
+
+#include "PromptFun.hpp"
+#include "PromptCatalog.hpp"
+
 #include "PlanNode.hpp"
 #include "PlanDefinitionParser.hpp"
 #include "SqlPlanner.hpp"
@@ -1117,6 +1125,8 @@ bool PROMPT::bPrompt_classes(SePrompt* pPrompt)
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "PromptFun.hpp"
+#include "PromptCatalog.hpp"
 
 
 PromptFun __Prompt_cmds (

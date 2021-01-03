@@ -6,6 +6,13 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "ShortCut.hpp"
+#include "SeDeputy.hpp"
+#include "SePrompt.hpp"
+
+#include "PromptFun.hpp"
+#include "PromptCatalog.hpp"
+
 #include "Prompt_ALLINONE.hpp"
 
 #include "ePP.h"

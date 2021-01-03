@@ -10,7 +10,9 @@
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
-
+#include "ShortCut.hpp"
+#include "SeDeputy.hpp"
+#include "SePrompt.hpp"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 

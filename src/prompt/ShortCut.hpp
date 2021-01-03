@@ -23,7 +23,10 @@ namespace PROMPT
   
     Footer* aFooter(void);
   };
+
 }
+
+typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
 /*============================================================================*/
 /* end                                                                        */

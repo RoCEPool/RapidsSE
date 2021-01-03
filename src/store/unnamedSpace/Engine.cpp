@@ -12,6 +12,10 @@
 #include "EnvCheck.hpp"
 #include "Error.hpp"
 
+#include "ShortCut.hpp"
+#include "SeDeputy.hpp"
+#include "SePrompt.hpp"
+
 #include "Step.hpp"
 
 #include "eBO.h"
