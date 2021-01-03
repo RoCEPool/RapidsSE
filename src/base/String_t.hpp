@@ -246,7 +246,7 @@ byte* String_t<AREA>::ayByte(void)
 template <i8 AREA>
 void String_t<AREA>::vCat(Stz* szArg, ...)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  //_precondition_(_MAGIC_,_FOOTER_);
   
   va_list xVarArgs;
   
@@ -254,12 +254,13 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
   
   StrLib::vConcat(this->azChar(),szArg->azChar());
   
-  while (Stz* szVal = va_arg(xVarArgs,Stz*))
+  while (Stz* szVal = va_arg(xVarArgs,Stz*)) {
     StrLib::vConcat(this->azChar(),szVal->azChar());
+  }
   
   va_end(xVarArgs);
   
-  _postcondition_(_MAGIC_,_FOOTER_);
+  //_postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
