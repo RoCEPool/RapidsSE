@@ -4,9 +4,8 @@
 
 #include "BASE.h"
 #include "STORE.h"
-#include "PROMPT.h"
-#include "OBLIQUE.h"
 
+#include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
 

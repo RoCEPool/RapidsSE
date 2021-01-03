@@ -5,7 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
-//#include "Engine.hpp"
+#include "AttachMap.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */

@@ -6,6 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "AttachMap.hpp"
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"

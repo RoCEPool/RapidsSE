@@ -3,8 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-#include "OBLIQUE.h"
 
 #include "Exemplar.hpp"
 
