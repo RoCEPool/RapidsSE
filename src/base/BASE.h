@@ -32,7 +32,6 @@ namespace BASE
 #include "UsefulConstants.h"
 #include "UserStrSizes.h"
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace BASE            { class Format;                                   }
@@ -154,8 +153,7 @@ extern d8 C_D8_MAX;
 extern d8 C_D8_MID;
 
 
-
-
+//------------------------------------------------------------------------------
 
 
 #include "BitLib.hpp"
@@ -176,11 +174,8 @@ extern d8 C_D8_MID;
 
 #include "PmcUse.h"
 
-
 #include "Stz.hpp"
 #include "StrLib.hpp"
-
-
 
 #include "ClassNumbers.hpp"
 #include "FnDesc.hpp"
@@ -199,8 +194,6 @@ struct SizeHeap {
   i8  m_nVtableAdjust; // temp: explore support for vtable
 
 };
-
-
 
 #include "Hack.hpp"
 
@@ -262,19 +255,7 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "ToolFn.hpp"
 #include "ToolCatalog.hpp"
 
-
-
-
 #include "CodeCell.hpp"
-
-
-//typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
-//extern pDUMPFUN *gpDump[];
-
-//typedef void (pOUTLINEFUN)(Focal* pFocal, Stz*);
-//extern pOUTLINEFUN *gpOutline[];
-
-
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
@@ -283,21 +264,16 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "SPmedium.hpp"
 #include "SPsmall.hpp"
 
-
-
-
 #include "FocalDesc.hpp"
 
 #include "NamedObject.hpp"
 #include "ReqTuple.hpp"
-
 
 #include "IntLib.hpp"
 #include "MagLib.hpp"
 #include "Dtm.hpp"
 #include "TypedCell.hpp"
 #include "CellSingle.hpp"
-
 
 #include "HshLib.hpp"
 
@@ -332,11 +308,9 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "WspConvergent_t.hpp"
 #include "Wsp_t.hpp"
 
-
-
 #include "ShmLib.hpp"
 
-
+//------------------------------------------------------------------------------
 
 static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
 
@@ -356,6 +330,8 @@ static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
 
 static const i8 C_VIA_MALLOC         = 1;
 
+//------------------------------------------------------------------------------
+
 #include "PoolBuffer.hpp"
 #include "FreeBuffer.hpp"
 #include "FreeChunk.hpp"
@@ -372,9 +348,7 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "Slab.hpp"
 #include "SlabAllocator.hpp"
 
-
 //------------------------------------------------------------------------------
-
 
 #include "Birth.hpp"
 #include "CRM.hpp"
@@ -402,44 +376,9 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "Peruse.hpp"
 #include "Numbat.hpp"
 
- 
- 
-typedef void (*FNADDR)(void*);
-
-
-#define JOBS_fn(FNNAME) \
-  \
-  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)STORE::FNNAME); \
-  \
-  void STORE::FNNAME(Job* pJob) \
-EndDefine
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include "RU.hpp"
 #include "RU_Cpu.hpp"
 #include "RU_Memory.hpp"
-
-
-
-
-
-
-
-extern BufferPool* gpBufferPool;
-
-
 
 #include "ArrayNL_t.hpp"
 
@@ -501,7 +440,6 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 #include "ResourceTracker.hpp" //?
 
-
 #include "AnnChar.hpp"
 #include "Token.hpp"
 #include "TokenVec.hpp"
@@ -517,7 +455,6 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 #include "Format.hpp"
 
-
 //------------------------------------------------------------------------------
 
 #include "ColPix.h"
@@ -527,7 +464,6 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 //------------------------------------------------------------------------------
 
 #include "Literal.hpp"
-
 
 #include "Licence.hpp"
 #include "Limits.hpp"
@@ -584,10 +520,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-
-//------------------------------------------------------------------------------
-
-
 namespace BASE
 {
   static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
@@ -618,7 +550,6 @@ namespace BASE
 
   void vInitAllGlobals(void);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

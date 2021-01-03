@@ -1413,7 +1413,7 @@ eEC STORE::eJob_checkCluster(void)
 /*----------------------------------------------------------------------------*/
 /* pre-send job function                                                      */
 /*----------------------------------------------------------------------------*/
-JOBS_fn(vJob_send)
+void STORE::vJob_send(Job* pJob)
 {
 
 }
@@ -1421,7 +1421,7 @@ JOBS_fn(vJob_send)
 /*----------------------------------------------------------------------------*/
 /* post-recv job function  (when is this run ????)                            */
 /*----------------------------------------------------------------------------*/
-JOBS_fn(vJob_recv)
+void STORE::vJob_recv(Job* pJob)
 {
   pJob->vWasReceived(true);
   

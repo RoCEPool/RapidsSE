@@ -16,6 +16,7 @@ extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;
 
 extern Stz* gsBuildGitHash;
+extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
