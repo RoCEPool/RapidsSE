@@ -241,7 +241,7 @@ void LogicCompiler::vExtract(void)
   
   File* pFile = new File(nullptr);
   
-  bool b = pFile->bOpenRead("../src/store/unnamedSpace/LogicUnit.cpp"_Stz);
+  bool b = pFile->bOpenRead("../src/store/LogicUnit.cpp"_Stz);
   RASSERT(b);
   
   char* azCrs = gcaEoFragments;
@@ -907,11 +907,11 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n"
   "\n  #include \"../src/base/EnumGroups.h\""
   "\n  #include \"../src/store/Ent_int.h\""
-  "\n  #include \"../src/store/unnamedSpace/InflateSet.h\""
-  "\n  #include \"../src/store/unnamedSpace/LIB_interface.h\""
-  "\n  #include \"../src/store/unnamedSpace/DEV_interface.h\""
-  "\n  #include \"../src/store/unnamedSpace/RLU_interface.h\""
-  "\n  #include \"../src/store/unnamedSpace/RluCommon.h\""
+  "\n  #include \"../src/store/InflateSet.h\""
+  "\n  #include \"../src/store/LIB_interface.h\""
+  "\n  #include \"../src/store/DEV_interface.h\""
+  "\n  #include \"../src/store/RLU_interface.h\""
+  "\n  #include \"../src/store/RluCommon.h\""
   "\n  #include \"../src/base/eEO.h\""
   "\n"
   "\n  #define ArgNil() "
