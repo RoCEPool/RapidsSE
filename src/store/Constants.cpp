@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Constants.hpp"
 
 #include "EnumGroups.h"
 #include "eAN.h"

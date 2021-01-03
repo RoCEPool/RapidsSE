@@ -9,6 +9,7 @@
 
 #include <signal.h>
 
+#include "Constants.hpp"
 #include "Engine.hpp"
 #include "EnvCheck.hpp"
 #include "Error.hpp"

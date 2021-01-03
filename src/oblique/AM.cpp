@@ -7,6 +7,7 @@
 #include "PROMPT.h"
 #include "OBLIQUE.h"
 
+#include "Constants.hpp"
 #include "Engine.hpp"
 
 #include "TagConstants.h"
