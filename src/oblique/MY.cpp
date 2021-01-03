@@ -7,6 +7,8 @@
 
 #include "MY.hpp"
 
+#include "Job.hpp"
+
 extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;

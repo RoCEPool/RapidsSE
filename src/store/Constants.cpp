@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "Constants.hpp"
+#include "Job.hpp"
 
 #include "EnumGroups.h"
 #include "eAN.h"

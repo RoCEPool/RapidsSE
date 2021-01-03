@@ -8,6 +8,9 @@
 #include "Api.hpp"
 
 #include "AttachMap.hpp"
+#include "Job.hpp"
+#include "Procedure.hpp"
+
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"

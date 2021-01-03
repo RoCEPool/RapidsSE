@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eJL.h"
+
 namespace STORE
 {
   class JobList : public Object

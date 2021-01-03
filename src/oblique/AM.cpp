@@ -9,13 +9,15 @@
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
+#include "Job.hpp"
 #include "SessionArray.hpp"
+#include "XmitOperand.hpp"
 
 #include "TagConstants.h"
 
+
 #include "LogEntry.hpp"
 #include "Log.hpp"
-
 
 #include "eBO.h"
 #include "eCC.h"

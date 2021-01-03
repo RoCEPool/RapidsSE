@@ -4,13 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
-
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Job.hpp"
+#include "JobLog.hpp"
 #include "Socket.hpp"
+#include "XmitOperand.hpp"
 
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"

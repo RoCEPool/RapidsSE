@@ -10,6 +10,10 @@
 #include "StepTiming.hpp"
 
 #include "Api.hpp"
+#include "Job.hpp"
+
+#include "JobList.hpp"
+#include "JobLog.hpp"
 #include "SessionArray.hpp"
 
 #include "TagConstants.h"

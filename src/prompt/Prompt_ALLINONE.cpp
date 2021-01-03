@@ -7,9 +7,16 @@
 #include "Prompt_ALLINONE.hpp"
 
 #include "Api.hpp"
+#include "Definition.hpp"
+#include "StreamDef.hpp"
+#include "Stream.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "JobList.hpp"
 
+#include "Procedure.hpp"
 #include "RapidsSE.hpp"
-
 #include "SessionArray.hpp"
 
 #include "ShortCut.hpp"

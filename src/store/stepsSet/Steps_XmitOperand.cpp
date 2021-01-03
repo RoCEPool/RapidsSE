@@ -9,6 +9,10 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "XmitOperand.hpp"
+
+#include "Job.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

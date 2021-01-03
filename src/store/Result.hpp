@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eOM.h"
 #include "eRS.h"
 
 namespace STORE

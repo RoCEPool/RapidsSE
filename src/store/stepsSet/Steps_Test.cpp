@@ -10,6 +10,7 @@
 #include "StepTiming.hpp"
 
 #include "Test.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

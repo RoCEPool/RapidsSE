@@ -5,8 +5,10 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Job.hpp"
+#include "JobList.hpp"
 
-#include "PsxThd.hpp"  //?
+#include "PsxThd.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

@@ -9,6 +9,9 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Job.hpp"
+#include "JobList.hpp"
+#include "JobLog.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

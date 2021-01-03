@@ -6,8 +6,9 @@
 #include "STORE.h"
 
 #include "SessionArray.hpp"
+#include "Job.hpp"
 
-#include "PsxThd.hpp" 
+#include "PsxThd.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

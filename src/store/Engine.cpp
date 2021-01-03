@@ -12,6 +12,8 @@
 #include "Engine.hpp"
 #include "EnvCheck.hpp"
 #include "Error.hpp"
+#include "Job.hpp"
+#include "JobList.hpp"
 
 #include "SessionArray.hpp"
 

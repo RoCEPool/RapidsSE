@@ -10,6 +10,9 @@
 #include "StepTiming.hpp"
 
 #include "Api.hpp"
+#include "Job.hpp"
+
+#include "Procedure.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"

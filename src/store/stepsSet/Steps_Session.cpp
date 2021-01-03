@@ -10,6 +10,7 @@
 #include "StepTiming.hpp"
 
 #include "SessionArray.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

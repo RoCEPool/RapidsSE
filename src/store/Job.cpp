@@ -5,8 +5,10 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Job.hpp"
+#include "File.hpp"
+#include "JobLog.hpp"
 
-#include "File.hpp" //?
 #include "TagConstants.h"
 
 #include "SP_Gid.hpp"

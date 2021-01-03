@@ -7,6 +7,9 @@
 
 #include "ApiMacros.h"
 #include "Api.hpp"
+#include "Job.hpp"
+#include "JobList.hpp"
+#include "Procedure.hpp"
 #include "SessionArray.hpp"
 
 #include "TagConstants.h"

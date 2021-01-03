@@ -6,6 +6,8 @@
 #include "STORE.h"
 
 #include "Dynamo.hpp"
+#include "Job.hpp"
+
 #include "TagConstants.h"
 
 #include "SP_TknVecStr.hpp"

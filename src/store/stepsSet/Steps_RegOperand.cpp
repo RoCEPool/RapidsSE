@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Job.hpp"
+
 #ifdef WITH_PYTHON_SUPPORT
   #include "/usr/include/python2.7/Python.h"
 #endif

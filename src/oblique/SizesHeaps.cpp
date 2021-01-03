@@ -8,7 +8,12 @@
 #include "SizesHeaps.hpp"
 
 #include "AttachMap.hpp"
+#include "Dynamo.hpp"
+
 #include "Exemplar.hpp"
+#include "Job.hpp"
+#include "Job__Find.hpp"
+#include "JobList.hpp"
 
 #include "LogEntry.hpp"
 #include "Log.hpp"
@@ -34,6 +39,9 @@
 #include "SN_Tme.hpp"
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
+
+#include "XmitOperand.hpp"
+
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
