@@ -420,7 +420,7 @@ static const i8 C_VIA_MALLOC         = 1;
 
 // -- -- -- -- -- -- -- --
 
-typedef void (pARTFUN)(Object* pObject, SP& spObject);
+typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
 
 #include "Article.hpp"
 #include "MiniHeap_t.hpp"

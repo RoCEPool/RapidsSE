@@ -24,7 +24,7 @@ namespace BASE
   
     Atomic   m_ixRefCount; // reference count
   
-    pARTFUN* m_fpArtFun;   // article sp function
+    fpARTICLEFN* m_fpArtFun;   // article sp function
 
   
     // must be last
@@ -34,10 +34,10 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Article(Stz* szName, Object* pObject, pARTFUN* fpArtFun);
+    Article(Stz* szName, Object* pObject, fpARTICLEFN* fpArtFun);
    ~Article(void) noexcept(false);
   
-    pARTFUN* fpArtFun(void);
+    fpARTICLEFN* fpArtFun(void);
 
     Article* pCategory(void);
     void  vCategory(Article* pCategory);
