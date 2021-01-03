@@ -6,6 +6,7 @@
 #include "STORE.h"
 #include "PROMPT.h"
 
+#include "Prompt_ALLINONE.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"

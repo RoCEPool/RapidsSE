@@ -29,6 +29,8 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+/*
 #include "Prompt_antlr.hpp"
 #include "Prompt_apiDemo.hpp"
 #include "Prompt_args.hpp"
@@ -167,6 +169,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_with.hpp"
 #include "Prompt_without.hpp"
 
+ */
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
