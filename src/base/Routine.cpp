@@ -44,7 +44,7 @@ Routine::~Routine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the outer routine of given instruction ptr                             */
 /*----------------------------------------------------------------------------*/
-Routine* Routine::pToRoutine(ForthCell* aInxPtr)
+Routine* Routine::pToRoutine(CodeCell* aInxPtr)
 {
   _static_
     
@@ -58,7 +58,7 @@ Routine* Routine::pToRoutine(ForthCell* aInxPtr)
 /*----------------------------------------------------------------------------*/
 /* get the outer word of given instruction ptr                                */
 /*----------------------------------------------------------------------------*/
-Word* Routine::pToWord(ForthCell* aInxPtr)
+Word* Routine::pToWord(CodeCell* aInxPtr)
 {
   _static_
     
@@ -92,7 +92,7 @@ byte* Routine::ayAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append a pointer to a cell                                                 */
 /*----------------------------------------------------------------------------*/
-void Routine::vAppend(ForthCell* aCell)
+void Routine::vAppend(CodeCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -102,11 +102,11 @@ void Routine::vAppend(ForthCell* aCell)
 /*----------------------------------------------------------------------------*/
 /* append a pointer to a cell, return the address of the allotted cell        */
 /*----------------------------------------------------------------------------*/
-void* Routine::aAppend(ForthCell* aCell)
+void* Routine::aAppend(CodeCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
-  ForthCell* aAllottedCell = (ForthCell*)ayAllot(sizeof(aCell));
+  CodeCell* aAllottedCell = (CodeCell*)ayAllot(sizeof(aCell));
   
   aAllottedCell->m_aJumpTo = aCell;
   

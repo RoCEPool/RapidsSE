@@ -59,13 +59,13 @@ namespace BASE
     void vPokeItem(i8 i_Item, TypedCell* aTypedCell);
   
     i8   iPopAsInt(const char* azCallingFunNm);
-    ForthCell* aPopFip(const char* azCallingFunNm);
+    CodeCell* aPopFip(const char* azCallingFunNm);
     i8   iPopInt(const char* azCallingFunNm);
     Object* pPopPtr(const char* azCallingFunNm);
     void vPopStr(String* pStr, const char* azCallingFunNm);
     void vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm);
 
-    void vPushFip(ForthCell* aFip);
+    void vPushFip(CodeCell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushStr(String* pStr);

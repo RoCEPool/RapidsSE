@@ -329,7 +329,7 @@ void Task::vAdjustFIP(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_aInxPtr = aAdd<ForthCell*>(m_aInxPtr,nBytes);
+  m_aInxPtr = aAdd<CodeCell*>(m_aInxPtr,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -883,7 +883,7 @@ void Task::vTracePoint(Stz* aMark)
   
   s256 sRoutine;
   
-  ForthCell* aHasCell = m_aInxPtr;
+  CodeCell* aHasCell = m_aInxPtr;
   
   Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
   if (pLocatedWord)
@@ -927,7 +927,7 @@ void Task::vTraceStep(Stz* aStepNm)
   
   s256 sRoutine;
   
-  ForthCell* aHasCell = m_aInxPtr;
+  CodeCell* aHasCell = m_aInxPtr;
   Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->szWordNm();

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthCell.hpp -- cell in the routine area of a word                             */
+/* CodeCell.hpp -- cell in the routine area of a word                             */
 /*============================================================================*/
 #pragma once
 
@@ -12,7 +12,7 @@ namespace BASE
   //
   typedef void (Object::*fpMEMBERFN)(void);
 
-  class ForthCell
+  class CodeCell
   {
   public:
     union {
@@ -34,13 +34,13 @@ namespace BASE
       // additionally cells can be an argument to a another cell
       //
       
-      ForthCell* m_aJumpTo;  // a pointer to another cell within same routine
+      CodeCell* m_aJumpTo;  // a pointer to another cell within same routine
       
       _Header m_xTypedValue; // or header for embedded typed value (PushValue)
     };
   };
   
-  ForthCell* _aCell(void* aAddr);
+  CodeCell* _aCell(void* aAddr);
 }
 
 /*============================================================================*/

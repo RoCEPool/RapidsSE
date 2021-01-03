@@ -60,7 +60,7 @@ namespace BASE
     DicStack  m_oDicStack;      // dictionary stack
     DicStack  m_oSaveDicStack;  // save dictionary stack
 
-    ForthCell*     m_aInxPtr;      // instruction/cell pointer
+    CodeCell*     m_aInxPtr;      // instruction/cell pointer
 
     TypedStack*    m_pAuxStack;    // auxiliary stack
     TypedStack*    m_pDataStack;   // data stack

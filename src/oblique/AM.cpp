@@ -2022,7 +2022,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   vTrace("See: %s\n"_Stz,spWord.szSeeWord(pWord));
   vTrace("-------------------------------------------------------------\n"_Stz);
 
-  ForthCell* aDoes = pWord->aEntryCell();
+  CodeCell* aDoes = pWord->aEntryCell();
   
   Word* pDoesWord = Routine::pToWord(aDoes);
   
@@ -2036,13 +2036,13 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
+void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
                       DicStack* pDicStack)
 {
   vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
 
-  ForthCell* aLastCell = pDoesWord->aLastCell();
-  for (ForthCell* aCell = aDoes; aCell < aLastCell; ) {
+  CodeCell* aLastCell = pDoesWord->aLastCell();
+  for (CodeCell* aCell = aDoes; aCell < aLastCell; ) {
     
     fpSTEPFN fpStepFn = *aCell->m_afpStepFn;
     Word* pStepWord = pDicStack->pLocateStepWord(fpStepFn);
@@ -2077,7 +2077,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
-      aCell = aAdd<ForthCell*>(aCell,iBytes);
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
       
       continue;
     }
@@ -2104,7 +2104,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       }
       
       i8 iBytes = aTypedCell->nStackUsage();
-      aCell = aAdd<ForthCell*>(aCell,iBytes);
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
       
       continue;
     }
@@ -2121,7 +2121,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       vTrace(" \"%s\"\n"_Stz,aTypedCell->szStz());
       
       i8 iBytes = aTypedCell->nStackUsage();
-      aCell = aAdd<ForthCell*>(aCell,iBytes);
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
       
       continue;
     }
@@ -2131,7 +2131,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     
     if (fpStepFn == &Step::vEnterRoutine) {
       
-      ForthCell* aEnterCell = *(ForthCell**)(aCell->m_afpStepFn + 1);
+      CodeCell* aEnterCell = *(CodeCell**)(aCell->m_afpStepFn + 1);
       Word* pEnterWord = Routine::pToWord(aEnterCell);
 
       vTrace("%p: %s %s\n"_Stz,

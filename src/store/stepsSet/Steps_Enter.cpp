@@ -29,7 +29,7 @@ void Step::vEnterRoutine(void)
     (fpSTEPFN*) ((m_aInxPtr - 1)->m_afpStepFn + 1);
   
   m_pReturnStack->vPushFip(m_aInxPtr);
-  m_aInxPtr = *(ForthCell**)afpEntryCell;
+  m_aInxPtr = *(CodeCell**)afpEntryCell;
 
    if ( (m_iTraceMask & C_TRACE_ROUTINES) )
     Task::vTracePoint(">"_Stz);

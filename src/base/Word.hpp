@@ -45,7 +45,7 @@ namespace BASE
                               //  this allows the address of m_aInxPtr
                               //  to be computed
       
-    ForthCell*     m_aInxPtr;      // the cell to start executing from for
+    CodeCell*     m_aInxPtr;      // the cell to start executing from for
                               //   - normal words: this will be the
                               //       first cell in the routine
                               //   - future words: this will be
@@ -82,13 +82,13 @@ namespace BASE
     void  vCategory(Word* pCategory);
     void  vContentDump(void);
     Dic*  pDic(void);
-    void* aEncodeArg(ForthCell* aArgCell);
+    void* aEncodeArg(CodeCell* aArgCell);
     void  vEncodeCall(fpSTEPFN* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
-    void  vEncodeJump(Stz* aWordNm, ForthCell* aArgCell);
+    void  vEncodeJump(Stz* aWordNm, CodeCell* aArgCell);
     void  vEncodePush(TypedCell* aTypedCell);
-    void  vEntryCell(ForthCell* aInxPtr);
-    ForthCell* aEntryCell(void);
+    void  vEntryCell(CodeCell* aInxPtr);
+    CodeCell* aEntryCell(void);
     void  vEntryStep(fpSTEPFN fpIntrinsic);
     fpSTEPFN fpEntryStep(void);
     fpSTEPFN* afpEntryStep(void);
@@ -97,14 +97,14 @@ namespace BASE
     void  vExceptionHook(Stz* szExceptionHook);
     Stz*  szExitHook(void);
     void  vExitHook(Stz* szExitHook);
-    ForthCell* aFirstCell(void);
-    bool  bHasCell(ForthCell* aCell);
+    CodeCell* aFirstCell(void);
+    bool  bHasCell(CodeCell* aCell);
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
     Word* pInclude(void);
     void  vInclude(Word* pInclude);
     bool  bIsName(s32& sName);
-    ForthCell* aLastCell(void);
+    CodeCell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
     Object* pObject(void);

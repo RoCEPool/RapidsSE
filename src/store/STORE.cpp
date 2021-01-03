@@ -15,7 +15,7 @@ void STORE::vCheckAssumptions(void)
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(Operand)));
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
 
-  ALWAYS(sizeof(ForthCell)   == 8);
+  ALWAYS(sizeof(CodeCell)   == 8);
   
   ALWAYS(sizeof(Dic)     < C_SIZE_SMALL_OBJECT);
   

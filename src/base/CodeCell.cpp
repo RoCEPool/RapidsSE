@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthCell.hpp - a cell in the body of a word                                    */
+/* CodeCell.hpp - a cell in the body of a word                                    */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ForthCell* BASE::_aCell(void* aAddr)
+CodeCell* BASE::_aCell(void* aAddr)
 {
-  ForthCell* aCell = reinterpret_cast<ForthCell*>(aAddr);
+  CodeCell* aCell = reinterpret_cast<CodeCell*>(aAddr);
   
   return aCell;
 }

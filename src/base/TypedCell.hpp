@@ -25,8 +25,8 @@ namespace BASE
   
     void vCopy(TypedCell* aTypedCell, i8 nBytes=0);
 
-    ForthCell* aFip(void);
-    void vFip(ForthCell* aFip);
+    CodeCell* aFip(void);
+    void vFip(CodeCell* aFip);
 
     void vInit(void);
 

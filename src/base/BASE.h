@@ -102,7 +102,7 @@ namespace BASE {
   typedef Bytes_t<C_256K>  b256K; // note: K, not KB
 }
 
-namespace BASE       { class ForthCell;            class Focal;
+namespace BASE       { class CodeCell;            class Focal;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
 namespace BASE            { class ReqTuple;                              }
@@ -265,7 +265,7 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 
 
-#include "ForthCell.hpp"
+#include "CodeCell.hpp"
 
 
 //typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);

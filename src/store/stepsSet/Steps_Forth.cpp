@@ -162,7 +162,7 @@ void Step::vExit_RT(void)
   // make sure we don't return to nowhere
   ASSERT(m_pReturnStack->nValues());
   
-  ForthCell* aCell = m_pReturnStack->aPopFip(__func__);
+  CodeCell* aCell = m_pReturnStack->aPopFip(__func__);
   
   m_aInxPtr = aCell;
   

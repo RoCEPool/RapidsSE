@@ -26,13 +26,13 @@ namespace BASE
     Routine(Word* p_Word);
    ~Routine(void) noexcept(false);
 
-    static Routine* pToRoutine(ForthCell* aInxPtr);
-    static Word*    pToWord(ForthCell* aInxPtr);
+    static Routine* pToRoutine(CodeCell* aInxPtr);
+    static Word*    pToWord(CodeCell* aInxPtr);
   
     byte* ayAllot(i8 iBytes);
 
-    void* aAppend(ForthCell* aCell);
-    void  vAppend(ForthCell* aCell);
+    void* aAppend(CodeCell* aCell);
+    void  vAppend(CodeCell* aCell);
     void  vAppend(i8 iInt);
     void  vAppend(fpSTEPFN* afpStep);
     void  vAppend(TypedCell* aTypedCell);
