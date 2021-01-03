@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "SP_TagSet.hpp"
 
@@ -17,10 +16,10 @@
 /*----------------------------------------------------------------------------*/
 /* get the cmd tag set of the job                                             */
 /*----------------------------------------------------------------------------*/
-TagSet* CmdHelper::pCmdTagSet(Stz* szJobNm)
+TagSet* CmdHelper::pCmdTagSet(Stz* szCmdNm)
 {
   // form the cmdTag name
-  s32 sCmdTagNm(szJobNm);
+  s32 sCmdTagNm(szCmdNm);
   StrLib::vConcat(sCmdTagNm.azChar(),(const char*)"_cmdTags"_Stz);
   
   // find the CmdTagNm word
@@ -57,10 +56,10 @@ bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
       
       //vTrace("    matches\n"_Stz);
       
-      s32 sJobName(pSyntax->pWrdTagSet()->szValue("__cmdNm__"_Stz));
+      s32 sCmdName(pSyntax->pWrdTagSet()->szValue("__cmdNm__"_Stz));
       
       // get the CmdTag words tagSet
-      TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sJobName);
+      TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sCmdName);
       
       // copy the cmd tag set into the pTagSet
       pTagSet->vCopy(pCmdTagSet);

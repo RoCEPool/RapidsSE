@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   class CmdHelper
   {
   public:
   
-    static TagSet* pCmdTagSet(Stz* szJobNm);
+    static TagSet* pCmdTagSet(Stz* szCmdNm);
     static bool    bParseCmd(TokenVec* pTknVec,
                              TagSet*   pArgTags);
     

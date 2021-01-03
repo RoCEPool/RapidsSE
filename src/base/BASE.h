@@ -518,6 +518,8 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "CsvBuffer.hpp"
 #include "Reader.hpp"
 
+#include "CmdHelper.hpp"
+
 //------------------------------------------------------------------------------
 
 namespace BASE
