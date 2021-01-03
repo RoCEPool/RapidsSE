@@ -122,8 +122,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-#include "LogEntry.hpp"
-
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"

@@ -3,8 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
@@ -23,7 +21,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LogEntry* STORE::_pLogEntry(void* aAddr)
+LogEntry* BASE::_pLogEntry(void* aAddr)
 {
   LogEntry* pLogEntry = reinterpret_cast<LogEntry*>(aAddr);
   

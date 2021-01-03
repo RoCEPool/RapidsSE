@@ -33,6 +33,7 @@ namespace BASE      { class Tx;              class TxSet;             }
 namespace BASE       { class DataBuffer;      class CsvBuffer;       }
 
 namespace STORE          { class Session;         class SessionState;      }
+namespace BASE           { class Log;             class LogEntry;          }
 
 
 namespace STORE    { class Crw;             class CrwBuffer;
@@ -56,7 +57,6 @@ namespace STORE              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }
-namespace STORE           { class Log;             class LogEntry;          }
 namespace STORE          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }

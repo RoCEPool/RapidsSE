@@ -520,6 +520,9 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "CmdHelper.hpp"
 
+#include "LogEntry.hpp"
+#include "Log.hpp"
+
 //------------------------------------------------------------------------------
 
 namespace BASE

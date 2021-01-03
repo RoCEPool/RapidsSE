@@ -5,7 +5,7 @@
 
 #include "eLG.h"
 
-namespace STORE
+namespace BASE
 {
   static Stz* C_ENTRY_FMT_TXT = "%-16s %20s %s %s: %s"_Stz;
 
