@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "ApiMacros.h"
+#include "Api.hpp"
+#include "SessionArray.hpp"
 
 #include "TagConstants.h"
 

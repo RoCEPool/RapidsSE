@@ -13,6 +13,8 @@
 #include "EnvCheck.hpp"
 #include "Error.hpp"
 
+#include "SessionArray.hpp"
+
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"

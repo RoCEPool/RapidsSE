@@ -5,8 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "SessionArray.hpp"
 
-#include "PsxThd.hpp"  //?
+#include "PsxThd.hpp" 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

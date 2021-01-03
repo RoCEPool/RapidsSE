@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "RapidsSE.hpp"
+#include "Api.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"

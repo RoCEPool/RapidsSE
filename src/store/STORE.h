@@ -186,12 +186,12 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-#include "ApiMacros.h"
+//#include "ApiMacros.h"
 
-#include "Api.hpp"
-#include "SessionArray.hpp"
+//#include "Api.hpp"
+//#include "SessionArray.hpp"
 
-#include "RapidsSE.hpp"
+//#include "RapidsSE.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

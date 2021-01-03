@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "SessionArray.hpp"
+
 #include "TagConstants.h"
 
 Atomic gixSession;

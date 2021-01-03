@@ -10,6 +10,8 @@
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
 
+#include "Api.hpp"
+
 #include "TagConstants.h"
 
 #include "PromptFun.hpp"

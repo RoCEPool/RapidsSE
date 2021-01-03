@@ -5,9 +5,11 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Api.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
+#include "SessionArray.hpp"
 
 #include "TagConstants.h"
 

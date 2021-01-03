@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "SessionArray.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

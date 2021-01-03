@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Api.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"

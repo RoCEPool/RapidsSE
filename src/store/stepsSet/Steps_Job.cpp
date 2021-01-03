@@ -9,6 +9,9 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Api.hpp"
+#include "SessionArray.hpp"
+
 #include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/

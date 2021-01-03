@@ -6,6 +6,12 @@
 #include "PROMPT.h"
 #include "Prompt_ALLINONE.hpp"
 
+#include "Api.hpp"
+
+#include "RapidsSE.hpp"
+
+#include "SessionArray.hpp"
+
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"

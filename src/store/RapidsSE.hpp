@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eOM.h"
+
 namespace STORE
 {
   class RapidsSE
