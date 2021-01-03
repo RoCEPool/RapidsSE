@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "StrLib.hpp"
+
 namespace BASE
 {
   template <i8 AREA>
@@ -248,14 +250,16 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
+  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  
+  
   va_list xVarArgs;
   
   va_start(xVarArgs,szArg);
   
-  StrLib::vConcat(this->m_caCharArea,szArg->azChar());
   
   while (Stz* szVal = va_arg(xVarArgs,Stz*)) {
-    StrLib::vConcat(this->m_caCharArea,szVal->azChar());
+    StrLib::vConcat(m_caCharArea,szVal->azChar());
   }
   
   va_end(xVarArgs);
