@@ -2024,7 +2024,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 
   CodeCell* aDoes = pWord->aEntryCell();
   
-  Word* pDoesWord = Routine::pToWord(aDoes);
+  Word* pDoesWord = CodeBlock::pToWord(aDoes);
   
   vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
 
@@ -2132,7 +2132,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
     if (fpStepFn == &Step::vEnterRoutine) {
       
       CodeCell* aEnterCell = *(CodeCell**)(aCell->m_afpStepFn + 1);
-      Word* pEnterWord = Routine::pToWord(aEnterCell);
+      Word* pEnterWord = CodeBlock::pToWord(aEnterCell);
 
       vTrace("%p: %s %s\n"_Stz,
              aCell,

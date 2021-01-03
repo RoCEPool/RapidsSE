@@ -543,7 +543,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "DicStack.hpp"
 #include "Local.hpp"
 #include "LocalChain.hpp"
-#include "Routine.hpp"
+#include "CodeBlock.hpp"
 #include "TypedStack.hpp"
 
 #include "Compiler.hpp"

@@ -100,7 +100,7 @@ Word::Word(Stz* szWordNm)
   m_iTrace     = 0;
   m_pWrdTagSet = nullptr;
 
-  m_pRoutine    = new Routine(this);
+  m_pRoutine    = new CodeBlock(this);
   
   m_fpIntrinsic = gfpEntryStep;
   m_aInxPtr     = aFirstCell();
@@ -163,7 +163,7 @@ Word* Word::pToWord(void* aEmbeddedObject)
 {
   _static_
     
-  Word* pWord = Routine::pToWord((CodeCell*)aEmbeddedObject);
+  Word* pWord = CodeBlock::pToWord((CodeCell*)aEmbeddedObject);
   
   return pWord;
 }
@@ -652,7 +652,7 @@ void Word::vResetRoutine(void)
 /*----------------------------------------------------------------------------*/
 /* get routine                                                                */
 /*----------------------------------------------------------------------------*/
-Routine* Word::pRoutine(void)
+CodeBlock* Word::pRoutine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 

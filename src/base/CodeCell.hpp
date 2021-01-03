@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CodeCell.hpp -- cell in the routine area of a word                             */
+/* CodeCell.hpp -- cell in code block of routine                              */
 /*============================================================================*/
 #pragma once
 
@@ -10,6 +10,9 @@ namespace BASE
   //   n.b. Object is non-virtual,
   //        so fpMEMBERFN can be cast to a sub-class of Object
   //
+
+  // more universal?
+
   typedef void (Object::*fpMEMBERFN)(void);
 
   class CodeCell

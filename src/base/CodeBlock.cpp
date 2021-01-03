@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Routine.hpp -- Forth Routine                                               */
+/* CodeBlock.cpp -- Code Block                                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -9,15 +9,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,Routine,CN_ROUTINE)
-__aNewFunction(Routine,CN_ROUTINE)
-__vDeleteFunction(Routine,CN_ROUTINE)
-__aFooterFunction(Routine)
+__pCastFunction(BASE,CodeBlock,CN_ROUTINE)
+__aNewFunction(CodeBlock,CN_ROUTINE)
+__vDeleteFunction(CodeBlock,CN_ROUTINE)
+__aFooterFunction(CodeBlock)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Routine::Routine(Word* p_ExoWord)
+CodeBlock::CodeBlock(Word* p_ExoWord)
 : Object(CN_ROUTINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
@@ -32,7 +32,7 @@ Routine::Routine(Word* p_ExoWord)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Routine::~Routine(void) noexcept(false)
+CodeBlock::~CodeBlock(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
 }
@@ -44,13 +44,13 @@ Routine::~Routine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the outer routine of given instruction ptr                             */
 /*----------------------------------------------------------------------------*/
-Routine* Routine::pToRoutine(CodeCell* aInxPtr)
+CodeBlock* CodeBlock::pToRoutine(CodeCell* aInxPtr)
 {
   _static_
     
-  Routine* aRoutine = _pMaskDownToObject<Routine*>(aInxPtr,C_MASK_SMALL_OBJECT);
+  CodeBlock* aRoutine = _pMaskDownToObject<CodeBlock*>(aInxPtr,C_MASK_SMALL_OBJECT);
 
-  Routine* pRoutine = _pRoutine(aRoutine);
+  CodeBlock* pRoutine = _pCodeBlock(aRoutine);
     
   return pRoutine;
 }
@@ -58,11 +58,11 @@ Routine* Routine::pToRoutine(CodeCell* aInxPtr)
 /*----------------------------------------------------------------------------*/
 /* get the outer word of given instruction ptr                                */
 /*----------------------------------------------------------------------------*/
-Word* Routine::pToWord(CodeCell* aInxPtr)
+Word* CodeBlock::pToWord(CodeCell* aInxPtr)
 {
   _static_
     
-  Routine* pRoutine = pToRoutine(aInxPtr);
+  CodeBlock* pRoutine = pToRoutine(aInxPtr);
 
   Word* pWord = pRoutine->m_p_ExoWord;
   
@@ -77,7 +77,7 @@ Word* Routine::pToWord(CodeCell* aInxPtr)
 /*----------------------------------------------------------------------------*/
 /* allot data space                                                           */
 /*----------------------------------------------------------------------------*/
-byte* Routine::ayAllot(i8 nBytes)
+byte* CodeBlock::ayAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -92,7 +92,7 @@ byte* Routine::ayAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append a pointer to a cell                                                 */
 /*----------------------------------------------------------------------------*/
-void Routine::vAppend(CodeCell* aCell)
+void CodeBlock::vAppend(CodeCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -102,7 +102,7 @@ void Routine::vAppend(CodeCell* aCell)
 /*----------------------------------------------------------------------------*/
 /* append a pointer to a cell, return the address of the allotted cell        */
 /*----------------------------------------------------------------------------*/
-void* Routine::aAppend(CodeCell* aCell)
+void* CodeBlock::aAppend(CodeCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -116,7 +116,7 @@ void* Routine::aAppend(CodeCell* aCell)
 /*----------------------------------------------------------------------------*/
 /* append an i8 integer                                                       */
 /*----------------------------------------------------------------------------*/
-void Routine::vAppend(i8 iInt)
+void CodeBlock::vAppend(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -128,7 +128,7 @@ void Routine::vAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
-void Routine::vAppend(fpSTEPFN* afpStepFp)
+void CodeBlock::vAppend(fpSTEPFN* afpStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
 
@@ -140,7 +140,7 @@ void Routine::vAppend(fpSTEPFN* afpStepFp)
 /*----------------------------------------------------------------------------*/
 /* append a value (the entire value, not a pointer to it)                     */
 /*----------------------------------------------------------------------------*/
-void Routine::vAppend(TypedCell* aTypedCell)
+void CodeBlock::vAppend(TypedCell* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -154,7 +154,7 @@ void Routine::vAppend(TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* append a value (the entire value, not a pointer to it)                     */
 /*----------------------------------------------------------------------------*/
-void Routine::vReset(void)
+void CodeBlock::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -164,7 +164,7 @@ void Routine::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get the start of the wsp area                                              */
 /*----------------------------------------------------------------------------*/
-byte* Routine::ayWspArea(void)
+byte* CodeBlock::ayWspArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -174,7 +174,7 @@ byte* Routine::ayWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get the latter portion of the wsp area                                     */
 /*----------------------------------------------------------------------------*/
-byte* Routine::ayWspLatter(void)
+byte* CodeBlock::ayWspLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   
@@ -184,7 +184,7 @@ byte* Routine::ayWspLatter(void)
 /*----------------------------------------------------------------------------*/
 /* get the latter portion of the wsp area                                     */
 /*----------------------------------------------------------------------------*/
-i8 Routine::nWspUsed(void)
+i8 CodeBlock::nWspUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
   

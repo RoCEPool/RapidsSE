@@ -333,7 +333,7 @@ void Step::vSemicolon(void)
   i8 iUsed = pCurrentWord->nRoutineUsed();
   if (iUsed > iMaxUsed)
     iMaxUsed = iUsed;
-//  vTrace(" Routine %lldB (%lld): %s\n"_Stz,
+//  vTrace(" CodeBlock %lldB (%lld): %s\n"_Stz,
 //         pCurrentWord->nRoutineUsed(),
 //         iMaxUsed,
 //         pCurrentWord->szWordNm());

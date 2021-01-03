@@ -588,7 +588,7 @@ void Step::vWordXcheckInxPtr(void)
   
   Word* pTestWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
-  Word* pExeWord  = Routine::pToWord(m_aInxPtr);
+  Word* pExeWord  = CodeBlock::pToWord(m_aInxPtr);
 
   ASSERT(pExeWord == pTestWord);
   

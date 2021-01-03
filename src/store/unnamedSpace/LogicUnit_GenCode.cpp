@@ -235,7 +235,7 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
   
   vBeginToken(0);
   
-  ASSERT(m_pTkn->bSame("Routine"_Stz) );
+  ASSERT(m_pTkn->bSame("CodeBlock"_Stz) );
   vAcceptToken();
   
   // add label

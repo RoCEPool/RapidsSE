@@ -370,7 +370,7 @@ void Task::vCheckBreakPt(void)
   if (! m_aInxPtr)
     return;
   
-  Word* pThisWord = Routine::pToWord(m_aInxPtr);
+  Word* pThisWord = CodeBlock::pToWord(m_aInxPtr);
   
   if (! pThisWord->bBreakPt())
     return;

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Routine.hpp -- A Forth Routine                                             */
+/* CodeBlock.hpp -- Code Block                                                */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace BASE
 {
   static const i8 C_WSP_ROUTINE = C_SIZE_SMALL_OBJECT - 128;
 
-  class Routine : public Object
+  class CodeBlock : public Object
   {
   private:
     Word* m_p_ExoWord;
@@ -23,10 +23,10 @@ namespace BASE
    void* operator new(size_t);
    void  operator delete(void* aAddress);
   
-    Routine(Word* p_Word);
-   ~Routine(void) noexcept(false);
+    CodeBlock(Word* p_Word);
+   ~CodeBlock(void) noexcept(false);
 
-    static Routine* pToRoutine(CodeCell* aInxPtr);
+    static CodeBlock* pToRoutine(CodeCell* aInxPtr);
     static Word*    pToWord(CodeCell* aInxPtr);
   
     byte* ayAllot(i8 iBytes);
@@ -47,7 +47,7 @@ namespace BASE
     Footer* aFooter(void);
   };
 
-  Routine* _pRoutine(void* aAddr);
+  CodeBlock* _pCodeBlock(void* aAddr);
 }
 
 /*============================================================================*/
