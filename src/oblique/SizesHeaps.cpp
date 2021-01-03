@@ -6,6 +6,10 @@
 #include "STORE.h"
 #include "OBLIQUE.h"
 
+#include "SizesHeaps.hpp"
+
+#include "Exemplar.hpp"
+
 #include "LogEntry.hpp"
 #include "Log.hpp"
 

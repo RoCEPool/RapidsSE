@@ -4,6 +4,8 @@
 
 #include "OBLIQUE.h"
 
+#include "MY.hpp"
+
 extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;
