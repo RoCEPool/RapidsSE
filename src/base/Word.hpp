@@ -56,7 +56,7 @@ namespace BASE
                               //   m_aInxPtr must be immediately after
                               //     m_fpIntrinsic
 
-    CodeBlock*  m_pRoutine;    // the encoded routine
+    CodeBlock*  m_pCodeBlock;    // the encoded routine
   
     // must be last
     Footer m_xFooter;
@@ -114,7 +114,7 @@ namespace BASE
     i8    iParams(void);
     Word* pPrevWord(void);
     void  vResetRoutine(void);
-    CodeBlock* pRoutine(void);
+    CodeBlock* pCodeBlock(void);
     i8    nRoutineUsed(void);
     eWK   eWord(void);
     void  vWord(eWK eWord);

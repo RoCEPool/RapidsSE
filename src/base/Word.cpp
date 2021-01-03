@@ -100,7 +100,7 @@ Word::Word(Stz* szWordNm)
   m_iTrace     = 0;
   m_pWrdTagSet = nullptr;
 
-  m_pRoutine    = new CodeBlock(this);
+  m_pCodeBlock    = new CodeBlock(this);
   
   m_fpIntrinsic = gfpEntryStep;
   m_aInxPtr     = aFirstCell();
@@ -127,7 +127,7 @@ Word::~Word(void) noexcept(false)
   delete m_pArticle;
   delete m_pWrdTagSet;
   
-  delete m_pRoutine;
+  delete m_pCodeBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +179,7 @@ byte* Word::ayAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  byte* ayAddress = m_pRoutine->ayAllot(nBytes);
+  byte* ayAddress = m_pCodeBlock->ayAllot(nBytes);
   
   _setFooter_();
   
@@ -265,7 +265,7 @@ void Word::vContentDump(void)
          aWK[m_eWord]->azChar(),
          m_pCategory->m_sWordNm.azChar(),
          m_bImmediate ? "immediate" : "not-immediate",
-         m_pRoutine->nWspUsed(),
+         m_pCodeBlock->nWspUsed(),
          m_fpIntrinsic,
          pStepWord ? pStepWord->szWordNm() : "<not-found>"_Stz,
          aFirstCell()
@@ -289,7 +289,7 @@ void* Word::aEncodeArg(CodeCell* aArgCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  CodeCell* aAllottedCell = (CodeCell*)m_pRoutine->aAppend(aArgCell);
+  CodeCell* aAllottedCell = (CodeCell*)m_pCodeBlock->aAppend(aArgCell);
   
   return aAllottedCell;
 }
@@ -301,7 +301,7 @@ void Word::vEncodeCall(fpSTEPFN* afpEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pRoutine->vAppend(afpEntryStep);
+  m_pCodeBlock->vAppend(afpEntryStep);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,7 +315,7 @@ void Word::vEncodeCall(Stz* aWordNm)
   Word* pCalledWord = pRootDic->pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
-  m_pRoutine->vAppend(pCalledWord->afpEntryStep());
+  m_pCodeBlock->vAppend(pCalledWord->afpEntryStep());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,7 +327,7 @@ void Word::vEncodeJump(Stz* aWordNm, CodeCell* aCell)
   
   vEncodeCall(aWordNm);
   
-  m_pRoutine->vAppend(aCell);
+  m_pCodeBlock->vAppend(aCell);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,7 +351,7 @@ void Word::vEncodePush(TypedCell* aTypedCell)
     NEVER_REACH;
   }
 
-  m_pRoutine->vAppend(aTypedCell);
+  m_pCodeBlock->vAppend(aTypedCell);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -461,7 +461,7 @@ CodeCell* Word::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  CodeCell* aFirst = reinterpret_cast<CodeCell*>(m_pRoutine->ayWspArea());
+  CodeCell* aFirst = reinterpret_cast<CodeCell*>(m_pCodeBlock->ayWspArea());
   
   return pPoolCheck<CodeCell*>(aFirst);
 }
@@ -538,7 +538,7 @@ CodeCell* Word::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  CodeCell* aLast = reinterpret_cast<CodeCell*>(m_pRoutine->ayWspLatter());
+  CodeCell* aLast = reinterpret_cast<CodeCell*>(m_pCodeBlock->ayWspLatter());
   
   return pPoolCheck<CodeCell*>(aLast);
 }
@@ -597,7 +597,7 @@ void Word::vObjectDump(Stz* aTab)
          m_pDic ? m_pDic->szDicNm() : C_NO_NAME,
          aWK[m_eWord]->azChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
-         m_pRoutine->nWspUsed(),
+         m_pCodeBlock->nWspUsed(),
          m_fpIntrinsic,
          aFirstCell()
          );
@@ -646,17 +646,17 @@ void Word::vResetRoutine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pRoutine->vReset();
+  m_pCodeBlock->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get routine                                                                */
 /*----------------------------------------------------------------------------*/
-CodeBlock* Word::pRoutine(void)
+CodeBlock* Word::pCodeBlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  return m_pRoutine;
+  return m_pCodeBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -666,7 +666,7 @@ i8 Word::nRoutineUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  i8 nUsed = m_pRoutine->nWspUsed();
+  i8 nUsed = m_pCodeBlock->nWspUsed();
   
   return nUsed;
 }
@@ -745,7 +745,7 @@ char* Word::aWspArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aBody = (char*)m_pRoutine->ayWspArea();
+  char* aBody = (char*)m_pCodeBlock->ayWspArea();
   
   return pPoolCheck<char*>((void*)aBody);
 }

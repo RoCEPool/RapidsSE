@@ -48,11 +48,11 @@ CodeBlock* CodeBlock::pToRoutine(CodeCell* aInxPtr)
 {
   _static_
     
-  CodeBlock* aRoutine = _pMaskDownToObject<CodeBlock*>(aInxPtr,C_MASK_SMALL_OBJECT);
+  CodeBlock* aCodeBlock = _pMaskDownToObject<CodeBlock*>(aInxPtr,C_MASK_SMALL_OBJECT);
 
-  CodeBlock* pRoutine = _pCodeBlock(aRoutine);
+  CodeBlock* pCodeBlock = _pCodeBlock(aCodeBlock);
     
-  return pRoutine;
+  return pCodeBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,9 +62,9 @@ Word* CodeBlock::pToWord(CodeCell* aInxPtr)
 {
   _static_
     
-  CodeBlock* pRoutine = pToRoutine(aInxPtr);
+  CodeBlock* pCodeBlock = pToRoutine(aInxPtr);
 
-  Word* pWord = pRoutine->m_p_ExoWord;
+  Word* pWord = pCodeBlock->m_p_ExoWord;
   
   return pWord;
 }
