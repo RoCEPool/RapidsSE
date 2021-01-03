@@ -2,6 +2,8 @@
 /* Exemplar.cpp -- Best Practive Example Class                                */
 /*============================================================================*/
 
+#include "BASE.h"
+#include "STORE.h"
 #include "OBLIQUE.h"
 
 #include "Exemplar.hpp"

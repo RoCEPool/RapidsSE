@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 #include "PROMPT.h"
+#include "OBLIQUE.h"
 
 #include <signal.h>
 
