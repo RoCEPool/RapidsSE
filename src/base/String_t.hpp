@@ -252,10 +252,10 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
   
   va_start(xVarArgs,szArg);
   
-  StrLib::vConcat(this->azChar(),szArg->azChar());
+  StrLib::vConcat(this->m_caCharArea,szArg->azChar());
   
   while (Stz* szVal = va_arg(xVarArgs,Stz*)) {
-    StrLib::vConcat(this->azChar(),szVal->azChar());
+    StrLib::vConcat(this->m_caCharArea,szVal->azChar());
   }
   
   va_end(xVarArgs);
