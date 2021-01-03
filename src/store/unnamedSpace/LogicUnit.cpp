@@ -16,6 +16,8 @@
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
 
+#include "SN_Dte.hpp"
+
 extern EoArg EoArgs[];
 Atomic gixQueryNo;
 
