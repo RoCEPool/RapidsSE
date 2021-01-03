@@ -6,7 +6,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <iostream>
-#include <netdb.h>
+//#include <netdb.h>
 //#include <stdarg.h>
 //#include <stdlib.h>
 //#include <stdio.h>
