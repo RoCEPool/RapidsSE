@@ -44,7 +44,7 @@ CodeBlock::~CodeBlock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the outer routine of given instruction ptr                             */
 /*----------------------------------------------------------------------------*/
-CodeBlock* CodeBlock::pToRoutine(CodeCell* aInxPtr)
+CodeBlock* CodeBlock::pToCodeBlock(CodeCell* aInxPtr)
 {
   _static_
     
@@ -62,7 +62,7 @@ Word* CodeBlock::pToWord(CodeCell* aInxPtr)
 {
   _static_
     
-  CodeBlock* pCodeBlock = pToRoutine(aInxPtr);
+  CodeBlock* pCodeBlock = pToCodeBlock(aInxPtr);
 
   Word* pWord = pCodeBlock->m_p_ExoWord;
   

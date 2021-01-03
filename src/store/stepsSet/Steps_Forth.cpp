@@ -330,11 +330,11 @@ void Step::vSemicolon(void)
   else
     pCurrentWord->vEncodeCall("exit_rt"_Stz);
   
-  i8 iUsed = pCurrentWord->nRoutineUsed();
+  i8 iUsed = pCurrentWord->nCodeBlockUsed();
   if (iUsed > iMaxUsed)
     iMaxUsed = iUsed;
 //  vTrace(" CodeBlock %lldB (%lld): %s\n"_Stz,
-//         pCurrentWord->nRoutineUsed(),
+//         pCurrentWord->nCodeBlockUsed(),
 //         iMaxUsed,
 //         pCurrentWord->szWordNm());
   

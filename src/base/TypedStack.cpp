@@ -138,7 +138,7 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
       case CN_FIPVAL: {
         CodeCell* aFip  = aTypedCell->aFip();
         if (pDicStack) {
-          Word* pWord = pDicStack->pLocateRoutineWord(aFip);
+          Word* pWord = pDicStack->pLocateRoutine(aFip);
           
           vTrace("=%p word %s \n"_Stz,aFip,
                  pWord ? pWord->szWordNm() : C_NO_WORD);

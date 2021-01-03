@@ -642,7 +642,7 @@ Word* Word::pPrevWord(void)
 /*----------------------------------------------------------------------------*/
 /* reset routine                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vResetRoutine(void)
+void Word::vResetCodeBlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -662,7 +662,7 @@ CodeBlock* Word::pCodeBlock(void)
 /*----------------------------------------------------------------------------*/
 /* get routine size                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Word::nRoutineUsed(void)
+i8 Word::nCodeBlockUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 

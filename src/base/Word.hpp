@@ -113,9 +113,9 @@ namespace BASE
     void  vParams(i8 iParams);
     i8    iParams(void);
     Word* pPrevWord(void);
-    void  vResetRoutine(void);
+    void  vResetCodeBlock(void);
     CodeBlock* pCodeBlock(void);
-    i8    nRoutineUsed(void);
+    i8    nCodeBlockUsed(void);
     eWK   eWord(void);
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);

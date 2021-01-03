@@ -426,7 +426,7 @@ void Step::vWordLocate(void)
   
   CodeCell* aHasCell = m_pDataStack->aPopFip(__func__);
   
-  Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
+  Word* pLocatedWord = m_oDicStack.pLocateRoutine(aHasCell);
   
   if (pLocatedWord) {
     s32 sName;
@@ -560,7 +560,7 @@ void Step::vWordResetRoutine(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  pWord->vResetRoutine();
+  pWord->vResetCodeBlock();
   
   EXIT();
 }

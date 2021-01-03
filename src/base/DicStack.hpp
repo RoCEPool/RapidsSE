@@ -33,7 +33,7 @@ namespace BASE
     void  vDiscard(void);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
-    Word* pLocateRoutineWord(CodeCell* aCell);
+    Word* pLocateRoutine(CodeCell* aCell);
     Word* pLocateStepWord(fpSTEPFN fpStepFn);
     Word* pRemoveWord(Stz* szWordNm);
     Dic*  pPick(i8 iDic);

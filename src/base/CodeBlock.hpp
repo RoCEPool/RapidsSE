@@ -26,7 +26,7 @@ namespace BASE
     CodeBlock(Word* p_Word);
    ~CodeBlock(void) noexcept(false);
 
-    static CodeBlock* pToRoutine(CodeCell* aInxPtr);
+    static CodeBlock* pToCodeBlock(CodeCell* aInxPtr);
     static Word*    pToWord(CodeCell* aInxPtr);
   
     byte* ayAllot(i8 iBytes);

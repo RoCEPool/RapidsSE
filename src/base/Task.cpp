@@ -460,7 +460,7 @@ void Task::vDump(void)
   AM::vTaskDump(this);
   
   
-  Word* pWord = m_oDicStack.pLocateRoutineWord(m_aInxPtr);
+  Word* pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
 
   vTrace("\n"_Stz);
   vTrace("Execution Context\n"_Stz);
@@ -881,15 +881,15 @@ void Task::vTracePoint(Stz* aMark)
 //    PsxThd::vSleepUsec(iPause,CN_TASK);
 //  }
   
-  s256 sRoutine;
+  s256 sWordWithCodeCell;
   
   CodeCell* aHasCell = m_aInxPtr;
   
-  Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
+  Word* pLocatedWord = m_oDicStack.pLocateRoutine(aHasCell);
   if (pLocatedWord)
-    sRoutine = pLocatedWord->szWordNm();
+    sWordWithCodeCell = pLocatedWord->szWordNm();
   else
-    sRoutine = "<unknown>"_Stz;
+    sWordWithCodeCell = "<unknown>"_Stz;
   
   i8 iAuxValues    = m_pAuxStack->nValues();
   i8 iDataValues   = m_pDataStack->nValues();
@@ -902,7 +902,7 @@ void Task::vTracePoint(Stz* aMark)
          szJobName(),
          m_oAcksRmg.iPrintOnlyValue(),
          
-         sRoutine.azChar(),
+         sWordWithCodeCell.azChar(),
          aMark,
          iAuxValues);
          
@@ -925,19 +925,19 @@ void Task::vTraceStep(Stz* aStepNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  s256 sRoutine;
+  s256 sWordWithCodeCell;
   
   CodeCell* aHasCell = m_aInxPtr;
-  Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
+  Word* pLocatedWord = m_oDicStack.pLocateRoutine(aHasCell);
   if (pLocatedWord)
-    sRoutine = pLocatedWord->szWordNm();
+    sWordWithCodeCell = pLocatedWord->szWordNm();
   else
-    sRoutine = "<unknown>"_Stz;
+    sWordWithCodeCell = "<unknown>"_Stz;
   
   i8 iDataValues   = m_pDataStack->nValues();
   i8 iReturnValues = m_pReturnStack->nValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
-         sRoutine.azChar(),
+         sWordWithCodeCell.azChar(),
          aStepNm,
          iReturnValues,
          iDataValues);
