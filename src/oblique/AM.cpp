@@ -9,6 +9,7 @@
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
+#include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 #include "SessionArray.hpp"

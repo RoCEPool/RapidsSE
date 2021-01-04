@@ -8,6 +8,7 @@
 #include "Api.hpp"
 
 #include "AttachMap.hpp"
+#include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 #include "Procedure.hpp"

@@ -7,6 +7,7 @@
 
 #include "MY.hpp"
 
+#include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 

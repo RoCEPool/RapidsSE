@@ -142,7 +142,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 
-#include "Response.hpp"
+//#include "Response.hpp"
 
 //#include "Result.hpp"
 //#include "JobFilePath.hpp"

@@ -11,6 +11,7 @@
 #include "Dynamo.hpp"
 
 #include "Exemplar.hpp"
+#include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 #include "Job__Find.hpp"

@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Response.hpp"
 #include "Result.hpp"
 
 #include "SP_AggTimer.hpp"

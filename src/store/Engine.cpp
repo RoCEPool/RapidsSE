@@ -12,6 +12,7 @@
 #include "Engine.hpp"
 #include "EnvCheck.hpp"
 #include "Error.hpp"
+#include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
