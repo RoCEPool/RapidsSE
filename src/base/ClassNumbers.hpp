@@ -38,6 +38,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CATALOG,
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
+  /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
   /* */ CN_CRVBUFFER,
@@ -361,6 +362,7 @@ static Stz* aCN[]
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
+  /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMPILER"_Stz,             // CN_COMPILER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER

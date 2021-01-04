@@ -523,6 +523,10 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
+
+
+#include "ClassPlaceHolder.hpp"
+
 //------------------------------------------------------------------------------
 
 namespace BASE

@@ -129,7 +129,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
-   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
+  { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
   { sizeof(ByteRate),           HT_T_TINY    ,0 }, // CN_BYTERATE
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_BYTES_T
 
@@ -137,6 +137,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Catalog),            HT_INVALID   ,0 }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_MEDIUM  ,0 }, // CN_CHARSER
+  { sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 }, // CN_CLASSPLACEHOLDER
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
   { sizeof(Compiler),           HT_T_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
