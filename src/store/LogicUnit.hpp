@@ -9,6 +9,7 @@
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
 
+#include "DevROW.hpp"
 #include "LogicTimer.hpp"
 #include "LogicCompiler.hpp"
 #include "Project.hpp"

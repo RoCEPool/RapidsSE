@@ -164,7 +164,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Device.hpp"
 #include "DevIXT.hpp"
-#include "DevROW.hpp"
+//#include "DevROW.hpp"
 
 //#include "LogicTimer.hpp"
 
