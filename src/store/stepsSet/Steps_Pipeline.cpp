@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Pipeline.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"

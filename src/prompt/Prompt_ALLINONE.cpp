@@ -16,6 +16,7 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 
+#include "Pipeline.hpp"
 #include "Procedure.hpp"
 #include "RapidsSE.hpp"
 #include "SessionArray.hpp"

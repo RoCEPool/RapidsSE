@@ -20,6 +20,8 @@
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
+#include "Pipeline.hpp"
+
 #include "SessionArray.hpp"
 
 #include "ShortCut.hpp"

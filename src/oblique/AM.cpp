@@ -21,6 +21,8 @@
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
+#include "Pipeline.hpp"
+
 #include "eBO.h"
 #include "eCC.h"
 #include "eCK.h"

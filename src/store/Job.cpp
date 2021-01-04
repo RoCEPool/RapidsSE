@@ -11,6 +11,7 @@
 #include "Job.hpp"
 #include "File.hpp"
 #include "JobLog.hpp"
+#include "Pipeline.hpp"
 
 #include "TagConstants.h"
 
