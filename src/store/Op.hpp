@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eXK.h"
 #include "eZK.h"
 
 namespace STORE

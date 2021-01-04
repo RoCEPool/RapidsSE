@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "AttachMap.hpp"
+#include "Plan.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */

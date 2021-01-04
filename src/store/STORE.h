@@ -129,10 +129,12 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "AccessPath.hpp"
 
-#include "Plan.hpp"
-#include "Planner.hpp"
+//#include "Plan.hpp"
+//#include "Planner.hpp"
 
-#include "OpSpec.hpp"
+//------------------------------------------------------------------------------
+
+//#include "OpSpec.hpp"
 //#include "StageSpec.hpp"
 //#include "PipelineSpec.hpp"
 

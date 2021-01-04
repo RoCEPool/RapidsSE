@@ -8,6 +8,7 @@
 #include "ePX.h"
 
 #include "Dynamo.hpp"
+#include "OpSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

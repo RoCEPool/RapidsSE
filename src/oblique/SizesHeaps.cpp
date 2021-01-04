@@ -35,7 +35,7 @@
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
-
+#include "eXK.h"
 
 #include "SizesHeaps.hpp"
 
@@ -54,9 +54,12 @@
 #include "LogicUnit.hpp"
 
 #include "Op.hpp"
+#include "OpSpec.hpp"
 
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
+#include "Plan.hpp"
+#include "Planner.hpp"
 
 #include "SessionArray.hpp"
 
