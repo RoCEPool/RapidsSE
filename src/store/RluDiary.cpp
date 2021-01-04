@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "RluDiary.hpp"
 
 #include "ePP.h"
 

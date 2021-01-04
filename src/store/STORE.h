@@ -160,7 +160,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "RluCommon.h"
 
-#include "RluDiary.hpp"
+//#include "RluDiary.hpp"
 
 //#include "Device.hpp"
 //#include "DevIXT.hpp"

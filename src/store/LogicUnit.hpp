@@ -9,6 +9,7 @@
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
 
+#include "RluDiary.hpp"
 #include "DevIXT.hpp"
 #include "DevROW.hpp"
 #include "LogicTimer.hpp"
