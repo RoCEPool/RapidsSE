@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Range.hpp"
+
 #include "TagConstants.h"
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

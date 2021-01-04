@@ -169,9 +169,9 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "LogicTimer.hpp"
 
 #include "LogicCompiler.hpp"
-#include "Project.hpp"
-#include "Filter.hpp"
-#include "Range.hpp"
+//#include "Project.hpp"
+//#include "Filter.hpp"
+//#include "Range.hpp"
 
 //#include "LogicUnit.hpp"
 

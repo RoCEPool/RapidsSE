@@ -9,6 +9,10 @@
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
 
+#include "Project.hpp"
+#include "Filter.hpp"
+#include "Range.hpp"
+
 #include "InflateSet.h"
 
 #include "eLH.h"
