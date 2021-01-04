@@ -10,6 +10,7 @@
 #include "StepTiming.hpp"
 
 #include "Api.hpp"
+#include "Result.hpp"
 #include "Job.hpp"
 
 #include "Procedure.hpp"

@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "SessionArray.hpp"
+#include "Result.hpp"
 #include "Job.hpp"
 
 #include "PsxThd.hpp"

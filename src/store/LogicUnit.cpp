@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Result.hpp"
 #include "Job.hpp"
 
 #include "EnumGroups.h"

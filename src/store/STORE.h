@@ -144,8 +144,8 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Response.hpp"
 
-#include "Result.hpp"
-#include "JobFilePath.hpp"
+//#include "Result.hpp"
+//#include "JobFilePath.hpp"
 //#include "Job.hpp"
 //#include "JobLog.hpp"
 //#include "Job__Find.hpp"

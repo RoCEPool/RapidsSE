@@ -10,6 +10,7 @@
 #include "SP_Job.hpp"
 #include "SP_ReqTuple.hpp"
 
+#include "Result.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
