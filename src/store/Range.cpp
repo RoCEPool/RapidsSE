@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "Range.hpp"
+#include "eEO.h"
 
 #include "TagConstants.h"
 /*----------------------------------------------------------------------------*/

@@ -166,7 +166,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "DevIXT.hpp"
 #include "DevROW.hpp"
 
-#include "LogicTimer.hpp"
+//#include "LogicTimer.hpp"
 
 //#include "LogicCompiler.hpp"
 //#include "Project.hpp"
