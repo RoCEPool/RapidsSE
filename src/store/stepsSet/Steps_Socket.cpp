@@ -18,6 +18,7 @@
 #include "Socket.hpp"
 #include "XmitOperand.hpp"
 #include "LogicUnit.hpp"
+#include "OpSpec.hpp"
 #include "StageSpec.hpp"
 
 #include "SP_Header.hpp"

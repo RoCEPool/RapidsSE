@@ -43,6 +43,7 @@
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
+#include "PipelineSpec.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"

@@ -8,7 +8,10 @@
 
 #include "Api.hpp"
 #include "Definition.hpp"
+#include "OpSpec.hpp"
+#include "StageSpec.hpp"
 #include "StreamDef.hpp"
+#include "PipelineSpec.hpp"
 #include "Stream.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

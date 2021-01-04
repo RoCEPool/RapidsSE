@@ -65,9 +65,7 @@ namespace STORE      {
 namespace STORE         { class Xmits;           class Op;
                               class Pipeline;        class Stage;
                               class StageVec;        class Stream;            }
-namespace STORE     { class OpSpec;          class PipelineSpec;
-                              class StageSpec;                                }
-namespace STORE             { class Planner;                                  }
+
 namespace STORE   { class Crv;                                      }
 namespace STORE              { class Row;                                      }
 namespace STORE             { class Step;            class StepTiming;        }

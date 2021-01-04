@@ -5,6 +5,8 @@
 
 #include "eXK.h"
 
+namespace STORE { class PipelineSpec; class StageSpec; }
+
 namespace STORE
 {
   class OpSpec : public Object

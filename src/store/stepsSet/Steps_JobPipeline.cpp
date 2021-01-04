@@ -14,6 +14,7 @@
 #include "Op.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "PipelineSpec.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
@@ -147,7 +148,8 @@ void Step::vJob_PipelineDeleteDynamo(void)
 {
   ENTRY();
   
-  PipelineSpec* pPipelineSpec = ( m_pJob->pLogicUnit_job() )->m_xpDynamo->pPipelineSpec();
+  PipelineSpec* pPipelineSpec =
+    ( m_pJob->pLogicUnit_job() )->m_xpDynamo->pPipelineSpec();
   delete pPipelineSpec;
   
   delete *( m_pJob->pLogicUnit_job() )->m_xpDynamo;

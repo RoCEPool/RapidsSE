@@ -11,6 +11,7 @@
 
 #include "EnumGroups.h"
 
+#include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

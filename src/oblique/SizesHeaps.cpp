@@ -40,7 +40,6 @@
 #include "SizesHeaps.hpp"
 
 #include "AttachMap.hpp"
-#include "Dynamo.hpp"
 
 #include "Exemplar.hpp"
 #include "Response.hpp"
@@ -56,8 +55,10 @@
 #include "Op.hpp"
 #include "OpSpec.hpp"
 
-#include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
+#include "Pipeline.hpp"
+#include "Dynamo.hpp"
+
 #include "Plan.hpp"
 #include "Planner.hpp"
 

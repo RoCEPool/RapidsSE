@@ -11,6 +11,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
 
 extern AttachMap gxAttachMap;

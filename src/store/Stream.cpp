@@ -7,8 +7,10 @@
 
 #include "ePX.h"
 
+#include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Stream.hpp"
+#include "StageSpec.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"

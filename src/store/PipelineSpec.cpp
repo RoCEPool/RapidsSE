@@ -5,8 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
-#include "PipelineSpec.hpp"
+#include "OpSpec.hpp"
 #include "StageSpec.hpp"
+#include "PipelineSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
