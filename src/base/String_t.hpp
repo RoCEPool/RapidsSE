@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "StrLib.hpp"
+#include <cstdarg>
 
 namespace BASE
 {
