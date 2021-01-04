@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eAM.h"
+
 namespace STORE
 {
   class Range : public Definition

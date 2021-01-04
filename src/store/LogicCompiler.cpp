@@ -6,6 +6,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "LogicCompiler.hpp"
+
 #ifdef __TINYC
 #include "libtcc.h"
 #endif
