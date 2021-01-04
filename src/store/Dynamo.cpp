@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "Dynamo.hpp"
+#include "Result.hpp"
 #include "Job.hpp"
 
 #include "TagConstants.h"

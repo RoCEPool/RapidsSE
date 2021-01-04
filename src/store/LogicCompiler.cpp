@@ -6,7 +6,6 @@
 #include "BASE.h"
 #include "STORE.h"
 
-
 #ifdef __TINYC
 #include "libtcc.h"
 #endif
@@ -28,9 +27,14 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_QueryMisc.macro",
     "../asm/AM_RowBuffer.macro"
 };
+
+#include "Result.hpp"
+
 #include "DEV_interface.h"
 #include "LIB_interface.h"
 #include "RLU_interface.h"
+
+
 
 /*----------------------------------------------------------------------------*/
 /* symbols for dynamically generated code                                     */

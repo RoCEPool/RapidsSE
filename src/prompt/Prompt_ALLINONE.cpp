@@ -12,6 +12,7 @@
 #include "Stream.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
+#include "JobFilePath.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 

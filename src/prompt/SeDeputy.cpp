@@ -10,6 +10,7 @@
 #include "SePrompt.hpp"
 
 #include "Api.hpp"
+#include "Result.hpp"
 #include "Job.hpp"
 
 #include "TagConstants.h"

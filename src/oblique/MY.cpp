@@ -7,6 +7,7 @@
 
 #include "MY.hpp"
 
+#include "Result.hpp"
 #include "Job.hpp"
 
 extern Args          gxArgs;

@@ -19,7 +19,7 @@ macro AM_INDEX_RANGE_LOWER_GE
 // macro AM_INDEX_RANGE_LOWER_GE                                              //
 //----------------------------------------------------------------------------//
   Label INDEX_RANGE_LOWER_GE
-  EO_INTEGER <lboundValue>
+  <lboundType> <lboundLiteral>
   EO_DUMP
   EO_ENTWRK_SETINTELM
   EO_IXT_SRC_LBOUND
@@ -35,7 +35,7 @@ macro AM_INDEX_RANGE_LOWER_GE
 
   Label DATAPULSE_INDEXRANGE_UPD
   EO_ENTWRK_RESET
-  EO_INTEGER <uboundValue>
+  <uboundType> <uboundLiteral>
   EO_ENTWRK_SETINTELM
   EO_IXT_SRC_UBOUND_LT
   EO_JMP_TRUE DATAPULSE_INDEXRANGE_TILL_UBD

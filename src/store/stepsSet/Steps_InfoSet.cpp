@@ -12,6 +12,7 @@
 #include "MetricsHelper.hpp"
 #include "LockMetrics.hpp"
 
+#include "Result.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/

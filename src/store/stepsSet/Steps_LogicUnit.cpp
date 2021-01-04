@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Result.hpp"
 #include "Job.hpp"
 
 extern EnvFlags gxEnvFlags;;
@@ -353,7 +354,7 @@ void Step::vLogicUnitGenProjection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].genRange -- generate projection asm text into file        */
+/* LogicUnit[].genRange -- generabte projection asm text into file             */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitGenRange(void)
 {

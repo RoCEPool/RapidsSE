@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Result.hpp"
 #include "Job.hpp"
 #include "TagConstants.h"
 

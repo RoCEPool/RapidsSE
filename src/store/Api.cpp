@@ -7,6 +7,7 @@
 
 #include "ApiMacros.h"
 #include "Api.hpp"
+#include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Procedure.hpp"

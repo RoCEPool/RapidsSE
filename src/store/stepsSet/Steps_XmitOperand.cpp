@@ -11,6 +11,7 @@
 
 #include "XmitOperand.hpp"
 
+#include "Result.hpp"
 #include "Job.hpp"
 
 
