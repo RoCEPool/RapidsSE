@@ -89,6 +89,15 @@ EndDefine
                       (Stz*)"NEVER_REACH point reached"); \
 EndDefine
 
+/*----------------------------------------------------------------------------*/
+/* NEVER_REACH macro (point in code which should never be reached             */
+/*----------------------------------------------------------------------------*/
+#define NOT_IMPLEMENTED_YET \
+  BASE::vThrow(FK_REACHED,VL_FATAL,\
+                      __func__,__FILE__,__LINE__, \
+                      (Stz*)"NOT_IMPLEMENTED_YET point reached"); \
+EndDefine
+
 
 /*============================================================================*/
 /* end                                                                        */
