@@ -22,9 +22,11 @@ namespace STORE
     Range(void);
    ~Range(void) noexcept(false);
 
-    eEC eRangeValues(Index* pIndex, Stz* sProjectColumns);
+    eEC eRangeValues(Index* pIndex, Stz* sRangeColumns);
 
   private:
+    void vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue);
+    void vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue);
 
     Footer* aFooter(void);
   };

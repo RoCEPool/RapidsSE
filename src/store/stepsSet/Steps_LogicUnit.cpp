@@ -355,7 +355,7 @@ void Step::vLogicUnitGenProjection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].genRange -- generate projection asm text into file        */
+/* LogicUnit[].genRange -- generabte projection asm text into file             */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitGenRange(void)
 {

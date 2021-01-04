@@ -96,6 +96,7 @@ namespace STORE
     REG<Operand>     m_xpOperandC;  // operand C
     REG<Operand>     m_xpOperandOoO; // operand OoO
 
+    REG<Filter>      m_xpFilter;    // filter
     REG<Project>     m_xpProject;   // project
     REG<Range>       m_xpRange;     // range
 

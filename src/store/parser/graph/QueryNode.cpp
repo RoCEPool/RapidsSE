@@ -88,7 +88,21 @@ QueryNode::~QueryNode(void)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* Give this node a new name                                                  */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vRename(Stz *szName)
+{
+  // This is useful when building compound objects and this object will be
+  // a property of some parent. The name of this object is how the property
+  // is referred to from the parent. So this is useful where we need the
+  // properties to have specific names.
 
+  ASSERT(szName);
+  ASSERT(szName->nLength() > 0);
+
+  m_sName.vCopy(szName);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns the number of children of this node                                */

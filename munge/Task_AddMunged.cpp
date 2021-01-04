@@ -8035,6 +8035,7 @@ void Task::vAddMunged(Task* pTask)
     "  // check for error\n"
     "  eError EC_NONE == not if\n"
     "    eError op.pipelineJob@ ERROR_JOB\n"
+    "    Pipein[].delete\n"
     "    Operand[].newErrorMarker\n"
     "    Operand[].pipeOut\n"
     "    true\n"

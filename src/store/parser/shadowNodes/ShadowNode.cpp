@@ -10,6 +10,7 @@
 #include "Statement.hpp"
 #include "TableRef.hpp"
 #include "Expr.hpp"
+#include "ProjectedExpr.hpp"
 
 using namespace Parser;
 
@@ -60,13 +61,16 @@ void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)
   // manual polymorphism here
 
   // Statements
-  if      (Statement::bIsOfType(pNode)) { Statement::vDescribe(pNode, sBuf); }
+  if      (Statement::bIsOfType(pNode))       { Statement::vDescribe(pNode, sBuf); }
 
   // Expressions
-  else if (Expr::bIsOfType(pNode))      { Expr::vDescribe(pNode, sBuf);      }
+  else if (Expr::bIsOfType(pNode))            { Expr::vDescribe(pNode, sBuf);      }
 
   // TableRefs
-  else if (TableRef::bIsOfType(pNode))  { TableRef::vDescribe(pNode, sBuf);  }
+  else if (TableRef::bIsOfType(pNode))        { TableRef::vDescribe(pNode, sBuf);  }
+
+  // ProjectedExpr
+  else if (ProjectedExpr::bIsOfType(pNode))   { ProjectedExpr::vDescribe(pNode, sBuf);  }
 
   else {
     // Need to add in manual polymorphism here
