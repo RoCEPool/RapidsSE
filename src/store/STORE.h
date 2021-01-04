@@ -133,10 +133,10 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Planner.hpp"
 
 #include "OpSpec.hpp"
-#include "StageSpec.hpp"
-#include "PipelineSpec.hpp"
+//#include "StageSpec.hpp"
+//#include "PipelineSpec.hpp"
 
-#include "Xmits.hpp"
+//#include "Xmits.hpp"
 //.#include "Op.hpp"
 //#include "Stream.hpp"
 //#include "Stage.hpp"

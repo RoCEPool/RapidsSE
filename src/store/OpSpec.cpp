@@ -5,6 +5,10 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "ePX.h"
+
+#include "PipelineSpec.hpp"
+#include "StageSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */

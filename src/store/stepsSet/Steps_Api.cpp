@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "ePX.h"
+
 #include "Api.hpp"
 #include "Op.hpp"
 #include "Response.hpp"

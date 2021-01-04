@@ -5,6 +5,38 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "eBO.h"
+#include "eCC.h"
+#include "eCK.h"
+#include "eCP.h"
+#include "eCX.h"
+#include "eDL.h"
+#include "eDS.h"
+#include "eED.h"
+#include "eFN.h"
+#include "eIK.h"
+#include "eJF.h"
+#include "eLG.h"
+#include "eMM.h"
+#include "eMT.h"
+#include "eNE.h"
+#include "eOC.h"
+#include "eOK.h"
+#include "eOP.h"
+#include "eOR.h"
+#include "ePF.h"
+#include "ePP.h"
+#include "ePO.h"
+#include "ePY.h"
+#include "ePX.h"
+#include "eRG.h"
+#include "eRU.h"
+#include "eST.h"
+#include "eTP.h"
+#include "eTT.h"
+#include "eUK.h"
+
+
 #include "SizesHeaps.hpp"
 
 #include "AttachMap.hpp"
@@ -24,6 +56,7 @@
 #include "Op.hpp"
 
 #include "Pipeline.hpp"
+#include "PipelineSpec.hpp"
 
 #include "SessionArray.hpp"
 
@@ -32,6 +65,7 @@
 #include "SePrompt.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
+#include "StageSpec.hpp"
 #include "StepTiming.hpp"
 #include "Stream.hpp"
 
@@ -50,7 +84,7 @@
 #include "SN_Vch.hpp"
 
 #include "XmitOperand.hpp"
-
+#include "Xmits.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"

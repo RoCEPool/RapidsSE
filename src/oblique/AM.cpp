@@ -5,26 +5,6 @@
 #include "BASE.h"
 #include "STORE.h"
 
-#include "Api.hpp"
-#include "AttachMap.hpp"
-#include "Constants.hpp"
-#include "Engine.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
-#include "Job.hpp"
-#include "SessionArray.hpp"
-#include "XmitOperand.hpp"
-
-#include "TagConstants.h"
-
-
-#include "LogEntry.hpp"
-#include "Log.hpp"
-#include "LogicUnit.hpp"
-
-#include "Pipeline.hpp"
-
-#include "Op.hpp"
 
 #include "eBO.h"
 #include "eCC.h"
@@ -47,13 +27,38 @@
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
+#include "ePO.h"
 #include "ePY.h"
+#include "ePX.h"
 #include "eRG.h"
 #include "eRU.h"
 #include "eST.h"
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
+
+
+
+#include "Api.hpp"
+#include "AttachMap.hpp"
+#include "Constants.hpp"
+#include "Engine.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "SessionArray.hpp"
+#include "XmitOperand.hpp"
+
+#include "TagConstants.h"
+
+
+#include "LogEntry.hpp"
+#include "Log.hpp"
+#include "LogicUnit.hpp"
+
+#include "Pipeline.hpp"
+
+#include "Op.hpp"
 
 #include "EnumGroups.h"
 

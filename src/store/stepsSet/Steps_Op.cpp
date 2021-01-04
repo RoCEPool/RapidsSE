@@ -9,10 +9,13 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "ePX.h"
+
 #include "Op.hpp"
 #include "Pipeline.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
+#include "StageSpec.hpp"
 
 #include "Job.hpp"
 

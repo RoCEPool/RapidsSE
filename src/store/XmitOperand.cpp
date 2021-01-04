@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "ePX.h"
+
 #include "Op.hpp"
 #include "XmitOperand.hpp"
 

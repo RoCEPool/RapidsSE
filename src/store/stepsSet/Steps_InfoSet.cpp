@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "ePX.h"
+
 #include "MetricsHelper.hpp"
 #include "LockMetrics.hpp"
 

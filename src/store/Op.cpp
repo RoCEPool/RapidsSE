@@ -5,10 +5,13 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "ePX.h"
+
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "StageSpec.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"

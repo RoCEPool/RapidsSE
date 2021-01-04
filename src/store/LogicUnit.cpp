@@ -5,16 +5,17 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "eED.h"
+#include "eEO.h"
+#include "ePX.h"
+
+#include "EnumGroups.h"
+
 #include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
-
-#include "EnumGroups.h"
-
-#include "eED.h"
-#include "eEO.h"
 
 #include "LIB_interface.h"
 #include "DEV_interface.h"

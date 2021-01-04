@@ -9,11 +9,14 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "ePX.h"
+
 #include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
+#include "StageSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

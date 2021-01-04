@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "ePX.h"
+
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
@@ -16,6 +18,7 @@
 #include "Socket.hpp"
 #include "XmitOperand.hpp"
 #include "LogicUnit.hpp"
+#include "StageSpec.hpp"
 
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"

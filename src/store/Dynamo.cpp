@@ -5,10 +5,14 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "ePX.h"
+
 #include "Dynamo.hpp"
+#include "PipelineSpec.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "StageSpec.hpp"
 
 #include "TagConstants.h"
 
