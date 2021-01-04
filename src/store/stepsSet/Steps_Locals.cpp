@@ -207,6 +207,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Filter[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Filter[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Index[]"_Stz)) {
     pCurrentWord->vEncodeCall("Index[].set"_Stz);
     EXIT();
