@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Device.hpp"
+
 namespace STORE
 {
   class DevROW : public Device

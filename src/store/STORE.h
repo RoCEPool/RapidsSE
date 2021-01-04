@@ -162,7 +162,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "RluDiary.hpp"
 
-#include "Device.hpp"
+//#include "Device.hpp"
 //#include "DevIXT.hpp"
 //#include "DevROW.hpp"
 
