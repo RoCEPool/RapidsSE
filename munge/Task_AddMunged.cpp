@@ -1844,7 +1844,7 @@ void Task::vAddMunged(Task* pTask)
     "\n"
     "  sPath\n"
     "  \"\n"
-    "  procedure filterScan\n"
+    "  procedure filterRows\n"
     "    parameters $table $etc\n"
     "    begin\n"
     "\n"

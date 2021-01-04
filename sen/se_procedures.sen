@@ -1826,7 +1826,7 @@
 
   sPath
   "
-  procedure filterScan
+  procedure filterRows
     parameters $table $etc
     begin
 

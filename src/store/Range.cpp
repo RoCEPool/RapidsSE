@@ -299,10 +299,9 @@ void Range::vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue) {
 
   if (eColumnType == CT_VARCHAR  ||
       eColumnType == CT_CHAR     ||
-      eColumnType == CT_INTEGER  ||
       eColumnType == CT_INTERVAL ||
       eColumnType == CT_DATE     ||
-      eColumnType != CT_TIMESTAMP)
+      eColumnType == CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_LBOUND_LITERAL, (Stz *) sValue);
   else
     m_oTagSet.vInsert(C_TAG_LBOUND_LITERAL, iValue);
@@ -336,10 +335,9 @@ void Range::vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue) {
 
   if (eColumnType == CT_VARCHAR  ||
       eColumnType == CT_CHAR     ||
-      eColumnType == CT_INTEGER  ||
       eColumnType == CT_INTERVAL ||
       eColumnType == CT_DATE     ||
-      eColumnType != CT_TIMESTAMP)
+      eColumnType == CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_UBOUND_LITERAL, (Stz *) sValue);
   else
     m_oTagSet.vInsert(C_TAG_UBOUND_LITERAL, iValue);
