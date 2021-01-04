@@ -139,7 +139,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Xmits.hpp"
 #include "Op.hpp"
 #include "Stream.hpp"
-#include "Stage.hpp"
+//#include "Stage.hpp"
 //#include "Pipeline.hpp"
 
 //#include "Response.hpp"

@@ -27,6 +27,7 @@
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
+#include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
