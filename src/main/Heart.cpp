@@ -153,9 +153,9 @@ void vHeartInit(void) {
 }
 
 
-/*----------------------------------------------------------------------------*/
-/* heart read loop                                                            */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+/* heart read loop: to simulate the reading, but doesn't do anything with the data */
+/*---------------------------------------------------------------------------------*/
 [[noreturn]] void *vHeartReadLoop(void *pFuncObj) {
   printf("SE Heart Read from received ring-buffer thread entry\n");
 
