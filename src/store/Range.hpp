@@ -25,6 +25,8 @@ namespace STORE
     eEC eRangeValues(Index* pIndex, Stz* sProjectColumns);
 
   private:
+    void vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue);
+    void vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue);
 
     Footer* aFooter(void);
   };

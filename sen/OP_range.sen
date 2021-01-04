@@ -47,6 +47,7 @@
   // check for error
   eError EC_NONE == not if
     eError op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
     true

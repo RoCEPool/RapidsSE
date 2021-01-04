@@ -318,22 +318,32 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
     Stz* sColumnNm = pTkn->szChars();
 
     // get in column from m_iStreamInCol ~ to out column
-    //i8 i_Local = -1;
     pColumn = nullptr;
     i8 i_StreamInCol;
     for (i_StreamInCol = 0; m_pStreamInCol[i_StreamInCol] != nullptr; i_StreamInCol++) {
       pColumn = m_pStreamInCol[i_StreamInCol];
-      //i_Local++;
       if (pColumn->szColNm()->bSame(sColumnNm)) {
         break;
       }
     }
     RASSERT(pColumn);
 
-    if (pColumn->eColumnType() == CT_VARCHAR || pColumn->eColumnType() == CT_CHAR)
-      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALS %lld\n"_Stz,i_StreamInCol);
+    // check how many bits are on till this i_StreamInCol bit
+    i8 iLocal = 0;
+    i8 iBit = -1;
+    for (i8 i = 0;  i < pColumn->iColumnNo(); i++) {
+      if (BitLib::bEachBit(m_uProjectColumns, iBit))
+        if (iBit < pColumn->iColumnNo())
+          iLocal++;
+        else
+          break;
+    }
+
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR)
+      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALS %lld\n"_Stz,iLocal);
     else
-      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,i_StreamInCol);
+      StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,iLocal);
     pTkn = pTknVec->pNextToken();
   }
 
@@ -355,11 +365,11 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
   switch (pColumn->eColumnType()) {
     case CT_INTEGER:
     case CT_DECIMAL:
+    case CT_DATE:
       //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLI, i_Col);
       StrLib::vSprintCat(azCrs,"  EO_ROW_DST_POPCOLI %lld\n"_Stz,i_DstColumn);
       break;
     case CT_CHAR:
-    case CT_DATE:
     case CT_VARCHAR:
       //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLS, i_Col);
       StrLib::vSprintCat(azCrs,"  EO_ROW_DST_POPCOLS %lld\n"_Stz,i_DstColumn);
