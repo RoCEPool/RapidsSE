@@ -7,6 +7,9 @@ enum eAM // ASM Macros
 {
   /*  0 */ AM_NONE=0,
 
+  /*    */ AM_CRW_FILTER_END,
+  /*    */ AM_CRW_FILTER_ROWS,
+
   /*    */ AM_CRW_PROJECT_COLUMNS,
   /*    */ AM_CRW_PROJECT_END,
   /*    */ AM_CRW_PROJECT_NONE,
@@ -49,6 +52,9 @@ enum eAM // ASM Macros
 static Stz* aAM[]
 {
     /*  0 */ "NONE"_Stz,
+
+    /*    */ "CRW_FILTER_END"_Stz,
+    /*    */ "CRW_FILTER_ROWS"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
     /*    */ "CRW_PROJECT_END"_Stz,

@@ -910,6 +910,7 @@ public:
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenCode(void);
+  void vLogicUnitGenFilter(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);
   void vLogicUnitDevFetch(void);

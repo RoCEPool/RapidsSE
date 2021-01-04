@@ -99,9 +99,9 @@
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
 
-  Project[].new
-  StreamDefOut[].new
-  //<etc> StreamDef[] StreamDefOut[] Project[].filterColumns to eError
+  Filter[].new
+  StreamDef[].duplicate to StreamDefOut[]
+  <etc> StreamDef[] Filter[].filterRows to eError
 
   // check for error
   eError EC_NONE == not if
@@ -112,7 +112,7 @@
     exit
   then
 
-  StreamDefOut[] Project[] LogicUnit[].genProjection
+  StreamDefOut[] Filter[] LogicUnit[].genFilter
 
   StreamDef[].asSrcStreamDef
   false pot[].useStreamDefOut

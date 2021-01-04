@@ -1,9 +1,7 @@
 /*============================================================================*/
-/* Filter.hpp -- Filter values                                                */
+/* Filter.hpp -- Filter columns                                             */
 /*============================================================================*/
 #pragma once
-
-#include "eAM.h"
 
 namespace STORE
 {
@@ -11,8 +9,8 @@ namespace STORE
   {
   public:
 
-    TagSet m_oTagSet;
-    eAM    m_eMacro;
+    u8      m_uFilterColumns;
+    s4K     m_sAsmText;
 
     // must be last
     Footer m_xFooter;
@@ -24,11 +22,10 @@ namespace STORE
     Filter(void);
    ~Filter(void) noexcept(false);
 
-    eEC eFilterValues(Index* pIndex, Stz* sFilterColumns);
+    eEC eFilterRows(StreamDef* pStreamDefIn, Stz* sFilter);
 
   private:
-    void vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue);
-    void vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue);
+    eEC eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec);
 
     Footer* aFooter(void);
   };

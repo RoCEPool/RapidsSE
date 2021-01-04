@@ -38,6 +38,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
+  vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
   vAddStep("LogicUnit[].genRange"_Stz,      &Step::vLogicUnitGenRange);
     
@@ -336,6 +337,23 @@ void Step::vLogicUnitGenCode(void)
       
   ( m_pJob->pLogicUnit_job() )->vGenCode(iTestNo);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genFilter -- generate filter asm text into file                */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenFilter(void)
+{
+  ENTRY();
+
+  Filter* pFilter;
+  pFilter = _pFilter(m_pDataStack->pPopPtr(__func__));
+
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  ( m_pJob->pLogicUnit_job() )->vGenerateFilter(pFilter, pStreamDefOut);
+
   EXIT();
 }
 

@@ -58,14 +58,13 @@ void Step::vFilterRows(void)
 
   Filter* pFilter = *( m_pJob->pLogicUnit_job() )->m_xpFilter;
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
   s4K sFilter;
   m_pDataStack->vPopStr(sFilter, __func__);
 
-  //eEC eError = pFilter->eFilterRows(pStreamDefIn, pStreamDefOut, sFilter);
-  //m_pDataStack->vPushInt(eError);
+  eEC eError = pFilter->eFilterRows(pStreamDefIn, sFilter);
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
