@@ -13,6 +13,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 
 #ifdef WITH_PYTHON_SUPPORT
   #include "/usr/include/python2.7/Python.h"

@@ -15,6 +15,7 @@
 #include "JobLog.hpp"
 #include "Socket.hpp"
 #include "XmitOperand.hpp"
+#include "LogicUnit.hpp"
 
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"

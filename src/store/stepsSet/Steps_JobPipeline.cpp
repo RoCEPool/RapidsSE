@@ -15,6 +15,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 
 #include "Dynamo.hpp"
 #include "TagConstants.h"

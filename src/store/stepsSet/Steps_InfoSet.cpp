@@ -16,6 +16,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

@@ -19,6 +19,7 @@
 
 #include "LogEntry.hpp"
 #include "Log.hpp"
+#include "LogicUnit.hpp"
 
 #include "Op.hpp"
 

@@ -173,7 +173,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Filter.hpp"
 #include "Range.hpp"
 
-#include "LogicUnit.hpp"
+//#include "LogicUnit.hpp"
 
 //------------------------------------------------------------------------------
 

@@ -5,7 +5,6 @@
 #include "BASE.h"
 #include "STORE.h"
 
-
 #include "LIB_interface.h"
 
 #include "SP_Bcd.hpp"
@@ -18,6 +17,7 @@
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
 
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* breakpoint                                                                 */

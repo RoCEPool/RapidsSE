@@ -15,6 +15,7 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "JobLog.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

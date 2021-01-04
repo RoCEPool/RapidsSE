@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "LogicUnit.hpp"
+
 #include "RLU_interface.h"
 #include "LIB_interface.h"
 

@@ -12,6 +12,7 @@
 #include "Job.hpp"
 #include "File.hpp"
 #include "JobLog.hpp"
+#include "LogicUnit.hpp"
 
 #include "Stream.hpp"
 #include "Stage.hpp"

@@ -8,6 +8,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 
 #include "TagConstants.h"
 
