@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,13 +30,13 @@ void Step::vToHshCrwRegCompleted(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pTask->m_pLogicUnit->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
   
-  i8 i_Ptn = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
   CrwBuffer* pCrwBuffer = pToHshCrw->pCompleted(i_Ptn);
 
-  m_pTask->m_pDataStack->vPushPtr(pCrwBuffer);
+  m_pDataStack->vPushPtr(pCrwBuffer);
 
   EXIT();
 }
@@ -43,9 +48,9 @@ void Step::vToHshCrwRegConvert(void)
 {
   ENTRY();
 
-  ToHshCrw* pToHshCrw = *m_pTask->m_pLogicUnit->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
     
-  RowBuffer* pRowBuffer = _pRowBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   pToHshCrw->vConvert(pRowBuffer);
   
@@ -59,9 +64,9 @@ void Step::vToHshCrwRegCreate(void)
 {
   ENTRY();
     
-  ToHshCrw* pToHshCrw = new ToHshCrw(* m_pTask->m_pLogicUnit->m_xpStreamDef);
+  ToHshCrw* pToHshCrw = new ToHshCrw(* ( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
       
-  m_pTask->m_pLogicUnit->m_xpToHshCrw = pToHshCrw;
+  ( m_pJob->pLogicUnit_job() )->m_xpToHshCrw = pToHshCrw;
 
   EXIT();
 }
@@ -73,13 +78,13 @@ void Step::vToHshCrwRegDangling(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pTask->m_pLogicUnit->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
   
-  i8 i_Ptn = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
   CrwBuffer* pCrwBuffer = pToHshCrw->pDangling(i_Ptn);
   
-  m_pTask->m_pDataStack->vPushPtr(pCrwBuffer);
+  m_pDataStack->vPushPtr(pCrwBuffer);
 
   EXIT();
 }
@@ -91,8 +96,8 @@ void Step::vToHshCrwRegDelete(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pTask->m_pLogicUnit->m_xpToHshCrw;
-  m_pTask->m_pLogicUnit->m_xpToHshCrw = nullptr;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
+  ( m_pJob->pLogicUnit_job() )->m_xpToHshCrw = nullptr;
   
   delete pToHshCrw;
   

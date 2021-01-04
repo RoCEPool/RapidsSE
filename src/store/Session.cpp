@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "SessionArray.hpp"
+
 #include "TagConstants.h"
 
 Atomic gixSession;
@@ -230,7 +232,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   Dic* pDic = nullptr;
-  ForthCell* aCell =  nullptr;
+  CodeCell* aCell =  nullptr;
   //m_oDicStack.vContentDump();
  
   //fprintf(stderr,"eInit A\n");

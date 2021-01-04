@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 #include "PsxThd.hpp"  //?
@@ -23,7 +27,7 @@ void Step::vHandlerServiceSleepQueue(void)
 {
   ENTRY();
   
-  m_pTask->m_pThread->m_pPsxThd->vSleepSsec(1,CN_WORD);
+  m_pThread->m_pPsxThd->vSleepSsec(1,CN_WORD);
   
   EXIT();
 }

@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -26,12 +30,12 @@ void Step::vZeroLess(void)
 {
   ENTRY();
   
-  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
   if (iZero < 0)
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -43,12 +47,12 @@ void Step::vZeroLessEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
   if (iZero <= 0)
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -60,12 +64,12 @@ void Step::vZeroEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
   if (iZero == 0)
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -77,12 +81,12 @@ void Step::vZeroNotEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
   if (iZero != 0)
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -94,12 +98,12 @@ void Step::vZeroGreaterEqual(void)
 {
   ENTRY();
   
-  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
   if (iZero >= 0)
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -111,12 +115,12 @@ void Step::vZeroGreater(void)
 {
   ENTRY();
   
-  i8 iZero = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iZero = m_pDataStack->iPopAsInt(__func__);
   
   if (iZero > 0)
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }

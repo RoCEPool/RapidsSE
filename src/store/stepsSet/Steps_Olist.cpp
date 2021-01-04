@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -21,17 +26,17 @@ void Step::vOlistFindJob(void)
 {
   ENTRY();
   
-  i8 iJobId = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iJobId = m_pDataStack->iPopAsInt(__func__);
   
   Job* pJobFound = Scheduler::pJob_FindOriginating(iJobId);
   RASSERT(pJobFound);
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pTask->m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&( m_pJob->pLogicUnit_job() )->m_xpJobRef);
   
   
-  m_pTask->m_pDataStack->vPushPtr(pJobFound);
+  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }

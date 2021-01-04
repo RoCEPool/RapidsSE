@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,9 +30,9 @@ void Step::vJobRefHasTask(void)
 {
   ENTRY();
   
-  Job* pJob = m_pTask->m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = ( m_pJob->pLogicUnit_job() )->m_xpJobRef.pReferencedObject();
   
-  m_pTask->m_pDataStack->vPushInt(pJob->pTask() ? true : false);
+  m_pDataStack->vPushInt(pJob->pTask() ? true : false);
   
   EXIT();
 }
@@ -39,9 +44,9 @@ void Step::vJobRefPointer(void)
 {
   ENTRY();
   
-  Job* pJob = m_pTask->m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = ( m_pJob->pLogicUnit_job() )->m_xpJobRef.pReferencedObject();
 
-  m_pTask->m_pDataStack->vPushPtr(pJob);
+  m_pDataStack->vPushPtr(pJob);
 
   EXIT();
 }
@@ -53,7 +58,12 @@ void Step::vJobRefNone(void)
 {
   ENTRY();
   
-  if (m_pTask->m_pLogicUnit->m_xpJobRef.pReferencedObject())
+  if (! pJob() || ! pJob()->pLogicUnit_job()) {
+    EXIT();
+    return;
+  }
+
+  if (( m_pJob->pLogicUnit_job() )->m_xpJobRef.pReferencedObject())
     THROW("JobRef[].none : register still has reference to a job"_Stz);
   
   EXIT();
@@ -66,7 +76,7 @@ void Step::vJobRefReferences(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpJobRef.nReferences());
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpJobRef.nReferences());
   
   EXIT();
 }
@@ -78,8 +88,8 @@ void Step::vJobRefReturn(void)
 {
   ENTRY();
   
-  if (m_pTask->m_pLogicUnit->m_xpJobRef.bHasReference())
-    m_pTask->m_pLogicUnit->m_xpJobRef.vReturnRef();
+  if (( m_pJob->pLogicUnit_job() )->m_xpJobRef.bHasReference())
+    ( m_pJob->pLogicUnit_job() )->m_xpJobRef.vReturnRef();
 
   EXIT();
 }

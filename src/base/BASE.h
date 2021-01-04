@@ -27,9 +27,10 @@ namespace BASE
 #include "CompiledWith.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
+//typedef unsigned long size_t;
+
 #include "UsefulConstants.h"
 #include "UserStrSizes.h"
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -100,7 +101,7 @@ namespace BASE {
   typedef Bytes_t<C_256K>  b256K; // note: K, not KB
 }
 
-namespace BASE       { class ForthCell;            class Focal;
+namespace BASE       { class CodeCell;            class Focal;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
 namespace BASE            { class ReqTuple;                              }
@@ -117,7 +118,44 @@ using namespace BASE;
 
 
 //------------------------------------------------------------------------------
-#include "AxiomaticConstants.h"
+
+
+static const i8 C_ALL          = -1;
+static const i8 C_VARGS_BEGIN  = -1;
+static const i8 C_VARGS_END    = -1;
+static const i8 C_NEVER_THROWN = -1;
+static const i8 C_NIL          = -1;
+static const i8 C_UNKNOWN      = -1;
+static const i8 C_IGNORED      = -1;
+
+static const bool B_CALL_AGAIN      = true;
+static const bool B_DONT_CALL_AGAIN = false;
+
+static const b8 C_NONFOCAL          = true;
+
+static const i8 C_SET_OFFSETS       = 128;
+static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
+static const i8 C_CHUNKBLOCK        = 2048;
+
+
+// initialised in IntLib::vInitGlobals()
+extern i8 C_DATUM_NULL;
+extern i8 C_DATUM_MINUS_INFINITY;
+extern i8 C_DATUM_PLUS_INFINITY;
+
+extern i8 C_I8_MIN;
+extern i8 C_I8_MAX;
+extern i8 C_I8_MID;
+
+// initialised in FltLib::vInitGlobals()
+extern d8 C_D8_MIN;
+extern d8 C_D8_MAX;
+extern d8 C_D8_MID;
+
+
+//------------------------------------------------------------------------------
+
+
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
 #include "CommonTypes.h"
@@ -136,11 +174,8 @@ using namespace BASE;
 
 #include "PmcUse.h"
 
-
 #include "Stz.hpp"
 #include "StrLib.hpp"
-
-
 
 #include "ClassNumbers.hpp"
 #include "FnDesc.hpp"
@@ -159,8 +194,6 @@ struct SizeHeap {
   i8  m_nVtableAdjust; // temp: explore support for vtable
 
 };
-
-
 
 #include "Hack.hpp"
 
@@ -192,6 +225,7 @@ struct SizeHeap {
 #include "Trace.hpp"
 #include "Jot.hpp"
 #include "IntLib.hpp"
+#include "FltLib.hpp"
 
 #include "Statistics.hpp"
 #include "Focal.hpp"
@@ -221,19 +255,7 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "ToolFn.hpp"
 #include "ToolCatalog.hpp"
 
-
-
-
-#include "ForthCell.hpp"
-
-
-//typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
-//extern pDUMPFUN *gpDump[];
-
-//typedef void (pOUTLINEFUN)(Focal* pFocal, Stz*);
-//extern pOUTLINEFUN *gpOutline[];
-
-
+#include "CodeCell.hpp"
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
@@ -242,15 +264,10 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "SPmedium.hpp"
 #include "SPsmall.hpp"
 
-
-
-
 #include "FocalDesc.hpp"
 
 #include "NamedObject.hpp"
 #include "ReqTuple.hpp"
-#include "SP_Gid.hpp"
-
 
 #include "IntLib.hpp"
 #include "MagLib.hpp"
@@ -258,12 +275,8 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "TypedCell.hpp"
 #include "CellSingle.hpp"
 
-
 #include "HshLib.hpp"
 
-#include "SP_Bits.hpp"
-
-//#include "Compress.hpp"
 #include "IvlLib.hpp"
 #include "RndLib.hpp"
 #include "TspLib.hpp"
@@ -283,10 +296,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "LockTracker.hpp"
 #include "Mutex.hpp"
 
-#include "SP_Lock.hpp"
-#include "SP_Mutex.hpp"
-
-
 #include "SingleWord.hpp"
 #include "AlignedObject.hpp"
 
@@ -299,11 +308,9 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "WspConvergent_t.hpp"
 #include "Wsp_t.hpp"
 
-
-
 #include "ShmLib.hpp"
 
-
+//------------------------------------------------------------------------------
 
 static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
 
@@ -323,6 +330,8 @@ static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
 
 static const i8 C_VIA_MALLOC         = 1;
 
+//------------------------------------------------------------------------------
+
 #include "PoolBuffer.hpp"
 #include "FreeBuffer.hpp"
 #include "FreeChunk.hpp"
@@ -339,27 +348,7 @@ static const i8 C_VIA_MALLOC         = 1;
 #include "Slab.hpp"
 #include "SlabAllocator.hpp"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-namespace BASE
-{
-
-  void vCheckAssumptions(void);
-}
-
 //------------------------------------------------------------------------------
-
 
 #include "Birth.hpp"
 #include "CRM.hpp"
@@ -387,53 +376,9 @@ namespace BASE
 #include "Peruse.hpp"
 #include "Numbat.hpp"
 
-#include "SP_AggTimer.hpp"
-#include "SP_Bytes.hpp"
-#include "SP_Char.hpp"
-#include "SP_Elapsed.hpp"
-#include "SP_Footer.hpp"
-#include "SP_Header.hpp"
-#include "SP_ReqTuple.hpp"
-#include "SP_String.hpp"
-#include "SP_TagSet.hpp"
-#include "SP_Timer.hpp"
-
-typedef void (*FNADDR)(void*);
-
-
-#define JOBS_fn(FNNAME) \
-  \
-  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)STORE::FNNAME); \
-  \
-  void STORE::FNNAME(Job* pJob) \
-EndDefine
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include "RU.hpp"
 #include "RU_Cpu.hpp"
 #include "RU_Memory.hpp"
-
-
-
-
-
-
-
-extern BufferPool* gpBufferPool;
-
-
 
 #include "ArrayNL_t.hpp"
 
@@ -475,7 +420,7 @@ extern BufferPool* gpBufferPool;
 
 // -- -- -- -- -- -- -- --
 
-typedef void (pARTFUN)(Object* pObject, SP& spObject);
+typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
 
 #include "Article.hpp"
 #include "MiniHeap_t.hpp"
@@ -484,9 +429,6 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 // -- -- -- -- -- -- -- --
 
 #include "SP_Article.hpp"
-
-
-
 
 #include "Dir.hpp"    //?
 #include "Fifo.hpp"   //?
@@ -498,7 +440,6 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 
 #include "ResourceTracker.hpp" //?
 
-
 #include "AnnChar.hpp"
 #include "Token.hpp"
 #include "TokenVec.hpp"
@@ -506,26 +447,13 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 #include "Charser.hpp"
 #include "Input.hpp"
 
-#include "SP_AnnChar.hpp"
-#include "SP_Charser.hpp"
-#include "SP_Token.hpp"
-#include "SP_TknVecStr.hpp"
-
-
-
-
 #include "ShmUtility.hpp"
-
-
-
 
 #include "Thing.hpp"
 #include "Arrange.hpp"
 #include "IntSet.hpp"
 
-
 #include "Format.hpp"
-
 
 //------------------------------------------------------------------------------
 
@@ -533,39 +461,69 @@ typedef void (pARTFUN)(Object* pObject, SP& spObject);
 #include "RowPix.h"
 #include "Column.hpp"
 
-#include "SN_Bcd.hpp"
-#include "SN_Bol.hpp"
-#include "SN_Dte.hpp"
-#include "SN_Flt.hpp"
-#include "SN_Int.hpp"
-#include "SN_Ivl.hpp"
-#include "SN_Tme.hpp"
-#include "SN_Tsp.hpp"
-#include "SN_Vch.hpp"
-
-#include "SP_Bcd.hpp"
-#include "SP_Bol.hpp"
-#include "SP_Dte.hpp"
-#include "SP_Flt.hpp"
-#include "SP_Int.hpp"
-#include "SP_Ivl.hpp"
-#include "SP_Tme.hpp"
-#include "SP_Tsp.hpp"
-#include "SP_Vch.hpp"
-
-
 //------------------------------------------------------------------------------
 
 #include "Literal.hpp"
-
 
 #include "Licence.hpp"
 #include "Limits.hpp"
 
 //------------------------------------------------------------------------------
 
+// declare a function pointer to any member function of Step
+typedef void (Step::*fpSTEPFN)(void);
 
+#include "Operand.hpp"
 
+#include "Dic.hpp"
+#include "DicStack.hpp"
+#include "Local.hpp"
+#include "LocalChain.hpp"
+#include "CodeBlock.hpp"
+#include "TypedStack.hpp"
+
+#include "Compiler.hpp"
+#include "Word.hpp"
+
+#include "Profile.hpp"
+#include "Task.hpp"
+
+#include "TaskList.hpp"
+#include "TaskQueue.hpp"
+
+//------------------------------------------------------------------------------
+
+#include "DataChunk.hpp"
+#include "RecordChunk.hpp"
+#include "FileChunk.hpp"
+
+#include "IngestChunk.hpp"
+#include "IoChunk.hpp"
+#include "IoCopy.hpp"
+#include "LoadChunk.hpp"
+
+#include "OperandQueue.hpp"
+
+#include "LinkedBuffer.hpp"
+
+//------------------------------------------------------------------------------
+
+#include "Tx.hpp"
+#include "TxSet.hpp"
+
+#include "Ref.hpp"
+#include "DataBuffer.hpp"
+
+#include "CsvMeta.hpp"
+#include "CsvBuffer.hpp"
+#include "Reader.hpp"
+
+#include "CmdHelper.hpp"
+
+#include "LogEntry.hpp"
+#include "Log.hpp"
+
+//------------------------------------------------------------------------------
 
 namespace BASE
 {
@@ -597,7 +555,6 @@ namespace BASE
 
   void vInitAllGlobals(void);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

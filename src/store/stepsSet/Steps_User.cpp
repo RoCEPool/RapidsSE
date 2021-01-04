@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +27,7 @@ void Step::vUserName(void)
   
   s32 sUserNme( (Stz*)getenv("USER") );
   
-  m_pTask->m_pDataStack->vPushStr(sUserNme);
+  m_pDataStack->vPushStr(sUserNme);
 
   EXIT();
 }

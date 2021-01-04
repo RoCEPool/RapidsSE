@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -24,13 +29,13 @@ void Step::vStreamSetTableColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_pTask->m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpStreamSetTable);
   
-  i8 iColumnNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pTask->m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
+  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
   
   EXIT();
 }
@@ -44,7 +49,7 @@ void Step::vStreamSetTableDump(void)
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_pTask->m_pLogicUnit->m_xpStreamSetTable);
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpStreamSetTable);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -62,7 +67,7 @@ void Step::vStreamSetTableGet(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpStreamSetTable);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpStreamSetTable);
   
   EXIT();
 }
@@ -74,7 +79,7 @@ void Step::vStreamSetTableSet(void)
 {
   ENTRY();
   
-  m_pTask->m_pLogicUnit->m_xpStreamSetTable = _pTable(m_pTask->m_pDataStack->pPopPtr(__func__));
+  ( m_pJob->pLogicUnit_job() )->m_xpStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

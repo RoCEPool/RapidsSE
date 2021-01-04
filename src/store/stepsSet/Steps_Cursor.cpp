@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -26,9 +30,9 @@ void Step::vCursorFetch(void)
   
   CellSingle xCursorVar;
   
-  m_pTask->m_pReturnStack->vPeekItem(iPeek,xCursorVar);
+  m_pReturnStack->vPeekItem(iPeek,xCursorVar);
   
-  m_pTask->m_pDataStack->vPushItem(xCursorVar);
+  m_pDataStack->vPushItem(xCursorVar);
   
   EXIT();
 }
@@ -43,9 +47,9 @@ void Step::vCursorStore(void)
   i8 iPoke = 1;
   
   CellSingle xCursorVar;
-  m_pTask->m_pDataStack->vPopItem(xCursorVar,__func__);
+  m_pDataStack->vPopItem(xCursorVar,__func__);
   
-  m_pTask->m_pReturnStack->vPokeItem(iPoke,xCursorVar);
+  m_pReturnStack->vPokeItem(iPoke,xCursorVar);
   
   EXIT();
 }

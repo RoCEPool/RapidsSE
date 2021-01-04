@@ -31,7 +31,7 @@ void Article::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Article::Article(Stz* szName, Object* pObject, pARTFUN* fpArtFun)
+Article::Article(Stz* szName, Object* pObject, fpARTICLEFN* fpArtFun)
 : Object(CN_ARTICLE)
 , m_okLock(LK_NAME,this)
 {
@@ -69,7 +69,7 @@ Article::~Article(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get category                                                               */
 /*----------------------------------------------------------------------------*/
-pARTFUN* Article::fpArtFun(void)
+fpARTICLEFN* Article::fpArtFun(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   

@@ -4,8 +4,12 @@
 
 #include "BASE.h"
 
-#include "Socket.hpp" //?
-#include "ResourceTracker.hpp" //?
+#include "Socket.hpp"
+#include "ResourceTracker.hpp"
+
+//#include <pcap/pcap.h>
+#include <arpa/inet.h>
+//#include <netinet/in.h>
 
 Atomic gixSocket;
 

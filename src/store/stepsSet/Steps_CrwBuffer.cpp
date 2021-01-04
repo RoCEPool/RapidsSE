@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +29,7 @@ void Step::vCrwBufferDelete(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
   delete pCrwBuffer;
   
@@ -41,7 +45,7 @@ void Step::vCrwBufferNew(void)
 
   CrwBuffer* pCrwBuffer = new CrwBuffer;
 
-  m_pTask->m_pDataStack->vPushPtr(pCrwBuffer);
+  m_pDataStack->vPushPtr(pCrwBuffer);
   
   EXIT();
 }
@@ -53,9 +57,9 @@ void Step::vCrwBufferOperandDump(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
-  i8 iDetail = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iDetail = m_pDataStack->iPopInt(__func__);
   
   pCrwBuffer->vOperandDump(iDetail);
 
@@ -69,7 +73,7 @@ void Step::vCrwBufferSnapshot(void)
 {
   ENTRY();
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
   Table* pTable = pCrwBuffer->pTable();
   i8 i_Ptn = pCrwBuffer->tPtnNo();
@@ -83,7 +87,7 @@ void Step::vCrwBufferSnapshot(void)
   vTrace("SNAPSHOT BUFFER %p (t%lld)\n"_Stz, pCrwBuffer_snaphot, tPerspective);
   vTrace("*************************************\n\n"_Stz);
   
-  m_pTask->m_pDataStack->vPushPtr(pCrwBuffer_snaphot);
+  m_pDataStack->vPushPtr(pCrwBuffer_snaphot);
   
   EXIT();
 }

@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +28,7 @@ void Step::vTraceOff(void)
 {
   ENTRY();
   
-  m_pTask->m_iTraceMask = 0;
+  m_iTraceMask = 0;
   
   EXIT();
 }
@@ -36,7 +40,7 @@ void Step::vTraceOn(void)
 {
   ENTRY();
   
-  m_pTask->m_iTraceMask = C_TRACE_STEPS;
+  m_iTraceMask = C_TRACE_STEPS;
   
   EXIT();
 }
@@ -50,10 +54,10 @@ void Step::vTracePoint(void)
   
   s256 sPointName;
   
-  m_pTask->m_pDataStack->vPopStr(sPointName,__func__);
+  m_pDataStack->vPopStr(sPointName,__func__);
   
   if (AM::bTracepoint())
-    m_pTask->vTracePoint(sPointName);
+    Task::vTracePoint(sPointName);
   
   EXIT();
 }
@@ -65,9 +69,9 @@ void Step::vTraceSet(void)
 {
   ENTRY();
   
-  i8 iTrace = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iTrace = m_pDataStack->iPopInt(__func__);
   
-  m_pTask->m_iTraceMask = iTrace;
+  m_iTraceMask = iTrace;
   
   EXIT();
 }

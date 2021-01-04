@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,23 +30,23 @@ void Step::vDot(void)
   ENTRY();
   
   CellSingle xVariable;
-  m_pTask->m_pDataStack->vPopItem(xVariable,__func__);
+  m_pDataStack->vPopItem(xVariable,__func__);
   
   if (xVariable.bIsIntVal()) {
 //    vTrace("[%s %s] %lld\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //           xVariable.iInt());
     
-    m_pTask->m_pJob->vPrint("%lld"_Stz,xVariable.iGetColVal());
+    m_pJob->vPrint("%lld"_Stz,xVariable.iGetColVal());
     
   }
   else {
 //    vTrace("[%s %s] %s\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //           xVariable.szStz());
-    m_pTask->m_pJob->vPrint("%s"_Stz,xVariable.szStz());
+    m_pJob->vPrint("%s"_Stz,xVariable.szStz());
   }
   
   EXIT();
@@ -53,23 +58,23 @@ void Step::vDot(void)
 //  ENTRY();
 //
 //  CellSingle xVariable;
-//  m_pTask->m_pDataStack->vPopItem(xVariable,__func__);
+//  m_pDataStack->vPopItem(xVariable,__func__);
 //
 //  s32 sSide;
 //
 //  if (xVariable.bIsInt()) {
 //    vTrace("[%s%s %s] %lld\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //
 //           xVariable.iInt());
 //  }
 //  else {
 //    vTrace("[%s%s %s] %s\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //
 //           xVariable.szStz());
 //  }
@@ -85,7 +90,7 @@ void Step::vDotPut(void)
   ENTRY();
   
   CellSingle xVariable;
-  m_pTask->m_pDataStack->vPopItem(xVariable,__func__);
+  m_pDataStack->vPopItem(xVariable,__func__);
   
   if (xVariable.bIsIntVal())
     vTrace("%lld"_Stz,xVariable.iGetColVal());
@@ -115,12 +120,12 @@ void Step::vDotVerbose(void)
   ENTRY();
   
   CellSingle xVariable;
-  m_pTask->m_pDataStack->vPopItem(xVariable,__func__);
+  m_pDataStack->vPopItem(xVariable,__func__);
   
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,
-           m_pTask,
-           m_pTask->szJobName(),
+           this,
+           szJobName(),
            xVariable.szStz());
   }
   

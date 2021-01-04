@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -45,7 +50,7 @@ void Step::vFile0Get(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpFile0);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
   
   EXIT();
 }
@@ -57,13 +62,13 @@ void Step::vFile0GetEofLocation(void)
 {
   ENTRY();
   
-  File* pFile = *m_pTask->m_pLogicUnit->m_xpFile0;
+  File* pFile = *( m_pJob->pLogicUnit_job() )->m_xpFile0;
   
   // get the end-of-file location
   pFile->vSeekEnd();
   i8 iEofLoc = pFile->iTell();
   
-  m_pTask->m_pDataStack->vPushInt(iEofLoc);
+  m_pDataStack->vPushInt(iEofLoc);
   
   EXIT();
 }
@@ -75,7 +80,7 @@ void Step::vFile0IsNull(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpFile0.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpFile0.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -87,9 +92,9 @@ void Step::vFile0Set(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
-  m_pTask->m_pLogicUnit->m_xpFile0 = pFile;
+  ( m_pJob->pLogicUnit_job() )->m_xpFile0 = pFile;
   
   EXIT();
 }
@@ -101,9 +106,9 @@ void Step::vFile0Size(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(*m_pTask->m_pLogicUnit->m_xpFile0);
+  File* pFile = _pFile(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
   
-  m_pTask->m_pDataStack->vPushInt(File::nSize(pFile->sFilePath()));
+  m_pDataStack->vPushInt(File::nSize(pFile->sFilePath()));
                          
   EXIT();
 }
@@ -115,7 +120,7 @@ void Step::vFileClose(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   
   pFile->vClose();
   
@@ -129,7 +134,7 @@ void Step::vFileDelete(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
   delete pFile;
   
@@ -144,16 +149,16 @@ void Step::vFileModTime(void)
   ENTRY();
   
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
 
   time_t tTime;
   
   bool bResult = File::bModTime(sPath,tTime);
   
   if (bResult)
-    m_pTask->m_pDataStack->vPushInt(tTime);
+    m_pDataStack->vPushInt(tTime);
   else
-    m_pTask->m_pDataStack->vPushInt(0);
+    m_pDataStack->vPushInt(0);
 
   EXIT();
 }
@@ -165,9 +170,9 @@ void Step::vFileNew(void)
 {
   ENTRY();
   
-  File* pFile = new File(m_pTask);
+  File* pFile = new File(this);
   
-  m_pTask->m_pDataStack->vPushPtr(pFile);
+  m_pDataStack->vPushPtr(pFile);
   
   EXIT();
 }
@@ -179,17 +184,17 @@ void Step::vFileOpen(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   
   s32 sMode;
-  m_pTask->m_pDataStack->vPopStr(sMode,__func__);
+  m_pDataStack->vPopStr(sMode,__func__);
 
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
-  m_pTask->m_pDataStack->vPushInt(bOpened);
+  m_pDataStack->vPushInt(bOpened);
   
   EXIT();
 }
@@ -201,11 +206,11 @@ void Step::vFilePathGet(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
   s256 sPath = pFile->sFilePath();
   
-  m_pTask->m_pDataStack->vPushStr(sPath);
+  m_pDataStack->vPushStr(sPath);
   
   EXIT();
 }
@@ -218,9 +223,9 @@ void Step::vFilePrint(void)
   ENTRY();
   
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
 
-  File* pFile = new File(m_pTask);
+  File* pFile = new File(this);
 
   bool bOpened = pFile->bOpenMode(sPath,C_OPEN_READ);
   if (! bOpened)
@@ -245,9 +250,9 @@ void Step::vFileReadChunk(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
   pCsvBuffer->vReset();
   
@@ -265,7 +270,7 @@ void Step::vFileReadChunk(void)
   }
   pCsvBuffer->ayDataArea()[nReadBytes] = 0;
   
-  m_pTask->m_pDataStack->vPushInt(nReadBytes);
+  m_pDataStack->vPushInt(nReadBytes);
 
   EXIT();
 }
@@ -277,9 +282,9 @@ void Step::vFileReadCrwBlock(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
   byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));
   i8 nSizeCrwProper = sizeof(CrwBuffer) - sizeof(DataBuffer);
@@ -288,7 +293,7 @@ void Step::vFileReadCrwBlock(void)
 
   RASSERT(CN_CRWBUFFER == pCrwBuffer->eClass());
   
-  m_pTask->m_pDataStack->vPushInt(nReadBytes);
+  m_pDataStack->vPushInt(nReadBytes);
   
   EXIT();
 }
@@ -300,7 +305,7 @@ void Step::vFileReadLine(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
   
   s48K sLine;
@@ -308,11 +313,11 @@ void Step::vFileReadLine(void)
   bool bResult = pFile->bReadLine(sLine);
   
   if (bResult) {
-    m_pTask->m_pDataStack->vPushStr(sLine);
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushStr(sLine);
+    m_pDataStack->vPushInt(true);
   }
   else {
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
   }
 
   EXIT();
@@ -325,10 +330,10 @@ void Step::vFileReadText(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
   
-  Text* pText = _pText(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Text* pText = _pText(m_pDataStack->pPopPtr(__func__));
   
   Stz* szDst = pText->szGet();
   
@@ -336,7 +341,7 @@ void Step::vFileReadText(void)
 
   szDst->azChar()[nReadBytes] = '\0';
   
-  m_pTask->m_pDataStack->vPushInt(nReadBytes);
+  m_pDataStack->vPushInt(nReadBytes);
 
   EXIT();
 }
@@ -348,10 +353,10 @@ void Step::vFileSeek(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
 
-  i8 iOffset = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iOffset = m_pDataStack->iPopInt(__func__);
   
   pFile->vSeek(iOffset);
 
@@ -367,7 +372,7 @@ void Step::vFileSeekRndCsv(void)
   
   s48K sBuffer;
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
 
   i8 nFileSize = pFile->iSize();
@@ -402,12 +407,12 @@ void Step::vFileSize(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
 
   i8 nSize = pFile->iSize();
   
-  m_pTask->m_pDataStack->vPushInt(nSize);
+  m_pDataStack->vPushInt(nSize);
                          
   EXIT();
 }
@@ -420,11 +425,11 @@ void Step::vFileSizeNm(void)
   ENTRY();
   
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
 
   i8 nSize = File::nSize(sPath);
   
-  m_pTask->m_pDataStack->vPushInt(nSize);
+  m_pDataStack->vPushInt(nSize);
                          
   EXIT();
 }
@@ -436,12 +441,12 @@ void Step::vFileTell(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
 
   i8 iOffset = pFile->iTell();
   
-  m_pTask->m_pDataStack->vPushInt(iOffset);
+  m_pDataStack->vPushInt(iOffset);
 
   EXIT();
 }
@@ -453,12 +458,12 @@ void Step::vFileWriteLine(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(m_pTask->m_pDataStack->pPopPtr(__func__));
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
   
   s48K sLine;
   
-  m_pTask->m_pDataStack->vPopStr(sLine,__func__);
+  m_pDataStack->vPopStr(sLine,__func__);
   
   Stz* wStr = sLine;
   

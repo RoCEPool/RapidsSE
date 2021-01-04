@@ -4,9 +4,18 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
-
+#include "Job.hpp"
+#include "JobLog.hpp"
 #include "Socket.hpp"
+#include "XmitOperand.hpp"
+
+#include "SP_Header.hpp"
+#include "SP_Job.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -36,7 +45,7 @@ void Step::vSocketAccept(void)
   
   SysCall oSysCall;
   
-  Socket* pSocket = _pSocket(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   // accept a connection
   int iSocketId;
@@ -49,7 +58,7 @@ void Step::vSocketAccept(void)
   // return the socket
   Socket* pNewSocket = new Socket(this,iSocketId);
   
-  m_pTask->m_pDataStack->vPushPtr(pNewSocket);
+  m_pDataStack->vPushPtr(pNewSocket);
   
   EXIT();
 }
@@ -63,7 +72,7 @@ void Step::vSocketClose(void)
   
   SysCall oSysCall;
 
-  Socket* pSocket = _pSocket(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
 
   // close the socket
   bool bResult = pSocket->bClose(oSysCall);
@@ -87,13 +96,13 @@ void Step::vSocketConnect(void)
   CellSingle xNodeVar;
   
   
-  Object* pObject = m_pTask->m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
 
-  m_pTask->m_pDataStack->vPopItem(xNodeVar,__func__);
+  m_pDataStack->vPopItem(xNodeVar,__func__);
   
-  i8 iPort = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iPort = m_pDataStack->iPopInt(__func__);
   
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
@@ -109,7 +118,7 @@ void Step::vSocketConnect(void)
   if (bResult) {
     // return the socket object
     Object* pPtrSocket = pSocket;
-    m_pTask->m_pDataStack->vPushPtr(pPtrSocket);
+    m_pDataStack->vPushPtr(pPtrSocket);
     EXIT();
     return;
   }
@@ -129,7 +138,7 @@ void Step::vSocketConnect(void)
            iError, strerror((int)iError));
   }
   
-  m_pTask->m_pDataStack->vPushPtr(nullptr);
+  m_pDataStack->vPushPtr(nullptr);
   
   EXIT();
 }
@@ -141,7 +150,7 @@ void Step::vSocketDropWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   pSocket->vDropWrite();
   
@@ -155,7 +164,7 @@ void Step::vSocketGrabWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   pSocket->vGrabWrite();
   
@@ -171,7 +180,7 @@ void Step::vSocketListen(void)
   
   SysCall oSysCall;
   
-  i8 iPort = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iPort = m_pDataStack->iPopInt(__func__);
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
   // attempt to create server-side listening socket
@@ -212,7 +221,7 @@ void Step::vSocketListen(void)
 
   // return socket
   Object* pPtrSocket = pSocket;
-  m_pTask->m_pDataStack->vPushPtr(pPtrSocket);
+  m_pDataStack->vPushPtr(pPtrSocket);
   
   EXIT();
 }
@@ -227,7 +236,7 @@ void Step::vSocketOpen(void)
   SysCall oSysCall;
   Socket* pSocket;
   
-  Node* pNode = _pNode(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
   pSocket = new Socket(pNode);
   bool bResult = pSocket->bSocket(oSysCall);
@@ -237,7 +246,7 @@ void Step::vSocketOpen(void)
            "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
   
   Object* pPtrSocket = pSocket;
-  m_pTask->m_pDataStack->vPushPtr(pPtrSocket);
+  m_pDataStack->vPushPtr(pPtrSocket);
   
   EXIT();
 }
@@ -261,7 +270,7 @@ void Step::vSocketRecvObject(void)
   
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the object header
@@ -273,7 +282,7 @@ void Step::vSocketRecvObject(void)
 
   bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes,oSysCall);
   if (! bResult) {
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
     EXIT();
     return;
   }
@@ -313,7 +322,7 @@ void Step::vSocketRecvObject(void)
 
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
@@ -335,14 +344,14 @@ void Step::vSocketRecvObject(void)
       pJob->vMarkJob();
     }
     
-    //ActLog::vAdd(pJob,AN_RECV_JOB,m_pTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
 
     pJob->m_i_Focal = C_UNKNOWN;
     pJob->vOriginResponseVec(nullptr);
     pJob->vBufferQueue(nullptr);
     
-    m_pTask->m_pDataStack->vPushPtr(pJob);
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushPtr(pJob);
+    m_pDataStack->vPushInt(true);
     EXIT();
     return;
   }
@@ -357,7 +366,7 @@ void Step::vSocketRecvObject(void)
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
@@ -370,8 +379,8 @@ void Step::vSocketRecvObject(void)
 //                "Socket received XmitOperand: %s"_Stz, //!format-LogRes
 //                spJob.sz_recv(pXmitOperand));
     
-    m_pTask->m_pDataStack->vPushPtr(pXmitOperand);
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushPtr(pXmitOperand);
+    m_pDataStack->vPushInt(true);
     EXIT();
     return;
   }
@@ -395,7 +404,7 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
@@ -407,8 +416,8 @@ void Step::vSocketRecvObject(void)
       // restore the nub of the crwbuffer
       pCrwBuffer->vRestoreNub();
       
-      m_pTask->m_pDataStack->vPushPtr(pCrwBuffer);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pCrwBuffer);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -424,7 +433,7 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
@@ -432,8 +441,8 @@ void Step::vSocketRecvObject(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
             
-      m_pTask->m_pDataStack->vPushPtr(pCsvBuffer);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pCsvBuffer);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -448,7 +457,7 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
@@ -456,8 +465,8 @@ void Step::vSocketRecvObject(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pTask->m_pDataStack->vPushPtr(pIndexDef);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pIndexDef);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -472,13 +481,13 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pInfoSet);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pInfoSet);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -493,13 +502,13 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pRowBuffer);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pRowBuffer);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -514,13 +523,13 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pStreamSet);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pStreamSet);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -535,13 +544,13 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pMarker);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pMarker);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -556,13 +565,13 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pProfile);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pProfile);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -577,7 +586,7 @@ void Step::vSocketRecvObject(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
@@ -585,8 +594,8 @@ void Step::vSocketRecvObject(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pTask->m_pDataStack->vPushPtr(pStreamDef);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pStreamDef);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -608,7 +617,7 @@ void Step::vSocketRecvObject_LowMem(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   void* aLowBuff = pSocket->m_aLowBuff;
 
@@ -622,7 +631,7 @@ void Step::vSocketRecvObject_LowMem(void)
   
   bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes, oSysCall);
   if (! bResult) {
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(false);
     EXIT();
     return;
   }
@@ -653,7 +662,7 @@ void Step::vSocketRecvObject_LowMem(void)
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
@@ -661,15 +670,15 @@ void Step::vSocketRecvObject_LowMem(void)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    //ActLog::vAdd(pJob,AN_RECV_JOB,m_pTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
     //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
     pJob->m_i_Focal = C_UNKNOWN;
     pJob->vOriginResponseVec(nullptr);
     pJob->vBufferQueue(nullptr);
     
-    m_pTask->m_pDataStack->vPushPtr(pJob);
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushPtr(pJob);
+    m_pDataStack->vPushInt(true);
     EXIT();
     return;
   }
@@ -687,13 +696,13 @@ void Step::vSocketRecvObject_LowMem(void)
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
     
-    m_pTask->m_pDataStack->vPushPtr(pXmitOperand);
-    m_pTask->m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushPtr(pXmitOperand);
+    m_pDataStack->vPushInt(true);
     EXIT();
     return;
   }
@@ -720,7 +729,7 @@ void Step::vSocketRecvObject_LowMem(void)
       bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
       
       // whether able to recv or not, return false
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
@@ -738,12 +747,12 @@ void Step::vSocketRecvObject_LowMem(void)
       
       bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
@@ -758,7 +767,7 @@ void Step::vSocketRecvObject_LowMem(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
@@ -766,8 +775,8 @@ void Step::vSocketRecvObject_LowMem(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pTask->m_pDataStack->vPushPtr(pIndexDef);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pIndexDef);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -783,13 +792,13 @@ void Step::vSocketRecvObject_LowMem(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pInfoSet);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pInfoSet);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -807,7 +816,7 @@ void Step::vSocketRecvObject_LowMem(void)
       
       bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
 
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
@@ -822,13 +831,13 @@ void Step::vSocketRecvObject_LowMem(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pStreamSet);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pStreamSet);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -843,13 +852,13 @@ void Step::vSocketRecvObject_LowMem(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
       
-      m_pTask->m_pDataStack->vPushPtr(pMarker);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pMarker);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -866,7 +875,7 @@ void Step::vSocketRecvObject_LowMem(void)
       // recv rest of the object into LowBuffer
       bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
      
-      m_pTask->m_pDataStack->vPushInt(false);
+      m_pDataStack->vPushInt(false);
       EXIT();
       return;
     }
@@ -881,7 +890,7 @@ void Step::vSocketRecvObject_LowMem(void)
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
-        m_pTask->m_pDataStack->vPushInt(false);
+        m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
@@ -889,8 +898,8 @@ void Step::vSocketRecvObject_LowMem(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pTask->m_pDataStack->vPushPtr(pStreamDef);
-      m_pTask->m_pDataStack->vPushInt(true);
+      m_pDataStack->vPushPtr(pStreamDef);
+      m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
@@ -912,9 +921,9 @@ void Step::vSocketSendObject(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
-  Object* pObject = m_pTask->m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -935,7 +944,7 @@ void Step::vSocketSendObject(void)
                          pJob,
                          pSocket);
     
-    //ActLog::vAdd(pJob,AN_SEND_JOB,m_pTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) ||
@@ -952,8 +961,8 @@ void Step::vSocketSendObject(void)
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
-              m_pTask->m_pLogicUnit->m_pSendNode ?
-                m_pTask->m_pLogicUnit->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
+              ( m_pJob->pLogicUnit_job() )->m_pSendNode ?
+                ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
               C_VARGS_END);
 
     
@@ -974,7 +983,7 @@ void Step::vSocketSendObject(void)
                 nObjectSize,
                 C_VARGS_END);
 
-  m_pTask->m_pDataStack->vPushInt(bResult);
+  m_pDataStack->vPushInt(bResult);
 
   EXIT();
 }

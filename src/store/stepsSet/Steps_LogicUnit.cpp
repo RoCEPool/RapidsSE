@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 extern EnvFlags gxEnvFlags;;
 
@@ -59,9 +64,9 @@ void Step::vLogicUnitAltIndexFetch(void)
 {
   ENTRY();
   
-  DevIXT* pDevIxt = _pDevIXT(m_pTask->m_pLogicUnit->m_xRluCommon.m_pDevAltIxt);
+  DevIXT* pDevIxt = _pDevIXT(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevAltIxt);
   
-  m_pTask->m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
+  m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
   
   EXIT();
 }
@@ -73,9 +78,9 @@ void Step::vLogicUnitAltTableFetch(void)
 {
   ENTRY();
   
-  DevROW* pDevRow = _pDevROW(m_pTask->m_pLogicUnit->m_xRluCommon.m_pDevAltRow);
+  DevROW* pDevRow = _pDevROW(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevAltRow);
   
-  m_pTask->m_pDataStack->vPushStr(pDevRow->m_sTableNm);
+  m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
   EXIT();
 }
@@ -87,25 +92,25 @@ void Step::vLogicUnitDiaryAction(void)
 {
   ENTRY();
  
-  i8 i_EnumGroup = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 i_Enum      = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 iItem       = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
+  i8 i_Enum      = m_pDataStack->iPopInt(__func__);
+  i8 iItem       = m_pDataStack->iPopInt(__func__);
 
-  i8 i_Action       = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 i_ActEnumGroup = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 i_ActEnum      = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Action       = m_pDataStack->iPopInt(__func__);
+  i8 i_ActEnumGroup = m_pDataStack->iPopInt(__func__);
+  i8 i_ActEnum      = m_pDataStack->iPopInt(__func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
     return;
   }
   
-  m_pTask->m_pLogicUnit->m_oSince.vUpdate();
-  i8 nNanoSeconds = m_pTask->m_pLogicUnit->m_oSince.iNanoseconds();
+  ( m_pJob->pLogicUnit_job() )->m_oSince.vUpdate();
+  i8 nNanoSeconds = ( m_pJob->pLogicUnit_job() )->m_oSince.iNanoseconds();
   
-  i8 nQueueLength = m_pTask->m_pLogicUnit->m_xpOp->nQueueLength();
+  i8 nQueueLength = ( m_pJob->pLogicUnit_job() )->m_xpOp->nQueueLength();
 
-  m_pTask->m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
+  ( m_pJob->pLogicUnit_job() )->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
                            i_Action,i_ActEnumGroup,i_ActEnum,nQueueLength);
   
   EXIT();
@@ -118,7 +123,7 @@ void Step::vLogicUnitDiaryFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(m_pTask->m_pLogicUnit->m_pRluDiary);
+  m_pDataStack->vPushPtr(( m_pJob->pLogicUnit_job() )->m_pRluDiary);
 
   EXIT();
 }
@@ -131,14 +136,14 @@ void Step::vLogicUnitDiaryJobNote(void)
   ENTRY();
   
   s256 sJobNote;
-  m_pTask->m_pDataStack->vPopStr(sJobNote, __func__);
+  m_pDataStack->vPopStr(sJobNote, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
     return;
   }
   
-  m_pTask->m_pLogicUnit->vDiaryJobNote(sJobNote);
+  ( m_pJob->pLogicUnit_job() )->vDiaryJobNote(sJobNote);
 
   EXIT();
 }
@@ -151,14 +156,14 @@ void Step::vLogicUnitDiaryName(void)
   ENTRY();
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName, __func__);
+  m_pDataStack->vPopStr(sName, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
     return;
   }
   
-  m_pTask->m_pLogicUnit->vDiaryName(sName);
+  ( m_pJob->pLogicUnit_job() )->vDiaryName(sName);
 
   EXIT();
 }
@@ -170,22 +175,22 @@ void Step::vLogicUnitDiaryNote(void)
 {
   ENTRY();
   
-  i8 i_EnumGroup = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 i_Enum      = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 iItem       = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_EnumGroup = m_pDataStack->iPopInt(__func__);
+  i8 i_Enum      = m_pDataStack->iPopInt(__func__);
+  i8 iItem       = m_pDataStack->iPopInt(__func__);
   
   if ( ! AM::bRLUDiary() ) {
     EXIT();
     return;
   }
   
-  m_pTask->m_pLogicUnit->m_oSince.vUpdate();
-  i8 nNanoSeconds = m_pTask->m_pLogicUnit->m_oSince.iNanoseconds();
+  ( m_pJob->pLogicUnit_job() )->m_oSince.vUpdate();
+  i8 nNanoSeconds = ( m_pJob->pLogicUnit_job() )->m_oSince.iNanoseconds();
   
   
-  i8 nQueueLength = m_pTask->m_pLogicUnit->m_xpOp->nQueueLength();
+  i8 nQueueLength = ( m_pJob->pLogicUnit_job() )->m_xpOp->nQueueLength();
   
-  m_pTask->m_pLogicUnit->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
+  ( m_pJob->pLogicUnit_job() )->vDiaryNote(i_EnumGroup,i_Enum,iItem,nNanoSeconds,
                            0,0,0,nQueueLength);
   
   EXIT();
@@ -199,14 +204,14 @@ void Step::vLogicUnitDiaryDir(void)
   ENTRY();
   
   s256 sDir;
-  m_pTask->m_pDataStack->vPopStr(sDir, __func__);
+  m_pDataStack->vPopStr(sDir, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
     return;
   }
   
-  m_pTask->m_pLogicUnit->vDiaryDir(sDir);
+  ( m_pJob->pLogicUnit_job() )->vDiaryDir(sDir);
 
   EXIT();
 }
@@ -219,14 +224,14 @@ void Step::vLogicUnitDiaryTitle(void)
   ENTRY();
   
   s256 sTitle;
-  m_pTask->m_pDataStack->vPopStr(sTitle, __func__);
+  m_pDataStack->vPopStr(sTitle, __func__);
 
   if ( ! AM::bRLUDiary() ) {
     EXIT();
     return;
   }
   
-  m_pTask->m_pLogicUnit->vDiaryTitle(sTitle);
+  ( m_pJob->pLogicUnit_job() )->vDiaryTitle(sTitle);
 
   EXIT();
 }
@@ -238,7 +243,7 @@ void Step::vLogicUnitDynFun(void)
 {
   ENTRY();
   
-  i8 iRes = m_pTask->m_pLogicUnit->iDynFun(0,C_UNKNOWN);
+  i8 iRes = ( m_pJob->pLogicUnit_job() )->iDynFun(0,C_UNKNOWN);
   
   EXIT();
 }
@@ -250,14 +255,14 @@ void Step::vLogicUnitDynFunArgs(void)
 {
   ENTRY();
   
-  i8 nArgs = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 nArgs = m_pDataStack->iPopInt(__func__);
 
   if (nArgs) {
     RASSERT(1 == nArgs);
   }
-  i8 iArg0 = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iArg0 = m_pDataStack->iPopInt(__func__);
 
-  i8 iRes = m_pTask->m_pLogicUnit->iDynFun(nArgs,iArg0);
+  i8 iRes = ( m_pJob->pLogicUnit_job() )->iDynFun(nArgs,iArg0);
   
   EXIT();
 }
@@ -270,7 +275,7 @@ void Step::vLogicUnitGenAsm(void)
   ENTRY();
   
   s256 sFileName;
-  m_pTask->m_pDataStack->vPopStr(sFileName, __func__);
+  m_pDataStack->vPopStr(sFileName, __func__);
   
   File* pFile = new File(nullptr);
   
@@ -289,9 +294,9 @@ void Step::vLogicUnitGenAsm(void)
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
-  bool bResult = m_pTask->m_pLogicUnit->bGenerateAsm(sText);
+  bool bResult = ( m_pJob->pLogicUnit_job() )->bGenerateAsm(sText);
   
-  m_pTask->m_pDataStack->vPushInt(bResult);
+  m_pDataStack->vPushInt(bResult);
   
   EXIT();
 }
@@ -304,14 +309,14 @@ void Step::vLogicUnitGenAsmTxt(void)
   ENTRY();
   
   s256 sFileName;
-  m_pTask->m_pDataStack->vPopStr(sFileName, __func__);
+  m_pDataStack->vPopStr(sFileName, __func__);
   
   File* pFile = new File(nullptr);
 
-  i8 iSubQueryNo = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 iQueryNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iSubQueryNo = m_pDataStack->iPopInt(__func__);
+  i8 iQueryNo = m_pDataStack->iPopInt(__func__);
 
-  //m_pTask->m_pLogicUnit->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
+  //( m_pJob->pLogicUnit_job() )->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
   
   EXIT();
 }
@@ -323,9 +328,9 @@ void Step::vLogicUnitGenCode(void)
 {
   ENTRY();
   
-  i8 iTestNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iTestNo = m_pDataStack->iPopInt(__func__);
       
-  m_pTask->m_pLogicUnit->vGenCode(iTestNo);
+  ( m_pJob->pLogicUnit_job() )->vGenCode(iTestNo);
   
   EXIT();
 }
@@ -338,11 +343,11 @@ void Step::vLogicUnitGenProjection(void)
   ENTRY();
 
   Project* pProject;
-  pProject = _pProject(m_pTask->m_pDataStack->pPopPtr(__func__));
+  pProject = _pProject(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pTask->m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  m_pTask->m_pLogicUnit->vGenerateProjection(pProject, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->vGenerateProjection(pProject, pStreamDefOut);
 
   EXIT();
 }
@@ -354,11 +359,11 @@ void Step::vLogicUnitGenRange(void)
 {
   ENTRY();
 
-  Range* pRange = _pRange(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Range* pRange = _pRange(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pTask->m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  m_pTask->m_pLogicUnit->vGenerateRange(pRange, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->vGenerateRange(pRange, pStreamDefOut);
 
   EXIT();
 }
@@ -370,7 +375,7 @@ void Step::vLogicUnitCallAgainFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xRluCommon.m_bCallAgain);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCallAgain);
   
   EXIT();
 }
@@ -382,9 +387,9 @@ void Step::vLogicUnitCallAgainStore(void)
 {
   ENTRY();
 
-  i8 iCallAgain = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
-  m_pTask->m_pLogicUnit->m_xRluCommon.m_bCallAgain = iCallAgain;
+  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCallAgain = iCallAgain;
   
   EXIT();
 }
@@ -396,7 +401,7 @@ void Step::vLogicUnitCalledAgainFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xRluCommon.m_bCalledAgain);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCalledAgain);
   
   EXIT();
 }
@@ -408,9 +413,9 @@ void Step::vLogicUnitCalledAgainStore(void)
 {
   ENTRY();
 
-  i8 iCallAgain = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
   
-  m_pTask->m_pLogicUnit->m_xRluCommon.m_bCalledAgain = iCallAgain;
+  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_bCalledAgain = iCallAgain;
   
   EXIT();
 }
@@ -422,11 +427,11 @@ void Step::vLogicUnitDevFetch(void)
 {
   ENTRY();
 
-  i8 i_Dev = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Dev = m_pDataStack->iPopInt(__func__);
   
-  void* aDev = m_pTask->m_pLogicUnit->m_aaDev[i_Dev];
+  void* aDev = ( m_pJob->pLogicUnit_job() )->m_aaDev[i_Dev];
   
-  m_pTask->m_pDataStack->vPushPtr((Object*)aDev);
+  m_pDataStack->vPushPtr((Object*)aDev);
 
   EXIT();
 }
@@ -438,11 +443,11 @@ void Step::vLogicUnitDevStore(void)
 {
   ENTRY();
 
-  i8 i_Dev = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Dev = m_pDataStack->iPopInt(__func__);
   
-  void* aDev = m_pTask->m_pDataStack->pPopPtr(__func__);
+  void* aDev = m_pDataStack->pPopPtr(__func__);
   
-  m_pTask->m_pLogicUnit->m_aaDev[i_Dev] = aDev;
+  ( m_pJob->pLogicUnit_job() )->m_aaDev[i_Dev] = aDev;
   
   EXIT();
 }
@@ -454,7 +459,7 @@ void Step::vLogicUnitHandlerFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpHandler);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpHandler);
 
   EXIT();
 }
@@ -466,9 +471,9 @@ void Step::vLogicUnitHandlerStore(void)
 {
   ENTRY();
 
-  Word* pHandler = _pWord(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  m_pTask->m_pLogicUnit->m_xpHandler = pHandler;
+  ( m_pJob->pLogicUnit_job() )->m_xpHandler = pHandler;
   
   EXIT();
 }
@@ -480,7 +485,7 @@ void Step::vLogicUnitInit(void)
 {
   ENTRY();
   
-  m_pTask->m_pLogicUnit->vInit();
+  ( m_pJob->pLogicUnit_job() )->vInit();
   
   EXIT();
 }
@@ -492,9 +497,9 @@ void Step::vLogicUnitSrcIndexFetch(void)
 {
   ENTRY();
   
-  DevIXT* pDevIxt = _pDevIXT(m_pTask->m_pLogicUnit->m_xRluCommon.m_pDevSrcIxt);
+  DevIXT* pDevIxt = _pDevIXT(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevSrcIxt);
   
-  m_pTask->m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
+  m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
   
   EXIT();
 }
@@ -506,9 +511,9 @@ void Step::vLogicUnitSrcTableFetch(void)
 {
   ENTRY();
   
-  DevROW* pDevRow = _pDevROW(m_pTask->m_pLogicUnit->m_xRluCommon.m_pDevSrcRow);
+  DevROW* pDevRow = _pDevROW(( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pDevSrcRow);
   
-  m_pTask->m_pDataStack->vPushStr(pDevRow->m_sTableNm);
+  m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
   EXIT();
 }
@@ -520,7 +525,7 @@ void Step::vLogicUnitTransform(void)
 {
   ENTRY();
   
-  i8 bResult = m_pTask->m_pLogicUnit->iTransform(0,C_UNKNOWN);
+  i8 bResult = ( m_pJob->pLogicUnit_job() )->iTransform(0,C_UNKNOWN);
   
   EXIT();
 }
@@ -532,14 +537,14 @@ void Step::vLogicUnitTransformArgs(void)
 {
   ENTRY();
   
-  i8 nArgs = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 nArgs = m_pDataStack->iPopInt(__func__);
 
   if (nArgs) {
     RASSERT(1 == nArgs);
   }
-  i8 iArg0 = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iArg0 = m_pDataStack->iPopInt(__func__);
 
-  i8 bResult = m_pTask->m_pLogicUnit->iTransform(nArgs,iArg0);
+  i8 bResult = ( m_pJob->pLogicUnit_job() )->iTransform(nArgs,iArg0);
   
   EXIT();
 }

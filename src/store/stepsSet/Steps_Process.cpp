@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +29,7 @@ void Step::vProcessGetPid(void)
   
   i8 iPid = Process::iGetPid();
   
-  m_pTask->m_pDataStack->vPushInt(iPid);
+  m_pDataStack->vPushInt(iPid);
   
   EXIT();
 }
@@ -52,11 +56,11 @@ void Step::vProcessTestPid(void)
 {
   ENTRY();
 
-  i8 iPid = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iPid = m_pDataStack->iPopInt(__func__);
   
   i8 iExists = Process::bTestPid(iPid);
   
-  m_pTask->m_pDataStack->vPushInt(iExists);
+  m_pDataStack->vPushInt(iExists);
   
   EXIT();
 }

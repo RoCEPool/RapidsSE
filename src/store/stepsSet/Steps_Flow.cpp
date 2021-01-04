@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +44,7 @@ void Step::vFlowJump(void)
 {
   ENTRY();
   
-  m_pTask->m_aInxPtr = m_pTask->m_aInxPtr->m_aJumpTo;
+  m_aInxPtr = m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -52,16 +56,16 @@ void Step::vFlowJumpFalse(void)
 {
   ENTRY();
   
-  i8 iVal = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iVal = m_pDataStack->iPopAsInt(__func__);
   
   // n.b. the IP points to the jump arg
   
   if (! iVal)
     // jump to location
-    m_pTask->m_aInxPtr = m_pTask->m_aInxPtr->m_aJumpTo;
+    m_aInxPtr = m_aInxPtr->m_aJumpTo;
   else
     // do not jump, skip over argument
-    m_pTask->m_aInxPtr++;
+    m_aInxPtr++;
   
   EXIT();
 }
@@ -73,16 +77,16 @@ void Step::vFlowJumpTrue(void)
 {
   ENTRY();
   
-  i8 iVal = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iVal = m_pDataStack->iPopAsInt(__func__);
   
   // n.b. the IP points to the jump arg
   
   if (iVal)
     // jump to location
-    m_pTask->m_aInxPtr = m_pTask->m_aInxPtr->m_aJumpTo;
+    m_aInxPtr = m_aInxPtr->m_aJumpTo;
   else
     // do not jump, skip over argument
-    m_pTask->m_aInxPtr++;
+    m_aInxPtr++;
   
   EXIT();
 }
@@ -104,9 +108,9 @@ void Step::vFlowReenter(void)
 {
   ENTRY();
   
-  Word* pExecuting = Routine::pToWord(m_pTask->m_aInxPtr);
+  Word* pExecuting = CodeBlock::pToWord(m_aInxPtr);
   
-  m_pTask->m_aInxPtr = pExecuting->aEntryCell();
+  m_aInxPtr = pExecuting->aEntryCell();
   
   EXIT();
 }
@@ -118,7 +122,7 @@ void Step::vFlowTest(void)
 {
   ENTRY();
   
-  vTrace("[%s] Test\n"_Stz,m_pTask->szJobName());
+  vTrace("[%s] Test\n"_Stz,szJobName());
   
   EXIT();
 }

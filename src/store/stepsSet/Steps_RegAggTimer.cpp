@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -23,7 +28,7 @@ void Step::vRegAggTimerGet(void)
 {
   ENTRY();
     
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpAggTimer);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpAggTimer);
 
   EXIT();
 }
@@ -35,7 +40,7 @@ void Step::vRegAggTimerSet(void)
 {
   ENTRY();
     
-  m_pTask->m_pLogicUnit->m_xpAggTimer = _pAggTimer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  ( m_pJob->pLogicUnit_job() )->m_xpAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

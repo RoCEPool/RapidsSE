@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +32,7 @@ void Step::vAttachMapOperandsFetch(void)
   
   i8 nOperands = AM::nOperandsGet();
   
-  m_pTask->m_pDataStack->vPushInt(nOperands);
+  m_pDataStack->vPushInt(nOperands);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +42,7 @@ void Step::vAttachMapRegionSizeFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(AM::iRegionSize());
+  m_pDataStack->vPushInt(AM::iRegionSize());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +52,7 @@ void Step::vAttachMapIsLowMemory(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(gpBufferPool->bLowMemory());
+  m_pDataStack->vPushInt(gpBufferPool->bLowMemory());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +62,7 @@ void Step::vAttachMapTenantsFetch(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(AM::pTenants());
+  m_pDataStack->vPushPtr(AM::pTenants());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +72,7 @@ void Step::vAttachMapTenantsStore(void)
 {
   ENTRY();
   
-  Word *pWord_tenants = _pWord(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Word *pWord_tenants = _pWord(m_pDataStack->pPopPtr(__func__));
 
   AM::vTenants(pWord_tenants);
 }

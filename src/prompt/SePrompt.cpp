@@ -4,8 +4,21 @@
 
 #include "BASE.h"
 #include "STORE.h"
-#include "PROMPT.h"
 
+#include "Api.hpp"
+
+#include "AttachMap.hpp"
+#include "Job.hpp"
+#include "Procedure.hpp"
+
+#include "ShortCut.hpp"
+#include "SeDeputy.hpp"
+#include "SePrompt.hpp"
+
+#include "PromptFun.hpp"
+#include "PromptCatalog.hpp"
+
+#include "Prompt_ALLINONE.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"
@@ -16,6 +29,7 @@ extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;
 
 extern Stz* gsBuildGitHash;
+extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

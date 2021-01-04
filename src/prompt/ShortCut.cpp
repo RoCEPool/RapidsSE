@@ -4,8 +4,8 @@
 
 #include "BASE.h"
 #include "STORE.h"
-#include "PROMPT.h"
 
+#include "ShortCut.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

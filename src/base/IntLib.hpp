@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntLib.hpp -- integer utility                                              */
+/* IntLib.hpp -- integer library                                              */
 /*============================================================================*/
 #pragma once
 
@@ -30,6 +30,10 @@ namespace BASE
     static i8 iVlqToInt(byte yVlqVec[16]);
   
     static char* sAsText(i8 iValue);
+  
+  
+    static void vInitGlobals(void);
+
   
   /*----------------------------------------------------------------------------*/
   /* return the byte magnitude of arg                                           */

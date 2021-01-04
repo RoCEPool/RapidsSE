@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "SP_Header.hpp"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/

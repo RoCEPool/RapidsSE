@@ -100,7 +100,7 @@ void TypedCell::vCopy(TypedCell* aSrcVal, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-ForthCell* TypedCell::aFip(void)
+CodeCell* TypedCell::aFip(void)
 {
   return m_wxValueCell.aGetColVal();
 }
@@ -108,7 +108,7 @@ ForthCell* TypedCell::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vFip(ForthCell* aFip)
+void TypedCell::vFip(CodeCell* aFip)
 {
   vType(CN_FIPVAL);
   m_wxValueCell.vPutColVal(aFip);

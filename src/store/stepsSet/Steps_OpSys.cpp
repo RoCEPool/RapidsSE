@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,9 +27,9 @@ void Step::vOpSysIsLinux(void)
   ENTRY();
   
 #ifdef WITH_LINUX
-  m_pTask->m_pDataStack->vPushInt(true);
+  m_pDataStack->vPushInt(true);
 #else
-  m_pTask->m_pDataStack->vPushInt(false);
+  m_pDataStack->vPushInt(false);
 #endif
 
   EXIT();
@@ -39,9 +43,9 @@ void Step::vOpSysIsMacOs(void)
   ENTRY();
 
 #ifdef WITH_APPLE
-  m_pTask->m_pDataStack->vPushInt(true);
+  m_pDataStack->vPushInt(true);
 #else
-  m_pTask->m_pDataStack->vPushInt(false);
+  m_pDataStack->vPushInt(false);
 #endif
 
   EXIT();

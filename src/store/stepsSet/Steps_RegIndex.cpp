@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -22,7 +27,7 @@ void Step::vRegIndexGet(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpIndex);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
   
   EXIT();
 }
@@ -34,7 +39,7 @@ void Step::vRegIndexSet(void)
 {
   ENTRY();
   
-  m_pTask->m_pLogicUnit->m_xpIndex = _pIndex(m_pTask->m_pDataStack->pPopPtr(__func__));
+  ( m_pJob->pLogicUnit_job() )->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

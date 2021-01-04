@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,14 +27,14 @@ void Step::vEnvGet(void)
   
   s32 sEnvName;
   
-  m_pTask->m_pDataStack->vPopStr(sEnvName,__func__);
+  m_pDataStack->vPopStr(sEnvName,__func__);
   
   s256 sEnvVal;
   
   if (! Env::bGet(sEnvName,sEnvVal))
     sEnvVal = ""_Stz;
   
-  m_pTask->m_pDataStack->vPushStr(sEnvVal);
+  m_pDataStack->vPushStr(sEnvVal);
   
   EXIT();
 }

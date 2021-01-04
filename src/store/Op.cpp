@@ -101,7 +101,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Task* pTask = AM::pThisTLSTask();
-  AM::vTaskBeginOp(pTask);
   
   ++ gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCT,

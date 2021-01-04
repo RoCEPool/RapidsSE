@@ -139,7 +139,7 @@ char* CellSingle::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get address of column cell                                                 */
 /*----------------------------------------------------------------------------*/
-ForthCell* CellSingle::aFip(void)
+CodeCell* CellSingle::aFip(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
 

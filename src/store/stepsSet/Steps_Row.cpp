@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,7 +30,7 @@ void Step::vRowGet(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpRow);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpRow);
   
   EXIT();
 }
@@ -37,11 +42,11 @@ void Step::vRowGetIntColumn(void)
 {
   ENTRY();
   
-  i8 i_Col = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Col = m_pDataStack->iPopInt(__func__);
   
-  Row* pRow = *m_pTask->m_pLogicUnit->m_xpRow;
+  Row* pRow = *( m_pJob->pLogicUnit_job() )->m_xpRow;
   
-  m_pTask->m_pDataStack->vPushInt(pRow->iColVal_int(i_Col));
+  m_pDataStack->vPushInt(pRow->iColVal_int(i_Col));
   
   EXIT();
 }
@@ -53,12 +58,12 @@ void Step::vRowGetVchColumn(void)
 {
   ENTRY();
   
-  i8 i_Col = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Col = m_pDataStack->iPopInt(__func__);
   
-  Row* pRow = *m_pTask->m_pLogicUnit->m_xpRow;
+  Row* pRow = *( m_pJob->pLogicUnit_job() )->m_xpRow;
   
   s256 sColumn = pRow->szColVal_ofs(i_Col);
-  m_pTask->m_pDataStack->vPushStr(sColumn);
+  m_pDataStack->vPushStr(sColumn);
   
   EXIT();
 }
@@ -70,7 +75,7 @@ void Step::vRowIsNull(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpRow.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpRow.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -82,9 +87,9 @@ void Step::vRowSet(void)
 {
   ENTRY();
 
-  Row* pRow = _pRow(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
 
-  m_pTask->m_pLogicUnit->m_xpRow = _pRow(pRow);
+  ( m_pJob->pLogicUnit_job() )->m_xpRow = _pRow(pRow);
   
   EXIT();
 }

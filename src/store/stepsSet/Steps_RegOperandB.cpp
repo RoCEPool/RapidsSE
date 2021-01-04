@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -28,7 +33,7 @@ void Step::vRegOperandBAppendClose(void)
 {
   ENTRY();
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pTask->m_pLogicUnit->m_xpOperandB);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   pCrwBuffer->vAppendClose();
   
   EXIT();
@@ -41,9 +46,9 @@ void Step::vRegOperandBDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pTask->m_pLogicUnit->m_xpOperandB);
+  AM::vDeleteOperand(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   
-  m_pTask->m_pLogicUnit->m_xpOperandB = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = nullptr;
   
   EXIT();
 }
@@ -55,7 +60,7 @@ void Step::vRegOperandBGet(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushPtr(*m_pTask->m_pLogicUnit->m_xpOperandB);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   
   EXIT();
 }
@@ -67,7 +72,7 @@ void Step::vRegOperandBIsNotNull(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpOperandB.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -79,7 +84,7 @@ void Step::vRegOperandBIsNull(void)
 {
   ENTRY();
   
-  m_pTask->m_pDataStack->vPushInt(m_pTask->m_pLogicUnit->m_xpOperandB.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -91,13 +96,13 @@ void Step::vRegOperandBPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*m_pTask->m_pLogicUnit->m_xpOperandB);
+  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
+  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pTask->m_pLogicUnit->m_xpOperandB,m_pTask);
+  pOp->vPipeOut_nextOp(*( m_pJob->pLogicUnit_job() )->m_xpOperandB,this);
   
-  m_pTask->m_pLogicUnit->m_xpOperandB = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = nullptr;
   
   EXIT();
 }
@@ -109,8 +114,8 @@ void Step::vRegOperandBSet(void)
 {
   ENTRY();
   
-  ASSERT(m_pTask->m_pLogicUnit->m_xpOperandB.bIsNull());
-  m_pTask->m_pLogicUnit->m_xpOperandB = _pOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
+  ASSERT(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull());
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

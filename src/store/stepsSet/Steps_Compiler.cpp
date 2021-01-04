@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -50,11 +54,11 @@ void Step::vCompilerIsCompiling(void)
 {
   ENTRY();
   
-  eCM eMode = m_pTask->m_pCompiler->eMode();
+  eCM eMode = m_pCompiler->eMode();
   
   i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDCOMPILING == eMode);
   
-  m_pTask->m_pDataStack->vPushInt(iIsCompiling);
+  m_pDataStack->vPushInt(iIsCompiling);
   
   EXIT();
 }
@@ -66,11 +70,11 @@ void Step::vCompilerIsDiscarding(void)
 {
   ENTRY();
   
-  eCM eMode = m_pTask->m_pCompiler->eMode();
+  eCM eMode = m_pCompiler->eMode();
   
   i8 iIsDiscarding = CM_DISCARDING == eMode;
   
-  m_pTask->m_pDataStack->vPushInt(iIsDiscarding);
+  m_pDataStack->vPushInt(iIsDiscarding);
 
   EXIT();
 }
@@ -82,11 +86,11 @@ void Step::vCompilerIsInterpreting(void)
 {
   ENTRY();
   
-  eCM eMode = m_pTask->m_pCompiler->eMode();
+  eCM eMode = m_pCompiler->eMode();
   
   i8 iIsInterpreting = CM_INTERPRETING == eMode;
   
-  m_pTask->m_pDataStack->vPushInt(iIsInterpreting);
+  m_pDataStack->vPushInt(iIsInterpreting);
 
   EXIT();
 }
@@ -98,11 +102,11 @@ void Step::vCompilerIsPostponing(void)
 {
   ENTRY();
   
-  eCM eMode = m_pTask->m_pCompiler->eMode();
+  eCM eMode = m_pCompiler->eMode();
   
   i8 iIsPostponing = CM_POSTPONING == eMode;
   
-  m_pTask->m_pDataStack->vPushInt(iIsPostponing);
+  m_pDataStack->vPushInt(iIsPostponing);
 
   EXIT();
 }
@@ -119,7 +123,7 @@ void Step::vCompilerCompiling(void)
 {
   ENTRY();
   
-  m_pTask->m_pCompiler->vMode(CM_COMPILING);
+  m_pCompiler->vMode(CM_COMPILING);
   
   EXIT();
 }
@@ -131,7 +135,7 @@ void Step::vCompilerDiscarding(void)
 {
   ENTRY();
   
-  m_pTask->m_pCompiler->vMode(CM_DISCARDING);
+  m_pCompiler->vMode(CM_DISCARDING);
   
   EXIT();
 }
@@ -143,7 +147,7 @@ void Step::vCompilerInterpreting(void)
 {
   ENTRY();
   
-  m_pTask->m_pCompiler->vMode(CM_INTERPRETING);
+  m_pCompiler->vMode(CM_INTERPRETING);
   
   EXIT();
 }
@@ -155,7 +159,7 @@ void Step::vCompilerPostponing(void)
 {
   ENTRY();
   
-  m_pTask->m_pCompiler->vMode(CM_POSTPONING);
+  m_pCompiler->vMode(CM_POSTPONING);
   
   EXIT();
 }
@@ -172,12 +176,12 @@ void Step::vCompilerCurrentFetch(void)
 {
   ENTRY();
     
-  Word* pCurrWord = m_pTask->m_pCompiler->pCurrentWord();
+  Word* pCurrWord = m_pCompiler->pCurrentWord();
     
 //  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
 //    BASE::vDebugPoint();
 
-  m_pTask->m_pDataStack->vPushPtr(pCurrWord);
+  m_pDataStack->vPushPtr(pCurrWord);
   
   EXIT();
 }
@@ -189,9 +193,9 @@ void Step::vCompilerCurrentStore(void)
 {
   ENTRY();
   
-  Word* pCurrWord = _pWord(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
-  m_pTask->m_pCompiler->vCurrentWord(pCurrWord);
+  m_pCompiler->vCurrentWord(pCurrWord);
   
   EXIT();
 }
@@ -208,11 +212,11 @@ void Step::vCompilerNestedFetch(void)
 {
   ENTRY();
     
-  i8 i_Nested = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Nested = m_pDataStack->iPopInt(__func__);
   
-  Word* pNested = m_pTask->m_pCompiler->pNestedWord(i_Nested);
+  Word* pNested = m_pCompiler->pNestedWord(i_Nested);
   
-  m_pTask->m_pDataStack->vPushPtr(pNested);
+  m_pDataStack->vPushPtr(pNested);
   
   EXIT();
 }
@@ -224,11 +228,11 @@ void Step::vCompilerNestedStore(void)
 {
   ENTRY();
   
-  Word* pNested = _pWord(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Word* pNested = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  i8 i_Nested = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Nested = m_pDataStack->iPopInt(__func__);
     
-  m_pTask->m_pCompiler->vNestedWord(i_Nested,pNested);
+  m_pCompiler->vNestedWord(i_Nested,pNested);
   
   EXIT();
 }
@@ -244,7 +248,7 @@ void Step::vCompilerCondBegin(void)
 {
   ENTRY();
     
-  m_pTask->m_pCompiler->vMode(CM_INTERPRETING);
+  m_pCompiler->vMode(CM_INTERPRETING);
 
   EXIT();
 }
@@ -256,12 +260,12 @@ void Step::vCompilerCondTest(void)
 {
   ENTRY();
   
-  i8 iCondTest = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iCondTest = m_pDataStack->iPopInt(__func__);
   
   if (iCondTest)
-    m_pTask->m_pCompiler->vMode(CM_CONDCOMPILING);
+    m_pCompiler->vMode(CM_CONDCOMPILING);
   else
-    m_pTask->m_pCompiler->vMode(CM_DISCARDING);
+    m_pCompiler->vMode(CM_DISCARDING);
 
   EXIT();
 }
@@ -273,13 +277,13 @@ void Step::vCompilerCondElse(void)
 {
   ENTRY();
    
-  eCM eMode = m_pTask->m_pCompiler->eMode();
+  eCM eMode = m_pCompiler->eMode();
 
   if (CM_CONDCOMPILING == eMode)
-    m_pTask->m_pCompiler->vMode(CM_DISCARDING);
+    m_pCompiler->vMode(CM_DISCARDING);
   else
   if (CM_DISCARDING == eMode)
-    m_pTask->m_pCompiler->vMode(CM_CONDCOMPILING);
+    m_pCompiler->vMode(CM_CONDCOMPILING);
 
   EXIT();
 }
@@ -291,9 +295,9 @@ void Step::vCompilerCondEnd(void)
 {
   ENTRY();
     
-  eCM eMode = m_pTask->m_pCompiler->eMode();
+  eCM eMode = m_pCompiler->eMode();
 
-  m_pTask->m_pCompiler->vMode(CM_COMPILING);
+  m_pCompiler->vMode(CM_COMPILING);
 
   EXIT();
 }

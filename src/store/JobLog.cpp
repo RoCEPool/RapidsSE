@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Job.hpp"
+#include "JobLog.hpp"
 
 #include "eQK.h"
 #include "eTS.h"

@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Api.hpp"
+#include "Job.hpp"
+
+#include "Procedure.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"
@@ -28,10 +36,10 @@ void Step::vApiAddProcedure(void)
   ENTRY();
   
   s48K sRequest;
-  m_pTask->m_pDataStack->vPopStr(sRequest,__func__);
+  m_pDataStack->vPopStr(sRequest,__func__);
   
   s48K sWithTagStr;
-  m_pTask->m_pDataStack->vPopStr(sWithTagStr,__func__);
+  m_pDataStack->vPopStr(sWithTagStr,__func__);
   
   if (AM::bVerbose()) {
     vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
@@ -59,19 +67,19 @@ void Step::vApiExecuteNested(void)
 {
   ENTRY();
 
-  //m_pTask->m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
+  //( m_pJob->pLogicUnit_job() )->m_xpOp->pOpTagSet()->vDumpSet();
   
   eEC eError;
   ReqTuple xReqTuple;
 
   s48K sRequest;
-  m_pTask->m_pDataStack->vPopStr(sRequest,__func__);
+  m_pDataStack->vPopStr(sRequest,__func__);
 
-  i8 iReqNo = m_pTask->m_pDataStack->iPopInt(__func__);
-  i8 iReqOf = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iReqNo = m_pDataStack->iPopInt(__func__);
+  i8 iReqOf = m_pDataStack->iPopInt(__func__);
 
 //  s48K sWithTagStr;
-//  m_pTask->m_pDataStack->vPopStr(sWithTagStr,__func__);
+//  m_pDataStack->vPopStr(sWithTagStr,__func__);
 //
 //  if (AM::bVerbose()) {
 //    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
@@ -96,8 +104,8 @@ void Step::vApiExecuteNested(void)
   eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
   if (eError) {
-    m_pTask->m_pDataStack->vPushInt(eError);
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
     EXIT();
   }
     
@@ -105,11 +113,11 @@ void Step::vApiExecuteNested(void)
 
   Job* pJob = pSession->m_pSsnJob;
 
-  pJob->m_pOuterOp = m_pTask->m_pJob->m_pOp;
+  pJob->m_pOuterOp = m_pJob->m_pOp;
   
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
 
   pJobTagSet->vReplace(C_TAG_REQNO,iReqNo);
@@ -118,8 +126,8 @@ void Step::vApiExecuteNested(void)
 //  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
 //  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
-  m_pTask->m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
-  pJobTagSet->vCopy(m_pTask->m_pLogicUnit->m_xpOp->pOpTagSet());
+  ( m_pJob->pLogicUnit_job() )->m_xpOp->pOpTagSet()->vDumpSet();
+  pJobTagSet->vCopy(( m_pJob->pLogicUnit_job() )->m_xpOp->pOpTagSet());
   
   if (AM::bVerbose())
     pJobTagSet->vDumpSet();
@@ -140,7 +148,7 @@ void Step::vApiExecuteNested(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->m_pDataStack->vPushInt(true);
+  m_pDataStack->vPushInt(true);
   
 //  Api::vFreeSession(pSession);
   
@@ -162,10 +170,10 @@ void Step::vApiExecuteRequest(void)
   ReqTuple xReqTuple;
 
   s48K sRequest;
-  m_pTask->m_pDataStack->vPopStr(sRequest,__func__);
+  m_pDataStack->vPopStr(sRequest,__func__);
 
   s48K sWithTagStr;
-  m_pTask->m_pDataStack->vPopStr(sWithTagStr,__func__);
+  m_pDataStack->vPopStr(sWithTagStr,__func__);
 
   if (AM::bVerbose()) {
     vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
@@ -190,8 +198,8 @@ void Step::vApiExecuteRequest(void)
   eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
   
   if (eError) {
-    m_pTask->m_pDataStack->vPushInt(eError);
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
     EXIT();
   }
     
@@ -201,7 +209,7 @@ void Step::vApiExecuteRequest(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
   TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
@@ -225,7 +233,7 @@ void Step::vApiExecuteRequest(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->m_pDataStack->vPushInt(true);
+  m_pDataStack->vPushInt(true);
   
   Api::vFreeSession(pSession);
   
@@ -244,12 +252,12 @@ void Step::vApiSpawnDemon(void)
   ENTRY();
   
   s48K sPipeline;
-  m_pTask->m_pDataStack->vPopStr(sPipeline,__func__);
+  m_pDataStack->vPopStr(sPipeline,__func__);
  
-  bool bDedicated = m_pTask->m_pDataStack->iPopInt(__func__);
+  bool bDedicated = m_pDataStack->iPopInt(__func__);
   
   s48K sTagStr;
-  m_pTask->m_pDataStack->vPopStr(sTagStr,__func__);
+  m_pDataStack->vPopStr(sTagStr,__func__);
 
   if (AM::bVerbose()) {
     vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
@@ -272,8 +280,8 @@ void Step::vApiSpawnDemon(void)
 
   if (eError) {
     Api::vFreeSession(pSession);
-    m_pTask->m_pDataStack->vPushInt(eError);
-    m_pTask->m_pDataStack->vPushInt(false);
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
     EXIT();
   }
     
@@ -283,7 +291,7 @@ void Step::vApiSpawnDemon(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
   TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
@@ -302,7 +310,7 @@ void Step::vApiSpawnDemon(void)
   
   Api::vFreeSession(pSession);
 
-  m_pTask->m_pDataStack->vPushInt(true);
+  m_pDataStack->vPushInt(true);
   
   delete pDmnTknVec;
   delete pTagStrTknVec;

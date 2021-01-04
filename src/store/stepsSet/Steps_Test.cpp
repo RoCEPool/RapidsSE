@@ -4,8 +4,13 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 #include "Test.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -358,7 +363,7 @@ void Step::vTestTest22(void)
   i8 nSize = pFile->iSize();
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
   
-  m_pTask->m_pLogicUnit->bGenerateAsm(sText);
+  ( m_pJob->pLogicUnit_job() )->bGenerateAsm(sText);
   
   EXIT();
 }

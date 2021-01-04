@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include <sys/stat.h>
+
 Atomic gixFile;
 
 OpenFiles* gpOpenFiles;

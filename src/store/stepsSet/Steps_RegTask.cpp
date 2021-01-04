@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -21,7 +25,7 @@ void Step::vRegTaskGet(void)
 {
   ENTRY();
     
-  m_pTask->m_pDataStack->vPushPtr(m_pTask);
+  m_pDataStack->vPushPtr(this);
 
   EXIT();
 }

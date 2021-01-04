@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Procedure.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -22,7 +27,7 @@ void Step::vProcedureAdd(void)
   ENTRY();
   
   s48K sProcText;
-  m_pTask->m_pDataStack->vPopStr(sProcText,__func__);
+  m_pDataStack->vPopStr(sProcText,__func__);
   
   TokenVec* pTokenVec = TokenVec::pTokenise(sProcText);
   

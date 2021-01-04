@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 extern Stz* gszaMungedText[];
@@ -36,27 +40,27 @@ void Step::vColon(void)
   
   s256 sName;
   
-  m_pTask->m_pCompiler->vMode(CM_COMPILING);
+  m_pCompiler->vMode(CM_COMPILING);
   
-  m_pTask->m_pInput->vReadToken();
-  sName = m_pTask->m_pInput->szChars();
+  m_pInput->vReadToken();
+  sName = m_pInput->szChars();
   
   //vTrace("Colon: %s\n"_Stz,sName.szStz());
   
   Dic* pDic;
-  if (m_pTask->m_oDicStack.iCount())
-    pDic = m_pTask->m_oDicStack.pTop();
+  if (m_oDicStack.iCount())
+    pDic = m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
   Word* pNewWord = new(pDic) Word(sName);
   
-  Word* pInclude = m_pTask->m_pInput->pUseInclude();
+  Word* pInclude = m_pInput->pUseInclude();
   pNewWord->vInclude(pInclude);
   
-  m_pTask->m_pCompiler->vCurrentWord(pNewWord);
+  m_pCompiler->vCurrentWord(pNewWord);
   
-  m_pTask->m_pCompiler->vNestedWord(0,pNewWord);
+  m_pCompiler->vNestedWord(0,pNewWord);
   
   EXIT();
 }
@@ -69,8 +73,8 @@ void Step::vComment(void)
   ENTRY();
   
   for (;;) {
-    m_pTask->m_pInput->vReadToken();
-    if (m_pTask->m_pInput->szChars()->bEqual(")"_Stz))
+    m_pInput->vReadToken();
+    if (m_pInput->szChars()->bEqual(")"_Stz))
       break;
   }
   
@@ -84,16 +88,16 @@ void Step::vCreateFromInRoot(void)
   ENTRY();
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   Dic* pDic = AM::pRootDic();
   
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic) Word(sName);
   
-  //m_pTask->m_pCompiler->vCurrentWord(pNewWord);
+  //m_pCompiler->vCurrentWord(pNewWord);
   
-  m_pTask->m_pDataStack->vPushPtr(pNewWord);
+  m_pDataStack->vPushPtr(pNewWord);
 
   EXIT();
 }
@@ -105,22 +109,22 @@ void Step::vFlowExecute(void)
 {
   ENTRY();
   
-  fpSTEPFN fpStep;
+  fpSTEPFN fpStepFn;
   Object* pObject;
 
-  Word* pWord = _pWord(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   eWK eWord = pWord->eWord();
   
   switch(eWord) {
     case WK_CPPOBJECT:
-      m_pTask->m_pReturnStack->vPushFip(m_pTask->m_aInxPtr);
-      m_pTask->m_aInxPtr = pWord->aEntryCell();
+      m_pReturnStack->vPushFip(m_aInxPtr);
+      m_aInxPtr = pWord->aEntryCell();
       break;
           
     case WK_INTRINSIC:
-      fpStep = pWord->fpEntryStep();
-      ((Step*)this->*fpStep)();
+      fpStepFn = pWord->fpEntryStep();
+      ((Step*)this->*fpStepFn)();
       break;
           
     case WK_LOCAL:
@@ -128,8 +132,8 @@ void Step::vFlowExecute(void)
       break;
           
     case WK_ROUTINE:
-      m_pTask->m_pReturnStack->vPushFip(m_pTask->m_aInxPtr);
-      m_pTask->m_aInxPtr = pWord->aEntryCell();
+      m_pReturnStack->vPushFip(m_aInxPtr);
+      m_aInxPtr = pWord->aEntryCell();
       break;
           
     default:
@@ -146,21 +150,21 @@ void Step::vExit_RT(void)
 {
   ENTRY();
   
-  //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pTask->m_pReturnStack->iValues());
+  //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pReturnStack->iValues());
   
-  if ( (m_pTask->m_iTraceMask & C_TRACE_ROUTINES) )
-    m_pTask->vTracePoint("<"_Stz);
+  if ( (m_iTraceMask & C_TRACE_ROUTINES) )
+    Task::vTracePoint("<"_Stz);
   
-  if (m_pTask->m_pLocalsFrame
-      && m_pTask->m_pLocalsFrame->aDiscardPoint() == (TypedCell*)m_pTask->m_pReturnStack->aTopVal())
-    m_pTask->vLocalsPop();
+  if (m_pLocalsFrame
+      && m_pLocalsFrame->aDiscardPoint() == (TypedCell*)m_pReturnStack->aTopVal())
+    vLocalsPop();
   
   // make sure we don't return to nowhere
-  ASSERT(m_pTask->m_pReturnStack->nValues());
+  ASSERT(m_pReturnStack->nValues());
   
-  ForthCell* aCell = m_pTask->m_pReturnStack->aPopFip(__func__);
+  CodeCell* aCell = m_pReturnStack->aPopFip(__func__);
   
-  m_pTask->m_aInxPtr = aCell;
+  m_aInxPtr = aCell;
   
   EXIT();
 }
@@ -172,12 +176,12 @@ void Step::vFind(void)
 {
   ENTRY();
   
-  m_pTask->m_pInput->vReadToken();
+  m_pInput->vReadToken();
 
   s32 sWordNm;
-  sWordNm = m_pTask->m_pInput->szChars();
+  sWordNm = m_pInput->szChars();
   
-  Word* pWord = m_pTask->m_oDicStack.pFindWord(sWordNm);
+  Word* pWord = m_oDicStack.pFindWord(sWordNm);
   
   if (! pWord)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -186,12 +190,12 @@ void Step::vFind(void)
   CellSingle xVar;
   xVar = pWord;
 
-  if (m_pTask->m_pCompiler->bCompiling()) {
-    Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
+  if (m_pCompiler->bCompiling()) {
+    Word* pCurrentWord = m_pCompiler->pCurrentWord();
     pCurrentWord->vEncodePush(xVar);
   }
   else {
-    m_pTask->m_pDataStack->vPushPtr(pWord);
+    m_pDataStack->vPushPtr(pWord);
   }
   
   EXIT();
@@ -204,7 +208,7 @@ void Step::vImmediate(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
@@ -220,13 +224,13 @@ void Step::vMungedText(void)
 {
   ENTRY();
 
-  i8 i_Text = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 i_Text = m_pDataStack->iPopInt(__func__);
   
   Stz* szText = gszaMungedText[i_Text];
   
   //vTrace("MungedText[%lld]:\n%s\n"_Stz,i_Text,szText);
   
-  m_pTask->m_pDataStack->vPushStz(szText);
+  m_pDataStack->vPushStz(szText);
   
   EXIT();
 }
@@ -238,17 +242,17 @@ void Step::vPostpone(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // get name of word to be called
-  m_pTask->m_pInput->vReadToken();
+  m_pInput->vReadToken();
 
   // find the word in dic stack
-  Word* pCalledWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pInput->szChars());
+  Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szChars());
   if ( ! pCalledWord )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,
-           m_pTask->m_pInput->szChars()->azChar());
+           m_pInput->szChars()->azChar());
   
   
   CellSingle xVar;
@@ -283,9 +287,9 @@ void Step::vSee(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
 
-  AM::vWordSee(pCurrentWord,&m_pTask->m_oDicStack);
+  AM::vWordSee(pCurrentWord,&m_oDicStack);
   
   EXIT();
 }
@@ -299,24 +303,24 @@ void Step::vSemicolon(void)
   
   static i8 iMaxUsed = 0;
   
-  Word* pCurrentWord = m_pTask->m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  if (m_pTask->m_pCompiler->nLocals()) {
+  if (m_pCompiler->nLocals()) {
     
     // reset the number of local variables
-    m_pTask->m_pCompiler->vLocals(0);
+    m_pCompiler->vLocals(0);
     
     // pop top dictionary
-    m_pTask->m_oDicStack.vDiscard();
+    m_oDicStack.vDiscard();
     
     // enocde locals frame pop
     pCurrentWord->vEncodeCall("locals.pop"_Stz);
   }
   
   if (! pCurrentWord->szWordNm()->bSame("exit"_Stz) &&
-      m_pTask->m_oDicStack.pFindWord("exit"_Stz)) {
+      m_oDicStack.pFindWord("exit"_Stz)) {
     
-    if (m_pTask->m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
+    if (m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
       pCurrentWord->vEncodeCall(pCurrentWord->szExitHook());
       pCurrentWord->vEncodeCall("exit_rt"_Stz);
     }
@@ -326,17 +330,17 @@ void Step::vSemicolon(void)
   else
     pCurrentWord->vEncodeCall("exit_rt"_Stz);
   
-  i8 iUsed = pCurrentWord->nRoutineUsed();
+  i8 iUsed = pCurrentWord->nCodeBlockUsed();
   if (iUsed > iMaxUsed)
     iMaxUsed = iUsed;
-//  vTrace(" Routine %lldB (%lld): %s\n"_Stz,
-//         pCurrentWord->nRoutineUsed(),
+//  vTrace(" CodeBlock %lldB (%lld): %s\n"_Stz,
+//         pCurrentWord->nCodeBlockUsed(),
 //         iMaxUsed,
 //         pCurrentWord->szWordNm());
   
-  m_pTask->m_pCompiler->vMode(CM_INTERPRETING);
+  m_pCompiler->vMode(CM_INTERPRETING);
     
-  //m_pTask->m_pCompiler->vCurrentWord(nullptr);
+  //m_pCompiler->vCurrentWord(nullptr);
     
 //  if (pCurrentWord->szWordNm()->bSame("tpl_liteOp_PulseMarker"_Stz))
 //    AM::vWordSee(pCurrentWord,&m_oDicStack);
@@ -352,7 +356,7 @@ void Step::vSeriesName(void)
   ENTRY();
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -381,7 +385,7 @@ void Step::vSeriesName(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pTask->m_pDataStack->vPushStr(sNextName);
+  m_pDataStack->vPushStr(sNextName);
 
   EXIT();
 }

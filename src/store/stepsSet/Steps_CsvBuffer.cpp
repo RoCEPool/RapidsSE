@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +31,7 @@ void Step::vCsvBufferNew(void)
   
   CsvBuffer* pCsvBuffer = new CsvBuffer;
     
-  m_pTask->m_pDataStack->vPushPtr(pCsvBuffer);
+  m_pDataStack->vPushPtr(pCsvBuffer);
 
   EXIT();
 }
@@ -42,7 +46,7 @@ void Step::vCsvBufferDelete(void)
 {
   ENTRY();
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
   delete pCsvBuffer;
   
@@ -56,9 +60,9 @@ void Step::vCsvBufferOperandDump(void)
 {
   ENTRY();
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
-  i8 iDetail = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iDetail = m_pDataStack->iPopInt(__func__);
 
   if (iDetail)
     pCsvBuffer->vPrintRecords();
@@ -75,7 +79,7 @@ void Step::vCsvBufferPrint(void)
 {
   ENTRY();
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
   pCsvBuffer->vPrintRecords();
   

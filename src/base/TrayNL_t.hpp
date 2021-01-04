@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "MetaCodeMacros.h"
+
 namespace BASE
 {
   static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit);

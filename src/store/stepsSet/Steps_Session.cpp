@@ -4,7 +4,13 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "SessionArray.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -32,11 +38,11 @@ void Step::vSessionDicStackFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(pSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pTask->m_pDataStack->vPushPtr(pSession->pPathStack());
+  m_pDataStack->vPushPtr(pSession->pPathStack());
   
   EXIT();
 }
@@ -48,7 +54,7 @@ void Step::vSessionDump(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
   
   pSession->vContentDump();
@@ -63,11 +69,11 @@ void Step::vSessionTagSetFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
   TagSet* pSsnTagSet = & pSession->m_oSsnTagSet;
   
-  m_pTask->m_pDataStack->vPushPtr(pSsnTagSet);
+  m_pDataStack->vPushPtr(pSsnTagSet);
   
   EXIT();
 }
@@ -79,10 +85,10 @@ void Step::vSessionIsExiting(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pTask->m_pDataStack->vPushInt(pSession->m_bExiting);
+  m_pDataStack->vPushInt(pSession->m_bExiting);
   
   EXIT();
 }
@@ -94,10 +100,10 @@ void Step::vSessionPid(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pTask->m_pDataStack->vPushInt(pSession->m_iPid);
+  m_pDataStack->vPushInt(pSession->m_iPid);
   
   EXIT();
 }
@@ -109,10 +115,10 @@ void Step::vSessionTablePtnFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pTask->m_pDataStack->vPushInt(pSession->i_Stream());
+  m_pDataStack->vPushInt(pSession->i_Stream());
   
   EXIT();
 }
@@ -124,7 +130,7 @@ void Step::vSessionThis(void)
 {
   ENTRY();
  
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
 
   i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
   
@@ -133,7 +139,7 @@ void Step::vSessionThis(void)
   if (iSessionId != C_UNKNOWN)
     pSession = AM::pSessionArray()->pGetSession(iSessionId);
   
-  m_pTask->m_pDataStack->vPushPtr(pSession);
+  m_pDataStack->vPushPtr(pSession);
 
   EXIT();
 }
@@ -145,9 +151,9 @@ void Step::vSessionToDoFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
 
-  m_pTask->m_pDataStack->vPushStr(pSession->m_sToDo);
+  m_pDataStack->vPushStr(pSession->m_sToDo);
   
   EXIT();
 }
@@ -159,10 +165,10 @@ void Step::vSessionToDoStore(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
   s4K sToDo;
-  m_pTask->m_pDataStack->vPopStr(sToDo,__func__);
+  m_pDataStack->vPopStr(sToDo,__func__);
 
   pSession->m_sToDo = sToDo;
   
@@ -176,11 +182,11 @@ void Step::vSessionTxFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
   Tx* pTx = pSession->pTx();
   
-  m_pTask->m_pDataStack->vPushPtr(pTx);
+  m_pDataStack->vPushPtr(pTx);
   
   EXIT();
 }
@@ -192,9 +198,9 @@ void Step::vSessionTxStore(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   
-  Tx* pTx = _pTx(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   pSession->vTx(pTx);
   

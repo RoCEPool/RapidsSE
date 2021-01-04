@@ -4,6 +4,14 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
+
+#include "XmitOperand.hpp"
+
+#include "Job.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -22,9 +30,9 @@ void Step::vXmitOperandOperandStore(void)
 {
   ENTRY();
   
-  XmitOperand* pXmitOperand = _pXmitOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
+  XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
   
-  Operand* pOperand = _pOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   pXmitOperand->m_pOperand = pOperand;
   
@@ -38,7 +46,7 @@ void Step::vXmitOperandPipeOut(void)
 {
   ENTRY();
   
-  XmitOperand* pXmitOperand = _pXmitOperand(m_pTask->m_pDataStack->pPopPtr(__func__));
+  XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
   
   // find the pipeline participant job
   i8 iPipelineJob = pXmitOperand->m_iPipelineJobId;
@@ -56,7 +64,7 @@ void Step::vXmitOperandPipeOut(void)
   //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
   // append to left queue
   if (pXmitOperand->m_pOperand)
-    pOp->vAppendLeft(pXmitOperand->m_pOperand,m_pTask);
+    pOp->vAppendLeft(pXmitOperand->m_pOperand,this);
   
   // now delete the pXmitOperand
   delete pXmitOperand;

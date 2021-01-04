@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -25,12 +29,12 @@ void Step::vTablePtnAttemptGrabRead(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   // attempt to grab the read lock
   bool bSuccess = pTablePtn->bGrabRead();
   
-  m_pTask->m_pDataStack->vPushInt(bSuccess);
+  m_pDataStack->vPushInt(bSuccess);
   
   EXIT();
 }
@@ -42,12 +46,12 @@ void Step::vTablePtnAttemptGrabWrite(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
   
-  m_pTask->m_pDataStack->vPushInt(bSuccess);
+  m_pDataStack->vPushInt(bSuccess);
   
   EXIT();
 }
@@ -59,7 +63,7 @@ void Step::vTablePtnDropRead(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
     
   // drop the read lock
   pTablePtn->vDropRead();
@@ -74,7 +78,7 @@ void Step::vTablePtnDropWrite(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = _pTablePtn(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TablePtn* pTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   // drop the write lock
   pTablePtn->vDropWrite();

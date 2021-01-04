@@ -21,34 +21,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-#include "DataChunk.hpp"
-#include "RecordChunk.hpp"
-#include "FileChunk.hpp"
-
-#include "IngestChunk.hpp"
-#include "IoChunk.hpp"
-#include "IoCopy.hpp"
-#include "LoadChunk.hpp"
-
-#include "Operand.hpp"
-#include "LinkedBuffer.hpp"
 #include "Definition.hpp"
-#include "OperandQueue.hpp"
-
-//------------------------------------------------------------------------------
-
-#include "Dic.hpp"
-#include "DicStack.hpp"
-#include "Local.hpp"
-#include "LocalChain.hpp"
-#include "Routine.hpp"
-#include "TypedStack.hpp"
-
-#include "Compiler.hpp"
-#include "Forth.hpp"
-#include "Word.hpp"
-
-#include "SP_Word.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -69,12 +42,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Marker.hpp"
 
-#include "Tx.hpp"
-#include "TxSet.hpp"
-
 //------------------------------------------------------------------------------
-
-#include "Ref.hpp"
 
 #include "Row.hpp"
 #include "NmlStr.hpp"
@@ -85,19 +53,13 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-#include "DataBuffer.hpp"
-#include "SP_DataBuffer.hpp"
-
 #include "RowUte.hpp"
 
 #include "RowBuffer.hpp"
-#include "CsvMeta.hpp"
-#include "CsvBuffer.hpp"
 
 #include "HashSet.hpp"
 #include "Pot.hpp"
 
-#include "Reader.hpp"
 
 #include "InfoSetBase.hpp"
 #include "InfoSet.hpp"
@@ -109,10 +71,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Ent.hpp"
 #include "Ent_flat.hpp"
 #include "EntWrk.hpp"
-
-#include "SP_Ent.hpp"
-#include "SP_Key.hpp"
-#include "SP_Ref.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -132,16 +90,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "RowInflator.hpp"
-
-#include "SP_Encoding_v2.hpp"
-
-#include "SrtSet.hpp"
-#include "SrtBuffer.hpp"
-#include "QuickSort.hpp"
-#include "BufferCursor.hpp"
-#include "BufferSort.hpp"
-
-#include "IntBuffer.hpp"
 
 #include "KeyBuilder.hpp"
 
@@ -172,13 +120,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Grid.hpp"
 #include "Session.hpp"
 
-#include "SP_Grid.hpp"
-#include "SP_Node.hpp"
-#include "SP_Session.hpp"
-
 //------------------------------------------------------------------------------
-
-#include "LogEntry.hpp"
 
 #include "Arg.hpp"
 #include "RelOp.hpp"
@@ -204,18 +146,15 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Result.hpp"
 #include "JobFilePath.hpp"
-#include "Job.hpp"
-#include "JobLog.hpp"
-#include "CmdHelper.hpp"
-#include "Job__Find.hpp"
-#include "XmitOperand.hpp"
-#include "JobList.hpp"
-#include "SP_Job.hpp"
+//#include "Job.hpp"
+//#include "JobLog.hpp"
+//#include "Job__Find.hpp"
+//#include "XmitOperand.hpp"
+//#include "JobList.hpp"
 
-#include "Procedure.hpp"
+//#include "Procedure.hpp"
 
-#include "Dynamo.hpp"
-
+//#include "Dynamo.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -235,15 +174,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "LogicUnit.hpp"
 
-#include "Profile.hpp"
-#include "Task.hpp"
-#include "TaskList.hpp"
-#include "TaskQueue.hpp"
-
-#include "EnterExit.h"
-
-#include "SP_Task.hpp"
-
 //------------------------------------------------------------------------------
 
 #include "Scheduler.hpp"
@@ -253,31 +183,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "ThreadVec.hpp"
 
 #include "Queues.hpp"
-
-#include "SP_Thread.hpp"
-
-//------------------------------------------------------------------------------
-
-#include "ApiMacros.h"
-
-#include "Api.hpp"
-#include "SessionArray.hpp"
-
-#include "RapidsSE.hpp"
-
-//------------------------------------------------------------------------------
-
-#include "Error.hpp"
-
-#include "StepAccum.hpp"
-#include "StepTiming.hpp"
-#include "Step.hpp"
-
-//------------------------------------------------------------------------------
-
-#include "AttachMap.hpp"
-#include "Constants.hpp"
-#include "EnvCheck.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

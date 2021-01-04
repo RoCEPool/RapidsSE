@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -25,11 +29,11 @@ void Step::vObjectClassFetch(void)
 {
   ENTRY();
   
-  Object* pObject = m_pTask->m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   eCN eClassNo = pObject->eClass();
   
-  m_pTask->m_pDataStack->vPushInt(eClassNo);
+  m_pDataStack->vPushInt(eClassNo);
   
   EXIT();
 }
@@ -41,9 +45,9 @@ void Step::vObjectClassStore(void)
 {
   ENTRY();
   
-  Object* pObject = m_pTask->m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  i8 iClassNo = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
   pObject->vClass((eCN)iClassNo);
   
@@ -61,9 +65,9 @@ void Step::vObjectFetch(void)
   
   CellSingle xObjectVar;
   
-  m_pTask->m_pReturnStack->vPeekItem(iPick,xObjectVar);
+  m_pReturnStack->vPeekItem(iPick,xObjectVar);
   
-  m_pTask->m_pDataStack->vPushItem(xObjectVar);
+  m_pDataStack->vPushItem(xObjectVar);
   
   EXIT();
 }
@@ -75,7 +79,7 @@ void Step::vObjectMagicMark(void)
 {
   ENTRY();
   
-  Object* pObject = m_pTask->m_pDataStack->pPopPtr(__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   pObject->vMagic();
   
@@ -93,9 +97,9 @@ void Step::vObjectStore(void)
   
   CellSingle xObjectVar;
   
-  m_pTask->m_pDataStack->vPopItem(xObjectVar,__func__);
+  m_pDataStack->vPopItem(xObjectVar,__func__);
   
-  m_pTask->m_pReturnStack->vPokeItem(iPeek,xObjectVar);
+  m_pReturnStack->vPokeItem(iPeek,xObjectVar);
   
   EXIT();
 }

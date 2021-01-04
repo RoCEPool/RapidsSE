@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -21,11 +26,11 @@ void Step::vExpressionsLockSample(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDef = *m_pTask->m_pLogicUnit->m_xpStreamDef;
+  StreamDef* pStreamDef = *( m_pJob->pLogicUnit_job() )->m_xpStreamDef;
     
   //InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   
-  //m_pTask->m_pDataStack->vPushPtr(pInfoSet);
+  //m_pDataStack->vPushPtr(pInfoSet);
   
   EXIT();
 }

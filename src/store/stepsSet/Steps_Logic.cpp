@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,13 +27,13 @@ void Step::vLogicAnd(void)
 {
   ENTRY();
   
-  i8 iArgB = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iArgB = m_pDataStack->iPopAsInt(__func__);
   
-  i8 iArgA = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iArgA = m_pDataStack->iPopAsInt(__func__);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  m_pTask->m_pDataStack->vPushInt(iArgR);
+  m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }
@@ -41,11 +45,11 @@ void Step::vLogicNot(void)
 {
   ENTRY();
   
-  i8 iValA = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iValA = m_pDataStack->iPopAsInt(__func__);
   
   i8 iNotA = iValA ? 0 : 1;
   
-  m_pTask->m_pDataStack->vPushInt(iNotA);
+  m_pDataStack->vPushInt(iNotA);
   
   EXIT();
 }
@@ -57,13 +61,13 @@ void Step::vLogicOr(void)
 {
   ENTRY();
   
-  i8 iArgB = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iArgB = m_pDataStack->iPopAsInt(__func__);
   
-  i8 iArgA = m_pTask->m_pDataStack->iPopAsInt(__func__);
+  i8 iArgA = m_pDataStack->iPopAsInt(__func__);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  m_pTask->m_pDataStack->vPushInt(iArgR);
+  m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }

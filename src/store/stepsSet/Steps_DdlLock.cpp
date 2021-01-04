@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -26,11 +31,11 @@ void Step::vDdlLockDropRead(void)
 {
   ENTRY();
   
-  ASSERT(LH_HAVE_READ_LOCK == m_pTask->m_pLogicUnit->m_eDdlLocked);
+  ASSERT(LH_HAVE_READ_LOCK == ( m_pJob->pLogicUnit_job() )->m_eDdlLocked);
 
 
   AM::pDdlLock()->vDropRead();
-  m_pTask->m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
+  ( m_pJob->pLogicUnit_job() )->m_eDdlLocked = LH_HAVE_NO_LOCK;
 
   EXIT();
 }
@@ -42,10 +47,10 @@ void Step::vDdlLockDropWrite(void)
 {
   ENTRY();
   
-  ASSERT(LH_HAVE_WRITE_LOCK == m_pTask->m_pLogicUnit->m_eDdlLocked);
+  ASSERT(LH_HAVE_WRITE_LOCK == ( m_pJob->pLogicUnit_job() )->m_eDdlLocked);
   
   AM::pDdlLock()->vDropWrite();
-  m_pTask->m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
+  ( m_pJob->pLogicUnit_job() )->m_eDdlLocked = LH_HAVE_NO_LOCK;
 
   EXIT();
 }
@@ -57,10 +62,10 @@ void Step::vDdlLockGrabRead(void)
 {
   ENTRY();
   
-  ASSERT(! m_pTask->m_pLogicUnit->m_eDdlLocked);
+  ASSERT(! ( m_pJob->pLogicUnit_job() )->m_eDdlLocked);
   
   AM::pDdlLock()->vGrabRead();
-  m_pTask->m_pLogicUnit->m_eDdlLocked = LH_HAVE_READ_LOCK;
+  ( m_pJob->pLogicUnit_job() )->m_eDdlLocked = LH_HAVE_READ_LOCK;
 
   EXIT();
 }
@@ -72,10 +77,10 @@ void Step::vDdlLockGrabWrite(void)
 {
   ENTRY();
   
-  ASSERT(! m_pTask->m_pLogicUnit->m_eDdlLocked);
+  ASSERT(! ( m_pJob->pLogicUnit_job() )->m_eDdlLocked);
   
   AM::pDdlLock()->vGrabWrite();
-  m_pTask->m_pLogicUnit->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
+  ( m_pJob->pLogicUnit_job() )->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
 
   EXIT();
 }
@@ -87,7 +92,12 @@ void Step::vDdlLockNone(void)
 {
   ENTRY();
 
-  if (LH_HAVE_NO_LOCK != m_pTask->m_pLogicUnit->m_eDdlLocked)
+  if (! pJob() || ! pJob()->pLogicUnit_job()) {
+    EXIT();
+    return;
+  }
+
+  if (LH_HAVE_NO_LOCK != ( m_pJob->pLogicUnit_job() )->m_eDdlLocked)
     THROW("DdlLock[].none : register still has ddl locked"_Stz);
 
   EXIT();
@@ -100,16 +110,21 @@ void Step::vDdlLockTestDrop(void)
 {
   ENTRY();
   
-  if (LH_HAVE_READ_LOCK == m_pTask->m_pLogicUnit->m_eDdlLocked) {
+  if (! pJob() || ! pJob()->pLogicUnit_job()) {
+    EXIT();
+    return;
+  }
+  
+  if (LH_HAVE_READ_LOCK == ( m_pJob->pLogicUnit_job() )->m_eDdlLocked) {
     
     AM::pDdlLock()->vDropRead();
-    m_pTask->m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
+    ( m_pJob->pLogicUnit_job() )->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   else
-  if (LH_HAVE_WRITE_LOCK == m_pTask->m_pLogicUnit->m_eDdlLocked) {
+  if (LH_HAVE_WRITE_LOCK == ( m_pJob->pLogicUnit_job() )->m_eDdlLocked) {
     
     AM::pDdlLock()->vDropWrite();
-    m_pTask->m_pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
+    ( m_pJob->pLogicUnit_job() )->m_eDdlLocked = LH_HAVE_NO_LOCK;
   }
   
   EXIT();

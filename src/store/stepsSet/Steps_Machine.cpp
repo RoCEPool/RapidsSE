@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +30,7 @@ void Step::vMachineCoreCount(void)
   
   i8 iCores = Hardware::iCoreCount();
   
-  m_pTask->m_pDataStack->vPushInt(iCores);
+  m_pDataStack->vPushInt(iCores);
 
   EXIT();
 }
@@ -40,7 +44,7 @@ void Step::vMachineCpuFreq(void)
   
   i8 iFreq = Hardware::iCpuFrequency();
   
-  m_pTask->m_pDataStack->vPushInt(iFreq);
+  m_pDataStack->vPushInt(iFreq);
 
   EXIT();
 }
@@ -56,7 +60,7 @@ void Step::vMachineHostName(void)
 
   Hardware::vHostName(sHostName);
 
-  m_pTask->m_pDataStack->vPushStr(sHostName);
+  m_pDataStack->vPushStr(sHostName);
   
   EXIT();
 }
@@ -70,7 +74,7 @@ void Step::vMachineMemory(void)
   
   i8 iMemory = Hardware::iPhysicalMemory();
   
-  m_pTask->m_pDataStack->vPushInt(iMemory);
+  m_pDataStack->vPushInt(iMemory);
 
   EXIT();
 }

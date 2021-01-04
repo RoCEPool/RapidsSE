@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+extern BufferPool* gpBufferPool;
+
 namespace BASE
 {  
   template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>

@@ -55,7 +55,7 @@ namespace BASE
 
       Object*  m_pObject;
 
-      ForthCell*  m_aFip;
+      CodeCell*  m_aFip;
       i8     m_iFip;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -106,7 +106,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* get float column value                                                 */
     /*------------------------------------------------------------------------*/
-    inline ForthCell* aGetColVal(void)
+    inline CodeCell* aGetColVal(void)
     {
       return m_aFip;
     }
@@ -159,7 +159,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     /* put integer column value                                               */
     /*------------------------------------------------------------------------*/
-    inline void vPutColVal(ForthCell* aFip)
+    inline void vPutColVal(CodeCell* aFip)
     {
       m_aFip = aFip;
     }

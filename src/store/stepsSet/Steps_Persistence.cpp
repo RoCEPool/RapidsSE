@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +27,7 @@ void Step::vPersistenceCheckpoint(void)
   ENTRY();
   
   s256 sFilePath;
-  m_pTask->m_pDataStack->vPopStr(sFilePath,__func__);
+  m_pDataStack->vPopStr(sFilePath,__func__);
   
   vTrace("\nTaking checkpoint into file : '%s'\n"_Stz, sFilePath.azChar());
   
@@ -40,7 +44,7 @@ void Step::vPersistenceReload(void)
   ENTRY();
   
   s256 sFilePath;
-  m_pTask->m_pDataStack->vPopStr(sFilePath,__func__);
+  m_pDataStack->vPopStr(sFilePath,__func__);
   
   vTrace("\nReloading from file : '%s'\n"_Stz, sFilePath.azChar());
   

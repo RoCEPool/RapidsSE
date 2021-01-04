@@ -2,15 +2,22 @@
 /* AM.cpp -- AttachMap helper                                                 */
 /*============================================================================*/
 
-#include "OBLIQUE.h"
+#include "BASE.h"
+#include "STORE.h"
 
+#include "Api.hpp"
+#include "AttachMap.hpp"
+#include "Constants.hpp"
 #include "Engine.hpp"
+#include "Job.hpp"
+#include "SessionArray.hpp"
+#include "XmitOperand.hpp"
 
 #include "TagConstants.h"
 
+
 #include "LogEntry.hpp"
 #include "Log.hpp"
-
 
 #include "eBO.h"
 #include "eCC.h"
@@ -21,7 +28,9 @@
 #include "eDS.h"
 #include "eED.h"
 #include "eFN.h"
+#include "eIK.h"
 #include "eJF.h"
+#include "eLG.h"
 #include "eMM.h"
 #include "eMT.h"
 #include "eNE.h"
@@ -41,6 +50,9 @@
 
 #include "EnumGroups.h"
 
+#include "Step.hpp"
+
+#include "SP_Word.hpp"
 
 extern Args          gxArgs;
 
@@ -351,9 +363,38 @@ void AM::vAppendJobTags(Job* pJob, TagSet* pTagSet)
   pJob->pJobTags()->vCopy(pTagSet);
 }
 
+eCN AM::eJobClass(Job* pJob)
+{
+  return pJob->eClass();
+}
+
+Stz* AM::szJobNm(Job* pJob)
+{
+  return pJob->szJobNm();
+}
+
+Stz* AM::szJobOpNm(Job* pJob)
+{
+  if (pJob->m_pOp)
+    return pJob->m_pOp->szOpNm();
+  else
+    return nullptr;
+}
+
+Stz* AM::szJobSeed(Job* pJob)
+{
+  return pJob->szSeed();
+}
+
+
 TagSet* AM::pJobTags(Job* pJob)
 {
   return pJob->pJobTags();
+}
+
+bool AM::bJobWasReceived(Job* pJob)
+{
+  return pJob->bWasReceived();
 }
 
 
@@ -429,7 +470,10 @@ i8 AM::nRndSkipLevel(void) {
   i8 nLevels;
   if (AM::bDeveloper()) {
     Task* pTask = Task::pThisTLSTask();
-    nLevels = RndLib::iSkipLevel(nLvlLevels,iLvlRatio,pTask->i_NextRnd());
+    nLevels =
+      RndLib::iSkipLevel(nLvlLevels,
+                         iLvlRatio,
+                         pTask->pJob()->pLogicUnit_job()->m_i_NextRnd);
   }
   else {
     nLevels = RndLib::iSkipLevel(nLvlLevels,iLvlRatio);
@@ -451,13 +495,82 @@ Table* AM::pTableFind(Stz* szTableNm) {
 }
 
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
-void AM::vTaskBeginOp(Task* pTask)     { pTask->vBeginOp();     }
 void AM::vTaskDump(void) {
   if (AM::pThisTLSTask())
     AM::pThisTLSTask()->vDump();
 }
 
-LogicUnit* AM::pTaskLogicUnit(Task* pTask)   { return pTask->pLogicUnit(); }
+
+
+
+
+void AM::vTaskDump(Task* pTask)
+{
+  Job* pJob = pTask->pJob();
+  
+  if (AM::aReqTuple_tls())
+    AM::aReqTuple_tls()->vContentDump();
+  
+  AM::vJobContentDump(pJob);
+  
+  if (pJob->pLogicUnit_job()->m_xpOp.bIsNotNull())
+    pJob->pLogicUnit_job()->m_xpOp->vDump();
+  
+  pJob->pLogicUnit_job()->vContentDump();
+
+}
+
+
+
+
+
+
+
+
+
+LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
+  Job* pJob = pTask->pJob();
+  return pJob->pLogicUnit_job();
+}
+
+
+
+void AM::vTaskOnExceptionTrace(Task* pTask)
+{
+  Job* pJob = pTask->pJob();
+  
+  vTrace("\n\n"_Stz);
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
+         AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
+         aCN[AM::eJobClass(pJob)]
+         );
+  
+
+  // dump the call stack
+  vThreadCallStackDump();
+  
+  // write activity log
+  AM::vWriteLog();
+  
+  // dump api state
+  //AM::vDumpApi();
+
+  pTask->vContentDump();
+  
+  if (AM::aReqTuple_tls()) AM::aReqTuple_tls()->vContentDump();
+
+  AM::vJobContentDump(pJob);
+  
+  pJob->pLogicUnit_job()->vContentDump();
+  
+  AM::pGrid()->vDsv();
+
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+}
+
+
 
 i8 AM::iTaskQueue(Task* pTask) {
   eQK eQueue = pTask->eQueue();
@@ -500,12 +613,13 @@ t8 AM::tThisTLSPespective(void)
 //}
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+  Job* pJob = pTask->pJob();
+  LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
 
   return pLogicUnit;
 }
 
-STORE::Task* AM::pThisTLSTask(void) {
+Task* AM::pThisTLSTask(void) {
   Task* pTask = Task::pThisTLSTask();
   return pTask;
 }
@@ -527,7 +641,10 @@ Tx* AM::pThisTLSTx(void) {
   if (! pTask)
     return nullptr;
   
-  Tx* pTx = *pTask->pLogicUnit()->m_xpTx;
+  Job* pJob = pTask->pJob();
+  LogicUnit* pLogicUnit = pJob->pLogicUnit_job();
+
+  Tx* pTx = *pLogicUnit->m_xpTx;
   return pTx;
 }
 
@@ -581,7 +698,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
 {
-  pTask->vSendNode(pSendNode);
+  pTask->pJob()->pLogicUnit_job()->m_pSendNode = pSendNode;
   
   // grab socket wite lock
   Socket* pSocket = pSendNode->pSendSocket();
@@ -1545,7 +1662,6 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       
     case CN_PROFILE:   eOperand = ZK_PROFILE;   break;
     case CN_ROWBUFFER: eOperand = ZK_ROWBUFFER; break;
-    case CN_SRTBUFFER: eOperand = ZK_SRTBUFFER; break;
     case CN_STREAMDEF: eOperand = ZK_STREAMDEF; break;
     case CN_STREAMSET: eOperand = ZK_STREAMSET; break;
       
@@ -1678,26 +1794,26 @@ void AM::vBootCheck(void)
         
       case HT_P_TINY:
       case HT_T_TINY:
-        assert(iClassSize < C_SIZE_TINY_OBJECT);
+        ASSERT(iClassSize < C_SIZE_TINY_OBJECT);
         continue;
         
       case HT_P_SMALL:
       case HT_T_SMALL:
-        assert(iClassSize < C_SIZE_SMALL_OBJECT);
+        ASSERT(iClassSize < C_SIZE_SMALL_OBJECT);
         continue;
         
       case HT_P_MEDIUM:
       case HT_T_MEDIUM:
-        assert(iClassSize < C_SIZE_MEDIUM_OBJECT);
+        ASSERT(iClassSize < C_SIZE_MEDIUM_OBJECT);
         continue;
         
       case HT_P_LARGE:
       case HT_T_LARGE:
-        assert(iClassSize < C_SIZE_LARGE_OBJECT);
+        ASSERT(iClassSize < C_SIZE_LARGE_OBJECT);
         continue;
                 
       default:
-        assert(0);
+        ASSERT(0);
     }
   }
   
@@ -1790,8 +1906,29 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 
 void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
 
+void AM::vJobDelete(Job** ppJob) {
+  
+  delete * ppJob;
+  
+  * ppJob = nullptr;
+}
+
+void AM::vJobInitExeContext(Job* pJob) {
+  
+  if (! pJob->pLogicUnit_job()) {
+    LogicUnit* pLogicUnit = new LogicUnit(pJob->pTask());
+    pJob->vLogicUnit_job( & pLogicUnit );
+  }
+
+}
+
+
+
+
 Task* AM::pTaskNew(Job* pJob) {
-  return new Task(pJob);
+  Task* pTask = new Task(pJob,pJob->m_iFocalId);
+  pJob->vTask(pTask);
+  return pTask;
 }
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
@@ -1808,6 +1945,11 @@ Job* AM::pTaskJob(void) {
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
   pJob->pJobTags()->vInsert(C_TAG_TABLENM,szObjectName);
 }
+
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1887,9 +2029,9 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   vTrace("See: %s\n"_Stz,spWord.szSeeWord(pWord));
   vTrace("-------------------------------------------------------------\n"_Stz);
 
-  ForthCell* aDoes = pWord->aEntryCell();
+  CodeCell* aDoes = pWord->aEntryCell();
   
-  Word* pDoesWord = Routine::pToWord(aDoes);
+  Word* pDoesWord = CodeBlock::pToWord(aDoes);
   
   vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
 
@@ -1901,24 +2043,24 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
+void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
                       DicStack* pDicStack)
 {
   vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
 
-  ForthCell* aLastCell = pDoesWord->aLastCell();
-  for (ForthCell* aCell = aDoes; aCell < aLastCell; ) {
+  CodeCell* aLastCell = pDoesWord->aLastCell();
+  for (CodeCell* aCell = aDoes; aCell < aLastCell; ) {
     
-    fpSTEPFN fpStep = *aCell->m_afpObjectFn;
-    Word* pStepWord = pDicStack->pLocateStepWord(fpStep);
+    fpSTEPFN fpStepFn = *aCell->m_afpStepFn;
+    Word* pStepWord = pDicStack->pLocateStepWord(fpStepFn);
     Stz* szStepNm = pStepWord->szWordNm();
     
     // -- -- -- -- -- -- -- -- -- --
     // step is: jump / jump false / jump true
     
-    if (fpStep == &Step::vFlowJump ||
-        fpStep == &Step::vFlowJumpFalse ||
-        fpStep == &Step::vFlowJumpTrue ) {
+    if (fpStepFn == &Step::vFlowJump ||
+        fpStepFn == &Step::vFlowJumpFalse ||
+        fpStepFn == &Step::vFlowJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1932,7 +2074,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: push intval
     
-    if (fpStep == &Step::vPushIntVal) {
+    if (fpStepFn == &Step::vPushIntVal) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1942,7 +2084,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
-      aCell = aAdd<ForthCell*>(aCell,iBytes);
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
       
       continue;
     }
@@ -1950,7 +2092,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: push ptrval
     
-    if (fpStep == &Step::vPushPtrVal) {
+    if (fpStepFn == &Step::vPushPtrVal) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1969,7 +2111,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       }
       
       i8 iBytes = aTypedCell->nStackUsage();
-      aCell = aAdd<ForthCell*>(aCell,iBytes);
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
       
       continue;
     }
@@ -1977,7 +2119,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: push stzval
     
-    if (fpStep == &Step::vPushStzVal) {
+    if (fpStepFn == &Step::vPushStzVal) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -1986,7 +2128,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
       vTrace(" \"%s\"\n"_Stz,aTypedCell->szStz());
       
       i8 iBytes = aTypedCell->nStackUsage();
-      aCell = aAdd<ForthCell*>(aCell,iBytes);
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
       
       continue;
     }
@@ -1994,10 +2136,10 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: enter routine
     
-    if (fpStep == &Step::vEnterRoutine) {
+    if (fpStepFn == &Step::vEnterRoutine) {
       
-      ForthCell* aEnterCell = *(ForthCell**)(aCell->m_afpObjectFn + 1);
-      Word* pEnterWord = Routine::pToWord(aEnterCell);
+      CodeCell* aEnterCell = *(CodeCell**)(aCell->m_afpStepFn + 1);
+      Word* pEnterWord = CodeBlock::pToWord(aEnterCell);
 
       vTrace("%p: %s %s\n"_Stz,
              aCell,

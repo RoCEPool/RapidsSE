@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -38,9 +42,9 @@ void Step::vInputChars(void)
 {
   ENTRY();
   
-  s48K sTkn(m_pTask->m_pInput->szChars());
+  s48K sTkn(m_pInput->szChars());
   
-  m_pTask->m_pDataStack->vPushStr(sTkn);
+  m_pDataStack->vPushStr(sTkn);
   
   EXIT();
 }
@@ -52,7 +56,7 @@ void Step::vInputClose(void)
 {
   ENTRY();
   
-  m_pTask->m_pInput->vUseClose();
+  m_pInput->vUseClose();
   
   EXIT();
 }
@@ -64,7 +68,7 @@ void Step::vInputCppTokens(void)
 {
   ENTRY();
     
-  m_pTask->m_pInput->vFormCppTokens();
+  m_pInput->vFormCppTokens();
 
   EXIT();
 }
@@ -76,7 +80,7 @@ void Step::vInputDump(void)
 {
   ENTRY();
     
-  m_pTask->m_pInput->vInspect();
+  m_pInput->vInspect();
 
   EXIT();
 }
@@ -88,7 +92,7 @@ void Step::vInputInspect(void)
 {
   ENTRY();
     
-  //m_pTask->m_pInput->vInspect();
+  //m_pInput->vInspect();
   
   EXIT();
 }
@@ -100,9 +104,9 @@ void Step::vInputKind(void)
 {
   ENTRY();
   
-  eTN eTokenType = m_pTask->m_pInput->eToken();
+  eTN eTokenType = m_pInput->eToken();
   
-  m_pTask->m_pDataStack->vPushInt(eTokenType);
+  m_pDataStack->vPushInt(eTokenType);
   
   EXIT();
 }
@@ -115,11 +119,11 @@ void Step::vInputNext(void)
   ENTRY();
   
   // read next token
-  m_pTask->m_pInput->vReadToken();
+  m_pInput->vReadToken();
   
   // push the token
-  s48K sTkn(m_pTask->m_pInput->szChars());
-  m_pTask->m_pDataStack->vPushStr(sTkn);
+  s48K sTkn(m_pInput->szChars());
+  m_pDataStack->vPushStr(sTkn);
   
   EXIT();
 }
@@ -133,9 +137,9 @@ void Step::vInputOpen(void)
   
   s256 sFilePath;
   
-  m_pTask->m_pDataStack->vPopStr(sFilePath,__func__);
+  m_pDataStack->vPopStr(sFilePath,__func__);
   
-  bool bOpened = m_pTask->m_pInput->bUseFile(sFilePath);
+  bool bOpened = m_pInput->bUseFile(sFilePath);
   
   if ( ! bOpened )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -151,11 +155,11 @@ void Step::vInputPop(void)
 {
   ENTRY();
   
-  bool bPopped = m_pTask->m_pInput->bPopCharser();
+  bool bPopped = m_pInput->bPopCharser();
   ASSERT(bPopped);
   
-  if (-1 == m_pTask->m_pInput->iDepth())
-    m_pTask->vDeleteInput();
+  if (-1 == m_pInput->iDepth())
+    vDeleteInput();
 
   EXIT();
 }
@@ -167,12 +171,12 @@ void Step::vInputPush(void)
 {
   ENTRY();
   
-  if (! m_pTask->m_pInput) {
-    m_pTask->vNewInput();
-    ASSERT(0 == m_pTask->m_pInput->iDepth());
+  if (! m_pInput) {
+    vNewInput();
+    ASSERT(0 == m_pInput->iDepth());
   }
   
-  m_pTask->m_pInput->vPushCharser();
+  m_pInput->vPushCharser();
 
   EXIT();
 }
@@ -184,7 +188,7 @@ void Step::vInputRead(void)
 {
   ENTRY();
     
-  m_pTask->m_pInput->vReadToken();
+  m_pInput->vReadToken();
 
   EXIT();
 }
@@ -196,7 +200,7 @@ void Step::vInputSenTokens(void)
 {
   ENTRY();
   
-  m_pTask->m_pInput->vFormSenTokens();
+  m_pInput->vFormSenTokens();
 
   EXIT();
 }
@@ -208,8 +212,8 @@ void Step::vInputStdin(void)
 {
   ENTRY();
     
-  m_pTask->m_pInput->vUseStdin();
-  m_pTask->m_pInput->vSingleLineCmd(true);
+  m_pInput->vUseStdin();
+  m_pInput->vSingleLineCmd(true);
 
   EXIT();
 }
@@ -223,7 +227,7 @@ void Step::vInputUnknown(void)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         m_pTask->m_pInput->szChars()
+         m_pInput->szChars()
          );
   vTrace("\n"_Stz);
 
@@ -239,7 +243,7 @@ void Step::vInputUseBegin(void)
 {
   ENTRY();
   
-  m_pTask->m_pInput->vUseBegin();
+  m_pInput->vUseBegin();
 
   EXIT();
 }
@@ -251,7 +255,7 @@ void Step::vInputUseEnd(void)
 {
   ENTRY();
   
-  m_pTask->m_pInput->vUseEnd();
+  m_pInput->vUseEnd();
 
   EXIT();
 }
@@ -263,9 +267,9 @@ void Step::vInputUseInclude(void)
 {
   ENTRY();
   
-  Word* pInclude = _pWord(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Word* pInclude = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  m_pTask->m_pInput->vUseInclude(pInclude);
+  m_pInput->vUseInclude(pInclude);
   
   EXIT();
 }
@@ -277,15 +281,15 @@ void Step::vInputUseString(void)
 {
   ENTRY();
   
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
   }
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  m_pTask->m_pDataStack->vPopStr(sInput,__func__);
+  m_pDataStack->vPopStr(sInput,__func__);
     
-  m_pTask->m_pInput->vUseString(sInput);
+  m_pInput->vUseString(sInput);
   
   EXIT();
 }

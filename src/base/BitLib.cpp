@@ -83,7 +83,7 @@ void BitLib::vDump(u8 uBitMap, char cBuffer[])
 /*----------------------------------------------------------------------------*/
 bool BitLib::bEachBit(u8 uBitMap, i8& iBit)
 {
-  assert(iBit >= -1 && iBit < 64);
+  ASSERT(iBit >= -1 && iBit < 64);
   
   // is the bitmap all zeroes?
   if (0 == uBitMap) {
@@ -119,7 +119,7 @@ bool BitLib::bEachBit(u8 uBitMap, i8& iBit)
   }
   
   // we should have found a bit on
-  assert(0);
+  ASSERT(0);
   return false;
 }
 

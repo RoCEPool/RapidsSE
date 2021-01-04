@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +27,7 @@ void Step::vProfileEnd(void)
 {
   ENTRY();
   
-  Profile* pProfile = m_pTask->pProfile();
+  Profile* pProfile = m_pProfile;
   RU_Cpu* pRU_Cpu = pProfile->pRU_Cpu();
   pRU_Cpu->vEnd();
   
@@ -38,9 +42,9 @@ void Step::vProfileNameStore(void)
   ENTRY();
   
   s256 sName;
-  m_pTask->m_pDataStack->vPopStr(sName, __func__);
+  m_pDataStack->vPopStr(sName, __func__);
   
-  Profile* pProfile = m_pTask->pProfile();
+  Profile* pProfile = m_pProfile;
   pProfile->vOpName(sName);
   
   EXIT();
@@ -53,9 +57,9 @@ void Step::vProfileStart(void)
 {
   ENTRY();
   
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pTask->m_pDataStack->pPopPtr(__func__));
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
                                          
-  Profile* pProfile = m_pTask->pProfile();
+  Profile* pProfile = m_pProfile;
   RU_Cpu* pRU_Cpu = pProfile->pRU_Cpu();
   
   if (pDataBuffer) {

@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,13 +27,13 @@ void Step::vShellExecute(void)
   
   CellSingle xCommand;
   
-  m_pTask->m_pDataStack->vPopItem(xCommand,__func__);
+  m_pDataStack->vPopItem(xCommand,__func__);
   
   SysCall oSysCall;
   
   i8 iExitStatus = Shell::iExecute(xCommand.szStz(),oSysCall);
   
-  m_pTask->m_pDataStack->vPushInt(iExitStatus);
+  m_pDataStack->vPushInt(iExitStatus);
   
   EXIT();
 }

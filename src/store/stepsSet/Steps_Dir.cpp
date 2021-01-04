@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 #include "Dir.hpp" //?
@@ -43,7 +47,7 @@ void Step::vDirChangeCurrent(void)
   ENTRY();
   
   s256 sDir;
-  m_pTask->m_pDataStack->vPopStr(sDir,__func__);
+  m_pDataStack->vPopStr(sDir,__func__);
   
   if ( ! Dir::bChangeCurrent(sDir) )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -60,11 +64,11 @@ void Step::vDirExists(void)
   ENTRY();
   
   s256 sDirPath;
-  m_pTask->m_pDataStack->vPopStr(sDirPath,__func__);
+  m_pDataStack->vPopStr(sDirPath,__func__);
   
   i8 iResult = Dir::bExists(sDirPath);
   
-  m_pTask->m_pDataStack->vPushInt(iResult);
+  m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -82,7 +86,7 @@ void Step::vDirGetCurrent(void)
   
   if (Dir::bGetCurrent(sDirPath)) {
     xDirPath = sDirPath;
-    m_pTask->m_pDataStack->vPushItem(xDirPath);
+    m_pDataStack->vPushItem(xDirPath);
   }
   else {
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -100,11 +104,11 @@ void Step::vDirMake(void)
   ENTRY();
   
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
   
   i8 iResult = Dir::bMake(sPath);
   
-  m_pTask->m_pDataStack->vPushInt(iResult);
+  m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -117,11 +121,11 @@ void Step::vDirRemove(void)
   ENTRY();
   
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
   
   i8 iResult = Dir::bRemove(sPath);
   
-  m_pTask->m_pDataStack->vPushInt(iResult);
+  m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -133,7 +137,7 @@ void Step::vDirClose(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   pDir->vClose();
   
@@ -147,7 +151,7 @@ void Step::vDirDelete(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   delete pDir;
   
@@ -161,11 +165,11 @@ void Step::vDirEntryName(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   s256 sEntryNm = pDir->szEntryNm();
   
-  m_pTask->m_pDataStack->vPushStr(sEntryNm);
+  m_pDataStack->vPushStr(sEntryNm);
   
   EXIT();
 }
@@ -177,13 +181,13 @@ void Step::vDirEntryType(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   i8 iEntryType;
   
   iEntryType = pDir->iEntryType();
   
-  m_pTask->m_pDataStack->vPushInt(iEntryType);
+  m_pDataStack->vPushInt(iEntryType);
   
   EXIT();
 }
@@ -195,11 +199,11 @@ void Step::vDirIsClosed(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   bool bIsClosed = pDir->bIsClosed();
   
-  m_pTask->m_pDataStack->vPushInt(bIsClosed);
+  m_pDataStack->vPushInt(bIsClosed);
   
   EXIT();
 }
@@ -211,11 +215,11 @@ void Step::vDirIsOpen(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   bool bIsOpen = pDir->bIsOpen();
   
-  m_pTask->m_pDataStack->vPushInt(bIsOpen);
+  m_pDataStack->vPushInt(bIsOpen);
   
   EXIT();
 }
@@ -227,12 +231,12 @@ void Step::vDirNew(void)
 {
   ENTRY();
   
-  Dir* pDir = new Dir(m_pTask);
+  Dir* pDir = new Dir(this);
   
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;
   
-  m_pTask->m_pDataStack->vPushPtr(pPtrDir);
+  m_pDataStack->vPushPtr(pPtrDir);
   
   EXIT();
 }
@@ -244,14 +248,14 @@ void Step::vDirOpen(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   s256 sPath;
-  m_pTask->m_pDataStack->vPopStr(sPath,__func__);
+  m_pDataStack->vPopStr(sPath,__func__);
   
   bool bOpened = pDir->bOpen(sPath);
   
-  m_pTask->m_pDataStack->vPushInt(bOpened);
+  m_pDataStack->vPushInt(bOpened);
   
   EXIT();
 }
@@ -263,11 +267,11 @@ void Step::vDirPathGet(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   s256 sPath = pDir->szPath();
   
-  m_pTask->m_pDataStack->vPushStr(sPath);
+  m_pDataStack->vPushStr(sPath);
 
   
   EXIT();
@@ -280,11 +284,11 @@ void Step::vDirRead(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   bool bRead  = pDir->bRead();
   
-  m_pTask->m_pDataStack->vPushInt(bRead);
+  m_pDataStack->vPushInt(bRead);
   
   EXIT();
 }
@@ -296,7 +300,7 @@ void Step::vDirRewind(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   pDir->vRewind();
   
@@ -310,9 +314,9 @@ void Step::vDirSeek(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
-  i8 iPosition = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iPosition = m_pDataStack->iPopInt(__func__);
   
   pDir->vSeek(iPosition);
   
@@ -326,11 +330,11 @@ void Step::vDirTell(void)
 {
   ENTRY();
   
-  Dir* pDir = _pDir(m_pTask->m_pDataStack->pPopPtr(__func__));
+  Dir* pDir = _pDir(m_pDataStack->pPopPtr(__func__));
   
   i8 iPosition = pDir->iTell();
   
-  m_pTask->m_pDataStack->vPushInt(iPosition);
+  m_pDataStack->vPushInt(iPosition);
   
   EXIT();
 }

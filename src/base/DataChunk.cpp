@@ -1,0 +1,129 @@
+/*============================================================================*/
+/* DataChunk.cpp -- Rows Chunk                                                */
+/*============================================================================*/
+
+#include "BASE.h"
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+DataChunk* BASE::_pDataChunk(void* aAddr)
+{
+  DataChunk* pDataChunk = reinterpret_cast<DataChunk*>(aAddr);
+    
+  return pDataChunk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* DataChunk::operator new(size_t)
+{
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: DataChunk class cannot be new'd\n"_Stz);
+
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+DataChunk::DataChunk(eCN eClassNo)
+: Object(eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+
+  m_nDataBytes      = 0;
+  m_aLastDataByte   = nullptr;
+  m_nUnprocessedBytes = 0;
+  
+#ifdef WITH_CHECK_INITIALISED
+  m_xWsp.vFill(0xEF,eClassNo);
+#endif
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+DataChunk::~DataChunk(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* copy source data chunk into this data chunk                                */
+/*----------------------------------------------------------------------------*/
+void DataChunk::vCopy(DataChunk* pSource)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  MemLib::vCopy(m_xWsp.ayArea(),
+                pSource->aDataArea(),
+                pSource->m_nDataBytes,
+                eClass());
+  
+  vSetBytes(pSource->m_nDataBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get data area of wsp                                                       */
+/*----------------------------------------------------------------------------*/
+char* DataChunk::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  char* aArea = (char*)m_xWsp.ayArea();
+  
+  return aArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set members                                                                */
+/*----------------------------------------------------------------------------*/
+void DataChunk::vSetBytes(i8 nDataBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_nDataBytes = nDataBytes;
+  m_nUnprocessedBytes = m_nDataBytes;
+
+  m_aLastDataByte = &m_xWsp.szStz()[m_nDataBytes - 1];
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the number of bytes which constitute complete records              */
+/*----------------------------------------------------------------------------*/
+i8 DataChunk::nQuantumBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nBytes = 0;
+  
+  char* aLastByte = &(aDataArea()[m_nDataBytes - 1]);
+  
+  char *aFinalEol = aLastByte;
+  
+  bool bFoundEol = StrLib::bBackward(&aFinalEol,aLastByte,'\n');
+  if (!bFoundEol)
+    bFoundEol = StrLib::bBackward(&aFinalEol,aLastByte,'\r');
+  RASSERT(bFoundEol);
+  
+  nBytes = nDifference((void*)aFinalEol,(void*)aDataArea()) + 1;
+  
+  return nBytes;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "SP_TagSet.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -36,7 +41,7 @@ void Step::vTagSetNew(void)
   
   TagSet* pTagSet = new TagSet;
   
-  m_pTask->m_pDataStack->vPushPtr(pTagSet);
+  m_pDataStack->vPushPtr(pTagSet);
   
   EXIT();
 }
@@ -51,12 +56,12 @@ void Step::vTagSetAppendInt(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  i8 iValue = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iValue = m_pDataStack->iPopInt(__func__);
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   pTagSet->vAppend(sName,iValue);
   // pTagSet->vPrint();
@@ -71,13 +76,13 @@ void Step::vTagSetAppendStr(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   s256 sValue;
-  m_pTask->m_pDataStack->vPopStr(sValue,__func__);
+  m_pDataStack->vPopStr(sValue,__func__);
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   pTagSet->vAppend(sName,sValue);
   //pTagSet->vPrint();
@@ -91,13 +96,13 @@ void Step::vTagSetAsStr(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   sSTMT sStr;
   SP_TagSet spTagSet;
   sStr = spTagSet.sz(pTagSet);
   
-  m_pTask->m_pDataStack->vPushStr(sStr);
+  m_pDataStack->vPushStr(sStr);
   
   EXIT();
 }
@@ -109,8 +114,8 @@ void Step::vTagSetCopy(void)
 {
   ENTRY();
   
-  TagSet* pTagSet_dst = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
-  TagSet* pTagSet_src = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet_dst = _pTagSet(m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet_src = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -126,15 +131,15 @@ void Step::vTagSetGetInt(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   i8 iValue;
   iValue = pTagSet->iValue(sName);
   
-  m_pTask->m_pDataStack->vPushInt(iValue);
+  m_pDataStack->vPushInt(iValue);
   
   EXIT();
 }
@@ -146,10 +151,10 @@ void Step::vTagSetGetStr(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // translate name into value
@@ -160,7 +165,7 @@ void Step::vTagSetGetStr(void)
     sValue = pTagSet->szValue(sName);
   }
   
-  m_pTask->m_pDataStack->vPushStr(sValue);
+  m_pDataStack->vPushStr(sValue);
   
   EXIT();
 }
@@ -172,14 +177,14 @@ void Step::vTagSetHasName(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
 
   bool bHas = pTagSet->bHasName(sName);
   
-  m_pTask->m_pDataStack->vPushInt(bHas);
+  m_pDataStack->vPushInt(bHas);
   
   EXIT();
 }
@@ -191,12 +196,12 @@ void Step::vTagSetInsertInt(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  i8 iValue = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iValue = m_pDataStack->iPopInt(__func__);
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   pTagSet->vInsert(sName,iValue);
   // pTagSet->vPrint();
@@ -211,13 +216,13 @@ void Step::vTagSetInsertStr(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   s256 sValue;
-  m_pTask->m_pDataStack->vPopStr(sValue,__func__);
+  m_pDataStack->vPopStr(sValue,__func__);
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   pTagSet->vInsert(sName,sValue);
   //pTagSet->vPrint();
@@ -232,12 +237,12 @@ void Step::vTagSetReplaceInt(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  i8 iValue = m_pTask->m_pDataStack->iPopInt(__func__);
+  i8 iValue = m_pDataStack->iPopInt(__func__);
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   pTagSet->vReplace(sName,iValue);
   //pTagSet->vPrint();
@@ -252,13 +257,13 @@ void Step::vTagSetReplaceStr(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
   s256 sValue;
-  m_pTask->m_pDataStack->vPopStr(sValue,__func__);
+  m_pDataStack->vPopStr(sValue,__func__);
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   pTagSet->vReplace(sName,sValue);
   //pTagSet->vPrint();
@@ -273,13 +278,13 @@ void Step::vTagSetUpsertStr(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = _pTagSet(m_pTask->m_pDataStack->pPopPtr(__func__));
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
   s256 sValue;
-  m_pTask->m_pDataStack->vPopStr(sValue,__func__);
+  m_pDataStack->vPopStr(sValue,__func__);
   
   s32 sName;
-  m_pTask->m_pDataStack->vPopStr(sName,__func__);
+  m_pDataStack->vPopStr(sName,__func__);
   
   bool bHas = pTagSet->bHasName(sName);
   

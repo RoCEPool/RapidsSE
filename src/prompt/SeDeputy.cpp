@@ -4,10 +4,18 @@
 
 #include "BASE.h"
 #include "STORE.h"
-#include "PROMPT.h"
+
+#include "ShortCut.hpp"
+#include "SeDeputy.hpp"
+#include "SePrompt.hpp"
+
+#include "Api.hpp"
+#include "Job.hpp"
 
 #include "TagConstants.h"
 
+#include "PromptFun.hpp"
+#include "PromptCatalog.hpp"
 
 extern Args          gxArgs;
 

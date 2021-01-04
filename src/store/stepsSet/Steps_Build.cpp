@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 extern Stz* gsBuildGitHash;
@@ -33,7 +37,7 @@ void Step::vBuildBranch(void)
   
   s32 sBuildItem(gsBuildBranch);
   
-  m_pTask->m_pDataStack->vPushStr(sBuildItem);
+  m_pDataStack->vPushStr(sBuildItem);
   
   EXIT();
 }
@@ -47,7 +51,7 @@ void Step::vBuildDate(void)
   
   s32 sBuildItem(gsBuildDate);
   
-  m_pTask->m_pDataStack->vPushStr(sBuildItem);
+  m_pDataStack->vPushStr(sBuildItem);
   
   EXIT();
 }
@@ -61,7 +65,7 @@ void Step::vBuildGitHash(void)
   
   s32 sBuildItem(gsBuildGitHash);
   
-  m_pTask->m_pDataStack->vPushStr(sBuildItem);
+  m_pDataStack->vPushStr(sBuildItem);
   
   EXIT();
 }
@@ -75,7 +79,7 @@ void Step::vBuildHostName(void)
   
   s32 sBuildItem(gsBuildHostName);
   
-  m_pTask->m_pDataStack->vPushStr(sBuildItem);
+  m_pDataStack->vPushStr(sBuildItem);
   
   EXIT();
 }
@@ -89,7 +93,7 @@ void Step::vBuildUserName(void)
   
   s32 sBuildItem(gsBuildUserName);
   
-  m_pTask->m_pDataStack->vPushStr(sBuildItem);
+  m_pDataStack->vPushStr(sBuildItem);
   
   EXIT();
 }
