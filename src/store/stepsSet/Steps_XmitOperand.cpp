@@ -11,6 +11,7 @@
 
 #include "XmitOperand.hpp"
 
+#include "Op.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "Response.hpp"

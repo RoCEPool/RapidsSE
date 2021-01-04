@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 
@@ -12,6 +13,7 @@
 #include "File.hpp"
 #include "JobLog.hpp"
 
+#include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 

@@ -23,6 +23,8 @@
 
 #include "Pipeline.hpp"
 
+#include "Op.hpp"
+
 #include "eBO.h"
 #include "eCC.h"
 #include "eCK.h"

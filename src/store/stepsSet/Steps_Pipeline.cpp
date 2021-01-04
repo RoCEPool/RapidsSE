@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Op.hpp"
+#include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "Response.hpp"

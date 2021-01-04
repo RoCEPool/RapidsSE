@@ -11,6 +11,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Op.hpp"
 #include "Procedure.hpp"
 #include "SessionArray.hpp"
 

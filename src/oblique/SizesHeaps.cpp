@@ -20,6 +20,8 @@
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
+#include "Op.hpp"
+
 #include "Pipeline.hpp"
 
 #include "SessionArray.hpp"
@@ -30,6 +32,7 @@
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
+#include "Stream.hpp"
 
 #include "SP_Gid.hpp"
 #include "SP_Elapsed.hpp"

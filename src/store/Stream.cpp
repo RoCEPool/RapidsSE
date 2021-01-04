@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Op.hpp"
+#include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 
