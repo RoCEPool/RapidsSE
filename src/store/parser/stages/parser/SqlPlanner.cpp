@@ -18,13 +18,16 @@
 #include "GraphNav.hpp"
 
 #include "ShadowNode.hpp"
-#include "Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/Statement.hpp"
 #include "TableRef.hpp"
 
 #include "ColumnRef.hpp"
 #include "LiteralExpr.hpp"
 
 #include "ProjectedExpr.hpp"
+
+#include "ProjectOp.hpp"
+#include "TableScanOp.hpp"
 
 using namespace Parser;
 
@@ -249,49 +252,54 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
   ASSERT(m_pSelectItems->nItems() > 0);
 
   // Create a project operator and attach it to the statement object
-  // TODO: Create a ProjectOp ShadowNode class
-  //QueryNode* pProjectOp = ProjectOp::pCreate(m_pSelectList);
+  QueryNode* pProjectOp = ProjectOp::pCreate(m_pSelectItems);
 
-  //QueryNode* pStatement = m_pStatementStack->pPeek(0);
-  //ASSERT(Statement::bIsOfType(pStatement));
-  //pStatement->vAppendChild(pProjectOp);
-
-  // TODO: How do we handle select list items that may have an alias,
-  // TODO: versus a column wildcard that does not have an alias.
-
-  // TODO: Check for an alias when parsing a select list item.
-
-  // TODO: Check for a tableRef and attach it to the ProjectOp
+  QueryNode* pStatement = m_pStatementStack->pPeek(0);
+  ASSERT(Statement::bIsOfType(pStatement));
+  pStatement->vAppendChild(pProjectOp);
 
 
 
-  ////////////////////////////////////////////////////////
+  // Check for a tableRef. If one exists, add it to a TableScanOp
+  // and attach the TableScanOp as a child of the ProjectOp
   if (m_pTableRefStack->nItems() > 0) {
-    vTrace("  /from\n"_Stz);
-    
-    s2K sBuf;
+    ASSERT(m_pTableRefStack->nItems() == 1);
     QueryNode* pTableRef = m_pTableRefStack->pPop();
-    ShadowNode::vDescribe(pTableRef, sBuf);
-    
-    vTrace("    /%s\n"_Stz, sBuf.szStz());
-    delete pTableRef;
+
+    QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
+    pProjectOp->vAppendChild(pTableScanOp);
   }
-  
-  ASSERT(m_pSelectItems->nItems() > 0);
-  vTrace("  /project\n"_Stz);
-  
-  while (m_pSelectItems->nItems() > 0) {
-    QueryNode* pSelectItem = m_pSelectItems->pPop();
-    s2K buf;
-    
-    buf.vCopy("    /"_Stz);
-    ShadowNode::vDescribe(pSelectItem, buf);
-   
-    buf.vConcat("\n"_Stz);
-    vTrace(buf.szStz());
-  }
+
+
+
   ////////////////////////////////////////////////////////
-  
+//  if (m_pTableRefStack->nItems() > 0) {
+//    vTrace("  /from\n"_Stz);
+//
+//    s2K sBuf;
+//    QueryNode* pTableRef = m_pTableRefStack->pPop();
+//    ShadowNode::vDescribe(pTableRef, sBuf);
+//
+//    vTrace("    /%s\n"_Stz, sBuf.szStz());
+//    delete pTableRef;
+//  }
+//
+//  ASSERT(m_pSelectItems->nItems() > 0);
+//  vTrace("  /project\n"_Stz);
+//
+//  while (m_pSelectItems->nItems() > 0) {
+//    QueryNode* pSelectItem = m_pSelectItems->pPop();
+//    s2K buf;
+//
+//    buf.vCopy("    /"_Stz);
+//    ShadowNode::vDescribe(pSelectItem, buf);
+//
+//    buf.vConcat("\n"_Stz);
+//    vTrace(buf.szStz());
+//  }
+  ////////////////////////////////////////////////////////
+
+  ASSERT(m_pSelectItems->nItems() == 0);
   delete m_pSelectItems;
   m_pSelectItems = nullptr;
   

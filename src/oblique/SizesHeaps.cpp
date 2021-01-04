@@ -64,13 +64,6 @@
 #include "graph/StatisticsNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
 
-#include "shadowNodes/ShadowNode.hpp"
-#include "shadowNodes/TableRef.hpp"
-#include "shadowNodes/Statement.hpp"
-#include "shadowNodes/expressions/Expr.hpp"
-#include "shadowNodes/expressions/LiteralExpr.hpp"
-#include "shadowNodes/expressions/ColumnRef.hpp"
-
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"
 

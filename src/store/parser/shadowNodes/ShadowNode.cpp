@@ -7,7 +7,7 @@
 
 #include "PlanNode.hpp"
 
-#include "Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/Statement.hpp"
 #include "TableRef.hpp"
 #include "Expr.hpp"
 #include "ProjectedExpr.hpp"
@@ -61,7 +61,7 @@ void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)
   // manual polymorphism here
 
   // Statements
-  if      (Statement::bIsOfType(pNode))       { Statement::vDescribe(pNode, sBuf); }
+  if      (PlanObject::bIsOfType(pNode))      { PlanObject::vDescribe(pNode, sBuf); }
 
   // Expressions
   else if (Expr::bIsOfType(pNode))            { Expr::vDescribe(pNode, sBuf);      }
