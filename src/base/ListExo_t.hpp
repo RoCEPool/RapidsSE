@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eLC.h"
+
 namespace BASE
 {
   template <class ITEM>
@@ -838,6 +840,95 @@ template <eCN CLASSNO, class ITEM>
 Footer* ListExo_t<CLASSNO,ITEM>::aFooter(void)
 {
   return &m_xFooter;
+}
+
+
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+
+namespace BASE
+{
+template <eCN CLASSNO, class ITEM>
+class ListExoIter_t : public Object
+{
+private:
+ 
+  ListExo_t<CLASSNO,ITEM>* m_pListExo;
+
+  ListExoNode_t<ITEM>*     m_pListNodeCursor;
+  
+  // must be last
+  Footer m_xFooter;
+
+public:
+  void* operator new(size_t);
+  void operator delete(void* aListExoNode);
+
+  ListExoIter_t<CLASSNO,ITEM>(ListExo_t<CLASSNO,ITEM>* pListExo);
+ ~ListExoIter_t(void) noexcept(false);
+
+private:
+  Footer* aFooter(void);
+};
+
+} // namespace BASE
+
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void* ListExoIter_t<CLASSNO,ITEM>::operator new(size_t)
+{
+  ListExoIter_t<CLASSNO,ITEM>* pListExoIter_t;
+  
+  pListExoIter_t =
+    (ListExoIter_t<CLASSNO,ITEM>*)HeapMem::pAllocate(CN_CLASSPLACEHOLDER);
+  
+  return pListExoIter_t;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExoIter_t<CLASSNO,ITEM>::operator delete(void* aListExoIter_t)
+{
+  ListExoIter_t<CLASSNO,ITEM>* pListExoIter_t;
+
+  pListExoIter_t = (ListExoIter_t<CLASSNO,ITEM>*)aListExoIter_t;
+
+  HeapMem::vFree(pListExoIter_t);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExoIter_t<CLASSNO,ITEM>::ListExoIter_t(ListExo_t<CLASSNO,ITEM>* pListExo)
+: Object(CN_CLASSPLACEHOLDER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  
+  m_pListExo = pListExo;
+  
+  m_pListNodeCursor = nullptr;
+  
+  _checkInitialised_(CN_CLASSPLACEHOLDER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExoIter_t<CLASSNO,ITEM>::~ListExoIter_t(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+
 }
 
 /*============================================================================*/
