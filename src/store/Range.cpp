@@ -222,14 +222,6 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
   // equal ?
   if (eLower == EO_EQUAL) {
     vInsertLowerBound(eColumnType, sValue, iValue);
-//    if (eColumnType == CT_VARCHAR ||
-//        eColumnType == CT_CHAR ||
-//        eColumnType == CT_INTERVAL ||
-//        eColumnType == CT_DATE     ||
-//        eColumnType != CT_TIMESTAMP)
-//      m_oTagSet.vInsert(C_TAG_LITERAL_VALUE, (Stz*)sValue);
-//    else
-//      m_oTagSet.vInsert(C_TAG_LITERAL_VALUE, iValue);
 
     m_eMacro = AM_INDEX_EQ;
     goto L_RETURN;
@@ -237,28 +229,9 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
 
   // range ?
   if (eLower != EO_NONE && eUpper != EO_NONE) {
+
     vInsertLowerBound(eColumnType, sLowerValue, iLowerValue);
-
-//    if (eColumnType == CT_VARCHAR ||
-//        eColumnType == CT_CHAR ||
-//        eColumnType == CT_INTERVAL ||
-//        eColumnType == CT_DATE     ||
-//        eColumnType != CT_TIMESTAMP) {
-//      m_oTagSet.vInsert(C_TAG_LBOUND_VALUE, (Stz *) sLowerValue);
-//    }
-//    else {
-//      m_oTagSet.vInsert(C_TAG_LBOUND_VALUE, iLowerValue);
-//    }
-
     vInsertUpperBound(eColumnType, sUpperValue, iUpperValue);
-//    if (eColumnType == CT_VARCHAR ||
-//        eColumnType == CT_CHAR ||
-//        eColumnType == CT_INTERVAL ||
-//        eColumnType == CT_DATE     ||
-//        eColumnType != CT_TIMESTAMP)
-//      m_oTagSet.vInsert(C_TAG_UBOUND_VALUE, (Stz*)sUpperValue);
-//    else
-//      m_oTagSet.vInsert(C_TAG_UBOUND_VALUE, iUpperValue);
 
     m_oTagSet.vInsert(C_TAG_RELATIONAL_UPPER, eUpper);
     if (eLower == EO_GREATERTHAN) {
@@ -275,14 +248,6 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
       eLower == EO_GREATEREQUAL) {
 
     vInsertLowerBound(eColumnType, sLowerValue, iLowerValue);
-//    if (eColumnType == CT_VARCHAR ||
-//        eColumnType == CT_CHAR ||
-//        eColumnType == CT_INTERVAL ||
-//        eColumnType == CT_DATE     ||
-//        eColumnType != CT_TIMESTAMP)
-//      m_oTagSet.vInsert(C_TAG_LBOUND_VALUE, (Stz*)sLowerValue);
-//    else
-//      m_oTagSet.vInsert(C_TAG_LBOUND_VALUE, iLowerValue);
 
     if (eLower == EO_GREATERTHAN)
       m_eMacro = AM_INDEX_LOWER_BOUND_GT;
@@ -292,15 +257,6 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
 
   // upper bound ?
   ASSERT(eUpper != EO_NONE);
-
-//  if (eColumnType == CT_VARCHAR ||
-//      eColumnType == CT_CHAR ||
-//      eColumnType == CT_INTERVAL ||
-//      eColumnType == CT_DATE     ||
-//      eColumnType != CT_TIMESTAMP)
-//    m_oTagSet.vInsert(C_TAG_UBOUND_VALUE, (Stz*)sUpperValue);
-//  else
-//    m_oTagSet.vInsert(C_TAG_UBOUND_VALUE, iUpperValue);
 
   vInsertUpperBound(eColumnType, sUpperValue, iUpperValue);
 
@@ -341,10 +297,11 @@ void Range::vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue) {
       RASSERT(0);
   }
 
-  if (eColumnType == CT_VARCHAR ||
-      eColumnType == CT_CHAR ||
+  if (eColumnType == CT_VARCHAR  ||
+      eColumnType == CT_CHAR     ||
+      eColumnType == CT_INTEGER  ||
       eColumnType == CT_INTERVAL ||
-      eColumnType == CT_DATE ||
+      eColumnType == CT_DATE     ||
       eColumnType != CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_LBOUND_LITERAL, (Stz *) sValue);
   else
@@ -377,10 +334,11 @@ void Range::vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue) {
       RASSERT(0);
   }
 
-  if (eColumnType == CT_VARCHAR ||
-      eColumnType == CT_CHAR ||
+  if (eColumnType == CT_VARCHAR  ||
+      eColumnType == CT_CHAR     ||
+      eColumnType == CT_INTEGER  ||
       eColumnType == CT_INTERVAL ||
-      eColumnType == CT_DATE ||
+      eColumnType == CT_DATE     ||
       eColumnType != CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_UBOUND_LITERAL, (Stz *) sValue);
   else

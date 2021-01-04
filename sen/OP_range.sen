@@ -103,11 +103,11 @@
 
   0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryNote
 
-  Pipein[].isNull if
+  //Pipein[].isNull if
     // create a new eos marker
-    Operand[].newEosMarker
-    Operand[] to Pipein[]
-  then
+    //Operand[].newEosMarker
+    //Operand[] to Pipein[]
+  //then
 
   PipeIn[].pipeOut
   ZK_DATAPULSE Counter0[] executeAsmArgs

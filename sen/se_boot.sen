@@ -132,6 +132,7 @@ assert::stack_0
 
 "f" .put
         "OP_fetch.sen"                include
+        "OP_filter.sen"               include
 
 "g" .put
         "OP_genAsmTxt.sen"            include
