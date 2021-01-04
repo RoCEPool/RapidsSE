@@ -4,7 +4,14 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -21,7 +28,7 @@ void Step::vRegJobGet(void)
 {
   ENTRY();
     
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
 
   m_pDataStack->vPushPtr(pJob);
 

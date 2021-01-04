@@ -2,7 +2,14 @@
 /* MY.cpp -- My helper                                                        */
 /*============================================================================*/
 
-#include "OBLIQUE.h"
+#include "BASE.h"
+#include "STORE.h"
+
+#include "MY.hpp"
+
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
 
 extern Args          gxArgs;
 

@@ -4,7 +4,18 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+
+#include "Job.hpp"
+#include "JobList.hpp"
+#include "JobLog.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -50,7 +61,7 @@ void Step::vTaskAck(void)
   
   Task* pTaskWaiting = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pTaskWaiting,m_pTask);
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pTaskWaiting,this);
   
 #ifdef WITH_STATISTICS_COUNTERS
   if (bWasQueued)
@@ -69,11 +80,11 @@ void Step::vTaskAcksStore(void)
     
   i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
   
-  ASSERT(0 == m_pTask->m_oAcksRmg.iPrintOnlyValue());
+  ASSERT(0 == m_oAcksRmg.iPrintOnlyValue());
 
-  RASSERT(m_pTask->bIsLocked());
+  RASSERT(bIsLocked());
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
   
   if (pJob && pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,"Setting acks: %s %p to %lld"_Stz,
@@ -83,7 +94,7 @@ void Step::vTaskAcksStore(void)
     AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
   }
   
-  m_pTask->vAcksRmg(nAcksRequired);
+  vAcksRmg(nAcksRequired);
   
   EXIT();
 }
@@ -105,7 +116,7 @@ void Step::vTaskDoneFinally(void)
 {
   ENTRY();
   
-  m_bDoneFinally = true;
+ m_bDoneFinally = true;
   
   EXIT();
 }
@@ -131,7 +142,7 @@ void Step::vTaskDump(void)
 {
   ENTRY();
   
-  m_pTask->vDump();
+  vDump();
   
   EXIT();
 }
@@ -142,11 +153,15 @@ void Step::vTaskDump(void)
 void Step::vTaskDelete(void)
 {
   ENTRY();
+    
+  // unlink task and job
+  if (m_pJob) {
+    m_pJob->vTask(nullptr);
+    m_pJob = nullptr;
+  }
   
-  m_pTask->vUnlinkJob();
-  
-  m_pTask->vGrabTaskLock();
-  m_pTask->vScheduleDelete();
+  vGrabTaskLock();
+  vScheduleDelete();
 
   EXIT();
 }
@@ -260,7 +275,7 @@ void Step::vTaskOperandYieldFetch(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushInt(m_pTask->m_nOperandYield);
+  m_pDataStack->vPushInt(m_nOperandYield);
   
   EXIT();
 }
@@ -272,7 +287,7 @@ void Step::vTaskOperandYieldStore(void)
 {
   ENTRY();
     
-  m_pTask->m_nOperandYield = m_pDataStack->iPopInt(__func__);
+  m_nOperandYield = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }
@@ -328,7 +343,7 @@ void Step::vTaskSendNodeFetch(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  Node* pSendNode = pThatTask->pSendNode();
+  Node* pSendNode = pThatTask->pJob()->pLogicUnit_job()->m_pSendNode;
   
   Object* pPtrSendNode = pSendNode;
   
@@ -348,8 +363,8 @@ void Step::vTaskSendNodeStore(void)
   
   Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  pThatTask->vSendNode(pSendNode);
-  
+  pThatTask->pJob()->pLogicUnit_job()->m_pSendNode = pSendNode;
+
   EXIT();
 }
 
@@ -364,9 +379,9 @@ void Step::vTaskSleepMsec(void)
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
-  m_pTask->vSleepUsec(nMicroSeconds);
-  m_pTask->vGrabTaskLock();
-  m_pTask->vScheduleSleep();
+  vSleepUsec(nMicroSeconds);
+  vGrabTaskLock();
+  vScheduleSleep();
 
   EXIT();
 }
@@ -381,9 +396,9 @@ void Step::vTaskSleepSsec(void)
   i8 nSeconds = m_pDataStack->iPopInt(__func__);
   i8 nMicroSeconds = nSeconds * C_1M;
   
-  m_pTask->vSleepUsec(nMicroSeconds);
-  m_pTask->vGrabTaskLock();
-  m_pTask->vScheduleSleep();
+  vSleepUsec(nMicroSeconds);
+  vGrabTaskLock();
+  vScheduleSleep();
 
   EXIT();
 }
@@ -397,9 +412,9 @@ void Step::vTaskSleepUsec(void)
   
   i8 nMicroSeconds = m_pDataStack->iPopInt(__func__);
   
-  m_pTask->vSleepUsec(nMicroSeconds);
-  m_pTask->vGrabTaskLock();
-  m_pTask->vScheduleSleep();
+  vSleepUsec(nMicroSeconds);
+  vGrabTaskLock();
+  vScheduleSleep();
 
   EXIT();
 }
@@ -443,7 +458,7 @@ void Step::vTaskWait(void)
 {
   ENTRY();
   
-  m_pTask->vScheduleWait();
+  vScheduleWait();
 
   EXIT();
 }
@@ -455,8 +470,8 @@ void Step::vTaskYield(void)
 {
   ENTRY();
     
-  m_pTask->vGrabTaskLock();
-  m_pTask->vScheduleYield();
+  vGrabTaskLock();
+  vScheduleYield();
 
   EXIT();
 }

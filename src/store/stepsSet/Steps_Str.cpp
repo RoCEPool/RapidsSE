@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +196,7 @@ void Step::vStrFormat(void)
   
   s48K sString;
   
-  m_pTask->vValSprint(sFormat,sString);
+  m_pDataStack->vValSprint(sFormat,sString);
   
   m_pDataStack->vPushStr(sString);
   
@@ -578,12 +582,12 @@ void Step::vStrToStrVec(void)
     if (! StrLib::bExtractName(&azPath,azDicNm))
       break;
     
-    m_pAuxStack->vPushStr(sDicNm);
+     m_pAuxStack->vPushStr(sDicNm);
   }
   
   for (i8 iMove = 0; iMove < nStrings; iMove++) {
     
-    m_pAuxStack->vPopStr(sDicNm,__func__);
+     m_pAuxStack->vPopStr(sDicNm,__func__);
     m_pDataStack->vPushStr(sDicNm);
   }
 

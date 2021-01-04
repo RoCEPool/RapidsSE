@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,7 +33,7 @@ void Step::vCrwToRowCompleted(void)
 {
   ENTRY();
   
-  CrwToRow* pCrwToRow = *m_pLogicUnit->m_xpCrwToRow;
+  CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
 
   RowBuffer* pRowBuffer = pCrwToRow->pFullRowBuffer();
   
@@ -41,9 +49,9 @@ void Step::vCrwToRowConvert(void)
 {
   ENTRY();
 
-  CrwToRow* pCrwToRow = *m_pLogicUnit->m_xpCrwToRow;
+  CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpOperandA);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
   bool bResult = pCrwToRow->bConvertCrwToRow(pCrwBuffer);
   
@@ -57,11 +65,11 @@ void Step::vCrwToRowCreate(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDef = * m_pLogicUnit->m_xpStreamDef;
+  StreamDef* pStreamDef = * ( m_pJob->pLogicUnit_job() )->m_xpStreamDef;
 
   CrwToRow* pCrwToRow = new CrwToRow(pStreamDef);
       
-  m_pLogicUnit->m_xpCrwToRow = pCrwToRow;
+  ( m_pJob->pLogicUnit_job() )->m_xpCrwToRow = pCrwToRow;
     
   EXIT();
 }
@@ -73,11 +81,11 @@ void Step::vCrwToRowDangling(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpCrwToRow.bIsNull()) {
+  if (( m_pJob->pLogicUnit_job() )->m_xpCrwToRow.bIsNull()) {
     m_pDataStack->vPushPtr(nullptr);
   }
   else {
-    CrwToRow* pCrwToRow = *m_pLogicUnit->m_xpCrwToRow;
+    CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
     RowBuffer* pRowBuffer = pCrwToRow->pDanglingRowBuffer();
     m_pDataStack->vPushPtr(pRowBuffer);
   }
@@ -92,8 +100,8 @@ void Step::vCrwToRowDelete(void)
 {
   ENTRY();
   
-  CrwToRow* pCrwToRow = *m_pLogicUnit->m_xpCrwToRow;
-  m_pLogicUnit->m_xpCrwToRow = nullptr;
+  CrwToRow* pCrwToRow = *( m_pJob->pLogicUnit_job() )->m_xpCrwToRow;
+  ( m_pJob->pLogicUnit_job() )->m_xpCrwToRow = nullptr;
   
   delete pCrwToRow;
   

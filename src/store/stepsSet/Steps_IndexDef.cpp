@@ -4,7 +4,19 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "ePX.h"
+
+#include "Op.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
+#include "StageSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -39,7 +51,7 @@ void Step::vIndexDefAddColumn(void)
   
   eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
   
-  IndexDef* pIndexDef = * m_pLogicUnit->m_xpIndexDef;
+  IndexDef* pIndexDef = * ( m_pJob->pLogicUnit_job() )->m_xpIndexDef;
   
   pIndexDef->vAddColumn(sColumnNm,eColType);
   
@@ -53,9 +65,9 @@ void Step::vIndexDefDelete(void)
 {
   ENTRY();
   
-  IndexDef* pIndexDef = * m_pLogicUnit->m_xpIndexDef;
+  IndexDef* pIndexDef = * ( m_pJob->pLogicUnit_job() )->m_xpIndexDef;
   
-  m_pLogicUnit->m_xpIndexDef = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexDef = nullptr;
   
   delete pIndexDef;
   
@@ -69,7 +81,7 @@ void Step::vIndexDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexDef);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpIndexDef);
   
   EXIT();
 }
@@ -81,7 +93,7 @@ void Step::vIndexDefIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndexDef.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpIndexDef.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -96,7 +108,7 @@ void Step::vIndexDefNameStore(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  m_pLogicUnit->m_xpIndexDef->vIndexNm(sName);
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexDef->vIndexNm(sName);
   
   EXIT();
 }
@@ -108,7 +120,7 @@ void Step::vIndexDefNew(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpIndexDef = new IndexDef;
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexDef = new IndexDef;
   
   EXIT();
 }
@@ -200,7 +212,7 @@ void Step::vIndexDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -260,13 +272,13 @@ void Step::vIndexDefPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*m_pLogicUnit->m_xpIndexDef);
+  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpIndexDef);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
+  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pLogicUnit->m_xpIndexDef,m_pTask);
+  pOp->vPipeOut_nextOp(*( m_pJob->pLogicUnit_job() )->m_xpIndexDef,this);
   
-  m_pLogicUnit->m_xpIndexDef = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexDef = nullptr;
   
   EXIT();
 }
@@ -278,7 +290,7 @@ void Step::vIndexDefTableNameFetch(void)
 {
   ENTRY();
   
-  IndexDef* pIndexDef = *m_pLogicUnit->m_xpIndexDef;
+  IndexDef* pIndexDef = *( m_pJob->pLogicUnit_job() )->m_xpIndexDef;
   
   s32 sTableNm = pIndexDef->szTableNm();
   
@@ -294,7 +306,7 @@ void Step::vIndexDefTableNameStore(void)
 {
   ENTRY();
   
-  IndexDef* pIndexDef = *m_pLogicUnit->m_xpIndexDef;
+  IndexDef* pIndexDef = *( m_pJob->pLogicUnit_job() )->m_xpIndexDef;
   
   s4K sTableName;
   m_pDataStack->vPopStr(sTableName,__func__);

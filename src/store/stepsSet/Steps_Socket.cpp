@@ -4,9 +4,24 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "ePX.h"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "JobLog.hpp"
 #include "Socket.hpp"
+#include "XmitOperand.hpp"
+#include "LogicUnit.hpp"
+#include "StageSpec.hpp"
+
+#include "SP_Header.hpp"
+#include "SP_Job.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -335,7 +350,7 @@ void Step::vSocketRecvObject(void)
       pJob->vMarkJob();
     }
     
-    //ActLog::vAdd(pJob,AN_RECV_JOB,m_pTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
 
     pJob->m_i_Focal = C_UNKNOWN;
     pJob->vOriginResponseVec(nullptr);
@@ -661,7 +676,7 @@ void Step::vSocketRecvObject_LowMem(void)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    //ActLog::vAdd(pJob,AN_RECV_JOB,m_pTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
     //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
     pJob->m_i_Focal = C_UNKNOWN;
@@ -935,7 +950,7 @@ void Step::vSocketSendObject(void)
                          pJob,
                          pSocket);
     
-    //ActLog::vAdd(pJob,AN_SEND_JOB,m_pTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) ||
@@ -952,8 +967,8 @@ void Step::vSocketSendObject(void)
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
-              m_pLogicUnit->m_pSendNode ?
-                m_pLogicUnit->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
+              ( m_pJob->pLogicUnit_job() )->m_pSendNode ?
+                ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
               C_VARGS_END);
 
     

@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -23,7 +31,7 @@ void Step::vToNstRowRegConvert(void)
 {
   ENTRY();
 
-  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToNstRow* pToNstRow = *( m_pJob->pLogicUnit_job() )->m_xpToNstRow;
   
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -43,7 +51,7 @@ void Step::vToNstRowRegCreate(void)
     
   ToNstRow* pToNstRow = new ToNstRow;
       
-  m_pLogicUnit->m_xpToNstRow = pToNstRow;
+  ( m_pJob->pLogicUnit_job() )->m_xpToNstRow = pToNstRow;
 
   EXIT();
 }
@@ -55,9 +63,9 @@ void Step::vToNstRowRegDelete(void)
 {
   ENTRY();
   
-  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToNstRow* pToNstRow = *( m_pJob->pLogicUnit_job() )->m_xpToNstRow;
   
-  m_pLogicUnit->m_xpToNstRow = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_xpToNstRow = nullptr;
   
   delete pToNstRow;
   

@@ -4,7 +4,14 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -30,18 +37,18 @@ void Step::vDot(void)
   if (xVariable.bIsIntVal()) {
 //    vTrace("[%s %s] %lld\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //           xVariable.iInt());
     
-    m_pTask->m_pJob->vPrint("%lld"_Stz,xVariable.iGetColVal());
+    m_pJob->vPrint("%lld"_Stz,xVariable.iGetColVal());
     
   }
   else {
 //    vTrace("[%s %s] %s\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //           xVariable.szStz());
-    m_pTask->m_pJob->vPrint("%s"_Stz,xVariable.szStz());
+    m_pJob->vPrint("%s"_Stz,xVariable.szStz());
   }
   
   EXIT();
@@ -60,16 +67,16 @@ void Step::vDot(void)
 //  if (xVariable.bIsInt()) {
 //    vTrace("[%s%s %s] %lld\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //
 //           xVariable.iInt());
 //  }
 //  else {
 //    vTrace("[%s%s %s] %s\n"_Stz,
 //           AM::pGrid()->pThisNode()->szNodeNm(),
-//           m_pTask->m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
-//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
+//           m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
 //
 //           xVariable.szStz());
 //  }
@@ -119,8 +126,8 @@ void Step::vDotVerbose(void)
   
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,
-           m_pTask,
-           m_pTask->szJobName(),
+           this,
+           szJobName(),
            xVariable.szStz());
   }
   

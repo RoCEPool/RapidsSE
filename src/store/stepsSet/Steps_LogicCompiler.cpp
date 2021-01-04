@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -26,7 +34,7 @@ void Step::vLogicCompilerCompile(void)
   ENTRY();
       
   i8 iResult =
-    m_pLogicUnit->m_xpLogicCompiler->iCompile(m_pLogicUnit,m_pLogicUnit);
+    ( m_pJob->pLogicUnit_job() )->m_xpLogicCompiler->iCompile(( m_pJob->pLogicUnit_job() ),( m_pJob->pLogicUnit_job() ));
   
   EXIT();
 }
@@ -38,8 +46,8 @@ void Step::vLogicCompilerDelete(void)
 {
   ENTRY();
   
-  LogicCompiler* pLogicCompiler = * m_pLogicUnit->m_xpLogicCompiler;
-  m_pLogicUnit->m_xpLogicCompiler = nullptr;
+  LogicCompiler* pLogicCompiler = * ( m_pJob->pLogicUnit_job() )->m_xpLogicCompiler;
+  ( m_pJob->pLogicUnit_job() )->m_xpLogicCompiler = nullptr;
   
   delete pLogicCompiler;
       
@@ -81,7 +89,7 @@ void Step::vLogicCompilerNew(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpLogicCompiler = new LogicCompiler;
+  ( m_pJob->pLogicUnit_job() )->m_xpLogicCompiler = new LogicCompiler;
   
   EXIT();
 }

@@ -4,7 +4,21 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "ePX.h"
+
+#include "Api.hpp"
+#include "Op.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
+
+#include "Procedure.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"
@@ -59,7 +73,7 @@ void Step::vApiExecuteNested(void)
 {
   ENTRY();
 
-  //m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
+  //( m_pJob->pLogicUnit_job() )->m_xpOp->pOpTagSet()->vDumpSet();
   
   eEC eError;
   ReqTuple xReqTuple;
@@ -105,11 +119,11 @@ void Step::vApiExecuteNested(void)
 
   Job* pJob = pSession->m_pSsnJob;
 
-  pJob->m_pOuterOp = m_pTask->m_pJob->m_pOp;
+  pJob->m_pOuterOp = m_pJob->m_pOp;
   
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
 
   pJobTagSet->vReplace(C_TAG_REQNO,iReqNo);
@@ -118,8 +132,8 @@ void Step::vApiExecuteNested(void)
 //  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
 //  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
-  m_pLogicUnit->m_xpOp->pOpTagSet()->vDumpSet();
-  pJobTagSet->vCopy(m_pLogicUnit->m_xpOp->pOpTagSet());
+  ( m_pJob->pLogicUnit_job() )->m_xpOp->pOpTagSet()->vDumpSet();
+  pJobTagSet->vCopy(( m_pJob->pLogicUnit_job() )->m_xpOp->pOpTagSet());
   
   if (AM::bVerbose())
     pJobTagSet->vDumpSet();
@@ -201,7 +215,7 @@ void Step::vApiExecuteRequest(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
   TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
@@ -283,7 +297,7 @@ void Step::vApiSpawnDemon(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  Stz* szTagPath = m_pTask->m_pJob->pJobTags()->szValue(C_TAG_PATH);
+  Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
   pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   
   TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);

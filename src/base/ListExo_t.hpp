@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eLC.h"
+
 namespace BASE
 {
   template <class ITEM>
@@ -191,6 +193,7 @@ namespace BASE
     void  vAppend(ITEM* pItem);
     void  vDeleteAll(void);
     ITEM* pHead(void);
+    ListExoNode_t<ITEM>* pHeadNode(void);
     void  vInsertAfter(ITEM* pInsItem, ITEM* pRef);
     void  vInsertBefore(ITEM* pInsItem, ITEM* pRef);
     i8    nItems(void);
@@ -838,6 +841,187 @@ template <eCN CLASSNO, class ITEM>
 Footer* ListExo_t<CLASSNO,ITEM>::aFooter(void)
 {
   return &m_xFooter;
+}
+
+
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+
+namespace BASE
+{
+template <eCN CLASSNO, class ITEM>
+class ListExoIter_t : public Object
+{
+private:
+ 
+  ListExo_t<CLASSNO,ITEM>* m_pListExo;
+
+  eLC                      m_eCursorState;
+  ListExoNode_t<ITEM>*     m_pListNode_cursor;
+  
+  
+  // must be last
+  Footer m_xFooter;
+
+public:
+  void* operator new(size_t);
+  void operator delete(void* aListExoNode);
+
+  ListExoIter_t<CLASSNO,ITEM>(ListExo_t<CLASSNO,ITEM>* pListExo);
+ ~ListExoIter_t(void) noexcept(false);
+  
+  ITEM* pFirst(void);
+  bool  bHasNext(void);
+  ITEM* pNext(void);
+  
+private:
+  Footer* aFooter(void);
+};
+
+} // namespace BASE
+
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void* ListExoIter_t<CLASSNO,ITEM>::operator new(size_t)
+{
+  ListExoIter_t<CLASSNO,ITEM>* pListExoIter_t;
+  
+  pListExoIter_t =
+    (ListExoIter_t<CLASSNO,ITEM>*)HeapMem::pAllocate(CN_CLASSPLACEHOLDER);
+  
+  return pListExoIter_t;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExoIter_t<CLASSNO,ITEM>::operator delete(void* aListExoIter_t)
+{
+  ListExoIter_t<CLASSNO,ITEM>* pListExoIter_t;
+
+  pListExoIter_t = (ListExoIter_t<CLASSNO,ITEM>*)aListExoIter_t;
+
+  HeapMem::vFree(pListExoIter_t);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExoIter_t<CLASSNO,ITEM>::ListExoIter_t(ListExo_t<CLASSNO,ITEM>* pListExo)
+: Object(CN_CLASSPLACEHOLDER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  
+  m_pListExo = pListExo;
+  
+  m_eCursorState = LC_NIL;
+  m_pListNode_cursor = nullptr;
+  
+  _checkInitialised_(CN_CLASSPLACEHOLDER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExoIter_t<CLASSNO,ITEM>::~ListExoIter_t(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail first item of list                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ITEM* ListExoIter_t<CLASSNO,ITEM>::pFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  ITEM* pItem;
+
+  m_pListNode_cursor = m_pListExo->pHeadNode();
+  
+  if (m_pListNode_cursor) {
+    m_eCursorState = LC_ON_EXITING_ITEM;
+    pItem = m_pListNode_cursor->pItem();
+    return pItem;
+  }
+  else {
+    m_eCursorState = LC_NIL;
+    return nullptr;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail first item of list                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+bool ListExoIter_t<CLASSNO,ITEM>::bHasNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  switch (m_eCursorState) {
+      
+    case LC_NIL:
+      ASSERT(! m_pListNode_cursor);
+      return false;
+
+    case LC_ON_EXITING_ITEM:
+      ASSERT(m_pListNode_cursor);
+      if (m_pListNode_cursor->pNextNode())
+        return true;
+      else
+        return false;
+      
+    case LC_ON_REMOVED_ITEM:
+      NOT_IMPLEMENTED_YET;
+
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail first item of list                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ITEM* ListExoIter_t<CLASSNO,ITEM>::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  ITEM* pItem;
+
+  switch (m_eCursorState) {
+      
+    case LC_NIL:
+      ASSERT(! m_pListNode_cursor);
+      return false;
+
+    case LC_ON_EXITING_ITEM:
+      ASSERT(m_pListNode_cursor);
+      if (! m_pListNode_cursor->pNextNode())
+        return false;
+      
+      m_pListNode_cursor = m_pListNode_cursor->pNextNode();
+      pItem = m_pListNode_cursor->pItem();
+      return pItem;
+
+    case LC_ON_REMOVED_ITEM:
+      NOT_IMPLEMENTED_YET;
+
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*============================================================================*/

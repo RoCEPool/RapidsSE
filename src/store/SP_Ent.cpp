@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "SP_Ent.hpp"
+#include "SP_Key.hpp"
+#include "SP_Ref.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

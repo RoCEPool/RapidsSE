@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 #include "Dir.hpp" //?
@@ -227,7 +231,7 @@ void Step::vDirNew(void)
 {
   ENTRY();
   
-  Dir* pDir = new Dir(m_pTask);
+  Dir* pDir = new Dir(this);
   
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;

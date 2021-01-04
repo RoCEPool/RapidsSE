@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 extern Stz* gszaMungedText[];
@@ -105,7 +109,7 @@ void Step::vFlowExecute(void)
 {
   ENTRY();
   
-  fpSTEPFN fpStep;
+  fpSTEPFN fpStepFn;
   Object* pObject;
 
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
@@ -119,8 +123,8 @@ void Step::vFlowExecute(void)
       break;
           
     case WK_INTRINSIC:
-      fpStep = pWord->fpEntryStep();
-      ((Step*)this->*fpStep)();
+      fpStepFn = pWord->fpEntryStep();
+      ((Step*)this->*fpStepFn)();
       break;
           
     case WK_LOCAL:
@@ -148,17 +152,17 @@ void Step::vExit_RT(void)
   
   //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pReturnStack->iValues());
   
-  if ( (m_pTask->m_iTraceMask & C_TRACE_ROUTINES) )
-    m_pTask->vTracePoint("<"_Stz);
+  if ( (m_iTraceMask & C_TRACE_ROUTINES) )
+    Task::vTracePoint("<"_Stz);
   
   if (m_pLocalsFrame
       && m_pLocalsFrame->aDiscardPoint() == (TypedCell*)m_pReturnStack->aTopVal())
-    m_pTask->vLocalsPop();
+    vLocalsPop();
   
   // make sure we don't return to nowhere
   ASSERT(m_pReturnStack->nValues());
   
-  ForthCell* aCell = m_pReturnStack->aPopFip(__func__);
+  CodeCell* aCell = m_pReturnStack->aPopFip(__func__);
   
   m_aInxPtr = aCell;
   
@@ -326,11 +330,11 @@ void Step::vSemicolon(void)
   else
     pCurrentWord->vEncodeCall("exit_rt"_Stz);
   
-  i8 iUsed = pCurrentWord->nRoutineUsed();
+  i8 iUsed = pCurrentWord->nCodeBlockUsed();
   if (iUsed > iMaxUsed)
     iMaxUsed = iUsed;
-//  vTrace(" Routine %lldB (%lld): %s\n"_Stz,
-//         pCurrentWord->nRoutineUsed(),
+//  vTrace(" CodeBlock %lldB (%lld): %s\n"_Stz,
+//         pCurrentWord->nCodeBlockUsed(),
 //         iMaxUsed,
 //         pCurrentWord->szWordNm());
   

@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -68,15 +72,15 @@ void Step::vPushFipVal(void)
 {
   ENTRY();
   
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
   }
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushFip(aTypedCell->aFip());
   
-  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
+  vAdjustFIP(aTypedCell->nStackUsage());
   
   EXIT();
 }
@@ -88,21 +92,21 @@ void Step::vPushIntVal(void)
 {
   ENTRY();
   
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
   }
   
 //  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbVal);
 //
 //  m_pDataStack->vPushInt(aIntVal->iInt());
 //
-//  m_pTask->vAdjustFIP(aIntVal->nStackUsage());
+//  vAdjustFIP(aIntVal->nStackUsage());
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushInt(aTypedCell->iInt());
   
-  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
+  vAdjustFIP(aTypedCell->nStackUsage());
 
   EXIT();
 }
@@ -114,15 +118,15 @@ void Step::vPushPtrVal(void)
 {
   ENTRY();
   
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
   }
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushPtr(aTypedCell->pObj());
   
-  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
+  vAdjustFIP(aTypedCell->nStackUsage());
   
   EXIT();
 }
@@ -134,11 +138,11 @@ void Step::vPushStzVal(void)
 {
   ENTRY();
   
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
   }
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xEmbVal);
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
   
 //  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
 //    vTrace("vPushStzVal: %s"_Stz,aStzVal->szStz());
@@ -147,7 +151,7 @@ void Step::vPushStzVal(void)
   
   m_pDataStack->vPushStz(aTypedCell->szStz());
   
-  m_pTask->vAdjustFIP(aTypedCell->nStackUsage());
+  vAdjustFIP(aTypedCell->nStackUsage());
   
   EXIT();
 }

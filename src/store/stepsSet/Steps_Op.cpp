@@ -4,7 +4,20 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "ePX.h"
+
+#include "Op.hpp"
+#include "Pipeline.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "StageSpec.hpp"
+
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -36,7 +49,7 @@ void Step::vOpAckPipelineJob(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   pOp->vAckJob();
 }
 
@@ -49,7 +62,7 @@ void Step::vOpDownstreamOpStore(void)
     
   Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
 
   pOp->vDownstreamOp(pDownstreamOp);
 
@@ -68,7 +81,7 @@ void Step::vOpFindOp(void)
   
   Op* pDownstreamOp = nullptr;
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   for (Op* pScanOp = pOp->pNextOp(); pScanOp; pScanOp = pScanOp->pNextOp()) {
     if (pScanOp->szOpNm()->bSame(sOpName)) {
@@ -89,7 +102,7 @@ void Step::vOpNextOpStore(void)
 {
   ENTRY();
   
-  m_pTask->m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
+  m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -101,7 +114,7 @@ void Step::vOpNextStageStore(void)
 {
   ENTRY();
   
-  m_pTask->m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
+  m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -113,7 +126,7 @@ void Step::vOpOpNameFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   s256 sOpName = pOp->szOpNm();
   
   m_pDataStack->vPushStr(sOpName);
@@ -128,7 +141,7 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->tPtnNo());
+  m_pDataStack->vPushInt(m_pJob->m_pOp->tPtnNo());
   
   EXIT();
 }
@@ -140,7 +153,7 @@ void Step::vOpPiplineJobFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   m_pDataStack->vPushPtr(pOp->pPipeline()->pPipelineJob());
   
@@ -154,11 +167,11 @@ void Step::vOpPipeOut(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  pOp->vPipeOut_nextOp(pOperand,m_pTask);
+  pOp->vPipeOut_nextOp(pOperand,this);
 
   EXIT();
 }
@@ -170,7 +183,7 @@ void Step::vOpOutboundOperandFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   m_pDataStack->vPushPtr(pOp->pOutboundOperand());
   
@@ -184,7 +197,7 @@ void Step::vOpOutboundOperandStore(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -200,7 +213,7 @@ void Step::vOpQueueLength(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   
   i8 nLength = pOp->nQueueLength();
 
@@ -216,7 +229,7 @@ void Step::vOpStageNameFetch(void)
 {
   ENTRY();
   
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
   s256 sStageName = pOp->szStageName();
   
   m_pDataStack->vPushStr(sStageName);
@@ -231,7 +244,7 @@ void Step::vOpTopologyStore(void)
 {
   ENTRY();
   
-  m_pTask->m_pJob->m_pOp->vCrossTopo((ePX)m_pDataStack->iPopInt(__func__));
+  m_pJob->m_pOp->vCrossTopo((ePX)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -243,7 +256,7 @@ void Step::vOpXmitKindStore(void)
 {
   ENTRY();
   
-  m_pTask->m_pJob->m_pOp->vXmitKind((eXK)m_pDataStack->iPopInt(__func__));
+  m_pJob->m_pOp->vXmitKind((eXK)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

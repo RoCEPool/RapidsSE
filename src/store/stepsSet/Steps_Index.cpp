@@ -4,7 +4,18 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "ePX.h"
+
+#include "Op.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -44,7 +55,7 @@ void Step::vIndexColumnFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
@@ -64,7 +75,7 @@ void Step::vIndexColumnCountFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
   
   m_pDataStack->vPushInt(pIndex->nColumns());
@@ -79,7 +90,7 @@ void Step::vIndexCompact(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndex->pTable()->vCompactIndex(pIndex);
@@ -94,13 +105,13 @@ void Step::vIndexCompactPtn(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
   i8 i_Ptn  = pJob->m_pOp->tPtnNo();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(i_Ptn);
 
@@ -135,7 +146,7 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the index and the table
-  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -148,12 +159,12 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower and upper entries
-  Ent* aLowerEntry = m_pLogicUnit->m_aLowerEntry;
-  Ent* aUpperEntry = m_pLogicUnit->m_aUpperEntry;
+  Ent* aLowerEntry = ( m_pJob->pLogicUnit_job() )->m_aLowerEntry;
+  Ent* aUpperEntry = ( m_pJob->pLogicUnit_job() )->m_aUpperEntry;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the entry buffer to start from
-  EntBuffer* pEntBuffer = m_pLogicUnit->m_pEntBufferOuter;
+  EntBuffer* pEntBuffer = ( m_pJob->pLogicUnit_job() )->m_pEntBufferOuter;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get IndexTree
@@ -239,8 +250,8 @@ void Step::vIndexDeleteNext(void)
   
 L_Exit:
   vTrace("------------------------------------------\n"_Stz);
-  m_pLogicUnit->m_pEntBufferOuter = pEntBuffer;
-  m_pLogicUnit->m_aLowerEntry = aLowerEntry;
+  ( m_pJob->pLogicUnit_job() )->m_pEntBufferOuter = pEntBuffer;
+  ( m_pJob->pLogicUnit_job() )->m_aLowerEntry = aLowerEntry;
   
   EXIT();
 }
@@ -252,7 +263,7 @@ void Step::vIndexDump(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -306,11 +317,11 @@ void Step::vIndexIndexTree(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
   
   Table* pTable = pIndex->pTable();
  
@@ -436,7 +447,7 @@ void Step::vIndexNameFetch(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the index
-  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   s32 sIndexName = pIndex->szIndexNm();
@@ -489,7 +500,7 @@ void Step::vIndexSize(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
@@ -542,7 +553,7 @@ void Step::vIndexVerify(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
@@ -558,13 +569,13 @@ void Step::vIndexVerifyPtn(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_pLogicUnit->m_xpIndex;
+  Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
   i8 i_Ptn  = pJob->m_pOp->tPtnNo();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(i_Ptn);
 
@@ -590,7 +601,7 @@ void Step::vIndexVisualize(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndexNo = pIndex->iIndexNo();

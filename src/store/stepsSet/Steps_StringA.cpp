@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -23,7 +31,7 @@ void Step::vStringAGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_pLogicUnit->m_sStringA);
+  m_pDataStack->vPushStr(( m_pJob->pLogicUnit_job() )->m_sStringA);
 
   EXIT();
 }
@@ -35,7 +43,7 @@ void Step::vStringASet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_pLogicUnit->m_sStringA, __func__);
+  m_pDataStack->vPopStr(( m_pJob->pLogicUnit_job() )->m_sStringA, __func__);
 
   EXIT();
 }

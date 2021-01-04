@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +30,7 @@ void Step::vQueuesCheckSleeping(void)
 {
   ENTRY();
   
-  Scheduler::vTaskCross_WakeSleepers(m_pTask);
+  Scheduler::vTaskCross_WakeSleepers(this);
   
   EXIT();
 }

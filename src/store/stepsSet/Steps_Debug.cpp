@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -24,7 +32,7 @@ void Step::vDebugFlagFetch(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_iDebugFlag);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_iDebugFlag);
   
   EXIT();
 }
@@ -36,7 +44,7 @@ void Step::vDebugFlagStore(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
+  ( m_pJob->pLogicUnit_job() )->m_iDebugFlag = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

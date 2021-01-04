@@ -4,7 +4,14 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -27,7 +34,7 @@ void Step::vTagGet(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pJob = m_pTask->pJob();
+  Job* pJob = m_pJob;
       
   TagSet* pJobTags = pJob->pJobTags();
 
@@ -69,7 +76,7 @@ void Step::vTagSet(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Job* pJob = m_pTask->pJob();
+  Job* pJob = m_pJob;
       
   TagSet* pJobTags = pJob->pJobTags();
 

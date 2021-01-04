@@ -14,12 +14,13 @@ macro AM_HANDLER_DATAPULSE
   EO_JMP QUERY_DONE
 endMacro
 
-macro AM_DATAPULSE_INDEXRANGE
+macro AM_INDEX_RANGE_LOWER_GE
 //----------------------------------------------------------------------------//
-// macro AM_DATAPULSE_INDEXRANGE                                              //
+// macro AM_INDEX_RANGE_LOWER_GE                                              //
 //----------------------------------------------------------------------------//
-  Label DATAPULSE_INDEXRANGE
-  EO_INTEGER <lboundValue>
+  Label INDEX_RANGE_LOWER_GE
+  <lboundType> <lboundLiteral>
+  EO_DUMP
   EO_ENTWRK_SETINTELM
   EO_IXT_SRC_LBOUND
   EO_IXT_SRC_PRINT
@@ -34,7 +35,7 @@ macro AM_DATAPULSE_INDEXRANGE
 
   Label DATAPULSE_INDEXRANGE_UPD
   EO_ENTWRK_RESET
-  EO_INTEGER <uboundValue>
+  <uboundType> <uboundLiteral>
   EO_ENTWRK_SETINTELM
   EO_IXT_SRC_UBOUND_LT
   EO_JMP_TRUE DATAPULSE_INDEXRANGE_TILL_UBD

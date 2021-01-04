@@ -33,6 +33,10 @@ int main(int argc, char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  IntLib::vInitGlobals();
+
+  FltLib::vInitGlobals();
+
   Engine::vEnvFlags();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

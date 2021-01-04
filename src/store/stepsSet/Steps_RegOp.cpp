@@ -4,7 +4,19 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "ePX.h"
+
+#include "Op.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
+#include "StageSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -27,7 +39,7 @@ void Step::vRegOpGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOp);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOp);
 
   EXIT();
 }
@@ -41,7 +53,7 @@ void Step::vRegOpHandlerFetch(void)
 
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
 
-  Word* pHandler = m_pLogicUnit->m_xpOp->pOperandHandler(i_OperandKind);
+  Word* pHandler = ( m_pJob->pLogicUnit_job() )->m_xpOp->pOperandHandler(i_OperandKind);
     
   m_pDataStack->vPushPtr(pHandler);
 
@@ -59,7 +71,7 @@ void Step::vRegOpHandlerStore(void)
   
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  m_pLogicUnit->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+  ( m_pJob->pLogicUnit_job() )->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -74,7 +86,7 @@ void Step::vRegOpHandlerAllStore(void)
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
   for (i8 i_OpKind = 0; i_OpKind < ZK_ENUMS; i_OpKind++)
-    m_pLogicUnit->m_xpOp->vOperandHandler(i_OpKind,pHandler);
+    ( m_pJob->pLogicUnit_job() )->m_xpOp->vOperandHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -86,9 +98,9 @@ void Step::vRegOpInit(void)
 {
   ENTRY();
 
-  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Op* pOp = m_pJob->m_pOp;
 
-  m_pLogicUnit->m_xpOp = pOp;
+  ( m_pJob->pLogicUnit_job() )->m_xpOp = pOp;
 
   EXIT();
 }
@@ -105,8 +117,8 @@ void Step::vRegOpIsOperandValid(void)
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
   
   // skip consumeOp operand validation
-  if ( ! m_pLogicUnit->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
-    bValid = m_pLogicUnit->m_xpOp->bIsOperandValid(i_OperandKind);
+  if ( ! ( m_pJob->pLogicUnit_job() )->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
+    bValid = ( m_pJob->pLogicUnit_job() )->m_xpOp->bIsOperandValid(i_OperandKind);
   
   if ( ! bValid )
     RASSERT(0);
@@ -125,7 +137,7 @@ void Step::vRegOpIncOperandCount(void)
   
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->m_xpOp->vIncOperandCount(i_OperandKind);
+  ( m_pJob->pLogicUnit_job() )->m_xpOp->vIncOperandCount(i_OperandKind);
   
   EXIT();
 }

@@ -378,6 +378,12 @@ public:
   void vFileTell(void);
   void vFileWriteLine(void);
 
+  // filter
+  void vFilterGet(void);
+  void vFilterNew(void);
+  void vFilterRows(void);
+  void vFilterSet(void);
+
   // flow
   void vFlowExecute(void);
   void vFlowHazard(void);
@@ -904,6 +910,7 @@ public:
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenCode(void);
+  void vLogicUnitGenFilter(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);
   void vLogicUnitDevFetch(void);
@@ -1141,6 +1148,12 @@ public:
   void vQueuesReadyLength(void);
   void vQueuesSleepingLength(void);
   void vQueuesWaitingLength(void);
+
+  // range
+  void vRangeGet(void);
+  void vRangeNew(void);
+  void vRangeBounds(void);
+  void vRangeSet(void);
 
   // rbCursor
   void vRbCursorBegin(void);

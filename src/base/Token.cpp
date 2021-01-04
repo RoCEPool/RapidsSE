@@ -363,6 +363,24 @@ bool Token::bIsOther(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token a relational operator ?                                      */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsRelational(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (TN_NAME == m_eToken &&
+       (bSame(">"_Stz)  ||
+        bSame(">="_Stz) ||
+        bSame("<"_Stz)  ||
+        bSame("<="_Stz) ||
+        bSame("=="_Stz)))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token a semicol?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsSemicolon(void)

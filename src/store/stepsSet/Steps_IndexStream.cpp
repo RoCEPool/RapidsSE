@@ -4,7 +4,16 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Planner.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -32,7 +41,7 @@ void Step::vIndexStreamClose(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   pIndexStream->vClose();
   
@@ -46,7 +55,7 @@ void Step::vIndexStreamDelete(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   delete pIndexStream;
   
@@ -60,7 +69,7 @@ void Step::vIndexStreamDeleteNext(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   bool bMoreToDelete = pIndexStream->bDelete();
   
@@ -75,7 +84,7 @@ void Step::vIndexStreamGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexStream);
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   EXIT();
 }
@@ -87,7 +96,7 @@ void Step::vIndexStreamIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndexStream.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpIndexStream.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -116,7 +125,7 @@ void Step::vIndexStreamOpen(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   bool bOpened = pIndexStream->bOpen();
   ASSERT(bOpened);
@@ -131,7 +140,7 @@ void Step::vIndexStreamRead(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the rowOnce skipList
@@ -151,7 +160,7 @@ void Step::vIndexStreamSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpIndexStream = _pIndexStream(m_pDataStack->pPopPtr(__func__));
+  ( m_pJob->pLogicUnit_job() )->m_xpIndexStream = _pIndexStream(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -163,7 +172,7 @@ void Step::vIndexStreamSeek(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the planner

@@ -4,12 +4,90 @@
 
 #include "BASE.h"
 #include "STORE.h"
-#include "OBLIQUE.h"
-#include "PROMPT.h"
+
+#include "eBO.h"
+#include "eCC.h"
+#include "eCK.h"
+#include "eCP.h"
+#include "eCX.h"
+#include "eDL.h"
+#include "eDS.h"
+#include "eED.h"
+#include "eFN.h"
+#include "eIK.h"
+#include "eJF.h"
+#include "eLG.h"
+#include "eMM.h"
+#include "eMT.h"
+#include "eNE.h"
+#include "eOC.h"
+#include "eOK.h"
+#include "eOP.h"
+#include "eOR.h"
+#include "ePF.h"
+#include "ePP.h"
+#include "ePO.h"
+#include "ePY.h"
+#include "ePX.h"
+#include "eRG.h"
+#include "eRU.h"
+#include "eST.h"
+#include "eTP.h"
+#include "eTT.h"
+#include "eUK.h"
+#include "eXK.h"
+
+#include "SizesHeaps.hpp"
+
+#include "AttachMap.hpp"
+#include "Dynamo.hpp"
+
+#include "Exemplar.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "Job__Find.hpp"
+#include "JobList.hpp"
 
 #include "LogEntry.hpp"
 #include "Log.hpp"
+#include "LogicUnit.hpp"
 
+#include "Op.hpp"
+#include "OpSpec.hpp"
+
+#include "Pipeline.hpp"
+#include "PipelineSpec.hpp"
+#include "Plan.hpp"
+#include "Planner.hpp"
+
+#include "SessionArray.hpp"
+
+#include "ShortCut.hpp"
+#include "SeDeputy.hpp"
+#include "SePrompt.hpp"
+#include "Stage.hpp"
+#include "StepAccum.hpp"
+#include "StageSpec.hpp"
+#include "StepTiming.hpp"
+#include "Stream.hpp"
+
+#include "SP_Gid.hpp"
+#include "SP_Elapsed.hpp"
+#include "SP_String.hpp"
+
+#include "SN_Bcd.hpp"
+#include "SN_Bol.hpp"
+#include "SN_Dte.hpp"
+#include "SN_Flt.hpp"
+#include "SN_Int.hpp"
+#include "SN_Ivl.hpp"
+#include "SN_Tme.hpp"
+#include "SN_Tsp.hpp"
+#include "SN_Vch.hpp"
+
+#include "XmitOperand.hpp"
+#include "Xmits.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -22,13 +100,6 @@
 #include "graph/MetadataNode.hpp"
 #include "graph/StatisticsNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
-
-#include "shadowNodes/ShadowNode.hpp"
-#include "shadowNodes/TableRef.hpp"
-#include "shadowNodes/Statement.hpp"
-#include "shadowNodes/expressions/Expr.hpp"
-#include "shadowNodes/expressions/LiteralExpr.hpp"
-#include "shadowNodes/expressions/ColumnRef.hpp"
 
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"
@@ -58,16 +129,15 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
-  { sizeof(BufferCursor),       HT_T_LARGE   ,0 }, // CN_BUFFERCURSOR
   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
   { sizeof(ByteRate),           HT_T_TINY    ,0 }, // CN_BYTERATE
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_BYTES_T
 
   { 'C' - ('A' - 1),            HT_INVALID   ,0 }, // CN__C__
   { sizeof(Catalog),            HT_INVALID   ,0 }, // CN_CATALOG
-
   { sizeof(CellSingle),         HT_INVALID   ,0 }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_MEDIUM  ,0 }, // CN_CHARSER
+  { sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 }, // CN_CLASSPLACEHOLDER
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
   { sizeof(Compiler),           HT_T_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
@@ -103,8 +173,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Fifo),               HT_T_TINY    ,0 }, // CN_FIFO
   { sizeof(File),               HT_T_TINY    ,0 }, // CN_FILE
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FIPVAL
+  { sizeof(Filter),             HT_T_LARGE   ,0 }, // CN_FILTER
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FLTVAL
-  { sizeof(Forth),              HT_T_TINY    ,0 }, // CN_FORTH
   { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER
   { sizeof(FreeChunk),          HT_INVALID   ,0 }, // CN_FREECHUNK
@@ -134,7 +204,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(InfoSet),            HT_T_LARGE   ,0 }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_T_LARGE   ,0 }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_T_TINY    ,0 }, // CN_INPUT
-  { sizeof(IntBuffer),          HT_T_LARGE   ,0 }, // CN_INTBUFFER
   { sizeof(IntSet),             HT_T_TINY    ,0 }, // CN_INTSET
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_INTVAL
   { sizeof(IoChunk),            HT_T_LARGE   ,0 }, // CN_IOCHUNK
@@ -225,6 +294,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Queues),             HT_T_TINY    ,0 }, // CN_QUEUES
 
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
+  { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE
   { sizeof(ReadApi),            HT_T_TINY    ,0 }, // CN_READAPI
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
@@ -236,7 +306,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RluDiary),           HT_T_LARGE   ,0 }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID   ,0 }, // CN_RN_RAND
   { sizeof(RootNode),           HT_T_TINY    ,-8 }, // CN_ROOTNODE
-  { sizeof(Routine),            HT_T_SMALL   ,0 }, // CN_ROUTINE
+  { sizeof(CodeBlock),            HT_T_SMALL   ,0 }, // CN_ROUTINE
   { sizeof(Row),                HT_T_LARGE   ,0 }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_T_MEDIUM  ,0 }, // CN_ROWAGG
   { 0,                          HT_INVALID   ,0 }, // CN_ROWBOX
@@ -289,8 +359,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SPmedium),           HT_INVALID   ,0 }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID   ,0 }, // CN_SPSMALL
   { sizeof(SqlPlanner),         HT_T_MEDIUM  ,-8 }, // CN_SQLPLANNER
-  { sizeof(SrtBuffer),          HT_T_LARGE   ,0 }, // CN_SRTBUFFER
-  { sizeof(SrtSet),             HT_INVALID   ,0 }, // CN_SRTSET
   { sizeof(TypedStack),         HT_T_MEDIUM  ,0 }, // CN_STACK
   { sizeof(Stage),              HT_T_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC

@@ -26,6 +26,8 @@
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
+  EC_NONE locals| eError |
+
   <tableNm> <indexNm> op__table_index not if
     false
     exit
@@ -39,24 +41,22 @@
   table[] StreamDef[].new
   StreamDef[].duplicate to streamDefOut[]
 
-/*
   range[].new
-  <etc> StreamDef[] StreamDefOut[] range[].rangeColumns to eError
+  <etc> index[] range[].rangeBounds to eError
 
   // check for error
   eError EC_NONE == not if
     eError op.pipelineJob@ ERROR_JOB
+    Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
     true
     exit
   then
-*/
 
   ZK_STARTMARKER_handler
 
-  project[].new
-  StreamDefOut[] project[] LogicUnit[].genRange
+  StreamDefOut[] range[] LogicUnit[].genRange
 
   // new the pot[]
   Pot[].new
@@ -103,11 +103,11 @@
 
   0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryNote
 
-  Pipein[].isNull if
+  //Pipein[].isNull if
     // create a new eos marker
-    Operand[].newEosMarker
-    Operand[] to Pipein[]
-  then
+    //Operand[].newEosMarker
+    //Operand[] to Pipein[]
+  //then
 
   PipeIn[].pipeOut
   ZK_DATAPULSE Counter0[] executeAsmArgs

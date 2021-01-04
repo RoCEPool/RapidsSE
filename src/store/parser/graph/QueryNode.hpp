@@ -29,6 +29,7 @@ namespace Parser
 
     Footer* aFooter(void);
 
+    void vRename(Stz* szName);
 
     // Returns the number of children of this node
     i8 iNumChildren(void);

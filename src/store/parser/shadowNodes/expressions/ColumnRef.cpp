@@ -9,6 +9,8 @@
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 
+#include "GraphNav.hpp"
+
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -46,10 +48,10 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
   Value xColumnName(pColumnName);
 
   QueryNode* pColRef = new QueryNode(sName, C_COLREF_DEFN);
-  pColRef->vAppendChild(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogName));
-  pColRef->vAppendChild(new QueryNode(C_SCHEMA_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaName));
-  pColRef->vAppendChild(new QueryNode(C_TABLE_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableName));
-  pColRef->vAppendChild(new QueryNode(C_COLUMN_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xColumnName));
+  pColRef->vAppendProperty(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogName));
+  pColRef->vAppendProperty(new QueryNode(C_SCHEMA_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaName));
+  pColRef->vAppendProperty(new QueryNode(C_TABLE_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableName));
+  pColRef->vAppendProperty(new QueryNode(C_COLUMN_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xColumnName));
 
   return pColRef;
 }
@@ -62,7 +64,42 @@ void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bValidate(pNode));
 
-  sBuf.vConcat(pNode->szName());
+  QueryNode* pColumnRef = static_cast<QueryNode*>(pNode);
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_NAME_PROP, pColumnRef));
+  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_NAME_PROP,  pColumnRef));
+  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_NAME_PROP,   pColumnRef));
+  QueryNode* pColumnNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMN_NAME_PROP,  pColumnRef));
+
+  ASSERT(pCatalogNode);
+  ASSERT(pSchemaNode);
+  ASSERT(pTableNode);
+  ASSERT(pColumnNode);
+
+  Stz* szCatalogName = pCatalogNode->getStringValue();
+  Stz* szSchemaName  = pSchemaNode->getStringValue();
+  Stz* szTableName   = pTableNode->getStringValue();
+  Stz* szColumnName  = pColumnNode->getStringValue();
+
+  if (szCatalogName) {
+    sBuf.vConcat(szCatalogName);
+    sBuf.vAppend('.');
+    ASSERT(szSchemaName);
+  }
+
+  if (szSchemaName) {
+    sBuf.vConcat(szSchemaName);
+    sBuf.vAppend('.');
+    ASSERT(szTableName);
+  }
+
+  if (szTableName) {
+    sBuf.vConcat(szTableName);
+    sBuf.vAppend('.');
+  }
+
+  ASSERT(szColumnName);
+  sBuf.vConcat(szColumnName);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -121,6 +121,11 @@ function compressLargeFiles() {
     return
   fi
 
+  if [ ! -f "${BIN_DIR}" ]; then
+    echo "Skipping compression of large files because bin dir doesn't exist."
+    return
+  fi
+
   # Run in a subshell so that we can change directory temporarily
   (
     # Compress the binaries

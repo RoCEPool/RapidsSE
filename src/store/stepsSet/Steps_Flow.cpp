@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +108,7 @@ void Step::vFlowReenter(void)
 {
   ENTRY();
   
-  Word* pExecuting = Routine::pToWord(m_aInxPtr);
+  Word* pExecuting = CodeBlock::pToWord(m_aInxPtr);
   
   m_aInxPtr = pExecuting->aEntryCell();
   
@@ -118,7 +122,7 @@ void Step::vFlowTest(void)
 {
   ENTRY();
   
-  vTrace("[%s] Test\n"_Stz,m_pTask->szJobName());
+  vTrace("[%s] Test\n"_Stz,szJobName());
   
   EXIT();
 }

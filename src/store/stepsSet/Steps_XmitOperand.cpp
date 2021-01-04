@@ -4,6 +4,21 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
+
+#include "ePX.h"
+
+#include "XmitOperand.hpp"
+
+#include "Op.hpp"
+#include "Stage.hpp"
+#include "Pipeline.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +71,7 @@ void Step::vXmitOperandPipeOut(void)
   //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
   // append to left queue
   if (pXmitOperand->m_pOperand)
-    pOp->vAppendLeft(pXmitOperand->m_pOperand,m_pTask);
+    pOp->vAppendLeft(pXmitOperand->m_pOperand,this);
   
   // now delete the pXmitOperand
   delete pXmitOperand;

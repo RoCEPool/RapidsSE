@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 #include "TagConstants.h"
 
@@ -203,6 +207,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Filter[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Filter[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Index[]"_Stz)) {
     pCurrentWord->vEncodeCall("Index[].set"_Stz);
     EXIT();
@@ -270,6 +279,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("PtnStream[]"_Stz)) {
     pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Range[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Range[].set"_Stz);
     EXIT();
     return;
   }

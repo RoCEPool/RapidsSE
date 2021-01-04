@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,7 +33,7 @@ void Step::vToHshCrwRegCompleted(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -43,7 +51,7 @@ void Step::vToHshCrwRegConvert(void)
 {
   ENTRY();
 
-  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -59,9 +67,9 @@ void Step::vToHshCrwRegCreate(void)
 {
   ENTRY();
     
-  ToHshCrw* pToHshCrw = new ToHshCrw(* m_pLogicUnit->m_xpStreamDef);
+  ToHshCrw* pToHshCrw = new ToHshCrw(* ( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
       
-  m_pLogicUnit->m_xpToHshCrw = pToHshCrw;
+  ( m_pJob->pLogicUnit_job() )->m_xpToHshCrw = pToHshCrw;
 
   EXIT();
 }
@@ -73,7 +81,7 @@ void Step::vToHshCrwRegDangling(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -91,8 +99,8 @@ void Step::vToHshCrwRegDelete(void)
 {
   ENTRY();
   
-  ToHshCrw* pToHshCrw = *m_pLogicUnit->m_xpToHshCrw;
-  m_pLogicUnit->m_xpToHshCrw = nullptr;
+  ToHshCrw* pToHshCrw = *( m_pJob->pLogicUnit_job() )->m_xpToHshCrw;
+  ( m_pJob->pLogicUnit_job() )->m_xpToHshCrw = nullptr;
   
   delete pToHshCrw;
   

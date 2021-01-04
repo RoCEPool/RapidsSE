@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -24,10 +32,10 @@ void Step::vSubsetGet(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpSubset.bIsNull())
+  if (( m_pJob->pLogicUnit_job() )->m_xpSubset.bIsNull())
     m_pDataStack->vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSubset);
+    m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpSubset);
   
   EXIT();
 }
@@ -41,8 +49,8 @@ void Step::vSubsetNext(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*m_pLogicUnit->m_xpSubset)
-    pNextOperand = m_pLogicUnit->m_xpSubset->pNextItem();
+  if (*( m_pJob->pLogicUnit_job() )->m_xpSubset)
+    pNextOperand = ( m_pJob->pLogicUnit_job() )->m_xpSubset->pNextItem();
   
   m_pDataStack->vPushPtr(pNextOperand);
   
@@ -58,20 +66,20 @@ void Step::vSubsetNextBuffer(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*m_pLogicUnit->m_xpSubset) {
-    if (m_pLogicUnit->m_xpSubset->eClass() == CN_CRWBUFFER) {
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpSubset);
+  if (*( m_pJob->pLogicUnit_job() )->m_xpSubset) {
+    if (( m_pJob->pLogicUnit_job() )->m_xpSubset->eClass() == CN_CRWBUFFER) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpSubset);
       pNextOperand = pCrwBuffer->pNextBuffer();
-      //m_pLogicUnit->m_xpSubset = pNextOperand;
+      //( m_pJob->pLogicUnit_job() )->m_xpSubset = pNextOperand;
     }
     else
-      if (m_pLogicUnit->m_xpSubset->eClass() == CN_CSVBUFFER) {
-      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpSubset);
+      if (( m_pJob->pLogicUnit_job() )->m_xpSubset->eClass() == CN_CSVBUFFER) {
+      CsvBuffer* pCsvBuffer = _pCsvBuffer(*( m_pJob->pLogicUnit_job() )->m_xpSubset);
       pNextOperand = pCsvBuffer->pNextBuffer();
-      //m_pLogicUnit->m_xpSubset = pNextOperand;
+      //( m_pJob->pLogicUnit_job() )->m_xpSubset = pNextOperand;
     }
     else {
-      vTrace("Subset class %s\n"_Stz, aCN[m_pLogicUnit->m_xpSubset->eClass()]);
+      vTrace("Subset class %s\n"_Stz, aCN[( m_pJob->pLogicUnit_job() )->m_xpSubset->eClass()]);
       ASSERT(0);
     }
   }
@@ -95,7 +103,7 @@ void Step::vSubsetSet(void)
     vDebugPoint();
   }
   
-  m_pLogicUnit->m_xpSubset = pOperand;
+  ( m_pJob->pLogicUnit_job() )->m_xpSubset = pOperand;
   
   EXIT();
 }

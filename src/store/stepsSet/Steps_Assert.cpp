@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +208,7 @@ void Step::vAssertStack_0(void)
   
   if ( ! (0 == iStackValues)  ) {
     
-    m_pTask->m_pForth->vContentDump();
+    vContentDump();
 
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "assert::stack_0 in word"_Stz);

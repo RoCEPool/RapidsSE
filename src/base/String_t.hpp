@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include <cstdarg>
+
 namespace BASE
 {
   template <i8 AREA>
@@ -246,20 +248,23 @@ byte* String_t<AREA>::ayByte(void)
 template <i8 AREA>
 void String_t<AREA>::vCat(Stz* szArg, ...)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  //_precondition_(_MAGIC_,_FOOTER_);
+  
+  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  
   
   va_list xVarArgs;
   
   va_start(xVarArgs,szArg);
   
-  StrLib::vConcat(azChar(),szArg->azChar());
   
-  while (Stz* szVal = va_arg(xVarArgs,Stz*))
-    StrLib::vConcat(azChar(),szVal->azChar());
+  while (Stz* szVal = va_arg(xVarArgs,Stz*)) {
+    StrLib::vConcat(m_caCharArea,szVal->azChar());
+  }
   
   va_end(xVarArgs);
   
-  _postcondition_(_MAGIC_,_FOOTER_);
+  //_postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

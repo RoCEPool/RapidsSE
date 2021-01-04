@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "JobLog.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -46,8 +54,8 @@ void Step::vLogMark(void)
 
   m_pDataStack->vPopStr(sMark,__func__);
 
-  //i8 iJobId = m_pTask->m_pJob->m_iFocalId;
-  JobLog::vNote(m_pTask->m_pJob,sMark);
+  //i8 iJobId = m_pJob->m_iFocalId;
+  JobLog::vNote(m_pJob,sMark);
   
   EXIT();
 }
@@ -63,7 +71,7 @@ void Step::vLogMarkEntry(void)
   
   m_pDataStack->vPopStr(sWordNm,__func__);
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
               "%s"_Stz, //!format-LogJob
               sWordNm.szStz());
@@ -82,7 +90,7 @@ void Step::vLogMarkExit(void)
   
   m_pDataStack->vPopStr(sWordNm,__func__);
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
 
   AM::vLogJob(SL_INF,pJob,JA_JOB_EXIT,
               "%s"_Stz, //!format-LogJob
@@ -100,7 +108,7 @@ void Step::vLogMarkPhase(void)
   
   i8 i_Phase = m_pDataStack->iPopInt(__func__);
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
   
   AM::vLogJob(SL_INF,pJob,JA_JOB_PHASE,
               "%s"_Stz,
@@ -123,7 +131,7 @@ void Step::vLogMarkSeed(void)
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
   
-  //ActLog::vAdd(m_pTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
+  //ActLog::vAdd(m_pJob,(eAN)iSeed,sWordNm.szStz());
   
   EXIT();
 }
@@ -140,7 +148,7 @@ void Step::vLogMarkWord(void)
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
   
-  //ActLog::vAdd(m_pTask->m_pJob,(eAN)iAN,sWordNm.szStz());
+  //ActLog::vAdd(m_pJob,(eAN)iAN,sWordNm.szStz());
   
   EXIT();
 }
@@ -154,7 +162,7 @@ void Step::vLogJobSeed(void)
   
   i8 i_Seed = m_pDataStack->iPopInt(__func__);
   
-  Job* pJob = m_pTask->m_pJob;
+  Job* pJob = m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,
               "%s"_Stz, //!format-LogJob
               aSS[i_Seed]);

@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -25,7 +33,7 @@ void Step::vToPtnRowRegCompleted(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
+  ToPtnRow* pToPtnRow = *( m_pJob->pLogicUnit_job() )->m_xpToPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -43,7 +51,7 @@ void Step::vToPtnRowRegConvert(void)
 {
   ENTRY();
 
-  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
+  ToPtnRow* pToPtnRow = *( m_pJob->pLogicUnit_job() )->m_xpToPtnRow;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -63,7 +71,7 @@ void Step::vToPtnRowRegCreate(void)
     
   ToPtnRow* pToPtnRow = new ToPtnRow;
       
-  m_pLogicUnit->m_xpToPtnRow = pToPtnRow;
+  ( m_pJob->pLogicUnit_job() )->m_xpToPtnRow = pToPtnRow;
 
   EXIT();
 }
@@ -75,7 +83,7 @@ void Step::vToPtnRowRegDangling(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
+  ToPtnRow* pToPtnRow = *( m_pJob->pLogicUnit_job() )->m_xpToPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -93,8 +101,8 @@ void Step::vToPtnRowRegDelete(void)
 {
   ENTRY();
   
-  ToPtnRow* pToPtnRow = *m_pLogicUnit->m_xpToPtnRow;
-  m_pLogicUnit->m_xpToPtnRow = nullptr;
+  ToPtnRow* pToPtnRow = *( m_pJob->pLogicUnit_job() )->m_xpToPtnRow;
+  ( m_pJob->pLogicUnit_job() )->m_xpToPtnRow = nullptr;
   
   delete pToPtnRow;
   

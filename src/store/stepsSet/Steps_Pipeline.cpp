@@ -4,7 +4,20 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "ePX.h"
+
+#include "Op.hpp"
+#include "Stream.hpp"
+#include "Stage.hpp"
+#include "Pipeline.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -32,7 +45,7 @@ void Step::vPipelinePipeout(void)
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 
-  pOp0->vPipeOut_thisOp(pOperand,m_pTask);
+  pOp0->vPipeOut_thisOp(pOperand,this);
 
   EXIT();
 }

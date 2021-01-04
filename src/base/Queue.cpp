@@ -235,7 +235,9 @@ void Queue::vVerify(void)
   
   i8 iCount = 0;
   
-  for (QueueBuffer* pQbuffer = m_pTopBuffer; pQbuffer; pQbuffer->pNext()) {
+  for (QueueBuffer* pQbuffer = m_pTopBuffer;
+       pQbuffer;
+       pQbuffer = pQbuffer->pNext()) {
     iCount += pQbuffer->iCount();
     pQbuffer->vVerify();
   }

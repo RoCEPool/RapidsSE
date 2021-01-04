@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +87,7 @@ void Step::vRstackCsRoll(void)
     m_pReturnStack->vPushItem(xValMid);
   }
   
-  ForthCell* aFipZ = m_pDataStack->aPopFip(__func__);
+  CodeCell* aFipZ = m_pDataStack->aPopFip(__func__);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pReturnStack->vPopItem(xValMid,__func__);

@@ -5,7 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
-//#include "Engine.hpp"
+#include "AttachMap.hpp"
+#include "Plan.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
@@ -15,7 +16,7 @@ void STORE::vCheckAssumptions(void)
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(Operand)));
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
 
-  ALWAYS(sizeof(ForthCell)   == 8);
+  ALWAYS(sizeof(CodeCell)   == 8);
   
   ALWAYS(sizeof(Dic)     < C_SIZE_SMALL_OBJECT);
   

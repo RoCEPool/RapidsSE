@@ -36,13 +36,19 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
-/time load lineitem "/DATA/TPCH/lineitem100.csv";
+/time load lineitem "../DATA/TPCH/lineitem1.csv";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
-//projection lineitem l_extendedPrice, 2;
-//projection lineitem l_extendedPrice, l_discount, L_COMMENT;
-//rangeScan lineitem lineitem_idx2 xyz;
+filterRows lineitem "l_discount 0.04 >=";
 
+/*
+projection lineitem l_extendedPrice , l_discount , l_shipdate;
+projection lineitem l_shipdate, l_extendedPrice , l_discount;
+projection lineitem l_extendedPrice, 2;
+projection lineitem l_extendedPrice, l_discount, L_COMMENT;
+
+rangeScan lineitem lineitem_idx2 "30 >= 50 <";
+rangeScan lineitem lineitem_idx1 " '1994-01-01' >= '1995-01-01' <";
 
 pipeline Query6
 begin
@@ -50,28 +56,15 @@ begin
     start | periodic once | stageB
 
    stage stageB on all partitions :
-     range 0 lineitem by lineitem_idx2 x
-     | project 0 "l_extendedPrice , l_comment"
+     range 0 lineitem by lineitem_idx1 " '1994-01-01' >= '1995-01-01' <"
+     | project 0 "l_extendedPrice l_discount *"
      | stageC
 
    stage stageC on origin :
      output | sink | stageA
 end;
-/*
-pipeline x
-  begin
-
-  stage stageA on origin :
-    start | periodic once | syntaxTable x "(y integer)" | stageB
-
-  stage stageB on all nodes :
-    createTable | stageC
-
-  stage stageC on origin :
-    sink | stageA
-
-  end ;
 */
+
 //Smt0 lineitem l_extendedPrice, l_discount;
 //Smt0 lineitem as revenue l_extendedPrice 2 * ;
 //Smt0 lineitem l_extendedPrice, l_discount, l_extendedPrice 2 *;
@@ -101,20 +94,3 @@ pipeline x
 // aggregate - sum
 //select l_orderkey, sum(l_extendedprice) from lineitem;
 //Smt8;
-/*
-pipeline smt0
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan lineitem
-      | project 0 l_extendedPrice, l_discount
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-*/

@@ -4,6 +4,11 @@
 
 #include "BASE.h"
 
+#include <sys/utsname.h>
+//#include <sys/unistd.h>
+
+#include <sys/sysctl.h>
+
 static struct utsname gxUtsName;
 
 /*----------------------------------------------------------------------------*/

@@ -4,6 +4,23 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
+
+#include "ePX.h"
+
+#include "Api.hpp"
+#include "Op.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
+
+#include "JobList.hpp"
+#include "JobLog.hpp"
+#include "SessionArray.hpp"
 
 #include "TagConstants.h"
 
@@ -312,11 +329,11 @@ void Step::vJobAssertCorrectness(void)
 {
   ENTRY();
   
-  //Job* pJob = m_pTask->m_pJob;
+  //Job* pJob = m_pJob;
   
   //vTrace("job::assertCorrectness\n"_Stz);
   
-  m_pTask->vAssertStructure();
+  vAssertStructure();
   
   EXIT();
 }
@@ -442,10 +459,10 @@ void Step::vJobBideOperand(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pLogicUnit->m_xpOperandA = pJob->m_pOp->pPopQueue();
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandA = pJob->m_pOp->pPopQueue();
   
-  if (m_pLogicUnit->m_xpOperandA.bIsNull()) {
-    m_pTask->vScheduleBide();
+  if (( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull()) {
+    vScheduleBide();
   }
   
   EXIT();
@@ -474,12 +491,12 @@ void Step::vJobCompleted(void)
 {
   ENTRY();
   
-  Job* pJob = m_pTask->pJob();
+  Job* pJob = m_pJob;
   
   pJob->vJobState(JS_COMPLETED);
   
-  m_pTask->vGrabTaskLock();
-  m_pTask->vScheduleDelete();
+  vGrabTaskLock();
+  vScheduleDelete();
   
   EXIT();
 }
@@ -621,7 +638,7 @@ void Step::vJobFindOriginator(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&( m_pJob->pLogicUnit_job() )->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -643,7 +660,7 @@ void Step::vJobFindParticipant(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&( m_pJob->pLogicUnit_job() )->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -802,9 +819,9 @@ void Step::vJobNextOperand(void)
   
   Op* pOp = pJob->m_pOp;
   
-  if (m_pLogicUnit->m_xpOperandA.bIsNull())
-    m_pLogicUnit->m_xpOperandA = pOp->pPopQueue();
-  ASSERT(*m_pLogicUnit->m_xpOperandA);
+  if (( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull())
+    ( m_pJob->pLogicUnit_job() )->m_xpOperandA = pOp->pPopQueue();
+  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
   EXIT();
 }
@@ -1057,7 +1074,7 @@ void Step::vJobPostRecv(void)
     pJob->vMarkJob();
   }
   
-  //ActLog::vAdd(pJob,AN_POST_RECV,m_pTask->pJob());
+  //ActLog::vAdd(pJob,AN_POST_RECV,pJob());
 
   EXIT();
 }
@@ -1071,7 +1088,7 @@ void Step::vJobPreSend(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  //ActLog::vAdd(pJob,AN_PRE_SEND,m_pTask->pJob());
+  //ActLog::vAdd(pJob,AN_PRE_SEND,pJob());
   STORE::vJob_send(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)
@@ -1092,10 +1109,10 @@ void Step::vJobQueueReturn(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  Op* pOuterOp = m_pTask->m_pJob->m_pOuterOp;
+  Op* pOuterOp = m_pJob->m_pOuterOp;
   Op* pDownstreamOp = pOuterOp->pDownstreamOp();
   
-  pDownstreamOp->vAppendLeft(pOperand,m_pTask,false);
+  pDownstreamOp->vAppendLeft(pOperand,this,false);
   
   EXIT();
 }
@@ -1391,10 +1408,10 @@ void Step::vJobSeedStore(void)
   
   i8 i_Seed = m_pDataStack->iPopInt(__func__);
   
-  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
+  AM::vLogSvc(SL_INF,m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
-              aCN[m_pTask->m_pJob->eClass()],
+              aCN[m_pJob->eClass()],
               C_VARGS_END);
   
   pJob->vSeed((eSS)i_Seed);
@@ -1492,7 +1509,7 @@ void Step::vJobSignalSession(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->vGrabTaskLock();
+  vGrabTaskLock();
 
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
@@ -1506,18 +1523,18 @@ void Step::vJobSignalSession(void)
   
 
   
-  m_pTask->vJob(nullptr);
+  vJob(nullptr);
 
-  pSession->m_oSsnMutex.vLock(m_pTask);
-  pSession->m_oSsnMutex.vSignal(m_pTask);
-  pSession->m_oSsnMutex.vUnlock(m_pTask);
+  pSession->m_oSsnMutex.vLock(this);
+  pSession->m_oSsnMutex.vSignal(this);
+  pSession->m_oSsnMutex.vUnlock(this);
 
-  m_pTask->vDropTaskLock();
+  vDropTaskLock();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //m_pTask->vScheduleCompletion();
+  //vScheduleCompletion();
   
 
   
@@ -1535,16 +1552,16 @@ void Step::vJobScheduleNextPhase(void)
 
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
+  AM::vLogSvc(SL_INF,m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJobParticipant->eClass()],
-              aCN[m_pTask->m_pJob->eClass()],
+              aCN[m_pJob->eClass()],
               C_VARGS_END);
 
   Task* pTaskParticipant = pJobParticipant->pTask();
   RASSERT(! pTaskParticipant);
   
-  AM::vScheduleNextPhase(pJobParticipant,m_pTask);
+  AM::vScheduleNextPhase(pJobParticipant,this);
   
   EXIT();
 }
@@ -1558,10 +1575,10 @@ void Step::vJobSpawnReceived(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
+  AM::vLogSvc(SL_INF,m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
-              aCN[m_pTask->m_pJob->eClass()],
+              aCN[m_pJob->eClass()],
               C_VARGS_END);
 
   Task* pTask = pJob->pTask();

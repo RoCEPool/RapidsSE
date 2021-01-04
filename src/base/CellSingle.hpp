@@ -38,7 +38,7 @@ namespace BASE
  
     char* azChar(void);
   
-   ForthCell* aFip(void);
+   CodeCell* aFip(void);
 
     Stz*  szStz(void);
 

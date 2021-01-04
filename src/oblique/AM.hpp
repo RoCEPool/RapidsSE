@@ -24,6 +24,16 @@
 #include "eYA.h"
 
 namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracker;}
+namespace BASE { class Operand;                                  }
+namespace BASE { class Dic;             class DicStack;
+                 class Word;              }
+namespace BASE             { class Task;                                     }
+namespace BASE      { class Tx;              class TxSet;             }
+
+namespace BASE       { class DataBuffer;      class CsvBuffer;       }
+
+namespace STORE          { class Session;         class SessionState;      }
+namespace BASE           { class Log;             class LogEntry;          }
 
 
 namespace STORE    { class Crw;             class CrwBuffer;
@@ -32,8 +42,7 @@ namespace STORE    { class Crw;             class CrwBuffer;
                      class SP_Encoding_v2;
                       class Packing_v2;
                               class OverLine;        class TailLine;          }
-namespace STORE       { class DataBuffer;      class CsvBuffer;
-                              class RowBuffer;       class RowBuffer;         }
+namespace STORE       { class RowBuffer;       class RowBuffer;         }
 
 
 namespace STORE    { class Dynamo;                                   }
@@ -48,11 +57,9 @@ namespace STORE              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
                               class Job_Distributed;                          }
-namespace STORE           { class Log;             class LogEntry;          }
 namespace STORE          { class Table;           class IdxColVec;
                               class Index;
                               class BucketMap;       class PtnMap;            }
-namespace STORE          { class Operand;                                  }
 namespace STORE      {
                               class PtnStream;       class TablePtn;          }
 namespace STORE         { class Xmits;           class Op;
@@ -63,17 +70,12 @@ namespace STORE     { class OpSpec;          class PipelineSpec;
 namespace STORE             { class Planner;                                  }
 namespace STORE   { class Crv;                                      }
 namespace STORE              { class Row;                                      }
-namespace STORE             { class Dic;             class DicStack;
-                              class Forth;           class Word;              }
-namespace STORE          { class Session;         class SessionState;      }
 namespace STORE             { class Step;            class StepTiming;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 
 
-namespace STORE             { class Task;                                     }
 namespace STORE           { class Scheduler;       class Thread;
                               class Queues;                                   }
-namespace STORE      { class Tx;              class TxSet;             }
 
 
 using namespace STORE;
@@ -243,8 +245,13 @@ namespace OBLIQUE
     static void vDumpApi(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static eCN eJobClass(Job* pJob);
+    static Stz* szJobNm(Job* pJob);
+    static Stz* szJobOpNm(Job* pJob);
+    static Stz* szJobSeed(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
-  
+    static bool bJobWasReceived(Job* pJob);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static void vFilePrint(File* pFile, Stz* szFormat,...);
@@ -252,6 +259,8 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
+    static void vJobDelete(Job** ppJob);
+    static void vJobInitExeContext(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
 
     static bool bIsOperandOoO(Operand* pOperand);
@@ -358,14 +367,15 @@ namespace OBLIQUE
     static Table* pTableFind(Stz* szTableNm);
 
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
-    static void vTaskBeginOp(Task* pTask);
     static DicStack* pTaskDicStack(void);
     static void vTaskDump(void);
+    static void vTaskDump(Task* pTask);
     static Job* pTaskJob(void);
     static void vTaskMutexLock(Task* pTask);
     static void vTaskMutexSignal(Task* pTask);
     static void vTaskMutexUnlock(Task* pTask);
     static void vTaskMutexWait(Task* pTask);
+    static void vTaskOnExceptionTrace(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
@@ -378,7 +388,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);
     static void vWordSee(Word* pWord, DicStack* pDicStack);
-    static void vWordSeeDoes(Word* pWord, Word* pDoesWord, ForthCell* aFip, DicStack* pDicStack);
+    static void vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aFip, DicStack* pDicStack);
     static void vWriteLog(void);
     static void vWriteTrace_vargs(eYA eSysAct, Stz* szFormat, va_list xArgs);
     static void vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs);

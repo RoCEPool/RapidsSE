@@ -18,12 +18,16 @@
 #include "GraphNav.hpp"
 
 #include "ShadowNode.hpp"
-#include "Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/Statement.hpp"
 #include "TableRef.hpp"
-
 
 #include "ColumnRef.hpp"
 #include "LiteralExpr.hpp"
+
+#include "ProjectedExpr.hpp"
+
+#include "ProjectOp.hpp"
+#include "TableScanOp.hpp"
 
 using namespace Parser;
 
@@ -44,7 +48,7 @@ SqlPlanner::SqlPlanner(void)
   m_pStatementStack(new QueryNodeStack()),
   m_pTableRefStack(new QueryNodeStack()),
   m_pExprStack(nullptr),
-  m_pSelectList(nullptr)
+  m_pSelectItems(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -88,13 +92,13 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pExprStack = nullptr;
   }
 
-  if (m_pSelectList) {
-    while (m_pSelectList->nItems() > 0) {
-      QueryNode* pItem = m_pSelectList->pPop();
+  if (m_pSelectItems) {
+    while (m_pSelectItems->nItems() > 0) {
+      QueryNode* pItem = m_pSelectItems->pPop();
       delete pItem;
     }
-    delete m_pSelectList;
-    m_pSelectList = nullptr;
+    delete m_pSelectItems;
+    m_pSelectItems = nullptr;
   }
 }
 
@@ -238,41 +242,66 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
 {
-  // TODO: Parse out ALL and DISTINCT here.
-  
-  ASSERT(!m_pSelectList);
-  m_pSelectList = new QueryNodeList();
-  
+  ASSERT(m_pStatementStack->nItems() > 0);
+  ASSERT(!m_pSelectItems);
+  m_pSelectItems = new QueryNodeList();
+
+  // Visit the child parse tree nodes. The select list above will be populated.
   antlrcpp::Any any = visitChildren(ctx);
-  
+
+  ASSERT(m_pSelectItems->nItems() > 0);
+
+  // Create a project operator and attach it to the statement object
+  QueryNode* pProjectOp = ProjectOp::pCreate(m_pSelectItems);
+
+  QueryNode* pStatement = m_pStatementStack->pPeek(0);
+  ASSERT(Statement::bIsOfType(pStatement));
+  pStatement->vAppendChild(pProjectOp);
+
+
+
+  // Check for a tableRef. If one exists, add it to a TableScanOp
+  // and attach the TableScanOp as a child of the ProjectOp
   if (m_pTableRefStack->nItems() > 0) {
-    vTrace("  /from\n"_Stz);
-    
-    s2K sBuf;
+    ASSERT(m_pTableRefStack->nItems() == 1);
     QueryNode* pTableRef = m_pTableRefStack->pPop();
-    ShadowNode::vDescribe(pTableRef, sBuf);
-    
-    vTrace("    /%s\n"_Stz, sBuf.szStz());
-    delete pTableRef;
+
+    QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
+    pProjectOp->vAppendChild(pTableScanOp);
   }
-  
-  ASSERT(m_pSelectList->nItems() > 0);
-  vTrace("  /project\n"_Stz);
-  
-  while (m_pSelectList->nItems() > 0) {
-    QueryNode* pSelectItem = m_pSelectList->pPop();
-    s2K buf;
-    
-    buf.vCopy("    /"_Stz);
-    ShadowNode::vDescribe(pSelectItem, buf);
-   
-    buf.vConcat("\n"_Stz);
-    vTrace(buf.szStz());
-  }
-  
-  
-  delete m_pSelectList;
-  m_pSelectList = nullptr;
+
+
+
+  ////////////////////////////////////////////////////////
+//  if (m_pTableRefStack->nItems() > 0) {
+//    vTrace("  /from\n"_Stz);
+//
+//    s2K sBuf;
+//    QueryNode* pTableRef = m_pTableRefStack->pPop();
+//    ShadowNode::vDescribe(pTableRef, sBuf);
+//
+//    vTrace("    /%s\n"_Stz, sBuf.szStz());
+//    delete pTableRef;
+//  }
+//
+//  ASSERT(m_pSelectItems->nItems() > 0);
+//  vTrace("  /project\n"_Stz);
+//
+//  while (m_pSelectItems->nItems() > 0) {
+//    QueryNode* pSelectItem = m_pSelectItems->pPop();
+//    s2K buf;
+//
+//    buf.vCopy("    /"_Stz);
+//    ShadowNode::vDescribe(pSelectItem, buf);
+//
+//    buf.vConcat("\n"_Stz);
+//    vTrace(buf.szStz());
+//  }
+  ////////////////////////////////////////////////////////
+
+  ASSERT(m_pSelectItems->nItems() == 0);
+  delete m_pSelectItems;
+  m_pSelectItems = nullptr;
   
   return nullptr;
 }
@@ -282,7 +311,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* ctx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
 {
-  ASSERT(m_pSelectList);
+  ASSERT(m_pSelectItems);
   
   ASSERT(!m_pExprStack);
   m_pExprStack = new QueryNodeStack();
@@ -293,7 +322,7 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *ctx)
   delete m_pExprStack;
   m_pExprStack = nullptr;
   
-  ASSERT(m_pSelectList->nItems() > 0);
+  ASSERT(m_pSelectItems->nItems() > 0);
   
   return nullptr;
 }
@@ -308,21 +337,15 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   // pop the expr stack and add it to the select list.
   ASSERT(m_pExprStack->nItems() == 1);
   
-  QueryNode* pNode = m_pExprStack->pPop();
-  m_pSelectList->vAppend(pNode);
-  
-  // Expr is a base class. Example subclasses:
-  //    columnRef
-  //    columnWildcard
-  //    literal
-  //    variable  (e.g. CURRENT_TIMESTAMP)
-  //    function (some simply have children, some have children and parameters)
-  //      Add
-  //      Divide
-  //      AND
-  //      IF
-  //      SUBSTRING, etc
-  //
+  QueryNode* pExprNode = m_pExprStack->pPop();
+
+  // Is there an alias?
+  Text* pAliasText = cleanId(ctx->as);
+
+  QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pExprNode, pAliasText);
+
+  m_pSelectItems->vAppend(pProjectedExpr);
+
   return nullptr;
 }
 
@@ -360,6 +383,10 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* ctx)
 /*----------------------------------------------------------------------------*/
 Text* SqlPlanner::cleanId(sqlParser::IdentifierContext *ctx)
 {
+  if (!ctx) {
+    return nullptr;
+  }
+
   std::string idStr = ctx->getText();
   
   i8 idLen = idStr.length();

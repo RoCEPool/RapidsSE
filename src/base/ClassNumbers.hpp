@@ -30,7 +30,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BIRTH,
   /* */ CN_BOLVAL,
   /* */ CN_BUCKETMAP,
-  /* */ CN_BUFFERCURSOR,
   /* */ CN_BUFFERPOOL,
   /* */ CN_BYTERATE,
   /* */ CN_BYTES_T,
@@ -39,6 +38,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CATALOG,
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
+  /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
   /* */ CN_CRVBUFFER,
@@ -74,8 +74,8 @@ enum eCN : u2 // Class Number
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FIPVAL,
+  /* */ CN_FILTER,
   /* */ CN_FLTVAL,
-  /* */ CN_FORTH,
   /* */ CN_FORMAT,
   /* */ CN_FREEBUFFER,
   /* */ CN_FREECHUNK,
@@ -105,7 +105,7 @@ enum eCN : u2 // Class Number
   /* */ CN_INFOSET,
   /* */ CN_INGESTCHUNK,
   /* */ CN_INPUT,
-  /* */ CN_INTBUFFER,
+
   /* */ CN_INTSET,
   /* */ CN_INTVAL,
   /* */ CN_IOCHUNK,
@@ -196,6 +196,7 @@ enum eCN : u2 // Class Number
   /* */ CN_QUEUES,
 
   /* */ CN__R__,
+  /* */ CN_RANGE,
   /* */ CN_READAPI,
   /* */ CN_READER,
   /* */ CN_RECORD,
@@ -260,8 +261,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SPMEDIUM,
   /* */ CN_SPSMALL,
   /* */ CN_SQLPLANNER,
-  /* */ CN_SRTBUFFER,
-  /* */ CN_SRTSET,
   /* */ CN_STACK,
   /* */ CN_STAGE,
   /* */ CN_STAGESPEC,
@@ -355,7 +354,6 @@ static Stz* aCN[]
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
   /* */ "BUCKETMAP"_Stz,            // CN_BUCKETMAP
-  /* */ "BUFFERCURSOR"_Stz,         // CN_BUFFERCURSOR
   /* */ "BUFFERPOOL"_Stz,           // CN_BUFFERPOOL
   /* */ "BYTERATE"_Stz,             // CN_BYTERATE
   /* */ "BYTES_T"_Stz,              // CN_BYTES_T
@@ -364,6 +362,7 @@ static Stz* aCN[]
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
+  /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMPILER"_Stz,             // CN_COMPILER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
@@ -399,8 +398,8 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
+  /* */ "FILTER"_Stz,               // CN_FILTER
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
-  /* */ "FORTH"_Stz,                // CN_FORTH
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER
   /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK
@@ -430,7 +429,6 @@ static Stz* aCN[]
   /* */ "INFOSET"_Stz,              // CN_INFOSET
   /* */ "INGESTCHUNK"_Stz,          // CN_INGESTCHUNK
   /* */ "INPUT"_Stz,                // CN_INPUT
-  /* */ "INTBUFFER"_Stz,            // CN_INTBUFFER
   /* */ "INTSET"_Stz,               // CN_INTSET
   /* */ "INTVAL"_Stz,               // CN_INTVAL
   /* */ "IOCHUNK"_Stz,              // CN_IOCHUNK
@@ -521,6 +519,7 @@ static Stz* aCN[]
   /* */ "QUEUES"_Stz,               // CN_QUEUES
    
   /* */ "_R__"_Stz,                 // CN__R__
+  /* */ "RANGE"_Stz,                // CN_RANGE
   /* */ "READAPI"_Stz,              // CN_READAPI
   /* */ "READER"_Stz,               // CN_READER
   /* */ "RECORD"_Stz,               // CN_RECORD
@@ -585,8 +584,6 @@ static Stz* aCN[]
   /* */ "SPMEDIUM"_Stz,             // CN_SPMEDIUM
   /* */ "SPSMALL"_Stz,              // CN_SPSMALL
   /* */ "SQLPLANNER"_Stz,           // CN_SQLPLANNER
-  /* */ "SRTBUFFER"_Stz,            // CN_SRTBUFFER
-  /* */ "SRTSET"_Stz,               // CN_SRTSET
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC

@@ -4,7 +4,15 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -92,9 +100,9 @@ void Step::vGridListNodes(void)
 {
   ENTRY();
   
-  Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
+  Table* pStreamSetTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpStreamSetTable);
   StreamDef* pStreamDef  = pStreamSetTable->pStreamDef();
-  StreamSet* pStreamSet  = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet  = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
 
   i8 i_Node = m_pDataStack->iPopAsInt(__func__);
   for (Node_I oNode_I(i_Node,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {

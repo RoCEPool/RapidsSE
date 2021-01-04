@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -420,9 +424,9 @@ void Step::vWordLocate(void)
 {
   ENTRY();
   
-  ForthCell* aHasCell = m_pDataStack->aPopFip(__func__);
+  CodeCell* aHasCell = m_pDataStack->aPopFip(__func__);
   
-  Word* pLocatedWord = m_oDicStack.pLocateRoutineWord(aHasCell);
+  Word* pLocatedWord = m_oDicStack.pLocateRoutine(aHasCell);
   
   if (pLocatedWord) {
     s32 sName;
@@ -556,7 +560,7 @@ void Step::vWordResetRoutine(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  pWord->vResetRoutine();
+  pWord->vResetCodeBlock();
   
   EXIT();
 }
@@ -584,7 +588,7 @@ void Step::vWordXcheckInxPtr(void)
   
   Word* pTestWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
-  Word* pExeWord  = Routine::pToWord(m_aInxPtr);
+  Word* pExeWord  = CodeBlock::pToWord(m_aInxPtr);
 
   ASSERT(pExeWord == pTestWord);
   

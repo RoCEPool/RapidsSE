@@ -5,6 +5,10 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "JobLog.hpp"
 
 #include "eQK.h"
 #include "eTS.h"

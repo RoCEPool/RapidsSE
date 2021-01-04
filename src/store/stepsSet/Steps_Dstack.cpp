@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -100,8 +104,8 @@ void Step::vDstackDup(void)
 {
   ENTRY();
   
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
   }
 
   // could just copy from stack back into stack

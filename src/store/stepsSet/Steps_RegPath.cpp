@@ -4,6 +4,10 @@
 
 #include "BASE.h"
 #include "STORE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "StepTiming.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -29,7 +33,7 @@ void Step::vRegPathGet(void)
 {
   ENTRY();
     
-  Object* pPtrDicStack = &m_oDicStack;
+  Object* pPtrDicStack = & m_oDicStack;
   
   m_pDataStack->vPushPtr(pPtrDicStack);
   
@@ -43,7 +47,7 @@ void Step::vRegPathDepth(void)
 {
   ENTRY();
   
-  i8 iDepth = m_oDicStack.iCount();
+  i8 iDepth =  m_oDicStack.iCount();
   
   m_pDataStack->vPushInt(iDepth);
   
@@ -57,7 +61,7 @@ void Step::vRegPathDiscard(void)
 {
   ENTRY();
   
-  m_oDicStack.vDiscard();
+   m_oDicStack.vDiscard();
   
   EXIT();
 }
@@ -69,7 +73,7 @@ void Step::vRegPathDump(void)
 {
   ENTRY();
   
-  m_oDicStack.vContentDump();
+   m_oDicStack.vContentDump();
   
   EXIT();
 }
@@ -83,7 +87,7 @@ void Step::vRegPathPick(void)
   
   i8 iDic = m_pDataStack->iPopInt(__func__);
   
-  Object* pPtrDic = m_oDicStack.pPick(iDic);
+  Object* pPtrDic =  m_oDicStack.pPick(iDic);
 
   m_pDataStack->vPushPtr(pPtrDic);
   
@@ -99,7 +103,7 @@ void Step::vRegPathPush(void)
   
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   
-  m_oDicStack.vPush(pDic);
+   m_oDicStack.vPush(pDic);
   
   EXIT();
 }
@@ -111,7 +115,7 @@ void Step::vRegPathSave(void)
 {
   ENTRY();
   
-  m_oSaveDicStack.vCopy(&m_oDicStack);
+  m_oSaveDicStack.vCopy(& m_oDicStack);
   
   EXIT();
 }
@@ -123,7 +127,7 @@ void Step::vRegPathRestore(void)
 {
   ENTRY();
   
-  m_oDicStack.vCopy(&m_oSaveDicStack);
+   m_oDicStack.vCopy(&m_oSaveDicStack);
 
   EXIT();
 }

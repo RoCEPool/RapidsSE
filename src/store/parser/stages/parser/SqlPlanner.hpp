@@ -19,7 +19,7 @@ namespace Parser
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableRefStack;
     QueryNodeStack* m_pExprStack;
-    QueryNodeList* m_pSelectList;
+    QueryNodeList* m_pSelectItems;
     Footer m_xFooter;
     
    public:
