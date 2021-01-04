@@ -7,9 +7,9 @@ enum eLC // list cursor state
 {
   /*  0 */ LC_NONE=0,
   
-  /*  1 */ LC_A,
-  /*  2 */ LC_B,
-  /*  3 */ LC_C,
+  /*  1 */ LC_NIL,
+  /*  2 */ LC_ON_EXITING_ITEM,
+  /*  3 */ LC_ON_REMOVED_ITEM,
   
   /*  4 */ LC_ENUMS
 };
@@ -18,9 +18,9 @@ static Stz* aLC[]
 {
   /*  0 */ "LC_NONE"_Stz,
   
-  /*  1 */ "LC_A"_Stz,
-  /*  2 */ "LC_B"_Stz,
-  /*  3 */ "LC_C"_Stz,
+  /*  1 */ "LC_NIL"_Stz,
+  /*  2 */ "LC_ON_EXITING_ITEM"_Stz,
+  /*  3 */ "LC_ON_REMOVED_ITEM"_Stz,
 
   /*  4 */ "LC_ENUMS"_Stz,
 };

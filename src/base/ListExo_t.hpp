@@ -857,7 +857,9 @@ private:
  
   ListExo_t<CLASSNO,ITEM>* m_pListExo;
 
+  eLC                      m_eCursorState;
   ListExoNode_t<ITEM>*     m_pListNodeCursor;
+  
   
   // must be last
   Footer m_xFooter;
@@ -914,6 +916,7 @@ ListExoIter_t<CLASSNO,ITEM>::ListExoIter_t(ListExo_t<CLASSNO,ITEM>* pListExo)
   
   m_pListExo = pListExo;
   
+  m_eCursorState = LC_NIL;
   m_pListNodeCursor = nullptr;
   
   _checkInitialised_(CN_CLASSPLACEHOLDER);
