@@ -45,61 +45,6 @@ void Header::vAssertHeader(void)
   ASSERT(bIsMagicValid());
 }
 
-/*----------------------------------------------------------------------------*/
-/* is a valid class number                                                    */
-/*----------------------------------------------------------------------------*/
-eEC Header::eValidClass(void)
-{
-  if (m_eClassNo < CN_ENUMS)
-    return EC_NONE;
-  
-  return EC_OBJECT_CLASSNO_INVALID;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is a valid header                                                          */
-/*----------------------------------------------------------------------------*/
-eEC Header::eValidHeader(void)
-{
-  eEC eError;
-  
-  if ((eError = eValidMagic()))
-    return eError;
-  
-  if ((eError = eValidClass()))
-    return eError;
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is a valid class number                                                    */
-/*----------------------------------------------------------------------------*/
-eEC Header::eValidMagic(void)
-{
-  if (C_MAGIC == m_uMagic)
-    return EC_NONE;
-  
-  return EC_OBJECT_MAGIC_INVALID;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint the header into readable form                                       */
-/*----------------------------------------------------------------------------*/
-void Header::vSprint(Stz* szHeader)
-{
-  StrLib::vSprint(szHeader,
-                  "Magic: %c%c%c%c Class %03d %s (%s)"_Stz,
-                  m_caMagic[0],
-                  m_caMagic[1],
-                  m_caMagic[2],
-                  m_caMagic[3],
-                  m_eClassNo,
-                  aCN[m_eClassNo],
-                  bIsMagicValid() ? "valid magic" : "not-valid magic"
-                  );
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
