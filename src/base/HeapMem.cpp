@@ -161,7 +161,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 {
-  pBuffer->vMagic();
+  pBuffer->vSetMagic();
   
   AM::pHeapMem()->Transient.m_pLarge->vFreeObject(pBuffer);
 }

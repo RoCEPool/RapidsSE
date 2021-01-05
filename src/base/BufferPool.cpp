@@ -463,7 +463,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     
     FreeBuffer* pFreeBuffer = pToFreeBuffer(i_Buffer);
     
-    pFreeBuffer->vMagic();
+    pFreeBuffer->vSetMagic();
     pFreeBuffer->vClass(CN_FREEBUFFER);
     
     //pFreeBuffer->aFooter()->vSetFooter();
@@ -480,7 +480,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
   
   FreeBuffer* pLastBuffer = pToFreeBuffer(iBufferLast());
   
-  pLastBuffer->vMagic();
+  pLastBuffer->vSetMagic();
   pLastBuffer->vClass(CN_FREEBUFFER);
   //pLastBuffer->aFooter()->vSetFooter();
   if (bTouch)

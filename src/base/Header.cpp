@@ -21,7 +21,7 @@ Header::Header(void)
 /*----------------------------------------------------------------------------*/
 Header::Header(eCN eClassNo)
 {
-  vMagic();
+  vSetMagic();
   vClass(eClassNo);
 }
 

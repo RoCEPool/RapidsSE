@@ -81,7 +81,7 @@ void Step::vObjectMagicMark(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  pObject->vMagic();
+  pObject->vSetMagic();
   
   EXIT();
 }
