@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* PredicateVec.hpp -- vector of predicates                                   */
+/* PredicateVec.cpp -- vector of predicates                                   */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Predicate.hpp"
 #include "PredicateVec.hpp"
 
 /*----------------------------------------------------------------------------*/

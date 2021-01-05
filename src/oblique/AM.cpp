@@ -38,6 +38,7 @@
 #include "eUK.h"
 
 
+#include "Predicate.hpp"
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 

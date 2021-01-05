@@ -39,6 +39,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "Predicate.hpp"
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 #include "AttachMap.hpp"
