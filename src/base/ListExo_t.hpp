@@ -7,7 +7,7 @@
 
 namespace BASE
 {
-  class ListExo_ENVELOPED : public Object
+  class ListExo_ABSTRACT : public Object
   {
   protected:
     i8    m_nItems;
@@ -22,14 +22,14 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ListExo_ENVELOPED(eCN eClassNo);
-   ~ListExo_ENVELOPED(void) noexcept(false);
+    ListExo_ABSTRACT(eCN eClassNo);
+   ~ListExo_ABSTRACT(void) noexcept(false);
 
   private:
     Footer* aFooter(void);
   };
 
-  ListExo_ENVELOPED* _pListExo_ENVELOPED(void* aAddr);
+  ListExo_ABSTRACT* _pListExo_ABSTRACT(void* aAddr);
 
 } // namespace BASE
 
@@ -207,11 +207,10 @@ Footer* ListExoNode_t<ITEM>::aFooter(void)
 namespace BASE
 {
   template <eCN CLASSNO, class ITEM>
-  class ListExo_t : public Object
+  class ListExo_t : protected ListExo_ABSTRACT
   {
   protected:
     Lock  m_okLock;
-    i8    m_nItems;
     ListExoNode_t<ITEM>* m_pHeadNode;
     ListExoNode_t<ITEM>* m_pTailNode;
 
@@ -291,13 +290,11 @@ void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
-: Object(CLASSNO)
+: ListExo_ABSTRACT(CLASSNO)
 , m_okLock(LK_LIST,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-  
-  m_nItems = 0;
-  
+    
   m_pHeadNode  = nullptr;
   m_pTailNode  = nullptr;
 

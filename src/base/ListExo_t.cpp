@@ -8,32 +8,36 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,ListExo_ENVELOPED,CN_CLASSPLACEHOLDER)
-__aNewFunction(ListExo_ENVELOPED,CN_CLASSPLACEHOLDER)
-__vDeleteFunction(ListExo_ENVELOPED,CN_CLASSPLACEHOLDER)
-__aFooterFunction(ListExo_ENVELOPED)
+__pCastFunction(BASE,ListExo_ABSTRACT,CN_CLASSPLACEHOLDER)
+__aNewFunction(ListExo_ABSTRACT,CN_CLASSPLACEHOLDER)
+__vDeleteFunction(ListExo_ABSTRACT,CN_CLASSPLACEHOLDER)
+__aFooterFunction(ListExo_ABSTRACT)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ListExo_ENVELOPED::ListExo_ENVELOPED(eCN eClassNo)
+ListExo_ABSTRACT::ListExo_ABSTRACT(eCN eClassNo)
 : Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  
+  m_nItems = 0;
+  m_pHeadNode_object = nullptr;
+  m_pTailNode_object = nullptr;
   
    _checkInitialised_(CN_CLASSPLACEHOLDER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ListExo_ENVELOPED::~ListExo_ENVELOPED(void) noexcept(false)
+ListExo_ABSTRACT::~ListExo_ABSTRACT(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*============================================================================*/
