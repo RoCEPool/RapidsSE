@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"

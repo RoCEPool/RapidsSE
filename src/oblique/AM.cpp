@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 
+#include "eAK.h"
 #include "eBO.h"
 #include "eCC.h"
 #include "eCK.h"
@@ -38,6 +39,7 @@
 #include "eUK.h"
 
 
+#include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
