@@ -165,7 +165,7 @@ namespace OBLIQUE
     static void vProcessExit(void);
     static bool bProgress(void);
     static i8   nPtnsInGrid(void);
-    static SystemSchedule* pQueues(void);
+    static SystemSchedule* pSystemSchedule(void);
     static ResourceTracker* pResourceTracker(void);
     static Article* pRootArticle(void);
     static Word* pRootConstant(void);

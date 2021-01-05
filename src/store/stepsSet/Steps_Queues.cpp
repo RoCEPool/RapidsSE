@@ -44,8 +44,8 @@ void Step::vQueuesExecutingLength(void)
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  SystemSchedule* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksExecuting());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksExecuting());
   
   EXIT();
 }
@@ -59,8 +59,8 @@ void Step::vQueuesReadyLength(void)
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  SystemSchedule* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksReady());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksReady());
   
   EXIT();
 }
@@ -72,8 +72,8 @@ void Step::vQueuesSleepingLength(void)
 {
   ENTRY();
   
-  SystemSchedule* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksSleeping());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksSleeping());
   
   EXIT();
 }
@@ -85,8 +85,8 @@ void Step::vQueuesWaitingLength(void)
 {
   ENTRY();
   
-  SystemSchedule* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksWaiting());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksWaiting());
   
   EXIT();
 }

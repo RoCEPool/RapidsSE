@@ -18,11 +18,11 @@
 /*----------------------------------------------------------------------------*/
 SystemSchedule* BASE::_pQueues(void* aAddr)
 {
-  SystemSchedule* pQueues = reinterpret_cast<SystemSchedule*>(aAddr);
+  SystemSchedule* pSystemSchedule = reinterpret_cast<SystemSchedule*>(aAddr);
   
-  RASSERT_TYPE(pQueues,CN_QUEUES);
+  RASSERT_TYPE(pSystemSchedule,CN_QUEUES);
   
-  return pQueues;
+  return pSystemSchedule;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,14 +107,14 @@ void SystemSchedule::vThreadsReport(void)
   i8 iPercentageUsage;
   i8 iSleepSsec;
   
-  SystemSchedule* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  pQueues->m_pGeneralThreadVec->vGrabLock();
+  pSystemSchedule->m_pGeneralThreadVec->vGrabLock();
 
-  i8 nThreads = pQueues->m_pGeneralThreadVec->nItems();
+  i8 nThreads = pSystemSchedule->m_pGeneralThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
-    Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
+    Thread* pThread = pSystemSchedule->m_pGeneralThreadVec->pGet(i_Thread);
     
     pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
@@ -142,16 +142,16 @@ void SystemSchedule::vThreadsReport(void)
            );
   }
   
-  pQueues->m_pGeneralThreadVec->vDropLock();
+  pSystemSchedule->m_pGeneralThreadVec->vDropLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pQueues->m_pDedicatedThreadVec->vGrabLock();
+  pSystemSchedule->m_pDedicatedThreadVec->vGrabLock();
   
-  nThreads = pQueues->m_pDedicatedThreadVec->nItems();
+  nThreads = pSystemSchedule->m_pDedicatedThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
-    Thread* pThread = pQueues->m_pDedicatedThreadVec->pGet(i_Thread);
+    Thread* pThread = pSystemSchedule->m_pDedicatedThreadVec->pGet(i_Thread);
     
     pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
@@ -179,7 +179,7 @@ void SystemSchedule::vThreadsReport(void)
            );
   }
   
-  pQueues->m_pDedicatedThreadVec->vDropLock();
+  pSystemSchedule->m_pDedicatedThreadVec->vDropLock();
 }
 
 
