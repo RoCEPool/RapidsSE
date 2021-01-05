@@ -5,7 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
-#include "Test.hpp"
+#include "TestX.hpp"
 
 #include "TpchRatios.h"
 
@@ -274,6 +274,7 @@ void vTest8(void)
   delete pText1;
   delete pText0;
 
+  
   delete pListExo;
 }
 
