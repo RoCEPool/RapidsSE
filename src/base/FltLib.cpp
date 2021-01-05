@@ -18,11 +18,12 @@ void FltLib::vInitGlobals(void)
 {
   _static_
   
+  // DBL_EPSILON the minimum positive number such that 1.0 + DBL_EPSILON != 1.0
+    
   C_D8_MIN = DBL_MIN + DBL_EPSILON;
   C_D8_MAX = DBL_MAX;
   C_D8_MID = DBL_MAX / 2.0;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* return arg raised to given power                                           */
@@ -32,6 +33,16 @@ d8 FltLib::dPow(d8 dArg, d8 dRaisedTo)
   d8 dRaised = pow(dArg,dRaisedTo);
     
   return dRaised;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return square root of arg                                                  */
+/*----------------------------------------------------------------------------*/
+d8 FltLib::dSqrt(d8 dArg)
+{
+  d8 dRoot = sqrt(dArg);
+    
+  return dRoot;
 }
 
 /*============================================================================*/
