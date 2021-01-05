@@ -19,6 +19,7 @@ __aFooterFunction(ListExo_ABSTRACT)
 /*----------------------------------------------------------------------------*/
 ListExo_ABSTRACT::ListExo_ABSTRACT(eCN eClassNo)
 : Object(eClassNo)
+, m_okLock(LK_LIST,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
@@ -26,11 +27,10 @@ ListExo_ABSTRACT::ListExo_ABSTRACT(eCN eClassNo)
   m_pHeadNode_abstract = nullptr;
   m_pTailNode_abstract = nullptr;
   
-   _checkInitialised_(CN_CLASSPLACEHOLDER);
+   _checkInitialised_(eClassNo);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

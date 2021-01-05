@@ -10,7 +10,8 @@ namespace BASE
   class ListExo_ABSTRACT : public Object
   {
   protected:
-    i8    m_nItems;
+    Lock    m_okLock;
+    i8      m_nItems;
     Object* m_pHeadNode_abstract;
     Object* m_pTailNode_abstract;
 
@@ -210,9 +211,6 @@ namespace BASE
   class ListExo_t : protected ListExo_ABSTRACT
   {
   protected:
-    Lock  m_okLock;
-    //ListExoNode_t<ITEM>* m_pHeadNode_list;
-    ListExoNode_t<ITEM>* m_pTailNode_list;
 
     // must be last
     Footer m_xFooter;
@@ -295,13 +293,9 @@ void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
 : ListExo_ABSTRACT(CLASSNO)
-, m_okLock(LK_LIST,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
-  //m_pHeadNode_list  = nullptr;
-  m_pTailNode_list  = nullptr;
-
   _checkInitialised_(CLASSNO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
@@ -336,7 +330,7 @@ void ListExo_t<CLASSNO,ITEM>::vAppend(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-  vInsertExoNodeAfter(pAppendingNode,m_pTailNode_list);
+  vInsertExoNodeAfter(pAppendingNode,pTailNode_downcast());
   
   m_okLock.vDropWrite();
   vValidateList();
@@ -519,13 +513,13 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pPopTail(void)
      
   m_okLock.vGrabWrite();
   
-  if (! m_pTailNode_list) {
+  if (! pTailNode_downcast()) {
     ASSERT(! m_nItems);
     m_okLock.vDropWrite();
     return nullptr;
   }
 
-  ListExoNode_t<ITEM>* pWasTailNode = m_pTailNode_list;
+  ListExoNode_t<ITEM>* pWasTailNode = pTailNode_downcast();
   ITEM* pWasTailItem = pWasTailNode->pItem();
   
   vCutExoNode(pWasTailNode);
@@ -572,7 +566,7 @@ void ListExo_t<CLASSNO,ITEM>::vPushTail(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-  vInsertExoNodeAfter(pPushingNode,m_pTailNode_list);
+  vInsertExoNodeAfter(pPushingNode,pTailNode_downcast());
   
   m_okLock.vDropWrite();
   vValidateList();
@@ -648,12 +642,12 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
   
   m_okLock.vGrabWrite();
   
-  if (! m_pTailNode_list) {
+  if (! pTailNode_downcast()) {
     m_okLock.vDropWrite();
     return nullptr;
   }
 
-  ITEM* pItem = m_pTailNode_list->pItem();
+  ITEM* pItem = pTailNode_downcast()->pItem();
   
   m_okLock.vDropWrite();
 
@@ -682,12 +676,12 @@ void ListExo_t<CLASSNO,ITEM>::vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode)
   ListExoNode_t<ITEM>* pNextOfCut = pCutThisNode->pNextNode();
   ListExoNode_t<ITEM>* pPrevOfCut = pCutThisNode->pPrevNode();
 
-  if (pCutThisNode == pHeadNode_downcast() && pCutThisNode == m_pTailNode_list) {
+  if (pCutThisNode == pHeadNode_downcast() && pCutThisNode == pTailNode_downcast()) {
     // cut only node
     
     ASSERT(1 == m_nItems);
     m_pHeadNode_abstract = nullptr;
-    m_pTailNode_list = nullptr;
+    m_pTailNode_abstract = nullptr;
   }
   else
   if (pCutThisNode == pHeadNode_downcast()) {
@@ -698,12 +692,12 @@ void ListExo_t<CLASSNO,ITEM>::vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode)
     m_pHeadNode_abstract = pNextOfCut;
   }
   else
-  if (pCutThisNode == m_pTailNode_list) {
+  if (pCutThisNode == pTailNode_downcast()) {
     // cut tail node
 
     ASSERT(m_nItems > 1);
     pPrevOfCut->vNextNode(nullptr);
-    m_pTailNode_list = pPrevOfCut;
+    m_pTailNode_abstract = pPrevOfCut;
   }
   else {
     // cut body node
@@ -790,8 +784,8 @@ void ListExo_t<CLASSNO,ITEM>::
     m_pHeadNode_abstract = pInsertThisNode;
   }
   
-  if (! m_pTailNode_list || m_pTailNode_list == pAfterThisNode)
-    m_pTailNode_list = pInsertThisNode;
+  if (! pTailNode_downcast() || pTailNode_downcast() == pAfterThisNode)
+    m_pTailNode_abstract = pInsertThisNode;
 
   m_nItems++;
   ASSERT(m_nItems >= 1);
@@ -827,9 +821,9 @@ void ListExo_t<CLASSNO,ITEM>::
   if (! pHeadNode_downcast() || pHeadNode_downcast() == pBeforeThisNode)
     m_pHeadNode_abstract = pInsertThisNode;
   
-  if (! m_pTailNode_list) {
+  if (! pTailNode_downcast()) {
     ASSERT(! m_nItems);
-    m_pTailNode_list = pInsertThisNode;
+    m_pTailNode_abstract = pInsertThisNode;
   }
   
   m_nItems++;
@@ -844,8 +838,9 @@ ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pTailNode_downcast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
-  ListExoNode_t<ITEM>* pTail_downcast= m_pTailNode_list;
-  
+  ListExoNode_t<ITEM>* pTail_downcast =
+    (ListExoNode_t<ITEM>*) m_pTailNode_abstract;
+
   return pTail_downcast;
 }
 
@@ -877,7 +872,7 @@ void ListExo_t<CLASSNO,ITEM>::vValidateList(void)
   RASSERT(nItemsCheck == m_nItems);
   
   nItemsCheck = 0;
-  for (pScanNode = m_pTailNode_list;
+  for (pScanNode = pTailNode_downcast();
        pScanNode;
        pScanNode = pScanNode->pPrevNode()) {
     
