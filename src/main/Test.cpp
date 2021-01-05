@@ -278,6 +278,12 @@ void vTest8(void)
   vTrace("1: %s\n"_Stz,pListExo->pPeek(1)->szGet());
   vTrace("2: %s\n"_Stz,pListExo->pPeek(2)->szGet());
 
+  
+  ListExoIter_t<CN_CLASSPLACEHOLDER,Text>* pListExoIter = pListExo->pNewIter();
+ 
+  
+  delete pListExoIter;
+  
   pListExo->vRemoveAll();
 
   delete pText2;
