@@ -5,7 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
-#include "TestX.hpp"
+#include "Test.hpp"
 
 #include "TpchRatios.h"
 
