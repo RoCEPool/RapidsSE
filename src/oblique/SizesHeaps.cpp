@@ -301,7 +301,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(QueryNodeStack),     HT_T_MEDIUM  ,0 }, // CN_QUERYNODESTACK
   { sizeof(Queue),              HT_T_TINY    ,0 }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID   ,0 }, // CN_QUEUEBUFFER
-  { sizeof(SystemSchedule),             HT_T_TINY    ,0 }, // CN_QUEUES
 
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
   { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE
@@ -382,6 +381,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_STRING_T
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
+  { sizeof(SystemSchedule),     HT_T_TINY    ,0 }, // CN_SYSTEMSCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 }, // CN__T__
   { sizeof(Table),              HT_T_TINY    ,0 }, // CN_TABLE

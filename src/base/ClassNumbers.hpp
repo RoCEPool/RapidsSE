@@ -193,7 +193,6 @@ enum eCN : u2 // Class Number
   /* */ CN_QUERYNODESTACK,
   /* */ CN_QUEUE,
   /* */ CN_QUEUEBUFFER,
-  /* */ CN_QUEUES,
 
   /* */ CN__R__,
   /* */ CN_RANGE,
@@ -274,7 +273,8 @@ enum eCN : u2 // Class Number
   /* */ CN_STRING_T,
   /* */ CN_STZVAL,
   /* */ CN_SYSCALL,
-  
+  /* */ CN_SYSTEMSCHEDULE,
+
   /* */ CN__T__,
   /* */ CN_TABLE,
   /* */ CN_TABLEDEF,
@@ -516,7 +516,6 @@ static Stz* aCN[]
   /* */ "QUERYNODESTACK"_Stz,       // CN_QUERYNODESTACK
   /* */ "QUEUE"_Stz,                // CN_QUEUE
   /* */ "QUEUEBUFFER"_Stz,          // CN_QUEUEBUFFER
-  /* */ "QUEUES"_Stz,               // CN_QUEUES
    
   /* */ "_R__"_Stz,                 // CN__R__
   /* */ "RANGE"_Stz,                // CN_RANGE
@@ -597,7 +596,8 @@ static Stz* aCN[]
   /* */ "STRING_T"_Stz,             // CN_STRING_T
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
-   
+  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SYSTEMSCHEDULE
+
   /* */ "_T__"_Stz,                 // CN__T__
   /* */ "TABLE"_Stz,                // CN_TABLE
   /* */ "TABLEDEF"_Stz,             // CN_TABLEDEF

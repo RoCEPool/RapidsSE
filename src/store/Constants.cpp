@@ -341,7 +341,7 @@ void Constants::vAddConstantsCpp(void)
 
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
-  /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
+  /*    */ vAddConstant("CN_SYSTEMSCHEDULE"_Stz,       CN_SYSTEMSCHEDULE);
   
   /*    */ vAddConstant("CN_READAPI"_Stz,      CN_READAPI);
   /*    */ vAddConstant("CN_RECORD"_Stz,       CN_RECORD);

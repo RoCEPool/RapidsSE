@@ -685,7 +685,7 @@ void Scheduler::vThread_NapTillGeneralThreads(void)
     Thread* pThread = pSystemSchedule->m_pGeneralThreadVec->pGet(i_Thread);
     
     while (HS_IDLE != pThread->m_eThreadState)
-      AM::vNapMsec(10,CN_QUEUES);
+      AM::vNapMsec(10,CN_SYSTEMSCHEDULE);
   }
 }
 

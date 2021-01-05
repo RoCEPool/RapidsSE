@@ -426,7 +426,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
     
     eCN eClass = pBuffer->eClass();
     
-    if (CN_QUEUES == eClass)
+    if (CN_SYSTEMSCHEDULE == eClass)
       int iDebug = 1;
     
     pPoolSnapshot->m_nObjects[eClass]++;
@@ -442,7 +442,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
 //    if (iCountObjects[eClass] == 0)
 //      continue;
 //
-//    if (CN_QUEUES == eClass)
+//    if (CN_SYSTEMSCHEDULE == eClass)
 //      int iDebug = 1;
 //
 //    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
@@ -458,7 +458,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    if (CN_QUEUES == eClass)
+    if (CN_SYSTEMSCHEDULE == eClass)
       int iDebug = 1;
     
     pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
@@ -474,7 +474,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    if (CN_QUEUES == eClass)
+    if (CN_SYSTEMSCHEDULE == eClass)
       int iDebug = 1;
 
     pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
@@ -490,7 +490,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    if (CN_QUEUES == eClass)
+    if (CN_SYSTEMSCHEDULE == eClass)
       int iDebug = 1;
 
     pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
