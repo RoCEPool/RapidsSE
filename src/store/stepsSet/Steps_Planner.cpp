@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 #include "Planner.hpp"
 #include "Response.hpp"
