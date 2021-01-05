@@ -932,11 +932,11 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   i8 iJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob_Pipeline = Scheduler::pJob_FindParticipating(iJobId);
+  Job* pJob_Pipeline = AM::pJob_FindParticipating(iJobId);
   
   if ( ! pJob_Pipeline ) {
     vTrace("job %lld not found\n"_Stz, iJobId);
-    Scheduler::vJob_DumpParticipating();
+    AM::vJob_DumpParticipating();
     return false;
   }
   else

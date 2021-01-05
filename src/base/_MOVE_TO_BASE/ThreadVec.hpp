@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* ThreadVec.hpp -- Vector of Expressions                                         */
+/* ThreadVec.hpp -- Vector of Threads                                         */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   class ThreadVec : public VectorNL_t<CN_THREADVEC,Thread,C_MAX_THREADS>
   {

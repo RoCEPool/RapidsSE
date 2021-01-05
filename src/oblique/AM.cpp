@@ -57,6 +57,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "JobList.hpp"
 #include "SessionArray.hpp"
 #include "XmitOperand.hpp"
 
@@ -2592,6 +2593,266 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
         
   return true;
 }
+
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* add job to demon list                                                      */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddDemon(Job* pJob)
+{
+  
+  Queues* pQueues = AM::pQueues();
+  
+  AM::pDemonJobs()->vGrabLock();
+  AM::pDemonJobs()->vAddJob(pJob);
+  AM::pDemonJobs()->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
+              "Job added to DemonJobs"_Stz); //!format-LogJob
+}
+
+/*----------------------------------------------------------------------------*/
+/* add job to local list                                                      */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddLocal(Job* pJob)
+{
+  
+  Queues* pQueues = AM::pQueues();
+  
+  AM::pLocalJobs()->vGrabLock();
+  AM::pLocalJobs()->vAddJob(pJob);
+  AM::pLocalJobs()->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
+              "Job added to LocalJobs"_Stz); //!format-LogJob
+}
+
+/*----------------------------------------------------------------------------*/
+/* add job to originating list                                                */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddOriginating(Job* pJob)
+{
+  
+  Queues* pQueues = AM::pQueues();
+  
+  AM::pOriginatingJobs()->vGrabLock();
+  AM::pOriginatingJobs()->vAddJob(pJob);
+  AM::pOriginatingJobs()->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
+              "Job added to OriginatingJobs"_Stz); //!format-LogJob
+}
+
+/*----------------------------------------------------------------------------*/
+/* add job to participating list                                              */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddParticipating(Job* pJob)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::pParticipatingJobs()->vGrabLock();
+  AM::pParticipatingJobs()->vAddJob(pJob);
+  AM::pParticipatingJobs()->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
+              "Job added to ParticipatingJobs"_Stz); //!format-LogJob
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump demon job list                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_DumpDemon(void)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
+              "DemonJobs list:"_Stz); //!format-LogQue
+  
+  AM::pDemonJobs()->vGrabLock();
+  AM::pDemonJobs()->vContentDump();
+  AM::pDemonJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump local job list                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_DumpLocal(void)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
+              "LocalJobs list:"_Stz); //!format-LogQue
+  
+  AM::pLocalJobs()->vGrabLock();
+  AM::pLocalJobs()->vContentDump();
+  AM::pLocalJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump originating job list                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_DumpOriginating(void)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
+              "OriginatingJobs list:"_Stz); //!format-LogQue
+
+  AM::pOriginatingJobs()->vGrabLock();
+  AM::pOriginatingJobs()->vContentDump();
+  AM::pOriginatingJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump participating job list                                                */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_DumpParticipating(void)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_PARTICPANTS,
+              "ParticipatingJobs list:"_Stz); //!format-LogQue
+  
+  AM::pParticipatingJobs()->vGrabLock();
+  AM::pParticipatingJobs()->vContentDump();
+  AM::pParticipatingJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in originating list                                               */
+/*----------------------------------------------------------------------------*/
+Job* AM::pJob_FindOriginating(i8 iJobId)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_ORIG,
+              "Find job %lld in OriginatingJobs"_Stz, //!format-LogQue
+              iJobId);
+  
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(iJobId);
+  
+  if (pJob)
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_FOUND_ORIG,
+                "found job %lld in OriginatingJobs"_Stz, //!format-LogQue
+                iJobId);
+  else
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_NOT_ORIG,
+                "did not find job %lld in OriginatingJobs"_Stz, //!format-LogQue
+                iJobId);
+  
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in participating list                                             */
+/*----------------------------------------------------------------------------*/
+Job* AM::pJob_FindParticipating(i8 iJobId)
+{
+  Queues* pQueues = AM::pQueues();
+
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_PARTG,
+              "find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
+              iJobId);
+  
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(iJobId);
+  
+  if (pJob)
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_FOUND_PARTG,
+                "found job %lld in ParticipatingJobs"_Stz, //!format-LogQue
+                iJobId);
+  else
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_NOT_PARTG,
+                "did not find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
+                iJobId);
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove job from local list                                                 */
+/*----------------------------------------------------------------------------*/
+bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::pLocalJobs()->vGrabLock();
+  
+  if (bDump)
+    AM::pLocalJobs()->vContentDump();
+  
+  bool bRemoved = AM::pLocalJobs()->bRemoveJob(pJob);
+  
+  AM::pLocalJobs()->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
+              "Job removed from LocalJobs"_Stz); //!format-LogJob
+  
+  return bRemoved;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove job from originating list                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::pOriginatingJobs()->vGrabLock();
+  
+  if (bDump)
+    AM::pOriginatingJobs()->vContentDump();
+  
+  bool bRemoved = AM::pOriginatingJobs()->bRemoveJob(pJob);
+  
+  AM::pOriginatingJobs()->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
+              "Job removed from OriginatingJobs"_Stz); //!format-LogJob
+  
+  return bRemoved;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove job from participating list                                         */
+/*----------------------------------------------------------------------------*/
+bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
+{
+  Queues* pQueues = AM::pQueues();
+  
+  AM::pParticipatingJobs()->vGrabLock();
+  
+  if (bDump)
+    AM::pParticipatingJobs()->vContentDump();
+
+  bool bRemoved = AM::pParticipatingJobs()->bRemoveJob(pJob);
+  
+  AM::pParticipatingJobs()->vDropLock();
+  
+  pJob->vIncStepNo();
+  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
+              "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
+  
+  return bRemoved;
+}
+
+
+
+
+
 
 /*============================================================================*/
 /* end                                                                        */

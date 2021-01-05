@@ -5,7 +5,7 @@
 
 #include "eHS.h"
 
-namespace STORE
+namespace BASE
 {
   class Thread : public Focal,
                  public ListItem_t<Thread>

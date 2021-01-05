@@ -32,7 +32,7 @@ void Step::vOlistFindJob(void)
   
   i8 iJobId = m_pDataStack->iPopAsInt(__func__);
   
-  Job* pJobFound = Scheduler::pJob_FindOriginating(iJobId);
+  Job* pJobFound = AM::pJob_FindOriginating(iJobId);
   RASSERT(pJobFound);
   
   

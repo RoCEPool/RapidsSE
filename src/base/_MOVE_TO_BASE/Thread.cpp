@@ -3,8 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 
 #include "PsxThd.hpp"  //?
 
@@ -19,7 +17,7 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Thread* STORE::_pThread(void* aAddr)
+Thread* BASE::_pThread(void* aAddr)
 {
   Thread* pThread = reinterpret_cast<Thread*>(aAddr);
   

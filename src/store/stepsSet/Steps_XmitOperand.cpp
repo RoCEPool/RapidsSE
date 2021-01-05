@@ -57,7 +57,7 @@ void Step::vXmitOperandPipeOut(void)
   
   // find the pipeline participant job
   i8 iPipelineJob = pXmitOperand->m_iPipelineJobId;
-  Job* pPipelineJob = Scheduler::pJob_FindParticipating(iPipelineJob);
+  Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
   // get the next stage the xmit is supposed to xmit to
   Stage* pStage = pPipelineJob->m_pPipeline->pGet(pXmitOperand->m_iNextStage);

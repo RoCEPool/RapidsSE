@@ -3,13 +3,11 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ThreadQueue* STORE::_pThreadQueue(void* aAddr)
+ThreadQueue* BASE::_pThreadQueue(void* aAddr)
 {
   ThreadQueue* pThreadQueue = reinterpret_cast<ThreadQueue*>(aAddr);
   

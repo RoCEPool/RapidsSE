@@ -854,7 +854,7 @@ i8 Task::iTaskId(void)
 /*----------------------------------------------------------------------------*/
 /* get thread                                                                 */
 /*----------------------------------------------------------------------------*/
-STORE::Thread* Task::pvThread_DONT_DEREF(void)
+Thread* Task::pvThread_DONT_DEREF(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -864,7 +864,7 @@ STORE::Thread* Task::pvThread_DONT_DEREF(void)
 /*----------------------------------------------------------------------------*/
 /* set thread                                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThread(STORE::Thread* pThread)
+void Task::vThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

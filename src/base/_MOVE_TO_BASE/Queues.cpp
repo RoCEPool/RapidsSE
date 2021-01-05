@@ -3,13 +3,9 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
-#include "Response.hpp"
-#include "Result.hpp"
-
-#include "Job.hpp"
-#include "JobList.hpp"
+//#include "Response.hpp"
+//#include "Result.hpp"
 
 #include "PsxThd.hpp"
 
@@ -20,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queues* STORE::_pQueues(void* aAddr)
+Queues* BASE::_pQueues(void* aAddr)
 {
   Queues* pQueues = reinterpret_cast<Queues*>(aAddr);
   
