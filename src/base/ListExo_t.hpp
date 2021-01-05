@@ -247,12 +247,16 @@ namespace BASE
 
     void vCutExoNode(ListExoNode_t<ITEM>* pCutThisNode);
   
+    ListExoNode_t<ITEM>* pHeadNode_xlate(void);
+  
     void vInsertExoNodeAfter(ListExoNode_t<ITEM>* pInsertThisNode,
                              ListExoNode_t<ITEM>* pAfterThisNode);
   
     void vInsertExoNodeBefore(ListExoNode_t<ITEM>* pInsertThisNode,
                               ListExoNode_t<ITEM>* pBeforeThisNode);
-
+  
+    ListExoNode_t<ITEM>* pTailNode_xlate(void);
+  
     void vValidateList(void);
   
     Footer* aFooter(void);
@@ -742,6 +746,19 @@ ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pFindExoNode(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get head item of list                                                      */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pHeadNode_xlate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+    
+  ListExoNode_t<ITEM>* pHead = m_pHeadNode;
+  
+  return pHead;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert node after given node                                               */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
@@ -816,6 +833,19 @@ void ListExo_t<CLASSNO,ITEM>::
   
   m_nItems++;
   ASSERT(m_nItems >= 1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head item of list                                                      */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pTailNode_xlate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+    
+  ListExoNode_t<ITEM>* pTail = m_pTailNode;
+  
+  return pHead;
 }
 
 /*----------------------------------------------------------------------------*/
