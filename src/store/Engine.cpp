@@ -1523,6 +1523,14 @@ void Engine::vStartSystem(void)
    gpAttachMap->m_pQueues = new Queues;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job lists
+  
+  gpAttachMap->m_pDemonJobs         = new JobList(bJobCompare,JL_DEMON);
+  gpAttachMap->m_pLocalJobs         = new JobList(bJobCompare,JL_LOCAL);
+  gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
+  gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes
   
   gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);

@@ -83,14 +83,6 @@ Queues::Queues(void)
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // jobs
-  
-  m_pDemonJobs         = new JobList(bJobCompare,JL_DEMON);
-  m_pLocalJobs         = new JobList(bJobCompare,JL_LOCAL);
-  m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
-  m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   _checkInitialised_(CN_QUEUES);
   
