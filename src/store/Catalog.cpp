@@ -18,8 +18,8 @@ Catalog* STORE::_pCatalog(void* aAddr)
 {
   Catalog* pCatalog = reinterpret_cast<Catalog*>(aAddr);
   
-  if (pCatalog && CN_CATALOG != pCatalog->eClass())
-    vTrace("_pCatalog got class %s\n"_Stz,aCN[pCatalog->eClass()]);
+  if (pCatalog && CN_CATALOG != pCatalog->eGetClassNo())
+    vTrace("_pCatalog got class %s\n"_Stz,aCN[pCatalog->eGetClassNo()]);
   
   RASSERT_TYPE(pCatalog,CN_CATALOG);
   

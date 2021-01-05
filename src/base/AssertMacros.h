@@ -56,7 +56,7 @@ EndDefine
 /* RASSERT_TYPE macro                                                         */
 /*----------------------------------------------------------------------------*/
 #define RASSERT_TYPE(pOBJECT,eCLASS) \
-  if (pOBJECT && eCLASS != pOBJECT->eClass()) \
+  if (pOBJECT && eCLASS != pOBJECT->eGetClassNo()) \
     BASE::vThrowType(FK_TYPE,VL_FATAL,\
                             __func__,__FILE__,__LINE__,\
                             pOBJECT,eCLASS); \

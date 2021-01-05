@@ -218,7 +218,7 @@ bool SkipListNL::bInsert(void* aObjectInsert)
   RASSERT(pNode); // logic check
   
   Object* pObjectInsert = (Object*)aObjectInsert;
-  //RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eClass() == pObjectInsert->eClass() );
+  //RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eGetClassNo() == pObjectInsert->eGetClassNo() );
   
   // do not insert duplicates into a list of unique keys
   if (bEqualTo && m_bUniqueKey) {
@@ -405,7 +405,7 @@ SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** 
     while (SkipNode* pNextNode = pCurrentNode->m_pRight[iCurrentLevel]) {
       
       //RJH vTrace("pNextNode:%p n"_Stz,pNextNode);
-      //RJH vTrace("pNextNode:%s n"_Stz,aCN[pNextNode->eClass()]);
+      //RJH vTrace("pNextNode:%s n"_Stz,aCN[pNextNode->eGetClassNo()]);
       //RJH vTrace("Object:%p\n"_Stz,pNextNode->m_pObject);
       
       // compare the inserting object with next object

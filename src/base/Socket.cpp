@@ -264,7 +264,7 @@ void Socket::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/

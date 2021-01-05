@@ -18,8 +18,8 @@ Schema* STORE::_pSchema(void* aAddr)
 {
   Schema* pSchema = reinterpret_cast<Schema*>(aAddr);
   
-  if (pSchema && CN_SCHEMA != pSchema->eClass())
-    vTrace("_pSchema got class %s\n"_Stz,aCN[pSchema->eClass()]);
+  if (pSchema && CN_SCHEMA != pSchema->eGetClassNo())
+    vTrace("_pSchema got class %s\n"_Stz,aCN[pSchema->eGetClassNo()]);
   
   RASSERT_TYPE(pSchema,CN_SCHEMA);
   

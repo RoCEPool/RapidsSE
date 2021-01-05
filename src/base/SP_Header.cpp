@@ -40,7 +40,7 @@ Stz* SP_Header::sz(Header* aHeader)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  eCN eClassNo  = aHeader->eClass();
+  eCN eClassNo  = aHeader->eGetClassNo();
   i8 nClassSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
   StrLib::vSprint(m_caResult,

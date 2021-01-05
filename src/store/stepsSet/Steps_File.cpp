@@ -295,7 +295,7 @@ void Step::vFileReadCrwBlock(void)
   
   i8 nReadBytes = pFile->nReadBytes(aCrwProper,nSizeCrwProper);
 
-  RASSERT(CN_CRWBUFFER == pCrwBuffer->eClass());
+  RASSERT(CN_CRWBUFFER == pCrwBuffer->eGetClassNo());
   
   m_pDataStack->vPushInt(nReadBytes);
   

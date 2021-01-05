@@ -223,7 +223,7 @@ void TypedCell::vToStz(Stz* szDst)
 /*----------------------------------------------------------------------------*/
 eCN TypedCell::eType(void)
 {
-  return (eCN)m_wxType.eClass();
+  return (eCN)m_wxType.eGetClassNo();
 }
 
 /*----------------------------------------------------------------------------*/

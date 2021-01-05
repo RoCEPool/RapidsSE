@@ -207,10 +207,10 @@ EndDefine
 /* check the object is of a known class                                     */
 /*--------------------------------------------------------------------------*/
 #ifdef WITH_CORRECTNESS_ALGEBRA
-#define _class_(arg) ASSERT(eClass() == arg); EndDefine
-#define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2); EndDefine
+#define _class_(arg) ASSERT(eGetClassNo() == arg); EndDefine
+#define _class2_(arg1,arg2) ASSERT(eGetClassNo() == arg1 || eGetClassNo() == arg2); EndDefine
 #define _class3_(arg1,arg2,arg3) \
-  ASSERT(eClass() == arg1 || eClass() == arg2 || eClass() == arg3); \
+  ASSERT(eGetClassNo() == arg1 || eGetClassNo() == arg2 || eGetClassNo() == arg3); \
 EndDefine
 #else
 #define _class_(arg)  EndDefine

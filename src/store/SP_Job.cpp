@@ -69,7 +69,7 @@ Stz* SP_Job::sz_log(Job* pJob)
   StrLib::vSprint(m_caResult,
                   "{%s %lld %lld %s %s %s %s%s%s}%s"_Stz,
                   
-                  aCN[pJob->eClass()],
+                  aCN[pJob->eGetClassNo()],
                   pJob->i_TablePtn(),
                   pJob->iAcksRmg_printOnlyValue(),
 

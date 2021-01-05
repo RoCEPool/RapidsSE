@@ -108,7 +108,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 {  
   HeapMem* pHeapMem = AM::pHeapMem();
   
-  eCN eWasClass = pObject->eClass();
+  eCN eWasClass = pObject->eGetClassNo();
   
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   

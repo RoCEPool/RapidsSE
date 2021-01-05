@@ -30,7 +30,7 @@ ClassCatalog::ClassCatalog(void)
 /*----------------------------------------------------------------------------*/
 bool ClassCatalog::bCallClassFn(eCF eFunction, Object* pObject)
 {
-  eCN eClass = pObject->eClass();
+  eCN eClass = pObject->eGetClassNo();
   
   bool b = m_fpaClassFn[eClass]->bCallClassFn(eFunction,pObject);
   

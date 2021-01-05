@@ -242,7 +242,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
       // get the index buffer of the entry
       pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       ASSERT(pEntBuffer);
-      ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
+      ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
     }
     
     return pEntBuffer;

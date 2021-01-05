@@ -92,7 +92,7 @@ bool FreeItem::bValidFreeItem(void)
   if (! bIsMagicValid())
     return false;
   
-  if (CN_FREEITEM != eClass())
+  if (CN_FREEITEM != eGetClassNo())
     return false;
 
   return true;

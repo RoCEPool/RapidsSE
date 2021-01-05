@@ -371,7 +371,7 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Rrf& xRowRef)
   reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
   
   ASSERT(pEntBuffer);
-  ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
+  ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
   
   return pEntBuffer;
 }
@@ -438,7 +438,7 @@ void EntBuffer::vAnalyze(i8& iBuffers, i8& iEntries)
       EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
       ASSERT(pEntBuffer);
-      ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
+      ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
       
       pEntBuffer->vAnalyze(iBuffers, iEntries);
       
@@ -481,7 +481,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
       EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
       ASSERT(pEntBuffer);
-      ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
+      ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
       
       pEntBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
       
@@ -543,7 +543,7 @@ void EntBuffer::vBufferCount(i8& nBuffers)
     pNextBuffer = EntBuffer::pRefdEntBuffer(aEnt);
     
     ASSERT(pNextBuffer);
-    ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
+    ASSERT(pNextBuffer->eGetClassNo() == CN_ENTBUFFER);
     
     pNextBuffer->vBufferCount(nBuffers);
     
@@ -701,7 +701,7 @@ void EntBuffer::vDump(bool bEntries)
       EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
       ASSERT(pEntBuffer);
-      ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
+      ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
       
       pEntBuffer->vDump();
     }
@@ -1814,7 +1814,7 @@ void EntBuffer::vTruncate(void)
       pNextBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
       RASSERT(pNextBuffer);
-      RASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
+      RASSERT(pNextBuffer->eGetClassNo() == CN_ENTBUFFER);
       pNextBuffer->vTruncate();
     }
   }

@@ -52,7 +52,7 @@ void Step::vAstackClass(void)
   
    m_pAuxStack->vPeekItem(nTh,xVariable);
   
-  eCN eClass = xVariable.eClass();
+  eCN eClass = xVariable.eGetClassNo();
   
    m_pAuxStack->vPushInt(eClass);
   

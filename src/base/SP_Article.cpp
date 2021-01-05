@@ -47,7 +47,7 @@ Stz* SP_Article::sz(Article* pArticle, i8 iDepth)
                   pArticle->szName(),
                   
                   pObject,
-                  aCN[pObject->eClass()],
+                  aCN[pObject->eGetClassNo()],
                   
                   pArticle->nItems(),
                   

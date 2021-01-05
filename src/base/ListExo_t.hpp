@@ -887,7 +887,7 @@ void ListExo_t<CLASSNO,ITEM>::vValidateList(void)
     if (nItemsCheck > m_nItems)
       break;
     
-    //RASSERT(CLASSNO == pScanNode->pItem()->eClass());
+    //RASSERT(CLASSNO == pScanNode->pItem()->eGetClassNo());
     nItemsCheck++;
   }
 
@@ -901,7 +901,7 @@ void ListExo_t<CLASSNO,ITEM>::vValidateList(void)
     if (nItemsCheck > m_nItems)
       break;
     
-    //RASSERT(CLASSNO == pScanNode->pItem()->eClass());
+    //RASSERT(CLASSNO == pScanNode->pItem()->eGetClassNo());
     nItemsCheck++;
   }
   

@@ -68,19 +68,19 @@ void Step::vSubsetNextBuffer(void)
   Operand* pNextOperand = nullptr;
   
   if (*( m_pJob->pLogicUnit_job() )->m_xpSubset) {
-    if (( m_pJob->pLogicUnit_job() )->m_xpSubset->eClass() == CN_CRWBUFFER) {
+    if (( m_pJob->pLogicUnit_job() )->m_xpSubset->eGetClassNo() == CN_CRWBUFFER) {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpSubset);
       pNextOperand = pCrwBuffer->pNextBuffer();
       //( m_pJob->pLogicUnit_job() )->m_xpSubset = pNextOperand;
     }
     else
-      if (( m_pJob->pLogicUnit_job() )->m_xpSubset->eClass() == CN_CSVBUFFER) {
+      if (( m_pJob->pLogicUnit_job() )->m_xpSubset->eGetClassNo() == CN_CSVBUFFER) {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(*( m_pJob->pLogicUnit_job() )->m_xpSubset);
       pNextOperand = pCsvBuffer->pNextBuffer();
       //( m_pJob->pLogicUnit_job() )->m_xpSubset = pNextOperand;
     }
     else {
-      vTrace("Subset class %s\n"_Stz, aCN[( m_pJob->pLogicUnit_job() )->m_xpSubset->eClass()]);
+      vTrace("Subset class %s\n"_Stz, aCN[( m_pJob->pLogicUnit_job() )->m_xpSubset->eGetClassNo()]);
       ASSERT(0);
     }
   }
@@ -99,7 +99,7 @@ void Step::vSubsetSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  if (pOperand && CN_CRWBUFFER == pOperand->eClass()) {
+  if (pOperand && CN_CRWBUFFER == pOperand->eGetClassNo()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
     vDebugPoint();
   }

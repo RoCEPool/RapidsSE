@@ -29,7 +29,7 @@ Stz* MY::szJobNm(void)
 {
   Job* pJob = AM::pThisTLSJob();
   
-  return aCN[pJob->eClass()];
+  return aCN[pJob->eGetClassNo()];
 }
 
 /*----------------------------------------------------------------------------*/

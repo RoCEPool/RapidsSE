@@ -77,13 +77,13 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* get address of the element bytes of the key in this entry                  */
 /*----------------------------------------------------------------------------*/
-eCN Ent::eClass(void)
+eCN Ent::eGetClassNo(void)
 {
   eCN eClass;
   
 #ifdef __ENT_HEADER
   
-  eClass = m_xHeader.eClass();
+  eClass = m_xHeader.eGetClassNo();
   
 #else
   
@@ -494,7 +494,7 @@ bool Ent::bValidEnt(void)
     return false;
   }
   
-  if ( ! (CN_ENT == eClass() || CN_FREEITEM == eClass()) ) {
+  if ( ! (CN_ENT == eGetClassNo() || CN_FREEITEM == eGetClassNo()) ) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }

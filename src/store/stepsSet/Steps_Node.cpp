@@ -100,7 +100,7 @@ void Step::vNodeForget(void)
   ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_NODE == pNode->eClass());
+  ASSERT(CN_NODE == pNode->eGetClassNo());
   
   Grid* pGrid = AM::pGrid();
   
@@ -122,7 +122,7 @@ void Step::vNodeIP(void)
   ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_NODE == pNode->eClass());
+  ASSERT(CN_NODE == pNode->eGetClassNo());
   
   s256 sIP;
   sIP = pNode->szIPAddr();
@@ -158,7 +158,7 @@ void Step::vNodeName(void)
   ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_NODE == pNode->eClass());
+  ASSERT(CN_NODE == pNode->eGetClassNo());
   
   s256 sName;
   sName = pNode->szNodeNm();
@@ -175,7 +175,7 @@ void Step::vNodeNo(void)
   ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_NODE == pNode->eClass());
+  ASSERT(CN_NODE == pNode->eGetClassNo());
   
   m_pDataStack->vPushInt(pNode->iNodeNo());
   

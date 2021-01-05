@@ -76,7 +76,7 @@ bool Wilderness::bValidWilderness(void)
   if (! bIsMagicValid())
     return false;
   
-  if (CN_WILDERNESS != eClass())
+  if (CN_WILDERNESS != eGetClassNo())
     return false;
   
   return true;

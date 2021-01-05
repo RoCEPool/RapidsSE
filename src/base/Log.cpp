@@ -738,7 +738,7 @@ i8 Log::iEntryRes(eSL eSeverity, Resource* pRes, eRA eResAct,
   if (! m_bLogRes)
     return C_UNKNOWN;
   
-  eCN eClass = pRes->eClass();
+  eCN eClass = pRes->eGetClassNo();
   
   if (! m_baLogClass[eClass])
     return C_UNKNOWN;
@@ -918,7 +918,7 @@ void Log::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 
@@ -1248,7 +1248,7 @@ bool Log::bIsLoggable(Object* pObject)
   
   EnumFlags* pClassFlags = AM::pClassFlags();
   
-  eCN eClassNo = pObject->eClass();
+  eCN eClassNo = pObject->eGetClassNo();
   
   if (pClassFlags->bFlagged(eClassNo))
     return true;

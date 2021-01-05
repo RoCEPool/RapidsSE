@@ -839,7 +839,7 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
   }
   
   // pSession should be an SESSION class
-  if (pSession->eClass() != CN_SESSION) {
+  if (pSession->eGetClassNo() != CN_SESSION) {
     TRACE_API_ERROR("eValidateSession(c)", EC_INVALID_INTERFACE);
     return EC_INVALID_INTERFACE;
   }

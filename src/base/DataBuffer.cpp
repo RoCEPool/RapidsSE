@@ -185,7 +185,7 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
   reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
   
   ASSERT(pDataBuffer);
-  ASSERT(pDataBuffer->eClass() == CN_CRWBUFFER || pDataBuffer->eClass() == CN_CRVBUFFER);
+  ASSERT(pDataBuffer->eGetClassNo() == CN_CRWBUFFER || pDataBuffer->eGetClassNo() == CN_CRVBUFFER);
   
   return pDataBuffer;
 }

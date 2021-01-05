@@ -1106,8 +1106,8 @@ bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);
   
-  RASSERT(pScanEntry->eClass() == CN_TASK);
-  RASSERT(pInsertEntry->eClass() == CN_TASK);
+  RASSERT(pScanEntry->eGetClassNo() == CN_TASK);
+  RASSERT(pInsertEntry->eGetClassNo() == CN_TASK);
   
   if ( ! pObjectScan )
     return false;

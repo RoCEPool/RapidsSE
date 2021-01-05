@@ -87,15 +87,15 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
           );
   
   RASSERT(
-          pObject->eClass() == CN_TINYTRANSIENT    ||
-          pObject->eClass() == CN_SMALLTRANSIENT   ||
-          pObject->eClass() == CN_MEDIUMTRANSIENT  ||
-          pObject->eClass() == CN_LARGETRANSIENT   ||
+          pObject->eGetClassNo() == CN_TINYTRANSIENT    ||
+          pObject->eGetClassNo() == CN_SMALLTRANSIENT   ||
+          pObject->eGetClassNo() == CN_MEDIUMTRANSIENT  ||
+          pObject->eGetClassNo() == CN_LARGETRANSIENT   ||
            
-          pObject->eClass() == CN_TINYPERSISTENT  ||
-          pObject->eClass() == CN_SMALLPERSISTENT  ||
-          pObject->eClass() == CN_MEDIUMPERSISTENT ||
-          pObject->eClass() == CN_LARGEPERSISTENT
+          pObject->eGetClassNo() == CN_TINYPERSISTENT  ||
+          pObject->eGetClassNo() == CN_SMALLPERSISTENT  ||
+          pObject->eGetClassNo() == CN_MEDIUMPERSISTENT ||
+          pObject->eGetClassNo() == CN_LARGEPERSISTENT
           );
   
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
@@ -263,7 +263,7 @@ void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  if (CN_LARGETRANSIENT == eClass()) {
+  if (CN_LARGETRANSIENT == eGetClassNo()) {
     
     if (m_nFreeChunks > 10) {
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
@@ -283,7 +283,7 @@ void Heap::vFreeObject(Object* pObject)
   m_okLock.vGrabWrite();
   
   FreeChunk* aFreeChunk = reinterpret_cast<FreeChunk*>(pObject);
-  vPushFree(aFreeChunk,pObject->eClass());
+  vPushFree(aFreeChunk,pObject->eGetClassNo());
   
   m_nCurrAllocated--;
 
@@ -356,7 +356,7 @@ void Heap::vObjectValidate(void)
          aChunk;
          aChunk = pHeapBuffer->aNextChunk(aChunk,nSizeObject)) {
       
-      eCN eClass = aChunk->eClass();
+      eCN eClass = aChunk->eGetClassNo();
       
       if (CN_FREECHUNK == eClass)
         continue;
@@ -367,7 +367,7 @@ void Heap::vObjectValidate(void)
         
         if (EC_OBJECT_FOOTER_INVALID == eError) {
           vTrace("Object %p %s is not valid : %s\n"_Stz,
-                 pObject,aCN[pObject->eClass()],aEC[eError]);
+                 pObject,aCN[pObject->eGetClassNo()],aEC[eError]);
         }
         else {
           vTrace("Object %p is not valid : %s\n"_Stz,
@@ -399,7 +399,7 @@ void Heap::vSummaryReport(String* pReportString)
     "%16s (%6s)"
     " buffers %-6lld alloc %-6lld free %-6lld (sum=%s)"_Stz,
                                   
-    aCN[eClass()],
+    aCN[eGetClassNo()],
     sMagSize.azChar(),
                                   
     nBufferCount(),
@@ -487,7 +487,7 @@ FreeChunk* Heap::pPopFree(void)
   FreeChunk* aFreeChunk = m_pFreeHead;
   m_pFreeHead = aFreeChunk->pNextFree();
   
-  ASSERT(CN_FREECHUNK == aFreeChunk->eClass());
+  ASSERT(CN_FREECHUNK == aFreeChunk->eGetClassNo());
   
   m_nFreeChunks--;
   
@@ -563,7 +563,7 @@ void Heap::vValidFree(FreeChunk* aFreeChunk)
 
   HeapBuffer* pHeapBuffer = (HeapBuffer*)((u8)aFreeChunk & ~C_MASK_LARGE_OBJECT);
   
-  ASSERT(pHeapBuffer->eClass() == CN_HEAPBUFFER);
+  ASSERT(pHeapBuffer->eGetClassNo() == CN_HEAPBUFFER);
   
   u8 uSize = (u8)aFreeChunk & (u8)0xFF;
 

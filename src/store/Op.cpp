@@ -228,7 +228,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 //  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
 //         m_sOpNm.szStz(),
 //         pOperand,
-//         aCN[pOperand->eClass()]);
+//         aCN[pOperand->eGetClassNo()]);
   
   vGrabTaskLock();
   if (bSet) {
@@ -266,7 +266,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
   //         m_sOpNm(),
   //         pOperand,
-  //         aCN[pOperand->eClass()]);
+  //         aCN[pOperand->eGetClassNo()]);
   
   vGrabTaskLock();
   
@@ -376,7 +376,7 @@ void Op::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -992,7 +992,7 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 //                "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
 //                AM::pOperandName(pOperand),
 //                m_bAppendRight ? "right"_Stz : "left"_Stz,
-//                aCN[pOp->eClass()]);
+//                aCN[pOp->eGetClassNo()]);
   }
   
 }
@@ -1020,11 +1020,11 @@ void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       // Can Operand be deleted already ????
 //  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
 //              "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
-//              pOperand->eClass() == CN_MARKER ?
+//              pOperand->eGetClassNo() == CN_MARKER ?
 //              aOM[(_pMarker(pOperand))->eOpMarker()] :
-//              aCN[pOperand->eClass()],
+//              aCN[pOperand->eGetClassNo()],
 //              m_bAppendRight ? "right"_Stz : "left"_Stz,
-//              aCN[eClass()]);
+//              aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1051,7 +1051,7 @@ void Op::vPipeToJob(Operand* pOperand)
   
   AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
               "vPipeToJob operand %s to queue of pipeline job"_Stz, //!format-LogOpr
-              aCN[pOperand->eClass()]);
+              aCN[pOperand->eGetClassNo()]);
   
   pBufferQueue->vAppend(pOperand);
   
@@ -1675,7 +1675,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
 //                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
 //                      AM::pOperandName(pOperand),
 //                      m_bAppendRight ? "right"_Stz : "left"_Stz,
-//                      aCN[pOp->eClass()]);
+//                      aCN[pOp->eGetClassNo()]);
 
         }
         else {
@@ -1731,7 +1731,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
 //                        "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
 //                        AM::pOperandName(pNewOperand),
 //                        m_bAppendRight ? "right"_Stz : "left"_Stz,
-//                        aCN[pOp->eClass()]);
+//                        aCN[pOp->eGetClassNo()]);
             
           }
      
@@ -1804,7 +1804,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
 //                    "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
 //                    AM::pOperandName(pOperand),
 //                    m_bAppendRight ? "right"_Stz : "left"_Stz,
-//                    aCN[pOp->eClass()]);
+//                    aCN[pOp->eGetClassNo()]);
         
       }
       else {
@@ -1869,7 +1869,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
 //                      "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
 //                      AM::pOperandName(pNewOperand),
 //                      m_bAppendRight ? "right"_Stz : "left"_Stz,
-//                      aCN[pOp->eClass()]);
+//                      aCN[pOp->eGetClassNo()]);
           
         }
         else {

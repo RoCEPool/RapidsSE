@@ -31,7 +31,7 @@ void Step::vObjectClassFetch(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  eCN eClassNo = pObject->eClass();
+  eCN eClassNo = pObject->eGetClassNo();
   
   m_pDataStack->vPushInt(eClassNo);
   

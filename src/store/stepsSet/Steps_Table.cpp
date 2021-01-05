@@ -153,7 +153,7 @@ void Step::vTableLazyBuildIndexes(void)
   m_pDataStack->vPopStr(sString,__func__);
   
   Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
-  ASSERT(CN_TABLE == pTable->eClass());
+  ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   m_pDataStack->vPopStr(sString,__func__);
   
@@ -172,7 +172,7 @@ void Step::vTableCreatePtnDef(void)
   ENTRY();
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TABLE == pTable->eClass());
+  ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   pTable->vCreatePtnDef();
   
@@ -487,7 +487,7 @@ void Step::vTablePtnStreamDefFetch(void)
   ENTRY();
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
-  ASSERT(CN_TABLE == pTable->eClass());
+  ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   StreamDef* pStreamDef = pTable->pPtnStreamDef();
   

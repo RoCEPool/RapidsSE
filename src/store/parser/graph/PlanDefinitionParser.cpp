@@ -149,7 +149,7 @@ PlanNode* PlanDefinitionParser::pParse()
 
   // Create a lambda function to walk each node and print its path and type.
 //  auto fVisitor = [](PlanNode* pNode, s256& sPath) -> b1 {
-//    vTrace("%s\t\t(%s)\n"_Stz, sPath.szStz(), aCN[pNode->eClass()]);
+//    vTrace("%s\t\t(%s)\n"_Stz, sPath.szStz(), aCN[pNode->eGetClassNo()]);
 //    return true;
 //  };
 //

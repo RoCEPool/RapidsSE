@@ -84,7 +84,7 @@ void JobList::vAddJob(Job* pJob)
   
   ASSERT(bIsLocked());
   
-  //vTrace("inserting job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
+  //vTrace("inserting job %p %s %lld\n"_Stz, pJob, aCN[pJob->eGetClassNo()], pJob->iJobId());
   
   ASSERT(JL_NONE == pJob->eJobList());
   ASSERT( (JL_DEMON         == m_eJobsList && ! pJob->bWasReceived()) ||
@@ -186,7 +186,7 @@ bool JobList::bHasJobClass(eCN eJobClass)
   while (pNode) {
     
     Job* pJob = _pJob(pNode->m_pObject);
-    if (eJobClass == pJob->eClass()) {
+    if (eJobClass == pJob->eGetClassNo()) {
       bHasJobClass = true;
       break;
     }
@@ -235,7 +235,7 @@ void JobList::vLogJobs(i8 iJobId)
     AM::vLogFyi("  %s %p %03lld parent %03lld tablePtn[%lld] "  //!format-LogFyi
                 "phase %s state %s acksRmg %lld/%lld partNode %lld"_Stz,
                
-                 aCN[pJob->eClass()],
+                 aCN[pJob->eGetClassNo()],
                  pJob,
                  pJob->m_iFocalId,
                  pJob->iParentId(),
@@ -263,7 +263,7 @@ bool JobList::bRemoveJob(Job* pJob)
   
   ASSERT(m_okLock.bIsLocked());
   
-  //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
+  //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eGetClassNo()], pJob->iJobId());
   
   ASSERT(m_eJobsList == pJob->eJobList());
   
@@ -306,7 +306,7 @@ void JobList::vContentDump(void)
     vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
            pJob,
            pJob->szJobNm(),
-           aCN[pJob->eClass()],
+           aCN[pJob->eGetClassNo()],
            pJob->m_iFocalId,
            pJob->iParticipantNode(),
            pNode->m_nRight);
@@ -345,7 +345,7 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
       vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
              pJob,
              pJob->szJobNm(),
-             aCN[pJob->eClass()],
+             aCN[pJob->eGetClassNo()],
              pJob->m_iFocalId,
              pJob->iParticipantNode(),
              pNode->m_nRight);

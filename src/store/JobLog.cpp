@@ -71,7 +71,7 @@ void JobLog::vNoteState(STORE::Job* pJob, Stz* szPoint)
   if (! pJob)
     return;
 
-  if (! STORE::_bIsValidJob(pJob->eClass()))
+  if (! STORE::_bIsValidJob(pJob->eGetClassNo()))
     return;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,7 +83,7 @@ void JobLog::vNoteState(STORE::Job* pJob, Stz* szPoint)
                       "%s %s"_Stz,
                       
                       szPoint,
-                      aCN[pJob->eClass()],
+                      aCN[pJob->eGetClassNo()],
                       pJob,
                       
                       aTS[AM::iTaskState(pJob->pTask())],

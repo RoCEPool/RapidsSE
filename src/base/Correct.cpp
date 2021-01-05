@@ -171,7 +171,7 @@ void BASE::vThreadCallStackDump(void)
                                             eCN   eExpectingClass)
 {
   Object* pObject = static_cast<Object*>(aObject);
-  eCN eGotClass = pObject->eClass();
+  eCN eGotClass = pObject->eGetClassNo();
   
   char zCondition[256];
 

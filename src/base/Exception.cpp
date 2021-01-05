@@ -128,7 +128,7 @@ void Exception::vSprint(char* azIntoBuf)
                   azText(),
                   
                   pJob()
-                    ? aCN[((Object*)pJob())->eClass()]->azChar()
+                    ? aCN[((Object*)pJob())->eGetClassNo()]->azChar()
                     : "<null>",
 
                   m_zFuncNm,

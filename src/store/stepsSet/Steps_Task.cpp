@@ -90,7 +90,7 @@ void Step::vTaskAcksStore(void)
   
   if (pJob && pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,"Setting acks: %s %p to %lld"_Stz,
-                       aCN[pJob->eClass()],
+                       aCN[pJob->eGetClassNo()],
                        pJob,
                        nAcksRequired);
     AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);

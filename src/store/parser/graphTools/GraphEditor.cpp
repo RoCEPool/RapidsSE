@@ -59,7 +59,7 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
   // Create a new copy of: /__root__/plan
   QueryNode* pPlanNode = (QueryNode*) GraphNav::pFind("/__root__/plan"_Stz, pRootNode);
   ASSERT(pPlanNode);
-  ASSERT(pPlanNode->eClass() == CN_QUERYNODE);
+  ASSERT(pPlanNode->eGetClassNo() == CN_QUERYNODE);
 
   PlanNode* pNewPlanChild = new QueryNode(*pPlanNode);
 

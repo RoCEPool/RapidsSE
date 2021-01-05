@@ -44,7 +44,7 @@ FreeBuffer::~FreeBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 FreeBuffer::iNextFree(void)
 {
-  if (CN_FREEBUFFER != eClass())
+  if (CN_FREEBUFFER != eGetClassNo())
     int debug = 1;
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);

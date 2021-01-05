@@ -309,7 +309,7 @@ void Step::vSocketRecvObject(void)
   // get the details about the received object
   
   Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
-  eCN eClass = pObject->eClass();
+  eCN eClass = pObject->eGetClassNo();
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
 
   RASSERT(_bIsValidJob(eClass) ||
@@ -649,7 +649,7 @@ void Step::vSocketRecvObject_LowMem(void)
   // get the details about the received object
   
   Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
-  eCN eClass = pObject->eClass();
+  eCN eClass = pObject->eGetClassNo();
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
   RASSERT(_bIsValidJob(eClass) ||
@@ -936,7 +936,7 @@ void Step::vSocketSendObject(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eCN eClass = pObject->eClass();
+  eCN eClass = pObject->eGetClassNo();
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
   //vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
