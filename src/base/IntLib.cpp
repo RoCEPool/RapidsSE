@@ -356,7 +356,7 @@ i8 IntLib::iPercent(i8 iNumerator, i8 iDenominator)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return iArg raised to given power                                          */
+/* return arg raised to given power                                           */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iPow(i8 iArg, i8 iRaisedTo)
 {
