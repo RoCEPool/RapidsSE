@@ -278,10 +278,21 @@ void vTest8(void)
   vTrace("1: %s\n"_Stz,pListExo->pPeek(1)->szGet());
   vTrace("2: %s\n"_Stz,pListExo->pPeek(2)->szGet());
 
-  
-  ListExoIter_t<CN_CLASSPLACEHOLDER,Text>* pListExoIter = pListExo->pNewIter();
- 
-  
+  //ListExoIter_t<CN_CLASSPLACEHOLDER,Text>* pListExoIter = pListExo->pNewIter();
+  ListExoIter_t<Text>* pListExoIter = pListExo->pNewIter();
+
+  Text* pText = pListExoIter->pFirst();
+  vTrace("pFirst: %s\n"_Stz,pText->szGet());
+  vTrace("bHastext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHastext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHastext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
   delete pListExoIter;
   
   pListExo->vRemoveAll();

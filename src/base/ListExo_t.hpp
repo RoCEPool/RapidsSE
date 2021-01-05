@@ -26,6 +26,9 @@ namespace BASE
     ListExo_ABSTRACT(eCN eClassNo);
    ~ListExo_ABSTRACT(void) noexcept(false);
 
+    Object* pHeadNode_abstract(void);
+    Object* pTailNode_abstract(void);
+
   private:
     Footer* aFooter(void);
   };
@@ -205,7 +208,7 @@ Footer* ListExoNode_t<ITEM>::aFooter(void)
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 
 
-namespace BASE { template <eCN CLASSNO, class ITEM> class ListExoIter_t; }
+namespace BASE { template <class ITEM> class ListExoIter_t; }
 
 namespace BASE
 {
@@ -231,7 +234,7 @@ namespace BASE
     void  vInsertAfter(ITEM* pInsItem, ITEM* pRef);
     void  vInsertBefore(ITEM* pInsItem, ITEM* pRef);
     i8    nItems(void);
-    ListExoIter_t<CLASSNO,ITEM>* pNewIter(void);
+    ListExoIter_t<ITEM>* pNewIter(void);
     ITEM* pPeek(i8 nThItem);
     ITEM* pPop(void);
     ITEM* pPopTail(void);
@@ -448,12 +451,12 @@ i8 ListExo_t<CLASSNO,ITEM>::nItems(void)
 /* peek at nth item of list                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-ListExoIter_t<CLASSNO,ITEM>* ListExo_t<CLASSNO,ITEM>::pNewIter(void)
+ListExoIter_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pNewIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  ListExoIter_t<CLASSNO,ITEM>* pIter
-    = new ListExoIter_t<CLASSNO,ITEM>(this);
+  ListExoIter_t<ITEM>* pIter
+    = new ListExoIter_t<ITEM>(this);
   
   return pIter;
 }
@@ -928,12 +931,12 @@ Footer* ListExo_t<CLASSNO,ITEM>::aFooter(void)
 
 namespace BASE
 {
-template <eCN CLASSNO, class ITEM>
+template <class ITEM>
 class ListExoIter_t : public Object
 {
 private:
  
-  ListExo_t<CLASSNO,ITEM>* m_pListExo;
+  ListExo_ABSTRACT*        m_pListExo;
 
   eLC                      m_eCursorState;
   ListExoNode_t<ITEM>*     m_pListNode_cursor;
@@ -946,7 +949,7 @@ public:
   void* operator new(size_t);
   void operator delete(void* aListExoNode);
 
-  ListExoIter_t<CLASSNO,ITEM>(ListExo_t<CLASSNO,ITEM>* pListExo);
+  ListExoIter_t<ITEM>(ListExo_ABSTRACT* pListExo);
  ~ListExoIter_t(void) noexcept(false);
   
   ITEM* pFirst(void);
@@ -963,13 +966,13 @@ private:
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-void* ListExoIter_t<CLASSNO,ITEM>::operator new(size_t)
+template <class ITEM>
+void* ListExoIter_t<ITEM>::operator new(size_t)
 {
-  ListExoIter_t<CLASSNO,ITEM>* pListExoIter_t;
+  ListExoIter_t<ITEM>* pListExoIter_t;
   
   pListExoIter_t =
-    (ListExoIter_t<CLASSNO,ITEM>*)HeapMem::pAllocate(CLASSNO);
+    (ListExoIter_t<ITEM>*)HeapMem::pAllocate(CN_CLASSPLACEHOLDER);
   
   return pListExoIter_t;
 }
@@ -977,12 +980,12 @@ void* ListExoIter_t<CLASSNO,ITEM>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-void ListExoIter_t<CLASSNO,ITEM>::operator delete(void* aListExoIter_t)
+template <class ITEM>
+void ListExoIter_t<ITEM>::operator delete(void* aListExoIter_t)
 {
-  ListExoIter_t<CLASSNO,ITEM>* pListExoIter_t;
+  ListExoIter_t<ITEM>* pListExoIter_t;
 
-  pListExoIter_t = (ListExoIter_t<CLASSNO,ITEM>*)aListExoIter_t;
+  pListExoIter_t = (ListExoIter_t<ITEM>*)aListExoIter_t;
 
   HeapMem::vFree(pListExoIter_t);
 }
@@ -990,11 +993,11 @@ void ListExoIter_t<CLASSNO,ITEM>::operator delete(void* aListExoIter_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ListExoIter_t<CLASSNO,ITEM>::ListExoIter_t(ListExo_t<CLASSNO,ITEM>* pListExo)
-: Object(CLASSNO)
+template <class ITEM>
+ListExoIter_t<ITEM>::ListExoIter_t(ListExo_ABSTRACT* pListExo)
+: Object(CN_CLASSPLACEHOLDER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
   
   m_pListExo = pListExo;
   
@@ -1003,33 +1006,33 @@ ListExoIter_t<CLASSNO,ITEM>::ListExoIter_t(ListExo_t<CLASSNO,ITEM>* pListExo)
   
   _checkInitialised_(CN_CLASSPLACEHOLDER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ListExoIter_t<CLASSNO,ITEM>::~ListExoIter_t(void) noexcept(false)
+template <class ITEM>
+ListExoIter_t<ITEM>::~ListExoIter_t(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* get tail first item of list                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ITEM* ListExoIter_t<CLASSNO,ITEM>::pFirst(void)
+template <class ITEM>
+ITEM* ListExoIter_t<ITEM>::pFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
   
   ITEM* pItem;
 
-  m_pListNode_cursor = m_pListExo->pHeadNode();
+  m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
   
   if (m_pListNode_cursor) {
-    m_eCursorState = LC_ON_EXITING_ITEM;
+    m_eCursorState = LC_ON_EXISTING_ITEM;
     pItem = m_pListNode_cursor->pItem();
     return pItem;
   }
@@ -1042,10 +1045,10 @@ ITEM* ListExoIter_t<CLASSNO,ITEM>::pFirst(void)
 /*----------------------------------------------------------------------------*/
 /* get tail first item of list                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-bool ListExoIter_t<CLASSNO,ITEM>::bHasNext(void)
+template <class ITEM>
+bool ListExoIter_t<ITEM>::bHasNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
   
   switch (m_eCursorState) {
       
@@ -1053,7 +1056,7 @@ bool ListExoIter_t<CLASSNO,ITEM>::bHasNext(void)
       ASSERT(! m_pListNode_cursor);
       return false;
 
-    case LC_ON_EXITING_ITEM:
+    case LC_ON_EXISTING_ITEM:
       ASSERT(m_pListNode_cursor);
       if (m_pListNode_cursor->pNextNode())
         return true;
@@ -1071,10 +1074,10 @@ bool ListExoIter_t<CLASSNO,ITEM>::bHasNext(void)
 /*----------------------------------------------------------------------------*/
 /* get tail first item of list                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ITEM* ListExoIter_t<CLASSNO,ITEM>::pNext(void)
+template <class ITEM>
+ITEM* ListExoIter_t<ITEM>::pNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
   
   ITEM* pItem;
 
@@ -1082,12 +1085,12 @@ ITEM* ListExoIter_t<CLASSNO,ITEM>::pNext(void)
       
     case LC_NIL:
       ASSERT(! m_pListNode_cursor);
-      return false;
+      return nullptr;
 
-    case LC_ON_EXITING_ITEM:
+    case LC_ON_EXISTING_ITEM:
       ASSERT(m_pListNode_cursor);
       if (! m_pListNode_cursor->pNextNode())
-        return false;
+        return nullptr;
       
       m_pListNode_cursor = m_pListNode_cursor->pNextNode();
       pItem = m_pListNode_cursor->pItem();
@@ -1108,8 +1111,8 @@ ITEM* ListExoIter_t<CLASSNO,ITEM>::pNext(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-Footer* ListExoIter_t<CLASSNO,ITEM>::aFooter(void)
+template <class ITEM>
+Footer* ListExoIter_t<ITEM>::aFooter(void)
 {
   return &m_xFooter;
 }
