@@ -15,18 +15,18 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SystemSchedule(void)
 {
-  vAddStep("queues::CheckSleeping"_Stz,   &Step::vQueuesCheckSleeping);
+  vAddStep("queues::CheckSleeping"_Stz,   &Step::vSystemScheduleCheckSleeping);
   
-  vAddStep("queues::ExecutingLength"_Stz, &Step::vQueuesExecutingLength);
-  vAddStep("queues::ReadyLength"_Stz,     &Step::vQueuesReadyLength);
-  vAddStep("queues::SleepingLength"_Stz,  &Step::vQueuesSleepingLength);
-  vAddStep("queues::WaitingLength"_Stz,   &Step::vQueuesWaitingLength);
+  vAddStep("queues::ExecutingLength"_Stz, &Step::vSystemScheduleExecutingLength);
+  vAddStep("queues::ReadyLength"_Stz,     &Step::vSystemScheduleReadyLength);
+  vAddStep("queues::SleepingLength"_Stz,  &Step::vSystemScheduleSleepingLength);
+  vAddStep("queues::WaitingLength"_Stz,   &Step::vSystemScheduleWaitingLength);
 }
 
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesCheckSleeping -- check the sleeping queue                    */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesCheckSleeping(void)
+void Step::vSystemScheduleCheckSleeping(void)
 {
   ENTRY();
   
@@ -38,7 +38,7 @@ void Step::vQueuesCheckSleeping(void)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesExecutingLength -- get the executing queue length            */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesExecutingLength(void)
+void Step::vSystemScheduleExecutingLength(void)
 {
   ENTRY();
   
@@ -53,7 +53,7 @@ void Step::vQueuesExecutingLength(void)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesReadyLength -- get the ready queue length                    */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesReadyLength(void)
+void Step::vSystemScheduleReadyLength(void)
 {
   ENTRY();
   
@@ -68,7 +68,7 @@ void Step::vQueuesReadyLength(void)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesSleepingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesSleepingLength(void)
+void Step::vSystemScheduleSleepingLength(void)
 {
   ENTRY();
   
@@ -81,7 +81,7 @@ void Step::vQueuesSleepingLength(void)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesWaitingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesWaitingLength(void)
+void Step::vSystemScheduleWaitingLength(void)
 {
   ENTRY();
   
