@@ -47,7 +47,7 @@ RootNode::~RootNode(void)
 //  PlanNode* pItem = m_pChildren->pHead();
 //
 //  while (pItem) {
-//    if (pItem->bIsClass(CN_DEFINITIONNODE) || pItem->bIsClass(CN_PRIMITIVENODE)) {
+//    if (pItem->bIsClassNo(CN_DEFINITIONNODE) || pItem->bIsClassNo(CN_PRIMITIVENODE)) {
 //      PlanNode* pNext = pItem->pNextItem();
 //      m_pChildren->vRemove(pItem);
 //      pItem = pNext;

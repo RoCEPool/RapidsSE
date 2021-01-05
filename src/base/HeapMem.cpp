@@ -121,12 +121,12 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   if (gpBufferPool->bDontFree()) {
     
     if (CN_ENTBUFFER != eWasClass) {
-      pObject->vClass(CN_FREEDNOT);
+      pObject->vSetClassNo(CN_FREEDNOT);
       return;
     }
     
     if ( ! gpBufferPool->bFreeCB() ) {
-      pObject->vClass(CN_FREEDNOT);
+      pObject->vSetClassNo(CN_FREEDNOT);
       return;
     }
   }

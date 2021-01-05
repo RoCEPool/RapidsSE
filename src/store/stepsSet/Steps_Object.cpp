@@ -49,7 +49,7 @@ void Step::vObjectClassStore(void)
   
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
-  pObject->vClass((eCN)iClassNo);
+  pObject->vSetClassNo((eCN)iClassNo);
   
   EXIT();
 }

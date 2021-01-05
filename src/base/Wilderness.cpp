@@ -73,7 +73,7 @@ void Wilderness::vAssertWilderness(void)
 /*----------------------------------------------------------------------------*/
 bool Wilderness::bValidWilderness(void)
 { 
-  if (! bValidMagic())
+  if (! bIsMagicValid())
     return false;
   
   if (CN_WILDERNESS != eClass())

@@ -40,7 +40,7 @@ namespace BASE
   /*--------------------------------------------------------------------------*/
   /* set class                                                                */
   /*--------------------------------------------------------------------------*/
-  inline void vClass(eCN eClass)
+  inline void vSetClassNo(eCN eClass)
   {
     m_eClass = eClass;
   }
@@ -48,7 +48,7 @@ namespace BASE
   /*--------------------------------------------------------------------------*/
   /* test for given class                                                     */
   /*--------------------------------------------------------------------------*/
-  inline bool bIsClass(eCN eClass)
+  inline bool bIsClassNo(eCN eClass)
   {
     if (m_eClass == eClass)
       return true;
@@ -57,17 +57,9 @@ namespace BASE
   }
   
   /*--------------------------------------------------------------------------*/
-  /* set magic                                                                */
+  /* test if magic is valid                                                   */
   /*--------------------------------------------------------------------------*/
-  inline void vSetMagic(void)
-  {
-    m_uMagic = C_MAGIC;
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* test for valid magic                                                     */
-  /*--------------------------------------------------------------------------*/
-  inline bool bValidMagic(void)
+  inline bool bIsMagicValid(void)
   {
     if (C_MAGIC == m_uMagic)
       return true;
@@ -75,6 +67,14 @@ namespace BASE
       return false;
   }
 
+  /*--------------------------------------------------------------------------*/
+  /* set magic                                                                */
+  /*--------------------------------------------------------------------------*/
+  inline void vSetMagic(void)
+  {
+    m_uMagic = C_MAGIC;
+  }
+  
   };
   
   //--------------------------------------------------------------------------//

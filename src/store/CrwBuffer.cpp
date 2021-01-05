@@ -808,7 +808,7 @@ bool CrwBuffer::bValidCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  if (! bValidMagic()) {
+  if (! bIsMagicValid()) {
     vTrace("Not valid magic\n"_Stz);
     return false;
   }

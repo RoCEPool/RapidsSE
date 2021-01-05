@@ -14,14 +14,13 @@ namespace BASE
   
     static bool bInspect(Object* pObject);
 
-      
     Footer* aCalcFooterAddress(void);
     Stz* szClassNm(void);
     bool bInspectObject(void);
     void vMemoryDump(void);
-    i8 nSizeOfObject(void);
-    eEC eValidObject(void);
-    i8  iWhenAllocated(void);
+    i8   nSizeOfObject(void);
+    eEC  eValidObject(void);
+    i8   iWhenAllocated(void);
   
     Footer* aFooter(void);
   };
@@ -139,7 +138,7 @@ EndDefine
 /* check the object has a magic marker as its first word                    */
 /*--------------------------------------------------------------------------*/
 #ifdef WITH_CORRECTNESS_ALGEBRA
-#define _magic_() ASSERT(bValidMagic()); EndDefine
+#define _magic_() ASSERT(bIsMagicValid()); EndDefine
 #else
 #define _magic_() EndDefine
 #endif
@@ -150,10 +149,10 @@ EndDefine
 #define __bCorrectLayout(CLASSNM,CN) \
 bool CLASSNM::bCorrectLayout(void) \
 { \
-  if (! bValidMagic()) \
+  if (! bIsMagicValid()) \
     return false; \
   \
-  if (! bIsClass(CN)) \
+  if (! bIsClassNo(CN)) \
     return false; \
   \
   if (! aFooter()->bValidFooter()) \

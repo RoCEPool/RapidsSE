@@ -193,7 +193,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
     Footer* aFooter = aAdd<Footer*>(aAddress,(i_Word * C_BYTES_PER_WORD));
     i8 iVal = *aAdd<i8*>(aAddress,(i_Word * C_BYTES_PER_WORD));
     
-    if (aHeader->bValidMagic()) {
+    if (aHeader->bIsMagicValid()) {
       vTrace(" [Header: Class %lld %s]"_Stz,
              aHeader->eClass(),
              aCN[aHeader->eClass()]);
@@ -299,7 +299,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
     }
     
     Header* aHeader = aAdd<Header*>(aAddress,(i_Word * C_BYTES_PER_WORD));
-    if (aHeader->bValidMagic()) {
+    if (aHeader->bIsMagicValid()) {
       vTrace(" [Header: Class %lld %s]"_Stz,
              aHeader->eClass(),
              aCN[aHeader->eClass()]);
@@ -717,7 +717,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
     Footer* aFooter = aAdd<Footer*>(aAddress,(i_Word * C_BYTES_PER_WORD));
     i8 iVal = *aAdd<i8*>(aAddress,(i_Word * C_BYTES_PER_WORD));
     
-    if (aHeader->bValidMagic()) {
+    if (aHeader->bIsMagicValid()) {
       vTrace(" [Header: Class %lld %s]"_Stz,
              aHeader->eClass(),
              aCN[aHeader->eClass()]);

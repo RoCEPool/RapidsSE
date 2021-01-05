@@ -49,7 +49,7 @@ Stz* SP_Header::sz(Header* aHeader)
                   eClassNo,
                   aCN[eClassNo],
                   nClassSize,
-                  aHeader->bValidMagic() ? "valid-magic" : "invalid-magic"
+                  aHeader->bIsMagicValid() ? "valid-magic" : "invalid-magic"
                   );
 
   return (Stz*) &m_caResult[0];

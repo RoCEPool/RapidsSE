@@ -231,7 +231,7 @@ eCN TypedCell::eType(void)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vType(eCN eType)
 {
-  m_wxType.vClass(eType);
+  m_wxType.vSetClassNo(eType);
 }
 
 

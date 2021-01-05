@@ -520,7 +520,7 @@ void TypedStack::vStackContents(s48K& sStackContents)
 //                                    pTask->szJobName());
 //        }
         else {
-          if (pPtr->bValidMagic() && pPtr->eClass() < CN_ENUMS)
+          if (pPtr->bIsMagicValid() && pPtr->eClass() < CN_ENUMS)
             sStackContents.vCatSprint("^%s=%p"_Stz,
                                       aCN[ePtrClass],
                                       pPtr);

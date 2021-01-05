@@ -22,7 +22,7 @@ Header::Header(void)
 Header::Header(eCN eClassNo)
 {
   vSetMagic();
-  vClass(eClassNo);
+  vSetClassNo(eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ Header::~Header(void)
 /*----------------------------------------------------------------------------*/
 void Header::vAssertHeader(void)
 {
-  ASSERT(bValidMagic());
+  ASSERT(bIsMagicValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ void Header::vSprint(Stz* szHeader)
                   m_caMagic[3],
                   m_eClass,
                   aCN[m_eClass],
-                  bValidMagic() ? "valid magic" : "not-valid magic"
+                  bIsMagicValid() ? "valid magic" : "not-valid magic"
                   );
 }
 

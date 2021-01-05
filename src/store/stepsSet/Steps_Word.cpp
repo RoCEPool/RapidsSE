@@ -74,7 +74,7 @@ void Step::vWordAllot(void)
   ASSERT(pEmbObject);
   
   pEmbObject->vSetMagic();
-  pEmbObject->vClass(CN_NONE);
+  pEmbObject->vSetClassNo(CN_NONE);
 
   m_pDataStack->vPushPtr(pEmbObject);
 

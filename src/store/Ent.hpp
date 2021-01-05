@@ -97,7 +97,7 @@ namespace STORE
     void  vSkipLevels(i8 nLevels);
 
     bool  bValidEnt(void);
-    bool  bValidMagic(void);
+    bool  bIsMagicValid(void);
  };
   
   /*--------------------------------------------------------------------------*/

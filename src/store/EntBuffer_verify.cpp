@@ -187,7 +187,7 @@ bool EntBuffer::bValidEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  if (! bValidMagic()) {
+  if (! bIsMagicValid()) {
     vTrace("Not valid magic\n"_Stz);
     return false;
   }
