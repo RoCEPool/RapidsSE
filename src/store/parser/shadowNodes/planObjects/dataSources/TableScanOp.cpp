@@ -21,7 +21,7 @@ using namespace Parser;
 static Stz* C_TABLEREF_PROP = "tableRef"_Stz;
 static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/tableRef"_Stz;
 
-static Stz* C_TABLESCAN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableScan"_Stz;
+static Stz* C_TABLESCAN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableScanOp"_Stz;
 
 
 
@@ -51,7 +51,7 @@ QueryNode* TableScanOp::pCreate(QueryNode* pTableRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
@@ -66,6 +66,40 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pTableRef);
 
   TableRef::vDescribe(pTableRef, sBuf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bValidate(pNode));
+
+  sBuf.vConcat("\n\n"_Stz);
+  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+
+  // Get the tableref property
+  PlanNode* pTableRefNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEREF_PROP), pNode);
+  ASSERT(pTableRefNode);
+  ASSERT(TableRef::bIsOfType(pTableRefNode));
+
+  // Print the table reference
+  s2K sTblBuf;
+  TableRef::vDescribe(pTableRefNode, sTblBuf);
+  sBuf.vConcat("\n"_Stz);
+  vAppendIndent(sBuf, iIndent, IF_PLAIN);
+  sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());
+
+  // Recurse any children
+  i8 nChildren = pNode->nChildren();
+  for (i8 i=0; i<nChildren; i++) {
+    PlanNode* pChild = pNode->pNthChild(i);
+    ASSERT(PlanObject::bIsOfType(pChild));
+
+    PlanObject::vExplain(pChild, sBuf, iIndent+1);
+  }
 }
 
 

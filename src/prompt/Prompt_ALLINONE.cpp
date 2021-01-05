@@ -76,7 +76,7 @@ bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   s48K sAntlr;
   pInpTknVec->vVecToString(sAntlr,0,true);
-  vTrace("%s\n"_Stz,sAntlr.azChar());
+  //vTrace("%s\n"_Stz,sAntlr.azChar());
 
   SqlPlanner* pPlanner = new SqlPlanner();
   pPlanner->plan(sAntlr.szStz(), pGraphTemplate);

@@ -27,7 +27,7 @@
 #include "ProjectedExpr.hpp"
 
 #include "ProjectOp.hpp"
-#include "TableScanOp.hpp"
+#include "store/parser/shadowNodes/planObjects/dataSources/TableScanOp.hpp"
 
 using namespace Parser;
 
@@ -157,6 +157,11 @@ void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
   ASSERT(m_pStatementStack->nItems() == 1);
   QueryNode* pStatementNode = m_pStatementStack->pPop();
   pQueryNode->vAppendChild(pStatementNode);
+
+  // Explain the statement
+  s48K sExplainBuf;
+  Statement::vExplain(pStatementNode, sExplainBuf, 0);
+  vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
 }
 
 

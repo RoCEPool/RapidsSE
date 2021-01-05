@@ -20,6 +20,7 @@ namespace Parser
   public:
     static QueryNode* pCreate(QueryNode* pTableRef);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void       vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);

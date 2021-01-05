@@ -321,9 +321,9 @@
                   value: "A container of all operators that process streams of data",
                   children: [
 
-// Path: /__root__/definitions/object/planObject/sqlOperator/projection
+// Path: /__root__/definitions/object/planObject/sqlOperator/projectOp
                     {
-                      name: "projection",
+                      name: "projectOp",
                       value: "An operator that changes the definition of the rows that it processes",
                       properties: [
                         {
@@ -336,9 +336,9 @@
                       children: []
                     },
 
-// Path: /__root__/definitions/object/planObject/sqlOperator/filter
+// Path: /__root__/definitions/object/planObject/sqlOperator/filterOp
                     {
-                      name: "filter",
+                      name: "filterOp",
                       value: "An operator that filters out rows that do not meet an expression condition",
                       properties: [
                         {
@@ -350,12 +350,12 @@
                       children: []
                     },
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoin
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoin
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/loopJoin
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoinOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoinOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/loopJoinOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/aggregation
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/order
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/limit
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/limitOp
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/dataSource
                     {
@@ -365,14 +365,14 @@
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableScan
                         {
-                          name: "tableScan",
+                          name: "tableScanOp",
                           value: "Linearly reads all rows in a table",
                           properties: [
                             { name: "tableRef", type: "/__root__/definitions/object/tableRef" },
                           ]
                         },
 
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/indexScan
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/indexScanOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/scalar
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/subquery/vector
