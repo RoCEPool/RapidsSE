@@ -14,7 +14,7 @@ namespace BASE
   
   class _Header
   {
-  private:
+  protected:
     union {
       u4   m_uMagic;      // 4 byte magic signature
       char m_caMagic[4];
@@ -22,7 +22,7 @@ namespace BASE
     eCN  m_eClass;        // 2 byte class enum
     u2   m__spareBytes;   // 2 spare bytes
 
-    //! observe there are no constructors
+    // ! observe there are no constructors
   
   /*--------------------------------------------------------------------------*/
   /*                           -- Inline Functions --                         */
@@ -82,15 +82,15 @@ namespace BASE
   //------------------------------ Header ------------------------------------//
   //--------------------------------------------------------------------------//
 
-  class Header
+  class Header : public _Header
   {
-  private:
-    union {
-      u4   m_uMagic;       // 4 byte magic signature
-      char m_caMagic[4];
-    };
-    eCN  m_eClass;         // 2 byte class enum
-    u2   m__spareBytes;    // 2 spare bytes
+//  private:
+//    union {
+//      u4   m_uMagic;       // 4 byte magic signature
+//      char m_caMagic[4];
+//    };
+//    eCN  m_eClass;         // 2 byte class enum
+//    u2   m__spareBytes;    // 2 spare bytes
   
   public:
     Header(void);
