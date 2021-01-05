@@ -24,7 +24,16 @@ namespace BASE
   
     Footer* aFooter(void);
   };
-}
+
+
+  //
+  // declare a function pointer to any member function of Object
+  //   n.b. Object is non-virtual,
+  //        so fpMEMBERFN can be cast to a sub-class of Object
+  //
+  typedef void (Object::*fpMEMBERFN)(void);
+
+} // namespace BASE
 
 /*--------------------------------------------------------------------------*/
 /* pre and post condition                                                   */
