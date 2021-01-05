@@ -23,8 +23,8 @@ ListExo_ABSTRACT::ListExo_ABSTRACT(eCN eClassNo)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
   m_nItems = 0;
-  m_pHeadNode_object = nullptr;
-  m_pTailNode_object = nullptr;
+  m_pHeadNode_abstract = nullptr;
+  m_pTailNode_abstract = nullptr;
   
    _checkInitialised_(CN_CLASSPLACEHOLDER);
   
