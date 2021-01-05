@@ -174,6 +174,8 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
       char *strSenderAddress = inet_ntoa(SenderAddr.sin_addr);
       unsigned short sPort = ntohs(SenderAddr.sin_port);
 
+      (void)strSenderAddress;
+      (void)sPort;
       //printf("received from %s %d\n", strSenderAddress, sPort);
     }
 

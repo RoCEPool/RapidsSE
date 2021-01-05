@@ -48,6 +48,11 @@ private:
   std::unique_ptr<T[]> m_tBuffer;
   size_t m_iWriteIdx;
   size_t m_iReadIdx;
+
+  // Using C++11 atomic here
+  std::atomic<int64_t> m_atmWrite;
+  std::atomic<int64_t> m_atmRead;
+
   const size_t m_iMaxSize;
   bool m_bFull;
 public:
@@ -56,6 +61,9 @@ public:
       m_iMaxSize(iMaxSize) {
     m_iWriteIdx = 0;
     m_iReadIdx = 0;
+
+    m_atmWrite.store(0,std::memory_order_release);
+    m_atmRead.store(0, std::memory_order_release);
     m_bFull = false;
   }
 
@@ -70,7 +78,7 @@ public:
 
     m_iWriteIdx = (m_iWriteIdx + 1) % m_iMaxSize;
 
-    //If tail is ahead the head by 1, we are full
+    //If read is ahead the write by 1, we are full
     m_bFull = m_iWriteIdx == m_iReadIdx;
   } // Lock is automatically released here
 
@@ -81,7 +89,7 @@ public:
       return T();// return empty value
     }
 
-    //Read data and advance the tail (we now have a free space)
+    //Read data and advance the read index (we now have a free space)
     auto val = m_tBuffer[m_iReadIdx];
     m_bFull = false;
     m_iReadIdx = (m_iReadIdx + 1) % m_iMaxSize;
@@ -96,13 +104,52 @@ public:
       return false;// return false for empty
     }
 
-    //Read data and advance the tail (we now have a free space)
+    //Read data and advance the read index (we now have a free space)
     tItem = m_tBuffer[m_iReadIdx];
     m_bFull = false;
     m_iReadIdx = (m_iReadIdx + 1) % m_iMaxSize;
 
     return true;
   } // Lock is automatically released here
+
+
+  // Atomic operation here
+  bool bTryWrite(const T& tItem) {
+
+    auto const currentWrite = m_atmWrite.load(std::memory_order_relaxed);
+
+    auto nextWrite = (currentWrite + 1) % m_iMaxSize;
+
+    if (nextWrite != m_atmRead.load(std::memory_order_acquire)) {
+      m_tBuffer[currentWrite] = tItem;
+      m_atmWrite.store(nextWrite, std::memory_order_release);
+      return true;
+    }
+
+    // queue is full
+    return false;
+  }
+
+  // Atomic operation here
+  bool bTryRead(T& tItem)
+  {
+    auto const currentRead= m_atmRead.load(std::memory_order_relaxed);
+
+    if (currentRead == m_atmWrite.load(std::memory_order_acquire))
+    {
+      return false; // return false for empty
+    }
+
+    //Read data and advance the read index (we now have a free space)
+    tItem = m_tBuffer[currentRead];
+    m_bFull = false;
+
+    m_atmRead.store((currentRead + 1) % m_iMaxSize, std::memory_order_release);
+
+    return true;
+  }
+
+
 
   void vReset() {
     std::lock_guard<std::mutex> lock(m_mutexHB);
