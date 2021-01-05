@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Node.hpp"
 #include "Grid.hpp"
 #include "MetricsHelper.hpp"
 #include "LockMetrics.hpp"

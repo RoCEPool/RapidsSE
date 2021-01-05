@@ -11,6 +11,7 @@
 
 #include "EnumGroups.h"
 
+#include "Node.hpp"
 #include "Node_I.hpp"
 #include "OpSpec.hpp"
 #include "Op.hpp"

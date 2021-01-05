@@ -7,6 +7,7 @@
 
 #include "eAC.h"
 
+#include "Node.hpp"
 #include "Grid.hpp"
 #include "AttachMap.hpp"
 

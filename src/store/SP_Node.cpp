@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Node.hpp"
 #include "SP_Node.hpp"
 
 /*----------------------------------------------------------------------------*/

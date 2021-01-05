@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Node.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
