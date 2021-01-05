@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Grid.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 

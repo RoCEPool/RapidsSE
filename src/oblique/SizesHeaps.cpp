@@ -39,6 +39,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "Grid.hpp"
 #include "Session.hpp"
 #include "Arg.hpp"
 #include "RelOp.hpp"

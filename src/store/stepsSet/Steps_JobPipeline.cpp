@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Grid.hpp"
 #include "Op.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"

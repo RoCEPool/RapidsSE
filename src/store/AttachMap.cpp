@@ -7,6 +7,7 @@
 
 #include "eAC.h"
 
+#include "Grid.hpp"
 #include "AttachMap.hpp"
 
 #include "Session.hpp"

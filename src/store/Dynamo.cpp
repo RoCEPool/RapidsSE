@@ -7,6 +7,7 @@
 
 #include "ePX.h"
 
+#include "Grid.hpp"
 #include "OpSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"

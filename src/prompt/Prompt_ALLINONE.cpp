@@ -7,6 +7,7 @@
 #include "Prompt_ALLINONE.hpp"
 
 #include "Api.hpp"
+#include "Grid.hpp"
 #include "Session.hpp"
 #include "Definition.hpp"
 #include "OpSpec.hpp"

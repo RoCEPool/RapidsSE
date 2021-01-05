@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "Constants.hpp"
+#include "Grid.hpp"
 #include "Session.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

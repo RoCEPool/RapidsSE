@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Grid.hpp"
 #include "Api.hpp"
 #include "Session.hpp"
 #include "Op.hpp"
