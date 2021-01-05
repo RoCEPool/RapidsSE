@@ -4909,7 +4909,7 @@ void Task::vAddMunged(Task* pTask)
     "\n"
     "    // \"checking...\" .\n"
     "\n"
-    "    queues::checkSleeping\n"
+    "    SystemSchedule::checkSleeping\n"
     "\n"
     "  again\n"
     "\n"
