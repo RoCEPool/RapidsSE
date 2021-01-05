@@ -127,7 +127,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
 
-#include "AccessPath.hpp"
+//#include "AccessPath.hpp"
 
 //#include "Plan.hpp"
 //#include "Planner.hpp"

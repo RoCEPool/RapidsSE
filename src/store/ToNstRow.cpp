@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "AccessPath.hpp"
 #include "Planner.hpp"
 
 #include "LogicUnit.hpp"
