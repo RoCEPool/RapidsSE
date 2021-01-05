@@ -90,7 +90,7 @@ namespace STORE
     NextGid       m_inNextTxId;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
-    Queues*       m_pQueues;
+    SystemSchedule*       m_pQueues;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
     Article*      m_pRootArcticle;

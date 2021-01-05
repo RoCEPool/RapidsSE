@@ -6150,7 +6150,7 @@ PromptFun __Prompt_taskQueues (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_taskQueues(SePrompt* pPrompt)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   pQueues->vDumpExecutingSet();
   pQueues->vDumpReadyQueue();
@@ -6236,7 +6236,7 @@ PromptFun __Prompt_threads (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 {  
-  Queues::vThreadsReport();
+  SystemSchedule::vThreadsReport();
   
   return true;
 }

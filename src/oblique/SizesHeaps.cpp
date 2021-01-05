@@ -301,7 +301,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(QueryNodeStack),     HT_T_MEDIUM  ,0 }, // CN_QUERYNODESTACK
   { sizeof(Queue),              HT_T_TINY    ,0 }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID   ,0 }, // CN_QUEUEBUFFER
-  { sizeof(Queues),             HT_T_TINY    ,0 }, // CN_QUEUES
+  { sizeof(SystemSchedule),             HT_T_TINY    ,0 }, // CN_QUEUES
 
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
   { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE

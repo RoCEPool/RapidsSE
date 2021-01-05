@@ -197,7 +197,7 @@ i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 i8   AM::nPtnsInGrid(void) {
   return gpAttachMap->m_pPtnMap->nPtnsInGrid();
 }
-Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
+SystemSchedule* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }
 Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
@@ -1225,7 +1225,7 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
+void AM::vLogQue(eSL eSeverity, SystemSchedule* pQue, eQA eQueAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -2608,7 +2608,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 void AM::vJob_AddDemon(Job* pJob)
 {
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vAddJob(pJob);
@@ -2625,7 +2625,7 @@ void AM::vJob_AddDemon(Job* pJob)
 void AM::vJob_AddLocal(Job* pJob)
 {
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vAddJob(pJob);
@@ -2642,7 +2642,7 @@ void AM::vJob_AddLocal(Job* pJob)
 void AM::vJob_AddOriginating(Job* pJob)
 {
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vAddJob(pJob);
@@ -2658,7 +2658,7 @@ void AM::vJob_AddOriginating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddParticipating(Job* pJob)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vAddJob(pJob);
@@ -2675,7 +2675,7 @@ void AM::vJob_AddParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
               "DemonJobs list:"_Stz); //!format-LogQue
@@ -2690,7 +2690,7 @@ void AM::vJob_DumpDemon(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpLocal(void)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
               "LocalJobs list:"_Stz); //!format-LogQue
@@ -2705,7 +2705,7 @@ void AM::vJob_DumpLocal(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpOriginating(void)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
               "OriginatingJobs list:"_Stz); //!format-LogQue
@@ -2720,7 +2720,7 @@ void AM::vJob_DumpOriginating(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpParticipating(void)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::vLogQue(SL_INF,pQueues,QA_QUE_PARTICPANTS,
               "ParticipatingJobs list:"_Stz); //!format-LogQue
@@ -2735,7 +2735,7 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 Job* AM::pJob_FindOriginating(i8 iJobId)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_ORIG,
               "Find job %lld in OriginatingJobs"_Stz, //!format-LogQue
@@ -2760,7 +2760,7 @@ Job* AM::pJob_FindOriginating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 Job* AM::pJob_FindParticipating(i8 iJobId)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
 
   AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_PARTG,
               "find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
@@ -2785,7 +2785,7 @@ Job* AM::pJob_FindParticipating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::pLocalJobs()->vGrabLock();
   
@@ -2808,7 +2808,7 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::pOriginatingJobs()->vGrabLock();
   
@@ -2831,7 +2831,7 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   AM::pParticipatingJobs()->vGrabLock();
   

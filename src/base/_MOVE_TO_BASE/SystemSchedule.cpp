@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Queues.cpp -- Collection of the Systems' Queues                            */
+/* SystemSchedule.cpp -- System Schedule (tasks x threads)                    */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -16,9 +16,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queues* BASE::_pQueues(void* aAddr)
+SystemSchedule* BASE::_pQueues(void* aAddr)
 {
-  Queues* pQueues = reinterpret_cast<Queues*>(aAddr);
+  SystemSchedule* pQueues = reinterpret_cast<SystemSchedule*>(aAddr);
   
   RASSERT_TYPE(pQueues,CN_QUEUES);
   
@@ -28,7 +28,7 @@ Queues* BASE::_pQueues(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new a queues from existing memory                                          */
 /*----------------------------------------------------------------------------*/
-void* Queues::operator new(size_t)
+void* SystemSchedule::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_QUEUES);
   
@@ -36,18 +36,18 @@ void* Queues::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Queues are never deleted (for the moment)                                  */
+/* SystemSchedule are never deleted (for the moment)                                  */
 /*----------------------------------------------------------------------------*/
-void Queues::operator delete(void* aAddr)
+void SystemSchedule::operator delete(void* aAddr)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: Queues class cannot be deleted"_Stz);
+         "fatal: SystemSchedule class cannot be deleted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Queues::Queues(void)
+SystemSchedule::SystemSchedule(void)
 : Focal(CN_QUEUES,0,C_UNKNOWN)
 , m_okScheduling(LK_QUEUES,this)
 {
@@ -88,7 +88,7 @@ Queues::Queues(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Queues::~Queues(void) noexcept(false)
+SystemSchedule::~SystemSchedule(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
 }
@@ -100,14 +100,14 @@ Queues::~Queues(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* threads report                                                             */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadsReport(void)
+void SystemSchedule::vThreadsReport(void)
 {
   i8 iUserTime;
   i8 iSystemTime;
   i8 iPercentageUsage;
   i8 iSleepSsec;
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pQueues = AM::pQueues();
   
   pQueues->m_pGeneralThreadVec->vGrabLock();
 
@@ -190,7 +190,7 @@ void Queues::vThreadsReport(void)
 /*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
-void Queues::vFocalOutline(s4K& sOutline)
+void SystemSchedule::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -205,7 +205,7 @@ void Queues::vFocalOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* add task to biding set                                                     */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddBidingSet(Task* pTask)
+void SystemSchedule::vAddBidingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -231,7 +231,7 @@ void Queues::vAddBidingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to executing queue                                                */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddExecutingSet(Task* pTask)
+void SystemSchedule::vAddExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -252,7 +252,7 @@ void Queues::vAddExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to sleeping queue                                                 */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddSleepingQueue(Task* pTask)
+void SystemSchedule::vAddSleepingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -276,7 +276,7 @@ void Queues::vAddSleepingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to waiting set                                                    */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddWaitingSet(Task* pTask)
+void SystemSchedule::vAddWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -302,7 +302,7 @@ void Queues::vAddWaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to ready queue (normal priority)                                  */
 /*----------------------------------------------------------------------------*/
-void Queues::vAppendReadyQueue(Task* pTask)
+void SystemSchedule::vAppendReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -323,7 +323,7 @@ void Queues::vAppendReadyQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to low priority ready queue                                       */
 /*----------------------------------------------------------------------------*/
-void Queues::vAppendReadyQueueLP(Task* pTask)
+void SystemSchedule::vAppendReadyQueueLP(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -344,7 +344,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* pop a task from the ready queue (normal priority)                          */
 /*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadyQueue(void)
+Task* SystemSchedule::pPopReadyQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -376,7 +376,7 @@ Task* Queues::pPopReadyQueue(void)
 /*----------------------------------------------------------------------------*/
 /* pop a task from the low priority ready queue                               */
 /*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadyQueueLP(void)
+Task* SystemSchedule::pPopReadyQueueLP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -408,7 +408,7 @@ Task* Queues::pPopReadyQueueLP(void)
 /*----------------------------------------------------------------------------*/
 /* pop a wakeable task from sleeping queue                                    */
 /*----------------------------------------------------------------------------*/
-Task* Queues::pPopSleepingQueue(void)
+Task* SystemSchedule::pPopSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -462,7 +462,7 @@ Task* Queues::pPopSleepingQueue(void)
 /*----------------------------------------------------------------------------*/
 /* remove task from biding set                                               */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveBidingSet(Task* pTask)
+void SystemSchedule::vRemoveBidingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -479,7 +479,7 @@ void Queues::vRemoveBidingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* remove task from executing queue                                           */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveExecutingSet(Task* pTask)
+void SystemSchedule::vRemoveExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -496,7 +496,7 @@ void Queues::vRemoveExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* remove task from waiting queue                                             */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveWaitingSet(Task* pTask)
+void SystemSchedule::vRemoveWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -523,7 +523,7 @@ void Queues::vRemoveWaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add  thread to dedicated thread vector                                     */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddDedicatedThread(Thread* pThread)
+void SystemSchedule::vAddDedicatedThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -537,7 +537,7 @@ void Queues::vAddDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* add thread to general thread vector                                        */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddGeneralThread(Thread* pThread)
+void SystemSchedule::vAddGeneralThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -551,7 +551,7 @@ void Queues::vAddGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* append thread to idle thread queue                                          */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadAppendIdle(Thread* pThread)
+void SystemSchedule::vThreadAppendIdle(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -565,7 +565,7 @@ void Queues::vThreadAppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* pop idle thread                                                            */
 /*----------------------------------------------------------------------------*/
-Thread* Queues::pThreadPopIdleNL(void)
+Thread* SystemSchedule::pThreadPopIdleNL(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -581,7 +581,7 @@ Thread* Queues::pThreadPopIdleNL(void)
 /*----------------------------------------------------------------------------*/
 /* remove thread from dedicated thread vector                                 */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveDedicatedThread(Thread* pThread)
+void SystemSchedule::vRemoveDedicatedThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -593,7 +593,7 @@ void Queues::vRemoveDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* remove thread from general thread vector                                   */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveGeneralThread(Thread* pThread)
+void SystemSchedule::vRemoveGeneralThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -610,7 +610,7 @@ void Queues::vRemoveGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* drop idle queue lock                                                       */
 /*----------------------------------------------------------------------------*/
-void Queues::vDropThreadIdleQueue(void)
+void SystemSchedule::vDropThreadIdleQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -620,7 +620,7 @@ void Queues::vDropThreadIdleQueue(void)
 /*----------------------------------------------------------------------------*/
 /* dump the biding set                                                        */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpBidingSet(void)
+void SystemSchedule::vDumpBidingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -639,7 +639,7 @@ void Queues::vDumpBidingSet(void)
 /*----------------------------------------------------------------------------*/
 /* dump the executing set                                                     */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpExecutingSet(void)
+void SystemSchedule::vDumpExecutingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -658,7 +658,7 @@ void Queues::vDumpExecutingSet(void)
 /*----------------------------------------------------------------------------*/
 /* dump the ready queue                                                       */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpReadyQueue(void)
+void SystemSchedule::vDumpReadyQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -677,7 +677,7 @@ void Queues::vDumpReadyQueue(void)
 /*----------------------------------------------------------------------------*/
 /* dump the low priority ready queue                                          */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpReadyQueueLP(void)
+void SystemSchedule::vDumpReadyQueueLP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -696,7 +696,7 @@ void Queues::vDumpReadyQueueLP(void)
 /*----------------------------------------------------------------------------*/
 /* dump sleeping queue                                                        */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpSleepingQueue(void)
+void SystemSchedule::vDumpSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
 
@@ -715,7 +715,7 @@ void Queues::vDumpSleepingQueue(void)
 /*----------------------------------------------------------------------------*/
 /* dump waiting set                                                           */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpWaitingSet(void)
+void SystemSchedule::vDumpWaitingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -734,7 +734,7 @@ void Queues::vDumpWaitingSet(void)
 /*----------------------------------------------------------------------------*/
 /* grab idle queue lock                                                       */
 /*----------------------------------------------------------------------------*/
-void Queues::vGrabThreadIdleQueue(void)
+void SystemSchedule::vGrabThreadIdleQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -747,14 +747,14 @@ void Queues::vGrabThreadIdleQueue(void)
 /*----------------------------------------------------------------------------*/
 /* get a portrait of the queues                                               */
 /*----------------------------------------------------------------------------*/
-void Queues::vMonitorPortrait(s48K& sPortrait)
+void SystemSchedule::vMonitorPortrait(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
 //  s48K sTasksPortrait;
 //  
 //  sPortrait = ""_Stz;
-//  sPortrait.vConcat("Queues:\n"_Stz);
+//  sPortrait.vConcat("SystemSchedule:\n"_Stz);
 //  
 //  m_pExecutingSet->vPortrait(sTasksPortrait);
 //  sPortrait.vConcat(sTasksPortrait);
@@ -775,7 +775,7 @@ void Queues::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* get a portrait of the threads                                              */
 /*----------------------------------------------------------------------------*/
-void Queues::vMonitorThread(s48K& sPortrait)
+void SystemSchedule::vMonitorThread(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -814,7 +814,7 @@ void Queues::vMonitorThread(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the biding set                                          */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nTasksBiding(void)
+i8 SystemSchedule::nTasksBiding(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -824,7 +824,7 @@ i8 Queues::nTasksBiding(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the executing set                                       */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nTasksExecuting(void)
+i8 SystemSchedule::nTasksExecuting(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -834,7 +834,7 @@ i8 Queues::nTasksExecuting(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the ready queue                                         */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nTasksReady(void)
+i8 SystemSchedule::nTasksReady(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -844,7 +844,7 @@ i8 Queues::nTasksReady(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the low priority ready queue                            */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nTasksReadyLP(void)
+i8 SystemSchedule::nTasksReadyLP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -854,7 +854,7 @@ i8 Queues::nTasksReadyLP(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the sleeping queue                                      */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nTasksSleeping(void)
+i8 SystemSchedule::nTasksSleeping(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -864,7 +864,7 @@ i8 Queues::nTasksSleeping(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the waiting set                                         */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nTasksWaiting(void)
+i8 SystemSchedule::nTasksWaiting(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -876,7 +876,7 @@ i8 Queues::nTasksWaiting(void)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Queues);
+__aFooterFunction(SystemSchedule);
 
 /*============================================================================*/
 /* end                                                                        */
