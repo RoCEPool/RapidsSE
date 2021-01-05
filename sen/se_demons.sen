@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* se_demon.sen -- demons                                                     */
+/* se_demon.sen -- support words for demons                                   */
 /*============================================================================*/
 
 " se_demon.sen" .verbose
@@ -26,9 +26,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* answer demon                                                               */
+/* pipeline command for the answer demon                                      */
 /*----------------------------------------------------------------------------*/
-: answerDemonStr
+: answerDemonPipelineCmd
 
   "
     pipelineLocal answerDemon
@@ -43,9 +43,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* connector demon                                                            */
+/* pipeline command for the connector demon                                   */
 /*----------------------------------------------------------------------------*/
-: connectorDemonStr
+: connectorDemonPipelineCmd
 
   "
     pipelineLocal connectorDemon
@@ -60,9 +60,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* recurring demon                                                            */
+/* pipeline command for the recurring demon                                   */
 /*----------------------------------------------------------------------------*/
-: recurringDemonStr
+: recurringDemonPipelineCmd
 
   "
     pipelineLocal recurringDemon
@@ -77,9 +77,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* stat demon                                                                 */
+/* pipeline command for the stat demon                                        */
 /*----------------------------------------------------------------------------*/
-: statDemonStr
+: statDemonPipelineCmd
 
   "
     pipelineLocal statDemon
@@ -94,9 +94,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* supervisor demon                                                           */
+/* pipeline command for the supervisor demon                                  */
 /*----------------------------------------------------------------------------*/
-: supervisorDemonStr
+: supervisorDemonPipelineCmd
 
   "
     pipelineLocal supervisorDemon
@@ -111,9 +111,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* waker demon                                                                */
+/* pipeline command for the waker demon                                       */
 /*----------------------------------------------------------------------------*/
-: wakerDemonStr
+: wakerDemonPipelineCmd
 
   "
     pipelineLocal wakerDemon

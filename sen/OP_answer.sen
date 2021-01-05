@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver demon                                                             */
 /*----------------------------------------------------------------------------*/
-: receiverDemonStr
+: receiverDemonPipelineCmd
 
   "
     pipelineLocal receiverDemon
@@ -37,7 +37,7 @@
   false
 
   // receiver demon pipeline
-  receiverDemonStr
+  receiverDemonPipelineCmd
 
   api::spawnDemon not if
     "Error Code %v" .printf

@@ -101,7 +101,7 @@ Thread::~Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* thread entry point                                                         */
+/* dedicated thread entry point                                               */
 /*----------------------------------------------------------------------------*/
 void* Thread::aEntryPoint_dedicated(void* pArg)
 {
@@ -166,7 +166,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread entry point                                                         */
+/* general thread entry point                                                 */
 /*----------------------------------------------------------------------------*/
 void* Thread::aEntryPoint_general(void* pArg)
 {

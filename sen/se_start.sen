@@ -50,32 +50,32 @@
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // spawn supervisor demon
-  //"" false supervisorDemonStr api::spawnDemon not if
+  //"" false supervisorDemonPipelineCmd api::spawnDemon not if
   //  "Error Code %v" .printf
   //then
 
   // spawn recurring demon
-//  "" false recurringDemonStr api::spawnDemon not if
-//    "Error Code %v" .printf
-//  then
+  //  "" false recurringDemonPipelineCmd api::spawnDemon not if
+  //    "Error Code %v" .printf
+  //  then
 
   // spawn stat demon
-  "" false statDemonStr api::spawnDemon not if
+  "" false statDemonPipelineCmd api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn waker demon
-  "" false wakerDemonStr api::spawnDemon not if
+  "" false wakerDemonPipelineCmd api::spawnDemon not if
     "Error Code %v" .printf
   then
 
-  //spawn answer demon
-  "" false answerDemonStr api::spawnDemon not if
+  // spawn answer demon
+  "" false answerDemonPipelineCmd api::spawnDemon not if
     "Error Code %v" .printf
   then
 
-  //spawn connector demon
-  "" false connectorDemonStr api::spawnDemon not if
+  // spawn connector demon
+  "" false connectorDemonPipelineCmd api::spawnDemon not if
     "Error Code %v" .printf
   then
 
