@@ -2456,6 +2456,34 @@ bool StrLib::bIsAlphaDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsDecimal: is string a decimal no ?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsDecimalNo(char* ps) {
+  _static_
+
+  bool bDecimalPoint = false;
+
+  if ('-' == *ps)
+    (ps)++;
+
+  for (; *ps; (ps)++) {
+    if (*ps == '.') {
+
+      // have we seen a decimal point before ?
+      if (bDecimalPoint)
+        return false;
+
+      bDecimalPoint = true;
+      continue;
+    }
+    if (!isdigit(*ps))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsDigit: is char a numeric decimal digit?                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsDigit(const char c)

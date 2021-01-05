@@ -36,19 +36,52 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
-/time load lineitem "../DATA/TPCH/lineitem1.csv";
+/time load lineitem "../DATA/TPCH/lineitem10k.csv";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_1.csv";
 
-filterRows lineitem "l_discount 0.04 >=";
+filterRows lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <>";
+filterRows lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24.0 < <>";
+//filterRows lineitem "l_discount 0.04 >= l_discount 0.06 <= l_quantity 24.0 < and and ;
 
 /*
-projection lineitem l_extendedPrice , l_discount , l_shipdate;
-projection lineitem l_shipdate, l_extendedPrice , l_discount;
+projection lineitem l_extendedPrice , l_discount, l_shipdate;
+projection lineitem l_shipdate, l_extendedPrice 2 *, l_extendedPrice;
 projection lineitem l_extendedPrice, 2;
 projection lineitem l_extendedPrice, l_discount, L_COMMENT;
 
+
+
 rangeScan lineitem lineitem_idx2 "30 >= 50 <";
-rangeScan lineitem lineitem_idx1 " '1994-01-01' >= '1995-01-01' <";
+rangeScan lineitem lineitem_idx1  "'1994-01-01' >=  '1995-01-01' <";
+
+
+pipeline singleColumn
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+   stage stageB on all partitions :
+     scan lineitem
+     | project l_extendedPrice | stage C
+
+   stage stageC on origin :
+      output | sink | stageA
+end;
+
+   pipeline Query6
+   begin
+     stage stageA on origin :
+       start | periodic once | stageB
+
+      stage stageB on all partitions :
+        scan lineitem
+        | filter lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24.0 < <>"
+        | project 0 "l_extendedPrice l_discount * , l_discount , l_quantity"
+        | stageC
+
+      stage stageC on origin :
+        output | sink | stageA
+   end;
 
 pipeline Query6
 begin
@@ -56,8 +89,10 @@ begin
     start | periodic once | stageB
 
    stage stageB on all partitions :
-     range 0 lineitem by lineitem_idx1 " '1994-01-01' >= '1995-01-01' <"
-     | project 0 "l_extendedPrice l_discount *"
+     range 0 lineitem by lineitem_idx1 " '1994-01-01' >=  '1995-01-01' <"
+     //| filterRows lineitem l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24 <
+     | project 0 "as xyz l_extendedPrice l_discount * "
+     //| sum 0 xyz
      | stageC
 
    stage stageC on origin :

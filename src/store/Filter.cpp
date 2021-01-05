@@ -104,6 +104,7 @@ eEC Filter::eFilterRows(StreamDef* pStreamDefIn, Stz* sFilter)
   }
 
   L_RETRUN:
+    delete pTknVec;
     return eError;
 }
 
@@ -121,6 +122,8 @@ eEC Filter::eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
 
   Column *pColumn = nullptr;
   TagSet oTagSet;
+  char* szToken;
+  i8 iDecimal;
 
   Stz* azCrs = m_sAsmText.szStz();
 
@@ -128,37 +131,92 @@ eEC Filter::eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
   bool bFound = false;
   Stz* sColumnNm;
 
-  // first should be a column name
-  if ( ! pTkn->bIsName() ) {
-    eError = EC_INVALID_COMMAND;
-    goto L_RETURN;
-  }
+  // collect each expression
+  while (pTkn) {
 
-  // found a src column
-  sColumnNm = pTkn->szChars();
-
-  // get in column from m_iStreamInCol ~ to out column
-  pColumn = nullptr;
-  for (i8 i_StreamInCol = 0; i_StreamInCol < pStreamDefIn->nTotalColumns(); i_StreamInCol++) {
-    pColumn = pStreamDefIn->pGetColumn(i_StreamInCol);
-    if (pColumn->szColNm()->bSame(sColumnNm)) {
-      bFound = true;
-      break;
+    // is column an integer ?
+    if (pTkn->bIsInteger()) {
+      // we should have a column and column type should be CT_INTEGER
+      RASSERT(pColumn && pColumn->eColumnType() == CT_INTEGER);
+      StrLib::vSprintCat(azCrs, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
-  }
 
-  // invalid column name
-  if ( ! bFound ) {
-    eError = EC_INVALID_COMMAND;
-    goto L_RETURN;
-  }
+    // is column a decimal ?
+    if (pTkn->bIsName() && StrLib::bIsDecimalNo(pTkn->azChars())) {
+      // we should have a column and column type should be CT_DECIMAL
+      RASSERT(pColumn && pColumn->eColumnType() == CT_DECIMAL);
+      szToken = (char*)pTkn->szChars();
+      bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 15, 2);
+      if ( ! bResult ) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+      StrLib::vSprintCat(azCrs, "  EO_INTEGER %lld\n"_Stz, iDecimal);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
 
-  // code to push the column
-  StrLib::vSprintCat(azCrs,"  EO_SET_ITEMS 1\n"_Stz);
-  StrLib::vSprintCat(azCrs,"  EO_COL_SRC_PUSHONE %lld\n"_Stz,pColumn->iColumnNo());
+    // is it a logical operator ?
+    if (pTkn->bSame("and"_Stz)) {
+      StrLib::vSprintCat(azCrs, "  EO_LGL_AND\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
 
-  // collect the expression
-  while (pTkn && ! pTkn->bIsRelational()) {
+    if (pTkn->bIsRelational()) {
+      if (pTkn->bSame(">"_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_GREATERTHAN\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame(">="_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_GREATEREQUAL\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame("<"_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_LESSTHAN\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame("<="_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_LESSEQUAL\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame("=="_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_EQUAL\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+    }
+
+    // is it a column name
+    if ( pTkn->bIsName() ) {
+
+      // found a src column
+      sColumnNm = pTkn->szChars();
+
+      // get in column from m_iStreamInCol
+      pColumn = nullptr;
+      for (i8 i_StreamInCol = 0; i_StreamInCol < pStreamDefIn->nTotalColumns(); i_StreamInCol++) {
+        pColumn = pStreamDefIn->pGetColumn(i_StreamInCol);
+        if (pColumn->szColNm()->bSame(sColumnNm)) {
+          bFound = true;
+          break;
+        }
+      }
+
+      // invalid column name
+      if (!bFound) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // code to push the column
+      StrLib::vSprintCat(azCrs, "  EO_SET_ITEMS 1\n"_Stz);
+      StrLib::vSprintCat(azCrs, "  EO_COL_SRC_PUSHONE %lld\n"_Stz, pColumn->iColumnNo());
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
 
     // arithmetic operators
     if (pTkn->bSame("+"_Stz)) {
@@ -188,40 +246,20 @@ eEC Filter::eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
     if (pTkn->bSame("-"_Stz)) {
       //vAddCode(i_DstColumn, EO_SUBTRACT);
       StrLib::vSprintCat(azCrs, "  EO_SUBTRACT\n"_Stz);
+      pTkn = pTknVec->pNextToken();
       continue;
     }
-
-    // is it an integer ?
-    if (pTkn->bIsInteger()) {
-      StrLib::vSprintCat(azCrs, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
+      StrLib::vSprintCat(azCrs, "EO_JMP_FALSE CRW_FILTER_FALSE\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
-
-    // is it an decimal ?
-    //if (pTkn->bIsDecimal()) {
-    //  StrLib::vSprintCat(azCrs, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
-    //}
-
-    pTkn = pTknVec->pNextToken();
+    else {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
   }
 
-  // next token should be a relational operator
-  if ( ! pTkn ) {
-    eError = EC_INVALID_COMMAND;
-    goto L_RETURN;
-  }
-
-  if (pTkn->bSame(">"_Stz)) {
-    StrLib::vSprintCat(azCrs,"  EO_GREATERTHAN\n"_Stz);
-    pTkn = pTknVec->pNextToken();
-  }
-  else if (pTkn->bSame(">="_Stz)) {
-    StrLib::vSprintCat(azCrs,"  EO_GREATEREQUAL\n"_Stz);
-    pTkn = pTknVec->pNextToken();
-  }
-  else {
-    eError = EC_INVALID_COMMAND;
-  }
-  StrLib::vSprintCat(azCrs,"  EO_JMP_FALSE CRW_FILTER_FALSE\n"_Stz);
   L_RETURN:
     return eError;
 }
