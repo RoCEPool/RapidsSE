@@ -77,7 +77,11 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   s2K sExprBuf;
   Expr::vDescribe(pExprNode, sExprBuf);
 
-  sBuf.vSprintCat("Alias: %s ; Expr: %s"_Stz, (szAliasName == nullptr ? "<none>"_Stz : szAliasName), sExprBuf.szStz());
+  if (szAliasName) {
+    sBuf.vSprintCat("Alias = %s ; "_Stz, (szAliasName == nullptr ? "<none>"_Stz : szAliasName));
+  }
+
+  sBuf.vSprintCat("Expr = %s"_Stz, sExprBuf.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

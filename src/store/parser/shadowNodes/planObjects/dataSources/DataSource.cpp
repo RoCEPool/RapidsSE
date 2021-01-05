@@ -24,7 +24,7 @@ static Stz* C_DATASOURCE_DEFN = "/__root__/definitions/object/planObject/sqlOper
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
@@ -40,6 +40,30 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // Others
   //else if (FilterOp::bIsOfType(pNode))      { FilterOp::vDescribe(pNode, sBuf);   }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void DataSource::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bValidate(pNode));
+
+  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+
+  // Manual polymorphism here
+
+  // TableScanOp
+  if      (TableScanOp::bIsOfType(pNode))   { TableScanOp::vExplain(pNode, sBuf, iIndent); }
+
+  // IndexScanOp
+  //else if (IndexScanOp::bIsOfType(pNode))   { IndexScanOp::vExplain(pNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here

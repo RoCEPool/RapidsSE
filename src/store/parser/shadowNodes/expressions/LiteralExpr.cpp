@@ -39,7 +39,7 @@ QueryNode* LiteralExpr::pCreate(eET eType, Value xVal)
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {

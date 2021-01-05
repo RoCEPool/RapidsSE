@@ -26,7 +26,7 @@ namespace Parser
       ST_UPDATE,
       ST_DELETE,
       ST_INSERTSELECT,
-      ST_ENUMS
+      ST_NENUMS
     };
 
   private:
@@ -36,12 +36,13 @@ namespace Parser
   public:
     static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void       vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
   protected:
-
+    static eST eStatementType(PlanNode* pNode);
   };
 
 }

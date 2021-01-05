@@ -57,7 +57,7 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
 }
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
 {

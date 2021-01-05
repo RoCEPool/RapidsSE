@@ -40,7 +40,7 @@ static Stz* aExprTypeDefns[] = {
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {

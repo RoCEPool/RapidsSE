@@ -1,5 +1,9 @@
 /*============================================================================*/
 /* Statement.hpp - identifies the type of query being planned                 */
+/*                                                                            */
+/* Not intending to create subclasses of this to represent each statement type*/
+/* because it doesn't really add any value. Instead we can capture all        */
+/* behaviour in this class.                                                   */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -47,28 +51,31 @@ static Stz* aST_definition[] = {
 QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
 {
   ASSERT(eStmtType > ST_NONE);
-  ASSERT(eStmtType < ST_ENUMS);
+  ASSERT(eStmtType < ST_NENUMS);
   ASSERT(szQueryText);
 
   // Get the definition of the statement we're creating
   Stz* szDef = aST_definition[eStmtType];
 
-  Value xValue(szQueryText);
+  // Store the enum value in the value field of the statement node
+  Value xValue;
+  xValue.m_iInt = eStmtType;
 
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(szDef), sName);
 
   // Create the object with its queryText property
-  QueryNode* pStmt = new QueryNode(sName, szDef);
-  QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xValue);
+  QueryNode* pStmt = new QueryNode(sName, szDef, xValue);
+  Value xQueryTextVal(szQueryText);
+  QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xQueryTextVal);
   pStmt->vAppendProperty(pQueryText);
 
   return pStmt;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void Statement::vDescribe(PlanNode* pNode, s2K& buf)
 {
@@ -82,11 +89,63 @@ void Statement::vDescribe(PlanNode* pNode, s2K& buf)
 
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void Statement::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bValidate(pNode));
+
+  if (sBuf.nLength() > 0) {
+    sBuf.vConcat("\n"_Stz);
+  }
+
+  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+  sBuf.vCatSprint("%s statement"_Stz, GraphNav::szLeafType(pNode->szType()));
+
+  PlanNode* pQueryTextProp = GraphNav::pFindProperty(const_cast<Stz*>(C_QUERYTEXT_PROP), pNode);
+  ASSERT(pQueryTextProp);
+
+  Stz* szQueryText = pQueryTextProp->getStringValue();
+  ASSERT(szQueryText);
+
+  // Add the queryText property
+  sBuf.vConcat("\n"_Stz);
+  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
+  sBuf.vCatSprint("queryText: \"%s\""_Stz, szQueryText);
+
+  // Recurse any children
+  i8 nChildren = pNode->nChildren();
+  for (i8 i=0; i<nChildren; i++) {
+    PlanNode* pChild = pNode->pNthChild(i);
+    ASSERT(PlanObject::bIsOfType(pChild));
+
+    PlanObject::vExplain(pChild, sBuf, iIndent+1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 Statement::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_STATEMENT_DEFN);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns the statement enum type from a given node                          */
+/*----------------------------------------------------------------------------*/
+Statement::eST Statement::eStatementType(PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  i8 iType = pNode->getIntValue();
+  ASSERT(iType > ST_NONE);
+  ASSERT(iType < ST_NENUMS);
+
+  return (eST) iType;
 }
 
 /*============================================================================*/
