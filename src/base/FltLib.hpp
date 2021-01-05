@@ -9,6 +9,8 @@ namespace BASE
   {
   public:
     static void vInitGlobals(void);
+  
+ 
   };
 }
 

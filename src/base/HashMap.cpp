@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include <math.h>
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -101,7 +99,7 @@ void HashMap::vAnalysis(bool bBufferAnalysis)
   if (bBufferAnalysis)
     m_pRootBuffer->vAnalysis();
   
-  i8 iFullTree = (i8)pow(m_nArcsPerBuffer,m_iMaxDepth);
+  i8 iFullTree = IntLib::iPow(m_nArcsPerBuffer,m_iMaxDepth);
   
   vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"
          "    Arguments %lld MaxDepth %lld "
