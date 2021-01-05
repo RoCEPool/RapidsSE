@@ -108,6 +108,14 @@ namespace STORE
     TempName      m_oTempName;
     Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
+  
+  
+    JobList*      m_pDemonJobs;
+    JobList*      m_pLocalJobs;
+    JobList*      m_pOriginatingJobs;
+    JobList*      m_pParticipatingJobs;
+
+  
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // these should be in Arg
