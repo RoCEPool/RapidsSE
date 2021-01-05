@@ -270,10 +270,19 @@ void vTest8(void)
   
   pListExo = new ListExo_t<CN_CLASSPLACEHOLDER,Text>();
   
+  pListExo->vAppend(pText0);
+  pListExo->vAppend(pText1);
+  pListExo->vAppend(pText2);
+  
+  vTrace("0: %s\n"_Stz,pListExo->pPeek(0)->szGet());
+  vTrace("1: %s\n"_Stz,pListExo->pPeek(1)->szGet());
+  vTrace("2: %s\n"_Stz,pListExo->pPeek(2)->szGet());
+
+  pListExo->vRemoveAll();
+
   delete pText2;
   delete pText1;
   delete pText0;
-
   
   delete pListExo;
 }
