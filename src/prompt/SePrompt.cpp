@@ -7,6 +7,7 @@
 
 #include "Api.hpp"
 
+#include "Session.hpp"
 #include "AttachMap.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

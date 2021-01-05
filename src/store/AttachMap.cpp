@@ -5,8 +5,11 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "eAC.h"
+
 #include "AttachMap.hpp"
 
+#include "Session.hpp"
 #include "Step.hpp"
 
 #include "ResourceTracker.hpp" //?

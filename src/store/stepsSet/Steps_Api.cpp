@@ -12,6 +12,7 @@
 #include "ePX.h"
 
 #include "Api.hpp"
+#include "Session.hpp"
 #include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

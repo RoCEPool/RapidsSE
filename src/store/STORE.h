@@ -118,7 +118,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
+//#include "Session.hpp"
 
 //------------------------------------------------------------------------------
 

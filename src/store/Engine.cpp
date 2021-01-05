@@ -7,6 +7,7 @@
 
 #include <signal.h>
 
+#include "Session.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"

@@ -39,6 +39,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "Session.hpp"
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
