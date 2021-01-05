@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Queues.cpp - queues step group                                       */
+/* Steps_SystemSchedule.cpp - System Schedule step group                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Queues(void)
+void Step::vAddSteps_SystemSchedule(void)
 {
   vAddStep("queues::CheckSleeping"_Stz,   &Step::vQueuesCheckSleeping);
   
