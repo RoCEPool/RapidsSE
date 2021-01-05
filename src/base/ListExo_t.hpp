@@ -7,6 +7,41 @@
 
 namespace BASE
 {
+  class ListExo_ENVELOPED : public Object
+  {
+  protected:
+    i8    m_nItems;
+    Object* m_pHeadNode_object;
+    Object* m_pTailNode_object;
+
+  private:
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    ListExo_ENVELOPED(eCN eClassNo);
+   ~ListExo_ENVELOPED(void) noexcept(false);
+
+  private:
+    Footer* aFooter(void);
+  };
+
+  ListExo_ENVELOPED* _pListExo_ENVELOPED(void* aAddr);
+
+} // namespace BASE
+
+
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
+
+
+namespace BASE
+{
   template <class ITEM>
   class ListExoNode_t : public Object
   {
