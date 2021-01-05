@@ -19,7 +19,7 @@ namespace BASE
       u4   m_uMagic;      // 4 byte magic signature
       char m_caMagic[4];
     };
-    eCN  m_eClass;        // 2 byte class enum
+    eCN  m_eClassNo;      // 2 byte class enum
     u2   m__spareBytes;   // 2 spare bytes
 
     // ! observe there are no constructors
@@ -34,23 +34,23 @@ namespace BASE
   /*--------------------------------------------------------------------------*/
   inline eCN eClass(void)
   {
-    return m_eClass;
+    return m_eClassNo;
   }
   
   /*--------------------------------------------------------------------------*/
   /* set class                                                                */
   /*--------------------------------------------------------------------------*/
-  inline void vSetClassNo(eCN eClass)
+  inline void vSetClassNo(eCN eClassNo)
   {
-    m_eClass = eClass;
+    m_eClassNo = eClassNo;
   }
   
   /*--------------------------------------------------------------------------*/
   /* test for given class                                                     */
   /*--------------------------------------------------------------------------*/
-  inline bool bIsClassNo(eCN eClass)
+  inline bool bIsClassNo(eCN eClassNo)
   {
-    if (m_eClass == eClass)
+    if (m_eClassNo == eClassNo)
       return true;
     else
       return false;

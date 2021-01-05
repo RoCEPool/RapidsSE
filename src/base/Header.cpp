@@ -50,7 +50,7 @@ void Header::vAssertHeader(void)
 /*----------------------------------------------------------------------------*/
 eEC Header::eValidClass(void)
 {
-  if (m_eClass < CN_ENUMS)
+  if (m_eClassNo < CN_ENUMS)
     return EC_NONE;
   
   return EC_OBJECT_CLASSNO_INVALID;
@@ -94,8 +94,8 @@ void Header::vSprint(Stz* szHeader)
                   m_caMagic[1],
                   m_caMagic[2],
                   m_caMagic[3],
-                  m_eClass,
-                  aCN[m_eClass],
+                  m_eClassNo,
+                  aCN[m_eClassNo],
                   bIsMagicValid() ? "valid magic" : "not-valid magic"
                   );
 }
