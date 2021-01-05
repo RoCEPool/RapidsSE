@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Queues.cpp - queues step group                                       */
+/* Steps_SystemSchedule.cpp - System Schedule step group                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -13,20 +13,20 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Queues(void)
+void Step::vAddSteps_SystemSchedule(void)
 {
-  vAddStep("queues::CheckSleeping"_Stz,   &Step::vQueuesCheckSleeping);
+  vAddStep("SystemSchedule::CheckSleeping"_Stz,   &Step::vSystemScheduleCheckSleeping);
   
-  vAddStep("queues::ExecutingLength"_Stz, &Step::vQueuesExecutingLength);
-  vAddStep("queues::ReadyLength"_Stz,     &Step::vQueuesReadyLength);
-  vAddStep("queues::SleepingLength"_Stz,  &Step::vQueuesSleepingLength);
-  vAddStep("queues::WaitingLength"_Stz,   &Step::vQueuesWaitingLength);
+  vAddStep("SystemSchedule::ExecutingLength"_Stz, &Step::vSystemScheduleExecutingLength);
+  vAddStep("SystemSchedule::ReadyLength"_Stz,     &Step::vSystemScheduleReadyLength);
+  vAddStep("SystemSchedule::SleepingLength"_Stz,  &Step::vSystemScheduleSleepingLength);
+  vAddStep("SystemSchedule::WaitingLength"_Stz,   &Step::vSystemScheduleWaitingLength);
 }
 
 /*----------------------------------------------------------------------------*/
-/* queues::QueuesCheckSleeping -- check the sleeping queue                    */
+/* SystemSchedule::QueuesCheckSleeping -- check the sleeping queue            */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesCheckSleeping(void)
+void Step::vSystemScheduleCheckSleeping(void)
 {
   ENTRY();
   
@@ -36,57 +36,57 @@ void Step::vQueuesCheckSleeping(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* queues::QueuesExecutingLength -- get the executing queue length            */
+/* SystemSchedule::QueuesExecutingLength -- get the executing queue length    */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesExecutingLength(void)
+void Step::vSystemScheduleExecutingLength(void)
 {
   ENTRY();
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksExecuting());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksExecuting());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* queues::QueuesReadyLength -- get the ready queue length                    */
+/* SystemSchedule::QueuesReadyLength -- get the ready queue length            */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesReadyLength(void)
+void Step::vSystemScheduleReadyLength(void)
 {
   ENTRY();
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
   
-  Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksReady());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksReady());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* queues::QueuesSleepingLength -- get the sleeping queue length              */
+/* SystemSchedule::QueuesSleepingLength -- get the sleeping queue length      */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesSleepingLength(void)
+void Step::vSystemScheduleSleepingLength(void)
 {
   ENTRY();
   
-  Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksSleeping());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksSleeping());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* queues::QueuesWaitingLength -- get the sleeping queue length              */
+/* SystemSchedule::QueuesWaitingLength -- get the sleeping queue length       */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesWaitingLength(void)
+void Step::vSystemScheduleWaitingLength(void)
 {
   ENTRY();
   
-  Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushInt(pQueues->nTasksWaiting());
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  m_pDataStack->vPushInt(pSystemSchedule->nTasksWaiting());
   
   EXIT();
 }

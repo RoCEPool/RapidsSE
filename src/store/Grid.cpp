@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Node.hpp"
+#include "Node_I.hpp"
+#include "Grid.hpp"
 
 extern Args gxArgs;
 

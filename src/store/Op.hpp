@@ -6,6 +6,8 @@
 #include "eXK.h"
 #include "eZK.h"
 
+namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
+
 namespace STORE
 {
   class Op : public Focal

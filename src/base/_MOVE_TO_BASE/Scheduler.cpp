@@ -3,13 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
-#include "Response.hpp"
-#include "Result.hpp"
+#include "Node.hpp"
+#include "Grid.hpp"
 
-#include "Job.hpp"
-#include "JobList.hpp"
+//#include "Response.hpp"
+//#include "Result.hpp"
 
 // /////////////////////////////////////////////////////////////////////////////
 //                             task transition                                //
@@ -37,8 +36,8 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
 
   // remove task from the executing set
   
-  Queues* pQueues = AM::pQueues();
-  pQueues->vRemoveExecutingSet(pSelfTask);
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  pSystemSchedule->vRemoveExecutingSet(pSelfTask);
   RASSERT(QK_NONE == pSelfTask->eQueue());
   
   // set task to be desisted to indicate its under control of the scheduler
@@ -116,7 +115,7 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
 
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
   pSelfTask->vTranstionRequestClear();
 
@@ -124,7 +123,7 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   // queued case: operator task bides for operand
 
   pSelfTask->vState(TS_BIDING);
-  pQueues->vAddBidingSet(pSelfTask);
+  pSystemSchedule->vAddBidingSet(pSelfTask);
   
   pSelfTask->vDropTaskLock();
   
@@ -181,7 +180,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
 
   pSelfTask->vTranstionRequestClear();
   
@@ -191,7 +190,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   if (! pSelfTask->bWakeupNow()) {
 
     pSelfTask->vState(TS_SLEEPING);
-    pQueues->vAddSleepingQueue(pSelfTask);
+    pSystemSchedule->vAddSleepingQueue(pSelfTask);
 
     pSelfTask->vDropTaskLock();
     /** do not touch task **/
@@ -209,7 +208,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   pSelfTask->vState(TS_EXECUTING);
   pSelfTask->vThread(pThread);
 
-  pQueues->vAddExecutingSet(pSelfTask);
+  pSystemSchedule->vAddExecutingSet(pSelfTask);
 
   pSelfTask->vDropTaskLock();
   
@@ -230,7 +229,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_WAIT,
               "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
   pSelfTask->vTranstionRequestClear();
   
@@ -238,7 +237,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   // queued case:
   
   pSelfTask->vState(TS_WAITING);
-  pQueues->vAddWaitingSet(pSelfTask);
+  pSystemSchedule->vAddWaitingSet(pSelfTask);
   
   pSelfTask->vDropTaskLock();
   /** do not touch task **/
@@ -258,14 +257,14 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
 
   pSelfTask->vTranstionRequestClear();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // queued case: there are queued ready to run tasks
   
-  i8 nReadyTasks = pQueues->nTasksReady() + pQueues->nTasksReadyLP();
+  i8 nReadyTasks = pSystemSchedule->nTasksReady() + pSystemSchedule->nTasksReadyLP();
   if (nReadyTasks) {
 
     vScheduleTask(pSelfTask);
@@ -283,7 +282,7 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   pThread->m_pTask = pSelfTask;
   pThread->m_eThreadState = HS_ASSIGNED;
 
-  pQueues->vAddExecutingSet(pSelfTask);
+  pSystemSchedule->vAddExecutingSet(pSelfTask);
   pSelfTask->vDropTaskLock();
   
   // calling thread continues with self task
@@ -336,9 +335,9 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
   RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
   RASSERT(TR_NONE == pTaskWaiting->eTranstionRequest());
 
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  pQueues->vRemoveWaitingSet(pTaskWaiting);
+  pSystemSchedule->vRemoveWaitingSet(pTaskWaiting);
     
   RASSERT(TS_DESISTED == pTaskWaiting->eState());
   RASSERT(QK_NONE == pTaskWaiting->eQueue());
@@ -383,9 +382,9 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
   RASSERT(QK_BIDING_SET == pTaskBiding->eQueue());
   RASSERT(TR_NONE == pTaskBiding->eTranstionRequest());
 
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  pQueues->vRemoveBidingSet(pTaskBiding);
+  pSystemSchedule->vRemoveBidingSet(pTaskBiding);
   
   pTaskBiding->vDropTaskLock();
   
@@ -406,9 +405,9 @@ void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
   // called from Step::vQueuesCheckSleeping()
   //
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  while (Task* pWakingTask = pQueues->pPopSleepingQueue()) {
+  while (Task* pWakingTask = pSystemSchedule->pPopSleepingQueue()) {
         
     RASSERT(TS_DESISTED == pWakingTask->eState());
     RASSERT(QK_NONE == pWakingTask->eQueue());
@@ -444,7 +443,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   Thread* pThread = new Thread;
   
   pThread->m_pTask = pNewTask;
-  pThread->m_eDedicated = pNewTask->pJob()->eClass();
+  pThread->m_eDedicated = AM::eJobClass(pNewTask->pJob());
   
   pThread->vSpawnPsxThd_dedicated();
 }
@@ -575,12 +574,12 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
   RASSERT(pThread->m_pTask);
   RASSERT(TS_DESISTED == pThread->m_pTask->eState());
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
   pThread->m_pTask->vThread(pThread);
   
   pThread->m_pTask->vState(TS_EXECUTING);
-  pQueues->vAddExecutingSet(pThread->m_pTask);
+  pSystemSchedule->vAddExecutingSet(pThread->m_pTask);
 }
 
 
@@ -588,254 +587,6 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
 // /////////////////////////////////////////////////////////////////////////////
 //                              job interface                                 //
 // /////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add job to demon list                                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_AddDemon(Job* pJob)
-{
-  
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->m_pDemonJobs->vGrabLock();
-  pQueues->m_pDemonJobs->vAddJob(pJob);
-  pQueues->m_pDemonJobs->vDropLock();
-  
-  pJob->vIncStepNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
-              "Job added to DemonJobs"_Stz); //!format-LogJob
-}
-
-/*----------------------------------------------------------------------------*/
-/* add job to local list                                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_AddLocal(Job* pJob)
-{
-  
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->m_pLocalJobs->vGrabLock();
-  pQueues->m_pLocalJobs->vAddJob(pJob);
-  pQueues->m_pLocalJobs->vDropLock();
-  
-  pJob->vIncStepNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
-              "Job added to LocalJobs"_Stz); //!format-LogJob
-}
-
-/*----------------------------------------------------------------------------*/
-/* add job to originating list                                                */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_AddOriginating(Job* pJob)
-{
-  
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->m_pOriginatingJobs->vGrabLock();
-  pQueues->m_pOriginatingJobs->vAddJob(pJob);
-  pQueues->m_pOriginatingJobs->vDropLock();
-  
-  pJob->vIncStepNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
-              "Job added to OriginatingJobs"_Stz); //!format-LogJob
-}
-
-/*----------------------------------------------------------------------------*/
-/* add job to participating list                                              */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_AddParticipating(Job* pJob)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->m_pParticipatingJobs->vGrabLock();
-  pQueues->m_pParticipatingJobs->vAddJob(pJob);
-  pQueues->m_pParticipatingJobs->vDropLock();
-  
-  pJob->vIncStepNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
-              "Job added to ParticipatingJobs"_Stz); //!format-LogJob
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump demon job list                                                        */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_DumpDemon(void)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
-              "DemonJobs list:"_Stz); //!format-LogQue
-  
-  pQueues->m_pDemonJobs->vGrabLock();
-  pQueues->m_pDemonJobs->vContentDump();
-  pQueues->m_pDemonJobs->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump local job list                                                        */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_DumpLocal(void)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
-              "LocalJobs list:"_Stz); //!format-LogQue
-  
-  pQueues->m_pLocalJobs->vGrabLock();
-  pQueues->m_pLocalJobs->vContentDump();
-  pQueues->m_pLocalJobs->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump originating job list                                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_DumpOriginating(void)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_ORIGINATORS,
-              "OriginatingJobs list:"_Stz); //!format-LogQue
-
-  pQueues->m_pOriginatingJobs->vGrabLock();
-  pQueues->m_pOriginatingJobs->vContentDump();
-  pQueues->m_pOriginatingJobs->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump participating job list                                                */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vJob_DumpParticipating(void)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_PARTICPANTS,
-              "ParticipatingJobs list:"_Stz); //!format-LogQue
-  
-  pQueues->m_pParticipatingJobs->vGrabLock();
-  pQueues->m_pParticipatingJobs->vContentDump();
-  pQueues->m_pParticipatingJobs->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* find job in originating list                                               */
-/*----------------------------------------------------------------------------*/
-Job* Scheduler::pJob_FindOriginating(i8 iJobId)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_ORIG,
-              "Find job %lld in OriginatingJobs"_Stz, //!format-LogQue
-              iJobId);
-  
-  Job* pJob = pQueues->m_pOriginatingJobs->pFindJob(iJobId);
-  
-  if (pJob)
-    AM::vLogQue(SL_INF,pQueues,QA_QUE_FOUND_ORIG,
-                "found job %lld in OriginatingJobs"_Stz, //!format-LogQue
-                iJobId);
-  else
-    AM::vLogQue(SL_INF,pQueues,QA_QUE_NOT_ORIG,
-                "did not find job %lld in OriginatingJobs"_Stz, //!format-LogQue
-                iJobId);
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find job in participating list                                             */
-/*----------------------------------------------------------------------------*/
-Job* Scheduler::pJob_FindParticipating(i8 iJobId)
-{
-  Queues* pQueues = AM::pQueues();
-
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_PARTG,
-              "find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
-              iJobId);
-  
-  Job* pJob = pQueues->m_pParticipatingJobs->pFindJob(iJobId);
-  
-  if (pJob)
-    AM::vLogQue(SL_INF,pQueues,QA_QUE_FOUND_PARTG,
-                "found job %lld in ParticipatingJobs"_Stz, //!format-LogQue
-                iJobId);
-  else
-    AM::vLogQue(SL_INF,pQueues,QA_QUE_NOT_PARTG,
-                "did not find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
-                iJobId);
-
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove job from local list                                                 */
-/*----------------------------------------------------------------------------*/
-bool Scheduler::bJob_RemoveLocal(Job* pJob, bool bDump)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->m_pLocalJobs->vGrabLock();
-  
-  if (bDump)
-    pQueues->m_pLocalJobs->vContentDump();
-  
-  bool bRemoved = pQueues->m_pLocalJobs->bRemoveJob(pJob);
-  
-  pQueues->m_pLocalJobs->vDropLock();
-  
-  pJob->vIncStepNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
-              "Job removed from LocalJobs"_Stz); //!format-LogJob
-  
-  return bRemoved;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove job from originating list                                           */
-/*----------------------------------------------------------------------------*/
-bool Scheduler::bJob_RemoveOriginating(Job* pJob, bool bDump)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->m_pOriginatingJobs->vGrabLock();
-  
-  if (bDump)
-    pQueues->m_pOriginatingJobs->vContentDump();
-  
-  bool bRemoved = pQueues->m_pOriginatingJobs->bRemoveJob(pJob);
-  
-  pQueues->m_pOriginatingJobs->vDropLock();
-  
-  pJob->vIncStepNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
-              "Job removed from OriginatingJobs"_Stz); //!format-LogJob
-  
-  return bRemoved;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove job from participating list                                         */
-/*----------------------------------------------------------------------------*/
-bool Scheduler::bJob_RemoveParticipating(Job* pJob, bool bDump)
-{
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->m_pParticipatingJobs->vGrabLock();
-  
-  if (bDump)
-    pQueues->m_pParticipatingJobs->vContentDump();
-
-  bool bRemoved = pQueues->m_pParticipatingJobs->bRemoveJob(pJob);
-  
-  pQueues->m_pParticipatingJobs->vDropLock();
-  
-  pJob->vIncStepNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
-              "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
-  
-  return bRemoved;
-}
-
 
 
 
@@ -854,10 +605,10 @@ void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
               "Thread added to DedicatedThreadVec"_Stz); //!format-LogThd
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
   pThread->m_eThreadState = HS_IDLE;
-  pQueues->vAddDedicatedThread(pThread);
+  pSystemSchedule->vAddDedicatedThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -871,10 +622,10 @@ void Scheduler::vThread_AddGeneralThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
               "Thread added to GeneralThreadVec"_Stz); //!format-LogThd
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
   pThread->m_eThreadState = HS_IDLE;
-  pQueues->vAddGeneralThread(pThread);
+  pSystemSchedule->vAddGeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,22 +670,22 @@ void Scheduler::vThread_NapTillGeneralThreads(void)
   AM::vLogSys(SL_INF,nullptr,YA_SYS_PAUSE_GENERAL,
               "Pause till all general threads are all idle"_Stz); //!format-LogSys
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
   // pause till all general threads have all begun
   while (AM::nThreadsBegun() != AM::nThreads())
     AM::vNapMsec(10,CN_NONE);
   
-  RASSERT(pQueues->m_pGeneralThreadVec->nItems() == AM::nThreads());
+  RASSERT(pSystemSchedule->m_pGeneralThreadVec->nItems() == AM::nThreads());
   
   // pause till all general threads are in idle state
-  i8 nGeneralThreads = pQueues->m_pGeneralThreadVec->nItems();
+  i8 nGeneralThreads = pSystemSchedule->m_pGeneralThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nGeneralThreads; i_Thread++) {
     
-    Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
+    Thread* pThread = pSystemSchedule->m_pGeneralThreadVec->pGet(i_Thread);
     
     while (HS_IDLE != pThread->m_eThreadState)
-      AM::vNapMsec(10,CN_QUEUES);
+      AM::vNapMsec(10,CN_SYSTEMSCHEDULE);
   }
 }
 
@@ -947,9 +698,9 @@ void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_DEDICATED,
               "Thread removed from DedicatedThreadVec"_Stz); //!format-LogThd
     
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  pQueues->vRemoveDedicatedThread(pThread);
+  pSystemSchedule->vRemoveDedicatedThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -961,9 +712,9 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
               "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  pQueues->vRemoveGeneralThread(pThread);
+  pSystemSchedule->vRemoveGeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -972,7 +723,7 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
   vThread_WaitAssignment(pThread);
 
@@ -989,7 +740,7 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
   // ok to touch task
   
   pThread->m_pTask->vState(TS_EXECUTING);
-  pQueues->vAddExecutingSet(pThread->m_pTask);
+  pSystemSchedule->vAddExecutingSet(pThread->m_pTask);
   
   RASSERT(pThread == pKnownTask->pvThread_DONT_DEREF());
 }
@@ -1011,9 +762,9 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   
   RASSERT(TS_DESISTED == pKnownTask->eState());
   
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  Thread* pThread = pQueues->pThreadPopIdleNL();
+  Thread* pThread = pSystemSchedule->pThreadPopIdleNL();
   
   if (! pThread)
     return false;
@@ -1057,7 +808,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(! pThread->m_pTask);
 
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mutex-based loop waiting for
@@ -1065,9 +816,9 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   while (! pThread->m_pTask) {
     
     // attempt to po a task from one of the ready queues
-    Task* pPoppedTask = pQueues->pPopReadyQueue();
+    Task* pPoppedTask = pSystemSchedule->pPopReadyQueue();
     if (! pPoppedTask)
-      pPoppedTask = pQueues->pPopReadyQueueLP();
+      pPoppedTask = pSystemSchedule->pPopReadyQueueLP();
     
     // was a task popped?
     if (pPoppedTask) {
@@ -1084,7 +835,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     
     pThread->m_eThreadState = HS_IDLE;
     RASSERT(! pThread->m_pTask);
-    pQueues->vThreadAppendIdle(pThread);
+    pSystemSchedule->vThreadAppendIdle(pThread);
 
     ASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
     pThread->m_oMutex.vWait(pThread);
@@ -1144,12 +895,12 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   RASSERT(QK_NONE == pKnownTask->eQueue());
   RASSERT(TR_NONE == pKnownTask->eTranstionRequest());
 
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  pQueues->vGrabThreadIdleQueue();
+  pSystemSchedule->vGrabThreadIdleQueue();
   
   if (bThread_AssignIdle(pKnownTask)) {
-    pQueues->vDropThreadIdleQueue();
+    pSystemSchedule->vDropThreadIdleQueue();
     return;
   }
   
@@ -1165,13 +916,13 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   //! as PY_NORMAL hence Appending to readyQueue always
   
   //if (pKnownTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
-  //  pQueues->vAppendReadyQueue(pKnownTask);
+  //  pSystemSchedule->vAppendReadyQueue(pKnownTask);
   //else
-  //  pQueues->vAppendReadyQueueLP(pKnownTask);
+  //  pSystemSchedule->vAppendReadyQueueLP(pKnownTask);
  
-  pQueues->vAppendReadyQueue(pKnownTask);
+  pSystemSchedule->vAppendReadyQueue(pKnownTask);
   
-  pQueues->vDropThreadIdleQueue();
+  pSystemSchedule->vDropThreadIdleQueue();
   
   // **do not touch task*
 }

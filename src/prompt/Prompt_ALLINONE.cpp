@@ -7,8 +7,14 @@
 #include "Prompt_ALLINONE.hpp"
 
 #include "Api.hpp"
+#include "Node_I.hpp"
+#include "Grid.hpp"
+#include "Session.hpp"
 #include "Definition.hpp"
+#include "OpSpec.hpp"
+#include "StageSpec.hpp"
 #include "StreamDef.hpp"
+#include "PipelineSpec.hpp"
 #include "Stream.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
@@ -73,7 +79,7 @@ bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   s48K sAntlr;
   pInpTknVec->vVecToString(sAntlr,0,true);
-  vTrace("%s\n"_Stz,sAntlr.azChar());
+  //vTrace("%s\n"_Stz,sAntlr.azChar());
 
   SqlPlanner* pPlanner = new SqlPlanner();
   pPlanner->plan(sAntlr.szStz(), pGraphTemplate);
@@ -926,11 +932,11 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   i8 iJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob_Pipeline = Scheduler::pJob_FindParticipating(iJobId);
+  Job* pJob_Pipeline = AM::pJob_FindParticipating(iJobId);
   
   if ( ! pJob_Pipeline ) {
     vTrace("job %lld not found\n"_Stz, iJobId);
-    Scheduler::vJob_DumpParticipating();
+    AM::vJob_DumpParticipating();
     return false;
   }
   else
@@ -1668,7 +1674,7 @@ PromptFun __Prompt_executing (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_executing(SePrompt* pPrompt)
 {
-  AM::pQueues()->vDumpExecutingSet();
+  AM::pSystemSchedule()->vDumpExecutingSet();
 
   return true;
 }
@@ -4642,8 +4648,8 @@ PromptFun __Prompt_ready (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 {
-  AM::pQueues()->vDumpReadyQueue();
-  AM::pQueues()->vDumpReadyQueueLP();
+  AM::pSystemSchedule()->vDumpReadyQueue();
+  AM::pSystemSchedule()->vDumpReadyQueueLP();
   
   return true;
 }
@@ -5298,7 +5304,7 @@ PromptFun __Prompt_sleeping (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_sleeping(SePrompt* pPrompt)
 {
-  AM::pQueues()->vDumpSleepingQueue();
+  AM::pSystemSchedule()->vDumpSleepingQueue();
 
   return true;
 }
@@ -6144,13 +6150,13 @@ PromptFun __Prompt_taskQueues (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_taskQueues(SePrompt* pPrompt)
 {
-  Queues* pQueues = AM::pQueues();
+  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
   
-  pQueues->vDumpExecutingSet();
-  pQueues->vDumpReadyQueue();
-  pQueues->vDumpReadyQueueLP();
-  pQueues->vDumpSleepingQueue();
-  pQueues->vDumpWaitingSet();
+  pSystemSchedule->vDumpExecutingSet();
+  pSystemSchedule->vDumpReadyQueue();
+  pSystemSchedule->vDumpReadyQueueLP();
+  pSystemSchedule->vDumpSleepingQueue();
+  pSystemSchedule->vDumpWaitingSet();
   
   return true;
 }
@@ -6230,7 +6236,7 @@ PromptFun __Prompt_threads (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 {  
-  Queues::vThreadsReport();
+  SystemSchedule::vThreadsReport();
   
   return true;
 }
@@ -6662,7 +6668,7 @@ PromptFun __Prompt_waiting (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_waiting(SePrompt* pPrompt)
 {
-  AM::pQueues()->vDumpWaitingSet();
+  AM::pSystemSchedule()->vDumpWaitingSet();
 
   return true;
 }

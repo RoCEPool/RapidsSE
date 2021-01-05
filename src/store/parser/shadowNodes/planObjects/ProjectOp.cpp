@@ -19,7 +19,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_PROJECTEDEXPRS_PROP = "projectedExprs"_Stz;
 static Stz* C_PROJECTEDEXPRS_DEFN = "/__root__/definitions/object/list/projectedExprs"_Stz;
-static Stz* C_PROJECTION_DEFN = "/__root__/definitions/object/planObject/sqlOperator/projection"_Stz;
+static Stz* C_PROJECTOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/projectOp"_Stz;
 
 
 
@@ -46,17 +46,17 @@ QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
 
   // Create a unique name for this ProjectOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_PROJECTION_DEFN), sName);
+  ShadowNode::vObjName(GraphNav::szLeafType(C_PROJECTOP_DEFN), sName);
 
   // Create the object and add  its projectedExprs property
-  QueryNode* pProjectOp = new QueryNode(sName, C_PROJECTION_DEFN);
+  QueryNode* pProjectOp = new QueryNode(sName, C_PROJECTOP_DEFN);
   pProjectOp->vAppendProperty(pProjectedExprs);
 
   return pProjectOp;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
@@ -82,11 +82,54 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void ProjectOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bValidate(pNode));
+
+  sBuf.vConcat("\n\n"_Stz);
+  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+
+  // Get the list of projected expressions
+  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDEXPRS_PROP), pNode);
+  ASSERT(pProjExprs);
+
+  // Iterate each projected expression
+  i8 nCols = pProjExprs->nChildren();
+  ASSERT(nCols > 0);
+
+  for (i8 i=0; i<nCols; i++) {
+    PlanNode* pProjExpr = pProjExprs->pNthChild(i);
+    ASSERT(pProjExpr);
+    ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
+
+    // Get the description of the projected expression
+    s2K sColBuf;
+    ProjectedExpr::vDescribe(pProjExpr, sColBuf);
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
+  }
+
+  // Recurse any children
+  i8 nChildren = pNode->nChildren();
+  for (i8 i=0; i<nChildren; i++) {
+    PlanNode* pChild = pNode->pNthChild(i);
+    ASSERT(PlanObject::bIsOfType(pChild));
+
+    PlanObject::vExplain(pChild, sBuf, iIndent+1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 ProjectOp::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_PROJECTION_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_PROJECTOP_DEFN);
 }
 
 /*============================================================================*/

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* OP_supervisor.sen -- Operator supervisor                                   */
+/* OP_supervisor.sen -- Supervisor Operator                                   */
 /*============================================================================*/
 
 " OP_supervisor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* add peridiodic activity here                                               */
+/* put the supervisors peridiodic activity here                               */
 /*----------------------------------------------------------------------------*/
 : supervisor::activity ( -- )
 
@@ -17,25 +17,25 @@
 /*----------------------------------------------------------------------------*/
 : supervisor_StartMarker \handler
 
-    "Supervisor Job Started" .
+  "Supervisor Job Started" .
 
-    begin
+  begin
 
-        supervisor::activity
-        args.supervisorSleep thread::sleepSsec
+    supervisor::activity
+    args.supervisorSleep thread::sleepSsec
 
-    again
+  again
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // should never exit
-    hazard
+  // should never exit
+  hazard
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute for supervisor req                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : supervisor_req \operator
+: supervisor_req \operator
  
   LogReqEntry SEED_REQ
 

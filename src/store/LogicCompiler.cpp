@@ -32,6 +32,7 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
 
 #include "Response.hpp"
 #include "Result.hpp"
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
 #include "DEV_interface.h"

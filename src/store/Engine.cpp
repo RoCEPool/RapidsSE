@@ -7,6 +7,9 @@
 
 #include <signal.h>
 
+#include "Node.hpp"
+#include "Grid.hpp"
+#include "Session.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
@@ -16,6 +19,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
 #include "SessionArray.hpp"
@@ -1516,8 +1520,16 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
   
-   gpAttachMap->m_pQueues = new Queues;
+   gpAttachMap->m_pQueues = new SystemSchedule;
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job lists
+  
+  gpAttachMap->m_pDemonJobs         = new JobList(bJobCompare,JL_DEMON);
+  gpAttachMap->m_pLocalJobs         = new JobList(bJobCompare,JL_LOCAL);
+  gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
+  gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes
   

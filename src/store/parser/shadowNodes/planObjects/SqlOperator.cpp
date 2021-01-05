@@ -10,7 +10,7 @@
 #include "QueryNode.hpp"
 
 #include "ProjectOp.hpp"
-#include "DataSource.hpp"
+#include "store/parser/shadowNodes/planObjects/dataSources/DataSource.hpp"
 
 using namespace Parser;
 
@@ -26,7 +26,7 @@ static Stz* C_SQLOPERATOR_DEFN = "/__root__/definitions/object/planObject/sqlOpe
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the statement into a buffer                       */
+/* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
@@ -45,6 +45,33 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // DataSource
   else if (DataSource::bIsOfType(pNode))    { DataSource::vDescribe(pNode, sBuf);   }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void SqlOperator::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bValidate(pNode));
+
+  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+
+  // Manual polymorphism here
+
+  // Projection
+  if      (ProjectOp::bIsOfType(pNode))   { ProjectOp::vExplain(pNode, sBuf, iIndent); }
+
+  // DataSource
+  else if (DataSource::bIsOfType(pNode)) { DataSource::vExplain(pNode, sBuf, iIndent); }
+
+  // Filter
+  //else if (FilterOp::bIsOfType(pNode))   { FilterOp::vExplain(pNode, sBuf, iIndent);     }
 
   else {
     // Need to add in manual polymorphism here

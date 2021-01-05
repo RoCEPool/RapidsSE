@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Queues.hpp -- Collection of the Systems' Queues                            */
+/* SystemSchedule.hpp -- Collection of the Systems' SystemSchedule                            */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
-  class Queues : public Focal
+  class SystemSchedule : public Focal
   {
   friend Scheduler;
   
@@ -36,13 +36,7 @@ namespace STORE
     TaskList*  m_pWaitingSet;      // set of suspended tasks waiting to be signaled
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // jobs
-  
-    JobList*   m_pDemonJobs;
-    JobList*   m_pLocalJobs;
-    JobList*   m_pOriginatingJobs;
-    JobList*   m_pParticipatingJobs;
-    
+      
     // must be last
     Footer m_xFooter;
   
@@ -50,8 +44,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Queues(void);
-   ~Queues(void) noexcept(false);
+    SystemSchedule(void);
+   ~SystemSchedule(void) noexcept(false);
   
     static void vThreadsReport(void);
   
@@ -111,7 +105,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  Queues* _pQueues(void* aAddr);
+  SystemSchedule* _pQueues(void* aAddr);
 }
 
 /*============================================================================*/

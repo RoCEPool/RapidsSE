@@ -9,6 +9,7 @@
 namespace Parser
 {
   class PlanNode;
+  class QueryNode;
 
   class PlanObject : public ShadowNode
   {
@@ -19,9 +20,21 @@ namespace Parser
 
   public:
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
+
+  protected:
+    // Indent format
+    enum eIndentFormat {
+      IF_NONE = 0,
+      IF_PLAIN,
+      IF_ARROW,
+      IF_NENUMS
+    };
+
+    static void vAppendIndent(s48K& sBuf, i8 iIndentLevel, eIndentFormat eFormat);
 
   };
 

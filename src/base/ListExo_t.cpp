@@ -1,52 +1,67 @@
 /*============================================================================*/
-/* ToNstRow.cpp -- Convert row to normalised string row slab buffers          */
+/* ListExo_t.cpp -- List of Items (with exo-nodes)                            */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
-#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ToNstRow,CN_TONSTROW)
-__aNewFunction(ToNstRow,CN_TONSTROW)
-__vDeleteFunction(ToNstRow,CN_TONSTROW)
-__aFooterFunction(ToNstRow)
+__pCastFunction(BASE,ListExo_ABSTRACT,CN_CLASSPLACEHOLDER)
+__aNewFunction(ListExo_ABSTRACT,CN_CLASSPLACEHOLDER)
+__vDeleteFunction(ListExo_ABSTRACT,CN_CLASSPLACEHOLDER)
+__aFooterFunction(ListExo_ABSTRACT)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToNstRow::ToNstRow(void)
-: Object(CN_TONSTROW)
+ListExo_ABSTRACT::ListExo_ABSTRACT(eCN eClassNo)
+: Object(eClassNo)
+, m_okLock(LK_LIST,nullptr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  
+  m_nItems = 0;
+  m_pHeadNode_abstract = nullptr;
+  m_pTailNode_abstract = nullptr;
+  
+  // _checkInitialised_(eClassNo);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ToNstRow::~ToNstRow(void) noexcept(false)
+ListExo_ABSTRACT::~ListExo_ABSTRACT(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- public: -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert                                                                    */
+/* get head node                                                              */
 /*----------------------------------------------------------------------------*/
-void ToNstRow::vConvert(RowBuffer* pRowBuffer)
+Object* ListExo_ABSTRACT::pHeadNode_abstract(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  pRowBuffer->vNormaliseStrings();
+  return m_pHeadNode_abstract;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail node                                                              */
+/*----------------------------------------------------------------------------*/
+Object* ListExo_ABSTRACT::pTailNode_abstract(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_pTailNode_abstract;
 }
 
 /*============================================================================*/

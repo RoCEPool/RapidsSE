@@ -529,6 +529,16 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
+#include "Scheduler.hpp"
+
+#include "Thread.hpp"
+#include "ThreadQueue.hpp"
+#include "ThreadVec.hpp"
+
+#include "SystemSchedule.hpp"
+
+//------------------------------------------------------------------------------
+
 namespace BASE
 {
   static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);

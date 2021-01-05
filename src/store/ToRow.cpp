@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "SP_String.hpp"
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/

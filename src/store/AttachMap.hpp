@@ -90,7 +90,7 @@ namespace STORE
     NextGid       m_inNextTxId;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
-    Queues*       m_pQueues;
+    SystemSchedule*       m_pQueues;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
     Article*      m_pRootArcticle;
@@ -108,6 +108,14 @@ namespace STORE
     TempName      m_oTempName;
     Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
+  
+  
+    JobList*      m_pDemonJobs;
+    JobList*      m_pLocalJobs;
+    JobList*      m_pOriginatingJobs;
+    JobList*      m_pParticipatingJobs;
+
+  
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // these should be in Arg

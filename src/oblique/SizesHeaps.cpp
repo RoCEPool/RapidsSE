@@ -39,8 +39,16 @@
 
 #include "SizesHeaps.hpp"
 
+#include "Node.hpp"
+#include "Node_I.hpp"
+#include "Grid.hpp"
+#include "Session.hpp"
+#include "Arg.hpp"
+#include "RelOp.hpp"
+#include "Predicate.hpp"
+#include "PredicateVec.hpp"
+#include "AccessPath.hpp"
 #include "AttachMap.hpp"
-#include "Dynamo.hpp"
 
 #include "Exemplar.hpp"
 #include "Response.hpp"
@@ -56,8 +64,10 @@
 #include "Op.hpp"
 #include "OpSpec.hpp"
 
-#include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
+#include "Pipeline.hpp"
+#include "Dynamo.hpp"
+
 #include "Plan.hpp"
 #include "Planner.hpp"
 
@@ -291,7 +301,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(QueryNodeStack),     HT_T_MEDIUM  ,0 }, // CN_QUERYNODESTACK
   { sizeof(Queue),              HT_T_TINY    ,0 }, // CN_QUEUE
   { sizeof(QueueBuffer),        HT_INVALID   ,0 }, // CN_QUEUEBUFFER
-  { sizeof(Queues),             HT_T_TINY    ,0 }, // CN_QUEUES
 
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
   { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE
@@ -372,6 +381,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_STRING_T
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
+  { sizeof(SystemSchedule),     HT_T_TINY    ,0 }, // CN_SYSTEMSCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 }, // CN__T__
   { sizeof(Table),              HT_T_TINY    ,0 }, // CN_TABLE

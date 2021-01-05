@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Session.hpp"
 #include "SessionArray.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

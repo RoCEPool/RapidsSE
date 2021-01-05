@@ -8,6 +8,7 @@
 #include "ePX.h"
 
 #include "Op.hpp"
+#include "OpSpec.hpp"
 #include "XmitOperand.hpp"
 
 /*----------------------------------------------------------------------------*/

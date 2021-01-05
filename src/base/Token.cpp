@@ -369,12 +369,11 @@ bool Token::bIsRelational(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  if (TN_NAME == m_eToken &&
-       (bSame(">"_Stz)  ||
-        bSame(">="_Stz) ||
-        bSame("<"_Stz)  ||
-        bSame("<="_Stz) ||
-        bSame("=="_Stz)))
+  if (bSame(">"_Stz)  ||
+      bSame(">="_Stz) ||
+      bSame("<"_Stz)  ||
+      bSame("<="_Stz) ||
+      bSame("=="_Stz))
     return true;
   else
     return false;

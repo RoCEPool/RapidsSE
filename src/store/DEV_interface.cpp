@@ -9,6 +9,7 @@
 
 #include "SP_Ent.hpp"
 
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/

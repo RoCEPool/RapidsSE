@@ -11,10 +11,12 @@
 
 #include "ePX.h"
 
+#include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 #include "StageSpec.hpp"
 

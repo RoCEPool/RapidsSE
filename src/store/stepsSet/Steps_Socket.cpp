@@ -11,13 +11,16 @@
 
 #include "ePX.h"
 
+#include "Node.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobLog.hpp"
 #include "Socket.hpp"
 #include "XmitOperand.hpp"
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
+#include "OpSpec.hpp"
 #include "StageSpec.hpp"
 
 #include "SP_Header.hpp"

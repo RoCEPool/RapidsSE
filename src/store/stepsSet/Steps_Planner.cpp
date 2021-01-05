@@ -9,6 +9,12 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Node_I.hpp"
+#include "Arg.hpp"
+#include "RelOp.hpp"
+#include "Predicate.hpp"
+#include "PredicateVec.hpp"
+#include "AccessPath.hpp"
 #include "Planner.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

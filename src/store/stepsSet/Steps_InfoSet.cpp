@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "Node.hpp"
+#include "Grid.hpp"
 #include "MetricsHelper.hpp"
 #include "LockMetrics.hpp"
 
@@ -18,6 +20,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/

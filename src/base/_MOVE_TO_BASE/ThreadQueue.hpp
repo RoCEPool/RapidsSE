@@ -1,33 +1,40 @@
 /*============================================================================*/
-/* ThreadVec.hpp -- Vector of Expressions                                         */
+/* ThreadQueue.hpp -- queue of (idle) threads                                 */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
-  class ThreadVec : public VectorNL_t<CN_THREADVEC,Thread,C_MAX_THREADS>
+  class ThreadQueue : public ListNL_t<Thread>
   {
   private:
-    
     Lock m_okLock;
-    
+  
     // must be last
-    Footer m_xFooter;    
+    Footer m_xFooter;
     
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ThreadVec(void);
-    ~ThreadVec(void) noexcept(false);
-  
+    ThreadQueue(void);
+    ~ThreadQueue(void) noexcept(false);
+    
+    void vAppendThread(Thread* pThread);
     void vDropLock(void);
     void vGrabLock(void);
-    
-    static ThreadVec* _pThreadVec(void* aAddr);
+    bool bGrabLock(void);
+    bool bIsLocked(void);
+    Thread* pPeekThread(void);
+    Thread* pPopThread(void);
+    i8   nQueuedThreads(void);
   
+    void vContentDump(void);
+    
     Footer* aFooter(void);
   };
+  
+  ThreadQueue* _pThreadQueue(void* aAddr);
 }
 
 /*============================================================================*/

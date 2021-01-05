@@ -23,6 +23,8 @@
 
 #include "eLH.h"
 
+namespace STORE { class Planner; }
+
 namespace STORE
 {
   static const i8 C_LOGIC_DEV   = 16;

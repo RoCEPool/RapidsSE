@@ -7,6 +7,9 @@
 
 #include "ePX.h"
 
+#include "Node.hpp"
+#include "Node_I.hpp"
+#include "Grid.hpp"
 #include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

@@ -1142,13 +1142,6 @@ public:
   void vQueueNew(void);
   void vQueuePop(void);
 
-  // queues
-  void vQueuesCheckSleeping(void);
-  void vQueuesExecutingLength(void);
-  void vQueuesReadyLength(void);
-  void vQueuesSleepingLength(void);
-  void vQueuesWaitingLength(void);
-
   // range
   void vRangeGet(void);
   void vRangeNew(void);
@@ -1536,6 +1529,13 @@ public:
   void vSubsetNext(void);
   void vSubsetNextBuffer(void);
   void vSubsetSet(void);
+
+  // system schedule
+  void vSystemScheduleCheckSleeping(void);
+  void vSystemScheduleExecutingLength(void);
+  void vSystemScheduleReadyLength(void);
+  void vSystemScheduleSleepingLength(void);
+  void vSystemScheduleWaitingLength(void);
 
   // table
   void vTableAddIndex(void);

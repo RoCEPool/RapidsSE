@@ -115,19 +115,19 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Table.hpp"
 
-#include "Node.hpp"
-#include "Node_I.hpp"
-#include "Grid.hpp"
-#include "Session.hpp"
+//#include "Node.hpp"
+//#include "Node_I.hpp"
+//#include "Grid.hpp"
+//#include "Session.hpp"
 
 //------------------------------------------------------------------------------
 
-#include "Arg.hpp"
-#include "RelOp.hpp"
-#include "Predicate.hpp"
-#include "PredicateVec.hpp"
+//#include "Arg.hpp"
+//#include "RelOp.hpp"
+//#include "Predicate.hpp"
+//#include "PredicateVec.hpp"
 
-#include "AccessPath.hpp"
+//#include "AccessPath.hpp"
 
 //#include "Plan.hpp"
 //#include "Planner.hpp"
@@ -179,13 +179,13 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-#include "Scheduler.hpp"
-
-#include "Thread.hpp"
-#include "ThreadQueue.hpp"
-#include "ThreadVec.hpp"
-
-#include "Queues.hpp"
+//#include "Scheduler.hpp"
+//
+//#include "Thread.hpp"
+//#include "ThreadQueue.hpp"
+//#include "ThreadVec.hpp"
+//
+//#include "SystemSchedule.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
