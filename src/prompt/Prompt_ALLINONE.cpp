@@ -7,6 +7,7 @@
 #include "Prompt_ALLINONE.hpp"
 
 #include "Api.hpp"
+#include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Session.hpp"
 #include "Definition.hpp"

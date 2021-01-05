@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Expressions.cpp - Expressions step group                                     */
+/* Steps_Metrics.cpp - Metrics step group                                     */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Node_I.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"

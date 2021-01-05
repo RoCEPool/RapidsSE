@@ -17,6 +17,7 @@
 #include "JobLog.hpp"
 #include "Socket.hpp"
 #include "XmitOperand.hpp"
+#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"

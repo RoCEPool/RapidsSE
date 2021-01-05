@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Node_I.hpp"
 #include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Response.hpp"
