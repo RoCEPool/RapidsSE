@@ -281,21 +281,68 @@ void vTest8(void)
   //ListExoIter_t<CN_CLASSPLACEHOLDER,Text>* pListExoIter = pListExo->pNewIter();
   ListExoIter_t<Text>* pListExoIter = pListExo->pNewIter();
 
+  // - - - -
+
+  vTrace("\nSeq (a) : testing 3 items : pFirst(), pNext(), pNext()\n"_Stz);
+
   Text* pText = pListExoIter->pFirst();
   vTrace("pFirst: %s\n"_Stz,pText->szGet());
-  vTrace("bHastext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
 
   pText = pListExoIter->pNext();
   vTrace("pNext: %s\n"_Stz,pText->szGet());
-  vTrace("bHastext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
 
   pText = pListExoIter->pNext();
   vTrace("pNext: %s\n"_Stz,pText->szGet());
-  vTrace("bHastext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
+  ASSERT(! pText);
+  
+  // - - - -
+  
+  vTrace("\nSeq (b) : testing 3 items : pNext(), pNext(), pNext()\n"_Stz);
+  
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  
+  pText = pListExoIter->pNext();
+  ASSERT(! pText);
+
+  // - - - -
+
+  vTrace("\nSeq (c) : testing 3 items : while ( pNext() )\n"_Stz);
+  
+  while ( (pText = pListExoIter->pNext()) ) {
+    vTrace("pNext: %s\n"_Stz,pText->szGet());
+    vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  }
+  
+  // - - - -
+  
+  pListExo->vRemoveAll();
+
+  vTrace("\nSeq (d) : testing empty list : while ( pNext() )\n"_Stz);
+  
+  while ( (pText = pListExoIter->pNext()) ) {
+    vTrace("pNext: %s\n"_Stz,pText->szGet());
+    vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  }
+  
+  // - - - -
 
   delete pListExoIter;
   
-  pListExo->vRemoveAll();
 
   delete pText2;
   delete pText1;

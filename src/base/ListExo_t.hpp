@@ -1029,18 +1029,59 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
   
   ITEM* pItem;
 
-  m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
-  
-  if (m_pListNode_cursor) {
-    m_eCursorState = LC_ON_EXISTING_ITEM;
-    pItem = m_pListNode_cursor->pItem();
-    return pItem;
-  }
-  else {
-    m_eCursorState = LC_NIL;
-    return nullptr;
+  switch (m_eCursorState) {
+      
+    case LC_NIL:
+      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
+    
+      if (m_pListNode_cursor) {
+        m_eCursorState = LC_ON_EXISTING_ITEM;
+        pItem = m_pListNode_cursor->pItem();
+        return pItem;
+      }
+      
+      ASSERT(LC_NIL == m_eCursorState);
+      return nullptr;
+
+    case LC_ON_EXISTING_ITEM:
+      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
+    
+      if (m_pListNode_cursor) {
+        m_eCursorState = LC_ON_EXISTING_ITEM;
+        pItem = m_pListNode_cursor->pItem();
+        return pItem;
+      }
+      
+      m_eCursorState = LC_NIL;
+      return nullptr;
+
+    case LC_ON_REMOVED_ITEM:
+      NOT_IMPLEMENTED_YET;
+
+    default:
+      NEVER_REACH;
   }
 }
+/*----------------------------------------------------------------------------*/
+//template <class ITEM>
+//ITEM* ListExoIter_t<ITEM>::pFirst(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+//
+//  ITEM* pItem;
+//
+//  m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
+//
+//  if (m_pListNode_cursor) {
+//    m_eCursorState = LC_ON_EXISTING_ITEM;
+//    pItem = m_pListNode_cursor->pItem();
+//    return pItem;
+//  }
+//  else {
+//    m_eCursorState = LC_NIL;
+//    return nullptr;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get tail first item of list                                                */
@@ -1084,16 +1125,27 @@ ITEM* ListExoIter_t<ITEM>::pNext(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      ASSERT(! m_pListNode_cursor);
+      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
+    
+      if (m_pListNode_cursor) {
+        m_eCursorState = LC_ON_EXISTING_ITEM;
+        pItem = m_pListNode_cursor->pItem();
+        return pItem;
+      }
+      
+      ASSERT(LC_NIL == m_eCursorState);
       return nullptr;
 
     case LC_ON_EXISTING_ITEM:
       ASSERT(m_pListNode_cursor);
-      if (! m_pListNode_cursor->pNextNode())
+      if (! m_pListNode_cursor->pNextNode()) {
+        m_eCursorState = LC_NIL;
         return nullptr;
+      }
       
       m_pListNode_cursor = m_pListNode_cursor->pNextNode();
       pItem = m_pListNode_cursor->pItem();
+      ASSERT(LC_ON_EXISTING_ITEM == m_eCursorState);
       return pItem;
 
     case LC_ON_REMOVED_ITEM:
@@ -1103,6 +1155,36 @@ ITEM* ListExoIter_t<ITEM>::pNext(void)
       NEVER_REACH;
   }
 }
+/*----------------------------------------------------------------------------*/
+//template <class ITEM>
+//ITEM* ListExoIter_t<ITEM>::pNext(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+//
+//  ITEM* pItem;
+//
+//  switch (m_eCursorState) {
+//
+//    case LC_NIL:
+//      ASSERT(! m_pListNode_cursor);
+//      return nullptr;
+//
+//    case LC_ON_EXISTING_ITEM:
+//      ASSERT(m_pListNode_cursor);
+//      if (! m_pListNode_cursor->pNextNode())
+//        return nullptr;
+//
+//      m_pListNode_cursor = m_pListNode_cursor->pNextNode();
+//      pItem = m_pListNode_cursor->pItem();
+//      return pItem;
+//
+//    case LC_ON_REMOVED_ITEM:
+//      NOT_IMPLEMENTED_YET;
+//
+//    default:
+//      NEVER_REACH;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
