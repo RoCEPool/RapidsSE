@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include <limits.h>
+#include <math.h>
 #include <float.h>
 
 d8 C_D8_MIN;
