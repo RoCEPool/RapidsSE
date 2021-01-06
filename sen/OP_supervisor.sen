@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : supervisor::activity
 
-  "Supervisor Activity" .
+  // "Supervisor Activity" .
   
   // collect heartbeat related info
 ;
