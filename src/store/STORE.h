@@ -129,7 +129,6 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //#include "AccessPath.hpp"
 
-//#include "Plan.hpp"
 //#include "Planner.hpp"
 
 //------------------------------------------------------------------------------

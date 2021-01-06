@@ -336,7 +336,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_NOW"_Stz,          CN_NOW);
 
   /* 40 */ vAddConstant("CN_CHARSER"_Stz,      CN_CHARSER);
-  /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
 
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);

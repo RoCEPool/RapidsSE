@@ -68,7 +68,6 @@
 #include "Pipeline.hpp"
 #include "Dynamo.hpp"
 
-#include "Plan.hpp"
 #include "Planner.hpp"
 
 #include "SessionArray.hpp"
@@ -273,7 +272,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
-  { sizeof(Plan),                 HT_T_MEDIUM  ,0 }, // CN_PLAN
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(Planner),              HT_T_MEDIUM  ,0 }, // CN_PLANNER
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
