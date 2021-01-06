@@ -15,6 +15,8 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_PROJECT_NONE,
   /*    */ AM_CRW_PROJECT_STAR,
 
+  /*    */ AM_CRW_PUSH_COLUMN,
+
   /*    */ AM_DATAPULSE_INDEXRANGE,
 
   /*    */ AM_DEFAULT_HANDLER_CRWBUFFER,
@@ -37,6 +39,9 @@ enum eAM // ASM Macros
 
   /*    */ AM_QUERY_DONE,
   /*    */ AM_QUERY_INIT,
+
+  /*    */ AM_ROW_FILTER_END,
+  /*    */ AM_ROW_FILTER_ROWS,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_END,
@@ -61,6 +66,7 @@ static Stz* aAM[]
     /*    */ "CRW_PROJECT_NONE"_Stz,
     /*    */ "CRW_PROJECT_STAR"_Stz,
 
+    /*    */ "CRW_PUSH_COLUMN"_Stz,
     /*    */ "DATAPULSE_INDEXRANGE"_Stz,
 
     /*    */ "DEFAULT_HANDLER_CRWBUFFER"_Stz,
@@ -83,6 +89,9 @@ static Stz* aAM[]
 
     /*    */ "QUERY_DONE"_Stz,
     /*    */ "QUERY_INIT"_Stz,
+
+    /*    */ "ROW_FILTER_END"_Stz,
+    /*    */ "ROW_FILTER_ROWS"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_END"_Stz,

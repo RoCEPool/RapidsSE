@@ -43,7 +43,6 @@ filterRows lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <>";
 filterRows lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24.0 < <>";
 //filterRows lineitem "l_discount 0.04 >= l_discount 0.06 <= l_quantity 24.0 < and and ;
 
-/*
 projection lineitem l_extendedPrice , l_discount, l_shipdate;
 projection lineitem l_shipdate, l_extendedPrice 2 *, l_extendedPrice;
 projection lineitem l_extendedPrice, 2;
@@ -74,7 +73,7 @@ end;
        start | periodic once | stageB
 
       stage stageB on all partitions :
-        scan lineitem
+        range 0 lineitem by lineitem_idx1 " '1994-01-01' >=  '1995-01-01' <"
         | filter lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24.0 < <>"
         | project 0 "l_extendedPrice l_discount * , l_discount , l_quantity"
         | stageC
@@ -90,15 +89,14 @@ begin
 
    stage stageB on all partitions :
      range 0 lineitem by lineitem_idx1 " '1994-01-01' >=  '1995-01-01' <"
-     //| filterRows lineitem l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24 <
-     | project 0 "as xyz l_extendedPrice l_discount * "
-     //| sum 0 xyz
+     | filter lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24.0 < <>"
+     | project 0 "l_extendedPrice l_discount * "
      | stageC
 
    stage stageC on origin :
      output | sink | stageA
 end;
-*/
+
 
 //Smt0 lineitem l_extendedPrice, l_discount;
 //Smt0 lineitem as revenue l_extendedPrice 2 * ;

@@ -24,6 +24,7 @@ namespace STORE
     Project(void);
    ~Project(void) noexcept(false);
 
+    eEC eProjectAll(StreamDef* pStreamDefIn);
     eEC eProjectColumns(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sProjectColumns);
 
   private:

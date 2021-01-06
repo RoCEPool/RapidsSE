@@ -79,6 +79,31 @@ Project::~Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add column vec from stream def                                             */
 /*----------------------------------------------------------------------------*/
+eEC Project::eProjectAll(StreamDef* pStreamDefIn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECT,_FOOTER_);
+
+  for (i8 iCol = 0; iCol < pStreamDefIn->nTotalColumns(); iCol++) {
+    Column* pColumn = pStreamDefIn->pGetColumn(iCol);
+    Stz* azCrs = m_sAsmText[iCol].szStz();
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
+      StrLib::vSprintCat(azCrs, "  EO_PUSH_LOCALS %lld\n"_Stz, iCol);
+      StrLib::vSprintCat(azCrs, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iCol);
+    }
+    else {
+      StrLib::vSprintCat(azCrs, "  EO_PUSH_LOCALI %lld\n"_Stz, iCol);
+      StrLib::vSprintCat(azCrs, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iCol);
+    }
+  }
+
+  L_RETRUN:
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add column vec from stream def                                             */
+/*----------------------------------------------------------------------------*/
 eEC Project::eProjectColumns(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sProjectColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECT,_FOOTER_);
