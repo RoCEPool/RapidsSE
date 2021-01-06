@@ -84,8 +84,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FREQDIST,
   
   /* */ CN__G__,
-  /* */ CN_GRAPHEDITOR,
-  /* */ CN_GRAPHNAV,
   /* */ CN_GRID,
   
   /* */ CN__H__,
@@ -408,8 +406,6 @@ static Stz* aCN[]
   /* */ "FREQDIST"_Stz,             // CN_FREQDIST
    
   /* */ "_G__"_Stz,                 // CN__G__
-  /* */ "GRAPHEDITOR"_Stz,          // CN_GRAPHEDITOR
-  /* */ "GRAPHNAV"_Stz,             // CN_GRAPHNAV
   /* */ "GRID"_Stz,                 // CN_GRID
  
   /* */ "_H__"_Stz,                 // CN__H__

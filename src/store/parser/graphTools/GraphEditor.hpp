@@ -7,20 +7,12 @@ namespace Parser
 {
   class PlanNode;
 
-  class GraphEditor : public Object
+  class GraphEditor
   {
   private:
-    Footer m_xFooter;
+    GraphEditor();
 
   public:
-
-    void* operator new(size_t);
-    void  operator delete(void*);
-
-    GraphEditor();
-    ~GraphEditor(void);
-
-    Footer* aFooter(void);
 
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(PlanNode* pRootNode);

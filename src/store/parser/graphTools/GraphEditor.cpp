@@ -13,36 +13,6 @@
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__pCastFunction(Parser,GraphEditor,CN_GRAPHEDITOR)
-__aNewFunction(GraphEditor,CN_GRAPHEDITOR)
-__vDeleteFunction(GraphEditor,CN_GRAPHEDITOR)
-__aFooterFunction(GraphEditor)
-
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-GraphEditor::GraphEditor()
-    : Object(CN_GRAPHEDITOR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHEDITOR,_FOOTER_);
-
-  _checkInitialised_(CN_GRAPHEDITOR);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPHEDITOR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-GraphEditor::~GraphEditor(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHEDITOR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

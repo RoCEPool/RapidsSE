@@ -193,8 +193,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(FreqDist),           HT_T_SMALL   ,0 }, // CN_FREQDIST
 
   { 'G' - ('A' - 1),            HT_INVALID   ,0 }, // CN__G__
-  { sizeof(GraphEditor),        HT_T_TINY    ,0 }, // CN_GRAPHEDITOR
-  { sizeof(GraphNav),           HT_T_TINY    ,0 }, // CN_GRAPHNAV
   { sizeof(Grid),               HT_T_SMALL   ,0 }, // CN_GRID
 
   { 'H' - ('A' - 1),            HT_INVALID   ,0 }, // CN__H__

@@ -8,20 +8,13 @@ namespace Parser
 {
   class PlanNode;
 
-  class GraphNav : public Object
+  class GraphNav
   {
+
   private:
-    Footer m_xFooter;
+    GraphNav();
 
   public:
-
-    void* operator new(size_t);
-    void  operator delete(void*);
-
-    GraphNav();
-    ~GraphNav(void);
-
-    Footer* aFooter(void);
 
     // Returns the leaf element of a type definition path.
     // e.g. given a definition path of /a/b/c this will return 'c'.

@@ -9,35 +9,6 @@
 
 using namespace Parser;
 
-/*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__pCastFunction(Parser, GraphNav, CN_GRAPHNAV)
-__aNewFunction(GraphNav, CN_GRAPHNAV)
-__vDeleteFunction(GraphNav, CN_GRAPHNAV)
-__aFooterFunction(GraphNav)
-
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-GraphNav::GraphNav()
-    : Object(CN_GRAPHNAV)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_GRAPHNAV, _FOOTER_);
-
-  _checkInitialised_(CN_GRAPHNAV);
-
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_GRAPHNAV, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-GraphNav::~GraphNav(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_GRAPHNAV, _FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
