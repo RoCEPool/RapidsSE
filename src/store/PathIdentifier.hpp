@@ -57,7 +57,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  PathIdentifier* _pPlanner(void* aAddr);
+  PathIdentifier* _pPathIdentifier(void* aAddr);
 }
 
 /*============================================================================*/

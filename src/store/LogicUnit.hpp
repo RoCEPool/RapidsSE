@@ -79,7 +79,7 @@ namespace STORE
     REG<Table>       m_xpInfoSetTable;
     REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
-    REG<PathIdentifier>     m_xpPlanner;
+    REG<PathIdentifier>     m_xpPathIdentifier;
     REG<Pot>         m_xpPot;
     REG<PtnStream>   m_xpPtnStream;
     REG<Row>         m_xpRow;

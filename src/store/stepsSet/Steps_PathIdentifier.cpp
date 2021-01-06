@@ -58,10 +58,10 @@ void Step::vPathIdentifierChoosePaths(void)
   
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  for (i8 i_Phrase = 0; i_Phrase < pPlanner->nPhrases(); i_Phrase++)
-    pPlanner->vChoosePath(i_Phrase);
+  for (i8 i_Phrase = 0; i_Phrase < pPathIdentifier->nPhrases(); i_Phrase++)
+    pPathIdentifier->vChoosePath(i_Phrase);
   
   EXIT();
 }
@@ -73,10 +73,10 @@ void Step::vPathIdentifierChosenPath(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* pChosenPlan = pPlanner->pChosenPath(i_Phrase);
+  AccessPath* pChosenPlan = pPathIdentifier->pChosenPath(i_Phrase);
   
   m_pDataStack->vPushPtr(pChosenPlan);
   
@@ -90,9 +90,9 @@ void Step::vPathIdentifierDelete(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  delete pPlanner;
+  delete pPathIdentifier;
   
   EXIT();
 }
@@ -104,7 +104,7 @@ void Step::vPathIdentifierFetchTechniqueFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
@@ -121,9 +121,9 @@ void Step::vPathIdentifierGenPaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  pPlanner->vGenPaths();
+  pPathIdentifier->vGenPaths();
   
   EXIT();
 }
@@ -135,9 +135,9 @@ void Step::vPathIdentifierGet(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  m_pDataStack->vPushPtr(pPlanner);
+  m_pDataStack->vPushPtr(pPathIdentifier);
   
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vPathIdentifierHighKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -170,7 +170,7 @@ void Step::vPathIdentifierIndexNmFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -190,7 +190,7 @@ void Step::vPathIdentifierIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpPlanner.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -202,7 +202,7 @@ void Step::vPathIdentifierKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -223,7 +223,7 @@ void Step::vPathIdentifierLowKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
@@ -244,9 +244,9 @@ void Step::vPathIdentifierMatchPaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  pPlanner->vMatchPaths();
+  pPathIdentifier->vMatchPaths();
   
   EXIT();
 }
@@ -258,7 +258,7 @@ void Step::vPathIdentifierNew(void)
 {
   ENTRY();
   
-  ( m_pJob->pLogicUnit_job() )->m_xpPlanner = new PathIdentifier;
+  ( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier = new PathIdentifier;
   
   EXIT();
 }
@@ -270,19 +270,19 @@ void Step::vPathIdentifierParseWhere(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   s48K sWhere;
   m_pDataStack->vPopStr(sWhere,__func__);
   
-  pPlanner->vParseWhere(sWhere);
-  pPlanner->vParsePhrases();
+  pPathIdentifier->vParseWhere(sWhere);
+  pPathIdentifier->vParsePhrases();
   
   //  i8 nLastBuffers;
   //
-  //  i8 nPhrases = pPlanner->nPhrases();
+  //  i8 nPhrases = pPathIdentifier->nPhrases();
   //  if (nPhrases)
-  //    nLastBuffers = pPlanner->nPhrases() * gxArgs.m_nPtnsPerTable;
+  //    nLastBuffers = pPathIdentifier->nPhrases() * gxArgs.m_nPtnsPerTable;
   //  else
   //    nLastBuffers = gxArgs.m_nPtnsPerTable;
   //
@@ -298,7 +298,7 @@ void Step::vPathIdentifierPhrasesFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 nPhrases = mpPlanner->nPhrases();
   
@@ -314,9 +314,9 @@ void Step::vPathIdentifierScorePaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  pPlanner->vScorePaths();
+  pPathIdentifier->vScorePaths();
   
   EXIT();
 }
@@ -328,9 +328,9 @@ void Step::vPathIdentifierSet(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
-  ASSERT(! pPlanner || ( m_pJob->pLogicUnit_job() )->m_xpPlanner.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpPlanner = _pPlanner(pPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
+  ASSERT(! pPathIdentifier || ( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier.bIsNull());
+  ( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier = _pPathIdentifier(pPathIdentifier);
   
   EXIT();
 }
@@ -342,9 +342,9 @@ void Step::vPathIdentifierShowPaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  pPlanner->vShowPaths();
+  pPathIdentifier->vShowPaths();
   
   EXIT();
 }
@@ -356,9 +356,9 @@ void Step::vPathIdentifierTableFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  Table* pTable = pPlanner->pTable();
+  Table* pTable = pPathIdentifier->pTable();
   
   m_pDataStack->vPushPtr(pTable);
   
@@ -372,11 +372,11 @@ void Step::vPathIdentifierTableStore(void)
 {
   ENTRY();
   
-  PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  pPlanner->vTable(pTable);
+  pPathIdentifier->vTable(pTable);
   
   EXIT();
 }

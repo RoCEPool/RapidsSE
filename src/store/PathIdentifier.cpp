@@ -19,13 +19,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PathIdentifier* STORE::_pPlanner(void* aAddr)
+PathIdentifier* STORE::_pPathIdentifier(void* aAddr)
 {
-  PathIdentifier* pPlanner = reinterpret_cast<PathIdentifier*>(aAddr);
+  PathIdentifier* pPathIdentifier = reinterpret_cast<PathIdentifier*>(aAddr);
   
-  RASSERT_TYPE(pPlanner,CN_PLANNER);
+  RASSERT_TYPE(pPathIdentifier,CN_PLANNER);
  
-  return pPlanner;
+  return pPathIdentifier;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,9 +43,9 @@ void* PathIdentifier::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void PathIdentifier::operator delete(void* aAddr)
 {
-  PathIdentifier* pPlanner = reinterpret_cast<PathIdentifier*>(aAddr);
+  PathIdentifier* pPathIdentifier = reinterpret_cast<PathIdentifier*>(aAddr);
   
-  HeapMem::vFree(pPlanner);
+  HeapMem::vFree(pPathIdentifier);
 }
 
 /*----------------------------------------------------------------------------*/
