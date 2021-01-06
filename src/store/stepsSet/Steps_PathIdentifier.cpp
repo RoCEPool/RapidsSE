@@ -26,57 +26,33 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Planner(void)
 {
-  vAddStep("planner[].new"_Stz,            &Step::vPlannerNewN);
+  vAddStep("planner[].new"_Stz,            &Step::vPathIdentifierNew);
   
-  vAddStep("planner[].chosenPath"_Stz,     &Step::vPlannerChosenPathN);
-  vAddStep("planner[].choosePaths"_Stz,    &Step::vPlannerChoosePathsN);
-  vAddStep("planner[].delete"_Stz,         &Step::vPlannerDeleteN);
-  vAddStep("planner[].fetchTechnique@"_Stz,&Step::vPlannerFetchTechniqueFetchN);
-  vAddStep("planner[]"_Stz,                &Step::vPlannerGetN);
-  vAddStep("planner[].genPaths"_Stz,       &Step::vPlannerGenPathsN);
-  vAddStep("planner[].upperkey@"_Stz,      &Step::vPlannerHighKeyFetchN);
-  vAddStep("planner[].indexNm@"_Stz,       &Step::vPlannerIndexNmFetchN);
-  vAddStep("planner[].isNull"_Stz,         &Step::vPlannerIsNullN);
-  vAddStep("planner[].key@"_Stz,           &Step::vPlannerKeyFetchN);
-  vAddStep("planner[].lowkey@"_Stz,        &Step::vPlannerLowKeyFetchN);
-  vAddStep("planner[].set"_Stz,            &Step::vPlannerSetN);
-  vAddStep("planner[].matchPaths"_Stz,     &Step::vPlannerMatchPathsN);
-  vAddStep("planner[].parseWhere"_Stz,     &Step::vPlannerParseWhereN);
-  vAddStep("planner[].phrases@"_Stz,       &Step::vPlannerPhrasesFetchN);
-  vAddStep("planner[].scorePaths"_Stz,     &Step::vPlannerScorePathsN);
-  vAddStep("planner[].showPaths"_Stz,      &Step::vPlannerShowPathsN);
-  vAddStep("planner[].table@"_Stz,         &Step::vPlannerTableFetchN);
-  vAddStep("planner[].table!"_Stz,         &Step::vPlannerTableStoreN);
-  
-  
-  /*----------------------------------------------------------------------------*/
-  /*  OLD STEPS -- to go                                                        */
-  /*----------------------------------------------------------------------------*/
-  vAddStep("planner::new"_Stz,           &Step::vPlannerNew);
-  
-  vAddStep("planner.choosePaths"_Stz,    &Step::vPlannerChoosePaths);
-  vAddStep("planner.chosenPath"_Stz,     &Step::vPlannerChosenPath);
-  vAddStep("planner.delete"_Stz,         &Step::vPlannerDelete);
-  vAddStep("planner.fetchTechnique@"_Stz,&Step::vPlannerFetchTechniqueFetch);
-  vAddStep("planner.genPaths"_Stz,       &Step::vPlannerGenPaths);
-  vAddStep("planner.highkey@"_Stz,       &Step::vPlannerHighKeyFetch);
-  vAddStep("planner.indexNm@"_Stz,       &Step::vPlannerIndexNmFetch);
-  vAddStep("planner.key@"_Stz,           &Step::vPlannerKeyFetch);
-  vAddStep("planner.lowkey@"_Stz,        &Step::vPlannerLowKeyFetch);
-  vAddStep("planner.matchPaths"_Stz,     &Step::vPlannerMatchPaths);
-  vAddStep("planner.phrases@"_Stz,       &Step::vPlannerPhrasesFetch);
-  vAddStep("planner.parseWhere"_Stz,     &Step::vPlannerParseWhere);
-  vAddStep("planner.scorePaths"_Stz,     &Step::vPlannerScorePaths);
-  
-  vAddStep("planner.showPaths"_Stz,      &Step::vPlannerShowPaths);
-  vAddStep("planner.table@"_Stz,         &Step::vPlannerTableFetch);
-  vAddStep("planner.table!"_Stz,         &Step::vPlannerTableStore);
+  vAddStep("planner[].chosenPath"_Stz,     &Step::vPathIdentifierChosenPath);
+  vAddStep("planner[].choosePaths"_Stz,    &Step::vPathIdentifierChoosePaths);
+  vAddStep("planner[].delete"_Stz,         &Step::vPathIdentifierDelete);
+  vAddStep("planner[].fetchTechnique@"_Stz,&Step::vPathIdentifierFetchTechniqueFetch);
+  vAddStep("planner[]"_Stz,                &Step::vPathIdentifierGet);
+  vAddStep("planner[].genPaths"_Stz,       &Step::vPathIdentifierGenPaths);
+  vAddStep("planner[].upperkey@"_Stz,      &Step::vPathIdentifierHighKeyFetch);
+  vAddStep("planner[].indexNm@"_Stz,       &Step::vPathIdentifierIndexNmFetch);
+  vAddStep("planner[].isNull"_Stz,         &Step::vPathIdentifierIsNull);
+  vAddStep("planner[].key@"_Stz,           &Step::vPathIdentifierKeyFetch);
+  vAddStep("planner[].lowkey@"_Stz,        &Step::vPathIdentifierLowKeyFetch);
+  vAddStep("planner[].set"_Stz,            &Step::vPathIdentifierSet);
+  vAddStep("planner[].matchPaths"_Stz,     &Step::vPathIdentifierMatchPaths);
+  vAddStep("planner[].parseWhere"_Stz,     &Step::vPathIdentifierParseWhere);
+  vAddStep("planner[].phrases@"_Stz,       &Step::vPathIdentifierPhrasesFetch);
+  vAddStep("planner[].scorePaths"_Stz,     &Step::vPathIdentifierScorePaths);
+  vAddStep("planner[].showPaths"_Stz,      &Step::vPathIdentifierShowPaths);
+  vAddStep("planner[].table@"_Stz,         &Step::vPathIdentifierTableFetch);
+  vAddStep("planner[].table!"_Stz,         &Step::vPathIdentifierTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* planner.choosePaths -- choose an access path for each phrase               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerChoosePathsN(void)
+void Step::vPathIdentifierChoosePaths(void)
 {
   //! refer:  https://en.cppreference.com/w/c/language/function_definition
   
@@ -93,7 +69,7 @@ void Step::vPlannerChoosePathsN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.chosenPath -- push chosen access path for given phrase             */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerChosenPathN(void)
+void Step::vPathIdentifierChosenPath(void)
 {
   ENTRY();
   
@@ -110,7 +86,7 @@ void Step::vPlannerChosenPathN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.delete -- delete the plan ( planner -- )                           */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerDeleteN(void)
+void Step::vPathIdentifierDelete(void)
 {
   ENTRY();
   
@@ -124,7 +100,7 @@ void Step::vPlannerDeleteN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.fetchTechnique@ -- fetch the fetch technique for given phrase( -- )*/
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerFetchTechniqueFetchN(void)
+void Step::vPathIdentifierFetchTechniqueFetch(void)
 {
   ENTRY();
   
@@ -141,7 +117,7 @@ void Step::vPlannerFetchTechniqueFetchN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.genPaths -- generate all access paths for table                    */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerGenPathsN(void)
+void Step::vPathIdentifierGenPaths(void)
 {
   ENTRY();
   
@@ -155,7 +131,7 @@ void Step::vPlannerGenPathsN(void)
 /*----------------------------------------------------------------------------*/
 /* planner[] -- get planner                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerGetN(void)
+void Step::vPathIdentifierGet(void)
 {
   ENTRY();
   
@@ -169,7 +145,7 @@ void Step::vPlannerGetN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.highKey@ -- fetch high key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerHighKeyFetchN(void)
+void Step::vPathIdentifierHighKeyFetch(void)
 {
   ENTRY();
   
@@ -190,7 +166,7 @@ void Step::vPlannerHighKeyFetchN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.indexNm@ -- fetch index name for given phrase ( -- )               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerIndexNmFetchN(void)
+void Step::vPathIdentifierIndexNmFetch(void)
 {
   ENTRY();
   
@@ -210,7 +186,7 @@ void Step::vPlannerIndexNmFetchN(void)
 /*----------------------------------------------------------------------------*/
 /* planner[].isNull -- is planner null ?                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerIsNullN(void)
+void Step::vPathIdentifierIsNull(void)
 {
   ENTRY();
   
@@ -222,7 +198,7 @@ void Step::vPlannerIsNullN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.key@ -- fetch key for given phrase ( -- )                          */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerKeyFetchN(void)
+void Step::vPathIdentifierKeyFetch(void)
 {
   ENTRY();
   
@@ -243,7 +219,7 @@ void Step::vPlannerKeyFetchN(void)
 /*----------------------------------------------------------------------------*/
 /* planner[].lowKey@ -- fetch low key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerLowKeyFetchN(void)
+void Step::vPathIdentifierLowKeyFetch(void)
 {
   ENTRY();
   
@@ -264,7 +240,7 @@ void Step::vPlannerLowKeyFetchN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.matchPaths -- attempt to match predicates with paths               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerMatchPathsN(void)
+void Step::vPathIdentifierMatchPaths(void)
 {
   ENTRY();
   
@@ -278,7 +254,7 @@ void Step::vPlannerMatchPathsN(void)
 /*----------------------------------------------------------------------------*/
 /* planner::new -- new a planner ( -- planner )                               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerNewN(void)
+void Step::vPathIdentifierNew(void)
 {
   ENTRY();
   
@@ -290,7 +266,7 @@ void Step::vPlannerNewN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.parseWhere -- parse a where clause                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerParseWhereN(void)
+void Step::vPathIdentifierParseWhere(void)
 {
   ENTRY();
   
@@ -318,7 +294,7 @@ void Step::vPlannerParseWhereN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.phrases@ -- fetch number of phrases ( -- nPhrases )                */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerPhrasesFetchN(void)
+void Step::vPathIdentifierPhrasesFetch(void)
 {
   ENTRY();
   
@@ -334,7 +310,7 @@ void Step::vPlannerPhrasesFetchN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.scorePaths -- score the generated set of paths                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerScorePathsN(void)
+void Step::vPathIdentifierScorePaths(void)
 {
   ENTRY();
   
@@ -348,7 +324,7 @@ void Step::vPlannerScorePathsN(void)
 /*----------------------------------------------------------------------------*/
 /* planner[].set -- set planner                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerSetN(void)
+void Step::vPathIdentifierSet(void)
 {
   ENTRY();
   
@@ -362,7 +338,7 @@ void Step::vPlannerSetN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.showPaths -- show generated paths                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerShowPathsN(void)
+void Step::vPathIdentifierShowPaths(void)
 {
   ENTRY();
   
@@ -376,7 +352,7 @@ void Step::vPlannerShowPathsN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.table@ -- fetch table from access path                             */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerTableFetchN(void)
+void Step::vPathIdentifierTableFetch(void)
 {
   ENTRY();
   
@@ -392,313 +368,11 @@ void Step::vPlannerTableFetchN(void)
 /*----------------------------------------------------------------------------*/
 /* planner.table! -- store table into access path                             */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerTableStoreN(void)
+void Step::vPathIdentifierTableStore(void)
 {
   ENTRY();
   
   PathIdentifier* pPlanner = _pPlanner(*( m_pJob->pLogicUnit_job() )->m_xpPlanner);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  pPlanner->vTable(pTable);
-  
-  EXIT();
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* OLD STEPS -- to go                                                         */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* planner.choosePaths -- choose an access path for each phrase               */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerChoosePaths(void)
-{
-  //! refer:  https://en.cppreference.com/w/c/language/function_definition
-  
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  for (i8 i_Phrase = 0; i_Phrase < pPlanner->nPhrases(); i_Phrase++)
-    pPlanner->vChoosePath(i_Phrase);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.chosenPath -- push chosen access path for given phrase             */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerChosenPath(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* pChosenPlan = pPlanner->pChosenPath(i_Phrase);
-  
-  m_pDataStack->vPushPtr(pChosenPlan);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.delete -- delete the plan ( planner -- )                           */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerDelete(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-
-  delete pPlanner;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.fetchTechnique@ -- fetch the fetch technique for given phrase( -- )*/
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerFetchTechniqueFetch(void)
-{
-  ENTRY();
-  
-  PathIdentifier* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
-  
-  m_pDataStack->vPushInt(eFetchTechnique);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.genPaths -- generate all access paths for table                    */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerGenPaths(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  pPlanner->vGenPaths();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.highKey@ -- fetch high key for given phrase ( -- )                 */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerHighKeyFetch(void)
-{
-  ENTRY();
-  
-  PathIdentifier* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
-  
-  PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
-  Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
-  s256 sHighKey = mpUpperPredicate->pArg2()->sArgVal();
-  
-  m_pDataStack->vPushStr(sHighKey);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.indexNm@ -- fetch index name for given phrase ( -- )               */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerIndexNmFetch(void)
-{
-  ENTRY();
-  
-  PathIdentifier* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
-  
-  Index* pChosenIndex = mpChosenPath->pIndex();
-  
-  s32 sIndexNm = pChosenIndex->szIndexNm();
-  m_pDataStack->vPushStr(sIndexNm);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.key@ -- fetch key for given phrase ( -- )                          */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerKeyFetch(void)
-{
-  ENTRY();
-  
-  PathIdentifier* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
-  
-  PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
-  Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
-  s256 sEqlKey = mpLowerPredicate->pArg2()->sArgVal();
-  
-  m_pDataStack->vPushStr(sEqlKey);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.lowKey@ -- fetch low key for given phrase ( -- )                   */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerLowKeyFetch(void)
-{
-  ENTRY();
-  
-  PathIdentifier* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
-  
-  PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
-  Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
-  s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();
-  
-  m_pDataStack->vPushStr(sLowKey);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.matchPaths -- attempt to match predicates with paths               */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerMatchPaths(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  pPlanner->vMatchPaths();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner::new -- new a planner ( -- planner )                               */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerNew(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = new PathIdentifier;
-  
-  m_pDataStack->vPushPtr(pPlanner);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.parseWhere -- parse a where clause                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerParseWhere(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  s48K sWhere;
-  m_pDataStack->vPopStr(sWhere,__func__);
-  
-  pPlanner->vParseWhere(sWhere);
-  pPlanner->vParsePhrases();
-  
-//  i8 nLastBuffers;
-//  
-//  i8 nPhrases = pPlanner->nPhrases();
-//  if (nPhrases)
-//    nLastBuffers = pPlanner->nPhrases() * gxArgs.m_nPtnsPerTable;
-//  else
-//    nLastBuffers = gxArgs.m_nPtnsPerTable;
-//  
-//  m_pTask->m_pSession->vLastBuffers(nLastBuffers);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.phrases@ -- fetch number of phrases ( -- nPhrases )                */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerPhrasesFetch(void)
-{
-  ENTRY();
-  
-  PathIdentifier* mpPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  i8 nPhrases = mpPlanner->nPhrases();
-  
-  m_pDataStack->vPushInt(nPhrases);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.scorePaths -- score the generated set of paths                     */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerScorePaths(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  pPlanner->vScorePaths();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.showPaths -- show generated paths                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerShowPaths(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  pPlanner->vShowPaths();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.table@ -- fetch table from access path                             */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerTableFetch(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
-  
-  Table* pTable = pPlanner->pTable();
-
-  m_pDataStack->vPushPtr(pTable);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planner.table! -- store table into access path                             */
-/*----------------------------------------------------------------------------*/
-void Step::vPlannerTableStore(void)
-{
-  ENTRY();
-  
-  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
