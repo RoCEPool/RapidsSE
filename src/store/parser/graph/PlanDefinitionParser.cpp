@@ -9,6 +9,7 @@
 #include "ErrorListener.hpp"
 #include "PlanNodeBuilder.hpp"
 #include "PlanNodeBuilderStack.hpp"
+#include "GraphNav.hpp"
 
 
 using namespace Parser;
@@ -154,6 +155,7 @@ PlanNode* PlanDefinitionParser::pParse()
 //  };
 //
 //  GraphNav::bWalk(pTemplatePlan, fVisitor);
+//  GraphNav::bWalkBottomUp(pTemplatePlan, fVisitor);
 
   return pTemplatePlan;
 }

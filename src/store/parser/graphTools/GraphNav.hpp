@@ -30,16 +30,27 @@ namespace Parser
     // Returns the parent of the type definition path given.
     static void vParentType(Stz* szTypePath, s256& buf);
 
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     // Methods for walking a plan graph.
+    // ---------------------------------
     // The following functions require a visitor function with the definition:
     //   b1 func(PlanNode* pNode, s256& sPath)
     // Returning true in this visitor function indicates that the walk should
     // continue. Returning false indicates that the walk is to abort.
 
     // Walk the current node and (potenitially) its properties and children,
-    // calling the visitor function for each node encountered
+    // calling the visitor function for each node encountered. This is a
+    // top-down, depth-first traversal.
     static b1 bWalk(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor);
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor);
+
+    // Walk the current node and (potenitially) its properties and children,
+    // calling the visitor function for each node encountered. This is a
+    // bottom-up, depth-first traversal.
+    static b1 bWalkBottomUp(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor);
+    static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor);
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     // Returns a PlanNode* for a given path if one is found. Otherwise null.
     // The path may be absolute (starts with a '/') or relative.
@@ -60,6 +71,8 @@ namespace Parser
 
   private:
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                    std::function<b1(PlanNode*, s256&)> fVisitor, s256& sPath);
+    static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                     std::function<b1(PlanNode*, s256&)> fVisitor, s256& sPath);
 
     static i8 iNextSeparator(Stz* szPath);
