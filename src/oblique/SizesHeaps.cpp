@@ -39,6 +39,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "PtnStream.hpp"
 #include "Table.hpp"
 
 #include "Node.hpp"

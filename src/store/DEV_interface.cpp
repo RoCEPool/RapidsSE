@@ -7,6 +7,7 @@
 
 #include "DEV_interface.h"
 
+#include "PtnStream.hpp"
 #include "SP_Ent.hpp"
 
 #include "Node_I.hpp"
