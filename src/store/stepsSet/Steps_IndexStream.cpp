@@ -182,7 +182,7 @@ void Step::vIndexStreamSeek(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the planner
-  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  PathIdentifier* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the upper bound key
