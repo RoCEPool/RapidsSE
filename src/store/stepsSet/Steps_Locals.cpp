@@ -267,8 +267,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Planner[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Planner[].set"_Stz);
+  else if (szTerm->bSame("PathIdentifier[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PathIdentifier[].set"_Stz);
     EXIT();
     return;
   }

@@ -13,7 +13,7 @@
   0 locals| sIndexNm |
 
   // find the index
-  iPhrase planner[].indexNm@ to sIndexNm
+  iPhrase PathIdentifier[].indexNm@ to sIndexNm
   <tableNm> sIndexNm op__index assert
 
   // grab the table ptn read lock
@@ -29,7 +29,7 @@
   iPhrase  // phrase
   lowerKey // lower
   upperKey // upper
-  planner[] indexStream[].seek
+  PathIdentifier[] indexStream[].seek
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the fetch technique
-  iPhrase planner[].fetchTechnique@
+  iPhrase PathIdentifier[].fetchTech@
 
   case
 
@@ -51,8 +51,8 @@
       "*exact*" .verbose
 
       iPhrase                  // phrase
-      iPhrase planner[].key@   // lower key
-      iPhrase planner[].key@   // upper key
+      iPhrase PathIdentifier[].key@   // lower key
+      iPhrase PathIdentifier[].key@   // upper key
       positionBeginFetch
     endof
 
@@ -62,7 +62,7 @@
       "*lower*" .verbose
 
       iPhrase                     // phrase
-      iPhrase planner[].lowKey@   // lower key
+      iPhrase PathIdentifier[].lowKey@   // lower key
       ""                          // upper key
       positionBeginFetch
     endof
@@ -74,7 +74,7 @@
 
       iPhrase                     // phrase
       ""                          // lower key
-      iPhrase planner[].upperKey@ // upper key
+      iPhrase PathIdentifier[].upperKey@ // upper key
       positionBeginFetch
     endof
 
@@ -84,8 +84,8 @@
       "*range" .verbose
 
       iPhrase                     // phrase
-      iPhrase planner[].lowKey@   // lower key
-      iPhrase planner[].upperKey@ // upper key
+      iPhrase PathIdentifier[].lowKey@   // lower key
+      iPhrase PathIdentifier[].upperKey@ // upper key
       positionBeginFetch
     endof
 
@@ -118,19 +118,19 @@
 
   //sWhere "generatePlan" "%v %v" str.format .
 
-  ( cdt_0 ) planner[].new
-  ( cdt_1 ) Table[] Planner[].table!
+  ( cdt_0 ) PathIdentifier[].new
+  ( cdt_1 ) Table[] PathIdentifier[].table!
 
-  ( cdt_2 ) <predicate> Planner[].parseWhere  //"parseWheres" .
+  ( cdt_2 ) <predicate> PathIdentifier[].parseWhere  //"parseWheres" .
 
-  ( cdt_3 ) Planner[].genPaths           //"genPaths" .
-  ( cdt_4 ) Planner[].scorePaths         //"scorePaths" .
-  //( cdt_5 ) Planner[].showPaths
+  ( cdt_3 ) PathIdentifier[].genPaths           //"genPaths" .
+  ( cdt_4 ) PathIdentifier[].scorePaths         //"scorePaths" .
+  //( cdt_5 ) PathIdentifier[].showPaths
 
-  ( cdt_6 ) Planner[].matchPaths         //"matchPaths" .
-  //( cdt_6 ) Planner[].showPaths
+  ( cdt_6 ) PathIdentifier[].matchPaths         //"matchPaths" .
+  //( cdt_6 ) PathIdentifier[].showPaths
 
-  ( cdt_7 ) Planner[].choosePaths        //"choosePaths" .
+  ( cdt_7 ) PathIdentifier[].choosePaths        //"choosePaths" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +154,7 @@
   //"Operand:- ZK_CRWBUFFER" .verbose
 
   // get the fetchTechnique
-  Counter1[] planner[].fetchTechnique@
+  Counter1[] PathIdentifier[].fetchTech@
   case
     AT_SCAN of
       // read next buffer from ptn stream
@@ -195,7 +195,7 @@
       tablePtn[] tablePtnDropRead
 
       // delete the planner
-      planner[].delete
+      PathIdentifier[].delete
 
       // delete the rowOnce skipList
       rowOnce[].isNull not if
@@ -239,7 +239,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of phrases
-  planner[].phrases@ to Counter0[]
+  PathIdentifier[].phrases@ to Counter0[]
 
   // if multiple phrases create a rowOnce skipList
   Counter0[] 1 > if
@@ -278,10 +278,10 @@
   // generate the plan for the fetch
   generatePlan
 
-  //planner[].showPaths
+  //PathIdentifier[].showPaths
 
   // assert we have a plan
-  planner[].isNull not assert
+  PathIdentifier[].isNull not assert
 
   true
 ;

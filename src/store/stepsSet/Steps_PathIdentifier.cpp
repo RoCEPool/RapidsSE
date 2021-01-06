@@ -26,27 +26,27 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Planner(void)
 {
-  vAddStep("planner[].new"_Stz,            &Step::vPathIdentifierNew);
+  vAddStep("PathIdentifier[].new"_Stz,            &Step::vPathIdentifierNew);
   
-  vAddStep("planner[].chosenPath"_Stz,     &Step::vPathIdentifierChosenPath);
-  vAddStep("planner[].choosePaths"_Stz,    &Step::vPathIdentifierChoosePaths);
-  vAddStep("planner[].delete"_Stz,         &Step::vPathIdentifierDelete);
-  vAddStep("planner[].fetchTechnique@"_Stz,&Step::vPathIdentifierFetchTechniqueFetch);
-  vAddStep("planner[]"_Stz,                &Step::vPathIdentifierGet);
-  vAddStep("planner[].genPaths"_Stz,       &Step::vPathIdentifierGenPaths);
-  vAddStep("planner[].upperkey@"_Stz,      &Step::vPathIdentifierHighKeyFetch);
-  vAddStep("planner[].indexNm@"_Stz,       &Step::vPathIdentifierIndexNmFetch);
-  vAddStep("planner[].isNull"_Stz,         &Step::vPathIdentifierIsNull);
-  vAddStep("planner[].key@"_Stz,           &Step::vPathIdentifierKeyFetch);
-  vAddStep("planner[].lowkey@"_Stz,        &Step::vPathIdentifierLowKeyFetch);
-  vAddStep("planner[].set"_Stz,            &Step::vPathIdentifierSet);
-  vAddStep("planner[].matchPaths"_Stz,     &Step::vPathIdentifierMatchPaths);
-  vAddStep("planner[].parseWhere"_Stz,     &Step::vPathIdentifierParseWhere);
-  vAddStep("planner[].phrases@"_Stz,       &Step::vPathIdentifierPhrasesFetch);
-  vAddStep("planner[].scorePaths"_Stz,     &Step::vPathIdentifierScorePaths);
-  vAddStep("planner[].showPaths"_Stz,      &Step::vPathIdentifierShowPaths);
-  vAddStep("planner[].table@"_Stz,         &Step::vPathIdentifierTableFetch);
-  vAddStep("planner[].table!"_Stz,         &Step::vPathIdentifierTableStore);
+  vAddStep("PathIdentifier[].chosenPath"_Stz,     &Step::vPathIdentifierChosenPath);
+  vAddStep("PathIdentifier[].choosePaths"_Stz,    &Step::vPathIdentifierChoosePaths);
+  vAddStep("PathIdentifier[].delete"_Stz,         &Step::vPathIdentifierDelete);
+  vAddStep("PathIdentifier[].fetchTech@"_Stz,&Step::vPathIdentifierFetchTechniqueFetch);
+  vAddStep("PathIdentifier[]"_Stz,                &Step::vPathIdentifierGet);
+  vAddStep("PathIdentifier[].genPaths"_Stz,       &Step::vPathIdentifierGenPaths);
+  vAddStep("PathIdentifier[].upperkey@"_Stz,      &Step::vPathIdentifierHighKeyFetch);
+  vAddStep("PathIdentifier[].indexNm@"_Stz,       &Step::vPathIdentifierIndexNmFetch);
+  vAddStep("PathIdentifier[].isNull"_Stz,         &Step::vPathIdentifierIsNull);
+  vAddStep("PathIdentifier[].key@"_Stz,           &Step::vPathIdentifierKeyFetch);
+  vAddStep("PathIdentifier[].lowkey@"_Stz,        &Step::vPathIdentifierLowKeyFetch);
+  vAddStep("PathIdentifier[].set"_Stz,            &Step::vPathIdentifierSet);
+  vAddStep("PathIdentifier[].matchPaths"_Stz,     &Step::vPathIdentifierMatchPaths);
+  vAddStep("PathIdentifier[].parseWhere"_Stz,     &Step::vPathIdentifierParseWhere);
+  vAddStep("PathIdentifier[].phrases@"_Stz,       &Step::vPathIdentifierPhrasesFetch);
+  vAddStep("PathIdentifier[].scorePaths"_Stz,     &Step::vPathIdentifierScorePaths);
+  vAddStep("PathIdentifier[].showPaths"_Stz,      &Step::vPathIdentifierShowPaths);
+  vAddStep("PathIdentifier[].table@"_Stz,         &Step::vPathIdentifierTableFetch);
+  vAddStep("PathIdentifier[].table!"_Stz,         &Step::vPathIdentifierTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ void Step::vPathIdentifierGenPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner[] -- get planner                                                   */
+/* PathIdentifier[] -- get planner                                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierGet(void)
 {
@@ -184,7 +184,7 @@ void Step::vPathIdentifierIndexNmFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner[].isNull -- is planner null ?                                      */
+/* PathIdentifier[].isNull -- is planner null ?                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierIsNull(void)
 {
@@ -217,7 +217,7 @@ void Step::vPathIdentifierKeyFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner[].lowKey@ -- fetch low key for given phrase ( -- )                 */
+/* PathIdentifier[].lowKey@ -- fetch low key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierLowKeyFetch(void)
 {
@@ -322,7 +322,7 @@ void Step::vPathIdentifierScorePaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner[].set -- set planner                                               */
+/* PathIdentifier[].set -- set planner                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierSet(void)
 {
