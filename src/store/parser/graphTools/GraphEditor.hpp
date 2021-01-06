@@ -17,9 +17,12 @@ namespace Parser
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(PlanNode* pRootNode);
 
-  };
+    // Validate the entire plan, including definitions
+    static b1 bValidateAll(PlanNode* pRootNode);
 
-  GraphEditor* _pGraphEditor(void* aAddr);
+    // Validate only the /plan section of the plan (ignoring definitions & primitives)
+    static b1 bValidatePlan(PlanNode* pPlanNode);
+  };
 }
 
 /*============================================================================*/

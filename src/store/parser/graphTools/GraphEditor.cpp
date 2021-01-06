@@ -13,6 +13,11 @@
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
+/*-- Constants ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -27,7 +32,7 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
   ASSERT(pRootNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
 
   // Create a new copy of: /__root__/plan
-  QueryNode* pPlanNode = (QueryNode*) GraphNav::pFind("/__root__/plan"_Stz, pRootNode);
+  QueryNode* pPlanNode = (QueryNode*) GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode);
   ASSERT(pPlanNode);
   ASSERT(pPlanNode->eGetClassNo() == CN_QUERYNODE);
 
@@ -76,6 +81,13 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
   return pNewRoot;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Validate the entire plan, including definitions                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphEditor::bValidateAll(PlanNode *pRootNode)
+{
+  return true;
+}
 
 
 /*============================================================================*/
