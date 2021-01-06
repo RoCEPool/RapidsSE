@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Planner.cpp - planner step group                                     */
+/* Steps_PathIdentifier.cpp - Path Identifier step group                      */
 /*============================================================================*/
 
 #include "BASE.h"
