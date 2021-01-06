@@ -39,6 +39,8 @@
 
 #include "SizesHeaps.hpp"
 
+#include "Table.hpp"
+
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"

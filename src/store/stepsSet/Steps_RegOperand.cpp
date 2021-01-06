@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Table.hpp"
 #include "Node_I.hpp"
 #include "Op.hpp"
 #include "Response.hpp"

@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Table.hpp"
 
 bool mbCheckPriorVec = false;
 

@@ -38,6 +38,7 @@
 #include "eTT.h"
 #include "eUK.h"
 
+#include "Table.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"

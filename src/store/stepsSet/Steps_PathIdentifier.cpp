@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Table.hpp"
 #include "Node_I.hpp"
 #include "Arg.hpp"
 #include "RelOp.hpp"

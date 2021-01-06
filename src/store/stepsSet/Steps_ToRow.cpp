@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Table.hpp"
+
 #include "Node_I.hpp"
 
 #include "Response.hpp"

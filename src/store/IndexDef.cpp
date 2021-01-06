@@ -5,13 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
-
-#include "BASE.h"
-#include "STORE.h"
-
+#include "Table.hpp"
 
 extern EnvFlags gxEnvFlags;
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

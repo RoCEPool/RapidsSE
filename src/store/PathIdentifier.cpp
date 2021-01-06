@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* PathIdentifier.cpp - PathIdentifier                                                      */
+/* PathIdentifier.cpp - PathIdentifier                                        */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Table.hpp"
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"

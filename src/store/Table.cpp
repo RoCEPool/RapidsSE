@@ -5,8 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
-#include "Grid.hpp"
+#include "Table.hpp"
 
+#include "Grid.hpp"
 
 Atomic gixTable;
 

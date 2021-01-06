@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Table.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Op.hpp"
