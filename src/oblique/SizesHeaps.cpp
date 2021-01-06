@@ -30,6 +30,7 @@
 #include "ePY.h"
 #include "ePX.h"
 #include "eRG.h"
+#include "eRO.h"
 #include "eRU.h"
 #include "eST.h"
 #include "eTP.h"
@@ -39,6 +40,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "IndexStream.hpp"
 #include "PtnStream.hpp"
 #include "Table.hpp"
 

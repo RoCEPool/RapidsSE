@@ -110,7 +110,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "TablePtn.hpp"
 
 #include "RowOnce.hpp"
-#include "IndexStream.hpp"
+//#include "IndexStream.hpp"
 //#include "PtnStream.hpp"
 
 //#include "Table.hpp"

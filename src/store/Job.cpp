@@ -7,6 +7,7 @@
 
 #include "ePX.h"
 
+#include "IndexStream.hpp"
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"

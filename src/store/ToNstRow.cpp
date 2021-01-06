@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexStream.hpp"
 #include "Node_I.hpp"
 #include "Arg.hpp"
 #include "RelOp.hpp"

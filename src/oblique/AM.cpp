@@ -32,12 +32,14 @@
 #include "ePY.h"
 #include "ePX.h"
 #include "eRG.h"
+#include "eRO.h"
 #include "eRU.h"
 #include "eST.h"
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
 
+#include "IndexStream.hpp"
 #include "Table.hpp"
 
 #include "Node.hpp"
