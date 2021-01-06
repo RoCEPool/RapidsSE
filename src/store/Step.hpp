@@ -104,7 +104,7 @@ namespace STORE
 
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
-    static void vAddSteps_Planner(void);
+    static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_Plist(void);
     static void vAddSteps_Pot(void);
     static void vAddSteps_Procedure(void);

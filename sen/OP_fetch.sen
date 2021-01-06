@@ -194,7 +194,7 @@
  
       tablePtn[] tablePtnDropRead
 
-      // delete the planner
+      // delete the path identifier
       PathIdentifier[].delete
 
       // delete the rowOnce skipList

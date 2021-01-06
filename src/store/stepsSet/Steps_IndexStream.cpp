@@ -181,7 +181,7 @@ void Step::vIndexStreamSeek(void)
   IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the planner
+  // get the pathIdentifier 
   PathIdentifier* pPathIdentifier = _pPathIdentifier(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

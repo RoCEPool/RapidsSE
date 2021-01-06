@@ -184,7 +184,7 @@
 
       tablePtn[] tablePtnDropRead
 
-      // delete the planner
+      // delete the path identifier
       PathIdentifier[].delete
 
       // pipeout an eosMarker

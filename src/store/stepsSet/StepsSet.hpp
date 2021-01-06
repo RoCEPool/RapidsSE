@@ -1031,7 +1031,7 @@ public:
   void vPlanNameStore(void);
   void vPlanShow(void);
 
-  // planner
+  // path identifier
   void vPathIdentifierChoosePaths(void);
   void vPathIdentifierChosenPath(void);
   void vPathIdentifierDelete(void);

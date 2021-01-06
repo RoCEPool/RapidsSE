@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Planner(void)
+void Step::vAddSteps_PathIdentifier(void)
 {
   vAddStep("PathIdentifier[].new"_Stz,            &Step::vPathIdentifierNew);
   
@@ -50,7 +50,7 @@ void Step::vAddSteps_Planner(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.choosePaths -- choose an access path for each phrase               */
+/* PathIdentifier[].choosePaths -- choose an access path for each phrase      */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierChoosePaths(void)
 {
@@ -67,7 +67,7 @@ void Step::vPathIdentifierChoosePaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.chosenPath -- push chosen access path for given phrase             */
+/* PathIdentifier[].chosenPath -- push chosen access path for given phrase    */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierChosenPath(void)
 {
@@ -84,7 +84,7 @@ void Step::vPathIdentifierChosenPath(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.delete -- delete the plan ( planner -- )                           */
+/* PathIdentifier[].delete -- delete the plan                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierDelete(void)
 {
@@ -98,16 +98,16 @@ void Step::vPathIdentifierDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.fetchTechnique@ -- fetch the fetch technique for given phrase( -- )*/
+/* PathIdentifier[].fetchTechnique@ -- fetch the fetch technique for given phrase( -- )*/
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierFetchTechniqueFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
+  eAT eFetchTechnique = pPathIdentifier->pChosenPath(i_Phrase)->eAccess();
   
   m_pDataStack->vPushInt(eFetchTechnique);
   
@@ -115,7 +115,7 @@ void Step::vPathIdentifierFetchTechniqueFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.genPaths -- generate all access paths for table                    */
+/* PathIdentifier[].genPaths -- generate all access paths for table           */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierGenPaths(void)
 {
@@ -129,7 +129,7 @@ void Step::vPathIdentifierGenPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PathIdentifier[] -- get planner                                                   */
+/* PathIdentifier[] -- get path idenitifier                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierGet(void)
 {
@@ -143,16 +143,16 @@ void Step::vPathIdentifierGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.highKey@ -- fetch high key for given phrase ( -- )                 */
+/* PathIdentifier[].highKey@ -- fetch high key for given phrase ( -- )        */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierHighKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
   Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
@@ -164,16 +164,16 @@ void Step::vPathIdentifierHighKeyFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.indexNm@ -- fetch index name for given phrase ( -- )               */
+/* PathIdentifier[].indexNm@ -- fetch index name for given phrase ( -- )      */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierIndexNmFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   Index* pChosenIndex = mpChosenPath->pIndex();
   
@@ -184,7 +184,7 @@ void Step::vPathIdentifierIndexNmFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PathIdentifier[].isNull -- is planner null ?                                      */
+/* PathIdentifier[].isNull -- is pathIdentifier null ?                        */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierIsNull(void)
 {
@@ -196,16 +196,16 @@ void Step::vPathIdentifierIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.key@ -- fetch key for given phrase ( -- )                          */
+/* PathIdentifier[].key@ -- fetch key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
@@ -217,16 +217,16 @@ void Step::vPathIdentifierKeyFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PathIdentifier[].lowKey@ -- fetch low key for given phrase ( -- )                 */
+/* PathIdentifier[].lowKey@ -- fetch low key for given phrase ( -- )          */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierLowKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
@@ -238,7 +238,7 @@ void Step::vPathIdentifierLowKeyFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.matchPaths -- attempt to match predicates with paths               */
+/* PathIdentifier[].matchPaths -- attempt to match predicates with paths      */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierMatchPaths(void)
 {
@@ -252,7 +252,7 @@ void Step::vPathIdentifierMatchPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner::new -- new a planner ( -- planner )                               */
+/* PathIdentifier[].new -- new a pathIdentifier                               */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierNew(void)
 {
@@ -264,7 +264,7 @@ void Step::vPathIdentifierNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.parseWhere -- parse a where clause                                 */
+/* PathIdentifier[].parseWhere -- parse a where clause                        */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierParseWhere(void)
 {
@@ -292,15 +292,15 @@ void Step::vPathIdentifierParseWhere(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.phrases@ -- fetch number of phrases ( -- nPhrases )                */
+/* PathIdentifier[].phrases@ -- fetch number of phrases ( -- nPhrases )       */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierPhrasesFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* mpPlanner = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*( m_pJob->pLogicUnit_job() )->m_xpPathIdentifier);
   
-  i8 nPhrases = mpPlanner->nPhrases();
+  i8 nPhrases = pPathIdentifier->nPhrases();
   
   m_pDataStack->vPushInt(nPhrases);
   
@@ -308,7 +308,7 @@ void Step::vPathIdentifierPhrasesFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.scorePaths -- score the generated set of paths                     */
+/* PathIdentifier[].scorePaths -- score the generated set of paths            */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierScorePaths(void)
 {
@@ -322,7 +322,7 @@ void Step::vPathIdentifierScorePaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PathIdentifier[].set -- set planner                                               */
+/* PathIdentifier[].set -- set pathIdentifier                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierSet(void)
 {
@@ -336,7 +336,7 @@ void Step::vPathIdentifierSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.showPaths -- show generated paths                                  */
+/* PathIdentifier[].showPaths -- show generated paths                         */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierShowPaths(void)
 {
@@ -350,7 +350,7 @@ void Step::vPathIdentifierShowPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.table@ -- fetch table from access path                             */
+/* PathIdentifier[].table@ -- fetch table from access path                    */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierTableFetch(void)
 {
@@ -366,7 +366,7 @@ void Step::vPathIdentifierTableFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.table! -- store table into access path                             */
+/* PathIdentifier[].table! -- store table into access path                    */
 /*----------------------------------------------------------------------------*/
 void Step::vPathIdentifierTableStore(void)
 {

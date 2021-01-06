@@ -161,12 +161,12 @@ enum eCN : u2 // Class Number
   /* */ CN_OPSPEC,
   
   /* */ CN__P__,
+  /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
-  /* */ CN_PLANNER,
   /* */ CN_PLANNODE,
   /* */ CN_PLANNODEBUILDER,
   /* */ CN_PLANNODEBUILDERLIST,
@@ -481,12 +481,12 @@ static Stz* aCN[]
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
    
   /* */ "_P__"_Stz,                 // CN__P__
+  /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
-  /* */ "PLANNER"_Stz,              // CN_PLANNER
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
   /* */ "PLANNODEBUILDER"_Stz,      // CN_PLANNODEBUILDER
   /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST
