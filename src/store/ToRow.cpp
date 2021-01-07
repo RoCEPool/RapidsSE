@@ -561,6 +561,22 @@ void ToRow::vNewRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
 /*----------------------------------------------------------------------------*/
+bool ToRow::bConvertCsv(CsvBuffer* pCsvBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+
+  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
+
+  char* azCsvChunk = (char*) pCsvBuffer->szRecords();
+
+  bool b = bConvertCsv(azCsvChunk,pCsvMeta);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fast inline conversion of a csv chunk (using standard csv format rules)    */
+/*----------------------------------------------------------------------------*/
 bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);

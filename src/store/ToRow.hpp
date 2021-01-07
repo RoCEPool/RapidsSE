@@ -53,6 +53,7 @@ namespace STORE
    ~ToRow(void) noexcept(false);
   
     bool bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta);
+    bool bConvertCsv(CsvBuffer* pCsvBuffer);
 
     RowBuffer* pDanglingRowBuffer(void);
     RowBuffer* pFullRowBuffer(void);
