@@ -1190,7 +1190,7 @@ bool PROMPT::bPrompt_cmds(SePrompt* pPrompt)
 
 
 
-extern Args gxArgs;
+extern CmdLineArgs gxArgs;
 
 PromptFun __Prompt_config (
   PF_CONFIG,            // prompt function

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Args.hpp - command line arguments                                          */
+/* CmdLineArgs.hpp - command line arguments                                          */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace STORE
   static const i8 C_DEF_LVL_LEVELS = 3;
   static const i8 C_DEF_LVL_RATIO  = 3; // this means 1/2^3 i.e. reducing by 8
 
-  class Args : public Object
+  class CmdLineArgs : public Object
   {
     friend class OBLIQUE::AM;
     friend class STORE::Engine;
@@ -30,8 +30,8 @@ namespace STORE
     Footer m_xFooter;
     
   public:
-    Args(void);
-   ~Args(void) noexcept(false);
+    CmdLineArgs(void);
+   ~CmdLineArgs(void) noexcept(false);
     
     static i8 nBurstArgs(s256 saArgv[], Stz* szArgStr);
 

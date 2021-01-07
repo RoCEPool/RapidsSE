@@ -11,7 +11,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 
-extern Args          gxArgs;
+extern CmdLineArgs          gxArgs;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;

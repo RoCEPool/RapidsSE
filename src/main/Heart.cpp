@@ -14,7 +14,7 @@
 #include "Heartbeat.hpp"
 
 
-extern Args gxArgs;
+extern CmdLineArgs gxArgs;
 
 extern Stz *gsBuildGitHash;
 extern Stz *gsBuildDate;

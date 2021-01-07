@@ -20,7 +20,7 @@
 #include "PromptFun.hpp"
 #include "PromptCatalog.hpp"
 
-extern Args          gxArgs;
+extern CmdLineArgs          gxArgs;
 
 extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;

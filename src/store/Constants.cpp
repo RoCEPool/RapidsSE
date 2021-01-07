@@ -30,7 +30,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
-extern Args  gxArgs;
+extern CmdLineArgs  gxArgs;
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
@@ -73,7 +73,7 @@ void Constants::vAddConstant(Stz* szName, Stz* szVal)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstantsArgs(void)
 {
-  // Args
+  // CmdLineArgs
   Constants::vAddConstant("args.addNode"_Stz,           gxArgs.m_xSysArgs.m_bAddNode);
   Constants::vAddConstant("args.bootNodes"_Stz,         gxArgs.m_xSysArgs.m_nBootNodes);
   Constants::vAddConstant("args.condCode"_Stz,          gxArgs.m_xSysArgs.m_iCondCode);

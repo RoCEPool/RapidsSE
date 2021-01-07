@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Args.cpp - command line arguments                                          */
+/* CmdLineArgs.cpp - command line arguments                                          */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
-extern Args       gxArgs;
+extern CmdLineArgs       gxArgs;
 extern AttachMap* gpAttachMap;
 extern Log*       gpLog;
 
@@ -15,7 +15,7 @@ s256   gi_szaArgv[128];
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Args::Args(void)
+CmdLineArgs::CmdLineArgs(void)
 : Object(CN_ARGUMENTS)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
@@ -124,7 +124,7 @@ Args::Args(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Args::~Args(void) noexcept(false)
+CmdLineArgs::~CmdLineArgs(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
 }
@@ -132,7 +132,7 @@ Args::~Args(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* burst env string into command line arguments                               */
 /*----------------------------------------------------------------------------*/
-i8 Args::nBurstArgs(s256 saArgv[], Stz* szArgStr)
+i8 CmdLineArgs::nBurstArgs(s256 saArgv[], Stz* szArgStr)
 {
   _static_
 
@@ -162,7 +162,7 @@ i8 Args::nBurstArgs(s256 saArgv[], Stz* szArgStr)
 /*----------------------------------------------------------------------------*/
 /* log the command line arguments                                             */
 /*----------------------------------------------------------------------------*/
-void Args::vLog(void)
+void CmdLineArgs::vLog(void)
 {
   _static_
   
@@ -189,7 +189,7 @@ void Args::vLog(void)
 /*----------------------------------------------------------------------------*/
 /* check for environment variables                                            */
 /*----------------------------------------------------------------------------*/
-void Args::vEnvironmentVariables(void)
+void CmdLineArgs::vEnvironmentVariables(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
@@ -215,7 +215,7 @@ void Args::vEnvironmentVariables(void)
 /*----------------------------------------------------------------------------*/
 /* parse command line arguments                                               */
 /*----------------------------------------------------------------------------*/
-bool Args::bParse(i8 argc, s256 argv[])
+bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
     
@@ -926,7 +926,7 @@ bool Args::bParse(i8 argc, s256 argv[])
 /*----------------------------------------------------------------------------*/
 /* print arguments                                                            */
 /*----------------------------------------------------------------------------*/
-void Args::vPrint(void)
+void CmdLineArgs::vPrint(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
@@ -953,7 +953,7 @@ void Args::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* print arguments                                                            */
 /*----------------------------------------------------------------------------*/
-void Args::vPrintStartupInfo(void)
+void CmdLineArgs::vPrintStartupInfo(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
@@ -1047,7 +1047,7 @@ void Args::vPrintStartupInfo(void)
 /*----------------------------------------------------------------------------*/
 /* print help                                                                 */
 /*----------------------------------------------------------------------------*/
-void Args::vPrintHelp(void)
+void CmdLineArgs::vPrintHelp(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
@@ -1073,7 +1073,7 @@ void Args::vPrintHelp(void)
 /*----------------------------------------------------------------------------*/
 /* check arguments                                                            */
 /*----------------------------------------------------------------------------*/
-void Args::vSanityCheck(void)
+void CmdLineArgs::vSanityCheck(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
@@ -1101,13 +1101,13 @@ void Args::vSanityCheck(void)
 /*----------------------------------------------------------------------------*/
 /* scribble over arguments                                                    */
 /*----------------------------------------------------------------------------*/
-void Args::vScribble(void)
+void CmdLineArgs::vScribble(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   byte* aDst = aAdd<byte*>(this,sizeof(Object));
   
-  i8 nBytes = sizeof(Args) - sizeof(Object) - sizeof(Footer);
+  i8 nBytes = sizeof(CmdLineArgs) - sizeof(Object) - sizeof(Footer);
   
   MemLib::vSet(aDst,0xFF,nBytes,CN_ARGUMENTS);
 }
@@ -1115,7 +1115,7 @@ void Args::vScribble(void)
 /*----------------------------------------------------------------------------*/
 /* is this a simple user prompt                                               */
 /*----------------------------------------------------------------------------*/
-bool Args::bUserPrompt(void)
+bool CmdLineArgs::bUserPrompt(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
 
@@ -1141,7 +1141,7 @@ bool Args::bUserPrompt(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Args::aFooter(void)
+Footer* CmdLineArgs::aFooter(void)
 {
   return &m_xFooter;
 }

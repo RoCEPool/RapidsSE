@@ -16,7 +16,7 @@ extern Stz* gsBuildHostName;
 extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
-extern Args gxArgs;
+extern CmdLineArgs gxArgs;
 extern EnvFlags gxEnvFlags;
 
 extern i8   gi_argc;
@@ -73,9 +73,9 @@ int main(int argc, char* argv[])
         "--log "
         ""_Stz;
     }
-    vTrace("Args: %s\n"_Stz,sSeArgs.szStz());
+    vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz());
     
-    gi_argc = Args::nBurstArgs(gi_szaArgv, sSeArgs);
+    gi_argc = CmdLineArgs::nBurstArgs(gi_szaArgv, sSeArgs);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

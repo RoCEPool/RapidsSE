@@ -134,7 +134,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AccessPath),         HT_T_MEDIUM  ,0 }, // CN_ACCESSPATH
   { sizeof(AggTimer),           HT_T_TINY    ,0 }, // CN_AGGTIMER
   { sizeof(Arg),                HT_T_TINY    ,0 }, // CN_ARG
-  { sizeof(Args),               HT_INVALID   ,0 }, // CN_ARGUMENTS
+  { sizeof(CmdLineArgs),               HT_INVALID   ,0 }, // CN_ARGUMENTS
   { sizeof(Arrange),            HT_T_TINY    ,0 }, // CN_ARRANGE
   { sizeof(Article),            HT_T_TINY    ,0 }, // CN_ARTICLE
   { sizeof(Atomic),             HT_INVALID   ,0 }, // CN_ATOMIC

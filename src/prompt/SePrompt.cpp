@@ -28,7 +28,7 @@
 #include "ePP.h"
 #include "TagConstants.h"
 
-extern Args          gxArgs;
+extern CmdLineArgs          gxArgs;
 
 extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;

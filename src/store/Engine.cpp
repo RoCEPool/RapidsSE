@@ -35,7 +35,7 @@
 #include "eBO.h"
 #include "TagConstants.h"
 
-Args      gxArgs;
+CmdLineArgs      gxArgs;
 EnvFlags  gxEnvFlags;
 FnCatalog gxFnCatalog;
 
