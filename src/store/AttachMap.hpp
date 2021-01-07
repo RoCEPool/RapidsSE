@@ -58,7 +58,7 @@ namespace STORE
     NextGid       m_inNextTxId;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
-    SystemSchedule*       m_pQueues;
+    SystemSchedule*  m_pSystemSchedule;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
     Article*      m_pRootArcticle;
@@ -83,14 +83,6 @@ namespace STORE
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
 
-  
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // these should be in Arg
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // remove?
-  
     union {
       u8    m_uAttachMapState;         // attachmap is ready
       char  m_caAttachMapState[8];

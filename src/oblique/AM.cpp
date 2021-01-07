@@ -202,7 +202,7 @@ i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 i8   AM::nPtnsInGrid(void) {
   return gpAttachMap->m_pPtnMap->nPtnsInGrid();
 }
-SystemSchedule* AM::pSystemSchedule(void)     { return gpAttachMap->m_pQueues;                }
+SystemSchedule* AM::pSystemSchedule(void)     { return gpAttachMap->m_pSystemSchedule;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }
 Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
