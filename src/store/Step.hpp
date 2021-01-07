@@ -3,7 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include "RowOnce.hpp"
 #include "IndexStream.hpp"
+
 
 namespace STORE
 {

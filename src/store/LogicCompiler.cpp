@@ -8,6 +8,7 @@
 
 #include "LogicCompiler.hpp"
 
+#include "RowOnce.hpp"
 #include "IndexStream.hpp"
 
 #ifdef __TINYC

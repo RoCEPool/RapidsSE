@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "TablePtn.hpp"
 #include "PtnStream.hpp"
 
 /*----------------------------------------------------------------------------*/

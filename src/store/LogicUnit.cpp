@@ -11,6 +11,8 @@
 
 #include "EnumGroups.h"
 
+#include "TablePtn.hpp"
+#include "RowOnce.hpp"
 #include "IndexStream.hpp"
 
 #include "Node.hpp"
