@@ -128,8 +128,8 @@ bool AM::bDbgTag(Stz* szTagNm) {
   return bHasDbgTag;
 }
 
-Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();             }
-Stz* AM::szInitial(void)      { return gxArgs.m_sInitial.szStz();             }
+Stz* AM::szCommand(void)      { return gxArgs.m_xSysArgs.m_sCommand.szStz();             }
+Stz* AM::szInitial(void)      { return gxArgs.m_xSysArgs.m_sInitial.szStz();             }
 
 // file names
 Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }
@@ -226,7 +226,7 @@ void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
 }
 bool AM::bVerbose(void)       { return gpAttachMap->Arg.m_bVerbose;           }
 bool AM::bVerboseProgress(void)  {
-  if (gxArgs.m_bVerbose || gxArgs.m_bProgress)
+  if (gxArgs.m_xSysArgs.m_bVerbose || gxArgs.m_xSysArgs.m_bProgress)
     return true;
   else
     return false;

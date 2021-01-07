@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
       Process::vExitFailure();
     
     // potentially run utilities
-    if (gxArgs.m_bUtility) {
+    if (gxArgs.m_xSysArgs.m_bUtility) {
       Engine::vRunUtility(argc,(Stz**)argv);
       Process::vExitSuccess();
     }

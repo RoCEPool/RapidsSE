@@ -257,38 +257,38 @@ void AttachMap::vRecordArguments(Args* pArgs)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
-  Arg.m_nBootNodes       = pArgs->m_nBootNodes;
-  Arg.m_iConnectCode     = pArgs->m_iConnectCode;
-  Arg.m_bDebugIndex      = pArgs->m_bDebugIndex;
-  Arg.m_bDebugMode       = pArgs->m_bDebugMode;
-  Arg.m_nDegOfPar        = pArgs->m_nDegOfPar;
-  Arg.m_bDeveloper       = pArgs->m_bDeveloper;
-  Arg.m_nDummyLoop       = pArgs->m_nDummyLoop;
-  Arg.m_nDummySleep      = pArgs->m_nDummySleep;
-  Arg.m_nDummyThreads    = pArgs->m_nDummyThreads;
-  Arg.m_nIndexEntries    = pArgs->m_nEntries;
-  Arg.m_bLog             = pArgs->m_bLog;
-  Arg.m_nLvlLevels       = pArgs->m_nLvlLevels;
-  Arg.m_iLvlRatio        = pArgs->m_iLvlRatio;
-  Arg.m_nMaxLoadErrors   = pArgs->m_nMaxLoadErrors;
-  Arg.m_nMaxReadyLP      = pArgs->m_nMaxReadyLP;
-  Arg.m_bMetadata        = pArgs->m_bMetadata;
-  Arg.m_bMunged          = pArgs->m_bMunged;
-  Arg.m_sGridName        = pArgs->m_sGridName;
-  Arg.m_nOperands        = pArgs->m_nOperands;
-  Arg.m_bProgress        = pArgs->m_bProgress;
-  Arg.m_sRegionName      = pArgs->m_sRegionName;
-  Arg.m_iRegionSize      = pArgs->m_iRegionSize;
-  Arg.m_bRLUDiary        = pArgs->m_bRLUDiary;
-  Arg.m_bRLUTimer        = pArgs->m_bRLUTimer;
-  Arg.m_nPtnsPerTable    = pArgs->m_nPtnsPerTable;
-  Arg.m_nThreads         = pArgs->m_nThreads;
-  Arg.m_bTracepoint      = pArgs->m_bTracepoint;
-  Arg.m_bVerbose         = pArgs->m_bVerbose;
+  Arg.m_nBootNodes       = pArgs->m_xSysArgs.m_nBootNodes;
+  Arg.m_iConnectCode     = pArgs->m_xSysArgs.m_iConnectCode;
+  Arg.m_bDebugIndex      = pArgs->m_xSysArgs.m_bDebugIndex;
+  Arg.m_bDebugMode       = pArgs->m_xSysArgs.m_bDebugMode;
+  Arg.m_nDegOfPar        = pArgs->m_xSysArgs.m_nDegOfPar;
+  Arg.m_bDeveloper       = pArgs->m_xSysArgs.m_bDeveloper;
+  Arg.m_nDummyLoop       = pArgs->m_xSysArgs.m_nDummyLoop;
+  Arg.m_nDummySleep      = pArgs->m_xSysArgs.m_nDummySleep;
+  Arg.m_nDummyThreads    = pArgs->m_xSysArgs.m_nDummyThreads;
+  Arg.m_nIndexEntries    = pArgs->m_xSysArgs.m_nEntries;
+  Arg.m_bLog             = pArgs->m_xSysArgs.m_bLog;
+  Arg.m_nLvlLevels       = pArgs->m_xSysArgs.m_nLvlLevels;
+  Arg.m_iLvlRatio        = pArgs->m_xSysArgs.m_iLvlRatio;
+  Arg.m_nMaxLoadErrors   = pArgs->m_xSysArgs.m_nMaxLoadErrors;
+  Arg.m_nMaxReadyLP      = pArgs->m_xSysArgs.m_nMaxReadyLP;
+  Arg.m_bMetadata        = pArgs->m_xSysArgs.m_bMetadata;
+  Arg.m_bMunged          = pArgs->m_xSysArgs.m_bMunged;
+  Arg.m_sGridName        = pArgs->m_xSysArgs.m_sGridName;
+  Arg.m_nOperands        = pArgs->m_xSysArgs.m_nOperands;
+  Arg.m_bProgress        = pArgs->m_xSysArgs.m_bProgress;
+  Arg.m_sRegionName      = pArgs->m_xSysArgs.m_sRegionName;
+  Arg.m_iRegionSize      = pArgs->m_xSysArgs.m_iRegionSize;
+  Arg.m_bRLUDiary        = pArgs->m_xSysArgs.m_bRLUDiary;
+  Arg.m_bRLUTimer        = pArgs->m_xSysArgs.m_bRLUTimer;
+  Arg.m_nPtnsPerTable    = pArgs->m_xSysArgs.m_nPtnsPerTable;
+  Arg.m_nThreads         = pArgs->m_xSysArgs.m_nThreads;
+  Arg.m_bTracepoint      = pArgs->m_xSysArgs.m_bTracepoint;
+  Arg.m_bVerbose         = pArgs->m_xSysArgs.m_bVerbose;
 
   Arg.m_oDbgTagSet.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
   
-  Arg.m_oDbgTagSet.vCopy(&pArgs->m_oArgTagSet);
+  Arg.m_oDbgTagSet.vCopy(&pArgs->m_xSysArgs.m_oArgTagSet);
   
   
   // ray -- not sure the following should be here
