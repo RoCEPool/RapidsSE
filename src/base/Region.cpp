@@ -192,7 +192,7 @@ void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
   SysCall oSysCall;
   bool bResult;
   
-  //if (gxArgs.m_xSysArgs.m_bVerbose)
+  //if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
   //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.azChar());
   
   // open shm region

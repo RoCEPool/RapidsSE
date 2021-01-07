@@ -7,7 +7,7 @@
 
 #include "EnvCheck.hpp"
 
-extern CmdLineArgs gxArgs;
+extern CmdLineArgs gxCmdLineArgs;
 
 extern char giProgressPoint;
 

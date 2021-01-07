@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* CmdLineArgs.cpp - command line arguments                                          */
+/* CmdLineArgs.cpp - command line arguments                                   */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
-extern CmdLineArgs       gxArgs;
+extern CmdLineArgs       gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
 extern Log*       gpLog;
 
@@ -962,7 +962,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
     return;
   
   
-  if (gxArgs.m_xSysArgs.m_bVerbose) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bVerbose) {
     vTrace("\n"_Stz,CN_ENUMS);
     vTrace("  No of Classes %lld\n"_Stz,CN_ENUMS);
 #ifdef WITH_MUNGED_SEN

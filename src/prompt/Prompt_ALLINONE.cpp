@@ -1190,7 +1190,7 @@ bool PROMPT::bPrompt_cmds(SePrompt* pPrompt)
 
 
 
-extern CmdLineArgs gxArgs;
+extern CmdLineArgs gxCmdLineArgs;
 
 PromptFun __Prompt_config (
   PF_CONFIG,            // prompt function
@@ -1219,12 +1219,12 @@ bool PROMPT::bPrompt_config(SePrompt* pPrompt)
   MagLib::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
   vTrace("  Node %s ShmLib %s Free %s Nodes %lld TablePtns %lld Expressions %lld : %s\n"_Stz,
-         gxArgs.m_xSysArgs.m_sNodeName.azChar(),
+         gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
          sShmSize.azChar(),
          sFreeSpace.azChar(),
-         gxArgs.m_xSysArgs.m_nBootNodes,
-         gxArgs.m_xSysArgs.m_nPtnsPerTable,
-         gxArgs.m_xSysArgs.m_nThreads,
+         gxCmdLineArgs.m_xSysArgs.m_nBootNodes,
+         gxCmdLineArgs.m_xSysArgs.m_nPtnsPerTable,
+         gxCmdLineArgs.m_xSysArgs.m_nThreads,
 
          AM::pGrid()->bHasStarted() ? "cluster started"
                                     : "cluster not started"

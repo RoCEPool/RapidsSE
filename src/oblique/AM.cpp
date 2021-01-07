@@ -83,7 +83,7 @@
 
 #include "SP_Word.hpp"
 
-extern CmdLineArgs          gxArgs;
+extern CmdLineArgs          gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
@@ -128,8 +128,8 @@ bool AM::bDbgTag(Stz* szTagNm) {
   return bHasDbgTag;
 }
 
-Stz* AM::szCommand(void)      { return gxArgs.m_xSysArgs.m_sCommand.szStz();             }
-Stz* AM::szInitial(void)      { return gxArgs.m_xSysArgs.m_sInitial.szStz();             }
+Stz* AM::szCommand(void)      { return gxCmdLineArgs.m_xSysArgs.m_sCommand.szStz();             }
+Stz* AM::szInitial(void)      { return gxCmdLineArgs.m_xSysArgs.m_sInitial.szStz();             }
 
 // file names
 Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }
@@ -226,7 +226,7 @@ void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_xSysArgs.m_bVerbose;           }
 bool AM::bVerboseProgress(void)  {
-  if (gxArgs.m_xSysArgs.m_bVerbose || gxArgs.m_xSysArgs.m_bProgress)
+  if (gxCmdLineArgs.m_xSysArgs.m_bVerbose || gxCmdLineArgs.m_xSysArgs.m_bProgress)
     return true;
   else
     return false;
@@ -439,7 +439,7 @@ bool AM::bJobIsForeign(i8 iJobId) {
   return bForeign;
 }
 void AM::vLogArguments(void) {
-  gxArgs.vLog();
+  gxCmdLineArgs.vLog();
 }
 
 i8 AM::nLvlLevels(void) {
@@ -476,13 +476,13 @@ eEC AM::ePopulateJob(Job* pJob, TagSet* pTagSet)
 }
 
 void AM::vPrintArguments(void) {
-  gxArgs.vPrint();
+  gxCmdLineArgs.vPrint();
 }
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();
 }
 void AM::vPrintStartupInfo(void) {
-  gxArgs.vPrintStartupInfo();
+  gxCmdLineArgs.vPrintStartupInfo();
 }
 
 PtnMap* AM::pPtnMap(void) {
@@ -1917,7 +1917,7 @@ i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     
 
 void AM::vPrintGlobals(void)
 {
-  printf("gxArgs     @%p\n",&gxArgs);
+  printf("gxCmdLineArgs     @%p\n",&gxCmdLineArgs);
   printf("\n");
 
   printf("gpAttachMap     @%p : %p\n",&gpAttachMap,  gpAttachMap);

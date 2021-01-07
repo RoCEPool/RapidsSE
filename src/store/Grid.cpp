@@ -9,7 +9,7 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 
-extern CmdLineArgs gxArgs;
+extern CmdLineArgs gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

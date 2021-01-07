@@ -35,7 +35,7 @@
 #include "eBO.h"
 #include "TagConstants.h"
 
-CmdLineArgs      gxArgs;
+CmdLineArgs      gxCmdLineArgs;
 EnvFlags  gxEnvFlags;
 FnCatalog gxFnCatalog;
 
@@ -116,7 +116,7 @@ void Engine::vPreliminary(void)
   vPrintConstants();
   vPrintFormats();
 
-  gxArgs.vPrintStartupInfo();
+  gxCmdLineArgs.vPrintStartupInfo();
 
   if (AM::bVerboseProgress())
      vInfo("\n*\n* %lld) Internal Initialisation\n*\n"_Stz,giProgressPoint++);
@@ -250,7 +250,7 @@ void Engine::vRunCommandLine(void)
       case BO_START_PROMPT:
         vStartSystem();
 #ifdef WITH_APPLE
-        if (! gxArgs.m_xSysArgs.m_bNoMunge )
+        if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
           vMungeCheck();
 #endif
         vCallPrompt();
@@ -398,7 +398,7 @@ void Engine::vCallImmmediate(Task* pImmediateTask)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallPrompt(void)
 {
-//  SePrompt* pSePrompt = new SePrompt(gxArgs.m_xSysArgs.m_bCommand);
+//  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
 //
 //  pSePrompt->vPromptLoop();
 //
@@ -409,7 +409,7 @@ void Engine::vCallPrompt(void)
 
   //AM::vPromptCall();
   
-  SePrompt* pSePrompt = new SePrompt(gxArgs.m_xSysArgs.m_bCommand, gxArgs.m_xSysArgs.m_bSethScript);
+  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand, gxCmdLineArgs.m_xSysArgs.m_bSethScript);
   
   pSePrompt->vPromptLoop();
   
@@ -474,11 +474,11 @@ void Engine::vChangeDirectory(void)
   // from the cwd to set the header and library search paths when 
   // compiling dynamic code. If you change this value you may need to
   // change these paths in LogicCompiler::bCompile().
-  bool bResult = Dir::bChangeCurrent(gxArgs.m_xSysArgs.m_sCommandsDir);
+  bool bResult = Dir::bChangeCurrent(gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
   
   if (! bResult)
     Process::vUnrecoverableError("Unable to change to command dir"_Stz,
-                                 gxArgs.m_xSysArgs.m_sCommandsDir);
+                                 gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
 
   if (Dir::bGetCurrent(sCurrent) && AM::bVerboseProgress())
     vInfo("Current working directory: %s\n"_Stz,sCurrent.szStz());
@@ -490,32 +490,32 @@ void Engine::vChangeDirectory(void)
 void Engine::vCheckGrid(void)
 {
   // nothing to check if not running a grid test
-  if ( ! gxArgs.m_xSysArgs.m_bStart)
+  if ( ! gxCmdLineArgs.m_xSysArgs.m_bStart)
     return;
   
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Checking GridTest Configuration\n*\n"_Stz,giProgressPoint++);
   
-   for (i8 i_Node = 0; i_Node < gxArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
      
      if (AM::bVerboseProgress())
        vInfo("Checking %s %s %lld\n"_Stz,
-             gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
-             gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
-             gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo
+             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz(),
+             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
+             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo
              );
      
-     if (! gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
+     if (! gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.bSame(C_LOOPBACK_IP))
        Process::vUnrecoverableError("Invalid loopback IP for grid test"_Stz,
-                                    gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress);
+                                    gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress);
      
      if (AM::bVerboseProgress())
        vInfo("Loopback %s for %s is valid\n"_Stz,
-             gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
-             gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz());
+             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.szStz(),
+             gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.szStz());
 
-     if (gxArgs.m_xSysArgs.m_bGridTest)
-       vTestPort(gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+     if (gxCmdLineArgs.m_xSysArgs.m_bGridTest)
+       vTestPort(gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
    }
 
 }
@@ -525,23 +525,23 @@ void Engine::vCheckGrid(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCheckNodes(void)
 {
-  if (! gxArgs.m_xSysArgs.m_bStart)
+  if (! gxCmdLineArgs.m_xSysArgs.m_bStart)
     return;
   
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Checking Node Configurations\n*\n"_Stz,giProgressPoint++);
 
-  if (gxArgs.m_xSysArgs.m_nBootNodes < 1)
+  if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes < 1)
     Process::vUnrecoverableError("No nodelist was supplied (via --node)"_Stz,
-                                 gxArgs.m_xSysArgs.m_sNodeName.szStz());
+                                 gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
-  if (C_UNKNOWN == gxArgs.m_xSysArgs.m_iThisNode)
+  if (C_UNKNOWN == gxCmdLineArgs.m_xSysArgs.m_iThisNode)
     Process::vUnrecoverableError("This node is not in node list"_Stz,
-                                 gxArgs.m_xSysArgs.m_sNodeName.szStz());
+                                 gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
   vInfo("This is node %lld of %lld nodes\n"_Stz,
-        gxArgs.m_xSysArgs.m_iThisNode,
-        gxArgs.m_xSysArgs.m_nBootNodes);
+        gxCmdLineArgs.m_xSysArgs.m_iThisNode,
+        gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -554,13 +554,13 @@ void Engine::vCheckPort(void)
   i8      iPort;
   
   // nothing to check if not starting SE
-  if ( ! gxArgs.m_xSysArgs.m_bStart)
+  if ( ! gxCmdLineArgs.m_xSysArgs.m_bStart)
     return;
   
   if (AM::bVerboseProgress())
     vInfo("\n*\n* %lld) Testing Listening Port\n*\n"_Stz,giProgressPoint++);
   
-  iPort = gxArgs.m_xSysArgs.m_xBootNode[gxArgs.m_xSysArgs.m_iThisNode].m_iPortNo;
+  iPort = gxCmdLineArgs.m_xSysArgs.m_xBootNode[gxCmdLineArgs.m_xSysArgs.m_iThisNode].m_iPortNo;
   
   vTestPort(iPort);
   
@@ -634,16 +634,16 @@ void Engine::vCreateAttachMap(void)
 void Engine::vCreateFileNames(void)
 {
   
-  // "SEgrid" to be gxArgs.m_xSysArgs.m_sGridName.szStz()
+  // "SEgrid" to be gxCmdLineArgs.m_xSysArgs.m_sGridName.szStz()
 #ifdef WITH_DEBUG_VERSION
   gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                                    "SEgrid"_Stz, gxArgs.m_xSysArgs.m_sNodeName.szStz());
+                                    "SEgrid"_Stz, gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s_Debug"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
 #else
   gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                                    "SEgrid"_Stz, gxArgs.m_xSysArgs.m_sNodeName.szStz());
+                                    "SEgrid"_Stz, gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
@@ -681,15 +681,15 @@ void Engine::vCreateTmpDir(void)
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
 {
-  if (gxArgs.m_xSysArgs.m_bStart && gxArgs.m_xSysArgs.m_bPrompt)   return BO_START_PROMPT;
-  if (gxArgs.m_xSysArgs.m_bStart)                       return BO_START;
-  if (gxArgs.m_xSysArgs.m_bPrompt)                      return BO_PROMPT;
-  if (gxArgs.m_xSysArgs.m_bStatus)                      return BO_STATUS;
-  if (gxArgs.m_xSysArgs.m_bStop)                        return BO_STOP;
-  if (gxArgs.m_xSysArgs.m_bUnlink)                      return BO_UNLINK;
-  if (gxArgs.m_xSysArgs.m_bSethScript)                  return BO_SETH_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart && gxCmdLineArgs.m_xSysArgs.m_bPrompt)   return BO_START_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart)                       return BO_START;
+  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt)                      return BO_PROMPT;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStatus)                      return BO_STATUS;
+  if (gxCmdLineArgs.m_xSysArgs.m_bStop)                        return BO_STOP;
+  if (gxCmdLineArgs.m_xSysArgs.m_bUnlink)                      return BO_UNLINK;
+  if (gxCmdLineArgs.m_xSysArgs.m_bSethScript)                  return BO_SETH_PROMPT;
   
-  if (gxArgs.m_xSysArgs.m_bAddNode)                     return BO_ADD_NODE;
+  if (gxCmdLineArgs.m_xSysArgs.m_bAddNode)                     return BO_ADD_NODE;
 
   return BO_NONE;
 }
@@ -802,7 +802,7 @@ void Engine::vGetWelcome(s256& sWelcome)
 /*----------------------------------------------------------------------------*/
 void Engine::vKillPrev(void)
 {
-  if (! gxArgs.m_xSysArgs.m_bKillPrev)
+  if (! gxCmdLineArgs.m_xSysArgs.m_bKillPrev)
     return;
   
   if (AM::bVerboseProgress())
@@ -814,25 +814,25 @@ void Engine::vKillPrev(void)
   s32 sRegionNm;
   int iFD;
   
-  for (i8 i_Node = 0; i_Node < gxArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
     
     sRegionNm.vSprint("%s_%s"_Stz,
-                        gxArgs.m_xSysArgs.m_sRegionPrefix.azChar(),
-                        gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.azChar());
+                        gxCmdLineArgs.m_xSysArgs.m_sRegionPrefix.azChar(),
+                        gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.azChar());
     
     if (! Region::bTest(sRegionNm) )
       continue;
 
-    if (gxArgs.m_xSysArgs.m_bDeveloper)
+    if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper)
       vTrace("vKillPrev: region %s exists\n"_Stz,sRegionNm.szStz());
     
-    if (! (aRegion = Region::aOpen(sRegionNm,gxArgs.m_xSysArgs.m_aRegionAddr,iFD)))
+    if (! (aRegion = Region::aOpen(sRegionNm,gxCmdLineArgs.m_xSysArgs.m_aRegionAddr,iFD)))
       continue;
     
     AttachMap* pAttachMap = (AttachMap*)aAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
     i8 iPid = pAttachMap->iPid();
-    if (gxArgs.m_xSysArgs.m_bDeveloper)
+    if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper)
       vTrace("vKillPrev: prev pid %lld\n"_Stz,iPid);
 
     if (iPid &&
@@ -840,7 +840,7 @@ void Engine::vKillPrev(void)
         Process::bTestPid(iPid)) {
       
       bool bResult = Process::bKillPid(iPid);
-      if (gxArgs.m_xSysArgs.m_bDeveloper) {
+      if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
         if (bResult)
           vTrace("vKillPrev: process %lld killed\n"_Stz,iPid);
         else
@@ -945,8 +945,8 @@ void Engine::vMungeCheck(void)
     vTrace("\n MUNGING!!! (Last modified Sen file : %s)        \n\n"_Stz, sLastModified.azChar());
     vTrace("******************************************************************\n"_Stz);
     
-    gxArgs.m_xSysArgs.m_sCommand = "docol munge"_Stz;
-    gxArgs.m_xSysArgs.m_bCommand = true;
+    gxCmdLineArgs.m_xSysArgs.m_sCommand = "docol munge"_Stz;
+    gxCmdLineArgs.m_xSysArgs.m_bCommand = true;
   }
 }
 
@@ -980,7 +980,7 @@ void Engine::vOperandQueueReport(bool bStdOut)
 void Engine::vOpenLog(void)
 {
   bool bStarting = false;
-  if (0 == AM::pGrid()->iThisNode() && gxArgs.m_xSysArgs.m_bStart)
+  if (0 == AM::pGrid()->iThisNode() && gxCmdLineArgs.m_xSysArgs.m_bStart)
     bStarting = true;
   
   AM::vLogOpenBySE(bStarting);
@@ -993,15 +993,15 @@ void Engine::vOpenPool(void)
 {
   bool bResult;
   
-  if (gxArgs.m_xSysArgs.m_bUnlink) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bUnlink) {
     //vUnlink();
     return;
   }
   
-  if (gxArgs.m_xSysArgs.m_bStart) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart) {
     
-    if (! gxArgs.m_xSysArgs.m_bRestart && Region::bTest(gxArgs.m_xSysArgs.m_sRegionName)) {
-      vTrace("Error: Instance %s already started\n"_Stz,gxArgs.m_xSysArgs.m_sRegionName.azChar());
+    if (! gxCmdLineArgs.m_xSysArgs.m_bRestart && Region::bTest(gxCmdLineArgs.m_xSysArgs.m_sRegionName)) {
+      vTrace("Error: Instance %s already started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
     }
@@ -1009,25 +1009,25 @@ void Engine::vOpenPool(void)
     if (AM::bVerboseProgress())
       vInfo("\n*\n* %lld) Create Shared Memory Region\n*\n"_Stz,giProgressPoint++);
     
-    Region::vCreate(gxArgs.m_xSysArgs.m_sRegionName,
-                    gxArgs.m_xSysArgs.m_bVerbose,
-                    gxArgs.m_xSysArgs.m_aRegionAddr,
-                    gxArgs.m_xSysArgs.m_iRegionSize,
-                    gxArgs.m_xSysArgs.m_bTouch,
-                    gxArgs.m_xSysArgs.m_bProgress,
-                    gxArgs.m_xSysArgs.m_bLock,
-                    gxArgs.m_xSysArgs.m_bRestart,
-                    gxArgs.m_xSysArgs.m_bDontFree,
-                    gxArgs.m_xSysArgs.m_bFreeCB);
+    Region::vCreate(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
+                    gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                    gxCmdLineArgs.m_xSysArgs.m_aRegionAddr,
+                    gxCmdLineArgs.m_xSysArgs.m_iRegionSize,
+                    gxCmdLineArgs.m_xSysArgs.m_bTouch,
+                    gxCmdLineArgs.m_xSysArgs.m_bProgress,
+                    gxCmdLineArgs.m_xSysArgs.m_bLock,
+                    gxCmdLineArgs.m_xSysArgs.m_bRestart,
+                    gxCmdLineArgs.m_xSysArgs.m_bDontFree,
+                    gxCmdLineArgs.m_xSysArgs.m_bFreeCB);
     
     if (AM::bVerboseProgress()) {
       
       s32 sRegionSize_magn;
-      MagLib::vByteMag(gxArgs.m_xSysArgs.m_iRegionSize,3,sRegionSize_magn);
+      MagLib::vByteMag(gxCmdLineArgs.m_xSysArgs.m_iRegionSize,3,sRegionSize_magn);
       
        vInfo("Created new buffer pool region %p: %s size %s\n"_Stz,
-            gxArgs.m_xSysArgs.m_aRegionAddr,
-            gxArgs.m_xSysArgs.m_sRegionName.szStz(),
+            gxCmdLineArgs.m_xSysArgs.m_aRegionAddr,
+            gxCmdLineArgs.m_xSysArgs.m_sRegionName.szStz(),
             sRegionSize_magn.szStz());
     }
     
@@ -1036,40 +1036,40 @@ void Engine::vOpenPool(void)
     return;
   }
   
-  if (gxArgs.m_xSysArgs.m_bStatus) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bStatus) {
     return;
   }
   
-  if (gxArgs.m_xSysArgs.m_bStop) {
-    if (! Region::bTest(gxArgs.m_xSysArgs.m_sRegionName)) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bStop) {
+    if (! Region::bTest(gxCmdLineArgs.m_xSysArgs.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,
-             gxArgs.m_xSysArgs.m_sRegionName.azChar());
+             gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
     }
     if (AM::bVerboseProgress())
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArgs.m_xSysArgs.m_sRegionName,
-                              gxArgs.m_xSysArgs.m_bVerbose,
-                              gxArgs.m_xSysArgs.m_aRegionAddr);
+    bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
+                              gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                              gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     ASSERT(bResult);
     vAttachRegion();
     return;
   }
   
-  if (gxArgs.m_xSysArgs.m_bPrompt || gxArgs.m_xSysArgs.m_bSethScript) {
-    if (! Region::bTest(gxArgs.m_xSysArgs.m_sRegionName)) {
-      vTrace("Error: Instance %s was not started\n"_Stz,gxArgs.m_xSysArgs.m_sRegionName.azChar());
+  if (gxCmdLineArgs.m_xSysArgs.m_bPrompt || gxCmdLineArgs.m_xSysArgs.m_bSethScript) {
+    if (! Region::bTest(gxCmdLineArgs.m_xSysArgs.m_sRegionName)) {
+      vTrace("Error: Instance %s was not started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
     }
     if (AM::bVerboseProgress())
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArgs.m_xSysArgs.m_sRegionName,
-                              gxArgs.m_xSysArgs.m_bVerbose,
-                              gxArgs.m_xSysArgs.m_aRegionAddr);
+    bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
+                              gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                              gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     if ( ! bResult ) {
-      vTrace("Error: Unable to attach to instance %s\n"_Stz,gxArgs.m_xSysArgs.m_sRegionName.azChar());
+      vTrace("Error: Unable to attach to instance %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
       
@@ -1080,9 +1080,9 @@ void Engine::vOpenPool(void)
   
   if (AM::bVerboseProgress())
     vInfo("\n*\n* Attach Region\n*\n"_Stz);
-  bResult = Region::bAttach(gxArgs.m_xSysArgs.m_sRegionName,
-                            gxArgs.m_xSysArgs.m_bVerbose,
-                            gxArgs.m_xSysArgs.m_aRegionAddr);
+  bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
+                            gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                            gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
   ASSERT(bResult);
   vAttachRegion();
 }
@@ -1093,8 +1093,8 @@ void Engine::vOpenPool(void)
 bool Engine::bOpenPool(s32& sPoolName)
 {
   bool bResult = Region::bAttach(sPoolName,
-                                 gxArgs.m_xSysArgs.m_bVerbose,
-                                 gxArgs.m_xSysArgs.m_aRegionAddr);
+                                 gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                                 gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
   if (!bResult)
     return bResult;
   
@@ -1113,11 +1113,11 @@ void Engine::vOpenTrace(void)
   #ifdef WITH_DEBUG_VERSION
     sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
                        "SEgrid"_Stz,
-                       gxArgs.m_xSysArgs.m_sNodeName.szStz());
+                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   #else
     sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
                        "SEgrid"_Stz,
-                       gxArgs.m_xSysArgs.m_sNodeName.szStz());
+                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   #endif
   //if (AM::bVerboseProgress())
   //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
@@ -1126,7 +1126,7 @@ void Engine::vOpenTrace(void)
   
   bool bOpened;
 
-  if (gxArgs.m_xSysArgs.m_bAppendTrace)
+  if (gxCmdLineArgs.m_xSysArgs.m_bAppendTrace)
     bOpened = gpTraceFile->bOpenAppend(sTracePath);
   else
     bOpened = gpTraceFile->bOpenWrite(sTracePath);
@@ -1134,7 +1134,7 @@ void Engine::vOpenTrace(void)
   
   if (AM::bVerboseProgress())
     vInfo("Opened trace file for %s: %s\n"_Stz,
-          (gxArgs.m_xSysArgs.m_bAppendTrace) ? "append" : "write",
+          (gxCmdLineArgs.m_xSysArgs.m_bAppendTrace) ? "append" : "write",
           sTracePath.szStz());
 }
 
@@ -1272,12 +1272,12 @@ void Engine::vPrintFormats(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintStatus(void)
 {
-  if (Region::bTest(gxArgs.m_xSysArgs.m_sRegionName)) {
+  if (Region::bTest(gxCmdLineArgs.m_xSysArgs.m_sRegionName)) {
     
     // attach to the region
-    bool bResult = Region::bAttach(gxArgs.m_xSysArgs.m_sRegionName,
-                                   gxArgs.m_xSysArgs.m_bVerbose,
-                                   gxArgs.m_xSysArgs.m_aRegionAddr);
+    bool bResult = Region::bAttach(gxCmdLineArgs.m_xSysArgs.m_sRegionName,
+                                   gxCmdLineArgs.m_xSysArgs.m_bVerbose,
+                                   gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     ASSERT(bResult);
     
     // get globals
@@ -1287,13 +1287,13 @@ void Engine::vPrintStatus(void)
     i8 iPid = AM::iPid();
     if ( Process::bTestPid(iPid) ) {
       vTrace("Engine instance %s running\n"_Stz,
-             gxArgs.m_xSysArgs.m_sRegionName.azChar());
+             gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
       return;
     }
   }
   
   vTrace("Engine instance %s not running\n"_Stz,
-         gxArgs.m_xSysArgs.m_sRegionName.azChar());
+         gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
   
 }
 
@@ -1452,7 +1452,7 @@ void Engine::vPrintWelcome(void)
   vGetWelcome(sWelcome);
   vGetCopyright(sCopyright);
 
-  if (gxArgs.m_xSysArgs.m_bWelcome && ! gxArgs.m_xSysArgs.m_bStatus) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
     vInfo("%s\n"_Stz,sWelcome.szStz());
     vInfo("%s\n"_Stz,sCopyright.szStz());
   }
@@ -1464,13 +1464,13 @@ void Engine::vPrintWelcome(void)
 void Engine::vRunUtility(int argc, Stz* argv[])
 {
   // potentially run the shm utility
-  if (gxArgs.m_xSysArgs.m_bUteShm) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bUteShm) {
     ShmUtility::vRun(argc,(Stz**)argv);
     return;
   }
 
   // potentially run the api demo
-  if (gxArgs.m_xSysArgs.m_bUteApiDemo) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bUteApiDemo) {
     // ... more
     return;
   }
@@ -1481,7 +1481,7 @@ void Engine::vRunUtility(int argc, Stz* argv[])
 /*----------------------------------------------------------------------------*/
 void Engine::vSanityCheck(void)
 {
-  gxArgs.vSanityCheck();
+  gxCmdLineArgs.vSanityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1513,7 +1513,7 @@ void Engine::vStartSystem(void)
   
   //ASSERT( ! AM::pRootDic()->bHasWords() );
     
-  gpAttachMap->vRecordArguments(&gxArgs);
+  gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   
   if (AM::bVerboseProgress()) {
     gpAttachMap->vPrintAttachMap();
@@ -1544,13 +1544,13 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
-  for (i8 i_Node = 0; i_Node < gxArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
     ASSERT(AM::pGrid()->nNodes() == i_Node);
     Node* pNode = new Node(i_Node,
-                           gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
-                           gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
-                           gxArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
     AM::pGrid()->vPutNode(pNode);
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
@@ -1560,11 +1560,11 @@ void Engine::vStartSystem(void)
     pGridArticle->vAppend(pNodeArticle);
   }
   
-  Node* pThisNode = AM::pGrid()->pFindNode(gxArgs.m_xSysArgs.m_sNodeName);
+  Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   if (! pThisNode)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Cannot find Node %s in the cluster"_Stz,
-           gxArgs.m_xSysArgs.m_sNodeName.azChar());
+           gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
   
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
@@ -1636,13 +1636,13 @@ void Engine::vStartSystem(void)
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
   // spawn general threads
-  for (i8 iThreads = 0; iThreads < gxArgs.m_xSysArgs.m_nThreads; iThreads++) {
+  for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
     pThread->vSpawnPsxThd_general();
   }
   
   // spawn dummy threads
-  for (i8 iThreads = 0; iThreads < gxArgs.m_xSysArgs.m_nDummyThreads; iThreads++) {
+  for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nDummyThreads; iThreads++) {
     Thread* pThread = new Thread;
     pThread->vSpawnPsxThd_dummy();
   }
@@ -1662,10 +1662,10 @@ void Engine::vStartSystem(void)
   
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "instance %s started"_Stz,
-              gxArgs.m_xSysArgs.m_sRegionName.azChar()); //!format-LogSys
+              gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar()); //!format-LogSys
   
   if (AM::bVerboseProgress()) {
-    vInfo("Engine Instance %s started\n"_Stz,gxArgs.m_xSysArgs.m_sRegionName.azChar());
+    vInfo("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     gpAttachMap->m_pPtnMap->vDumpDataBuffers();
   }
   
@@ -1714,12 +1714,12 @@ void Engine::vStopSystem(void)
 {
   ASSERT(gpBufferPool);
   
-  Region::vUnlink(gxArgs.m_xSysArgs.m_sRegionName);
+  Region::vUnlink(gxCmdLineArgs.m_xSysArgs.m_sRegionName);
   
   gpAttachMap->m_iStop = 1;
   
   vTrace("Engine instance %s stopped\n"_Stz,
-         gxArgs.m_xSysArgs.m_sRegionName.azChar());
+         gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
   
   // the system is now stopped
 }
@@ -1763,7 +1763,7 @@ void Engine::vTestPort(i8 iPort)
 /*----------------------------------------------------------------------------*/
 void Engine::vUnlinkSystem(void)
 {
-  Region::vUnlink(gxArgs.m_xSysArgs.m_sRegionName);
+  Region::vUnlink(gxCmdLineArgs.m_xSysArgs.m_sRegionName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1788,20 +1788,20 @@ void Engine::vWriteRegionName(void)
     vInfo("\n*\n* Write Region Name\n*\n"_Stz);
  
   s256 sFileName;
-  sFileName.vSprint("./SE_%s.region"_Stz,gxArgs.m_xSysArgs.m_sNodeName.szStz());
+  sFileName.vSprint("./SE_%s.region"_Stz,gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   
   // write the regionName into a se.region file
   // used by shell script to start se prompt
-  if (gxArgs.m_xSysArgs.m_bStart) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bStart) {
     File oFile(nullptr);
     bool b = oFile.bOpenMode(sFileName.szStz(),C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
-    oFile.vPrint("%s\n"_Stz,gxArgs.m_xSysArgs.m_sRegionName.azChar());
+    oFile.vPrint("%s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     oFile.vClose();
   }
   
   if (AM::bVerboseProgress())
-    vInfo("REGION NAME: %s\n"_Stz,gxArgs.m_xSysArgs.m_sRegionName.azChar());
+    vInfo("REGION NAME: %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
 }
 
 /*============================================================================*/

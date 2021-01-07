@@ -16,7 +16,7 @@ extern Stz* gsBuildHostName;
 extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
-extern CmdLineArgs gxArgs;
+extern CmdLineArgs gxCmdLineArgs;
 extern EnvFlags gxEnvFlags;
 
 extern i8   gi_argc;
@@ -87,11 +87,11 @@ int main(int argc, char* argv[])
     Process::vEntry();
     
     // parse the command line arguments
-    if (! gxArgs.bParse(gi_argc,gi_szaArgv))
+    if (! gxCmdLineArgs.bParse(gi_argc,gi_szaArgv))
       Process::vExitFailure();
     
     // potentially run utilities
-    if (gxArgs.m_xSysArgs.m_bUtility) {
+    if (gxCmdLineArgs.m_xSysArgs.m_bUtility) {
       Engine::vRunUtility(argc,(Stz**)argv);
       Process::vExitSuccess();
     }

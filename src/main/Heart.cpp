@@ -14,7 +14,7 @@
 #include "Heartbeat.hpp"
 
 
-extern CmdLineArgs gxArgs;
+extern CmdLineArgs gxCmdLineArgs;
 
 extern Stz *gsBuildGitHash;
 extern Stz *gsBuildDate;
@@ -34,14 +34,14 @@ RingBuffer<Heartbeat> gxHeartbeatData(100); // collect heartbeat data from the s
 /*----------------------------------------------------------------------------*/
 void vHeartInit(void) {
 
-  if (gxArgs.m_xSysArgs.m_nHeartbeatNodes > 0) {
+  if (gxCmdLineArgs.m_xSysArgs.m_nHeartbeatNodes > 0) {
     printf("SE Heart (sizeof(Heartbeat)=%lld\n", (i8) sizeof(Heartbeat));
 
 //  char azPath[256];
 //  sprintf(azPath,"../tmp/rapidsse_pid%lld",(i8)0); //getpid());
 //  gaHearbeatFile = fopen(azPath,"w");
 
-    int iPort = gxArgs.m_xSysArgs.m_xHeartbeatNode[0].m_iPortNo;
+    int iPort = gxCmdLineArgs.m_xSysArgs.m_xHeartbeatNode[0].m_iPortNo;
     char szAddr[32];
 
     if (iPort == 0) {
@@ -53,7 +53,7 @@ void vHeartInit(void) {
     PsxThd::iSpawnPosixThread(vHeartRcvLoop, pReceiver);
 
 
-    strncpy(szAddr, gxArgs.m_xSysArgs.m_xHeartbeatNode[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
+    strncpy(szAddr, gxCmdLineArgs.m_xSysArgs.m_xHeartbeatNode[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
     szAddr[sizeof(szAddr) - 1] = 0;
 
     //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
@@ -86,7 +86,7 @@ void vCollectData()
   xHeartbeat.m_iSincePosixEpoch = time(0);
   strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, 32);
 
-  strncpy(xHeartbeat.m_acString0, gxArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acString0) - 1);
+  strncpy(xHeartbeat.m_acString0, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acString0) - 1);
   xHeartbeat.m_acString0[sizeof(xHeartbeat.m_acString0) - 1] = 0;
 
   gxHeartbeatData.bTryWrite(xHeartbeat);

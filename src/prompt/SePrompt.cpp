@@ -28,7 +28,7 @@
 #include "ePP.h"
 #include "TagConstants.h"
 
-extern CmdLineArgs          gxArgs;
+extern CmdLineArgs          gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;
@@ -74,7 +74,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
   m_pSnapshotObjects = nullptr;
 
-  d_iDebugMode = gxArgs.m_xSysArgs.m_iPromptDebug;
+  d_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
 
   m_pLitTknVec = new TokenVec;
     
@@ -843,7 +843,7 @@ void SePrompt::vInitialSettings(void)
   //else
   pSeDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
   
-  if (gxArgs.m_xSysArgs.m_bDeveloper) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
     m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
     m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
     m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
@@ -1020,10 +1020,10 @@ void SePrompt::vPromptUser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (gxArgs.m_xSysArgs.m_bSethScript)
+  if (gxCmdLineArgs.m_xSysArgs.m_bSethScript)
     return;
   
-  if (gxArgs.bUserPrompt()) {
+  if (gxCmdLineArgs.bUserPrompt()) {
     vInfo("se> "_Stz);
     fflush(stdin);
     return;
@@ -1080,8 +1080,8 @@ bool SePrompt::bReadNextCommand(SeDeputy* pSeDeputy)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: initial command supplied as an SE command line argument
   
-  if (gxArgs.m_xSysArgs.m_bInitial) {
-    gxArgs.m_xSysArgs.m_bInitial = false;
+  if (gxCmdLineArgs.m_xSysArgs.m_bInitial) {
+    gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
     m_pInpTknVec->vTokenise(szInitial);
