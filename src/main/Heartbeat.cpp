@@ -2,7 +2,7 @@
 /* Heartbeat.cpp - heartbeat message                                          */
 /*============================================================================*/
 
-#if 0 // ray 7 jan 2020; compilation problem in bamboo re atomics
+#if 1 // ray 7 jan 2020; compilation problem in bamboo re atomics
 
 #include <base/BASE.h>
 #include "STORE.h"

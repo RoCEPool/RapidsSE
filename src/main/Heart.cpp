@@ -2,7 +2,7 @@
 /* Heart.cpp - system heart                                                   */
 /*============================================================================*/
 
-#if 0 // ray 7 jan 2020; compilation problem in bamboo re atomics
+#if 1 // ray 7 jan 2020; compilation problem in bamboo re atomics
 
 #include <cstdio>
 #include <cstring>
@@ -181,6 +181,7 @@ void vCollectData()
 /* heart read loop: to simulate the reading, but doesn't do anything with the data */
 /*---------------------------------------------------------------------------------*/
 [[noreturn]] void *vHeartReadLoop(void *pFuncObj) {
+
   printf("SE Heart Read from received ring-buffer thread entry\n");
 
   Heartbeat hbHeartbeat;
@@ -197,7 +198,7 @@ void vCollectData()
     usleep(500*1000);
 
     if (gxHeartbeatBuffer.bTryRead(hbHeartbeat))  {
-      //hbHeartbeat = gxHeartbeatBuffer.tRead();
+
       tmTimeInfo = localtime((const time_t *) &hbHeartbeat.m_iSincePosixEpoch);
       strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
 

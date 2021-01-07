@@ -2,6 +2,7 @@
 /* Heartbeat.hpp -- heartbeat message                                         */
 /*============================================================================*/
 #pragma once
+#include <atomic>
 #include <string>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -12,7 +13,8 @@
 #include "MachineTypes.h"
 #include <base/BASE.h>
 
-//#include <atomic>
+
+
 //#include <stdatomic.h>
 
 /*----------------------------------------------------------------------------*/
@@ -55,8 +57,8 @@ private:
 
 
   // Using C++11 atomic here
-  std::atomic<int64_t> m_atmWrite;
-  std::atomic<int64_t> m_atmRead;
+  std::atomic<i8> m_atmWrite;
+  std::atomic<i8> m_atmRead;
 
   const size_t m_iMaxSize;
   bool m_bFull;
@@ -123,9 +125,9 @@ public:
   // Atomic operation here
   bool bTryWrite(const T& tItem) {
 
-    auto const currentWrite = m_atmWrite.load(std::memory_order_relaxed);
+    i8 currentWrite = m_atmWrite.load(std::memory_order_relaxed);
 
-    auto nextWrite = (currentWrite + 1) % m_iMaxSize;
+    i8 nextWrite = (currentWrite + 1) % m_iMaxSize;
 
     if (nextWrite != m_atmRead.load(std::memory_order_acquire)) {
       m_tBuffer[currentWrite] = tItem;
@@ -193,8 +195,8 @@ public:
   size_t iSize() const {
     size_t size = m_iMaxSize;
 
-    auto iWriteIdx = m_atmWrite.load(std::memory_order_relaxed);
-    auto iReadIdx = m_atmRead.load(std::memory_order_relaxed);
+    i8 iWriteIdx = m_atmWrite.load(std::memory_order_relaxed);
+    i8 iReadIdx = m_atmRead.load(std::memory_order_relaxed);
     if (!m_bFull) {
       if (iWriteIdx >= iReadIdx) {
         size = iWriteIdx - iReadIdx;
