@@ -1,7 +1,10 @@
 /*============================================================================*/
-/* Args.hpp - command line arguments                                     */
+/* Args.hpp - command line arguments                                          */
 /*============================================================================*/
 #pragma once
+
+#include "SysArgs.h"
+
 
 namespace STORE
 {
@@ -18,6 +21,9 @@ namespace STORE
     friend class PROMPT::SePrompt;
 
   public:
+  
+    // SYSARGS EXPERIMENT 1 : does it fit
+    SysArgs m_xSysArgs;
   
     // configuration of this node
     s256  m_sCommandsDir;  // commands dir

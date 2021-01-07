@@ -27,6 +27,9 @@ namespace STORE
     s256  m_sLogRegion;
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
+  
+    // SYSARGS EXPERIMENT 1 : does it fit
+    SysArgs m_xSysArgs;
     
     struct {
       i8     m_nBootNodes;     // number nodes supplied via SE -node

@@ -5,8 +5,6 @@
 #include "BASE.h"
 #include "STORE.h"
 
-#include "SysArgs.h"
-
 extern Args       gxArgs;
 extern AttachMap* gpAttachMap;
 extern Log*       gpLog;
