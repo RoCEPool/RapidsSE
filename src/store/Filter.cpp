@@ -87,21 +87,8 @@ eEC Filter::eFilterRows(StreamDef* pStreamDefIn, Stz* sFilter)
 
   pTkn = pTknVec->pNextToken();
 
-  // now project each destination column
-  while (pTkn) {
-    eError = eFilterColumn(pStreamDefIn, pTknVec);
-    if (eError != EC_NONE)
-       break;
-
-    pTkn = pTknVec->pCurrToken();
-
-    if ( pTkn && ! pTkn->bSame(","_Stz) ) {
-      eError = EC_INVALID_COMMAND;
-      break;
-    }
-    if (pTkn)
-      pTkn = pTknVec->pNextToken();
-  }
+  // now evaluate the filter
+  eError = eFilterColumn(pStreamDefIn, pTknVec);
 
   L_RETRUN:
     delete pTknVec;
