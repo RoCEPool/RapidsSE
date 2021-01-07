@@ -16,9 +16,9 @@ s256   gi_szaArgv[128];
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CmdLineArgs::CmdLineArgs(void)
-: Object(CN_ARGUMENTS)
+: Object(CN_CMDLINEARGS)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   // configuration
 #ifdef WITH_APPLE
@@ -116,7 +116,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bUteShm          = false;
   m_xSysArgs.m_bUteApiDemo      = false;
 
-  _checkInitialised_(CN_ARGUMENTS);
+  _checkInitialised_(CN_CMDLINEARGS);
   
   vEnvironmentVariables();
 }
@@ -126,7 +126,7 @@ CmdLineArgs::CmdLineArgs(void)
 /*----------------------------------------------------------------------------*/
 CmdLineArgs::~CmdLineArgs(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,7 +191,7 @@ void CmdLineArgs::vLog(void)
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vEnvironmentVariables(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   s32  sVarName;
   s256 sRegionName;
@@ -217,7 +217,7 @@ void CmdLineArgs::vEnvironmentVariables(void)
 /*----------------------------------------------------------------------------*/
 bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
     
   if (argv[1].bSame("shm"_Stz)) {
     m_xSysArgs.m_bUtility = true;
@@ -928,7 +928,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vPrint(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   vTrace("\nArgs:"_Stz);
   
@@ -955,7 +955,7 @@ void CmdLineArgs::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vPrintStartupInfo(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   // print startup information
   if (! AM::bVerboseProgress())
@@ -1049,7 +1049,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vPrintHelp(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   vInfo("\n"_Stz);
   
@@ -1075,7 +1075,7 @@ void CmdLineArgs::vPrintHelp(void)
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vSanityCheck(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
     vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_xSysArgs.m_nBootNodes,C_MAX_NODES);
@@ -1103,13 +1103,13 @@ void CmdLineArgs::vSanityCheck(void)
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vScribble(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   byte* aDst = aAdd<byte*>(this,sizeof(Object));
   
   i8 nBytes = sizeof(CmdLineArgs) - sizeof(Object) - sizeof(Footer);
   
-  MemLib::vSet(aDst,0xFF,nBytes,CN_ARGUMENTS);
+  MemLib::vSet(aDst,0xFF,nBytes,CN_CMDLINEARGS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1117,7 +1117,7 @@ void CmdLineArgs::vScribble(void)
 /*----------------------------------------------------------------------------*/
 bool CmdLineArgs::bUserPrompt(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
 
   if (m_xSysArgs.m_bDeveloper)
     return false;

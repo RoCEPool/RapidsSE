@@ -19,7 +19,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ACCESSPATH,
   /* */ CN_AGGTIMER,
   /* */ CN_ARG,
-  /* */ CN_ARGUMENTS,
   /* */ CN_ARRANGE,
   /* */ CN_ARTICLE,
   /* */ CN_ATOMIC,
@@ -39,6 +38,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
   /* */ CN_CLASSPLACEHOLDER,
+  /* */ CN_CMDLINEARGS,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
   /* */ CN_CRVBUFFER,
@@ -341,7 +341,6 @@ static Stz* aCN[]
   /* */ "ACCESSPATH"_Stz,           // CN_ACCESSPATH
   /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
   /* */ "ARG"_Stz,                  // CN_ARG
-  /* */ "ARGUMENTS"_Stz,            // CN_ARGUMENTS
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
   /* */ "ARTICLE"_Stz,              // CN_ARTICLE
   /* */ "ATOMIC"_Stz,               // CN_ATOMIC
@@ -361,6 +360,7 @@ static Stz* aCN[]
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
+  /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMPILER"_Stz,             // CN_COMPILER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER

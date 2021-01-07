@@ -20,7 +20,7 @@ __aFooterFunction(Licence)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Licence::Licence(void)
-: Object(CN_ARGUMENTS)
+: Object(CN_CMDLINEARGS)
 {
   _precondition_(_MAGIC_,CN_LICENCE,_FOOTER_);
   

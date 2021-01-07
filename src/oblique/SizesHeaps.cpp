@@ -134,7 +134,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AccessPath),         HT_T_MEDIUM  ,0 }, // CN_ACCESSPATH
   { sizeof(AggTimer),           HT_T_TINY    ,0 }, // CN_AGGTIMER
   { sizeof(Arg),                HT_T_TINY    ,0 }, // CN_ARG
-  { sizeof(CmdLineArgs),               HT_INVALID   ,0 }, // CN_ARGUMENTS
   { sizeof(Arrange),            HT_T_TINY    ,0 }, // CN_ARRANGE
   { sizeof(Article),            HT_T_TINY    ,0 }, // CN_ARTICLE
   { sizeof(Atomic),             HT_INVALID   ,0 }, // CN_ATOMIC
@@ -154,6 +153,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CellSingle),         HT_INVALID   ,0 }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_MEDIUM  ,0 }, // CN_CHARSER
   { sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 }, // CN_CLASSPLACEHOLDER
+  { sizeof(CmdLineArgs),        HT_INVALID   ,0 }, // CN_CMDLINEARGS
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
   { sizeof(Compiler),           HT_T_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER

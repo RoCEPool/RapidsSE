@@ -121,7 +121,7 @@ namespace STORE
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
   
-    void vRecordArguments(CmdLineArgs* pArgs);
+    void vRecordArguments(CmdLineArgs* CmdLineArgs);
     SessionArray* pSessionArray(void);
 
     Footer* aFooter(void);

@@ -283,7 +283,7 @@ void Constants::vAddConstantsCpp(void)
 
   /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   
-  /* 12 */ vAddConstant("CN_ARGUMENTS"_Stz,    CN_ARGUMENTS);
+  /* 12 */ vAddConstant("CN_CMDLINEARGS"_Stz,    CN_CMDLINEARGS);
   /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);
   /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
   

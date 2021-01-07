@@ -250,45 +250,45 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordArguments(CmdLineArgs* pArgs)
+void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
-  m_xSysArgs.m_nBootNodes       = pArgs->m_xSysArgs.m_nBootNodes;
-  m_xSysArgs.m_iConnectCode     = pArgs->m_xSysArgs.m_iConnectCode;
-  m_xSysArgs.m_bDebugIndex      = pArgs->m_xSysArgs.m_bDebugIndex;
-  m_xSysArgs.m_bDebugMode       = pArgs->m_xSysArgs.m_bDebugMode;
-  m_xSysArgs.m_nDegOfPar        = pArgs->m_xSysArgs.m_nDegOfPar;
-  m_xSysArgs.m_bDeveloper       = pArgs->m_xSysArgs.m_bDeveloper;
-  m_xSysArgs.m_nDummyLoop       = pArgs->m_xSysArgs.m_nDummyLoop;
-  m_xSysArgs.m_nDummySleep      = pArgs->m_xSysArgs.m_nDummySleep;
-  m_xSysArgs.m_nDummyThreads    = pArgs->m_xSysArgs.m_nDummyThreads;
-  m_xSysArgs.m_nIndexEntries    = pArgs->m_xSysArgs.m_nEntries;
-  m_xSysArgs.m_bLog             = pArgs->m_xSysArgs.m_bLog;
-  m_xSysArgs.m_nLvlLevels       = pArgs->m_xSysArgs.m_nLvlLevels;
-  m_xSysArgs.m_iLvlRatio        = pArgs->m_xSysArgs.m_iLvlRatio;
-  m_xSysArgs.m_nMaxLoadErrors   = pArgs->m_xSysArgs.m_nMaxLoadErrors;
-  m_xSysArgs.m_nMaxReadyLP      = pArgs->m_xSysArgs.m_nMaxReadyLP;
-  m_xSysArgs.m_bMetadata        = pArgs->m_xSysArgs.m_bMetadata;
-  m_xSysArgs.m_bMunged          = pArgs->m_xSysArgs.m_bMunged;
-  m_xSysArgs.m_sGridName        = pArgs->m_xSysArgs.m_sGridName;
-  m_xSysArgs.m_nOperands        = pArgs->m_xSysArgs.m_nOperands;
-  m_xSysArgs.m_bProgress        = pArgs->m_xSysArgs.m_bProgress;
-  m_xSysArgs.m_sRegionName      = pArgs->m_xSysArgs.m_sRegionName;
-  m_xSysArgs.m_iRegionSize      = pArgs->m_xSysArgs.m_iRegionSize;
-  m_xSysArgs.m_bRLUDiary        = pArgs->m_xSysArgs.m_bRLUDiary;
-  m_xSysArgs.m_bRLUTimer        = pArgs->m_xSysArgs.m_bRLUTimer;
-  m_xSysArgs.m_nPtnsPerTable    = pArgs->m_xSysArgs.m_nPtnsPerTable;
-  m_xSysArgs.m_nThreads         = pArgs->m_xSysArgs.m_nThreads;
-  m_xSysArgs.m_bTracepoint      = pArgs->m_xSysArgs.m_bTracepoint;
-  m_xSysArgs.m_bVerbose         = pArgs->m_xSysArgs.m_bVerbose;
+  m_xSysArgs.m_nBootNodes       = pCmdLineArgs->m_xSysArgs.m_nBootNodes;
+  m_xSysArgs.m_iConnectCode     = pCmdLineArgs->m_xSysArgs.m_iConnectCode;
+  m_xSysArgs.m_bDebugIndex      = pCmdLineArgs->m_xSysArgs.m_bDebugIndex;
+  m_xSysArgs.m_bDebugMode       = pCmdLineArgs->m_xSysArgs.m_bDebugMode;
+  m_xSysArgs.m_nDegOfPar        = pCmdLineArgs->m_xSysArgs.m_nDegOfPar;
+  m_xSysArgs.m_bDeveloper       = pCmdLineArgs->m_xSysArgs.m_bDeveloper;
+  m_xSysArgs.m_nDummyLoop       = pCmdLineArgs->m_xSysArgs.m_nDummyLoop;
+  m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;
+  m_xSysArgs.m_nDummyThreads    = pCmdLineArgs->m_xSysArgs.m_nDummyThreads;
+  m_xSysArgs.m_nIndexEntries    = pCmdLineArgs->m_xSysArgs.m_nEntries;
+  m_xSysArgs.m_bLog             = pCmdLineArgs->m_xSysArgs.m_bLog;
+  m_xSysArgs.m_nLvlLevels       = pCmdLineArgs->m_xSysArgs.m_nLvlLevels;
+  m_xSysArgs.m_iLvlRatio        = pCmdLineArgs->m_xSysArgs.m_iLvlRatio;
+  m_xSysArgs.m_nMaxLoadErrors   = pCmdLineArgs->m_xSysArgs.m_nMaxLoadErrors;
+  m_xSysArgs.m_nMaxReadyLP      = pCmdLineArgs->m_xSysArgs.m_nMaxReadyLP;
+  m_xSysArgs.m_bMetadata        = pCmdLineArgs->m_xSysArgs.m_bMetadata;
+  m_xSysArgs.m_bMunged          = pCmdLineArgs->m_xSysArgs.m_bMunged;
+  m_xSysArgs.m_sGridName        = pCmdLineArgs->m_xSysArgs.m_sGridName;
+  m_xSysArgs.m_nOperands        = pCmdLineArgs->m_xSysArgs.m_nOperands;
+  m_xSysArgs.m_bProgress        = pCmdLineArgs->m_xSysArgs.m_bProgress;
+  m_xSysArgs.m_sRegionName      = pCmdLineArgs->m_xSysArgs.m_sRegionName;
+  m_xSysArgs.m_iRegionSize      = pCmdLineArgs->m_xSysArgs.m_iRegionSize;
+  m_xSysArgs.m_bRLUDiary        = pCmdLineArgs->m_xSysArgs.m_bRLUDiary;
+  m_xSysArgs.m_bRLUTimer        = pCmdLineArgs->m_xSysArgs.m_bRLUTimer;
+  m_xSysArgs.m_nPtnsPerTable    = pCmdLineArgs->m_xSysArgs.m_nPtnsPerTable;
+  m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
+  m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
+  m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;
 
   m_xSysArgs.m_oArgTagSet.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
   
-  m_xSysArgs.m_oArgTagSet.vCopy(&pArgs->m_xSysArgs.m_oArgTagSet);
+  m_xSysArgs.m_oArgTagSet.vCopy(&pCmdLineArgs->m_xSysArgs.m_oArgTagSet);
   
   
   // ray -- not sure the following should be here

@@ -20,7 +20,7 @@ __aFooterFunction(Limits)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Limits::Limits(void)
-: Object(CN_ARGUMENTS)
+: Object(CN_CMDLINEARGS)
 {
   _precondition_(_MAGIC_,CN_LIMITS,_FOOTER_);
   
