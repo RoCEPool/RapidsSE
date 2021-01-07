@@ -170,7 +170,7 @@
               properties: [
                 // Add a constraint that the valueObjects contain no children
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                  {  name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
+                  { name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
                 ]}
               ],
               children: [
@@ -269,7 +269,22 @@
                       name: "queryText",
                       value: "The string that the user entered",
                       type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
-                    }
+                    },
+                    {
+                      // Add a constraint that children of statement objects must be planObjects
+                      name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                        {
+                          name: "childType",
+                          type: "/__root__/primitives/constraints/childType",
+                          children: [
+                            {
+                              name: "childTypeParam",
+                              type: "/__root__/definitions/object/valueObject/stringObject",
+                              value: "/__root__/definitions/object/planObject"
+                            }
+                          ]
+                        }
+                    ]}
                   ],
                   children: [
 
@@ -319,6 +334,23 @@
                 {
                   name: "sqlOperator",
                   value: "A container of all operators that process streams of data",
+                  properties: [
+                    {
+                      // Add a constraint that all children of sqlOperator objects must also be planObjects
+                      name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type: "/__root__/primitives/constraints/childType",
+                        children: [
+                          {
+                            name: "childTypeParam",
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/definitions/object/planObject"
+                          }
+                        ]
+                      }
+                    ]}
+                  ],
                   children: [
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/projectOp
@@ -368,7 +400,7 @@
                           name: "tableScanOp",
                           value: "Linearly reads all rows in a table",
                           properties: [
-                            { name: "tableRef", type: "/__root__/definitions/object/tableRef" },
+                            { name: "tableRef", type: "/__root__/definitions/object/compound/tableRef" },
                           ]
                         },
 
@@ -1116,23 +1148,6 @@
                 }
               ]
             }, // EndPath: /__root__/definitions/object/expr
-            
-// Path: /__root__/definitions/object/tableRef
-            {
-              name: "tableRef",
-              value: "A reference to a table",
-              properties: [
-                // Add a constraint that this object doesn't have any children
-                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                  {  name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
-                ]},
-
-                // Add properties for catalogname, schemaname and tablename
-                { name: "catalogName", type: "/__root__/definitions/object/valueObject/stringObject" },
-                { name: "schemaName",  type: "/__root__/definitions/object/valueObject/stringObject" },
-                { name: "tableName",   type: "/__root__/definitions/object/valueObject/stringObject" }
-              ]
-            },
 
 
 // Path: /__root__/definitions/object/list
@@ -1170,6 +1185,23 @@
               value: "A container for all custom compound objects that are referenced elsewhere.",
               children: [
 
+// Path: /__root__/definitions/object/compound/tableRef
+                {
+                  name: "tableRef",
+                  value: "A reference to a table",
+                  properties: [
+                    // Add a constraint that this object doesn't have any children
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {  name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
+                    ]},
+
+                    // Add properties for catalogname, schemaname and tablename
+                    { name: "catalogName", type: "/__root__/definitions/object/valueObject/stringObject" },
+                    { name: "schemaName",  type: "/__root__/definitions/object/valueObject/stringObject" },
+                    { name: "tableName",   type: "/__root__/definitions/object/valueObject/stringObject" }
+                  ]
+                },
+
 // Path: /__root__/definitions/object/compound/projectedExpr
                 {
                   name: "projectedExpr",
@@ -1186,10 +1218,27 @@
                       type: "/__root__/definitions/object/expr"
                     }
                   ]
-                } // EndPath: /__root__/definitions/object/compound/projectedExpr
-              ]
-            } // EndPath: /__root__/definitions/object/compound
+                }, // EndPath: /__root__/definitions/object/compound/projectedExpr
 
+              ]
+            }, // EndPath: /__root__/definitions/object/compound
+
+// Path: /__root__/definitions/object/planNode
+            {
+              name: "planNode",
+              value: "A definition for the node that occurs at /__root__/plan.",
+              properties: [
+                // Add a constraint that the children of a plan node must be a single statement node
+                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                  { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
+                    { name: "", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/statement" }
+                  ]},
+                  { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
+                    { name: "", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }
+                  ]}
+                ]}
+              ]
+            } // EndPath: /__root__/definitions/object/planNode
           ]
         }, // EndPath: /__root__/definitions/object
 
@@ -1204,7 +1253,7 @@
 // Path: /__root__/plan
     {
       name: "plan",
-      type: "/__root__/primitives/branch",
+      type: "/__root__/definitions/object/planNode",
       children: [
         // Note: Children will get populated when a query is being parsed.
       ]

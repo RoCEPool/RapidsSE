@@ -16,7 +16,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/tableRef"_Stz;
+static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/compound/tableRef"_Stz;
 static Stz* C_TABLEREF_NAME = "tableRef"_Stz;
 static Stz* C_CATALOG_PROP  = "catalogName"_Stz;
 static Stz* C_SCHEMA_PROP   = "schemaName"_Stz;
