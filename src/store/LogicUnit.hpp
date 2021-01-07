@@ -17,6 +17,7 @@
 #include "DevROW.hpp"
 #include "LogicTimer.hpp"
 #include "LogicCompiler.hpp"
+#include "ExprEval.hpp"
 #include "Project.hpp"
 #include "Filter.hpp"
 #include "Range.hpp"
@@ -110,6 +111,7 @@ namespace STORE
     REG<Operand>     m_xpOperandC;  // operand C
     REG<Operand>     m_xpOperandOoO; // operand OoO
 
+    REG<ExprEval>     m_xpExprEval; // expr eval
     REG<Filter>      m_xpFilter;    // filter
     REG<Project>     m_xpProject;   // project
     REG<Range>       m_xpRange;     // range

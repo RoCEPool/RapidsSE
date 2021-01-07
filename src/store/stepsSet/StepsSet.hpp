@@ -337,6 +337,12 @@ public:
   void vExprVecGet(void);
   void vExprVecNew(void);
 
+  // project
+  void vExprEvalGet(void);
+  void vExprEvalNew(void);
+  void vExprEvalColumns(void);
+  void vExprEvalSet(void);
+
   // fact
   void vFactAtrOf(void);
   void vFactAttributeAppend(void);
