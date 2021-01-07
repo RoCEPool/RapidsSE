@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "TablePtn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 
+#include "TablePtn.hpp"
 #include "Table.hpp"
 
 bool mbWatch = false;
