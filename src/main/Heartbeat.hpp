@@ -44,10 +44,12 @@ public:
 template<class T>
 class RingBuffer {
 private:
-  std::mutex m_mutexHB;
+  //std::mutex m_mutexHB;
+  //size_t m_iWriteIdx;
+  //size_t m_iReadIdx;
+
   std::unique_ptr<T[]> m_tBuffer;
-  size_t m_iWriteIdx;
-  size_t m_iReadIdx;
+
 
   // Using C++11 atomic here
   std::atomic<int64_t> m_atmWrite;
@@ -55,18 +57,20 @@ private:
 
   const size_t m_iMaxSize;
   bool m_bFull;
+
 public:
   explicit RingBuffer(size_t iMaxSize) :
       m_tBuffer(std::unique_ptr<T[]>(new T[iMaxSize])),
       m_iMaxSize(iMaxSize) {
-    m_iWriteIdx = 0;
-    m_iReadIdx = 0;
+    //m_iWriteIdx = 0;
+    //m_iReadIdx = 0;
 
     m_atmWrite.store(0,std::memory_order_release);
     m_atmRead.store(0, std::memory_order_release);
     m_bFull = false;
   }
 
+  /*
   void vWrite(const T& tItem) {
     std::lock_guard<std::mutex> lock(m_mutexHB);
 
@@ -111,7 +115,7 @@ public:
 
     return true;
   } // Lock is automatically released here
-
+ */
 
   // Atomic operation here
   bool bTryWrite(const T& tItem) {
@@ -150,7 +154,7 @@ public:
   }
 
 
-
+/*
   void vReset() {
     std::lock_guard<std::mutex> lock(m_mutexHB);
     m_iWriteIdx = m_iReadIdx;
@@ -167,10 +171,6 @@ public:
     return m_bFull;
   }
 
-  size_t iMaxSize() const {
-    return m_iMaxSize;
-  }
-
   size_t iSize() const {
     size_t size = m_iMaxSize;
 
@@ -181,14 +181,32 @@ public:
         size = m_iMaxSize + m_iWriteIdx - m_iReadIdx;
       }
     }
+  */
+
+  size_t iMaxSize() const {
+    return m_iMaxSize;
+  }
+
+  size_t iSize() const {
+    size_t size = m_iMaxSize;
+
+    auto iWriteIdx = m_atmWrite.load(std::memory_order_relaxed);
+    auto iReadIdx = m_atmRead.load(std::memory_order_relaxed);
+    if (!m_bFull) {
+      if (iWriteIdx >= iReadIdx) {
+        size = iWriteIdx - iReadIdx;
+      } else {
+        size = m_iMaxSize + iWriteIdx - iReadIdx;
+      }
+    }
 
     return size;
   }
 
   // For debug only
-  size_t iWriteIdx() const { return m_iWriteIdx; }
+  size_t iWriteIdx() const { return m_atmWrite.load(std::memory_order_relaxed);; }//m_iWriteIdx; }
 
-  size_t iReadIdx() const { return m_iReadIdx; }
+  size_t iReadIdx() const { return m_atmRead.load(std::memory_order_relaxed);; } //m_iReadIdx; }
 
 };
 
