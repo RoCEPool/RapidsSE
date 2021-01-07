@@ -39,6 +39,7 @@
 #include "eTT.h"
 #include "eUK.h"
 
+#include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Table.hpp"

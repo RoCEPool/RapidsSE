@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "Constants.hpp"
+#include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"

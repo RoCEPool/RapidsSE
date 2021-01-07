@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegInfoSet.cpp -- Register InfoSet step group                        */
+/* Steps_InfoSet.cpp -- Register InfoSet step group                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"

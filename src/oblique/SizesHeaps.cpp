@@ -40,6 +40,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "PtnStream.hpp"
