@@ -28,43 +28,8 @@ namespace STORE
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
   
-    // SYSARGS EXPERIMENT 1 : does it fit
-    SysArgs_attachMap m_xSysArgs;
-    
-//    struct {
-//      i8     m_nBootNodes;     // number nodes supplied via SE -node
-//      i8     m_iConnectCode;  // connect code (not yet used)
-//      bool   m_bDebugIndex;    // debug index
-//      bool   m_bDebugMode;     // debug mode
-//      i8     m_nDegOfPar;      // degree of parallelism
-//      bool   m_bDeveloper;     // developer mode
-//      i8     m_nDummyLoop;     // loop count for dummy threads
-//      i8     m_nDummySleep;    // sleep period for dummy threads
-//      i8     m_nDummyThreads;  // number of dummy threads
-//      s32    m_sGridName;
-//      i8     m_nIndexEntries;  // no of entries per buffer
-//      bool   m_bLog;
-//      i8     m_nLvlLevels;     // maximum number of levels
-//      i8     m_iLvlRatio;      // level ratio
-//      i8     m_nMaxLoadErrors;
-//      i8     m_nMaxReadyLP;
-//      bool   m_bMetadata;
-//      bool   m_bMunged;
-//      i8     m_nOperands;
-//      bool   m_bProgress;
-//      s32    m_sRegionName;
-//      i8     m_iRegionSize;
-//      bool   m_bRLUDiary;
-//      bool   m_bRLUTimer;
-//      i8     m_nPtnsPerTable;
-//      i8     m_nThreads;       // number of general threads
-//      bool   m_bTracepoint;
-//      bool   m_bVerbose;
-//
-//      TagSet m_oDbgTagSet;
-//
-//    } Arg;
-    
+    SysArgs m_xSysArgs;
+        
     bool          m_bBootError;
     BucketMap*    m_pBucketMap;
     BufferPool*   m_pBufferPool;

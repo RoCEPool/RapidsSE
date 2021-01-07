@@ -12,7 +12,6 @@ namespace STORE
   static const i8 C_DEF_LVL_RATIO  = 3; // this means 1/2^3 i.e. reducing by 8
 
   class Args : public Object
-//                 , public SysArgs_args
   {
     friend class OBLIQUE::AM;
     friend class STORE::Engine;
@@ -23,7 +22,7 @@ namespace STORE
 
   public:
 
-    SysArgs_args m_xSysArgs;
+    SysArgs m_xSysArgs;
 
   private:
 
