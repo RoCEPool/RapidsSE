@@ -1518,6 +1518,9 @@ public:
   void vSubsetNextBuffer(void);
   void vSubsetSet(void);
 
+  // Supervisor
+  void vSupervisorCollectInfo(void);
+
   // system schedule
   void vSystemScheduleCheckSleeping(void);
   void vSystemScheduleExecutingLength(void);

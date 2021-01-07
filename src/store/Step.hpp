@@ -158,7 +158,8 @@ namespace STORE
     static void vAddSteps_StreamSet(void);
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_Subset(void);
-  
+    static void vAddSteps_Supervisor(void);
+
     static void vAddSteps_Table(void);
     static void vAddSteps_TablePartition(void);
     static void vAddSteps_TablePartition2(void);
