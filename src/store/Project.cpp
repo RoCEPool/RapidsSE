@@ -83,9 +83,12 @@ eEC Project::eProjectAll(StreamDef* pStreamDefIn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECT,_FOOTER_);
 
+  Stz* azCrs = m_sAsmText.szStz();
+
   for (i8 iCol = 0; iCol < pStreamDefIn->nTotalColumns(); iCol++) {
     Column* pColumn = pStreamDefIn->pGetColumn(iCol);
-    Stz* azCrs = m_sAsmText[iCol].szStz();
+    //Stz* azCrs = m_sAsmText[iCol].szStz();
+
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
       StrLib::vSprintCat(azCrs, "  EO_PUSH_LOCALS %lld\n"_Stz, iCol);
@@ -215,6 +218,10 @@ eEC Project::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
       continue;
     }
 
+    if (pTkn->bIsRelational()) {
+      continue;
+    }
+
     // skip any other token that is not a name
     if (!pTkn->bIsName()) {
       continue;
@@ -273,7 +280,8 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
 
   Token* pTkn = pTknVec->pCurrToken();
 
-  Stz* azCrs = m_sAsmText[i_DstColumn].szStz();
+  //Stz* azCrs = m_sAsmText[i_DstColumn].szStz();
+  Stz* azCrs = m_sAsmText.szStz();
   eCT eColumnType = CT_NONE;
   i8 iColumnLength = C_UNKNOWN;
   i8 iColumnScale = C_UNKNOWN;
@@ -323,6 +331,30 @@ eEC Project::eProjectColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, T
       //vAddCode(i_DstColumn, EO_SUBTRACT);
       StrLib::vSprintCat(azCrs,"  EO_SUBTRACT\n"_Stz);
       continue;
+    }
+
+    if (pTkn->bIsRelational()) {
+      if (pTkn->bSame(">"_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_GREATERTHAN\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame(">="_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_GREATEREQUAL\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame("<"_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_LESSTHAN\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame("<="_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_LESSEQUAL\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      } else if (pTkn->bSame("=="_Stz)) {
+        StrLib::vSprintCat(azCrs, "  EO_EQUAL\n"_Stz);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
     }
 
     // is it an integer ?

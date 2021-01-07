@@ -2480,6 +2480,9 @@ bool StrLib::bIsDecimalNo(char* ps) {
       return false;
   }
 
+  if ( ! bDecimalPoint )
+    return false;
+
   return true;
 }
 

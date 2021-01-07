@@ -2398,9 +2398,9 @@ void LogicUnit::vGenerateFilter(Filter* pFilter, StreamDef* pStreamDefOut) {
   RASSERT(eError == EC_NONE);
 
   // add the columns to be projected to PROJECT_COLUMNS
-  for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText[i_Col].azChar());
-  }
+  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
+    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText.azChar());
+  //}
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
 
@@ -2484,9 +2484,9 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
     pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet));
   }
 
-  for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText[i_Col].azChar());
-  }
+  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
+    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText.azChar());
+  //}
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2512,9 +2512,9 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
     pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet));
   }
 
-  for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText[i_Col].azChar());
-  }
+  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
+    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText.azChar());
+  //}
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -4,8 +4,8 @@
 
 #include <cstdio>
 #include <cstring>
+#include <base/BASE.h>
 
-#include "BASE.h"
 #include "STORE.h"
 
 #include "Heart.h"
@@ -14,15 +14,18 @@
 
 extern Args gxArgs;
 
-extern Stz* gsBuildGitHash;
-extern Stz* gsBuildDate;
-extern Stz* gsBuildHostName;
-extern Stz* gsBuildUserName;
-extern Stz* gsBuildBranch;
+extern Stz *gsBuildGitHash;
+extern Stz *gsBuildDate;
+extern Stz *gsBuildHostName;
+extern Stz *gsBuildUserName;
+extern Stz *gsBuildBranch;
 
-FILE*  gaHearbeatFile = nullptr;
+FILE *gaHearbeatFile = nullptr;
 
-Heartbeat gxHeartbeat;
+// global
+RingBuffer<Heartbeat> gxHeartbeatBuffer(100); // receiving from network
+RingBuffer<Heartbeat> gxHeartbeatData(100); // collect heartbeat data from the system to be sent out
+
 
 /*----------------------------------------------------------------------------*/
 /* heart initialise                                                           */
@@ -31,12 +34,6 @@ void vHeartInit(void) {
 
   if (gxArgs.m_nHeartbeatNodes > 0) {
     printf("SE Heart (sizeof(Heartbeat)=%lld\n", (i8) sizeof(Heartbeat));
-
-    memset((char*)&gxHeartbeat, 0x00, sizeof(Heartbeat));
-    strncpy(gxHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, 32);
-
-    strncpy(gxHeartbeat.m_acString0, gxArgs.m_sNodeName.azChar(), sizeof(gxHeartbeat.m_acString0)-1);
-    gxHeartbeat.m_acString0[sizeof(gxHeartbeat.m_acString0)-1] = 0;
 
 //  char azPath[256];
 //  sprintf(azPath,"../tmp/rapidsse_pid%lld",(i8)0); //getpid());
@@ -53,13 +50,19 @@ void vHeartInit(void) {
     HeartbeatRcv *pReceiver = new HeartbeatRcv(szAddr, iPort);
     PsxThd::iSpawnPosixThread(vHeartRcvLoop, pReceiver);
 
-    strncpy(szAddr, gxArgs.m_xHeartbeatNode[0].m_sIPAddress.azChar(), sizeof(szAddr)-1);
-    szAddr[sizeof(szAddr)-1] = 0;
 
-    //strcpy(szAddr, "192.168.0.255"); // Send to broadcast address
-    //User can put on the command line argument as --heartbeat BROADCAST 8888
+    strncpy(szAddr, gxArgs.m_xHeartbeatNode[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
+    szAddr[sizeof(szAddr) - 1] = 0;
+
+    //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
+
+    //strcpy(szAddr, "192.168.0.255"); // for DEBUG
     HeartbeatSnd *pSender = new HeartbeatSnd(szAddr, iPort);
     PsxThd::iSpawnPosixThread(vHeartSndLoop, pSender);
+
+    // Create Reader thread to test out the ringbuffer
+    PsxThd::iSpawnPosixThread(vHeartReadLoop, nullptr);
+
 
   } else {
     printf("SE Heartbeat is not set for this node\n");
@@ -67,83 +70,149 @@ void vHeartInit(void) {
 
 }
 
+
+/*--------------------------------------------------------------------------------*/
+/* This function to collect heartbeat data and write to ringbuffer to be sent out */
+/*--------------------------------------------------------------------------------*/
+void vCollectData()
+{
+  Heartbeat xHeartbeat;
+  static i8 iSeq = 0;
+
+  memset((char *) &xHeartbeat, 0x00, sizeof(Heartbeat));
+  xHeartbeat.m_iSeqNo = ++iSeq;
+  xHeartbeat.m_iSincePosixEpoch = time(0);
+  strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, 32);
+
+  strncpy(xHeartbeat.m_acString0, gxArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acString0) - 1);
+  xHeartbeat.m_acString0[sizeof(xHeartbeat.m_acString0) - 1] = 0;
+
+  gxHeartbeatData.bTryWrite(xHeartbeat);
+}
+
 /*----------------------------------------------------------------------------*/
 /* heart send loop                                                            */
 /*----------------------------------------------------------------------------*/
-void* vHeartSndLoop(void* pFuncObj)
-{
+[[noreturn]] void *vHeartSndLoop(void *pFuncObj) {
   printf("SE Heart Send thread entry\n");
-  HeartbeatSnd* pSender = (HeartbeatSnd*)pFuncObj;
-  
+  HeartbeatSnd *pSender = (HeartbeatSnd *) pFuncObj;
+
+  Heartbeat xHeartbeat;
   char azHeartbeat[C_4K];
   int iCnt = 0;
 
   for (;;) {
-    
-    gxHeartbeat.m_iSeqNo++;
-    gxHeartbeat.m_iSincePosixEpoch = time(0);
+
+    vCollectData();
+
+    memset((char *) &xHeartbeat, 0x00, sizeof(Heartbeat));
+
+    gxHeartbeatData.bTryRead(xHeartbeat);
 
     sprintf(azHeartbeat,
-            
-            "SE sent heartbeat: seqNo %lld sinceEpoch %lld gitHash %s\n"
-            
-            ,gxHeartbeat.m_iSeqNo
-            ,gxHeartbeat.m_iSincePosixEpoch
-            ,gxHeartbeat.m_acBuildGitHash
 
-            );
-    
-    //fseeko(gaHearbeatFile,0,SEEK_SET);
-//    fwrite(azHeartbeat, 1, strlen(azHeartbeat)+1,gaHearbeatFile);
-//    fflush(gaHearbeatFile);
-    pSender->iSend((char*)&gxHeartbeat, sizeof(Heartbeat));
+            "SE sent heartbeat: seqNo %lld sinceEpoch %lld gitHash %s\n", xHeartbeat.m_iSeqNo,
+            xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash
 
-    if (iCnt++ == 0) // debug only: print once
-      printf(azHeartbeat);
+    );
+
+      //fseeko(gaHearbeatFile,0,SEEK_SET);
+      //fwrite(azHeartbeat, 1, strlen(azHeartbeat)+1,gaHearbeatFile);
+      //fflush(gaHearbeatFile);
+
+
+    pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
+
+    if (iCnt++ <= 1) // debug only: print twice
+      printf("%s",azHeartbeat);
 
     sleep(3);
   }
-  
-  return nullptr;
+
+  //return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* heart receive loop                                                         */
 /*----------------------------------------------------------------------------*/
-void* vHeartRcvLoop(void* pFuncObj)
-{
+[[noreturn]] void *vHeartRcvLoop(void *pFuncObj) {
   printf("SE Heart Receiver thread entry\n");
-  HeartbeatRcv* pReceiver = (HeartbeatRcv*)pFuncObj;
+  HeartbeatRcv *pReceiver = (HeartbeatRcv *) pFuncObj;
 
-  Heartbeat xHeartbeat;
-  struct tm * tmTimeInfo;
+  Heartbeat hbHeartbeat;
+  struct tm *tmTimeInfo;
 
-  char buffer[80];
+  char azTimeBuffer[80];
   char azHeartbeat[C_16KB];
   int iCnt = 0;
 
   for (;;) {
 
-    memset(&xHeartbeat,0x00,sizeof(Heartbeat));
+    memset(&hbHeartbeat, 0x00, sizeof(Heartbeat));
 
-    int iLen = pReceiver->iRecv((char*)&xHeartbeat, sizeof(xHeartbeat));
+    int iLen = pReceiver->iRecv((char *) &hbHeartbeat, sizeof(hbHeartbeat));
 
     if (iLen > 0) {
-      tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
-      strftime(buffer, sizeof(buffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
+      if (gxHeartbeatBuffer.bTryWrite(hbHeartbeat)) {
 
-      sprintf(azHeartbeat,
+            tmTimeInfo = localtime((const time_t *) &hbHeartbeat.m_iSincePosixEpoch);
+            strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
 
-              "SE received heartbeat: seqNo %lld sinceEpoch %lld gitHash %s at %s\n", xHeartbeat.m_iSeqNo,
-              xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, buffer
-      );
+            sprintf(azHeartbeat,
 
-      if (iCnt++ == 0) // debug print once
-        printf(azHeartbeat);
+            "%ld: SE received heartbeat: seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
+            gxHeartbeatBuffer.iWriteIdx(), hbHeartbeat.m_iSeqNo,
+            hbHeartbeat.m_iSincePosixEpoch, hbHeartbeat.m_acBuildGitHash, azTimeBuffer
+            );
+
+            if (iCnt++ <= 1) // debug print twice
+            printf("%s", azHeartbeat);
+        }
     }
   }
 
-  return nullptr;
+  //return nullptr;
+}
+
+
+/*---------------------------------------------------------------------------------*/
+/* heart read loop: to simulate the reading, but doesn't do anything with the data */
+/*---------------------------------------------------------------------------------*/
+[[noreturn]] void *vHeartReadLoop(void *pFuncObj) {
+  printf("SE Heart Read from received ring-buffer thread entry\n");
+
+  Heartbeat hbHeartbeat;
+  struct tm *tmTimeInfo;
+
+  char azTimeBuffer[80];
+  char azHeartbeat[C_16KB];
+  int iCnt = 0;
+
+  for (;;) {
+
+    memset(&hbHeartbeat, 0x00, sizeof(Heartbeat));
+
+    usleep(500*1000);
+
+    if (gxHeartbeatBuffer.bTryRead(hbHeartbeat))  {
+      //hbHeartbeat = gxHeartbeatBuffer.tRead();
+      tmTimeInfo = localtime((const time_t *) &hbHeartbeat.m_iSincePosixEpoch);
+      strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
+
+      sprintf(azHeartbeat,
+
+              "%ld SE read from received heartbeat: seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
+              gxHeartbeatBuffer.iReadIdx(),
+              hbHeartbeat.m_iSeqNo,
+              hbHeartbeat.m_iSincePosixEpoch, hbHeartbeat.m_acBuildGitHash, azTimeBuffer
+      );
+
+      if (iCnt++ <= 1) // debug print twice
+        printf("%s",azHeartbeat);
+    }
+  }
+
+  //return nullptr;
 }
 
 /*============================================================================*/
