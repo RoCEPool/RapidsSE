@@ -30,7 +30,8 @@ void Step::vSupervisorCollectInfo(void)
 {
   ENTRY();
   
-  vTrace("  ** Step::vSupervisorCollectInfo ** \n"_Stz);
+  //vTrace("  ** Step::vSupervisorCollectInfo ** \n"_Stz);
+  
   EXIT();
 }
 
