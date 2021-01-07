@@ -95,35 +95,35 @@ extern Log*          gpLog;
 extern SizeHeap      gxaSizeHeap[];
 
 // Arg
-bool AM::bDebugIndex(void)    { return gpAttachMap->Arg.m_bDebugIndex;        }
-bool AM::bDebugMode(void)     { return gpAttachMap->Arg.m_bDebugMode;         }
-i8   AM::nDegOfPar(void)      { return gpAttachMap->Arg.m_nDegOfPar;          }
-bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
-i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
-i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }
-i8   AM::nDummyThreads(void)  { return gpAttachMap->Arg.m_nDummyThreads;      }
-bool AM::bLog(void)           { return gpAttachMap->Arg.m_bLog;               }
-i8   AM::nMaxLoadErrors(void) { return gpAttachMap->Arg.m_nMaxLoadErrors;     }
-i8   AM::nMaxReadyLP(void)    { return gpAttachMap->Arg.m_nMaxReadyLP;        }
-bool AM::bMunged(void)        { return gpAttachMap->Arg.m_bMunged;            }
-Stz* AM::szRegionName(void)   { return gpAttachMap->Arg.m_sRegionName.szStz();}
-bool AM::bRLUDiary(void)      { return gpAttachMap->Arg.m_bRLUDiary;          }
-bool AM::bRLUTimer(void)      { return gpAttachMap->Arg.m_bRLUTimer;          }
-i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
-i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
+bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;        }
+bool AM::bDebugMode(void)     { return gpAttachMap->m_xSysArgs.m_bDebugMode;         }
+i8   AM::nDegOfPar(void)      { return gpAttachMap->m_xSysArgs.m_nDegOfPar;          }
+bool AM::bDeveloper(void)     { return gpAttachMap->m_xSysArgs.m_bDeveloper;         }
+i8   AM::nDummyLoop(void)     { return gpAttachMap->m_xSysArgs.m_nDummyLoop;         }
+i8   AM::nDummySleep(void)    { return gpAttachMap->m_xSysArgs.m_nDummySleep;        }
+i8   AM::nDummyThreads(void)  { return gpAttachMap->m_xSysArgs.m_nDummyThreads;      }
+bool AM::bLog(void)           { return gpAttachMap->m_xSysArgs.m_bLog;               }
+i8   AM::nMaxLoadErrors(void) { return gpAttachMap->m_xSysArgs.m_nMaxLoadErrors;     }
+i8   AM::nMaxReadyLP(void)    { return gpAttachMap->m_xSysArgs.m_nMaxReadyLP;        }
+bool AM::bMunged(void)        { return gpAttachMap->m_xSysArgs.m_bMunged;            }
+Stz* AM::szRegionName(void)   { return gpAttachMap->m_xSysArgs.m_sRegionName.szStz();}
+bool AM::bRLUDiary(void)      { return gpAttachMap->m_xSysArgs.m_bRLUDiary;          }
+bool AM::bRLUTimer(void)      { return gpAttachMap->m_xSysArgs.m_bRLUTimer;          }
+i8   AM::iRegionSize(void)    { return gpAttachMap->m_xSysArgs.m_iRegionSize;        }
+i8   AM::nThreads(void)       { return gpAttachMap->m_xSysArgs.m_nThreads;           }
 
 i8   AM::nPtnsPerTable(void) {
   return gpAttachMap->m_pPtnMap->nPtnsPerTable();
 }
 
-TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->Arg.m_oDbgTagSet;       }
+TagSet* AM::pDbgTagSet(void)  { return & gpAttachMap->m_xSysArgs.m_oArgTagSet;       }
 
 bool AM::bDbgTag(Stz* szTagNm) {
   
   if (! AM::bDebugMode())
     return false;
   
-  bool bHasDbgTag = gpAttachMap->Arg.m_oDbgTagSet.bHasName(szTagNm);
+  bool bHasDbgTag = gpAttachMap->m_xSysArgs.m_oArgTagSet.bHasName(szTagNm);
   
   return bHasDbgTag;
 }
@@ -154,7 +154,7 @@ Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->bHasStarted();   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
-i8   AM::nIndexEntries(void)  { return gpAttachMap->Arg.m_nIndexEntries;      }
+i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
   return gpAttachMap->m_pLocalJobs;                                }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
@@ -172,8 +172,8 @@ i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
 i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 Article* AM::pLexiconArticle(void) { return gpAttachMap->m_pLexiconArticle;    }
 void AM::vProcessExit(void)   { Process::vExitFailure();                      }
-bool AM::bProgress(void)      { return gpAttachMap->Arg.m_bProgress;              }
-bool AM::bMetadata(void)      { return gpAttachMap->Arg.m_bMetadata;          }
+bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
+bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
@@ -218,13 +218,13 @@ Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_ixThreads;            }
-bool AM::bTracepoint(void)    { return gpAttachMap->Arg.m_bTracepoint;        }
+bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
 void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
   pOp->vXmitNode(i_XmitNde);
 }
-bool AM::bVerbose(void)       { return gpAttachMap->Arg.m_bVerbose;           }
+bool AM::bVerbose(void)       { return gpAttachMap->m_xSysArgs.m_bVerbose;           }
 bool AM::bVerboseProgress(void)  {
   if (gxArgs.m_xSysArgs.m_bVerbose || gxArgs.m_xSysArgs.m_bProgress)
     return true;
@@ -352,7 +352,7 @@ void AM::vGrabTaskLock(Task* pTask) {
   pTask->vGrabTaskLock();
 }
 void AM::vIndexEntries(i8 nIndexEntries) {
-  gpAttachMap->Arg.m_nIndexEntries = nIndexEntries;
+  gpAttachMap->m_xSysArgs.m_nIndexEntries = nIndexEntries;
 }
 void AM::vNextTempName(s32& sName) {
   gpAttachMap->m_oTempName.vNextName(sName);
@@ -443,10 +443,10 @@ void AM::vLogArguments(void) {
 }
 
 i8 AM::nLvlLevels(void) {
-  return gpAttachMap->Arg.m_nLvlLevels;
+  return gpAttachMap->m_xSysArgs.m_nLvlLevels;
 }
 i8 AM::iLvlRatio(void) {
-  return gpAttachMap->Arg.m_iLvlRatio;
+  return gpAttachMap->m_xSysArgs.m_iLvlRatio;
 }
 
 bool AM::bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet)
@@ -1593,7 +1593,7 @@ Stz* AM::pOperandName(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 i8 AM::nOperandsArg(void)
 {
-  return gpAttachMap->Arg.m_nOperands;
+  return gpAttachMap->m_xSysArgs.m_nOperands;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1601,7 +1601,7 @@ i8 AM::nOperandsArg(void)
 /*----------------------------------------------------------------------------*/
 void AM::vOperandsArg(i8 nOperands)
 {
-  gpAttachMap->Arg.m_nOperands = nOperands;
+  gpAttachMap->m_xSysArgs.m_nOperands = nOperands;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -166,7 +166,7 @@ void AttachMap::vIndexEntries(i8 nIndexEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
  
-  Arg.m_nIndexEntries = nIndexEntries;
+  m_xSysArgs.m_nIndexEntries = nIndexEntries;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,20 +198,20 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
   vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
   
-  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.szStz());
-  vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
-  vInfo("Arguments     : %lld \n"_Stz,   gpAttachMap->Arg.m_nOperands);
+  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->m_xSysArgs.m_sRegionName.szStz());
+  vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->m_xSysArgs.m_iRegionSize);
+  vInfo("Arguments     : %lld \n"_Stz,   gpAttachMap->m_xSysArgs.m_nOperands);
 
   vInfo("\n"_Stz);
   vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
   vInfo("BootError    : %lld \n"_Stz, gpAttachMap->m_bBootError);
-  vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->Arg.m_nIndexEntries);
-  vInfo("LvlLevels    : %lld \n"_Stz, gpAttachMap->Arg.m_nLvlLevels);
+  vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nIndexEntries);
+  vInfo("LvlLevels    : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nLvlLevels);
   
   vInfo("Verbose      : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
-  vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->Arg.m_bTracepoint ? "true"_Stz : "false"_Stz);
-  vInfo("Progress     : %s \n"_Stz, gpAttachMap->Arg.m_bProgress ? "true"_Stz : "false"_Stz);
-  vInfo("Metadata     : %s \n"_Stz, gpAttachMap->Arg.m_bMetadata ? "true"_Stz : "false"_Stz);
+  vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bTracepoint ? "true"_Stz : "false"_Stz);
+  vInfo("Progress     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bProgress ? "true"_Stz : "false"_Stz);
+  vInfo("Metadata     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bMetadata ? "true"_Stz : "false"_Stz);
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
@@ -242,7 +242,7 @@ void AttachMap::vPrintAttachMap(void)
         gpAttachMap->m_oFormat.m_cDateSeparator ? gpAttachMap->m_oFormat.m_cDateSeparator : '0');
   
   vInfo("\n"_Stz);
-  gpAttachMap->Arg.m_oDbgTagSet.vDumpSet();
+  gpAttachMap->m_xSysArgs.m_oArgTagSet.vDumpSet();
 
   vInfo("\n-- ATTACH MAP END --\n\n"_Stz);
 }
@@ -257,38 +257,38 @@ void AttachMap::vRecordArguments(Args* pArgs)
   if (AM::bVerboseProgress())
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
-  Arg.m_nBootNodes       = pArgs->m_xSysArgs.m_nBootNodes;
-  Arg.m_iConnectCode     = pArgs->m_xSysArgs.m_iConnectCode;
-  Arg.m_bDebugIndex      = pArgs->m_xSysArgs.m_bDebugIndex;
-  Arg.m_bDebugMode       = pArgs->m_xSysArgs.m_bDebugMode;
-  Arg.m_nDegOfPar        = pArgs->m_xSysArgs.m_nDegOfPar;
-  Arg.m_bDeveloper       = pArgs->m_xSysArgs.m_bDeveloper;
-  Arg.m_nDummyLoop       = pArgs->m_xSysArgs.m_nDummyLoop;
-  Arg.m_nDummySleep      = pArgs->m_xSysArgs.m_nDummySleep;
-  Arg.m_nDummyThreads    = pArgs->m_xSysArgs.m_nDummyThreads;
-  Arg.m_nIndexEntries    = pArgs->m_xSysArgs.m_nEntries;
-  Arg.m_bLog             = pArgs->m_xSysArgs.m_bLog;
-  Arg.m_nLvlLevels       = pArgs->m_xSysArgs.m_nLvlLevels;
-  Arg.m_iLvlRatio        = pArgs->m_xSysArgs.m_iLvlRatio;
-  Arg.m_nMaxLoadErrors   = pArgs->m_xSysArgs.m_nMaxLoadErrors;
-  Arg.m_nMaxReadyLP      = pArgs->m_xSysArgs.m_nMaxReadyLP;
-  Arg.m_bMetadata        = pArgs->m_xSysArgs.m_bMetadata;
-  Arg.m_bMunged          = pArgs->m_xSysArgs.m_bMunged;
-  Arg.m_sGridName        = pArgs->m_xSysArgs.m_sGridName;
-  Arg.m_nOperands        = pArgs->m_xSysArgs.m_nOperands;
-  Arg.m_bProgress        = pArgs->m_xSysArgs.m_bProgress;
-  Arg.m_sRegionName      = pArgs->m_xSysArgs.m_sRegionName;
-  Arg.m_iRegionSize      = pArgs->m_xSysArgs.m_iRegionSize;
-  Arg.m_bRLUDiary        = pArgs->m_xSysArgs.m_bRLUDiary;
-  Arg.m_bRLUTimer        = pArgs->m_xSysArgs.m_bRLUTimer;
-  Arg.m_nPtnsPerTable    = pArgs->m_xSysArgs.m_nPtnsPerTable;
-  Arg.m_nThreads         = pArgs->m_xSysArgs.m_nThreads;
-  Arg.m_bTracepoint      = pArgs->m_xSysArgs.m_bTracepoint;
-  Arg.m_bVerbose         = pArgs->m_xSysArgs.m_bVerbose;
+  m_xSysArgs.m_nBootNodes       = pArgs->m_xSysArgs.m_nBootNodes;
+  m_xSysArgs.m_iConnectCode     = pArgs->m_xSysArgs.m_iConnectCode;
+  m_xSysArgs.m_bDebugIndex      = pArgs->m_xSysArgs.m_bDebugIndex;
+  m_xSysArgs.m_bDebugMode       = pArgs->m_xSysArgs.m_bDebugMode;
+  m_xSysArgs.m_nDegOfPar        = pArgs->m_xSysArgs.m_nDegOfPar;
+  m_xSysArgs.m_bDeveloper       = pArgs->m_xSysArgs.m_bDeveloper;
+  m_xSysArgs.m_nDummyLoop       = pArgs->m_xSysArgs.m_nDummyLoop;
+  m_xSysArgs.m_nDummySleep      = pArgs->m_xSysArgs.m_nDummySleep;
+  m_xSysArgs.m_nDummyThreads    = pArgs->m_xSysArgs.m_nDummyThreads;
+  m_xSysArgs.m_nIndexEntries    = pArgs->m_xSysArgs.m_nEntries;
+  m_xSysArgs.m_bLog             = pArgs->m_xSysArgs.m_bLog;
+  m_xSysArgs.m_nLvlLevels       = pArgs->m_xSysArgs.m_nLvlLevels;
+  m_xSysArgs.m_iLvlRatio        = pArgs->m_xSysArgs.m_iLvlRatio;
+  m_xSysArgs.m_nMaxLoadErrors   = pArgs->m_xSysArgs.m_nMaxLoadErrors;
+  m_xSysArgs.m_nMaxReadyLP      = pArgs->m_xSysArgs.m_nMaxReadyLP;
+  m_xSysArgs.m_bMetadata        = pArgs->m_xSysArgs.m_bMetadata;
+  m_xSysArgs.m_bMunged          = pArgs->m_xSysArgs.m_bMunged;
+  m_xSysArgs.m_sGridName        = pArgs->m_xSysArgs.m_sGridName;
+  m_xSysArgs.m_nOperands        = pArgs->m_xSysArgs.m_nOperands;
+  m_xSysArgs.m_bProgress        = pArgs->m_xSysArgs.m_bProgress;
+  m_xSysArgs.m_sRegionName      = pArgs->m_xSysArgs.m_sRegionName;
+  m_xSysArgs.m_iRegionSize      = pArgs->m_xSysArgs.m_iRegionSize;
+  m_xSysArgs.m_bRLUDiary        = pArgs->m_xSysArgs.m_bRLUDiary;
+  m_xSysArgs.m_bRLUTimer        = pArgs->m_xSysArgs.m_bRLUTimer;
+  m_xSysArgs.m_nPtnsPerTable    = pArgs->m_xSysArgs.m_nPtnsPerTable;
+  m_xSysArgs.m_nThreads         = pArgs->m_xSysArgs.m_nThreads;
+  m_xSysArgs.m_bTracepoint      = pArgs->m_xSysArgs.m_bTracepoint;
+  m_xSysArgs.m_bVerbose         = pArgs->m_xSysArgs.m_bVerbose;
 
-  Arg.m_oDbgTagSet.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
+  m_xSysArgs.m_oArgTagSet.vInsert(C_TAGSET_NAME,"dbgTagSet"_Stz);
   
-  Arg.m_oDbgTagSet.vCopy(&pArgs->m_xSysArgs.m_oArgTagSet);
+  m_xSysArgs.m_oArgTagSet.vCopy(&pArgs->m_xSysArgs.m_oArgTagSet);
   
   
   // ray -- not sure the following should be here
@@ -302,7 +302,7 @@ void AttachMap::vRecordArguments(Args* pArgs)
   
   m_iEpoch      = 0;
   
-  m_oFormat.m_nMaxErrors = Arg.m_nMaxLoadErrors;
+  m_oFormat.m_nMaxErrors = m_xSysArgs.m_nMaxLoadErrors;
   
   ASSERT(m_xHeapMem.Transient.m_pTiny);
   ASSERT(m_xHeapMem.Transient.m_pSmall);
@@ -343,7 +343,7 @@ void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
          pAttachMap->m_iPid,
          pAttachMap->m_oNow.sz(),
-         pAttachMap->Arg.m_iRegionSize);
+         pAttachMap->m_xSysArgs.m_iRegionSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,8 +356,8 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("\nArgs:\n"_Stz);
   
   vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeNm()->azChar());
-  vTrace("  --region %s\n"_Stz,Arg.m_sRegionName.azChar());
-  vTrace("  --size %lld\n"_Stz,Arg.m_iRegionSize);
+  vTrace("  --region %s\n"_Stz,m_xSysArgs.m_sRegionName.azChar());
+  vTrace("  --size %lld\n"_Stz,m_xSysArgs.m_iRegionSize);
   vTrace("  --partitionsPerNode %lld\n"_Stz,AM::nPtnsPerTable());
 }
 

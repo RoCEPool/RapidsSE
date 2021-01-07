@@ -1598,7 +1598,7 @@ void Engine::vStartSystem(void)
 
   gpAttachMap->m_pPtnMap =
     new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
-               gpAttachMap->Arg.m_nDegOfPar);
+               gpAttachMap->m_xSysArgs.m_nDegOfPar);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

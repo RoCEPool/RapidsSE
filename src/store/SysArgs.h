@@ -73,6 +73,7 @@ namespace STORE
     bool m_bFreeCB;          // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
+    i8   m_nIndexEntries;  // no of entries per buffer
     s256 m_sInitial;         // initial to run
     bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
@@ -184,6 +185,7 @@ namespace STORE
     bool m_bFreeCB;          // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
+    i8   m_nIndexEntries;  // no of entries per buffer
     s256 m_sInitial;         // initial to run
     bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)

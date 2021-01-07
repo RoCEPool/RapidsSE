@@ -83,6 +83,7 @@ Args::Args(void)
   m_xSysArgs.m_bFreeCB          = false;
   m_xSysArgs.m_bGridTest        = false;
   m_xSysArgs.m_bHugePages       = false;
+  m_xSysArgs.m_nIndexEntries    = 0;
   m_xSysArgs.m_bJot             = false;
   m_xSysArgs.m_bKillPrev        = false;
   m_xSysArgs.m_bLock            = false;
