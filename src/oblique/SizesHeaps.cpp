@@ -184,6 +184,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
   { sizeof(EnumFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
+  { sizeof(ExprEval),           HT_T_LARGE   ,0 }, // CN_EXPREVAL
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 }, // CN_FIFO

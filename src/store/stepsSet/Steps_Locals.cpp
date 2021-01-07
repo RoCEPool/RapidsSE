@@ -202,6 +202,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("ExprEval[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ExprEval[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("File0[]"_Stz)) {
     pCurrentWord->vEncodeCall("File0[].set"_Stz);
     EXIT();

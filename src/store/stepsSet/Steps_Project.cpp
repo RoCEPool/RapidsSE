@@ -39,7 +39,7 @@ void Step::vProjectGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* project::new -- new a project                                              */
+/* project[].new -- new a project                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vProjectNew(void)
 {
