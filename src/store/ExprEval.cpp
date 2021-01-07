@@ -182,8 +182,6 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
   eEC eError = EC_NONE;
   Token* pTkn;
 
-  i8 iColumn = 0;
-
   for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
 
     pTkn = pTknVec->pGet(i_Tkn);
@@ -225,6 +223,10 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
       break;
     }
 
+    if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
+      continue;
+    }
+
     // look for the column in the streamDefIn
     Column *pColumn = nullptr;
     bool bFound = false;
@@ -243,7 +245,6 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
           BitLib::vSetOn(m_uExprEvalColumns, i_StreamInCol);
           m_pStreamInCol[m_iStreamInColumns] = pColumn;
           m_iStreamInColumns++;
-
         }
         break;
       }
@@ -253,15 +254,6 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     if (!bFound) {
       eError = EC_INVALID_COMMAND;
       break;
-    }
-
-    if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
-      if ( !bFound ) {
-        // add a place holder for the column
-        m_pStreamInCol[m_iStreamInColumns] = nullptr;
-        m_iStreamInColumns++;
-      }
-      continue;
     }
 
     continue;

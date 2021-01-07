@@ -2467,7 +2467,10 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   // CRWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
-  oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS"_Stz);
+  if (pExprEval->m_iStreamInColumns)
+    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS"_Stz);
+  else
+    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_NONE"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet));
   oTagSet.vReset();
 
@@ -2485,16 +2488,17 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
     pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet));
   }
 
-  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
-  //}
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
-  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS"_Stz);
+  if (pExprEval->m_iStreamInColumns)
+    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS"_Stz);
+  else
+    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet));
   oTagSet.vReset();
 
@@ -2510,7 +2514,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
     oTagSet.vReset();
   }
   else {
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet));
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet));
   }
 
   //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
