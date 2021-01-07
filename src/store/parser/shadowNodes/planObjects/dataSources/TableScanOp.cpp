@@ -19,7 +19,7 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_TABLEREF_PROP = "tableRef"_Stz;
-static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/tableRef"_Stz;
+static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/compound/tableRef"_Stz;
 
 static Stz* C_TABLESCAN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableScanOp"_Stz;
 
