@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "SP_String.hpp"
 #include "Node_I.hpp"

@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "eRO.h"
+#include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"

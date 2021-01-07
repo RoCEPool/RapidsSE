@@ -7,6 +7,7 @@
 
 #include <signal.h>
 
+#include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"

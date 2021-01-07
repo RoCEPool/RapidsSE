@@ -7,6 +7,7 @@
 
 #include "DEV_interface.h"
 
+#include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "PtnStream.hpp"
 #include "SP_Ent.hpp"
