@@ -189,39 +189,6 @@ eEC Filter::eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
       }
     }
 
-    // is it a column name
-    if ( pTkn->bIsName() ) {
-
-      // found a src column
-      sColumnNm = pTkn->szChars();
-
-      // get in column from m_iStreamInCol
-      pColumn = nullptr;
-      for (i8 i_StreamInCol = 0; i_StreamInCol < pStreamDefIn->nTotalColumns(); i_StreamInCol++) {
-        pColumn = pStreamDefIn->pGetColumn(i_StreamInCol);
-        if (pColumn->szColNm()->bSame(sColumnNm)) {
-          bFound = true;
-          break;
-        }
-      }
-
-      // invalid column name
-      if (!bFound) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // code to push the column
-      //StrLib::vSprintCat(azCrs, "  EO_COL_SRC_PUSHONE %lld\n"_Stz, pColumn->iColumnNo());
-      if (pColumn->eColumnType() == CT_VARCHAR ||
-          pColumn->eColumnType() == CT_CHAR)
-        StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALS %lld\n"_Stz,pColumn->iColumnNo());
-      else
-        StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,pColumn->iColumnNo());
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
     // arithmetic operators
     if (pTkn->bSame("+"_Stz)) {
       //vAddCode(i_DstColumn, EO_ADD);
@@ -255,6 +222,39 @@ eEC Filter::eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
     }
     if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
       StrLib::vSprintCat(azCrs, "EO_JMP_FALSE CRW_FILTER_FALSE\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a column name
+    if ( pTkn->bIsName() ) {
+
+      // found a src column
+      sColumnNm = pTkn->szChars();
+
+      // get in column from m_iStreamInCol
+      pColumn = nullptr;
+      for (i8 i_StreamInCol = 0; i_StreamInCol < pStreamDefIn->nTotalColumns(); i_StreamInCol++) {
+        pColumn = pStreamDefIn->pGetColumn(i_StreamInCol);
+        if (pColumn->szColNm()->bSame(sColumnNm)) {
+          bFound = true;
+          break;
+        }
+      }
+
+      // invalid column name
+      if (!bFound) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // code to push the column
+      //StrLib::vSprintCat(azCrs, "  EO_COL_SRC_PUSHONE %lld\n"_Stz, pColumn->iColumnNo());
+      if (pColumn->eColumnType() == CT_VARCHAR ||
+          pColumn->eColumnType() == CT_CHAR)
+        StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALS %lld\n"_Stz,pColumn->iColumnNo());
+      else
+        StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,pColumn->iColumnNo());
       pTkn = pTknVec->pNextToken();
       continue;
     }

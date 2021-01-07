@@ -10,7 +10,7 @@ namespace STORE
   public:
 
     u8      m_uProjectColumns;
-    s4K     m_sAsmText[C_MAX_COLUMNS];
+    s4K     m_sAsmText; //[C_MAX_COLUMNS];
     i8      m_iStreamInColumns;
     Column* m_pStreamInCol[C_MAX_COLUMNS];
 
