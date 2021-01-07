@@ -11,7 +11,8 @@ namespace STORE
   static const i8 C_DEF_LVL_LEVELS = 3;
   static const i8 C_DEF_LVL_RATIO  = 3; // this means 1/2^3 i.e. reducing by 8
 
-  class Args : public Object
+  class Args : public Object,
+               public SysArgs
   {
     friend class OBLIQUE::AM;
     friend class STORE::Engine;
@@ -21,9 +22,6 @@ namespace STORE
     friend class PROMPT::SePrompt;
 
   public:
-  
-    // SYSARGS EXPERIMENT 1 : does it fit
-    SysArgs m_xSysArgs;
   
     // configuration of this node
     s256  m_sCommandsDir;  // commands dir
