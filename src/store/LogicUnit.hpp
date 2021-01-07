@@ -260,7 +260,7 @@ namespace STORE
     void vGenerate100001(void);
 
     void vGenerateFilter(Filter* pFilter, StreamDef* pStreamDefOut);
-    void vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut);
+    void vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

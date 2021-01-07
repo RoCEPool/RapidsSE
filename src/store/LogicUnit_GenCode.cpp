@@ -2433,7 +2433,7 @@ void LogicUnit::vGenerateFilter(Filter* pFilter, StreamDef* pStreamDefOut) {
 /*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut) {
+void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -2475,9 +2475,9 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
   // CRW_PROJECT_COLUMNS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_COLUMNS
-  if (pProject->m_iStreamInColumns) {
-    oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pProject->m_iStreamInColumns);
-    oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pProject->m_uProjectColumns);
+  if (pExprEval->m_iStreamInColumns) {
+    oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+    oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
     pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet));
     oTagSet.vReset();
   }
@@ -2486,7 +2486,7 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
   }
 
   //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText.azChar());
+    pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   //}
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet));
 
@@ -2503,9 +2503,9 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
   // ROW_PROJECT_COLUMNS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_COLUMNS
-  if (pProject->m_iStreamInColumns) {
-    oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pProject->m_iStreamInColumns);
-    oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pProject->m_uProjectColumns);
+  if (pExprEval->m_iStreamInColumns) {
+    oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+    oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
     pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet));
     oTagSet.vReset();
   }
@@ -2514,7 +2514,7 @@ void LogicUnit::vGenerateProjection(Project* pProject, StreamDef* pStreamDefOut)
   }
 
   //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText.azChar());
+    pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   //}
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
 

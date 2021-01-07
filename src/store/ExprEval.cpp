@@ -50,9 +50,6 @@ ExprEval::ExprEval(void)
   m_iStreamInColumns = 0;
   m_uExprEvalColumns = 0;
   //m_sAsmText;
-
-  //for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
-  //  m_i_Code[i_Col] = 0;
   
   //_checkInitialised_(CN_EXPREVAL);
 
@@ -107,7 +104,7 @@ eEC ExprEval::eExprEvalAll(StreamDef* pStreamDefIn)
 /*----------------------------------------------------------------------------*/
 /* add column vec from stream def                                             */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalColumns(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns)
+eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -185,27 +182,16 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
   eEC eError = EC_NONE;
   Token* pTkn;
 
+  i8 iColumn = 0;
+
   for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
 
     pTkn = pTknVec->pGet(i_Tkn);
-    if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
-      continue;
-    }
 
-    // alias ?
+    // skip alias ?
     if (pTkn->bSame("as"_Stz)) {
-
-      // skip next token
       i_Tkn++;
       pTkn = pTknVec->pGet(i_Tkn);
-
-      // should be a name
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
-
-      // move on
       continue;
     }
 
@@ -213,18 +199,30 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     if (pTkn->bIsArithmetic())
       continue;
 
-    // skip any numerics
+    // skip any logical operators
+    if (pTkn->bIsLogical()) {
+      continue;
+    }
+
+    // skip any numeric numbers
     if (pTkn->bIsNumeric()) {
       continue;
     }
 
+    // skip any relational operators
     if (pTkn->bIsRelational()) {
       continue;
     }
 
-    // skip any other token that is not a name
-    if (!pTkn->bIsName()) {
+    // skip any tags
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
       continue;
+    }
+
+    // it should be a name
+    if (!pTkn->bIsName()) {
+      eError = EC_INVALID_COMMAND;
+      break;
     }
 
     // look for the column in the streamDefIn
@@ -255,6 +253,15 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     if (!bFound) {
       eError = EC_INVALID_COMMAND;
       break;
+    }
+
+    if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
+      if ( !bFound ) {
+        // add a place holder for the column
+        m_pStreamInCol[m_iStreamInColumns] = nullptr;
+        m_iStreamInColumns++;
+      }
+      continue;
     }
 
     continue;

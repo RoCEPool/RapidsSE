@@ -48,7 +48,7 @@ print "loading Lineitem...";
 projection lineitem l_extendedPrice;
 projection lineitem as x l_extendedPrice;
 
-projection lineitem l_extendedPrice >= ;
+projection lineitem l_extendedPrice 0 >= ;
 projection lineitem l_shipdate, l_extendedPrice 2 *, l_extendedPrice;
 projection lineitem l_extendedPrice, 2;
 projection lineitem l_extendedPrice, l_discount, L_COMMENT;

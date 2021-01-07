@@ -10,7 +10,7 @@ namespace STORE
   public:
 
     u8      m_uExprEvalColumns;
-    s4K     m_sAsmText; //[C_MAX_COLUMNS];
+    s4K     m_sAsmText;
     i8      m_iStreamInColumns;
     Column* m_pStreamInCol[C_MAX_COLUMNS];
 
@@ -25,7 +25,7 @@ namespace STORE
    ~ExprEval(void) noexcept(false);
 
     eEC eExprEvalAll(StreamDef* pStreamDefIn);
-    eEC eExprEvalColumns(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
+    eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
   private:
 //    void vAddCode(i8 i_Column, eEO eCode);

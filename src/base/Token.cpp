@@ -312,6 +312,21 @@ bool Token::bIsLessThan(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token a logical operator ?                                         */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsLogical(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (bSame("and"_Stz)  ||
+      bSame("or"_Stz) ||
+      bSame("not"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token a name?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsName(void)

@@ -99,9 +99,9 @@
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
 
-  Project[].new
+  ExprEval[].new
   StreamDefOut[].new
-  <etc> StreamDef[] StreamDefOut[] Project[].projectColumns to eError
+  <etc> StreamDef[] StreamDefOut[] ExprEval[].projectColumns to eError
 
   // check for error
   eError EC_NONE == not if
@@ -112,7 +112,7 @@
     exit
   then
 
-  StreamDefOut[] Project[] LogicUnit[].genProjection
+  StreamDefOut[] ExprEval[] LogicUnit[].genProjection
 
   StreamDef[].asSrcStreamDef
   false pot[].useStreamDefOut

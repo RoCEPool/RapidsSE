@@ -367,12 +367,12 @@ void Step::vLogicUnitGenProjection(void)
 {
   ENTRY();
 
-  Project* pProject;
-  pProject = _pProject(m_pDataStack->pPopPtr(__func__));
+  ExprEval* pExprEval;
+  pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateProjection(pProject, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->vGenerateProjection(pExprEval, pStreamDefOut);
 
   EXIT();
 }

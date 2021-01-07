@@ -65,7 +65,7 @@ void Step::vExprEvalColumns(void)
   s4K sProjectColumns;
   m_pDataStack->vPopStr(sProjectColumns, __func__);
 
-  eEC eError = pExprEval->eExprEvalColumns(pStreamDefIn, pStreamDefOut, sProjectColumns);
+  eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
   m_pDataStack->vPushInt(eError);
 
   EXIT();

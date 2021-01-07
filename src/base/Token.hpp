@@ -51,6 +51,7 @@ namespace BASE
     bool  bIsInteger(void);
     bool  bIsGreaterThan(void);
     bool  bIsLessThan(void);
+    bool  bIsLogical(void);
     bool  bIsName(void);
     bool  bIsNull(void);
     bool  bIsNumeric(void);
