@@ -258,7 +258,7 @@ void Dir::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIR,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,6 +7,7 @@
 
 #include <signal.h>
 
+#include "IndexStream.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Session.hpp"

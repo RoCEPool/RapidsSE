@@ -41,7 +41,7 @@ static CAST ahAdd(Header* aHeader, i8 nBytes)
   
   CAST aOtherHeader = reinterpret_cast<CAST>(aAddr1);
   
-  ASSERT(aOtherHeader->bValidMagic());
+  ASSERT(aOtherHeader->bIsMagicValid());
   
   return aOtherHeader;
 }
@@ -58,7 +58,7 @@ static CAST pAdd(Object* pObject, i8 nBytes)
   
   CAST pOtherObject = reinterpret_cast<CAST>(aAddr1);
   
-  ASSERT(pObject->bValidMagic());
+  ASSERT(pObject->bIsMagicValid());
   
   return pOtherObject;
 }

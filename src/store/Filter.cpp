@@ -212,8 +212,12 @@ eEC Filter::eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
       }
 
       // code to push the column
-      StrLib::vSprintCat(azCrs, "  EO_SET_ITEMS 1\n"_Stz);
-      StrLib::vSprintCat(azCrs, "  EO_COL_SRC_PUSHONE %lld\n"_Stz, pColumn->iColumnNo());
+      //StrLib::vSprintCat(azCrs, "  EO_COL_SRC_PUSHONE %lld\n"_Stz, pColumn->iColumnNo());
+      if (pColumn->eColumnType() == CT_VARCHAR ||
+          pColumn->eColumnType() == CT_CHAR)
+        StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALS %lld\n"_Stz,pColumn->iColumnNo());
+      else
+        StrLib::vSprintCat(azCrs,"  EO_PUSH_LOCALI %lld\n"_Stz,pColumn->iColumnNo());
       pTkn = pTknVec->pNextToken();
       continue;
     }

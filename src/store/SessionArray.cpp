@@ -382,7 +382,7 @@ void SessionArray::vApiJob(Session* pSession, Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pSession->m_eJobClass = pJob->eClass();
+  pSession->m_eJobClass = pJob->eGetClassNo();
 
   pSession->m_nJobNew++;
   

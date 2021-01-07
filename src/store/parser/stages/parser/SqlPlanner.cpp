@@ -150,7 +150,7 @@ void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
   // Find the subpath where we will attach the parsed query plan
   PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
   ASSERT(pItem);
-  ASSERT(pItem->eClass() == CN_QUERYNODE);
+  ASSERT(pItem->eGetClassNo() == CN_QUERYNODE);
   QueryNode* pQueryNode = static_cast<QueryNode*>(pItem);
 
   // Attach the statement plan we created

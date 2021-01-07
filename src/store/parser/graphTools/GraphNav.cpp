@@ -9,35 +9,6 @@
 
 using namespace Parser;
 
-/*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__pCastFunction(Parser, GraphNav, CN_GRAPHNAV)
-__aNewFunction(GraphNav, CN_GRAPHNAV)
-__vDeleteFunction(GraphNav, CN_GRAPHNAV)
-__aFooterFunction(GraphNav)
-
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-GraphNav::GraphNav()
-    : Object(CN_GRAPHNAV)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_GRAPHNAV, _FOOTER_);
-
-  _checkInitialised_(CN_GRAPHNAV);
-
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_GRAPHNAV, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-GraphNav::~GraphNav(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_GRAPHNAV, _FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -88,7 +59,8 @@ void GraphNav::vParentType(Stz* szTypePath, s256& buf)
 
 /*----------------------------------------------------------------------------*/
 /* Walks a node graph (including all properties and children) and calls a
- * function for each PlanNode visited (i.e., it's a visitor pattern).
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * TOP-DOWN, depth-first traversal.
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
@@ -97,12 +69,10 @@ void GraphNav::vParentType(Stz* szTypePath, s256& buf)
  *   pNode    - The node of the graph to start with (may not be the root).
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 b1 func(PlanNode* pNode, s256& sPath)
- *              The function should return false if it wishes the walk operation
- *              to abort early, or return true if the walk is to continue
- *              walking other nodes.
- * Returns: true if all desired nodes were walked or false if the function
- *          aborted the walk prematurely.
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
  *
  * NOTES:
  *
@@ -111,14 +81,48 @@ void GraphNav::vParentType(Stz* szTypePath, s256& buf)
  * can often be easier than creating a new class to specifically overload
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bWalk(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor)
+b1 GraphNav::bWalk(PlanNode* pNode,
+                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                   void* pvArg)
 {
-  return bWalk(pNode, true, true, fVisitor);
+  return bWalk(pNode, true, true, fVisitor, pvArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks a node graph (including all properties and children) and calls a
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * BOTTOM-UP, depth-first traversal.
+ * This function returns a boolean where true indicates that it walked every
+ * node and false indicates that it stopped walking nodes early (on request
+ * of the function).
+ *
+ * Params:
+ *   pNode    - The node of the graph to start with (may not be the root).
+ *   fVisitor - A function that is called for each node visited. This function
+ *              must have the following definition:
+ *                 b1 func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
+ *
+ * NOTES:
+ *
+ *
+ * Functions or C++11 lambdas can be passed to this function. Using lambdas
+ * can often be easier than creating a new class to specifically overload
+ * the operator().                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bWalkBottomUp(PlanNode* pNode,
+                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                           void* pvArg)
+{
+  return bWalkBottomUp(pNode, true, true, fVisitor, pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Walks a node graph (including properties and children if desired) and calls a
- * function for each PlanNode visited (i.e., it's a visitor pattern).
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * TOP-DOWN, depth-first traversal.
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
@@ -131,19 +135,19 @@ b1 GraphNav::bWalk(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 b1 func(PlanNode* pNode, s256& sPath)
- *              The function should return false if it wishes the walk operation
- *              to abort early, or return true if the walk is to continue
- *              walking other nodes.
- * Returns: true if all desired nodes were walked or false if the function
- *          aborted the walk prematurely.
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ *   pvArg - An optional argument to be passed to the visitor function.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
  *
  * NOTES:
  * Functions or C++11 lambdas can be passed to this function. Using lambdas
  * can often be easier than creating a new class to specifically overload
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor)
+b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
 {
   if (!pNode) {
     return true;
@@ -160,12 +164,13 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
     // We don't know where we're starting, so it will be a relative path
   }
 
-  return bWalk(pNode, bWalkProperties, bWalkChildren, fVisitor, sPath);
+  return bWalk(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Walks a node graph (including properties and children if desired) and calls a
- * function for each PlanNode visited (i.e., it's a visitor pattern).
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * BOTTOM-UP, depth-first traversal.
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
@@ -178,21 +183,71 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
  *                   If false then any child nodes will be skipped.
  *   fVisitor - A function that is called for each node visited. This function
  *              must have the following definition:
- *                 b1 func(PlanNode* pNode, s256& sPath)
- *              The function should return false if it wishes the walk operation
- *              to abort early, or return true if the walk is to continue
- *              walking other nodes.
- *   sPath - the path (absolute or relative) of the parent node. The current
- *           node should be appended to this and cleared before returning.
- * Returns: true if all desired nodes were walked or false if the function
- *          aborted the walk prematurely.
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ *   pvArg - An optional argument to be passed to the visitor function.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
  *
  * NOTES:
  * Functions or C++11 lambdas can be passed to this function. Using lambdas
  * can often be easier than creating a new class to specifically overload
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor, s256& sPath)
+b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+{
+  if (!pNode) {
+    return true;
+  }
+
+  s256 sPath;
+
+  // We may not be starting with the root node. If we are then set the path to "/"
+  // so that each node can append its name appropriately.
+  if (pNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
+    sPath.vCopy("/"_Stz);
+
+  } else {
+    // We don't know where we're starting, so it will be a relative path
+  }
+
+  return bWalkBottomUp(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks a node graph (including properties and children if desired) and calls a
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * TOP-DOWN, depth-first traversal.
+ * This function returns a boolean where true indicates that it walked every
+ * node and false indicates that it stopped walking nodes early (on request
+ * of the function).
+ *
+ * Params:
+ *   pNode    - The node of the graph to start with (may not be the root).
+ *   bWalkProperties - If true then any property nodes will be walked as well.
+ *                     If false then any property nodes will be skipped.
+ *   bWalkChildren - If true then any child nodes will be walked as well.
+ *                   If false then any child nodes will be skipped.
+ *   fVisitor - A function that is called for each node visited. This function
+ *              must have the following definition:
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ *   pvArg - An optional argument to be passed to the visitor function.
+ *   sPath - the path (absolute or relative) of the parent node. The current
+ *           node should be appended to this and cleared before returning.
+ *   iDepth - the depth of the current node, starting at 0 for the first node.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
+ *
+ * NOTES:
+ * Functions or C++11 lambdas can be passed to this function. Using lambdas
+ * can often be easier than creating a new class to specifically overload
+ * the operator().                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                   void* pvArg, s256& sPath, i8 iDepth)
 {
   if (!pNode) {
     return true;
@@ -202,12 +257,104 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
   i8 nLen = sPath.nLength();
 
   // Visit the current node
-  b1 bRetVal = fVisitor(pNode, sPath);
+  eWalkCtrl eCtrl = fVisitor(pNode, sPath, iDepth, pvArg);
 
-  // If the function returned false then we don't need to look at any other nodes
-  if (!bRetVal) {
+  if (eCtrl == WALK_ABORT) {
     return false;
   }
+
+  if (eCtrl == WALK_SKIP_SUBTREE) {
+    return true;
+  }
+
+  b1 bRetVal;
+
+  // Any properties to walk down?
+  if (eCtrl != WALK_SKIP_PROPERTIES && bWalkProperties) {
+    i8 nProperties = pNode->nProperties();
+
+    // TODO: replace with something more efficient
+    for (i8 i=0; i<nProperties; i++) {
+      PlanNode* pProp = pNode->pNthProperty(i);
+
+      // Don't forget to clip the path and add the appropriate separator before each node
+      sPath.vClip(nLen);
+      sPath.vConcat(const_cast<Stz*>(C_PROPERTY_SEPARATOR));
+
+      bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+
+      if (!bRetVal) {
+        return false;
+      }
+    }
+  }
+
+  // Any children to walk down?
+  if (eCtrl != WALK_SKIP_CHILDREN && bWalkChildren) {
+    i8 nChildren = pNode->nChildren();
+
+    // TODO: replace with something more efficient
+    for (i8 i=0; i<nChildren; i++) {
+      PlanNode* pChild = pNode->pNthChild(i);
+
+      // Don't forget to clip the path and add the appropriate separator before each node
+      sPath.vClip(nLen);
+      sPath.vConcat(const_cast<Stz*>(C_CHILD_SEPARATOR));
+
+      bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+
+      if (!bRetVal) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Walks a node graph (including properties and children if desired) and calls a
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * BOTTOM-UP, depth-first traversal.
+ * This function returns a boolean where true indicates that it walked every
+ * node and false indicates that it stopped walking nodes early (on request
+ * of the function).
+ *
+ * Params:
+ *   pNode    - The node of the graph to start with (may not be the root).
+ *   bWalkProperties - If true then any property nodes will be walked as well.
+ *                     If false then any property nodes will be skipped.
+ *   bWalkChildren - If true then any child nodes will be walked as well.
+ *                   If false then any child nodes will be skipped.
+ *   fVisitor - A function that is called for each node visited. This function
+ *              must have the following definition:
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ *   pvArg - An optional argument to be passed to the visitor function.
+ *   sPath - the path (absolute or relative) of the parent node. The current
+ *           node should be appended to this and cleared before returning.
+ *   iDepth - the depth of the current node, starting at 0 for the first node.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
+ *
+ * NOTES:
+ * Functions or C++11 lambdas can be passed to this function. Using lambdas
+ * can often be easier than creating a new class to specifically overload
+ * the operator().                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                           void* pvArg, s256& sPath, i8 iDepth)
+{
+  if (!pNode) {
+    return true;
+  }
+
+  sPath.vConcat(pNode->szName());
+  i8 nLen = sPath.nLength();
+
+  b1 bRetVal;
 
   // Any properties to walk down?
   if (bWalkProperties) {
@@ -221,7 +368,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
       sPath.vClip(nLen);
       sPath.vConcat(const_cast<Stz*>(C_PROPERTY_SEPARATOR));
 
-      bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, sPath);
+      bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
       if (!bRetVal) {
         return false;
@@ -241,7 +388,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
       sPath.vClip(nLen);
       sPath.vConcat(const_cast<Stz*>(C_CHILD_SEPARATOR));
 
-      bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, sPath);
+      bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
       if (!bRetVal) {
         return false;
@@ -249,7 +396,25 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::f
     }
   }
 
-  return true;
+  // Now visit the current node
+  sPath.vClip(nLen);
+  eWalkCtrl eCtrl = fVisitor(pNode, sPath, iDepth, pvArg);
+
+  switch (eCtrl) {
+    case WALK_ABORT:
+      return false;
+
+    case WALK_CONTINUE:
+      return true;
+
+    case WALK_SKIP_SUBTREE:     // meaningless for a bottom-up traversal
+    case WALK_SKIP_CHILDREN:    // meaningless for a bottom-up traversal
+    case WALK_SKIP_PROPERTIES:  // meaningless for a bottom-up traversal
+      THROW("Invalid eWalkCtrl values for a bottom-up traversal of the plan graph"_Stz)
+
+    default:
+      NEVER_REACH
+  }
 }
 
 

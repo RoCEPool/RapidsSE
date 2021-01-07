@@ -63,7 +63,7 @@ void Step::vAssertClass(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    eClassNo = aTypedCell->pObj()->eClass();
+    eClassNo = aTypedCell->pObj()->eGetClassNo();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -88,7 +88,7 @@ void Step::vAssertClass_0(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    eClassNo = aTypedCell->pObj()->eClass();
+    eClassNo = aTypedCell->pObj()->eGetClassNo();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -113,7 +113,7 @@ void Step::vAssertClass_1(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    eClassNo = aTypedCell->pObj()->eClass();  }
+    eClassNo = aTypedCell->pObj()->eGetClassNo();  }
   
   if ( eClassNo != eAssertClassNo )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -137,7 +137,7 @@ void Step::vAssertClass_2(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    eClassNo = aTypedCell->pObj()->eClass();
+    eClassNo = aTypedCell->pObj()->eGetClassNo();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -162,7 +162,7 @@ void Step::vAssertClass_3(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    eClassNo = aTypedCell->pObj()->eClass();
+    eClassNo = aTypedCell->pObj()->eGetClassNo();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -187,7 +187,7 @@ void Step::vAssertClass_4(void)
   eCN eClassNo = aTypedCell->eType();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    eClassNo = aTypedCell->pObj()->eClass();
+    eClassNo = aTypedCell->pObj()->eGetClassNo();
   }
   
   if ( eClassNo != eAssertClassNo )

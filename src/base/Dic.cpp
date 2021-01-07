@@ -84,7 +84,7 @@ void Dic::vAddWord(Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  ASSERT(pWord->eClass() == CN_WORD);
+  ASSERT(pWord->eGetClassNo() == CN_WORD);
   
   m_pArticle->vGrabWrite();
   

@@ -165,7 +165,7 @@ void ThreadQueue::vContentDump(void)
 //
 //    vTrace("Thread %p %s %s\n"_Stz,
 //           pThread,
-//           aCN[pThread->pJob()->eClass()],
+//           aCN[pThread->pJob()->eGetClassNo()],
 //           aTS[pThread->eState()]
 //           );
 //

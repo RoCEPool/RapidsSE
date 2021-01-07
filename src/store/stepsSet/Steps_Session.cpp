@@ -43,7 +43,7 @@ void Step::vSessionDicStackFetch(void)
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(pSession);
-  ASSERT(CN_SESSION == pSession->eClass());
+  ASSERT(CN_SESSION == pSession->eGetClassNo());
   
   m_pDataStack->vPushPtr(pSession->pPathStack());
   
@@ -58,7 +58,7 @@ void Step::vSessionDump(void)
   ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eClass());
+  ASSERT(CN_SESSION == pSession->eGetClassNo());
   
   pSession->vContentDump();
   
@@ -89,7 +89,7 @@ void Step::vSessionIsExiting(void)
   ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eClass());
+  ASSERT(CN_SESSION == pSession->eGetClassNo());
   
   m_pDataStack->vPushInt(pSession->m_bExiting);
   
@@ -104,7 +104,7 @@ void Step::vSessionPid(void)
   ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eClass());
+  ASSERT(CN_SESSION == pSession->eGetClassNo());
   
   m_pDataStack->vPushInt(pSession->m_iPid);
   
@@ -119,7 +119,7 @@ void Step::vSessionTablePtnFetch(void)
   ENTRY();
   
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eClass());
+  ASSERT(CN_SESSION == pSession->eGetClassNo());
   
   m_pDataStack->vPushInt(pSession->i_Stream());
   

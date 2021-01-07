@@ -18,8 +18,8 @@ Tenant* STORE::_pTenant(void* aAddr)
 {
   Tenant* pTenant = reinterpret_cast<Tenant*>(aAddr);
   
-  if (pTenant && CN_TENANT != pTenant->eClass())
-    vTrace("_pTenant got class %s\n"_Stz,aCN[pTenant->eClass()]);
+  if (pTenant && CN_TENANT != pTenant->eGetClassNo())
+    vTrace("_pTenant got class %s\n"_Stz,aCN[pTenant->eGetClassNo()]);
   
   RASSERT_TYPE(pTenant,CN_TENANT);
   

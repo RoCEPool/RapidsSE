@@ -30,6 +30,7 @@
 #include "ePY.h"
 #include "ePX.h"
 #include "eRG.h"
+#include "eRO.h"
 #include "eRU.h"
 #include "eST.h"
 #include "eTP.h"
@@ -38,6 +39,10 @@
 #include "eXK.h"
 
 #include "SizesHeaps.hpp"
+
+#include "IndexStream.hpp"
+#include "PtnStream.hpp"
+#include "Table.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -68,8 +73,7 @@
 #include "Pipeline.hpp"
 #include "Dynamo.hpp"
 
-#include "Plan.hpp"
-#include "Planner.hpp"
+#include "PathIdentifier.hpp"
 
 #include "SessionArray.hpp"
 
@@ -193,8 +197,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(FreqDist),           HT_T_SMALL   ,0 }, // CN_FREQDIST
 
   { 'G' - ('A' - 1),            HT_INVALID   ,0 }, // CN__G__
-  { sizeof(GraphEditor),        HT_T_TINY    ,0 }, // CN_GRAPHEDITOR
-  { sizeof(GraphNav),           HT_T_TINY    ,0 }, // CN_GRAPHNAV
   { sizeof(Grid),               HT_T_SMALL   ,0 }, // CN_GRID
 
   { 'H' - ('A' - 1),            HT_INVALID   ,0 }, // CN__H__
@@ -271,13 +273,12 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OpSpec),             HT_T_LARGE   ,0 }, // CN_OPSPEC
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
+  { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 }, // CN_PATHVEC
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
-  { sizeof(Plan),                 HT_T_MEDIUM  ,0 }, // CN_PLAN
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
-  { sizeof(Planner),              HT_T_MEDIUM  ,0 }, // CN_PLANNER
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST

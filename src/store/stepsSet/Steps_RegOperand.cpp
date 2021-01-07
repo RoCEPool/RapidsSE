@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Table.hpp"
 #include "Node_I.hpp"
 #include "Op.hpp"
 #include "Response.hpp"
@@ -258,7 +259,7 @@ void Step::vRegOperandInsdelIntoTable(void)
 //  tPN tPtnNo = pOp->tPtnNo();
 //  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnNo);
 //
-//  if (CN_CRWBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eClass()) {
+//  if (CN_CRWBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eGetClassNo()) {
 //    CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
 //    // will delete this buffer
 //    pCrwBuffer->vIsPermanent(false);
@@ -266,7 +267,7 @@ void Step::vRegOperandInsdelIntoTable(void)
 //
 //  }
 //  else
-//  if (CN_ROWBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eClass()) {
+//  if (CN_ROWBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eGetClassNo()) {
 //    // will delete this buffer
 //    RowBuffer* pRowBuffer = _pRowBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
 //    pRowBuffer->vIsPermanent(false);
@@ -792,7 +793,7 @@ void Step::vRegOperandWriteToFile0(void)
   ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
   ASSERT(( m_pJob->pLogicUnit_job() )->m_xpFile0->bIsOpen());
   
-  if (CN_CSVBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eClass()) {
+  if (CN_CSVBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eGetClassNo()) {
     CsvBuffer* pCsvBuffer = _pCsvBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
     char* aData = (char*)pCsvBuffer->ayDataArea();
   
@@ -800,7 +801,7 @@ void Step::vRegOperandWriteToFile0(void)
     //( m_pJob->pLogicUnit_job() )->m_xpFile0->vFlush();
   }
   else
-  if (CN_CRWBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eClass()) {
+  if (CN_CRWBUFFER == (*( m_pJob->pLogicUnit_job() )->m_xpOperandA)->eGetClassNo()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
     
     byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));

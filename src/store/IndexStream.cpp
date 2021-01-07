@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexStream.hpp"
+
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -371,7 +374,7 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey,
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the lower relational OP
-    //eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
+    //eLowerRelnOp = pPathIdentifier->eGetFirstLowerPredicateRO(iPhrase);
     ASSERT(RO_NONE != eLowerRelnOp);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -438,7 +441,7 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey,
 //  }
 //  else {
 //    ASSERT(RO_NONE != eUpperRelnOp);
-//    //eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+//    //eUpperRelnOp = pPathIdentifier->eGetFirstUpperPredicateRO(iPhrase);
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

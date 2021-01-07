@@ -73,8 +73,8 @@ void Step::vWordAllot(void)
   Object* pEmbObject = (Object*)pWord->ayAllot(nBytes);
   ASSERT(pEmbObject);
   
-  pEmbObject->vMagic();
-  pEmbObject->vClass(CN_NONE);
+  pEmbObject->vSetMagic();
+  pEmbObject->vSetClassNo(CN_NONE);
 
   m_pDataStack->vPushPtr(pEmbObject);
 

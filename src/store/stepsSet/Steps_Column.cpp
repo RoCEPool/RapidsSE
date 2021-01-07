@@ -31,7 +31,7 @@ void Step::vColumnIsNullableFetch(void)
   ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_COLUMN == pColumn->eClass());
+  ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   s32 sColumnIsNullable;
   sColumnIsNullable = pColumn->bIsNullable() ? "true"_Stz : "false"_Stz;
@@ -49,7 +49,7 @@ void Step::vColumnIsPartitionKeyFetch(void)
   ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_COLUMN == pColumn->eClass());
+  ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   s32 sIsPartitionKey;
   sIsPartitionKey = pColumn->bIsPtnKey() ? "true"_Stz : "false"_Stz;
@@ -67,7 +67,7 @@ void Step::vColumnLengthFetch(void)
   ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_COLUMN == pColumn->eClass());
+  ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   m_pDataStack->vPushInt(pColumn->iColumnLength());
   
@@ -82,7 +82,7 @@ void Step::vColumnNameFetch(void)
   ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_COLUMN == pColumn->eClass());
+  ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   s32 sColNm(pColumn->szColNm());
   
@@ -99,7 +99,7 @@ void Step::vColumnScaleFetch(void)
   ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_COLUMN == pColumn->eClass());
+  ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   m_pDataStack->vPushInt(pColumn->iColumnScale());
   
@@ -114,7 +114,7 @@ void Step::vColumnTypeFetch(void)
   ENTRY();
   
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_COLUMN == pColumn->eClass());
+  ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
   m_pDataStack->vPushInt(pColumn->eColumnType());
   

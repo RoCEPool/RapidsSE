@@ -13,7 +13,7 @@
   0 locals| sIndexNm |
 
   // find the index
-  iPhrase planner[].indexNm@ to sIndexNm
+  iPhrase PathIdentifier[].indexNm@ to sIndexNm
   <tableNm> sIndexNm op__index assert
 
   // grab the table ptn read lock
@@ -29,7 +29,7 @@
   iPhrase  // phrase
   lowerKey // lower
   upperKey // upper
-  planner[] indexStream[].seek
+  PathIdentifier[] indexStream[].seek
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the fetch technique
-  iPhrase planner[].fetchTechnique@
+  iPhrase PathIdentifier[].fetchTech@
 
   case
 
@@ -51,8 +51,8 @@
       "*exact*" .verbose
 
       iPhrase                  // phrase
-      iPhrase planner[].key@   // lower key
-      iPhrase planner[].key@   // upper key
+      iPhrase PathIdentifier[].key@   // lower key
+      iPhrase PathIdentifier[].key@   // upper key
       positionBeginDelete
     endof
 
@@ -62,7 +62,7 @@
       "*lower*" .verbose
 
       iPhrase                     // phrase
-      iPhrase planner[].lowKey@   // lower key
+      iPhrase PathIdentifier[].lowKey@   // lower key
       ""                          // upper key
       positionBeginDelete
     endof
@@ -74,7 +74,7 @@
 
       iPhrase                     // phrase
       ""                          // lower key
-      iPhrase planner[].upperKey@ // upper key
+      iPhrase PathIdentifier[].upperKey@ // upper key
       positionBeginDelete
     endof
 
@@ -84,8 +84,8 @@
       "*range" .verbose
 
       iPhrase                     // phrase
-      iPhrase planner[].lowKey@   // lower key
-      iPhrase planner[].upperKey@ // upper key
+      iPhrase PathIdentifier[].lowKey@   // lower key
+      iPhrase PathIdentifier[].upperKey@ // upper key
       positionBeginDelete
     endof
 
@@ -113,19 +113,19 @@
 
   //sWhere "generatePlan" "%v %v" str.format .
 
-  ( cdt_0 ) planner[].new
-  ( cdt_1 ) Table[] Planner[].table!
+  ( cdt_0 ) PathIdentifier[].new
+  ( cdt_1 ) Table[] PathIdentifier[].table!
 
-  ( cdt_2 ) <predicate> Planner[].parseWhere  //"parseWheres" .
+  ( cdt_2 ) <predicate> PathIdentifier[].parseWhere  //"parseWheres" .
 
-  ( cdt_3 ) Planner[].genPaths           //"genPaths" .
-  ( cdt_4 ) Planner[].scorePaths         //"scorePaths" .
-  //( cdt_5 ) Planner[].showPaths
+  ( cdt_3 ) PathIdentifier[].genPaths           //"genPaths" .
+  ( cdt_4 ) PathIdentifier[].scorePaths         //"scorePaths" .
+  //( cdt_5 ) PathIdentifier[].showPaths
 
-  ( cdt_6 ) Planner[].matchPaths         //"matchPaths" .
-  //( cdt_6 ) Planner[].showPaths
+  ( cdt_6 ) PathIdentifier[].matchPaths         //"matchPaths" .
+  //( cdt_6 ) PathIdentifier[].showPaths
 
-  ( cdt_7 ) Planner[].choosePaths        //"choosePaths" .
+  ( cdt_7 ) PathIdentifier[].choosePaths        //"choosePaths" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -151,7 +151,7 @@
   0 locals| bMoreToDelete |
 
   // get the fetchTechnique
-  Counter1[] planner[].fetchTechnique@
+  Counter1[] PathIdentifier[].fetchTech@
   case
     AT_SCAN of
      0 assert
@@ -184,8 +184,8 @@
 
       tablePtn[] tablePtnDropRead
 
-      // delete the planner
-      planner[].delete
+      // delete the path identifier
+      PathIdentifier[].delete
 
       // pipeout an eosMarker
       Operand[].newEosMarker
@@ -219,7 +219,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of phrases
-  planner[].phrases@ to Counter0[]
+  PathIdentifier[].phrases@ to Counter0[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we have at least one phrase
@@ -257,10 +257,10 @@
   // generate the plan for the fetch
   generatePlan
 
-  //planner[].showPaths
+  //PathIdentifier[].showPaths
 
   // assert we have a plan
-  planner[].isNull not assert
+  PathIdentifier[].isNull not assert
 
   true
 ;

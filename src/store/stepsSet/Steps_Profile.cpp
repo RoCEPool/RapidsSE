@@ -64,7 +64,7 @@ void Step::vProfileStart(void)
   
   if (pDataBuffer) {
     
-    eCN eClassNo = pDataBuffer->eClass();
+    eCN eClassNo = pDataBuffer->eGetClassNo();
     i8 nRowCount = 0;
     
     switch (eClassNo) {

@@ -301,7 +301,7 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
   //
   // called from Step::vTaskAck()
   //
-  RASSERT(pTaskWaiting->eClass() == CN_TASK);
+  RASSERT(pTaskWaiting->eGetClassNo() == CN_TASK);
   
   if (pTaskWaiting->iAcksRmg_assert_only_() <= 0) {
     vTrace("[%s] Acks Remaining: %lld\n"_Stz,

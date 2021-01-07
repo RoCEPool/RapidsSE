@@ -32,12 +32,15 @@
 #include "ePY.h"
 #include "ePX.h"
 #include "eRG.h"
+#include "eRO.h"
 #include "eRU.h"
 #include "eST.h"
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
 
+#include "IndexStream.hpp"
+#include "Table.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -258,7 +261,7 @@ void AM::vBootError(bool bBootError) {
 void AM::vDeleteOperand(Operand* pOperand)
 {
   
-  eCN eClass = pOperand->eClass();
+  eCN eClass = pOperand->eGetClassNo();
   
   switch(eClass) {
       
@@ -389,7 +392,7 @@ void AM::vAppendJobTags(Job* pJob, TagSet* pTagSet)
 
 eCN AM::eJobClass(Job* pJob)
 {
-  return pJob->eClass();
+  return pJob->eGetClassNo();
 }
 
 Stz* AM::szJobNm(Job* pJob)
@@ -729,12 +732,12 @@ void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
   pSocket->vGrabWrite();
   
   SysCall oSysCall;
-  i8 nObjectSize = gxaSizeHeap[pXmitOperand->eClass()].m_nClassSize;
+  i8 nObjectSize = gxaSizeHeap[pXmitOperand->eGetClassNo()].m_nClassSize;
   bool bResult = pSocket->bSendTo(pXmitOperand, nObjectSize, oSysCall);
   
   Operand* pOperand = pXmitOperand->m_pOperand;
   
-  nObjectSize = gxaSizeHeap[pOperand->eClass()].m_nClassSize;
+  nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
   // drop the socket write lock
@@ -1514,13 +1517,13 @@ void AM::vDeleteXmitOperand(XmitOperand* pXmitOperand)
 /*----------------------------------------------------------------------------*/
 Operand* AM::pDuplicateOperand(Operand* pOperand)
 {
-  if (pOperand->eClass() == CN_MARKER) {
+  if (pOperand->eGetClassNo() == CN_MARKER) {
     Marker* pMarker = _pMarker(pOperand);
     Marker* pNewMarker = new Marker(pMarker->eOpMarker());
     return pNewMarker;
   }
   else {
-    ASSERT(pOperand->eClass() == CN_STREAMDEF);
+    ASSERT(pOperand->eGetClassNo() == CN_STREAMDEF);
     StreamDef* pStreamDef = _pStreamDef(pOperand);
     StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
     return pNewStreamDef;
@@ -1580,7 +1583,7 @@ Stz* AM::pOperandName(Operand* pOperand)
   if (pOperand->bIsInfoSet())
     return aOI[(_pInfoSet(pOperand))->eOpInfoSet()];
   else
-    return aCN[pOperand->eClass()];
+    return aCN[pOperand->eGetClassNo()];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1632,7 +1635,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
 {
   eZK eOperand = ZK_NONE;
   
-  eCN eClass_opd = pOperand->eClass();
+  eCN eClass_opd = pOperand->eGetClassNo();
   
   switch (eClass_opd) {
     
@@ -2122,9 +2125,9 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
       aCell++;
       
       //PtrVal* aPtrVal = _aPtrVal(aCell);
-      //eCN eClassNo_obj = aPtrVal->pObj()->eClass();
+      //eCN eClassNo_obj = aPtrVal->pObj()->eGetClassNo();
       TypedCell* aTypedCell = _aTypedCell(aCell);
-      eCN eClassNo_obj = aTypedCell->pObj()->eClass();
+      eCN eClassNo_obj = aTypedCell->pObj()->eGetClassNo();
 
       if (CN_WORD == eClassNo_obj) {
         Word* pWord = _pWord(aTypedCell->pObj());

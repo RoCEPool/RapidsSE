@@ -50,9 +50,9 @@
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // spawn supervisor demon
-  //"" false supervisorDemonPipelineCmd api::spawnDemon not if
-  //  "Error Code %v" .printf
-  //then
+  "" false supervisorDemonPipelineCmd api::spawnDemon not if
+    "Error Code %v" .printf
+  then
 
   // spawn recurring demon
   //  "" false recurringDemonPipelineCmd api::spawnDemon not if

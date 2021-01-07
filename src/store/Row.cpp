@@ -18,7 +18,7 @@ Row* STORE::_pRow(void* aAddr)
 {
   Row* pRow = reinterpret_cast<Row*>(aAddr);
   
-  ASSERT(!pRow || CN_ROW == pRow->eClass());
+  ASSERT(!pRow || CN_ROW == pRow->eGetClassNo());
   
   return pRow;
 }

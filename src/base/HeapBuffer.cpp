@@ -76,7 +76,7 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
        aChunk;
        aChunk = aNextChunk(aChunk,nBytes), iChunk++) {
 
-    eCN eClass = aChunk->eClass();
+    eCN eClass = aChunk->eGetClassNo();
     //vTrace("Analyse : %p %lld\n"_Stz,aChunk,eClass);
     
     if (eClass >= CN_ENUMS || eClass < 1) {
@@ -188,7 +188,7 @@ void HeapBuffer::vVerify(i8 iChunkSize)
        aChunk;
        aChunk = aNextChunk(aChunk,iChunkSize), iChunk++) {
     
-    eCN eClass = aChunk->eClass();
+    eCN eClass = aChunk->eGetClassNo();
     ASSERT(eClass < CN_ENUMS);
   }
 }

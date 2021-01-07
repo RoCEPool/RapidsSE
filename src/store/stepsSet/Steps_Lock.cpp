@@ -30,7 +30,7 @@ void Step::vLockDropRead(void)
   
   Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
-  ASSERT(CN_LOCK == pLock->eClass());
+  ASSERT(CN_LOCK == pLock->eGetClassNo());
   
   pLock->vDropRead();
   
@@ -46,7 +46,7 @@ void Step::vLockDropWrite(void)
 
   Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
-  ASSERT(CN_LOCK == pLock->eClass());
+  ASSERT(CN_LOCK == pLock->eGetClassNo());
 
   pLock->vDropWrite();
   
@@ -62,7 +62,7 @@ void Step::vLockGrabRead(void)
 
   Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
-  ASSERT(CN_LOCK == pLock->eClass());
+  ASSERT(CN_LOCK == pLock->eGetClassNo());
 
   pLock->vGrabRead();
   
@@ -78,7 +78,7 @@ void Step::vLockGrabWrite(void)
 
   Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
-  ASSERT(CN_LOCK == pLock->eClass());
+  ASSERT(CN_LOCK == pLock->eGetClassNo());
   
   pLock->vGrabWrite();
   

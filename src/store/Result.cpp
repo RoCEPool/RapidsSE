@@ -98,7 +98,7 @@ void Result::vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker)
 {
   _static_
   
-  eClassNo = pOperand->eClass();
+  eClassNo = pOperand->eGetClassNo();
   
   if (CN_MARKER == eClassNo) {
     Marker* pMarker = _pMarker(pOperand);
@@ -309,7 +309,7 @@ bool Result::bProcessOperand(Operand* pOperand)
   
   //SP_DataBuffer spDataBuffer;
     
-  eCN eOperandClass = pOperand->eClass();
+  eCN eOperandClass = pOperand->eGetClassNo();
   
   switch (eOperandClass) {
       

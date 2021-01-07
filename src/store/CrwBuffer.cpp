@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexStream.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -126,7 +128,7 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
   reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
   
   ASSERT(pCrwBuffer);
-  ASSERT(pCrwBuffer->eClass() == CN_CRWBUFFER);
+  ASSERT(pCrwBuffer->eGetClassNo() == CN_CRWBUFFER);
   
   return pCrwBuffer;
 }
@@ -147,7 +149,7 @@ CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
   CrwBuffer* pCrwBuffer =
     reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
   
-  RASSERT(CN_CRWBUFFER == pCrwBuffer->eClass());
+  RASSERT(CN_CRWBUFFER == pCrwBuffer->eGetClassNo());
   
   return pCrwBuffer;
 }
@@ -808,12 +810,12 @@ bool CrwBuffer::bValidCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  if (! bValidMagic()) {
+  if (! bIsMagicValid()) {
     vTrace("Not valid magic\n"_Stz);
     return false;
   }
   
-  if (CN_CRWBUFFER != eClass()) {
+  if (CN_CRWBUFFER != eGetClassNo()) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }

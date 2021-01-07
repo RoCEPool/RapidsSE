@@ -127,7 +127,7 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipeline();
-  Step::vAddSteps_Planner();
+  Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_Plist();
   Step::vAddSteps_Pot();
   Step::vAddSteps_Procedure();

@@ -7,6 +7,7 @@
 
 #include "ePX.h"
 
+#include "IndexStream.hpp"
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
@@ -42,10 +43,10 @@ Job* STORE::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
-  if (pJob && ! _bIsValidJob(pJob->eClass()) )
-      vTrace("_pJob got class %s\n"_Stz,aCN[pJob->eClass()]);
+  if (pJob && ! _bIsValidJob(pJob->eGetClassNo()) )
+      vTrace("_pJob got class %s\n"_Stz,aCN[pJob->eGetClassNo()]);
       
-  //RASSERT( ! pJob || _bIsValidJob(pJob->eClass()) );
+  //RASSERT( ! pJob || _bIsValidJob(pJob->eGetClassNo()) );
   
   return pJob;
 }
@@ -57,10 +58,10 @@ Job* STORE::_pJob(i8 iAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(iAddr);
   
-  //  if ( pJob && ! _bIsValidJob(pJob->eClass() )
+  //  if ( pJob && ! _bIsValidJob(pJob->eGetClassNo() )
   //    i8 iDebug = 1;
   
-  RASSERT( ! pJob || _bIsValidJob(pJob->eClass()) );
+  RASSERT( ! pJob || _bIsValidJob(pJob->eGetClassNo()) );
   
   return pJob;
 }
@@ -116,7 +117,7 @@ Job::Job(eCN eClassNo)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
-  //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
+  //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eGetClassNo()]);
   
   // m_xReqTuple
   
@@ -253,7 +254,7 @@ Job::~Job(void) noexcept(false)
   //! are completely returned
   while (nReferences()) {
     vTrace("Napping\n"_Stz);
-    AM::vNapMsec(10, eClass());
+    AM::vNapMsec(10, eGetClassNo());
   }
   
   if (m_pPipeline)
@@ -475,7 +476,7 @@ void Job::vContentDump(void)
          "m_pBufferQueue=%p\n"
          "m_pPipeline=%p\n"_Stz,
          this,
-         aCN[eClass()],
+         aCN[eGetClassNo()],
          
          m_sJobNm.azChar(),
          aJK[m_eJobKind]->azChar(),
@@ -529,7 +530,7 @@ void Job::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -819,7 +820,7 @@ void Job::vMarkJob(void)
   
   sJobMark.vSprintCat("Job %03lld %s session %lld tablePtn %lld\n"_Stz,
                       m_iFocalId,
-                      aCN[eClass()],
+                      aCN[eGetClassNo()],
                       m_xReqTuple.m_i_Session,
                       m_i_TablePtn);
   sJobMark.vSprintCat("  phase %s state %s list %s"_Stz,
@@ -1317,7 +1318,7 @@ void Job::vShow(void)
 
   vTrace("%s parentId %03lld seed %s "
          "i_Session %03lld i_TablePtn %lld WasReceived %lld\n"_Stz,
-         aCN[eClass()],
+         aCN[eGetClassNo()],
          m_iParentId,
          aSS[m_eSeed],
          
@@ -1460,7 +1461,7 @@ bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
   Job* pInsertEntry = _pJob(pObjectInsert);
   Job* pScanEntry   = _pJob(pObjectScan);
   
-  eCN eClassScanEntry = pScanEntry->eClass();
+  eCN eClassScanEntry = pScanEntry->eGetClassNo();
   
   RASSERT(_bIsValidJob(eClassScanEntry));
   

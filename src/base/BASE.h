@@ -172,8 +172,6 @@ extern d8 C_D8_MID;
 
 #include "Asm.h"
 
-#include "PmcUse.h"
-
 #include "Stz.hpp"
 #include "StrLib.hpp"
 

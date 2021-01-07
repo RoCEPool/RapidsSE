@@ -38,7 +38,7 @@ void PoolHelper::vObjectDump(i8 iAfter, Heap* pHeap)
          aChunk;
          aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
       
-      eCN eClass = aChunk->eClass();
+      eCN eClass = aChunk->eGetClassNo();
       
       if (CN_FREECHUNK == eClass)
         continue;
@@ -78,14 +78,14 @@ void PoolHelper::vHeapDump(Heap* pHeap)
   vTrace("%sObjects in %s Heap:\n"_Stz,
          Stz::szTab(1),
          
-           pHeap->eClass() == CN_TINYTRANSIENT    ? "Tiny Transient"_Stz
-         : pHeap->eClass() == CN_SMALLTRANSIENT   ? "Small Transient"_Stz
-         : pHeap->eClass() == CN_MEDIUMTRANSIENT  ? "Medium Transient"_Stz
-         : pHeap->eClass() == CN_LARGETRANSIENT   ? "Large Transient"_Stz
-         : pHeap->eClass() == CN_TINYPERSISTENT   ? "Tiny Persistent"_Stz
-         : pHeap->eClass() == CN_SMALLPERSISTENT  ? "Small Persistent"_Stz
-         : pHeap->eClass() == CN_MEDIUMPERSISTENT ? "Medium Persistent"_Stz
-         : pHeap->eClass() == CN_LARGEPERSISTENT  ? "Large Persistent"_Stz
+           pHeap->eGetClassNo() == CN_TINYTRANSIENT    ? "Tiny Transient"_Stz
+         : pHeap->eGetClassNo() == CN_SMALLTRANSIENT   ? "Small Transient"_Stz
+         : pHeap->eGetClassNo() == CN_MEDIUMTRANSIENT  ? "Medium Transient"_Stz
+         : pHeap->eGetClassNo() == CN_LARGETRANSIENT   ? "Large Transient"_Stz
+         : pHeap->eGetClassNo() == CN_TINYPERSISTENT   ? "Tiny Persistent"_Stz
+         : pHeap->eGetClassNo() == CN_SMALLPERSISTENT  ? "Small Persistent"_Stz
+         : pHeap->eGetClassNo() == CN_MEDIUMPERSISTENT ? "Medium Persistent"_Stz
+         : pHeap->eGetClassNo() == CN_LARGEPERSISTENT  ? "Large Persistent"_Stz
          : "unknown"_Stz
          );
          
@@ -100,7 +100,7 @@ void PoolHelper::vHeapDump(Heap* pHeap)
          aChunk;
          aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
       
-      eCN eClass = aChunk->eClass();
+      eCN eClass = aChunk->eGetClassNo();
       
       if (CN_FREECHUNK == eClass)
         continue;
@@ -149,7 +149,7 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
          aChunk;
          aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
       
-      eCN eClass = aChunk->eClass();
+      eCN eClass = aChunk->eGetClassNo();
       
       if (CN_FREECHUNK == eClass)
         continue;
@@ -202,7 +202,7 @@ void PoolHelper::vInspectObjects(i8 iAfter)
            aChunk;
            aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->nObjectSize())) {
         
-        eCN eClass = aChunk->eClass();
+        eCN eClass = aChunk->eGetClassNo();
         if (CN_FREECHUNK == eClass)
           continue; // next chunk
         
@@ -248,7 +248,7 @@ void PoolHelper::vObjectSummary(void)
        i_Buffer++) {
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
-    iCountObjects[pBuffer->eClass()]++;
+    iCountObjects[pBuffer->eGetClassNo()]++;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -424,7 +424,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     
-    eCN eClass = pBuffer->eClass();
+    eCN eClass = pBuffer->eGetClassNo();
     
     if (CN_SYSTEMSCHEDULE == eClass)
       int iDebug = 1;
@@ -779,10 +779,10 @@ void PoolHelper::vWordList(i8 iEpoch)
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     
-    if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
+    if (CN_MEDIUMTRANSIENT == pBuffer->eGetClassNo())
       pMediumTransient = pBuffer;
     
-    if (CN_SMALLTRANSIENT == pBuffer->eClass())
+    if (CN_SMALLTRANSIENT == pBuffer->eGetClassNo())
       pSmallTransient = pBuffer;
   }
   

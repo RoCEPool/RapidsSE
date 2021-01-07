@@ -35,7 +35,7 @@ void* Ent::operator new(size_t, Ent* aEnt)
 Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 {
 #ifdef __ENT_HEADER
-  m_xHeader.vClass(CN_ENT);
+  m_xHeader.vSetClassNo(CN_ENT);
   m_xHeader.vMagic();
 #endif
   
@@ -77,13 +77,13 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* get address of the element bytes of the key in this entry                  */
 /*----------------------------------------------------------------------------*/
-eCN Ent::eClass(void)
+eCN Ent::eGetClassNo(void)
 {
   eCN eClass;
   
 #ifdef __ENT_HEADER
   
-  eClass = m_xHeader.eClass();
+  eClass = m_xHeader.eGetClassNo();
   
 #else
   
@@ -489,12 +489,12 @@ void Ent::vSkipLevels(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 bool Ent::bValidEnt(void)
 {
-  if (! bValidMagic()) {
+  if (! bIsMagicValid()) {
     vTrace("Not valid magic\n"_Stz);
     return false;
   }
   
-  if ( ! (CN_ENT == eClass() || CN_FREEITEM == eClass()) ) {
+  if ( ! (CN_ENT == eGetClassNo() || CN_FREEITEM == eGetClassNo()) ) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }
@@ -505,10 +505,10 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 /* test for valid magic                                                       */
 /*----------------------------------------------------------------------------*/
-bool Ent::bValidMagic(void)
+bool Ent::bIsMagicValid(void)
 {
 #ifdef __ENT_HEADER
-  bool bValid = m_xHeader.bValidMagic();
+  bool bValid = m_xHeader.bIsMagicValid();
 #else
   bool bValid = true;
 #endif

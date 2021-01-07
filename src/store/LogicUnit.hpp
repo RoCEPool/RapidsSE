@@ -9,6 +9,8 @@
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
 
+
+
 #include "RluCommon.h"
 #include "RluDiary.hpp"
 #include "DevIXT.hpp"
@@ -23,7 +25,7 @@
 
 #include "eLH.h"
 
-namespace STORE { class Planner; }
+namespace STORE { class PathIdentifier; }
 
 namespace STORE
 {
@@ -79,7 +81,7 @@ namespace STORE
     REG<Table>       m_xpInfoSetTable;
     REG<LogicCompiler> m_xpLogicCompiler;
     REG<Operand>     m_xpPipein;    // Pipein
-    REG<Planner>     m_xpPlanner;
+    REG<PathIdentifier>     m_xpPathIdentifier;
     REG<Pot>         m_xpPot;
     REG<PtnStream>   m_xpPtnStream;
     REG<Row>         m_xpRow;

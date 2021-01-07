@@ -8,6 +8,8 @@
 
 #include "LogicCompiler.hpp"
 
+#include "IndexStream.hpp"
+
 #ifdef __TINYC
 #include "libtcc.h"
 #endif

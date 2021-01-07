@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "LIB_interface.h"
+#include "IndexStream.hpp"
 #include "Node_I.hpp"
 
 #include "SP_Bcd.hpp"

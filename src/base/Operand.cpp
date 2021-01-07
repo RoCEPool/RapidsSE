@@ -71,7 +71,7 @@ Operand::~Operand(void) noexcept(false)
 bool Operand::bIsBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  eCN eClass = this->eClass();
+  eCN eClass = this->eGetClassNo();
   
   if (eClass == CN_INFOSET || eClass == CN_MARKER ||
       eClass == CN_PROFILE || eClass == CN_STREAMDEF)
@@ -87,7 +87,7 @@ bool Operand::bIsInfoSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return eClass() == CN_INFOSET ? true : false;
+  return eGetClassNo() == CN_INFOSET ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ bool Operand::bIsMarker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return eClass() == CN_MARKER ? true : false;
+  return eGetClassNo() == CN_MARKER ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ bool Operand::bIsProfile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return eClass() == CN_PROFILE ? true : false;
+  return eGetClassNo() == CN_PROFILE ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ bool Operand::bIsStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return eClass() == CN_STREAMDEF ? true : false;
+  return eGetClassNo() == CN_STREAMDEF ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

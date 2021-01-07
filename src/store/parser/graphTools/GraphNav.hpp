@@ -8,20 +8,13 @@ namespace Parser
 {
   class PlanNode;
 
-  class GraphNav : public Object
+  class GraphNav
   {
+
   private:
-    Footer m_xFooter;
+    GraphNav();
 
   public:
-
-    void* operator new(size_t);
-    void  operator delete(void*);
-
-    GraphNav();
-    ~GraphNav(void);
-
-    Footer* aFooter(void);
 
     // Returns the leaf element of a type definition path.
     // e.g. given a definition path of /a/b/c this will return 'c'.
@@ -30,16 +23,49 @@ namespace Parser
     // Returns the parent of the type definition path given.
     static void vParentType(Stz* szTypePath, s256& buf);
 
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     // Methods for walking a plan graph.
+    // ---------------------------------
+
+    // An enum return value so that the visitor can control the traversal to some degree.
+    enum eWalkCtrl {
+      WALK_NONE = 0,
+      WALK_CONTINUE,        // Keep walking.
+      WALK_ABORT,           // Abort all further walking of nodes in the graph.
+      WALK_SKIP_SUBTREE,    // Slip all properties and children. Not applicable on a bottom-up traversal.
+      WALK_SKIP_PROPERTIES, // Slip properties only. Not applicable on a bottom-up traversal.
+      WALK_SKIP_CHILDREN,   // Slip children only. Not applicable on a bottom-up traversal.
+      WALK_NENUMS
+    };
+
     // The following functions require a visitor function with the definition:
-    //   b1 func(PlanNode* pNode, s256& sPath)
-    // Returning true in this visitor function indicates that the walk should
-    // continue. Returning false indicates that the walk is to abort.
+    //   eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+    // Params:
+    //   pNode - the current node being walked
+    //   sPath - the path of the current node being walked
+    //   iDepth - the depth of the current node, where the first node has
+    //            a depth of 0.
+    //   pvArg - an optional argument passed to the walk function
+    // The return value controls whether walking continues, skips a subtree
+    // or aborts altogether.
 
     // Walk the current node and (potenitially) its properties and children,
-    // calling the visitor function for each node encountered
-    static b1 bWalk(PlanNode* pNode, std::function<b1(PlanNode*, s256&)> fVisitor);
-    static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren, std::function<b1(PlanNode*, s256&)> fVisitor);
+    // calling the visitor function for each node encountered. This is a
+    // top-down, depth-first traversal.
+    // Returns false if the walk was aborted or true if it completed normally.
+    static b1 bWalk(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                    std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+
+    // Walk the current node and (potenitially) its properties and children,
+    // calling the visitor function for each node encountered. This is a
+    // bottom-up, depth-first traversal.
+    // Returns false if the walk was aborted or true if it completed normally.
+    static b1 bWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                            std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     // Returns a PlanNode* for a given path if one is found. Otherwise null.
     // The path may be absolute (starts with a '/') or relative.
@@ -60,7 +86,11 @@ namespace Parser
 
   private:
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                    std::function<b1(PlanNode*, s256&)> fVisitor, s256& sPath);
+                    std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                    void* pvArg, s256& sPath, i8 iDepth);
+    static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                            std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                            void* pvArg, s256& sPath, i8 iDepth);
 
     static i8 iNextSeparator(Stz* szPath);
   };

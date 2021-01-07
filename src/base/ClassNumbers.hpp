@@ -84,8 +84,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FREQDIST,
   
   /* */ CN__G__,
-  /* */ CN_GRAPHEDITOR,
-  /* */ CN_GRAPHNAV,
   /* */ CN_GRID,
   
   /* */ CN__H__,
@@ -163,13 +161,12 @@ enum eCN : u2 // Class Number
   /* */ CN_OPSPEC,
   
   /* */ CN__P__,
+  /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINESPEC,
-  /* */ CN_PLAN,
   /* */ CN_PLANDEFINITIONPARSER,
-  /* */ CN_PLANNER,
   /* */ CN_PLANNODE,
   /* */ CN_PLANNODEBUILDER,
   /* */ CN_PLANNODEBUILDERLIST,
@@ -408,8 +405,6 @@ static Stz* aCN[]
   /* */ "FREQDIST"_Stz,             // CN_FREQDIST
    
   /* */ "_G__"_Stz,                 // CN__G__
-  /* */ "GRAPHEDITOR"_Stz,          // CN_GRAPHEDITOR
-  /* */ "GRAPHNAV"_Stz,             // CN_GRAPHNAV
   /* */ "GRID"_Stz,                 // CN_GRID
  
   /* */ "_H__"_Stz,                 // CN__H__
@@ -486,13 +481,12 @@ static Stz* aCN[]
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
    
   /* */ "_P__"_Stz,                 // CN__P__
+  /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
-  /* */ "PLAN"_Stz,                 // CN_PLAN
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
-  /* */ "PLANNER"_Stz,              // CN_PLANNER
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
   /* */ "PLANNODEBUILDER"_Stz,      // CN_PLANNODEBUILDER
   /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST

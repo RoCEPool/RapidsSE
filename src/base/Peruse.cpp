@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include <math.h>
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -152,9 +150,11 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
     
     d8 dGrandVar = m_dGrandM2/(m_iGrandCount-1.0);
     
-    d8 dGrandStdDev = sqrt( dGrandVar );
+    d8 dGrandStdDev = FltLib::dSqrt( dGrandVar );
     
-    d8 dGrandSkew = sqrt(double(m_iGrandCount)) * m_dGrandM3/ pow(m_dGrandM2, 1.5);
+    d8 dGrandSkew = FltLib::dSqrt(double(m_iGrandCount))
+                      * m_dGrandM3
+                      / FltLib::dPow(m_dGrandM2, 1.5);
     
     d8 dGrandKurt = double(m_iGrandCount)*m_dGrandM4 / (m_dGrandM2*m_dGrandM2) - 3.0;
     
@@ -231,9 +231,11 @@ void Peruse::vPrint(Stz* szFormat,...)
   
   d8 dGrandVar = m_dGrandM2 / (m_iGrandCount-1.0);
   
-  d8 dGrandStdDev = sqrt(dGrandVar);
+  d8 dGrandStdDev = FltLib::dSqrt(dGrandVar);
   
-  d8 dGrandSkew = sqrt(double(m_iGrandCount)) * m_dGrandM3 / pow(m_dGrandM2, 1.5);
+  d8 dGrandSkew = FltLib::dSqrt(double(m_iGrandCount))
+                    * m_dGrandM3
+                    / FltLib::dPow(m_dGrandM2, 1.5);
   
   d8 dGrandKurt = double(m_iGrandCount)*m_dGrandM4 / (m_dGrandM2*m_dGrandM2) - 3.0;
   
@@ -344,12 +346,12 @@ double RunningStats::Variance() const
 
 double RunningStats::StandardDeviation() const
 {
-  return sqrt( Variance() );
+  return FltLib::dSqrt( Variance() );
 }
 
 double RunningStats::Skewness() const
 {
-  return sqrt(double(n)) * M3/ pow(M2, 1.5);
+  return FltLib::dSqrt(double(n)) * M3 / FltLib::dPow(M2, 1.5);
 }
 
 double RunningStats::Kurtosis() const

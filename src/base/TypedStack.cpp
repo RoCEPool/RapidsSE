@@ -161,7 +161,7 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
       // -- -- -- -- -- --
       case CN_PTRVAL: {
         Object* pObj  =aTypedCell->pObj();
-        eCN ePtdClass = pObj->eClass();
+        eCN ePtdClass = pObj->eGetClassNo();
         
         if (CN_WORD == ePtdClass) {
           Word* pPtdWord = _pWord(pObj);
@@ -499,7 +499,7 @@ void TypedStack::vStackContents(s48K& sStackContents)
         
         Object* pPtr = aTypedCell->pObj();
         
-        eCN ePtrClass = aTypedCell->pObj()->eClass();
+        eCN ePtrClass = aTypedCell->pObj()->eGetClassNo();
         
         if (CN_WORD == ePtrClass)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
@@ -520,7 +520,7 @@ void TypedStack::vStackContents(s48K& sStackContents)
 //                                    pTask->szJobName());
 //        }
         else {
-          if (pPtr->bValidMagic() && pPtr->eClass() < CN_ENUMS)
+          if (pPtr->bIsMagicValid() && pPtr->eGetClassNo() < CN_ENUMS)
             sStackContents.vCatSprint("^%s=%p"_Stz,
                                       aCN[ePtrClass],
                                       pPtr);

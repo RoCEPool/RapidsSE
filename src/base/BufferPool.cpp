@@ -325,7 +325,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   }
   
   // free buffer by pushing onto free chain
-  pFreeBuffer->vClass(CN_FREEBUFFER);
+  pFreeBuffer->vSetClassNo(CN_FREEBUFFER);
   pFreeBuffer->vNextFree(m_iFreeHead);
   m_iFreeHead = pBuffer->iBufferNo();
   
@@ -463,8 +463,8 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     
     FreeBuffer* pFreeBuffer = pToFreeBuffer(i_Buffer);
     
-    pFreeBuffer->vMagic();
-    pFreeBuffer->vClass(CN_FREEBUFFER);
+    pFreeBuffer->vSetMagic();
+    pFreeBuffer->vSetClassNo(CN_FREEBUFFER);
     
     //pFreeBuffer->aFooter()->vSetFooter();
     if (bTouch)
@@ -480,8 +480,8 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
   
   FreeBuffer* pLastBuffer = pToFreeBuffer(iBufferLast());
   
-  pLastBuffer->vMagic();
-  pLastBuffer->vClass(CN_FREEBUFFER);
+  pLastBuffer->vSetMagic();
+  pLastBuffer->vSetClassNo(CN_FREEBUFFER);
   //pLastBuffer->aFooter()->vSetFooter();
   if (bTouch)
     pLastBuffer->vZeroData();
@@ -683,8 +683,8 @@ void BufferPool::vVerifyPool(void)
     
     FreeBuffer* pBufferVerify = pToFreeBuffer(i_Buffer);
     
-    RASSERT(pBufferVerify->bValidMagic());
-    RASSERT(CN_FREEBUFFER == pBufferVerify->eClass());
+    RASSERT(pBufferVerify->bIsMagicValid());
+    RASSERT(CN_FREEBUFFER == pBufferVerify->eGetClassNo());
     
     i_Buffer = pBufferVerify->iNextFree();
     RASSERT(i_Buffer < m_nBuffers);

@@ -119,9 +119,9 @@ void EntBuffer::vQuickVerify(Ent* aSeeEntry)
       if (! aCheckEntry)
         continue;
       
-      if (CN_ENT != aCheckEntry->eClass())
+      if (CN_ENT != aCheckEntry->eGetClassNo())
         vShow();
-      ASSERT(CN_ENT == aCheckEntry->eClass());
+      ASSERT(CN_ENT == aCheckEntry->eGetClassNo());
     }
     
   }
@@ -141,9 +141,9 @@ void EntBuffer::vQuickVerify(Ent* aSeeEntry)
   //      if (pTestEntry == pSeeEntry)
   //        int iDebug = 1;
   //
-  //      if (CN_ENT != pTestEntry->eClass())
+  //      if (CN_ENT != pTestEntry->eGetClassNo())
   //        vShow();
-  //      ASSERT(CN_ENT == pTestEntry->eClass());
+  //      ASSERT(CN_ENT == pTestEntry->eGetClassNo());
   //    }
   //  }
   
@@ -172,7 +172,7 @@ bool EntBuffer::bQuickVerify(Ent* aNotSeeEntry)
         return false;
       }
       
-      if (CN_ENT != aCheckEntry->eClass())
+      if (CN_ENT != aCheckEntry->eGetClassNo())
         return false;
     }
   }
@@ -187,12 +187,12 @@ bool EntBuffer::bValidEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  if (! bValidMagic()) {
+  if (! bIsMagicValid()) {
     vTrace("Not valid magic\n"_Stz);
     return false;
   }
   
-  if (CN_ENTBUFFER != eClass()) {
+  if (CN_ENTBUFFER != eGetClassNo()) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }
@@ -493,7 +493,7 @@ bool EntBuffer::bVerifyItems(void)
     
     //vTrace("Verify item %p\n"_Stz,pItem);
     
-    eCN eClass = aEnt->eClass();
+    eCN eClass = aEnt->eGetClassNo();
     
     switch (eClass) {
         
@@ -732,7 +732,7 @@ bool EntBuffer::bVerifyRowRefs(void)
     // get the row entry from referenced entry buffer
     i8 i_Item = aEnt->rxRef().iItem();
     
-    if (pDataBuffer->eClass() == CN_CRWBUFFER) {
+    if (pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
       Crw* aCrw = pCrwBuffer->aCrw(i_Item);
       if (! aCrw ) {
@@ -741,7 +741,7 @@ bool EntBuffer::bVerifyRowRefs(void)
       }
     }
     else {
-      ASSERT(pDataBuffer->eClass() == CN_CRVBUFFER);
+      ASSERT(pDataBuffer->eGetClassNo() == CN_CRVBUFFER);
       Crv* aCrv = AM::aCrv(pDataBuffer,i_Item);
       if (! aCrv ) {
         vVerifyFault(__func__,__FILE__,__LINE__);
@@ -781,7 +781,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
     Ent* aTestEntry_sl = aNextEntry(aSkipRoots(),i_ScanLevel);
     while (aTestEntry_sl) {
       
-      if (CN_ENT != aTestEntry_sl->eClass()) {
+      if (CN_ENT != aTestEntry_sl->eGetClassNo()) {
         vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
@@ -789,19 +789,19 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
       switch (i_ScanLevel) {
         case 2:
           aNextEntry2 = aNextEntry(aTestEntry_sl,2);
-          if (aNextEntry2 && CN_ENT != aNextEntry2->eClass()) {
+          if (aNextEntry2 && CN_ENT != aNextEntry2->eGetClassNo()) {
             vVerifyFault(__func__,__FILE__,__LINE__);
             return false;
           }
         case 1:
           aNextEntry1 = aNextEntry(aTestEntry_sl,1);
-          if (aNextEntry1 && CN_ENT != aNextEntry1->eClass()) {
+          if (aNextEntry1 && CN_ENT != aNextEntry1->eGetClassNo()) {
             vVerifyFault(__func__,__FILE__,__LINE__);
             return false;
           }
         case 0:
           aNextEntry0 = aNextEntry(aTestEntry_sl,0);
-          if (aNextEntry0 && CN_ENT != aNextEntry0->eClass()) {
+          if (aNextEntry0 && CN_ENT != aNextEntry0->eGetClassNo()) {
             vVerifyFault(__func__,__FILE__,__LINE__);
             return false;
           }

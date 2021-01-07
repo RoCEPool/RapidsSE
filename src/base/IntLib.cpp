@@ -356,6 +356,18 @@ i8 IntLib::iPercent(i8 iNumerator, i8 iDenominator)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return arg raised to given power                                           */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iPow(i8 iArg, i8 iRaisedTo)
+{
+  d8 dRaised = pow(iArg,iRaisedTo);
+  
+  i8 iRaised = (i8)dRaised;
+  
+  return iRaised;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the quartile of value given its maximum                             */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iQuartile(i8 iNumerator, i8 iDenominator)

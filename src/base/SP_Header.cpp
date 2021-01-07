@@ -40,7 +40,7 @@ Stz* SP_Header::sz(Header* aHeader)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  eCN eClassNo  = aHeader->eClass();
+  eCN eClassNo  = aHeader->eGetClassNo();
   i8 nClassSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
   StrLib::vSprint(m_caResult,
@@ -49,7 +49,7 @@ Stz* SP_Header::sz(Header* aHeader)
                   eClassNo,
                   aCN[eClassNo],
                   nClassSize,
-                  aHeader->bValidMagic() ? "valid-magic" : "invalid-magic"
+                  aHeader->bIsMagicValid() ? "valid-magic" : "invalid-magic"
                   );
 
   return (Stz*) &m_caResult[0];

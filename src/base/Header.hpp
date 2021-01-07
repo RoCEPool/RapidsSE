@@ -3,8 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+//#include "eEC.h"
+
 namespace BASE
 {
+  // magic signature
   static const u4 C_MAGIC = 0x4B696A4D; // spells MjiK
                             //K i j M
   
@@ -14,15 +17,15 @@ namespace BASE
   
   class _Header
   {
-  private:
+  protected:
     union {
       u4   m_uMagic;      // 4 byte magic signature
       char m_caMagic[4];
     };
-    eCN  m_eClass;        // 2 byte class enum
+    eCN  m_eClassNo;      // 2 byte class enum
     u2   m__spareBytes;   // 2 spare bytes
 
-    //! observe there are no constructors
+    // ! observe there are no constructors
   
   /*--------------------------------------------------------------------------*/
   /*                           -- Inline Functions --                         */
@@ -30,44 +33,36 @@ namespace BASE
   public:
 
   /*--------------------------------------------------------------------------*/
-  /* set class                                                                */
+  /* get class number                                                         */
   /*--------------------------------------------------------------------------*/
-  inline void vClass(eCN eClass)
+  inline eCN eGetClassNo(void)
   {
-    m_eClass = eClass;
+    return m_eClassNo;
   }
   
   /*--------------------------------------------------------------------------*/
-  /* get class                                                                */
+  /* set class number                                                         */
   /*--------------------------------------------------------------------------*/
-  inline eCN eClass(void)
+  inline void vSetClassNo(eCN eClassNo)
   {
-    return m_eClass;
+    m_eClassNo = eClassNo;
   }
   
   /*--------------------------------------------------------------------------*/
-  /* test for given class                                                     */
+  /* test if given class number                                              */
   /*--------------------------------------------------------------------------*/
-  inline bool bIsClass(eCN eClass)
+  inline bool bIsClassNo(eCN eClassNo)
   {
-    if (m_eClass == eClass)
+    if (m_eClassNo == eClassNo)
       return true;
     else
       return false;
   }
   
   /*--------------------------------------------------------------------------*/
-  /* set magic                                                                */
+  /* test if magic signature is valid                                         */
   /*--------------------------------------------------------------------------*/
-  inline void vMagic(void)
-  {
-    m_uMagic = C_MAGIC;
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* test for valid magic                                                     */
-  /*--------------------------------------------------------------------------*/
-  inline bool bValidMagic(void)
+  inline bool bIsMagicValid(void)
   {
     if (C_MAGIC == m_uMagic)
       return true;
@@ -75,23 +70,79 @@ namespace BASE
       return false;
   }
 
-  };
+  /*--------------------------------------------------------------------------*/
+  /* set magic signature                                                      */
+  /*--------------------------------------------------------------------------*/
+  inline void vSetMagic(void)
+  {
+    m_uMagic = C_MAGIC;
+  }
   
+  /*--------------------------------------------------------------------------*/
+  /* sprint the header into readable form                                     */
+  /*--------------------------------------------------------------------------*/
+  inline void vSprint(Stz* szHeader)
+  {
+    StrLib::vSprint(szHeader,
+                    "Magic: %c%c%c%c Class %03d %s (%s)"_Stz,
+                    m_caMagic[0],
+                    m_caMagic[1],
+                    m_caMagic[2],
+                    m_caMagic[3],
+                    m_eClassNo,
+                    aCN[m_eClassNo],
+                    bIsMagicValid() ? "valid magic" : "not-valid magic"
+                    );
+  }
   
+  /*--------------------------------------------------------------------------*/
+  /* has a valid class number ?                                               */
+  /*--------------------------------------------------------------------------*/
+  inline eEC eValidClassNo(void)
+  {
+    if (m_eClassNo < CN_ENUMS)
+      return EC_NONE;
+    
+    return EC_OBJECT_CLASSNO_INVALID;
+  }
+
+  /*--------------------------------------------------------------------------*/
+  /* is this a valid header ?                                                 */
+  /*--------------------------------------------------------------------------*/
+  inline eEC eValidHeader(void)
+  {
+    eEC eError;
+    
+    if ((eError = eValidMagic()))
+      return eError;
+    
+    if ((eError = eValidClassNo()))
+      return eError;
+
+    return EC_NONE;
+  }
+
+  /*--------------------------------------------------------------------------*/
+  /* has a valid magic signature                                              */
+  /*--------------------------------------------------------------------------*/
+  inline eEC eValidMagic(void)
+  {
+    if (C_MAGIC == m_uMagic)
+      return EC_NONE;
+    
+    return EC_OBJECT_MAGIC_INVALID;
+  }
+
+
+  }; // class _Header
+  
+
   //--------------------------------------------------------------------------//
   //------------------------------ Header ------------------------------------//
   //--------------------------------------------------------------------------//
 
-  class Header
+  class Header : public _Header
   {
-  private:
-    union {
-      u4   m_uMagic;       // 4 byte magic signature
-      char m_caMagic[4];
-    };
-    eCN  m_eClass;         // 2 byte class enum
-    u2   m__spareBytes;    // 2 spare bytes
-  
   public:
     Header(void);
     Header(eCN eClass);
@@ -99,61 +150,6 @@ namespace BASE
     ~Header(void);
 
     void vAssertHeader(void);
-    eEC  eValidClass(void);
-    eEC  eValidHeader(void);
-    eEC  eValidMagic(void);
-    void vSprint(Stz* szHeader);
-    
-  /*--------------------------------------------------------------------------*/
-  /*                           -- Inline Functions --                         */
-  /*--------------------------------------------------------------------------*/
-  
-  /*--------------------------------------------------------------------------*/
-  /* get class                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline eCN eClass(void)
-  {
-    return m_eClass;
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* test for given class                                                     */
-  /*--------------------------------------------------------------------------*/
-  inline bool bIsClass(eCN eClass)
-  {
-    if (m_eClass == eClass)
-      return true;
-    else
-      return false;
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* set class                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline void vClass(eCN eClass)
-  {
-    m_eClass = eClass;
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* set magic                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline void vMagic(void)
-  {
-    m_uMagic = C_MAGIC;
-  }
-  
-  /*--------------------------------------------------------------------------*/
-  /* test for valid magic                                                     */
-  /*--------------------------------------------------------------------------*/
-  inline bool bValidMagic(void)
-  {
-    if (C_MAGIC == m_uMagic)
-      return true;
-    else
-      return false;
-  }
-  
   };
 }
 

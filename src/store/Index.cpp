@@ -5,11 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
-
-
-#include "BASE.h"
-#include "STORE.h"
-
+#include "Table.hpp"
 
 
 Index*  gpReadApiIndex;

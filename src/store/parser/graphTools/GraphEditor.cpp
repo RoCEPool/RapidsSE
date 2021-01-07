@@ -13,34 +13,9 @@
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
+/*-- Constants ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__pCastFunction(Parser,GraphEditor,CN_GRAPHEDITOR)
-__aNewFunction(GraphEditor,CN_GRAPHEDITOR)
-__vDeleteFunction(GraphEditor,CN_GRAPHEDITOR)
-__aFooterFunction(GraphEditor)
 
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-GraphEditor::GraphEditor()
-    : Object(CN_GRAPHEDITOR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHEDITOR,_FOOTER_);
-
-  _checkInitialised_(CN_GRAPHEDITOR);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPHEDITOR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-GraphEditor::~GraphEditor(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHEDITOR,_FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -57,9 +32,9 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
   ASSERT(pRootNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
 
   // Create a new copy of: /__root__/plan
-  QueryNode* pPlanNode = (QueryNode*) GraphNav::pFind("/__root__/plan"_Stz, pRootNode);
+  QueryNode* pPlanNode = (QueryNode*) GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode);
   ASSERT(pPlanNode);
-  ASSERT(pPlanNode->eClass() == CN_QUERYNODE);
+  ASSERT(pPlanNode->eGetClassNo() == CN_QUERYNODE);
 
   PlanNode* pNewPlanChild = new QueryNode(*pPlanNode);
 
@@ -106,6 +81,13 @@ PlanNode* GraphEditor::pNewFromTemplate(PlanNode* pRootNode)
   return pNewRoot;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Validate the entire plan, including definitions                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphEditor::bValidateAll(PlanNode *pRootNode)
+{
+  return true;
+}
 
 
 /*============================================================================*/

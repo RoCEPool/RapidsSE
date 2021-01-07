@@ -8,7 +8,6 @@
 #include "eAC.h"
 
 #include "AttachMap.hpp"
-#include "Plan.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
@@ -62,10 +61,6 @@ void STORE::vCheckAssumptions(void)
   ALWAYS(40 == sizeof(Ent_gen));
   ALWAYS(32 == sizeof(Ent_int));
 #endif
-
-  
-  ALWAYS(sizeof(Plan)      < C_SIZE_MEDIUM_OBJECT);
-
 
   ALWAYS(sizeof(AttachMap) < C_SIZE_POOL_BUFFER);
   

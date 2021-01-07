@@ -1,16 +1,18 @@
 /*============================================================================*/
-/* Planner.cpp - Planner                                                      */
+/* PathIdentifier.cpp - PathIdentifier                                        */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexStream.hpp"
+#include "Table.hpp"
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
-#include "Planner.hpp"
+#include "PathIdentifier.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -19,21 +21,21 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Planner* STORE::_pPlanner(void* aAddr)
+PathIdentifier* STORE::_pPathIdentifier(void* aAddr)
 {
-  Planner* pPlanner = reinterpret_cast<Planner*>(aAddr);
+  PathIdentifier* pPathIdentifier = reinterpret_cast<PathIdentifier*>(aAddr);
   
-  RASSERT_TYPE(pPlanner,CN_PLANNER);
+  RASSERT_TYPE(pPathIdentifier,CN_PATHIDENTIFIER);
  
-  return pPlanner;
+  return pPathIdentifier;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Planner::operator new(size_t)
+void* PathIdentifier::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_PLANNER);
+  void* pObject = HeapMem::pAllocate(CN_PATHIDENTIFIER);
   
   return pObject;
 }
@@ -41,20 +43,20 @@ void* Planner::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Planner::operator delete(void* aAddr)
+void PathIdentifier::operator delete(void* aAddr)
 {
-  Planner* pPlanner = reinterpret_cast<Planner*>(aAddr);
+  PathIdentifier* pPathIdentifier = reinterpret_cast<PathIdentifier*>(aAddr);
   
-  HeapMem::vFree(pPlanner);
+  HeapMem::vFree(pPathIdentifier);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Planner::Planner(void)
-: Object(CN_PLANNER)
+PathIdentifier::PathIdentifier(void)
+: Object(CN_PATHIDENTIFIER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   m_pTable = nullptr;
   m_pWhereTknVec = nullptr;
@@ -66,17 +68,17 @@ Planner::Planner(void)
   }
   m_nPhrases = 0;
   
-  _checkInitialised_(CN_PLANNER);
+  _checkInitialised_(CN_PATHIDENTIFIER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Planner::~Planner(void) noexcept(false)
+PathIdentifier::~PathIdentifier(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   for (i8 i_Phrase = 0; i_Phrase < C_MAX_PHRASES; i_Phrase++) {
     if (m_pPhraseTknVec[i_Phrase]) {
@@ -99,9 +101,9 @@ Planner::~Planner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* choose best path based on score                                            */
 /*----------------------------------------------------------------------------*/
-void Planner::vChoosePath(i8 i_Phrase)
+void PathIdentifier::vChoosePath(i8 i_Phrase)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
 
   AccessPath* npChosenAccessPath = nullptr;
   
@@ -143,9 +145,9 @@ void Planner::vChoosePath(i8 i_Phrase)
 /*----------------------------------------------------------------------------*/
 /* get chosen path                                                            */
 /*----------------------------------------------------------------------------*/
-AccessPath* Planner::pChosenPath(i8 i_Phrase)
+AccessPath* PathIdentifier::pChosenPath(i8 i_Phrase)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
     
   AccessPath* pChosenPath = m_pPathVec[i_Phrase]->pGet(m_i_Chosen[i_Phrase]);
   
@@ -155,9 +157,9 @@ AccessPath* Planner::pChosenPath(i8 i_Phrase)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(void)
+void PathIdentifier::vGenPaths(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   IdxVec* pIdxVec = m_pTable->pIdxVec();
   
@@ -200,9 +202,9 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 /* get the relatonal operator for the first lower predicate of phrase         */
 /*----------------------------------------------------------------------------*/
-eRO Planner::eGetFirstLowerPredicateRO(i8 iPhrase)
+eRO PathIdentifier::eGetFirstLowerPredicateRO(i8 iPhrase)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   // get the first predicate
   AccessPath* pAccessPath = pChosenPath(iPhrase);
@@ -219,9 +221,9 @@ eRO Planner::eGetFirstLowerPredicateRO(i8 iPhrase)
 /*----------------------------------------------------------------------------*/
 /* get the relatonal operator for the first upper predicate of phrase         */
 /*----------------------------------------------------------------------------*/
-eRO Planner::eGetFirstUpperPredicateRO(i8 iPhrase)
+eRO PathIdentifier::eGetFirstUpperPredicateRO(i8 iPhrase)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   // get the first predicate
   AccessPath* pAccessPath = pChosenPath(iPhrase);
@@ -238,9 +240,9 @@ eRO Planner::eGetFirstUpperPredicateRO(i8 iPhrase)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given phrase, index and access technique */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
+void PathIdentifier::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   //
   // create a possible path for every index column combination
@@ -308,9 +310,9 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
 /*----------------------------------------------------------------------------*/
 /* is given relational op an exact op?                                        */
 /*----------------------------------------------------------------------------*/
-bool Planner::bIsExactOp(eRO eRelOp)
+bool PathIdentifier::bIsExactOp(eRO eRelOp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   if (RO_EQUAL_TO == eRelOp)
     return true;
@@ -321,9 +323,9 @@ bool Planner::bIsExactOp(eRO eRelOp)
 /*----------------------------------------------------------------------------*/
 /* is given relational op a lower op?                                         */
 /*----------------------------------------------------------------------------*/
-bool Planner::bIsLowerOp(eRO eRelOp)
+bool PathIdentifier::bIsLowerOp(eRO eRelOp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   if (RO_GREATER_EQUAL == eRelOp || RO_GREATER_THAN == eRelOp)
     return true;
@@ -334,9 +336,9 @@ bool Planner::bIsLowerOp(eRO eRelOp)
 /*----------------------------------------------------------------------------*/
 /* does given relational op match with given bounds?                          */
 /*----------------------------------------------------------------------------*/
-bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
+bool PathIdentifier::bIsMatchingOp(eAT eAccess, eRO eRelOp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   if ( AT_EXACT == eAccess ) {
     if ( bIsExactOp(eRelOp) )
@@ -358,9 +360,9 @@ bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
 /*----------------------------------------------------------------------------*/
 /* is token a relational op?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Planner::bIsRelationalOp(Token* pToken)
+bool PathIdentifier::bIsRelationalOp(Token* pToken)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   if (pToken->bSame("<"_Stz)  ||
       pToken->bSame("<="_Stz) ||
@@ -376,9 +378,9 @@ bool Planner::bIsRelationalOp(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* is given relational op an upper op?                                        */
 /*----------------------------------------------------------------------------*/
-bool Planner::bIsUpperOp(eRO eRelOp)
+bool PathIdentifier::bIsUpperOp(eRO eRelOp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   if (RO_LESS_THAN == eRelOp || RO_LESS_EQUAL == eRelOp)
     return true;
@@ -389,9 +391,9 @@ bool Planner::bIsUpperOp(eRO eRelOp)
 /*----------------------------------------------------------------------------*/
 /* attempt to match predicates to paths                                       */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchPaths(void)
+void PathIdentifier::vMatchPaths(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   // step thru all generated access paths
   
@@ -448,9 +450,9 @@ void Planner::vMatchPaths(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to match path columns to where columns                             */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAccess)
+void PathIdentifier::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAccess)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   Token* pColNmTkn_Where;
   Token* mpLitTkn_Where;
@@ -512,9 +514,9 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
 /*----------------------------------------------------------------------------*/
 /* parse phrases                                                              */
 /*----------------------------------------------------------------------------*/
-//void Planner::vParsePhrases(void)
+//void PathIdentifier::vParsePhrases(void)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
 //  
 //  // for the moment just make the phrase vector a copy of the where vector
 //  m_pPhraseTknVec[0] = new TokenVec;
@@ -525,9 +527,9 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
 //  
 //  vShowPhrases();
 //}
-void Planner::vParsePhrases(void)
+void PathIdentifier::vParsePhrases(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   TokenVec* pPhrase1 = new TokenVec;
   TokenVec* pPhrase2 = new TokenVec;
@@ -603,9 +605,9 @@ void Planner::vParsePhrases(void)
 /*----------------------------------------------------------------------------*/
 /* parse where clause                                                         */
 /*----------------------------------------------------------------------------*/
-void Planner::vParseWhere(s48K& sWhereClause)
+void PathIdentifier::vParseWhere(s48K& sWhereClause)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   m_pWhereTknVec = TokenVec::pTokenise(sWhereClause);
   
@@ -615,9 +617,9 @@ void Planner::vParseWhere(s48K& sWhereClause)
 /*----------------------------------------------------------------------------*/
 /* get the number of phrases                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Planner::nPhrases(void)
+i8 PathIdentifier::nPhrases(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   return m_nPhrases;
 }
@@ -625,9 +627,9 @@ i8 Planner::nPhrases(void)
 /*----------------------------------------------------------------------------*/
 /* get token vector for phrase                                                */
 /*----------------------------------------------------------------------------*/
-TokenVec* Planner::pPhraseTknVec(i8 i_Phrase)
+TokenVec* PathIdentifier::pPhraseTknVec(i8 i_Phrase)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   TokenVec* pPhraseTknVec = m_pPhraseTknVec[i_Phrase];
   
@@ -637,9 +639,9 @@ TokenVec* Planner::pPhraseTknVec(i8 i_Phrase)
 /*----------------------------------------------------------------------------*/
 /* score the vector array of all paths (lower is better)                      */
 /*----------------------------------------------------------------------------*/
-void Planner::vScorePaths(void)
+void PathIdentifier::vScorePaths(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   i8 iScore;
   
@@ -691,9 +693,9 @@ void Planner::vScorePaths(void)
 /*----------------------------------------------------------------------------*/
 /* show the generated set of paths for each phrase                            */
 /*----------------------------------------------------------------------------*/
-void Planner::vShowPaths(void)
+void PathIdentifier::vShowPaths(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
  
   for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
     for (i8 i_Path = 0; i_Path < m_pPathVec[i_Phrase]->nItems(); i_Path++) {
@@ -706,9 +708,9 @@ void Planner::vShowPaths(void)
 /*----------------------------------------------------------------------------*/
 /* show all phrases extracted from the where clause                           */
 /*----------------------------------------------------------------------------*/
-void Planner::vShowPhrases(void)
+void PathIdentifier::vShowPhrases(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   vTrace("-- Phrases -------------------\n"_Stz);
   for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
@@ -727,9 +729,9 @@ void Planner::vShowPhrases(void)
 /*----------------------------------------------------------------------------*/
 /* get current table                                                          */
 /*----------------------------------------------------------------------------*/
-Table* Planner::pTable(void)
+Table* PathIdentifier::pTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   return m_pTable;
 }
@@ -737,9 +739,9 @@ Table* Planner::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* set the table being accessed                                               */
 /*----------------------------------------------------------------------------*/
-void Planner::vTable(Table* pTable)
+void PathIdentifier::vTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
   m_pTable = pTable;
 }
@@ -748,7 +750,7 @@ void Planner::vTable(Table* pTable)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Planner)
+__aFooterFunction(PathIdentifier)
 
 /*============================================================================*/
 /* end                                                                        */

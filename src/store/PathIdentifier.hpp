@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Planner.hpp - Planner                                                      */
+/* PathIdentifier.hpp - PathIdentifier                                                      */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class Planner : public Object
+  class PathIdentifier : public Object
   {
   private:
     static const i8 C_MAX_PHRASES = 128;
@@ -27,8 +27,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Planner(void);
-    ~Planner(void) noexcept(false);
+    PathIdentifier(void);
+    ~PathIdentifier(void) noexcept(false);
   
     void vChoosePath(i8 i_Phrase);
     AccessPath* pChosenPath(i8 i_Phrase);
@@ -57,7 +57,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  Planner* _pPlanner(void* aAddr);
+  PathIdentifier* _pPathIdentifier(void* aAddr);
 }
 
 /*============================================================================*/

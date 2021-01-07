@@ -52,7 +52,7 @@ namespace STORE
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
-    eCN   eClass(void);
+    eCN   eGetClassNo(void);
   
     Dtm*  aElmSeq_dtm(void);
     i8    nElmSeqSize(void);
@@ -97,7 +97,7 @@ namespace STORE
     void  vSkipLevels(i8 nLevels);
 
     bool  bValidEnt(void);
-    bool  bValidMagic(void);
+    bool  bIsMagicValid(void);
  };
   
   /*--------------------------------------------------------------------------*/

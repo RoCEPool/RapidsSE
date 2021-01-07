@@ -31,7 +31,7 @@ void Step::vObjectClassFetch(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  eCN eClassNo = pObject->eClass();
+  eCN eClassNo = pObject->eGetClassNo();
   
   m_pDataStack->vPushInt(eClassNo);
   
@@ -49,7 +49,7 @@ void Step::vObjectClassStore(void)
   
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
-  pObject->vClass((eCN)iClassNo);
+  pObject->vSetClassNo((eCN)iClassNo);
   
   EXIT();
 }
@@ -81,7 +81,7 @@ void Step::vObjectMagicMark(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  pObject->vMagic();
+  pObject->vSetMagic();
   
   EXIT();
 }

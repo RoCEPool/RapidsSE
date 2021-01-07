@@ -14,7 +14,7 @@
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
-#include "Planner.hpp"
+#include "PathIdentifier.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
@@ -181,8 +181,8 @@ void Step::vIndexStreamSeek(void)
   IndexStream* pIndexStream = _pIndexStream(*( m_pJob->pLogicUnit_job() )->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the planner
-  Planner* pPlanner = _pPlanner(m_pDataStack->pPopPtr(__func__));
+  // get the pathIdentifier 
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the upper bound key
@@ -205,7 +205,7 @@ void Step::vIndexStreamSeek(void)
   if ( ! StrLib::bSame(szLowerKey->azChar(), "") ) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the lower relational OP
-    eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
+    eLowerRelnOp = pPathIdentifier->eGetFirstLowerPredicateRO(iPhrase);
   }
   
   if (eLowerRelnOp == RO_EQUAL_TO) {
@@ -216,7 +216,7 @@ void Step::vIndexStreamSeek(void)
     if ( ! StrLib::bSame(szUpperKey->azChar(), "") ) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // get the lower relational OP
-      eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+      eUpperRelnOp = pPathIdentifier->eGetFirstUpperPredicateRO(iPhrase);
     }
   
   pIndexStream->vSeek(eLowerRelnOp, szLowerKey, eUpperRelnOp, szUpperKey);

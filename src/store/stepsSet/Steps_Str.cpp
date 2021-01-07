@@ -293,7 +293,7 @@ void Step::vStrPrepend(void)
   // first string A
   
   // if received INTEGER convert to STRING
-  if (xValA.eClass() == CN_INTVAL) {
+  if (xValA.eGetClassNo() == CN_INTVAL) {
     ASSERT(0);
   }
   else {
@@ -304,7 +304,7 @@ void Step::vStrPrepend(void)
   // second string B
 
   // if received INTEGER convert to STRING
-  if (xValB.eClass() == CN_INTVAL) {
+  if (xValB.eGetClassNo() == CN_INTVAL) {
     ASSERT(0);
   }
   else {

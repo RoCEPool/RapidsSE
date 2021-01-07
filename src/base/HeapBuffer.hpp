@@ -53,7 +53,7 @@ static CAST _pMaskDownToObject(void* aEndoAddr, u8 uMask)
   
   CAST pObject = reinterpret_cast<CAST>(uObject);
   
-  ASSERT(pObject->bValidMagic());
+  ASSERT(pObject->bIsMagicValid());
   
   return pObject;
 }

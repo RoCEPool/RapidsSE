@@ -46,7 +46,7 @@ bool Object::bInspect(Object* pObject)
 /*----------------------------------------------------------------------------*/
 Stz* Object::szClassNm(void)
 {
-  eCN eClass = this->eClass();
+  eCN eClass = this->eGetClassNo();
 
   Stz* szName = aCN[eClass];
   
@@ -58,7 +58,7 @@ Stz* Object::szClassNm(void)
 /*----------------------------------------------------------------------------*/
 Footer* Object::aCalcFooterAddress(void)
 {
-  eCN eClass = this->eClass();
+  eCN eClass = this->eGetClassNo();
 
   Footer* aFooter =
     aAdd<Footer*>(this,gxaSizeHeap[eClass].m_nClassSize-sizeof(Footer));
@@ -86,7 +86,7 @@ bool Object::bInspectObject(void)
 /*----------------------------------------------------------------------------*/
 void Object::vMemoryDump(void)
 {
-  eCN eClass = this->eClass();
+  eCN eClass = this->eGetClassNo();
   i8 nSize = nSizeOfObject();
   
   MemLib::vDumpWords(this,nSize);
@@ -97,7 +97,7 @@ void Object::vMemoryDump(void)
 /*----------------------------------------------------------------------------*/
 i8 Object::nSizeOfObject(void)
 {
-  eCN eClass = this->eClass();
+  eCN eClass = this->eGetClassNo();
 
   i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
   
@@ -114,7 +114,7 @@ eEC Object::eValidObject(void)
   if ((eError = this->eValidHeader()))
     return eError;
   
-  eCN eClass = this->eClass();
+  eCN eClass = this->eGetClassNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

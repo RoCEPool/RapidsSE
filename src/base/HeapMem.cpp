@@ -108,7 +108,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 {  
   HeapMem* pHeapMem = AM::pHeapMem();
   
-  eCN eWasClass = pObject->eClass();
+  eCN eWasClass = pObject->eGetClassNo();
   
   RU_Memory* pRU_Memory = AM::pRU_Memory();
   
@@ -121,12 +121,12 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   if (gpBufferPool->bDontFree()) {
     
     if (CN_ENTBUFFER != eWasClass) {
-      pObject->vClass(CN_FREEDNOT);
+      pObject->vSetClassNo(CN_FREEDNOT);
       return;
     }
     
     if ( ! gpBufferPool->bFreeCB() ) {
-      pObject->vClass(CN_FREEDNOT);
+      pObject->vSetClassNo(CN_FREEDNOT);
       return;
     }
   }
@@ -161,7 +161,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 {
-  pBuffer->vMagic();
+  pBuffer->vSetMagic();
   
   AM::pHeapMem()->Transient.m_pLarge->vFreeObject(pBuffer);
 }

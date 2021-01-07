@@ -9,6 +9,9 @@ namespace BASE
   {
   public:
     static void vInitGlobals(void);
+  
+    static d8 dPow(d8 dArg, d8 dRaisedTo);
+    static d8 dSqrt(d8 dArg);
   };
 }
 

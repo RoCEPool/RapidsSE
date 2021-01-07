@@ -127,7 +127,7 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentEntry(ITEM* aItem)
   ITEM* aAdjacent = nullptr;
   
 #ifdef __ENT_HEADER
-  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+  i8 nItemBytes = (CN_FREEITEM == aItem->eGetClassNo())
                     ? ((FreeItem*)aItem)->nSizeBytes()
                     : aItem->nSizeBytes();
 #else
@@ -156,7 +156,7 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 {
   ITEM* aAdjacent = nullptr;
   
-  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+  i8 nItemBytes = (CN_FREEITEM == aItem->eGetClassNo())
                     ? ((FreeItem*)aItem)->nSizeBytes()
                     : aItem->nSizeBytes();
   
@@ -178,7 +178,7 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nSizeItem)
 {
   ITEM* aAdjacent = nullptr;
   
-  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+  i8 nItemBytes = (CN_FREEITEM == aItem->eGetClassNo())
   ? ((FreeItem*)aItem)->nSizeBytes()
   : nSizeItem;
   
@@ -266,7 +266,7 @@ void MiniHeap_t<ITEM>::vDumpItems(void)
        aItem = aAdjacentEntry(aItem)) {
     
     i8 iOffset = iToOffset(aItem);
-    eCN eClass = aItem->eClass();
+    eCN eClass = aItem->eGetClassNo();
     switch (eClass) {
         
       case CN_ENT: {

@@ -1031,45 +1031,27 @@ public:
   void vPlanNameStore(void);
   void vPlanShow(void);
 
-  // planner
-  void vPlannerChoosePathsN(void);
-  void vPlannerChosenPathN(void);
-  void vPlannerDeleteN(void);
-  void vPlannerFetchTechniqueFetchN(void);
-  void vPlannerGenPathsN(void);
-  void vPlannerGetN(void);
-  void vPlannerHighKeyFetchN(void);
-  void vPlannerIndexNmFetchN(void);
-  void vPlannerIsNullN(void);
-  void vPlannerKeyFetchN(void);
-  void vPlannerLowKeyFetchN(void);
-  void vPlannerMatchPathsN(void);
-  void vPlannerNewN(void);
-  void vPlannerParseWhereN(void);
-  void vPlannerPhrasesFetchN(void);
-  void vPlannerScorePathsN(void);
-  void vPlannerSetN(void);
-  void vPlannerShowPathsN(void);
-  void vPlannerTableFetchN(void);
-  void vPlannerTableStoreN(void);
-
-  void vPlannerChoosePaths(void);
-  void vPlannerChosenPath(void);
-  void vPlannerDelete(void);
-  void vPlannerFetchTechniqueFetch(void);
-  void vPlannerGenPaths(void);
-  void vPlannerHighKeyFetch(void);
-  void vPlannerIndexNmFetch(void);
-  void vPlannerKeyFetch(void);
-  void vPlannerLowKeyFetch(void);
-  void vPlannerMatchPaths(void);
-  void vPlannerNew(void);
-  void vPlannerParseWhere(void);
-  void vPlannerPhrasesFetch(void);
-  void vPlannerScorePaths(void);
-  void vPlannerShowPaths(void);
-  void vPlannerTableFetch(void);
-  void vPlannerTableStore(void);
+  // path identifier
+  void vPathIdentifierChoosePaths(void);
+  void vPathIdentifierChosenPath(void);
+  void vPathIdentifierDelete(void);
+  void vPathIdentifierFetchTechniqueFetch(void);
+  void vPathIdentifierGenPaths(void);
+  void vPathIdentifierGet(void);
+  void vPathIdentifierHighKeyFetch(void);
+  void vPathIdentifierIndexNmFetch(void);
+  void vPathIdentifierIsNull(void);
+  void vPathIdentifierKeyFetch(void);
+  void vPathIdentifierLowKeyFetch(void);
+  void vPathIdentifierMatchPaths(void);
+  void vPathIdentifierNew(void);
+  void vPathIdentifierParseWhere(void);
+  void vPathIdentifierPhrasesFetch(void);
+  void vPathIdentifierScorePaths(void);
+  void vPathIdentifierSet(void);
+  void vPathIdentifierShowPaths(void);
+  void vPathIdentifierTableFetch(void);
+  void vPathIdentifierTableStore(void);
 
   // plist (participant list)
   void vPlistFindJob(void);

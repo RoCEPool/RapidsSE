@@ -7,9 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* put the supervisors peridiodic activity here                               */
 /*----------------------------------------------------------------------------*/
-: supervisor::activity ( -- )
+: supervisor::activity
 
-  "Supervisor Activity" .
+  // "Supervisor Activity" .
+  
+  // collect heartbeat related info
 ;
 
 /*----------------------------------------------------------------------------*/

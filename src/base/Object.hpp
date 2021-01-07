@@ -14,18 +14,26 @@ namespace BASE
   
     static bool bInspect(Object* pObject);
 
-      
     Footer* aCalcFooterAddress(void);
     Stz* szClassNm(void);
     bool bInspectObject(void);
     void vMemoryDump(void);
-    i8 nSizeOfObject(void);
-    eEC eValidObject(void);
-    i8  iWhenAllocated(void);
+    i8   nSizeOfObject(void);
+    eEC  eValidObject(void);
+    i8   iWhenAllocated(void);
   
     Footer* aFooter(void);
   };
-}
+
+
+  //
+  // declare a function pointer to any member function of Object
+  //   n.b. Object is non-virtual,
+  //        so fpMEMBERFN can be cast to a sub-class of Object
+  //
+  typedef void (Object::*fpMEMBERFN)(void);
+
+} // namespace BASE
 
 /*--------------------------------------------------------------------------*/
 /* pre and post condition                                                   */
@@ -139,7 +147,7 @@ EndDefine
 /* check the object has a magic marker as its first word                    */
 /*--------------------------------------------------------------------------*/
 #ifdef WITH_CORRECTNESS_ALGEBRA
-#define _magic_() ASSERT(bValidMagic()); EndDefine
+#define _magic_() ASSERT(bIsMagicValid()); EndDefine
 #else
 #define _magic_() EndDefine
 #endif
@@ -150,10 +158,10 @@ EndDefine
 #define __bCorrectLayout(CLASSNM,CN) \
 bool CLASSNM::bCorrectLayout(void) \
 { \
-  if (! bValidMagic()) \
+  if (! bIsMagicValid()) \
     return false; \
   \
-  if (! bIsClass(CN)) \
+  if (! bIsClassNo(CN)) \
     return false; \
   \
   if (! aFooter()->bValidFooter()) \
@@ -208,10 +216,10 @@ EndDefine
 /* check the object is of a known class                                     */
 /*--------------------------------------------------------------------------*/
 #ifdef WITH_CORRECTNESS_ALGEBRA
-#define _class_(arg) ASSERT(eClass() == arg); EndDefine
-#define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2); EndDefine
+#define _class_(arg) ASSERT(eGetClassNo() == arg); EndDefine
+#define _class2_(arg1,arg2) ASSERT(eGetClassNo() == arg1 || eGetClassNo() == arg2); EndDefine
 #define _class3_(arg1,arg2,arg3) \
-  ASSERT(eClass() == arg1 || eClass() == arg2 || eClass() == arg3); \
+  ASSERT(eGetClassNo() == arg1 || eGetClassNo() == arg2 || eGetClassNo() == arg3); \
 EndDefine
 #else
 #define _class_(arg)  EndDefine

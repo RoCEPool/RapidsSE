@@ -136,7 +136,7 @@ void TypedCell::vInt(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vMagic(void)
 {
-  m_wxType.vMagic();
+  m_wxType.vSetMagic();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +223,7 @@ void TypedCell::vToStz(Stz* szDst)
 /*----------------------------------------------------------------------------*/
 eCN TypedCell::eType(void)
 {
-  return (eCN)m_wxType.eClass();
+  return (eCN)m_wxType.eGetClassNo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +231,7 @@ eCN TypedCell::eType(void)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vType(eCN eType)
 {
-  m_wxType.vClass(eType);
+  m_wxType.vSetClassNo(eType);
 }
 
 

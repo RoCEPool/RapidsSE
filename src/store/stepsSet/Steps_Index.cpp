@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "Table.hpp"
 #include "Op.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
@@ -57,7 +58,7 @@ void Step::vIndexColumnFetch(void)
   ENTRY();
   
   Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -77,7 +78,7 @@ void Step::vIndexColumnCountFetch(void)
   ENTRY();
   
   Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   m_pDataStack->vPushInt(pIndex->nColumns());
   
@@ -92,7 +93,7 @@ void Step::vIndexCompact(void)
   ENTRY();
   
   Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   pIndex->pTable()->vCompactIndex(pIndex);
   
@@ -107,7 +108,7 @@ void Step::vIndexCompactPtn(void)
   ENTRY();
   
   Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -148,7 +149,7 @@ void Step::vIndexDeleteNext(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the index and the table
   Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table
@@ -265,7 +266,7 @@ void Step::vIndexDump(void)
   ENTRY();
   
   Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -351,7 +352,7 @@ void Step::vIndexIsPrimaryKeyFetch(void)
   ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   bool bIsPrimaryKey = pIndex->bIsPrimaryKey();
   
@@ -368,7 +369,7 @@ void Step::vIndexIsPrimaryKeyStore(void)
   ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIsPrimaryKey = m_pDataStack->iPopInt(__func__);
   
@@ -385,7 +386,7 @@ void Step::vIndexIsUniqueFetch(void)
   ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   bool bIsUnique = pIndex->bIsUnique();
   
@@ -402,7 +403,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // get the table partition stream def
   StreamDef* pPtnStreamDef = pIndex->pTable()->pPtnStreamDef();
@@ -449,7 +450,7 @@ void Step::vIndexNameFetch(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the index
   Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   s32 sIndexName = pIndex->szIndexNm();
   
@@ -482,7 +483,7 @@ void Step::vIndexPopulate(void)
 {
   ENTRY();
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -502,7 +503,7 @@ void Step::vIndexSize(void)
   ENTRY();
   
   Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
@@ -519,10 +520,10 @@ void Step::vIndexTableFetch(void)
   ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   Table* pTable = pIndex->pTable();
-  ASSERT(CN_TABLE == pTable->eClass());
+  ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   m_pDataStack->vPushPtr(pTable);
   
@@ -537,10 +538,10 @@ void Step::vIndexTableStore(void)
   ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TABLE == pTable->eClass());
+  ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   pIndex->vTable(pTable);
   
@@ -555,7 +556,7 @@ void Step::vIndexVerify(void)
   ENTRY();
   
   Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
   m_pDataStack->vPushInt(bVerified);
@@ -571,7 +572,7 @@ void Step::vIndexVerifyPtn(void)
   ENTRY();
   
   Index* pIndex = *( m_pJob->pLogicUnit_job() )->m_xpIndex;
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -603,7 +604,7 @@ void Step::vIndexVisualize(void)
   ENTRY();
   
   Index* pIndex = _pIndex(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();

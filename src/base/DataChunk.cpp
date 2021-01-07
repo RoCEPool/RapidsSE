@@ -71,7 +71,7 @@ void DataChunk::vCopy(DataChunk* pSource)
   MemLib::vCopy(m_xWsp.ayArea(),
                 pSource->aDataArea(),
                 pSource->m_nDataBytes,
-                eClass());
+                eGetClassNo());
   
   vSetBytes(pSource->m_nDataBytes);
 }

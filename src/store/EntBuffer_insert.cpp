@@ -167,7 +167,7 @@ void EntBuffer::vCompact(void)
   
   // scan item is the working pointer
   Ent* aScanItem = aFirstItem();
-  //ASSERT(aScanItem->eClass() == CN_ENT);
+  //ASSERT(aScanItem->eGetClassNo() == CN_ENT);
   
   // loop while we can still reclaim more space
   for (;;) {
@@ -185,7 +185,7 @@ void EntBuffer::vCompact(void)
          aScanItem != nullptr;
          aScanItem = aAdjacentEntry(aScanItem)) { // HACK by Ray Wed 26 Aug 2020
       
-      eCN eClass = aScanItem->eClass();
+      eCN eClass = aScanItem->eGetClassNo();
       
       if (CN_FREEITEM == eClass) {
         aFreeItem = _aFreeItem(aScanItem);
@@ -205,7 +205,7 @@ void EntBuffer::vCompact(void)
          aEnt != nullptr;
          aEnt = aAdjacentEntry(aEnt)) {
       
-      eCN eClass = aEnt->eClass();
+      eCN eClass = aEnt->eGetClassNo();
       
       ASSERT ((eClass == CN_ENT) ||
                (eClass == CN_FREEITEM) ||
@@ -284,7 +284,7 @@ void EntBuffer::vCompact(void)
     
   } // for
   
-  ASSERT( ! aScanItem || CN_FREEITEM == aScanItem->eClass() );
+  ASSERT( ! aScanItem || CN_FREEITEM == aScanItem->eGetClassNo() );
   
   if (aScanItem) {
     vSetUsed(aScanItem);

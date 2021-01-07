@@ -23,8 +23,8 @@ Session* STORE::_pSession(void* aAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(aAddr);
   
-  if (pSession && CN_SESSION != pSession->eClass()) {
-    vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eClass()]);
+  if (pSession && CN_SESSION != pSession->eGetClassNo()) {
+    vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eGetClassNo()]);
     //return nullptr;
   }
   
@@ -40,8 +40,8 @@ Session* STORE::_pSession(i8 iAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(iAddr);
   
-  if (pSession && CN_SESSION != pSession->eClass()) {
-    vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eClass()]);
+  if (pSession && CN_SESSION != pSession->eGetClassNo()) {
+    vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eGetClassNo()]);
     return nullptr;
   }
   
@@ -222,7 +222,7 @@ void Session::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/

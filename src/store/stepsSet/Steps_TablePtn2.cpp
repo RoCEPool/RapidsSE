@@ -70,7 +70,7 @@ void Step::vTablePtnPopulateIndex(void)
   ENTRY();
   
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIndexNo = pIndex->iIndexNo();
   

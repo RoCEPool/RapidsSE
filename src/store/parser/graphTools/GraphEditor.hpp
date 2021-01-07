@@ -7,27 +7,22 @@ namespace Parser
 {
   class PlanNode;
 
-  class GraphEditor : public Object
+  class GraphEditor
   {
   private:
-    Footer m_xFooter;
+    GraphEditor();
 
   public:
-
-    void* operator new(size_t);
-    void  operator delete(void*);
-
-    GraphEditor();
-    ~GraphEditor(void);
-
-    Footer* aFooter(void);
 
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(PlanNode* pRootNode);
 
-  };
+    // Validate the entire plan, including definitions
+    static b1 bValidateAll(PlanNode* pRootNode);
 
-  GraphEditor* _pGraphEditor(void* aAddr);
+    // Validate only the /plan section of the plan (ignoring definitions & primitives)
+    static b1 bValidatePlan(PlanNode* pPlanNode);
+  };
 }
 
 /*============================================================================*/

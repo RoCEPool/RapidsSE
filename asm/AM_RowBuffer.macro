@@ -51,17 +51,37 @@ macro AM_ROW_PROJECT_STAR
   // AM_ROW_PROJECT_STAR
   Label ROW_PROJECT_STAR
   EO_ROW_DST_NEW
-  //EO_COL_ROW_PUSHDST
+
+endMacro
+
+macro AM_ROW_PROJECT_END
+//----------------------------------------------------------------------------//
+// macro AM_ROW_PROJECT_END                                                   //
+//----------------------------------------------------------------------------//
+  // PROJECT_END
   EO_ROW_DST_PRINT
   EO_RETURN
 endMacro
 
+macro AM_ROW_FILTER_ROWS
 //----------------------------------------------------------------------------//
-// macro AM_ROW_PROJECT_END                                                   //
+// macro AM_ROW_FILTER_ROWS                                                   //
 //----------------------------------------------------------------------------//
-macro AM_ROW_PROJECT_END
-  // PROJECT_END
+  // ROW_FILTER_ROWS
+  Label ROW_FILTER_ROWS
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMNS <projectSrcColumns>
+  EO_SET_LOCALS_ROW
+endMacro
+
+macro AM_ROW_FILTER_END
+//----------------------------------------------------------------------------//
+// macro AM_ROW_FILTER_END                                                    //
+//----------------------------------------------------------------------------//
+  // ROW_FILTER_END
+  EO_CALL ROW_PROJECT_STAR
   EO_ROW_DST_PRINT
+  Label ROW_FILTER_FALSE
   EO_RETURN
 endMacro
 

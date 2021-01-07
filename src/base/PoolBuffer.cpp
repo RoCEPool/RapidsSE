@@ -69,7 +69,7 @@ PoolBuffer::~PoolBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(eClass() != CN_NONE);
+  ASSERT(eGetClassNo() != CN_NONE);
   
   ASSERT(m_iBufferNo >= gpBufferPool->iBufferFirst());
   ASSERT(m_iBufferNo <= gpBufferPool->iBufferLast());

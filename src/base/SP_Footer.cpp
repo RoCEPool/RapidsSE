@@ -57,7 +57,7 @@ Stz* SP_Footer::sz(Object* pObject)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  eCN eClass = pObject->eClass();
+  eCN eClass = pObject->eGetClassNo();
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
 
   Footer* aFoot = aAdd<Footer*>(pObject,nObjectSize-sizeof(Footer));

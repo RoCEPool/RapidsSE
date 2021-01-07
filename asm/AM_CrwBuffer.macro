@@ -71,7 +71,9 @@ macro AM_CRW_FILTER_ROWS
 //----------------------------------------------------------------------------//
   // CRW_FILTER_ROWS
   Label CRW_FILTER_ROWS
-
+  EO_SET_ITEMS <projectItems>          // not optimal !!! inflating all rows
+  EO_SET_COLUMNS <projectSrcColumns>
+  EO_SET_LOCALS_SRC2
 endMacro
 
 //----------------------------------------------------------------------------//

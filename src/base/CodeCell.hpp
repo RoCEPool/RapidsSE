@@ -5,16 +5,6 @@
 
 namespace BASE
 {
-  //
-  // declare a function pointer to any member function of Object
-  //   n.b. Object is non-virtual,
-  //        so fpMEMBERFN can be cast to a sub-class of Object
-  //
-
-  // more universal?
-
-  typedef void (Object::*fpMEMBERFN)(void);
-
   class CodeCell
   {
   public:
@@ -34,12 +24,12 @@ namespace BASE
       fpMEMBERFN* m_afpStepFn;  // indirect address of a member function
 
       //
-      // additionally cells can be an argument to a another cell
+      // additionally cells can be an argument to previous cell :
       //
       
-      CodeCell* m_aJumpTo;  // a pointer to another cell within same routine
+      CodeCell* m_aJumpTo;   // a) pointer to another cell within same routine
       
-      _Header m_xTypedValue; // or header for embedded typed value (PushValue)
+      _Header m_xTypedValue; // b) header for embedded typed value (PushValue)
     };
   };
   

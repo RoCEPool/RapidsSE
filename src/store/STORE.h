@@ -110,10 +110,10 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "TablePtn.hpp"
 
 #include "RowOnce.hpp"
-#include "IndexStream.hpp"
-#include "PtnStream.hpp"
+//#include "IndexStream.hpp"
+//#include "PtnStream.hpp"
 
-#include "Table.hpp"
+//#include "Table.hpp"
 
 //#include "Node.hpp"
 //#include "Node_I.hpp"
@@ -129,8 +129,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //#include "AccessPath.hpp"
 
-//#include "Plan.hpp"
-//#include "Planner.hpp"
+//#include "PathIdentifier.hpp"
 
 //------------------------------------------------------------------------------
 

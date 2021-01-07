@@ -52,7 +52,7 @@ Lock::Lock(eLK eLockKind, Object* pFor)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
 //  if (pFor) {
-//    printf("  Lock(%s)\n",(char*)aCN[pFor->eClass()]);
+//    printf("  Lock(%s)\n",(char*)aCN[pFor->eGetClassNo()]);
 //    AM::vPrintGlobals();
 //  }
 //  else {
@@ -237,7 +237,7 @@ void Lock::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +375,7 @@ void Lock::vGrabRead(void)
   bool bReported = false;
   while (! Lock::iLockGrabRead(&m_uLockWord) ) {
 
-    if (! m_pFor || CN_LOG == m_pFor->eClass())
+    if (! m_pFor || CN_LOG == m_pFor->eGetClassNo())
       continue;
     
     oTimer.vUpdate();
@@ -523,7 +523,7 @@ void Lock::vGrabWrite(void)
   bool bReported = false;
   while (! Lock::iLockGrabWrite(&m_uLockWord)) {
 
-    if (! m_pFor || CN_LOG == m_pFor->eClass())
+    if (! m_pFor || CN_LOG == m_pFor->eGetClassNo())
       continue;
     
     oTimer.vUpdate();
