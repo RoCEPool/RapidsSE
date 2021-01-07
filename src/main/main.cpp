@@ -96,8 +96,10 @@ int main(int argc, char* argv[])
       Process::vExitSuccess();
     }
     
+#if 0 // ray 7 jan 2020; compilation problem in bamboo re atomics
     vHeartInit();
-
+#endif
+    
     // run SE
     Engine::vMainEntry();
   }

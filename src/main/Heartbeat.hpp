@@ -12,8 +12,8 @@
 #include "MachineTypes.h"
 #include <base/BASE.h>
 
-#include <atomic>
-#include <stdatomic.h>
+//#include <atomic>
+//#include <stdatomic.h>
 
 /*----------------------------------------------------------------------------*/
 /* Heartbeat class contains data for heartbeat                                */

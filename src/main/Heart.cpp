@@ -2,6 +2,8 @@
 /* Heart.cpp - system heart                                                   */
 /*============================================================================*/
 
+#if 0 // ray 7 jan 2020; compilation problem in bamboo re atomics
+
 #include <cstdio>
 #include <cstring>
 #include <base/BASE.h>
@@ -214,6 +216,8 @@ void vCollectData()
 
   //return nullptr;
 }
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */
