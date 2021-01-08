@@ -28,6 +28,7 @@ namespace STORE
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
   private:
+    void vAddArithmetic(Token*  pTkn);
     void vAddPopCol(eCT eColumnType, i8 iColumn);
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
