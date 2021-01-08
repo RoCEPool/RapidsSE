@@ -28,11 +28,10 @@ namespace STORE
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
   private:
-//    void vAddCode(i8 i_Column, eEO eCode);
-//    void vAddCodeArg(i8 i_Column, eEO eCode, i8 iArg);
+    void vAddPopCol(eCT eColumnType, i8 iColumn);
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
-
+    void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName);
     Footer* aFooter(void);
   };
   

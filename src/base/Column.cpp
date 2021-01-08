@@ -335,6 +335,18 @@ void Column::vIsPtnKey(bool bIsPtnKey)
 
   m_bIsPtnKey = bIsPtnKey;
 }
+/*----------------------------------------------------------------------------*/
+/* sset the column                                                            */
+/*----------------------------------------------------------------------------*/
+void Column::vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLUMN, _FOOTER_);
+
+  m_sColumnNm     = sColumnNm;
+  m_eColumnType   = eColumnType;
+  m_iColumnLength = iColumnLength;
+  m_iColumnScale  = iColumnScale;
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* show column contents                                                       */

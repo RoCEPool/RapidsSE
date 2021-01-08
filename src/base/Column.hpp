@@ -74,6 +74,7 @@ namespace BASE
     bool bIsPtnKey(void);
     void vIsPtnKey(bool bIsPtnKey);
 
+    void vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
     void vShow(void);
     
     Footer* aFooter(void);

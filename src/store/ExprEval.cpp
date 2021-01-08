@@ -134,31 +134,28 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* add EO code for pop column                                                 */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn) {
 
-///*----------------------------------------------------------------------------*/
-///* add code                                                                   */
-///*----------------------------------------------------------------------------*/
-//void ExprEval::vAddCode(i8 i_Column, eEO eCode)
-//{
-//    _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
-//
-//    m_eaCode[i_Column][m_i_Code[i_Column]++] = eCode;
-//}
-//
-///*----------------------------------------------------------------------------*/
-///* add code with argument                                                     */
-///*----------------------------------------------------------------------------*/
-//void ExprEval::vAddCodeArg(i8 i_Column, eEO eCode, i8 iArg)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
-//
-//  m_eaCode[i_Column][m_i_Code[i_Column]++] = eCode;
-//
-//  i8* piArg = (i8*) & m_eaCode[m_i_Code[i_Column]];
-//  * piArg = iArg;
-//
-//  m_i_Code[i_Column] += sizeof(i8);
-//}
+  // swtich on column type
+  switch (eColumnType) {
+    case CT_INTEGER:
+    case CT_DECIMAL:
+    case CT_DATE:
+      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iColumn);
+      break;
+
+    case CT_CHAR:
+    case CT_VARCHAR:
+      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iColumn);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* collect source columns needed for projection                               */
@@ -261,52 +258,30 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
   eEC eError = EC_NONE;
 
   Stz *sAliasName = ""_Stz;
-  i8 i_DstColumn = C_UNKNOWN; //pStreamDefOut->nTotalColumns();
+  i8 i_DstColumn = C_UNKNOWN;
   Column *pColumn = nullptr;
+  Column *pColumnExpr =  new Column;
   TagSet oTagSet;
 
   Token* pTkn = pTknVec->pCurrToken();
 
   //Stz* azCrs = m_sAsmText[i_DstColumn].szStz();
   Stz* azCrs = m_sAsmText.szStz();
-  eCT eColumnType = CT_NONE;
-  i8 iColumnLength = C_UNKNOWN;
-  i8 iColumnScale = C_UNKNOWN;
 
   while ( pTkn ) {
 
     if (pTkn->bSame(","_Stz)) {
 
       i_DstColumn++;
-      // add the column to the streamDefOut
-      if (pColumn) {
-        pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? pColumn->szColNm() : sAliasName,
-                                  pColumn->eColumnType(),
-                                  pColumn->iColumnLength(),
-                                  pColumn->iColumnScale());
-      } else {
-        pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? "NONE"_Stz : sAliasName,
-                                  eColumnType,
-                                  iColumnLength,
-                                  iColumnScale);
+
+      // discovered a comma, add the column to the streamDefOut
+      if (pStreamDefOut) {
+        vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
       }
 
-      pColumn = pStreamDefOut->pGetColumn(i_DstColumn);
-      switch (pColumn->eColumnType()) {
-        case CT_INTEGER:
-        case CT_DECIMAL:
-        case CT_DATE:
-          //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLI, i_Col);
-          StrLib::vSprintCat(azCrs, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, i_DstColumn);
-          break;
-        case CT_CHAR:
-        case CT_VARCHAR:
-          //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLS, i_Col);
-          StrLib::vSprintCat(azCrs, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, i_DstColumn);
-          break;
-        default:
-          RASSERT(0);
-      }
+      // add EO code for pop column
+      vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+
       pColumn = nullptr;
       pTkn = pTknVec->pNextToken();
     }
@@ -383,9 +358,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     // is it an integer ?
     if (pTkn->bIsInteger()) {
       StrLib::vSprintCat(azCrs, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
-      eColumnType = CT_INTEGER;
-      iColumnLength = 19;
-      iColumnScale = 0;
+      pColumnExpr->vSet("NONE"_Stz, CT_INTEGER, 19, 0);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -429,38 +402,28 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
   }
 
     i_DstColumn++;
-    // add the column to the streamDefOut
-    if (pColumn) {
-      pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? pColumn->szColNm() : sAliasName,
-                                pColumn->eColumnType(),
-                                pColumn->iColumnLength(),
-                                pColumn->iColumnScale());
-    } else {
-      pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? "NONE"_Stz : sAliasName,
-                                eColumnType,
-                                iColumnLength,
-                                iColumnScale);
+
+    // discovered a comma, add the column to the streamDefOut
+    if (pStreamDefOut) {
+      vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
     }
 
-    pColumn = pStreamDefOut->pGetColumn(i_DstColumn);
-    switch (pColumn->eColumnType()) {
-      case CT_INTEGER:
-      case CT_DECIMAL:
-      case CT_DATE:
-        //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLI, i_Col);
-        StrLib::vSprintCat(azCrs, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, i_DstColumn);
-        break;
-      case CT_CHAR:
-      case CT_VARCHAR:
-        //vAddCodeArg(i_Col, EO_ROW_DST_POPCOLS, i_Col);
-        StrLib::vSprintCat(azCrs, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, i_DstColumn);
-        break;
-      default:
-        RASSERT(0);
-    }
+    // add EO code for pop column
+    vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
 
   L_RETURN:
+    delete pColumnExpr;
     return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the streamDefOut                                                    */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName) {
+    pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? pColumn->szColNm() : sAliasName,
+                              pColumn->eColumnType(),
+                              pColumn->iColumnLength(),
+                              pColumn->iColumnScale());
 }
 
 /*----------------------------------------------------------------------------*/
