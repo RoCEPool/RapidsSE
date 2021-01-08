@@ -38,14 +38,14 @@ void Step::vColon(void)
 {
   ENTRY();
   
-  s256 sName;
+  s256 sWordNm;
   
   m_pCompiler->vMode(CM_COMPILING);
   
   m_pInput->vReadToken();
-  sName = m_pInput->szChars();
+  sWordNm = m_pInput->szChars();
   
-  //vTrace("Colon: %s\n"_Stz,sName.szStz());
+  //vTrace("Colon: %s\n"_Stz,sWordNm.szStz());
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -53,7 +53,11 @@ void Step::vColon(void)
   else
     pDic = AM::pRootDic();
   
-  Word* pNewWord = new(pDic) Word(sName);
+  if (pDic->pFindWord(sWordNm)) {
+    vTrace("vColon : word already defined -- %s\n"_Stz,sWordNm.szStz());
+  }
+  
+  Word* pNewWord = new(pDic) Word(sWordNm);
   
   Word* pInclude = m_pInput->pUseInclude();
   pNewWord->vInclude(pInclude);
