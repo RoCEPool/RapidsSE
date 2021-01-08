@@ -5,12 +5,11 @@
 
 namespace BASE
 {
-  class QuadWord : public Line
+  class QuadWord
   {
   public:
     union {
       byte m_yaByte[C_BYTES_PER_QUAD_WORD];
-      //SingleWord m_waWord[1]; //! this doesnt work
     };
 
   public:

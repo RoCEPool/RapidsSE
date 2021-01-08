@@ -5,12 +5,11 @@
 
 namespace BASE
 {
-  class CacheLine : public Line
+  class CacheLine
   {
   public:
     union {
       byte m_yaByte[C_BYTES_PER_CACHE_LINE];
-      //SingleWord m_waWord; //! this doesnt work
     };
   
   public:
