@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  static const i8 C_WSP_ROUTINE = C_SIZE_SMALL_OBJECT - 128;
+  static const i8 C_WSP_CODEBLOCK = C_SIZE_SMALL_OBJECT - 128;
 
   class CodeBlock : public Object
   {
@@ -14,7 +14,7 @@ namespace BASE
   
     SingleWord m__PadToCacheLine[6]; // padding to cache line
 
-    Wsp_t<C_WSP_ROUTINE> m_xWsp;
+    Wsp_t<C_WSP_CODEBLOCK> m_xWsp;
   
     // must be last
     Footer m_xFooter;
@@ -27,13 +27,12 @@ namespace BASE
    ~CodeBlock(void) noexcept(false);
 
     static CodeBlock* pToCodeBlock(CodeCell* aInxPtr);
-    static Word*    pToWord(CodeCell* aInxPtr);
+    static Word*      pToWord(CodeCell* aInxPtr);
   
     byte* ayAllot(i8 iBytes);
 
-    void* aAppend(CodeCell* aCell);
-    void  vAppend(CodeCell* aCell);
-    void  vAppend(i8 iInt);
+    void* aAppend(CodeCell* aJumpTo);
+    void  vAppend(CodeCell* aJumpTo);
     void  vAppend(fpSTEPFN* afpStep);
     void  vAppend(TypedCell* aTypedCell);
   

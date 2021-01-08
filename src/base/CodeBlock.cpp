@@ -9,24 +9,24 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,CodeBlock,CN_ROUTINE)
-__aNewFunction(CodeBlock,CN_ROUTINE)
-__vDeleteFunction(CodeBlock,CN_ROUTINE)
+__pCastFunction(BASE,CodeBlock,CN_CODEBLOCK)
+__aNewFunction(CodeBlock,CN_CODEBLOCK)
+__vDeleteFunction(CodeBlock,CN_CODEBLOCK)
 __aFooterFunction(CodeBlock)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CodeBlock::CodeBlock(Word* p_ExoWord)
-: Object(CN_ROUTINE)
+: Object(CN_CODEBLOCK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
 
   m_p_ExoWord = p_ExoWord;
   
-  m_xWsp.vZero(CN_ROUTINE);
+  m_xWsp.vZero(CN_CODEBLOCK);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ CodeBlock::CodeBlock(Word* p_ExoWord)
 /*----------------------------------------------------------------------------*/
 CodeBlock::~CodeBlock(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,50 +79,38 @@ Word* CodeBlock::pToWord(CodeCell* aInxPtr)
 /*----------------------------------------------------------------------------*/
 byte* CodeBlock::ayAllot(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
   byte* ayAddress = m_xWsp.ayAllot(nBytes);
     
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  //_postcondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
   return ayAddress;
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* append a pointer to a cell                                                 */
+/* append a jump to address, return the address of the allotted cell          */
 /*----------------------------------------------------------------------------*/
-void CodeBlock::vAppend(CodeCell* aCell)
+void* CodeBlock::aAppend(CodeCell* aJumpTo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
-  IGNORE_RETURN(aAppend(aCell));
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a pointer to a cell, return the address of the allotted cell        */
-/*----------------------------------------------------------------------------*/
-void* CodeBlock::aAppend(CodeCell* aCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  CodeCell* aAllottedCell = (CodeCell*)ayAllot(sizeof(aJumpTo));
   
-  CodeCell* aAllottedCell = (CodeCell*)ayAllot(sizeof(aCell));
-  
-  aAllottedCell->m_aJumpTo = aCell;
+  aAllottedCell->m_aJumpTo = aJumpTo;
   
   return aAllottedCell;
 }
 
 /*----------------------------------------------------------------------------*/
-/* append an i8 integer                                                       */
+/* append a jump to address                                                   */
 /*----------------------------------------------------------------------------*/
-void CodeBlock::vAppend(i8 iInt)
+void CodeBlock::vAppend(CodeCell* aJumpTo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
-  i8* aAllottedInt = (i8*)ayAllot(sizeof(i8));
-
-  *aAllottedInt = iInt;
+  IGNORE_RETURN(aAppend(aJumpTo));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +118,7 @@ void CodeBlock::vAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void CodeBlock::vAppend(fpSTEPFN* afpStepFp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
 
   fpSTEPFN** aafpStepFp = (fpSTEPFN**)ayAllot(sizeof(fpSTEPFN*));
 
@@ -142,13 +130,13 @@ void CodeBlock::vAppend(fpSTEPFN* afpStepFp)
 /*----------------------------------------------------------------------------*/
 void CodeBlock::vAppend(TypedCell* aTypedCell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
   i8 nBytes = aTypedCell->nStackUsage();
   
   char* aValueAddress = (char*)ayAllot(nBytes);
   
-  MemLib::vCopy(aValueAddress,aTypedCell,nBytes,CN_ROUTINE);
+  MemLib::vCopy(aValueAddress,aTypedCell,nBytes,CN_CODEBLOCK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +144,7 @@ void CodeBlock::vAppend(TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 void CodeBlock::vReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
   m_xWsp.vReset();
 }
@@ -166,7 +154,7 @@ void CodeBlock::vReset(void)
 /*----------------------------------------------------------------------------*/
 byte* CodeBlock::ayWspArea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
   return m_xWsp.ayArea();
 }
@@ -176,7 +164,7 @@ byte* CodeBlock::ayWspArea(void)
 /*----------------------------------------------------------------------------*/
 byte* CodeBlock::ayWspLatter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
   return m_xWsp.ayLatter();
 }
@@ -186,7 +174,7 @@ byte* CodeBlock::ayWspLatter(void)
 /*----------------------------------------------------------------------------*/
 i8 CodeBlock::nWspUsed(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROUTINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   
   return m_xWsp.nUsed();
 }

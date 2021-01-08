@@ -154,6 +154,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Charser),            HT_T_MEDIUM  ,0 }, // CN_CHARSER
   { sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 }, // CN_CLASSPLACEHOLDER
   { sizeof(CmdLineArgs),        HT_INVALID   ,0 }, // CN_CMDLINEARGS
+  { sizeof(CodeBlock),          HT_T_SMALL   ,0 }, // CN_CODEBLOCK
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
   { sizeof(Compiler),           HT_T_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
@@ -319,7 +320,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RluDiary),           HT_T_LARGE   ,0 }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID   ,0 }, // CN_RN_RAND
   { sizeof(RootNode),           HT_T_TINY    ,-8 }, // CN_ROOTNODE
-  { sizeof(CodeBlock),            HT_T_SMALL   ,0 }, // CN_ROUTINE
   { sizeof(Row),                HT_T_LARGE   ,0 }, // CN_ROW
   { sizeof(Row),/*correct*/     HT_T_MEDIUM  ,0 }, // CN_ROWAGG
   { 0,                          HT_INVALID   ,0 }, // CN_ROWBOX
