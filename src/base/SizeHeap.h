@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* WordAsBytes.h -- SingleWord As Bytes                                             */
+/* SizeHeap.h -- Structure used by SizesHeaps                                 */
 /*============================================================================*/
 #pragma once
 
-namespace BASE
-{ 
-  struct _WordAsBytes {
-    union {
-      b1 m_yaByte[C_BYTES_PER_WORD];
-      i8 m_iI8;
-      u8 m_uU8;
-    };
-  };
-}
+#include "eHT.h"
+
+struct SizeHeap {
+  
+  i8  m_nClassSize;
+  eHT m_eWhichHeap;
+  
+  i8  m_nVtableAdjust; // temp: explore support for vtable
+
+};
 
 /*============================================================================*/
 /* end                                                                        */

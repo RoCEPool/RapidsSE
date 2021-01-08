@@ -87,6 +87,15 @@ namespace BASE
   const u8 C_WORDS_PER_DOUBLE_WORD = 2;
   const u8 C_WORDS_PER_QUAD_WORD   = 4;
   const u8 C_WORDS_PER_CACHE_LINE  = 8;
+
+  struct _WordAsBytes {
+    union {
+      b1 m_yaByte[C_BYTES_PER_WORD];
+      i8 m_iI8;
+      u8 m_uU8;
+    };
+  };
+
 }
 
 //------------------------------------------------------------------------------
@@ -185,7 +194,6 @@ namespace BASE
 #include "EnvFlags.h"
 #include "Gid.h"
 #include "Null.hpp"
-#include "WordAsBytes.h"
 
 #include "Asm.h"
 
@@ -193,24 +201,16 @@ namespace BASE
 #include "StrLib.hpp"
 
 #include "ClassNumbers.hpp"
+#include "SizeHeap.h"
+#include "LimitsFormats.h"
+
 #include "FnDesc.hpp"
 #include "FnDefn.hpp"
 #include "FnCatalog.hpp"
-#include "LimitsFormats.h"
 
 #include "AM.hpp"
-#include "eHT.h"
 
 //------------------------------------------------------------------------------
-
-struct SizeHeap {
-  
-  i8  m_nClassSize;
-  eHT m_eWhichHeap;
-  
-  i8  m_nVtableAdjust; // temp: explore support for vtable
-
-};
 
 #include "Hack.hpp"
 
@@ -425,15 +425,15 @@ typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
 
 #include "SP_Article.hpp"
 
-#include "Dir.hpp"    //?
-#include "Fifo.hpp"   //?
-#include "File.hpp"   //?
-#include "PsxThd.hpp" //?
-#include "Socket.hpp" //?
+#include "Dir.hpp"
+#include "Fifo.hpp"
+#include "File.hpp"
+#include "PsxThd.hpp"
+#include "Socket.hpp"
 
-#include "TlsKeys.hpp" //?
+#include "TlsKeys.hpp"
 
-#include "ResourceTracker.hpp" //?
+#include "ResourceTracker.hpp"
 
 #include "AnnChar.hpp"
 #include "Token.hpp"
