@@ -62,6 +62,8 @@ Dic::Dic(Stz* szDicNm)
   // this is because of GlobalDictionary (ugh)
   //vInit();
   
+  m_pWordSkipList = new SkipListNL(C_UNQIUE_KEY, bWordCompare);
+
   _checkInitialised_(CN_DIC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -75,6 +77,8 @@ Dic::~Dic(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
   delete m_pArticle;
+  
+  delete m_pWordSkipList;
 }
 
 /*----------------------------------------------------------------------------*/

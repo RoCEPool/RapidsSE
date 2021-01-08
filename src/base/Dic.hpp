@@ -13,6 +13,8 @@ namespace BASE
     s32       m_sDicNm;    // name of this dictionary
     Word*     m_pDicKind;  // kind of dictionary
   
+    SkipListNL* m_pWordSkipList; // skip list of words (ordered by wordNm)
+
     // must be last
     Footer m_xFooter;
     
