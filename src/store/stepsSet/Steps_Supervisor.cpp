@@ -15,6 +15,15 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+
+/*
+   include Heartbeat.hpp
+   include RingBuffer.hpp
+
+   extern sendRingBuffer
+ 
+ */
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -31,6 +40,17 @@ void Step::vSupervisorCollectInfo(void)
   ENTRY();
   
   //vTrace("  ** Step::vSupervisorCollectInfo ** \n"_Stz);
+  
+  /*
+   
+  Heartbeat xHeartbeat;
+  
+  xHeartbeat.x = 1;
+  ...
+   
+  sendRingBuffer.push(&xHeartbeat);
+   
+  */
   
   EXIT();
 }
