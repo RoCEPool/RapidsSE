@@ -29,6 +29,7 @@ namespace STORE
 
   private:
     void vAddArithmetic(Token*  pTkn);
+    void vAddRelational(Token*  pTkn);
     void vAddPopCol(eCT eColumnType, i8 iColumn);
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);

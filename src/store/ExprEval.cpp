@@ -132,7 +132,12 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddArithmetic(Token*  pTkn) {
+/*----------------------------------------------------------------------------*/
+/* add EO code for arithmetic operators                                       */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddArithmetic(Token* pTkn) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   if (pTkn->bSame("+"_Stz)) {
     StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
@@ -157,6 +162,8 @@ void ExprEval::vAddArithmetic(Token*  pTkn) {
 /*----------------------------------------------------------------------------*/
 void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn) {
 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
   // switch on column type
   switch (eColumnType) {
     case CT_INTEGER:
@@ -172,6 +179,31 @@ void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn) {
 
     default:
       RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for relational operators                                       */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddRelational(Token* pTkn) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  if (pTkn->bSame(">"_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_GREATERTHAN\n"_Stz);
+  }
+  else if (pTkn->bSame(">="_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_GREATEREQUAL\n"_Stz);
+  }
+  else if (pTkn->bSame("<"_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_LESSTHAN\n"_Stz);
+  }
+  else if (pTkn->bSame("<="_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_LESSEQUAL\n"_Stz);
+  }
+  else {
+    ASSERT(pTkn->bSame("=="_Stz));
+      StrLib::vSprintCat(m_sAsmText, "  EO_EQUAL\n"_Stz);
   }
 }
 
@@ -271,6 +303,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   eEC eError = EC_NONE;
@@ -322,28 +355,11 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       continue;
     }
 
+    // relational operators
     if (pTkn->bIsRelational()) {
-      if (pTkn->bSame(">"_Stz)) {
-        StrLib::vSprintCat(m_sAsmText, "  EO_GREATERTHAN\n"_Stz);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      } else if (pTkn->bSame(">="_Stz)) {
-        StrLib::vSprintCat(m_sAsmText, "  EO_GREATEREQUAL\n"_Stz);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      } else if (pTkn->bSame("<"_Stz)) {
-        StrLib::vSprintCat(m_sAsmText, "  EO_LESSTHAN\n"_Stz);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      } else if (pTkn->bSame("<="_Stz)) {
-        StrLib::vSprintCat(m_sAsmText, "  EO_LESSEQUAL\n"_Stz);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      } else if (pTkn->bSame("=="_Stz)) {
-        StrLib::vSprintCat(m_sAsmText, "  EO_EQUAL\n"_Stz);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
+      vAddRelational(pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
 
     // is it an integer ?
