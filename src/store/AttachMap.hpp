@@ -78,10 +78,19 @@ namespace STORE
     TxSet*        m_pTxSet;
   
   
-    JobList*      m_pDemonJobs;
-    JobList*      m_pLocalJobs;
-    JobList*      m_pOriginatingJobs;
-    JobList*      m_pParticipatingJobs;
+  
+    struct {
+    
+    } m_xBase;
+  
+    struct {
+      
+      JobList*      m_pDemonJobs;
+      JobList*      m_pLocalJobs;
+      JobList*      m_pOriginatingJobs;
+      JobList*      m_pParticipatingJobs;
+
+    } m_xStore;
 
     union {
       u8    m_uAttachMapState;         // attachmap is ready

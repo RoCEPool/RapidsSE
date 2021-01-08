@@ -649,9 +649,8 @@ void Step::vInfoSetRdCsvChunk(void)
   
   ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
 
-  CsvBuffer* pCsvBuffer = nullptr;
-  char* azInto;
-  i8 nBytesRead;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get file and info arguments
   
   File* pCsvFile = _pFile(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
   Stz* szFilePath = pCsvFile->sFilePath();
@@ -665,7 +664,7 @@ void Step::vInfoSetRdCsvChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create new csvBuffer and set csvMeta
   
-  pCsvBuffer = new CsvBuffer;
+  CsvBuffer* pCsvBuffer = new CsvBuffer;
   
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
   
@@ -676,17 +675,19 @@ void Step::vInfoSetRdCsvChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read chunk into buffer
   
-  azInto = (char*)pCsvBuffer->ayDataArea();
+  char* azInto = (char*)pCsvBuffer->ayDataArea();
 
   pCsvFile->vSeek(iOffset);
   pCsvBuffer->vTake(nBytes);
-  nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+  i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
   ASSERT(nBytesRead == nBytes);
   azInto[nBytes] = '\0';
   
   //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return the CsvBuffer
+  
   m_pDataStack->vPushPtr(pCsvBuffer);
  
   EXIT();
