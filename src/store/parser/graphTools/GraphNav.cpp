@@ -270,12 +270,11 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
   b1 bRetVal;
 
   // Any properties to walk down?
-  if (eCtrl != WALK_SKIP_PROPERTIES && bWalkProperties) {
-    i8 nProperties = pNode->nProperties();
+  if (eCtrl != WALK_SKIP_PROPERTIES && bWalkProperties && pNode->bHasProperties()) {
 
-    // TODO: replace with something more efficient
-    for (i8 i=0; i<nProperties; i++) {
-      PlanNode* pProp = pNode->pNthProperty(i);
+    PlanNodeIter* pIter = pNode->pPropertyIter();
+    while (pIter->bHasNext()) {
+      PlanNode* pProp = pIter->pNext();
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
@@ -284,18 +283,19 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
       bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
       if (!bRetVal) {
+        delete pIter;
         return false;
       }
     }
+    delete pIter;
   }
 
   // Any children to walk down?
-  if (eCtrl != WALK_SKIP_CHILDREN && bWalkChildren) {
-    i8 nChildren = pNode->nChildren();
+  if (eCtrl != WALK_SKIP_CHILDREN && bWalkChildren && pNode->bHasChildren()) {
 
-    // TODO: replace with something more efficient
-    for (i8 i=0; i<nChildren; i++) {
-      PlanNode* pChild = pNode->pNthChild(i);
+    PlanNodeIter* pIter = pNode->pChildrenIter();
+    while (pIter->bHasNext()) {
+      PlanNode* pChild = pIter->pNext();
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
@@ -304,9 +304,11 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
       bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
       if (!bRetVal) {
+        delete pIter;
         return false;
       }
     }
+    delete pIter;
   }
 
   return true;
@@ -357,12 +359,11 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
   b1 bRetVal;
 
   // Any properties to walk down?
-  if (bWalkProperties) {
-    i8 nProperties = pNode->nProperties();
+  if (bWalkProperties && pNode->bHasProperties()) {
 
-    // TODO: replace with something more efficient
-    for (i8 i=0; i<nProperties; i++) {
-      PlanNode* pProp = pNode->pNthProperty(i);
+    PlanNodeIter* pIter = pNode->pPropertyIter();
+    while (pIter->bHasNext()) {
+      PlanNode *pProp = pIter->pNext();
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
@@ -371,18 +372,19 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
       bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
       if (!bRetVal) {
+        delete pIter;
         return false;
       }
     }
+    delete pIter;
   }
 
   // Any children to walk down?
-  if (bWalkChildren) {
-    i8 nChildren = pNode->nChildren();
+  if (bWalkChildren && pNode->bHasChildren()) {
 
-    // TODO: replace with something more efficient
-    for (i8 i=0; i<nChildren; i++) {
-      PlanNode* pChild = pNode->pNthChild(i);
+    PlanNodeIter* pIter = pNode->pChildrenIter();
+    while (pIter->bHasNext()) {
+      PlanNode *pChild = pIter->pNext();
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
@@ -391,9 +393,11 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
       bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
       if (!bRetVal) {
+        delete pIter;
         return false;
       }
     }
+    delete pIter;
   }
 
   // Now visit the current node
@@ -495,28 +499,34 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
   PlanNode* pResult;
 
   // Check against the children
-  if (cSep == '/') {
-    i8 nChildren = pNode->nChildren();
-    for (i8 i=0; i<nChildren; i++) {
-      pItem = pNode->pNthChild(i);
+  if (cSep == '/' && pNode->bHasChildren()) {
+
+    PlanNodeIter* pIter = pNode->pChildrenIter();
+    while (pIter->bHasNext()) {
+      pItem = pIter->pNext();
 
       pResult = pFind(szNextPath, pItem);
       if (pResult) {
+        delete pIter;
         return pResult;
       }
     }
+    delete pIter;
 
     // Check against the properties
-  } else if (cSep == ':') {
-    i8 nProperties = pNode->nProperties();
-    for (i8 i=0; i<nProperties; i++) {
-      pItem = pNode->pNthProperty(i);
+  } else if (cSep == ':' && pNode->bHasProperties()) {
+
+    PlanNodeIter* pIter = pNode->pPropertyIter();
+    while (pIter->bHasNext()) {
+      pItem = pIter->pNext();
 
       pResult = pFind(szNextPath, pItem);
       if (pResult) {
+        delete pIter;
         return pResult;
       }
     }
+    delete pIter;
 
   } else {
     NEVER_REACH
@@ -538,17 +548,21 @@ PlanNode* GraphNav::pFindProperty(Stz* szPropName, PlanNode* pNode)
   ASSERT(!szPropName->bContains("/"_Stz));
   ASSERT(!szPropName->bContains(":"_Stz));
 
-  i8 nProperties = pNode->nProperties();
+  if (!pNode->bHasProperties()) {
+    return nullptr;
+  }
 
-  // TODO: Use a more efficient mechanism here
-  for (i8 i=0; i<nProperties; i++) {
-    PlanNode* pItem = pNode->pNthProperty(i);
+  PlanNodeIter* pIter = pNode->pPropertyIter();
+  while (pIter->bHasNext()) {
+    PlanNode* pItem = pIter->pNext();
 
     if (pItem->szName()->bEqual(szPropName)) {
+      delete pIter;
       return pItem;
     }
   }
 
+  delete pIter;
   return nullptr;
 }
 
@@ -564,17 +578,21 @@ PlanNode* GraphNav::pFindChild(Stz* szChildName, PlanNode* pNode)
   ASSERT(!szChildName->bContains("/"_Stz));
   ASSERT(!szChildName->bContains(":"_Stz));
 
-  i8 nChildren = pNode->nChildren();
+  if (!pNode->bHasChildren()) {
+    return nullptr;
+  }
 
-  // TODO: Use a more efficient mechanism here
-  for (i8 i=0; i<nChildren; i++) {
-    PlanNode* pItem = pNode->pNthChild(i);
+  PlanNodeIter* pIter = pNode->pChildrenIter();
+  while (pIter->bHasNext()) {
+    PlanNode* pItem = pIter->pNext();
 
     if (pItem->szName()->bEqual(szChildName)) {
+      delete pIter;
       return pItem;
     }
   }
 
+  delete pIter;
   return nullptr;
 }
 

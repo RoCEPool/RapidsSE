@@ -137,13 +137,15 @@ PlanNodeList* PlanNodeBuilder::pBuildList(PlanNodeBuilderList* builderList)
 
   PlanNodeList *pPlanNodeList = new PlanNodeList();
 
-  i8 nBuilders = builderList->nItems();
-  for (i8 i=0; i<nBuilders; i++) {
-    PlanNodeBuilder* builder = builderList->pPeek(i);
+  PlanNodeBuilderIter* pBuilderIter = builderList->pNewIter();
 
-    PlanNode* planNode = builder->pBuild();
+  while (pBuilderIter->bHasNext()) {
+    PlanNodeBuilder* pBuilder = pBuilderIter->pNext();
+
+    PlanNode* planNode = pBuilder->pBuild();
     pPlanNodeList->vAppend(planNode);
   }
+  delete pBuilderIter;
 
   return pPlanNodeList;
 }
@@ -160,30 +162,36 @@ void PlanNodeBuilder::vSetPath(s256& sParentPath)
   sParentPath.vConcat(m_sName.szStz());
   i8 pathSize = sParentPath.nLength();
 
-  if (m_pProperties) {
-    i8 nProperties = m_pProperties->nItems();
+  if (m_pProperties && m_pProperties->nItems() > 0) {
 
-    for (i8 i=0; i<nProperties; i++) {
-      // TODO: use something more efficient
-      PlanNodeBuilder* builder = m_pProperties->pPeek(i);
+    PlanNodeBuilderIter* pBuilderIter = m_pProperties->pNewIter();
+
+    while (pBuilderIter->bHasNext()) {
+      PlanNodeBuilder* pBuilder = pBuilderIter->pNext();
+
       sParentPath.vClip(pathSize);
       sParentPath.vAppend(':');
 
-      builder->vSetPath(sParentPath);
+      pBuilder->vSetPath(sParentPath);
     }
+
+    delete pBuilderIter;
   }
 
-  if (m_pChildren) {
-    i8 nChildren = m_pChildren->nItems();
+  if (m_pChildren && m_pChildren->nItems() > 0) {
 
-    for (i8 i=0; i<nChildren; i++) {
-      // TODO: use something more efficient
-      PlanNodeBuilder* builder = m_pChildren->pPeek(i);
+    PlanNodeBuilderIter* pBuilderIter = m_pChildren->pNewIter();
+
+    while (pBuilderIter->bHasNext()) {
+      PlanNodeBuilder* pBuilder = pBuilderIter->pNext();
+
       sParentPath.vClip(pathSize);
       sParentPath.vAppend('/');
 
-      builder->vSetPath(sParentPath);
+      pBuilder->vSetPath(sParentPath);
     }
+
+    delete pBuilderIter;
   }
 
   sParentPath.vClip(pathSize);

@@ -225,6 +225,7 @@ namespace BASE
     void operator delete(void* aListExo);
 
     ListExo_t(void);
+    ListExo_t(ListExoIter_t<ITEM>* pIter);
    ~ListExo_t(void) noexcept(false);
 
     void  vAppend(ITEM* pItem);
@@ -306,6 +307,26 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
     
   _checkInitialised_(CLASSNO);
   
+  _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor. Soft copy of items from another list.                         */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExo_t<CLASSNO,ITEM>::ListExo_t(ListExoIter_t<ITEM>* pIter)
+    : ListExo_ABSTRACT(CLASSNO)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  ASSERT(pIter);
+  while (pIter->bHasNext()) {
+    ITEM* pItem = pIter->pNext();
+    vAppend(pItem);
+  }
+
+  _checkInitialised_(CLASSNO);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 }
 
