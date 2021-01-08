@@ -19,6 +19,8 @@ namespace BASE
     i8        m_nObjects;   // number of objects in the list
     i8        m_iHeight;    // current max level in the list
   
+    SkipNode* m_pNewly;     // most recently new'd skip node
+  
     SlabAllocator* m_pSlabAllocator; // optional slab allocator
   
     // must be last
@@ -39,6 +41,7 @@ namespace BASE
     void* pFind(void* pObject);
     SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject);
+    SkipNode* pNewly(void);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     i8    nObjects(void);
     void* pPop(void);

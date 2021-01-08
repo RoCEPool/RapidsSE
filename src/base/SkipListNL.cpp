@@ -64,6 +64,7 @@ SkipListNL::SkipListNL(bool bUniqueKey, CompareFp fpCompare, bool bSlabAllocator
   m_nObjects   = 0;
   m_iHeight    = 0;
   
+  m_pNewly     = nullptr;
   
   for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
     m_pHead->m_pRight[i_Level] = nullptr;
@@ -234,13 +235,13 @@ bool SkipListNL::bInsert(void* aObjectInsert)
   
   //RJH vTrace("bInsert:position7\n"_Stz);
   // create new node with inserted object
-  SkipNode* pNodeInsert = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
-  RASSERT(pNodeInsert);
+  m_pNewly = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
+  RASSERT(m_pNewly);
   
   // put new node into the list according the prior vector for random level
   do {
-    pNodeInsert->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
-    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = pNodeInsert;
+    m_pNewly->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
+    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = m_pNewly;
 	} while (--iNodeLevel >= 0);
   
   // one more object in the list
@@ -248,6 +249,16 @@ bool SkipListNL::bInsert(void* aObjectInsert)
   
   // succesful insert
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get most recently new'd skip node                                          */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipListNL::pNewly(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  return m_pNewly;
 }
 
 /*----------------------------------------------------------------------------*/
