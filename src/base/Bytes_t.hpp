@@ -5,12 +5,12 @@
 
 namespace BASE
 {
-  template <int BYTES>
+  template <i8 AREA>
   class Bytes_t : public Object
   {
   private:
     i8     m_i_Latter;      // offset of next available byte
-    byte   m_yaArea[BYTES]; // byte area (_ya =: byte array)
+    byte   m_yaArea[AREA]; // byte area (_ya =: byte array)
     
     // must be last
     Footer m_xFooter;
@@ -46,8 +46,8 @@ using namespace BASE;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-Bytes_t<BYTES>::Bytes_t(void)
+template <i8 AREA>
+Bytes_t<AREA>::Bytes_t(void)
 : Object(CN_BYTES_T)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
@@ -55,12 +55,12 @@ Bytes_t<BYTES>::Bytes_t(void)
   m_i_Latter = 0;
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_yaArea,BYTES,CN_BYTES_T);
+  MemLib::vZero(m_yaArea,AREA,CN_BYTES_T);
 #else
   m_yaArea[0] = '\0';
 #endif
 
-  _checkInitialisedSize_(BYTES);
+  _checkInitialisedSize_(AREA);
   
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
 }
@@ -68,8 +68,8 @@ Bytes_t<BYTES>::Bytes_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-Bytes_t<BYTES>::~Bytes_t(void) noexcept(false)
+template <i8 AREA>
+Bytes_t<AREA>::~Bytes_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -83,8 +83,8 @@ Bytes_t<BYTES>::~Bytes_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append given string                                                        */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-i8 Bytes_t<BYTES>::iAppend(Stz* szStr)
+template <i8 AREA>
+i8 Bytes_t<AREA>::iAppend(Stz* szStr)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -103,8 +103,8 @@ i8 Bytes_t<BYTES>::iAppend(Stz* szStr)
 /*----------------------------------------------------------------------------*/
 /* get get the address of the byte area                                       */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-Stz* Bytes_t<BYTES>::szArea(void)
+template <i8 AREA>
+Stz* Bytes_t<AREA>::szArea(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -116,12 +116,12 @@ Stz* Bytes_t<BYTES>::szArea(void)
 /*----------------------------------------------------------------------------*/
 /* get last accessible byte in the byte area                                  */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-Stz* Bytes_t<BYTES>::szBoundary(void)
+template <i8 AREA>
+Stz* Bytes_t<AREA>::szBoundary(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
-  char* azStr = (char*) &m_yaArea[BYTES - 1];
+  char* azStr = (char*) &m_yaArea[AREA - 1];
   
   return (Stz*)azStr;
 }
@@ -129,8 +129,8 @@ Stz* Bytes_t<BYTES>::szBoundary(void)
 /*----------------------------------------------------------------------------*/
 /* get address at given offset in m_yaArea                                    */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
+template <i8 AREA>
+Stz* Bytes_t<AREA>::szGet(i8 i_Area)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -142,8 +142,8 @@ Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
 /*----------------------------------------------------------------------------*/
 /* give nBytes back to latter area                                            */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vGive(i8 nBytes)
+template <i8 AREA>
+void Bytes_t<AREA>::vGive(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -153,8 +153,8 @@ void Bytes_t<BYTES>::vGive(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get the offset of the latter portion                                       */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-i8 Bytes_t<BYTES>::i_Latter(void)
+template <i8 AREA>
+i8 Bytes_t<AREA>::i_Latter(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
     
@@ -164,8 +164,8 @@ i8 Bytes_t<BYTES>::i_Latter(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the later portion                                           */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-Stz* Bytes_t<BYTES>::szLatter(void)
+template <i8 AREA>
+Stz* Bytes_t<AREA>::szLatter(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -177,8 +177,8 @@ Stz* Bytes_t<BYTES>::szLatter(void)
 /*----------------------------------------------------------------------------*/
 /* list all embedded strings                                                  */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vListAll(void)
+template <i8 AREA>
+void Bytes_t<AREA>::vListAll(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -209,8 +209,8 @@ void Bytes_t<BYTES>::vListAll(void)
 /*----------------------------------------------------------------------------*/
 /* cut nBytes starting at given offset                                        */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytesRem)
+template <i8 AREA>
+void Bytes_t<AREA>::vMoveLeft(Stz* szAtAddr, i8 nBytesRem)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -234,8 +234,8 @@ void Bytes_t<BYTES>::vMoveLeft(Stz* szAtAddr, i8 nBytesRem)
 /*----------------------------------------------------------------------------*/
 /* insert space for n-bytes starting at given offset                          */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vMoveRight(Stz* szAtAddr, i8 nBytesIns)
+template <i8 AREA>
+void Bytes_t<AREA>::vMoveRight(Stz* szAtAddr, i8 nBytesIns)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -257,8 +257,8 @@ void Bytes_t<BYTES>::vMoveRight(Stz* szAtAddr, i8 nBytesIns)
 /*----------------------------------------------------------------------------*/
 /* print all embedded strings                                                 */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vPrintAll(void)
+template <i8 AREA>
+void Bytes_t<AREA>::vPrintAll(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -275,8 +275,8 @@ void Bytes_t<BYTES>::vPrintAll(void)
 /*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vReset(void)
+template <i8 AREA>
+void Bytes_t<AREA>::vReset(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -286,19 +286,19 @@ void Bytes_t<BYTES>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get size of the area in bytes                                              */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-i8 Bytes_t<BYTES>::nSize(void)
+template <i8 AREA>
+i8 Bytes_t<AREA>::nSize(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
-  return BYTES;
+  return AREA;
 }
 
 /*----------------------------------------------------------------------------*/
 /* take nBytes from latter area                                               */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vTake(i8 nBytes)
+template <i8 AREA>
+void Bytes_t<AREA>::vTake(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -308,8 +308,8 @@ void Bytes_t<BYTES>::vTake(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* reset latter to given argument                                             */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-void Bytes_t<BYTES>::vTrim(Stz* szTrim)
+template <i8 AREA>
+void Bytes_t<AREA>::vTrim(Stz* szTrim)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
@@ -325,8 +325,8 @@ void Bytes_t<BYTES>::vTrim(Stz* szTrim)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <int BYTES>
-Footer* Bytes_t<BYTES>::aFooter(void)
+template <i8 AREA>
+Footer* Bytes_t<AREA>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T);
   
