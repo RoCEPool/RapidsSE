@@ -71,7 +71,7 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pProjectedExprs);
 
   if (pProjectedExprs->bHasChildren()) {
-    PlanNodeIter* pIter = pProjectedExprs->pChildrenIter();
+    PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
       QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
@@ -104,7 +104,7 @@ void ProjectOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 
   // Iterate each projected expression
   if (pProjExprs->bHasChildren()) {
-    PlanNodeIter* pIter = pProjExprs->pChildrenIter();
+    PlanNodeIter* pIter = pProjExprs->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
       QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
@@ -125,7 +125,7 @@ void ProjectOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
-    PlanNodeIter* pIter = pNode->pChildrenIter();
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
       PlanNode* pChild = pIter->pNext();

@@ -200,7 +200,7 @@ i8 PlanNode::nChildren()
 /* Returns an iterator for the properties of this node. May be null if there  */
 /* are none. The iterator must be deleted after use.                          */
 /*----------------------------------------------------------------------------*/
-PlanNodeIter* PlanNode::pPropertyIter()
+PlanNodeIter* PlanNode::pNewPropertyIter()
 {
   if (!m_pProperties) {
     return nullptr;
@@ -213,7 +213,7 @@ PlanNodeIter* PlanNode::pPropertyIter()
 /* Returns an iterator for the children of this node. May be null if there    */
 /* are none. The iterator must be deleted after use.                          */
 /*----------------------------------------------------------------------------*/
-PlanNodeIter* PlanNode::pChildrenIter()
+PlanNodeIter* PlanNode::pNewChildrenIter()
 {
   if (!m_pChildren) {
     return nullptr;

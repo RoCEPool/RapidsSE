@@ -94,7 +94,7 @@ void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 
   // Recurse any children
   if (pNode->bHasChildren()) {
-    PlanNodeIter* pIter = pNode->pChildrenIter();
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
       PlanNode* pChild = pIter->pNext();

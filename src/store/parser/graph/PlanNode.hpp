@@ -97,8 +97,8 @@ namespace Parser
 
     // Allocates and returns an iterator for the properties or children of this node.
     // May be null if there are none. The iterator must be deleted after use.
-    PlanNodeIter* pPropertyIter();
-    PlanNodeIter* pChildrenIter();
+    PlanNodeIter* pNewPropertyIter();
+    PlanNodeIter* pNewChildrenIter();
   };
   
   PlanNode* _pPlanNode(void* aAddr);

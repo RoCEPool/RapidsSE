@@ -272,7 +272,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
   // Any properties to walk down?
   if (eCtrl != WALK_SKIP_PROPERTIES && bWalkProperties && pNode->bHasProperties()) {
 
-    PlanNodeIter* pIter = pNode->pPropertyIter();
+    PlanNodeIter* pIter = pNode->pNewPropertyIter();
     while (pIter->bHasNext()) {
       PlanNode* pProp = pIter->pNext();
 
@@ -293,7 +293,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
   // Any children to walk down?
   if (eCtrl != WALK_SKIP_CHILDREN && bWalkChildren && pNode->bHasChildren()) {
 
-    PlanNodeIter* pIter = pNode->pChildrenIter();
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
     while (pIter->bHasNext()) {
       PlanNode* pChild = pIter->pNext();
 
@@ -361,7 +361,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
   // Any properties to walk down?
   if (bWalkProperties && pNode->bHasProperties()) {
 
-    PlanNodeIter* pIter = pNode->pPropertyIter();
+    PlanNodeIter* pIter = pNode->pNewPropertyIter();
     while (pIter->bHasNext()) {
       PlanNode *pProp = pIter->pNext();
 
@@ -382,7 +382,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
   // Any children to walk down?
   if (bWalkChildren && pNode->bHasChildren()) {
 
-    PlanNodeIter* pIter = pNode->pChildrenIter();
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
     while (pIter->bHasNext()) {
       PlanNode *pChild = pIter->pNext();
 
@@ -501,7 +501,7 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
   // Check against the children
   if (cSep == '/' && pNode->bHasChildren()) {
 
-    PlanNodeIter* pIter = pNode->pChildrenIter();
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
     while (pIter->bHasNext()) {
       pItem = pIter->pNext();
 
@@ -516,7 +516,7 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
     // Check against the properties
   } else if (cSep == ':' && pNode->bHasProperties()) {
 
-    PlanNodeIter* pIter = pNode->pPropertyIter();
+    PlanNodeIter* pIter = pNode->pNewPropertyIter();
     while (pIter->bHasNext()) {
       pItem = pIter->pNext();
 
@@ -552,7 +552,7 @@ PlanNode* GraphNav::pFindProperty(Stz* szPropName, PlanNode* pNode)
     return nullptr;
   }
 
-  PlanNodeIter* pIter = pNode->pPropertyIter();
+  PlanNodeIter* pIter = pNode->pNewPropertyIter();
   while (pIter->bHasNext()) {
     PlanNode* pItem = pIter->pNext();
 
@@ -582,7 +582,7 @@ PlanNode* GraphNav::pFindChild(Stz* szChildName, PlanNode* pNode)
     return nullptr;
   }
 
-  PlanNodeIter* pIter = pNode->pChildrenIter();
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
   while (pIter->bHasNext()) {
     PlanNode* pItem = pIter->pNext();
 
