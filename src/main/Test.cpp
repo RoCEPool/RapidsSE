@@ -262,6 +262,7 @@ void vTest8(void)
 {
   vTrace("Test 8\n"_Stz);
 
+  Text* pText;
   Text* pText0 = new Text("A"_Stz);
   Text* pText1 = new Text("B"_Stz);
   Text* pText2 = new Text("C"_Stz);
@@ -282,10 +283,20 @@ void vTest8(void)
   ListExoIter_t<Text>* pListExoIter = pListExo->pNewIter();
 
   // - - - -
-
+  
   vTrace("\nSeq (a) : testing 3 items : pNewIter() ; while ( pNext() )\n"_Stz);
   
-  Text* pText;
+  while (pListExoIter->bHasNext()) {
+    pText = pListExoIter->pNext();
+    vTrace("pNext: %s\n"_Stz,pText->szGet());
+    vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  }
+
+  // - - - -
+
+  vTrace("\nSeq (b) : testing 3 items : vBeforeFirst(); while ( pNext() )\n"_Stz);
+  
+  pListExoIter->vBeforeFirst();
   while ( (pText = pListExoIter->pNext()) ) {
     vTrace("pNext: %s\n"_Stz,pText->szGet());
     vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
@@ -293,7 +304,7 @@ void vTest8(void)
 
   // - - - -
 
-  vTrace("\nSeq (b) : testing 3 items : pFirst(), pNext(), pNext()\n"_Stz);
+  vTrace("\nSeq (c) : testing 3 items : pFirst(), pNext(), pNext()\n"_Stz);
 
   pText = pListExoIter->pFirst();
   vTrace("pFirst: %s\n"_Stz,pText->szGet());
@@ -342,7 +353,7 @@ void vTest8(void)
   
   pListExo->vRemoveAll();
 
-  vTrace("\nSeq (d) : testing empty list : while ( pNext() )\n"_Stz);
+  vTrace("\nSeq (e) : testing empty list : while ( pNext() )\n"_Stz);
   
   while ( (pText = pListExoIter->pNext()) ) {
     vTrace("pNext: %s\n"_Stz,pText->szGet());
