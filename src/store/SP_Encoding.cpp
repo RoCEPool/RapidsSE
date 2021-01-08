@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Encoding_v2.cpp - Row Encoding_v2 sprint helper                         */
+/* SP_Encoding.cpp - Row Encoding2 sprint helper                              */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
-#include "SP_Encoding_v2.hpp"
+#include "SP_Encoding.hpp"
 
 #include "SP_Bcd.hpp"
 #include "SP_Bol.hpp"
@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Encoding_v2::SP_Encoding_v2(void)
+SP_Encoding::SP_Encoding(void)
 : Sprint(CN_ROW)
 {
   _precondition_(_MAGIC_,CN_ROW,_FOOTER_);
@@ -42,7 +42,7 @@ SP_Encoding_v2::SP_Encoding_v2(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Encoding_v2::~SP_Encoding_v2(void) noexcept(false)
+SP_Encoding::~SP_Encoding(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ROW,_FOOTER_);
 }
@@ -54,7 +54,7 @@ SP_Encoding_v2::~SP_Encoding_v2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
+void SP_Encoding::vEncoding(Encoding_v2* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -211,7 +211,7 @@ void SP_Encoding_v2::vEncoding(Encoding_v2* pEncoding)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Encoding_v2::sz(void)
+Stz* SP_Encoding::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -221,7 +221,7 @@ Stz* SP_Encoding_v2::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Encoding_v2::sz(Encoding_v2* pEncoding)
+Stz* SP_Encoding::sz(Encoding_v2* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -238,7 +238,7 @@ Stz* SP_Encoding_v2::sz(Encoding_v2* pEncoding)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SP_Encoding_v2::aFooter(void)
+Footer* SP_Encoding::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_ROW);
   

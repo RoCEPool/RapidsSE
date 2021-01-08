@@ -153,8 +153,8 @@ bool RowCompactor::bCompactRow(Row* aRow)
   
 //  if (nRows > 1060 && nRows < 1070) {
 //    m_pCrwBuffer->vPrintRows(m_pStreamDef);
-//    SP_Encoding_v2 spEncoding_v2;
-//    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding_v2.sz(m_pEncoding_v2));
+//    SP_Encoding spEncoding;
+//    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v2));
 //  }
   nRows++;
   
