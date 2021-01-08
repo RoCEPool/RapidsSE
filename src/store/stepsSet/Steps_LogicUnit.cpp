@@ -350,12 +350,11 @@ void Step::vLogicUnitGenFilter(void)
 {
   ENTRY();
 
-  Filter* pFilter;
-  pFilter = _pFilter(m_pDataStack->pPopPtr(__func__));
+  ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateFilter(pFilter, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->vGenerateFilter(pExprEval, pStreamDefOut);
 
   EXIT();
 }

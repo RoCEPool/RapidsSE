@@ -164,7 +164,7 @@ eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  eEC eError;
+  eEC eError = EC_NONE;
   i8 iDecimal;
 
   char* szToken = (char*)pTkn->szChars();
@@ -179,6 +179,25 @@ eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr) {
   }
 
   return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for logical operators                                          */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddLogical(Token* pTkn) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  if (pTkn->bSame("and"_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_LGL_AND\n"_Stz);
+  }
+  else if (pTkn->bSame("or"_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_LGL_OR\n"_Stz);
+  }
+  else {
+    ASSERT(pTkn->bSame("not"_Stz));
+    StrLib::vSprintCat(m_sAsmText, "  EO_LGL_NOT\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,10 +384,10 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       // discovered a comma, add the column to the streamDefOut
       if (pStreamDefOut) {
         vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
-      }
 
-      // add EO code for pop column
-      vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+        // add EO code for pop column
+        vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+      }
 
       pColumn = nullptr;
       pTkn = pTknVec->pNextToken();
@@ -388,14 +407,21 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       continue;
     }
 
-    // arithmetic operators
+    // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
       vAddArithmetic(pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
-    // relational operators
+    // logical operator ?
+    if (pTkn->bIsLogical()) {
+      vAddLogical(pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // relational operator ?
     if (pTkn->bIsRelational()) {
       vAddRelational(pTkn);
       pTkn = pTknVec->pNextToken();
@@ -412,9 +438,15 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
       eError = eAddDecimal(pTkn, pColumnExpr);
-      if (eError != EC_INVALID_COMMAND)
+      if (eError == EC_INVALID_COMMAND)
         break;
 
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
+      StrLib::vSprintCat(m_sAsmText, "  EO_JMP_FALSE CRW_FILTER_FALSE\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -442,11 +474,13 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     i8 iLocal = 0;
     i8 iBit = -1;
     for (i8 i = 0; i < pColumn->iColumnNo(); i++) {
-      if (BitLib::bEachBit(m_uExprEvalColumns, iBit))
-        if (iBit < pColumn->iColumnNo())
+      if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
+        if (iBit < pColumn->iColumnNo()) {
           iLocal++;
-        else
+        } else {
           break;
+        }
+      }
     }
 
     if (pColumn->eColumnType() == CT_VARCHAR ||
@@ -462,10 +496,10 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     // discovered a comma, add the column to the streamDefOut
     if (pStreamDefOut) {
       vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
-    }
 
-    // add EO code for pop column
-    vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+      // add EO code for pop column
+      vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+    }
 
   L_RETURN:
     delete pColumnExpr;

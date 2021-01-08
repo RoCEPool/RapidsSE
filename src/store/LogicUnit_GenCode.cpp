@@ -2314,7 +2314,7 @@ void LogicUnit::vGenerate100001(void)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for filter                                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateFilter(Filter* pFilter, StreamDef* pStreamDefOut) {
+void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -2356,15 +2356,21 @@ void LogicUnit::vGenerateFilter(Filter* pFilter, StreamDef* pStreamDefOut) {
   // CRW_PROJECT_COLUMNS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the filter
-  u8 uProjectColumns = 0;
-  for (i8 i = 0; i < pStreamDefOut->nTotalColumns(); i++)
-    BitLib::vSetOn(uProjectColumns, i);
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+//  u8 uProjectColumns = 0;
+//  for (i8 i = 0; i < pStreamDefOut->nTotalColumns(); i++)
+//    BitLib::vSetOn(uProjectColumns, i);
+//  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
+//  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+//  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet));
+//  oTagSet.vReset();
+
+  ASSERT(pExprEval->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet));
   oTagSet.vReset();
 
-  pFile->vPrint("%s\n"_Stz, pFilter->m_sAsmText.azChar());
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet));
 
@@ -2383,24 +2389,26 @@ void LogicUnit::vGenerateFilter(Filter* pFilter, StreamDef* pStreamDefOut) {
   // ROW_FILTER_ROWS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the filter
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  //oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
+  //oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet));
   oTagSet.vReset();
 
-  pFile->vPrint("%s\n"_Stz, pFilter->m_sAsmText.azChar());
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet));
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet));
 
-  Project* pProject = new Project;
-  eEC eError = pProject->eProjectAll(pStreamDefOut);
+  ExprEval* pExprEvalStar = new ExprEval;
+  eEC eError = pExprEvalStar->eExprEvalAll(pStreamDefOut);
   RASSERT(eError == EC_NONE);
 
   // add the columns to be projected to PROJECT_COLUMNS
   //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pProject->m_sAsmText.azChar());
+    pFile->vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
   //}
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
