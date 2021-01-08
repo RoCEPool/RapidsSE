@@ -10,7 +10,7 @@
 #include "PlanNodeBuilder.hpp"
 #include "PlanNodeBuilderStack.hpp"
 #include "GraphNav.hpp"
-
+#include "GraphValidator.hpp"
 
 using namespace Parser;
 
@@ -161,6 +161,11 @@ PlanNode* PlanDefinitionParser::pParse()
 
 //  GraphNav::bWalk(pTemplatePlan, fVisitor, nullptr);
 //  GraphNav::bWalkBottomUp(pTemplatePlan, fVisitor, nullptr);
+
+#ifdef WITH_ASSERT_MACRO
+  // Only validate the plan when asserts are enabled
+  GraphValidator::vValidateAll(pTemplatePlan);
+#endif
 
   return pTemplatePlan;
 }

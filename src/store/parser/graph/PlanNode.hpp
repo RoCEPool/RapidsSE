@@ -55,6 +55,8 @@ namespace Parser
 
   class PlanNode : public Object
   {
+    friend class GraphValidator;  // for validation
+
   protected:
     s256  m_sName;
     s256  m_sType;

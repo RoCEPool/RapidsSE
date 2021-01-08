@@ -87,6 +87,7 @@
 #include "StageSpec.hpp"
 #include "StepTiming.hpp"
 #include "Stream.hpp"
+#include "StzList.hpp"
 
 #include "SP_Gid.hpp"
 #include "SP_Elapsed.hpp"
@@ -383,6 +384,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_T_LARGE   ,0 }, // CN_STREAMSET
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_STRING_T
+  { sizeof(StzList),            HT_T_TINY    ,0 }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
   { sizeof(SystemSchedule),     HT_T_TINY    ,0 }, // CN_SYSTEMSCHEDULE

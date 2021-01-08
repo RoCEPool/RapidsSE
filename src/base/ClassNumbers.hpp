@@ -269,6 +269,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
+  /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SYSCALL,
   /* */ CN_SYSTEMSCHEDULE,
@@ -590,6 +591,7 @@ static Stz* aCN[]
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T
+  /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SYSTEMSCHEDULE
