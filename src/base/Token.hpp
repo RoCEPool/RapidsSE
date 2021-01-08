@@ -48,6 +48,7 @@ namespace BASE
     bool  bHasChars(void);
     bool  bIsArithmetic(void);
     bool  bIsAssign(void);
+    bool  bIsDecimalNo(void);
     bool  bIsInteger(void);
     bool  bIsGreaterThan(void);
     bool  bIsLessThan(void);

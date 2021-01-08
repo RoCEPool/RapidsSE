@@ -273,6 +273,19 @@ bool Token::bIsAssign(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token decimal no?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsDecimalNo(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (TN_NAME == m_eToken && StrLib::bIsDecimalNo((char*)m_szChars))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token an integer?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsInteger(void)

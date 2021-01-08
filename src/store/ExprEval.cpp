@@ -158,6 +158,41 @@ void ExprEval::vAddArithmetic(Token* pTkn) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for decimals                                                   */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eEC eError;
+  i8 iDecimal;
+
+  char* szToken = (char*)pTkn->szChars();
+
+  bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 19, 2);
+  if ( ! bResult ) {
+    eError = EC_INVALID_COMMAND;
+  }
+  else {
+    StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER %lld\n"_Stz, iDecimal);
+    pColumnExpr->vSet("NONE"_Stz, CT_DECIMAL, 19, 2);
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for numerics                                                   */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddNumeric(Token* pTkn, Column* pColumnExpr) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
+  pColumnExpr->vSet("NONE"_Stz, CT_INTEGER, 19, 0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for pop column                                                 */
 /*----------------------------------------------------------------------------*/
 void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn) {
@@ -239,6 +274,11 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
 
     // skip any numeric numbers
     if (pTkn->bIsNumeric()) {
+      continue;
+    }
+
+    // skip any decimal numbers
+    if (pTkn->bIsDecimalNo()) {
       continue;
     }
 
@@ -362,10 +402,19 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       continue;
     }
 
-    // is it an integer ?
-    if (pTkn->bIsInteger()) {
-      StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
-      pColumnExpr->vSet("NONE"_Stz, CT_INTEGER, 19, 0);
+    // is it a numeric ?
+    if (pTkn->bIsNumeric()) {
+      vAddNumeric(pTkn, pColumnExpr);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a decimal no ?
+    if (pTkn->bIsDecimalNo()) {
+      eError = eAddDecimal(pTkn, pColumnExpr);
+      if (eError != EC_INVALID_COMMAND)
+        break;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
