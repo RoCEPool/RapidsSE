@@ -212,13 +212,8 @@ void Step::vRegOperandCsvToRow(void)
   CsvBuffer* pCsvBuffer =
     _pCsvBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
-//  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
-//
-//  char* azCsvChunk = (char*) pCsvBuffer->szRecords();
-//
   ToRow* pToRow = *( m_pJob->pLogicUnit_job() )->m_xpToRow;
   
-//  bool b = pToRow->bConvertCsv(azCsvChunk,pCsvMeta);
   bool b = pToRow->bConvertCsv(pCsvBuffer);
 
   EXIT();
