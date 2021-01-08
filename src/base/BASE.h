@@ -63,13 +63,9 @@ namespace BASE {
   typedef Bytes_t<C_256K>  b256K; // note: K, not KB
 }
 
-
-
 using namespace BASE;
 
-
 //------------------------------------------------------------------------------
-
 
 static const i8 C_ALL          = -1;
 static const i8 C_VARGS_BEGIN  = -1;
@@ -88,7 +84,6 @@ static const i8 C_SET_OFFSETS       = 128;
 static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
 static const i8 C_CHUNKBLOCK        = 2048;
 
-
 // initialised in IntLib::vInitGlobals()
 extern i8 C_DATUM_NULL;
 extern i8 C_DATUM_MINUS_INFINITY;
@@ -103,9 +98,7 @@ extern d8 C_D8_MIN;
 extern d8 C_D8_MAX;
 extern d8 C_D8_MID;
 
-
 //------------------------------------------------------------------------------
-
 
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
@@ -115,7 +108,6 @@ extern d8 C_D8_MID;
 #include "Nibbler.h"
 #include "Null.hpp"
 #include "WordAsBytes.h"
-
 
 #if !( (defined(WITH_APPLE) || defined(WITH_LINUX)) )
   #include "Asm.h"
@@ -152,7 +144,6 @@ struct SizeHeap {
 
 #include "eFK.h"
 #include "Exception.hpp"
-
 
 #include "Footer.hpp"
 #include "Header.hpp"
@@ -238,7 +229,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "OpSys.hpp"
 #include "Process.hpp"
 #include "Shell.hpp"
-
 
 #include "Atomic.hpp"
 #include "Lock.hpp"
@@ -472,8 +462,6 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "LogEntry.hpp"
 #include "Log.hpp"
 
-
-
 #include "ClassPlaceHolder.hpp"
 
 //------------------------------------------------------------------------------
@@ -492,7 +480,6 @@ namespace BASE
 {
   static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 }
-
 
 /*---------------------------------------------------------------------------*/
 /* pCheck: check address                                                     */
