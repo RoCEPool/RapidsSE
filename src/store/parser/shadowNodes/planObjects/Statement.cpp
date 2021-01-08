@@ -115,12 +115,17 @@ void Statement::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
   sBuf.vCatSprint("queryText: \"%s\""_Stz, szQueryText);
 
   // Recurse any children
-  i8 nChildren = pNode->nChildren();
-  for (i8 i=0; i<nChildren; i++) {
-    PlanNode* pChild = pNode->pNthChild(i);
-    ASSERT(PlanObject::bIsOfType(pChild));
+  if (pNode->bHasChildren()) {
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
 
-    PlanObject::vExplain(pChild, sBuf, iIndent+1);
+    while (pIter->bHasNext()) {
+      PlanNode* pChild = pIter->pNext();
+      ASSERT(PlanObject::bIsOfType(pChild));
+
+      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+    }
+
+    delete pIter;
   }
 }
 

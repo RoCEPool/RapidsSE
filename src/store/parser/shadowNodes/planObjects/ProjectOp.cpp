@@ -70,13 +70,18 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pProjectedExprs = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDEXPRS_PROP, pProjectOp));
   ASSERT(pProjectedExprs);
 
-  i8 nCols = pProjectedExprs->nChildren();
-  for (i8 i=0; i<nCols; i++) {
-    QueryNode* pProjectedExpr = static_cast<QueryNode*>(pProjectedExprs->pNthChild(i));
-    ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+  if (pProjectedExprs->bHasChildren()) {
+    PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
 
-    sBuf.vConcat("\n  "_Stz);
-    ProjectedExpr::vDescribe(pProjectedExpr, sBuf);
+    while (pIter->bHasNext()) {
+      QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
+      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+
+      sBuf.vConcat("\n  "_Stz);
+      ProjectedExpr::vDescribe(pProjectedExpr, sBuf);
+    }
+
+    delete pIter;
   }
 }
 
@@ -98,29 +103,37 @@ void ProjectOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
   ASSERT(pProjExprs);
 
   // Iterate each projected expression
-  i8 nCols = pProjExprs->nChildren();
-  ASSERT(nCols > 0);
+  if (pProjExprs->bHasChildren()) {
+    PlanNodeIter* pIter = pProjExprs->pNewChildrenIter();
 
-  for (i8 i=0; i<nCols; i++) {
-    PlanNode* pProjExpr = pProjExprs->pNthChild(i);
-    ASSERT(pProjExpr);
-    ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
+    while (pIter->bHasNext()) {
+      QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
+      ASSERT(pProjExpr);
+      ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
 
-    // Get the description of the projected expression
-    s2K sColBuf;
-    ProjectedExpr::vDescribe(pProjExpr, sColBuf);
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
+      // Get the description of the projected expression
+      s2K sColBuf;
+      ProjectedExpr::vDescribe(pProjExpr, sColBuf);
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
+    }
+
+    delete pIter;
   }
 
-  // Recurse any children
-  i8 nChildren = pNode->nChildren();
-  for (i8 i=0; i<nChildren; i++) {
-    PlanNode* pChild = pNode->pNthChild(i);
-    ASSERT(PlanObject::bIsOfType(pChild));
 
-    PlanObject::vExplain(pChild, sBuf, iIndent+1);
+  // Recurse any children of pNode
+  if (pNode->bHasChildren()) {
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      PlanNode* pChild = pIter->pNext();
+      ASSERT(PlanObject::bIsOfType(pChild));
+
+      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+    }
+    delete pIter;
   }
 }
 

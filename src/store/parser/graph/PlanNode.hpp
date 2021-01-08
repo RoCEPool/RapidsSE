@@ -7,6 +7,7 @@ namespace Parser
 {
   class PlanNode;
   typedef ListExo_t<CN_PLANNODELIST, PlanNode> PlanNodeList;
+  typedef ListExoIter_t<PlanNode> PlanNodeIter;
 
   // A multi-value struct used in every PlanNode
   struct Value {
@@ -94,8 +95,10 @@ namespace Parser
     i8 nProperties();
     i8 nChildren();
 
-    PlanNode* pNthProperty(i8 idx);
-    PlanNode* pNthChild(i8 idx);
+    // Allocates and returns an iterator for the properties or children of this node.
+    // May be null if there are none. The iterator must be deleted after use.
+    PlanNodeIter* pNewPropertyIter();
+    PlanNodeIter* pNewChildrenIter();
   };
   
   PlanNode* _pPlanNode(void* aAddr);

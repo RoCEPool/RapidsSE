@@ -123,39 +123,21 @@ b1 QueryNode::bHasChild(QueryNode* pNode)
 {
   ASSERT(pNode);
 
-  if (!m_pChildren) {
+  if (!m_pChildren || m_pChildren->nItems() == 0) {
     return false;
   }
 
-  for (i8 i=0; i<m_pChildren->nItems(); i++) {
-    PlanNode* pItem = m_pChildren->pPeek(i);
+  PlanNodeIter* pChildIter = m_pChildren->pNewIter();
+  while (pChildIter->bHasNext()) {
+    PlanNode* pItem = pChildIter->pNext();
+
     if (pItem == pNode) {
+      delete pChildIter;
       return true;
     }
   }
-
+  delete pChildIter;
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the zero-based index of the child, or -1 if the child doesn't exist*/
-/*----------------------------------------------------------------------------*/
-i8 QueryNode::bChildIndex(QueryNode* pNode)
-{
-  ASSERT(pNode);
-
-  if (!m_pChildren) {
-    return -1;
-  }
-
-  for (i8 i=0; i<m_pChildren->nItems(); i++) {
-    PlanNode* pItem = m_pChildren->pPeek(i);
-    if (pItem == pNode) {
-      return i;
-    }
-  }
-
-  return -1;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,16 +1,17 @@
 /*============================================================================*/
-/* Nibbler.h -- Look at a byte as two nibbles                                 */
+/* SizeHeap.h -- Structure used by SizesHeaps                                 */
 /*============================================================================*/
 #pragma once
 
-struct Nibbler {
+#include "eHT.h"
+
+struct SizeHeap {
   
-  u1 m_uHigh  :  4 ; // 0..15
-  u1 m_uLow   :  4 ; // 0..15
-  //           ---
-  //             8
-  //           ===
+  i8  m_nClassSize;
+  eHT m_eWhichHeap;
   
+  i8  m_nVtableAdjust; // temp: explore support for vtable
+
 };
 
 /*============================================================================*/
