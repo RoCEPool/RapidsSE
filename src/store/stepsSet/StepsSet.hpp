@@ -669,7 +669,6 @@ public:
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);
   void vJobSeedStore(void);
-  void vJobSend(void);
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);

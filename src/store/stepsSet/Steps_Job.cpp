@@ -114,7 +114,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
   vAddStep("job.seed!"_Stz,            &Step::vJobSeedStore);
-  vAddStep("job.send"_Stz,             &Step::vJobSend);
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
@@ -1418,21 +1417,6 @@ void Step::vJobSeedStore(void)
               C_VARGS_END);
   
   pJob->vSeed((eSS)i_Seed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.send -- pre-send of job                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSend(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // call the job pre-send function
-  STORE::vJob_send(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
