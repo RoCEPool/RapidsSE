@@ -94,6 +94,8 @@ void Dic::vAddWord(Word* pWord)
   
   m_pArticle->vAppend(pWord->pArticle());
   
+  bool b = m_pWordSkipList->bInsert(pWord);
+  
   m_pArticle->vDropWrite();
 }
 
@@ -242,22 +244,6 @@ bool Dic::bHasWords(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* initialize this dictionary                                                 */
-/*----------------------------------------------------------------------------*/
-void Dic::vInit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  Word* pWord = Word::pToWord(this);
-  
-  //m_sDicNm.vInit();
-  m_sDicNm = pWord->szWordNm();
-  
-  delete m_pArticle;
-  m_pArticle = new Article(m_sDicNm,this,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
