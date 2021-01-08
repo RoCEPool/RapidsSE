@@ -184,13 +184,8 @@ namespace BASE
 #include "CommonTypes.h"
 #include "EnvFlags.h"
 #include "Gid.h"
-#include "Nibbler.h"
 #include "Null.hpp"
 #include "WordAsBytes.h"
-
-#if !( (defined(WITH_APPLE) || defined(WITH_LINUX)) )
-  #include "Asm.h"
-#endif
 
 #include "Asm.h"
 
