@@ -110,30 +110,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* generate plan for the fetch                                                */
-/*----------------------------------------------------------------------------*/
-: generatePlan ( -- )
-
-  0 locals| sPredicate |
-
-  //sWhere "generatePlan" "%v %v" str.format .
-
-  ( cdt_0 ) PathIdentifier[].new
-  ( cdt_1 ) Table[] PathIdentifier[].table!
-
-  ( cdt_2 ) <predicate> PathIdentifier[].parseWhere  //"parseWheres" .
-
-  ( cdt_3 ) PathIdentifier[].genPaths           //"genPaths" .
-  ( cdt_4 ) PathIdentifier[].scorePaths         //"scorePaths" .
-  //( cdt_5 ) PathIdentifier[].showPaths
-
-  ( cdt_6 ) PathIdentifier[].matchPaths         //"matchPaths" .
-  //( cdt_6 ) PathIdentifier[].showPaths
-
-  ( cdt_7 ) PathIdentifier[].choosePaths        //"choosePaths" .
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
 : fetch_CancelMarker \handler
