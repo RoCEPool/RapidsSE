@@ -7,7 +7,7 @@ namespace STORE
 {
   class RowCompactor : public  Object,
                        private RowCoder,
-                       private Packing_v2
+                       private CrwPacker
   {
   public:
     CrwBuffer* m_pCrwBuffer;   // crw buffer
@@ -49,7 +49,7 @@ namespace STORE
   private:
 
     // - - - - - - - - - - - - - - - - - - - - -
-    // Row Packing
+    // Row CrwPacker
   
     bool bAddRowAsCrw(Row* pRow);
     bool bAllotCrw(void);

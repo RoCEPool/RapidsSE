@@ -180,7 +180,7 @@ bool RowCompactor::bCompactTail(Stz* szTailStr)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                             -- Row Packing --                              */
+/*                             -- Row CrwPacker --                              */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +207,7 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
   }
   
   // 5) pack encoded row into a compact row
-  Packing_v2::vPackCrw_v2(m_aHeadLine,m_pEncoding_v2);
+  CrwPacker::vPackCrw(m_aHeadLine,m_pEncoding_v2);
 
   m_aHeadLine = nullptr;
 

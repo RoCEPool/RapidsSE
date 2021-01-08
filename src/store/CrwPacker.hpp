@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* Packing_v2.hpp -- Compact Row Packing                                      */
+/* CrwPacker.hpp -- Encoded Row to Compact Row Packer                         */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class Packing_v2
+  class CrwPacker
   {
   public:
-    static void vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding);
+    static void vPackCrw(HeadLine* aHeadLine, Encoding_v2* pEncoding);
   };
 }
 

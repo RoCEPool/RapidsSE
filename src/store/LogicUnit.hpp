@@ -259,7 +259,7 @@ namespace STORE
     void vGenerate100000(void);
     void vGenerate100001(void);
 
-    void vGenerateFilter(Filter* pFilter, StreamDef* pStreamDefOut);
+    void vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
 

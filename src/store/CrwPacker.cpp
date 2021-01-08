@@ -1,15 +1,14 @@
 /*============================================================================*/
-/* Packing_v2.cpp -- Compact Row Packing_v2                                   */
+/* CrwPacker.cpp -- Encoded Row to Compact Row Packer                         */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
-
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */
 /*----------------------------------------------------------------------------*/
-void Packing_v2::vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding)
+void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding_v2* pEncoding)
 {
   _static_
   
