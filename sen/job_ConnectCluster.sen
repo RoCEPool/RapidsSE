@@ -158,7 +158,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute job_ConnectCluster (on participating node)                         */
 /*----------------------------------------------------------------------------*/
-: connectCluster::execute _eeh ( -- )
+: connectCluster::execute _eeh_suffix ( -- )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected

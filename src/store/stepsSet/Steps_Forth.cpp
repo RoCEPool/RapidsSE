@@ -53,10 +53,10 @@ void Step::vColon(void)
   else
     pDic = AM::pRootDic();
   
-//  Word* pFoundWord = pDic->pFindWord(sWordNm);
-//  if (pFoundWord) {
-//    vTrace("\nvColon : word already defined [++] %s\n\n"_Stz,sWordNm.szStz());
-//  }
+  Word* pFoundWord = pDic->pFindWord(sWordNm);
+  if (pFoundWord) {
+    vTrace("\nvColon : word already defined [++] %s\n\n"_Stz,sWordNm.szStz());
+  }
 //  else {
 //    vTrace("vColon : new word [--] %s\n"_Stz,sWordNm.szStz());
 //  }
