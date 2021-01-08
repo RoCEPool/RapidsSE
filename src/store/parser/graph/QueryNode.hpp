@@ -37,9 +37,6 @@ namespace Parser
     // Returns true if the current node has a specific child
     b1 bHasChild(QueryNode* pNode);
 
-    // Returns the zero-based index of the child, or -1 if the child doesn't exist
-    i8 bChildIndex(QueryNode* pNode);
-
     // Adds a new child at the end of the list
     void vAppendChild(QueryNode* pNode);
 

@@ -93,12 +93,17 @@ void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
   sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());
 
   // Recurse any children
-  i8 nChildren = pNode->nChildren();
-  for (i8 i=0; i<nChildren; i++) {
-    PlanNode* pChild = pNode->pNthChild(i);
-    ASSERT(PlanObject::bIsOfType(pChild));
+  if (pNode->bHasChildren()) {
+    PlanNodeIter* pIter = pNode->pChildrenIter();
 
-    PlanObject::vExplain(pChild, sBuf, iIndent+1);
+    while (pIter->bHasNext()) {
+      PlanNode* pChild = pIter->pNext();
+      ASSERT(PlanObject::bIsOfType(pChild));
+
+      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+    }
+
+    delete pIter;
   }
 }
 

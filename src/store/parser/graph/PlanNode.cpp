@@ -41,21 +41,28 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
 
   if (oNode.m_pProperties) {
     m_pProperties = new PlanNodeList();
-    // TODO: slow to iterate
-    for (i8 i=0; i<oNode.m_pProperties->nItems(); i++) {
-      PlanNode* pItem = oNode.m_pProperties->pPeek(i);
+    PlanNodeIter* pPropIter = oNode.m_pProperties->pNewIter();
+
+    while (pPropIter->bHasNext()) {
+      PlanNode* pItem = pPropIter->pNext();
       m_pProperties->vAppend(pItem);
     }
+    delete pPropIter;
+
   } else {
     m_pProperties = nullptr;
   }
 
   if (oNode.m_pChildren) {
     m_pChildren = new PlanNodeList();
-    for (i8 i=0; i<oNode.m_pChildren->nItems(); i++) {
-      PlanNode* pItem = oNode.m_pChildren->pPeek(i);
+    PlanNodeIter* pChildIter = oNode.m_pChildren->pNewIter();
+
+    while (pChildIter->bHasNext()) {
+      PlanNode* pItem = pChildIter->pNext();
       m_pChildren->vAppend(pItem);
     }
+    delete pChildIter;
+
   } else {
     m_pChildren = nullptr;
   }
@@ -188,26 +195,31 @@ i8 PlanNode::nChildren()
   return m_pChildren->nItems();
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* Returns the nth property of this node.                                     */
+/* Returns an iterator for the properties of this node. May be null if there  */
+/* are none. The iterator must be deleted after use.                          */
 /*----------------------------------------------------------------------------*/
-PlanNode* PlanNode::pNthProperty(i8 idx)
+PlanNodeIter* PlanNode::pPropertyIter()
 {
-  // TODO: replace this method with something more efficient
-  ASSERT(m_pProperties);
-  ASSERT(idx >= 0 && idx < nProperties());
-  return m_pProperties->pPeek(idx);
+  if (!m_pProperties) {
+    return nullptr;
+  }
+
+  return m_pProperties->pNewIter();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the nth child of this node.                                        */
+/* Returns an iterator for the children of this node. May be null if there    */
+/* are none. The iterator must be deleted after use.                          */
 /*----------------------------------------------------------------------------*/
-PlanNode* PlanNode::pNthChild(i8 idx)
+PlanNodeIter* PlanNode::pChildrenIter()
 {
-  // TODO: replace this method with something more efficient
-  ASSERT(m_pChildren);
-  ASSERT(idx >= 0 && idx < nChildren());
-  return m_pChildren->pPeek(idx);
+  if (!m_pChildren) {
+    return nullptr;
+  }
+
+  return m_pChildren->pNewIter();
 }
 
 /*----------------------------------------------------------------------------*/
