@@ -165,11 +165,10 @@ eEC ExprEval::eAddDate(Token* pTkn, Column* pColumnExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  i8 ;
+  i8 iDate;
   char* szToken = (char*)pTkn->szChars();
 
   SN_Dte snDate;
-  i8 iDate;
 
   // validate the date
   try {
