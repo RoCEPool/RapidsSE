@@ -81,7 +81,8 @@ Word::Word(Stz* szWordNm)
 #endif
   
   m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
-
+  m_pSkipNode  = nullptr;
+  
   m_sWordNm    = szWordNm;
   RASSERT(m_sWordNm.bSame(szWordNm));
   

@@ -15,6 +15,7 @@ namespace BASE
 
   private:
     Article*  m_pArticle;     // the word article
+    SkipNode* m_pSkipNode;    // the node of this word in dic skiplist
 
     s32       m_sWordNm;      // the name of this word
     eWK       m_eWord;        // kind of word
