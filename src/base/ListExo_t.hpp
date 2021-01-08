@@ -965,6 +965,7 @@ public:
   ListExoIter_t<ITEM>(ListExo_ABSTRACT* pListExo);
  ~ListExoIter_t(void) noexcept(false);
   
+  void  vBeforeFirst(void);
   ITEM* pFirst(void);
   bool  bHasNext(void);
   ITEM* pNext(void);
@@ -1033,6 +1034,18 @@ ListExoIter_t<ITEM>::~ListExoIter_t(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* position before first item                                                 */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExoIter_t<ITEM>::vBeforeFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  
+  m_eCursorState = LC_NIL;
+  m_pListNode_cursor = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get tail first item of list                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
@@ -1087,8 +1100,10 @@ bool ListExoIter_t<ITEM>::bHasNext(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      ASSERT(! m_pListNode_cursor);
-      return false;
+      if (m_pListExo->pHeadNode_abstract())
+        return true;
+      else
+        return false;
 
     case LC_ON_EXISTING_ITEM:
       ASSERT(m_pListNode_cursor);
