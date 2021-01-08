@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include <dirent.h>
-#include <fcntl.h>
+//#include <dirent.h>
+//#include <fcntl.h>
 #include <iostream>
 #include <string.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 /*============================================================================*/
 /* end                                                                        */

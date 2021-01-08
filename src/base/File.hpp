@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Resource.hpp"
+#include <fcntl.h>
 
 namespace BASE
 {
