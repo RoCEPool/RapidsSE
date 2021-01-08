@@ -756,6 +756,33 @@ char* Word::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(Word)
 
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* compare two words (in a skiplist) by their word names                      */
+/*----------------------------------------------------------------------------*/
+bool bWordCompare(void* aWordBeingInserted, void* aWordScan, bool& bMatching)
+{
+  Word* pWordBeingInserted = _pWord(aWordBeingInserted);
+  Word* pWordScan          = _pWord(aWordScan);
+    
+  if ( ! pWordScan )
+    return false;
+  
+  if (pWordBeingInserted->szWordNm()->bSame(pWordScan->szWordNm()))
+    bMatching = true;
+  else
+    bMatching = false;
+  
+  i8 iCmp = pWordBeingInserted->szWordNm()->iCompare(pWordScan->szWordNm());
+  if (iCmp > 0)
+    return true;
+  else
+    return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

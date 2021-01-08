@@ -132,6 +132,8 @@ namespace BASE
   Word* _pWord(void* aAddr);
 }
 
+bool bWordCompare(void* aWordBeingInserted, void* aWordScan, bool& bMatching);
+
 void vEnterRoutine(Step* pStep);
 
 /*============================================================================*/
