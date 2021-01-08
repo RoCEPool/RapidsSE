@@ -1,11 +1,12 @@
 /*============================================================================*/
-/* ExprEval.cpp -- ExprEval column                                        */
+/* ExprEval.cpp -- Expression Evaluator                                       */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
 #include "ExprEval.hpp"
+#include "SN_Dte.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -158,6 +159,32 @@ void ExprEval::vAddArithmetic(Token* pTkn) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for dates                                                      */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eAddDate(Token* pTkn, Column* pColumnExpr) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  i8 ;
+  char* szToken = (char*)pTkn->szChars();
+
+  SN_Dte snDate;
+  i8 iDate;
+
+  // validate the date
+  try {
+    iDate = snDate.i(&szToken, AM::pFmt());
+  } catch (...) {
+    return EC_INVALID_COMMAND;
+  }
+
+  StrLib::vSprintCat(m_sAsmText, "  EO_DATE \"%s\"\n"_Stz, pTkn->szChars());
+  pColumnExpr->vSet("NONE"_Stz, CT_DATE, 0, 0);
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for decimals                                                   */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr) {
@@ -262,6 +289,19 @@ void ExprEval::vAddRelational(Token* pTkn) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for strings                                                    */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddString(Token* pTkn, Column* pColumnExpr) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  char* szToken = (char*)pTkn->szChars();
+
+  StrLib::vSprintCat(m_sAsmText, "  EO_STRING %s\n"_Stz, szToken);
+  pColumnExpr->vSet("NONE"_Stz, CT_VARCHAR, 128, 0);    // ALKA: come back to this
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect source columns needed for projection                               */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
@@ -278,7 +318,6 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     // skip alias ?
     if (pTkn->bSame("as"_Stz)) {
       i_Tkn++;
-      pTkn = pTknVec->pGet(i_Tkn);
       continue;
     }
 
@@ -288,6 +327,11 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
 
     // skip any logical operators
     if (pTkn->bIsLogical()) {
+      continue;
+    }
+
+    // skip any relational operators
+    if (pTkn->bIsRelational()) {
       continue;
     }
 
@@ -301,8 +345,8 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
       continue;
     }
 
-    // skip any relational operators
-    if (pTkn->bIsRelational()) {
+    // skip any strings
+    if (pTkn->bIsString()) {
       continue;
     }
 
@@ -315,6 +359,20 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     if (!pTkn->bIsName()) {
       eError = EC_INVALID_COMMAND;
       break;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pGet(i_Tkn+1);
+
+      // skip if its a date string
+      if (pTkn->bIsString())
+        i_Tkn++;
+      continue;
+    }
+
+    // skip any strings
+    if (pTkn->bIsString()) {
+      continue;
     }
 
     if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
@@ -438,9 +496,16 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
       eError = eAddDecimal(pTkn, pColumnExpr);
-      if (eError == EC_INVALID_COMMAND)
-        break;
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
 
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bIsString()) {
+      vAddString(pTkn, pColumnExpr);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -453,7 +518,21 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
     if (!pTkn->bIsName()) {
       eError = EC_INVALID_COMMAND;
-      break;
+      goto L_RETURN;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        eError = eAddDate(pTkn, pColumnExpr);
+        if (eError == EC_INVALID_COMMAND) {
+          goto L_RETURN;
+        }
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
     }
 
     // found a src column

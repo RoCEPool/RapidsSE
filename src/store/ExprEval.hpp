@@ -29,10 +29,12 @@ namespace STORE
 
   private:
     void vAddArithmetic(Token*  pTkn);
+    eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddDecimal(Token*  pTkn, Column* pColumnExpr);
     void vAddLogical(Token*  pTkn);
     void vAddNumeric(Token*  pTkn, Column* pColumnExpr);
     void vAddRelational(Token*  pTkn);
+    void vAddString(Token*  pTkn, Column* pColumnExpr);
     void vAddPopCol(eCT eColumnType, i8 iColumn);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
