@@ -653,21 +653,34 @@ void Step::vInfoSetRdCsvChunk(void)
   char* azInto;
   i8 nBytesRead;
   
-  File* pFile = _pFile(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
+  File* pCsvFile = _pFile(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
+  Stz* szFilePath = pCsvFile->sFilePath();
   
-  Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iOffset = pRow->iColVal_int(0);
-  i8 nBytes = pRow->iColVal_int(1);
+  Row* pInfoRow = _pRow(m_pDataStack->pPopPtr(__func__));
+  i8 iOffset = pInfoRow->iColVal_int(0);
+  i8 nBytes = pInfoRow->iColVal_int(1);
   
   //vTrace("reading chunk @%lld of %lld bytes\n"_Stz, iOffset, nBytes);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create new csvBuffer and set csvMeta
+  
   pCsvBuffer = new CsvBuffer;
+  
+  CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
+  
+  pCsvMeta->vOriginNm(AM::szNodeNm());
+  pCsvMeta->vFilePath(szFilePath);
+  pCsvMeta->vOffset(iOffset);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read chunk into buffer
+  
   azInto = (char*)pCsvBuffer->ayDataArea();
 
-  pFile->vSeek(iOffset);
+  pCsvFile->vSeek(iOffset);
   pCsvBuffer->vTake(nBytes);
-  nBytesRead = pFile->nReadBytes(azInto,nBytes);
+  nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
   ASSERT(nBytesRead == nBytes);
   azInto[nBytes] = '\0';
   
