@@ -16,13 +16,14 @@
 #include "LogicUnit.hpp"
 
 
-/*
-   include Heartbeat.hpp
-   include RingBuffer.hpp
+#include "Heartbeat.hpp"
 
-   extern sendRingBuffer
+extern CmdLineArgs gxCmdLineArgs;
+
+extern Stz *gsBuildGitHash;
+extern RingBuffer<Heartbeat> gxHeartbeatData;
  
- */
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -39,18 +40,23 @@ void Step::vSupervisorCollectInfo(void)
 {
   ENTRY();
   
-  //vTrace("  ** Step::vSupervisorCollectInfo ** \n"_Stz);
-  
-  /*
+  vTrace("  ** Step::vSupervisorCollectInfo ** \n"_Stz);
+
+  static i8 iSeq = 0;
    
   Heartbeat xHeartbeat;
-  
-  xHeartbeat.x = 1;
-  ...
+
+  memset((char *) &xHeartbeat, 0x00, sizeof(Heartbeat));
+  xHeartbeat.m_iSeqNo = ++iSeq;
+  xHeartbeat.m_iSincePosixEpoch = time(0);
+  strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, 32);
+
+  strncpy(xHeartbeat.m_acString0, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acString0) - 1);
+  xHeartbeat.m_acString0[sizeof(xHeartbeat.m_acString0) - 1] = 0;
+
+  gxHeartbeatData.bTryWrite(xHeartbeat);
    
-  sendRingBuffer.push(&xHeartbeat);
-   
-  */
+
   
   EXIT();
 }

@@ -105,28 +105,29 @@ void vCollectData()
 
   for (;;) {
 
-    vCollectData();
+    //vCollectData();
 
     memset((char *) &xHeartbeat, 0x00, sizeof(Heartbeat));
 
-    gxHeartbeatData.bTryRead(xHeartbeat);
+    if (gxHeartbeatData.bTryRead(xHeartbeat)) {
 
-    sprintf(azHeartbeat,
+      sprintf(azHeartbeat,
 
-            "SE sent heartbeat: seqNo %lld sinceEpoch %lld gitHash %s\n", xHeartbeat.m_iSeqNo,
-            xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash
+              "SE sent heartbeat: seqNo %lld sinceEpoch %lld gitHash %s\n", xHeartbeat.m_iSeqNo,
+              xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash
 
-    );
+      );
 
       //fseeko(gaHearbeatFile,0,SEEK_SET);
       //fwrite(azHeartbeat, 1, strlen(azHeartbeat)+1,gaHearbeatFile);
       //fflush(gaHearbeatFile);
 
 
-    pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
+      pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
 
-    if (iCnt++ <= 1) // debug only: print twice
-      printf("%s",azHeartbeat);
+      //if (iCnt++ <= 1) // debug only: print twice
+      printf("%s", azHeartbeat);
+    }
 
     sleep(3);
   }
@@ -167,7 +168,7 @@ void vCollectData()
             hbHeartbeat.m_iSincePosixEpoch, hbHeartbeat.m_acBuildGitHash, azTimeBuffer
             );
 
-            if (iCnt++ <= 1) // debug print twice
+            //if (iCnt++ <= 1) // debug print twice
             printf("%s", azHeartbeat);
         }
     }
@@ -210,7 +211,7 @@ void vCollectData()
               hbHeartbeat.m_iSincePosixEpoch, hbHeartbeat.m_acBuildGitHash, azTimeBuffer
       );
 
-      if (iCnt++ <= 1) // debug print twice
+      //if (iCnt++ <= 1) // debug print twice
         printf("%s",azHeartbeat);
     }
   }
