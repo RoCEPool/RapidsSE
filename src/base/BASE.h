@@ -17,6 +17,11 @@ namespace BASE
 //#pragma GCC diagnostic warning "-Wunused-parameter"
 //#pragma GCC diagnostic warning "-Wunused-variable"
 
+#include <iostream>
+#include <string.h>
+
+//------------------------------------------------------------------------------
+
 #define EndDefine
 
 #define _static_ EndDefine
@@ -26,7 +31,7 @@ namespace BASE
 
 #include "CompiledWith.h"
 #include "MachineTypes.h"
-#include "SystemIncludes.h"
+
 //typedef unsigned long size_t;
 
 #include "UsefulConstants.h"
