@@ -39,6 +39,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CHARSER,
   /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_CMDLINEARGS,
+  /* */ CN_CODEBLOCK,
   /* */ CN_COLUMN,
   /* */ CN_COMPILER,
   /* */ CN_CRVBUFFER,
@@ -205,7 +206,6 @@ enum eCN : u2 // Class Number
   /* */ CN_RLUDIARY,
   /* */ CN_RN_RAND,
   /* */ CN_ROOTNODE,
-  /* */ CN_ROUTINE,
   /* */ CN_ROW,
   /* */ CN_ROWAGG,
   /* */ CN_ROWBOX,
@@ -269,6 +269,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
+  /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SYSCALL,
   /* */ CN_SYSTEMSCHEDULE,
@@ -361,6 +362,7 @@ static Stz* aCN[]
   /* */ "CHARSER"_Stz,              // CN_CHARSER
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
+  /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMPILER"_Stz,             // CN_COMPILER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
@@ -526,7 +528,6 @@ static Stz* aCN[]
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
   /* */ "RN_RAND"_Stz,              // CN_RN_RAND
   /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE
-  /* */ "ROUTINE"_Stz,              // CN_ROUTINE
   /* */ "ROW"_Stz,                  // CN_ROW
   /* */ "ROWAGG"_Stz,               // CN_ROWAGG
   /* */ "ROWBOX"_Stz,               // CN_ROWBOX
@@ -590,6 +591,7 @@ static Stz* aCN[]
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T
+  /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SYSTEMSCHEDULE

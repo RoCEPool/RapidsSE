@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Encoding_v2.hpp - Row Encoding_v2 sprint helper                         */
+/* SP_Encoding.hpp - Row Encoding_v2 sprint helper                         */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class SP_Encoding_v2 : public Sprint
+  class SP_Encoding : public Sprint
   {
   public:
   
@@ -15,8 +15,8 @@ namespace STORE
     Footer m_xFooter;
     
   public:
-    SP_Encoding_v2(void);
-    ~SP_Encoding_v2(void) noexcept(false);
+    SP_Encoding(void);
+    ~SP_Encoding(void) noexcept(false);
 
     void vEncoding(Encoding_v2* pEncoding);
   

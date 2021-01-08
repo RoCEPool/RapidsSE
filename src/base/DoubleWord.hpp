@@ -5,12 +5,11 @@
 
 namespace BASE
 {
-  class DoubleWord : public Line
+  class DoubleWord
   {
   public:
     union {
       byte m_yaByte[C_BYTES_PER_DOUBLE_WORD];
-      //SingleWord m_waWord[1]; //! this doesnt work
     };
 
   public:

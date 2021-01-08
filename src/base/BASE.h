@@ -312,12 +312,13 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "Mutex.hpp"
 
 #include "SingleWord.hpp"
-#include "AlignedObject.hpp"
-
-#include "Line.hpp"
 #include "DoubleWord.hpp"
 #include "QuadWord.hpp"
 #include "CacheLine.hpp"
+
+#include "AlignedObject.hpp"
+
+#include "Line.hpp"
 #include "SpaceUnit.hpp"
 
 #include "WspConvergent_t.hpp"

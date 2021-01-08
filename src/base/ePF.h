@@ -18,7 +18,6 @@ enum ePF // prompt function
   /*    */ PF_BPA,
   /*    */ PF_BYE,
   
-  /*    */ PF_CACHE,
   /*    */ PF_CALC,
   /*    */ PF_CANCEL,
   /*    */ PF_CD,
@@ -172,7 +171,6 @@ static Stz* aPF[]
   /*    */ "PF_BPA"_Stz,
   /*    */ "PF_BYE"_Stz,
   
-  /*    */ "PF_CACHE"_Stz,
   /*    */ "PF_CALC"_Stz,
   /*    */ "PF_CANCEL"_Stz,
   /*    */ "PF_CD"_Stz,

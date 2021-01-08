@@ -10,6 +10,8 @@
 #include "QueryNode.hpp"
 #include "GraphNav.hpp"
 
+#include "ListExo_t.hpp"
+
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -26,10 +28,10 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /* Validate the entire plan, including definitions                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphValidator::bValidateAll(PlanNode *pRootNode)
+void GraphValidator::vValidateAll(PlanNode *pRootNode)
 {
   // Validate root
-  bValidateRootNode(pRootNode);
+  vValidateRootNode(pRootNode);
 
   // Validate primitives
   PlanNode* pPrimitives = GraphNav::pFind(const_cast<Stz*>(C_PRIMITIVES_PATH), pRootNode);
@@ -56,25 +58,23 @@ b1 GraphValidator::bValidateAll(PlanNode *pRootNode)
   ASSERT(pStatistics);
   GraphNav::bWalk(pStatistics, GraphValidator::eValidateStatisticsNode, pRootNode);
 
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Validate only the /plan node against its definitions                       */
 /*----------------------------------------------------------------------------*/
-b1 GraphValidator::bValidatePlan(PlanNode* pRootNode)
+void GraphValidator::vValidatePlan(PlanNode* pRootNode)
 {
   PlanNode* pPlanNode = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode);
   ASSERT(pPlanNode);
   GraphNav::bWalk(pPlanNode, GraphValidator::eValidatePlanNode, pRootNode);
 
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Validate the root node only                                                */
 /*----------------------------------------------------------------------------*/
-b1 GraphValidator::bValidateRootNode(PlanNode* pRootNode)
+void GraphValidator::vValidateRootNode(PlanNode* pRootNode)
 {
   // *********************************
   // Root Node Validation Rules:
@@ -90,22 +90,74 @@ b1 GraphValidator::bValidateRootNode(PlanNode* pRootNode)
   //    ROOT-3.1: validate that the type field is not null and has a value of
   //              /__root__/primitives/root
   //
-  // PLAN-4: Validate the properties:
+  // ROOT-4: Validate the properties:
   //    ROOT-4.1: validate that the properties field is null.
   //
-  // PLAN-5: Validate the constraints:
+  // ROOT-5: Validate the constraints:
   //    Nothing needed here due to ROOT-4.1.
   //
-  // PLAN-6: Validate the children:
+  // ROOT-6: Validate the children:
   //    ROOT-6.1: validate that the children field is not null.
   //    ROOT-6.2: validate that the children field has 5 items named:
   //              "primitives", "definitions", "plan", "metadata" and "statistics".
+  //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  RASSERT(pRootNode);
 
+  // ROOT-1: Validate the name field:
+  //    ROOT-1.1: the name field must be "__root__".
+  RASSERT(pRootNode->szName());
+  RASSERT(pRootNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
 
+  // - - - - - - - - - - - - - - - - - - - - - -
 
+  // ROOT-2: Validate the value field:
+  //    ROOT-2.1: the value field must not be null and it must contains a string.
+  RASSERT(pRootNode->getStringValue());
+  RASSERT(pRootNode->getValue().m_pText->bIsClassNo(CN_TEXT));
+  RASSERT(pRootNode->getValue().m_bMustFree);
+  RASSERT(pRootNode->getStringValue()->nLength() > 0);
 
-  return true;
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // ROOT-3: Validate the type field:
+  //    ROOT-3.1: validate that the type field is not null and has a value of
+  //              /__root__/primitives/root
+  RASSERT(pRootNode->szType());
+  RASSERT(pRootNode->szType()->bEqual(const_cast<Stz*>(C_ROOT_DEFN_PATH)));
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // ROOT-4: Validate the properties:
+  //    ROOT-4.1: validate that the properties field is null.
+  RASSERT(!pRootNode->bHasProperties());
+  RASSERT(!pRootNode->m_pProperties);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // ROOT-5: Validate the constraints:
+  //    Nothing needed here due to ROOT-4.1.
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // ROOT-6: Validate the children:
+  //    ROOT-6.1: validate that the children field is not null.
+  RASSERT(pRootNode->m_pChildren);
+
+  //    ROOT-6.2: validate that the children field has 5 items named:
+  //              "primitives", "definitions", "plan", "metadata" and "statistics".
+  RASSERT(pRootNode->nChildren() == 5);
+
+  StzList* pRootChildrenList = new StzList;
+  i8 i = 0;
+  Stz* szName;
+  while ((szName = const_cast<Stz*>(C_ROOT_CHILDREN_NAMES[i++])) != nullptr) {
+    pRootChildrenList->vAppend(szName);
+  }
+
+  RASSERT(bContainsChildrenNamed(pRootNode, pRootChildrenList));
+  delete pRootChildrenList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,13 +178,13 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s256
   // PRIM-3: Validate the type field:
   //    PRIM-3.1: validate that the type field is null.
   //
-  // PLAN-4: Validate the properties:
+  // PRIM-4: Validate the properties:
   //    PRIM-4.1: validate that the properties field is null.
   //
-  // PLAN-5: Validate the constraints:
+  // PRIM-5: Validate the constraints:
   //    Nothing needed here due to PRIM-4.1.
   //
-  // PLAN-6: Validate the children:
+  // PRIM-6: Validate the children:
   //    PRIM-6.1: validate that the children field is null.
   //
 
@@ -345,6 +397,30 @@ GraphNav::eWalkCtrl GraphValidator::eValidateStatisticsNode(PlanNode* pNode, s25
 
   return Parser::GraphNav::WALK_CONTINUE;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* returns true if a given node has children with all of the names in the list*/
+/*----------------------------------------------------------------------------*/
+b1 GraphValidator::bContainsChildrenNamed(PlanNode* pNode, StzList* pNames)
+{
+  ASSERT(pNode);
+  ASSERT(pNames);
+
+  StzIter* pIter = pNames->pNewIter();
+  while (pIter->bHasNext()) {
+    Stz* szChildName = pIter->pNext();
+
+    if (!GraphNav::pFindChild(szChildName, pNode)) {
+      delete pIter;
+      return false;
+    }
+  }
+
+  delete pIter;
+  return true;
+}
+
 
 
 /*============================================================================*/

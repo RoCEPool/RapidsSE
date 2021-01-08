@@ -1,15 +1,16 @@
 /*============================================================================*/
-/* Packing_v2.hpp -- Compact Row Packing                                      */
+/* StzList.hpp -- a list of null terminated strings                           */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+//#include "ClassNumbers.hpp"
+#include "ListExo_t.hpp"
+#include "Stz.hpp"
+
+namespace BASE
 {
-  class Packing_v2
-  {
-  public:
-    static void vPackCrw_v2(HeadLine* aHeadLine, Encoding_v2* pEncoding);
-  };
+  typedef ListExo_t<CN_STZLIST, Stz> StzList;
+  typedef ListExoIter_t<Stz> StzIter;
 }
 
 /*============================================================================*/

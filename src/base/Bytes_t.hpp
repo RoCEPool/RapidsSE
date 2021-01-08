@@ -9,8 +9,9 @@ namespace BASE
   class Bytes_t : public Object
   {
   private:
-    i8     m_i_Latter;      // offset of next available byte
-    byte   m_yaArea[AREA]; // byte area (_ya =: byte array)
+    i8   m_nArea;        // byte length of byte area/array
+    i8   m_i_Latter;     // offset of next available byte
+    byte m_yaArea[AREA]; // byte area (_ya =: byte array)
     
     // must be last
     Footer m_xFooter;
@@ -20,6 +21,7 @@ namespace BASE
    ~Bytes_t(void) noexcept(false);
   
     i8   iAppend(Stz* szStr);
+    i8   nArea(void);
     Stz* szArea(void);
     Stz* szBoundary(void);
     Stz* szGet(i8 i_Area);
@@ -53,6 +55,8 @@ Bytes_t<AREA>::Bytes_t(void)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   m_i_Latter = 0;
+  
+  m_nArea = AREA;
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_yaArea,AREA,CN_BYTES_T);
@@ -98,6 +102,19 @@ i8 Bytes_t<AREA>::iAppend(Stz* szStr)
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   return i_String;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return m_nArea                                                             */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 Bytes_t<AREA>::nArea(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  ASSERT(AREA == m_nArea);
+    
+  return m_nArea;
 }
 
 /*----------------------------------------------------------------------------*/
