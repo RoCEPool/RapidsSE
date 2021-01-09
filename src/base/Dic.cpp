@@ -145,7 +145,7 @@ Word* Dic::pEachWord(Word* pPrior)
   
   m_pArticle->vGrabRead();
   
-  Word* pNextWord = pPrior ? pPrior->pNextWord() : pLastWord();
+  Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
 
   m_pArticle->vDropRead();
 
@@ -177,13 +177,13 @@ Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
   
   m_pArticle->vGrabRead();
   
-  Word* pWord = (pPrior) ? pPrior->pPrevWord() : pLastWord();
-  
-  for ( ; pWord; pWord = pWord->pPrevWord()) {
+  Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
+
+  for ( ; pNextWord; pNextWord = pNextWord->pNextWord()) {
     
-    if (pWord->pCategory() == pCategory) {
+    if (pNextWord->pCategory() == pCategory) {
       m_pArticle->vDropRead();
-      return pWord;
+      return pNextWord;
     }
   }
   
@@ -225,19 +225,6 @@ Word* Dic::pFindWord(Stz* szWordNm)
   
   m_pArticle->vGrabRead();
   
-  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
-    
-    //void* aEndWord = aAdd<void*>(pWord,sizeof(Word));
-    
-    if (pWord->szWordNm()->bSame(szWordNm)) {
-      m_pArticle->vDropRead();
-
-      if (szWordNm->bSame("whereAmI"_Stz))
-        vTrace(": %s is in dictionary %s ---\n"_Stz,szWordNm,m_sDicNm.szStz());
-
-      return pWord;
-    }
-  }
   
   m_pArticle->vDropRead();
   
@@ -281,7 +268,7 @@ Word* Dic::pFindStep(fpSTEPFN fpStepFn)
   
   m_pArticle->vGrabRead();
   
-  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+  for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     if (WK_INTRINSIC == pWord->eWord() && fpStepFn == pWord->fpEntryStep()) {
       m_pArticle->vDropRead();
       return pWord;
@@ -381,7 +368,7 @@ void Dic::vListWords(void)
   
   m_pArticle->vGrabRead();
   
-  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+  for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
     vTrace(": %s (dictionary %s)"_Stz,
            pWord->szWordNm(),
@@ -478,7 +465,7 @@ Word* Dic::pRemoveWord(Stz* szWordNm)
   
   m_pArticle->vGrabWrite();
   
-  m_pArticle->vRemove(pWordRemove->pArticle());
+  bool b = m_pWordSkipList->bRemove(pWordRemove);
   
   m_pArticle->vDropWrite();
   
