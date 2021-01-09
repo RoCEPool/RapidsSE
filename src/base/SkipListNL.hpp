@@ -59,6 +59,8 @@ namespace BASE
     SkipNode* pPosition(void* Ent, bool& bEqualTo,
                         SkipNode** pRevise, bool bTrace);
   
+    void vValidate(void);
+  
     Footer* aFooter(void);
   };
   

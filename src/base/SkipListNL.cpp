@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+//#define _VALIDATE_SKIPLIST
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -257,6 +259,12 @@ bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
   // one more object in the list
   m_nObjects++;
   
+  
+#ifdef _VALIDATE_SKIPLIST
+  vValidate();
+#endif
+  
+  
   // succesful insert
   return true;
 }
@@ -488,6 +496,32 @@ i8 SkipListNL::iRandomLevel(void)
   } while (!b);
   
   return (level > C_SKIPLIST_LEVELS - 1) ? C_SKIPLIST_LEVELS - 1: level;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate the skiplist                                                      */
+/*----------------------------------------------------------------------------*/
+void SkipListNL::vValidate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  i8 nItems = 0;
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
+    nItems++;
+  
+  ASSERT(nItems == m_nObjects);
+
+  
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    if (!pFind(pNode->m_pObject)) {
+      vTrace("Cannot find : "_Stz);
+        m_fpPrint(pNode->m_pObject);
+        vTrace("\n"_Stz);
+      NEVER_REACH;
+    }
+  }
+           
+           
 }
 
 /*----------------------------------------------------------------------------*/
