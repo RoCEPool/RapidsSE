@@ -38,7 +38,7 @@ namespace BASE
     void  vContents(void (*fvDump)(void* pObject));
     bool  bDeleteAll(void);
     bool  bExists(void* pObject);
-    void* pFind(void* pObject);
+    void* pFind(void* pObject, bool bTrace=false);
     SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject);
     SkipNode* pNewly(void);
@@ -50,7 +50,8 @@ namespace BASE
   
   private:
     i8 iRandomLevel(void);
-    SkipNode* pPosition(void* Ent, bool& bEqualTo, SkipNode** pRevise);
+    SkipNode* pPosition(void* Ent, bool& bEqualTo,
+                        SkipNode** pRevise, bool bTrace);
   
     Footer* aFooter(void);
   };

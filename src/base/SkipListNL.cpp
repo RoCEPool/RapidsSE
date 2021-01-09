@@ -162,7 +162,7 @@ bool SkipListNL::bExists(void* pObject)
 
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr,false);
   ASSERT(pNode); // logic check
   
   if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
@@ -174,13 +174,13 @@ bool SkipListNL::bExists(void* pObject)
 /*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
-void* SkipListNL::pFind(void* pObject)
+void* SkipListNL::pFind(void* pObject, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr, bTrace);
   ASSERT(pNode); // logic check
   
   if ( ! pNode->m_pRight[0] )
@@ -215,7 +215,7 @@ bool SkipListNL::bInsert(void* aObjectInsert)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
   // get a positioned prior vector
-  SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec);
+  SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec,false);
   RASSERT(pNode); // logic check
   
   Object* pObjectInsert = (Object*)aObjectInsert;
@@ -329,13 +329,13 @@ bool SkipListNL::bRemove(void* pObjectRemove)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   SkipNode* aPrior;
   
-  SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec);
+  SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec,false);
   RASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
     vTrace("SkipListNL::bRemove: failed to match\n"_Stz);
     vSkipListDump(this);
-    SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec);
+    SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec,false);
     return false;
   }
   
@@ -399,7 +399,8 @@ SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
 
 #define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
+SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo,
+                                SkipNode** aPriorVec, bool bTrace)
 {
   //RJH vTrace("Adding %p head:%p\n"_Stz,pObjectInsert, m_pHead);
   bEqualTo = false;

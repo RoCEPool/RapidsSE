@@ -63,8 +63,8 @@ void Dic::vAddWord(Word* pWord)
   m_pArticle->vGrabWrite();
     
   vTrace("Word : %s\n"_Stz,pWord->szWordNm());
-  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
-    vDebugPoint();
+//  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
+//    vDebugPoint();
 
   bool b = m_pWordSkipList->bInsert(pWord);
   ASSERT(b);
@@ -84,6 +84,10 @@ void Dic::vAddWord(Word* pWord)
   
   m_pArticle->vGrabWrite();
   
+//  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
+//  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
+//    vDebugPoint();
+
   m_pArticle->vAppend(pWord->pArticle());
     
   m_pArticle->vDropWrite();
@@ -223,11 +227,15 @@ Word* Dic::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
+  if (szWordNm->bSame("pipeline.pipeout"_Stz))
+  //vTrace("Find: %s\n"_Stz,szWordNm);
+    vListWords();
+  
   Word* pSearchWord = new (nullptr) Word(szWordNm);
   
   m_pArticle->vGrabRead();
   
-  Word* pFoundWord = _pWord(m_pWordSkipList->pFind(pSearchWord));
+  Word* pFoundWord = _pWord(m_pWordSkipList->pFind(pSearchWord,true));
   
   m_pArticle->vDropRead();
   
