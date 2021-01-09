@@ -565,6 +565,22 @@ void Word::vLocalNo(i8 iLocalNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next word in dic                                                       */
+/*----------------------------------------------------------------------------*/
+Word* Word::pNextWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  Word* pNextWord = nullptr;
+  
+  SkipNode* pSkipNode = m_SkipNode->m_pRight[0];
+  if (pSkipNode)
+    pNextWord = _pWord(pSkipNode->m_pObject);
+
+  return pNextWord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get object                                                                 */
 /*----------------------------------------------------------------------------*/
 Object* Word::pObject(void)

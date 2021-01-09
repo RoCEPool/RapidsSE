@@ -61,9 +61,7 @@ void Dic::vAddWord(Word* pWord)
   ASSERT(pWord->eGetClassNo() == CN_WORD);
   
   m_pArticle->vGrabWrite();
-  
-  m_pArticle->vAppend(pWord->pArticle());
-  
+    
 //  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
 //  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
 //    vDebugPoint();
@@ -87,17 +85,7 @@ void Dic::vAddWord(Word* pWord)
   m_pArticle->vGrabWrite();
   
   m_pArticle->vAppend(pWord->pArticle());
-  
-//  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
-//  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
-//    vDebugPoint();
-
-  bool b = m_pWordSkipList->bInsert(pWord);
-  ASSERT(b);
-
-  SkipNode* pSkipNode = m_pWordSkipList->pNewly();
-  pWord->m_pSkipNode = pSkipNode;
-  
+    
   m_pArticle->vDropWrite();
 }
 #endif
@@ -157,11 +145,19 @@ Word* Dic::pEachWord(Word* pPrior)
   
   m_pArticle->vGrabRead();
   
-  Word* pWord = (pPrior) ? pPrior->pPrevWord() : pLastWord();
-  
+  SkipNode* pSkipNode = nullptr;
+  Word* pNextWord = nullptr;
+
+  if (pPrior) {
+    pSkipNode = pPrior->m_pSkipNode;
+    pSkipNode = pSkipNode->m_pRight[0];
+    if (pSkipNode)
+      pNextWord = _pWord(pSkipNode->m_pObject);
+  }
+
   m_pArticle->vDropRead();
 
-  return pWord;
+  return pNextWord;
 }
 /*----------------------------------------------------------------------------*/
 #else
