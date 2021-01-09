@@ -90,7 +90,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: populateIndex :: populateIndex <indexNm> ;
 
-: populateIndex _cmdTags tagCopy: op_tags
+: populateIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <jobDesc>   = "--description of operator--" }
 ;

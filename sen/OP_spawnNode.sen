@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: spawnNode :: spawnNode <nodeNm> ;
 
-: spawnNode _cmdTags tagCopy: op_tags
+: spawnNode_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

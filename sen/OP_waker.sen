@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: waker :: waker ;
 
-: waker _cmdTags tagCopy: serviceOp_tags
+: waker_cmdTags _cmdTags tagCopy: serviceOp_tags
 
 ;
 

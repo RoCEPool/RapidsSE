@@ -292,7 +292,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: delete :: delete <tableNm> <predicate> ;
 
-: delete _cmdTags tagCopy: op_tags
+: delete_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

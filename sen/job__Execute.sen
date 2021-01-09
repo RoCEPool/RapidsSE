@@ -91,7 +91,7 @@
 
 cmdSyntax: _Execute :: _Execute ;
 
-: _Execute _cmdTags tagCopy: genericJob_tags
+: _Execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
   }

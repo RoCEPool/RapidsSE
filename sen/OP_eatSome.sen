@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: eatSome :: eatSome ;
 
-: eatSome _cmdTags tagCopy: op_tags
+: eatSome_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

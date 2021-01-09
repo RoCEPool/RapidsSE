@@ -257,7 +257,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: EOAsm2 :: EOAsm2 <queryText> <compiled> ;
 
-: EOAsm2 _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: EOAsm2_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

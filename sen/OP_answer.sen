@@ -180,7 +180,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: answer :: answer ;
 
-: answer _cmdTags tagCopy: serviceOp_tags
+: answer_cmdTags _cmdTags tagCopy: serviceOp_tags
 
 ;
 

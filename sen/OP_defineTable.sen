@@ -90,7 +90,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: defineTable :: defineTable <tableNm> ;
 
-: defineTable _cmdTags tagCopy: op_tags
+: defineTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--description of operator--" }
 ;

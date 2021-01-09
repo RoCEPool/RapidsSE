@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 
-: lsidxcol _cmdTags tagCopy: localLiteOp_tags
+: lsidxcol_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listColumns

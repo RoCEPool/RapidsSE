@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsten :: lsten ;
 
-: lsten _cmdTags tagCopy: localLiteOp_tags
+: lsten_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listContents

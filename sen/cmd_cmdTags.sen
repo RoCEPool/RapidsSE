@@ -107,9 +107,7 @@
   compiler::current@ locals| pWord |
 
   // set the name of the word to be _cmdTags
-  pWord word.name@
-    "_cmdTags" str.cat
-    pWord word.name!
+  // pWord word.name@ "_cmdTags" str.cat pWord word.name!
 
   // set the word category to be _cmdTags
   find: _cmdTags pWord word.category!

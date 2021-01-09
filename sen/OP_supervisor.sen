@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: supervisor :: supervisor ;
 
-: supervisor _cmdTags tagCopy: serviceOp_tags
+: supervisor_cmdTags _cmdTags tagCopy: serviceOp_tags
 
 ;
 

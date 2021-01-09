@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: connector :: connector ;
 
-: connector _cmdTags tagCopy: serviceOp_tags
+: connector_cmdTags _cmdTags tagCopy: serviceOp_tags
 
 ;
 

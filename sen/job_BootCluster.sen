@@ -140,7 +140,7 @@
 
 cmdSyntax: bootCluster :: bootCluster ;
 
-: bootCluster _cmdTags tagCopy: distJob_tags
+: bootCluster_cmdTags _cmdTags tagCopy: distJob_tags
   tags{
     <rspKind>  = RS_NONE
     <ddlLock>  = DL_NONE

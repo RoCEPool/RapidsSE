@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lssch :: lssch ;
 
-: lssch _cmdTags tagCopy: localLiteOp_tags
+: lssch_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listContents

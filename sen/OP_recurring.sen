@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: recurring :: recurring ;
 
-: recurring _cmdTags tagCopy: serviceOp_tags
+: recurring_cmdTags _cmdTags tagCopy: serviceOp_tags
 
 ;
 

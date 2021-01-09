@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: addNode :: addNode <nodeNm> <ipAddr> <portNo> ;
 
-: addNode _cmdTags tagCopy: op_tags
+: addNode_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

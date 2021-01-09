@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: syntaxTable :: syntaxTable <tableNm> <etc> ;
 
-: syntaxTable _cmdTags tagCopy: op_tags
+: syntaxTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--description of operator--" }
 ;

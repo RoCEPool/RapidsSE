@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: visidx :: visidx <tableNm> <indexNm> ;
 
-: visidx _cmdTags tagCopy: localLiteOp_tags
+: visidx_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 2

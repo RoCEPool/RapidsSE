@@ -100,7 +100,7 @@
 
 cmdSyntax: _Ended :: _Ended ;
 
-: _Ended _cmdTags tagCopy: genericJob_tags
+: _Ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
   }

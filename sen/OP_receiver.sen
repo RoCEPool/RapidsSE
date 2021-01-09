@@ -153,7 +153,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: receiver :: receiver ;
 
-: receiver _cmdTags tagCopy: serviceOp_tags
+: receiver_cmdTags _cmdTags tagCopy: serviceOp_tags
 ;
 
 /*============================================================================*/

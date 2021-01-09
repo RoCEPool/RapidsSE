@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: wrFile :: wrFile <fileNm> ;
 
-: wrFile _cmdTags tagCopy: op_tags
+: wrFile_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc>  = "--desc for op--" }
 ;
 

@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsNodes :: lsNodes ;
 
-: lsNodes _cmdTags tagCopy: localLiteOp_tags
+: lsNodes_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listNodes

@@ -1071,7 +1071,7 @@ then
 cmdSyntax: sql :: sql <queryNo> <compiled> ;
 cmdSyntax: sql :: sql <queryNo> <compiled> <tableNm> <indexNm> ;
 
-: sql _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: sql_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

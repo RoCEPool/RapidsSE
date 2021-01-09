@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: GenAsmTxt :: GenAsmTxt <queryNo> <subQueryNo> <fileName> ;
 
-: GenAsmTxt _cmdTags tagCopy: op_tags
+: GenAsmTxt_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

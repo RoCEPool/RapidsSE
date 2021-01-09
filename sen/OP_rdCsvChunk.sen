@@ -125,7 +125,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: rdCsvChunk :: rdCsvChunk <fileNm> ;
 
-: rdCsvChunk _cmdTags tagCopy: op_tags
+: rdCsvChunk_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

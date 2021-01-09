@@ -129,7 +129,7 @@
 
 cmdSyntax: _Cancelled :: _Cancelled ;
 
-: _Cancelled _cmdTags tagCopy: genericJob_tags
+: _Cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
   }

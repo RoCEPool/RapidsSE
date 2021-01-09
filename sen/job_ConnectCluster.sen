@@ -136,7 +136,7 @@
 
 cmdSyntax: connectCluster :: connectCluster ;
 
-: connectCluster _cmdTags tagCopy: distJob_tags
+: connectCluster_cmdTags _cmdTags tagCopy: distJob_tags
   tags{
     <rspKind>  = RS_NONE
     <ddlLock>  = DL_NONE

@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: exemplar :: exemplar ;
 
-: exemplar _cmdTags tagCopy: op_tags
+: exemplar_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

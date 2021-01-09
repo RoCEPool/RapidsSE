@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: gridSanity :: gridSanity ;
 
-: gridSanity _cmdTags tagCopy: op_tags
+: gridSanity_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

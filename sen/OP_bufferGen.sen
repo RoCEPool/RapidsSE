@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: bufferGen :: bufferGen <nBuffers> ;
 
-: bufferGen _cmdTags tagCopy: op_tags
+: bufferGen_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

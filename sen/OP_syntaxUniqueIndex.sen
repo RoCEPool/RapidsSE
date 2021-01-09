@@ -141,7 +141,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: syntaxUniqueIndex :: syntaxUniqueIndex <indexNm> <etc> ;
 
-: syntaxUniqueIndex _cmdTags tagCopy: op_tags
+: syntaxUniqueIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--description of operator--" }
 ;

@@ -92,7 +92,7 @@
 
 cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 
-: pipelineLocal _cmdTags tagCopy: localJob_tags
+: pipelineLocal_cmdTags _cmdTags tagCopy: localJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
 
