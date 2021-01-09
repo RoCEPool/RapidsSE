@@ -27,11 +27,8 @@ Dic::Dic(Stz* szDicNm)
   
   m_sDicNm   = szDicNm;
   m_pDicKind = nullptr;
-  
-  // this is because of GlobalDictionary (ugh)
-  //vInit();
-  
-  m_pWordSkipList = new SkipListNL(C_UNQIUE_KEY, bWordCompare);
+    
+  m_pWordSkipList = new SkipListNL(C_UNQIUE_KEY,bWordCompare,vWordPrint);
 
   _checkInitialised_(CN_DIC);
   

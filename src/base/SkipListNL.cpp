@@ -51,21 +51,27 @@ void SkipListNL::operator delete(void* pSkipListAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SkipListNL::SkipListNL(bool bUniqueKey, CompareFp fpCompare, bool bSlabAllocator)
+SkipListNL::SkipListNL(bool bUniqueKey,
+                       CompareFp fpCompare,
+                       PrintFp fpPrint,
+                       bool bSlabAllocator)
 : Object(CN_SKIPLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   m_pSlabAllocator = bSlabAllocator ? new SlabAllocator : nullptr;
-  
-  m_pHead      = new(C_SKIPLIST_LEVELS,m_pSlabAllocator) SkipNode(nullptr);
+
   m_bUniqueKey = bUniqueKey;
   m_fpCompare  = fpCompare;
+  m_fpPrint    = fpPrint;
+
   m_nObjects   = 0;
   m_iHeight    = 0;
-  
+  m_pHead      = new(C_SKIPLIST_LEVELS,m_pSlabAllocator) SkipNode(nullptr);
+
   m_pNewly     = nullptr;
-  
+
+
   for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
     m_pHead->m_pRight[i_Level] = nullptr;
   
@@ -406,7 +412,7 @@ SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo,
   bEqualTo = false;
   // start from head at known highest level
   SkipNode* pCurrentNode = m_pHead;
-  i8 iCurrentLevel = m_iHeight;
+  i8 iLevel = m_iHeight;
   
   do {
     
@@ -414,28 +420,26 @@ SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo,
     // inner loop: go right a number of nodes until we find
     //   ObjectInsert < ObjectNext at current level
     
-    while (SkipNode* pNextNode = pCurrentNode->m_pRight[iCurrentLevel]) {
+    while (SkipNode* pRightNode = pCurrentNode->m_pRight[iLevel]) {
       
-      //RJH vTrace("pNextNode:%p n"_Stz,pNextNode);
-      //RJH vTrace("pNextNode:%s n"_Stz,aCN[pNextNode->eGetClassNo()]);
-      //RJH vTrace("Object:%p\n"_Stz,pNextNode->m_pObject);
       
       // compare the inserting object with next object
-      bool bGreaterEqual = m_fpCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);
+      bool bRightIsGE = m_fpCompare(pObjectInsert,
+                                    pRightNode->m_pObject,
+                                    bEqualTo);
       
-      if (bGreaterEqual) {
-        // pObjectInsert is >= pObjectNext
-        //RJH vTrace("  %p after %p (level %lld)\n"_Stz,
-        //RJH        pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
-        
-        // go right one node
-        goRightNode(iCurrentLevel,pCurrentNode);
+      if (bTrace) {
+        vTrace("Pos ^%lld: "_Stz,iLevel);
+          m_fpPrint(pObjectInsert);
+          vTrace(" v "_Stz);
+          m_fpPrint(pRightNode->m_pObject);
+          vTrace(" : %s\n"_Stz,bRightIsGE ? "rightGE" : "leftLT");
+      }
+      
+      if (bRightIsGE) {
+        goRightNode(iLevel,pCurrentNode);
       }
       else {
-        // pObjectInsert is < pObjectNext or pObjectNext is null
-        //RJH vTrace("  %p before %p (level %lld)\n"_Stz,
-        //RJH        pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
-        
         break;
       }
     }
@@ -445,15 +449,15 @@ SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo,
     
     // first record current node as a revision point
     if (aPriorVec)
-      aPriorVec[iCurrentLevel] = pCurrentNode;
+      aPriorVec[iLevel] = pCurrentNode;
     
     //RJH vTrace("going down 1 level\n"_Stz);
     
     // now go down one level
-    goDownLevel(iCurrentLevel);
+    goDownLevel(iLevel);
     
     // and repeat till we have a complete revision vector
-  } while (iCurrentLevel >= 0);
+  } while (iLevel >= 0);
   
   return pCurrentNode;
 }

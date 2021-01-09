@@ -49,7 +49,7 @@ RowOnce::RowOnce(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   
-  m_pSkipList = new SkipListNL(C_UNQIUE_KEY,bI8Compare,true);
+  m_pSkipList = new SkipListNL(C_UNQIUE_KEY,bI8Compare,nullptr,true);
   
   _checkInitialised_(CN_ROWONCE);
   

@@ -135,6 +135,7 @@ namespace BASE
 }
 
 bool bWordCompare(void* aWordBeingInserted, void* aWordScan, bool& bMatching);
+void vWordPrint(void* aWordBeingInserted);
 
 void vEnterRoutine(Step* pStep);
 
