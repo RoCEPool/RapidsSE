@@ -1847,6 +1847,7 @@ public:
   void vWordNameFetch(void);
   void vWordNameStore(void);
   void vWordNew(void);
+  void vWordNext(void);
   void vWordObjectFetch(void);
   void vWordObjectStore(void);
   void vWordPrev(void);

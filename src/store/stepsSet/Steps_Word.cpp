@@ -40,6 +40,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.kind!"_Stz,        &Step::vWordKindStore);
   vAddStep("word.name@"_Stz,        &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,        &Step::vWordNameStore);
+  vAddStep("word.next"_Stz,         &Step::vWordNext);
   vAddStep("word.object@"_Stz,      &Step::vWordObjectFetch);
   vAddStep("word.object!"_Stz,      &Step::vWordObjectStore);
   vAddStep("word.prev"_Stz,         &Step::vWordPrev);
@@ -500,6 +501,22 @@ void Step::vWordNew(void)
   m_pDataStack->vPushPtr(pNewWord);
   //m_pCompiler->vCurrentWord(pNewWord);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.next -- push next word                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vWordNext(void)
+{
+  ENTRY();
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  Word* pNextWord = pWord->pNextWord();
+  
+  m_pDataStack->vPushPtr(pNextWord);
+  
   EXIT();
 }
 
