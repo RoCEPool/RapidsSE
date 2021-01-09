@@ -114,6 +114,7 @@
 
   POSTPONE dic::root
   POSTPONE dic.lastWord
+  //POSTPONE dic.firstWord
 
   POSTPONE DUP
   POSTPONE 2>R    // encode >r into future word
@@ -122,14 +123,6 @@
 
   //HERE
   //POSTPONE AHEAD
-;
-
-/*----------------------------------------------------------------------------*/
-/* get current iterate word                                                   */
-/*----------------------------------------------------------------------------*/
-: WORD@ immediate
-
-  POSTPONE r0
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -143,11 +136,20 @@
 
   POSTPONE object@
   POSTPONE word.prev
+  //POSTPONE word.next
   POSTPONE object!
  
   //POSTPONE 1
   //POSTPONE NEXT+
   POSTPONE NEXT
+;
+
+/*----------------------------------------------------------------------------*/
+/* get current iterate word                                                   */
+/*----------------------------------------------------------------------------*/
+: WORD@ immediate
+
+  POSTPONE r0
 ;
 
 /*----------------------------------------------------------------------------*/

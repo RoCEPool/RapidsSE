@@ -217,6 +217,7 @@ public:
 
   // dic
   void vDicDelete(void);
+  void vDicFirstWord(void);
   void vDicKindGet(void);
   void vDicKindSet(void);
   void vDicLastWord(void);
