@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+// !DIC_AS_SKIPLIST
 //#define _DIC_SKIPLIST
 
 /*----------------------------------------------------------------------------*/
@@ -57,15 +58,15 @@ void Dic::vAddWord(Word* pWord)
   
   ASSERT(pWord->eGetClassNo() == CN_WORD);
       
-  vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
+//  vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
   bool bTrace = false;
-  if (pWord->szWordNm()->bSame("defaultSeedDist_beg"_Stz)) {
-    vTrace("\n\n"_Stz);
-    vListWords();
-    vTrace("\n\n"_Stz);
-    //vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
-    bTrace = true;
-  }
+//  if (pWord->szWordNm()->bSame("defaultSeedDist_beg"_Stz)) {
+//    vTrace("\n\n"_Stz);
+//    vListWords();
+//    vTrace("\n\n"_Stz);
+//    //vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
+//    bTrace = true;
+//  }
   
   m_pArticle->vGrabWrite();
 
@@ -325,7 +326,6 @@ Word* Dic::pFindStep(fpSTEPFN fpStepFn)
 /*----------------------------------------------------------------------------*/
 /* get first word in dictionary                                               */
 /*----------------------------------------------------------------------------*/
-#ifdef _DIC_SKIPLIST
 Word* Dic::pFirstWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -339,7 +339,6 @@ Word* Dic::pFirstWord(void)
 
   return pFirstWord;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* are there words in the dictionary?                                         */
@@ -392,9 +391,7 @@ void Dic::vListWords(void)
   
   for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
-    vTrace(": %s (dictionary %s)"_Stz,
-           pWord->szWordNm(),
-           m_sDicNm.szStz());
+    vTrace(": %s\n"_Stz,pWord->szWordNm());
   }
   
   m_pArticle->vDropRead();

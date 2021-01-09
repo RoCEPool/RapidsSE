@@ -45,10 +45,10 @@
 /*----------------------------------------------------------------------------*/
 /* pipeline command for the connector demon                                   */
 /*----------------------------------------------------------------------------*/
-: connectorDemonPipelineCmd
+: connDemonPipelineCmd
 
   "
-    pipelineLocal connectorDemon
+    pipelineLocal connDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
@@ -96,10 +96,10 @@
 /*----------------------------------------------------------------------------*/
 /* pipeline command for the supervisor demon                                  */
 /*----------------------------------------------------------------------------*/
-: supervisorDemonPipelineCmd
+: superDemonPipelineCmd
 
   "
-    pipelineLocal supervisorDemon
+    pipelineLocal superDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 

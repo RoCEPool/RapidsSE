@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+// !DIC_AS_SKIPLIST
 //#define _VALIDATE_SKIPLIST
 
 /*----------------------------------------------------------------------------*/

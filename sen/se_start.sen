@@ -50,7 +50,7 @@
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // spawn supervisor demon
-  "" false supervisorDemonPipelineCmd api::spawnDemon not if
+  "" false superDemonPipelineCmd api::spawnDemon not if
     "Error Code %v" .printf
   then
 
@@ -75,7 +75,7 @@
   then
 
   // spawn connector demon
-  "" false connectorDemonPipelineCmd api::spawnDemon not if
+  "" false connDemonPipelineCmd api::spawnDemon not if
     "Error Code %v" .printf
   then
 

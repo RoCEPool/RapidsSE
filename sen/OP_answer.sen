@@ -7,10 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* receiver demon                                                             */
 /*----------------------------------------------------------------------------*/
-: receiverDemonPipelineCmd
+: recvDemonPipelineCmd params| iConnNo |
 
+  "pipelineLocal recvDemon" iConnNo >str str.cat
+  
   "
-    pipelineLocal receiverDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
@@ -19,6 +20,8 @@
 
     end ;
   "
+  
+  str.cat
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +40,7 @@
   false
 
   // receiver demon pipeline
-  receiverDemonPipelineCmd
+  iConnNo recvDemonPipelineCmd
 
   api::spawnDemon not if
     "Error Code %v" .printf

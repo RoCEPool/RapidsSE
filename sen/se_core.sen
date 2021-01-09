@@ -113,6 +113,8 @@
 : ITERATE-WORDS immediate
 
   POSTPONE dic::root
+
+  // !DIC_AS_SKIPLIST
   POSTPONE dic.lastWord
   //POSTPONE dic.firstWord
 
@@ -133,10 +135,12 @@
   //POSTPONE THEN
   //DISCARD
 
-
   POSTPONE object@
+
+  // !DIC_AS_SKIPLIST
   POSTPONE word.prev
   //POSTPONE word.next
+  
   POSTPONE object!
  
   //POSTPONE 1

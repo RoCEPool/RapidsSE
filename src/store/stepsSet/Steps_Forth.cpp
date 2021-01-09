@@ -384,7 +384,7 @@ void Step::vSeriesName(void)
     
     if (sStr.bSame(sName)) {
       iNext = sInt.iToI8() + 1;
-      break; // comment this out
+      //break; // comment this out
     }
   }
 
