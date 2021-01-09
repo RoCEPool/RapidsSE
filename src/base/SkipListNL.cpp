@@ -171,7 +171,7 @@ bool SkipListNL::bExists(void* pObject)
 
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr,false);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr,false,m_fpCompare);
   ASSERT(pNode); // logic check
   
   if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
@@ -183,13 +183,18 @@ bool SkipListNL::bExists(void* pObject)
 /*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
-void* SkipListNL::pFind(void* pObject, bool bTrace)
+void* SkipListNL::pFind(void* pObject, bool bTrace, CompareFp fpCompare_alt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr, bTrace);
+  SkipNode* pNode = pPosition(pObject,
+                              bEqualTo,
+                              nullptr,
+                              bTrace,
+                              fpCompare_alt ? fpCompare_alt : m_fpCompare
+                              );
   ASSERT(pNode); // logic check
   
   if ( ! pNode->m_pRight[0] )
@@ -224,7 +229,8 @@ bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
   // get a positioned prior vector
-  SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec,bTrace);
+  SkipNode* pNode =
+    pPosition(aObjectInsert,bEqualTo,aPriorVec,bTrace,m_fpCompare);
   RASSERT(pNode); // logic check
   
   Object* pObjectInsert = (Object*)aObjectInsert;
@@ -348,13 +354,15 @@ bool SkipListNL::bRemove(void* pObjectRemove)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   SkipNode* aPrior;
   
-  SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec,false);
+  SkipNode* pNodePrev =
+    pPosition(pObjectRemove,bEqualTo,aPriorVec,false,m_fpCompare);
   RASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
     vTrace("SkipListNL::bRemove: failed to match\n"_Stz);
     vSkipListDump(this);
-    SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec,false);
+    SkipNode* pNodePrev =
+      pPosition(pObjectRemove,bEqualTo,aPriorVec,false,m_fpCompare);
     return false;
   }
   
@@ -419,7 +427,8 @@ SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
 #define moveScanToRight(pLeft,iLevel) pLeft = pLeft->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipListNL::pPosition(void* pSearchForObject, bool& bEqualTo,
-                                SkipNode** aPriorVec, bool bTrace)
+                                SkipNode** aPriorVec, bool bTrace,
+                                CompareFp fpCompare)
 {
   bEqualTo = false;
 
@@ -436,9 +445,9 @@ SkipNode* SkipListNL::pPosition(void* pSearchForObject, bool& bEqualTo,
       
       
       // compare the object being searched for
-      bool bPosObjIsGT = m_fpCompare(pSearchForObject,
-                                     pRightNode->m_pObject,
-                                     bEqualTo);
+      bool bPosObjIsGT = fpCompare(pSearchForObject,
+                                   pRightNode->m_pObject,
+                                   bEqualTo);
       
       if (bTrace) {
         vTrace("Pos ^%lld: "_Stz,iLevel);

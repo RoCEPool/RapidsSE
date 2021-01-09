@@ -7,6 +7,7 @@
 // !DIC_AS_SKIPLIST
 //#define _DIC_SKIPLIST
 
+CompareFp g_fp_bWordCompare = bWordCompare;
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -245,7 +246,8 @@ Word* Dic::pFindWord(Stz* szWordNm)
   
   m_pArticle->vGrabRead();
   
-  Word* pFoundWord = _pWord(m_pWordSkipList->pFind(pSearchWord,bTrace));
+  Word* pFoundWord =
+    _pWord(m_pWordSkipList->pFind(pSearchWord,bTrace,g_fp_bWordCompare));
   
   m_pArticle->vDropRead();
   

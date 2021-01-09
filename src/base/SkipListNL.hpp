@@ -44,7 +44,8 @@ namespace BASE
     void  vContents(void (*fvDump)(void* pObject));
     bool  bDeleteAll(void);
     bool  bExists(void* pObject);
-    void* pFind(void* pObject, bool bTrace=false);
+    void* pFind(void* pObject, bool bTrace=false,
+                CompareFp fpCompare_alt = nullptr);
     SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject, bool bTrace=false);
     SkipNode* pNewly(void);
@@ -57,7 +58,8 @@ namespace BASE
   private:
     i8 iRandomLevel(void);
     SkipNode* pPosition(void* Ent, bool& bEqualTo,
-                        SkipNode** pRevise, bool bTrace);
+                        SkipNode** pRevise, bool bTrace,
+                        CompareFp fpCompare);
   
     void vValidate(void);
   
