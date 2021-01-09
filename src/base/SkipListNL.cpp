@@ -213,7 +213,7 @@ SkipNode* SkipListNL::pFirst(i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* insert object into list                                                    */
 /*----------------------------------------------------------------------------*/
-bool SkipListNL::bInsert(void* aObjectInsert)
+bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
@@ -221,7 +221,7 @@ bool SkipListNL::bInsert(void* aObjectInsert)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
   // get a positioned prior vector
-  SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec,false);
+  SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec,bTrace);
   RASSERT(pNode); // logic check
   
   Object* pObjectInsert = (Object*)aObjectInsert;
@@ -238,6 +238,10 @@ bool SkipListNL::bInsert(void* aObjectInsert)
     iNodeLevel = ++m_iHeight;
     aPriorVec[iNodeLevel] = m_pHead;
 	}
+  
+  if (bTrace) {
+    vTrace("\niNodeLevel %lld\n"_Stz,iNodeLevel);
+  }
   
   //RJH vTrace("bInsert:position7\n"_Stz);
   // create new node with inserted object
@@ -403,41 +407,40 @@ SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
 /* position object to be inserted                                             */
 /*----------------------------------------------------------------------------*/
 
-#define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
+#define moveScanToRight(pLeft,iLevel) pLeft = pLeft->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo,
+SkipNode* SkipListNL::pPosition(void* pSearchForObject, bool& bEqualTo,
                                 SkipNode** aPriorVec, bool bTrace)
 {
-  //RJH vTrace("Adding %p head:%p\n"_Stz,pObjectInsert, m_pHead);
   bEqualTo = false;
-  // start from head at known highest level
-  SkipNode* pCurrentNode = m_pHead;
+
+  SkipNode* pPriorNode = m_pHead;
   i8 iLevel = m_iHeight;
   
   do {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop: go right a number of nodes until we find
-    //   ObjectInsert < ObjectNext at current level
+    //               ObjectInsert < ObjectNext at current level
     
-    while (SkipNode* pRightNode = pCurrentNode->m_pRight[iLevel]) {
+    while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
       
       
-      // compare the inserting object with next object
-      bool bRightIsGE = m_fpCompare(pObjectInsert,
-                                    pRightNode->m_pObject,
-                                    bEqualTo);
+      // compare the object being searched for
+      bool bPosObjIsGT = m_fpCompare(pSearchForObject,
+                                     pRightNode->m_pObject,
+                                     bEqualTo);
       
       if (bTrace) {
         vTrace("Pos ^%lld: "_Stz,iLevel);
-          m_fpPrint(pObjectInsert);
+          m_fpPrint(pSearchForObject);
           vTrace(" v "_Stz);
           m_fpPrint(pRightNode->m_pObject);
-          vTrace(" : %s\n"_Stz,bRightIsGE ? "rightGE" : "leftLT");
+          vTrace(" : %s\n"_Stz,bPosObjIsGT ? "GT moveRight" : "LE goDown" );
       }
       
-      if (bRightIsGE) {
-        goRightNode(iLevel,pCurrentNode);
+      if (bPosObjIsGT) {
+        moveScanToRight(pPriorNode,iLevel);
       }
       else {
         break;
@@ -449,17 +452,15 @@ SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo,
     
     // first record current node as a revision point
     if (aPriorVec)
-      aPriorVec[iLevel] = pCurrentNode;
-    
-    //RJH vTrace("going down 1 level\n"_Stz);
-    
-    // now go down one level
+      aPriorVec[iLevel] = pPriorNode;
+       
+    // now go down one level on scan node
     goDownLevel(iLevel);
     
     // and repeat till we have a complete revision vector
   } while (iLevel >= 0);
   
-  return pCurrentNode;
+  return pPriorNode;
 }
 
 /*----------------------------------------------------------------------------*/

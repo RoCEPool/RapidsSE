@@ -46,7 +46,7 @@ namespace BASE
     bool  bExists(void* pObject);
     void* pFind(void* pObject, bool bTrace=false);
     SkipNode* pFirst(i8 iLevel);
-    bool  bInsert(void* pObject);
+    bool  bInsert(void* pObject, bool bTrace=false);
     SkipNode* pNewly(void);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     i8    nObjects(void);

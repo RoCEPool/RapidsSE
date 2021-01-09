@@ -56,20 +56,26 @@ void Dic::vAddWord(Word* pWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   ASSERT(pWord->eGetClassNo() == CN_WORD);
+      
+  bool bTrace = false;
+  if (pWord->szWordNm()->bSame("pipeline.pipeout"_Stz)) {
+    vListWords();
+    vTrace("\n\n"_Stz);
+    vTrace("Add Word : %s\n"_Stz,pWord->szWordNm());
+    bTrace = true;
+  }
   
   m_pArticle->vGrabWrite();
-    
-  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
-//  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
-//    vDebugPoint();
 
-  bool b = m_pWordSkipList->bInsert(pWord);
+  bool b = m_pWordSkipList->bInsert(pWord,bTrace);
   ASSERT(b);
 
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();
   pWord->m_pSkipNode = pSkipNode;
   
   m_pArticle->vDropWrite();
+  
+  ASSERT(pFindWord(pWord->szWordNm()));
 }
 /*----------------------------------------------------------------------------*/
 #else
@@ -224,15 +230,19 @@ Word* Dic::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  if (szWordNm->bSame("pipeline.pipeout"_Stz))
-  //vTrace("Find: %s\n"_Stz,szWordNm);
+  bool bTrace = false;
+  if (szWordNm->bSame("pipeline.pipeout"_Stz)) {
     vListWords();
+    vTrace("\n\n"_Stz);
+    vTrace("Find Word : %s\n"_Stz,szWordNm);
+    bTrace = true;
+  }
   
   Word* pSearchWord = new (nullptr) Word(szWordNm);
   
   m_pArticle->vGrabRead();
   
-  Word* pFoundWord = _pWord(m_pWordSkipList->pFind(pSearchWord,true));
+  Word* pFoundWord = _pWord(m_pWordSkipList->pFind(pSearchWord,bTrace));
   
   m_pArticle->vDropRead();
   
