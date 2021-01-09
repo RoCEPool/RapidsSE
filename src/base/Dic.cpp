@@ -62,9 +62,9 @@ void Dic::vAddWord(Word* pWord)
   
   m_pArticle->vGrabWrite();
     
-//  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
-//  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
-//    vDebugPoint();
+  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
+  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
+    vDebugPoint();
 
   bool b = m_pWordSkipList->bInsert(pWord);
   ASSERT(b);
@@ -223,12 +223,17 @@ Word* Dic::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
+  Word* pSearchWord = new (nullptr) Word(szWordNm);
+  
   m_pArticle->vGrabRead();
   
+  Word* pFoundWord = _pWord(m_pWordSkipList->pFind(pSearchWord));
   
   m_pArticle->vDropRead();
   
-  return nullptr;
+  delete pSearchWord;
+  
+  return pFoundWord;
 }
 /*----------------------------------------------------------------------------*/
 #else
