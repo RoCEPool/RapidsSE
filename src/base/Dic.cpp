@@ -94,7 +94,15 @@ void Dic::vAddWord(Word* pWord)
   
   m_pArticle->vAppend(pWord->pArticle());
   
-  bool b = m_pWordSkipList->bInsert(pWord);
+//  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
+//  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
+//    vDebugPoint();
+//
+//  bool b = m_pWordSkipList->bInsert(pWord);
+//  ASSERT(b);
+//
+//  SkipNode* pSkipNode = m_pWordSkipList->pNewly();
+//  pWord->m_pSkipNode = pSkipNode;
   
   m_pArticle->vDropWrite();
 }
