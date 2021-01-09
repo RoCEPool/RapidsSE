@@ -55,26 +55,28 @@ void Task::vAddAxioms(void)
   "axiom: interpret"
     
   
-  //" \"((a))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next input token
+  //" \"((a))\" . "
+  
   "  input::read"
   
   
-  //" \"((b))\" .put input::chars . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for end of input?
+  //" \"((b))\" .put input::chars . "
+  
   "  input::kind@ TN_NULL == if"
   "    exit_rt"
   "  then"
   
-  
   //"  input::chars ."
 
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for discarding input
   //" \"((c))\" .put input::chars . "
-  // -- -- -- -- -- -- --
-  // test for discarding
+
   "  compiler::isDiscarding if"
   "    input::chars \"?else\" str.same if"
   "      input::chars word::find execute"
@@ -88,9 +90,10 @@ void Task::vAddAxioms(void)
   "  then"
   
   
-  //" \"((d))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is token an integer?
+  //" \"((d))\" . "
+
   "  input::kind@ TN_INTEGER == if"
   
   "    compiler::isPostponing if"
@@ -111,9 +114,10 @@ void Task::vAddAxioms(void)
   "  then"
   
   
-  //" \"((e))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is token a string?
+  //" \"((e))\" . "
+
   "  input::kind@ TN_STRING == if"
   
   "    compiler::isPostponing if"
@@ -133,9 +137,10 @@ void Task::vAddAxioms(void)
   "  then"
   
   
-  //" \"((f))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is token a tag?
+  //" \"((f))\" . "
+
   "  input::kind@ TN_TAG == if"
   
   "    compiler::isPostponing if"
@@ -160,10 +165,10 @@ void Task::vAddAxioms(void)
   "  then"
 
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // token should be a name
   //" \"((g))\" . "
-  //
-  // -- token should be a name --
-  //
+
   "  input::kind@ TN_NAME != if"
   "    \"strange token\" . input::kind@ ."
   "    reenter"
@@ -181,11 +186,11 @@ void Task::vAddAxioms(void)
   "  then "
   
   // pointer to word on stack
-
   
-  //" \"((h))\" . "
-  // -- -- -- -- -- -- --
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is token a known word?
+  //" \"((h))\" . "
   "  dup not if"
   "    discard"                  // error -- token is an unknown word
   "    input::unknown"
@@ -195,9 +200,10 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
 
   
-  //" \"((i))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it an immediate word?
+  //" \"((i))\" . "
+
   "  dup word.isImmediate if"
   "    execute"                  // execute the immediate word on stack
   "    reenter"
@@ -206,9 +212,10 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
   
   
-  //" \"((j))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // postponing mode?
+  //" \"((j))\" . "
+
   "  compiler::isPostponing if"
   "    \"POSTPONING\" ."
   "    encode::call "
@@ -219,9 +226,10 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
   
   
-  //" \"((k))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compiling mode?
+  //" \"((k))\" . "
+
   "  compiler::isCompiling if "
   "    encode::call"             // compile : encode call to word on stack
   "    reenter"
@@ -230,20 +238,23 @@ void Task::vAddAxioms(void)
   // pointer to word on stack
   
   
-  //" \"((l))\" . "
-  // -- -- -- -- -- -- --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are interpreting
+  //" \"((l))\" . "
+
   "  execute"                    // interpret: execute word on stack
 
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loop again
   //" \"((m))\" . "
-  // -- -- -- -- -- -- --
-  // loop over
+  
   "  reenter"
 
   "  ;"_Stz;
   
   pCompileAxiomaticColon(sDefinition);
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : include file
@@ -268,6 +279,7 @@ void Task::vAddAxioms(void)
   
   pCompileAxiomaticColon(sDefinition);
   
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : include munged file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -285,6 +297,7 @@ void Task::vAddAxioms(void)
   "  ;"_Stz;
   
   pCompileAxiomaticColon(sDefinition);
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : include
@@ -304,6 +317,7 @@ void Task::vAddAxioms(void)
   "  ;"_Stz;
   
   pCompileAxiomaticColon(sDefinition);
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Temporary ifdef till we get sen files embedded in the executable
