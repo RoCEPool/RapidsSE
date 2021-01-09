@@ -41,7 +41,7 @@
 : _req_suffix immediate _suffix
 
   // append _req to name of word being compiled
-  "_req" word::addSuffix
+  // "_req" word::addSuffix
 
   word::seed#
 
@@ -58,7 +58,7 @@
 : _beg_suffix immediate _suffix
 
   // append _beg to name of word being compiled
-  "_beg" word::addSuffix
+  // "_beg" word::addSuffix
 
   // the compiled word is a seed
   find: seed compiler::current@ word.category!
@@ -78,7 +78,7 @@
 : _exe_suffix immediate _suffix
 
   // append _exe to name of word being compiled
-  "_exe" word::addSuffix
+  // "_exe" word::addSuffix
 
   word::seed#
 
@@ -95,7 +95,7 @@
 : _end_suffix immediate _suffix
 
   // append _end to name of word being compiled
-  "_end" word::addSuffix
+  // "_end" word::addSuffix
 
   word::seed#
 
@@ -112,7 +112,7 @@
 : _can_suffix immediate _suffix
 
   // append _can to name of word being compiled
-  "_can" word::addSuffix
+  // "_can" word::addSuffix
 
   word::seed#
 
@@ -129,7 +129,7 @@
 : _run_suffix immediate _suffix
 
   // append _beg to name of word being compiled
-  "_run" word::addSuffix
+  // "_run" word::addSuffix
 
   word::seed#
 

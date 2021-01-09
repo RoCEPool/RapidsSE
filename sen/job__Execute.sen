@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Execute on participating node   recv: job.spawn_received */
 /*----------------------------------------------------------------------------*/
-: _Execute _run_suffix
+: _Execute_run _run_suffix
 
   //
   // where: on the participating node

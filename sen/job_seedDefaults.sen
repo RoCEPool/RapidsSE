@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* request default                                      (on originating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedLocal _req_suffix ( -- )
+: defaultSeedLocal_req _req_suffix ( -- )
 
   task::seedInitially
 
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* request default                                      (on originating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist _req_suffix ( -- )
+: defaultSeedDist_req _req_suffix ( -- )
 
   task::seedInitially
 
@@ -107,7 +107,7 @@
 /*----------------------------------------------------------------------------*/
 /* begin default                                 (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist _beg_suffix ( -- )
+: defaultSeedDist_beg _beg_suffix ( -- )
 
   task::seedInitially
 
@@ -136,7 +136,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute default                               (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist _exe_suffix
+: defaultSeedDist_exe _exe_suffix
 
   task::seedInitially
 
@@ -168,7 +168,7 @@
 /*----------------------------------------------------------------------------*/
 /* end default                                   (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist _end_suffix ( -- )
+: defaultSeedDist_end _end_suffix ( -- )
 
   task::seedInitially
 
@@ -196,7 +196,7 @@
 /*----------------------------------------------------------------------------*/
 /* cancel default                                (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: defaultSeedDist _can_suffix ( -- )
+: defaultSeedDist_can _can_suffix ( -- )
 
   task::seedInitially
 
