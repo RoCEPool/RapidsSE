@@ -145,15 +145,7 @@ Word* Dic::pEachWord(Word* pPrior)
   
   m_pArticle->vGrabRead();
   
-  SkipNode* pSkipNode = nullptr;
-  Word* pNextWord = nullptr;
-
-  if (pPrior) {
-    pSkipNode = pPrior->m_pSkipNode;
-    pSkipNode = pSkipNode->m_pRight[0];
-    if (pSkipNode)
-      pNextWord = _pWord(pSkipNode->m_pObject);
-  }
+  Word* pNextWord = pPrior ? pPrior->pNextWord() : pLastWord();
 
   m_pArticle->vDropRead();
 
@@ -318,6 +310,25 @@ Word* Dic::pFindStep(fpSTEPFN fpStepFn)
   m_pArticle->vDropRead();
   
   return nullptr;
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* get first word in dictionary                                               */
+/*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
+Word* Dic::pFirstWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  SkipNode* pFirstNode = m_pWordSkipList->pFirst(0);
+  
+  if (! pFirstNode)
+    return nullptr;
+  
+  Word* pFirstWord = _pWord(pFirstNode->m_pObject);
+
+  return pFirstWord;
 }
 #endif
 

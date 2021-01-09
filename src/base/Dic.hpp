@@ -36,6 +36,7 @@ namespace BASE
     Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindStep(fpSTEPFN fpStepFn);
+    Word* pFirstWord(void);
     bool  bHasWords(void);
     bool  bIsName(Stz* szDicNm);
     Word* pLastWord(void);

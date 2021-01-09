@@ -573,7 +573,7 @@ Word* Word::pNextWord(void)
   
   Word* pNextWord = nullptr;
   
-  SkipNode* pSkipNode = m_SkipNode->m_pRight[0];
+  SkipNode* pSkipNode = m_pSkipNode->m_pRight[0];
   if (pSkipNode)
     pNextWord = _pWord(pSkipNode->m_pObject);
 
