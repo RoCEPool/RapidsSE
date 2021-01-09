@@ -4,47 +4,16 @@
 
 #include "BASE.h"
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Dic* BASE::_pDic(void* aAddr)
-{
-  RASSERT(aAddr);
-  Dic* pDic = reinterpret_cast<Dic*>(aAddr);
-  
-  RASSERT(pDic);
-  RASSERT_TYPE(pDic,CN_DIC);
-
-  return pDic;
-}
+//#define _DIC_SKIPLIST
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* Dic::operator new(size_t)
-{
-  Dic* pDic = (Dic*)(HeapMem::pAllocate(CN_DIC));
-  
-  return pDic;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Dic::operator new(size_t, Dic* pDic)
-{
-  return pDic;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Dic::operator delete(void* pDicAddress)
-{  
-  Dic* pDic = reinterpret_cast<Dic*>(pDicAddress);
-  
-  HeapMem::vFree(pDic);
-}
+__pCastFunction(BASE,Dic,CN_DIC)
+__aNewFunction(Dic,CN_DIC)
+__vDeleteFunction(Dic,CN_DIC)
+__aFooterFunction(Dic)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -84,6 +53,7 @@ Dic::~Dic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add word to this dictionary                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
 void Dic::vAddWord(Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -106,6 +76,31 @@ void Dic::vAddWord(Word* pWord)
   
   m_pArticle->vDropWrite();
 }
+/*----------------------------------------------------------------------------*/
+#else
+void Dic::vAddWord(Word* pWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  ASSERT(pWord->eGetClassNo() == CN_WORD);
+  
+  m_pArticle->vGrabWrite();
+  
+  m_pArticle->vAppend(pWord->pArticle());
+  
+//  vTrace("Word : %s\n"_Stz,pWord->szWordNm());
+//  if (pWord->szWordNm()->bSame("job.addDemon"_Stz))
+//    vDebugPoint();
+
+  bool b = m_pWordSkipList->bInsert(pWord);
+  ASSERT(b);
+
+  SkipNode* pSkipNode = m_pWordSkipList->pNewly();
+  pWord->m_pSkipNode = pSkipNode;
+  
+  m_pArticle->vDropWrite();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get dictionary article                                                     */
@@ -155,6 +150,7 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
 /*----------------------------------------------------------------------------*/
 /* progressively return each word                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
 Word* Dic::pEachWord(Word* pPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -167,10 +163,26 @@ Word* Dic::pEachWord(Word* pPrior)
 
   return pWord;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Word* Dic::pEachWord(Word* pPrior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_pArticle->vGrabRead();
+  
+  Word* pWord = (pPrior) ? pPrior->pPrevWord() : pLastWord();
+  
+  m_pArticle->vDropRead();
+
+  return pWord;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* progressively return each word which is of given kind                      */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
 Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -191,10 +203,34 @@ Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
   
   return nullptr;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_pArticle->vGrabRead();
+  
+  Word* pWord = (pPrior) ? pPrior->pPrevWord() : pLastWord();
+  
+  for ( ; pWord; pWord = pWord->pPrevWord()) {
+    
+    if (pWord->pCategory() == pCategory) {
+      m_pArticle->vDropRead();
+      return pWord;
+    }
+  }
+  
+  m_pArticle->vDropRead();
+  
+  return nullptr;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
 Word* Dic::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -219,10 +255,38 @@ Word* Dic::pFindWord(Stz* szWordNm)
   
   return nullptr;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Word* Dic::pFindWord(Stz* szWordNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_pArticle->vGrabRead();
+  
+  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+    
+    //void* aEndWord = aAdd<void*>(pWord,sizeof(Word));
+    
+    if (pWord->szWordNm()->bSame(szWordNm)) {
+      m_pArticle->vDropRead();
+
+      if (szWordNm->bSame("whereAmI"_Stz))
+        vTrace(": %s is in dictionary %s ---\n"_Stz,szWordNm,m_sDicNm.szStz());
+
+      return pWord;
+    }
+  }
+  
+  m_pArticle->vDropRead();
+  
+  return nullptr;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* find a word given pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
 Word* Dic::pFindStep(fpSTEPFN fpStepFn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -240,6 +304,26 @@ Word* Dic::pFindStep(fpSTEPFN fpStepFn)
   
   return nullptr;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Word* Dic::pFindStep(fpSTEPFN fpStepFn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_pArticle->vGrabRead();
+  
+  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+    if (WK_INTRINSIC == pWord->eWord() && fpStepFn == pWord->fpEntryStep()) {
+      m_pArticle->vDropRead();
+      return pWord;
+    }
+  }
+  
+  m_pArticle->vDropRead();
+  
+  return nullptr;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* are there words in the dictionary?                                         */
@@ -281,8 +365,9 @@ Word* Dic::pLastWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a word given name                                                     */
+/* list all words in this dic                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
 void Dic::vListWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -298,6 +383,24 @@ void Dic::vListWords(void)
   
   m_pArticle->vDropRead();
 }
+/*----------------------------------------------------------------------------*/
+#else
+void Dic::vListWords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_pArticle->vGrabRead();
+  
+  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+    
+    vTrace(": %s (dictionary %s)"_Stz,
+           pWord->szWordNm(),
+           m_sDicNm.szStz());
+  }
+  
+  m_pArticle->vDropRead();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get name of this dictionary                                                */
@@ -357,6 +460,7 @@ bool Dic::bRefOut(void)
 /*----------------------------------------------------------------------------*/
 /* forget a word given name                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
 Word* Dic::pRemoveWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -373,6 +477,25 @@ Word* Dic::pRemoveWord(Stz* szWordNm)
   
   return pWordRemove;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Word* Dic::pRemoveWord(Stz* szWordNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pWordRemove = pFindWord(szWordNm);
+  if (! pWordRemove)
+    return pWordRemove;
+  
+  m_pArticle->vGrabWrite();
+  
+  m_pArticle->vRemove(pWordRemove->pArticle());
+  
+  m_pArticle->vDropWrite();
+  
+  return pWordRemove;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get number of words                                                        */
@@ -383,12 +506,6 @@ i8 Dic::nWords(void)
   
   return m_pArticle->nItems();
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Dic)
 
 /*============================================================================*/
 /* end                                                                        */
