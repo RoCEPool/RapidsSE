@@ -170,7 +170,7 @@
 
   //pwTable word.see
 
-  pwTable execute locals| pTable |
+  pwTable execute to pTable
 
   pTable
 ;

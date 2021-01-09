@@ -91,7 +91,7 @@ void Task::vAddAxioms(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is token an integer?
+  // is input token an integer?
   //" \"((d))\" . "
 
   "  input::kind@ TN_INTEGER == if"
@@ -115,7 +115,7 @@ void Task::vAddAxioms(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is token a string?
+  // is input token a string?
   //" \"((e))\" . "
 
   "  input::kind@ TN_STRING == if"
@@ -138,7 +138,7 @@ void Task::vAddAxioms(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is token a tag?
+  // is input token a tag?
   //" \"((f))\" . "
 
   "  input::kind@ TN_TAG == if"
@@ -166,7 +166,7 @@ void Task::vAddAxioms(void)
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // token should be a name
+  // input token should be a name
   //" \"((g))\" . "
 
   "  input::kind@ TN_NAME != if"
@@ -185,11 +185,11 @@ void Task::vAddAxioms(void)
   "    process::quit "
   "  then "
   
-  // pointer to word on stack
+  // top of stack: pointer to word
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is token a known word?
+  // is input token a known word?
   //" \"((h))\" . "
   "  dup not if"
   "    discard"                  // error -- token is an unknown word
@@ -197,11 +197,11 @@ void Task::vAddAxioms(void)
   "    reenter"
   "  then"
 
-  // pointer to word on stack
+  // top of stack: pointer to word
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is it an immediate word?
+  // is that word an immediate word?
   //" \"((i))\" . "
 
   "  dup word.isImmediate if"
@@ -209,8 +209,8 @@ void Task::vAddAxioms(void)
   "    reenter"
   "  then"
   
-  // pointer to word on stack
-  
+  // top of stack: pointer to word
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // postponing mode?
@@ -223,8 +223,8 @@ void Task::vAddAxioms(void)
   "    reenter"
   "  then"
 
-  // pointer to word on stack
-  
+  // top of stack: pointer to word
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compiling mode?
@@ -235,11 +235,11 @@ void Task::vAddAxioms(void)
   "    reenter"
   "  then"
   
-  // pointer to word on stack
-  
+  // top of stack: pointer to word
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we are interpreting
+  // in interpreting mode
   //" \"((l))\" . "
 
   "  execute"                    // interpret: execute word on stack
