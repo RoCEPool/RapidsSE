@@ -115,8 +115,8 @@
   POSTPONE dic::root
 
   // !DIC_AS_SKIPLIST
-  POSTPONE dic.lastWord
-  //POSTPONE dic.firstWord
+  //POSTPONE dic.lastWord
+  POSTPONE dic.firstWord
 
   POSTPONE DUP
   POSTPONE 2>R    // encode >r into future word
@@ -138,8 +138,8 @@
   POSTPONE object@
 
   // !DIC_AS_SKIPLIST
-  POSTPONE word.prev
-  //POSTPONE word.next
+  //POSTPONE word.prev
+  POSTPONE word.next
   
   POSTPONE object!
  

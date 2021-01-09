@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 // !DIC_AS_SKIPLIST
-//#define _DIC_SKIPLIST
+#define _DIC_SKIPLIST
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

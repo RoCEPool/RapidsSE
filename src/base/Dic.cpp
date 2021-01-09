@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 // !DIC_AS_SKIPLIST
-//#define _DIC_SKIPLIST
+#define _DIC_SKIPLIST
 
 CompareFp g_fp_bWordCompare = bWordCompare;
 /*----------------------------------------------------------------------------*/
@@ -235,12 +235,12 @@ Word* Dic::pFindWord(Stz* szWordNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   bool bTrace = false;
-  if (szWordNm->bSame("pipeline.pipeout"_Stz)) {
-    vListWords();
-    vTrace("\n\n"_Stz);
-    vTrace("Find Word : %s\n"_Stz,szWordNm);
-    bTrace = true;
-  }
+//  if (szWordNm->bSame("pipeline.pipeout"_Stz)) {
+//    vListWords();
+//    vTrace("\n\n"_Stz);
+//    vTrace("Find Word : %s\n"_Stz,szWordNm);
+//    bTrace = true;
+//  }
   
   Word* pSearchWord = new (nullptr) Word(szWordNm);
   
@@ -370,6 +370,15 @@ bool Dic::bIsName(Stz* szDicNm)
 /*----------------------------------------------------------------------------*/
 /* get last word                                                              */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
+Word* Dic::pLastWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  return pFirstWord();
+}
+#else
+/*----------------------------------------------------------------------------*/
 Word* Dic::pLastWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
@@ -380,6 +389,7 @@ Word* Dic::pLastWord(void)
   
   return (Word*)pLastArticle->pObject();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* list all words in this dic                                                 */
