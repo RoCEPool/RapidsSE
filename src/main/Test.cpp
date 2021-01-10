@@ -538,6 +538,8 @@ void vTest14(void)
 
   Engine::vDeleteImmmediate(&pImmTask);
   
+  delete pSeApi;
+
   oTimer.vUpdate();
   vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
 
@@ -548,8 +550,41 @@ void vTest14(void)
 /*----------------------------------------------------------------------------*/
 void vTest15(void)
 {
-  vTrace("Test 15 -- not implemented\n"_Stz);
- 
+  vTrace("Test 15 -- API for Compiler calls >interpret\n"_Stz);
+  
+  Timer oTimer;
+  oTimer.vStart();
+  
+  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
+
+  Job* pJob = new Job(&xImmReqTuple);
+
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  //pJobTags->vDumpSet();
+  pJob->vSeed(SS_SEED_RUN);
+
+  
+  Task* pImmTask = AM::pTaskNew(pJob);
+  pImmTask->vInitExeContext();
+  
+  
+  
+  SeApi* pSeApi = new SeApi;
+  *pSeApi
+    | pSeApi->pAdd("filter_seapi"_Stz,""_Stz);
+
+  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
+  
+  Engine::vCallImmmediate(pImmTask);
+
+  Engine::vDeleteImmmediate(&pImmTask);
+  
+  delete pSeApi;
+  
+  oTimer.vUpdate();
+  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
