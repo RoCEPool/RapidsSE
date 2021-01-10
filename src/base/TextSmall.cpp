@@ -43,6 +43,16 @@ TextSmall::TextSmall(void)
 : TextBuffer(CN_TEXTSMALL, C_SIZE_SMALL_TEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTSMALL);
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caText,C_SIZE_SMALL_TEXT,CN_TEXTSMALL);
+#else
+  m_caText[0] = '\0';
+#endif
+
+  _checkInitialised_(CN_TEXTSMALL);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXTSMALL);
 }
 
 /*----------------------------------------------------------------------------*/

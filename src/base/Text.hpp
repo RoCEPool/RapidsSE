@@ -23,6 +23,9 @@ namespace BASE
     Text(Stz* szArg);
    ~Text(void) noexcept(false);
   
+    Text& operator |(Stz* szArg);
+    Text& operator |(Text* pArg);
+
     Stz* szGet(void);
     i8   nLength(void);
     void vSet(Stz* szArg);

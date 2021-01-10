@@ -43,6 +43,16 @@ TextMedium::TextMedium(void)
 : TextBuffer(CN_TEXTMEDIUM, C_SIZE_MEDIUM_TEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caText,C_SIZE_MEDIUM_TEXT,CN_TEXTMEDIUM);
+#else
+  m_caText[0] = '\0';
+#endif
+
+  _checkInitialised_(CN_TEXTMEDIUM);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
 }
 
 /*----------------------------------------------------------------------------*/

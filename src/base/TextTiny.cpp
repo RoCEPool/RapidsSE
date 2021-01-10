@@ -42,7 +42,17 @@ void TextTiny::operator delete(void* pTextAddress)
 TextTiny::TextTiny(void)
 : TextBuffer(CN_TEXTTINY, C_SIZE_TINY_TEXT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTTINY);  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTTINY);
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caText,C_SIZE_TINY_TEXT,CN_TEXTTINY);
+#else
+  m_caText[0] = '\0';
+#endif
+
+  _checkInitialised_(CN_TEXTTINY);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXTTINY);
 }
 
 /*----------------------------------------------------------------------------*/

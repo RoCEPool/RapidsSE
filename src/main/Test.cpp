@@ -464,11 +464,23 @@ void vTest11(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test12                                                                     */
+/* test12 -- seriies of | operators                                           */
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
-  vTrace("Test 12 -- not implemented\n"_Stz);
+  vTrace("Test 12 -- seriies of | operators\n"_Stz);
+  
+  Text* pText1 = new Text("1"_Stz);
+  Text* pText2 = new Text("2"_Stz);
+  Text* pText3 = new Text("3"_Stz);
+
+  *pText1 | pText2 | pText3;
+  
+  vTrace("Text %s\n"_Stz,pText1->szGet());
+  
+  delete pText1;
+  delete pText2;
+  delete pText3;
 }
 
 /*----------------------------------------------------------------------------*/

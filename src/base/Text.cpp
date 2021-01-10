@@ -24,6 +24,8 @@ Text::Text(void)
   m_nSizeText = 0;
   m_pTextBuffer = nullptr;
   
+  vNewBuffer(256);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXT,_FOOTER_);
 }
 
@@ -71,6 +73,43 @@ Text::~Text(void) noexcept(false)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* concat | operator                                                          */
+/*----------------------------------------------------------------------------*/
+Text& Text::operator |(Stz* szArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
+  
+  s4K sRevised = szGet();
+
+  sRevised.vConcat(szArg);
+  
+  vSet(sRevised);
+  
+  return *(Text*)this;
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat | operator                                                          */
+/*----------------------------------------------------------------------------*/
+Text& Text::operator |(Text* pArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
+  
+  s4K sRevised = szGet();
+
+  sRevised.vConcat(pArg->szGet());
+  
+  vSet(sRevised);
+  
+  return *(Text*)this;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* set text to given value                                                    */

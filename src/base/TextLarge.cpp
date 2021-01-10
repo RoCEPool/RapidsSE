@@ -43,6 +43,16 @@ TextLarge::TextLarge(void)
 : TextBuffer(CN_TEXTLARGE, C_SIZE_LARGE_TEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTLARGE);
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caText,C_SIZE_LARGE_TEXT,CN_TEXTLARGE);
+#else
+  m_caText[0] = '\0';
+#endif
+
+  _checkInitialised_(C_SIZE_LARGE_TEXT);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXTLARGE);
 }
 
 /*----------------------------------------------------------------------------*/
