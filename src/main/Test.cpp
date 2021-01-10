@@ -7,6 +7,14 @@
 
 #include "Test.hpp"
 
+#include "AM.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "TagConstants.h"
+
+#include "Engine.hpp"
+
 #include "TpchRatios.h"
 
 #include "SP_Bits.hpp"
@@ -424,38 +432,60 @@ void vTest10(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test11                                                                     */
+/* test11 -- API for Compiler                                                 */
 /*----------------------------------------------------------------------------*/
 void vTest11(void)
 {
+  vTrace("Test 11 -- API for Compiler\n"_Stz);
+
+  Timer oTimer;
+  oTimer.vStart();
   
+  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
+
+  Job* pJob = new Job(&xImmReqTuple);
+
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,"helloWorldImm"_Stz);
+  //pJobTags->vDumpSet();
+  pJob->vSeed(SS_SEED_RUN);
+
+  
+  Task* pImmTask = AM::pTaskNew(pJob);
+  pImmTask->vInitExeContext();
+  
+  Engine::vCallImmmediate(pImmTask);
+
+  Engine::vDeleteImmmediate(&pImmTask);
+  
+  oTimer.vUpdate();
+  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* test12 : SORING INT ARRAY USING INDEXES INTO THE ARRAY                     */
+/* test12                                                                     */
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
+  vTrace("Test 12 -- not implemented\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* test13 --  SORING INT ARRAY USING POINTERS TO ELEMENTS IN THE ARRAY        */
+/* test13                                                                     */
 /*----------------------------------------------------------------------------*/
 void vTest13(void)
 {
-
-
+  vTrace("Test 13 -- not implemented\n"_Stz);
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* test14 -- SORTING AN ARRAY OF INTEGERS USING CURSORS                       */
+/* test14                                                                     */
 /*----------------------------------------------------------------------------*/
 void vTest14(void)
 {
-
-
+  vTrace("Test 14 -- not implemented\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,9 +493,8 @@ void vTest14(void)
 /*----------------------------------------------------------------------------*/
 void vTest15(void)
 {
-  
-
-  
+  vTrace("Test 15 -- not implemented\n"_Stz);
+ 
 }
 
 /*----------------------------------------------------------------------------*/

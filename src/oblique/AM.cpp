@@ -542,10 +542,12 @@ void AM::vTaskDump(Task* pTask)
   
   AM::vJobContentDump(pJob);
   
-  if (pJob->pLogicUnit_job()->m_xpOp.bIsNotNull())
-    pJob->pLogicUnit_job()->m_xpOp->vDump();
+  if (pJob->pLogicUnit_job()) {
+    if (pJob->pLogicUnit_job()->m_xpOp.bIsNotNull())
+      pJob->pLogicUnit_job()->m_xpOp->vDump();
   
-  pJob->pLogicUnit_job()->vContentDump();
+    pJob->pLogicUnit_job()->vContentDump();
+  }
 
 }
 

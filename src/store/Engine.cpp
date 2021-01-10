@@ -386,11 +386,15 @@ void Engine::vCallBoot(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallImmmediate(Task* pImmediateTask)
 {
+  Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
+
   pImmediateTask->vSeedTask();
   
   pImmediateTask->vState(TS_EXECUTING);
   
   pImmediateTask->vTaskLoop();
+  
+  PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
 }
 
 /*----------------------------------------------------------------------------*/
