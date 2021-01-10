@@ -77,6 +77,7 @@
 
 #include "PathIdentifier.hpp"
 
+#include "SeApi.hpp"
 #include "SessionArray.hpp"
 
 #include "ShortCut.hpp"
@@ -341,6 +342,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'S' - ('A' - 1),            HT_INVALID   ,0 }, // CN__S__
   { sizeof(Schema),             HT_T_TINY    ,0 }, // CN_SCHEMA
+  { sizeof(SeApi),              HT_T_LARGE   ,0 }, // CN_SEAPI
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT

@@ -14,6 +14,7 @@
 #include "TagConstants.h"
 
 #include "Engine.hpp"
+#include "SeApi.hpp"
 
 #include "TpchRatios.h"
 
@@ -468,7 +469,7 @@ void vTest11(void)
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
-  vTrace("Test 12 -- seriies of | operators\n"_Stz);
+  vTrace("Test 12 -- series of | operators\n"_Stz);
   
   Text* pText1 = new Text("1"_Stz);
   Text* pText2 = new Text("2"_Stz);
@@ -488,9 +489,18 @@ void vTest12(void)
 /*----------------------------------------------------------------------------*/
 void vTest13(void)
 {
-  vTrace("Test 13 -- not implemented\n"_Stz);
-}
+  vTrace("Test 13 -- SeApi | operators series test\n"_Stz);
+  
+  SeApi* pSeApi = new SeApi;
 
+  *pSeApi
+    | pSeApi->pAdd("op0"_Stz,"arg0"_Stz)
+    | pSeApi->pAdd("op1"_Stz,"arg1"_Stz)
+    | pSeApi->pAdd("op2"_Stz,"arg2"_Stz)
+  ;
+  
+  vTrace("SeApi %s\n"_Stz,pSeApi->szGet());
+}
 
 /*----------------------------------------------------------------------------*/
 /* test14                                                                     */
