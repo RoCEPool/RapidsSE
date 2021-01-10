@@ -503,11 +503,44 @@ void vTest13(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test14                                                                     */
+/* test14 -- API for Compiler calls >interpret                                */
 /*----------------------------------------------------------------------------*/
 void vTest14(void)
 {
-  vTrace("Test 14 -- not implemented\n"_Stz);
+  vTrace("Test 14 -- API for Compiler calls >interpret\n"_Stz);
+  
+  Timer oTimer;
+  oTimer.vStart();
+  
+  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
+
+  Job* pJob = new Job(&xImmReqTuple);
+
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  //pJobTags->vDumpSet();
+  pJob->vSeed(SS_SEED_RUN);
+
+  
+  Task* pImmTask = AM::pTaskNew(pJob);
+  pImmTask->vInitExeContext();
+  
+  
+  
+  SeApi* pSeApi = new SeApi;
+  *pSeApi
+    | pSeApi->pAdd("."_Stz,"1 1 +"_Stz);
+
+  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
+  
+  Engine::vCallImmmediate(pImmTask);
+
+  Engine::vDeleteImmmediate(&pImmTask);
+  
+  oTimer.vUpdate();
+  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
+
 }
 
 /*----------------------------------------------------------------------------*/

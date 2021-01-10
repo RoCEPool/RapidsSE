@@ -23,7 +23,7 @@ SeApi::SeApi(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
   
-  m_sSequence = ">>>"_Stz;
+  m_sSequence = ""_Stz;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
 }
