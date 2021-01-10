@@ -4,6 +4,9 @@
 
 #include "BASE.h"
 
+// !DIC_AS_SKIPLIST
+//#define _VALIDATE_SKIPLIST
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -51,20 +54,27 @@ void SkipListNL::operator delete(void* pSkipListAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SkipListNL::SkipListNL(bool bUniqueKey, CompareFp fpCompare, bool bSlabAllocator)
+SkipListNL::SkipListNL(bool bUniqueKey,
+                       CompareFp fpCompare,
+                       PrintFp fpPrint,
+                       bool bSlabAllocator)
 : Object(CN_SKIPLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   m_pSlabAllocator = bSlabAllocator ? new SlabAllocator : nullptr;
-  
-  m_pHead      = new(C_SKIPLIST_LEVELS,m_pSlabAllocator) SkipNode(nullptr);
+
   m_bUniqueKey = bUniqueKey;
   m_fpCompare  = fpCompare;
+  m_fpPrint    = fpPrint;
+
   m_nObjects   = 0;
   m_iHeight    = 0;
-  
-  
+  m_pHead      = new(C_SKIPLIST_LEVELS,m_pSlabAllocator) SkipNode(nullptr);
+
+  m_pNewly     = nullptr;
+
+
   for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
     m_pHead->m_pRight[i_Level] = nullptr;
   
@@ -161,7 +171,7 @@ bool SkipListNL::bExists(void* pObject)
 
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr,false,m_fpCompare);
   ASSERT(pNode); // logic check
   
   if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
@@ -173,13 +183,18 @@ bool SkipListNL::bExists(void* pObject)
 /*----------------------------------------------------------------------------*/
 /* find first matching object                                                 */
 /*----------------------------------------------------------------------------*/
-void* SkipListNL::pFind(void* pObject)
+void* SkipListNL::pFind(void* pObject, bool bTrace, CompareFp fpCompare_alt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr);
+  SkipNode* pNode = pPosition(pObject,
+                              bEqualTo,
+                              nullptr,
+                              bTrace,
+                              fpCompare_alt ? fpCompare_alt : m_fpCompare
+                              );
   ASSERT(pNode); // logic check
   
   if ( ! pNode->m_pRight[0] )
@@ -206,7 +221,7 @@ SkipNode* SkipListNL::pFirst(i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* insert object into list                                                    */
 /*----------------------------------------------------------------------------*/
-bool SkipListNL::bInsert(void* aObjectInsert)
+bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
@@ -214,7 +229,8 @@ bool SkipListNL::bInsert(void* aObjectInsert)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
   // get a positioned prior vector
-  SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec);
+  SkipNode* pNode =
+    pPosition(aObjectInsert,bEqualTo,aPriorVec,bTrace,m_fpCompare);
   RASSERT(pNode); // logic check
   
   Object* pObjectInsert = (Object*)aObjectInsert;
@@ -232,22 +248,42 @@ bool SkipListNL::bInsert(void* aObjectInsert)
     aPriorVec[iNodeLevel] = m_pHead;
 	}
   
+  if (bTrace) {
+    vTrace("\niNodeLevel %lld\n"_Stz,iNodeLevel);
+  }
+  
   //RJH vTrace("bInsert:position7\n"_Stz);
   // create new node with inserted object
-  SkipNode* pNodeInsert = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
-  RASSERT(pNodeInsert);
+  m_pNewly = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
+  RASSERT(m_pNewly);
   
   // put new node into the list according the prior vector for random level
   do {
-    pNodeInsert->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
-    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = pNodeInsert;
+    m_pNewly->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
+    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = m_pNewly;
 	} while (--iNodeLevel >= 0);
   
   // one more object in the list
   m_nObjects++;
   
+  
+#ifdef _VALIDATE_SKIPLIST
+  vValidate();
+#endif
+  
+  
   // succesful insert
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get most recently new'd skip node                                          */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipListNL::pNewly(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  return m_pNewly;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,13 +354,15 @@ bool SkipListNL::bRemove(void* pObjectRemove)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   SkipNode* aPrior;
   
-  SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec);
+  SkipNode* pNodePrev =
+    pPosition(pObjectRemove,bEqualTo,aPriorVec,false,m_fpCompare);
   RASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
     vTrace("SkipListNL::bRemove: failed to match\n"_Stz);
     vSkipListDump(this);
-    SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec);
+    SkipNode* pNodePrev =
+      pPosition(pObjectRemove,bEqualTo,aPriorVec,false,m_fpCompare);
     return false;
   }
   
@@ -386,44 +424,43 @@ SkipNode* SkipListNL::pNext(SkipNode* pPrev, i8 iLevel)
 /* position object to be inserted                                             */
 /*----------------------------------------------------------------------------*/
 
-#define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
+#define moveScanToRight(pLeft,iLevel) pLeft = pLeft->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
+SkipNode* SkipListNL::pPosition(void* pSearchForObject, bool& bEqualTo,
+                                SkipNode** aPriorVec, bool bTrace,
+                                CompareFp fpCompare)
 {
-  //RJH vTrace("Adding %p head:%p\n"_Stz,pObjectInsert, m_pHead);
   bEqualTo = false;
-  // start from head at known highest level
-  SkipNode* pCurrentNode = m_pHead;
-  i8 iCurrentLevel = m_iHeight;
+
+  SkipNode* pPriorNode = m_pHead;
+  i8 iLevel = m_iHeight;
   
   do {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop: go right a number of nodes until we find
-    //   ObjectInsert < ObjectNext at current level
+    //               ObjectInsert < ObjectNext at current level
     
-    while (SkipNode* pNextNode = pCurrentNode->m_pRight[iCurrentLevel]) {
+    while (SkipNode* pRightNode = pPriorNode->m_pRight[iLevel]) {
       
-      //RJH vTrace("pNextNode:%p n"_Stz,pNextNode);
-      //RJH vTrace("pNextNode:%s n"_Stz,aCN[pNextNode->eGetClassNo()]);
-      //RJH vTrace("Object:%p\n"_Stz,pNextNode->m_pObject);
       
-      // compare the inserting object with next object
-      bool bGreaterEqual = m_fpCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);
+      // compare the object being searched for
+      bool bPosObjIsGT = fpCompare(pSearchForObject,
+                                   pRightNode->m_pObject,
+                                   bEqualTo);
       
-      if (bGreaterEqual) {
-        // pObjectInsert is >= pObjectNext
-        //RJH vTrace("  %p after %p (level %lld)\n"_Stz,
-        //RJH        pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
-        
-        // go right one node
-        goRightNode(iCurrentLevel,pCurrentNode);
+      if (bTrace) {
+        vTrace("Pos ^%lld: "_Stz,iLevel);
+          m_fpPrint(pSearchForObject);
+          vTrace(" v "_Stz);
+          m_fpPrint(pRightNode->m_pObject);
+          vTrace(" : %s\n"_Stz,bPosObjIsGT ? "GT moveRight" : "LE goDown" );
+      }
+      
+      if (bPosObjIsGT) {
+        moveScanToRight(pPriorNode,iLevel);
       }
       else {
-        // pObjectInsert is < pObjectNext or pObjectNext is null
-        //RJH vTrace("  %p before %p (level %lld)\n"_Stz,
-        //RJH        pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
-        
         break;
       }
     }
@@ -433,17 +470,15 @@ SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** 
     
     // first record current node as a revision point
     if (aPriorVec)
-      aPriorVec[iCurrentLevel] = pCurrentNode;
-    
-    //RJH vTrace("going down 1 level\n"_Stz);
-    
-    // now go down one level
-    goDownLevel(iCurrentLevel);
+      aPriorVec[iLevel] = pPriorNode;
+       
+    // now go down one level on scan node
+    goDownLevel(iLevel);
     
     // and repeat till we have a complete revision vector
-  } while (iCurrentLevel >= 0);
+  } while (iLevel >= 0);
   
-  return pCurrentNode;
+  return pPriorNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,6 +506,32 @@ i8 SkipListNL::iRandomLevel(void)
   } while (!b);
   
   return (level > C_SKIPLIST_LEVELS - 1) ? C_SKIPLIST_LEVELS - 1: level;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate the skiplist                                                      */
+/*----------------------------------------------------------------------------*/
+void SkipListNL::vValidate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  i8 nItems = 0;
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
+    nItems++;
+  
+  ASSERT(nItems == m_nObjects);
+
+  
+  for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {
+    if (!pFind(pNode->m_pObject)) {
+      vTrace("Cannot find : "_Stz);
+        m_fpPrint(pNode->m_pObject);
+        vTrace("\n"_Stz);
+      NEVER_REACH;
+    }
+  }
+           
+           
 }
 
 /*----------------------------------------------------------------------------*/

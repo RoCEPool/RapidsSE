@@ -40,7 +40,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
-  vAddStep("job.addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);

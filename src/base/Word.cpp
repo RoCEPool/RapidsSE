@@ -8,6 +8,9 @@
 
 extern fpSTEPFN gfpEntryStep;
 
+// !DIC_AS_SKIPLIST
+#define _DIC_SKIPLIST
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -81,7 +84,8 @@ Word::Word(Stz* szWordNm)
 #endif
   
   m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
-
+  m_pSkipNode  = nullptr;
+  
   m_sWordNm    = szWordNm;
   RASSERT(m_sWordNm.bSame(szWordNm));
   
@@ -564,6 +568,22 @@ void Word::vLocalNo(i8 iLocalNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next word in dic                                                       */
+/*----------------------------------------------------------------------------*/
+Word* Word::pNextWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  Word* pNextWord = nullptr;
+  
+  SkipNode* pSkipNode = m_pSkipNode->m_pRight[0];
+  if (pSkipNode)
+    pNextWord = _pWord(pSkipNode->m_pObject);
+
+  return pNextWord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get object                                                                 */
 /*----------------------------------------------------------------------------*/
 Object* Word::pObject(void)
@@ -626,6 +646,16 @@ i8 Word::iParams(void)
 /*----------------------------------------------------------------------------*/
 /* get previous word                                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef _DIC_SKIPLIST
+Word* Word::pPrevWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  
+  return pNextWord();
+}
+#else
+/*----------------------------------------------------------------------------*/
 Word* Word::pPrevWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
@@ -638,6 +668,7 @@ Word* Word::pPrevWord(void)
   
   return pPrevWord;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* reset routine                                                              */
@@ -755,6 +786,43 @@ char* Word::aWspArea(void)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(Word)
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* compare two words (in a skiplist) by their word names                      */
+/*----------------------------------------------------------------------------*/
+bool bWordCompare(void* aWordBeingInserted, void* aWordScan, bool& bMatching)
+{
+  Word* pWordBeingInserted = _pWord(aWordBeingInserted);
+  Word* pWordScan          = _pWord(aWordScan);
+    
+  if ( ! pWordScan )
+    return false;
+  
+  if (pWordBeingInserted->szWordNm()->bSame(pWordScan->szWordNm()))
+    bMatching = true;
+  else
+    bMatching = false;
+  
+  i8 iCmp = pWordBeingInserted->szWordNm()->iCompare(pWordScan->szWordNm());
+  if (iCmp > 0)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print word (in a skiplist)                                                 */
+/*----------------------------------------------------------------------------*/
+void vWordPrint(void* aWord)
+{
+  Word* pWord = _pWord(aWord);
+
+  vTrace("%s"_Stz,pWord->szWordNm());
+}
 
 /*============================================================================*/
 /* end                                                                        */

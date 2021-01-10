@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: recv :: recv <portNo> ;
 
-: recv _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: recv_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

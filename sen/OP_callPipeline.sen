@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: callPipeline :: callPipeline ;
 
-: callPipeline _cmdTags tagCopy: op_tags
+: callPipeline_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

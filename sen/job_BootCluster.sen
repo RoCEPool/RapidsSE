@@ -7,20 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: node.isConnected ( pNode -- t|f )
-
-  params| pNode |
-
-  pNode node.sendSocket@ if
-    true
-  else
-    false
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 //: grid::connected ( -- t|f )
 //
 //  grid::bootNodes 0
@@ -139,7 +125,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute job_BootCluster (on participating node)                            */
 /*----------------------------------------------------------------------------*/
-: bootCluster::execute _eeh ( -- )
+: bootCluster::execute _eeh_suffix ( -- )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
@@ -154,7 +140,7 @@
 
 cmdSyntax: bootCluster :: bootCluster ;
 
-: bootCluster _cmdTags tagCopy: distJob_tags
+: bootCluster_cmdTags _cmdTags tagCopy: distJob_tags
   tags{
     <rspKind>  = RS_NONE
     <ddlLock>  = DL_NONE

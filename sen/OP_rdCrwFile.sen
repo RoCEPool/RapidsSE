@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: rdCrwFile :: rdCrwFile <FileNm> ;
 
-: rdCrwFile _cmdTags tagCopy: localLiteOp_tags
+: rdCrwFile_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 1

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline request on origin                                     */
 /*----------------------------------------------------------------------------*/
-: pipelineLocal_req _eeh ( -- )
+: pipelineLocal_req _eeh_suffix ( -- )
 
   task[] locals| pTask |
   job[]  locals| pJob_pipeline |
@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_pipeline job check resources                                   */
 /*----------------------------------------------------------------------------*/
-: pipelineLocal::checkResources _eeh ( -- )
+: pipelineLocal::checkResources _eeh_suffix ( -- )
 
 
 ;
@@ -92,7 +92,7 @@
 
 cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 
-: pipelineLocal _cmdTags tagCopy: localJob_tags
+: pipelineLocal_cmdTags _cmdTags tagCopy: localJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
 

@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: catFile :: catFile <FileNm> ;
 
-: catFile _cmdTags tagCopy: localLiteOp_tags
+: catFile_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 1

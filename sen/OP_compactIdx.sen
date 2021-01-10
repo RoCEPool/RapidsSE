@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: compactIdx :: compactIdx   <tableNm> <indexNm> ;
 
-: compactIdx _cmdTags tagCopy: liteOp_tags
+: compactIdx_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
     <params>    = 2

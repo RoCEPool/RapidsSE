@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lscol :: lscol <tableNm> ;
 
-: lscol _cmdTags tagCopy: localLiteOp_tags
+: lscol_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listColumns

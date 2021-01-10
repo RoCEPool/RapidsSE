@@ -7,31 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: bClusterStarted
-  grid::started@ if
-    true
-  else
-    EC_CLUSTER_NOT_CONNECTED false
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: node.isConnected ( pNode -- t|f )
-
-  params| pNode |
-
-  pNode node.sendSocket@ if
-    true
-  else
-    false
-  then
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 //: grid::connected ( -- t|f )
 //
 //  grid::bootNodes 0
@@ -83,18 +58,6 @@
   "All nodes connected" .
 
   true
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: grid::pause ( -- )
-
-  begin
-    grid::connected not
-  while
-    100 thread::sleepMsec
-  repeat
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +121,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute job_ConnectCluster (on participating node)                         */
 /*----------------------------------------------------------------------------*/
-: connectCluster::execute _eeh ( -- )
+: connectCluster::execute _eeh_suffix ( -- )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
@@ -173,7 +136,7 @@
 
 cmdSyntax: connectCluster :: connectCluster ;
 
-: connectCluster _cmdTags tagCopy: distJob_tags
+: connectCluster_cmdTags _cmdTags tagCopy: distJob_tags
   tags{
     <rspKind>  = RS_NONE
     <ddlLock>  = DL_NONE

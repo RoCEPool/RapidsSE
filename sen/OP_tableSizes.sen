@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: tableSizes :: tableSizes ;
 
-: tableSizes _cmdTags tagCopy: liteOp_tags
+: tableSizes_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __tableSizes

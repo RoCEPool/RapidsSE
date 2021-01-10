@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* pipeline request (on originating node)                                     */
 /*----------------------------------------------------------------------------*/
-: pipeline::request _eeh ( -- <R> )
+: pipeline::request _eeh_suffix ( -- <R> )
 
   job[] locals| pJob_pipeline |
 
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline job on a node                                         */
 /*----------------------------------------------------------------------------*/
-: pipeline::execute _eeh ( -- )
+: pipeline::execute _eeh_suffix ( -- )
 
   task[] locals| pTask |
   job[]  locals| pJob_pipeline |
@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_pipeline job check resources                                   */
 /*----------------------------------------------------------------------------*/
-: pipeline::checkResources _eeh ( -- )
+: pipeline::checkResources _eeh_suffix ( -- )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -92,7 +92,7 @@
 
 cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
-: pipeline _cmdTags tagCopy: distJob_tags
+: pipeline_cmdTags _cmdTags tagCopy: distJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
 

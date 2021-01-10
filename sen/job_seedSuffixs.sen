@@ -38,10 +38,10 @@
 /*----------------------------------------------------------------------------*/
 /* _req makes the word being compile a request seed with name: /wordNm/_req   */
 /*----------------------------------------------------------------------------*/
-: _req immediate _suffix
+: _req_suffix immediate _suffix
 
   // append _req to name of word being compiled
-  "_req" word::addSuffix
+  // "_req" word::addSuffix
 
   word::seed#
 
@@ -55,10 +55,10 @@
 /*----------------------------------------------------------------------------*/
 /* _beg makes the word being compile a seed with name: <wordNm>_beg           */
 /*----------------------------------------------------------------------------*/
-: _beg immediate _suffix
+: _beg_suffix immediate _suffix
 
   // append _beg to name of word being compiled
-  "_beg" word::addSuffix
+  // "_beg" word::addSuffix
 
   // the compiled word is a seed
   find: seed compiler::current@ word.category!
@@ -75,10 +75,10 @@
 /*----------------------------------------------------------------------------*/
 /* _exe makes the word being compile a seed with name: <wordNm>_exe           */
 /*----------------------------------------------------------------------------*/
-: _exe immediate _suffix
+: _exe_suffix immediate _suffix
 
   // append _exe to name of word being compiled
-  "_exe" word::addSuffix
+  // "_exe" word::addSuffix
 
   word::seed#
 
@@ -92,10 +92,10 @@
 /*----------------------------------------------------------------------------*/
 /* _end makes the word being compile a end seed with name: <wordNm>_end       */
 /*----------------------------------------------------------------------------*/
-: _end immediate _suffix
+: _end_suffix immediate _suffix
 
   // append _end to name of word being compiled
-  "_end" word::addSuffix
+  // "_end" word::addSuffix
 
   word::seed#
 
@@ -109,10 +109,10 @@
 /*----------------------------------------------------------------------------*/
 /* _can makes the word being compile a cancel seed with name: <wordNm>_can    */
 /*----------------------------------------------------------------------------*/
-: _can immediate _suffix
+: _can_suffix immediate _suffix
 
   // append _can to name of word being compiled
-  "_can" word::addSuffix
+  // "_can" word::addSuffix
 
   word::seed#
 
@@ -126,10 +126,10 @@
 /*----------------------------------------------------------------------------*/
 /* _run makes the word being compile a seed with name: <wordNm>_run           */
 /*----------------------------------------------------------------------------*/
-: _run immediate _suffix
+: _run_suffix immediate _suffix
 
   // append _beg to name of word being compiled
-  "_run" word::addSuffix
+  // "_run" word::addSuffix
 
   word::seed#
 
@@ -143,7 +143,7 @@
 /*----------------------------------------------------------------------------*/
 /* adds a standard entry and exit hook to word being compiled                 */
 /*----------------------------------------------------------------------------*/
-: _eeh immediate _suffix
+: _eeh_suffix immediate _suffix
 
   "std_exitHook" compiler::current@ word.exitHook!
 

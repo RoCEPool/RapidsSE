@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Execute on participating node   recv: job.spawn_received */
 /*----------------------------------------------------------------------------*/
-: _Execute _run
+: _Execute_run _run_suffix
 
   //
   // where: on the participating node
@@ -91,7 +91,7 @@
 
 cmdSyntax: _Execute :: _Execute ;
 
-: _Execute _cmdTags tagCopy: genericJob_tags
+: _Execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
   }

@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: compactIndexPtn :: compactIndexPtn <tableNm> <indexNm> ;
 
-: compactIndexPtn _cmdTags tagCopy: op_tags
+: compactIndexPtn_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc>  = "--desc for op--" }
 ;
 

@@ -105,7 +105,7 @@ void BASE::vThreadCallStackDump(void)
     xException.vPrint();
     AM::vTaskDump();
     vThreadCallStackDump();
-    
+
     vDebugPoint();
   }
   

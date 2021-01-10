@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lf :: lf ;
 
-: lf _cmdTags tagCopy: localLiteOp_tags
+: lf_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listFolder

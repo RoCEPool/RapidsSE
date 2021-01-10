@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: range :: range <compiled> <tableNm> by <indexNm> <etc> ;
 
-: range _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: range_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: burst :: burst ;
 
-: burst _cmdTags tagCopy: op_tags
+: burst_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

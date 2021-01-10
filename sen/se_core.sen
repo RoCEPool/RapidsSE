@@ -113,7 +113,10 @@
 : ITERATE-WORDS immediate
 
   POSTPONE dic::root
-  POSTPONE dic.lastWord
+
+  // !DIC_AS_SKIPLIST
+  //POSTPONE dic.lastWord
+  POSTPONE dic.firstWord
 
   POSTPONE DUP
   POSTPONE 2>R    // encode >r into future word
@@ -125,14 +128,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get current iterate word                                                   */
-/*----------------------------------------------------------------------------*/
-: WORD@ immediate
-
-  POSTPONE r0
-;
-
-/*----------------------------------------------------------------------------*/
 /* iterate a loop                                                             */
 /*----------------------------------------------------------------------------*/
 : NEXT-WORD immediate
@@ -140,14 +135,25 @@
   //POSTPONE THEN
   //DISCARD
 
-
   POSTPONE object@
-  POSTPONE word.prev
+
+  // !DIC_AS_SKIPLIST
+  //POSTPONE word.prev
+  POSTPONE word.next
+  
   POSTPONE object!
  
   //POSTPONE 1
   //POSTPONE NEXT+
   POSTPONE NEXT
+;
+
+/*----------------------------------------------------------------------------*/
+/* get current iterate word                                                   */
+/*----------------------------------------------------------------------------*/
+: WORD@ immediate
+
+  POSTPONE r0
 ;
 
 /*----------------------------------------------------------------------------*/

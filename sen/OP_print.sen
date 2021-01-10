@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: print :: print <string> ;
 
-: print _cmdTags tagCopy: op_tags
+: print_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

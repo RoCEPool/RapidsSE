@@ -102,7 +102,7 @@ cmdSyntax: periodic :: periodic once ;
 cmdSyntax: periodic :: periodic min <minutes> ;
 cmdSyntax: periodic :: periodic hour <hours> ;
 
-: periodic _cmdTags tagCopy: op_tags
+: periodic_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

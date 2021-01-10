@@ -104,7 +104,7 @@
 cmdSyntax: createTable :: createTable ;
 cmdSyntax: createTable :: createTable <tableNm> ;
 
-: createTable _cmdTags tagCopy: op_tags
+: createTable_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--description of operator--" }
 ;

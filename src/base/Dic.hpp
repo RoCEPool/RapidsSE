@@ -13,6 +13,8 @@ namespace BASE
     s32       m_sDicNm;    // name of this dictionary
     Word*     m_pDicKind;  // kind of dictionary
   
+    SkipListNL* m_pWordSkipList; // skip list of words (ordered by wordNm)
+
     // must be last
     Footer m_xFooter;
     
@@ -34,8 +36,8 @@ namespace BASE
     Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindStep(fpSTEPFN fpStepFn);
+    Word* pFirstWord(void);
     bool  bHasWords(void);
-    void  vInit(void);
     bool  bIsName(Stz* szDicNm);
     Word* pLastWord(void);
     void  vListWords(void);

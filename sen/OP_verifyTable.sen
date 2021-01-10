@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: vfytbl :: vfytbl <tableNm> ;
 
-: vfytbl _cmdTags tagCopy: liteOp_tags
+: vfytbl_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __verifyTable

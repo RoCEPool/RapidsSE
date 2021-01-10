@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Cancel on participating node    recv: job.spawn_received */
 /*----------------------------------------------------------------------------*/
-: _Cancel _run
+: _Cancel_run _run_suffix
 
   //
   // where: on the participating node
@@ -93,7 +93,7 @@
 
 cmdSyntax: _Cancel :: _Cancel ;
 
-: _Cancel _cmdTags tagCopy: genericJob_tags
+: _Cancel_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
   }

@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: dropTenant :: dropTenant <tenantNm> ;
 
-: dropTenant _cmdTags tagCopy: op_tags
+: dropTenant_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--desc for op--" }
 ;

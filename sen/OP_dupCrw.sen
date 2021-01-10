@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: dupCrw :: dupCrw ;
 
-: dupCrw _cmdTags tagCopy: op_tags
+: dupCrw_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

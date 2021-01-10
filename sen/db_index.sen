@@ -154,7 +154,7 @@
 
   //pwIndex word.see
 
-  pwIndex execute locals| pIndex |
+  pwIndex execute to pIndex
 
   pIndex
 ;

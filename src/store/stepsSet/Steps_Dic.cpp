@@ -19,6 +19,7 @@ void Step::vAddSteps_Dic(void)
   vAddStep("dic::root"_Stz,       &Step::vDicRoot);
   
   vAddStep("dic.delete"_Stz,      &Step::vDicDelete);
+  vAddStep("dic.firstWord"_Stz,   &Step::vDicFirstWord);
   vAddStep("dic.kind@"_Stz,       &Step::vDicKindGet);
   vAddStep("dic.kind!"_Stz,       &Step::vDicKindSet);
   vAddStep("dic.lastWord"_Stz,    &Step::vDicLastWord);
@@ -38,6 +39,22 @@ void Step::vDicDelete(void)
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
   delete pDic;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.firstWord -- get first word of dictionary                               */
+/*----------------------------------------------------------------------------*/
+void Step::vDicFirstWord(void)
+{
+  ENTRY();
+  
+  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+  
+  Word* pFirstWord = pDic->pFirstWord();
+  
+  m_pDataStack->vPushPtr(pFirstWord);
   
   EXIT();
 }

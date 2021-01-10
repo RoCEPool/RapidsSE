@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: ping :: ping ;
 
-: ping _cmdTags tagCopy: localLiteOp_tags
+: ping_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 0

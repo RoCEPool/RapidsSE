@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: showCluster :: showCluster ;
 
-: showCluster _cmdTags tagCopy: localLiteOp_tags
+: showCluster_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __showCluster

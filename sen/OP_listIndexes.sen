@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsidx :: lsidx <tableNm> ;
 
-: lsidx _cmdTags tagCopy: localLiteOp_tags
+: lsidx_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __listIndex

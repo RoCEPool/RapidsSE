@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: antbl :: antbl <tableNm> ;
 
-: antbl _cmdTags tagCopy: liteOp_tags
+: antbl_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc>   = "--desc for op--"
     <streamDef> = __analyzeTable

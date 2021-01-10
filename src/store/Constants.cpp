@@ -176,11 +176,9 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
 
   vAddConstant("C_LOW_BUFFERS"_Stz,       C_LOW_BUFFERS);
-  vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
   vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
   vAddConstant("C_MAX_PATH"_Stz,          C_MAX_PATH);
-  vAddConstant("C_SIZE_POOL_BUFFER"_Stz,  C_SIZE_POOL_BUFFER);
   vAddConstant("C_SIZE_LARGE_TEXT"_Stz,   C_SIZE_LARGE_TEXT);
 
   // var args
@@ -862,15 +860,15 @@ void Constants::vAddConstantsCpp(void)
   #endif
     
   #ifdef WITH_ADDRESS_CHECKING
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)true);
+  vAddConstant("WITH_ADDRESS_CHECKING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)false);
+  vAddConstant("WITH_ADDRESS_CHECKING"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_APPLE
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)true);
+  vAddConstant("WITH_APPLE"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)false);
+  vAddConstant("WITH_APPLE"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_ANALYSE_FREE
@@ -892,9 +890,9 @@ void Constants::vAddConstantsCpp(void)
   #endif
     
   #ifdef WITH_CHECK_INITIALISED
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)true);
+  vAddConstant("WITH_CHECK_INITIALISED"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)false);
+  vAddConstant("WITH_CHECK_INITIALISED"_Stz,(i8)false);
   #endif
     
   #ifdef WITH_CORRECTNESS_ALGEBRA

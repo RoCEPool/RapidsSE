@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toNstRow :: toNstRow ;
 
-: toNstRow _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: toNstRow_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Executed on originating node    recv: job.spawn_received */
 /*----------------------------------------------------------------------------*/
-: _Executed _run
+: _Executed_run _run_suffix
 
   job[] locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
@@ -122,7 +122,7 @@
 
 cmdSyntax: _Executed :: _Executed ;
 
-: _Executed _cmdTags tagCopy: genericJob_tags
+: _Executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
   }

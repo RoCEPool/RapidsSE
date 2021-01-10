@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: etcTest :: etcTest <arg1> <arg2> <etc> ;
 
-: etcTest _cmdTags tagCopy: op_tags
+: etcTest_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>     = "--desc for op--"
   }

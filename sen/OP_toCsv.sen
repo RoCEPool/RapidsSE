@@ -136,7 +136,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: toCsv :: toCsv ;
 
-: toCsv _cmdTags tagCopy: op_tags
+: toCsv_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: lsptn :: lsptn <tableNm> ;
 
-: lsptn _cmdTags tagCopy: localLiteOp_tags
+: lsptn_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <streamDef>   = __promptOut

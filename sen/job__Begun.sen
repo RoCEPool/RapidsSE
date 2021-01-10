@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* run this received Job__Begun on originating node  recv: job.spawn_received */
 /*----------------------------------------------------------------------------*/
-: _Begun _run
+: _Begun_run _run_suffix
 
 
 
@@ -132,7 +132,7 @@
 
 cmdSyntax: _Begun :: _Begun ;
 
-: _Begun _cmdTags tagCopy: genericJob_tags
+: _Begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
   }

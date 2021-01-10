@@ -15,6 +15,7 @@ namespace BASE
 
   private:
     Article*  m_pArticle;     // the word article
+    SkipNode* m_pSkipNode;    // the node of this word in dic skiplist
 
     s32       m_sWordNm;      // the name of this word
     eWK       m_eWord;        // kind of word
@@ -80,6 +81,8 @@ namespace BASE
     void  vBreakPt(bool bBreakPt);
     Word* pCategory(void);
     void  vCategory(Word* pCategory);
+    CodeBlock* pCodeBlock(void);
+    i8    nCodeBlockUsed(void);
     void  vContentDump(void);
     Dic*  pDic(void);
     void* aEncodeArg(CodeCell* aArgCell);
@@ -107,6 +110,7 @@ namespace BASE
     CodeCell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
+    Word* pNextWord(void);
     Object* pObject(void);
     void  vObject(Object* pObject);
     void  vObjectDump(Stz* aTab);
@@ -114,8 +118,6 @@ namespace BASE
     i8    iParams(void);
     Word* pPrevWord(void);
     void  vResetCodeBlock(void);
-    CodeBlock* pCodeBlock(void);
-    i8    nCodeBlockUsed(void);
     eWK   eWord(void);
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);
@@ -131,6 +133,9 @@ namespace BASE
   
   Word* _pWord(void* aAddr);
 }
+
+bool bWordCompare(void* aWordBeingInserted, void* aWordScan, bool& bMatching);
+void vWordPrint(void* aWordBeingInserted);
 
 void vEnterRoutine(Step* pStep);
 

@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: snapshot :: snapshot <tableNm> ;
 
-: snapshot _cmdTags tagCopy: op_tags
+: snapshot_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

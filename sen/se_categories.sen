@@ -87,9 +87,7 @@
 /*----------------------------------------------------------------------------*/
 : words \prompt
 
-  iterate-words
-    word@ word.name@ str.length word@ word.name@ "word: %32v %v" .printf
-  next-word
+  "TO BE IMPLEMENTED" .
 ;
 
 /*----------------------------------------------------------------------------*/

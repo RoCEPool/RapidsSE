@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_syntaxIndex.sen -- Operator syntax index                                */
+/* OP_syntaxUniqueIndex.sen -- Operator syntax index                          */
 /*============================================================================*/
 
-" OP_syntaxIndex.sen" .verbose
+" OP_syntaxUniqueIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if <tableNm> . <indexNm> is a creatable index                        */
@@ -84,7 +84,7 @@
   then
 
   // check ok to create index
-  sTableNm syntaxIndex::checkCreate not if ( errorCode )
+  sTableNm syntaxUniqueIndex::checkCreate not if ( errorCode )
     op.pipelineJob@ ERROR_JOB
     Pipein[].delete
     Operand[].newErrorMarker
@@ -141,7 +141,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: syntaxUniqueIndex :: syntaxUniqueIndex <indexNm> <etc> ;
 
-: syntaxUniqueIndex _cmdTags tagCopy: op_tags
+: syntaxUniqueIndex_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>   = "--description of operator--" }
 ;

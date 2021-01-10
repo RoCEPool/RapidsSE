@@ -95,7 +95,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: passThru :: passThru ;
 
-: passThru _cmdTags tagCopy: op_tags
+: passThru_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 
