@@ -2,7 +2,7 @@
 /* Heart.cpp - system heart                                                   */
 /*============================================================================*/
 
-#if 1 // ray 7 jan 2020; compilation problem in bamboo re atomics
+
 
 #include <cstdio>
 #include <cstring>
@@ -125,8 +125,8 @@ void vCollectData()
 
       pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
 
-      //if (iCnt++ <= 1) // debug only: print twice
-      printf("%s", azHeartbeat);
+      if (iCnt++ <= 1) // debug only: print twice
+        printf("%s", azHeartbeat);
     }
 
     sleep(3);
@@ -168,8 +168,8 @@ void vCollectData()
             hbHeartbeat.m_iSincePosixEpoch, hbHeartbeat.m_acBuildGitHash, azTimeBuffer
             );
 
-            //if (iCnt++ <= 1) // debug print twice
-            printf("%s", azHeartbeat);
+            if (iCnt++ <= 1) // debug print twice
+              printf("%s", azHeartbeat);
         }
     }
   }
@@ -211,7 +211,7 @@ void vCollectData()
               hbHeartbeat.m_iSincePosixEpoch, hbHeartbeat.m_acBuildGitHash, azTimeBuffer
       );
 
-      //if (iCnt++ <= 1) // debug print twice
+      if (iCnt++ <= 1) // debug print twice
         printf("%s",azHeartbeat);
     }
   }
@@ -219,7 +219,7 @@ void vCollectData()
   //return nullptr;
 }
 
-#endif
+
 
 /*============================================================================*/
 /* end                                                                        */

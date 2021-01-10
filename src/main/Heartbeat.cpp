@@ -2,7 +2,7 @@
 /* Heartbeat.cpp - heartbeat message                                          */
 /*============================================================================*/
 
-#if 1 // ray 7 jan 2020; compilation problem in bamboo re atomics
+
 
 #include <base/BASE.h>
 #include "STORE.h"
@@ -182,7 +182,7 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
     }
 
     // We can send back a message to the sender
-    // or track wich node send to this one.
+    // or track which node send to this one.
     // sendto(sockfd, (const char *)"Got it", strlen("Got it"),
     //      MSG_CONFIRM, (const struct sockaddr *) &SenderAddr,
     //           len);
@@ -192,7 +192,7 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
 
 }
 
-#endif
+
 
 /*============================================================================*/
 /* end                                                                        */
