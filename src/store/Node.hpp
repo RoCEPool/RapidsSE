@@ -73,6 +73,9 @@ namespace STORE
     i8   qRegionSize(void);
     void vRegionSize(i8 qRegionSize);
 
+    void vPutHeartbeat(const Heartbeat& xHeartbeat);
+    Heartbeat xGetHeartbeat(void);
+
     Footer* aFooter(void);
   };
   

@@ -2857,7 +2857,39 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* update heartbeat info for a given node                                     */
+/*----------------------------------------------------------------------------*/
+void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
+{
+  Node *pThisNode = AM::pGrid()->pGetNode(iNode);
 
+  if (!pThisNode) {
+    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
+           "Cannot find Node %lld in the cluster"_Stz,
+           iNode);
+  }
+
+  pThisNode->vPutHeartbeat(xHeartbeat);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get heartbeat info for a give noce                                         */
+/*----------------------------------------------------------------------------*/
+Heartbeat AM::xGetHeartbeat(i8 iNode)
+{
+  Node *pThisNode = AM::pGrid()->pGetNode(iNode);
+
+  if (!pThisNode) {
+    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
+           "Cannot find Node %lld in the cluster"_Stz,
+           iNode);
+  }
+
+  return pThisNode->xGetHeartbeat();
+
+}
 
 
 
