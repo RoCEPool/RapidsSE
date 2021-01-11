@@ -5,6 +5,7 @@
 
 namespace BASE { class Socket; } //?
 
+#include <Heartbeat.hpp>
 #include "eNS.h"
 
 namespace STORE
@@ -29,6 +30,8 @@ namespace STORE
     i8 m_qRegionSize;  // last known region size
     i8 m_qFreeSpace;   // last known free space
     i8 m_qFreePercent; // last known free percent
+
+    Heartbeat m_xHeartbeat; // contains heartbeat info
 
     // must be last
     Footer m_xFooter;
