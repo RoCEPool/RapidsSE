@@ -45,16 +45,34 @@ begin
    start | periodic once | stageB
 
   stage stageB on all partitions :
-    range 0 lineitem by lineitem_idx1 " '1994-01-01' >=  '1995-01-01' <"
-    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
-    | project 0 " sum ( l_extendedPrice l_discount * ) "
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 24.0 < <> "
+    | project 0 " as revenue sum ( l_extendedPrice l_discount * ) "
     | stageC
 
   stage stageC on origin :
-    output | sink | stageA
+    project 0 " as revenue2 sum ( revenue ) "
+    | output | sink | stageA
+end;
+/*
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | stageC
+
+  stage stageC on origin :
+    project 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    | output | sink | stageA
 end;
 
-/*
+
 pipeline Query6
 begin
  stage stageA on origin :
