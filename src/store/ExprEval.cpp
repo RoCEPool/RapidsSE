@@ -51,7 +51,9 @@ ExprEval::ExprEval(void)
   m_iStreamInColumns = 0;
   m_uExprEvalColumns = 0;
   //m_sAsmText;
-  
+  m_bHasAgg = false;
+  //m_pStreamInCol;
+
   //_checkInitialised_(CN_EXPREVAL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
@@ -136,7 +138,7 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 /*----------------------------------------------------------------------------*/
 /* add EO code for arithmetic operators                                       */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddArithmetic(Token* pTkn) {
+void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -151,6 +153,10 @@ void ExprEval::vAddArithmetic(Token* pTkn) {
   }
   else if (pTkn->bSame("*"_Stz)) {
     StrLib::vSprintCat(m_sAsmText, "  EO_MULTIPLY\n"_Stz);
+    if (pColumn->eColumnType() == CT_DECIMAL) {
+      StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER 100\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DIVIDE\n"_Stz);
+    }
   }
   else {
     ASSERT(pTkn->bSame("-"_Stz));
@@ -301,6 +307,35 @@ void ExprEval::vAddString(Token* pTkn, Column* pColumnExpr) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for sum                                                        */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddSum(eCT eColumnType, i8 iColumn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_INTEGER:
+    case CT_DECIMAL:
+    case CT_DATE:
+      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_PUSHCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iColumn);
+      break;
+
+    case CT_CHAR:
+    case CT_VARCHAR:
+      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_PUSHCOLS %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iColumn);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect source columns needed for projection                               */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
@@ -309,6 +344,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
 
   eEC eError = EC_NONE;
   Token* pTkn;
+  bool bOpenBraces = false;
 
   for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
 
@@ -366,6 +402,31 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
       // skip if its a date string
       if (pTkn->bIsString())
         i_Tkn++;
+      continue;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame("SUM"_Stz) ) {
+
+      // next token should be (
+      pTkn = pTknVec->pGet(++i_Tkn);
+
+      if ( ! pTkn->bSame("("_Stz) ) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      bOpenBraces = true;
+      continue;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame(")"_Stz) ) {
+
+      // // should have seen a (
+
+      if ( ! bOpenBraces ) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      bOpenBraces = false;
       continue;
     }
 
@@ -429,6 +490,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
   Column *pColumn = nullptr;
   Column *pColumnExpr =  new Column;
   TagSet oTagSet;
+  bool bSum = false;
 
   Token* pTkn = pTknVec->pCurrToken();
 
@@ -443,7 +505,13 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
         vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
 
         // add EO code for pop column
-        vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+        if (bSum) {
+          vAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+          bSum = false;
+          m_bHasAgg = true;
+        }
+        else
+          vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
       }
 
       pColumn = nullptr;
@@ -466,7 +534,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
     // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
-      vAddArithmetic(pTkn);
+      vAddArithmetic(pTkn, pColumn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -534,6 +602,24 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
         pTkn = pTknVec->pPrevToken();
     }
 
+    if (pTkn->bIsName()  && pTkn->bSame("SUM"_Stz) ) {
+
+      bSum = true;
+
+      // skip next token (
+      pTkn = pTknVec->pNextToken();
+      ASSERT(pTkn->bSame("("_Stz));
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame(")"_Stz)) {
+      ASSERT(bSum);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     // found a src column
     Stz *sColumnNm = pTkn->szChars();
 
@@ -569,15 +655,21 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     pTkn = pTknVec->pNextToken();
   }
 
-    i_DstColumn++;
+  i_DstColumn++;
 
-    // discovered a comma, add the column to the streamDefOut
-    if (pStreamDefOut) {
-      vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
+  // discovered a comma, add the column to the streamDefOut
+  if (pStreamDefOut) {
+    vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
 
-      // add EO code for pop column
-      vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+    // add EO code for pop column
+    if (bSum) {
+      vAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+      bSum = false;
+      m_bHasAgg = true;
     }
+    else
+      vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+  }
 
   L_RETURN:
     delete pColumnExpr;

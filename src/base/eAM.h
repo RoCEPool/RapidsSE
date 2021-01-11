@@ -11,6 +11,7 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_FILTER_ROWS,
 
   /*    */ AM_CRW_PROJECT_COLUMNS,
+  /*    */ AM_CRW_PROJECT_COLUMNS_AGG,
   /*    */ AM_CRW_PROJECT_END,
   /*    */ AM_CRW_PROJECT_NONE,
   /*    */ AM_CRW_PROJECT_STAR,
@@ -27,8 +28,10 @@ enum eAM // ASM Macros
   /*    */ AM_DEFAULT_HANDLER_STREAMDEF,
 
   /*    */ AM_HANDLER_CRWBUFFER,
+  /*    */ AM_HANDLER_CRWBUFFER_AGG,
   /*    */ AM_HANDLER_DATAPULSE,
   /*    */ AM_HANDLER_ROWBUFFER,
+  /*    */ AM_HANDLER_ROWBUFFER_AGG,
 
   /*    */ AM_INDEX_EQ,
   /*    */ AM_INDEX_RANGE_LOWER_GT,
@@ -44,6 +47,7 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_FILTER_ROWS,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
+  /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
   /*    */ AM_ROW_PROJECT_END,
   /*    */ AM_ROW_PROJECT_NONE,
   /*    */ AM_ROW_PROJECT_STAR,
@@ -62,6 +66,7 @@ static Stz* aAM[]
     /*    */ "CRW_FILTER_ROWS"_Stz,
 
     /*    */ "CRW_PROJECT_COLUMNS"_Stz,
+    /*    */ "CRW_PROJECT_COLUMNS_AGG"_Stz,
     /*    */ "CRW_PROJECT_END"_Stz,
     /*    */ "CRW_PROJECT_NONE"_Stz,
     /*    */ "CRW_PROJECT_STAR"_Stz,
@@ -77,8 +82,10 @@ static Stz* aAM[]
     /*    */ "DEFAULT_HANDLER_STREAMDEF"_Stz,
 
     /*    */ "HANDLER_CRWBUFFER"_Stz,
+    /*    */ "HANDLER_CRWBUFFER_AGG"_Stz,
     /*    */ "HANDLER_DATAPULSE"_Stz,
     /*    */ "HANDLER_ROWBUFFER"_Stz,
+    /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,
 
     /*    */ "INDEX_EQ"_Stz,
     /*    */ "INDEX_RANGE_LOWER_GT"_Stz,
@@ -94,6 +101,7 @@ static Stz* aAM[]
     /*    */ "ROW_FILTER_ROWS"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
+    /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,
     /*    */ "ROW_PROJECT_END"_Stz,
     /*    */ "ROW_PROJECT_NONE"_Stz,
     /*    */ "ROW_PROJECT_STAR"_Stz,

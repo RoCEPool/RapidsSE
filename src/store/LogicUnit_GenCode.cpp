@@ -2389,8 +2389,6 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   // ROW_FILTER_ROWS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the filter
-  //oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
-  //oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet));
@@ -2400,7 +2398,13 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet));
 
+  u8 uProjectColumns = 0;
+  for (i8 i = 0; i < pStreamDefOut->nTotalColumns(); i++)
+    BitLib::vSetOn(uProjectColumns, i);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet));
+  oTagSet.vReset();
 
   ExprEval* pExprEvalStar = new ExprEval;
   eEC eError = pExprEvalStar->eExprEvalAll(pStreamDefOut);
@@ -2475,11 +2479,19 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   // CRWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
-  if (pExprEval->m_iStreamInColumns)
-    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS"_Stz);
+  if (pExprEval->m_iStreamInColumns) {
+    if (pExprEval->m_bHasAgg)
+      oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS_AGG"_Stz);
+    else
+      oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS"_Stz);
+  }
   else
     oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_NONE"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet));
+
+  if (pExprEval->m_bHasAgg)
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_AGG, &oTagSet));
+  else
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2489,7 +2501,12 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet));
+
+    if (pExprEval->m_bHasAgg)
+      pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS_AGG, &oTagSet));
+    else
+      pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet));
+
     oTagSet.vReset();
   }
   else {
@@ -2503,11 +2520,20 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   // ROWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
-  if (pExprEval->m_iStreamInColumns)
-    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS"_Stz);
+  if (pExprEval->m_iStreamInColumns) {
+    if (pExprEval->m_bHasAgg)
+      oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS_AGG"_Stz);
+    else
+      oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS"_Stz);
+  }
   else
     oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet));
+
+  if (pExprEval->m_bHasAgg)
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG, &oTagSet));
+  else
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet));
+
   oTagSet.vReset();
 
 
@@ -2518,7 +2544,10 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet));
+    if (pExprEval->m_bHasAgg)
+      pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS_AGG, &oTagSet));
+    else
+      pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet));
     oTagSet.vReset();
   }
   else {
