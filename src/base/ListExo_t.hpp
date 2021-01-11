@@ -213,7 +213,7 @@ namespace BASE { template <class ITEM> class ListExoIter_t; }
 namespace BASE
 {
   template <eCN CLASSNO, class ITEM>
-  class ListExo_t : protected ListExo_ABSTRACT
+  class ListExo_t : public ListExo_ABSTRACT
   {
   protected:
 

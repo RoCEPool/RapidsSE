@@ -20,8 +20,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_List(void)
 {
+  vAddStep("List[]"_Stz,              &Step::vListGet);
   vAddStep("List[].addRowBuffer"_Stz, &Step::vListAddRowBuffer);
   vAddStep("List[].delete"_Stz,       &Step::vListDelete);
+  vAddStep("List[].get"_Stz,          &Step::vListGet);
   vAddStep("List[].new"_Stz,          &Step::vListNew);
   vAddStep("List[].print"_Stz,        &Step::vListPrint);
 }
@@ -35,6 +37,22 @@ void Step::vListAddRowBuffer(void)
   
   vTrace("vListAddRowBuffer\n"_Stz);
   
+  RowBuffer* pRowBuffer = _pRowBuffer( m_pDataStack->pPopPtr(__func__) );
+
+  RowSingleList* pRowSingleList = * m_pJob->pLogicUnit_job()->m_xpList;
+
+  for (Row* aRow = pRowBuffer->aFirstRow();
+       aRow;
+       aRow = pRowBuffer->aNextRow(aRow)) {
+
+    RowSingle* pRowSingle =
+      new RowSingle( * m_pJob->pLogicUnit_job()->m_xpStreamDef );
+
+    pRowSingle->vCopyRow(aRow);
+    pRowSingle->vPrintRow();
+
+    pRowSingleList->vAppend(pRowSingle);
+  }
 
   EXIT();
 }
@@ -48,6 +66,23 @@ void Step::vListDelete(void)
   
   vTrace("vListDelete\n"_Stz);
   
+  delete * m_pJob->pLogicUnit_job()->m_xpList;
+
+  m_pJob->pLogicUnit_job()->m_xpList = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* List[].get-- get list                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vListGet(void)
+{
+  ENTRY();
+  
+  vTrace("vListGet\n"_Stz);
+  
+  m_pDataStack->vPushPtr(* m_pJob->pLogicUnit_job()->m_xpList);
 
   EXIT();
 }
@@ -61,6 +96,7 @@ void Step::vListNew(void)
   
   vTrace("vListNew\n"_Stz);
   
+  m_pJob->pLogicUnit_job()->m_xpList = new RowSingleList;
 
   EXIT();
 }
@@ -74,7 +110,18 @@ void Step::vListPrint(void)
   
   vTrace("vListPrint\n"_Stz);
   
+  RowSingleList* pRowSingleList = * m_pJob->pLogicUnit_job()->m_xpList;
 
+
+  ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
+  
+  while (pIter->bHasNext()) {
+    RowSingle* pRowSingle = pIter->pNext();
+    pRowSingle->vPrintRow();
+  }
+  
+  delete pIter;
+  
   EXIT();
 }
 

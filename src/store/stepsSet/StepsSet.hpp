@@ -847,6 +847,7 @@ public:
   // list
   void vListAddRowBuffer(void);
   void vListDelete(void);
+  void vListGet(void);
   void vListNew(void);
   void vListPrint(void);
 
