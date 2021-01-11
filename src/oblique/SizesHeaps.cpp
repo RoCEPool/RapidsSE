@@ -329,6 +329,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RowCompactor),       HT_T_SMALL   ,0 }, // CN_ROWCOMPACTOR
   { sizeof(RowOnce),            HT_T_TINY    ,0 }, // CN_ROWONCE
   { sizeof(RowSingle),          HT_T_MEDIUM  ,0 }, // CN_ROWSINGLE
+  { sizeof(RowSingleList),      HT_T_TINY    ,0 }, // CN_ROWSINGLELIST
   { sizeof(RowTray),            HT_T_LARGE   ,0 }, // CN_ROWTRAY
   { sizeof(RU_Cpu),             HT_INVALID   ,0 }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 }, // CN_RUDIR

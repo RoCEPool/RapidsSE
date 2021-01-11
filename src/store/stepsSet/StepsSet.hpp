@@ -844,6 +844,12 @@ public:
   void vKbaseTrim(void);
   void vKbaseTroll(void);
 
+  // list
+  void vListAddRowBuffer(void);
+  void vListDelete(void);
+  void vListNew(void);
+  void vListPrint(void);
+
   // loader
   void vLoaderCreate(void);
   void vLoaderDelete(void);

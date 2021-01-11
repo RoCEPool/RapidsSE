@@ -2359,7 +2359,7 @@
   begin
 
   stage stageA on origin :
-    start | periodic once | metaScan tables | output | sink | stageA
+    start | periodic once | metaScan tables | rowToList | output | sink | stageA
 
   end ;
   "

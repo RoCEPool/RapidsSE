@@ -105,6 +105,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobRef();
   
+  Step::vAddSteps_List();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
   Step::vAddSteps_LockTracker();

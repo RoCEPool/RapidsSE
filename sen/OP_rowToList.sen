@@ -5,14 +5,20 @@
 " OP_rowToList.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: rowToList_StartMarker \handler
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_STREAMDEF ...                                    DEFINITION */
 /*----------------------------------------------------------------------------*/
 : rowToList_StreamDef \handler
 
-  //"Operand:- ZK_STREAMDEF" .verbose
-  PipeIn[].delete
-
-  streamDef[].newtoCsvStream
+  Pipein[] to StreamDef[]
+  nullptr to PipeIn[]
   streamDef[].pipeOut
 
   true
@@ -23,43 +29,15 @@
 /*----------------------------------------------------------------------------*/
 : rowToList_RowBuffer \handler
 
-  // check for low memory
-  attachMap::isLowMemory if
-    EC_LOW_MEMORY
-    op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
-    true
-    exit
-  then
+  ZK_ROWBUFFER_handler
+;
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITMARKER ...                                         EXIT */
+/*----------------------------------------------------------------------------*/
+: rowToList_ExitMarker \handler
 
-  Operand[].rowToCsv
-  Operand[] to Subset[]
-
-  begin
-    Operand[].isNull
-
-  not while
-
-    assert::stack_0
-
-    // get the next buffer
-    Subset[].nextBuffer to Subset[]
-
-    // now pipeout the Operand
-    Operand[].pipeOut
-
-    // move Subset to Operand
-    Subset[] to Operand[]
-
-    assert::stack_0
-  repeat
-
-  true
+  ZK_EXITMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -74,8 +52,10 @@
 
   op__topology
 
-  find: rowToList_RowBuffer  ZK_ROWBUFFER op[].handler!
-  find: rowToList_StreamDef  ZK_STREAMDEF op[].handler!
+  find: rowToList_ExitMarker  ZK_EXITMARKER  op[].handler!
+  find: rowToList_RowBuffer   ZK_ROWBUFFER   op[].handler!
+  find: rowToList_StartMarker ZK_STARTMARKER op[].handler!
+  find: rowToList_StreamDef   ZK_STREAMDEF   op[].handler!
 
   op__loop
 
@@ -87,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toCsv :: toCsv ;
+cmdSyntax: rowToList :: rowToList ;
 
 : rowToList_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
