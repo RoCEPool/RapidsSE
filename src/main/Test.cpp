@@ -645,10 +645,10 @@ void vTest16(void)
 /*----------------------------------------------------------------------------*/
 
 #define SEAPI() \
+  \
   SeApi* pSeApi = new SeApi; \
   \
   ReqTuple xImmReqTuple("!!Immediate"_Stz,false); \
-  \
   Job* pJob = new Job(&xImmReqTuple); \
   \
   TagSet* pJobTags = pJob->pJobTags(); \
@@ -660,37 +660,56 @@ void vTest16(void)
   pImmTask->vInitExeContext(); \
   \
   LogicUnit* pLogicUnit = new LogicUnit(pImmTask); \
-  pJob->vLogicUnit_job( & pLogicUnit );
+  pJob->vLogicUnit_job(& pLogicUnit);\
+  \
+  RowSingleList* pRowSingleList = nullptr;
   
 
-#define Scan(_szTableNm) \
-  *pSeApi \
-    | pSeApi->pEncode("scan"_Stz,""_Stz)
+#define Scan(_TableNm) \
+    *pSeApi \
+  | pSeApi->pEncode("scan"_Stz,#_TableNm##_Stz)
 
+#define Filter(_szExpr) \
+  pSeApi->pEncode("tbd..."_Stz,"Filter"_Stz)
+
+#define Project(_szExpr) \
+    pSeApi->pEncode("tbd..."_Stz,"Project"_Stz)
+
+#define Sort(_szExpr) \
+    pSeApi->pEncode("tbd..."_Stz,"Sort"_Stz)
 
 #define Into(_pList) \
-  pSeApi->pAdd("rowToList_seapi"_Stz,""_Stz); \
+    pSeApi->pEncode("into"_Stz); \
   \
+  \
+  vTrace("imm %s\n"_Stz,pSeApi->szGet()); \
   pImmTask->m_pDataStack->vPushStz(pSeApi->szGet()); \
   Engine::vCallImmmediate(pImmTask); \
-  RowSingleList* pRowSingleList = \
+  pRowSingleList = \
     (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
 
 
 #define ENDSEAPI() \
-  delete pSeApi;
+  \
+  delete pSeApi; \
+  \
+  if (pRowSingleList) { \
+    pRowSingleList->vDeleteAll(); \
+    delete pRowSingleList; \
+    pRowSingleList = nullptr; \
+  }
+
 
 /*----------------------------------------------------------------------------*/
 /* test17                                                                     */
 /*----------------------------------------------------------------------------*/
-
 void vTest17(void)
 {
   vTrace("Test 17 -- SEAPI macros\n"_Stz);
 
   SEAPI();
     
-  Scan(Tables) | Into(pRowSingleList) ;
+  Scan(Tables) | Into(pRowSingleList);
   
   ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
 
@@ -699,6 +718,8 @@ void vTest17(void)
     pRowSingle->vPrintRow();
   }
 
+  delete pIter;
+  
   ENDSEAPI();
 }
 
