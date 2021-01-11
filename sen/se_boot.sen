@@ -162,6 +162,8 @@ assert::stack_0
         "OP_listTenants.sen"          include
 
 "m" .put
+        "OP_metaScan.sen"             include
+        
 "n" .put
         "OP_nodeInfo.sen"             include
         "OP_noop.sen"                 include
