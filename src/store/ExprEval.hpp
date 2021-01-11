@@ -12,6 +12,7 @@ namespace STORE
     u8      m_uExprEvalColumns;
     s4K     m_sAsmText;
     i8      m_iStreamInColumns;
+    bool    m_bHasAgg;
     Column* m_pStreamInCol[C_MAX_COLUMNS];
 
     // must be last
@@ -28,13 +29,14 @@ namespace STORE
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
   private:
-    void vAddArithmetic(Token*  pTkn);
+    void vAddArithmetic(Token*  pTkn, Column* pColumn);
     eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddDecimal(Token*  pTkn, Column* pColumnExpr);
     void vAddLogical(Token*  pTkn);
     void vAddNumeric(Token*  pTkn, Column* pColumnExpr);
     void vAddRelational(Token*  pTkn);
     void vAddString(Token*  pTkn, Column* pColumnExpr);
+    void vAddSum(eCT eColumnType, i8 iColumn);
     void vAddPopCol(eCT eColumnType, i8 iColumn);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);

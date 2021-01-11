@@ -21,6 +21,29 @@ macro AM_HANDLER_ROWBUFFER
   EO_JMP QUERY_DONE
  endMacro
 
+macro AM_HANDLER_ROWBUFFER_AGG
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_ROWBUFFER_AGG                                             //
+//----------------------------------------------------------------------------//
+  // HANDLER_ROWBUFFER_AGG
+  Label HANDLER_ROWBUFFER
+  EO_PRINTF "**HANDLER_ROWBUFFER**\n"
+  EO_POP
+
+  // new a dst row
+   EO_ROW_DST_NEW
+
+  EO_ROW_SRC_BEGIN
+
+  // NEXT_ROW_SRC
+  Label NEXT_ROW_SRC
+  EO_ROW_SRC_NEXT
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <rowProcessRoutine>
+  EO_JMP NEXT_ROW_SRC
+  EO_JMP QUERY_DONE
+ endMacro
+
 macro AM_ROW_PROJECT_COLUMNS
 //----------------------------------------------------------------------------//
 // macro AM_ROW_PROJECT_COLUMNS                                               //
@@ -31,6 +54,18 @@ macro AM_ROW_PROJECT_COLUMNS
   EO_SET_COLUMNS <projectSrcColumns>
   EO_SET_LOCALS_ROW
   EO_ROW_DST_NEW
+  //EO_DUMP
+endMacro
+
+macro AM_ROW_PROJECT_COLUMNS_AGG
+//----------------------------------------------------------------------------//
+// macro AM_ROW_PROJECT_COLUMNS_AGG                                           //
+//----------------------------------------------------------------------------//
+  // ROW_PROJECT_COLUMNS_AGG
+  Label ROW_PROJECT_COLUMNS_AGG
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMNS <projectSrcColumns>
+  EO_SET_LOCALS_ROW
   //EO_DUMP
 endMacro
 
@@ -50,6 +85,9 @@ macro AM_ROW_PROJECT_STAR
 //----------------------------------------------------------------------------//
   // AM_ROW_PROJECT_STAR
   Label ROW_PROJECT_STAR
+  EO_SET_ITEMS <projectItems>
+  EO_SET_COLUMNS <projectSrcColumns>
+  EO_SET_LOCALS_ROW
   EO_ROW_DST_NEW
 
 endMacro
