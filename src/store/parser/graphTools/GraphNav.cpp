@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "GraphNav.hpp"
 #include "PlanNode.hpp"
+#include "DefinitionNode.hpp"
+#include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
 
 using namespace Parser;
@@ -278,7 +280,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
-      sPath.vConcat(const_cast<Stz*>(C_PROPERTY_SEPARATOR));
+      sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
 
       bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
@@ -299,7 +301,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
-      sPath.vConcat(const_cast<Stz*>(C_CHILD_SEPARATOR));
+      sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
 
       bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
@@ -367,7 +369,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
-      sPath.vConcat(const_cast<Stz*>(C_PROPERTY_SEPARATOR));
+      sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
 
       bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
@@ -388,7 +390,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
 
       // Don't forget to clip the path and add the appropriate separator before each node
       sPath.vClip(nLen);
-      sPath.vConcat(const_cast<Stz*>(C_CHILD_SEPARATOR));
+      sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
 
       bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
@@ -460,8 +462,8 @@ PlanNode* GraphNav::pFind(Stz* szPath, PlanNode* pNode)
     return pResult;
   }
 
-  ASSERT(!szPath->bEqual(const_cast<Stz*>(C_CHILD_SEPARATOR)));
-  ASSERT(!szPath->bEqual(const_cast<Stz*>(C_PROPERTY_SEPARATOR)));
+  ASSERT(!szPath->bEqual(StrLib::szCharToStr(C_CHILD_SEPARATOR)));
+  ASSERT(!szPath->bEqual(StrLib::szCharToStr(C_PROPERTY_SEPARATOR)));
 
   // Compare the leading edge of the path to the name of the current node.
   // To do so, find the next path separator (if any).
@@ -617,6 +619,66 @@ i8 GraphNav::iNextSeparator(Stz* szPath)
   return -1;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Returns the parent node of a given definition node                         */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pGetParent(DefinitionNode* pDefnNode, PlanNode* pRootNode)
+{
+  ASSERT(pDefnNode);
+  ASSERT(pDefnNode->szPath());
+
+  // Get the path of the parent object
+  s2K sParentPathBuf;
+  if (!bParentPath(pDefnNode->szPath(), sParentPathBuf)) {
+    return nullptr;
+  }
+
+  PlanNode* pParentNode = GraphNav::pFind(sParentPathBuf, pRootNode);
+  return pParentNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the parent node of a given primitive node                          */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pGetParent(PrimitiveNode* pPrimNode, PlanNode* pRootNode)
+{
+  ASSERT(pPrimNode);
+  ASSERT(pPrimNode->szPath());
+
+  // Get the path of the parent object
+  s2K sParentPathBuf;
+  if (!bParentPath(pPrimNode->szPath(), sParentPathBuf)) {
+    return nullptr;
+  }
+
+  PlanNode* pParentNode = GraphNav::pFind(sParentPathBuf, pRootNode);
+  return pParentNode;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Given a path, write the parent path to sParentBuf. Return false if there   */
+/* isn't a parent.                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
+{
+  ASSERT(szPath);
+  char* pChar = StrLib::acLast(szPath->azChar());
+
+  while (pChar != szPath->azChar()) {
+    if (*pChar == C_CHILD_SEPARATOR || *pChar == C_PROPERTY_SEPARATOR) {
+
+      i8 nLen = pChar - szPath->azChar(); // not inclusive of last char
+      sParentBuf.vCopy(szPath, nLen);
+      return true;
+    }
+
+    --pChar;
+  }
+
+  return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */

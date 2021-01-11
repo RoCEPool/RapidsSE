@@ -84,6 +84,7 @@ namespace STORE
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
 
+    static void vAddSteps_List(void);
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
     static void vAddSteps_LockTracker(void);
@@ -94,6 +95,7 @@ namespace STORE
 
     static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);
+    static void vAddSteps_MetaTable(void);
     static void vAddSteps_Memory(void);
     static void vAddSteps_Expressions(void);
 

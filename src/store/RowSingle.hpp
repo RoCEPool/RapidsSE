@@ -63,6 +63,8 @@ namespace STORE
   RowSingle* _pRowSingle(void* aAddr);
 
   typedef HV<RowSingle,StreamDef> HV_RowSingle;
+
+  typedef ListExo_t<CN_ROWSINGLELIST, RowSingle> RowSingleList;
 }
 
 /*============================================================================*/

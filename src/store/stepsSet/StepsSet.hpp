@@ -844,6 +844,12 @@ public:
   void vKbaseTrim(void);
   void vKbaseTroll(void);
 
+  // list
+  void vListAddRowBuffer(void);
+  void vListDelete(void);
+  void vListNew(void);
+  void vListPrint(void);
+
   // loader
   void vLoaderCreate(void);
   void vLoaderDelete(void);
@@ -946,6 +952,9 @@ public:
   void vMemoryReset(void);
   void vMemoryStatistics(void);
   void vMemoryWordDump(void);
+
+  // metaTable
+  void vMetaTableListTables(void);
 
   // node (of grid)
   void vNodeForget(void);

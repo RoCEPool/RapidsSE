@@ -13,149 +13,55 @@
   PipeIn[].pipeOut
   Op.ackPipelineJob
   false
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
-/*----------------------------------------------------------------------------*/
-// ": metaScan_CrwBuffer" .
-
-: metaScan_CrwBuffer \handler
-  
-  debug::flag@ if "(Revised) metaScan_CrwBuffer handler" . then
-
-  // read next buffer from ptn stream
-  ptnStream[] ptnStream.read to Operand[]
- 
-  Operand[].isNotNull if
-    // read a next crw buffer
-
-    // pipe out the read crw buffer
-    Operand[].pipeOut
- 
-    // call this handler again to process next buffer
-    true LogicUnit[].callAgain!
- 
-  else
-    // no more crw buffers
- 
-    // close and delete partition stream
-    ptnStream[] ptnStream.close
-    ptnStream[] ptnStream.delete
-    nullptr to ptnStream[]
- 
-    // drop partition lock
-    tablePtn[] tablePtnDropRead
- 
-    // pipe out an eos marker
-    Operand[].newEosMarker
-    Operand[].pipeOut
-
-  then
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
-  // check for rate metering
- 
-  0 locals| rateSecs |
-
-  "<rateSecs>" job[] job.tagSet@ tagSet.hasName if
-    <rateSecs> >int to rateSecs
-  then
-
-  rateSecs if
-    rateSecs "Scan Pausing for %v secs" str.format .
-    rateSecs task::sleepSsec
-    "Scan awake" .
-  then
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-// ": metaScan_DataMarker" .
-
 : metaScan_DataMarker \handler
  
-  debug::flag@ if "(Revised) metaScan_DataMarker handler" . then
-
-  // pipe out the pulse marker
   PipeIn[].pipeOut
-
-  // pipe out a new a stream def
-  Operand[].newStreamDef
+  
+  // pipeout the streamDef
+  streamDef[] to Operand[]
   Operand[].pipeOut
 
-  // grab table ptn read lock
-  tablePtn[] tablePtnGrabRead
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Pot[].new
 
-  // new a partition stream for access crw buffer
-  tablePtn[] ptnStream::new to ptnStream[]
+  MetaTable::listTables
+  
+  Pot[].pipeoutAllCompleted
+  Pot[].pipeoutAllDangling
+  Pot[].delete
 
-  // open partition stream to access the crw buffers
-  ptnStream[] ptnStream.open if
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // force op loop to call metaScan_CrwBuffer to start processing buffers
-    "metaScan_CrwBuffer" word::find LogicUnit[].handler!
-    true LogicUnit[].callAgain!
+  // send an eos marker (there was no data)
+  Operand[].newEosMarker
+  Operand[].pipeOut
 
-  else
-    // unable to open partition stream (this would be unusual)
-
-    // delete partition stream
-    ptnStream[] ptnStream.delete
-    nullptr to ptnStream[]
-
-    // drop table ptn lock
-    tablePtn[] tablePtnDropRead
-
-    // send an eos marker (there was no data)
-    Operand[].newEosMarker
-    Operand[].pipeOut
-
-  then
- 
   true
 ;
-
-//  // -- partition stream test --
-//  tablePtn[] ptnStream::new to ptnStream[]
-//
-//  ptnStream[] ptnStream.open if
-//
-//    begin
-//      ptnStream[] ptnStream.read to Operand[]
-//      Operand[].isNull not
-//    while
-//      Operand[].pipeout
-//    repeat
-//
-//    ptnStream[] ptnStream.close
-//  then
-//
-//  ptnStream[] ptnStream.delete
-//  nullptr to ptnStream[]
-//  // -- end partition stream test --
 
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-// ": metaScan_StartMarker" .
-
 : metaScan_StartMarker \handler
 
-  <metaObjectNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
-    PipeIn[].pipeOut
-  then
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec path[].set
 
-  //args.developer if
-  //  1 debug::flag!
-  //then
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  PipeIn[].pipeOut
 
   true
 ;
@@ -170,8 +76,7 @@
   op__topology
 
   find: metaScan_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: metaScan_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: metaScan_DataMarker  ZK_DATAPULSE  op[].handler!
+  find: metaScan_DataMarker   ZK_DATAPULSE    op[].handler!
   find: metaScan_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
@@ -185,10 +90,14 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: metaScan :: metaScan <metaObjectNm> ;
-cmdSyntax: metaScan :: metaScan <metaObjectNm> <rateSecs> ;
+cmdSyntax: metaScan :: metaScan <metaObjectNm> <metaSubNm> ;
 
 : metaScan_cmdTags _cmdTags tagCopy: op_tags
-  tags{ <cmdDesc> = "--desc for op--" }
+  tags{
+    <cmdDesc>    = "--desc for op--"
+    <streamDef>  = __listContents
+  }
+
 ;
   
 /*============================================================================*/

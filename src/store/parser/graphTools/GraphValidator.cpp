@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "GraphValidator.hpp"
 #include "PlanNode.hpp"
+#include "DefinitionNode.hpp"
 #include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
 #include "QueryNode.hpp"
@@ -185,8 +186,61 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s256
   //    Nothing needed here due to PRIM-4.1.
   //
   // PRIM-6: Validate the children:
-  //    PRIM-6.1: validate that the children field is null.
+  //    PRIM-6.1: validate that the children field is either null or has 1 or more children.
   //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(pNode);
+  RASSERT(pNode->eGetClassNo() == CN_PRIMITIVENODE);
+
+  // PRIM-1: Validate the name field:
+  //    PRIM-1.1: the name field must not be null.
+  RASSERT(pNode->szName());
+  RASSERT(pNode->szName()->nLength() > 0);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-2: Validate the value field:
+  //    PRIM-2.1: the value field must not be null and it contains a string.
+  RASSERT(pNode->getValue().m_pText);
+  RASSERT(pNode->getValue().m_pText->bIsClassNo(CN_TEXT));
+  RASSERT(pNode->getValue().m_bMustFree);
+  RASSERT(pNode->getStringValue());
+  RASSERT(pNode->getStringValue()->nLength());
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-3: Validate the type field:
+  //    PRIM-3.1: validate that the type field is empty.
+  RASSERT(!pNode->szType() ||
+           (
+             pNode->szName()->bEqual(const_cast<Stz*>(C_PRIMITIVES_NAME)) &&
+             pNode->szType()->bEqual(const_cast<Stz*>(C_TRUNK_DEFN_PATH))
+           ) ||
+           (
+              pNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)) &&
+              pNode->szType()->bEqual(const_cast<Stz*>(C_ROOT_DEFN_PATH))
+           )
+         );
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-4: Validate the properties:
+  //    PRIM-4.1: validate that the properties field is null.
+  RASSERT(!pNode->m_pProperties);
+  RASSERT(!pNode->bHasProperties());
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-5: Validate the constraints:
+  //    Nothing needed here due to PRIM-4.1.
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-6: Validate the children:
+  //    PRIM-6.1: validate that the children field is either null or has 1 or more children.
+  RASSERT(!pNode->m_pChildren || pNode->nChildren() > 0);
+
 
   return Parser::GraphNav::WALK_CONTINUE;
 }
@@ -197,10 +251,6 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s256
 /*----------------------------------------------------------------------------*/
 GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
-  // *********************************
-  // Definition Node Validation Rules:
-  // *********************************
-  //
   // DEFN-1: Validate the name field:
   //    DEFN-1.1: the name field must not be null.
   //
@@ -258,7 +308,200 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //
   // DEFN-6: Validate the children:
   //    DEFN-6.1: validate that all children of a given definition node must have unique names.
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  RASSERT(pNode);
+  RASSERT(pNode->eGetClassNo() == CN_DEFINITIONNODE);
+  RASSERT(pvArg);
+
+  PlanNode* pRootNode = (PlanNode*) pvArg;
+  pRootNode->vAssertHeader();
+  RASSERT(pRootNode->eGetClassNo() == CN_ROOTNODE);
+
+  // DEFN-1: Validate the name field:
+  //    DEFN-1.1: the name field must not be null.
+  RASSERT(pNode->szName());
+  RASSERT(pNode->szName()->nLength() > 0);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // DEFN-2: Validate the value field:
+  //    DEFN-2.1: has a non-null string value if the type field is null.
+  if (!pNode->szType()) {
+    RASSERT(
+        pNode->getValue().m_pText &&
+          pNode->getValue().m_pText->eGetClassNo() == CN_TEXT &&
+          pNode->getStringValue() &&
+          pNode->getStringValue()->nLength() > 0
+        );
+
+  } else {
+  //    DEFN-2.2: has a null or non-null value if the type field is not null.
+  // Bit of a noop here
+    RASSERT(pNode->szType()->nLength() > 0);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // DEFN-3: Validate the type field:
+  //    DEFN-3.1: has a null type field when the node is not a direct or indirect property
+  //              of another node.
+  //              i.e., the node is on a direct inheritence path back to /definitions.
+  b1 bIsPropertyPath = sPath.bContains(":"_Stz);
+
+  if (!bIsPropertyPath) {
+    RASSERT(!pNode->szType() || sPath.bEqual(const_cast<Stz*>(C_DEFINITIONS_NAME)));
+  }
+
+  //    DEFN-3.2: has a non-null type field when the node (or any parent above it) is
+  //              a direct or indirect property of a parent node. (i.e., the node is
+  //              on a "property path").
+  if (bIsPropertyPath) {
+    RASSERT(pNode->szType());
+    RASSERT(pNode->szType()->nLength() > 0);
+  }
+
+  //    DEFN-3.3: when the type field is non-null, it must be an absolute path.
+  if (pNode->szType()) {
+    RASSERT(pNode->szType()->bBeginsWith("/"_Stz));
+  }
+
+  //    DEFN-3.4: when the type field is non-null, the path must be resolvable to another
+  //              node in the system.
+  if (pNode->szType()) {
+    PlanNode* pItem = GraphNav::pFind(pNode->szType(), pRootNode);
+    RASSERT(pItem);
+
+    //    DEFN-3.5: when the type field is non-null, the node that it resolves to must be
+    //              another definition or a primitive node.
+    RASSERT(pNode->szType()->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)) ||
+                     pNode->szType()->bBeginsWith(const_cast<Stz*>(C_PRIMITIVES_PATH)) );
+    RASSERT(pItem->eGetClassNo() == CN_DEFINITIONNODE ||
+                     pItem->eGetClassNo() == CN_PRIMITIVENODE);
+  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // DEFN-4: Validate the properties:
+  //    DEFN-4.1: all properties of the node must have a unique name with respect to
+  //              other properties defined for the node.
+  if (pNode->nProperties() > 1) {
+    PlanNodeIter* pIter1 = pNode->pNewPropertyIter();
+
+    while (pIter1->bHasNext()) {
+      PlanNode* pItem1 = pIter1->pNext();
+
+      // Horrible O(N^2) loop
+      PlanNodeIter* pIter2 = pNode->pNewPropertyIter();
+      while (pIter2->bHasNext()) {
+        PlanNode *pItem2 = pIter2->pNext();
+
+        if (pItem1 == pItem2) {
+          continue;
+        }
+
+        RASSERT(!pItem1->szName()->bEqual(pItem2->szName()));
+      }
+      delete pIter2;
+    }
+
+    delete pIter1;
+  }
+
+  //    DEFN-4.2: all properties of the node must have a unique name with respect to
+  //              other properties defined in parent nodes that the current node inherits
+  //              from. The only exception here is the "__constraints__" node.
   //
+  // e.g. node /a/b/c has a property :d. We need to check that there isn't a property named :d
+  // in /a/b or /a either.
+  if (pNode->nProperties() > 1) {
+    PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+
+    while (pPropIter->bHasNext()) {
+      PlanNode* pProp = pPropIter->pNext();
+      Stz* pPropName = pProp->szName();
+
+      if (pPropName->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER))) {
+        // ignore this
+        continue;
+      }
+
+      DefinitionNode* pInheritenceNode = static_cast<DefinitionNode*>(pNode);
+
+      // If the type field is null then we simply need to check up the current inheritance tree.
+      // If the type field is non-null then we need to resolve the type node and check
+      // up that resolved inheritance tree instead.
+      RASSERT(!pNode->szType());
+//      if (pNode->szType()) {
+//        RASSERT(pNode->szType()->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)));
+//        pInheritenceNode = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+//
+//        RASSERT(pInheritenceNode);
+//        RASSERT(pInheritenceNode->eGetClassNo() == CN_DEFINITIONNODE);
+//        RASSERT(!pInheritenceNode->szType());
+//      }
+
+      while (!pInheritenceNode->szPath()->bEqual(const_cast<Stz*>(C_DEFINITIONS_PATH))) {
+        // Get the parent
+        DefinitionNode* pParentDefn = static_cast<DefinitionNode*>(GraphNav::pGetParent(pInheritenceNode, pRootNode));
+        RASSERT(pParentDefn);
+
+        if (pParentDefn->bHasProperties()) {
+
+          // Check the properties of this node to make sure we don't have one with the same name
+          PlanNodeIter *pParentPropIter = pParentDefn->pNewPropertyIter();
+          while (pParentPropIter->bHasNext()) {
+            PlanNode* pParentProp = pParentPropIter->pNext();
+            RASSERT(!pPropName->bEqual(pParentProp->szName()));
+          }
+          delete pParentPropIter;
+        }
+
+        pInheritenceNode = pParentDefn;
+      }
+    }
+
+    delete pPropIter;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // DEFN-5: Validate the constraints:
+  //    DEFN-5.1: any constraints must exist under a node named "__constraints__" which
+  //              itself is a property of the current node.
+  //    DEFN-5.2: if a __constraints__ container exists then it must have 1 or more children.
+  //    DEFN-5.2: validate that if the any of the following constraints exist as children
+  //              under a __constraints__ container, then those constraints must also have
+  //              one child node (being a parameter of the constraint):
+  //                - childType
+  //                - valueType
+  //                - childCount
+  //    DEFN-5.3: if any of the constraints specified in DEFN-5.2 exist, then validate that
+  //              their parameter nodes must have non-null name, type and value fields.
+  //    DEFN-5.4: If the childType constraint is used then validate that its child parameter
+  //              must have a value field that is a path that can be resolved to another
+  //              definition node.
+  //    DEFN-5.5: If the valueType constraint is used then validate that its child parameter
+  //              must have a value field that is a path that can be resolved to another
+  //              definition node, and that that path is a subclass of valueObject.
+  //    DEFN-5.6: validate that the following combinations of constraints cannot be applied
+  //              in the __constraints__ container for a given object:
+  //                - (noChildren/alwaysChildren),
+  //                - (nullable/nonnullable),
+  //                - (optional/mandatory)
+  //    DEFN-5.7: validate that the constraints combinations specified in DEFN-5.6 cannot occur
+  //              with any constraints inherited by the current node.
+  //    DEFN-5.8: validate that the same constraint cannot be specified more than once
+  //              in the current node.
+  //    DEFN-5.9: validate that the same constraint cannot be specified more than once
+  //              when considering all inherited constraints of the current node.
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // DEFN-6: Validate the children:
+  //    DEFN-6.1: validate that all children of a given definition node must have unique names.
 
 
 

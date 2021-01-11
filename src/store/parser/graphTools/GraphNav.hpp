@@ -7,6 +7,8 @@
 namespace Parser
 {
   class PlanNode;
+  class DefinitionNode;
+  class PrimitiveNode;
 
   class GraphNav
   {
@@ -84,6 +86,12 @@ namespace Parser
     // it if found. Otherwise returns nullptr.
     static PlanNode* pFindChild(Stz* szChildName, PlanNode* pNode);
 
+    // Returns the parent node of a given definition node
+    static PlanNode* pGetParent(DefinitionNode* pDefnNode, PlanNode* pRootNode);
+
+    // Returns the parent node of a given primitive node
+    static PlanNode* pGetParent(PrimitiveNode* pDefnNode, PlanNode* pRootNode);
+
   private:
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                     std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
@@ -93,6 +101,10 @@ namespace Parser
                             void* pvArg, s256& sPath, i8 iDepth);
 
     static i8 iNextSeparator(Stz* szPath);
+
+    // Given a path, write the parent path to sParentBuf. Return false if there
+    // isn't a parent.
+    static b1 bParentPath(Stz* szPath, s2K& sParentBuf);
   };
 
   GraphNav* _pGraphNav(void* aAddr);

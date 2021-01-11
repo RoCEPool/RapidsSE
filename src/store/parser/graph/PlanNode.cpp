@@ -89,17 +89,26 @@ PlanNode::~PlanNode(void)
 
 /*----------------------------------------------------------------------------*/
 /* Get the name of this PlanNode                                              */
+/* Returns null if the name is empty.                                         */
 /*----------------------------------------------------------------------------*/
 Stz* PlanNode::szName()
 {
+  if (m_sName.nLength() == 0) {
+    return nullptr;
+  }
   return m_sName.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get the hierarchical path of type of PlanNode this instance represents     */
+/* Get the hierarchical path of type of PlanNode this instance represents.    */
+/* Returns null if the type is empty.                                         */
 /*----------------------------------------------------------------------------*/
 Stz* PlanNode::szType()
 {
+  if (m_sType.nLength() == 0) {
+    return nullptr;
+  }
+
   return m_sType.szStz();
 }
 

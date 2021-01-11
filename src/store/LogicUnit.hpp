@@ -73,33 +73,34 @@ namespace STORE
 
     REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
   
-    REG<CrwToRow>    m_xpCrwToRow;
-    REG<Index>       m_xpIndex;
-    REG<IndexDef>    m_xpIndexDef;
-    REG<IndexStream> m_xpIndexStream;
-    REG<IndexTree>   m_xpIndexTree;
-    REG<Operand>     m_xpInfoSet;
-    REG<Table>       m_xpInfoSetTable;
-    REG<LogicCompiler> m_xpLogicCompiler;
-    REG<Operand>     m_xpPipein;    // Pipein
-    REG<PathIdentifier>     m_xpPathIdentifier;
-    REG<Pot>         m_xpPot;
-    REG<PtnStream>   m_xpPtnStream;
-    REG<Row>         m_xpRow;
-    REG<RowOnce>     m_xpRowOnce;
-    REG<StreamDef>   m_xpStreamDef;     // maybe rename this to stream def in ?
-    REG<StreamDef>   m_xpStreamDefOut;
-    REG<Operand>     m_xpStreamSet;
-    REG<Table>       m_xpStreamSetTable;
-    REG<Operand>     m_xpSubset;
-    REG<Table>       m_xpTable;
-    REG<TablePtn>    m_xpTablePtn;
-    REG<ToHshCrw>    m_xpToHshCrw;
-    REG<ToNstRow>    m_xpToNstRow;
-    REG<ToPtnRow>    m_xpToPtnRow;
-    REG<ToRow>       m_xpToRow;
-    REG<Tx>          m_xpTx;
-    REG<Xmits>       m_xpXmits;     // consume xmits
+    REG<CrwToRow>       m_xpCrwToRow;
+    REG<Index>          m_xpIndex;
+    REG<IndexDef>       m_xpIndexDef;
+    REG<IndexStream>    m_xpIndexStream;
+    REG<IndexTree>      m_xpIndexTree;
+    REG<Operand>        m_xpInfoSet;
+    REG<Table>          m_xpInfoSetTable;
+    REG<RowSingleList>  m_xpList;
+    REG<LogicCompiler>  m_xpLogicCompiler;
+    REG<Operand>        m_xpPipein;    // Pipein
+    REG<PathIdentifier> m_xpPathIdentifier;
+    REG<Pot>            m_xpPot;
+    REG<PtnStream>      m_xpPtnStream;
+    REG<Row>            m_xpRow;
+    REG<RowOnce>        m_xpRowOnce;
+    REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
+    REG<StreamDef>      m_xpStreamDefOut;
+    REG<Operand>        m_xpStreamSet;
+    REG<Table>          m_xpStreamSetTable;
+    REG<Operand>        m_xpSubset;
+    REG<Table>          m_xpTable;
+    REG<TablePtn>       m_xpTablePtn;
+    REG<ToHshCrw>       m_xpToHshCrw;
+    REG<ToNstRow>       m_xpToNstRow;
+    REG<ToPtnRow>       m_xpToPtnRow;
+    REG<ToRow>          m_xpToRow;
+    REG<Tx>             m_xpTx;
+    REG<Xmits>          m_xpXmits;     // consume xmits
     
     REG<AggTimer>    m_xpAggTimer;  // aggregate timer
     REG<Now>         m_xpNow;       // now

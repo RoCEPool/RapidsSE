@@ -32,17 +32,17 @@
     {
       name: "primitives",
       value: "Contains all of the apriori information about definitions",
-      type: "/__root__/primitives/branch",
+      type: "/__root__/primitives/trunk",
       children: [
 // Path: /__root__/primitives/root
         {
           name: "root",
           value: "A definition for the root node of the graph, /",
         },
-// Path: /__root__/primitives/branch
+// Path: /__root__/primitives/trunk
         {
-          name: "branch",
-          value: "A definition for basic branch node of the graph, /plan, /definitions, etc",
+          name: "trunk",
+          value: "A definition for a major branch node of the graph, /plan, /definitions, etc",
         },
 // Path: /__root__/primitives/types
         {
@@ -155,7 +155,7 @@
     {
       name: "definitions",
       value: "A container of all definitions",
-      type: "/__root__/primitives/branch",
+      type: "/__root__/primitives/trunk",
       children: [
 // Path: /__root__/definitions/object
         {
@@ -501,7 +501,7 @@
                             children: [{
                               name: "valueTypeParam",
                               value: "/__root__/primitives/types/scalarType/integer",
-                              type: "/__root__/definitions/object/valueObject/integerObject"
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -520,7 +520,7 @@
                             children: [{
                               name: "valueTypeParam",
                               value: "/__root__/primitives/types/scalarType/float",
-                              type: "/__root__/definitions/object/valueObject/floatObject"
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -558,7 +558,7 @@
                             children: [{
                               name: "valueTypeParam",
                               value: "/__root__/primitives/types/scalarType/boolean",
-                              type: "/__root__/definitions/object/valueObject/booleanObject"
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -577,7 +577,7 @@
                             children: [{
                               name: "valueTypeParam",
                               value: "/__root__/primitives/types/scalarType/date",
-                              type: "/__root__/definitions/object/valueObject/dateObject"
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -596,7 +596,7 @@
                             children: [{
                               name: "valueTypeParam",
                               value: "/__root__/primitives/types/scalarType/time",
-                              type: "/__root__/definitions/object/valueObject/timeObject"
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -615,7 +615,7 @@
                             children: [{
                               name: "valueTypeParam",
                               value: "/__root__/primitives/types/scalarType/timestamp",
-                              type: "/__root__/definitions/object/valueObject/timestampObject"
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -634,7 +634,7 @@
                             children: [{
                               name: "valueTypeParam",
                               value: "/__root__/primitives/types/scalarType/interval",
-                              type: "/__root__/definitions/object/valueObject/intervalObject"
+                              type: "/__root__/definitions/object/valueObject/stringObject"
                             }]
                           }
                         ]}
@@ -1231,10 +1231,10 @@
                 // Add a constraint that the children of a plan node must be a single statement node
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
-                    { name: "", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/statement" }
+                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/statement" }
                   ]},
                   { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
-                    { name: "", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }
+                    { name: "childCountParam", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }
                   ]}
                 ]}
               ]
@@ -1243,9 +1243,6 @@
         }, // EndPath: /__root__/definitions/object
 
 // TODO Path: /__root__/definitions/enums
-        {
-
-        } // EndPath: /__root__/definitions/enums
       ]
     }, // EndPath: /__root__/definitions
 
@@ -1263,7 +1260,7 @@
 // Path: /__root__/metadata
     {
       name: "metadata",
-      type: "/__root__/primitives/branch",
+      type: "/__root__/primitives/trunk",
       children: [
         // Note: Children will get populated when a query is being plannned.
       ]
@@ -1273,7 +1270,7 @@
 // Path: /__root__/statistics
     {
       name: "statistics",
-      type: "/__root__/primitives/branch",
+      type: "/__root__/primitives/trunk",
       children: [
         // Note: Children will get populated when a query is being plannned.
       ]
