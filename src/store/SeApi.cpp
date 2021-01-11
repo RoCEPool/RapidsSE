@@ -63,6 +63,23 @@ SeApi* SeApi::pAdd(Stz* szOpNm, Stz* szOpArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode                                                                     */
+/*----------------------------------------------------------------------------*/
+SeApi* SeApi::pEncode(Stz* szAction, Stz* szArgument)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+  
+  if (szAction->bSame("scan"_Stz)) {
+    pAdd("metaScan_seapi"_Stz,""_Stz);
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get sequence                                                               */
 /*----------------------------------------------------------------------------*/
 Stz* SeApi::szGet(void)

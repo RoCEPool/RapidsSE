@@ -24,6 +24,7 @@ namespace STORE
     SeApi& operator |(SeApi* pArg);
 
     SeApi* pAdd(Stz* szOpNm, Stz* szOpArg);
+    SeApi* pEncode(Stz* szAction, Stz* szArgument);
 
     Stz*   szGet(void);
 

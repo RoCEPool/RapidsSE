@@ -643,9 +643,6 @@ void vTest16(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test17                                                                     */
-/*----------------------------------------------------------------------------*/
-
 
 #define SEAPI() \
   SeApi* pSeApi = new SeApi; \
@@ -668,12 +665,13 @@ void vTest16(void)
 
 #define Scan(_szTableNm) \
   *pSeApi \
-    | pSeApi->pAdd("metascan"_Stz,""_Stz)
+    | pSeApi->pEncode("scan"_Stz,""_Stz)
 
 
 #define Into(_pList) \
-  pSeApi->pAdd("into"_Stz,""_Stz); \
-  pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz); \
+  pSeApi->pAdd("rowToList_seapi"_Stz,""_Stz); \
+  \
+  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet()); \
   Engine::vCallImmmediate(pImmTask); \
   RowSingleList* pRowSingleList = \
     (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
@@ -681,6 +679,10 @@ void vTest16(void)
 
 #define ENDSEAPI() \
   delete pSeApi;
+
+/*----------------------------------------------------------------------------*/
+/* test17                                                                     */
+/*----------------------------------------------------------------------------*/
 
 void vTest17(void)
 {
@@ -698,21 +700,6 @@ void vTest17(void)
   }
 
   ENDSEAPI();
-
-  
-  /*
-  // Craig:
-  
-  Scan("tables") | Filter("...") | Project ("...") | Sort() | Into(CraigsList);
-  
-  ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
-  
-  while (pIter->bHasNext()) {
-    RowSingle* pRowSingle = pIter->pNext();
-    pRowSingle->vPrintRow();
-  }
-
-  */
 }
 
 /*----------------------------------------------------------------------------*/
