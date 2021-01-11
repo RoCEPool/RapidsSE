@@ -5,6 +5,38 @@
 " OP_metaScan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* support for seapi immediate                                                */
+/*----------------------------------------------------------------------------*/
+: metaScan_seapi
+
+  "metaScan_seapi" .
+  
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec path[].set
+
+  // find the __ table
+  "__listContents" op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  // -- -- -- -- -- --
+  
+  Pot[].new
+
+  MetaTable::listTables
+
+  Pot[].pushBuffer
+
+  Pot[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
 : metaScan_CancelMarker \handler

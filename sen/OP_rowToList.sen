@@ -5,9 +5,30 @@
 " OP_rowToList.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* support for seapi immediate                                                */
+/*----------------------------------------------------------------------------*/
+: rowToList_seapi
+
+  "rowToList_seapi" .
+  
+  List[].new
+
+  List[].addRowBuffer
+  
+  List[]
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : rowToList_StartMarker \handler
+
+  List[].new
 
   ZK_STARTMARKER_handler
 ;
@@ -18,8 +39,8 @@
 : rowToList_StreamDef \handler
 
   Pipein[] to StreamDef[]
-  nullptr to PipeIn[]
-  streamDef[].pipeOut
+  
+  PipeIn[].pipeOut
 
   true
 ;
@@ -29,13 +50,24 @@
 /*----------------------------------------------------------------------------*/
 : rowToList_RowBuffer \handler
 
-  ZK_ROWBUFFER_handler
+  Pipein[] to Operand[]
+  nullptr to Pipein[]
+
+  operand[] List[].addRowBuffer
+
+  Operand[].pipeOut
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_EXITMARKER ...                                         EXIT */
 /*----------------------------------------------------------------------------*/
 : rowToList_ExitMarker \handler
+
+  List[].print
+
+  List[].delete
 
   ZK_EXITMARKER_handler
 ;

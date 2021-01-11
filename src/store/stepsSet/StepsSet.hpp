@@ -847,6 +847,7 @@ public:
   // list
   void vListAddRowBuffer(void);
   void vListDelete(void);
+  void vListGet(void);
   void vListNew(void);
   void vListPrint(void);
 
@@ -1078,6 +1079,7 @@ public:
   void vPotDanglingPtn(void);
   void vPotDelete(void);
   void vPotNew(void);
+  void vPotPushBuffer(void);
   void vPotUseStreamDefOut(void);
 
   // procedure

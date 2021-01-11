@@ -204,7 +204,7 @@ void RowSingle::vCopyRow(Row* pRow)
       Stz* szValue = pRow->szColVal_ofs(i_Col);
       vDepositColVal(i_Col,szValue);
       
-      vTrace("Deposit: %s\n"_Stz,szValue);
+      //vTrace("Deposit: %s\n"_Stz,szValue);
       continue;
     }
     
