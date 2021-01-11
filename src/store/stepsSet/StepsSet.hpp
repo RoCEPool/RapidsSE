@@ -947,6 +947,9 @@ public:
   void vMemoryStatistics(void);
   void vMemoryWordDump(void);
 
+  // metaTable
+  void vMetaTableListTables(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeIP(void);

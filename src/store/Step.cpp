@@ -113,6 +113,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
+  Step::vAddSteps_MetaTable();
   Step::vAddSteps_Memory();
   Step::vAddSteps_Expressions();
 

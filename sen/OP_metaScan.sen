@@ -25,6 +25,18 @@
   // pipeout the streamDef
   streamDef[].pipeOut
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Pot[].new
+
+  MetaTable::listTables
+  
+  Pot[].pipeoutAllCompleted
+  Pot[].pipeoutAllDangling
+  Pot[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // send an eos marker (there was no data)
   Operand[].newEosMarker
   Operand[].pipeOut
