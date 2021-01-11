@@ -39,10 +39,14 @@ void Step::vMetaTableListTables(void)
   bool bNewBuffer;
   RowBuffer* pRowBuffer = nullptr;
   
-  Row* aRow = pPot->aNewDstRow(0,&pRowBuffer,&bNewBuffer);
-
-  pRowBuffer->vDepositColVal(0,"*test*"_Stz);
   
+  Dic* pDic = m_oDicStack.pTop();
+  Word* pWord = nullptr;
+  while ( (pWord = pDic->pEachWord(pWord)) ) {
+    Row* aRow = pPot->aNewDstRow(0,&pRowBuffer,&bNewBuffer);
+    pRowBuffer->vDepositColVal(0,pWord->szWordNm());
+  }
+
   EXIT();
 }
 
