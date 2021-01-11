@@ -185,8 +185,61 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s256
   //    Nothing needed here due to PRIM-4.1.
   //
   // PRIM-6: Validate the children:
-  //    PRIM-6.1: validate that the children field is null.
+  //    PRIM-6.1: validate that the children field is either null or has 1 or more children.
   //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(pNode);
+  RASSERT(pNode->eGetClassNo() == CN_PRIMITIVENODE);
+
+  // PRIM-1: Validate the name field:
+  //    PRIM-1.1: the name field must not be null.
+  RASSERT(pNode->szName());
+  RASSERT(pNode->szName()->nLength() > 0);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-2: Validate the value field:
+  //    PRIM-2.1: the value field must not be null and it contains a string.
+  RASSERT(pNode->getValue().m_pText);
+  RASSERT(pNode->getValue().m_pText->bIsClassNo(CN_TEXT));
+  RASSERT(pNode->getValue().m_bMustFree);
+  RASSERT(pNode->getStringValue());
+  RASSERT(pNode->getStringValue()->nLength());
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-3: Validate the type field:
+  //    PRIM-3.1: validate that the type field is empty.
+  RASSERT(!pNode->szType() ||
+           (
+             pNode->szName()->bEqual(const_cast<Stz*>(C_PRIMITIVES_NAME)) &&
+             pNode->szType()->bEqual(const_cast<Stz*>(C_TRUNK_DEFN_PATH))
+           ) ||
+           (
+              pNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)) &&
+              pNode->szType()->bEqual(const_cast<Stz*>(C_ROOT_DEFN_PATH))
+           )
+         );
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-4: Validate the properties:
+  //    PRIM-4.1: validate that the properties field is null.
+  RASSERT(!pNode->m_pProperties);
+  RASSERT(!pNode->bHasProperties());
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-5: Validate the constraints:
+  //    Nothing needed here due to PRIM-4.1.
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PRIM-6: Validate the children:
+  //    PRIM-6.1: validate that the children field is either null or has 1 or more children.
+  RASSERT(!pNode->m_pChildren || pNode->nChildren() > 0);
+
 
   return Parser::GraphNav::WALK_CONTINUE;
 }

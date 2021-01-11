@@ -96,10 +96,15 @@ Stz* PlanNode::szName()
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get the hierarchical path of type of PlanNode this instance represents     */
+/* Get the hierarchical path of type of PlanNode this instance represents.    */
+/* Returns null if the type is empty.                                         */
 /*----------------------------------------------------------------------------*/
 Stz* PlanNode::szType()
 {
+  if (m_sType.nLength() == 0) {
+    return nullptr;
+  }
+
   return m_sType.szStz();
 }
 

@@ -29,8 +29,9 @@ namespace Parser
   static const Stz* C_STRING_OBJ_DEFN = "/definitions/object/valueObject/stringObject"_Stz;
   static const Stz* C_STRING_OBJ_DEFN_NONNULL = "/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
 
-  static const Stz* C_ROOT_DEFN_PATH = "/__root__/primitives/root"_Stz;
-  
+  static const Stz* C_ROOT_DEFN_PATH  = "/__root__/primitives/root"_Stz;
+  static const Stz* C_TRUNK_DEFN_PATH = "/__root__/primitives/trunk"_Stz;
+
   static const Stz* C_ROOT_CHILDREN_NAMES[] = { C_PRIMITIVES_NAME,
                                                 C_DEFINITIONS_NAME,
                                                 C_PLAN_NAME,
