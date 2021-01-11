@@ -23,7 +23,8 @@
   PipeIn[].pipeOut
   
   // pipeout the streamDef
-  streamDef[].pipeOut
+  streamDef[] to Operand[]
+  Operand[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
