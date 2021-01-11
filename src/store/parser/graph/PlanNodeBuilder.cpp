@@ -66,6 +66,8 @@ PlanNode* PlanNodeBuilder::pBuild(void)
     vSetPath(sParentPath);
   }
 
+  RASSERT(m_sName.nLength() > 0);
+
   // Create the properties and children first.
   PlanNodeList *pPropertiesList = pBuildList(m_pProperties);
   PlanNodeList *pChildrenList   = pBuildList(m_pChildren);
