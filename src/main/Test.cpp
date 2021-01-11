@@ -645,8 +645,61 @@ void vTest16(void)
 /*----------------------------------------------------------------------------*/
 /* test17                                                                     */
 /*----------------------------------------------------------------------------*/
+
+
+#define SEAPI() \
+  SeApi* pSeApi = new SeApi; \
+  \
+  ReqTuple xImmReqTuple("!!Immediate"_Stz,false); \
+  \
+  Job* pJob = new Job(&xImmReqTuple); \
+  \
+  TagSet* pJobTags = pJob->pJobTags(); \
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz); \
+  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz); \
+  pJob->vSeed(SS_SEED_RUN); \
+  \
+  Task* pImmTask = AM::pTaskNew(pJob); \
+  pImmTask->vInitExeContext(); \
+  \
+  LogicUnit* pLogicUnit = new LogicUnit(pImmTask); \
+  pJob->vLogicUnit_job( & pLogicUnit );
+  
+
+#define Scan(_szTableNm) \
+  *pSeApi \
+    | pSeApi->pAdd("metascan"_Stz,""_Stz)
+
+
+#define Into(_pList) \
+  pSeApi->pAdd("into"_Stz,""_Stz); \
+  pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz); \
+  Engine::vCallImmmediate(pImmTask); \
+  RowSingleList* pRowSingleList = \
+    (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
+
+
+#define ENDSEAPI() \
+  delete pSeApi;
+
 void vTest17(void)
 {
+  vTrace("Test 17 -- SEAPI macros\n"_Stz);
+
+  SEAPI();
+    
+  Scan(Tables) | Into(pRowSingleList) ;
+  
+  ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
+
+  while (pIter->bHasNext()) {
+    RowSingle* pRowSingle = pIter->pNext();
+    pRowSingle->vPrintRow();
+  }
+
+  ENDSEAPI();
+
+  
   /*
   // Craig:
   
