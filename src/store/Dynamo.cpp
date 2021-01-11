@@ -571,7 +571,8 @@ bool Dynamo::bCollectEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("end"_Stz));
+  if ( ! m_pTkn->bSame("end"_Stz) )
+    return false;
   
 #ifdef WITH_TRACE_DYNAMO
   vTrace("End recognised\n"_Stz);
