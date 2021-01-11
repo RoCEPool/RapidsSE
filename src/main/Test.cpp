@@ -14,6 +14,7 @@
 #include "TagConstants.h"
 
 #include "Engine.hpp"
+#include "SeApi.hpp"
 
 #include "TpchRatios.h"
 
@@ -468,7 +469,7 @@ void vTest11(void)
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
-  vTrace("Test 12 -- seriies of | operators\n"_Stz);
+  vTrace("Test 12 -- series of | operators\n"_Stz);
   
   Text* pText1 = new Text("1"_Stz);
   Text* pText2 = new Text("2"_Stz);
@@ -488,16 +489,60 @@ void vTest12(void)
 /*----------------------------------------------------------------------------*/
 void vTest13(void)
 {
-  vTrace("Test 13 -- not implemented\n"_Stz);
+  vTrace("Test 13 -- SeApi | operators series test\n"_Stz);
+  
+  SeApi* pSeApi = new SeApi;
+
+  *pSeApi
+    | pSeApi->pAdd("op0"_Stz,"arg0"_Stz)
+    | pSeApi->pAdd("op1"_Stz,"arg1"_Stz)
+    | pSeApi->pAdd("op2"_Stz,"arg2"_Stz)
+  ;
+  
+  vTrace("SeApi %s\n"_Stz,pSeApi->szGet());
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* test14                                                                     */
+/* test14 -- API for Compiler calls >interpret                                */
 /*----------------------------------------------------------------------------*/
 void vTest14(void)
 {
-  vTrace("Test 14 -- not implemented\n"_Stz);
+  vTrace("Test 14 -- API for Compiler calls >interpret\n"_Stz);
+  
+  Timer oTimer;
+  oTimer.vStart();
+  
+  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
+
+  Job* pJob = new Job(&xImmReqTuple);
+
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  //pJobTags->vDumpSet();
+  pJob->vSeed(SS_SEED_RUN);
+
+  
+  Task* pImmTask = AM::pTaskNew(pJob);
+  pImmTask->vInitExeContext();
+  
+  
+  
+  SeApi* pSeApi = new SeApi;
+  *pSeApi
+    | pSeApi->pAdd("."_Stz,"1 1 +"_Stz);
+
+  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
+  
+  Engine::vCallImmmediate(pImmTask);
+
+  Engine::vDeleteImmmediate(&pImmTask);
+  
+  delete pSeApi;
+
+  oTimer.vUpdate();
+  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -505,8 +550,41 @@ void vTest14(void)
 /*----------------------------------------------------------------------------*/
 void vTest15(void)
 {
-  vTrace("Test 15 -- not implemented\n"_Stz);
- 
+  vTrace("Test 15 -- API for Compiler calls >interpret\n"_Stz);
+  
+  Timer oTimer;
+  oTimer.vStart();
+  
+  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
+
+  Job* pJob = new Job(&xImmReqTuple);
+
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  //pJobTags->vDumpSet();
+  pJob->vSeed(SS_SEED_RUN);
+
+  
+  Task* pImmTask = AM::pTaskNew(pJob);
+  pImmTask->vInitExeContext();
+  
+  
+  
+  SeApi* pSeApi = new SeApi;
+  *pSeApi
+    | pSeApi->pAdd("filter_seapi"_Stz,""_Stz);
+
+  pImmTask->m_pDataStack->vPushStz(pSeApi->szGet());
+  
+  Engine::vCallImmmediate(pImmTask);
+
+  Engine::vDeleteImmmediate(&pImmTask);
+  
+  delete pSeApi;
+  
+  oTimer.vUpdate();
+  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/

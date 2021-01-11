@@ -1,0 +1,105 @@
+/*============================================================================*/
+/* OP_metaScan.sen -- Operator meta scan                                      */
+/*============================================================================*/
+
+" OP_metaScan.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: metaScan_CancelMarker \handler
+
+  nullptr to Operand[]
+  PipeIn[].pipeOut
+  Op.ackPipelineJob
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: metaScan_DataMarker \handler
+ 
+  PipeIn[].pipeOut
+  
+  // pipeout the streamDef
+  streamDef[] to Operand[]
+  Operand[].pipeOut
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Pot[].new
+
+  MetaTable::listTables
+  
+  Pot[].pipeoutAllCompleted
+  Pot[].pipeoutAllDangling
+  Pot[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // send an eos marker (there was no data)
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: metaScan_StartMarker \handler
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec path[].set
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] streamDef[].new
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan request                                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: metaScan_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: metaScan_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: metaScan_DataMarker   ZK_DATAPULSE    op[].handler!
+  find: metaScan_StartMarker  ZK_STARTMARKER  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metaScan :: metaScan <metaObjectNm> ;
+cmdSyntax: metaScan :: metaScan <metaObjectNm> <metaSubNm> ;
+
+: metaScan_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc>    = "--desc for op--"
+    <streamDef>  = __listContents
+  }
+
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

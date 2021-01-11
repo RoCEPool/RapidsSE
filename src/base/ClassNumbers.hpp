@@ -213,6 +213,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWCOMPACTOR,
   /* */ CN_ROWONCE,
   /* */ CN_ROWSINGLE,
+  /* */ CN_ROWSINGLELIST,
   /* */ CN_ROWTRAY,
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
@@ -226,6 +227,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__S__,
   /* */ CN_SCHEMA,
+  /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SEPROMPT,
@@ -535,6 +537,7 @@ static Stz* aCN[]
   /* */ "ROWCOMPACTOR"_Stz,         // CN_ROWCOMPACTOR
   /* */ "ROWONCE"_Stz,              // CN_ROWONCE
   /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
+  /* */ "ROWSINGLELIST"_Stz,        // CN_ROWSINGLELIST
   /* */ "ROWTRAY"_Stz,              // CN_ROWTRAY
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
@@ -548,6 +551,7 @@ static Stz* aCN[]
  
   /* */ "_S__"_Stz,                 // CN__S__
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
+  /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT

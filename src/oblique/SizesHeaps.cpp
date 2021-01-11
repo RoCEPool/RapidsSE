@@ -77,6 +77,7 @@
 
 #include "PathIdentifier.hpp"
 
+#include "SeApi.hpp"
 #include "SessionArray.hpp"
 
 #include "ShortCut.hpp"
@@ -328,6 +329,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RowCompactor),       HT_T_SMALL   ,0 }, // CN_ROWCOMPACTOR
   { sizeof(RowOnce),            HT_T_TINY    ,0 }, // CN_ROWONCE
   { sizeof(RowSingle),          HT_T_MEDIUM  ,0 }, // CN_ROWSINGLE
+  { sizeof(RowSingleList),      HT_T_TINY    ,0 }, // CN_ROWSINGLELIST
   { sizeof(RowTray),            HT_T_LARGE   ,0 }, // CN_ROWTRAY
   { sizeof(RU_Cpu),             HT_INVALID   ,0 }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 }, // CN_RUDIR
@@ -341,6 +343,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'S' - ('A' - 1),            HT_INVALID   ,0 }, // CN__S__
   { sizeof(Schema),             HT_T_TINY    ,0 }, // CN_SCHEMA
+  { sizeof(SeApi),              HT_T_LARGE   ,0 }, // CN_SEAPI
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT

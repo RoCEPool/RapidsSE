@@ -105,6 +105,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobRef();
   
+  Step::vAddSteps_List();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
   Step::vAddSteps_LockTracker();
@@ -113,6 +114,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
+  Step::vAddSteps_MetaTable();
   Step::vAddSteps_Memory();
   Step::vAddSteps_Expressions();
 

@@ -2340,6 +2340,36 @@
 */
 ;
 
+/*----------------------------------------------------------------------------*/
+/* define procedures                                                          */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Meta" .verbose
+
+: start::defProc_Meta
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // scan tables
+  sPath
+  "
+  procedure scanTables
+  begin
+
+  stage stageA on origin :
+    start | periodic once | metaScan tables | rowToList | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // scanTables ;
+
+
+ ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
