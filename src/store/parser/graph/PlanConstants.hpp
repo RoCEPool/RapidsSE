@@ -6,8 +6,8 @@
 namespace Parser
 {
   // Separators
-  static const Stz* C_PROPERTY_SEPARATOR  = ":"_Stz;
-  static const Stz* C_CHILD_SEPARATOR     = "/"_Stz;
+  static const char C_PROPERTY_SEPARATOR  = ':';
+  static const char C_CHILD_SEPARATOR     = '/';
 
   // Names / identifiers
   static const Stz* C_ROOT_NAME         = "__root__"_Stz;
@@ -16,6 +16,8 @@ namespace Parser
   static const Stz* C_PLAN_NAME         = "plan"_Stz;
   static const Stz* C_METADATA_NAME     = "metadata"_Stz;
   static const Stz* C_STATISTICS_NAME   = "statistics"_Stz;
+
+  static const Stz* C_CONSTRAINTS_CONTAINER = "__constraints"_Stz;
 
   // Paths of nodes
   static const Stz* C_ROOT_PATH         = "/__root__"_Stz;
