@@ -11,8 +11,13 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
-#include "TagConstants.h"
 
+#include "RowOnce.hpp"
+#include "IndexStream.hpp"
+#include "Node_I.hpp"
+#include "LogicUnit.hpp"
+
+#include "TagConstants.h"
 #include "Engine.hpp"
 #include "SeApi.hpp"
 
@@ -592,6 +597,49 @@ void vTest15(void)
 /*----------------------------------------------------------------------------*/
 void vTest16(void)
 {
+  vTrace("Test 16 -- API for Compiler calls >interpret\n"_Stz);
+  
+  Timer oTimer;
+  oTimer.vStart();
+  
+  ReqTuple xImmReqTuple("!!Immediate"_Stz,false);
+
+  Job* pJob = new Job(&xImmReqTuple);
+
+  TagSet* pJobTags = pJob->pJobTags();
+  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace("<seedRun>"_Stz,">interpretImm"_Stz);
+  //pJobTags->vDumpSet();
+  pJob->vSeed(SS_SEED_RUN);
+
+  
+  Task* pImmTask = AM::pTaskNew(pJob);
+  pImmTask->vInitExeContext();
+  
+  LogicUnit* pLogicUnit = new LogicUnit(pImmTask);
+  pJob->vLogicUnit_job( & pLogicUnit );
+
+  pImmTask->m_pDataStack->vPushStz("metaScan_seapi rowToList_seapi"_Stz);
+  
+  Engine::vCallImmmediate(pImmTask);
+
+  RowSingleList* pRowSingleList =
+    (RowSingleList*) pImmTask->m_pDataStack->pPopPtr(__func__);
+  
+  ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
+  
+  while (pIter->bHasNext()) {
+    RowSingle* pRowSingle = pIter->pNext();
+    pRowSingle->vPrintRow();
+  }
+  
+  Engine::vDeleteImmmediate(&pImmTask);
+  
+  delete pIter;
+
+  oTimer.vUpdate();
+  vTrace("duration %lldus\n"_Stz,oTimer.iMicroseconds());
+
 }
 
 /*----------------------------------------------------------------------------*/

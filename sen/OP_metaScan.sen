@@ -11,8 +11,10 @@
 
   "metaScan_seapi" .
   
-  // -- -- -- -- -- --
-  
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec path[].set
+
   // find the __ table
   "__listContents" op__tableDef_streamSet assert
 
@@ -25,12 +27,9 @@
 
   MetaTable::listTables
 
-  // Pot[].pushBuffer
+  Pot[].pushBuffer
 
   Pot[].delete
-  
-  // -- -- -- -- -- --
-
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -49,7 +49,7 @@ void Step::vListAddRowBuffer(void)
       new RowSingle( * m_pJob->pLogicUnit_job()->m_xpStreamDef );
 
     pRowSingle->vCopyRow(aRow);
-    pRowSingle->vPrintRow();
+    //pRowSingle->vPrintRow();
 
     pRowSingleList->vAppend(pRowSingle);
   }

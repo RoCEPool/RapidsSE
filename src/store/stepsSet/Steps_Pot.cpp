@@ -26,6 +26,7 @@ void Step::vAddSteps_Pot(void)
   vAddStep("pot[].danglingPtn"_Stz,     &Step::vPotDanglingPtn);
   vAddStep("pot[].delete"_Stz,          &Step::vPotDelete);
   vAddStep("pot[].new"_Stz,             &Step::vPotNew);
+  vAddStep("pot[].pushBuffer"_Stz,      &Step::vPotPushBuffer);
   vAddStep("pot[].useStreamDefOut"_Stz, &Step::vPotUseStreamDefOut);
 }
 
@@ -122,6 +123,22 @@ void Step::vPotNew(void)
   Pot* pPot = new Pot;
       
   ( m_pJob->pLogicUnit_job() )->m_xpPot = pPot;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pot[].pushBuffer -- push top buffer                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vPotPushBuffer(void)
+{
+  ENTRY();
+  
+  Pot* pPot = *( m_pJob->pLogicUnit_job() )->m_xpPot;
+    
+  DataBuffer* pBuffer = pPot->pDangling(0);
+
+  m_pDataStack->vPushPtr(pBuffer);
 
   EXIT();
 }

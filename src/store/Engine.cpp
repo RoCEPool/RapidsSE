@@ -365,7 +365,7 @@ void Engine::vCallBoot(void)
   pBootTask->vInitExeContext();
   
   LogicUnit* pLogicUnit = new LogicUnit(pBootTask);
-  pJob->vLogicUnit_job(  & pLogicUnit );
+  pJob->vLogicUnit_job( & pLogicUnit );
 
   pBootTask->vAddAxioms();
 

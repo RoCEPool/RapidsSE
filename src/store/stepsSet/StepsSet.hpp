@@ -1079,6 +1079,7 @@ public:
   void vPotDanglingPtn(void);
   void vPotDelete(void);
   void vPotNew(void);
+  void vPotPushBuffer(void);
   void vPotUseStreamDefOut(void);
 
   // procedure

@@ -11,8 +11,6 @@
 
   "rowToList_seapi" .
   
-  // -- -- -- -- -- --
-
   List[].new
 
   List[].addRowBuffer
