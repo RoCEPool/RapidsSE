@@ -77,7 +77,12 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
   m_qRegionSize  = C_UNKNOWN;
   m_qFreeSpace   = C_UNKNOWN;
   m_qFreePercent = C_UNKNOWN;
-
+  
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+#endif
+  
   _checkInitialised_(CN_NODE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
