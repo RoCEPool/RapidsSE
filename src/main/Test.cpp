@@ -647,6 +647,19 @@ void vTest16(void)
 /*----------------------------------------------------------------------------*/
 void vTest17(void)
 {
+  /*
+  // Craig:
+  
+  Scan("tables") | Filter("...") | Project ("...") | Sort() | Into(CraigsList);
+  
+  ListExoIter_t<RowSingle>* pIter = pRowSingleList->pNewIter();
+  
+  while (pIter->bHasNext()) {
+    RowSingle* pRowSingle = pIter->pNext();
+    pRowSingle->vPrintRow();
+  }
+
+  */
 }
 
 /*----------------------------------------------------------------------------*/
