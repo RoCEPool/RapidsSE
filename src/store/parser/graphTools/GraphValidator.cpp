@@ -963,7 +963,7 @@ void GraphValidator::vDefn_4_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 void GraphValidator::vDefn_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
-  // DEFN-5.1: any constraints must exist under a node named "__constraints__" which
+  // DEFN-5.1: any constraints must exist under a node named "__constraints" which
   //           itself is a property of the current node.
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
@@ -1048,7 +1048,7 @@ void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.3: validate that if any of the following constraints exist as children
-  //           under a __constraints__ container, then those constraints must also have
+  //           under a __constraints container, then those constraints must also have
   //           one child node (being a parameter of the constraint):
   //             - childType
   //             - valueType
@@ -1320,12 +1320,12 @@ void GraphValidator::vDefn_5_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
     PlanNode* pConstraint = pConstraintsIter->pNext();
 
     RASSERT(pConstraint->szType());
-    if      (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NOCHILDREN_PATH)))     { bGotNoChildren = true;     }
+    if      (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NOCHILDREN_PATH)))     { bGotNoChildren     = true; }
     else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_ALWAYSCHILDREN_PATH))) { bGotAlwaysChildren = true; }
-    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NULLABLE_PATH)))       { bGotNullable = true;       }
-    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NONNULLABLE_PATH)))    { bGotNonNullable = true;    }
-    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_OPTIONAL_PATH)))       { bGotOptional = true;       }
-    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_MANDATORY_PATH)))      { bGotMandatory = true;      }
+    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NULLABLE_PATH)))       { bGotNullable       = true; }
+    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NONNULLABLE_PATH)))    { bGotNonNullable    = true; }
+    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_OPTIONAL_PATH)))       { bGotOptional       = true; }
+    else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_MANDATORY_PATH)))      { bGotMandatory      = true; }
   }
 
   delete pConstraintsIter;
@@ -1339,36 +1339,65 @@ void GraphValidator::vDefn_5_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
   DefinitionNode* pDefnParent = static_cast<DefinitionNode*>(pNode);
 
-  while (true) {
-    // get the parent node
-    pDefnParent = static_cast<DefinitionNode*>(GraphNav::pGetParent(pDefnParent, pRootNode));
+  // Get the first parent. If we have a non-null type then the first parent is
+  // this resolved type. If the type is null then the first parent is the
+  // the logical parent node of this node.
+  if (pDefnParent->szType()) {
+    pDefnParent = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
 
-    if (!pDefnParent || pDefnParent->szPath()->bEqual(const_cast<Stz*>(C_DEFINITIONS_PATH))) {
-      break;
-    }
+  } else {
+    // No type specified, so it inherits from its parent node
+    pDefnParent = static_cast<DefinitionNode*>(GraphNav::pGetParent(pDefnParent, pRootNode));
+  }
+
+  RASSERT(pDefnParent);
+
+  while (pDefnParent && !pDefnParent->szPath()->bEqual(const_cast<Stz*>(C_DEFINITIONS_PATH))) {
 
     // does this parent node have any constraints?
     PlanNode* pParentConstraints = GraphNav::pFindChild(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pDefnParent);
-    if (!pParentConstraints) {
-      continue;
+
+    if (pParentConstraints) {
+      // Iterate the constraints of the parent node
+      pConstraintsIter = pParentConstraints->pNewChildrenIter();
+
+      while (pConstraintsIter->bHasNext()) {
+        PlanNode *pConstraint = pConstraintsIter->pNext();
+
+        // Check the invalid combinations of constraints
+
+        if (bGotNoChildren &&
+            pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_ALWAYSCHILDREN_PATH))) {
+          RASSERT(0);
+        }
+
+        if (bGotAlwaysChildren &&
+            pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NOCHILDREN_PATH))) {
+          RASSERT(0);
+        }
+
+        if (bGotNullable && pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NONNULLABLE_PATH))) {
+          RASSERT(0);
+        }
+
+        if (bGotNonNullable && pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NULLABLE_PATH))) {
+          RASSERT(0);
+        }
+
+        if (bGotOptional && pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_MANDATORY_PATH))) {
+          RASSERT(0);
+        }
+
+        if (bGotMandatory && pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_OPTIONAL_PATH))) {
+          RASSERT(0);
+        }
+      }
+
+      delete pConstraintsIter;
     }
 
-    // Iterate the constraints of the parent node
-    pConstraintsIter = pParentConstraints->pNewChildrenIter();
-
-    while (pConstraintsIter->bHasNext()) {
-      PlanNode *pConstraint = pConstraintsIter->pNext();
-
-      // Check the invalid combinations
-      if (bGotNoChildren      && pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_ALWAYSCHILDREN_PATH))) { RASSERT(0); }
-      if (bGotAlwaysChildren  && pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NOCHILDREN_PATH)))     { RASSERT(0); }
-      if (bGotNullable        && pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NONNULLABLE_PATH)))    { RASSERT(0); }
-      if (bGotNonNullable     && pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_NULLABLE_PATH)))       { RASSERT(0); }
-      if (bGotOptional        && pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_MANDATORY_PATH)))      { RASSERT(0); }
-      if (bGotMandatory       && pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_OPTIONAL_PATH)))       { RASSERT(0); }
-    }
-
-    delete pConstraintsIter;
+    // get the parent node
+    pDefnParent = static_cast<DefinitionNode*>(GraphNav::pGetParent(pDefnParent, pRootNode));
   }
 }
 
@@ -1381,7 +1410,45 @@ void GraphValidator::vDefn_5_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5.9: validate that the same constraint cannot be specified more than once
   //           in the current node.
 
+  PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
+  if (!pConstraints) {
+    return;
+  }
+
+  if (pConstraints->nChildren() <= 1) {
+    return;
+  }
+
+  PlanNodeIter* pConstraintsIter1 = pConstraints->pNewChildrenIter();
+
+  while (pConstraintsIter1->bHasNext()) {
+    PlanNode* pConstraint1 = pConstraintsIter1->pNext();
+
+    RASSERT(pConstraint1->szType());
+
+    // Iterate the constraints again looking for a second copy of this constraint.
+    // Yes, this is an ugly O(N^2) loop, but it should be small.
+    PlanNodeIter* pConstraintsIter2 = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter2->bHasNext()) {
+      PlanNode* pConstraint2 = pConstraintsIter2->pNext();
+
+      RASSERT(pConstraint2->szType());
+
+      if (pConstraint1 == pConstraint2) {
+        // ignore
+        continue;
+      }
+
+      // Their types should not match
+      RASSERT(!pConstraint1->szType()->bEqual(pConstraint2->szType()));
+    }
+    delete pConstraintsIter2;
+
+
+  }
+  delete pConstraintsIter1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1393,6 +1460,72 @@ void GraphValidator::vDefn_5_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   // DEFN-5.10: validate that the same constraint cannot be specified more than once
   //            when considering all inherited constraints of the current node.
 
+  PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
+
+  if (!pConstraints) {
+    return;
+  }
+
+  if (pConstraints->nChildren() <= 1) {
+    return;
+  }
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  RASSERT_TYPE(pRootNode, CN_ROOTNODE);
+
+  PlanNodeIter* pConstraintsIter = pConstraints->pNewChildrenIter();
+
+  // Iterate each constraint in the target node
+  while (pConstraintsIter->bHasNext()) {
+    PlanNode* pConstraint = pConstraintsIter->pNext();
+
+    RASSERT(pConstraint->szType());
+
+    // Go back through the inheritence tree and check that this constraint hasn't
+    // already been specified.
+    // Note: If the current node has a non-null type then we need to resolve
+    // that type and go back through its tree, not the current node's parent.
+
+    DefinitionNode* pParent;
+
+    // Get the first parent
+    if (pNode->szType()) {
+      // resolve the type first
+      pParent = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+      RASSERT(pParent);
+
+    } else {
+      // No type specified, so it inherits from its parent node
+      DefinitionNode* pCurrentNode = static_cast<DefinitionNode*>(pNode);
+      pParent = static_cast<DefinitionNode*>(GraphNav::pGetParent(pCurrentNode, pRootNode));
+    }
+
+    RASSERT(pParent);
+    RASSERT_TYPE(pParent, CN_DEFINITIONNODE);
+
+    while (!pParent->szPath()->bEqual(const_cast<Stz*>(C_DEFINITIONS_PATH))) {
+
+      // get the constraint container of this node
+      PlanNode* pParentConstraints = GraphNav::pFindChild(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pParent);
+
+      if (pParentConstraints && pConstraints->nChildren() > 0) {
+        // Iterate the constraints of this node and compare to pConstraint->szType() above.
+        // They should not be the same.
+        PlanNodeIter *pParentConstraintIter = pParentConstraints->pNewChildrenIter();
+
+        while (pParentConstraintIter->bHasNext()) {
+          PlanNode *pParentConstraint = pParentConstraintIter->pNext();
+          RASSERT(pParentConstraint->szType());
+          RASSERT(!pParentConstraint->szType()->bEqual(pConstraint->szType()));
+        }
+        delete pParentConstraintIter;
+      }
+
+      // get the next parent
+      pParent = static_cast<DefinitionNode*>(GraphNav::pGetParent(pParent, pRootNode));
+    }
+  }
+  delete pConstraintsIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1403,6 +1536,31 @@ void GraphValidator::vDefn_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-6: Validate the children:
   // DEFN-6.1: validate that all children of a given definition node must have unique names.
 
+  if (pNode->nChildren() <= 1) {
+    return;
+  }
+
+  // Horrible O(N^2) lookup, but there shouldn't be too many children.
+  PlanNodeIter* pChildIter1 = pNode->pNewChildrenIter();
+
+  while (pChildIter1->bHasNext()) {
+    PlanNode* pChild1 = pChildIter1->pNext();
+
+    PlanNodeIter* pChildIter2 = pNode->pNewChildrenIter();
+    while (pChildIter2->bHasNext()) {
+      PlanNode *pChild2 = pChildIter2->pNext();
+
+      if (pChild1 == pChild2) {
+        continue;
+      }
+
+      // Names of the children cannot be the same
+      RASSERT(!pChild1->szName()->bEqual(pChild2->szName()))
+    }
+    delete pChildIter2;
+  }
+
+  delete pChildIter1;
 }
 
 /*============================================================================*/
