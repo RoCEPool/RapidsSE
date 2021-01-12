@@ -1865,7 +1865,7 @@ void Task::vAddMunged(Task* pTask)
     "\n"
     "  sPath\n"
     "  \"\n"
-    "  procedure projection\n"
+    "  procedure projectColumns\n"
     "    parameters $table $etc\n"
     "    begin\n"
     "\n"
