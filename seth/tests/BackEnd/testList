@@ -1,6 +1,8 @@
 filterRows_I.test
 //filterRows.test
+
 projectColumns_I.test
-//projectColumns.test
+projectColumns.test
+
 query6_I.test
 //query6.test

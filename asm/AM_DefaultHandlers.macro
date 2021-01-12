@@ -7,7 +7,7 @@ macro AM_DEFAULT_HANDLER_STARTMARKER
 // macro AM_DEFAULT_HANDLER_STARTMARKER                                       //
 //----------------------------------------------------------------------------//
   // STARTMARKER HANDLER
-  Label HANDLER_STARTMARKER_
+  Label HANDLER_STARTMARKER
   EO_PRINTF "**HANDLER_STARTMARKER_**\n"
   EO_POP
   EO_JMP QUERY_DONE

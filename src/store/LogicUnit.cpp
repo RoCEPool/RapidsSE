@@ -1746,13 +1746,27 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SET_COLUMNS: { ArgGet(iArg); // add columns to set
         dLU1(EO_SET_COLUMN, iArg);
         i8 iCol = 0;
+
         for (i8 iBit = 0; iBit < C_BITS_PER_WORD; iBit++) {
-          if (BitLib::bIsOn(iArg, iBit))
+          u8 uBitMap = iArg;
+          i8 iToLeft  = 63 - iBit;
+          i8 iToRight = iBit;
+
+          // strip off upper bits
+          uBitMap <<= iToLeft;
+          uBitMap >>= iToLeft;
+
+          // strip off lower bits
+          uBitMap >>= iToRight;
+
+          // test if given bit is on
+          if (uBitMap) {
             iaColSet[iCol++] = iBit;
+          }
         }
         iaColSet[iCol] = C_UNKNOWN;
       }
-        break;//+endCase
+      break;//+endCase
         
       case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
         dLU1(EO_SET_ITEMS,iArg);

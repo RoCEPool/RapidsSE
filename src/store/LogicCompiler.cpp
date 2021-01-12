@@ -906,6 +906,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  static const i8 C_CRW_FIRSTHEAD = 0x210;"
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n"
+  "\n  #define C_BITS_PER_WORD 64"
   "\n  #define C_MAX_LVL_LEVELS 6"
   "\n  #define C_LOGIC_LOCALS 32"
   "\n  #define C_UNKNOWN -1"
