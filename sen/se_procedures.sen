@@ -1826,7 +1826,7 @@
 
   sPath
   "
-  procedure filterRows
+  procedure filterRows_I
     parameters $table $etc
     begin
 
@@ -1847,7 +1847,28 @@
 
   sPath
   "
-  procedure projectColumns
+  procedure filterRows
+    parameters $table $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | filter 1 $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  sPath
+  "
+  procedure projectColumns_I
     parameters $table $etc
     begin
 
@@ -1867,24 +1888,65 @@
   api::addProcedure
 
   sPath
-    "
-    procedure rangeScan
-      parameters $table $index $etc
-      begin
+  "
+  procedure projectColumns
+    parameters $table $etc
+    begin
 
-      stage stageA on origin :
-        start | periodic once | stageB
+    stage stageA on origin :
+      start | periodic once | stageB
 
-      stage stageB on all partitions :
-        range 0 $table by $index $etc
-        | stageC
+    stage stageB on all partitions :
+      scan $table
+      | project 1 $etc
+      | stageC
 
-      stage stageC on origin :
-        output | sink | stageA
+    stage stageC on origin :
+      output | sink | stageA
 
-    end ;
-    "
-    api::addProcedure
+  end ;
+  "
+  api::addProcedure
+
+  sPath
+  "
+  procedure indexScan_I
+    parameters $table $index $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      range 0 $table by $index $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+   sPath
+  "
+  procedure indexScan
+    parameters $table $index $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      range 1 $table by $index $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
 
   /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

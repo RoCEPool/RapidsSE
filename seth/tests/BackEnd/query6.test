@@ -1,9 +1,23 @@
 --------------------------------------------------------------------------------
--- projection tests
+-- query6 tests
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_discount";
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | stageC
+
+  stage stageC on origin :
+    project 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    | output | sink | stageA
+end;
 failure contains: "no such table"
 
 //------------------------------------------------------------------------------
@@ -35,6 +49,7 @@ rows: 0
 
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
+success
 
 //------------------------------------------------------------------------------
 projectColumns lineitem "l_partkey";
@@ -174,10 +189,10 @@ drop table lineitem;
 success;
 
 CLEANUP {
-  
+
   drop table lineitem;
   mute
-  
+
   bye;
   mute
 }

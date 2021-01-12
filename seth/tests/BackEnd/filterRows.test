@@ -35,6 +35,7 @@ rows: 0
 
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
+success
 
 //------------------------------------------------------------------------------
 filterRows lineitem "l_discount 0.04 >= <>";
