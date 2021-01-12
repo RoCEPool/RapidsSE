@@ -39,6 +39,8 @@
 #include "eTT.h"
 #include "eUK.h"
 
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"

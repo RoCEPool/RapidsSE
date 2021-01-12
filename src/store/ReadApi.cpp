@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Crv.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

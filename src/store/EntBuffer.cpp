@@ -6,6 +6,9 @@
 #include "STORE.h"
 
 
+#include "Crv.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 

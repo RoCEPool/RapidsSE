@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "PtnStream.hpp"
 

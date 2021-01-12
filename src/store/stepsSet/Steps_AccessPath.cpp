@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Arg.hpp"
