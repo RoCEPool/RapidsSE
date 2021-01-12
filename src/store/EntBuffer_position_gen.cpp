@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "EntBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */

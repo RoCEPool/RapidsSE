@@ -59,7 +59,7 @@ private:
   std::atomic<i8> m_atmWrite;
   std::atomic<i8> m_atmRead;
 
-  const size_t m_iMaxSize;
+  const i8 m_iMaxSize;
   bool m_bFull;
 
 public:
@@ -141,7 +141,7 @@ public:
   // Atomic operation here
   bool bTryRead(T& tItem)
   {
-    auto const currentRead= m_atmRead.load(std::memory_order_relaxed);
+    i8 currentRead= m_atmRead.load(std::memory_order_relaxed);
 
     if (currentRead == m_atmWrite.load(std::memory_order_acquire))
     {
@@ -187,12 +187,12 @@ public:
     }
   */
 
-  size_t iMaxSize() const {
+  i8 iMaxSize() const {
     return m_iMaxSize;
   }
 
-  size_t iSize() const {
-    size_t size = m_iMaxSize;
+  i8 iSize() const {
+    i8 size = m_iMaxSize;
 
     i8 iWriteIdx = m_atmWrite.load(std::memory_order_relaxed);
     i8 iReadIdx = m_atmRead.load(std::memory_order_relaxed);
@@ -208,9 +208,9 @@ public:
   }
 
   // For debug only
-  size_t iWriteIdx() const { return m_atmWrite.load(std::memory_order_relaxed);; }//m_iWriteIdx; }
+  i8 iWriteIdx() const { i8 iWriteIdx=m_atmWrite.load(std::memory_order_relaxed); return iWriteIdx; }//m_iWriteIdx; }
 
-  size_t iReadIdx() const { return m_atmRead.load(std::memory_order_relaxed);; } //m_iReadIdx; }
+  i8 iReadIdx() const { i8 iReadIdx = m_atmRead.load(std::memory_order_relaxed); return iReadIdx; } //m_iReadIdx; }
 
 };
 

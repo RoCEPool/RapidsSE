@@ -7,6 +7,14 @@
 
 #include "DEV_interface.h"
 
+#include "EntBuffer.hpp"
+
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+
+#include "Crv.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"

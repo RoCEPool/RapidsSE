@@ -7,6 +7,9 @@
 
 #include "Test.hpp"
 
+#include "EntBuffer.hpp"
+#include "EntBufSorter.hpp"
+
 #include "AM.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

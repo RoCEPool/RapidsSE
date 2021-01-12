@@ -8,6 +8,10 @@
 #include "SP_Key.hpp"
 #include "SP_Ref.hpp"
 
+#include "EntBuffer.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */
 /*----------------------------------------------------------------------------*/

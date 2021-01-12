@@ -5,6 +5,12 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+
+#include "Crv.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
