@@ -290,7 +290,9 @@ cmd::fillOut_allCmds
         "se_defineTables.sen"         include // second last
         "se_start.sen"                include // last last
 
+"BEFORE 0" .
 0 .put
+"AFTER 0" .
 
 .\n
 
