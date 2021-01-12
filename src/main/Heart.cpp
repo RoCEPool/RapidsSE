@@ -25,7 +25,7 @@ extern Stz *gsBuildBranch;
 FILE *gaHearbeatFile = nullptr;
 
 // global
-RingBuffer<Heartbeat> gxHeartbeatBuffer(100); // receiving from network
+RingBuffer<Heartbeat> gxHeartbeatBuffer(1000); // receiving from network
 RingBuffer<Heartbeat> gxHeartbeatData(100); // collect heartbeat data from the system to be sent out
 
 
@@ -184,7 +184,8 @@ void vHeartInit(void) {
     if (gxHeartbeatBuffer.bTryRead(xHeartbeat))  {
 
       // update heartbeat info for the node
-      AM::vPutHeartbeat(xHeartbeat.m_iValue0,xHeartbeat);
+      // m_acString0 is the node name
+      AM::vPutHeartbeat((Stz*)xHeartbeat.m_acString0,xHeartbeat);
 
       tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
       strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
@@ -205,7 +206,7 @@ void vHeartInit(void) {
 
 
       // DEBUG get back the heartbeat
-      Heartbeat xxHeartbeat = AM::xGetHeartbeat(xHeartbeat.m_iValue0);
+      Heartbeat xxHeartbeat = AM::xGetHeartbeat((Stz*)xHeartbeat.m_acString0);
 
       sprintf(azHeartbeat,
 

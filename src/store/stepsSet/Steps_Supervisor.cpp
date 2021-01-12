@@ -66,7 +66,7 @@ void Step::vSupervisorCollectInfo(void)
   // So that if we receive heartbeat from the same node (loopback, broadcast), we can ignore
 
   // NOTE: But for the time being, commented out for testing/debug
-  //AM::vPutHeartbeat(xHeartbeat.m_iValue0, xHeartbeat);
+  //AM::vPutHeartbeat((Stz*)xHeartbeat.m_acString0, xHeartbeat);
   
   EXIT();
 }
