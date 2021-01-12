@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 
+#include "EntBuffer.hpp"
 #include "EntBufSorter.hpp"
 
 /*----------------------------------------------------------------------------*/

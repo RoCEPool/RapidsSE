@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 
+#include "EntBuffer.hpp"
 
 #define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
 

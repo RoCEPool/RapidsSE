@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"

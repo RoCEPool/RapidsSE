@@ -7,6 +7,7 @@
 
 #include "Constants.hpp"
 
+#include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 
 #include "Crv.hpp"

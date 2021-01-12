@@ -39,6 +39,7 @@
 #include "eTT.h"
 #include "eUK.h"
 
+#include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
