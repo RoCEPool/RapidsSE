@@ -11,6 +11,7 @@
 
 #include "ePX.h"
 
+#include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"

@@ -39,6 +39,7 @@
 #include "eTT.h"
 #include "eUK.h"
 
+#include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 

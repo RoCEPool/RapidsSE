@@ -7,6 +7,8 @@
 
 #include "Test.hpp"
 
+#include "SkipRoots.hpp"
+
 #include "EntBuffer.hpp"
 #include "EntBufSorter.hpp"
 

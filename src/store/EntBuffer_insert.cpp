@@ -8,7 +8,7 @@
 #include "SP_Key.hpp"
 #include "SP_Ref.hpp"
 
-#include "EntBuffer.hpp"
+#include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 

@@ -7,7 +7,7 @@
 
 #include "DEV_interface.h"
 
-#include "EntBuffer.hpp"
+#include "SkipRoots.hpp"
 
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"

@@ -40,6 +40,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "EntBufSorter.hpp"
 #include "IndexTree.hpp"
