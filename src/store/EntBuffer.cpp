@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexTree.hpp"
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"

@@ -7,6 +7,8 @@
 
 #include "Constants.hpp"
 
+#include "IndexTree.hpp"
+
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
