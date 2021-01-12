@@ -40,6 +40,7 @@
 
 #include "SizesHeaps.hpp"
 
+#include "EntBufSorter.hpp"
 #include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"

@@ -97,7 +97,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "EntBuffer.hpp"
 
-#include "EntBufSorter.hpp"
+//#include "EntBufSorter.hpp"
 
 //#include "IndexTree.hpp"
 

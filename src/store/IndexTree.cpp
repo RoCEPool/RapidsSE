@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "EntBufSorter.hpp"
+
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
