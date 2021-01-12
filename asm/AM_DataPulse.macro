@@ -11,7 +11,8 @@ macro AM_HANDLER_DATAPULSE
   EO_POP
 
   EO_CALL <dataPulseProcessRoutine>
-  EO_JMP QUERY_DONE
+  EO_EXIT
+  EO_RETURN
 endMacro
 
 macro AM_INDEX_RANGE_LOWER_GE
