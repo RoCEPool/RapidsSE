@@ -534,7 +534,7 @@
                     },
 // Path: /__root__/definitions/object/expr/literal/float
                     {
-                      name: "integer",
+                      name: "float",
                       value: "A float expression literal",
                       properties: [
                         // The value field of an instance of a float literal object must be a float type
