@@ -99,6 +99,7 @@ assert::stack_0
         "OP_chunk.sen"                include
         "OP_compactIdx.sen"           include
         "OP_compactIndexPtn.sen"      include
+        "OP_compilerOpEg.sen"         include
         "OP_connector.sen"            include
         "OP_consume.sen"              include
         "OP_createCatalog.sen"        include

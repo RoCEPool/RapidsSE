@@ -5,7 +5,7 @@
 " se_procedures.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* create related procedures                                                  */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Create" .verbose
@@ -16,6 +16,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create catalog
+  
   sPath
   "
   procedure create catalog
@@ -37,6 +38,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
+  
   sPath
   "
   procedure create index
@@ -61,6 +63,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
+  
   sPath
   "
   procedure create unique index
@@ -86,6 +89,7 @@
 /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
+  
   sPath
   "
   procedure create index
@@ -113,6 +117,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
+  
   sPath
   "
   procedure create unique index
@@ -138,8 +143,10 @@
   "
   api::addProcedure
 */
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create schema
+  
   sPath
   "
   procedure create schema
@@ -161,6 +168,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table
+  
   sPath
   "
   procedure create table
@@ -182,6 +190,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create tenant
+  
   sPath
   "
   procedure create tenant
@@ -203,6 +212,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table as
+  
   sPath
   "
   procedure ctas
@@ -227,6 +237,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // define table
+  
   sPath
   "
   procedureLocal define table
@@ -243,6 +254,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete
+  
   sPath
   "
   procedure delete
@@ -265,7 +277,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* drop related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Drop" .verbose
@@ -276,6 +288,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact index
+  
   sPath
   "
   procedure compact index
@@ -297,6 +310,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop catalog
+  
   sPath
   "
   procedure drop catalog
@@ -319,6 +333,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop index
+  
   sPath
   "
   procedure drop index
@@ -344,6 +359,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop schema
+  
   sPath
   "
   procedure drop schema
@@ -366,6 +382,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop table
+  
   sPath
   "
   procedure drop table
@@ -391,6 +408,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop tenant
+  
   sPath
   "
   procedure drop tenant
@@ -413,6 +431,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify index
+  
   sPath
   "
   procedure verify index
@@ -431,12 +450,10 @@
   end ;
   "
   api::addProcedure
-
-
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* scan related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Scan" .verbose
@@ -447,6 +464,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // count
+  
   sPath
   "
   procedure count
@@ -469,6 +487,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // export
+  
   sPath
   "
   procedure export
@@ -493,6 +512,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gridSanity
+  
   sPath
   "
   procedure gridSanity
@@ -513,6 +533,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // partitionScan
+  
   sPath
   "
   procedure partitionScan
@@ -535,6 +556,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // predicateFetch
+  
   sPath
   "
   procedure predicateFetch
@@ -556,6 +578,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // select table
+  
   sPath
   "
   procedure select table
@@ -577,6 +600,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tableScan
+  
   sPath
   "
   procedure tableScan
@@ -598,6 +622,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // truncate
+  
   sPath
   "
   procedure truncate
@@ -620,7 +645,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* load related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Load" .verbose
@@ -631,6 +656,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // load
+  
   sPath
   "
   procedure load
@@ -692,6 +718,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload
+  
   sPath
   "
   procedure dfload
@@ -756,6 +783,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload
+  
   sPath
   "
   procedure dload
@@ -778,7 +806,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* api related procedures                                                     */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Api" .verbose
@@ -851,7 +879,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* file related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_File" .verbose
@@ -863,6 +891,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
+  
   sPath
   "
   procedure copyFile
@@ -881,6 +910,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list file
+  
   sPath
   "
   procedure listFile
@@ -898,6 +928,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // xyz file
+  
   sPath
   "
   procedure xyzFile
@@ -931,6 +962,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file
+  
   sPath
   "
   procedure cyclicRdFile
@@ -951,7 +983,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* elasticity procedures                                                      */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Elasticity" .verbose
@@ -963,6 +995,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add node
+  
   sPath
   "
   procedure add node
@@ -991,6 +1024,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // adjust partitions
+  
   sPath
   "
   procedure adjust partitions
@@ -1018,6 +1052,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove node
+  
   sPath
   "
   procedure remove node
@@ -1038,6 +1073,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn node
+  
   sPath
   "
   procedure spawn node
@@ -1058,7 +1094,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* staedy state related procedures                                            */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_SteadyState" .verbose
@@ -1069,6 +1105,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 1
+  
   sPath
   "
   procedure steadyState_1
@@ -1101,6 +1138,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 2
+  
   sPath
   "
   procedure steadyState_2
@@ -1133,6 +1171,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 3
+  
   sPath
   "
   procedure steadyState_3
@@ -1184,7 +1223,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* unload/realod related procedures                                           */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_UnloadReload" .verbose
@@ -1196,6 +1235,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // unload
+  
   sPath
   "
   procedure unload
@@ -1223,6 +1263,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reload
+  
   sPath
   "
   procedure reload
@@ -1246,6 +1287,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reorder table
+  
   sPath
   "
   procedure reorder
@@ -1271,7 +1313,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures for Query tests                                          */
+/* query related procedures                                                   */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Query" .verbose
@@ -1282,6 +1324,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3b prelim
+  
   sPath
   "
   procedure Query_3b
@@ -1311,6 +1354,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3b prelim
+  
   sPath
   "
   procedure Query_3b_I
@@ -1341,6 +1385,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4b prelim
+  
   sPath
   "
   procedure Query_4b
@@ -1367,6 +1412,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4b prelim
+  
   sPath
   "
   procedure Query_4b_I
@@ -1394,7 +1440,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures for dynamic compiler                                     */
+/* dyn compiler related procedures                                            */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_DynCompiler" .verbose
@@ -1431,7 +1477,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* TPC-H related procedures                                                   */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_TPCH" .verbose
@@ -1442,6 +1488,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - iterating index on l_shipdate
+  
   sPath
   "
   procedure Query1
@@ -1472,6 +1519,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - iterating index on l_shipdate
+  
   sPath
   "
   procedure Query1_I
@@ -1502,6 +1550,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into ROW
+  
   sPath
   "
   procedure Query6
@@ -1530,6 +1579,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into ROW
+  
   sPath
   "
   procedure Query6_I
@@ -1558,7 +1608,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures (TPCH ASM Compiled)                                      */
+/* TPCH ASM Compiled related procedures                                       */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_TPCH_ASM" .verbose
@@ -1569,6 +1619,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - compiled
+  
   sPath
   "
   procedure Query1_ASM
@@ -1598,6 +1649,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 3 -- compiled
+  
   sPath
   "
   procedure Query3_ASM
@@ -1628,6 +1680,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 4 -- compiled
+  
   sPath
   "
   procedure Query4_ASM
@@ -1658,6 +1711,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - compiled
+  
   sPath
   "
   procedure Query6_ASM
@@ -1686,7 +1740,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures (TPCH ASM Interpretive)                                  */
+/* TPCH ASM Interpretive related procedures                                   */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_TPCH_ASM_I" .verbose
@@ -1697,6 +1751,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - interpretive
+  
   sPath
   "
   procedure Query1_ASM_I
@@ -1726,6 +1781,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 3 -- interpretive
+  
   sPath
   "
   procedure Query3_ASM_I
@@ -1756,6 +1812,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 4 -- interpretive
+  
   sPath
   "
   procedure Query4_ASM_I
@@ -1786,6 +1843,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - interpretive
+  
   sPath
   "
   procedure Query6_ASM_I
@@ -1815,7 +1873,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures (Planner experiments)                                    */
+/* Planner experiment related procedures                                      */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Planner" .verbose
@@ -1824,6 +1882,9 @@
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
   sPath
   "
   procedure filterRows_I
@@ -1845,6 +1906,9 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
   sPath
   "
   procedure filterRows
@@ -1866,6 +1930,9 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
   sPath
   "
   procedure projectColumns_I
@@ -1887,6 +1954,9 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
   sPath
   "
   procedure projectColumns
@@ -1908,6 +1978,9 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
   sPath
   "
   procedure indexScan_I
@@ -1928,7 +2001,10 @@
   "
   api::addProcedure
 
-   sPath
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
+  sPath
   "
   procedure indexScan
     parameters $table $index $etc
@@ -1951,6 +2027,7 @@
   /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt0 - select * from lineitem;
+  
   sPath
   "
   procedure Smt0
@@ -1980,6 +2057,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt1 - select l_extendedprice from lineitem;
+  
   sPath
   "
   procedure Smt1
@@ -2009,6 +2087,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt2 - select * from lineitem where l_partkey > 1000000;
+  
   sPath
   "
   procedure Smt2
@@ -2038,6 +2117,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt3 - select l_extendedprice from lineitem where where l_partkey < 1000000;
+  
   sPath
   "
   procedure Smt3
@@ -2068,6 +2148,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt4 - select * from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
+  
   sPath
   "
   procedure Smt4
@@ -2098,6 +2179,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt5 - select * from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R';
+  
   sPath
   "
   procedure Smt5
@@ -2128,6 +2210,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index on orderkey
   // Smt6 - select * from lineitem where l_orderkey >= 70;
+  
   sPath
   "
   procedure Smt6
@@ -2158,6 +2241,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index on orderkey
   // Smt7 - select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;
+  
   sPath
   "
   procedure Smt7
@@ -2188,6 +2272,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index on orderkey
   // Smt8 - select sum(l_extendedprice) from lineitem;
+  
   sPath
   "
   procedure Smt8
@@ -2220,7 +2305,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures (Planner experiments)                                    */
+/* Planner TPCH experiment related procedures                                 */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_PlannerTPCH" .verbose
@@ -2231,6 +2316,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - interpretive
+  
   sPath
   "
   procedure Query6_S
@@ -2263,9 +2349,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 20 -
   //   [P0] ( insert into temptable select p_partkey from part where p_mfgr = 'Manufacturer#1' )
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into tempTable0 select p_partkey from part where p_mfgr = 'Manufacturer#1';
+  
   sPath
   "
   procedure Query20_S0
@@ -2298,6 +2386,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // select ps_suppkey from partsupp where ps_parkey in tempTable0;
+  
   sPath
   "
   procedure Query20_S1
@@ -2330,6 +2419,7 @@
   // Query 20 -  [S1] select ps_suppkey from partsupp where ps_partKey in
   //             [S0] ( select p_partkey from part where p_name like 'forest%' )
   // changed to :[S0] ( select p_partkey from part where p_mfgr = 'Manufacturer#1' )
+  
   sPath
   "
   procedure Smt20_S0
@@ -2365,6 +2455,9 @@
   "
   api::addProcedure
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
   sPath
   "
   procedure Smt20
@@ -2403,7 +2496,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* meta table related procedures                                              */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Meta" .verbose
@@ -2415,6 +2508,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // scan tables
+  
   sPath
   "
   procedure scanTables
@@ -2428,12 +2522,10 @@
   api::addProcedure
 
   // scanTables ;
-
-
  ;
 
 /*----------------------------------------------------------------------------*/
-/* procedures for SqlCompiler                                                 */
+/* sql compiler related procedures                                            */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_SqlCompiler" .verbose
@@ -2444,14 +2536,22 @@
     locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // scan tables
+  // sql Compiler
+  
   sPath
   "
   procedure sqlCompiler
   begin
 
   stage stageA on origin :
-    start | periodic once | output | sink | stageA
+    start
+    | periodic once
+    | compilerOpEg
+    | compilerOpEg
+    | noop
+    | output
+    | sink
+    | stageA
 
   end ;
   "
