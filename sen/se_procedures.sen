@@ -2432,6 +2432,34 @@
 
  ;
 
+/*----------------------------------------------------------------------------*/
+/* procedures for SqlCompiler                                                 */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_SqlCompiler" .verbose
+
+: start::defProc_SqlCompiler
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // scan tables
+  sPath
+  "
+  procedure sqlCompiler
+  begin
+
+  stage stageA on origin :
+    start | periodic once | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // sqlCompiler ;
+ ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
