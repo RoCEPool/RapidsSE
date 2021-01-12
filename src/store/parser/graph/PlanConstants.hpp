@@ -17,8 +17,6 @@ namespace Parser
   static const Stz* C_METADATA_NAME     = "metadata"_Stz;
   static const Stz* C_STATISTICS_NAME   = "statistics"_Stz;
 
-  static const Stz* C_CONSTRAINTS_CONTAINER = "__constraints"_Stz;
-
   // Paths of nodes
   static const Stz* C_ROOT_PATH         = "/__root__"_Stz;
   static const Stz* C_PRIMITIVES_PATH   = "/__root__/primitives"_Stz;
@@ -28,8 +26,9 @@ namespace Parser
   static const Stz* C_STATISTICS_PATH   = "/__root__/statistics"_Stz;
 
   // Common type definition paths
-  static const Stz* C_STRING_OBJ_DEFN = "/definitions/object/valueObject/stringObject"_Stz;
-  static const Stz* C_STRING_OBJ_DEFN_NONNULL = "/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+  static const Stz* C_VALUE_OBJ_DEFN = "/__root__/definitions/object/valueObject"_Stz;
+  static const Stz* C_STRING_OBJ_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
+  static const Stz* C_STRING_OBJ_DEFN_NONNULL = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
 
   static const Stz* C_ROOT_DEFN_PATH  = "/__root__/primitives/root"_Stz;
   static const Stz* C_TRUNK_DEFN_PATH = "/__root__/primitives/trunk"_Stz;
@@ -40,4 +39,20 @@ namespace Parser
                                                 C_METADATA_NAME,
                                                 C_STATISTICS_NAME,
                                                 nullptr };
+
+  // Constraints
+  static const Stz* C_CONSTRAINTS_CONTAINER_NAME  = "__constraints"_Stz;
+  static const Stz* C_CONSTRAINTS_CONTAINER_PATH  = "/__root__/primitives/constraints"_Stz;
+
+  static const Stz* C_CONSTRAINTS_CHILDTYPE_PATH  = "/__root__/primitives/constraints/childType"_Stz;
+  static const Stz* C_CONSTRAINTS_VALUETYPE_PATH  = "/__root__/primitives/constraints/valueType"_Stz;
+  static const Stz* C_CONSTRAINTS_CHILDCOUNT_PATH = "/__root__/primitives/constraints/childCount"_Stz;
+
+  static const Stz* C_CONSTRAINTS_NOCHILDREN_PATH     = "/__root__/primitives/constraints/noChildren"_Stz;
+  static const Stz* C_CONSTRAINTS_ALWAYSCHILDREN_PATH = "/__root__/primitives/constraints/alwaysChildren"_Stz;
+  static const Stz* C_CONSTRAINTS_NULLABLE_PATH       = "/__root__/primitives/constraints/nullable"_Stz;
+  static const Stz* C_CONSTRAINTS_NONNULLABLE_PATH    = "/__root__/primitives/constraints/nonNullable"_Stz;
+  static const Stz* C_CONSTRAINTS_OPTIONAL_PATH       = "/__root__/primitives/constraints/optional"_Stz;
+  static const Stz* C_CONSTRAINTS_MANDATORY_PATH      = "/__root__/primitives/constraints/mandatory"_Stz;
+
 }

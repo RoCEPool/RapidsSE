@@ -62,7 +62,12 @@
 // Path: /__root__/primitives/types/scalarType/float
                 {
                   name: "float",
-                  value: "A basic approximate-decimal number type",
+                  value: "A basic approximate-numeric decimal number type",
+                },
+// Path: /__root__/primitives/types/scalarType/decimal
+                {
+                  name: "decimal",
+                  value: "An exact-numeric decimal number type",
                 },
 // Path: /__root__/primitives/types/scalarType/string
                 {
@@ -73,6 +78,26 @@
                 {
                   name: "boolean",
                   value: "A basic true/false type",
+                },
+// Path: /__root__/primitives/types/scalarType/date
+                {
+                  name: "date",
+                  value: "A date type",
+                },
+// Path: /__root__/primitives/types/scalarType/time
+                {
+                  name: "time",
+                  value: "A time type",
+                },
+// Path: /__root__/primitives/types/scalarType/timestamp
+                {
+                  name: "timestamp",
+                  value: "A timestamp type",
+                },
+// Path: /__root__/primitives/types/scalarType/interval
+                {
+                  name: "interval",
+                  value: "A interval type",
                 }
               ]
             }, // EndPath: /__root__/primitives/types/scalarType
