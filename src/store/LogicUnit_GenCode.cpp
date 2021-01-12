@@ -261,7 +261,7 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
   }
   
   m_pTknVec->vSetAllTokens();
-  vDumpCode();
+  //vDumpCode();
   
   return true;
 }
@@ -2418,6 +2418,12 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
+  pFile->vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
@@ -2521,7 +2527,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
       oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS"_Stz);
   }
   else
-    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
+    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
 
   if (pExprEval->m_bHasAgg)
     pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG, &oTagSet));
@@ -2552,6 +2558,12 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
     pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   //}
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
+  pFile->vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
@@ -2629,6 +2641,12 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
+  pFile->vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
@@ -2650,144 +2668,3 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-/*
- * vSeDeputy::vExecuteJob
-  [001] Routine
-  [002] QUERY_1
-  [003] EO_INIT
-  [004] EO_ENTER
-  [005] EO_SQL
-  [006] 0
-  [007] EO_DUP
-  [008] EO_INTEGER
-  [009] ZK_STARTMARKER
-  [010] EO_EQUAL
-  [011] EO_JMP_TRUE
-  [012] HANDLER_STARTMARKER
-  [013] EO_DUP
-  [014] EO_INTEGER
-  [015] ZK_DATAPULSE
-  [016] EO_EQUAL
-  [017] EO_JMP_TRUE
-  [018] HANDLER_DATAPULSE
-  [019] EO_DUP
-  [020] EO_INTEGER
-  [021] ZK_STREAMDEF
-  [022] EO_EQUAL
-  [023] EO_JMP_TRUE
-  [024] HANDLER_STREAMDEF
-  [025] EO_DUP
-  [026] EO_INTEGER
-  [027] ZK_CRWBUFFER
-  [028] EO_EQUAL
-  [029] EO_JMP_TRUE
-  [030] HANDLER_CRWBUFFER
-  [031] EO_DUP
-  [032] EO_INTEGER
-  [033] ZK_ROWBUFFER
-  [034] EO_EQUAL
-  [035] EO_JMP_TRUE
-  [036] HANDLER_ROWBUFFER
-  [037] EO_DUP
-  [038] EO_INTEGER
-  [039] ZK_EOSMARKER
-  [040] EO_EQUAL
-  [041] EO_JMP_TRUE
-  [042] HANDLER_EOSMARKER
-  [043] EO_PRINTF
-  [044] **NO_HANDLER**
-n
-  [045] EO_NEVERREACH
-  [046] Label
-  [047] HANDLER_STARTMARKER_
-  [048] EO_PRINTF
-  [049] **HANDLER_STARTMARKER_**
-n
-  [050] EO_POP
-  [051] EO_JMP
-  [052] QUERY_DONE
-  [053] Label
-  [054] HANDLER_DATAPULSE
-  [055] EO_PRINTF
-  [056] **HANDLER_DATAPULSE**
-n
-  [057] EO_POP
-  [058] EO_JMP
-  [059] QUERY_DONE
-  [060] Label
-  [061] HANDLER_EOSMARKER
-  [062] EO_PRINTF
-  [063] **HANDLER_EOSMARKER**
-n
-  [064] EO_POP
-  [065] EO_JMP
-  [066] QUERY_DONE
-  [067] Label
-  [068] HANDLER_STREAMDEF
-  [069] EO_PRINTF
-  [070] **HANDLER_STREAMDEF**
-n
-  [071] EO_POP
-  [072] EO_JMP
-  [073] QUERY_DONE
-  [074] Label
-  [075] HANDLER_CRWBUFFER
-  [076] EO_PRINTF
-  [077] **CRWBUFFER HANDLER**
-n
-  [078] EO_POP
-  [079] EO_CRW_SRC_BEGIN
-  [080] Label
-  [081] NEXT_CRW_SRC
-  [082] EO_CRW_SRC_NEXT
-  [083] EO_JMP_FALSE
-  [084] QUERY_DONE
-  [085] EO_CALL
-  [086] CRW_PROJECT_NONE
-  [087] EO_JMP
-  [088] NEXT_CRW_SRC
-  [089] EO_JMP
-  [090] QUERY_DONE
-  [091] Label
-  [092] CRW_PROJECT_NONE
-  [093] EO_ROW_DST_NEW
-  [094] EO_INTEGER
-  [095] 2
-  [096] EO_ROW_DST_POPCOLI
-  [097] 0
-  [098] EO_ROW_DST_PRINT
-  [099] EO_RETURN
-  [100] Label
-  [101] HANDLER_ROWBUFFER
-  [102] EO_PRINTF
-  [103] **HANDLER_ROWBUFFER**
-n
-  [104] EO_POP
-  [105] EO_ROW_SRC_BEGIN
-  [106] Label
-  [107] NEXT_ROW_SRC
-  [108] EO_ROW_SRC_NEXT
-  [109] EO_JMP_FALSE
-  [110] QUERY_DONE
-  [111] EO_CALL
-  [112] <rowProcessRoutine>
-  [113] EO_JMP
-  [114] NEXT_ROW_SRC
-  [115] EO_JMP
-  [116] QUERY_DONE
-  [117] Label
-  [118] ROW_PROJECT_NONE
-  [119] EO_ROW_DST_NEW
-  [120] EO_INTEGER
-  [121] 2
-  [122] EO_ROW_DST_POPCOLI
-  [123] 0
-  [124] EO_ROW_DST_PRINT
-  [125] EO_RETURN
-  [126] Label
-  [127] QUERY_DONE
-  [128] EO_EXIT
-  [129] EO_RETURN
-- - - - - - - - - - - - - - - - - -
-
- */

@@ -40,6 +40,7 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_LOWER_BOUND_GT,
   /*    */ AM_INDEX_UPPER_BOUND,
 
+  /*    */ AM_QUERY_DONE,
   /*    */ AM_QUERY_INIT,
 
   /*    */ AM_ROW_FILTER_END,
@@ -93,6 +94,7 @@ static Stz* aAM[]
     /*    */ "INDEX_LOWER_BOUND_GT"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
 
+    /*    */ "QUERY_DONE"_Stz,
     /*    */ "QUERY_INIT"_Stz,
 
     /*    */ "ROW_FILTER_END"_Stz,
