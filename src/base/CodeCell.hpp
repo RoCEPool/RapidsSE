@@ -10,23 +10,31 @@ namespace BASE
   public:
     union {
     
-      //  ray to rewrite this comment
-      
       //
-      // cells are primarily a pointer to the address of a Word::m_pEntryStep
-      // which contains a pointer the step function which executes the word
+      // Cells primarily contain the *indirect-address* of a function.
       //
-      // that step will be:
-      //   - Step::vEnterRoutine for normal words
-      //   - Step::vXyz for primitives
+      // This indirect-address is the speific address of the member m_pEntryStep
+      // of a Word object instance (ie: &pWord->m_pEntryStep)
+      //
+      // That member of Word is a pointer to a function which executes the word.
+      //
+      // The function will be:
+      //   i) Step::vEnterRoutine for normal : words; or
+      //  ii) Step::vXyz for primitives
       //
       
       fpMEMBERFN* m_afpStepFn;  // indirect address of a member function
-
-      //
-      // additionally cells can be an argument to previous cell :
-      //
       
+      // In the case of i), the enter-routine function sets the current
+      // tasks m_aInxPter 
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      
+      //
+      // Additionally cells can be an argument for the previous cell.
+      //
+      // There are two cases:
+      //
       CodeCell* m_aJumpTo;   // a) pointer to another cell within same routine
       
       _Header m_xTypedValue; // b) header for embedded typed value (PushValue)

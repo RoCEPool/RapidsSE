@@ -25,17 +25,47 @@ void Step::vEnterRoutine(void)
 {
   ENTRY();
   
-  fpSTEPFN* afpEntryCell =
-    (fpSTEPFN*) ((m_aInxPtr - 1)->m_afpStepFn + 1);
+  CodeCell* aPrevCellOfCurrentCodeBlock = m_aInxPtr - 1;
+  
+
+  fpSTEPFN* aAddressOf__m_fpIntrinsic =
+    (fpSTEPFN*) aPrevCellOfCurrentCodeBlock->m_afpStepFn;
+                 
+
+  CodeCell** aAddressOf__m_aInxPtr =
+    (CodeCell**) (aAddressOf__m_fpIntrinsic + 1);
+  
+  
+  CodeCell* aStartCellOfCalledCodeBlock = * aAddressOf__m_aInxPtr;
+  
   
   m_pReturnStack->vPushFip(m_aInxPtr);
-  m_aInxPtr = *(CodeCell**)afpEntryCell;
+  
+  
+  m_aInxPtr = aStartCellOfCalledCodeBlock;
+  
 
    if ( (m_iTraceMask & C_TRACE_ROUTINES) )
     Task::vTracePoint(">"_Stz);
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vEnterRoutine(void)
+//{
+//  ENTRY();
+//
+//  fpSTEPFN* afpEntryCell =
+//    (fpSTEPFN*) ((m_aInxPtr - 1)->m_afpStepFn + 1);
+//
+//  m_pReturnStack->vPushFip(m_aInxPtr);
+//  m_aInxPtr = *(CodeCell**)afpEntryCell;
+//
+//   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
+//    Task::vTracePoint(">"_Stz);
+//
+//  EXIT();
+//}
 
 /*============================================================================*/
 /* end                                                                        */
