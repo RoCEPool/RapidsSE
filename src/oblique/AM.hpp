@@ -5,6 +5,7 @@
 
 //!                    ** Do not include BASE.h **
 
+#include <Heartbeat.hpp>
 #include "eAA.h"
 #include "eDA.h"
 #include "eEC.h"
@@ -237,6 +238,10 @@ namespace OBLIQUE
     static Lock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
+    static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
+    static void vPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
+    static Heartbeat xGetHeartbeat(i8 iNode);
+    static Heartbeat xGetHeartbeat(Stz* pszNodeName);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);
     static bool bTracepoint(void);
@@ -475,9 +480,6 @@ namespace OBLIQUE
     static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
     static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
     static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);
-   
-
-
   };
 }
 

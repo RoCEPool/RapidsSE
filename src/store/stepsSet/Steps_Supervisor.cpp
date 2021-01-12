@@ -51,12 +51,22 @@ void Step::vSupervisorCollectInfo(void)
   xHeartbeat.m_iSincePosixEpoch = time(0);
   strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, 32);
 
+  // Add node name to the packet
   strncpy(xHeartbeat.m_acString0, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acString0) - 1);
   xHeartbeat.m_acString0[sizeof(xHeartbeat.m_acString0) - 1] = 0;
 
-  gxHeartbeatData.bTryWrite(xHeartbeat);
-   
+  // Add node number to the packet
+  xHeartbeat.m_iValue0 = AM::iThisNodeNo();
 
+  // Write to Send Ringbuffer
+  gxHeartbeatData.bTryWrite(xHeartbeat);
+
+
+  // May as well update this node's heartbeat here
+  // So that if we receive heartbeat from the same node (loopback, broadcast), we can ignore
+
+  // NOTE: But for the time being, commented out for testing/debug
+  //AM::vPutHeartbeat((Stz*)xHeartbeat.m_acString0, xHeartbeat);
   
   EXIT();
 }
