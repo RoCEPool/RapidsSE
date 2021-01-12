@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Node_I.hpp"

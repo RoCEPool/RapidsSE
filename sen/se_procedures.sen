@@ -1847,7 +1847,7 @@
 
   sPath
   "
-  procedure projection
+  procedure projectColumns
     parameters $table $etc
     begin
 
