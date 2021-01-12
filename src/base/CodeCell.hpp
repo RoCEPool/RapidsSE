@@ -19,14 +19,14 @@ namespace BASE
       // That member of Word is a pointer to a function which executes the word.
       //
       // The function will be:
-      //   i) Step::vEnterRoutine for normal : words; or
+      //   i) Step::vDoColon for normal : words; or
       //  ii) Step::vXyz for primitives
       //
       
       fpMEMBERFN* m_afpStepFn;  // indirect address of a member function
       
       // In the case of i), the enter-routine function sets the current
-      // tasks m_aInxPter 
+      // tasks m_aInxPter
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       

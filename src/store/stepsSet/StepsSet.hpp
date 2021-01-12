@@ -299,9 +299,6 @@ public:
   void vEncodeThen(void);
   void vEncodeUntil(void);
 
-  // enter
-  void vEnterRoutine(void);
-
   // entry
   void vEntryMatches(void);
   void vEntrySame(void);
@@ -404,6 +401,7 @@ public:
 
   // forth
   void vColon(void);
+  void vDoColon(void);
   void vCreateFromInRoot(void);
   void vExit_RT(void);
   void vFind(void);

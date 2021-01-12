@@ -6,7 +6,7 @@
 
 #include "SP_Word.hpp"
 
-extern fpSTEPFN gfpEntryStep;
+extern fpSTEPFN gfpDoColon;
 
 // !DIC_AS_SKIPLIST
 #define _DIC_SKIPLIST
@@ -106,7 +106,7 @@ Word::Word(Stz* szWordNm)
 
   m_pCodeBlock    = new CodeBlock(this);
   
-  m_fpIntrinsic = gfpEntryStep;
+  m_fpIntrinsic = gfpDoColon;
   m_aInxPtr     = aFirstCell();
 
   _setFooter_();

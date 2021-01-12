@@ -20,6 +20,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep(":"_Stz,                 &Step::vColon);
   vAddStep("("_Stz,                 &Step::vComment,          true );
   vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
+  vAddStep("doColon"_Stz,           &Step::vDoColon);
   vAddStep("execute"_Stz,           &Step::vFlowExecute);
   vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
   vAddStep("find:"_Stz,             &Step::vFind,             true);
@@ -109,6 +110,56 @@ void Step::vCreateFromInRoot(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* DoColon -- push inxPtr and set inxPtr to execute a different codeblock */
+/*----------------------------------------------------------------------------*/
+void Step::vDoColon(void)
+{
+  ENTRY();
+  
+  CodeCell* aPrevCellOfCurrentCodeBlock = m_aInxPtr - 1;
+  
+
+  fpSTEPFN* aAddressOf__m_fpIntrinsic =
+    (fpSTEPFN*) aPrevCellOfCurrentCodeBlock->m_afpStepFn;
+                 
+
+  CodeCell** aAddressOf__m_aInxPtr =
+    (CodeCell**) (aAddressOf__m_fpIntrinsic + 1);
+  
+  
+  CodeCell* aStartCellOfCalledCodeBlock = * aAddressOf__m_aInxPtr;
+  
+  
+  m_pReturnStack->vPushFip(m_aInxPtr);
+  
+  
+  m_aInxPtr = aStartCellOfCalledCodeBlock;
+  
+
+   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
+    Task::vTracePoint(">"_Stz);
+  
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+//void Step::vDoColon(void)
+//{
+//  ENTRY();
+//
+//  fpSTEPFN* afpEntryCell =
+//    (fpSTEPFN*) ((m_aInxPtr - 1)->m_afpStepFn + 1);
+//
+//  m_pReturnStack->vPushFip(m_aInxPtr);
+//  m_aInxPtr = *(CodeCell**)afpEntryCell;
+//
+//   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
+//    Task::vTracePoint(">"_Stz);
+//
+//  EXIT();
+//}
+
 
 /*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */

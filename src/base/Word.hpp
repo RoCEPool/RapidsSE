@@ -44,7 +44,7 @@ namespace BASE
                              //    (and *not* the value of the member)
                              //    gets encoded into calling words routine
                              //  this allows the address of m_aInxPtr
-                             //  to be computed
+                             //  to be computed 
       
     CodeCell* m_aInxPtr;    // the cell to start executing from for
                             //   - normal words: this will be the
@@ -137,7 +137,7 @@ namespace BASE
 bool bWordCompare(void* aWordBeingInserted, void* aWordScan, bool& bMatching);
 void vWordPrint(void* aWordBeingInserted);
 
-void vEnterRoutine(Step* pStep);
+//void vDoColon(Step* pStep);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -7,7 +7,7 @@
 
 #include "Step.hpp"
 
-fpSTEPFN gfpEntryStep = &STORE::Step::vEnterRoutine;
+fpSTEPFN gfpDoColon = &STORE::Step::vDoColon;
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
@@ -74,7 +74,6 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_TagSet();
   Step::vAddSteps_Encode();
-  Step::vAddSteps_Enter();
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
   Step::vAddSteps_Error();
