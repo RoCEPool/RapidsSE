@@ -91,7 +91,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "RowCompactor.hpp"
 #include "RowInflator.hpp"
 
-#include "KeyBuilder.hpp"
+//#include "KeyBuilder.hpp"
 
 //#include "SkipRoots.hpp"
 
