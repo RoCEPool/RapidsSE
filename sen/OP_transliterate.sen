@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_transliterate.sen -- Translitere Op (SQL Compiler)                      */
+/* OP_transliterate.sen -- Transliterate Op (SQL Compiler)                    */
 /*============================================================================*/
 
 " OP_transliterate.sen" .verbose
@@ -29,13 +29,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_PLANNODE ...                                                */
 /*----------------------------------------------------------------------------*/
-: transliterate_PlanOperand \handler
+: transliterate_PlanNode \handler
  
   sqlCompiler::transliterate
 
-  ZK_PLANOPERAND_handler
+  ZK_PLANNODE_handler
 
 ;
 
@@ -62,7 +62,7 @@
   find: transliterate_CancelMarker ZK_CANCELMARKER op[].handler!
   find: transliterate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: transliterate_PlanOperand  ZK_PLANOPERAND  op[].handler!
+  find: transliterate_PlanNode     ZK_PLANNODE     op[].handler!
   find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

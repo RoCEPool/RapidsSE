@@ -206,11 +206,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_PLANNODE ...                                             */
 /*----------------------------------------------------------------------------*/
-: ZK_PLANOPERAND_handler \handler
+: ZK_PLANNODE_handler \handler
 
-  //"ZK_PLANOPERAND_handler" .verbose
+  //"ZK_PLANNODE_handler" .verbose
   PipeIn[].pipeOut
   true
 ;

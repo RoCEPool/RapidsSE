@@ -29,13 +29,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_PLANNODE ...                                                */
 /*----------------------------------------------------------------------------*/
-: nameValidate_PlanOperand \handler
+: nameValidate_PlanNode \handler
  
   sqlCompiler::nameValidate
 
-  ZK_PLANOPERAND_handler
+  ZK_PLANNODE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@
   find: nameValidate_CancelMarker ZK_CANCELMARKER op[].handler!
   find: nameValidate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: nameValidate_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: nameValidate_PlanOperand  ZK_PLANOPERAND  op[].handler!
+  find: nameValidate_PlanNode     ZK_PLANNODE     op[].handler!
   find: nameValidate_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

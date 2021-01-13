@@ -31,9 +31,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* handler for ZK_PLANNODE ...                                                */
 /*----------------------------------------------------------------------------*/
-: parser_PlanOperand \handler
+: parser_PlanNode \handler
  
   ZK_EOSMARKER_handler
 ;
@@ -61,7 +61,7 @@
   find: parser_CancelMarker ZK_CANCELMARKER op[].handler!
   find: parser_DataMarker   ZK_DATAPULSE    op[].handler!
   find: parser_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: parser_PlanOperand  ZK_PLANOPERAND  op[].handler!
+  find: parser_PlanNode     ZK_PLANNODE     op[].handler!
   find: parser_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
