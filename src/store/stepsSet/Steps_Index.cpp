@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
 #include "RowInflator.hpp"
 
 #include "SkipRoots.hpp"

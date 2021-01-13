@@ -85,10 +85,10 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Encoding_v2.hpp"
 #include "Encoding.hpp"
-#include "CrwPacker.hpp"
+//#include "CrwPacker.hpp"
 
-#include "CrwBuffer.hpp"
-#include "RowCompactor.hpp"
+//#include "CrwBuffer.hpp"
+//#include "RowCompactor.hpp"
 //#include "RowInflator.hpp"
 
 //#include "KeyBuilder.hpp"

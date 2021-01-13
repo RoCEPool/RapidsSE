@@ -40,6 +40,9 @@
 
 #include "SizesHeaps.hpp"
 
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "RowCompactor.hpp"
 #include "OtherOperand.hpp"
 
 #include "SkipRoots.hpp"

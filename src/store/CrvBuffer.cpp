@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"

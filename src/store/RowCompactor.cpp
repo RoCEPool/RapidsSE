@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "RowCompactor.hpp"
 
 static Numbat oNumBat("partKey"_Stz);
 

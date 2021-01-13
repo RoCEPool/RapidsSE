@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "RowCompactor.hpp"
 #include "RowInflator.hpp"
 
 #include "KeyBuilder.hpp"
