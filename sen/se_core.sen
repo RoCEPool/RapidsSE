@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : ALLOT
 
-  compiler::current@ word.allot discard
+  senCompiler::current@ word.allot discard
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : :CREATE ( sWordNM -- )
 
-  word::new compiler::current!
+  word::new senCompiler::current!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -268,7 +268,7 @@ true find: CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : EXIT immediate
 
-  compiler::current@ word.exitHook@ word::find dup if
+  senCompiler::current@ word.exitHook@ word::find dup if
     encode::call
   else
     discard
@@ -284,7 +284,7 @@ true find: CASE word.immediate!
 : set_hook immediate
 
   "eg_hook"
-  compiler::current@
+  senCompiler::current@
   word.exitHook!
 ;
 
@@ -371,24 +371,24 @@ true find: CASE word.immediate!
 /* get nested Word$$<n>                                                       */
 /*----------------------------------------------------------------------------*/
 
-: Word$$    compiler::nested@ ;
-: Word$$0 0 compiler::nested@ ;
-: Word$$1 1 compiler::nested@ ;
-: Word$$2 2 compiler::nested@ ;
-: Word$$3 3 compiler::nested@ ;
-: Word$$4 4 compiler::nested@ ;
-: Word$$5 5 compiler::nested@ ;
-: Word$$6 6 compiler::nested@ ;
-: Word$$7 7 compiler::nested@ ;
-: Word$$8 8 compiler::nested@ ;
-: Word$$9 9 compiler::nested@ ;
+: Word$$    senCompiler::nested@ ;
+: Word$$0 0 senCompiler::nested@ ;
+: Word$$1 1 senCompiler::nested@ ;
+: Word$$2 2 senCompiler::nested@ ;
+: Word$$3 3 senCompiler::nested@ ;
+: Word$$4 4 senCompiler::nested@ ;
+: Word$$5 5 senCompiler::nested@ ;
+: Word$$6 6 senCompiler::nested@ ;
+: Word$$7 7 senCompiler::nested@ ;
+: Word$$8 8 senCompiler::nested@ ;
+: Word$$9 9 senCompiler::nested@ ;
 
 /*----------------------------------------------------------------------------*/
 /* start compiling nested word                                                */
 /*----------------------------------------------------------------------------*/
 : :NestedWord
 
-  word::new dup compiler::current! compiler::nested!
+  word::new dup senCompiler::current! senCompiler::nested!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -398,7 +398,7 @@ true find: CASE word.immediate!
 
   POSTPONE exit_rt
 
-  0 compiler::nested@ compiler::current!
+  0 senCompiler::nested@ senCompiler::current!
 ;
 
 /*----------------------------------------------------------------------------*/

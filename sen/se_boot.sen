@@ -154,7 +154,7 @@ assert::stack_0
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  [ compiler::current@ encode::push ] word::xcheckInxPtr
+  [ senCompiler::current@ encode::push ] word::xcheckInxPtr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

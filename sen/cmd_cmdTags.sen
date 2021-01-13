@@ -104,7 +104,7 @@
 /*----------------------------------------------------------------------------*/
 : _cmdTags immediate
 
-  compiler::current@ locals| pWord |
+  senCompiler::current@ locals| pWord |
 
   // set the name of the word to be _cmdTags
   // pWord word.name@ "_cmdTags" str.cat pWord word.name!

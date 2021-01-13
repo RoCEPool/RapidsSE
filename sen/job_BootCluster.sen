@@ -71,7 +71,7 @@
 
   task::seedInitially
 
-  // [ compiler::current@ word.name@ encode::push ] .
+  // [ senCompiler::current@ word.name@ encode::push ] .
   // <jobNm> .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

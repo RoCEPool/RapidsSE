@@ -14,11 +14,11 @@
   sCmdNm series-name "_syntax" str.cat :create
 
   // set the word category to be cmdSyntax:
-  [ compiler::current@ encode::push ] compiler::current@ word.category!
+  [ senCompiler::current@ encode::push ] senCompiler::current@ word.category!
 
   // attach a tag set to hold syntax to the word being created
   tagSet::new locals| pSynTags |
-  pSynTags compiler::current@ word.TagSet!
+  pSynTags senCompiler::current@ word.TagSet!
 
   // skip the :: token from input source
   input::next discard

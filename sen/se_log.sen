@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_can immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_CAN
 
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_end immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_END
 
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_exe immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_EXE
 
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_rcv immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   POSTPONE AN_SEED_RCV
 
@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_req immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   AN_SEED_REQ encode::push
 
@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_run immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   AN_SEED_RCV encode::push
 
@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_checked immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   AN_RESOURCES_CHECKED encode::push
 
@@ -93,7 +93,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_released immediate
 
-  compiler::current@ word.name@ encode::push
+  senCompiler::current@ word.name@ encode::push
 
   AN_RESOURCES_RELEASED encode::push
 
@@ -108,7 +108,7 @@
 : LogEntry immediate
 
   // format the string to be printed
-  compiler::current@ word.name@ ">>%v" str.format
+  senCompiler::current@ word.name@ ">>%v" str.format
 
   // encode push of that string
   encode::push
@@ -136,7 +136,7 @@
 : LogExit immediate
 
   // format the string to be printed
-  compiler::current@ word.name@ "<<%v" str.format
+  senCompiler::current@ word.name@ "<<%v" str.format
 
   // encode push of that string
   encode::push
@@ -151,7 +151,7 @@
 : !!logError immediate
 
   // format the string to be printed
-  compiler::current@ word.name@ "!!%v" str.format
+  senCompiler::current@ word.name@ "!!%v" str.format
 
   // encode push of that string
   encode::push
@@ -202,7 +202,7 @@
 : LogReqEntry immediate
 
   // format the string to be printed
-  compiler::current@ word.name@ ">>%v" str.format
+  senCompiler::current@ word.name@ ">>%v" str.format
 
   // encode push of that string
   encode::push
@@ -217,7 +217,7 @@
 : LogReqExit immediate
 
   // format the string to be printed
-  compiler::current@ word.name@ "<<%v" str.format
+  senCompiler::current@ word.name@ "<<%v" str.format
 
   // encode push of that string
   encode::push

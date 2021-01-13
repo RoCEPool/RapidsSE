@@ -10,7 +10,7 @@
 : exit_test \prompt
 
   set_hook
-  //[ "eg_hook" compiler::current@ word.exitHook! ]
+  //[ "eg_hook" senCompiler::current@ word.exitHook! ]
 
   1 if
     "exit with hook" . exit

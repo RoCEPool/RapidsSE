@@ -77,7 +77,7 @@ void Task::vAddAxioms(void)
   // test for discarding input
   //" \"((c))\" .put input::chars . "
 
-  "  compiler::isDiscarding if"
+  "  senCompiler::isDiscarding if"
   "    input::chars \"?else\" str.same if"
   "      input::chars word::find execute"
   "      reenter"
@@ -96,7 +96,7 @@ void Task::vAddAxioms(void)
 
   "  input::kind@ TN_INTEGER == if"
   
-  "    compiler::isPostponing if"
+  "    senCompiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING AN INT\" ."
   "      process::quit"
   "    then"
@@ -104,7 +104,7 @@ void Task::vAddAxioms(void)
   "    input::chars"             // push str token onto stack
   "    >int"                     // convert to int, leave on stack
 
-  "    compiler::isCompiling if"
+  "    senCompiler::isCompiling if"
   "      encode::push"           // compile : encode push int
   "      reenter"
   "    then"
@@ -120,14 +120,14 @@ void Task::vAddAxioms(void)
 
   "  input::kind@ TN_STRING == if"
   
-  "    compiler::isPostponing if"
+  "    senCompiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A STR\" ."
   "      process::quit"
   "    then"
   
   "    input::chars"             // push str token onto stack
   
-  "    compiler::isCompiling if"
+  "    senCompiler::isCompiling if"
   "      encode::push"           // compile : encode push str
   "      reenter"
   "    then"
@@ -143,13 +143,13 @@ void Task::vAddAxioms(void)
 
   "  input::kind@ TN_TAG == if"
   
-  "    compiler::isPostponing if"
+  "    senCompiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A TAG\" ."
   "      process::quit"
   "      reenter"
   "    then"
 
-  "    compiler::isCompiling if"
+  "    senCompiler::isCompiling if"
   "      input::chars"           // compile : encode push "<tagNm>"
   "      encode::push"           //         :
   "      \"tag::get\""           //         : encode tag::get
@@ -216,7 +216,7 @@ void Task::vAddAxioms(void)
   // postponing mode?
   //" \"((j))\" . "
 
-  "  compiler::isPostponing if"
+  "  senCompiler::isPostponing if"
   "    \"POSTPONING\" ."
   "    encode::call "
   "    \"encode::call\" word::find encode::call"
@@ -230,7 +230,7 @@ void Task::vAddAxioms(void)
   // compiling mode?
   //" \"((k))\" . "
 
-  "  compiler::isCompiling if "
+  "  senCompiler::isCompiling if "
   "    encode::call"             // compile : encode call to word on stack
   "    reenter"
   "  then"

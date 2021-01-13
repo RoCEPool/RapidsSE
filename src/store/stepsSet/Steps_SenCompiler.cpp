@@ -15,20 +15,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SqlCompiler(void)
 {
-  vAddStep("compiler::isCompiling"_Stz,    &Step::vSqlCompilerIsCompiling);
-  vAddStep("compiler::isDiscarding"_Stz,   &Step::vSqlCompilerIsDiscarding);
-  vAddStep("compiler::isInterpreting"_Stz, &Step::vSqlCompilerIsInterpreting);
-  vAddStep("compiler::isPostponing"_Stz,   &Step::vSqlCompilerIsPostponing);
+  vAddStep("senCompiler::isCompiling"_Stz,    &Step::vSqlCompilerIsCompiling);
+  vAddStep("senCompiler::isDiscarding"_Stz,   &Step::vSqlCompilerIsDiscarding);
+  vAddStep("senCompiler::isInterpreting"_Stz, &Step::vSqlCompilerIsInterpreting);
+  vAddStep("senCompiler::isPostponing"_Stz,   &Step::vSqlCompilerIsPostponing);
   
-  vAddStep("compiler::compiling"_Stz,      &Step::vSqlCompilerCompiling);
-  vAddStep("compiler::interpreting"_Stz,   &Step::vSqlCompilerInterpreting);
-  vAddStep("compiler::postponing"_Stz,     &Step::vSqlCompilerPostponing);
+  vAddStep("senCompiler::compiling"_Stz,      &Step::vSqlCompilerCompiling);
+  vAddStep("senCompiler::interpreting"_Stz,   &Step::vSqlCompilerInterpreting);
+  vAddStep("senCompiler::postponing"_Stz,     &Step::vSqlCompilerPostponing);
 
-  vAddStep("compiler::current@"_Stz,       &Step::vSqlCompilerCurrentFetch);
-  vAddStep("compiler::current!"_Stz,       &Step::vSqlCompilerCurrentStore);
+  vAddStep("senCompiler::current@"_Stz,       &Step::vSqlCompilerCurrentFetch);
+  vAddStep("senCompiler::current!"_Stz,       &Step::vSqlCompilerCurrentStore);
   
-  vAddStep("compiler::nested@"_Stz,        &Step::vSqlCompilerNestedFetch);
-  vAddStep("compiler::nested!"_Stz,        &Step::vSqlCompilerNestedStore);
+  vAddStep("senCompiler::nested@"_Stz,        &Step::vSqlCompilerNestedFetch);
+  vAddStep("senCompiler::nested!"_Stz,        &Step::vSqlCompilerNestedStore);
 
   
   vAddStep("["_Stz,     &Step::vSqlCompilerInterpreting,    true);
@@ -49,7 +49,7 @@ void Step::vAddSteps_SqlCompiler(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isCompiling -- currently in compiling mode?                      */
+/* senCompiler::isCompiling -- currently in compiling mode?                   */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerIsCompiling(void)
 {
@@ -65,7 +65,7 @@ void Step::vSqlCompilerIsCompiling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isCompiling -- currently in compiling mode?                      */
+/* senCompiler::isCompiling -- currently in compiling mode?                   */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerIsDiscarding(void)
 {
@@ -81,7 +81,7 @@ void Step::vSqlCompilerIsDiscarding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isInterpreting -- currently in interpreting mode?                */
+/* senCompiler::isInterpreting -- currently in interpreting mode?             */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerIsInterpreting(void)
 {
@@ -97,7 +97,7 @@ void Step::vSqlCompilerIsInterpreting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isPostponing -- currently in postponing mode?                    */
+/* senCompiler::isPostponing -- currently in postponing mode?                 */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerIsPostponing(void)
 {
@@ -118,7 +118,7 @@ void Step::vSqlCompilerIsPostponing(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::compiling-- change to compiling mode                             */
+/* senCompiler::compiling-- change to compiling mode                          */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerCompiling(void)
 {
@@ -130,7 +130,7 @@ void Step::vSqlCompilerCompiling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::discarding -- change to discarding mode                          */
+/* senCompiler::discarding -- change to discarding mode                       */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerDiscarding(void)
 {
@@ -142,7 +142,7 @@ void Step::vSqlCompilerDiscarding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::interpreting -- change to interpreting mode                      */
+/* senCompiler::interpreting -- change to interpreting mode                   */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerInterpreting(void)
 {
@@ -154,7 +154,7 @@ void Step::vSqlCompilerInterpreting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::postponing -- change to postponing mode                          */
+/* senCompiler::postponing -- change to postponing mode                       */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerPostponing(void)
 {
@@ -171,7 +171,7 @@ void Step::vSqlCompilerPostponing(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::current@ -- fetch current word                                   */
+/* senCompiler::current@ -- fetch current word                                */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerCurrentFetch(void)
 {
@@ -188,7 +188,7 @@ void Step::vSqlCompilerCurrentFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::current! -- put current word                                     */
+/* senCompiler::current! -- put current word                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerCurrentStore(void)
 {
@@ -207,7 +207,7 @@ void Step::vSqlCompilerCurrentStore(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::nested@ -- get nested word                                       */
+/* senCompiler::nested@ -- get nested word                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerNestedFetch(void)
 {
@@ -223,7 +223,7 @@ void Step::vSqlCompilerNestedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::nested! -- set nested word                                       */
+/* senCompiler::nested! -- set nested word                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerNestedStore(void)
 {
