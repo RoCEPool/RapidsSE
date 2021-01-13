@@ -165,7 +165,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CmdLineArgs),        HT_INVALID   ,0 }, // CN_CMDLINEARGS
   { sizeof(CodeBlock),          HT_T_SMALL   ,0 }, // CN_CODEBLOCK
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
-  { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 }, // CN_CRWBUFFER
   { sizeof(CrwToRow),           HT_T_LARGE   ,0 }, // CN_CRWTOROW
@@ -353,6 +352,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SeApi),              HT_T_LARGE   ,0 }, // CN_SEAPI
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
+  { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
   { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY

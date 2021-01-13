@@ -41,7 +41,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
   /* */ CN_COLUMN,
-  /* */ CN_COMPILER,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTOROW,
@@ -230,6 +229,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
+  /* */ CN_SENCOMPILER,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONARRAY,
@@ -366,7 +366,6 @@ static Stz* aCN[]
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "COLUMN"_Stz,               // CN_COLUMN
-  /* */ "COMPILER"_Stz,             // CN_COMPILER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
@@ -554,6 +553,7 @@ static Stz* aCN[]
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
+  /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONARRAY

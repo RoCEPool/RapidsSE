@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,SenCompiler,CN_COMPILER)
-__aNewFunction(SenCompiler,CN_COMPILER)
-__vDeleteFunction(SenCompiler,CN_COMPILER)
+__pCastFunction(BASE,SenCompiler,CN_SENCOMPILER)
+__aNewFunction(SenCompiler,CN_SENCOMPILER)
+__vDeleteFunction(SenCompiler,CN_SENCOMPILER)
 __aFooterFunction(SenCompiler)
 
 
@@ -18,9 +18,9 @@ __aFooterFunction(SenCompiler)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SenCompiler::SenCompiler(void)
-: Object(CN_COMPILER)
+: Object(CN_SENCOMPILER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_pCurrent   = nullptr;
   m_eMode      = CM_INTERPRETING;
@@ -29,9 +29,9 @@ SenCompiler::SenCompiler(void)
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
     m_paWord[i_Nested] = nullptr;
 
-  _checkInitialised_(CN_COMPILER);
+  _checkInitialised_(CN_SENCOMPILER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ SenCompiler::SenCompiler(void)
 /*----------------------------------------------------------------------------*/
 SenCompiler::~SenCompiler(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ SenCompiler::~SenCompiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool SenCompiler::bCompiling(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   bool bIsCompiling = CM_COMPILING == m_eMode;
   
@@ -63,7 +63,7 @@ bool SenCompiler::bCompiling(void)
 /*----------------------------------------------------------------------------*/
 Word* SenCompiler::pCurrentWord(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   return m_pCurrent;
 }
@@ -73,7 +73,7 @@ Word* SenCompiler::pCurrentWord(void)
 /*----------------------------------------------------------------------------*/
 void SenCompiler::vCurrentWord(Word* pWord)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_pCurrent = pWord;
 }
@@ -83,7 +83,7 @@ void SenCompiler::vCurrentWord(Word* pWord)
 /*----------------------------------------------------------------------------*/
 bool SenCompiler::bInterpreting(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   bool bIsInterpreting = CM_INTERPRETING == m_eMode;
   
@@ -95,7 +95,7 @@ bool SenCompiler::bInterpreting(void)
 /*----------------------------------------------------------------------------*/
 i8 SenCompiler::nLocals(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   return m_nLocals;
 }
@@ -105,7 +105,7 @@ i8 SenCompiler::nLocals(void)
 /*----------------------------------------------------------------------------*/
 void SenCompiler::vLocals(i8 nLocals)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_nLocals = nLocals;
   
@@ -122,7 +122,7 @@ void SenCompiler::vLocals(i8 nLocals)
 /*----------------------------------------------------------------------------*/
 eCM SenCompiler::eMode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   return m_eMode;
 }
@@ -132,7 +132,7 @@ eCM SenCompiler::eMode(void)
 /*----------------------------------------------------------------------------*/
 void SenCompiler::vMode(eCM eMode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_eMode = eMode;
 }
@@ -142,7 +142,7 @@ void SenCompiler::vMode(eCM eMode)
 /*----------------------------------------------------------------------------*/
 Word* SenCompiler::pNestedWord(i8 i_Nested)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   Word* pNested = m_paWord[i_Nested];
   
@@ -154,7 +154,7 @@ Word* SenCompiler::pNestedWord(i8 i_Nested)
 /*----------------------------------------------------------------------------*/
 void SenCompiler::vNestedWord(i8 i_Nested, Word* pNested)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_paWord[i_Nested] = pNested;
 }
@@ -164,7 +164,7 @@ void SenCompiler::vNestedWord(i8 i_Nested, Word* pNested)
 /*----------------------------------------------------------------------------*/
 bool SenCompiler::bPostponing(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   bool bIsPostponing = CM_POSTPONING == m_eMode;
   
