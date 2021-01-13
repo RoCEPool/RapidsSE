@@ -5220,7 +5220,7 @@ void Task::vAddMunged(Task* pTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": nameValidate_PlanOperand \\handler\n"
     " \n"
-    "  sqlCompiler::nameVaidate\n"
+    "  sqlCompiler::nameValidate\n"
     "\n"
     "  ZK_PLANOPERAND_handler\n"
     " ;\n"

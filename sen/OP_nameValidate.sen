@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : nameValidate_PlanOperand \handler
  
-  sqlCompiler::nameVaidate
+  sqlCompiler::nameValidate
 
   ZK_PLANOPERAND_handler
 ;
