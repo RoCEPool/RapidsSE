@@ -165,7 +165,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CmdLineArgs),        HT_INVALID   ,0 }, // CN_CMDLINEARGS
   { sizeof(CodeBlock),          HT_T_SMALL   ,0 }, // CN_CODEBLOCK
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
-  { sizeof(Compiler),           HT_T_TINY    ,0 }, // CN_COMPILER
+  { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 }, // CN_CRWBUFFER
   { sizeof(CrwToRow),           HT_T_LARGE   ,0 }, // CN_CRWTOROW

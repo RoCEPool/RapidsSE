@@ -8,16 +8,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,Compiler,CN_COMPILER)
-__aNewFunction(Compiler,CN_COMPILER)
-__vDeleteFunction(Compiler,CN_COMPILER)
-__aFooterFunction(Compiler)
+__pCastFunction(BASE,SenCompiler,CN_COMPILER)
+__aNewFunction(SenCompiler,CN_COMPILER)
+__vDeleteFunction(SenCompiler,CN_COMPILER)
+__aFooterFunction(SenCompiler)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Compiler::Compiler(void)
+SenCompiler::SenCompiler(void)
 : Object(CN_COMPILER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
@@ -37,7 +37,7 @@ Compiler::Compiler(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Compiler::~Compiler(void) noexcept(false)
+SenCompiler::~SenCompiler(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
 }
@@ -49,7 +49,7 @@ Compiler::~Compiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is the compiler in compiling mode?                                         */
 /*----------------------------------------------------------------------------*/
-bool Compiler::bCompiling(void)
+bool SenCompiler::bCompiling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -61,7 +61,7 @@ bool Compiler::bCompiling(void)
 /*----------------------------------------------------------------------------*/
 /* get current word                                                           */
 /*----------------------------------------------------------------------------*/
-Word* Compiler::pCurrentWord(void)
+Word* SenCompiler::pCurrentWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -71,7 +71,7 @@ Word* Compiler::pCurrentWord(void)
 /*----------------------------------------------------------------------------*/
 /* set current word                                                           */
 /*----------------------------------------------------------------------------*/
-void Compiler::vCurrentWord(Word* pWord)
+void SenCompiler::vCurrentWord(Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -81,7 +81,7 @@ void Compiler::vCurrentWord(Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* is the compiler in interpreting mode?                                      */
 /*----------------------------------------------------------------------------*/
-bool Compiler::bInterpreting(void)
+bool SenCompiler::bInterpreting(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -93,7 +93,7 @@ bool Compiler::bInterpreting(void)
 /*----------------------------------------------------------------------------*/
 /* get number of locals                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Compiler::nLocals(void)
+i8 SenCompiler::nLocals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -103,7 +103,7 @@ i8 Compiler::nLocals(void)
 /*----------------------------------------------------------------------------*/
 /* set number of locals                                                       */
 /*----------------------------------------------------------------------------*/
-void Compiler::vLocals(i8 nLocals)
+void SenCompiler::vLocals(i8 nLocals)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -120,7 +120,7 @@ void Compiler::vLocals(i8 nLocals)
 /*----------------------------------------------------------------------------*/
 /* get mode                                                                   */
 /*----------------------------------------------------------------------------*/
-eCM Compiler::eMode(void)
+eCM SenCompiler::eMode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -130,7 +130,7 @@ eCM Compiler::eMode(void)
 /*----------------------------------------------------------------------------*/
 /* set mode                                                                   */
 /*----------------------------------------------------------------------------*/
-void Compiler::vMode(eCM eMode)
+void SenCompiler::vMode(eCM eMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -140,7 +140,7 @@ void Compiler::vMode(eCM eMode)
 /*----------------------------------------------------------------------------*/
 /* get nested word                                                            */
 /*----------------------------------------------------------------------------*/
-Word* Compiler::pNestedWord(i8 i_Nested)
+Word* SenCompiler::pNestedWord(i8 i_Nested)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -152,7 +152,7 @@ Word* Compiler::pNestedWord(i8 i_Nested)
 /*----------------------------------------------------------------------------*/
 /* set nested word                                                            */
 /*----------------------------------------------------------------------------*/
-void Compiler::vNestedWord(i8 i_Nested, Word* pNested)
+void SenCompiler::vNestedWord(i8 i_Nested, Word* pNested)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
@@ -162,7 +162,7 @@ void Compiler::vNestedWord(i8 i_Nested, Word* pNested)
 /*----------------------------------------------------------------------------*/
 /* is the compiler in postponing mode?                                        */
 /*----------------------------------------------------------------------------*/
-bool Compiler::bPostponing(void)
+bool SenCompiler::bPostponing(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   

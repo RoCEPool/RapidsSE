@@ -104,7 +104,7 @@ Task::Task(Job* pJob, i8 iFocalId)
 
   m_pLocalsFrame = nullptr;
 
-  m_pSenCompiler    = new Compiler;
+  m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr; // new Input;
 
   
@@ -398,7 +398,7 @@ DicStack* Task::pDicStack(void)
 /*----------------------------------------------------------------------------*/
 /* get the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
-Compiler* Task::pCompiler(void)
+SenCompiler* Task::pSenCompiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

@@ -11,7 +11,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 
-extern CmdLineArgs          gxCmdLineArgs;
+extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
@@ -39,7 +39,7 @@ Stz* MY::szWordNm(void)
 {
   Task* pTask = AM::pThisTLSTask();
   
-  Word* pWord = pTask->pCompiler()->pCurrentWord();
+  Word* pWord = pTask->pSenCompiler()->pCurrentWord();
   
   return pWord->szWordNm();
 }

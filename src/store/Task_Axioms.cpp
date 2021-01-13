@@ -362,7 +362,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   CellSingle xVariable;
   TokenVec* pTokenVec;
   
-  Compiler*  pCompiler = m_pSenCompiler;
+  SenCompiler* pSenCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
   
   pInput->vUseString(sDefinition);
@@ -390,7 +390,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 
   pNewWord = new(pDic) Word(szChars);
   
-  pCompiler->vCurrentWord(pNewWord);
+  pSenCompiler->vCurrentWord(pNewWord);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -486,7 +486,7 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   s48K sValue;
   
-  Compiler* pCompiler = m_pSenCompiler;
+  SenCompiler* pSenCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
 
   pInput->vUseString(szDefinition);
