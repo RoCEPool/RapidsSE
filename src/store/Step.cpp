@@ -57,7 +57,6 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
-  Step::vAddSteps_Compiler();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_CrwBuffer();
   Step::vAddSteps_CrwToRow();
@@ -171,6 +170,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Session();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Socket();
+  Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();

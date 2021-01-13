@@ -36,7 +36,6 @@ namespace STORE
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
-    static void vAddSteps_Compiler(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
     static void vAddSteps_CrwToRow(void);
@@ -150,6 +149,7 @@ namespace STORE
     static void vAddSteps_Session(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Socket(void);
+    static void vAddSteps_SqlCompiler(void);
     static void vAddSteps_SsnState(void);
     static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);

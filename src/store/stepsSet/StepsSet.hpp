@@ -162,22 +162,22 @@ public:
   void vComment(void);
 
   // comment
-  void vCompilerCompiling(void);
-  void vCompilerCondBegin(void);
-  void vCompilerCondEnd(void);
-  void vCompilerCondElse(void);
-  void vCompilerCondTest(void);
-  void vCompilerCurrentFetch(void);
-  void vCompilerCurrentStore(void);
-  void vCompilerDiscarding(void);
-  void vCompilerInterpreting(void);
-  void vCompilerIsCompiling(void);
-  void vCompilerIsDiscarding(void);
-  void vCompilerIsInterpreting(void);
-  void vCompilerIsPostponing(void);
-  void vCompilerNestedFetch(void);
-  void vCompilerNestedStore(void);
-  void vCompilerPostponing(void);
+  void vSqlCompilerCompiling(void);
+  void vSqlCompilerCondBegin(void);
+  void vSqlCompilerCondEnd(void);
+  void vSqlCompilerCondElse(void);
+  void vSqlCompilerCondTest(void);
+  void vSqlCompilerCurrentFetch(void);
+  void vSqlCompilerCurrentStore(void);
+  void vSqlCompilerDiscarding(void);
+  void vSqlCompilerInterpreting(void);
+  void vSqlCompilerIsCompiling(void);
+  void vSqlCompilerIsDiscarding(void);
+  void vSqlCompilerIsInterpreting(void);
+  void vSqlCompilerIsPostponing(void);
+  void vSqlCompilerNestedFetch(void);
+  void vSqlCompilerNestedStore(void);
+  void vSqlCompilerPostponing(void);
 
   // crwBuffer
   void vCrwBufferDelete(void);
