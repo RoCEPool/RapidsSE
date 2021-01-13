@@ -478,7 +478,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "CodeBlock.hpp"
 #include "TypedStack.hpp"
 
-#include "Compiler.hpp"
+#include "SenCompiler.hpp"
 #include "Word.hpp"
 
 #include "Profile.hpp"
