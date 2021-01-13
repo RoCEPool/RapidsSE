@@ -29,7 +29,7 @@ namespace Parser
     
     SqlPlanner(void);
     
-    void plan(Stz* pStr, PlanNode* pTemplate);
+    void plan(Stz* pStr, const PlanNode* pTemplate);
 
     ~SqlPlanner(void) noexcept;
   

@@ -17,6 +17,7 @@
 #include "parser/common/ErrorListener.hpp"
 #include "GraphNav.hpp"
 #include "GraphValidator.hpp"
+#include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
@@ -110,7 +111,7 @@ SqlPlanner::~SqlPlanner(void) noexcept
 /*----------------------------------------------------------------------------*/
 /* Parse and create an initial plan for a SQL statement                       */
 /*----------------------------------------------------------------------------*/
-void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
+void SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
 {
   // We need to give the Lexer a CharStream, but that requires an STL-string...
   std::string sqlStr(pStr->azChar());
@@ -141,12 +142,9 @@ void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
   
   // Visit the parse tree that resulted from the above parsing.
   this->visitStatement(pStatementCtx);
-  //vTrace("Finished visiting the parse tree.\n"_Stz);
 
   // Create a new plan graph using the template
-  // TODO: Uncomment this when we have a list class with separate node pointers
-  //PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
-  PlanNode* pRoot = pTemplate;
+  PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
 
   // Find the subpath where we will attach the parsed query plan
   PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
