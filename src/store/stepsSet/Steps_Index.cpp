@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "RowInflator.hpp"
+
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"

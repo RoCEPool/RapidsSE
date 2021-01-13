@@ -89,7 +89,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
-#include "RowInflator.hpp"
+//#include "RowInflator.hpp"
 
 //#include "KeyBuilder.hpp"
 

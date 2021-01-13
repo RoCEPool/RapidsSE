@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "RowInflator.hpp"
+
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Node_I.hpp"

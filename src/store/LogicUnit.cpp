@@ -9,6 +9,8 @@
 #include "eEO.h"
 #include "ePX.h"
 
+#include "RowInflator.hpp"
+
 #include "EnumGroups.h"
 
 #include "SkipRoots.hpp"

@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "RowInflator.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
