@@ -19,7 +19,7 @@ namespace Parser
     // Validate the entire plan, including definitions
     static void vValidateAll(PlanNode* pRootNode);
 
-    // Validate only the /plan section of the plan (ignoring definitions & primitives)
+    // Validate only the /plan subsection of the plan (ignoring definitions & primitives)
     static void vValidatePlan(PlanNode* pRootNode);
 
   private:
@@ -59,6 +59,7 @@ namespace Parser
     static void vDefn_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_4_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_4_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
@@ -70,6 +71,30 @@ namespace Parser
     static void vDefn_5_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_5_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+
+    static void vPlan_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    //static void vPlan_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    //static void vPlan_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_6_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_7_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_7_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
 
   };
 }

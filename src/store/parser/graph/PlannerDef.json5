@@ -925,31 +925,16 @@
                               name: "operandExpr",
                               value: "The expression to be compared against the lower and upper bounds",
                               type: "/__root__/definitions/object/expr",
-                              properties: [
-                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                                  { name: "nonNullable", type:  "/__root__/primitives/constraints/nonNullable" }
-                                ]} // end __constraints container
-                              ]
                             },
                             {
                               name: "lowerExpr",
                               value: "The expression representing the lower bound to be compared against the operand",
                               type: "/__root__/definitions/object/expr",
-                              properties: [
-                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                                  { name: "nonNullable", type:  "/__root__/primitives/constraints/nonNullable" }
-                                ]} // end __constraints container
-                              ]
                             },
                             {
                               name: "upperExpr",
                               value: "The expression representing the upper bound to be compared against the operand",
                               type: "/__root__/definitions/object/expr",
-                              properties: [
-                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                                  { name: "nonNullable", type:  "/__root__/primitives/constraints/nonNullable" }
-                                ]} // end __constraints container
-                              ]
                             }
                           ]
                         },

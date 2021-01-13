@@ -105,6 +105,7 @@ void GraphValidator::vValidateRootNode(PlanNode* pRootNode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RASSERT(pRootNode);
+  RASSERT_TYPE(pRootNode, CN_ROOTNODE);
 
   // ROOT-1: Validate the name field:
   //    ROOT-1.1: the name field must be "__root__".
@@ -177,7 +178,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePrimitiveNode(PlanNode* pNode, s256
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RASSERT(pNode);
-  RASSERT(pNode->eGetClassNo() == CN_PRIMITIVENODE);
+  RASSERT_TYPE(pNode, CN_PRIMITIVENODE);
 
   // PRIM-1: Validate the name field:
   //    PRIM-1.1: the name field must not be null.
@@ -250,6 +251,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //    DEFN-4.2: all properties of the node must have a unique name with respect to
   //              other properties defined in parent nodes that the current node inherits
   //              from. The only exception here is the "__constraints__" node.
+  //    DEFN-4.3: all properties (except "__constraints") must have a non-null type field.
   //
   // DEFN-5: Validate the constraints:
   //    DEFN-5.1: any constraints must exist under a node named "__constraints__" which
@@ -292,7 +294,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
 
   PlanNode* pRootNode = (PlanNode*) pvArg;
   pRootNode->vAssertHeader();
-  RASSERT(pRootNode->eGetClassNo() == CN_ROOTNODE);
+  RASSERT_TYPE(pRootNode, CN_ROOTNODE);
 
   // DEFN-1: Validate the name field:
   //    DEFN-1.1: the name field must not be null.
@@ -343,6 +345,9 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //              other properties defined in parent nodes that the current node inherits
   //              from. The only exception here is the "__constraints__" node.
   vDefn_4_2(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-4.3: all properties (except "__constraints") must have a non-null type field.
+  vDefn_4_3(pNode, sPath, iDepth, pvArg);
 
   // - - - - - - - - - - - - - - - - - - - - - -
 
@@ -420,6 +425,16 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   // Plan Node Validation Rules:
   // *********************************
   //
+  // There are some basic, independent rules that can be validated first up.
+  // The rest of the rules are all about ensuring that the object matches
+  // the definition it is instantiating.
+  //
+  // To validate an object against its definition we really only need to handle two aspects -
+  //   1.) validate that the current node has all of the necessary properties
+  //   that its definition defines (recursively), and
+  //   2.) validate that the current node meets all of the constraints that
+  //   its definition defines (recursively).
+  //
   // PLAN-1: Validate the name field:
   //    PLAN-1.1: the name field must not be null.
   //
@@ -427,65 +442,217 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //    No validations here as it is largely dependent on constraints
   //
   // PLAN-3: Validate the type field:
+  // (NB: we will explicitly validate the object against the definition in PLAN-7 and PLAN-8)
   //    PLAN-3.1: the type field must not be null.
   //    PLAN-3.2: the type field must be an absolute path (start with a '/').
   //    PLAN-3.3: the path in the type field must be resolvable to another
   //              node in the system.
-  //    PLAN-3.4: the path in the type field must be resolve to a node in /definitions.
-  //    PLAN-3.5:
-  //    PLAN-3.6:
-  //    PLAN-3.7:
-  //    PLAN-3.8:
-  //    PLAN-3.9:
-  //    PLAN-3.10:
+  //    PLAN-3.4: the path in the type field must be resolve to a node in /__root__/definitions.
+  //    PLAN-3.5: the path in the type field must not be a property path
+  //              (i.e. it must not have a ':' in the path).
   //
   // PLAN-4: Validate the properties:
-  //    PLAN-4.1: the names of the properties must exactly match those specified in
-  //              the definition of the current node.
-  //    PLAN-4.2: the current node must not have any additional properties that
-  //              aren't specified in its definition.
-  //    PLAN-4.3: the current node has all properties that are defined in its definition.
+  // (NB: we will explicitly validate the properties against the definition in PLAN-7 and PLAN-8)
+  //    No validations here as it is largely dependent on constraints
   //
   // PLAN-5: Validate the constraints:
+  // (NB: we will explicitly validate the constraints against the definition in PLAN-7 and PLAN-8)
+  //    PLAN-5.1: Validate that there is no __constraint container in this objects properties.
+  //    PLAN-5.2: Validate that there are no properties that derive from a constraint definition.
   //
   // PLAN-6: Validate the children:
+  // (NB: we will explicitly validate the children against the definition in PLAN-7 and PLAN-8)
   //    PLAN-6.1: the children must each have a unique name.
+  //    PLAN-6.2: the leaf nodes on a non-property path must be data sources
+  //
+  // PLAN-7: Validate the object against its definition properties (excluding constraints):
+  //    PLAN-7.1: the node must have properties with names and types that represent all the properties
+  //              defined in its definition (including all parents of the definition), excluding any
+  //              properties that are marked as optional.
+  //    PLAN-7.2: the current node must not have any additional properties that
+  //              aren't specified in its definition (including the definition's parents recursively).
+  //
+  // PLAN-8: Validate the object against its definition constraints:
+  // Please refer to NODE 1 below for additional complexities surrounding the validation
+  // of constraints.
+  //
+  //    PLAN-8.1: If a node's definition (direct or inherited) contains the "noChildren" constraint
+  //              then validate that the node has no children.
+  //    PLAN-8.2: If a node's definition (direct or inherited) contains the "alwaysChildren" constraint
+  //              then validate that the node must have at least one child.
+  //    PLAN-8.3: If a node's definition (direct or inherited) contains the "nullable" constraint
+  //              then validate that the value field of the node can be null.
+  //    PLAN-8.4: If a node's definition (direct or inherited) contains the "nonNullable" constraint
+  //              then validate that the value field of the node cannot be null.
+  //    PLAN-8.5: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
+  //    PLAN-8.6: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
+  //    PLAN-8.7: If a node's definition (direct or inherited) contains the "childType" constraint
+  //              then validate that any and all children of the node must be of a type indicated
+  //              by the constraint's parameter.
+  //    PLAN-8.8: If a node's definition (direct or inherited) contains the "valueType" constraint
+  //              then validate that the value field of the node must be of a type indicated
+  //              by the constraint's parameter.
+  //    PLAN-8.9: If a node's definition (direct or inherited) contains the "childCount" constraint
+  //              then validate that the number of children of the node must equal that indicated
+  //              by the constraint's parameter.
 
 
-  // TODO: When validating a property, its definition may have constraints, but there might
-  //       also be additional constraints when it was specified as a property.
-  //       e.g. consider this definition of object "foo" and its property "bar":
-  //       {
-  //          name: "foo",
-  //          type: "foo_defn",
+  // NOTE 1:
+  //   When validating a property of a node, the definition of that property may have
+  //   constraints. But there might also be additional constraints specified when that
+  //   property was specified as a property of the node.
+  //   e.g. consider this definition of object "foo" and its property "bar":
+  //   {
+  //      name: "foo",
+  //      type: "foo_defn",
+  //      properties: [
+  //        {
+  //          name: "bar",
+  //          type: "bar_defn",
   //          properties: [
   //            {
-  //              name: "bar",
-  //              type: "bar_defn",
-  //              properties: [
-  //                {
-  //                  name: "__constraints__", type: "...", children: [
-  //                    { name: "optional", type: "/__root__/primitives/constraints/optional" }
-  //                  ]
-  //                }
+  //              name: "__constraints", type: "...", children: [
+  //                { name: "optional", type: "/__root__/primitives/constraints/optional" }
   //              ]
   //            }
   //          ]
-  //       }
-  //       Given this definition, the property "bar" may have certain constraints from its
-  //       definition, but it also has a constraint defined where the property was defined.
-  //       So to validate this definition we must evaluate "bar" against its definition
-  //       as well as against any additional constraints applied in the declaration of the
-  //       property "bar" too.
+  //        }
+  //      ]
+  //   }
+  //   Given this definition, the property "bar" may have certain constraints from its
+  //   definition (bar_defn), but it also has a constraint defined where the property was
+  //   defined (at foo:bar).
+  //   So to validate this definition we must evaluate "bar" against its definition (bar_defn)
+  //   as well as against any additional constraints applied in the declaration of the
+  //   property "bar" too.
+
+  // TODO: If a property is defined of another object and that property has a __constraint container
+  //       (note, not the parent object) with children, then validate that:
+  //       1.) the constraint is not already specified in the definition (and its parents)
+  //       2.) the constraint is not incompatible with any constraints in the definition (and its parents)
 
 
+  RASSERT(pNode);
+  RASSERT(pNode->eGetClassNo() == CN_MUTABLEPLANNODE ||
+                   pNode->eGetClassNo() == CN_QUERYNODE);
+  RASSERT(pvArg);
 
-  // Check for direct definition properties
-  // Check for inherited properties
-  // Apply/check constraints
-  // Apply/check any inherited constraints
+  PlanNode* pRootNode = (PlanNode*) pvArg;
+  pRootNode->vAssertHeader();
+  RASSERT_TYPE(pRootNode, CN_ROOTNODE);
 
-  // leaf node should be a data source
+  // PLAN-1: Validate the name field:
+  //    PLAN-1.1: the name field must not be null.
+  vPlan_1_1(pNode, sPath, iDepth, pvArg);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PLAN-2: Validate the value field:
+  //    No validations here as it is largely dependent on constraints
+  //vPlan_2_1(pNode, sPath, iDepth, pvArg);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PLAN-3: Validate the type field:
+  // (NB: we will explicitly validate the object against the definition in PLAN-7 and PLAN-8)
+  //    PLAN-3.1: the type field must not be null.
+  vPlan_3_1(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-3.2: the type field must be an absolute path (start with a '/').
+  vPlan_3_2(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-3.3: the path in the type field must be resolvable to another node in the system.
+  vPlan_3_3(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-3.4: the path in the type field must be resolve to a node in /__root__/definitions.
+  vPlan_3_4(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-3.5: the path in the type field must not be a property path
+  //              (i.e. it must not have a ':' in the path).
+  vPlan_3_5(pNode, sPath, iDepth, pvArg);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PLAN-4: Validate the properties:
+  // (NB: we will explicitly validate the properties against the definition in PLAN-7 and PLAN-8)
+  //    No validations here as it is largely dependent on constraints
+  //vPlan_4_1(pNode, sPath, iDepth, pvArg);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PLAN-5: Validate the constraints:
+  // (NB: we will explicitly validate the constraints against the definition in PLAN-7 and PLAN-8)
+  //    PLAN-5.1: Validate that there is no __constraint container in this objects properties.
+  vPlan_5_1(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-5.2: Validate that there are no properties that derive from a constraint definition.
+  vPlan_5_2(pNode, sPath, iDepth, pvArg);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PLAN-6: Validate the children:
+  // (NB: we will explicitly validate the children against the definition in PLAN-7 and PLAN-8)
+  //    PLAN-6.1: the children must each have a unique name.
+  vPlan_6_1(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-6.2: the leaf nodes on a non-property path must be data sources
+  vPlan_6_2(pNode, sPath, iDepth, pvArg);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PLAN-7: Validate the object against its definition properties (excluding constraints):
+  //    PLAN-7.1: the node must have properties with names and types that represent all the properties
+  //              defined in its definition (including all parents of the definition), excluding any
+  //              properties that are marked as optional.
+  vPlan_7_1(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-7.2: the current node must not have any additional properties that
+  //              aren't specified in its definition (including the definition's parents recursively).
+  vPlan_7_2(pNode, sPath, iDepth, pvArg);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
+
+  // PLAN-8: Validate the object against its definition constraints:
+  // Please refer to NODE 1 below for additional complexities surrounding the validation
+  // of constraints.
+  //
+  //    PLAN-8.1: If a node's definition (direct or inherited) contains the "noChildren" constraint
+  //              then validate that the node has no children.
+  vPlan_8_1(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.2: If a node's definition (direct or inherited) contains the "alwaysChildren" constraint
+  //              then validate that the node must have at least one child.
+  vPlan_8_2(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.3: If a node's definition (direct or inherited) contains the "nullable" constraint
+  //              then validate that the value field of the node can be null.
+  vPlan_8_3(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.4: If a node's definition (direct or inherited) contains the "nonNullable" constraint
+  //              then validate that the value field of the node cannot be null.
+  vPlan_8_4(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.5: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
+  vPlan_8_5(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.6: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
+  vPlan_8_6(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.7: If a node's definition (direct or inherited) contains the "childType" constraint
+  //              then validate that any and all children of the node must be of a type indicated
+  //              by the constraint's parameter.
+  vPlan_8_7(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.8: If a node's definition (direct or inherited) contains the "valueType" constraint
+  //              then validate that the value field of the node must be of a type indicated
+  //              by the constraint's parameter.
+  vPlan_8_8(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.9: If a node's definition (direct or inherited) contains the "childCount" constraint
+  //              then validate that the number of children of the node must equal that indicated
+  //              by the constraint's parameter.
+  vPlan_8_9(pNode, sPath, iDepth, pvArg);
+
 
   return Parser::GraphNav::WALK_CONTINUE;
 }
@@ -955,6 +1122,33 @@ void GraphValidator::vDefn_4_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
     delete pPropIter;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-4.3                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_4_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-4.3: all properties (except "__constraints") must have a non-null type field.
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter *pPropIter = pNode->pNewPropertyIter();
+
+  while (pPropIter->bHasNext()) {
+    PlanNode *pProp = pPropIter->pNext();
+    Stz *pPropName = pProp->szName();
+
+    if (pPropName->bEqual(const_cast<Stz *>(C_CONSTRAINTS_CONTAINER_NAME))) {
+      // ignore this
+      continue;
+    }
+
+    RASSERT(pProp->szType());
+  }
+  delete pPropIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1562,6 +1756,330 @@ void GraphValidator::vDefn_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
   delete pChildIter1;
 }
+
+
+/*============================================================================*/
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-1.1                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-1: Validate the name field:
+  //    PLAN-1.1: the name field must not be null.
+
+  RASSERT(pNode->szName());
+  RASSERT(pNode->szName()->nLength() > 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-2.1                                    */
+/*----------------------------------------------------------------------------*/
+//void GraphValidator::vPlan_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+//{
+//  // PLAN-2: Validate the value field:
+//  //    No validations here as it is largely dependent on constraints
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-3.1                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-3: Validate the type field:
+  //    PLAN-3.1: the type field must not be null.
+
+  RASSERT(pNode->szType());
+  RASSERT(pNode->szType()->nLength() > 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-3.2                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-3: Validate the type field:
+  //    PLAN-3.2: the type field must be an absolute path (start with a '/').
+
+  RASSERT(pNode->szType()->bBeginsWith(StrLib::szCharToStr(C_CHILD_SEPARATOR)));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-3.3                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-3: Validate the type field:
+  //    PLAN-3.3: the path in the type field must be resolvable to another node in the system.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  PlanNode* pDefnNode = GraphNav::pFind(pNode->szType(), pRootNode);
+
+  RASSERT(pDefnNode);
+  RASSERT_TYPE(pDefnNode, CN_DEFINITIONNODE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-3.4                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-3: Validate the type field:
+  //    PLAN-3.4: the path in the type field must be resolve to a node in /__root__/definitions.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  DefinitionNode* pDefnNode = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+
+  RASSERT(pDefnNode);
+  RASSERT_TYPE(pDefnNode, CN_DEFINITIONNODE);
+  RASSERT(pDefnNode->szPath()->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-3.5                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-3: Validate the type field:
+  //    PLAN-3.5: the path in the type field must not be a property path
+  //              (i.e. it must not have a ':' in the path).
+
+  RASSERT(!pNode->szType()->bContains(StrLib::szCharToStr(C_PROPERTY_SEPARATOR)));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-4.1                                    */
+/*----------------------------------------------------------------------------*/
+//void GraphValidator::vPlan_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+//{
+//  // PLAN-4: Validate the properties:
+//  //    No validations here as it is largely dependent on constraints
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-5.1                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-5: Validate the constraints:
+  //    PLAN-5.1: Validate that there is no __constraint container in this objects properties.
+
+  PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
+  RASSERT(!pConstraints);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-5.2                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-5: Validate the constraints:
+  //    PLAN-5.2: Validate that there are no properties that derive from a constraint definition.
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pProp = pPropIter->pNext();
+
+    RASSERT(pProp->szType());
+    RASSERT(!pProp->szType()->bBeginsWith(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_PATH)));
+  }
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-6.1                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-6: Validate the children:
+  //    PLAN-6.1: the children must each have a unique name.
+
+  if (pNode->nChildren() <= 1) {
+    return;
+  }
+
+  // Horrible O(N^2) approach here, but hopefully we shouldn't have too many children.
+  PlanNodeIter* pChildIter1 = pNode->pNewChildrenIter();
+  while (pChildIter1->bHasNext()) {
+    PlanNode* pChild1 = pChildIter1->pNext();
+
+    PlanNodeIter* pChildIter2 = pNode->pNewChildrenIter();
+    while (pChildIter2->bHasNext()) {
+      PlanNode *pChild2 = pChildIter2->pNext();
+
+      if (pChild1 == pChild2) {
+        continue; // same object
+      }
+
+      // Two children cannot have the same name
+      RASSERT(!pChild1->szName()->bEqual(pChild2->szName()));
+    }
+    delete pChildIter2;
+
+  }
+  delete pChildIter1;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-6.1                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_6_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-6: Validate the children:
+  //    PLAN-6.2: the leaf nodes on a non-property path must be data sources
+
+  if (pNode->nChildren() > 0 || sPath.bEqual(const_cast<Stz*>(C_PLAN_NAME)) ||
+      sPath.bContains(StrLib::szCharToStr(C_PROPERTY_SEPARATOR))) {
+    return;
+  }
+
+  RASSERT(pNode->szType()->bBeginsWith(const_cast<Stz*>(C_DATASOURCE_DEFN)));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-7.1                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_7_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-7: Validate the object against its definition properties (excluding constraints):
+  //    PLAN-7.1: the node must have properties with names and types that represent all the properties
+  //              defined in its definition (including all parents of the definition), excluding any
+  //              properties that are marked as optional.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-7.2                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_7_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-7: Validate the object against its definition properties (excluding constraints):
+  //    PLAN-7.2: the current node must not have any additional properties that
+  //              aren't specified in its definition (including the definition's parents recursively).
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.1                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.1: If a node's definition (direct or inherited) contains the "noChildren" constraint
+  //              then validate that the node has no children.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.2                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.2: If a node's definition (direct or inherited) contains the "alwaysChildren" constraint
+  //              then validate that the node must have at least one child.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.3                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.3: If a node's definition (direct or inherited) contains the "nullable" constraint
+  //              then validate that the value field of the node can be null.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.4                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.4: If a node's definition (direct or inherited) contains the "nonNullable" constraint
+  //              then validate that the value field of the node cannot be null.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.5                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.5: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.6                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.6: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.7                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.7: If a node's definition (direct or inherited) contains the "childType" constraint
+  //              then validate that any and all children of the node must be of a type indicated
+  //              by the constraint's parameter.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.8                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.8: If a node's definition (direct or inherited) contains the "valueType" constraint
+  //              then validate that the value field of the node must be of a type indicated
+  //              by the constraint's parameter.
+
+  // TODO
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.9                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.9: If a node's definition (direct or inherited) contains the "childCount" constraint
+  //              then validate that the number of children of the node must equal that indicated
+  //              by the constraint's parameter.
+
+  // TODO
+}
+
+
+/*============================================================================*/
+/*============================================================================*/
+
+
 
 /*============================================================================*/
 /* end                                                                        */

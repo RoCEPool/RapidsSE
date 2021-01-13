@@ -16,6 +16,7 @@
 #include "PlanConstants.hpp"
 #include "parser/common/ErrorListener.hpp"
 #include "GraphNav.hpp"
+#include "GraphValidator.hpp"
 
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
@@ -162,6 +163,9 @@ void SqlPlanner::plan(Stz* pStr, PlanNode* pTemplate)
   s48K sExplainBuf;
   Statement::vExplain(pStatementNode, sExplainBuf, 0);
   vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
+
+  // Validate the plan subsection of the graph
+  GraphValidator::vValidatePlan(pRoot);
 }
 
 
