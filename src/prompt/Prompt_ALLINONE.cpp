@@ -93,12 +93,6 @@ bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
 /* Prompt_apiDemo.cpp -- RapidsSE Api Demo                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-
-
-
-
-
-
 PromptFun __Prompt_apiDemo (
   PF_APIDEMO,           // prompt function
   "Prompt_apiDemo"_Stz, // name of the prompt function
@@ -421,12 +415,6 @@ L_CleanUp:
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_args.cpp -- show command line arguments                             */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-
-
-
-
-
 
 PromptFun __Prompt_args (
   PF_ARGS,           // prompt function
@@ -3977,6 +3965,47 @@ bool PROMPT::bPrompt_rnd(SePrompt* pPrompt)
 
   return true;
 }
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_scan.cpp -- scan to pipeline                                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_scan (
+  PF_SCAN,           // prompt function
+  "Prompt_scan"_Stz,    // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "scan"_Stz,           // the prompt command
+  nullptr,              // the second word
+  bPrompt_scan,         // prompt function
+  true,                 // enabled
+
+  false,                // visible
+  "scan"_Stz,           // help
+  ""_Stz                // description
+);
+
+//------------------------------------------------------------------------------
+/* prompt function                                                            */
+//------------------------------------------------------------------------------
+bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
+{
+  vTrace("bPrompt_scan\n"_Stz);
+  
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  
+  i8 iNumTokens = pInpTknVec->nItems();
+  
+  s48K sPipelineStmt;
+  
+  if (Procedure::bCmdToPipeline(sPipelineStmt,pInpTknVec)) {
+    
+    pPrompt->pSession()->m_sToDo = sPipelineStmt;
+    
+  }
+  
+  return true;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_selfies.cpp -- Ascii Helper                                           */

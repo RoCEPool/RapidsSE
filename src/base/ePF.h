@@ -108,6 +108,7 @@ enum ePF // prompt function
   /*    */ PF_RMFIFO,
   /*    */ PF_RND,
   
+  /*    */ PF_SCAN,
   /*    */ PF_SE,
   /*    */ PF_SELECT,
   /*    */ PF_SELFIES,
@@ -261,6 +262,7 @@ static Stz* aPF[]
   /*    */ "PF_RMFIFO"_Stz,
   /*    */ "PF_RND"_Stz,
   
+  /*    */ "PF_SCAN"_Stz,
   /*    */ "PF_SE"_Stz,
   /*    */ "PF_SELECT"_Stz,
   /*    */ "PF_SELFIES"_Stz,

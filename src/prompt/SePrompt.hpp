@@ -124,6 +124,7 @@ namespace PROMPT
     i8   iRequestId(void);
     void vSection(Stz* szSection);
     TagSet* pPmtTagSet(void);
+    Session* pSession(void);
     bool bShortCut(SeDeputy* pSeDeputy);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
