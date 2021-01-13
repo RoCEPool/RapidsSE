@@ -1239,9 +1239,9 @@
   stage stageA on origin :
     start
     | periodic once
-    | compilerOpEg
-    | compilerOpEg
-    | noop
+    | parser
+    | nameValidate
+    | transliterate
     | output
     | sink
     | stageA
