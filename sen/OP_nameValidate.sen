@@ -29,6 +29,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_OTHEROPERAND ...                                            */
+/*----------------------------------------------------------------------------*/
+: nameValidate_OtherOperand \handler
+ 
+  ZK_OTHEROPERAND_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_PLANNODE ...                                                */
 /*----------------------------------------------------------------------------*/
 : nameValidate_PlanNode \handler
@@ -61,6 +69,7 @@
   find: nameValidate_CancelMarker ZK_CANCELMARKER op[].handler!
   find: nameValidate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: nameValidate_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: nameValidate_OtherOperand ZK_OTHEROPERAND op[].handler!
   find: nameValidate_PlanNode     ZK_PLANNODE     op[].handler!
   find: nameValidate_StartMarker  ZK_STARTMARKER  op[].handler!
 

@@ -29,6 +29,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_OTHEROPERAND ...                                            */
+/*----------------------------------------------------------------------------*/
+: transliterate_OtherOperand \handler
+ 
+  ZK_OTHEROPERAND_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_PLANNODE ...                                                */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanNode \handler
@@ -62,6 +70,7 @@
   find: transliterate_CancelMarker ZK_CANCELMARKER op[].handler!
   find: transliterate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: transliterate_OtherOperand ZK_OTHEROPERAND op[].handler!
   find: transliterate_PlanNode     ZK_PLANNODE     op[].handler!
   find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
 
