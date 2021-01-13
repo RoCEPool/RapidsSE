@@ -69,6 +69,17 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* temp constructor for use by ray to test sql compiler pipeline              */
+/*----------------------------------------------------------------------------*/
+PlanNode::PlanNode(eCN eClassNo, void* aTempTest_byRay)
+    : Object(eClassNo)
+{
+  
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 PlanNode::~PlanNode(void)

@@ -23,6 +23,10 @@ namespace Parser
 
     RootNode(Stz* szName, Stz* szType, Value xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren, Stz* sPath);
+  
+    RootNode(void* aTempTest_byRay);
+
+
     virtual ~RootNode(void);
 
     Footer* aFooter(void);

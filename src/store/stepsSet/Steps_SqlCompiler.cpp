@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "PlanNode.hpp"
+#include "RootNode.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -46,6 +48,9 @@ void Step::vSqlCompilerParser(void)
 
   vTrace("%s\n"_Stz,sSqlStatement.szStz());
 
+  Parser::RootNode* pPlanNode_root = new Parser::RootNode(nullptr);
+  
+  m_pDataStack->vPushPtr(pPlanNode_root);
 
   EXIT();
 }

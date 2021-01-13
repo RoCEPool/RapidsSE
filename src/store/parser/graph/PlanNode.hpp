@@ -79,6 +79,8 @@ namespace Parser
 
     PlanNode(eCN eClassNo, const PlanNode& oNode);
 
+    PlanNode(eCN eClassNo, void* aTempTest_byRay);
+
   public:
     Stz* szName();
     Stz* szType();

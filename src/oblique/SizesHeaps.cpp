@@ -40,6 +40,8 @@
 
 #include "SizesHeaps.hpp"
 
+#include "OtherOperand.hpp"
+
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "EntBufSorter.hpp"
@@ -283,6 +285,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
   { sizeof(OpSpec),             HT_T_LARGE   ,0 }, // CN_OPSPEC
+  { sizeof(OtherOperand),       HT_T_TINY    ,0 }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 }, // CN_PATHIDENTIFIER

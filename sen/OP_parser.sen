@@ -19,7 +19,9 @@
  
   ZK_DATAPULSE_handler
   
-  <sqlStatement> sqlCompiler::parser
+  <sqlStatement> sqlCompiler::parser to Operand[]
+  
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
