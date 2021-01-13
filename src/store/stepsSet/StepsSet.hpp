@@ -161,24 +161,6 @@ public:
   // comment
   void vComment(void);
 
-  // comment
-  void vSqlCompilerCompiling(void);
-  void vSqlCompilerCondBegin(void);
-  void vSqlCompilerCondEnd(void);
-  void vSqlCompilerCondElse(void);
-  void vSqlCompilerCondTest(void);
-  void vSqlCompilerCurrentFetch(void);
-  void vSqlCompilerCurrentStore(void);
-  void vSqlCompilerDiscarding(void);
-  void vSqlCompilerInterpreting(void);
-  void vSqlCompilerIsCompiling(void);
-  void vSqlCompilerIsDiscarding(void);
-  void vSqlCompilerIsInterpreting(void);
-  void vSqlCompilerIsPostponing(void);
-  void vSqlCompilerNestedFetch(void);
-  void vSqlCompilerNestedStore(void);
-  void vSqlCompilerPostponing(void);
-
   // crwBuffer
   void vCrwBufferDelete(void);
   void vCrwBufferOperandDump(void);
@@ -1374,6 +1356,24 @@ public:
   // csv buffer
   void vSeekOffsetsOperandDump(void);
 
+  // sen compiler
+  void vSenCompilerCompiling(void);
+  void vSenCompilerCondBegin(void);
+  void vSenCompilerCondEnd(void);
+  void vSenCompilerCondElse(void);
+  void vSenCompilerCondTest(void);
+  void vSenCompilerCurrentFetch(void);
+  void vSenCompilerCurrentStore(void);
+  void vSenCompilerDiscarding(void);
+  void vSenCompilerInterpreting(void);
+  void vSenCompilerIsCompiling(void);
+  void vSenCompilerIsDiscarding(void);
+  void vSenCompilerIsInterpreting(void);
+  void vSenCompilerIsPostponing(void);
+  void vSenCompilerNestedFetch(void);
+  void vSenCompilerNestedStore(void);
+  void vSenCompilerPostponing(void);
+
   // session
   void vSessionCommand(void);
   void vSessionDicStackFetch(void);
@@ -1402,6 +1402,11 @@ public:
   void vSocketRecvObject(void);
   void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
+
+  // sql compiler
+  void vSqlCompilerNameValidate(void);
+  void vSqlCompilerParser(void);
+  void vSqlCompilerTransliterate(void);
 
   // ssn
   void vSsnIncBegun(void);
