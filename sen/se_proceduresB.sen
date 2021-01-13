@@ -1234,12 +1234,14 @@
   sPath
   "
   procedure sqlCompiler
+    parameters $sqlStatement
+
   begin
 
   stage stageA on origin :
     start
     | periodic once
-    | parser
+    | parser $sqlStatement
     | nameValidate
     | transliterate
     | output

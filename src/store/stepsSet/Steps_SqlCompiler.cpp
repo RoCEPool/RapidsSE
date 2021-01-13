@@ -40,6 +40,12 @@ void Step::vSqlCompilerParser(void)
   ENTRY();
   
   vTrace("Step::vSqlCompilerParser\n"_Stz);
+  
+  s4K sSqlStatement;
+  m_pDataStack->vPopStr(sSqlStatement,__func__);
+
+  vTrace("%s\n"_Stz,sSqlStatement.szStz());
+
 
   EXIT();
 }
