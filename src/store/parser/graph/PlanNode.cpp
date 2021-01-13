@@ -74,7 +74,8 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
 PlanNode::PlanNode(eCN eClassNo, void* aTempTest_byRay)
     : Object(eClassNo)
 {
-  
+  m_pProperties = nullptr;
+  m_pChildren   = nullptr;
 }
 
 

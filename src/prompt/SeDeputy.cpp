@@ -147,7 +147,7 @@ void SeDeputy::vExecuteJob(void)
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
   RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
   
-  vTrace("vSeDeputy::vExecuteJob\n"_Stz);
+  //vTrace("vSeDeputy::vExecuteJob\n"_Stz);
   
   Api::vExecuteJob(m_pSession);
   

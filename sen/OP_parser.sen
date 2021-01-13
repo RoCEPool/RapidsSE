@@ -18,9 +18,12 @@
 : parser_DataMarker \handler
  
   ZK_DATAPULSE_handler
-  
+
   <sqlStatement> sqlCompiler::parser to Operand[]
   
+  Operand[].pipeOut
+  
+  Operand[].newEosMarker
   Operand[].pipeOut
 ;
 

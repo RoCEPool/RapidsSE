@@ -11,9 +11,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,OtherOperand,CN_MARKER)
-__aNewFunction(OtherOperand,CN_MARKER)
-__vDeleteFunction(OtherOperand,CN_MARKER)
+__pCastFunction(STORE,OtherOperand,CN_OTHEROPERAND)
+__aNewFunction(OtherOperand,CN_OTHEROPERAND)
+__vDeleteFunction(OtherOperand,CN_OTHEROPERAND)
 __aFooterFunction(OtherOperand)
 
 
@@ -21,9 +21,9 @@ __aFooterFunction(OtherOperand)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OtherOperand::OtherOperand(Object* pObject)
-: Operand(CN_MARKER)
+: Operand(CN_OTHEROPERAND)
 {
-  _precondition_(_MAGIC_,CN_MARKER);
+  _precondition_(_MAGIC_,CN_OTHEROPERAND);
   
   m_pObject = pObject;
 }

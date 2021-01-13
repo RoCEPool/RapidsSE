@@ -11,6 +11,7 @@
 
 #include "PlanNode.hpp"
 #include "RootNode.hpp"
+#include "OtherOperand.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -29,8 +30,25 @@ void Step::vSqlCompilerNameValidate(void)
 {
   ENTRY();
   
-  vTrace("Step::vSqlCompilerNameValidate\n"_Stz);
+  //vTrace("\nStep::vSqlCompilerNameValidate\n"_Stz);
   
+  OtherOperand* pOtherOperand = _pOtherOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pOtherOperand->pObject();
+
+  
+  Parser::RootNode* pPlanNode_root2 = new Parser::RootNode(nullptr);
+  OtherOperand* pOtherOperand2 = new OtherOperand(pPlanNode_root2);
+
+  
+  //vTrace("  NameValidate(RootNode %p)-> RootNode %p\n"_Stz,
+  //       pPlanNode_root,pPlanNode_root2);
+
+  delete pOtherOperand;
+  delete pPlanNode_root;
+
+  
+  m_pDataStack->vPushPtr(pOtherOperand2);
+
   EXIT();
 }
 
@@ -41,16 +59,19 @@ void Step::vSqlCompilerParser(void)
 {
   ENTRY();
   
-  vTrace("Step::vSqlCompilerParser\n"_Stz);
+  //vTrace("\nStep::vSqlCompilerParser\n"_Stz);
   
   s4K sSqlStatement;
   m_pDataStack->vPopStr(sSqlStatement,__func__);
 
-  vTrace("%s\n"_Stz,sSqlStatement.szStz());
-
   Parser::RootNode* pPlanNode_root = new Parser::RootNode(nullptr);
   
-  m_pDataStack->vPushPtr(pPlanNode_root);
+  OtherOperand* pOtherOperand = new OtherOperand(pPlanNode_root);
+  
+  m_pDataStack->vPushPtr(pOtherOperand);
+
+  //vTrace("  antlr(%s) -> RootNode %p\n"_Stz,
+  //       sSqlStatement.szStz(),pPlanNode_root);
 
   EXIT();
 }
@@ -62,8 +83,17 @@ void Step::vSqlCompilerTransliterate(void)
 {
   ENTRY();
   
-  vTrace("Step::vSqlCompilerTransliterate\n"_Stz);
+  //vTrace("\nStep::vSqlCompilerTransliterate\n"_Stz);
 
+  OtherOperand* pOtherOperand = _pOtherOperand(m_pDataStack->pPopPtr(__func__));
+
+  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pOtherOperand->pObject();
+
+  //vTrace("  Transliterate(RootNode %p) -> nil\n"_Stz,pPlanNode_root);
+
+  delete pOtherOperand;
+  delete pPlanNode_root;
+  
   EXIT();
 }
 

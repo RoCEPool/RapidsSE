@@ -33,17 +33,17 @@
 /*----------------------------------------------------------------------------*/
 : nameValidate_OtherOperand \handler
  
-  ZK_OTHEROPERAND_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANNODE ...                                                */
-/*----------------------------------------------------------------------------*/
-: nameValidate_PlanNode \handler
- 
-  sqlCompiler::nameValidate
-
-  ZK_PLANNODE_handler
+  PipeIn[] to Operand[]
+    nullptr to PipeIn[]
+  
+  Operand[] nullptr to Operand[] sqlCompiler::nameValidate to Operand[]
+  
+  Operand[].pipeout
+  
+  true
+  
+  //PipeIn[].pipeout
+  //true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,6 @@
   find: nameValidate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: nameValidate_EosMarker    ZK_EOSMARKER    op[].handler!
   find: nameValidate_OtherOperand ZK_OTHEROPERAND op[].handler!
-  find: nameValidate_PlanNode     ZK_PLANNODE     op[].handler!
   find: nameValidate_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

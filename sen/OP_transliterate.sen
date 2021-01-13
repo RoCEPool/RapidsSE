@@ -33,18 +33,13 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_OtherOperand \handler
  
-  ZK_OTHEROPERAND_handler
-;
+  PipeIn[] to Operand[]
+    nullptr to PipeIn[]
 
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANNODE ...                                                */
-/*----------------------------------------------------------------------------*/
-: transliterate_PlanNode \handler
- 
-  sqlCompiler::transliterate
-
-  ZK_PLANNODE_handler
-
+  Operand[] nullptr to Operand[] sqlCompiler::transliterate
+  
+  
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +66,6 @@
   find: transliterate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
   find: transliterate_OtherOperand ZK_OTHEROPERAND op[].handler!
-  find: transliterate_PlanNode     ZK_PLANNODE     op[].handler!
   find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

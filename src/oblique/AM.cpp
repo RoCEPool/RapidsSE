@@ -1697,10 +1697,11 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       break;
     }
       
-    case CN_PROFILE:   eOperand = ZK_PROFILE;   break;
-    case CN_ROWBUFFER: eOperand = ZK_ROWBUFFER; break;
-    case CN_STREAMDEF: eOperand = ZK_STREAMDEF; break;
-    case CN_STREAMSET: eOperand = ZK_STREAMSET; break;
+    case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
+    case CN_PROFILE:      eOperand = ZK_PROFILE;        break;
+    case CN_ROWBUFFER:    eOperand = ZK_ROWBUFFER;      break;
+    case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
+    case CN_STREAMSET:    eOperand = ZK_STREAMSET;      break;
       
     default:
       RASSERT(0);
