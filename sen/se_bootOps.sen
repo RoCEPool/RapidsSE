@@ -105,6 +105,7 @@ assert::stack_0
         
 "n" .put
 
+  "OP_nameValidate.sen"         include
   "OP_nodeInfo.sen"             include
   "OP_noop.sen"                 include
 
@@ -114,6 +115,7 @@ assert::stack_0
 
 "p" .put
 
+  "OP_parser.sen"               include
   "OP_passThru.sen"             include
   "OP_periodic.sen"             include
   "OP_ping.sen"                 include
@@ -176,6 +178,7 @@ assert::stack_0
   "OP_toRow.sen"                include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include
+  "OP_transliterate.sen"        include
   "OP_truncateIndex.sen"        include
   "OP_truncateTable.sen"        include
 
