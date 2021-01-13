@@ -116,6 +116,7 @@ namespace PROMPT
   bool bPrompt_resources(SePrompt* pPrompt);
   bool bPrompt_rmfifo(SePrompt* pPrompt);
   bool bPrompt_rnd(SePrompt* pPrompt);
+  bool bPrompt_scan(SePrompt* pPrompt);
   bool bPrompt_selfies(SePrompt* pPrompt);
   bool bPrompt_setDbg(SePrompt* pPrompt);
   bool bPrompt_shell(SePrompt* pPrompt);
