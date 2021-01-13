@@ -499,7 +499,7 @@ void Step::vWordNew(void)
   }
   
   m_pDataStack->vPushPtr(pNewWord);
-  //m_pCompiler->vCurrentWord(pNewWord);
+  //m_pSenCompiler->vCurrentWord(pNewWord);
 
   EXIT();
 }

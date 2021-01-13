@@ -68,7 +68,7 @@ namespace BASE
 
     LocalChain* m_pLocalsFrame; // locals| | register frame chain
 
-    Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
+    Compiler*   m_pSenCompiler; // sen word compiler
     Input*      m_pInput;       // input stream
 
 

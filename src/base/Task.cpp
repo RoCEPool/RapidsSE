@@ -104,7 +104,7 @@ Task::Task(Job* pJob, i8 iFocalId)
 
   m_pLocalsFrame = nullptr;
 
-  m_pCompiler    = new Compiler;
+  m_pSenCompiler    = new Compiler;
   m_pInput       = nullptr; // new Input;
 
   
@@ -153,7 +153,7 @@ Task::~Task(void) noexcept(false)
     delete pLocalsFrame;
   }
   
-  delete m_pCompiler;
+  delete m_pSenCompiler;
   delete m_pInput;
 
     
@@ -402,7 +402,7 @@ Compiler* Task::pCompiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pCompiler;
+  return m_pSenCompiler;
 }
 
 /*----------------------------------------------------------------------------*/

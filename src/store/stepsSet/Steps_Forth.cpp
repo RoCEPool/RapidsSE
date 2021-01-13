@@ -41,7 +41,7 @@ void Step::vColon(void)
   
   s256 sWordNm;
   
-  m_pCompiler->vMode(CM_COMPILING);
+  m_pSenCompiler->vMode(CM_COMPILING);
   
   m_pInput->vReadToken();
   sWordNm = m_pInput->szChars();
@@ -67,9 +67,9 @@ void Step::vColon(void)
   Word* pInclude = m_pInput->pUseInclude();
   pNewWord->vInclude(pInclude);
   
-  m_pCompiler->vCurrentWord(pNewWord);
+  m_pSenCompiler->vCurrentWord(pNewWord);
   
-  m_pCompiler->vNestedWord(0,pNewWord);
+  m_pSenCompiler->vNestedWord(0,pNewWord);
   
   EXIT();
 }
@@ -104,7 +104,7 @@ void Step::vCreateFromInRoot(void)
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic) Word(sName);
   
-  //m_pCompiler->vCurrentWord(pNewWord);
+  //m_pSenCompiler->vCurrentWord(pNewWord);
   
   m_pDataStack->vPushPtr(pNewWord);
 
@@ -249,8 +249,8 @@ void Step::vFind(void)
   CellSingle xVar;
   xVar = pWord;
 
-  if (m_pCompiler->bCompiling()) {
-    Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  if (m_pSenCompiler->bCompiling()) {
+    Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
     pCurrentWord->vEncodePush(xVar);
   }
   else {
@@ -267,7 +267,7 @@ void Step::vImmediate(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
@@ -301,7 +301,7 @@ void Step::vPostpone(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   // get name of word to be called
   m_pInput->vReadToken();
@@ -346,7 +346,7 @@ void Step::vSee(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
 
   AM::vWordSee(pCurrentWord,&m_oDicStack);
   
@@ -362,12 +362,12 @@ void Step::vSemicolon(void)
   
   static i8 iMaxUsed = 0;
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
-  if (m_pCompiler->nLocals()) {
+  if (m_pSenCompiler->nLocals()) {
     
     // reset the number of local variables
-    m_pCompiler->vLocals(0);
+    m_pSenCompiler->vLocals(0);
     
     // pop top dictionary
     m_oDicStack.vDiscard();
@@ -397,9 +397,9 @@ void Step::vSemicolon(void)
 //         iMaxUsed,
 //         pCurrentWord->szWordNm());
   
-  m_pCompiler->vMode(CM_INTERPRETING);
+  m_pSenCompiler->vMode(CM_INTERPRETING);
     
-  //m_pCompiler->vCurrentWord(nullptr);
+  //m_pSenCompiler->vCurrentWord(nullptr);
     
 //  if (pCurrentWord->szWordNm()->bSame("tpl_liteOp_PulseMarker"_Stz))
 //    AM::vWordSee(pCurrentWord,&m_oDicStack);

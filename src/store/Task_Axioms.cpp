@@ -362,7 +362,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   CellSingle xVariable;
   TokenVec* pTokenVec;
   
-  Compiler*  pCompiler = m_pCompiler;
+  Compiler*  pCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
   
   pInput->vUseString(sDefinition);
@@ -486,7 +486,7 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   s48K sValue;
   
-  Compiler* pCompiler = m_pCompiler;
+  Compiler* pCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
 
   pInput->vUseString(szDefinition);
@@ -503,11 +503,11 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   // get CONSTANT
   pInput->vReadToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pSenCompiler->szToken()->azChar());
   
   // get name of word
   pInput->vReadToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pSenCompiler->szToken()->azChar());
 
   Stz* szName = (Stz*)pInput->szChars();
 

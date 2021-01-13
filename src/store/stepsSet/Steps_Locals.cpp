@@ -69,7 +69,7 @@ void Step::vLocalsBar(void)
 {
   ENTRY();
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   Dic* pDic = m_oDicStack.pPick(0);
 
@@ -85,7 +85,7 @@ void Step::vLocalsBar(void)
       break;
 
     // test for first use of locals|
-    i8 nLcl = m_pCompiler->nLocals();
+    i8 nLcl = m_pSenCompiler->nLocals();
     if ( ! nLcl ) {
       
       // create a locals dictionary
@@ -115,7 +115,7 @@ void Step::vLocalsBar(void)
     pCurrentWord->vEncodeCall("local.store"_Stz);
     
     nLcl++;
-    m_pCompiler->vLocals(nLcl);
+    m_pSenCompiler->vLocals(nLcl);
   }
   
   EXIT();
@@ -166,7 +166,7 @@ void Step::vLocalsTo(void)
   
   bool bSessionLevelTag = false;
   
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   // advance to token after to
   m_pInput->vReadToken();
@@ -374,7 +374,7 @@ void Step::vLocalsTo(void)
     
     RASSERT(szTerm->bSame(C_TAG_PATH));
 
-    Word* pCurrentWord = m_pCompiler->pCurrentWord();
+    Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
     
     CellSingle xMetaNm;
     xMetaNm = sLocalNm;

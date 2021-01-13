@@ -55,7 +55,7 @@ void Step::vSqlCompilerIsCompiling(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDCOMPILING == eMode);
   
@@ -71,7 +71,7 @@ void Step::vSqlCompilerIsDiscarding(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsDiscarding = CM_DISCARDING == eMode;
   
@@ -87,7 +87,7 @@ void Step::vSqlCompilerIsInterpreting(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsInterpreting = CM_INTERPRETING == eMode;
   
@@ -103,7 +103,7 @@ void Step::vSqlCompilerIsPostponing(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsPostponing = CM_POSTPONING == eMode;
   
@@ -124,7 +124,7 @@ void Step::vSqlCompilerCompiling(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_COMPILING);
+  m_pSenCompiler->vMode(CM_COMPILING);
   
   EXIT();
 }
@@ -136,7 +136,7 @@ void Step::vSqlCompilerDiscarding(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_DISCARDING);
+  m_pSenCompiler->vMode(CM_DISCARDING);
   
   EXIT();
 }
@@ -148,7 +148,7 @@ void Step::vSqlCompilerInterpreting(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_INTERPRETING);
+  m_pSenCompiler->vMode(CM_INTERPRETING);
   
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vSqlCompilerPostponing(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_POSTPONING);
+  m_pSenCompiler->vMode(CM_POSTPONING);
   
   EXIT();
 }
@@ -177,7 +177,7 @@ void Step::vSqlCompilerCurrentFetch(void)
 {
   ENTRY();
     
-  Word* pCurrWord = m_pCompiler->pCurrentWord();
+  Word* pCurrWord = m_pSenCompiler->pCurrentWord();
     
 //  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
 //    BASE::vDebugPoint();
@@ -196,7 +196,7 @@ void Step::vSqlCompilerCurrentStore(void)
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
-  m_pCompiler->vCurrentWord(pCurrWord);
+  m_pSenCompiler->vCurrentWord(pCurrWord);
   
   EXIT();
 }
@@ -215,7 +215,7 @@ void Step::vSqlCompilerNestedFetch(void)
     
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
   
-  Word* pNested = m_pCompiler->pNestedWord(i_Nested);
+  Word* pNested = m_pSenCompiler->pNestedWord(i_Nested);
   
   m_pDataStack->vPushPtr(pNested);
   
@@ -233,7 +233,7 @@ void Step::vSqlCompilerNestedStore(void)
   
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
     
-  m_pCompiler->vNestedWord(i_Nested,pNested);
+  m_pSenCompiler->vNestedWord(i_Nested,pNested);
   
   EXIT();
 }
@@ -249,7 +249,7 @@ void Step::vSqlCompilerCondBegin(void)
 {
   ENTRY();
     
-  m_pCompiler->vMode(CM_INTERPRETING);
+  m_pSenCompiler->vMode(CM_INTERPRETING);
 
   EXIT();
 }
@@ -264,9 +264,9 @@ void Step::vSqlCompilerCondTest(void)
   i8 iCondTest = m_pDataStack->iPopInt(__func__);
   
   if (iCondTest)
-    m_pCompiler->vMode(CM_CONDCOMPILING);
+    m_pSenCompiler->vMode(CM_CONDCOMPILING);
   else
-    m_pCompiler->vMode(CM_DISCARDING);
+    m_pSenCompiler->vMode(CM_DISCARDING);
 
   EXIT();
 }
@@ -278,13 +278,13 @@ void Step::vSqlCompilerCondElse(void)
 {
   ENTRY();
    
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
 
   if (CM_CONDCOMPILING == eMode)
-    m_pCompiler->vMode(CM_DISCARDING);
+    m_pSenCompiler->vMode(CM_DISCARDING);
   else
   if (CM_DISCARDING == eMode)
-    m_pCompiler->vMode(CM_CONDCOMPILING);
+    m_pSenCompiler->vMode(CM_CONDCOMPILING);
 
   EXIT();
 }
@@ -296,9 +296,9 @@ void Step::vSqlCompilerCondEnd(void)
 {
   ENTRY();
     
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
 
-  m_pCompiler->vMode(CM_COMPILING);
+  m_pSenCompiler->vMode(CM_COMPILING);
 
   EXIT();
 }
