@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Compiler.cpp - compiler step group                                   */
+/* Steps_SenCompiler.cpp - compiler step group                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -20,26 +20,27 @@ void Step::vAddSteps_Compiler(void)
   vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);
   vAddStep("compiler::isPostponing"_Stz,   &Step::vCompilerIsPostponing);
   
-  vAddStep("compiler::compiling"_Stz,    &Step::vCompilerCompiling);
-  vAddStep("compiler::interpreting"_Stz, &Step::vCompilerInterpreting);
-  vAddStep("compiler::postponing"_Stz,   &Step::vCompilerPostponing);
+  vAddStep("compiler::compiling"_Stz,      &Step::vCompilerCompiling);
+  vAddStep("compiler::interpreting"_Stz,   &Step::vCompilerInterpreting);
+  vAddStep("compiler::postponing"_Stz,     &Step::vCompilerPostponing);
 
-  vAddStep("compiler::current@"_Stz,     &Step::vCompilerCurrentFetch);
-  vAddStep("compiler::current!"_Stz,     &Step::vCompilerCurrentStore);
+  vAddStep("compiler::current@"_Stz,       &Step::vCompilerCurrentFetch);
+  vAddStep("compiler::current!"_Stz,       &Step::vCompilerCurrentStore);
   
-  vAddStep("compiler::nested@"_Stz,      &Step::vCompilerNestedFetch);
-  vAddStep("compiler::nested!"_Stz,      &Step::vCompilerNestedStore);
+  vAddStep("compiler::nested@"_Stz,        &Step::vCompilerNestedFetch);
+  vAddStep("compiler::nested!"_Stz,        &Step::vCompilerNestedStore);
 
-  vAddStep("["_Stz,                      &Step::vCompilerInterpreting,    true);
-  vAddStep("]"_Stz,                      &Step::vCompilerCompiling);
   
-  vAddStep("[["_Stz,                     &Step::vCompilerPostponing,      true);
-  vAddStep("]]"_Stz,                     &Step::vCompilerCompiling);
+  vAddStep("["_Stz,     &Step::vCompilerInterpreting,    true);
+  vAddStep("]"_Stz,     &Step::vCompilerCompiling);
   
-  vAddStep("[?"_Stz,                     &Step::vCompilerCondBegin,       true);
-  vAddStep("?if"_Stz,                    &Step::vCompilerCondTest);
-  vAddStep("?else"_Stz,                  &Step::vCompilerCondElse,        true);
-  vAddStep("?]"_Stz,                     &Step::vCompilerCondEnd,         true);
+  vAddStep("[["_Stz,    &Step::vCompilerPostponing,      true);
+  vAddStep("]]"_Stz,    &Step::vCompilerCompiling);
+  
+  vAddStep("[?"_Stz,    &Step::vCompilerCondBegin,       true);
+  vAddStep("?if"_Stz,   &Step::vCompilerCondTest);
+  vAddStep("?else"_Stz, &Step::vCompilerCondElse,        true);
+  vAddStep("?]"_Stz,    &Step::vCompilerCondEnd,         true);
 }
 
 
