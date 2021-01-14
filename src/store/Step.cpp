@@ -80,7 +80,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
-  Step::vAddSteps_Filter();
   Step::vAddSteps_Flow();
   Step::vAddSteps_Forth();
 
@@ -134,7 +133,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
   Step::vAddSteps_Profile();
-  Step::vAddSteps_Project();
   Step::vAddSteps_PtnMap();
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();

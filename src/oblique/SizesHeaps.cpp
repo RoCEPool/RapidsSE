@@ -208,7 +208,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Fifo),               HT_T_TINY    ,0 }, // CN_FIFO
   { sizeof(File),               HT_T_TINY    ,0 }, // CN_FILE
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FIPVAL
-  { sizeof(Filter),             HT_T_LARGE   ,0 }, // CN_FILTER
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FLTVAL
   { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER
@@ -312,7 +311,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 }, // CN_PREDICATEVEC
   { sizeof(PrimitiveNode),        HT_T_TINY    , -8 }, // CN_PRIMITIVENODE
   { sizeof(Profile),              HT_T_MEDIUM  ,0 }, // CN_PROFILE
-  { sizeof(Project),              HT_T_LARGE   ,0 }, // CN_PROJECT
   { sizeof(PsxThd),               HT_T_TINY    ,0 }, // CN_PSXTHD
   { sizeof(PtnMap),               HT_T_LARGE   ,0 }, // CN_PTNMAP
   { sizeof(PtnStream),            HT_T_TINY    ,0 }, // CN_PTNSTREAM
