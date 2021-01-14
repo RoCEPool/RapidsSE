@@ -7,6 +7,7 @@
 
 #include "Constants.hpp"
 
+#include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
 #include "Crw.hpp"
