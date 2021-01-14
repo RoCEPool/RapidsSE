@@ -743,6 +743,7 @@ void vTest18(void)
   
   SeApi::vPrintAllTablesInCurrFolder();
 
+  SeApi::bIsKnownTableNm("__verifyTable"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

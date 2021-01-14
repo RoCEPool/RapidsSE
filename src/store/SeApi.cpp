@@ -96,15 +96,15 @@ bool SeApi::bIsKnownTableNm(Stz* szTableNm)
   // get dictionary stack
   DicStack* pDicStack = pTask->pDicStack();
   
-  // get dictionary
-  Dic* pDic = pDicStack->pTop();
+  s32 sWordNm;
+  sWordNm = szTableNm;
 
-  Word* pWord = nullptr;
-  while ( (pWord = pDic->pEachWord(pWord)) ) {
-    vTrace("  - %s\n"_Stz,pWord->szWordNm());
-   }
-
-  return false;
+  Word* pWord = pDicStack->pFindWord(sWordNm);
+ 
+  if (pWord)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
