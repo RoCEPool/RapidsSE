@@ -9,6 +9,8 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 
+#include "CmdLineArgs.hpp"
+
 extern CmdLineArgs gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/

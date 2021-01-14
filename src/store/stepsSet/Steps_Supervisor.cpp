@@ -18,6 +18,8 @@
 
 #include "Heartbeat.hpp"
 
+#include "CmdLineArgs.hpp"
+
 extern CmdLineArgs gxCmdLineArgs;
 
 extern Stz *gsBuildGitHash;

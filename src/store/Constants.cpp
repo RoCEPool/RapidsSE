@@ -40,6 +40,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "CmdLineArgs.hpp"
+
 extern CmdLineArgs  gxCmdLineArgs;
 
 extern Stz* gsBuildGitHash;

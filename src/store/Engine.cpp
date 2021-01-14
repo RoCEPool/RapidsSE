@@ -7,6 +7,8 @@
 
 #include <signal.h>
 
+#include "CmdLineArgs.hpp"
+
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Node.hpp"
@@ -34,6 +36,7 @@
 
 #include "eBO.h"
 #include "TagConstants.h"
+
 
 CmdLineArgs      gxCmdLineArgs;
 EnvFlags  gxEnvFlags;

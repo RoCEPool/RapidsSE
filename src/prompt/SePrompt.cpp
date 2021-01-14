@@ -7,6 +7,8 @@
 
 #include "Api.hpp"
 
+#include "CmdLineArgs.hpp"
+
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Session.hpp"
@@ -27,6 +29,8 @@
 
 #include "ePP.h"
 #include "TagConstants.h"
+
+
 
 extern CmdLineArgs          gxCmdLineArgs;
 

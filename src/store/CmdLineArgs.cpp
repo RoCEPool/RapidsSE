@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "CmdLineArgs.hpp"
+
 extern CmdLineArgs       gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
 extern Log*       gpLog;

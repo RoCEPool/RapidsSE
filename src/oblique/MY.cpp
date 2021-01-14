@@ -11,6 +11,8 @@
 #include "Result.hpp"
 #include "Job.hpp"
 
+#include "CmdLineArgs.hpp"
+
 extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;

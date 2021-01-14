@@ -1238,15 +1238,15 @@
 
   begin
 
-  stage stageA on origin :
-    start
-    | periodic once
-    | parser $sqlStatement
-    | nameValidate
-    | transliterate
-    | output
-    | sink
-    | stageA
+    stage stageA on origin :
+      start
+      | periodic once
+      | parser $sqlStatement
+      | nameValidate
+      | transliterate
+      | output
+      | sink
+      | stageA
 
   end ;
   "

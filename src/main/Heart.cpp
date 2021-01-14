@@ -13,6 +13,8 @@
 #include "Heart.h"
 #include "Heartbeat.hpp"
 
+#include "CmdLineArgs.hpp"
+
 
 extern CmdLineArgs gxCmdLineArgs;
 

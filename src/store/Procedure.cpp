@@ -98,27 +98,6 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   pProcWord->pWrdTagSet()->vInsert("procText"_Stz,sProcText);
 }
 
-/*----------------------------------------------------------------------------*/
-/* translate command into a pipeline statement                                */
-/*----------------------------------------------------------------------------*/
-bool Procedure::bCmdToPipeline(String* pAsPipelineStmt,
-                               TokenVec* pFromTokenVec)
-{
-  _static_
-  
-  pAsPipelineStmt->vCopy(""_Stz);
-  
-  i8 nTkns = pFromTokenVec->nTokens();
-  
-  i8 i_Tkn = 0;
-  while (i_Tkn < nTkns) {
-    
-    i_Tkn++;
-  }
-    
-  return false;
-}
-
  /*----------------------------------------------------------------------------*/
 /* find word for procedure matching given name                                */
 /*----------------------------------------------------------------------------*/

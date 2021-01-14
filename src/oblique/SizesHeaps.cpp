@@ -40,6 +40,8 @@
 
 #include "SizesHeaps.hpp"
 
+#include "CmdLineArgs.hpp"
+
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"

@@ -7,6 +7,9 @@
 
 #include "eAC.h"
 
+#include "CmdLineArgs.hpp"
+
+
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "AttachMap.hpp"

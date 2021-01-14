@@ -80,6 +80,118 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* translate command into a pipeline statement                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
+                               TokenVec* pFromTokenVec)
+{
+  _static_
+  
+  i8 nTkns = pFromTokenVec->nTokens();
+  
+  Stz* szOpNm;
+  Stz* szOpArg;
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pAsPipelineStmt->vCopy(
+    "pipeline unnamed\n"
+    "begin\n"
+    "  stage stageA on origin :\n"
+    "    start\n"
+    "    | periodic once\n"
+    "    | stageB\n"
+    "  stage stageB on all partitions :\n"
+    ""_Stz);
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Tkn = 0; i_Tkn < nTkns; /*none*/) {
+
+    szOpNm = pFromTokenVec->pGet(i_Tkn++)->szChars();
+
+    // -- -- -- -- -- -- -- -- -- --
+    
+    if (szOpNm->bSame("scan"_Stz)) {
+      
+      szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+
+      pAsPipelineStmt->vCatSprint("    scan %s\n"_Stz,szOpArg);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+      }
+      
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("filter"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint("    | filter 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint(" %s"_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint(" <>\"\n"_Stz);
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("project"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint("    | project 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint("\"\n"_Stz);
+            
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else {
+      
+      return false;
+    }
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pAsPipelineStmt->vCatSprint(
+    "    | stageC\n"
+    "  stage stageC on origin :\n"
+    "    output\n"
+    "    | sink\n"
+    "    | stageA\n"
+    "end ;\n"
+    ""_Stz);
+  
+  vTrace("bCmdToPipeline : \n%s\n"_Stz,pAsPipelineStmt->szStz());
+  
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get cross topology between two stages                                      */
 /*----------------------------------------------------------------------------*/
 ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)

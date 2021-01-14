@@ -10,9 +10,6 @@ namespace STORE
   public:
     static void  vAddProcedure(TokenVec* pTokenVec);
   
-    static bool  bCmdToPipeline(String* pAsPipelineStmt,
-                                TokenVec* pFromTokenVec);
-
     static Word* pFindProcedure(TokenVec* pCmdTokenVec);
   
     static bool  bTranslateProcedure(String* pToPipelineStmt,

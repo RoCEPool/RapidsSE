@@ -7,6 +7,8 @@
 
 #include "eAC.h"
 
+#include "CmdLineArgs.hpp"
+
 #include "AttachMap.hpp"
 
 /*----------------------------------------------------------------------------*/

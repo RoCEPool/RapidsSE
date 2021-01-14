@@ -29,6 +29,8 @@
 #include "RapidsSE.hpp"
 #include "SessionArray.hpp"
 
+#include "Dynamo.hpp"
+
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
@@ -40,6 +42,12 @@
 #include "PlanNode.hpp"
 #include "PlanDefinitionParser.hpp"
 #include "SqlPlanner.hpp"
+
+#include "CmdLineArgs.hpp"
+
+extern CmdLineArgs gxCmdLineArgs;
+
+
 
 using namespace Parser;
 
@@ -937,7 +945,6 @@ bool PROMPT::bPrompt_cmds(SePrompt* pPrompt)
 /* Prompt_config.cpp -- simple configuration report                           */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-extern CmdLineArgs gxCmdLineArgs;
 
 PromptFun __Prompt_config (
   PF_CONFIG,            // prompt function
@@ -3989,7 +3996,7 @@ PromptFun __Prompt_scan (
 //------------------------------------------------------------------------------
 bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
 {
-  vTrace("bPrompt_scan\n"_Stz);
+  //vTrace("bPrompt_scan\n"_Stz);
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
@@ -3997,7 +4004,7 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
   
   s48K sPipelineStmt;
   
-  if (Procedure::bCmdToPipeline(sPipelineStmt,pInpTknVec)) {
+  if (Dynamo::bCmdToPipeline(sPipelineStmt,pInpTknVec)) {
     
     pPrompt->pSession()->m_sToDo = sPipelineStmt;
     

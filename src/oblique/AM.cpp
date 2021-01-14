@@ -39,6 +39,8 @@
 #include "eTT.h"
 #include "eUK.h"
 
+#include "CmdLineArgs.hpp"
+
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "SkipRoots.hpp"
@@ -84,6 +86,7 @@
 #include "Pipeline.hpp"
 
 #include "Op.hpp"
+
 
 #include "EnumGroups.h"
 
