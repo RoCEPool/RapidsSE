@@ -6,6 +6,7 @@
 #include "eIT.h"
 #include "eKE.h"
 
+#include "Definition.hpp"
 
 namespace STORE
 {
