@@ -7,6 +7,8 @@
 
 #include "Constants.hpp"
 
+#include "HeadLine.hpp"
+
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"

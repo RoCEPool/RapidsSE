@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* Crv.hpp -- Consistent Row Version                                          */
+/* Crv.cpp -- Consistent Row Version                                          */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "STORE.h"
 
+#include "HeadLine.hpp"
 #include "Crw.hpp"
 
 #include "Crv.hpp"

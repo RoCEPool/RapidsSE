@@ -41,6 +41,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "HeadLine.hpp"
+
 #include "Crw.hpp"
 
 #include "PtnMap.hpp"

@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "HeadLine.hpp"
 #include "OverLine.hpp"
 
 #include "Encoding.hpp"

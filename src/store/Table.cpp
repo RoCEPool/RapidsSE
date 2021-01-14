@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "BucketMap.hpp"
+#include "HeadLine.hpp"
 
 
 #include "Crw.hpp"

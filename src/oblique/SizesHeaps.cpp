@@ -42,6 +42,7 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "HeadLine.hpp"
 #include "Crw.hpp"
 
 #include "Encoding.hpp"

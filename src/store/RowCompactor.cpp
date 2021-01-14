@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "HeadLine.hpp"
+
 #include "TailLine.hpp"
 
 #include "TailStr.hpp"
