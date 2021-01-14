@@ -31,6 +31,7 @@ namespace Parser
     static GraphNav::eWalkCtrl eValidateStatisticsNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
 
     static b1 bContainsChildrenNamed(PlanNode* pNode, StzList* pNames);
+    static b1 bHasOptionalConstraint(PlanNode* pNode);
 
     // - - - - - - - - - - - - - - - - - - - - -
 

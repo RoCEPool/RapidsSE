@@ -39,8 +39,11 @@ QueryNode* ProjectedExpr::pCreate(QueryNode* pExprNode, Text* pAlias)
 
   Value xAliasValue(pAlias);
 
+  s256 sName;
+  ShadowNode::vObjName(C_PROJECTEDEXPR_NAME, sName);
+
   // Create the ProjectedExpr object
-  QueryNode* pProjectedExpr = new QueryNode(C_PROJECTEDEXPR_NAME, const_cast<Stz*>(C_PROJECTEDEXPR_DEFN));
+  QueryNode* pProjectedExpr = new QueryNode(sName.szStz(), const_cast<Stz*>(C_PROJECTEDEXPR_DEFN));
 
   // Add the expression as a property
   // Make sure it has the right property name first

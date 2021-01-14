@@ -462,7 +462,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //
   // PLAN-6: Validate the children:
   // (NB: we will explicitly validate the children against the definition in PLAN-7 and PLAN-8)
-  //    PLAN-6.1: the children must each have a unique name.
+  //    PLAN-6.1: the children must each have a unique name (so they have a unique path).
   //    PLAN-6.2: the leaf nodes on a non-property path must be data sources
   //
   // PLAN-7: Validate the object against its definition properties (excluding constraints):
@@ -730,6 +730,37 @@ b1 GraphValidator::bContainsChildrenNamed(PlanNode* pNode, StzList* pNames)
 
   delete pIter;
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns true if a given node has the Optional constraint as a property     */
+/*----------------------------------------------------------------------------*/
+b1 GraphValidator::bHasOptionalConstraint(PlanNode* pNode)
+{
+  RASSERT(pNode);
+
+  PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
+
+  if (!pConstraints) {
+    return false;   // no constraints
+  }
+
+  // Iterate the children of this node and look for a node with a type
+  // that matches the Optional constraint.
+  b1 bResult = false;
+  PlanNodeIter* pIter = pConstraints->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    PlanNode* pItem = pIter->pNext();
+
+    if (pItem->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_OPTIONAL_PATH))) {
+      bResult = true;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bResult;
 }
 
 
@@ -1897,7 +1928,7 @@ void GraphValidator::vPlan_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 void GraphValidator::vPlan_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-6: Validate the children:
-  //    PLAN-6.1: the children must each have a unique name.
+  //    PLAN-6.1: the children must each have a unique name (so they have a unique path).
 
   if (pNode->nChildren() <= 1) {
     return;
@@ -1951,7 +1982,66 @@ void GraphValidator::vPlan_7_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //              defined in its definition (including all parents of the definition), excluding any
   //              properties that are marked as optional.
 
-  // TODO
+  RASSERT(pNode->szType());
+
+  // Get the root node
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition node
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  while (!pDefn->szPath()->bEqual(const_cast<Stz*>(C_DEFINITIONS_PATH))) {
+
+    if (pDefn->nProperties() > 0) {
+
+      // Is there a constraints container in this definition?
+      PlanNode *pDefnConstraints = GraphNav::pFindProperty(const_cast<Stz *>(C_CONSTRAINTS_CONTAINER_NAME), pDefn);
+
+      // Iterate each property of this definition
+      PlanNodeIter *pPropIter = pDefn->pNewPropertyIter();
+
+      while (pPropIter->bHasNext()) {
+        DefinitionNode *pDefnProp = static_cast<DefinitionNode *>(pPropIter->pNext());
+
+        if (pDefnProp == pDefnConstraints) {
+          continue; // ignore
+        }
+
+        // Check if this property is optional. If it is then we don't care if the
+        // current node has this property.
+        if (bHasOptionalConstraint(pDefnProp)) {
+          continue;
+        }
+
+        // Non-optional property. The current node must have it.
+        RASSERT(pDefnProp->szName());
+        RASSERT(pDefnProp->szType());
+
+        // The name of the pNode property must match the name of the definition property.
+        // If the definition has a null type then the type of the pNode must be derived
+        // from the path of the definition property (i.e. its type must be a superset of the
+        // path of the definition property). Otherwise if the defintion property has a
+        // non-null type then the type of the pNode must be derived from this definition type.
+        PlanNode *pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+        RASSERT(pProp);
+        RASSERT(pProp->szName()->bEqual(pDefnProp->szName()));
+
+        if (pDefnProp->szType()) {
+          RASSERT(pProp->szType()->bBeginsWith(pDefnProp->szType()));
+
+        } else {
+          RASSERT(pProp->szType()->bBeginsWith(pDefnProp->szPath()));
+        }
+      }
+
+      delete pPropIter;
+    }
+
+    // Get the parent of this node.
+    pDefn = static_cast<DefinitionNode*>(GraphNav::pGetParent(pDefn, pRootNode));
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
