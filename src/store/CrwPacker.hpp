@@ -8,7 +8,7 @@ namespace STORE
   class CrwPacker
   {
   public:
-    static void vPackCrw(HeadLine* aHeadLine, Encoding_v2* pEncoding);
+    static void vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding);
   };
 }
 

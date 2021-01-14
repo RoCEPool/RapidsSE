@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */
 /*----------------------------------------------------------------------------*/
-void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding_v2* pEncoding)
+void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 {
   _static_
   

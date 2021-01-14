@@ -95,7 +95,7 @@ class IvlLib;
 
 namespace STORE    { class Crw;             class CrwBuffer;
                               class RowCompactor;    class RowInflator;
-                              class HeadLine;        class Encoding_v2;
+                              class HeadLine;        class Encoding;
                      class SP_Encoding;
                       class CrwPacker;
                               class OverLine;        class TailLine;          }

@@ -35,7 +35,7 @@ RowCompactor::RowCompactor(void)
   m_pCrwNub       = nullptr;
   m_pStreamDef    = nullptr;
 
-  m_pEncoding_v2  = nullptr;
+  m_pEncoding  = nullptr;
 
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
@@ -93,7 +93,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_pCrwNub      = pCrwBuffer->m_oRowTray.pNub();
   m_pStreamDef   = m_pCrwNub->pDesc();
   
-  m_pEncoding_v2 = new Encoding_v2(m_pStreamDef);
+  m_pEncoding = new Encoding(m_pStreamDef);
 
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
@@ -129,8 +129,8 @@ void RowCompactor::vCompactEnd(void)
   m_aHeadLine   = nullptr;
   m_aOverLine   = nullptr;
   
-  delete m_pEncoding_v2;
-  m_pEncoding_v2 = nullptr;
+  delete m_pEncoding;
+  m_pEncoding = nullptr;
 
   m_pCrwNub    = nullptr;
   m_pStreamDef = nullptr;
@@ -157,7 +157,7 @@ bool RowCompactor::bCompactRow(Row* aRow)
 //  if (nRows > 1060 && nRows < 1070) {
 //    m_pCrwBuffer->vPrintRows(m_pStreamDef);
 //    SP_Encoding spEncoding;
-//    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v2));
+//    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 //  }
   nRows++;
   
@@ -201,7 +201,7 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
     vEncodeTailsForRow(pRow);
   
   // 3) split encoded head between crw head and crw overflow
-  m_pEncoding_v2->vSplitOver();
+  m_pEncoding->vSplitOver();
 
   // 4) allot a logical compact row (head & over)
   if (! bAllotCrw()) {
@@ -210,7 +210,7 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
   }
   
   // 5) pack encoded row into a compact row
-  CrwPacker::vPackCrw(m_aHeadLine,m_pEncoding_v2);
+  CrwPacker::vPackCrw(m_aHeadLine,m_pEncoding);
 
   m_aHeadLine = nullptr;
 
@@ -252,7 +252,7 @@ bool RowCompactor::bAllotCrw(void)
   i8 nBytesNeeded;
   
   if (m_pStreamDef->m_nFixedSized == 0)
-    nBytesNeeded = m_pEncoding_v2->nBytesNeeded();
+    nBytesNeeded = m_pEncoding->nBytesNeeded();
   else
     nBytesNeeded = m_pStreamDef->m_nFixedSized;
  
@@ -268,11 +268,11 @@ bool RowCompactor::bAllotCrw(void)
   // +================================+
   
   // allot a head line in nub (the <W> is init'd by iAllotHead())
-  m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding_v2->m_nHeadSize);
+  m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding->m_nHeadSize);
   ASSERT(m_aHeadLine);
 
   // do we allot an over line?
-  if (! m_pEncoding_v2->bOverFlowed()) {
+  if (! m_pEncoding->bOverFlowed()) {
     m_aOverLine = nullptr;
     return true;
   }
@@ -285,7 +285,7 @@ bool RowCompactor::bAllotCrw(void)
   
   // allot the over line (the <U> is init'd by iAllotOver())
   i8 nOverSize;
-  nOverSize = m_pEncoding_v2->nOverSize();
+  nOverSize = m_pEncoding->nOverSize();
 
   ASSERT(nOverSize > 0);
   m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);
@@ -364,7 +364,7 @@ void RowCompactor::vEncodeHeadForRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pEncoding_v2->vEncodeRow(pRow);
+  m_pEncoding->vEncodeRow(pRow);
 
 #ifdef WITH_ENCODING_TRACE
   SP_Encoding spEncoding;
@@ -384,7 +384,7 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     
     _ColEnc* aColEnc;
   
-    aColEnc = & m_pEncoding_v2->xaColEnc[i_Col];
+    aColEnc = & m_pEncoding->xaColEnc[i_Col];
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
@@ -428,7 +428,7 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     aColEnc->m_aTailLine = aTailLine;
     
     // morph the encoding
-    m_pEncoding_v2->vMorphEncoding(aColEnc);
+    m_pEncoding->vMorphEncoding(aColEnc);
   }
   
 #ifdef WITH_ENCODING_TRACE

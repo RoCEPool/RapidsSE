@@ -7,7 +7,7 @@ namespace BASE
 {
   class Dtm
   {
-//  friend class S T O R E::Encoding_v2;
+//  friend class S T O R E::Encoding;
 //  friend class S T O R E::SP_Encoding;
 //  friend class S T O R E::CrwPacker;
 //  friend class S  TO R E::Row;

@@ -196,7 +196,6 @@ SizeHeap gxaSizeHeap[]
   { 'E' - ('A' - 1),            HT_INVALID   ,0 }, // CN__E__
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_EDTVAL
   { sizeof(Encoding),           HT_T_MEDIUM  ,0 }, // CN_ENCODING
-  { sizeof(Encoding_v2),        HT_T_MEDIUM  ,0 }, // CN_ENCODING_V2
   { sizeof(Ent),                HT_INVALID   ,0 }, // CN_ENT
   { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER

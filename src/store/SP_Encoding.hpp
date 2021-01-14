@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Encoding.hpp - Row Encoding_v2 sprint helper                         */
+/* SP_Encoding.hpp - Row Encoding sprint helper                         */
 /*============================================================================*/
 #pragma once
 
@@ -18,10 +18,10 @@ namespace STORE
     SP_Encoding(void);
     ~SP_Encoding(void) noexcept(false);
 
-    void vEncoding(Encoding_v2* pEncoding);
+    void vEncoding(Encoding* pEncoding);
   
     Stz* sz(void);
-    Stz* sz(Encoding_v2* pEncoding);
+    Stz* sz(Encoding* pEncoding);
   
     Footer* aFooter(void);
   };

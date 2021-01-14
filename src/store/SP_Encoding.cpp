@@ -54,7 +54,7 @@ SP_Encoding::~SP_Encoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Encoding::vEncoding(Encoding_v2* pEncoding)
+void SP_Encoding::vEncoding(Encoding* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -221,7 +221,7 @@ Stz* SP_Encoding::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Encoding::sz(Encoding_v2* pEncoding)
+Stz* SP_Encoding::sz(Encoding* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 

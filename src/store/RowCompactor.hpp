@@ -14,7 +14,7 @@ namespace STORE
     RowNub*    m_pCrwNub;      // nub of crw buffer
     StreamDef* m_pStreamDef;   // stream def
   
-    Encoding_v2* m_pEncoding_v2;  // encoding of row
+    Encoding* m_pEncoding;  // encoding of row
 
     HeadLine*  m_aHeadLine;    // head of crw
     OverLine*  m_aOverLine;    // over of crw
