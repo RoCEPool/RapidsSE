@@ -212,11 +212,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Filter[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Filter[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("Index[]"_Stz)) {
     pCurrentWord->vEncodeCall("Index[].set"_Stz);
     EXIT();
@@ -274,11 +269,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("PathIdentifier[]"_Stz)) {
     pCurrentWord->vEncodeCall("PathIdentifier[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("Project[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Project[].set"_Stz);
     EXIT();
     return;
   }

@@ -59,7 +59,6 @@ namespace STORE
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
-    static void vAddSteps_Filter(void);
     static void vAddSteps_Flow(void);
     static void vAddSteps_Forth(void);
 
@@ -115,7 +114,6 @@ namespace STORE
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);
-    static void vAddSteps_Project(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
     static void vAddSteps_Push(void);

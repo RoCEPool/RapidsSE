@@ -75,7 +75,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FIPVAL,
-  /* */ CN_FILTER,
   /* */ CN_FLTVAL,
   /* */ CN_FORMAT,
   /* */ CN_FREEBUFFER,
@@ -180,7 +179,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PREDICATEVEC,
   /* */ CN_PRIMITIVENODE,
   /* */ CN_PROFILE,
-  /* */ CN_PROJECT,
   /* */ CN_PSXTHD,
   /* */ CN_PTNMAP,
   /* */ CN_PTNSTREAM,
@@ -401,7 +399,6 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
-  /* */ "FILTER"_Stz,               // CN_FILTER
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER
@@ -505,7 +502,6 @@ static Stz* aCN[]
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
   /* */ "PROFILE"_Stz,              // CN_PROFILE
-  /* */ "PROJECT"_Stz,              // CN_PROJECT
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNMAP"_Stz,               // CN_PTNMAP
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
