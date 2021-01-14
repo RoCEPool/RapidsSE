@@ -6,6 +6,8 @@
 
 #include "SeApi.hpp"
 
+#include "AM.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -35,6 +37,52 @@ SeApi::~SeApi(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get current folder as string                                               */
+/*----------------------------------------------------------------------------*/
+
+ Stz* SeApi::szCurrentFolderNm(String* psFolderNm)
+{
+  _static_
+
+  // get the current task
+  Task* pTask = AM::pThisTLSTask();
+  
+  // get dictionary stack
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  // get dictionary
+  Dic* pDic = pDicStack->pTop();
+  
+  // express that as a folder name string
+  psFolderNm->vCopy(pDic->szDicNm());
+    
+  return psFolderNm->szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current folder path as string                                          */
+/*----------------------------------------------------------------------------*/Stz* SeApi::szCurrentFolderPath(String* psFolderPath)
+{
+  _static_
+
+  // get the current task
+  Task* pTask = AM::pThisTLSTask();
+  
+  // get dictionary stack
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  // express that as a path-folder string
+  pDicStack->vToPathStr(psFolderPath->szStz());
+  
+  return psFolderPath->szStz();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

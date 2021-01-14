@@ -21,6 +21,9 @@ namespace STORE
     SeApi(void);
    ~SeApi(void) noexcept(false);
   
+    static Stz* szCurrentFolderNm(String* szFolderNm);
+    static Stz* szCurrentFolderPath(String* szFolderPath);
+
     SeApi& operator |(SeApi* pArg);
 
     SeApi* pAdd(Stz* szOpNm, Stz* szOpArg);

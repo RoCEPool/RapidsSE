@@ -733,36 +733,14 @@ void vTest17(void)
 /*----------------------------------------------------------------------------*/
 void vTest18(void)
 {
-  char a[C_1K];
-  char b[C_1K];
-  char c[C_1K];
-  Timer oTimer;
+  s32 sFolderNm;
+  vTrace("CurrentFolderNm : %s\n"_Stz,
+         SeApi::szCurrentFolderNm(sFolderNm));
   
-  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++)
-    a[i_Char] = 'a';
-  a[C_1K-1] = '\0';
-  
-  i8 n = 0;
-  
-  oTimer.vStart();
-  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
-    MemLib::vCopy(&c[0], &a[0], C_1K, CN_NONE);
-    n++;
-  }
-  oTimer.vUpdate();
-  vTrace("%s %lld\n"_Stz, c, n);
-  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
-  
-  n = 0;
-  oTimer.vStart();
-  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
-    i8 nL = StrLib::nCopy(&b[0],&a[0]);
-    n++;
-    //RASSERT(nL == C_1K-1);
-  }
-  oTimer.vUpdate();
-  vTrace("%s %lld\n"_Stz, b, n);
-  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
+  s256 sFolderPath;
+  vTrace("CurrentFolderPth : %s\n"_Stz,
+         SeApi::szCurrentFolderPath(sFolderPath));
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1681,6 +1659,36 @@ void vTest62(void)
 /*----------------------------------------------------------------------------*/
 void vTest63(void)
 {
+  char a[C_1K];
+  char b[C_1K];
+  char c[C_1K];
+  Timer oTimer;
+  
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++)
+    a[i_Char] = 'a';
+  a[C_1K-1] = '\0';
+  
+  i8 n = 0;
+  
+  oTimer.vStart();
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
+    MemLib::vCopy(&c[0], &a[0], C_1K, CN_NONE);
+    n++;
+  }
+  oTimer.vUpdate();
+  vTrace("%s %lld\n"_Stz, c, n);
+  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
+  
+  n = 0;
+  oTimer.vStart();
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
+    i8 nL = StrLib::nCopy(&b[0],&a[0]);
+    n++;
+    //RASSERT(nL == C_1K-1);
+  }
+  oTimer.vUpdate();
+  vTrace("%s %lld\n"_Stz, b, n);
+  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
 }
 
 /*----------------------------------------------------------------------------*/
