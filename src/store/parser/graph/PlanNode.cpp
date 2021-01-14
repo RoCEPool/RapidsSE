@@ -244,6 +244,30 @@ PlanNodeIter* PlanNode::pNewChildrenIter()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the first PlanNode child, or nullptr if there is none              */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pFirstChild()
+{
+  if (!m_pChildren || m_pChildren->nItems() == 0) {
+    return nullptr;
+  }
+
+  return m_pChildren->pHead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the last PlanNode child, or nullptr if there is none              */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pLastChild()
+{
+  if (!m_pChildren || m_pChildren->nItems() == 0) {
+    return nullptr;
+  }
+
+  return m_pChildren->pTail();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 

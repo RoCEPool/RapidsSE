@@ -103,6 +103,9 @@ namespace Parser
     // May be null if there are none. The iterator must be deleted after use.
     PlanNodeIter* pNewPropertyIter();
     PlanNodeIter* pNewChildrenIter();
+
+    PlanNode* pFirstChild();
+    PlanNode* pLastChild();
   };
   
   PlanNode* _pPlanNode(void* aAddr);
