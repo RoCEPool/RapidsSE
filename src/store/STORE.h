@@ -83,7 +83,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
-#include "Encoding.hpp"
+//#include "Encoding.hpp"
 //#include "CrwPacker.hpp"
 
 //#include "CrwBuffer.hpp"

@@ -42,6 +42,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "Encoding.hpp"
+
 #include "PtnMap.hpp"
 #include "BucketMap.hpp"
 

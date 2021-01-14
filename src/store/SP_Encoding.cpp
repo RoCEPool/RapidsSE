@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Encoding.hpp"
 #include "SP_Encoding.hpp"
 
 #include "SP_Bcd.hpp"

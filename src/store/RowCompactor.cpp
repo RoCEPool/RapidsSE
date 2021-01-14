@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Encoding.hpp"
+
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
