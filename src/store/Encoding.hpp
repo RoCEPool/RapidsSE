@@ -5,11 +5,11 @@
 
 namespace STORE
 {
-  class Encoding : public Object
+  class Encoding : public Encoding_v2
   {
   private:
   
-    Encoding_v2* m_pEncoding_v2;
+    //Encoding_v2* m_pEncoding_v2;
 
     // must be last
     Footer m_xFooter;
@@ -21,14 +21,7 @@ namespace STORE
     Encoding(StreamDef* pStreamDef);
    ~Encoding(void) noexcept(false);
   
-    i8   nBytesNeeded(void);
-  
-    void vEncodeRow(Row* pRow);
-  
-    void vMorphEncoding(_ColEnc* aColEnc);
-    bool bOverFlowed(void);
-    i8   nOverSize(void);
-    void vSplitOver(void);
+
   
   private:
     Footer* aFooter(void);
