@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "OverLine.hpp"
+
 #include "Crw.hpp"
 
 extern EnvFlags gxEnvFlags;
