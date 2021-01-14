@@ -83,6 +83,73 @@ SeApi::~SeApi(void) noexcept(false)
   return psFolderPath->szStz();
 }
 
+/*----------------------------------------------------------------------------*/
+/* test if given table name is known                                          */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bIsKnownTableNm(Stz* szTableNm)
+{
+  _static_
+  
+  // get the current task
+  Task* pTask = AM::pThisTLSTask();
+  
+  // get dictionary stack
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  // get dictionary
+  Dic* pDic = pDicStack->pTop();
+
+  Word* pWord = nullptr;
+  while ( (pWord = pDic->pEachWord(pWord)) ) {
+    vTrace("  - %s\n"_Stz,pWord->szWordNm());
+   }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if given column name is known within supplied table                   */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bIsKnownColumnTable(Stz* szTableNm,Stz* szColumnNm)
+{
+  _static_
+  
+  // get the current task
+  Task* pTask = AM::pThisTLSTask();
+  
+  // get dictionary stack
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  // get dictionary
+  Dic* pDic = pDicStack->pTop();
+
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print all table names in current folder (debug help)                       */
+/*----------------------------------------------------------------------------*/
+void SeApi::vPrintAllTablesInCurrFolder(void)
+{
+  _static_
+  
+  // get the current task
+  Task* pTask = AM::pThisTLSTask();
+  
+  // get dictionary stack
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  // get dictionary
+  Dic* pDic = pDicStack->pTop();
+
+  Word* pWord = nullptr;
+  while ( (pWord = pDic->pEachWord(pWord)) ) {
+    vTrace("  - %s\n"_Stz,pWord->szWordNm());
+   }
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

@@ -740,6 +740,8 @@ void vTest18(void)
   s256 sFolderPath;
   vTrace("CurrentFolderPth : %s\n"_Stz,
          SeApi::szCurrentFolderPath(sFolderPath));
+  
+  SeApi::vPrintAllTablesInCurrFolder();
 
 }
 

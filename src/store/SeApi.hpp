@@ -23,6 +23,9 @@ namespace STORE
   
     static Stz* szCurrentFolderNm(String* szFolderNm);
     static Stz* szCurrentFolderPath(String* szFolderPath);
+    static bool bIsKnownTableNm(Stz* szTableNm);
+    static bool bIsKnownColumnTable(Stz* szTableNm,Stz* szColumnNm);
+    static void vPrintAllTablesInCurrFolder(void);
 
     SeApi& operator |(SeApi* pArg);
 
