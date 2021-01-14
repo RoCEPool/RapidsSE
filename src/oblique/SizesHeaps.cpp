@@ -42,6 +42,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "BucketMap.hpp"
+
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
