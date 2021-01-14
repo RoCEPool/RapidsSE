@@ -578,7 +578,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     }
 
     if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
-      StrLib::vSprintCat(m_sAsmText, "  EO_JMP_FALSE CRW_FILTER_FALSE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_FALSE\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }

@@ -1953,6 +1953,25 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
         break;//+endCase
 
+      case EO_RETURN_FALSE: ArgNil(); // return from subroutine on false
+        dLU0(EO_RETURN);
+#ifdef __TINYC__
+        if (! *(aiDstk--))
+          return aiDstk;
+#else
+        if (! *(aiDstk--)) {
+          if (aeaRstk == &eaReturnStack[0]) {
+            iRes = *(aiDstk--);
+#ifdef WITH_TRACE_LOGICUNIT
+            vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,aRluCommon->m_iSql);
+#endif
+            return iRes;
+          }
+        }
+        aeCode = * (--aeaRstk);
+#endif
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // misc
       case EO_ASSERT: ArgNil(); // pop top and assert

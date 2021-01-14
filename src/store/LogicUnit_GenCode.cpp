@@ -2353,17 +2353,21 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROWBUFFER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute FILTER_ROWS for each row
+  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_FILTER_ROWS"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_PROJECT_COLUMNS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add the filter
-//  u8 uProjectColumns = 0;
-//  for (i8 i = 0; i < pStreamDefOut->nTotalColumns(); i++)
-//    BitLib::vSetOn(uProjectColumns, i);
-//  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
-//  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
-//  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet));
-//  oTagSet.vReset();
-
   ASSERT(pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
@@ -2375,14 +2379,6 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet));
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ROWBUFFER_HANDLER
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //   to execute FILTER_ROWS for each row
-  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_FILTER_ROWS"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet));
-  oTagSet.vReset();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2418,9 +2414,8 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query Done
+  // close the file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet));
   pFile->vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
