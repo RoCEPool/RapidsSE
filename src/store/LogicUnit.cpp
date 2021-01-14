@@ -1967,8 +1967,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
             return iRes;
           }
+          aeCode = * (--aeaRstk);
         }
-        aeCode = * (--aeaRstk);
+
 #endif
         break;//+endCase
 
