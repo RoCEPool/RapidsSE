@@ -5,6 +5,10 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "TailLine.hpp"
+
+#include "TailStr.hpp"
+
 #include "Encoding.hpp"
 
 #include "Crw.hpp"

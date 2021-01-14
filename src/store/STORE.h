@@ -77,8 +77,8 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "OverLine.hpp"
-#include "TailLine.hpp"
-#include "TailStr.hpp"
+//#include "TailLine.hpp"
+//#include "TailStr.hpp"
 //#include "Crw.hpp"
 
 //------------------------------------------------------------------------------

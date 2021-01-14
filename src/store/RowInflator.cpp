@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "TailLine.hpp"
+
 #include "Crw.hpp"
 #include "RowInflator.hpp"
 

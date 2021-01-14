@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "TailLine.hpp"
+
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"

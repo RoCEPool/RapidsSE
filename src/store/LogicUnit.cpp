@@ -9,6 +9,8 @@
 #include "eEO.h"
 #include "ePX.h"
 
+#include "TailLine.hpp"
+
 #include "Crw.hpp"
 
 #include "RowInflator.hpp"
