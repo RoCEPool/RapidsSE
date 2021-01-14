@@ -7,6 +7,7 @@
 
 #include "Constants.hpp"
 
+#include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "SkipRoots.hpp"

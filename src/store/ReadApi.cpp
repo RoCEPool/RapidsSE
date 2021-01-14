@@ -9,6 +9,8 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 
+#include "Crw.hpp"
+
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"

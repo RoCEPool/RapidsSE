@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "Encoding.hpp"
+#include "Crw.hpp"
 #include "CrwPacker.hpp"
 
 /*----------------------------------------------------------------------------*/

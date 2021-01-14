@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "RowInflator.hpp"

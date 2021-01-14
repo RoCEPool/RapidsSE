@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "Node_I.hpp"

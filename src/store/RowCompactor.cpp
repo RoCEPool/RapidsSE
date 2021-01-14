@@ -7,6 +7,7 @@
 
 #include "Encoding.hpp"
 
+#include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
