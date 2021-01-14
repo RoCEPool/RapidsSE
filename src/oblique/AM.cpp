@@ -41,6 +41,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "PtnMap.hpp"
+
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "SkipRoots.hpp"

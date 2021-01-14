@@ -9,6 +9,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "PtnMap.hpp"
+
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Node.hpp"

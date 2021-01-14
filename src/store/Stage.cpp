@@ -7,6 +7,8 @@
 
 #include "ePX.h"
 
+#include "PtnMap.hpp"
+
 #include "Grid.hpp"
 
 #include "Op.hpp"

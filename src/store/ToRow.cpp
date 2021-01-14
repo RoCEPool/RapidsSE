@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "PtnMap.hpp"
+
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "SP_String.hpp"

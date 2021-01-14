@@ -42,6 +42,7 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "PtnMap.hpp"
 #include "BucketMap.hpp"
 
 #include "CrwPacker.hpp"

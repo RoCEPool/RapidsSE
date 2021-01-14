@@ -7,6 +7,9 @@
 
 #include "ePX.h"
 
+#include "PtnMap.hpp"
+
+
 #include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Stream.hpp"

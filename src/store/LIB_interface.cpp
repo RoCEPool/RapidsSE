@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "PtnMap.hpp"
+
 #include "LIB_interface.h"
 
 #include "RowOnce.hpp"
