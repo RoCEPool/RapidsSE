@@ -677,6 +677,16 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
+bool ExprEval::bHasAggregate(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  return m_bHasAgg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* update the streamDefOut                                                    */
 /*----------------------------------------------------------------------------*/
 void ExprEval::vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName) {

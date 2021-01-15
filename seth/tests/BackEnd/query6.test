@@ -15,7 +15,7 @@ begin
     | stageC
 
   stage stageC on origin :
-    project 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
     | output | sink | stageA
 end;
 failure contains: "no such table"
