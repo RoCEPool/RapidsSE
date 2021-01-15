@@ -5,6 +5,7 @@
 
 //! entry work is used to form an entry which is then inserted into an index
 
+#include "Pay.hpp"
 #include "Key.hpp"
 
 #include "Ent.hpp"

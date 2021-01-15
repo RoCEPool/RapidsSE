@@ -15,6 +15,7 @@
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
 
+#include "Pay.hpp"
 #include "Key.hpp"
 
 #include "NEO.h"
