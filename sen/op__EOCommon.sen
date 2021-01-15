@@ -52,7 +52,9 @@
 : cleanUpAsm params| bCompile |
 
   bCompile 1 == if
-    LogicCompiler[].delete
+    LogicCompiler[].isNull not if
+      LogicCompiler[].delete
+    then
   then
 ;
 
