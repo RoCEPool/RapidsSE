@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Ent.hpp"
+
 namespace STORE
 {
   class SP_Ent : public SPsmall

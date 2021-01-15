@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Ent.hpp"
+
 #include "eRO.h"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"

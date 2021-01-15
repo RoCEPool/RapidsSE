@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Ent.hpp"
+
 namespace STORE
 {
 static const i8 C_SKIPROOTS_PADDING = 8;
