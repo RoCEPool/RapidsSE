@@ -6,6 +6,8 @@
 #include "eRA.h"
 #include "eRO.h"
 
+#include "Pay.hpp"
+#include "Key.hpp"
 #include "Ent.hpp"
 
 namespace STORE

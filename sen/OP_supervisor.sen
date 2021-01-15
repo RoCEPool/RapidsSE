@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : supervisor::activity
 
-  //"Supervisor Activity" .
+  "Supervisor Activity" .
   
   // collect heartbeat related info
   Supervisor::collectInfo
@@ -21,10 +21,13 @@
 : supervisor_StartMarker \handler
 
   "Supervisor Job Started" .
-
+  
   begin
-
-    supervisor::activity
+ 
+    Supervisor::halt@ not if
+      supervisor::activity
+    then
+    
     args.supervisorSleep thread::sleepSsec
 
   again

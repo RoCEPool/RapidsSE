@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Pay.hpp"
+#include "Key.hpp"
+
 #include "EntWrk.hpp"
 
 #include "RowCoder.hpp"

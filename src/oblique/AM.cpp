@@ -2941,6 +2941,21 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* get supervisor halt flag                                                   */
+/*----------------------------------------------------------------------------*/
+bool AM::bSupervisorHalt(void)
+{
+  return gpAttachMap->m_xStore.m_bSupervisorHalt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set supervisor halt flag                                                   */
+/*----------------------------------------------------------------------------*/
+void AM::vSupervisorHalt(bool bHalt)
+{
+  gpAttachMap->m_xStore.m_bSupervisorHalt = bHalt;
+}
 
 /*============================================================================*/
 /* end                                                                        */

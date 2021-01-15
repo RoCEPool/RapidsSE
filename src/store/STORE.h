@@ -65,9 +65,9 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
 
-#include "Pay.hpp"
-#include "Key.hpp"
-#include "NEO.h"
+//#include "Pay.hpp"
+//#include "Key.hpp"
+//#include "NEO.h"
 //#include "Ent.hpp"
 //#include "Ent_flat.hpp"
 //#include "EntWrk.hpp"

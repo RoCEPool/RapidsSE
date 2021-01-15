@@ -1538,6 +1538,8 @@ public:
 
   // Supervisor
   void vSupervisorCollectInfo(void);
+  void vSupervisorHaltFetch(void);
+  void vSupervisorHaltStore(void);
 
   // system schedule
   void vSystemScheduleCheckSleeping(void);

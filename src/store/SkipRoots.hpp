@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Pay.hpp"
+#include "Key.hpp"
 #include "Ent.hpp"
 
 namespace STORE
