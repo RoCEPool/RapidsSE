@@ -163,9 +163,54 @@ bool SeApi::bIsKnownTableColumnNm(Stz* szTableNm, Stz* szColumnNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print all columns of given table                                           */
+/*----------------------------------------------------------------------------*/
+void SeApi::vPrintAllColumnsOfTable(Stz* szTableNm)
+{
+  // get the current task
+  Task* pTask = AM::pThisTLSTask();
+  
+  // get dictionary stack
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  // get dictionary
+  Dic* pDic = pDicStack->pTop();
+
+  s32 sWordNm;
+  sWordNm = szTableNm;
+
+  Word* pPackageWord = pDic->pFindWord(sWordNm);
+  if (! pPackageWord)
+    return ;
+
+  Dic* pTableDic = _pDic(pPackageWord->pObject());
+  if (! pTableDic)
+    return ;
+
+  Word* pColumnsWord = pTableDic->pFindWord(sWordNm);
+  if (! pColumnsWord)
+    return ;
+
+  Table* pTable = _pTable(pColumnsWord->pObject());
+  if (! pTable)
+    return ;
+
+//  Word* pColumnWord = nullptr;
+//  while ( (pColumnWord = pColumnsDic->pEachWord(pColumnWord)) ) {
+//    vTrace("  - %s\n"_Stz,pColumnWord->szWordNm());
+//   }
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (! pStreamDef)
+    return ;
+  
+  pStreamDef->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* print all table names in current folder (debug help)                       */
 /*----------------------------------------------------------------------------*/
-void SeApi::vPrintAllTablesInCurrFolder(void)
+void SeApi::vPrintAllTablesInCurrentFolder(void)
 {
   _static_
   
@@ -180,7 +225,7 @@ void SeApi::vPrintAllTablesInCurrFolder(void)
 
   Word* pWord = nullptr;
   while ( (pWord = pDic->pEachWord(pWord)) ) {
-    vTrace("  - %s\n"_Stz,pWord->szWordNm());
+    vTrace("  %s\n"_Stz,pWord->szWordNm());
    }
 }
 

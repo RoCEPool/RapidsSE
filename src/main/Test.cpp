@@ -734,17 +734,32 @@ void vTest17(void)
 void vTest18(void)
 {
   s32 sFolderNm;
-  vTrace("CurrentFolderNm : %s\n"_Stz,
+  vTrace("\nCurrentFolderNm : %s\n"_Stz,
          SeApi::szCurrentFolderNm(sFolderNm));
   
   s256 sFolderPath;
-  vTrace("CurrentFolderPth : %s\n"_Stz,
+  vTrace("\nCurrentFolderPath : %s\n"_Stz,
          SeApi::szCurrentFolderPath(sFolderPath));
   
-  SeApi::vPrintAllTablesInCurrFolder();
+  vTrace("\nCurrent Folder Contents:\n"_Stz);
+  SeApi::vPrintAllTablesInCurrentFolder();
 
-  SeApi::bIsKnownTableNm("__listColumns"_Stz);
-  SeApi::bIsKnownTableColumnNm("__listColumns"_Stz,"columnName"_Stz);
+  //
+  // There is a hidden/metatable called __listColumns.  Lets us that.
+  //
+  
+  if (SeApi::bIsKnownTableNm("__listColumns"_Stz))
+    vTrace("\n__listColumns is a known table\n"_Stz);
+  else
+    vTrace("\n__listColumns is not a known table\n"_Stz);
+
+  vTrace("\nColumns of __listColumns:\n"_Stz);
+  SeApi::vPrintAllColumnsOfTable("__listColumns"_Stz);
+  
+  if (SeApi::bIsKnownTableColumnNm("__listColumns"_Stz,"columnName"_Stz))
+    vTrace("\n__listColumns.columnName is a known column\n"_Stz);
+  else
+    vTrace("\n__listColumns.columnName is not a known column\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
