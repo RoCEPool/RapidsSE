@@ -63,7 +63,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "InfoSetBase.hpp"
 #include "InfoSet.hpp"
-#include "StreamSet.hpp"
+//#include "StreamSet.hpp"
 
 //#include "Pay.hpp"
 //#include "Key.hpp"

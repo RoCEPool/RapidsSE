@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "StreamSet.hpp"
+
 #include "PtnMap.hpp"
 
 #include "SkipRoots.hpp"
