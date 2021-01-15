@@ -72,6 +72,8 @@ void vHeartInit(void) {
     printf("SE Heartbeat is not set for this node\n");
   }
 
+  // MYVAN:
+  // Process::vExitFailure();
 }
 
 
@@ -109,7 +111,7 @@ void vHeartInit(void) {
         printf("%s", azHeartbeat);
     }
 
-    // MYVA: at some point simple call:
+    // MYVAN: at some point simple call:
     //AM::vSupervisorHalt(true);
     sleep(3);
   }
