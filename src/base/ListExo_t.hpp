@@ -477,7 +477,7 @@ ListExoIter_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pNewIter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
   ListExoIter_t<ITEM>* pIter
-    = new ListExoIter_t<ITEM>(this);
+    = new ListExoIter_t<ITEM>((ListExo_t<CN_NONE,ITEM>*)this);
   
   return pIter;
 }
@@ -983,7 +983,7 @@ public:
   void* operator new(size_t);
   void operator delete(void* aListExoNode);
 
-  ListExoIter_t<ITEM>(ListExo_ABSTRACT* pListExo);
+  ListExoIter_t<ITEM>(ListExo_t<CN_NONE,ITEM>* pListExo);
  ~ListExoIter_t(void) noexcept(false);
   
   void  vBeforeFirst(void);
@@ -1029,12 +1029,12 @@ void ListExoIter_t<ITEM>::operator delete(void* aListExoIter_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-ListExoIter_t<ITEM>::ListExoIter_t(ListExo_ABSTRACT* pListExo)
+ListExoIter_t<ITEM>::ListExoIter_t(ListExo_t<CN_NONE,ITEM>* pListExo)
 : Object(CN_CLASSPLACEHOLDER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
 
-  m_pListExot_CONCRETE = (ListExo_t<CN_NONE,ITEM>*) pListExo;
+  m_pListExot_CONCRETE = pListExo;
   
   m_eCursorState = LC_NIL;
   m_pListNode_cursor = nullptr;
