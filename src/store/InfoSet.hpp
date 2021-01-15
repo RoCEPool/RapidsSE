@@ -5,6 +5,8 @@
 
 #include "eOI.h"
 
+#include "InfoSetBase.hpp"
+
 namespace STORE
 {
   

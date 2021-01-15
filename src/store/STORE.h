@@ -61,7 +61,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Pot.hpp"
 
 
-#include "InfoSetBase.hpp"
+//#include "InfoSetBase.hpp"
 //#include "InfoSet.hpp"
 //#include "StreamSet.hpp"
 
