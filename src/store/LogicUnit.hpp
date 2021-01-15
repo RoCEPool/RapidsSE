@@ -9,6 +9,8 @@
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
 
+#include "Pot.hpp"
+
 
 #include "EntWrk.hpp"
 

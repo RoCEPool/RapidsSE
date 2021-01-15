@@ -41,6 +41,7 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "Pot.hpp"
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
 
