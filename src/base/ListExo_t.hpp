@@ -5,12 +5,6 @@
 
 #include "eLC.h"
 
-// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
-// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
-// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
-// § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
-
-
 namespace BASE
 {
   template <class ITEM>
@@ -183,11 +177,11 @@ namespace BASE
   class ListExo_t : public Object
   {
   protected:
-    Lock    m_okLock;
-    i8      m_nItems;
+    Lock m_okLock;
+    i8   m_nItems;
 
-    Object* m_pHeadNode_abstract;
-    Object* m_pTailNode_abstract;
+    ListExoNode_t<ITEM>* m_pHeadNode;
+    ListExoNode_t<ITEM>* m_pTailNode;
 
     // must be last
     Footer m_xFooter;
@@ -284,8 +278,8 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
     
   m_nItems = 0;
 
-  m_pHeadNode_abstract = nullptr;
-  m_pTailNode_abstract = nullptr;
+  m_pHeadNode = nullptr;
+  m_pTailNode = nullptr;
 
   _checkInitialised_(CLASSNO);
   
@@ -688,7 +682,7 @@ Object* ListExo_t<CLASSNO,ITEM>::pHeadNode_abstract(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
-  return m_pHeadNode_abstract;
+  return m_pHeadNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -699,7 +693,7 @@ Object* ListExo_t<CLASSNO,ITEM>::pTailNode_abstract(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
-  return m_pTailNode_abstract;
+  return m_pTailNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -727,8 +721,8 @@ void ListExo_t<CLASSNO,ITEM>::vCutNode(ListExoNode_t<ITEM>* pCutThisNode)
     // cut only node
     
     ASSERT(1 == m_nItems);
-    m_pHeadNode_abstract = nullptr;
-    m_pTailNode_abstract = nullptr;
+    m_pHeadNode = nullptr;
+    m_pTailNode = nullptr;
   }
   else
   if (pCutThisNode == pHeadNode_list()) {
@@ -736,7 +730,7 @@ void ListExo_t<CLASSNO,ITEM>::vCutNode(ListExoNode_t<ITEM>* pCutThisNode)
     
     ASSERT(m_nItems > 1);
     pNextOfCut->vPrevNode(nullptr);
-    m_pHeadNode_abstract = pNextOfCut;
+    m_pHeadNode = pNextOfCut;
   }
   else
   if (pCutThisNode == pTailNode_list()) {
@@ -744,7 +738,7 @@ void ListExo_t<CLASSNO,ITEM>::vCutNode(ListExoNode_t<ITEM>* pCutThisNode)
 
     ASSERT(m_nItems > 1);
     pPrevOfCut->vNextNode(nullptr);
-    m_pTailNode_abstract = pPrevOfCut;
+    m_pTailNode = pPrevOfCut;
   }
   else {
     // cut body node
@@ -795,7 +789,7 @@ ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pHeadNode_list(void)
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
   ListExoNode_t<ITEM>* pHead_list
-    = (ListExoNode_t<ITEM>*) m_pHeadNode_abstract;
+    = (ListExoNode_t<ITEM>*) m_pHeadNode;
   
   return pHead_list;
 }
@@ -828,11 +822,11 @@ void ListExo_t<CLASSNO,ITEM>::
   
   if (! pHeadNode_list()) {
     ASSERT(! m_nItems);
-    m_pHeadNode_abstract = pInsertThisNode;
+    m_pHeadNode = pInsertThisNode;
   }
   
   if (! pTailNode_list() || pTailNode_list() == pAfterThisNode)
-    m_pTailNode_abstract = pInsertThisNode;
+    m_pTailNode = pInsertThisNode;
 
   m_nItems++;
   ASSERT(m_nItems >= 1);
@@ -866,11 +860,11 @@ void ListExo_t<CLASSNO,ITEM>::
   
   
   if (! pHeadNode_list() || pHeadNode_list() == pBeforeThisNode)
-    m_pHeadNode_abstract = pInsertThisNode;
+    m_pHeadNode = pInsertThisNode;
   
   if (! pTailNode_list()) {
     ASSERT(! m_nItems);
-    m_pTailNode_abstract = pInsertThisNode;
+    m_pTailNode = pInsertThisNode;
   }
   
   m_nItems++;
@@ -899,7 +893,7 @@ ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pTailNode_list(void)
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
   ListExoNode_t<ITEM>* pTail_list =
-    (ListExoNode_t<ITEM>*) m_pTailNode_abstract;
+    (ListExoNode_t<ITEM>*) m_pTailNode;
 
   return pTail_list;
 }
