@@ -198,8 +198,8 @@ namespace BASE
     void  vDeleteAll(void);
     ITEM* pHead(void);
     ListExoNode_t<ITEM>* pHeadNode(void);
-    void  vInsertAfter(ITEM* pInsItem, ITEM* pRef);
-    void  vInsertBefore(ITEM* pInsItem, ITEM* pRef);
+    void  vInsertAfter(ITEM* pInsertItem, ITEM* pAfterItem);
+    void  vInsertBefore(ITEM* pInsertItem, ITEM* pBeforeItem);
     i8    nItems(void);
     ListExoIter_t<ITEM>* pNewIter(void);
     ITEM* pPeek(i8 nThItem);
@@ -212,9 +212,7 @@ namespace BASE
     void  vRemove(ITEM* pItem);
     void  vRemoveAll(void);
     ITEM* pTail(void);
-  
-    ListExoNode_t<ITEM>* pHeadNode_abstract(void);
-    ListExoNode_t<ITEM>* pTailNode_abstract(void);
+    ListExoNode_t<ITEM>* pTailNode(void);
 
     
   private:
@@ -374,6 +372,17 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pHead(void)
   m_okLock.vDropWrite();
 
   return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head node                                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pHeadNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  return m_pHeadNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,28 +602,6 @@ void ListExo_t<CLASSNO,ITEM>::vPushTail(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get read lock on list                                                      */
-/*----------------------------------------------------------------------------*/
-//template <eCN CLASSNO, class ITEM>
-//void ListExo_t<CLASSNO,ITEM>::vReadLock(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-//
-//  m_okLock.vGrabRead();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* release read lock on list                                                  */
-/*----------------------------------------------------------------------------*/
-//template <eCN CLASSNO, class ITEM>
-//void ListExo_t<CLASSNO,ITEM>::vReadUnlock(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-//
-//  m_okLock.vDropRead();
-//}
-
-/*----------------------------------------------------------------------------*/
 /* remove item from list                                                      */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
@@ -675,21 +662,10 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head node                                                              */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pHeadNode_abstract(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-
-  return m_pHeadNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get tail node                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pTailNode_abstract(void)
+ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pTailNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
@@ -1077,7 +1053,7 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      m_pListNode_cursor = m_pListExot->pHeadNode_abstract();
+      m_pListNode_cursor = m_pListExot->pHeadNode();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
@@ -1089,7 +1065,7 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
       return nullptr;
 
     case LC_ON_EXISTING_ITEM:
-      m_pListNode_cursor = m_pListExot->pHeadNode_abstract();
+      m_pListNode_cursor = m_pListExot->pHeadNode();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
@@ -1119,7 +1095,7 @@ bool ListExoIter_t<ITEM>::bHasNext(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      if (m_pListExot->pHeadNode_abstract())
+      if (m_pListExot->pHeadNode())
         return true;
       else
         return false;
@@ -1152,7 +1128,7 @@ ITEM* ListExoIter_t<ITEM>::pNext(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      m_pListNode_cursor = m_pListExot->pHeadNode_abstract();
+      m_pListNode_cursor = m_pListExot->pHeadNode();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
