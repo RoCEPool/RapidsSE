@@ -15,6 +15,8 @@
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
 
+#include "Key.hpp"
+
 #include "NEO.h"
 
 #include "Ent.hpp"

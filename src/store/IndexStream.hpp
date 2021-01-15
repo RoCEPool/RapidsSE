@@ -6,6 +6,7 @@
 #include "eRA.h"
 #include "eRO.h"
 
+#include "Key.hpp"
 #include "Ent.hpp"
 
 namespace STORE

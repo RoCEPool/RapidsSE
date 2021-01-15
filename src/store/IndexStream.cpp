@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Key.hpp"
+
 #include "EntWrk.hpp"
 
 #include "RowCoder.hpp"

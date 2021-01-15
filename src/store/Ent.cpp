@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Key.hpp"
 #include "Ent.hpp"
 
 /*----------------------------------------------------------------------------*/

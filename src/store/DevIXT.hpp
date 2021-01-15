@@ -5,6 +5,7 @@
 
 #include "Device.hpp"
 
+#include "Key.hpp"
 #include "Ent.hpp"
 
 namespace STORE

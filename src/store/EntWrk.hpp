@@ -5,6 +5,8 @@
 
 //! entry work is used to form an entry which is then inserted into an index
 
+#include "Key.hpp"
+
 #include "Ent.hpp"
 
 namespace STORE
