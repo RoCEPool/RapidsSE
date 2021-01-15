@@ -14,6 +14,8 @@
 #include "LogicUnit.hpp"
 
 #include "TagConstants.h"
+#include "Grid.hpp"
+#include "Node.hpp"
 
 extern Atomic gixQueryNo;
 
@@ -2325,7 +2327,8 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   s4K  sMacro;
 
   ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld.txt"_Stz, *gixQueryNo);
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+                    AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = pFile->bOpenWrite(sFileName);
 
@@ -2452,7 +2455,8 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   s4K sMacro;
 
   ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld.txt"_Stz, *gixQueryNo);
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+                    AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = pFile->bOpenWrite(sFileName);
 
@@ -2601,7 +2605,8 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   s4K sMacro;
 
   ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld.txt"_Stz, *gixQueryNo);
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+                    AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = pFile->bOpenWrite(sFileName);
 
