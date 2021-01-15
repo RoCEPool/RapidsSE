@@ -6687,7 +6687,7 @@ void Task::vAddMunged(Task* pTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": supervisor::activity\n"
     "\n"
-    "  \"Supervisor Activity\" .\n"
+    "  // \"Supervisor Activity\" .\n"
     "  \n"
     "  // collect heartbeat related info\n"
     "  Supervisor::collectInfo\n"

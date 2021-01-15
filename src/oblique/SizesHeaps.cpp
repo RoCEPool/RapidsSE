@@ -271,6 +271,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Licence),            HT_T_TINY    ,0 }, // CN_LICENCE
   { sizeof(Limits),             HT_T_TINY    ,0 }, // CN_LIMITS
   { sizeof(ListExoNode_t<Object>), HT_T_TINY ,0 }, // CN_LISTEXONODE_t
+  { sizeof(ListExoIter_t<Object>), HT_T_TINY ,0 }, // CN_LISTEXOITER_t
   { sizeof(LoadChunk),          HT_T_LARGE   ,0 }, // CN_LOADCHUNK
   { sizeof(Local),              HT_INVALID   ,0 }, // CN_LOCAL
   { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALSCHAIN

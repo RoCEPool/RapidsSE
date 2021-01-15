@@ -949,7 +949,7 @@ void* ListExoIter_t<ITEM>::operator new(size_t)
   ListExoIter_t<ITEM>* pListExoIter_t;
   
   pListExoIter_t =
-    (ListExoIter_t<ITEM>*)HeapMem::pAllocate(CN_CLASSPLACEHOLDER);
+    (ListExoIter_t<ITEM>*)HeapMem::pAllocate(CN_LISTEXOITER_t);
   
   return pListExoIter_t;
 }
@@ -972,18 +972,18 @@ void ListExoIter_t<ITEM>::operator delete(void* aListExoIter_t)
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ListExoIter_t<ITEM>::ListExoIter_t(ListExo_t<CN_NONE,ITEM>* pListExo)
-: Object(CN_CLASSPLACEHOLDER)
+: Object(CN_LISTEXOITER_t)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
 
   m_pListExot = pListExo;
   
   m_eCursorState = LC_NIL;
   m_pListNode_cursor = nullptr;
   
-  _checkInitialised_(CN_CLASSPLACEHOLDER);
+  _checkInitialised_(CN_LISTEXOITER_t);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -992,7 +992,7 @@ ListExoIter_t<ITEM>::ListExoIter_t(ListExo_t<CN_NONE,ITEM>* pListExo)
 template <class ITEM>
 ListExoIter_t<ITEM>::~ListExoIter_t(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
 
 }
 
@@ -1002,7 +1002,7 @@ ListExoIter_t<ITEM>::~ListExoIter_t(void) noexcept(false)
 template <class ITEM>
 void ListExoIter_t<ITEM>::vBeforeFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
   
   m_eCursorState = LC_NIL;
   m_pListNode_cursor = nullptr;
@@ -1014,7 +1014,7 @@ void ListExoIter_t<ITEM>::vBeforeFirst(void)
 template <class ITEM>
 ITEM* ListExoIter_t<ITEM>::pFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
   
   ITEM* pItem;
 
@@ -1058,7 +1058,7 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
 template <class ITEM>
 bool ListExoIter_t<ITEM>::bHasNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
   
   switch (m_eCursorState) {
       
@@ -1089,7 +1089,7 @@ bool ListExoIter_t<ITEM>::bHasNext(void)
 template <class ITEM>
 ITEM* ListExoIter_t<ITEM>::pNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
   
   ITEM* pItem;
 
