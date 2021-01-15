@@ -9,6 +9,8 @@
 #include "eEO.h"
 #include "ePX.h"
 
+#include "RowSingle.hpp"
+
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"

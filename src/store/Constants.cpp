@@ -6,6 +6,8 @@
 #include "STORE.h"
 
 #include "Constants.hpp"
+
+#include "RowSingle.hpp"
 #include "RowBuffer.hpp"
 
 #include "InfoSet.hpp"

@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "RowSingle.hpp"
 #include "EntWrk.hpp"
 
 #include "SkipRoots.hpp"

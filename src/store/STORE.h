@@ -49,7 +49,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "Record.hpp"
 #include "RowBox_t.hpp"
 
-#include "RowSingle.hpp"
+//#include "RowSingle.hpp"
 
 //------------------------------------------------------------------------------
 

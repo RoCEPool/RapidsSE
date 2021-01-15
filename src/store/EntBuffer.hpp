@@ -13,6 +13,9 @@
 //#define EB_LOCAL_VERIFY
 //#define EB_SPLIT_RIGHT
 
+#include "RowSingle.hpp"
+
+
 #include "Ent_flat.hpp"
 
 #include "EntWrk.hpp"
