@@ -41,6 +41,9 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "InfoSet.hpp"
+#include "StreamSet.hpp"
+
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
