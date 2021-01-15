@@ -38,7 +38,7 @@ namespace STORE
     void vAddNumeric(Token*  pTkn, Column* pColumnExpr);
     void vAddRelational(Token*  pTkn);
     void vAddString(Token*  pTkn, Column* pColumnExpr);
-    void vAddSum(eCT eColumnType, i8 iColumn);
+    eEC  eAddSum(eCT eColumnType, i8 iColumn);
     void vAddPopCol(eCT eColumnType, i8 iColumn);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);

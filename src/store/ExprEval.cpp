@@ -309,7 +309,7 @@ void ExprEval::vAddString(Token* pTkn, Column* pColumnExpr) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for sum                                                        */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddSum(eCT eColumnType, i8 iColumn) {
+eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -317,22 +317,26 @@ void ExprEval::vAddSum(eCT eColumnType, i8 iColumn) {
   switch (eColumnType) {
     case CT_INTEGER:
     case CT_DECIMAL:
-    case CT_DATE:
+    case CT_FLOAT:
       StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_PUSHCOLI %lld\n"_Stz, iColumn);
       StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iColumn);
-      break;
+      return EC_NONE;
 
+    case CT_BOOLEAN:
     case CT_CHAR:
+    case CT_DATE:
+    case CT_INTERVAL:
+    case CT_TIME:
+    case CT_TIMESTAMP:
     case CT_VARCHAR:
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_PUSHCOLS %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iColumn);
-      break;
+      return EC_INVALID_COMMAND;
 
     default:
       RASSERT(0);
   }
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,7 +513,9 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
         // add EO code for pop column
         if (bSum) {
-          vAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+          eError = eAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+          if (eError == EC_INVALID_COMMAND)
+            goto L_RETURN;
           bSum = false;
         }
         else
@@ -665,8 +671,9 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
     // add EO code for pop column
     if (bSum) {
-      vAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
-      bSum = false;
+      eError = eAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+      if (eError == EC_INVALID_COMMAND)
+        goto L_RETURN;bSum = false;
     }
     else
       vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
