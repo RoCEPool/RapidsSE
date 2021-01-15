@@ -5,35 +5,6 @@
 
 #include "eLC.h"
 
-namespace BASE
-{
-  class ListExo_ABSTRACT : public Object
-  {
-  protected:
-
-  private:
-    // must be last
-    Footer m_xFooter;
-
-  public:
-    void* operator new(size_t);
-    void  operator delete(void*);
-
-    ListExo_ABSTRACT(eCN eClassNo);
-   ~ListExo_ABSTRACT(void) noexcept(false);
-
-//    Object* pHeadNode_abstract(void);
-//    Object* pTailNode_abstract(void);
-
-  private:
-    Footer* aFooter(void);
-  };
-
-  ListExo_ABSTRACT* _pListExo_ABSTRACT(void* aAddr);
-
-} // namespace BASE
-
-
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
@@ -209,7 +180,7 @@ namespace BASE { template <class ITEM> class ListExoIter_t; }
 namespace BASE
 {
   template <eCN CLASSNO, class ITEM>
-  class ListExo_t : public ListExo_ABSTRACT
+  class ListExo_t : public Object
   {
   protected:
     Lock    m_okLock;
@@ -306,8 +277,8 @@ void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
-: ListExo_ABSTRACT(CLASSNO)
-, m_okLock(LK_LIST,nullptr)
+    : Object(CLASSNO)
+    , m_okLock(LK_LIST,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
@@ -326,7 +297,7 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(ListExoIter_t<ITEM>* pIter)
-    : ListExo_ABSTRACT(CLASSNO)
+    : Object(CLASSNO)
     , m_okLock(LK_LIST,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
