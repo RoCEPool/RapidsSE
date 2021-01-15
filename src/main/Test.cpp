@@ -743,7 +743,8 @@ void vTest18(void)
   
   SeApi::vPrintAllTablesInCurrFolder();
 
-  SeApi::bIsKnownTableNm("__verifyTable"_Stz);
+  SeApi::bIsKnownTableNm("__listColumns"_Stz);
+  SeApi::bIsKnownTableColumnNm("__listColumns"_Stz,"columnName"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

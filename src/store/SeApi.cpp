@@ -3,10 +3,14 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "STORE.h"
 
 #include "SeApi.hpp"
-
-#include "AM.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
+#include "IndexTree.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -101,16 +105,16 @@ bool SeApi::bIsKnownTableNm(Stz* szTableNm)
 
   Word* pWord = pDicStack->pFindWord(sWordNm);
  
-  if (pWord)
-    return true;
-  else
+  if (! pWord)
     return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* test if given column name is known within supplied table                   */
 /*----------------------------------------------------------------------------*/
-bool SeApi::bIsKnownColumnTable(Stz* szTableNm,Stz* szColumnNm)
+bool SeApi::bIsKnownTableColumnNm(Stz* szTableNm, Stz* szColumnNm)
 {
   _static_
   
@@ -123,8 +127,39 @@ bool SeApi::bIsKnownColumnTable(Stz* szTableNm,Stz* szColumnNm)
   // get dictionary
   Dic* pDic = pDicStack->pTop();
 
+  s32 sWordNm;
+  sWordNm = szTableNm;
+
+  Word* pPackageWord = pDic->pFindWord(sWordNm);
+  if (! pPackageWord)
+    return false;
+
+  Dic* pTableDic = _pDic(pPackageWord->pObject());
+  if (! pTableDic)
+    return false;
+
+  Word* pColumnsWord = pTableDic->pFindWord(sWordNm);
+  if (! pColumnsWord)
+    return false;
+
+  Table* pTable = _pTable(pColumnsWord->pObject());
+  if (! pTable)
+    return false;
+
+//  Word* pColumnWord = nullptr;
+//  while ( (pColumnWord = pColumnsDic->pEachWord(pColumnWord)) ) {
+//    vTrace("  - %s\n"_Stz,pColumnWord->szWordNm());
+//   }
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (! pStreamDef)
+    return false;
   
-  return false;
+  Column* pColumn = pStreamDef->pFindColumn(szColumnNm);
+  if (! pColumn)
+    return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
