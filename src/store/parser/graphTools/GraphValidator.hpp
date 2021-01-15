@@ -73,6 +73,16 @@ namespace Parser
     static void vDefn_5_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_5_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_5_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
+    static void vDefn_5_20(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
     static void vDefn_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);
 
     static void vPlan_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);

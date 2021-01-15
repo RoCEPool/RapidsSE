@@ -320,7 +320,9 @@ public:
   // project
   void vExprEvalGet(void);
   void vExprEvalNew(void);
-  void vExprEvalColumns(void);
+  void vExprEvalAggregate(void);
+  void vExprEvalFilter(void);
+  void vExprEvalProject(void);
   void vExprEvalSet(void);
 
   // fact
@@ -900,6 +902,7 @@ public:
   void vLogicUnitDiaryTitle(void);
   void vLogicUnitDynFun(void);
   void vLogicUnitDynFunArgs(void);
+  void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenCode(void);

@@ -101,7 +101,7 @@
 
   ExprEval[].new
   StreamDefOut[].new
-  <etc> StreamDef[] StreamDefOut[] ExprEval[].projectColumns to eError
+  <etc> StreamDef[] StreamDefOut[] ExprEval[].project to eError
 
   // check for error
   eError EC_NONE == not if

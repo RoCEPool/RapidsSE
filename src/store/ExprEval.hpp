@@ -28,6 +28,8 @@ namespace STORE
     eEC eExprEvalAll(StreamDef* pStreamDefIn);
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
+    bool bHasAggregate(void);
+
   private:
     void vAddArithmetic(Token*  pTkn, Column* pColumn);
     eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);

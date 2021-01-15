@@ -2314,6 +2314,140 @@ void LogicUnit::vGenerate100001(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate asm text for aggregates                                           */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+
+  TagSet oTagSet;
+  File *pFile = new File(nullptr);
+
+  s256 sFileName;
+  s4K sMacro;
+
+  ++gixQueryNo;
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+                    AM::pGrid()->pThisNode()->szNodeNm());
+
+  bool b = pFile->bOpenWrite(sFileName);
+
+  ASSERT(pExprEval->bHasAggregate());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // AM_QUERY_INIT
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DEFAULT_HANDLERS
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRWBUFFER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  if (pExprEval->m_iStreamInColumns) {
+    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS_AGG"_Stz);
+  }
+  else
+    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_NONE"_Stz);
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_AGG, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROWBUFFER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  if (pExprEval->m_iStreamInColumns) {
+    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS_AGG"_Stz);
+  }
+  else
+    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG, &oTagSet, sMacro));
+
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRW_PROJECT_COLUMNS
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  if (pExprEval->m_iStreamInColumns) {
+    oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+    oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
+
+    oTagSet.vReset();
+  }
+  else {
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
+  }
+
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROW_PROJECT_COLUMNS
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the columns to be projected to PROJECT_COLUMNS
+  if (pExprEval->m_iStreamInColumns) {
+    oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+    oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
+    oTagSet.vReset();
+  }
+  else {
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
+  }
+
+  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  //}
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the file
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Generate asm
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s16KB sText;
+  b = pFile->bOpenRead(sFileName);
+  RASSERT(b);
+  i8 nSize = pFile->iSize();
+  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+
+  // null terminate the read bytes
+  char* sReadStr = sText.azChar();
+  sReadStr[nSize] = '\0';
+
+  bool bResult = bGenerateAsm(sText);
+
+  pFile->vClose();
+  delete pFile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate asm text for filter                                              */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
@@ -2331,6 +2465,8 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
                     AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = pFile->bOpenWrite(sFileName);
+
+  ASSERT( ! pExprEval->bHasAggregate() );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
@@ -2411,9 +2547,7 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   RASSERT(eError == EC_NONE);
 
   // add the columns to be projected to PROJECT_COLUMNS
-  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
-  //}
+  pFile->vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
@@ -2460,6 +2594,8 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
 
   bool b = pFile->bOpenWrite(sFileName);
 
+  ASSERT( ! pExprEval->bHasAggregate() );
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2481,18 +2617,12 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
   if (pExprEval->m_iStreamInColumns) {
-    if (pExprEval->m_bHasAgg)
-      oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS_AGG"_Stz);
-    else
-      oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS"_Stz);
+    oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS"_Stz);
   }
   else
     oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_NONE"_Stz);
 
-  if (pExprEval->m_bHasAgg)
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_AGG, &oTagSet, sMacro));
-  else
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2500,18 +2630,12 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_COLUMNS for each row
   if (pExprEval->m_iStreamInColumns) {
-    if (pExprEval->m_bHasAgg)
-      oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS_AGG"_Stz);
-    else
-      oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS"_Stz);
+    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS"_Stz);
   }
   else
     oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
 
-  if (pExprEval->m_bHasAgg)
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG, &oTagSet, sMacro));
-  else
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
 
   oTagSet.vReset();
 
@@ -2528,12 +2652,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-
-    if (pExprEval->m_bHasAgg)
-      pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
-    else
-      pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet, sMacro));
-
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet, sMacro));
     oTagSet.vReset();
   }
   else {
@@ -2552,10 +2671,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-    if (pExprEval->m_bHasAgg)
-      pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
-    else
-      pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet, sMacro));
+    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet, sMacro));
     oTagSet.vReset();
   }
   else {
