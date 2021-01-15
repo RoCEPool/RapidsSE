@@ -554,7 +554,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--partitionsPerNode"_Stz)) {
-      m_xSysArgs.m_nPtnsPerTable = argv[++i_Arg].iToI8();
+
+      if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
+        vWarn("Invalid partitionsPerNode : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        return false;
+      }
+
+      m_xSysArgs.m_nPtnsPerTable = argv[i_Arg].iToI8();
+      if ( m_xSysArgs.m_nPtnsPerTable <= 0 || m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS ) {
+        vWarn("partitionsPerNode %lld is outside the valid range (1 to %lld)\n"_Stz,
+              m_xSysArgs.m_nPtnsPerTable, C_MAX_TABLEPTNS);
+        return false;
+      }
       if (m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
           C_MAX_TABLEPTNS);
