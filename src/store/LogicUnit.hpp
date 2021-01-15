@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "HashSet.hpp"
+
 #include "CrwToRow.hpp"
 #include "ToHshCrw.hpp"
 #include "ToNstRow.hpp"

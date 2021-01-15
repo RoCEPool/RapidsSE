@@ -57,7 +57,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "RowBuffer.hpp"
 
-#include "HashSet.hpp"
+//#include "HashSet.hpp"
 //#include "Pot.hpp"
 
 
