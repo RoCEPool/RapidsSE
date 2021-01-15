@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "RowBuffer.hpp"
 
 #include "InfoSetBase.hpp"
 

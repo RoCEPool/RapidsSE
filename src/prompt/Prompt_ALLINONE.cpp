@@ -8,6 +8,8 @@
 
 #include "Prompt_ALLINONE.hpp"
 
+#include "RowBuffer.hpp"
+
 #include "Api.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"

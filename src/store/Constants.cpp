@@ -6,6 +6,7 @@
 #include "STORE.h"
 
 #include "Constants.hpp"
+#include "RowBuffer.hpp"
 
 #include "InfoSet.hpp"
 #include "RowCoder.hpp"

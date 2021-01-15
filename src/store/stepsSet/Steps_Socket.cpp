@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "RowBuffer.hpp"
+
 #include "InfoSet.hpp"
 
 #include "StreamSet.hpp"

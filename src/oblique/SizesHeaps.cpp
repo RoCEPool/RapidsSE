@@ -42,6 +42,7 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "RowBuffer.hpp"
 #include "HashSet.hpp"
 #include "Pot.hpp"
 

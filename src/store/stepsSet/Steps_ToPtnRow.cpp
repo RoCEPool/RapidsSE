@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "RowBuffer.hpp"
+
 #include "Node_I.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

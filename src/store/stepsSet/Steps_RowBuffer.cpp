@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

@@ -41,6 +41,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "RowBuffer.hpp"
+
 #include "Pot.hpp"
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
