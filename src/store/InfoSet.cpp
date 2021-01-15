@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "InfoSet.hpp"
+
 #include "OpSpec.hpp"
 #include "PipelineSpec.hpp"
 

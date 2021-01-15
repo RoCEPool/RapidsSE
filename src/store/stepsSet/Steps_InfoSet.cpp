@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "InfoSet.hpp"
+
 #include "ePX.h"
 
 #include "SkipRoots.hpp"
