@@ -92,18 +92,29 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
   Stz* szOpNm;
   Stz* szOpArg;
   
+  char cStageStart   = 'A';
+  char cStageCurrent = 'A';
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pAsPipelineStmt->vCopy(
     "pipeline unnamed\n"
     "begin\n"
-    "  stage stageA on origin :\n"
+    ""_Stz);
+
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on origin :\n"
     "    start\n"
     "    | periodic once\n"
     "    | stageB\n"
-    "  stage stageB on all partitions :\n"
-    ""_Stz);
+    ""_Stz,
+  cStageStart);
+
+  ++ cStageCurrent;
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on all partitions :\n"
+    ""_Stz,
+    cStageCurrent);
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -177,11 +188,20 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pAsPipelineStmt->vCatSprint(
-    "    | stageC\n"
-    "  stage stageC on origin :\n"
+    "    | stage%c\n"
+    ""_Stz,
+    cStageCurrent + 1);
+  
+  ++ cStageCurrent;
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on origin :\n"
     "    output\n"
     "    | sink\n"
-    "    | stageA\n"
+    "    | stage%c\n"
+    ""_Stz,
+    cStageCurrent, cStageStart);
+
+  pAsPipelineStmt->vConcat(
     "end ;\n"
     ""_Stz);
   
