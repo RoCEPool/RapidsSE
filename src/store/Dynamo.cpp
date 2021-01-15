@@ -178,6 +178,25 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
     
     // -- -- -- -- -- -- -- -- -- --
     
+    else
+    if (szOpNm->bSame("aggreg"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint("    | aggreg 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint("\"\n"_Stz);
+            
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
     else {
       
       return false;

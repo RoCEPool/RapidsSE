@@ -12,6 +12,8 @@ tableScan nation;
 
 scan nation | filter n_nationKey 10 <= | project n_name ;
 
+scan nation | project N_NATIONKEY | aggreg as keytot sum ( N_NATIONKEY) ;
+
 // scan nation | project n_name ;
 
 /*============================================================================*/
