@@ -496,6 +496,9 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
   while ( pTkn ) {
 
+    if (bSum)
+      m_bHasAgg = true;
+
     if (pTkn->bSame(","_Stz)) {
 
       i_DstColumn++;
@@ -508,7 +511,6 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
         if (bSum) {
           vAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
           bSum = false;
-          m_bHasAgg = true;
         }
         else
           vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
@@ -665,7 +667,6 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     if (bSum) {
       vAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
       bSum = false;
-      m_bHasAgg = true;
     }
     else
       vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);

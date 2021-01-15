@@ -884,6 +884,7 @@ public:
   void vLogicCompilerDelete(void);
   void vLogicCompilerExtract(void);
   void vLogicCompilerExtractAsm(void);
+  void vLogicCompilerIsNull(void);
   void vLogicCompilerNew(void);
 
   // logic unit

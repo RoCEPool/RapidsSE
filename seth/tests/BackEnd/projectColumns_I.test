@@ -38,6 +38,10 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
+projectColumns lineitem " sum ( l_discount ) ";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
 projectColumns_I lineitem "l_partkey";
 rows:
   (1551894)

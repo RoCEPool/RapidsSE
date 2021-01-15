@@ -12,6 +12,7 @@ begin
     scan lineitem
     | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
     | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
     | stageC
 
   stage stageC on origin :
@@ -53,10 +54,11 @@ begin
     scan lineitem
     | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
     | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | aggreg 0 " as partitionRevenue sum ( l_extendedPrice l_discount * ) "
     | stageC
 
   stage stageC on origin :
-    aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    aggreg 0 " as revenue sum ( partitionRevenue ) "
     | output | sink | stageA
 end;
 rows: 0
@@ -186,6 +188,26 @@ begin
   stage stageB on all partitions :
     scan lineitem
     | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | aggreg 0 " as partitionRevenue sum ( l_extendedPrice l_discount * ) "
+    | stageC
+
+  stage stageC on origin :
+    aggreg 0 " as revenue sum ( partitionRevenue ) "
+    | output | sink | stageA
+end;
+rows:
+  (2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
     | stageC
 
   stage stageC on origin :
@@ -205,10 +227,11 @@ begin
   stage stageB on all partitions :
     scan lineitem
     | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | aggreg 0 " as revenuePart sum ( l_extendedPrice l_discount * ) "
     | stageC
 
   stage stageC on origin :
-    aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    aggreg 0 " as revenue sum ( revenuePart ) "
     | output | sink | stageA
 end;
 rows:
