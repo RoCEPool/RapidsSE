@@ -970,7 +970,9 @@ class ListExoIter_t : public Object
 {
 private:
  
-  ListExo_ABSTRACT*        m_pListExo;
+  ListExo_ABSTRACT*        m_pListExo_abstract;
+  
+  ListExo_t<CN_NONE,ITEM>* m_pListExot_test;
 
   eLC                      m_eCursorState;
   ListExoNode_t<ITEM>*     m_pListNode_cursor;
@@ -1034,7 +1036,9 @@ ListExoIter_t<ITEM>::ListExoIter_t(ListExo_ABSTRACT* pListExo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSPLACEHOLDER,_FOOTER_);
   
-  m_pListExo = pListExo;
+  m_pListExo_abstract = pListExo;
+  
+  m_pListExot_test = (ListExo_t<CN_NONE,ITEM>*) pListExo;
   
   m_eCursorState = LC_NIL;
   m_pListNode_cursor = nullptr;
@@ -1079,7 +1083,7 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
+      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo_abstract->pHeadNode_abstract();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
@@ -1091,7 +1095,7 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
       return nullptr;
 
     case LC_ON_EXISTING_ITEM:
-      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
+      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo_abstract->pHeadNode_abstract();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
@@ -1121,7 +1125,7 @@ bool ListExoIter_t<ITEM>::bHasNext(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      if (m_pListExo->pHeadNode_abstract())
+      if (m_pListExo_abstract->pHeadNode_abstract())
         return true;
       else
         return false;
@@ -1154,7 +1158,7 @@ ITEM* ListExoIter_t<ITEM>::pNext(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo->pHeadNode_abstract();
+      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExo_abstract->pHeadNode_abstract();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
