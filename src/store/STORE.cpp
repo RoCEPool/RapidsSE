@@ -15,6 +15,8 @@
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
 
+#include "Ent.hpp"
+
 #include "Ent_int.h"
 
 #include "Ent_gen.h"

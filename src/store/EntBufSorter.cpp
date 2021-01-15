@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Ent.hpp"
+
 #include "Ent_flat.hpp"
 
 #include "SkipRoots.hpp"

@@ -5,6 +5,8 @@
 
 //! entry work is used to form an entry which is then inserted into an index
 
+#include "Ent.hpp"
+
 namespace STORE
 {
   class EntWrk : public StackObject

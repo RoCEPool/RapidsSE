@@ -5,6 +5,8 @@
 
 #include "Device.hpp"
 
+#include "Ent.hpp"
+
 namespace STORE
 {
   class DevIXT : public Device

@@ -250,20 +250,20 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //              other properties defined for the node.
   //    DEFN-4.2: all properties of the node must have a unique name with respect to
   //              other properties defined in parent nodes that the current node inherits
-  //              from. The only exception here is the "__constraints__" node.
+  //              from. The only exception here is the "__constraints" node.
   //    DEFN-4.3: all properties (except "__constraints") must have a non-null type field.
   //
   // DEFN-5: Validate the constraints:
-  //    DEFN-5.1: any constraints must exist under a node named "__constraints__" which
+  //    DEFN-5.1: any constraints must exist under a node named "__constraints" which
   //              itself is a property of the current node.
-  //    DEFN-5.2: if a __constraints__ container exists then it must have 1 or more children.
+  //    DEFN-5.2: if a __constraints container exists then it must have 1 or more children.
   //    DEFN-5.3: validate that if any of the following constraints exist as children
-  //              under a __constraints__ container, then those constraints must also have
-  //              one child node (being a parameter of the constraint):
-  //                - childType
-  //                - valueType
-  //                - childCount
-  //    DEFN-5.4: if any of the constraints specified in DEFN-5.2 exist, then validate that
+  //              under a __constraints container, then those constraints must also have
+  //              one or more child nodes (being a parameter of the constraint):
+  //                - childType (one or more permitted)
+  //                - valueType (one or more permitted)
+  //                - childCount (only one child permitted)
+  //    DEFN-5.4: if any of the constraints specified in DEFN-5.3 exist, then validate that
   //              their parameter nodes must have non-null name, type and value fields.
   //    DEFN-5.5: If the childType constraint is used then validate that its child parameter
   //              must have a value field that is a path that can be resolved to another
@@ -272,21 +272,100 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //              must have a value field that is a path that can be resolved to another
   //              definition node, and that that path is a subclass of valueObject.
   //    DEFN-5.7: validate that the following combinations of constraints cannot be applied
-  //              in the __constraints__ container for a given object:
+  //              in the __constraints container for a given object:
   //                - (noChildren/alwaysChildren),
   //                - (nullable/nonnullable),
   //                - (optional/mandatory)
-  //    DEFN-5.8: validate that the constraints combinations specified in DEFN-5.6 cannot occur
+  //    DEFN-5.8: validate that the constraints combinations specified in DEFN-5.7 cannot occur
   //              with any constraints inherited by the current node.
   //    DEFN-5.9: validate that the same constraint cannot be specified more than once
   //              in the current node.
   //    DEFN-5.10: validate that the same constraint cannot be specified more than once
   //               when considering all inherited constraints of the current node.
   //
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.11: If an object definition has a property where the property's type field 
+  //               is non null, validate that any constraints of that property must exist
+  //               under a node named "__constraints" which itself is a property of the
+  //               property in question.
+  //    DEFN-5.12: If an object definition has a property where the property's type field
+  //               is non null, validate that if a constraints container exists in that
+  //               property then it must have one or more children.
+  //    DEFN-5.13: If an object definition has a property where the property's type field
+  //               is non null, validate that if any of the following constraints exist as
+  //               children under a __constraints container of that property, then those
+  //               constraints must also have one or more child nodes (being a parameter of
+  //               the constraint):
+  //                - childType (one or more permitted)
+  //                - valueType (one or more permitted)
+  //                - childCount (only one child permitted)
+  //    DEFN-5.14: If an object definition has a property where the property's type field
+  //               is non null, validate that if any of the constraints specified in
+  //               DEFN-5.13 are specified for the property in question, then validate that
+  //               their parameter nodes must have non-null name, type and value fields.
+  //    DEFN-5.15: If an object definition has a property where the property's type field
+  //               is non null, validate that if the childType constraint is used on the property
+  //               that its child parameter must have a value field that is a path that can be
+  //               resolved to another definition node.
+  //    DEFN-5.16: If an object definition has a property where the property's type field
+  //               is non null, validate that if the valueType constraint is used on the property
+  //               that its child parameter must have a value field that is a path that can be resolved
+  //               to another definition node, and that that path is a subclass of valueObject.
+  //    DEFN-5.17: If an object definition has a property where the property's type field
+  //               is non null, and that property has constraints then validate that the following
+  //               combinations of constraints cannot occur in the __constraints container
+  //               for that property:
+  //                - (noChildren/alwaysChildren),
+  //                - (nullable/nonnullable),
+  //                - (optional/mandatory)
+  //    DEFN-5.18: If an object definition has a property where the property's type field is
+  //               non null and that property has a __constraint container, then validate that
+  //               any constraints specified are not incompatible with any constraints already
+  //               specified in the definition of the property (including that definitions
+  //               inheritance hierarchy).
+  //    DEFN-5.19: If an object definition has a property where the property's type field
+  //               is non null and that property has a __constraint container, then validate
+  //               that any constraints specified are not specified more than once in this
+  //               constraints container for the property in question.
+  //    DEFN-5.20: If an object definition has a property where the property's type field
+  //               is non null and that property has a __constraint container, then validate
+  //               that any constraints specified are not already specified in the definition
+  //               of the property (including that definitions inheritance hierarchy).
+  //
   // DEFN-6: Validate the children:
   //    DEFN-6.1: validate that all children of a given definition node must have unique names.
+  //
+  // NOTE 1:
+  //   When validating a property of a node, the definition of that property may have
+  //   constraints (let's call these "direct" constraints). But there might also be additional
+  //   constraints specified when that property was specified as a property of the node (let's
+  //   call these "indirect" constraints).
+  //   e.g. consider this _definition_ of object "foo" and its property "bar":
+  //   {
+  //      name: "foo",
+  //      type: "foo_defn",
+  //      properties: [
+  //        {
+  //          name: "bar",
+  //          type: "bar_defn",
+  //          properties: [
+  //            {
+  //              name: "__constraints", type: "...", children: [
+  //                { name: "optional", type: "/__root__/primitives/constraints/optional" }
+  //              ]
+  //            }
+  //          ]
+  //        }
+  //      ]
+  //   }
+  //   Given this definition, the property "bar" may have certain direct constraints from its
+  //   definition (bar_defn), but it also has an indirect constraint specified where the property
+  //   was defined (at foo:bar).
+  //   So to validate this definition we must evaluate "bar" against its definition (bar_defn,
+  //   and therefore its direct constraints) as well as against any additional indirect constraints
+  //   applied in the declaration of the property "bar" too.
+  //
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
   RASSERT(pNode);
   RASSERT(pNode->eGetClassNo() == CN_DEFINITIONNODE);
@@ -343,7 +422,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
 
   //    DEFN-4.2: all properties of the node must have a unique name with respect to
   //              other properties defined in parent nodes that the current node inherits
-  //              from. The only exception here is the "__constraints__" node.
+  //              from. The only exception here is the "__constraints" node.
   vDefn_4_2(pNode, sPath, iDepth, pvArg);
 
   //    DEFN-4.3: all properties (except "__constraints") must have a non-null type field.
@@ -352,15 +431,15 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   // - - - - - - - - - - - - - - - - - - - - - -
 
   // DEFN-5: Validate the constraints:
-  //    DEFN-5.1: any constraints must exist under a node named "__constraints__" which
+  //    DEFN-5.1: any constraints must exist under a node named "__constraints" which
   //              itself is a property of the current node.
   vDefn_5_1(pNode, sPath, iDepth, pvArg);
 
-  //    DEFN-5.2: if a __constraints__ container exists then it must have 1 or more children.
+  //    DEFN-5.2: if a __constraints container exists then it must have 1 or more children.
   vDefn_5_2(pNode, sPath, iDepth, pvArg);
 
   //    DEFN-5.3: validate that if any of the following constraints exist as children
-  //              under a __constraints__ container, then those constraints must also have
+  //              under a __constraints container, then those constraints must also have
   //              one child node (being a parameter of the constraint):
   //                - childType
   //                - valueType
@@ -384,7 +463,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   vDefn_5_6(pNode, sPath, iDepth, pvArg);
 
   //    DEFN-5.7: validate that the following combinations of constraints cannot be applied
-  //              in the __constraints__ container for a given object:
+  //              in the __constraints container for a given object:
   //                - (noChildren/alwaysChildren),
   //                - (nullable/nonnullable),
   //                - (optional/mandatory)
@@ -402,13 +481,79 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //               when considering all inherited constraints of the current node.
   vDefn_5_10(pNode, sPath, iDepth, pvArg);
 
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.11: If an object definition has a property where the property's type field
+  //               is non null, validate that any constraints of that property must exist
+  //               under a node named "__constraints" which itself is a property of the
+  //               property in question.
+  vDefn_5_11(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.12: If an object definition has a property where the property's type field
+  //               is non null, validate that if a constraints container exists in that
+  //               property then it must have one or more children.
+  vDefn_5_12(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.13: If an object definition has a property where the property's type field
+  //               is non null, validate that if any of the following constraints exist as
+  //               children under a __constraints container of that property, then those
+  //               constraints must also have one or more child nodes (being a parameter of
+  //               the constraint):
+  //                - childType (one or more permitted)
+  //                - valueType (one or more permitted)
+  //                - childCount (only one child permitted)
+  vDefn_5_13(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.14: If an object definition has a property where the property's type field
+  //               is non null, validate that if any of the constraints specified in
+  //               DEFN-5.13 are specified for the property in question, then validate that
+  //               their parameter nodes must have non-null name, type and value fields.
+  vDefn_5_14(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.15: If an object definition has a property where the property's type field
+  //               is non null, validate that if the childType constraint is used on the property
+  //               that its child parameter must have a value field that is a path that can be
+  //               resolved to another definition node.
+  vDefn_5_15(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.16: If an object definition has a property where the property's type field
+  //               is non null, validate that if the valueType constraint is used on the property
+  //               that its child parameter must have a value field that is a path that can be resolved
+  //               to another definition node, and that that path is a subclass of valueObject.
+  vDefn_5_16(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.17: If an object definition has a property where the property's type field
+  //               is non null, and that property has constraints then validate that the following
+  //               combinations of constraints cannot occur in the __constraints container
+  //               for that property:
+  //                - (noChildren/alwaysChildren),
+  //                - (nullable/nonnullable),
+  //                - (optional/mandatory)
+  vDefn_5_17(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.18: If an object definition has a property where the property's type field is
+  //               non null and that property has a __constraint container, then validate that
+  //               any constraints specified are not incompatible with any constraints already
+  //               specified in the definition of the property (including that definitions
+  //               inheritance hierarchy).
+  vDefn_5_18(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.19: If an object definition has a property where the property's type field
+  //               is non null and that property has a __constraint container, then validate
+  //               that any constraints specified are not specified more than once in this
+  //               constraints container for the property in question.
+  vDefn_5_19(pNode, sPath, iDepth, pvArg);
+
+  //    DEFN-5.20: If an object definition has a property where the property's type field
+  //               is non null and that property has a __constraint container, then validate
+  //               that any constraints specified are not already specified in the definition
+  //               of the property (including that definitions inheritance hierarchy).
+  vDefn_5_20(pNode, sPath, iDepth, pvArg);
 
   // - - - - - - - - - - - - - - - - - - - - - -
 
   // DEFN-6: Validate the children:
   //    DEFN-6.1: validate that all children of a given definition node must have unique names.
   vDefn_6_1(pNode, sPath, iDepth, pvArg);
-
 
 
   return Parser::GraphNav::WALK_CONTINUE;
@@ -869,7 +1014,7 @@ PlanNode* GraphValidator::pGetConstraint(Stz* szConstraintDefn, DefinitionNode* 
 
   PlanNode* pResult = nullptr;
 
-  RASSERT(!pDefn->szType() || bWalkInheritance);
+  RASSERT(!pDefn->szType() || !bWalkInheritance);
 
   do {
     if (pDefn->nProperties() == 0) {
@@ -1246,7 +1391,7 @@ void GraphValidator::vDefn_4_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-4: Validate the properties:
   // DEFN-4.2: all properties of the node must have a unique name with respect to
   //           other properties defined in parent nodes that the current node inherits
-  //           from. The only exception here is the "__constraints__" node.
+  //           from. The only exception here is the "__constraints" node.
   //
   // e.g. node /a/b/c has a property :d. We need to check that there isn't a property named :d
   // in /a/b or /a either.
@@ -1394,7 +1539,7 @@ void GraphValidator::vDefn_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 void GraphValidator::vDefn_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   // DEFN-5: Validate the constraints:
-  // DEFN-5.2: if a __constraints__ container exists then it must have 1 or more children.
+  // DEFN-5.2: if a __constraints container exists then it must have 1 or more children.
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1413,10 +1558,10 @@ void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5: Validate the constraints:
   // DEFN-5.3: validate that if any of the following constraints exist as children
   //           under a __constraints container, then those constraints must also have
-  //           one child node (being a parameter of the constraint):
-  //             - childType
-  //             - valueType
-  //             - childCount
+  //           one or more child nodes (being a parameter of the constraint):
+  //             - childType (one or more permitted)
+  //             - valueType (one or more permitted)
+  //             - childCount (only one child permitted)
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1431,10 +1576,14 @@ void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
     RASSERT(pConstraint->szType());
     if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
-        pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH)) ||
-        pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH)) ) {
+        pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH))
+       ) {
 
-      // The constraint must have a child
+      // The constraint must have at least one child
+      RASSERT(pConstraint->nChildren() >= 1);
+
+    } else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))) {
+      // The constraint must have only one child
       RASSERT(pConstraint->nChildren() == 1);
     }
   }
@@ -1617,7 +1766,7 @@ void GraphValidator::vDefn_5_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // DEFN-5: Validate the constraints:
   // DEFN-5.7: validate that the following combinations of constraints cannot be applied
-  //           in the __constraints__ container for a given object:
+  //           in the __constraints container for a given object:
   //             - (noChildren/alwaysChildren),
   //             - (nullable/nonnullable),
   //             - (optional/mandatory)
@@ -1890,6 +2039,692 @@ void GraphValidator::vDefn_5_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
     }
   }
   delete pConstraintsIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.11                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.11: If an object definition has a property where the property's type field
+  //               is non null, validate that any constraints of that property must exist
+  //               under a node named "__constraints" which itself is a property of the
+  //               property in question.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property of the current node. We're only interested in those
+  // properties that have a non-null type field.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    if (pProp->nProperties() == 0) {
+      continue;
+    }
+
+    // Get the constraint container of this property, if it exists.
+    PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+
+    // Check each property of this property to ensure that it doesn't have a
+    // type field deriving from a constraint type when it is outside of the
+    // constraint container.
+    PlanNodeIter* pPropPropIter = pProp->pNewPropertyIter();
+    while (pPropPropIter->bHasNext()) {
+      PlanNode* pPropProp = pPropPropIter->pNext();
+
+      if (pPropProp == pConstraints) {
+        continue;   // ignore the constraints container
+      }
+
+      // We shouldn't have a constraint outside of its container.
+      RASSERT(pPropProp->szType());
+      RASSERT(!pPropProp->szType()->bBeginsWith(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_PATH)));
+    }
+    delete pPropPropIter;
+  }
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.12                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.12: If an object definition has a property where the property's type field
+  //               is non null, validate that if a constraints container exists in that
+  //               property then it must have one or more children.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+    if (!pConstraints) {
+      continue;   // ignore
+    }
+
+    RASSERT(pConstraints->nChildren() > 0);
+  }
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.13                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.13: If an object definition has a property where the property's type field
+  //               is non null, validate that if any of the following constraints exist as
+  //               children under a __constraints container of that property, then those
+  //               constraints must also have one or more child nodes (being a parameter of
+  //               the constraint):
+  //                - childType (one or more permitted)
+  //                - valueType (one or more permitted)
+  //                - childCount (only one child permitted)
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+    if (!pConstraints) {
+      continue;   // ignore
+    }
+
+    RASSERT(pConstraints->nChildren() > 0);
+    // Iterate the constraints in the container
+    PlanNodeIter* pConstraintIter = pConstraints->pNewChildrenIter();
+
+    while (pConstraintIter->bHasNext()) {
+      PlanNode* pConstraint = pConstraintIter->pNext();
+
+      if ( pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
+           pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH)) ) {
+
+        RASSERT(pConstraint->nChildren() > 0);
+
+      } else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))) {
+
+        RASSERT(pConstraint->nChildren() == 1);
+      }
+    }
+    delete pConstraintIter;
+  }
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.14                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.14: If an object definition has a property where the property's type field
+  //               is non null, validate that if any of the constraints specified in
+  //               DEFN-5.13 are specified for the property in question, then validate that
+  //               their parameter nodes must have non-null name, type and value fields.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+    if (!pConstraints) {
+      continue;   // ignore
+    }
+
+    RASSERT(pConstraints->nChildren() > 0);
+    // Iterate the constraints in the container
+    PlanNodeIter* pConstraintsIter = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter->bHasNext()) {
+      PlanNode* pConstraint = pConstraintsIter->pNext();
+
+      if ( pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
+           pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH)) ||
+           pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH)) ) {
+
+        RASSERT(pConstraint->nChildren() > 0);
+        PlanNodeIter* pParamIter = pConstraint->pNewChildrenIter();
+
+        // Iterate each param of the constraint
+        while (pParamIter->bHasNext()) {
+          PlanNode* pParam = pParamIter->pNext();
+          RASSERT(pParam->szName());
+          RASSERT(pParam->szName()->nLength() > 0);
+          RASSERT(pParam->szType());
+          RASSERT(pParam->szType()->nLength() > 0);
+          // TODO: Check that the value field is not null.
+        }
+        delete pParamIter;
+      }
+    }
+    delete pConstraintsIter;
+  }
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.15                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.15: If an object definition has a property where the property's type field
+  //               is non null, validate that if the childType constraint is used on the property
+  //               that its child parameter must have a value field that is a path that can be
+  //               resolved to another definition node.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+    if (!pConstraints) {
+      continue;   // ignore
+    }
+
+    RASSERT(pConstraints->nChildren() > 0);
+    // Iterate the constraints in the container
+    PlanNodeIter* pConstraintsIter = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter->bHasNext()) {
+      PlanNode* pConstraint = pConstraintsIter->pNext();
+
+      if ( pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ) {
+
+        RASSERT(pConstraint->nChildren() > 0);
+        PlanNodeIter* pParamIter = pConstraint->pNewChildrenIter();
+
+        // Iterate each param of the constraint
+        while (pParamIter->bHasNext()) {
+          PlanNode* pParam = pParamIter->pNext();
+
+          RASSERT(pParam->m_xValue.m_pText);
+          RASSERT(pParam->m_xValue.m_pText->bIsClassNo(CN_TEXT));
+          RASSERT(pParam->m_xValue.m_bMustFree);
+
+          Stz* szVal = pParam->getStringValue();
+          RASSERT(szVal);
+          RASSERT(szVal->nLength() > 0);
+          RASSERT(szVal->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)));
+
+          PlanNode* pChildDef = GraphNav::pFind(szVal, pRootNode);
+          RASSERT(pChildDef);
+          RASSERT_TYPE(pChildDef, CN_DEFINITIONNODE);
+        }
+        delete pParamIter;
+      }
+    }
+    delete pConstraintsIter;
+  }
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.16                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.16: If an object definition has a property where the property's type field
+  //               is non null, validate that if the valueType constraint is used on the property
+  //               that its child parameter must have a value field that is a path that can be resolved
+  //               to another definition node, and that that path is a subclass of valueObject.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+    if (!pConstraints) {
+      continue;   // ignore
+    }
+
+    RASSERT(pConstraints->nChildren() > 0);
+    // Iterate the constraints in the container
+    PlanNodeIter* pConstraintsIter = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter->bHasNext()) {
+      PlanNode* pConstraint = pConstraintsIter->pNext();
+
+      if ( pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ) {
+
+        RASSERT(pConstraint->nChildren() > 0);
+        PlanNodeIter* pParamIter = pConstraint->pNewChildrenIter();
+
+        // Iterate each param of the constraint
+        while (pParamIter->bHasNext()) {
+          PlanNode* pParam = pParamIter->pNext();
+
+          RASSERT(pParam->m_xValue.m_pText);
+          RASSERT(pParam->m_xValue.m_pText->bIsClassNo(CN_TEXT));
+          RASSERT(pParam->m_xValue.m_bMustFree);
+
+          Stz* szVal = pParam->getStringValue();
+          RASSERT(szVal);
+          RASSERT(szVal->nLength() > 0);
+          RASSERT(szVal->bBeginsWith(const_cast<Stz*>(C_VALUE_OBJ_DEFN)));
+
+          PlanNode* pChildDef = GraphNav::pFind(szVal, pRootNode);
+          RASSERT(pChildDef);
+          RASSERT_TYPE(pChildDef, CN_DEFINITIONNODE);
+        }
+        delete pParamIter;
+      }
+    }
+    delete pConstraintsIter;
+  }
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.17                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.17: If an object definition has a property where the property's type field
+  //               is non null, and that property has constraints then validate that the following
+  //               combinations of constraints cannot occur in the __constraints container
+  //               for that property:
+  //                - (noChildren/alwaysChildren),
+  //                - (nullable/nonnullable),
+  //                - (optional/mandatory)
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode *pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    // Get the constraints container for this property
+    PlanNode *pConstraints = GraphNav::pFindProperty(const_cast<Stz *>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+
+    if (!pConstraints) {
+      continue;
+    }
+
+    b1 bGotNoChildren = false;
+    b1 bGotAlwaysChildren = false;
+    b1 bGotNullable = false;
+    b1 bGotNonNullable = false;
+    b1 bGotOptional = false;
+    b1 bGotMandatory = false;
+
+    // Iterate the constraints in this constraint container
+    PlanNodeIter *pConstraintsIter = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter->bHasNext()) {
+      PlanNode *pConstraint = pConstraintsIter->pNext();
+
+      RASSERT(pConstraint->szType());
+
+      if      (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NOCHILDREN_PATH)))     { bGotNoChildren = true;     }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_ALWAYSCHILDREN_PATH))) { bGotAlwaysChildren = true; }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NULLABLE_PATH)))       { bGotNullable = true;       }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NONNULLABLE_PATH)))    { bGotNonNullable = true;    }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_OPTIONAL_PATH)))       { bGotOptional = true;       }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_MANDATORY_PATH)))      { bGotMandatory = true;      }
+    }
+
+    delete pConstraintsIter;
+
+    // Check for the invalid combinations
+    RASSERT(!(bGotNoChildren && bGotAlwaysChildren));
+    RASSERT(!(bGotNullable && bGotNonNullable));
+    RASSERT(!(bGotOptional && bGotMandatory));
+  }
+
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.18                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.18: If an object definition has a property where the property's type field is
+  //               non null and that property has a __constraint container, then validate that
+  //               any constraints specified are not incompatible with any constraints already
+  //               specified in the definition of the property (including that definitions
+  //               inheritance hierarchy).
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode *pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    // Get the constraints container for this property
+    PlanNode *pConstraints = GraphNav::pFindProperty(const_cast<Stz *>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+
+    if (!pConstraints) {
+      continue;
+    }
+
+    b1 bGotNoChildren     = false;
+    b1 bGotAlwaysChildren = false;
+    b1 bGotNullable       = false;
+    b1 bGotNonNullable    = false;
+    b1 bGotOptional       = false;
+    b1 bGotMandatory      = false;
+
+    // Iterate the constraints in this constraint container
+    PlanNodeIter *pConstraintsIter = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter->bHasNext()) {
+      PlanNode *pConstraint = pConstraintsIter->pNext();
+
+      RASSERT(pConstraint->szType());
+
+      if      (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NOCHILDREN_PATH)))     { bGotNoChildren = true;     }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_ALWAYSCHILDREN_PATH))) { bGotAlwaysChildren = true; }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NULLABLE_PATH)))       { bGotNullable = true;       }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NONNULLABLE_PATH)))    { bGotNonNullable = true;    }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_OPTIONAL_PATH)))       { bGotOptional = true;       }
+      else if (pConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_MANDATORY_PATH)))      { bGotMandatory = true;      }
+    }
+
+    delete pConstraintsIter;
+
+    // Now we need to look for these constraints after dereferencing the definition string of the property
+    DefinitionNode* pPropDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pProp->szType(), pRootNode));
+    RASSERT(pPropDefn);
+    RASSERT(pPropDefn->szPath()->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)));
+    RASSERT(!pPropDefn->szType());
+
+    // Walk up the definition's inheritance hierarchy
+    do {
+      if (pPropDefn->nProperties() == 0) {
+        continue;
+      }
+
+      // Get the constraint container for this definition, if any
+      PlanNode* pDefnConstraints = GraphNav::pFindProperty(const_cast<Stz *>(C_CONSTRAINTS_CONTAINER_NAME), pPropDefn);
+      if (!pDefnConstraints) {
+        continue;
+      }
+
+      // Iterate the constraints in this definition constraint container
+      PlanNodeIter *pDefnConstraintsIter = pDefnConstraints->pNewChildrenIter();
+
+      while (pDefnConstraintsIter->bHasNext()) {
+        PlanNode *pDefnConstraint = pDefnConstraintsIter->pNext();
+
+        RASSERT(pDefnConstraint->szType());
+
+        if      (pDefnConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NOCHILDREN_PATH)))     { bGotNoChildren = true;     }
+        else if (pDefnConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_ALWAYSCHILDREN_PATH))) { bGotAlwaysChildren = true; }
+        else if (pDefnConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NULLABLE_PATH)))       { bGotNullable = true;       }
+        else if (pDefnConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_NONNULLABLE_PATH)))    { bGotNonNullable = true;    }
+        else if (pDefnConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_OPTIONAL_PATH)))       { bGotOptional = true;       }
+        else if (pDefnConstraint->szType()->bEqual(const_cast<Stz *>(C_CONSTRAINTS_MANDATORY_PATH)))      { bGotMandatory = true;      }
+      }
+      delete pDefnConstraintsIter;
+
+    } while( pPropDefn &&
+             (pPropDefn = static_cast<DefinitionNode*>(GraphNav::pGetParent(pPropDefn, pRootNode))) &&
+             !pPropDefn->szPath()->bEqual(const_cast<Stz*>(C_DEFINITIONS_PATH)) );
+
+    // Check for the invalid combinations
+    RASSERT(!(bGotNoChildren && bGotAlwaysChildren));
+    RASSERT(!(bGotNullable && bGotNonNullable));
+    RASSERT(!(bGotOptional && bGotMandatory));
+  } // while (pPropIter->bHasNext())
+
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.19                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.19: If an object definition has a property where the property's type field
+  //               is non null and that property has a __constraint container, then validate
+  //               that any constraints specified are not specified more than once in this
+  //               constraints container for the property in question.
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode *pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    // Get the constraints container for this property
+    PlanNode *pConstraints = GraphNav::pFindProperty(const_cast<Stz *>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+
+    if (!pConstraints) {
+      continue;
+    }
+
+    // Iterate the constraints in this constraint container
+    PlanNodeIter *pConstraintsIter1 = pConstraints->pNewChildrenIter();
+    PlanNodeIter *pConstraintsIter2 = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter1->bHasNext()) {
+      PlanNode *pConstraint1 = pConstraintsIter1->pNext();
+      RASSERT(pConstraint1->szType());
+
+      // Now iterate it again to find any constraints of the same type in the same container
+      pConstraintsIter2->vBeforeFirst();
+
+      while (pConstraintsIter2->bHasNext()) {
+        PlanNode *pConstraint2 = pConstraintsIter2->pNext();
+        RASSERT(pConstraint2->szType());
+
+        if (pConstraint1 == pConstraint2) {
+          continue; // ignore self-comparison
+        }
+
+        // Cannot have the same type of constraint specified twice
+        RASSERT(!pConstraint1->szType()->bEqual(pConstraint2->szType()));
+      }
+    }
+
+    delete pConstraintsIter1;
+    delete pConstraintsIter2;
+  }
+
+  delete pPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                DEFN-5.20                                   */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vDefn_5_20(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  // DEFN-5: Validate the constraints:
+  //    (Indirect constraints follow. Refer to Note1 below)
+  //    DEFN-5.20: If an object definition has a property where the property's type field
+  //               is non null and that property has a __constraint container, then validate
+  //               that any constraints specified are not already specified in the definition
+  //               of the property (including that definitions inheritance hierarchy).
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  // Iterate each property. We're only interested in those properties that
+  // have a non-null type field and a constraints container.
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode *pProp = pPropIter->pNext();
+
+    if (!pProp->szType()) {
+      continue;   // ignore
+    }
+
+    // Get the constraints container for this property
+    PlanNode *pConstraints = GraphNav::pFindProperty(const_cast<Stz *>(C_CONSTRAINTS_CONTAINER_NAME), pProp);
+
+    if (!pConstraints) {
+      continue;
+    }
+
+    // Get the definition of the property
+    RASSERT(pProp->szType()->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)));
+    DefinitionNode* pPropDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pProp->szType(), pRootNode));
+    RASSERT(pPropDefn);
+    RASSERT_TYPE(pPropDefn, CN_DEFINITIONNODE);
+
+    // Iterate the constraints in this constraint container
+    PlanNodeIter *pConstraintsIter = pConstraints->pNewChildrenIter();
+
+    while (pConstraintsIter->bHasNext()) {
+      PlanNode *pConstraint = pConstraintsIter->pNext();
+      RASSERT(pConstraint->szType());
+
+      // Now iterate the definition of the property all the way up the inheritance
+      // hierarchy and look for the same constraint (by type).
+      do {
+        if (pPropDefn->nProperties() == 0) {
+          continue;
+        }
+
+        // Get the constraint container in this definition node
+        PlanNode* pDefnConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pPropDefn);
+        if (!pDefnConstraints) {
+          continue;
+        }
+
+        // Iterate the constraints in this definition node
+        PlanNodeIter* pDefnConstraintsIter = pDefnConstraints->pNewChildrenIter();
+        while (pDefnConstraintsIter->bHasNext()) {
+          PlanNode* pDefnConstraint = pDefnConstraintsIter->pNext();
+
+          // Compare the constraint types
+          RASSERT(pDefnConstraint->szType());
+          RASSERT(!pDefnConstraint->szType()->bEqual(pConstraint->szType()));
+        }
+        delete pDefnConstraintsIter;
+
+      } while (pPropDefn &&
+               (pPropDefn = static_cast<DefinitionNode*>(GraphNav::pGetParent(pPropDefn, pRootNode))) &&
+               !pPropDefn->szPath()->bEqual(const_cast<Stz*>(C_DEFINITIONS_PATH)) );
+
+    }
+
+    delete pConstraintsIter;
+  }
+
+  delete pPropIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2509,7 +3344,50 @@ void GraphValidator::vPlan_8_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "noChildren" constraint then validate
   //               that the property of the current node has no children.
 
-  // TODO
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "noChildren" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_NOCHILDREN_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // Now we can check if the instantiation of the property meets this constraint.
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+
+    // Validate the constraint
+    RASSERT(pProp->nChildren() == 0);
+  }
+
+  delete pDefnPropIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2522,7 +3400,50 @@ void GraphValidator::vPlan_8_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "alwaysChildren" constraint then validate
   //               that the property of the current node must have at least one child.
 
-  // TODO
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "alwaysChildren" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_ALWAYSCHILDREN_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // Now we can check if the instantiation of the property meets this constraint.
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+
+    // Validate the constraint
+    RASSERT(pProp->nChildren() > 0);
+  }
+
+  delete pDefnPropIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2584,7 +3505,72 @@ void GraphValidator::vPlan_8_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               that any and all children of the property of the current node must be of
   //               a type indicated by the constraint's parameter.
 
-  // TODO
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "childType" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // Get the parameter of this constraint and extract out its value
+    PlanNode* pConstraintParam = pConstraint->pFirstChild();
+    RASSERT(pConstraintParam);
+    RASSERT(pConstraintParam->m_xValue.m_pText);
+    RASSERT(pConstraintParam->m_xValue.m_bMustFree);
+    RASSERT(pConstraintParam->getStringValue());
+    RASSERT(pConstraintParam->getStringValue()->nLength() > 0);
+
+    Stz* szChildTypeDefn = pConstraintParam->getStringValue();
+
+    // Now we can check if the instantiation of the property meets this constraint.
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+
+    // Validate the constraint
+    if (pProp->nChildren() == 0) {
+      continue;
+    }
+
+    PlanNodeIter* pPropChildIter = pProp->pNewChildrenIter();
+    while (pPropChildIter->bHasNext()) {
+      PlanNode* pChild = pPropChildIter->pNext();
+
+      // The definition of this child must match the constraint definition
+      RASSERT(pChild->szType());
+      RASSERT(pChild->szType()->bBeginsWith(szChildTypeDefn));
+    }
+    delete pPropChildIter;
+  }
+
+  delete pDefnPropIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2612,7 +3598,57 @@ void GraphValidator::vPlan_8_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               that the number of children of the property of the current node must equal
   //               that indicated by the constraint's parameter.
 
-  // TODO
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "childCount" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // Get the parameter of this constraint and extract out its value
+    PlanNode* pConstraintParam = pConstraint->pFirstChild();
+    RASSERT(pConstraintParam);
+
+    i8 iCount = pConstraintParam->getIntValue();
+    RASSERT(iCount >= 0);
+
+    // Now we can check if the instantiation of the property meets this constraint.
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+
+    // Validate the constraint
+    RASSERT(pProp->nChildren() == iCount);
+  }
+
+  delete pDefnPropIter;
 }
 
 
