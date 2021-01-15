@@ -216,12 +216,10 @@ namespace BASE
 
     
   private:
+    void vCutNode(ListExoNode_t<ITEM>* pCutThisNode);
+    
     ListExoNode_t<ITEM>* pFindNode(ITEM* pItem);
 
-    void vCutNode(ListExoNode_t<ITEM>* pCutThisNode);
-  
-    ListExoNode_t<ITEM>* pHeadNode_list(void);
-  
     void vInsertNodeAfter(ListExoNode_t<ITEM>* pInsertThisNode,
                           ListExoNode_t<ITEM>* pAfterThisNode);
   
@@ -229,9 +227,7 @@ namespace BASE
                            ListExoNode_t<ITEM>* pBeforeThisNode);
   
     ListExoNode_t<ITEM>* pNewNode(ITEM* pItem);
-  
-    ListExoNode_t<ITEM>* pTailNode_list(void);
-  
+    
     void vValidateList(void);
   
     Footer* aFooter(void);
@@ -334,7 +330,7 @@ void ListExo_t<CLASSNO,ITEM>::vAppend(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-  vInsertNodeAfter(pAppendingNode,pTailNode_list());
+  vInsertNodeAfter(pAppendingNode,m_pTailNode);
   
   m_okLock.vDropWrite();
   vValidateList();
@@ -362,12 +358,12 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pHead(void)
     
   m_okLock.vGrabWrite();
   
-  if (! pHeadNode_list()) {
+  if (! m_pHeadNode) {
     m_okLock.vDropWrite();
     return nullptr;
   }
 
-  ITEM* pItem = pHeadNode_list()->pItem();
+  ITEM* pItem = m_pHeadNode->pItem();
   
   m_okLock.vDropWrite();
 
@@ -482,7 +478,7 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pPeek(i8 nThItem)
   m_okLock.vGrabWrite();
   
   i8 i_Scan = 0;
-  for (pScanNode = pHeadNode_list();
+  for (pScanNode = m_pHeadNode;
        pScanNode;
        pScanNode = pScanNode->pNextNode()) {
     
@@ -513,13 +509,13 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pPop(void)
      
   m_okLock.vGrabWrite();
   
-  if (! pHeadNode_list()) {
+  if (! m_pHeadNode) {
     ASSERT(! m_nItems);
     m_okLock.vDropWrite();
     return nullptr;
   }
 
-  ListExoNode_t<ITEM>* pWasHeadNode = pHeadNode_list();
+  ListExoNode_t<ITEM>* pWasHeadNode = m_pHeadNode;
   ITEM* pWasHeadItem = pWasHeadNode->pItem();
   
   vCutNode(pWasHeadNode);
@@ -542,13 +538,13 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pPopTail(void)
      
   m_okLock.vGrabWrite();
   
-  if (! pTailNode_list()) {
+  if (! m_pTailNode) {
     ASSERT(! m_nItems);
     m_okLock.vDropWrite();
     return nullptr;
   }
 
-  ListExoNode_t<ITEM>* pWasTailNode = pTailNode_list();
+  ListExoNode_t<ITEM>* pWasTailNode = m_pTailNode;
   ITEM* pWasTailItem = pWasTailNode->pItem();
   
   vCutNode(pWasTailNode);
@@ -575,7 +571,7 @@ void ListExo_t<CLASSNO,ITEM>::vPush(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-  vInsertNodeBefore(pPushingNode,pHeadNode_list());
+  vInsertNodeBefore(pPushingNode,m_pHeadNode);
 
   m_okLock.vDropWrite();
   vValidateList();
@@ -595,7 +591,7 @@ void ListExo_t<CLASSNO,ITEM>::vPushTail(ITEM* pItem)
 
   m_okLock.vGrabWrite();
   
-  vInsertNodeAfter(pPushingNode,pTailNode_list());
+  vInsertNodeAfter(pPushingNode,m_pTailNode);
   
   m_okLock.vDropWrite();
   vValidateList();
@@ -649,12 +645,12 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
   
   m_okLock.vGrabWrite();
   
-  if (! pTailNode_list()) {
+  if (! m_pTailNode) {
     m_okLock.vDropWrite();
     return nullptr;
   }
 
-  ITEM* pItem = pTailNode_list()->pItem();
+  ITEM* pItem = m_pTailNode->pItem();
   
   m_okLock.vDropWrite();
 
@@ -693,7 +689,7 @@ void ListExo_t<CLASSNO,ITEM>::vCutNode(ListExoNode_t<ITEM>* pCutThisNode)
   ListExoNode_t<ITEM>* pNextOfCut = pCutThisNode->pNextNode();
   ListExoNode_t<ITEM>* pPrevOfCut = pCutThisNode->pPrevNode();
 
-  if (pCutThisNode == pHeadNode_list() && pCutThisNode == pTailNode_list()) {
+  if (pCutThisNode == m_pHeadNode && pCutThisNode == m_pTailNode) {
     // cut only node
     
     ASSERT(1 == m_nItems);
@@ -701,7 +697,7 @@ void ListExo_t<CLASSNO,ITEM>::vCutNode(ListExoNode_t<ITEM>* pCutThisNode)
     m_pTailNode = nullptr;
   }
   else
-  if (pCutThisNode == pHeadNode_list()) {
+  if (pCutThisNode == m_pHeadNode) {
     // cut head node
     
     ASSERT(m_nItems > 1);
@@ -709,7 +705,7 @@ void ListExo_t<CLASSNO,ITEM>::vCutNode(ListExoNode_t<ITEM>* pCutThisNode)
     m_pHeadNode = pNextOfCut;
   }
   else
-  if (pCutThisNode == pTailNode_list()) {
+  if (pCutThisNode == m_pTailNode) {
     // cut tail node
 
     ASSERT(m_nItems > 1);
@@ -743,7 +739,7 @@ ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pFindNode(ITEM* pItem)
   
   ListExoNode_t<ITEM>* pScanNode;
 
-  for (pScanNode = pHeadNode_list();
+  for (pScanNode = m_pHeadNode;
        pScanNode;
        pScanNode = pScanNode->pNextNode()) {
     
@@ -754,20 +750,6 @@ ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pFindNode(ITEM* pItem)
   }
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get head item of list                                                      */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pHeadNode_list(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-    
-  ListExoNode_t<ITEM>* pHead_list
-    = (ListExoNode_t<ITEM>*) m_pHeadNode;
-  
-  return pHead_list;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -796,12 +778,12 @@ void ListExo_t<CLASSNO,ITEM>::
     pAfterThisNode->vNextNode(pInsertThisNode); // (4)
   }
   
-  if (! pHeadNode_list()) {
+  if (! m_pHeadNode) {
     ASSERT(! m_nItems);
     m_pHeadNode = pInsertThisNode;
   }
   
-  if (! pTailNode_list() || pTailNode_list() == pAfterThisNode)
+  if (! m_pTailNode || m_pTailNode == pAfterThisNode)
     m_pTailNode = pInsertThisNode;
 
   m_nItems++;
@@ -835,10 +817,10 @@ void ListExo_t<CLASSNO,ITEM>::
   }
   
   
-  if (! pHeadNode_list() || pHeadNode_list() == pBeforeThisNode)
+  if (! m_pHeadNode || m_pHeadNode == pBeforeThisNode)
     m_pHeadNode = pInsertThisNode;
   
-  if (! pTailNode_list()) {
+  if (! m_pTailNode) {
     ASSERT(! m_nItems);
     m_pTailNode = pInsertThisNode;
   }
@@ -861,20 +843,6 @@ ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pNewNode(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head item of list                                                      */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pTailNode_list(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
-    
-  ListExoNode_t<ITEM>* pTail_list =
-    (ListExoNode_t<ITEM>*) m_pTailNode;
-
-  return pTail_list;
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate list                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
@@ -888,7 +856,7 @@ void ListExo_t<CLASSNO,ITEM>::vValidateList(void)
   m_okLock.vGrabWrite();
 
   nItemsCheck = 0;
-  for (pScanNode = pHeadNode_list();
+  for (pScanNode = m_pHeadNode;
        pScanNode;
        pScanNode = pScanNode->pNextNode()) {
     
@@ -902,7 +870,7 @@ void ListExo_t<CLASSNO,ITEM>::vValidateList(void)
   RASSERT(nItemsCheck == m_nItems);
   
   nItemsCheck = 0;
-  for (pScanNode = pTailNode_list();
+  for (pScanNode = m_pTailNode;
        pScanNode;
        pScanNode = pScanNode->pPrevNode()) {
     
