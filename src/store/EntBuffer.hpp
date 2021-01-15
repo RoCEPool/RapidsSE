@@ -13,6 +13,8 @@
 //#define EB_LOCAL_VERIFY
 //#define EB_SPLIT_RIGHT
 
+#include "Ent_flat.hpp"
+
 #include "EntWrk.hpp"
 
 namespace STORE

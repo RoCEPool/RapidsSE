@@ -15,6 +15,10 @@
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
 
+#include "Ent_int.h"
+
+#include "Ent_gen.h"
+
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/

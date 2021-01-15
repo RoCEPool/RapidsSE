@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
-{
+//namespace STORE
+//{
   // the flattened layout for the int case
   #include "Ent_int.h"
 
   // the flattened layout for the general case
   #include "Ent_gen.h"
-}
+//}
 
 /*============================================================================*/
 /* end                                                                        */
