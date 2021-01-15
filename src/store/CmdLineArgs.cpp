@@ -502,7 +502,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xBootNode[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xSysArgs.m_xBootNode[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
-      m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[++i_Arg].iToI8();
+      if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
+        vWarn("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        return false;
+      }
+      m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
       i_BootNode++;
       
       if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
