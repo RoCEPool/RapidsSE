@@ -56,7 +56,8 @@ void Step::vMonitorUpdateNodeStatus(void)
     if (pNode)  {
       i8 iLastUpdate = time(0) - pNode->xGetHeartbeat().m_iSincePosixEpoch;
 
-      vTrace("  ** Step::vMonitorCollectInfo ** Node %s last update:%lld\n"_Stz, iLastUpdate);
+      vTrace("  ** Step::vMonitorCollectInfo ** Node %s last update:%lld\n"_Stz,
+             AM::szNodeNm(),iLastUpdate);
 
       if (iLastUpdate > 10) { // older than 10 seconds
         pNode->vSetNodeStatus(1); // late

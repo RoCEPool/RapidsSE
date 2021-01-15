@@ -6302,7 +6302,7 @@ void Task::vAddMunged(Task* pTask)
     "  then\n"
     "\n"
     "  // spawn monitor demon\n"
-    "  \"\" false monitorDemonPipelineCmd api::spawnDemon not if\n"
+    "  \"\" false monDemonPipelineCmd api::spawnDemon not if\n"
     "    \"Error Code %v\" .printf\n"
     "  then\n"
     "\n"

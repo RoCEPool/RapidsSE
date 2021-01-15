@@ -113,10 +113,10 @@
 /*----------------------------------------------------------------------------*/
 /* pipeline command for the monitor demon                                     */
 /*----------------------------------------------------------------------------*/
-: monitorDemonPipelineCmd
+: monDemonPipelineCmd
 
   "
-    pipelineLocal monitorDemon
+    pipelineLocal monDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
