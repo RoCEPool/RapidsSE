@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "EntWrk.hpp"
+
 #include "SP_Key.hpp"
 #include "SP_Ref.hpp"
 

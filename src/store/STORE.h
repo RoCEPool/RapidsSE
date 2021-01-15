@@ -70,7 +70,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "NEO.h"
 #include "Ent.hpp"
 #include "Ent_flat.hpp"
-#include "EntWrk.hpp"
+//#include "EntWrk.hpp"
 
 //------------------------------------------------------------------------------
 

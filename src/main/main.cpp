@@ -27,6 +27,8 @@ extern s256 gi_szaArgv[];
 
 extern i8   giProgressPoint;
 
+//#include <readline/readline.h>
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
@@ -34,6 +36,8 @@ int main(int argc, char* argv[])
 {
   //printf("sizeof(ColPix) %lld\n",(i8)sizeof(ColPix));
   printf("sizeof(Word) %lld\n",(i8)sizeof(Word));
+
+  //char* s = readline ("Enter a line: ");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

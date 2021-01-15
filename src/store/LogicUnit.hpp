@@ -10,6 +10,7 @@
 #include "ToRow.hpp"
 
 
+#include "EntWrk.hpp"
 
 #include "RluCommon.h"
 #include "RluDiary.hpp"
