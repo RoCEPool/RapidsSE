@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "EntWrk.hpp"
+
 #include "SeApi.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
