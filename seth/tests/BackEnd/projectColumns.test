@@ -94,6 +94,10 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
+projectColumns lineitem " sum ( l_discount ) ";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
 projectColumns lineitem "l_comment";
 rows:
   ('egular courts above the')
