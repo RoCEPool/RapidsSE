@@ -10,8 +10,6 @@ namespace BASE
   class ListExo_ABSTRACT : public Object
   {
   protected:
-    Object* m_pHeadNode_abstract;
-    Object* m_pTailNode_abstract;
 
   private:
     // must be last
@@ -24,8 +22,8 @@ namespace BASE
     ListExo_ABSTRACT(eCN eClassNo);
    ~ListExo_ABSTRACT(void) noexcept(false);
 
-    Object* pHeadNode_abstract(void);
-    Object* pTailNode_abstract(void);
+//    Object* pHeadNode_abstract(void);
+//    Object* pTailNode_abstract(void);
 
   private:
     Footer* aFooter(void);
@@ -217,6 +215,9 @@ namespace BASE
     Lock    m_okLock;
     i8      m_nItems;
 
+    Object* m_pHeadNode_abstract;
+    Object* m_pTailNode_abstract;
+
     // must be last
     Footer m_xFooter;
     
@@ -246,6 +247,10 @@ namespace BASE
     void  vRemove(ITEM* pItem);
     void  vRemoveAll(void);
     ITEM* pTail(void);
+  
+    Object* pHeadNode_abstract(void);
+    Object* pTailNode_abstract(void);
+
     
   private:
     ListExoNode_t<ITEM>* pFindNode(ITEM* pItem);
@@ -307,6 +312,9 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
   m_nItems = 0;
+
+  m_pHeadNode_abstract = nullptr;
+  m_pTailNode_abstract = nullptr;
 
   _checkInitialised_(CLASSNO);
   
@@ -701,6 +709,27 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
   return pItem;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get head node                                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+Object* ListExo_t<CLASSNO,ITEM>::pHeadNode_abstract(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  return m_pHeadNode_abstract;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail node                                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+Object* ListExo_t<CLASSNO,ITEM>::pTailNode_abstract(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  return m_pTailNode_abstract;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

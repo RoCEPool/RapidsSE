@@ -22,9 +22,7 @@ ListExo_ABSTRACT::ListExo_ABSTRACT(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
-   m_pHeadNode_abstract = nullptr;
-  m_pTailNode_abstract = nullptr;
-  
+   
   // _checkInitialised_(eClassNo);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
@@ -45,22 +43,22 @@ ListExo_ABSTRACT::~ListExo_ABSTRACT(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get head node                                                              */
 /*----------------------------------------------------------------------------*/
-Object* ListExo_ABSTRACT::pHeadNode_abstract(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_pHeadNode_abstract;
-}
+//Object* ListExo_ABSTRACT::pHeadNode_abstract(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+//
+//  return m_pHeadNode_abstract;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get tail node                                                              */
 /*----------------------------------------------------------------------------*/
-Object* ListExo_ABSTRACT::pTailNode_abstract(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_pTailNode_abstract;
-}
+//Object* ListExo_ABSTRACT::pTailNode_abstract(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+//  
+//  return m_pTailNode_abstract;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
