@@ -8,8 +8,6 @@
 
 #define C_LOGIC_LOCALS 32
 
-typedef struct Ent_int _Ent_int;
-
 struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 {
   i8   m_iCmnMagic;

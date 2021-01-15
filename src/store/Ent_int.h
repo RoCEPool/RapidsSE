@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Ent_int.hpp -- the flattened layout for the int case                       */
+/* Ent_int.h -- the flattened layout for the int case                         */
 /*============================================================================*/
 #pragma once
 
