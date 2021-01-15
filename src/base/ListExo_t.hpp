@@ -10,8 +10,6 @@ namespace BASE
   class ListExo_ABSTRACT : public Object
   {
   protected:
-    Lock    m_okLock;
-    i8      m_nItems;
     Object* m_pHeadNode_abstract;
     Object* m_pTailNode_abstract;
 
@@ -216,6 +214,8 @@ namespace BASE
   class ListExo_t : public ListExo_ABSTRACT
   {
   protected:
+    Lock    m_okLock;
+    i8      m_nItems;
 
     // must be last
     Footer m_xFooter;
@@ -302,9 +302,12 @@ void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
 : ListExo_ABSTRACT(CLASSNO)
+, m_okLock(LK_LIST,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
+  m_nItems = 0;
+
   _checkInitialised_(CLASSNO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
@@ -316,6 +319,7 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(ListExoIter_t<ITEM>* pIter)
     : ListExo_ABSTRACT(CLASSNO)
+    , m_okLock(LK_LIST,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
