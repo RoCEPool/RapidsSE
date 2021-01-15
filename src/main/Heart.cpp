@@ -109,6 +109,8 @@ void vHeartInit(void) {
         printf("%s", azHeartbeat);
     }
 
+    // MYVA: at some point simple call:
+    //AM::vSupervisorHalt(true);
     sleep(3);
   }
 

@@ -421,6 +421,8 @@ namespace OBLIQUE
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
+    static bool bSupervisorHalt(void);
+    static void vSupervisorHalt(bool bHalt);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
