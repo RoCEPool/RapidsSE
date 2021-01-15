@@ -2866,13 +2866,12 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
   Node *pThisNode = AM::pGrid()->pGetNode(iNode);
 
-  if (!pThisNode) {
-    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
-           "Cannot find Node %lld in the cluster"_Stz,
-           iNode);
+  if (pThisNode) {
+    pThisNode->vPutHeartbeat(xHeartbeat);
+  } else {
+    AM::vLogFyi("Cannot find Node %lld in the cluster"_Stz, //!format-LogFyi
+                iNode);
   }
-
-  pThisNode->vPutHeartbeat(xHeartbeat);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2882,17 +2881,16 @@ void AM::vPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
   Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
-  if (!pThisNode) {
-    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
-           "Cannot find Node %s in the cluster"_Stz,
-           pszName);
+  if (pThisNode) {
+    pThisNode->vPutHeartbeat(xHeartbeat);
+  } else {
+    AM::vLogFyi("Cannot find Node %s in the cluster"_Stz, //!format-LogFyi
+                pszName);
   }
-
-  pThisNode->vPutHeartbeat(xHeartbeat);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get heartbeat info for a give noce                                         */
+/* get heartbeat info for a give node                                         */
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
@@ -2907,7 +2905,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get heartbeat info for a give noce                                         */
+/* get heartbeat info for a give node                                         */
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(Stz* pszName)
 {

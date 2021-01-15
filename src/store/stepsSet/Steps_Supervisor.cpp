@@ -47,18 +47,43 @@ void Step::vSupervisorCollectInfo(void)
   Heartbeat xHeartbeat;
 
   memset((char *) &xHeartbeat, 0x00, sizeof(Heartbeat));
+  xHeartbeat.m_u2Version = 1; // hardcode here but it should be defined somewhere
   xHeartbeat.m_iSeqNo = ++iSeq;
   xHeartbeat.m_iSincePosixEpoch = time(0);
   strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, 32);
 
   // Add node name to the packet
-  strncpy(xHeartbeat.m_acString0, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acString0) - 1);
-  xHeartbeat.m_acString0[sizeof(xHeartbeat.m_acString0) - 1] = 0;
+  strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
+  xHeartbeat.m_acNodeName[sizeof(xHeartbeat.m_acNodeName) - 1] = 0;
+
+  xHeartbeat.m_u2DataLen = sizeof(xHeartbeat.m_iHeader)
+      + sizeof(xHeartbeat.m_u2Version)
+      + sizeof(xHeartbeat.m_u2DataLen)
+      + sizeof(xHeartbeat.m_acNodeName)
+      + sizeof(xHeartbeat.m_iSeqNo)
+      + sizeof(xHeartbeat.m_iSincePosixEpoch)
+      + sizeof(xHeartbeat.m_acBuildGitHash)
+      + sizeof(xHeartbeat.xStoreHeartbeat)
+      + sizeof(xHeartbeat.xBaseHeartbeat)
+      + sizeof(xHeartbeat.m_iChecksum)
+      + sizeof(xHeartbeat.m_iFooter)
+      + sizeof(xHeartbeat.m_acSpare);
+
+  //u2 checksum0 = checksum((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
+  //cCalcXOR_CRC((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
+
+  //vTrace("  ** Step::vSupervisorCollectInfo ** %ld\n"_Stz, checksum0);
+
+  xHeartbeat.m_iChecksum = fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
+  //xHeartbeat.m_iChecksum = xHeartbeat.m_iChecksum+1; // try to mess up here
+
+
+  vTrace("  ** Step::vSupervisorCollectInfo ** fletcher16 %ld\n"_Stz, xHeartbeat.m_iChecksum);
 
   // Add node number to the packet
-  xHeartbeat.m_iValue0 = AM::iThisNodeNo();
+  //xHeartbeat.m_iValue0 = AM::iThisNodeNo();
 
-  // Write to Send Ringbuffer
+  // Write to Send-Ringbuffer
   gxHeartbeatData.bTryWrite(xHeartbeat);
 
 
@@ -66,7 +91,7 @@ void Step::vSupervisorCollectInfo(void)
   // So that if we receive heartbeat from the same node (loopback, broadcast), we can ignore
 
   // NOTE: But for the time being, commented out for testing/debug
-  //AM::vPutHeartbeat((Stz*)xHeartbeat.m_acString0, xHeartbeat);
+  //AM::vPutHeartbeat(AM::iThisNodeNo(), xHeartbeat);
   
   EXIT();
 }

@@ -55,6 +55,11 @@
     "Error Code %v" .printf
   then
 
+  // spawn monitor demon
+  "" false monitorDemonPipelineCmd api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   // spawn recurring demon
   //  "" false recurringDemonPipelineCmd api::spawnDemon not if
   //    "Error Code %v" .printf

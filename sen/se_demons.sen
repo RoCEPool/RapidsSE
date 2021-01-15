@@ -111,6 +111,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* pipeline command for the monitor demon                                     */
+/*----------------------------------------------------------------------------*/
+: monitorDemonPipelineCmd
+
+  "
+    pipelineLocal monitorDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | monitor | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
 /* pipeline command for the waker demon                                       */
 /*----------------------------------------------------------------------------*/
 : wakerDemonPipelineCmd

@@ -94,8 +94,8 @@ void vHeartInit(void) {
 
       sprintf(azHeartbeat,
 
-              "SE sent heartbeat from Node: %lld seqNo %lld sinceEpoch %lld gitHash %s\n",
-              xHeartbeat.m_iValue0, // node number
+              "SE sent heartbeat from Node: %s seqNo %lld sinceEpoch %lld gitHash %s\n",
+              xHeartbeat.m_acNodeName, // node number
               xHeartbeat.m_iSeqNo,
               xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash
 
@@ -134,24 +134,36 @@ void vHeartInit(void) {
     int iLen = pReceiver->iRecv((char *) &xHeartbeat, sizeof(xHeartbeat));
 
     if (iLen > 0) {
-      if (gxHeartbeatBuffer.bTryWrite(xHeartbeat)) {
+      i8 iSaveChk = xHeartbeat.m_iChecksum;
 
-            tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
-            strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
+      xHeartbeat.m_iChecksum = 0;
+      //printf("fletcher16 mychecksum1=%d\n",fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat)));
 
-            sprintf(azHeartbeat,
+      if (fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat)) == iSaveChk) {
+        xHeartbeat.m_iChecksum = iSaveChk;
+        if (gxHeartbeatBuffer.bTryWrite(xHeartbeat)) {
 
-            "\n%lld: SE received heartbeat from Node:%lld Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
-            gxHeartbeatBuffer.iWriteIdx(),
-            xHeartbeat.m_iValue0, // node number
-            xHeartbeat.m_acString0, // name
-            xHeartbeat.m_iSeqNo,
-            xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
-            );
+          tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
+          strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
 
-            if (iCnt++ <= 1) // debug print twice
-              printf("%s", azHeartbeat);
+
+          sprintf(azHeartbeat,
+                  "\n%lld: SE received heartbeat from Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
+                  gxHeartbeatBuffer.iWriteIdx(),
+                  xHeartbeat.m_acNodeName, // name
+                  xHeartbeat.m_iSeqNo,
+                  xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
+          );
+
+          if (iCnt++ <= 1) { // debug print twice
+            printf("%s", azHeartbeat);
+            printf("iLen=%ld m_u2DataLen=%d checksum=%d \n", iLen, xHeartbeat.m_u2DataLen,
+                   xHeartbeat.m_iChecksum);
+          }
         }
+      } else {
+        vTrace("Checksum is not equal, skip this heartbeat packet\n"_Stz);
+      }
     }
   }
 
@@ -179,23 +191,20 @@ void vHeartInit(void) {
 
     memset(&xHeartbeat, 0x00, sizeof(Heartbeat));
 
-    usleep(500*1000);
-
     if (gxHeartbeatBuffer.bTryRead(xHeartbeat))  {
 
       // update heartbeat info for the node
       // m_acString0 is the node name
-      AM::vPutHeartbeat((Stz*)xHeartbeat.m_acString0,xHeartbeat);
+      AM::vPutHeartbeat((Stz*)xHeartbeat.m_acNodeName,xHeartbeat);
 
       tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
       strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
 
       sprintf(azHeartbeat,
 
-              "\n%lld SE read from received heartbeat from Node:%lld Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
+              "\n%lld SE read from received heartbeat from Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
               gxHeartbeatBuffer.iReadIdx(),
-              xHeartbeat.m_iValue0, // node number
-              xHeartbeat.m_acString0, // name
+              xHeartbeat.m_acNodeName, // name
               xHeartbeat.m_iSeqNo,
               xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
       );
@@ -206,14 +215,13 @@ void vHeartInit(void) {
 
 
       // DEBUG get back the heartbeat
-      Heartbeat xxHeartbeat = AM::xGetHeartbeat((Stz*)xHeartbeat.m_acString0);
+      Heartbeat xxHeartbeat = AM::xGetHeartbeat((Stz*)xHeartbeat.m_acNodeName);
 
       sprintf(azHeartbeat,
 
-              "SE after update node info for Node:%lld Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
+              "SE after update node info for Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
 
-              xxHeartbeat.m_iValue0, // node number
-              xxHeartbeat.m_acString0, // name
+              xxHeartbeat.m_acNodeName, // name
               xxHeartbeat.m_iSeqNo,
               xxHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
       );
@@ -221,6 +229,10 @@ void vHeartInit(void) {
       if (iCnt++ < 5) // debug print twice
         printf("%s",azHeartbeat);
 
+      usleep(100*1000); // short sleep
+    } else {
+      // Nothing in the queue to read, sleep a little
+      usleep(500*1000);
     }
   }
 
