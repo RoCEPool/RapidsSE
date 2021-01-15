@@ -213,8 +213,8 @@ namespace BASE
     void  vRemoveAll(void);
     ITEM* pTail(void);
   
-    Object* pHeadNode_abstract(void);
-    Object* pTailNode_abstract(void);
+    ListExoNode_t<ITEM>* pHeadNode_abstract(void);
+    ListExoNode_t<ITEM>* pTailNode_abstract(void);
 
     
   private:
@@ -678,7 +678,7 @@ ITEM* ListExo_t<CLASSNO,ITEM>::pTail(void)
 /* get head node                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-Object* ListExo_t<CLASSNO,ITEM>::pHeadNode_abstract(void)
+ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pHeadNode_abstract(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
@@ -689,7 +689,7 @@ Object* ListExo_t<CLASSNO,ITEM>::pHeadNode_abstract(void)
 /* get tail node                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-Object* ListExo_t<CLASSNO,ITEM>::pTailNode_abstract(void)
+ListExoNode_t<ITEM>* ListExo_t<CLASSNO,ITEM>::pTailNode_abstract(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
@@ -1077,7 +1077,7 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExot_CONCRETE->pHeadNode_abstract();
+      m_pListNode_cursor = m_pListExot_CONCRETE->pHeadNode_abstract();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
@@ -1089,7 +1089,7 @@ ITEM* ListExoIter_t<ITEM>::pFirst(void)
       return nullptr;
 
     case LC_ON_EXISTING_ITEM:
-      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExot_CONCRETE->pHeadNode_abstract();
+      m_pListNode_cursor = m_pListExot_CONCRETE->pHeadNode_abstract();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
@@ -1152,7 +1152,7 @@ ITEM* ListExoIter_t<ITEM>::pNext(void)
   switch (m_eCursorState) {
       
     case LC_NIL:
-      m_pListNode_cursor = (ListExoNode_t<ITEM>*) m_pListExot_CONCRETE->pHeadNode_abstract();
+      m_pListNode_cursor = m_pListExot_CONCRETE->pHeadNode_abstract();
     
       if (m_pListNode_cursor) {
         m_eCursorState = LC_ON_EXISTING_ITEM;
