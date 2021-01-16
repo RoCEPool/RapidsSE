@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "Node_I.hpp"
 #include "Grid.hpp"

@@ -4,7 +4,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "LogicCompiler.hpp"
 
