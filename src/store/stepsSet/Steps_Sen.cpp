@@ -16,27 +16,28 @@ extern Stz* gszaMungedText[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Sen(void)
 {
-  vAddStep(":"_Stz,              &Step::vSenColon);
-  vAddStep("("_Stz,              &Step::vSenComment,          true );
-  vAddStep(">createInRoot"_Stz,  &Step::vSenCreateFromInRoot);
-  vAddStep("doColon"_Stz,        &Step::vSenDoColon);
-  vAddStep("execute"_Stz,        &Step::vSenExecute);
-  vAddStep("exit_rt"_Stz,        &Step::vSenExit_RT);
-  vAddStep("find:"_Stz,          &Step::vSenFind,             true);
-  vAddStep("hazard"_Stz,         &Step::vSenHazard);
-  vAddStep("immediate"_Stz,      &Step::vSenImmediate,        true);
-  vAddStep("jump"_Stz,           &Step::vSenJump);
-  vAddStep("jumpFalse"_Stz,      &Step::vSenJumpFalse);
-  vAddStep("jumpTrue"_Stz,       &Step::vSenJumpTrue);
-  vAddStep("mungedText"_Stz,     &Step::vSenMungedText);
-  vAddStep("nop"_Stz,            &Step::vSenNop);
-  vAddStep("postpone"_Stz,       &Step::vSenPostpone,         true);
-  vAddStep("reenter"_Stz,        &Step::vSenReenter);
-  vAddStep("see"_Stz,            &Step::vSenSee,              true);
-  vAddStep(";"_Stz,              &Step::vSenSemicolon,        true);
-  vAddStep("series-name"_Stz,    &Step::vSenSeriesName);
-  vAddStep("test"_Stz,           &Step::vSenTest);
-  vAddStep("throw"_Stz,          &Step::vSenThrow);
+  vAddStep(":"_Stz,                &Step::vSenColon);
+  vAddStep("("_Stz,                &Step::vSenComment,          true );
+  vAddStep(">createInRoot"_Stz,    &Step::vSenCreateFromInRoot);
+  vAddStep("doColon"_Stz,          &Step::vSenDoColon);
+  vAddStep("execute"_Stz,          &Step::vSenExecute);
+  vAddStep("exit_rt"_Stz,          &Step::vSenExit_RT);
+  vAddStep("find:"_Stz,            &Step::vSenFind,             true);
+  vAddStep("hazard"_Stz,           &Step::vSenHazard);
+  vAddStep("immediate"_Stz,        &Step::vSenImmediate,        true);
+  vAddStep("innerInterpreter"_Stz, &Step::vSenInnerInterpreter);
+  vAddStep("jump"_Stz,             &Step::vSenJump);
+  vAddStep("jumpFalse"_Stz,        &Step::vSenJumpFalse);
+  vAddStep("jumpTrue"_Stz,         &Step::vSenJumpTrue);
+  vAddStep("mungedText"_Stz,       &Step::vSenMungedText);
+  vAddStep("nop"_Stz,              &Step::vSenNop);
+  vAddStep("postpone"_Stz,         &Step::vSenPostpone,         true);
+  vAddStep("reenter"_Stz,          &Step::vSenReenter);
+  vAddStep("see"_Stz,              &Step::vSenSee,              true);
+  vAddStep(";"_Stz,                &Step::vSenSemicolon,        true);
+  vAddStep("series-name"_Stz,      &Step::vSenSeriesName);
+  vAddStep("test"_Stz,             &Step::vSenTest);
+  vAddStep("throw"_Stz,            &Step::vSenThrow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,6 +292,17 @@ void Step::vSenImmediate(void)
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
   pCurrentWord->vImmediate(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* innerInterpreter -- interpreter inner loop                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSenInnerInterpreter(void)
+{
+  ENTRY();
+  
   
   EXIT();
 }

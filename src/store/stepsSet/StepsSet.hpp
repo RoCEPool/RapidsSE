@@ -1342,6 +1342,7 @@ public:
   void vSenExit_RT(void);
   void vSenFind(void);
   void vSenImmediate(void);
+  void vSenInnerInterpreter(void);
   void vSenMungedText(void);
   void vSenPostpone(void);
   void vSenSee(void);
