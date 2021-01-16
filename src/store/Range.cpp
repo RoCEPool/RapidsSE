@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Index.hpp"
+
 #include "Range.hpp"
 #include "eEO.h"
 

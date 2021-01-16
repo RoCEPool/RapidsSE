@@ -42,6 +42,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "Index.hpp"
+
 #include "Folder.hpp"
 #include "Schema.hpp"
 #include "Catalog.hpp"

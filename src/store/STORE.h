@@ -32,7 +32,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "IndexDef.hpp"
 
-#include "Index.hpp"
+//#include "Index.hpp"
 
 //#include "Folder.hpp"
 //#include "Schema.hpp"

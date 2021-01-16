@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "Index.hpp"
+
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 

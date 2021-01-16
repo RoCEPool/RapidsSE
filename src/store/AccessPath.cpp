@@ -7,6 +7,8 @@
 
 #include "eRO.h"
 
+#include "Index.hpp"
+
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
