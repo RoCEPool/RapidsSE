@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Row.hpp"
+
 #include "NmlStr.hpp"
 
 /*----------------------------------------------------------------------------*/
