@@ -7,6 +7,7 @@
 
 #include "Test.hpp"
 
+#include "IndexDef.hpp"
 #include "SkipRoots.hpp"
 
 #include "EntBuffer.hpp"

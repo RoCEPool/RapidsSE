@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "IndexDef.hpp"
+
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"

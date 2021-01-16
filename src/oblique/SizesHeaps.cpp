@@ -42,6 +42,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "IndexDef.hpp"
+
 #include "Index.hpp"
 
 #include "Folder.hpp"

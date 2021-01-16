@@ -30,7 +30,7 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "StreamDef.hpp"
 
-#include "IndexDef.hpp"
+//#include "IndexDef.hpp"
 
 //#include "Index.hpp"
 

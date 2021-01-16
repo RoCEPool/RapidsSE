@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexDef.hpp"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"

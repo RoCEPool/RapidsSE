@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexDef.hpp"
+
 #include "RowBuffer.hpp"
 
 #include "RowCoder.hpp"

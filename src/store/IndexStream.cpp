@@ -7,6 +7,7 @@
 
 #include "RowSingle.hpp"
 
+#include "IndexDef.hpp"
 #include "Pay.hpp"
 #include "Key.hpp"
 

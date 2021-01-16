@@ -17,6 +17,8 @@
 
 #include "Crw.hpp"
 
+#include "IndexDef.hpp"
+
 #include "RowInflator.hpp"
 
 #include "EnumGroups.h"

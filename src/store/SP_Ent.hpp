@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "IndexDef.hpp"
+
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"

@@ -41,6 +41,7 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "IndexDef.hpp"
 #include "Marker.hpp"
 
 #include "RowBuffer.hpp"

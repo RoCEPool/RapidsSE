@@ -9,6 +9,7 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "IndexDef.hpp"
 #include "Index.hpp"
 
 #include "SkipRoots.hpp"

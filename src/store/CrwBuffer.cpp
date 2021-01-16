@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "IndexDef.hpp"
+
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
