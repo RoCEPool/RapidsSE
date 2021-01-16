@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "RowBox_t.hpp"
+
 namespace STORE
 {
   static const i8 C_ROWSINGLE_WSP  = C_MAX_RECORD;
