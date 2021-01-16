@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Marker.hpp"
+
 #include "RowBuffer.hpp"
 
 #include "RowCoder.hpp"

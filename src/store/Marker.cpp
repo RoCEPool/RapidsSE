@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Marker.hpp"
 
 #include "eCF.h"
 

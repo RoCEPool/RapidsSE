@@ -41,6 +41,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "Marker.hpp"
+
 #include "RowBuffer.hpp"
 
 #include "Pot.hpp"

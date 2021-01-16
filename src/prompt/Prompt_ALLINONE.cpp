@@ -8,6 +8,8 @@
 
 #include "Prompt_ALLINONE.hpp"
 
+#include "Marker.hpp"
+
 #include "RowBuffer.hpp"
 
 #include "Api.hpp"

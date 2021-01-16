@@ -42,6 +42,7 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "Marker.hpp"
 #include "Record.hpp"
 #include "RowBuffer.hpp"
 #include "HashSet.hpp"

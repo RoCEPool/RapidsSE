@@ -11,6 +11,8 @@
 
 #include "ePX.h"
 
+#include "Marker.hpp"
+
 #include "RowBuffer.hpp"
 
 #include "RowCoder.hpp"
