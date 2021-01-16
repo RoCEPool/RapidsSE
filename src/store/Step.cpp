@@ -79,8 +79,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
-  Step::vAddSteps_Flow();
-  Step::vAddSteps_Sen();
 
   Step::vAddSteps_Grid();
   
@@ -164,6 +162,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_SeekOffsets();
+  Step::vAddSteps_Sen();
   Step::vAddSteps_SenCompiler();
   Step::vAddSteps_Session();
   Step::vAddSteps_Shell();

@@ -59,8 +59,6 @@ namespace STORE
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
-    static void vAddSteps_Flow(void);
-    static void vAddSteps_Sen(void);
 
     static void vAddSteps_Grid(void);
   
@@ -144,6 +142,7 @@ namespace STORE
     static void vAddSteps_Rstack(void);
 
     static void vAddSteps_SeekOffsets(void);
+    static void vAddSteps_Sen(void);
     static void vAddSteps_SenCompiler(void);
     static void vAddSteps_Session(void);
     static void vAddSteps_Shell(void);
