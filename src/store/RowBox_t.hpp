@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "NmlStr.hpp"
+
 #include "Record.hpp"
 
 namespace STORE
