@@ -34,11 +34,11 @@ typedef void (Step::*fpSTEPFN)(void);
 
 #include "Index.hpp"
 
-#include "Folder.hpp"
-#include "Schema.hpp"
-#include "Catalog.hpp"
-#include "Tenant.hpp"
-#include "Tenants.hpp"
+//#include "Folder.hpp"
+//#include "Schema.hpp"
+//#include "Catalog.hpp"
+//#include "Tenant.hpp"
+//#include "Tenants.hpp"
 
 //#include "Marker.hpp"
 

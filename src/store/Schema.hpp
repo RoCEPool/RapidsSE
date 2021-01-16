@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Folder.hpp"
+
 namespace STORE
 {
   class Schema : public Folder

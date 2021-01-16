@@ -42,6 +42,11 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "Folder.hpp"
+#include "Schema.hpp"
+#include "Catalog.hpp"
+#include "Tenant.hpp"
+#include "Tenants.hpp"
 #include "Marker.hpp"
 #include "Record.hpp"
 #include "RowBuffer.hpp"
