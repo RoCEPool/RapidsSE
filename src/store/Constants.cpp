@@ -962,13 +962,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_MUNGED_SEN"_Stz,(i8)false);
   #endif
-    
-  #ifdef WITH_PREPOST_CHECKING
-  vAddConstant("WITH_PREPOST_CHECKING"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_PREPOST_CHECKING"_Stz,(i8)false);
-  #endif
-    
+        
   #ifdef WITH_PULSING
   vAddConstant("WITH_PULSING"_Stz,(i8)true);
   #else

@@ -30,22 +30,22 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
 #if defined (WITH_DEBUG_VERSION)
 
-#define WITH_ASSERT_MACRO EndDefine          // Assert() macro
+#define WITH_ASSERT_MACRO EndDefine          // ASSERT() macro
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
-#define WITH_CORRECTNESS_ALGEBRA EndDefine   // known class, magic, footer
+#define WITH_CORRECTNESS_ALGEBRA EndDefine   // magic, class, footer, pre, post
+
 //#define WITH_EB_LAZY_CHAIN EndDefine       // build lazy chain on insert
 //#define WITH_IT_COMPACT_TRACE EndDefine    // compaction progress
-//#define WITH_LOCK_TRACKING EndDefine       // track lock activity
-#define WITH_PREPOST_CHECKING EndDefine      // _pre/postCondition_()
+//#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
-//#define WITH_SHARED_LOG EndDefine          // code for Log compiled in
-//#define WITH_STATISTICS_COUNTERS  EndDefine // statistics
+//#define WITH_SHARED_LOG EndDefine          // code for shared log
+//#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
-//#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO EndDefine        // tracing compiling dynamic pipeline
-#define WITH_TRACE_LOGICUNIT EndDefine       // trace LOGIC UNIT
-//#define WITH_TRACE_PURGING EndDefine       // trace purging
+//#define WITH_TRACE_API EndDefine           // trace api's
+//#define WITH_TRACE_DYNAMO EndDefine        // trace dynamo pipeline compiler
+#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
+//#define WITH_TRACE_PURGING EndDefine       // trace purging
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -53,24 +53,24 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
 #else
 
-#define WITH_RELEASE_VERSION EndDefine     // compile as release version
+#define WITH_RELEASE_VERSION EndDefine       // compile as release version
 
-// usually correctness, entry/exit, prepost
-
-//#define WITH_ASSERT_MACRO EndDefine        // Assert() macro
+//#define WITH_ASSERT_MACRO EndDefine        // ASSERT() macro
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
-//#define WITH_CORRECTNESS_ALGEBRA EndDefine // known class, magic, footer
+//#define WITH_CORRECTNESS_ALGEBRA EndDefine // magic, class, footer, pre, post
+
 //#define WITH_EB_LAZY_CHAIN EndDefine       // build lazy chain on insert
-//#define WITH_IT_COMPACT_TRACE EndDefine    // compact trace
-//#define WITH_LOCK_TRACKING EndDefine       // track lock activity
-//#define WITH_PREPOST_CHECKING EndDefine    // _pre/postCondition_()
-//#define WITH_STATISTICS_COUNTERS EndDefine // statistics
+//#define WITH_IT_COMPACT_TRACE EndDefine    // compaction progress
+//#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
+//#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
+//#define WITH_SHARED_LOG EndDefine          // code for shared log
+//#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO EndDefine        // tracing compiling dynamic pipeline
-//#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
-//#define WITH_TRACE_PURGING EndDefine       // trace purging
+//#define WITH_TRACE_DYNAMO EndDefine        // trace dynamo pipeline compiler
+//#define WITH_TRACE_LOGICUNIT EndDefine     // trace logic unit
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
+//#define WITH_TRACE_PURGING EndDefine       // trace purging
 
 #endif
 

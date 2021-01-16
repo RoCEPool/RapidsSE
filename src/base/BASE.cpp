@@ -196,11 +196,6 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
   
-#ifdef WITH_PREPOST_CHECKING
-  if (szWith->bSame("WITH_PREPOST_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifdef WITH_PULSING
   if (szWith->bSame("WITH_PULSING"_Stz))
     return true;
@@ -314,10 +309,6 @@ void BASE::vTraceWith(void)
   
 #ifdef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
-#endif
-  
-#ifdef WITH_PREPOST_CHECKING
-  vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
 #endif
   
 #ifdef WITH_PULSING
@@ -438,11 +429,6 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
-#ifndef WITH_PREPOST_CHECKING
-  if (szWith->bSame("WITH_PREPOST_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_PULSING
   if (szWith->bSame("WITH_PULSING"_Stz))
     return true;
@@ -556,10 +542,6 @@ void BASE::vTraceWithout(void)
   
 #ifndef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
-#endif
-  
-#ifndef WITH_PREPOST_CHECKING
-  vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
 #endif
   
 #ifndef WITH_PULSING
