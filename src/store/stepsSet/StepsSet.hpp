@@ -158,9 +158,6 @@ public:
   void vCommandPreJob(void);
   void vCommandSpawnJob(void);
 
-  // comment
-  void vComment(void);
-
   // crwBuffer
   void vCrwBufferDelete(void);
   void vCrwBufferOperandDump(void);
@@ -373,7 +370,6 @@ public:
   void vFilterSet(void);
 
   // flow
-  void vFlowExecute(void);
   void vFlowHazard(void);
   void vFlowJump(void);
   void vFlowJumpFalse(void);
@@ -382,19 +378,6 @@ public:
   void vFlowReenter(void);
   void vFlowTest(void);
   void vFlowThrow(void);
-
-  // forth
-  void vColon(void);
-  void vDoColon(void);
-  void vCreateFromInRoot(void);
-  void vExit_RT(void);
-  void vFind(void);
-  void vImmediate(void);
-  void vMungedText(void);
-  void vPostpone(void);
-  void vSee(void);
-  void vSemicolon(void);
-  void vSeriesName(void);
 
   // grid
   void vGridBootNodes(void);
@@ -1359,6 +1342,21 @@ public:
 
   // csv buffer
   void vSeekOffsetsOperandDump(void);
+
+  // sen
+  void vSenColon(void);
+  void vSenComment(void);
+  void vSenCreateFromInRoot(void);
+  void vSenDoColon(void);
+  void vSenExecute(void);
+  void vSenExit_RT(void);
+  void vSenFind(void);
+  void vSenImmediate(void);
+  void vSenMungedText(void);
+  void vSenPostpone(void);
+  void vSenSee(void);
+  void vSenSemicolon(void);
+  void vSenSeriesName(void);
 
   // sen compiler
   void vSenCompilerCompiling(void);

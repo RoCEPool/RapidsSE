@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Forth.cpp - forth step group                                         */
+/* Steps_Sen.cpp - sen step group                                             */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -14,27 +14,27 @@ extern Stz* gszaMungedText[];
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Forth(void)
+void Step::vAddSteps_Sen(void)
 {
-  vAddStep(":"_Stz,                 &Step::vColon);
-  vAddStep("("_Stz,                 &Step::vComment,          true );
-  vAddStep(">createInRoot"_Stz,     &Step::vCreateFromInRoot);
-  vAddStep("doColon"_Stz,           &Step::vDoColon);
-  vAddStep("execute"_Stz,           &Step::vFlowExecute);
-  vAddStep("exit_rt"_Stz,           &Step::vExit_RT);
-  vAddStep("find:"_Stz,             &Step::vFind,             true);
-  vAddStep("immediate"_Stz,         &Step::vImmediate,        true);
-  vAddStep("mungedText"_Stz,        &Step::vMungedText);
-  vAddStep("postpone"_Stz,          &Step::vPostpone,         true);
-  vAddStep("see"_Stz,               &Step::vSee,              true);
-  vAddStep(";"_Stz,                 &Step::vSemicolon,        true);
-  vAddStep("series-name"_Stz,       &Step::vSeriesName);
+  vAddStep(":"_Stz,                 &Step::vSenColon);
+  vAddStep("("_Stz,                 &Step::vSenComment,          true );
+  vAddStep(">createInRoot"_Stz,     &Step::vSenCreateFromInRoot);
+  vAddStep("doColon"_Stz,           &Step::vSenDoColon);
+  vAddStep("execute"_Stz,           &Step::vSenExecute);
+  vAddStep("exit_rt"_Stz,           &Step::vSenExit_RT);
+  vAddStep("find:"_Stz,             &Step::vSenFind,             true);
+  vAddStep("immediate"_Stz,         &Step::vSenImmediate,        true);
+  vAddStep("mungedText"_Stz,        &Step::vSenMungedText);
+  vAddStep("postpone"_Stz,          &Step::vSenPostpone,         true);
+  vAddStep("see"_Stz,               &Step::vSenSee,              true);
+  vAddStep(";"_Stz,                 &Step::vSenSemicolon,        true);
+  vAddStep("series-name"_Stz,       &Step::vSenSeriesName);
 }
 
 /*----------------------------------------------------------------------------*/
 /* : (aka colon) -- create word named by next token, enter compiling state    */
 /*----------------------------------------------------------------------------*/
-void Step::vColon(void)
+void Step::vSenColon(void)
 {
   ENTRY();
   
@@ -76,7 +76,7 @@ void Step::vColon(void)
 /*----------------------------------------------------------------------------*/
 /* comment -- comment                                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vComment(void)
+void Step::vSenComment(void)
 {
   ENTRY();
   
@@ -91,7 +91,7 @@ void Step::vComment(void)
 /*----------------------------------------------------------------------------*/
 /* >createInRoot -- create word in root dictionary using string on stack      */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFromInRoot(void)
+void Step::vSenCreateFromInRoot(void)
 {
   ENTRY();
   
@@ -113,7 +113,7 @@ void Step::vCreateFromInRoot(void)
 /*----------------------------------------------------------------------------*/
 /* DoColon -- push inxPtr and set inxPtr to execute a different codeblock */
 /*----------------------------------------------------------------------------*/
-void Step::vDoColon(void)
+void Step::vSenDoColon(void)
 {
   ENTRY();
   
@@ -143,7 +143,7 @@ void Step::vDoColon(void)
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
-//void Step::vDoColon(void)
+//void Step::vSenDoColon(void)
 //{
 //  ENTRY();
 //
@@ -163,7 +163,7 @@ void Step::vDoColon(void)
 /*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowExecute(void)
+void Step::vSenExecute(void)
 {
   ENTRY();
   
@@ -204,7 +204,7 @@ void Step::vFlowExecute(void)
 /*----------------------------------------------------------------------------*/
 /* exit_rt -- runtime for exit from routine                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vExit_RT(void)
+void Step::vSenExit_RT(void)
 {
   ENTRY();
   
@@ -230,7 +230,7 @@ void Step::vExit_RT(void)
 /*----------------------------------------------------------------------------*/
 /* find -- find and push word named by next token                             */
 /*----------------------------------------------------------------------------*/
-void Step::vFind(void)
+void Step::vSenFind(void)
 {
   ENTRY();
   
@@ -262,7 +262,7 @@ void Step::vFind(void)
 /*----------------------------------------------------------------------------*/
 /* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
-void Step::vImmediate(void)
+void Step::vSenImmediate(void)
 {
   ENTRY();
   
@@ -278,7 +278,7 @@ void Step::vImmediate(void)
 /*----------------------------------------------------------------------------*/
 /* mungedText -- push a particular munged text                                */
 /*----------------------------------------------------------------------------*/
-void Step::vMungedText(void)
+void Step::vSenMungedText(void)
 {
   ENTRY();
 
@@ -296,7 +296,7 @@ void Step::vMungedText(void)
 /*----------------------------------------------------------------------------*/
 /* postpone -- encode call to word named by next token into word being compiled  */
 /*----------------------------------------------------------------------------*/
-void Step::vPostpone(void)
+void Step::vSenPostpone(void)
 {
   ENTRY();
   
@@ -341,7 +341,7 @@ void Step::vPostpone(void)
 /*----------------------------------------------------------------------------*/
 /* see -- see inx contents of word                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vSee(void)
+void Step::vSenSee(void)
 {
   ENTRY();
   
@@ -355,7 +355,7 @@ void Step::vSee(void)
 /*----------------------------------------------------------------------------*/
 /* ; -- end compilation of current word, enter interpreter state              */
 /*----------------------------------------------------------------------------*/
-void Step::vSemicolon(void)
+void Step::vSenSemicolon(void)
 {
   ENTRY();
   
@@ -409,7 +409,7 @@ void Step::vSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* series-name -- generate next name within series for word named on stack    */
 /*----------------------------------------------------------------------------*/
-void Step::vSeriesName(void)
+void Step::vSenSeriesName(void)
 {
   ENTRY();
   

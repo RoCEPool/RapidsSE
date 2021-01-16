@@ -6,7 +6,7 @@
 
 #include "Step.hpp"
 
-fpSTEPFN gfpDoColon = &STORE::Step::vDoColon;
+fpSTEPFN gfpDoColon = &STORE::Step::vSenDoColon;
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
@@ -80,7 +80,7 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_File();
   Step::vAddSteps_Flow();
-  Step::vAddSteps_Forth();
+  Step::vAddSteps_Sen();
 
   Step::vAddSteps_Grid();
   

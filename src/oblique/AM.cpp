@@ -2194,7 +2194,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: enter routine
     
-    if (fpStepFn == &Step::vDoColon) {
+    if (fpStepFn == &Step::vSenDoColon) {
       
       CodeCell* aEnterCell = *(CodeCell**)(aCell->m_afpStepFn + 1);
       Word* pEnterWord = CodeBlock::pToWord(aEnterCell);
