@@ -121,11 +121,6 @@ void BASE::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 bool BASE::bTraceWith(Stz* szWith)
 {
-#ifdef WITH_ACTION_SEQUENCE
-  if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
-    return true;
-#endif
-  
 #ifdef WITH_ADDRESS_CHECKING
   if (szWith->bSame("WITH_ADDRESS_CHECKING"_Stz))
     return true;
@@ -223,11 +218,6 @@ bool BASE::bTraceWith(Stz* szWith)
   
 #ifdef WITH_RELEASE_VERSION
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
-    return true;
-#endif
-    
-#ifdef WITH_SETH_SUPPORT
-  if (szWith->bSame("WITH_SETH_SUPPORT"_Stz))
     return true;
 #endif
   
@@ -270,10 +260,6 @@ bool BASE::bTraceWith(Stz* szWith)
 void BASE::vTraceWith(void)
 {
   vTrace("\nWith:\n"_Stz);
-
-#ifdef WITH_ACTION_SEQUENCE
-  vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
-#endif
   
 #ifdef WITH_ADDRESS_CHECKING
   vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
@@ -355,10 +341,6 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
     
-#ifdef WITH_SETH_SUPPORT
-  vTrace("  WITH_SETH_SUPPORT\n"_Stz);
-#endif
-  
 #ifdef WITH_SHARED_LOG
   vTrace("  WITH_SHARED_LOG\n"_Stz);
 #endif
@@ -390,11 +372,6 @@ void BASE::vTraceWith(void)
 /*----------------------------------------------------------------------------*/
 bool BASE::bTraceWithout(Stz* szWith)
 {
-#ifndef WITH_ACTION_SEQUENCE
-  if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_ADDRESS_CHECKING
   if (szWith->bSame("WITH_ADDRESS_CHECKING"_Stz))
     return true;
@@ -495,11 +472,6 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
     
-#ifndef WITH_SETH_SUPPORT
-  if (szWith->bSame("WITH_SETH_SUPPORT"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_SHARED_LOG
   if (szWith->bSame("WITH_SHARED_LOG"_Stz))
     return true;
@@ -539,10 +511,6 @@ bool BASE::bTraceWithout(Stz* szWith)
 void BASE::vTraceWithout(void)
 {
   vTrace("\nWithout:\n"_Stz);
-
-#ifndef WITH_ACTION_SEQUENCE
-  vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
-#endif
   
 #ifndef WITH_ADDRESS_CHECKING
   vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
@@ -622,10 +590,6 @@ void BASE::vTraceWithout(void)
   
 #ifndef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
-#endif
-  
-#ifndef WITH_SETH_SUPPORT
-  vTrace("  WITH_SETH_SUPPORT\n"_Stz);
 #endif
   
 #ifndef WITH_SHARED_LOG

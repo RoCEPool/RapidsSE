@@ -872,14 +872,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
   /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
-  
-
-  #ifdef WITH_ACTION_SEQUENCE
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)false);
-  #endif
-    
+      
   #ifdef WITH_ADDRESS_CHECKING
   vAddConstant("WITH_ADDRESS_CHECKING"_Stz,(i8)true);
   #else
@@ -999,13 +992,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)false);
   #endif
-        
-  #ifdef WITH_SETH_SUPPORT
-  vAddConstant("WITH_SETH_SUPPORT"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_SETH_SUPPORT"_Stz,(i8)false);
-  #endif
-    
+            
   #ifdef WITH_SHARED_LOG
   vAddConstant("WITH_SHARED_LOG"_Stz,(i8)true);
   #else
