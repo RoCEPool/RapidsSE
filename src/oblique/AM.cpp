@@ -2116,9 +2116,9 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: jump / jump false / jump true
     
-    if (fpStepFn == &Step::vFlowJump ||
-        fpStepFn == &Step::vFlowJumpFalse ||
-        fpStepFn == &Step::vFlowJumpTrue ) {
+    if (fpStepFn == &Step::vSenJump ||
+        fpStepFn == &Step::vSenJumpFalse ||
+        fpStepFn == &Step::vSenJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;

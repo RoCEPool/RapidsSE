@@ -369,16 +369,6 @@ public:
   void vFilterRows(void);
   void vFilterSet(void);
 
-  // flow
-  void vFlowHazard(void);
-  void vFlowJump(void);
-  void vFlowJumpFalse(void);
-  void vFlowJumpTrue(void);
-  void vFlowNop(void);
-  void vFlowReenter(void);
-  void vFlowTest(void);
-  void vFlowThrow(void);
-
   // grid
   void vGridBootNodes(void);
   void vGridConnectedNodes(void);
@@ -1357,6 +1347,16 @@ public:
   void vSenSee(void);
   void vSenSemicolon(void);
   void vSenSeriesName(void);
+
+  // sen2 (was flow
+  void vSenHazard(void);
+  void vSenJump(void);
+  void vSenJumpFalse(void);
+  void vSenJumpTrue(void);
+  void vSenNop(void);
+  void vSenReenter(void);
+  void vSenTest(void);
+  void vSenThrow(void);
 
   // sen compiler
   void vSenCompilerCompiling(void);

@@ -14,20 +14,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Flow(void)
 {
-  vAddStep("hazard"_Stz,          &Step::vFlowHazard);
-  vAddStep("jump"_Stz,            &Step::vFlowJump);
-  vAddStep("jumpFalse"_Stz,       &Step::vFlowJumpFalse);
-  vAddStep("jumpTrue"_Stz,        &Step::vFlowJumpTrue);
-  vAddStep("nop"_Stz,             &Step::vFlowNop);
-  vAddStep("reenter"_Stz,         &Step::vFlowReenter);
-  vAddStep("test"_Stz,            &Step::vFlowTest);
-  vAddStep("throw"_Stz,           &Step::vFlowThrow);
+  vAddStep("hazard"_Stz,          &Step::vSenHazard);
+  vAddStep("jump"_Stz,            &Step::vSenJump);
+  vAddStep("jumpFalse"_Stz,       &Step::vSenJumpFalse);
+  vAddStep("jumpTrue"_Stz,        &Step::vSenJumpTrue);
+  vAddStep("nop"_Stz,             &Step::vSenNop);
+  vAddStep("reenter"_Stz,         &Step::vSenReenter);
+  vAddStep("test"_Stz,            &Step::vSenTest);
+  vAddStep("throw"_Stz,           &Step::vSenThrow);
 }
 
 /*----------------------------------------------------------------------------*/
 /* hazard -- should never be called                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowHazard(void)
+void Step::vSenHazard(void)
 {
   ENTRY();
   
@@ -39,7 +39,7 @@ void Step::vFlowHazard(void)
 /*----------------------------------------------------------------------------*/
 /* jump -- jump to location                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowJump(void)
+void Step::vSenJump(void)
 {
   ENTRY();
   
@@ -51,7 +51,7 @@ void Step::vFlowJump(void)
 /*----------------------------------------------------------------------------*/
 /* jumpFalse -- jump on false to location                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowJumpFalse(void)
+void Step::vSenJumpFalse(void)
 {
   ENTRY();
   
@@ -72,7 +72,7 @@ void Step::vFlowJumpFalse(void)
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowJumpTrue(void)
+void Step::vSenJumpTrue(void)
 {
   ENTRY();
   
@@ -93,7 +93,7 @@ void Step::vFlowJumpTrue(void)
 /*----------------------------------------------------------------------------*/
 /* nop -- no op                                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowNop(void)
+void Step::vSenNop(void)
 {
   ENTRY();
   
@@ -103,7 +103,7 @@ void Step::vFlowNop(void)
 /*----------------------------------------------------------------------------*/
 /* reenter -- re-enter the word currenty being executed (i.e. start over)     */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowReenter(void)
+void Step::vSenReenter(void)
 {
   ENTRY();
   
@@ -117,7 +117,7 @@ void Step::vFlowReenter(void)
 /*----------------------------------------------------------------------------*/
 /* test -- print test                                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowTest(void)
+void Step::vSenTest(void)
 {
   ENTRY();
   
@@ -129,7 +129,7 @@ void Step::vFlowTest(void)
 /*----------------------------------------------------------------------------*/
 /* throw -- throw c++ exception (for testing purposes)                        */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowThrow(void)
+void Step::vSenThrow(void)
 {
   ENTRY();
   
