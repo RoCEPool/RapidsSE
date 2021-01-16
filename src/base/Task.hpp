@@ -155,7 +155,7 @@ namespace BASE
     void vAddMunged(void);
     void vAddMunged(Task* pTask);
     void vAddAxioms(void);
-    Word* pCompileAxiomaticColon(s48K& sDefinition);
+    Word* pCompileAxiomColon(s48K& sDefinition);
     void  vCompileMungedColon(Stz* szDefinition);
     void  vCompileMungedColon(i8 i_Def);
 

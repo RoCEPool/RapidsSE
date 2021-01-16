@@ -303,7 +303,211 @@ void Step::vSenInnerInterpreter(void)
 {
   ENTRY();
   
+  s48K sDefinition;
+
+  sDefinition =
   
+  "axiom: interpret"
+    
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read next input token
+  //" \"((a))\" . "
+  
+  "  input::read"
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for end of input?
+  //" \"((b))\" .put input::chars . "
+  
+  "  input::kind@ TN_NULL == if"
+  "    exit_rt"
+  "  then"
+  
+  //"  input::chars ."
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for discarding input
+  //" \"((c))\" .put input::chars . "
+
+  "  senCompiler::isDiscarding if"
+  "    input::chars \"?else\" str.same if"
+  "      input::chars word::find execute"
+  "      reenter"
+  "    then"
+  "    input::chars \"?]\" str.same if"
+  "      input::chars word::find execute"
+  "      reenter"
+  "    then"
+  "    reenter"
+  "  then"
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is input token an integer?
+  //" \"((d))\" . "
+
+  "  input::kind@ TN_INTEGER == if"
+  
+  "    senCompiler::isPostponing if"
+  "      \": interpret : SHOULD NOT BE POSTPONING AN INT\" ."
+  "      process::quit"
+  "    then"
+
+  "    input::chars"             // push str token onto stack
+  "    >int"                     // convert to int, leave on stack
+
+  "    senCompiler::isCompiling if"
+  "      encode::push"           // compile : encode push int
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret : leave int on stack
+
+  "  then"
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is input token a string?
+  //" \"((e))\" . "
+
+  "  input::kind@ TN_STRING == if"
+  
+  "    senCompiler::isPostponing if"
+  "      \": interpret : SHOULD NOT BE POSTPONING A STR\" ."
+  "      process::quit"
+  "    then"
+  
+  "    input::chars"             // push str token onto stack
+  
+  "    senCompiler::isCompiling if"
+  "      encode::push"           // compile : encode push str
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret : leave str on stack
+
+  "  then"
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is input token a tag?
+  //" \"((f))\" . "
+
+  "  input::kind@ TN_TAG == if"
+  
+  "    senCompiler::isPostponing if"
+  "      \": interpret : SHOULD NOT BE POSTPONING A TAG\" ."
+  "      process::quit"
+  "      reenter"
+  "    then"
+
+  "    senCompiler::isCompiling if"
+  "      input::chars"           // compile : encode push "<tagNm>"
+  "      encode::push"           //         :
+  "      \"tag::get\""           //         : encode tag::get
+  "        word::find"           //         :
+  "        encode::call"         //         :
+  "      reenter"
+  "    then"
+  
+  "    input::chars"             // interpret : push <tagNm> onto stack
+  "    tag::get"                 //           : translate to <tagValue>
+  "    reenter"
+
+  "  then"
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // input token should be a name
+  //" \"((g))\" . "
+
+  "  input::kind@ TN_NAME != if"
+  "    \"strange token\" . input::kind@ ."
+  "    reenter"
+  "  then"
+  
+  // push name token onto stack
+  "  input::chars"
+
+  // find word using name on stack
+  "  word::find"
+  "  dup not if "
+  "    \"Unable to find: \" . input::chars ."
+  "    input::dump"
+  "    process::quit "
+  "  then "
+  
+  // top of stack: pointer to word
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is input token a known word?
+  //" \"((h))\" . "
+  "  dup not if"
+  "    discard"                  // error -- token is an unknown word
+  "    input::unknown"
+  "    reenter"
+  "  then"
+
+  // top of stack: pointer to word
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is that word an immediate word?
+  //" \"((i))\" . "
+
+  "  dup word.isImmediate if"
+  "    execute"                  // execute the immediate word on stack
+  "    reenter"
+  "  then"
+  
+  // top of stack: pointer to word
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // postponing mode?
+  //" \"((j))\" . "
+
+  "  senCompiler::isPostponing if"
+  "    \"POSTPONING\" ."
+  "    encode::call "
+  "    \"encode::call\" word::find encode::call"
+  "    reenter"
+  "  then"
+
+  // top of stack: pointer to word
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compiling mode?
+  //" \"((k))\" . "
+
+  "  senCompiler::isCompiling if "
+  "    encode::call"             // compile : encode call to word on stack
+  "    reenter"
+  "  then"
+  
+  // top of stack: pointer to word
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // in interpreting mode
+  //" \"((l))\" . "
+
+  "  execute"                    // interpret: execute word on stack
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loop again
+  //" \"((m))\" . "
+  
+  "  reenter"
+
+  "  ;"_Stz;
+
   EXIT();
 }
 
