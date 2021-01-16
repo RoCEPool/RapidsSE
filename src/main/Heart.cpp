@@ -8,8 +8,6 @@
 #include <cstring>
 #include <base/BASE.h>
 
-#include "STORE.h"
-
 #include "Heart.h"
 #include "Heartbeat.hpp"
 

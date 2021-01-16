@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 Stz* gszaMungedText[1024];
 
@@ -6971,8 +6970,6 @@ void Task::vAddMunged(Task* pTask)
     "  \"\\n\"\n"
     "  pCppFile file.writeLine\n"
     "  \"#include \\\"BASE.h\\\"\\n\"\n"
-    "  pCppFile file.writeLine\n"
-    "  \"#include \\\"STORE.h\\\"\\n\"\n"
     "  pCppFile file.writeLine\n"
     "\n"
     "  \"\\n\"\n"

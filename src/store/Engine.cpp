@@ -38,6 +38,7 @@
 #include "eBO.h"
 #include "TagConstants.h"
 
+#include "STORE.h"
 
 CmdLineArgs      gxCmdLineArgs;
 EnvFlags  gxEnvFlags;

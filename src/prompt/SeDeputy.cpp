@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"

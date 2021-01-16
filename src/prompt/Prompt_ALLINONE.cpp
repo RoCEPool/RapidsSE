@@ -4,7 +4,6 @@
 
 #include "BASE.h"
 #include "PROMPT.h"
-#include "STORE.h"
 
 #include "Prompt_ALLINONE.hpp"
 
