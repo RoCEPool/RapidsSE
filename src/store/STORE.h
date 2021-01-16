@@ -13,7 +13,7 @@ namespace STORE
 //------------------------------------------------------------------------------
 
 // declare a function pointer to any member function of Step
-typedef void (Step::*fpSTEPFN)(void);
+//typedef void (Step::*fpSTEPFN)(void);
 
 //------------------------------------------------------------------------------
 
