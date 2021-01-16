@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "StreamDef.hpp"
+
 #include "RowCoder.hpp"
 #include "Encoding.hpp"
 #include "SP_Encoding.hpp"

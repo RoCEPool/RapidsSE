@@ -6,6 +6,9 @@
 #include "eOM.h"
 #include "eRS.h"
 
+#include "Definition.hpp"
+#include "StreamDef.hpp"
+
 namespace STORE
 {
   class Result : public Object

@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "StreamDef.hpp"
+
 #include "ExprEval.hpp"
 #include "SN_Dte.hpp"
 

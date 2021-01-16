@@ -3,8 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#include "Definition.hpp"
+
 namespace STORE
 {
+  class StreamDef;
+
   class ExprEval : public Definition
   {
   public:

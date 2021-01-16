@@ -11,6 +11,8 @@
 
 #include "AttachMap.hpp"
 
+#include "StreamDef.hpp"
+
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"

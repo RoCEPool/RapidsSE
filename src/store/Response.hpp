@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Definition.hpp"
+
 namespace STORE
 {
   class Response : public Object

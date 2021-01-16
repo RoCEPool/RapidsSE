@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Definition.hpp"
+
 #include "Row.hpp"
 
 #include "NmlStr.hpp"

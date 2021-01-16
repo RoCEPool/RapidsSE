@@ -7,6 +7,9 @@
 
 namespace STORE
 {
+  class StreamDef;
+
+
   class DevROW : public Device
   {
   public:
