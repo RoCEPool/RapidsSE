@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "PROMPT.h"
 
 #include "PromptFun.hpp"
 #include "PromptCatalog.hpp"
