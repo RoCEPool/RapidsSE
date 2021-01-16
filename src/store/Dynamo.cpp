@@ -111,6 +111,7 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
   cStageStart);
 
   ++ cStageCurrent;
+  
   pAsPipelineStmt->vCatSprint(
     "  stage stage%c on all partitions :\n"
     ""_Stz,
@@ -181,7 +182,19 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
     else
     if (szOpNm->bSame("aggreg"_Stz)) {
       
-      pAsPipelineStmt->vCatSprint("    | aggreg 0"_Stz);
+      pAsPipelineStmt->vCatSprint(
+        "    | stage%c\n"
+        ""_Stz,
+        cStageCurrent + 1);
+
+      ++ cStageCurrent;
+      
+      pAsPipelineStmt->vCatSprint(
+        "  stage stage%c on origin :\n"
+        ""_Stz,
+        cStageCurrent);
+      
+      pAsPipelineStmt->vCatSprint("    aggreg 0"_Stz);
       pAsPipelineStmt->vCatSprint(" \""_Stz);
       
       while (i_Tkn < nTkns) {
@@ -212,6 +225,7 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
     cStageCurrent + 1);
   
   ++ cStageCurrent;
+  
   pAsPipelineStmt->vCatSprint(
     "  stage stage%c on origin :\n"
     "    output\n"
