@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Record.hpp"
+
 namespace STORE
 {
   template <i8 SIZE>

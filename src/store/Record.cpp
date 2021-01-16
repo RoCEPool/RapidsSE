@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "STORE.h"
 
+#include "Record.hpp"
+
 #include "SP_Bcd.hpp"
 #include "SP_Bol.hpp"
 #include "SP_Dte.hpp"
