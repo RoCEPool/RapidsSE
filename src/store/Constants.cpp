@@ -940,10 +940,10 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_ENCODING_TRACE"_Stz,(i8)false);
   #endif
     
-  #ifdef WITH_ENTRY_EXIT
-  vAddConstant("WITH_ENTRY_EXIT"_Stz,(i8)true);
+  #ifdef WITH_STEP_TIMING
+  vAddConstant("WITH_STEP_TIMING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ENTRY_EXIT"_Stz,(i8)false);
+  vAddConstant("WITH_STEP_TIMING"_Stz,(i8)false);
   #endif
       
   #ifdef WITH_INFLATE_TRACE

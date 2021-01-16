@@ -176,8 +176,8 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
   
-#ifdef WITH_ENTRY_EXIT
-  if (szWith->bSame("WITH_ENTRY_EXIT"_Stz))
+#ifdef WITH_STEP_TIMING
+  if (szWith->bSame("WITH_STEP_TIMING"_Stz))
     return true;
 #endif
     
@@ -315,8 +315,8 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif
   
-#ifdef WITH_ENTRY_EXIT
-  vTrace("  WITH_ENTRY_EXIT\n"_Stz);
+#ifdef WITH_STEP_TIMING
+  vTrace("  WITH_STEP_TIMING\n"_Stz);
 #endif
     
 #ifdef WITH_INFLATE_TRACE
@@ -445,8 +445,8 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
-#ifndef WITH_ENTRY_EXIT
-  if (szWith->bSame("WITH_ENTRY_EXIT"_Stz))
+#ifndef WITH_STEP_TIMING
+  if (szWith->bSame("WITH_STEP_TIMING"_Stz))
     return true;
 #endif
     
@@ -584,8 +584,8 @@ void BASE::vTraceWithout(void)
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif
   
-#ifndef WITH_ENTRY_EXIT
-  vTrace("  WITH_ENTRY_EXIT\n"_Stz);
+#ifndef WITH_STEP_TIMING
+  vTrace("  WITH_STEP_TIMING\n"_Stz);
 #endif
     
 #ifndef WITH_INFLATE_TRACE

@@ -40,13 +40,13 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
 #define WITH_CORRECTNESS_ALGEBRA EndDefine   // known class, magic, footer
 //#define WITH_EB_LAZY_CHAIN EndDefine         // build lazy chain on insert
-#define WITH_ENTRY_EXIT EndDefine            // code for ENTRY() & EXIT() macros
 #define WITH_IT_COMPACT_TRACE EndDefine      //
 #define WITH_LOCK_TRACKING EndDefine         // track lock activity
 #define WITH_PREPOST_CHECKING EndDefine      // _pre/postCondition_()
 #define WITH_SETH_SUPPORT EndDefine          // seth support
 #define WITH_SHARED_LOG EndDefine            // code for Log compiled in
 //#define WITH_STATISTICS_COUNTERS  EndDefine // statistics
+//#define WITH_STEP_TIMING EndDefine         // code for timing steps
 #define WITH_TRACE_API EndDefine             // code for tracing api's compiled in
 //#define WITH_TRACE_DYNAMO EndDefine        // tracing compiling dynamic pipeline
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
@@ -68,18 +68,17 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
 //#define WITH_CORRECTNESS_ALGEBRA EndDefine // known class, magic, footer
 //#define WITH_EB_LAZY_CHAIN EndDefine       // build lazy chain on insert
-//#define WITH_ENTRY_EXIT EndDefine          // code for ENTRY() & EXIT() macros
 //#define WITH_IT_COMPACT_TRACE EndDefine    // compact trace
 //#define WITH_LOCK_TRACKING EndDefine       // track lock activity
 //#define WITH_PREPOST_CHECKING EndDefine    // _pre/postCondition_()
 //#define WITH_SETH_SUPPORT EndDefine        // seth support
 //#define WITH_STATISTICS_COUNTERS EndDefine // statistics
+//#define WITH_STEP_TIMING EndDefine         // code for timing steps
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
 //#define WITH_TRACE_DYNAMO EndDefine        // tracing compiling dynamic pipeline
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
 //#define WITH_TRACE_PURGING EndDefine       // trace purging
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
-//#define WITH_TRACE_QUERIES EndDefine         // trace procedure
 
 #endif
 
