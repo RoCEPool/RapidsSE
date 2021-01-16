@@ -121,11 +121,6 @@ void BASE::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 bool BASE::bTraceWith(Stz* szWith)
 {
-#ifdef WITH_ADDRESS_CHECKING
-  if (szWith->bSame("WITH_ADDRESS_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifdef WITH_APPLE
   if (szWith->bSame("WITH_APPLE"_Stz))
     return true;
@@ -260,11 +255,7 @@ bool BASE::bTraceWith(Stz* szWith)
 void BASE::vTraceWith(void)
 {
   vTrace("\nWith:\n"_Stz);
-  
-#ifdef WITH_ADDRESS_CHECKING
-  vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
-#endif
-  
+    
 #ifdef WITH_APPLE
   vTrace("  WITH_APPLE\n"_Stz);
 #endif
@@ -372,11 +363,6 @@ void BASE::vTraceWith(void)
 /*----------------------------------------------------------------------------*/
 bool BASE::bTraceWithout(Stz* szWith)
 {
-#ifndef WITH_ADDRESS_CHECKING
-  if (szWith->bSame("WITH_ADDRESS_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_APPLE
   if (szWith->bSame("WITH_APPLE"_Stz))
     return true;
@@ -511,11 +497,7 @@ bool BASE::bTraceWithout(Stz* szWith)
 void BASE::vTraceWithout(void)
 {
   vTrace("\nWithout:\n"_Stz);
-  
-#ifndef WITH_ADDRESS_CHECKING
-  vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
-#endif
-  
+    
 #ifndef WITH_APPLE
   vTrace("  WITH_APPLE\n"_Stz);
 #endif

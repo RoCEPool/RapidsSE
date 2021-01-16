@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* check the object is within the pool                                        */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ADDRESS_CHECKING
+#ifdef WITH_CORRECTNESS_ALGEBRA
   #define _poolAddress_(pArg) BASE::vCheckAddress(pArg) EndDefine
 #else
   #define _poolAddress_(pArg) EndDefine

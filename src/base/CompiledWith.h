@@ -30,7 +30,6 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
 #if defined (WITH_DEBUG_VERSION)
 
-#define WITH_ADDRESS_CHECKING EndDefine      // check that address is in pool
 #define WITH_ASSERT_MACRO EndDefine          // Assert() macro
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
 #define WITH_CORRECTNESS_ALGEBRA EndDefine   // known class, magic, footer
@@ -58,7 +57,6 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
 // usually correctness, entry/exit, prepost
 
-//#define WITH_ADDRESS_CHECKING EndDefine    // check that address is in pool
 //#define WITH_ASSERT_MACRO EndDefine        // Assert() macro
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
 //#define WITH_CORRECTNESS_ALGEBRA EndDefine // known class, magic, footer

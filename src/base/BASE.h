@@ -544,7 +544,7 @@ namespace BASE
 template <class OBJECT>
 static OBJECT pPoolCheck(void* aAddress)
 {
-#ifdef WITH_ADDRESS_CHECKING
+#ifdef WITH_CORRECTNESS_ALGEBRA
   if (aAddress)
     gpBufferPool->vCheckAddress(aAddress);
 #endif

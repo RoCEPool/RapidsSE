@@ -872,13 +872,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
   /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
-      
-  #ifdef WITH_ADDRESS_CHECKING
-  vAddConstant("WITH_ADDRESS_CHECKING"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_ADDRESS_CHECKING"_Stz,(i8)false);
-  #endif
-    
+          
   #ifdef WITH_APPLE
   vAddConstant("WITH_APPLE"_Stz,(i8)true);
   #else
