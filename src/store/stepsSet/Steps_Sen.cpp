@@ -16,19 +16,34 @@ extern Stz* gszaMungedText[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Sen(void)
 {
-  vAddStep(":"_Stz,                 &Step::vSenColon);
-  vAddStep("("_Stz,                 &Step::vSenComment,          true );
-  vAddStep(">createInRoot"_Stz,     &Step::vSenCreateFromInRoot);
-  vAddStep("doColon"_Stz,           &Step::vSenDoColon);
-  vAddStep("execute"_Stz,           &Step::vSenExecute);
-  vAddStep("exit_rt"_Stz,           &Step::vSenExit_RT);
-  vAddStep("find:"_Stz,             &Step::vSenFind,             true);
-  vAddStep("immediate"_Stz,         &Step::vSenImmediate,        true);
-  vAddStep("mungedText"_Stz,        &Step::vSenMungedText);
-  vAddStep("postpone"_Stz,          &Step::vSenPostpone,         true);
-  vAddStep("see"_Stz,               &Step::vSenSee,              true);
-  vAddStep(";"_Stz,                 &Step::vSenSemicolon,        true);
-  vAddStep("series-name"_Stz,       &Step::vSenSeriesName);
+  vAddStep(":"_Stz,              &Step::vSenColon);
+  vAddStep("("_Stz,              &Step::vSenComment,          true );
+  vAddStep(">createInRoot"_Stz,  &Step::vSenCreateFromInRoot);
+  vAddStep("doColon"_Stz,        &Step::vSenDoColon);
+  vAddStep("execute"_Stz,        &Step::vSenExecute);
+  vAddStep("exit_rt"_Stz,        &Step::vSenExit_RT);
+  vAddStep("find:"_Stz,          &Step::vSenFind,             true);
+  vAddStep("hazard"_Stz,         &Step::vSenHazard);
+  vAddStep("immediate"_Stz,      &Step::vSenImmediate,        true);
+  vAddStep("jump"_Stz,           &Step::vSenJump);
+  vAddStep("jumpFalse"_Stz,      &Step::vSenJumpFalse);
+  vAddStep("jumpTrue"_Stz,       &Step::vSenJumpTrue);
+  vAddStep("mungedText"_Stz,     &Step::vSenMungedText);
+  vAddStep("nop"_Stz,            &Step::vSenNop);
+  vAddStep("postpone"_Stz,       &Step::vSenPostpone,         true);
+  vAddStep("reenter"_Stz,        &Step::vSenReenter);
+  vAddStep("see"_Stz,            &Step::vSenSee,              true);
+  vAddStep(";"_Stz,              &Step::vSenSemicolon,        true);
+  vAddStep("series-name"_Stz,    &Step::vSenSeriesName);
+  vAddStep("test"_Stz,           &Step::vSenTest);
+  vAddStep("throw"_Stz,          &Step::vSenThrow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_Flow(void)
+{
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,6 +275,18 @@ void Step::vSenFind(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* hazard -- should never be called                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vSenHazard(void)
+{
+  ENTRY();
+  
+  vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,"Entered hazard"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
 void Step::vSenImmediate(void)
@@ -271,6 +298,60 @@ void Step::vSenImmediate(void)
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
   pCurrentWord->vImmediate(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jump -- jump to location                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vSenJump(void)
+{
+  ENTRY();
+  
+  m_aInxPtr = m_aInxPtr->m_aJumpTo;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jumpFalse -- jump on false to location                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSenJumpFalse(void)
+{
+  ENTRY();
+  
+  i8 iVal = m_pDataStack->iPopAsInt(__func__);
+  
+  // n.b. the IP points to the jump arg
+  
+  if (! iVal)
+    // jump to location
+    m_aInxPtr = m_aInxPtr->m_aJumpTo;
+  else
+    // do not jump, skip over argument
+    m_aInxPtr++;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jumpTrue -- jump on true to location                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vSenJumpTrue(void)
+{
+  ENTRY();
+  
+  i8 iVal = m_pDataStack->iPopAsInt(__func__);
+  
+  // n.b. the IP points to the jump arg
+  
+  if (iVal)
+    // jump to location
+    m_aInxPtr = m_aInxPtr->m_aJumpTo;
+  else
+    // do not jump, skip over argument
+    m_aInxPtr++;
   
   EXIT();
 }
@@ -289,6 +370,16 @@ void Step::vSenMungedText(void)
   //vTrace("MungedText[%lld]:\n%s\n"_Stz,i_Text,szText);
   
   m_pDataStack->vPushStz(szText);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nop -- no op                                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vSenNop(void)
+{
+  ENTRY();
   
   EXIT();
 }
@@ -334,6 +425,20 @@ void Step::vSenPostpone(void)
     pCurrentWord->vEncodePush(xVar);
     pCurrentWord->vEncodeCall("encode::call"_Stz);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reenter -- re-enter the word currenty being executed (i.e. start over)     */
+/*----------------------------------------------------------------------------*/
+void Step::vSenReenter(void)
+{
+  ENTRY();
+  
+  Word* pExecuting = CodeBlock::pToWord(m_aInxPtr);
+  
+  m_aInxPtr = pExecuting->aEntryCell();
   
   EXIT();
 }
@@ -445,6 +550,34 @@ void Step::vSenSeriesName(void)
   
   m_pDataStack->vPushStr(sNextName);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test -- print test                                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vSenTest(void)
+{
+  ENTRY();
+  
+  vTrace("[%s] Test\n"_Stz,szJobName());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw -- throw c++ exception (for testing purposes)                        */
+/*----------------------------------------------------------------------------*/
+void Step::vSenThrow(void)
+{
+  ENTRY();
+  
+  s256 sException;
+  
+  sException.vSprint("THROW TEST"_Stz);
+  
+  vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,sException);
+  
   EXIT();
 }
 
