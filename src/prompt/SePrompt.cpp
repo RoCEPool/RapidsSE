@@ -850,7 +850,17 @@ bool SePrompt::bHandleDemo(void)
 void SePrompt::vInitialSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  SeDeputy* m_pCurrentDeputy = pCreateDeputy();
   
+  m_pCurrentDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
+  
+  if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+    m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
+    m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
+    m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
+  }
+
   vInputSet(new Input);
   
   m_pInpTknVec = pInputGet()->pTokenVec();
@@ -860,19 +870,6 @@ void SePrompt::vInitialSettings(void)
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
   pInputGet()->vForkReset();
-
-  SeDeputy* m_pCurrentDeputy = pCreateDeputy();
-  
-  //if (bSethScript)
-  //  m_pCurrentDeputy->pSession()->m_sToDo = ""_Stz;
-  //else
-  m_pCurrentDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
-  
-  if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
-    m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
-    m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
-    m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
