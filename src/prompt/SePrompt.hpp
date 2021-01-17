@@ -59,6 +59,9 @@ namespace PROMPT
     i8         m_nDeputies;   //
     SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
 
+    SeDeputy*  m_pCurrentDeputy;
+  
+
     // must be last
     Footer m_xFooter;
   
@@ -86,6 +89,8 @@ namespace PROMPT
     bool bContinue(void);
     void vContinue(bool bContinue);
     SeDeputy* pCreateDeputy(void);
+    SeDeputy* pCurrentDeputy(void);
+    void vCurrentDeputy(SeDeputy* pCurrentDeputy);
     void vCutToken(i8 i_Tkn);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);

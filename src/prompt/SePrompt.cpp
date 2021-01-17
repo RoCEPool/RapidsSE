@@ -58,11 +58,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_nDeputies = 0;
-  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
-    m_paSeDeputy[i_Deputy] = nullptr;
-  }
-  
   m_pInput     = nullptr;
   m_pInpTknVec = nullptr;
   
@@ -81,6 +76,13 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 
   m_pLitTknVec = new TokenVec;
     
+  m_nDeputies = 0;
+  for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
+    m_paSeDeputy[i_Deputy] = nullptr;
+  }
+  
+  m_pCurrentDeputy = nullptr;
+  
   _checkInitialised_(CN_SEPROMPT);
   
   vInitialSettings();
@@ -166,25 +168,25 @@ void SePrompt::vPromptLoop(void)
   //vTrace("vPromptLoop\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  SeDeputy* pSeDeputy = nullptr;
   
+  m_pCurrentDeputy = nullptr;
+
   while (m_bContinue) {
         
-    if (! pSeDeputy && ! (pSeDeputy = pFindDeputy())) {
+    if (! m_pCurrentDeputy && ! (m_pCurrentDeputy = pFindDeputy())) {
       vTrace("No Deputies\n"_Stz);
       RASSERT(0);
     }
     
-    if (! bGetCommand(pSeDeputy))
+    if (! bGetCommand(m_pCurrentDeputy))
       continue;
     
-    if (! bPrepareJob(pSeDeputy))
+    if (! bPrepareJob(m_pCurrentDeputy))
       continue;
     
-    vDeputiseJob(pSeDeputy);
+    vDeputiseJob(m_pCurrentDeputy);
 
-    pSeDeputy = nullptr;
+    m_pCurrentDeputy = nullptr;
     
     //vLogFreeSpace();
 
@@ -420,6 +422,26 @@ SeDeputy* SePrompt::pCreateDeputy(void)
     AM::vNapMsec(10,CN_SEPROMPT);
   
   return pSeDeputy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current deputy                                                         */
+/*----------------------------------------------------------------------------*/
+SeDeputy* SePrompt::pCurrentDeputy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  return m_pCurrentDeputy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current deputy                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCurrentDeputy(SeDeputy* pCurrentDeputy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  m_pCurrentDeputy = pCurrentDeputy;
 }
 
 /*----------------------------------------------------------------------------*/
