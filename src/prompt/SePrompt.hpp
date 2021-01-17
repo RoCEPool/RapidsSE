@@ -30,23 +30,16 @@ namespace PROMPT
   {
   private:
   
-    Mutex     m_oMutex;      // mutex for prompt
+    Mutex       m_oMutex;      // mutex for seprompt-sedeputy
+    TagSet      m_oPmtTagSet;  // tag set which controls this prompt
+    ShortCutVec m_oShortCutVec; // vector of short cuts
 
-  
     Input*    m_pInput;      // input processor
     TokenVec* m_pInpTknVec;  // token vector 
-
-    TagSet    m_oPmtTagSet;  // tag set which controls this prompt
-    i8        m_iDivisionNo; // division numbering
-    i8        m_iSectionNo;  // section numbering
-    bool      m_bContinue;   // continue processing commands?
-
     TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
 
     bool      m_bOneCommand; // run one command only
     bool      m_bOneRun;     // one command has been run?
-
-    ShortCutVec m_oShortCutVec; // vector of short cuts
    
     // object delta reporting
     ObjectSnapshot* m_pSnapshotAtTrackingMemory;
@@ -59,7 +52,11 @@ namespace PROMPT
     // temp for demo
     TokenVec* m_pLitTknVec;  // literal token vector for demo
   
-    i8        m_nDeputies;   //
+    i8        m_iDivisionNo; // division numbering
+    i8        m_iSectionNo;  // section numbering
+    bool      m_bContinue;   // continue processing commands?
+
+    i8         m_nDeputies;   //
     SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
 
     // must be last
