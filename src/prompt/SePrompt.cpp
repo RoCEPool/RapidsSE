@@ -199,6 +199,8 @@ void SePrompt::vPromptLoop(void)
     if (! bGetCommand())
       continue;
     
+    vTrace("Raw: %s\n"_Stz,pInputGet()->szRawInput());
+    
     if (! bPrepareJob())
       continue;
     
@@ -228,13 +230,17 @@ bool SePrompt::bGetCommand(void)
   }
   
   vResetExtractedTagSet();
-  
-  //L_Read_Next_Command:
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read next command
   
   if (! bReadNextCommand()) {
     m_bContinue = false;
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // examine the command
   
   if (bBlankLine())
     return false;
@@ -286,12 +292,7 @@ bool SePrompt::bGetCommand(void)
     vDebugPoint();
   }
   
-  //if (bTranslateProcedure())
-  //  goto L_Read_Next_Command;
-  
-  
-  //.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prompt has finessed the final input token vector at this stage
   
   //m_xReqTuple.m_iReqNo++;

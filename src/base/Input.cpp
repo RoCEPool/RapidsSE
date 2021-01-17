@@ -305,6 +305,18 @@ void Input::vPushCharser(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get raw input                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Input::szRawInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  Stz* szRaw = m_pCharser->szRawInput();
+  
+  return szRaw;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
 void Input::vReadCommand(void)

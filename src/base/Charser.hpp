@@ -114,6 +114,7 @@ namespace BASE
     AnnChar* aRegTwo(void);
     char*    azRawBuff(void);
     char*    acRawChar(void);
+    Stz*     szRawInput(void);
 
   private:
     
