@@ -102,7 +102,6 @@ namespace PROMPT
     SeDeputy* pFindDeputy(void);
     void vFocalOutline(s4K& sOutline);
     bool bHandleDemo(void);
-    void vInitialSettings(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
     void vInputSet(Input* pInput);

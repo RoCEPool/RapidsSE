@@ -85,7 +85,28 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   
   _checkInitialised_(CN_SEPROMPT);
   
-  vInitialSettings();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initial settings
+  
+  SeDeputy* m_pCurrentDeputy = pCreateDeputy();
+  
+  m_pCurrentDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
+  
+  if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+    m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
+    m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
+    m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
+  }
+
+  vInputSet(new Input);
+  
+  m_pInpTknVec = pInputGet()->pTokenVec();
+
+  pInputGet()->vDebugMode(d_iDebugMode);
+
+  // reset stdin as on Linux when another process(prompt)
+  //   accesses the stdin , its not a valid fp
+  pInputGet()->vForkReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -842,34 +863,6 @@ bool SePrompt::bHandleDemo(void)
   }
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* initise prompt settings tags                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vInitialSettings(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  SeDeputy* m_pCurrentDeputy = pCreateDeputy();
-  
-  m_pCurrentDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
-  
-  if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
-    m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
-    m_oPmtTagSet.vInsert(C_PMT_OBJDELTA);
-    m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
-  }
-
-  vInputSet(new Input);
-  
-  m_pInpTknVec = pInputGet()->pTokenVec();
-
-  pInputGet()->vDebugMode(d_iDebugMode);
-
-  // reset stdin as on Linux when another process(prompt)
-  //   accesses the stdin , its not a valid fp
-  pInputGet()->vForkReset();
 }
 
 /*----------------------------------------------------------------------------*/
