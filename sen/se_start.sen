@@ -56,7 +56,7 @@
   then
 
   // spawn monitor demon
-  "" false monitorDemonPipelineCmd api::spawnDemon not if
+  "" false monDemonPipelineCmd api::spawnDemon not if
     "Error Code %v" .printf
   then
 

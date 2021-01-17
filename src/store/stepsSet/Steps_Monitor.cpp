@@ -42,30 +42,26 @@ void Step::vMonitorUpdateNodeStatus(void)
 {
   ENTRY();
   
-  vTrace("  ** Step::vMonitorUpdateNodeStatus ** \n"_Stz);
+  //vTrace("  ** Step::vMonitorUpdateNodeStatus ** \n"_Stz);
 
-  //Grid* pGrid = AM::pGrid();
 
   i8  nNodes = AM::nNodes(); //pGrid->nNodes();
 
   for (i8 iNode = 0; iNode < nNodes; iNode++) {
-    //Node* pNode = pGrid->pGetNode(iNode);
 
     Node *pNode = AM::pGrid()->pGetNode(iNode);
 
-    if (pNode)  {
+    if (pNode && pNode->xGetHeartbeat().m_iSincePosixEpoch > 0)  {
       i8 iLastUpdate = time(0) - pNode->xGetHeartbeat().m_iSincePosixEpoch;
 
-      vTrace("  ** Step::vMonitorCollectInfo ** Node %s last update:%lld\n"_Stz, iLastUpdate);
-
-      if (iLastUpdate > 10) { // older than 10 seconds
+      // This 20 seconds max should be defined somewhere
+      if (iLastUpdate > 20) { // older than 20 seconds
         pNode->vSetNodeStatus(1); // late
+        vTrace("  ** Step::vMonitorUpdateNodeStatus ** Node %s last update:%lld\n"_Stz, pNode->xGetHeartbeat().m_acNodeName,iLastUpdate);
       } else {
         pNode->vSetNodeStatus(0); // OK
       }
     }
-
-
 
   }
 

@@ -69,16 +69,12 @@ void Step::vSupervisorCollectInfo(void)
       + sizeof(xHeartbeat.m_iFooter)
       + sizeof(xHeartbeat.m_acSpare);
 
-  //u2 checksum0 = checksum((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
-  //cCalcXOR_CRC((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
 
-  //vTrace("  ** Step::vSupervisorCollectInfo ** %ld\n"_Stz, checksum0);
 
   xHeartbeat.m_iChecksum = fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
-  //xHeartbeat.m_iChecksum = xHeartbeat.m_iChecksum+1; // try to mess up here
 
 
-  vTrace("  ** Step::vSupervisorCollectInfo ** fletcher16 %ld\n"_Stz, xHeartbeat.m_iChecksum);
+  //vTrace("  ** Step::vSupervisorCollectInfo ** fletcher16 %ld\n"_Stz, xHeartbeat.m_iChecksum);
 
   // Add node number to the packet
   //xHeartbeat.m_iValue0 = AM::iThisNodeNo();
