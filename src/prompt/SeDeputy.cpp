@@ -65,6 +65,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);
+  
+  m_pSession->m_pInput = new Input;
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -76,7 +78,10 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-   Api::vFreeSession(m_pSession);
+  delete m_pSession->m_pInput;
+  m_pSession->m_pInput = nullptr;
+
+  Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
   
   delete m_pThread;
@@ -206,6 +211,16 @@ Job* SeDeputy::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pSession->m_pSsnJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input                                                                  */
+/*----------------------------------------------------------------------------*/
+Input* SeDeputy::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pSession->m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/

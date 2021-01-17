@@ -81,6 +81,8 @@ Session::Session(void)
   m_i_Session  = -1;
   m_eSession   = SK_NONE;
   
+  m_pInput     = nullptr;
+  
   m_eApiFun    = AC_NONE;
   m_iApiLoc    = 0;
   m_eApiError  = EC_NONE;
@@ -143,6 +145,8 @@ Session::Session(void)
 Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  ASSERT(! m_pInput);
   
   AM::pSessionArray()->vFreeSession(this);
   

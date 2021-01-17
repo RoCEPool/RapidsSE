@@ -58,7 +58,6 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput    = nullptr;
   m_pInpTknVec = nullptr;
   
   m_iDivisionNo = 0;
@@ -72,7 +71,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
   m_pSnapshotObjects = nullptr;
 
-  d_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
+  m_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
 
   m_pLitTknVec = new TokenVec;
     
@@ -88,7 +87,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initial settings
   
-  SeDeputy* m_pCurrentDeputy = pCreateDeputy();
+  m_pCurrentDeputy = pCreateDeputy();
   
   m_pCurrentDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
   
@@ -98,11 +97,9 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
     m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
-  vInputSet(new Input);
-  
   m_pInpTknVec = pInputGet()->pTokenVec();
 
-  pInputGet()->vDebugMode(d_iDebugMode);
+  pInputGet()->vDebugMode(m_iDebugMode);
 
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
@@ -128,8 +125,6 @@ SePrompt::~SePrompt(void) noexcept(false)
       m_paSeDeputy[i_Deputy] = nullptr;
     }
   }
-  
-  delete m_pInput;
   
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
@@ -179,10 +174,10 @@ void SePrompt::vPromptLoop(void)
   pInputGet()->vUseBegin();
   //pInputGet()->vInspect();
 
-  if (d_iDebugMode) {
-    vJotDebug(d_iDebugMode);
+  if (m_iDebugMode) {
+    vJotDebug(m_iDebugMode);
     //vJotFilter("AnnChar:(some)"_Stz);
-    //vJotTrigger(0x0e,d_iDebugMode);
+    //vJotTrigger(0x0e,m_iDebugMode);
     //vJotDisable(0x27,0);
   }
     
@@ -198,6 +193,8 @@ void SePrompt::vPromptLoop(void)
       vTrace("No Deputies\n"_Stz);
       RASSERT(0);
     }
+    
+    m_pInpTknVec = pInputGet()->pTokenVec();
     
     if (! bGetCommand())
       continue;
@@ -488,10 +485,10 @@ void SePrompt::vDebugMode(i8 iDebugMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  d_iDebugMode = iDebugMode;
+  m_iDebugMode = iDebugMode;
 
-  if (d_iDebugMode > 1)
-    pInputGet()->vDebugMode(d_iDebugMode);
+  if (m_iDebugMode > 1)
+    pInputGet()->vDebugMode(m_iDebugMode);
   else
     pInputGet()->vDebugMode(0);
 }
@@ -1416,17 +1413,7 @@ Input* SePrompt::pInputGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pInput;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set input                                                                  */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vInputSet(Input* pInput)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pInput = pInput;
+  return m_pCurrentDeputy->pInput();
 }
 
 /*----------------------------------------------------------------------------*/

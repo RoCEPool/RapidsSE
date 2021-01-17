@@ -30,37 +30,40 @@ namespace PROMPT
   {
   private:
   
-    Mutex       m_oMutex;      // mutex for seprompt-sedeputy
-    TagSet      m_oPmtTagSet;  // tag set which controls this prompt
+    TagSet      m_oPmtTagSet;   // tag set which controls this prompt
     ShortCutVec m_oShortCutVec; // vector of short cuts
+    i8          m_iDebugMode;   // debug mode?
 
-    Input*    m_pInput;      // input processor
-    TokenVec* m_pInpTknVec;  // token vector 
-    TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
-
-    bool      m_bOneCommand; // run one command only
-    bool      m_bOneRun;     // one command has been run?
+    TagSet      m_oExtTagSet;   // extra tags gleaned from the prompt command
+    bool        m_bOneCommand;  // run one command only
+    bool        m_bOneRun;      // one command has been run?
    
+    i8          m_nDeputies;    // current number of deputies
+    SeDeputy*   m_paSeDeputy[C_MAX_DEPUTY];
+
+    Mutex       m_oMutex;       // mutex for seprompt-sedeputy
+    SeDeputy*   m_pCurrentDeputy;
+    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
+
+    // -- -- -- -- -- --
+    // move
+
     // object delta reporting
     ObjectSnapshot* m_pSnapshotAtTrackingMemory;
     ObjectSnapshot* m_pSnapshotAtMemoryLeaks;
     ObjectSnapshot* m_pSnapshotObjects;
 
     // some debugging aids
-    i8  d_iDebugMode; // debug mode?
-  
-    // temp for demo
-    TokenVec* m_pLitTknVec;  // literal token vector for demo
-  
     i8        m_iDivisionNo; // division numbering
     i8        m_iSectionNo;  // section numbering
     bool      m_bContinue;   // continue processing commands?
 
-    i8         m_nDeputies;   //
-    SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
-
-    SeDeputy*  m_pCurrentDeputy;
+    // -- -- -- -- -- --
+    // delete
   
+    // temp for demo
+    TokenVec* m_pLitTknVec;  // literal token vector for demo
+
 
     // must be last
     Footer m_xFooter;
@@ -104,7 +107,6 @@ namespace PROMPT
     bool bHandleDemo(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
-    void vInputSet(Input* pInput);
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);

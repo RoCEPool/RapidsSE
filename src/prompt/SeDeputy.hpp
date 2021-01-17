@@ -42,6 +42,7 @@ namespace PROMPT
   
     bool bAvailable(void);
     void vDeputiseJob(void);
+    Input* pInput(void);
     Job* pJob(void);
     void vReportTime(void);
     Session* pSession(void);
