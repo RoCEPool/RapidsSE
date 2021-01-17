@@ -3,8 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#include "Definition.hpp"
+
 namespace STORE
 {
+  class StreamDef;
+
   class ExprEval : public Definition
   {
   public:
@@ -28,6 +32,8 @@ namespace STORE
     eEC eExprEvalAll(StreamDef* pStreamDefIn);
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
+    bool bHasAggregate(void);
+
   private:
     void vAddArithmetic(Token*  pTkn, Column* pColumn);
     eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);
@@ -36,7 +42,7 @@ namespace STORE
     void vAddNumeric(Token*  pTkn, Column* pColumnExpr);
     void vAddRelational(Token*  pTkn);
     void vAddString(Token*  pTkn, Column* pColumnExpr);
-    void vAddSum(eCT eColumnType, i8 iColumn);
+    eEC  eAddSum(eCT eColumnType, i8 iColumn);
     void vAddPopCol(eCT eColumnType, i8 iColumn);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);

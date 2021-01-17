@@ -4,7 +4,6 @@
 #pragma once
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 namespace PROMPT
@@ -31,37 +30,40 @@ namespace PROMPT
   {
   private:
   
-    Mutex     m_oMutex;      // mutex for prompt
-
-  
-    Input*    m_pInput;      // input processor
-    TokenVec* m_pInpTknVec;  // token vector 
-
-    TagSet    m_oPmtTagSet;  // tag set which controls this prompt
-    i8        m_iDivisionNo; // division numbering
-    i8        m_iSectionNo;  // section numbering
-    bool      m_bContinue;   // continue processing commands?
-
-    TagSet    m_oExtTagSet;  // extra tags gleaned from the prompt command
-
-    bool      m_bOneCommand; // run one command only
-    bool      m_bOneRun;     // one command has been run?
-
+    TagSet      m_oPmtTagSet;   // tag set which controls this prompt
     ShortCutVec m_oShortCutVec; // vector of short cuts
+    i8          m_iDebugMode;   // debug mode?
+
+    TagSet      m_oExtTagSet;   // extra tags gleaned from the prompt command
+    bool        m_bOneCommand;  // run one command only
+    bool        m_bOneRun;      // one command has been run?
    
+    i8          m_nDeputies;    // current number of deputies
+    SeDeputy*   m_paSeDeputy[C_MAX_DEPUTY];
+
+    Mutex       m_oMutex;       // mutex for seprompt-sedeputy
+    SeDeputy*   m_pCurrentDeputy;
+    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
+
+    // -- -- -- -- -- --
+    // move
+
     // object delta reporting
     ObjectSnapshot* m_pSnapshotAtTrackingMemory;
     ObjectSnapshot* m_pSnapshotAtMemoryLeaks;
     ObjectSnapshot* m_pSnapshotObjects;
 
     // some debugging aids
-    i8  d_iDebugMode; // debug mode?
+    i8        m_iDivisionNo; // division numbering
+    i8        m_iSectionNo;  // section numbering
+    bool      m_bContinue;   // continue processing commands?
+
+    // -- -- -- -- -- --
+    // delete
   
     // temp for demo
     TokenVec* m_pLitTknVec;  // literal token vector for demo
-  
-    i8        m_nDeputies;   //
-    SeDeputy*  m_paSeDeputy[C_MAX_DEPUTY];
+
 
     // must be last
     Footer m_xFooter;
@@ -77,9 +79,9 @@ namespace PROMPT
   
     void vPromptLoop(void);
 
-    bool bGetCommand(SeDeputy* pSeDeputy);
-    bool bPrepareJob(SeDeputy* pSeDeputy);
-    void vDeputiseJob(SeDeputy* pSeDeputy);
+    bool bGetCommand(void);
+    bool bPrepareJob(void);
+    void vDeputiseJob(void);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
@@ -90,6 +92,8 @@ namespace PROMPT
     bool bContinue(void);
     void vContinue(bool bContinue);
     SeDeputy* pCreateDeputy(void);
+    SeDeputy* pCurrentDeputy(void);
+    void vCurrentDeputy(SeDeputy* pCurrentDeputy);
     void vCutToken(i8 i_Tkn);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
@@ -101,33 +105,33 @@ namespace PROMPT
     SeDeputy* pFindDeputy(void);
     void vFocalOutline(s4K& sOutline);
     bool bHandleDemo(void);
-    void vInitialSettings(void);
     TokenVec* pInpTknVec(void);
-    Input* pInput(void);
+    Input* pInputGet(void);
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    void vMakeDiaryDir(SeDeputy* pSeDeputy);
+    void vMakeDiaryDir(void);
     Mutex* pMutex(void);
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     void vPromptUser(void);
-    bool bReadNextCommand(SeDeputy* pSeDeputy);
+    bool bReadNextCommand(void);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);
     void vReportPool(void);
     void vReportTrace();
-    void vResetExtractedTagSet(SeDeputy* pSeDeputy);
+    void vResetExtractedTagSet(void);
     void vResetSectionNo(void);
     i8   iRequestId(void);
     void vSection(Stz* szSection);
     TagSet* pPmtTagSet(void);
-    bool bShortCut(SeDeputy* pSeDeputy);
+    Session* pSession(void);
+    bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
-    bool bSubSsnTags(SeDeputy* pSeDeputy);
+    bool bSubSsnTags(void);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);

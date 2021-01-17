@@ -21,6 +21,13 @@ namespace STORE
     SeApi(void);
    ~SeApi(void) noexcept(false);
   
+    static Stz* szCurrentFolderNm(String* szFolderNm);
+    static Stz* szCurrentFolderPath(String* szFolderPath);
+    static bool bIsKnownTableNm(Stz* szTableNm);
+    static bool bIsKnownTableColumnNm(Stz* szTableNm,Stz* szColumnNm);
+    static void vPrintAllColumnsOfTable(Stz* szTableNm);
+    static void vPrintAllTablesInCurrentFolder(void);
+
     SeApi& operator |(SeApi* pArg);
 
     SeApi* pAdd(Stz* szOpNm, Stz* szOpArg);

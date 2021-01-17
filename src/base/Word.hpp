@@ -38,26 +38,26 @@ namespace BASE
     //*
     //* the following two must be together in this order
     //
-    fpSTEPFN    m_fpIntrinsic;  // intrinsic function for this word
-                              //  IMPORTANT:
-                              //  the address of this member
-                              //    (and *not* the value of the member)
-                              //    gets encoded into calling words routine
-                              //  this allows the address of m_aInxPtr
-                              //  to be computed
+    fpSTEPFN m_fpIntrinsic;  // intrinsic function for this word
+                             //  IMPORTANT:
+                             //  the address of this member
+                             //    (and *not* the value of the member)
+                             //    gets encoded into calling words routine
+                             //  this allows the address of m_aInxPtr
+                             //  to be computed 
       
-    CodeCell*     m_aInxPtr;      // the cell to start executing from for
-                              //   - normal words: this will be the
-                              //       first cell in the routine
-                              //   - future words: this will be
-                              //      the cell after the
-                              //      in the defining word
-                              //   - steps: this will be null
-                              //   IMPORTANT:
-                              //   m_aInxPtr must be immediately after
-                              //     m_fpIntrinsic
+    CodeCell* m_aInxPtr;    // the cell to start executing from for
+                            //   - normal words: this will be the
+                            //       first cell in the routine
+                            //   - future words: this will be
+                            //      the cell after the
+                            //      in the defining word
+                            //   - steps: this will be null
+                            //   IMPORTANT:
+                            //   m_aInxPtr must be immediately after
+                            //     m_fpIntrinsic
 
-    CodeBlock*  m_pCodeBlock;    // the encoded routine
+    CodeBlock* m_pCodeBlock;  // the encoded : word
   
     // must be last
     Footer m_xFooter;
@@ -137,7 +137,7 @@ namespace BASE
 bool bWordCompare(void* aWordBeingInserted, void* aWordScan, bool& bMatching);
 void vWordPrint(void* aWordBeingInserted);
 
-void vEnterRoutine(Step* pStep);
+//void vDoColon(Step* pStep);
 
 /*============================================================================*/
 /* end                                                                        */

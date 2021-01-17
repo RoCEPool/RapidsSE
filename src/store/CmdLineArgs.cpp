@@ -3,7 +3,8 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "CmdLineArgs.hpp"
 
 extern CmdLineArgs       gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -500,7 +501,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xBootNode[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xSysArgs.m_xBootNode[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
-      m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[++i_Arg].iToI8();
+      if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
+        vWarn("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        return false;
+      }
+      m_xSysArgs.m_xBootNode[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
       i_BootNode++;
       
       if (m_xSysArgs.m_nBootNodes > C_MAX_NODES) {
@@ -548,7 +553,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--partitionsPerNode"_Stz)) {
-      m_xSysArgs.m_nPtnsPerTable = argv[++i_Arg].iToI8();
+
+      if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
+        vWarn("Invalid partitionsPerNode : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        return false;
+      }
+
+      m_xSysArgs.m_nPtnsPerTable = argv[i_Arg].iToI8();
+      if ( m_xSysArgs.m_nPtnsPerTable <= 0 || m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS ) {
+        vWarn("partitionsPerNode %lld is outside the valid range (1 to %lld)\n"_Stz,
+              m_xSysArgs.m_nPtnsPerTable, C_MAX_TABLEPTNS);
+        return false;
+      }
       if (m_xSysArgs.m_nPtnsPerTable > C_MAX_TABLEPTNS) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
           C_MAX_TABLEPTNS);

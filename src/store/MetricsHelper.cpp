@@ -1,11 +1,15 @@
 /*============================================================================*/
-/* MetricsHelper.cpp -- Expressions helper                                        */
+/* MetricsHelper.cpp -- Metrics helper                                        */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "RowBuffer.hpp"
+
+#include "InfoSet.hpp"
 
 #include "MetricsHelper.hpp"
+#include "InfoSet.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

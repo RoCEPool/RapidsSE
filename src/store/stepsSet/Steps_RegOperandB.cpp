@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* Steps_Operand.cpp -- Operand step group                                    */
+/* Steps_OperandB.cpp -- Operand step group                                   */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -11,6 +10,12 @@
 
 #include "ePX.h"
 
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
 #include "Node_I.hpp"
 #include "OpSpec.hpp"
 #include "Op.hpp"

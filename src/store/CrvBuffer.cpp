@@ -3,8 +3,16 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "RowSingle.hpp"
+#include "EntWrk.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"

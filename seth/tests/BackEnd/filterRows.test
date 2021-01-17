@@ -35,6 +35,11 @@ rows: 0
 
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+//------------------------------------------------------------------------------
+filterRows lineitem " sum ( l_discount ) ";
+failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
 filterRows lineitem "l_discount 0.04 >= <>";

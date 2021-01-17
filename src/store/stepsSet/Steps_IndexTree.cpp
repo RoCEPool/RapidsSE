@@ -3,11 +3,14 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 
 #include "Response.hpp"
 #include "Result.hpp"

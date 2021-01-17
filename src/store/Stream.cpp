@@ -3,9 +3,11 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "ePX.h"
+
+#include "PtnMap.hpp"
+
 
 #include "OpSpec.hpp"
 #include "Op.hpp"

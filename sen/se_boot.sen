@@ -8,7 +8,7 @@ assert::stack_0
 
 "Sen Compilation Progress: " .put
 
-9 .put
+"se_boot 9" .
         "se_core.sen"             include
         "se_word.sen"             include
         "se_str.sen"              include
@@ -23,17 +23,17 @@ assert::stack_0
         "se_socket.sen"           include
         "se_dbg.sen"              include
 
-8 .put
+"se_boot 8" .
         "tpl_liteOp.sen"          include
         "tpl_localLiteOp.sen"     include
         "cmd_cmdTags.sen"         include
         "cmd_compiler.sen"        include
 
-7 .put
+"se_boot 7" .
         "grid_grid.sen"           include
         "grid_node.sen"           include
 
-6 .put
+"se_boot 6" .
         "db_table.sen"            include
         "db_partition.sen"        include
         "db_index.sen"            include
@@ -41,7 +41,7 @@ assert::stack_0
         "db_catalog.sen"          include
         "db_tenant.sen"           include
 
-5 .put
+"se_boot 5" .
         "job_words.sen"           include
         "job_2pcReply.sen"        include
         "job_seedMarkers.sen"     include
@@ -73,194 +73,20 @@ assert::stack_0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-4 .put
+"se_boot 4" .
         "op__defHandlers.sen"         include
         "op__common.sen"              include
         "op__EOCommon.sen"            include
         "reg__common.sen"             include
-
-        // -- -- -- -- -- -- -- -- -- --
-
-"a" .put
-        "OP_addNode.sen"              include
-        "OP_adjustPartitions.sen"     include
-        "OP_analyzeIndex.sen"         include
-        "OP_analyzeTable.sen"         include
-        "OP_answer.sen"               include
-
-"b" .put
-        "OP_bufferGen.sen"            include
-        "OP_burst.sen"                include
-
-"c" .put
-        "OP_callPipeline.sen"         include
-        "OP_catFile.sen"              include
-        "OP_changeFolder.sen"         include
-        "OP_chunk.sen"                include
-        "OP_compactIdx.sen"           include
-        "OP_compactIndexPtn.sen"      include
-        "OP_connector.sen"            include
-        "OP_consume.sen"              include
-        "OP_createCatalog.sen"        include
-        "OP_createIndex.sen"          include
-        "OP_createSchema.sen"         include
-        "OP_createTable.sen"          include
-        "OP_createTenant.sen"         include
-        "OP_crwToRow.sen"             include
-
-"d" .put
-        "OP_defineTable.sen"          include
-        "OP_delete.sen"               include
-        "OP_docol.sen"                include
-        "OP_dropCatalog.sen"          include
-        "OP_dropIndex.sen"            include
-        "OP_dropSchema.sen"           include
-        "OP_dropTable.sen"            include
-        "OP_dropTenant.sen"           include
-        "OP_dump.sen"                 include
-        "OP_dumpIndex.sen"            include
-        "OP_dumpTable.sen"            include
-        "OP_dupCrw.sen"               include
-
-"e" .put
-        "OP_eatAll.sen"               include
-        "OP_eatSome.sen"              include
-        "OP_eachPath.sen"             include
-        "OP_emitStreamDef.sen"        include
-        "OP_etcTest.sen"              include
-        "OP_exemplar.sen"             include
-
-"f" .put
-        "OP_fetch.sen"                include
-        "OP_filter.sen"               include
-
-"g" .put
-        "OP_genAsmTxt.sen"            include
-        "OP_gridSanity.sen"           include
- 
-"h" .put
-"i" .put
-        "OP_input.sen"                include
-        "OP_insDel.sen"               include
-        "OP_insert.sen"               include
-
-"j" .put
-"k" .put
-"l" .put
-        "OP_listFolders.sen"          include
-        "OP_listCatalogs.sen"         include
-        "OP_listColumns.sen"          include
-        "OP_listIndexes.sen"          include
-        "OP_listIndexColumns.sen"     include
-        "OP_listNodes.sen"            include
-        "OP_listPartitionColumns.sen" include
-        "OP_listPartitions.sen"       include
-        "OP_listParts.sen"            include
-        "OP_listSchemas.sen"          include
-        "OP_listTables.sen"           include
-        "OP_listTableDefs.sen"        include
-        "OP_listTenants.sen"          include
-
-"m" .put
-        "OP_metaScan.sen"             include
-        "OP_monitor.sen"              include
         
-"n" .put
-        "OP_nodeInfo.sen"             include
-        "OP_noop.sen"                 include
+        "se_BootOps.sen"              include
 
-"o" .put
-        "OP_output.sen"               include
 
-"p" .put
-        "OP_passThru.sen"             include
-        "OP_periodic.sen"             include
-        "OP_ping.sen"                 include
-        "OP_populateIndex.sen"        include
-        "OP_print.sen"                include
-        "OP_progress.sen"             include
-        "OP_project.sen"              include
-        "OP_purge.sen"                include
-        "OP_pwf.sen"                  include
-        "OP_python.sen"               include
-        "OP_pythonShell.sen"          include
-
-"q" .put
-"r" .put
-        "OP_range.sen"                include
-        "OP_rdCrwFile.sen"            include
-        "OP_rdCsvChunk.sen"           include
-        "OP_rdCsvCyclic.sen"          include
-        "OP_receiver.sen"             include
-        "OP_recv.sen"                 include
-        "OP_recurring.sen"            include
-        "OP_reload.sen"               include
-        "OP_removeNode.sen"           include
-        "OP_report.sen"               include
-        "OP_rowCount.sen"             include
-        "OP_rowToList.sen"            include
-
-"s" .put
-        "OP_scan.sen"                 include
-        "OP_send.sen"                 include
-        "OP_showCluster.sen"          include
-        "OP_sink.sen"                 include
-        "OP_sizeIndex.sen"            include
-        "OP_sizeTable.sen"            include
-        "OP_snapshot.sen"             include
-        "OP_space.sen"                include
-        "OP_spawnNode.sen"            include
-        "OP_sql.sen"                  include
-        "OP_start.sen"                include
-        "OP_stats.sen"                include
-        "OP_status.sen"               include
-        "OP_statWrite.sen"            include
-        "OP_supervisor.sen"           include
-        "OP_syntaxIndex.sen"          include
-        "OP_syntaxTable.sen"          include
-        "OP_syntaxUniqueIndex.sen"    include
-
-"t" .put
-        "OP_tableSizes.sen"           include
-        "OP_toCsv.sen"                include
-        "OP_toDemon.sen"              include
-        "OP_toDfload.sen"             include
-        "OP_toHshCrw.sen"             include
-        "OP_toNstRow.sen"             include
-        "OP_toPtnRow.sen"             include
-        "OP_toRow.sen"                include
-        "OP_toStatDemon.sen"          include
-        "OP_totalCount.sen"           include
-        "OP_truncateIndex.sen"        include
-        "OP_truncateTable.sen"        include
-
-"u" .put
-        "OP_unload.sen"               include
-        "OP_upsert.sen"               include
-
-"v" .put
-        "OP_verifyIndex.sen"          include
-        "OP_verifyIndexPtn.sen"       include
-        "OP_verifyTable.sen"          include
-        "OP_visualizeIndex.sen"       include
-        "OP_visualizeTable.sen"       include
-
-"w" .put
-        "OP_waitPipeline.sen"         include
-        "OP_waker.sen"                include
-        "OP_wrFile.sen"               include
-
-"x" .put
-        "OP_xmit.sen"                 include
-
-"y" .put
-"z" .put
-
-3 .put
+"se_boot 3" .
         "OP_EOAsm.sen"                include
         "OP_EOAsm2.sen"               include
 
-2 .put
+"se_boot 2" .
         "test_dData.sen"              include
         "test_encodingData.sen"       include
         "test_gGen.sen"               include
@@ -273,7 +99,7 @@ assert::stack_0
         "test_unit.sen"               include
         "test_1m.sen"                 include
 
-1 .put
+"se_boot 1" .
         "se_demons.sen"               include
         "se_experiments.sen"          include
         "se_llc.sen"                  include
@@ -284,13 +110,32 @@ assert::stack_0
 
 //cmd::fillOut_allCmds_usingInfo
 //cmd::fillOut_allCmds_usingCmdSyntax
+
+"BEFORE fillOut_allCmds" .
+
 cmd::fillOut_allCmds
 
+"AFTER fillOut_allCmds" .
+
+
         "se_procedures.sen"           include // third last
+        
+"BEFORE AAA" .
+        "se_proceduresB.sen"           include // third last
+
+"BEFORE BBB" .
+
         "se_defineTables.sen"         include // second last
+        
+"BEFORE CCC" .
+
         "se_start.sen"                include // last last
 
-0 .put
+"BEFORE 0" .
+
+"se_boot 0" .
+
+"AFTER 0" .
 
 .\n
 
@@ -309,7 +154,7 @@ assert::stack_0
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  [ compiler::current@ encode::push ] word::xcheckInxPtr
+  [ senCompiler::current@ encode::push ] word::xcheckInxPtr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

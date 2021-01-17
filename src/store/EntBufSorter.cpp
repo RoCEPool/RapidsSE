@@ -1,11 +1,19 @@
 /*============================================================================*/
-/* SkipRoots.cpp -- roots of the skips list in an entry buffer                */
+/* EntBufSorter.cpp -- EbtBuffer sorter                                       */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "IndexDef.hpp"
+#include "Pay.hpp"
+#include "Key.hpp"
+#include "Ent.hpp"
 
+#include "Ent_flat.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "EntBufSorter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

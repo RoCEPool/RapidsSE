@@ -1,9 +1,24 @@
 /*============================================================================*/
-/* Result.hpp -- Result                                                       */
+/* Result.cpp -- Result                                                       */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "Marker.hpp"
+
+#include "RowBuffer.hpp"
+
+#include "InfoSet.hpp"
+
+#include "StreamSet.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
 
 #include "Grid.hpp"
 #include "Response.hpp"

@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* _scan : test of scan to pipeline transliterate 14 jan 2021                 */
+/*============================================================================*/
+
+bc;
+
+_nation
+
+load nation "/Users/Shared/tpch/SF1/nation.csv" ;
+
+tableScan nation;
+
+scan nation ;
+
+scan nation | filter n_nationKey 10 <= ;
+
+scan nation | project n_name ;
+
+scan nation | filter n_nationKey 10 <= | project n_name ;
+
+scan nation | filter n_nationKey 10 <= | project N_NATIONKEY | aggreg as keytot sum (n_nationKey) ;
+
+scan nation | project n_nationKey | aggreg as keytot sum (n_nationKey) ;
+
+scan nation | aggreg as keytot sum (n_nationKey) ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

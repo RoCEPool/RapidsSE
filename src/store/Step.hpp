@@ -36,7 +36,6 @@ namespace STORE
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
-    static void vAddSteps_Compiler(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
     static void vAddSteps_CrwToRow(void);
@@ -53,7 +52,6 @@ namespace STORE
   
     static void vAddSteps_Encode(void);
     static void vAddSteps_EntBuffer(void);
-    static void vAddSteps_Enter(void);
     static void vAddSteps_Env(void);
     static void vAddSteps_Error(void);
     static void vAddSteps_Executable(void);
@@ -61,9 +59,6 @@ namespace STORE
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
-    static void vAddSteps_Filter(void);
-    static void vAddSteps_Flow(void);
-    static void vAddSteps_Forth(void);
 
     static void vAddSteps_Grid(void);
   
@@ -118,7 +113,6 @@ namespace STORE
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);
-    static void vAddSteps_Project(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
     static void vAddSteps_Push(void);
@@ -149,9 +143,12 @@ namespace STORE
     static void vAddSteps_Rstack(void);
 
     static void vAddSteps_SeekOffsets(void);
+    static void vAddSteps_Sen(void);
+    static void vAddSteps_SenCompiler(void);
     static void vAddSteps_Session(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Socket(void);
+    static void vAddSteps_SqlCompiler(void);
     static void vAddSteps_SsnState(void);
     static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);

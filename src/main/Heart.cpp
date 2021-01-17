@@ -8,10 +8,10 @@
 #include <cstring>
 #include <base/BASE.h>
 
-#include "STORE.h"
-
 #include "Heart.h"
 #include "Heartbeat.hpp"
+
+#include "CmdLineArgs.hpp"
 
 
 extern CmdLineArgs gxCmdLineArgs;
@@ -70,6 +70,7 @@ void vHeartInit(void) {
     printf("SE Heartbeat is not set for this node\n");
   }
 
+  // Process::vExitFailure();
 }
 
 
@@ -107,6 +108,11 @@ void vHeartInit(void) {
         printf("%s", azHeartbeat);
     }
 
+    /*
+    if (iCnt > 3) {
+      printf("Supervisor got killed, no more sending, but monitor continues, works fine.\n");
+      AM::vSupervisorHalt(true);
+    } */
     sleep(3);
   }
 
@@ -157,7 +163,7 @@ void vHeartInit(void) {
 
           if (iCnt++ <= 1) { // debug print twice
             printf("%s", azHeartbeat);
-            printf("iLen=%ld m_u2DataLen=%d checksum=%d \n", iLen, xHeartbeat.m_u2DataLen,
+            printf("iLen=%d m_u2DataLen=%d checksum=%lld \n", iLen, xHeartbeat.m_u2DataLen,
                    xHeartbeat.m_iChecksum);
           }
         }

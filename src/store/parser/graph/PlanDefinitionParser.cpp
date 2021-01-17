@@ -24,13 +24,46 @@ __aFooterFunction(PlanDefinitionParser)
 
 
 /*----------------------------------------------------------------------------*/
-/* constants                                                                  */
+/* statics / constants                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* PlanDefinitionParser::definitionPaths[] = {
+Stz* PlanDefinitionParser::s_definitionPaths[] = {
     "../src/store/parser/graph/PlannerDef.json5"_Stz, // For development
     "../PlannerDef.json5"_Stz,                        // For installation directory
     "../res/PlannerDef.json5"_Stz,                    // Eventually for a tidier installation directory
     nullptr};
+
+PlanNode* PlanDefinitionParser::s_pGraphTemplate = nullptr;
+
+Lock PlanDefinitionParser::s_okLock(eLK::LK_PLAN_DEF_PARSER, nullptr);
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns the cached plan graph template. If it doesn't exist yet then       */
+/* it is read in from file, parsed and created.                               */
+/*----------------------------------------------------------------------------*/
+const PlanNode* PlanDefinitionParser::pGraphTemplate()
+{
+  if (s_pGraphTemplate) {
+    return s_pGraphTemplate;
+  }
+
+  s_okLock.vGrabWrite();
+
+  // Check again if someone got in before us
+  if (s_pGraphTemplate) {
+    s_okLock.vDropWrite();
+    return s_pGraphTemplate;
+  }
+
+  // Read it in from file and parse it
+  PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
+  s_pGraphTemplate = pPlanDefinitionParser->pParse();
+  s_okLock.vDropWrite();
+
+  delete pPlanDefinitionParser;
+  return s_pGraphTemplate;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -72,7 +105,7 @@ b1 PlanDefinitionParser::bFindDefinitionFile(s2K& pBuf)
   Stz* sPath;
 
   while (true) {
-    sPath = definitionPaths[i++];
+    sPath = s_definitionPaths[i++];
 
     if (sPath == nullptr) {
       break;
@@ -95,8 +128,8 @@ b1 PlanDefinitionParser::bFindDefinitionFile(s2K& pBuf)
 
   i = 0;
   while(true) {
-    if (definitionPaths[i] == nullptr)  break;
-    errorMsg.vCatSprint("\n  %s/%s"_Stz, sCwd.szStz(), definitionPaths[i++]);
+    if (s_definitionPaths[i] == nullptr)  break;
+    errorMsg.vCatSprint("\n  %s/%s"_Stz, sCwd.szStz(), s_definitionPaths[i++]);
   }
 
   vWarn(errorMsg.szStz());

@@ -3,12 +3,16 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "IndexDef.hpp"
+#include "Index.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

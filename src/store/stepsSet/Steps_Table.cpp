@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -11,6 +10,14 @@
 
 #include "ePX.h"
 
+#include "RowBuffer.hpp"
+
+#include "StreamSet.hpp"
+#include "PtnMap.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
 #include "TablePtn.hpp"

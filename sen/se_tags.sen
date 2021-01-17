@@ -59,13 +59,13 @@
 
   // attach a new ename set to the word being created
   //tagSet::new to pTagSet
-  //pTagSet compiler::current@ word.TagSet!
-  compiler::current@ word.EnsureTagSet
-  compiler::current@ word.TagSet@ to pTagSet
+  //pTagSet senCompiler::current@ word.TagSet!
+  senCompiler::current@ word.EnsureTagSet
+  senCompiler::current@ word.TagSet@ to pTagSet
   
   // add tag set name
   
-  "<aTagSetNm>" compiler::current@ word.name@ compiler::current@ word.TagSet@ tagSet.addReplaceTag
+  "<aTagSetNm>" senCompiler::current@ word.name@ senCompiler::current@ word.TagSet@ tagSet.addReplaceTag
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till "}", build ename set representing the syntax
@@ -90,7 +90,7 @@
     input::next to sTagValue
     
     // add the decoded
-    sTagName sTagValue compiler::current@ word.TagSet@ tagSet.addReplaceTag
+    sTagName sTagValue senCompiler::current@ word.TagSet@ tagSet.addReplaceTag
   
   repeat
 
@@ -101,7 +101,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //compiler::current@ encode::push
+  //senCompiler::current@ encode::push
   
   //POSTPONE word.tagSet@
 ;
@@ -115,7 +115,7 @@
   0 0 0 0 locals| pEnamSetDst pEnamSetSrc pDstTagWord pSrcTagWord |
   
   // get the ename set of the word being compiled
-  compiler::current@ to pDstTagWord
+  senCompiler::current@ to pDstTagWord
   
   pDstTagWord word.EnsureTagSet
 

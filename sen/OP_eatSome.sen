@@ -15,41 +15,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* eatSome request                                     (on node where spawned) */
+/* eatSome request                                    (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : eatSome_req \operator
 
-  find: OP_eatSome_Opr locals| pEastSomeHandler |
+  find: OP_eatSome_Opr locals| pEatSomeHandler |
 
   LogReqEntry SEED_REQ
 
   // set topology, next stage and op
   op__topology
 
-//  pEastSomeHandler ZK_CANCELMARKER     op[].handler!
-//  pEastSomeHandler ZK_CANCELLEDMARKER  op[].handler!
-    pEastSomeHandler ZK_CRWBUFFER        op[].handler!
-    pEastSomeHandler ZK_CSVBUFFER        op[].handler!
-//  pEastSomeHandler ZK_ENTBUFFER        op[].handler!
-//  pEastSomeHandler ZK_EOSMARKER        op[].handler!
-//  pEastSomeHandler ZK_ERRORMARKER      op[].handler!
-//  pEastSomeHandler ZK_ERROREDMARKER    op[].handler!
-//  pEastSomeHandler ZK_EXITMARKER       op[].handler!
-//  pEastSomeHandler ZK_EXITEDMARKER     op[].handler!
-//  pEastSomeHandler ZK_LOCKSTATS        op[].handler!
-//  pEastSomeHandler ZK_NODEINFO         op[].handler!
-//  pEastSomeHandler ZK_PROFILE          op[].handler!
-//  pEastSomeHandler ZK_PROGRESSUNITS    op[].handler!
-//  pEastSomeHandler ZK_DATAPULSE      op[].handler!
-//  pEastSomeHandler ZK_PULSEDMARKER     op[].handler!
-    pEastSomeHandler ZK_ROWBUFFER        op[].handler!
-//  pEastSomeHandler ZK_SEEKOFFSETS      op[].handler!
-//  pEastSomeHandler ZK_SRTBUFFER        op[].handler!
-//  pEastSomeHandler ZK_STARTMARKER      op[].handler!
-//  pEastSomeHandler ZK_STARTEDMARKER    op[].handler!
-//  pEastSomeHandler ZK_STREAMDEF        op[].handler!
-//  pEastSomeHandler ZK_STREAMSET        op[].handler!
-//  pEastSomeHandler ZK_TOTALUNITS       op[].handler!
+//  pEatSomeHandler ZK_CANCELMARKER     op[].handler!
+//  pEatSomeHandler ZK_CANCELLEDMARKER  op[].handler!
+    pEatSomeHandler ZK_CRWBUFFER        op[].handler!
+    pEatSomeHandler ZK_CSVBUFFER        op[].handler!
+//  pEatSomeHandler ZK_ENTBUFFER        op[].handler!
+//  pEatSomeHandler ZK_EOSMARKER        op[].handler!
+//  pEatSomeHandler ZK_ERRORMARKER      op[].handler!
+//  pEatSomeHandler ZK_ERROREDMARKER    op[].handler!
+//  pEatSomeHandler ZK_EXITMARKER       op[].handler!
+//  pEatSomeHandler ZK_EXITEDMARKER     op[].handler!
+//  pEatSomeHandler ZK_LOCKSTATS        op[].handler!
+//  pEatSomeHandler ZK_NODEINFO         op[].handler!
+//  pEatSomeHandler ZK_PROFILE          op[].handler!
+//  pEatSomeHandler ZK_PROGRESSUNITS    op[].handler!
+//  pEatSomeHandler ZK_DATAPULSE        op[].handler!
+//  pEatSomeHandler ZK_PULSEDMARKER     op[].handler!
+    pEatSomeHandler ZK_ROWBUFFER        op[].handler!
+//  pEatSomeHandler ZK_SEEKOFFSETS      op[].handler!
+//  pEatSomeHandler ZK_SRTBUFFER        op[].handler!
+//  pEatSomeHandler ZK_STARTMARKER      op[].handler!
+//  pEatSomeHandler ZK_STARTEDMARKER    op[].handler!
+//  pEatSomeHandler ZK_STREAMDEF        op[].handler!
+//  pEatSomeHandler ZK_STREAMSET        op[].handler!
+//  pEatSomeHandler ZK_TOTALUNITS       op[].handler!
 
   op__loop
 

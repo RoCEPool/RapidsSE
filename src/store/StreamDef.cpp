@@ -3,8 +3,8 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "StreamDef.hpp"
 
 #include "eCX.h"
 
@@ -287,6 +287,23 @@ i8 StreamDef::nColumns(i8 iSubSet)
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* find column with given name                                                */
+/*----------------------------------------------------------------------------*/
+Column* StreamDef::pFindColumn(Stz* szColumnNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+
+  for (i8 i_Column = 0; i_Column < m_nTotalColumns; i_Column++) {
+    
+    Column* pColumn = & m_xaColumn[i_Column];
+    
+    if (pColumn->szColNm()->bSame(szColumnNm))
+      return pColumn;
+  }
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get column vector at index                                                 */

@@ -3,9 +3,10 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "eRO.h"
+
+#include "Index.hpp"
 
 #include "Arg.hpp"
 #include "RelOp.hpp"

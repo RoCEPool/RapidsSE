@@ -3,9 +3,10 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "EnvCheck.hpp"
+
+#include "CmdLineArgs.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 

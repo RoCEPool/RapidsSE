@@ -20,7 +20,7 @@
 
 #include "Heartbeat.hpp"
 
-extern CmdLineArgs gxCmdLineArgs;
+
 
 extern Stz *gsBuildGitHash;
 extern RingBuffer<Heartbeat> gxHeartbeatData;
@@ -45,7 +45,7 @@ void Step::vMonitorUpdateNodeStatus(void)
   //vTrace("  ** Step::vMonitorUpdateNodeStatus ** \n"_Stz);
 
 
-  i8  nNodes = AM::nNodes(); //pGrid->nNodes();
+  i8  nNodes = AM::nNodes();
 
   for (i8 iNode = 0; iNode < nNodes; iNode++) {
 

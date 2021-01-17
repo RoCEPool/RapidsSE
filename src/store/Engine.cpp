@@ -3,9 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include <signal.h>
+
+#include "CmdLineArgs.hpp"
+
+#include "PtnMap.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -34,6 +37,8 @@
 
 #include "eBO.h"
 #include "TagConstants.h"
+
+#include "STORE.h"
 
 CmdLineArgs      gxCmdLineArgs;
 EnvFlags  gxEnvFlags;

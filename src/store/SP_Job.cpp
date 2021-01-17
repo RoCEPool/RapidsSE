@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "SP_Footer.hpp"
 #include "SP_Header.hpp"

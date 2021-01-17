@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "MY.hpp"
 
@@ -11,7 +10,9 @@
 #include "Result.hpp"
 #include "Job.hpp"
 
-extern CmdLineArgs          gxCmdLineArgs;
+#include "CmdLineArgs.hpp"
+
+extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
@@ -39,7 +40,7 @@ Stz* MY::szWordNm(void)
 {
   Task* pTask = AM::pThisTLSTask();
   
-  Word* pWord = pTask->pCompiler()->pCurrentWord();
+  Word* pWord = pTask->pSenCompiler()->pCurrentWord();
   
   return pWord->szWordNm();
 }

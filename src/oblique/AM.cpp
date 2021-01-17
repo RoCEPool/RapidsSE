@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 #include "eAK.h"
@@ -38,6 +37,30 @@
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
+
+#include "CmdLineArgs.hpp"
+
+#include "IndexDef.hpp"
+#include "Marker.hpp"
+
+#include "RowBuffer.hpp"
+
+#include "Pot.hpp"
+#include "InfoSet.hpp"
+#include "StreamSet.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "Crw.hpp"
+
+#include "PtnMap.hpp"
+
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
@@ -78,6 +101,7 @@
 #include "Pipeline.hpp"
 
 #include "Op.hpp"
+
 
 #include "EnumGroups.h"
 
@@ -1693,10 +1717,11 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       break;
     }
       
-    case CN_PROFILE:   eOperand = ZK_PROFILE;   break;
-    case CN_ROWBUFFER: eOperand = ZK_ROWBUFFER; break;
-    case CN_STREAMDEF: eOperand = ZK_STREAMDEF; break;
-    case CN_STREAMSET: eOperand = ZK_STREAMSET; break;
+    case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
+    case CN_PROFILE:      eOperand = ZK_PROFILE;        break;
+    case CN_ROWBUFFER:    eOperand = ZK_ROWBUFFER;      break;
+    case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
+    case CN_STREAMSET:    eOperand = ZK_STREAMSET;      break;
       
     default:
       RASSERT(0);
@@ -2091,9 +2116,9 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: jump / jump false / jump true
     
-    if (fpStepFn == &Step::vFlowJump ||
-        fpStepFn == &Step::vFlowJumpFalse ||
-        fpStepFn == &Step::vFlowJumpTrue ) {
+    if (fpStepFn == &Step::vSenJump ||
+        fpStepFn == &Step::vSenJumpFalse ||
+        fpStepFn == &Step::vSenJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
@@ -2169,7 +2194,7 @@ void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
     // -- -- -- -- -- -- -- -- -- --
     // step is: enter routine
     
-    if (fpStepFn == &Step::vEnterRoutine) {
+    if (fpStepFn == &Step::vSenDoColon) {
       
       CodeCell* aEnterCell = *(CodeCell**)(aCell->m_afpStepFn + 1);
       Word* pEnterWord = CodeBlock::pToWord(aEnterCell);
@@ -2922,6 +2947,21 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* get supervisor halt flag                                                   */
+/*----------------------------------------------------------------------------*/
+bool AM::bSupervisorHalt(void)
+{
+  return gpAttachMap->m_xStore.m_bSupervisorHalt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set supervisor halt flag                                                   */
+/*----------------------------------------------------------------------------*/
+void AM::vSupervisorHalt(bool bHalt)
+{
+  gpAttachMap->m_xStore.m_bSupervisorHalt = bHalt;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,8 +3,11 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "Index.hpp"
+
+#include "RowSingle.hpp"
+#include "EntWrk.hpp"
 
 #include "Sprint.hpp"
 

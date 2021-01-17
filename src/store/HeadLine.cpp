@@ -3,8 +3,15 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "StreamDef.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "OverLine.hpp"
+
+#include "Crw.hpp"
 
 extern EnvFlags gxEnvFlags;
 

@@ -3,14 +3,28 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "eED.h"
 #include "eEO.h"
 #include "ePX.h"
 
+#include "RowSingle.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "TailLine.hpp"
+
+#include "Crw.hpp"
+
+#include "IndexDef.hpp"
+
+#include "RowInflator.hpp"
+
 #include "EnumGroups.h"
 
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
@@ -1744,13 +1758,27 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SET_COLUMNS: { ArgGet(iArg); // add columns to set
         dLU1(EO_SET_COLUMN, iArg);
         i8 iCol = 0;
+
         for (i8 iBit = 0; iBit < C_BITS_PER_WORD; iBit++) {
-          if (BitLib::bIsOn(iArg, iBit))
+          u8 uBitMap = iArg;
+          i8 iToLeft  = 63 - iBit;
+          i8 iToRight = iBit;
+
+          // strip off upper bits
+          uBitMap <<= iToLeft;
+          uBitMap >>= iToLeft;
+
+          // strip off lower bits
+          uBitMap >>= iToRight;
+
+          // test if given bit is on
+          if (uBitMap) {
             iaColSet[iCol++] = iBit;
+          }
         }
         iaColSet[iCol] = C_UNKNOWN;
       }
-        break;//+endCase
+      break;//+endCase
         
       case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
         dLU1(EO_SET_ITEMS,iArg);
@@ -1931,6 +1959,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           return iRes;
         }
         aeCode = * (--aeaRstk);
+#endif
+        break;//+endCase
+
+      case EO_RETURN_FALSE: ArgNil(); // return from subroutine on false
+        dLU0(EO_RETURN);
+#ifdef __TINYC__
+        if (! *(aiDstk--))
+          return aiDstk;
+#else
+        if (! *(aiDstk--)) {
+          if (aeaRstk == &eaReturnStack[0]) {
+            iRes = *(aiDstk--);
+#ifdef WITH_TRACE_LOGICUNIT
+            vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,aRluCommon->m_iSql);
+#endif
+            return iRes;
+          }
+          aeCode = * (--aeaRstk);
+        }
+
 #endif
         break;//+endCase
 

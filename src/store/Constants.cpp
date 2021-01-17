@@ -3,9 +3,22 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "Constants.hpp"
+
+#include "RowSingle.hpp"
+#include "RowBuffer.hpp"
+
+#include "InfoSet.hpp"
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
@@ -33,6 +46,8 @@
 
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
+
+#include "CmdLineArgs.hpp"
 
 extern CmdLineArgs  gxCmdLineArgs;
 
@@ -785,7 +800,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
+  /*  0 */ vAddConstant("ZK_OTHEROPERAND"_Stz,    ZK_OTHEROPERAND);
   /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);
+  /*  0 */ vAddConstant("ZK_PLANNODE"_Stz,        ZK_PLANNODE);
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
@@ -855,20 +872,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
   /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
-  
-
-  #ifdef WITH_ACTION_SEQUENCE
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_ACTION_SEQUENCE"_Stz,(i8)false);
-  #endif
-    
-  #ifdef WITH_ADDRESS_CHECKING
-  vAddConstant("WITH_ADDRESS_CHECKING"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_ADDRESS_CHECKING"_Stz,(i8)false);
-  #endif
-    
+          
   #ifdef WITH_APPLE
   vAddConstant("WITH_APPLE"_Stz,(i8)true);
   #else
@@ -923,10 +927,10 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("WITH_ENCODING_TRACE"_Stz,(i8)false);
   #endif
     
-  #ifdef WITH_ENTRY_EXIT
-  vAddConstant("WITH_ENTRY_EXIT"_Stz,(i8)true);
+  #ifdef WITH_STEP_TIMING
+  vAddConstant("WITH_STEP_TIMING"_Stz,(i8)true);
   #else
-  vAddConstant("WITH_ENTRY_EXIT"_Stz,(i8)false);
+  vAddConstant("WITH_STEP_TIMING"_Stz,(i8)false);
   #endif
       
   #ifdef WITH_INFLATE_TRACE
@@ -958,13 +962,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_MUNGED_SEN"_Stz,(i8)false);
   #endif
-    
-  #ifdef WITH_PREPOST_CHECKING
-  vAddConstant("WITH_PREPOST_CHECKING"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_PREPOST_CHECKING"_Stz,(i8)false);
-  #endif
-    
+        
   #ifdef WITH_PULSING
   vAddConstant("WITH_PULSING"_Stz,(i8)true);
   #else
@@ -982,13 +980,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)false);
   #endif
-        
-  #ifdef WITH_SETH_SUPPORT
-  vAddConstant("WITH_SETH_SUPPORT"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_SETH_SUPPORT"_Stz,(i8)false);
-  #endif
-    
+            
   #ifdef WITH_SHARED_LOG
   vAddConstant("WITH_SHARED_LOG"_Stz,(i8)true);
   #else

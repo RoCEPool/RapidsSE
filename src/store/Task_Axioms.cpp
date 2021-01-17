@@ -3,12 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
-
 
 #include "eWK.h"
 
 extern Stz* gszaMungedText[];
+
+//#define _INTERPRET_V2
 
 /*----------------------------------------------------------------------------*/
 /* add munged words into main dictionary                                      */
@@ -47,6 +47,9 @@ void Task::vAddAxioms(void)
   
   s48K sDefinition;
   
+  
+#ifndef _INTERPRET_V2
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : interpret -- Sen Interpret & Compile Loop
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,7 +80,7 @@ void Task::vAddAxioms(void)
   // test for discarding input
   //" \"((c))\" .put input::chars . "
 
-  "  compiler::isDiscarding if"
+  "  senCompiler::isDiscarding if"
   "    input::chars \"?else\" str.same if"
   "      input::chars word::find execute"
   "      reenter"
@@ -96,7 +99,7 @@ void Task::vAddAxioms(void)
 
   "  input::kind@ TN_INTEGER == if"
   
-  "    compiler::isPostponing if"
+  "    senCompiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING AN INT\" ."
   "      process::quit"
   "    then"
@@ -104,7 +107,7 @@ void Task::vAddAxioms(void)
   "    input::chars"             // push str token onto stack
   "    >int"                     // convert to int, leave on stack
 
-  "    compiler::isCompiling if"
+  "    senCompiler::isCompiling if"
   "      encode::push"           // compile : encode push int
   "      reenter"
   "    then"
@@ -120,14 +123,14 @@ void Task::vAddAxioms(void)
 
   "  input::kind@ TN_STRING == if"
   
-  "    compiler::isPostponing if"
+  "    senCompiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A STR\" ."
   "      process::quit"
   "    then"
   
   "    input::chars"             // push str token onto stack
   
-  "    compiler::isCompiling if"
+  "    senCompiler::isCompiling if"
   "      encode::push"           // compile : encode push str
   "      reenter"
   "    then"
@@ -143,13 +146,13 @@ void Task::vAddAxioms(void)
 
   "  input::kind@ TN_TAG == if"
   
-  "    compiler::isPostponing if"
+  "    senCompiler::isPostponing if"
   "      \": interpret : SHOULD NOT BE POSTPONING A TAG\" ."
   "      process::quit"
   "      reenter"
   "    then"
 
-  "    compiler::isCompiling if"
+  "    senCompiler::isCompiling if"
   "      input::chars"           // compile : encode push "<tagNm>"
   "      encode::push"           //         :
   "      \"tag::get\""           //         : encode tag::get
@@ -216,7 +219,7 @@ void Task::vAddAxioms(void)
   // postponing mode?
   //" \"((j))\" . "
 
-  "  compiler::isPostponing if"
+  "  senCompiler::isPostponing if"
   "    \"POSTPONING\" ."
   "    encode::call "
   "    \"encode::call\" word::find encode::call"
@@ -230,7 +233,7 @@ void Task::vAddAxioms(void)
   // compiling mode?
   //" \"((k))\" . "
 
-  "  compiler::isCompiling if "
+  "  senCompiler::isCompiling if "
   "    encode::call"             // compile : encode call to word on stack
   "    reenter"
   "  then"
@@ -253,8 +256,48 @@ void Task::vAddAxioms(void)
 
   "  ;"_Stz;
   
-  pCompileAxiomaticColon(sDefinition);
+  pCompileAxiomColon(sDefinition);
   
+  
+ // 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪
+ // 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪
+
+#else
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // : interpret -- Sen Interpret & Compile Loop
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  sDefinition =
+  
+  "axiom: interpret"
+    
+  "  innerInterpreter"  // call the inner interpreter
+  
+  "  dup 1 == if"       // execute?
+  "    execute"
+  "    reenter"
+  "  then"
+
+  "  dup 0 == if"       // exit?
+  "    discard"
+  "    exit_rt"
+  "  then"
+
+  "  \": interpret : UNKNOWN RETURN FROM innerInterpreter\" ."
+  "  \": interpret : TOP OF STACK IS:\" ."
+  "  ."
+  "  \": interpret : QUITTING...\" ."
+  "  process::quit"
+
+  "  ;"_Stz;
+  
+  pCompileAxiomColon(sDefinition);
+  
+#endif
+  
+  // 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪
+  // 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // : include file
@@ -277,7 +320,7 @@ void Task::vAddAxioms(void)
   "  input::pop"
   "  ;"_Stz;
   
-  pCompileAxiomaticColon(sDefinition);
+  pCompileAxiomColon(sDefinition);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,7 +339,7 @@ void Task::vAddAxioms(void)
   "  input::pop"
   "  ;"_Stz;
   
-  pCompileAxiomaticColon(sDefinition);
+  pCompileAxiomColon(sDefinition);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -316,7 +359,7 @@ void Task::vAddAxioms(void)
   "  include-file"
   "  ;"_Stz;
   
-  pCompileAxiomaticColon(sDefinition);
+  pCompileAxiomColon(sDefinition);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -342,7 +385,7 @@ void Task::vAddAxioms(void)
 //  "  ;"_Stz;
 //#endif
   
-  pCompileAxiomaticColon(sDefinition);
+  pCompileAxiomColon(sDefinition);
   
   vDeleteInput();
 }
@@ -350,7 +393,7 @@ void Task::vAddAxioms(void)
 /*----------------------------------------------------------------------------*/
 /* compile given axiomatic : routine                                          */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
+Word* Task::pCompileAxiomColon(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -362,7 +405,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
   CellSingle xVariable;
   TokenVec* pTokenVec;
   
-  Compiler*  pCompiler = m_pCompiler;
+  SenCompiler* pSenCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
   
   pInput->vUseString(sDefinition);
@@ -390,7 +433,7 @@ Word* Task::pCompileAxiomaticColon(s48K& sDefinition)
 
   pNewWord = new(pDic) Word(szChars);
   
-  pCompiler->vCurrentWord(pNewWord);
+  pSenCompiler->vCurrentWord(pNewWord);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -486,7 +529,7 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   s48K sValue;
   
-  Compiler* pCompiler = m_pCompiler;
+  SenCompiler* pSenCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
 
   pInput->vUseString(szDefinition);
@@ -503,11 +546,11 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   // get CONSTANT
   pInput->vReadToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pSenCompiler->szToken()->azChar());
   
   // get name of word
   pInput->vReadToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->szToken()->azChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pSenCompiler->szToken()->azChar());
 
   Stz* szName = (Stz*)pInput->szChars();
 

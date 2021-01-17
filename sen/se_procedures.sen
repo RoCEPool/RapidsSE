@@ -5,7 +5,7 @@
 " se_procedures.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* create related procedures                                                  */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Create" .verbose
@@ -16,6 +16,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create catalog
+  
   sPath
   "
   procedure create catalog
@@ -37,6 +38,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
+  
   sPath
   "
   procedure create index
@@ -61,6 +63,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
+  
   sPath
   "
   procedure create unique index
@@ -86,6 +89,7 @@
 /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
+  
   sPath
   "
   procedure create index
@@ -113,6 +117,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
+  
   sPath
   "
   procedure create unique index
@@ -138,8 +143,10 @@
   "
   api::addProcedure
 */
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create schema
+  
   sPath
   "
   procedure create schema
@@ -161,6 +168,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table
+  
   sPath
   "
   procedure create table
@@ -182,6 +190,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create tenant
+  
   sPath
   "
   procedure create tenant
@@ -203,6 +212,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table as
+  
   sPath
   "
   procedure ctas
@@ -227,6 +237,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // define table
+  
   sPath
   "
   procedureLocal define table
@@ -243,6 +254,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete
+  
   sPath
   "
   procedure delete
@@ -265,7 +277,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* drop related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Drop" .verbose
@@ -276,6 +288,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact index
+  
   sPath
   "
   procedure compact index
@@ -297,6 +310,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop catalog
+  
   sPath
   "
   procedure drop catalog
@@ -319,6 +333,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop index
+  
   sPath
   "
   procedure drop index
@@ -344,6 +359,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop schema
+  
   sPath
   "
   procedure drop schema
@@ -366,6 +382,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop table
+  
   sPath
   "
   procedure drop table
@@ -391,6 +408,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop tenant
+  
   sPath
   "
   procedure drop tenant
@@ -413,6 +431,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify index
+  
   sPath
   "
   procedure verify index
@@ -431,12 +450,10 @@
   end ;
   "
   api::addProcedure
-
-
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* scan related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Scan" .verbose
@@ -447,6 +464,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // count
+  
   sPath
   "
   procedure count
@@ -469,6 +487,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // export
+  
   sPath
   "
   procedure export
@@ -493,6 +512,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gridSanity
+  
   sPath
   "
   procedure gridSanity
@@ -513,6 +533,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // partitionScan
+  
   sPath
   "
   procedure partitionScan
@@ -535,6 +556,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // predicateFetch
+  
   sPath
   "
   procedure predicateFetch
@@ -556,6 +578,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // select table
+  
   sPath
   "
   procedure select table
@@ -577,6 +600,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tableScan
+  
   sPath
   "
   procedure tableScan
@@ -598,6 +622,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // truncate
+  
   sPath
   "
   procedure truncate
@@ -620,7 +645,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* load related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Load" .verbose
@@ -631,6 +656,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // load
+  
   sPath
   "
   procedure load
@@ -692,6 +718,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload
+  
   sPath
   "
   procedure dfload
@@ -756,6 +783,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload
+  
   sPath
   "
   procedure dload
@@ -778,7 +806,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* api related procedures                                                     */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Api" .verbose
@@ -851,7 +879,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* file related procedures                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_File" .verbose
@@ -863,6 +891,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
+  
   sPath
   "
   procedure copyFile
@@ -881,6 +910,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list file
+  
   sPath
   "
   procedure listFile
@@ -898,6 +928,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // xyz file
+  
   sPath
   "
   procedure xyzFile
@@ -931,6 +962,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file
+  
   sPath
   "
   procedure cyclicRdFile
@@ -951,7 +983,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* elasticity procedures                                                      */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Elasticity" .verbose
@@ -963,6 +995,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add node
+  
   sPath
   "
   procedure add node
@@ -991,6 +1024,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // adjust partitions
+  
   sPath
   "
   procedure adjust partitions
@@ -1018,6 +1052,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove node
+  
   sPath
   "
   procedure remove node
@@ -1038,6 +1073,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn node
+  
   sPath
   "
   procedure spawn node
@@ -1058,7 +1094,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* staedy state related procedures                                            */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_SteadyState" .verbose
@@ -1069,6 +1105,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 1
+  
   sPath
   "
   procedure steadyState_1
@@ -1101,6 +1138,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 2
+  
   sPath
   "
   procedure steadyState_2
@@ -1133,6 +1171,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 3
+  
   sPath
   "
   procedure steadyState_3
@@ -1184,7 +1223,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
+/* unload/realod related procedures                                           */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_UnloadReload" .verbose
@@ -1196,6 +1235,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // unload
+  
   sPath
   "
   procedure unload
@@ -1223,6 +1263,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reload
+  
   sPath
   "
   procedure reload
@@ -1246,6 +1287,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reorder table
+  
   sPath
   "
   procedure reorder
@@ -1269,1106 +1311,6 @@
   api::addProcedure
 
 ;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures for Query tests                                          */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_Query" .verbose
-
-: start::defProc_Query
-
-  "<path>= /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // q 3b prelim
-  sPath
-  "
-  procedure Query_3b
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 300 1
-    | stageC hashed
-
-  stage stageC on all partitions :
-    sql 301 1
-    | stageD
-
-  stage stageD on origin :
-    sql 302 1
-    | output
-    | sink
-    | stageA
-
-  end ;  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // q 3b prelim
-  sPath
-  "
-  procedure Query_3b_I
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 300 0
-    | stageC hashed
-
-  stage stageC on all partitions :
-    sql 301 0
-    | stageD
-
-  stage stageD on origin :
-    sql 302 0
-    | output
-    | sink
-    | stageA
-
-  end ;  "
-  api::addProcedure
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // q 4b prelim
-  sPath
-  "
-  procedure Query_4b
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 400 1
-    | stageC
-
-  stage stageC on origin :
-    sql 401 1
-    | output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // q 4b prelim
-  sPath
-  "
-  procedure Query_4b_I
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 400 0
-    | stageC
-
-  stage stageC on origin :
-    sql 401 0
-    | output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures for dynamic compiler                                     */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_DynCompiler" .verbose
-
-: start::defProc_DynCompiler
-
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // q 3 prelim
-  sPath
-  "
-  procedure dynCompiler
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 100001 1
-    | stageC
-
-  stage stageC on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_TPCH" .verbose
-
-: start::defProc_TPCH
-
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 1 - iterating index on l_shipdate
-  sPath
-  "
-  procedure Query1
-    parameters $Table
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    scan $Table
-    | sql 100 1
-    //| sql 101
-    | stageC
-
-  stage stageC on origin :
-    sql 103 1
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 1 - iterating index on l_shipdate
-  sPath
-  "
-  procedure Query1_I
-    parameters $Table
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    scan $Table
-    | sql 100 0
-    //| sql 101
-    | stageC
-
-  stage stageC on origin :
-    sql 103 0
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - converting loaded CRW data into ROW
-  sPath
-  "
-  procedure Query6
-    parameters $Table $Index
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 600 1 $Table $Index
-    | stageC
-
-  stage stageC on origin :
-    sql 601 1
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - converting loaded CRW data into ROW
-  sPath
-  "
-  procedure Query6_I
-    parameters $Table $Index
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    sql 600 0 $Table $Index
-    | stageC
-
-  stage stageC on origin :
-    sql 601 0
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures (TPCH ASM Compiled)                                      */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_TPCH_ASM" .verbose
-
-: start::defProc_TPCH_ASM
-
-"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 1 - compiled
-  sPath
-  "
-  procedure Query1_ASM
-    parameters $Table $QueryText_stageB $QueryText_stageC
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    scan $Table
-    | EOAsm $QueryText_stageB 1
-    | stageC
-
-  stage stageC on origin :
-    EOAsm $QueryText_stageC 1
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 3 -- compiled
-  sPath
-  "
-  procedure Query3_ASM
-    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions : //300
-    EOAsm $QueryText_stageB 1
-    | stageC hashed
-
-  stage stageC on all partitions : //301
-    EOAsm $QueryText_stageC 1
-    | stageD
-
-  stage stageD on origin : //302
-    EOAsm $QueryText_stageD 1
-    | output
-    | sink
-    | stageA
-
-  end ;  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 4 -- compiled
-  sPath
-  "
-  procedure Query4_ASM
-    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    EOAsm $QueryText_stageB 1
-    | stageC hashed
-
-  stage stageC on all partitions :
-    EOAsm $QueryText_stageC 1
-    | stageD
-
-  stage stageD on origin :
-    EOAsm $QueryText_stageD 1
-    | output
-    | sink
-    | stageA
-
-  end ;  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - compiled
-  sPath
-  "
-  procedure Query6_ASM
-    parameters $QueryText_stageB $QueryText_stageC
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    EOAsm $QueryText_stageB 1
-    | stageC
-
-  stage stageC on origin :
-    EOAsm $QueryText_stageC 1
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures (TPCH ASM Interpretive)                                  */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_TPCH_ASM_I" .verbose
-
-: start::defProc_TPCH_ASM_I
-
-"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 1 - interpretive
-  sPath
-  "
-  procedure Query1_ASM_I
-  parameters $Table $QueryText_stageB $QueryText_stageC
-  begin
-
-  stage stageA on origin :
-  start
-  | periodic once
-  | stageB
-
-  stage stageB on all partitions :
-  scan $Table
-  | EOAsm $QueryText_stageB 0
-  | stageC
-
-  stage stageC on origin :
-  EOAsm $QueryText_stageC 0
-  | output
-  //| toStatDemon
-  | sink
-  | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 3 -- interpretive
-  sPath
-  "
-  procedure Query3_ASM_I
-    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    EOAsm $QueryText_stageB 0
-    | stageC hashed
-
-  stage stageC on all partitions :
-    EOAsm $QueryText_stageC 0
-    | stageD
-
-  stage stageD on origin :
-    EOAsm $QueryText_stageD 0
-    | output
-    | sink
-    | stageA
-
-  end ;  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 4 -- interpretive
-  sPath
-  "
-  procedure Query4_ASM_I
-    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    EOAsm $QueryText_stageB 0
-    | stageC hashed
-
-  stage stageC on all partitions :
-    EOAsm $QueryText_stageC 0
-    | stageD
-
-  stage stageD on origin :
-    EOAsm $QueryText_stageD 0
-    | output
-    | sink
-    | stageA
-
-  end ;  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - interpretive
-  sPath
-  "
-  procedure Query6_ASM_I
-    parameters $QueryText_stageB $QueryText_stageC
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all partitions :
-    EOAsm $QueryText_stageB 0
-    | stageC
-
-  stage stageC on origin :
-    EOAsm $QueryText_stageC 0
-    | output
-    //| toStatDemon
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures (Planner experiments)                                    */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_Planner" .verbose
-
-: start::defProc_Planner
-
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-  sPath
-  "
-  procedure filterRows
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | filter 0 $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  sPath
-  "
-  procedure projectColumns
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | project 0 $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  sPath
-    "
-    procedure rangeScan
-      parameters $table $index $etc
-      begin
-
-      stage stageA on origin :
-        start | periodic once | stageB
-
-      stage stageB on all partitions :
-        range 0 $table by $index $etc
-        | stageC
-
-      stage stageC on origin :
-        output | sink | stageA
-
-    end ;
-    "
-    api::addProcedure
-
-  /*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt0 - select * from lineitem;
-  sPath
-  "
-  procedure Smt0
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt0_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt0_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt1 - select l_extendedprice from lineitem;
-  sPath
-  "
-  procedure Smt1
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 1 0 ../eo_text/asmSmt1_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt1_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt2 - select * from lineitem where l_partkey > 1000000;
-  sPath
-  "
-  procedure Smt2
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 2 0 ../eo_text/asmSmt2_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt2_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt3 - select l_extendedprice from lineitem where where l_partkey < 1000000;
-  sPath
-  "
-  procedure Smt3
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 3 0 ../eo_text/asmSmt3_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt3_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt4 - select * from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
-  sPath
-  "
-  procedure Smt4
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 4 0 ../eo_text/asmSmt4_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt4_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt5 - select * from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R';
-  sPath
-  "
-  procedure Smt5
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 5 0 ../eo_text/asmSmt5_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt5_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index on orderkey
-  // Smt6 - select * from lineitem where l_orderkey >= 70;
-  sPath
-  "
-  procedure Smt6
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 6 0 ../eo_text/asmSmt6_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt6_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index on orderkey
-  // Smt7 - select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;
-  sPath
-  "
-  procedure Smt7
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 7 0 ../eo_text/asmSmt7_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt7_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index on orderkey
-  // Smt8 - select sum(l_extendedprice) from lineitem;
-  sPath
-  "
-  procedure Smt8
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | genAsmTxt 8 1 ../eo_text/asmSmt8_s1.txt
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 8 0 ../eo_text/asmSmt8_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt8_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    //EOAsm2 ../eo_text/asmSmt8_s1.txt 1
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-*/
-;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures (Planner experiments)                                    */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_PlannerTPCH" .verbose
-
-: start::defProc_PlannerTPCH
-
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - interpretive
-  sPath
-  "
-  procedure Query6_S
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | genAsmTxt 6 1 ../eo_text/asm6_s1.txt
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 6 0 ../eo_text/asm6_s0.txt
-    | stageC
-
-  stage stageB on all partitions :
-    EOAsm2 ./eo_text/asm6_s0.txt 0
-    | stageC
-
-  stage stageC on origin :
-    //EOAsm2 ./eo_text/asm6_s1.txt 0
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 20 -
-  //   [P0] ( insert into temptable select p_partkey from part where p_mfgr = 'Manufacturer#1' )
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert into tempTable0 select p_partkey from part where p_mfgr = 'Manufacturer#1';
-  sPath
-  "
-  procedure Query20_S0
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asm20_s0.txt 0
-    | toNstRow
-    | toHshCrw
-    | insert tempTable0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-    end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // select ps_suppkey from partsupp where ps_parkey in tempTable0;
-  sPath
-  "
-  procedure Query20_S1
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 20 1 ../eo_text/asm20_s1.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asm20_s1.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-    end ;
-  "
-  api::addProcedure
-
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 20 -  [S1] select ps_suppkey from partsupp where ps_partKey in
-  //             [S0] ( select p_partkey from part where p_name like 'forest%' )
-  // changed to :[S0] ( select p_partkey from part where p_mfgr = 'Manufacturer#1' )
-  sPath
-  "
-  procedure Smt20_S0
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm ../eo_text/asm20_s0.txt 0
-    | stageD
-
-  stage stageD on all nodes :
-    createTable
-    | stageE hashed
-
-  stage stageE on all partitions :
-    insert tempTable
-    | stageF
-
-  stage stageF on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  sPath
-  "
-  procedure Smt20
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | genAsmTxt 20 1 ../eo_text/asm20_s1_origin.txt
-    | EOAsm ../eo_text/asm20_s1_origin.txt   //callPipeline Smt20_S0
-    | waitPipeline
-    | stageB
-
-  stage stageB on all nodes :
-     genAsmTxt 20 1 ../eo_text/asm20_s1_all_partitions.txt
-     | stageC
-
-  stage stageC on all partitions :
-    EOAsm ../eo_text/asm20_s1_all_partitions.txt 0
-    | truncateTable tempTable
-    | stageD
-
-  stage stageD on all nodes :
-    dropTable tempTable
-    | stage E
-
-  stage stageE on origin :
-      output
-      | sink
-      | stageA
-
-    end ;
-    "
-    api::addProcedure
-*/
-;
-
-/*----------------------------------------------------------------------------*/
-/* define procedures                                                          */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_Meta" .verbose
-
-: start::defProc_Meta
-
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
-    locals| sPath |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // scan tables
-  sPath
-  "
-  procedure scanTables
-  begin
-
-  stage stageA on origin :
-    start | periodic once | metaScan tables | rowToList | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // scanTables ;
-
-
- ;
 
 /*============================================================================*/
 /* end                                                                        */

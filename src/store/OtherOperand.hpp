@@ -1,36 +1,34 @@
 /*============================================================================*/
-/* Filter.hpp -- Filter columns                                             */
+/* OtherOperand.hpp -- Other Operand                                          */
 /*============================================================================*/
 #pragma once
 
+#include "eOM.h"
+
 namespace STORE
 {
-  class Filter : public Definition
+  class OtherOperand : public Operand
   {
-  public:
-
-    u8      m_uFilterColumns;
-    s4K     m_sAsmText;
-
+  protected:
+    Object* m_pObject;
+    
     // must be last
     Footer m_xFooter;
-    
+
   public:
     void* operator new(size_t);
-    void  operator delete(void*);
+    void operator delete(void*);
+  
+    OtherOperand(Object* pObject);
+   ~OtherOperand(void) noexcept(false);
 
-    Filter(void);
-   ~Filter(void) noexcept(false);
-
-    eEC eFilterRows(StreamDef* pStreamDefIn, Stz* sFilter);
-
+    Object* pObject(void);
+  
   private:
-    eEC eFilterColumn(StreamDef* pStreamDefIn, TokenVec* pTknVec);
-
     Footer* aFooter(void);
   };
-  
-  Filter* _pFilter(void* aAddr);
+
+  OtherOperand* _pOtherOperand(void* aAddr);
 }
 
 /*============================================================================*/

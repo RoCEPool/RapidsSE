@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* Steps_Compiler.cpp - compiler step group                                   */
+/* Steps_SenCompiler.cpp - compiler step group                                */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -13,33 +12,34 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Compiler(void)
+void Step::vAddSteps_SenCompiler(void)
 {
-  vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
-  vAddStep("compiler::isDiscarding"_Stz,   &Step::vCompilerIsDiscarding);
-  vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);
-  vAddStep("compiler::isPostponing"_Stz,   &Step::vCompilerIsPostponing);
+  vAddStep("senCompiler::isCompiling"_Stz,    &Step::vSenCompilerIsCompiling);
+  vAddStep("senCompiler::isDiscarding"_Stz,   &Step::vSenCompilerIsDiscarding);
+  vAddStep("senCompiler::isInterpreting"_Stz, &Step::vSenCompilerIsInterpreting);
+  vAddStep("senCompiler::isPostponing"_Stz,   &Step::vSenCompilerIsPostponing);
   
-  vAddStep("compiler::compiling"_Stz,    &Step::vCompilerCompiling);
-  vAddStep("compiler::interpreting"_Stz, &Step::vCompilerInterpreting);
-  vAddStep("compiler::postponing"_Stz,   &Step::vCompilerPostponing);
+  vAddStep("senCompiler::compiling"_Stz,      &Step::vSenCompilerCompiling);
+  vAddStep("senCompiler::interpreting"_Stz,   &Step::vSenCompilerInterpreting);
+  vAddStep("senCompiler::postponing"_Stz,     &Step::vSenCompilerPostponing);
 
-  vAddStep("compiler::current@"_Stz,     &Step::vCompilerCurrentFetch);
-  vAddStep("compiler::current!"_Stz,     &Step::vCompilerCurrentStore);
+  vAddStep("senCompiler::current@"_Stz,       &Step::vSenCompilerCurrentFetch);
+  vAddStep("senCompiler::current!"_Stz,       &Step::vSenCompilerCurrentStore);
   
-  vAddStep("compiler::nested@"_Stz,      &Step::vCompilerNestedFetch);
-  vAddStep("compiler::nested!"_Stz,      &Step::vCompilerNestedStore);
+  vAddStep("senCompiler::nested@"_Stz,        &Step::vSenCompilerNestedFetch);
+  vAddStep("senCompiler::nested!"_Stz,        &Step::vSenCompilerNestedStore);
 
-  vAddStep("["_Stz,                      &Step::vCompilerInterpreting,    true);
-  vAddStep("]"_Stz,                      &Step::vCompilerCompiling);
   
-  vAddStep("[["_Stz,                     &Step::vCompilerPostponing,      true);
-  vAddStep("]]"_Stz,                     &Step::vCompilerCompiling);
+  vAddStep("["_Stz,     &Step::vSenCompilerInterpreting,    true);
+  vAddStep("]"_Stz,     &Step::vSenCompilerCompiling);
   
-  vAddStep("[?"_Stz,                     &Step::vCompilerCondBegin,       true);
-  vAddStep("?if"_Stz,                    &Step::vCompilerCondTest);
-  vAddStep("?else"_Stz,                  &Step::vCompilerCondElse,        true);
-  vAddStep("?]"_Stz,                     &Step::vCompilerCondEnd,         true);
+  vAddStep("[["_Stz,    &Step::vSenCompilerPostponing,      true);
+  vAddStep("]]"_Stz,    &Step::vSenCompilerCompiling);
+  
+  vAddStep("[?"_Stz,    &Step::vSenCompilerCondBegin,       true);
+  vAddStep("?if"_Stz,   &Step::vSenCompilerCondTest);
+  vAddStep("?else"_Stz, &Step::vSenCompilerCondElse,        true);
+  vAddStep("?]"_Stz,    &Step::vSenCompilerCondEnd,         true);
 }
 
 
@@ -48,13 +48,13 @@ void Step::vAddSteps_Compiler(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isCompiling -- currently in compiling mode?                      */
+/* senCompiler::isCompiling -- currently in compiling mode?                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerIsCompiling(void)
+void Step::vSenCompilerIsCompiling(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsCompiling = (CM_COMPILING == eMode) || (CM_CONDCOMPILING == eMode);
   
@@ -64,13 +64,13 @@ void Step::vCompilerIsCompiling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isCompiling -- currently in compiling mode?                      */
+/* senCompiler::isCompiling -- currently in compiling mode?                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerIsDiscarding(void)
+void Step::vSenCompilerIsDiscarding(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsDiscarding = CM_DISCARDING == eMode;
   
@@ -80,13 +80,13 @@ void Step::vCompilerIsDiscarding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isInterpreting -- currently in interpreting mode?                */
+/* senCompiler::isInterpreting -- currently in interpreting mode?             */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerIsInterpreting(void)
+void Step::vSenCompilerIsInterpreting(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsInterpreting = CM_INTERPRETING == eMode;
   
@@ -96,13 +96,13 @@ void Step::vCompilerIsInterpreting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::isPostponing -- currently in postponing mode?                    */
+/* senCompiler::isPostponing -- currently in postponing mode?                 */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerIsPostponing(void)
+void Step::vSenCompilerIsPostponing(void)
 {
   ENTRY();
   
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
   
   i8 iIsPostponing = CM_POSTPONING == eMode;
   
@@ -117,49 +117,49 @@ void Step::vCompilerIsPostponing(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::compiling-- change to compiling mode                             */
+/* senCompiler::compiling-- change to compiling mode                          */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCompiling(void)
+void Step::vSenCompilerCompiling(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_COMPILING);
+  m_pSenCompiler->vMode(CM_COMPILING);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::discarding -- change to discarding mode                          */
+/* senCompiler::discarding -- change to discarding mode                       */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerDiscarding(void)
+void Step::vSenCompilerDiscarding(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_DISCARDING);
+  m_pSenCompiler->vMode(CM_DISCARDING);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::interpreting -- change to interpreting mode                      */
+/* senCompiler::interpreting -- change to interpreting mode                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerInterpreting(void)
+void Step::vSenCompilerInterpreting(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_INTERPRETING);
+  m_pSenCompiler->vMode(CM_INTERPRETING);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::postponing -- change to postponing mode                          */
+/* senCompiler::postponing -- change to postponing mode                       */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerPostponing(void)
+void Step::vSenCompilerPostponing(void)
 {
   ENTRY();
   
-  m_pCompiler->vMode(CM_POSTPONING);
+  m_pSenCompiler->vMode(CM_POSTPONING);
   
   EXIT();
 }
@@ -170,13 +170,13 @@ void Step::vCompilerPostponing(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::current@ -- fetch current word                                   */
+/* senCompiler::current@ -- fetch current word                                */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentFetch(void)
+void Step::vSenCompilerCurrentFetch(void)
 {
   ENTRY();
     
-  Word* pCurrWord = m_pCompiler->pCurrentWord();
+  Word* pCurrWord = m_pSenCompiler->pCurrentWord();
     
 //  if (pCurrWord->szWordNm()->bSame("testProc"_Stz))
 //    BASE::vDebugPoint();
@@ -187,15 +187,15 @@ void Step::vCompilerCurrentFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::current! -- put current word                                     */
+/* senCompiler::current! -- put current word                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentStore(void)
+void Step::vSenCompilerCurrentStore(void)
 {
   ENTRY();
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
-  m_pCompiler->vCurrentWord(pCurrWord);
+  m_pSenCompiler->vCurrentWord(pCurrWord);
   
   EXIT();
 }
@@ -206,15 +206,15 @@ void Step::vCompilerCurrentStore(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compiler::nested@ -- get nested word                                       */
+/* senCompiler::nested@ -- get nested word                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerNestedFetch(void)
+void Step::vSenCompilerNestedFetch(void)
 {
   ENTRY();
     
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
   
-  Word* pNested = m_pCompiler->pNestedWord(i_Nested);
+  Word* pNested = m_pSenCompiler->pNestedWord(i_Nested);
   
   m_pDataStack->vPushPtr(pNested);
   
@@ -222,9 +222,9 @@ void Step::vCompilerNestedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::nested! -- set nested word                                       */
+/* senCompiler::nested! -- set nested word                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerNestedStore(void)
+void Step::vSenCompilerNestedStore(void)
 {
   ENTRY();
   
@@ -232,7 +232,7 @@ void Step::vCompilerNestedStore(void)
   
   i8 i_Nested = m_pDataStack->iPopInt(__func__);
     
-  m_pCompiler->vNestedWord(i_Nested,pNested);
+  m_pSenCompiler->vNestedWord(i_Nested,pNested);
   
   EXIT();
 }
@@ -244,11 +244,11 @@ void Step::vCompilerNestedStore(void)
 /*----------------------------------------------------------------------------*/
 /* [? -- conditional compilation begin                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCondBegin(void)
+void Step::vSenCompilerCondBegin(void)
 {
   ENTRY();
     
-  m_pCompiler->vMode(CM_INTERPRETING);
+  m_pSenCompiler->vMode(CM_INTERPRETING);
 
   EXIT();
 }
@@ -256,16 +256,16 @@ void Step::vCompilerCondBegin(void)
 /*----------------------------------------------------------------------------*/
 /* ?if -- conditional compilation test                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCondTest(void)
+void Step::vSenCompilerCondTest(void)
 {
   ENTRY();
   
   i8 iCondTest = m_pDataStack->iPopInt(__func__);
   
   if (iCondTest)
-    m_pCompiler->vMode(CM_CONDCOMPILING);
+    m_pSenCompiler->vMode(CM_CONDCOMPILING);
   else
-    m_pCompiler->vMode(CM_DISCARDING);
+    m_pSenCompiler->vMode(CM_DISCARDING);
 
   EXIT();
 }
@@ -273,17 +273,17 @@ void Step::vCompilerCondTest(void)
 /*----------------------------------------------------------------------------*/
 /* ?else -- conditional compilation else                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCondElse(void)
+void Step::vSenCompilerCondElse(void)
 {
   ENTRY();
    
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
 
   if (CM_CONDCOMPILING == eMode)
-    m_pCompiler->vMode(CM_DISCARDING);
+    m_pSenCompiler->vMode(CM_DISCARDING);
   else
   if (CM_DISCARDING == eMode)
-    m_pCompiler->vMode(CM_CONDCOMPILING);
+    m_pSenCompiler->vMode(CM_CONDCOMPILING);
 
   EXIT();
 }
@@ -291,13 +291,13 @@ void Step::vCompilerCondElse(void)
 /*----------------------------------------------------------------------------*/
 /* ?] -- conditional compilation end                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCondEnd(void)
+void Step::vSenCompilerCondEnd(void)
 {
   ENTRY();
     
-  eCM eMode = m_pCompiler->eMode();
+  eCM eMode = m_pSenCompiler->eMode();
 
-  m_pCompiler->vMode(CM_COMPILING);
+  m_pSenCompiler->vMode(CM_COMPILING);
 
   EXIT();
 }

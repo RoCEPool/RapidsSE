@@ -1,0 +1,94 @@
+/*============================================================================*/
+/* OP_parser.sen -- Parser Op (SQL Compiler)                                  */
+/*============================================================================*/
+
+" OP_parser.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: parser_CancelMarker \handler
+
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: parser_DataMarker \handler
+ 
+  ZK_DATAPULSE_handler
+
+  <sqlStatement> sqlCompiler::parser to Operand[]
+  
+  Operand[].pipeOut
+  
+  Operand[].newEosMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EOSMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+: parser_EosMarker \handler
+ 
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PLANNODE ...                                                */
+/*----------------------------------------------------------------------------*/
+: parser_PlanNode \handler
+ 
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: parser_StartMarker \handler
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler op request                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: parser_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: parser_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: parser_DataMarker   ZK_DATAPULSE    op[].handler!
+  find: parser_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: parser_PlanNode     ZK_PLANNODE     op[].handler!
+  find: parser_StartMarker  ZK_STARTMARKER  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: parser :: parser <sqlStatement> ;
+
+: parser_cmdTags _cmdTags tagCopy: op_tags
+
+  tags{
+    <cmdDesc>    = "--desc for op--"
+  }
+
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

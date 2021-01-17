@@ -212,8 +212,6 @@
   pCppFile file.writeLine
   "#include \"BASE.h\"\n"
   pCppFile file.writeLine
-  "#include \"STORE.h\"\n"
-  pCppFile file.writeLine
 
   "\n"
   pCppFile file.writeLine

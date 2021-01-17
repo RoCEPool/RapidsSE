@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -24,6 +23,7 @@ void Step::vAddSteps_LogicCompiler(void)
   vAddStep("LogicCompiler[].delete"_Stz,    &Step::vLogicCompilerDelete);
   vAddStep("LogicCompiler[].extract"_Stz,   &Step::vLogicCompilerExtract);
   vAddStep("LogicCompiler[].extractAsm"_Stz, &Step::vLogicCompilerExtractAsm);
+  vAddStep("LogicCompiler[].isNull"_Stz,    &Step::vLogicCompilerIsNull);
   vAddStep("LogicCompiler[].new"_Stz,       &Step::vLogicCompilerNew);
 }
 
@@ -79,6 +79,18 @@ void Step::vLogicCompilerExtractAsm(void)
 //#ifdef WITH_APPLE
   LogicCompiler::vExtractAsm();
 //#endif
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicCompiler[].isNull -- is logicCompiler null ?                          */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicCompilerIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt( (m_pJob->pLogicUnit_job() )->m_xpLogicCompiler.bIsNull() ? 1 : 0);
 
   EXIT();
 }

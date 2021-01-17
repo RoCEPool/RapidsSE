@@ -5,6 +5,7 @@
 
 #include "eMC.h"
 
+
 #include "MetaCodeMacros.h"
 
 namespace STORE
@@ -15,6 +16,8 @@ namespace STORE
   // numer of rows to sample before creating tails set
   static const i8 C_SAMPLE_ROWS = 100;
   
+  class StreamDef;
+
   //----------------------------------------------------------------------------
 
   class RowCoder

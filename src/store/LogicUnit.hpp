@@ -3,13 +3,20 @@
 /*============================================================================*/
 #pragma once
 
+#include "RowSingle.hpp"
+
+#include "HashSet.hpp"
+
 #include "CrwToRow.hpp"
 #include "ToHshCrw.hpp"
 #include "ToNstRow.hpp"
 #include "ToPtnRow.hpp"
 #include "ToRow.hpp"
 
+#include "Pot.hpp"
 
+
+#include "EntWrk.hpp"
 
 #include "RluCommon.h"
 #include "RluDiary.hpp"
@@ -18,8 +25,6 @@
 #include "LogicTimer.hpp"
 #include "LogicCompiler.hpp"
 #include "ExprEval.hpp"
-#include "Project.hpp"
-#include "Filter.hpp"
 #include "Range.hpp"
 
 #include "InflateSet.h"
@@ -113,8 +118,6 @@ namespace STORE
     REG<Operand>     m_xpOperandOoO; // operand OoO
 
     REG<ExprEval>     m_xpExprEval; // expr eval
-    REG<Filter>      m_xpFilter;    // filter
-    REG<Project>     m_xpProject;   // project
     REG<Range>       m_xpRange;     // range
 
     i8               m_iCounter0;   // counter
@@ -260,6 +263,7 @@ namespace STORE
     void vGenerate100000(void);
     void vGenerate100001(void);
 
+    void vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateRange(Range* pRange, StreamDef* pStreamDefOut);

@@ -3,7 +3,16 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "IndexDef.hpp"
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+
+#include "Crw.hpp"
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"

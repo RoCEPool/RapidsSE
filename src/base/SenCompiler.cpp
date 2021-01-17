@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Compiler.cpp -- Sen Word Compiler                                          */
+/* SenCompiler.cpp -- Sen Word Compiler                                       */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,19 +8,19 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,Compiler,CN_COMPILER)
-__aNewFunction(Compiler,CN_COMPILER)
-__vDeleteFunction(Compiler,CN_COMPILER)
-__aFooterFunction(Compiler)
+__pCastFunction(BASE,SenCompiler,CN_SENCOMPILER)
+__aNewFunction(SenCompiler,CN_SENCOMPILER)
+__vDeleteFunction(SenCompiler,CN_SENCOMPILER)
+__aFooterFunction(SenCompiler)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Compiler::Compiler(void)
-: Object(CN_COMPILER)
+SenCompiler::SenCompiler(void)
+: Object(CN_SENCOMPILER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_pCurrent   = nullptr;
   m_eMode      = CM_INTERPRETING;
@@ -29,17 +29,17 @@ Compiler::Compiler(void)
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
     m_paWord[i_Nested] = nullptr;
 
-  _checkInitialised_(CN_COMPILER);
+  _checkInitialised_(CN_SENCOMPILER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Compiler::~Compiler(void) noexcept(false)
+SenCompiler::~SenCompiler(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,9 +49,9 @@ Compiler::~Compiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is the compiler in compiling mode?                                         */
 /*----------------------------------------------------------------------------*/
-bool Compiler::bCompiling(void)
+bool SenCompiler::bCompiling(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   bool bIsCompiling = CM_COMPILING == m_eMode;
   
@@ -61,9 +61,9 @@ bool Compiler::bCompiling(void)
 /*----------------------------------------------------------------------------*/
 /* get current word                                                           */
 /*----------------------------------------------------------------------------*/
-Word* Compiler::pCurrentWord(void)
+Word* SenCompiler::pCurrentWord(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   return m_pCurrent;
 }
@@ -71,9 +71,9 @@ Word* Compiler::pCurrentWord(void)
 /*----------------------------------------------------------------------------*/
 /* set current word                                                           */
 /*----------------------------------------------------------------------------*/
-void Compiler::vCurrentWord(Word* pWord)
+void SenCompiler::vCurrentWord(Word* pWord)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_pCurrent = pWord;
 }
@@ -81,9 +81,9 @@ void Compiler::vCurrentWord(Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* is the compiler in interpreting mode?                                      */
 /*----------------------------------------------------------------------------*/
-bool Compiler::bInterpreting(void)
+bool SenCompiler::bInterpreting(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   bool bIsInterpreting = CM_INTERPRETING == m_eMode;
   
@@ -93,9 +93,9 @@ bool Compiler::bInterpreting(void)
 /*----------------------------------------------------------------------------*/
 /* get number of locals                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Compiler::nLocals(void)
+i8 SenCompiler::nLocals(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   return m_nLocals;
 }
@@ -103,9 +103,9 @@ i8 Compiler::nLocals(void)
 /*----------------------------------------------------------------------------*/
 /* set number of locals                                                       */
 /*----------------------------------------------------------------------------*/
-void Compiler::vLocals(i8 nLocals)
+void SenCompiler::vLocals(i8 nLocals)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_nLocals = nLocals;
   
@@ -120,9 +120,9 @@ void Compiler::vLocals(i8 nLocals)
 /*----------------------------------------------------------------------------*/
 /* get mode                                                                   */
 /*----------------------------------------------------------------------------*/
-eCM Compiler::eMode(void)
+eCM SenCompiler::eMode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   return m_eMode;
 }
@@ -130,9 +130,9 @@ eCM Compiler::eMode(void)
 /*----------------------------------------------------------------------------*/
 /* set mode                                                                   */
 /*----------------------------------------------------------------------------*/
-void Compiler::vMode(eCM eMode)
+void SenCompiler::vMode(eCM eMode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_eMode = eMode;
 }
@@ -140,9 +140,9 @@ void Compiler::vMode(eCM eMode)
 /*----------------------------------------------------------------------------*/
 /* get nested word                                                            */
 /*----------------------------------------------------------------------------*/
-Word* Compiler::pNestedWord(i8 i_Nested)
+Word* SenCompiler::pNestedWord(i8 i_Nested)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   Word* pNested = m_paWord[i_Nested];
   
@@ -152,9 +152,9 @@ Word* Compiler::pNestedWord(i8 i_Nested)
 /*----------------------------------------------------------------------------*/
 /* set nested word                                                            */
 /*----------------------------------------------------------------------------*/
-void Compiler::vNestedWord(i8 i_Nested, Word* pNested)
+void SenCompiler::vNestedWord(i8 i_Nested, Word* pNested)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_paWord[i_Nested] = pNested;
 }
@@ -162,9 +162,9 @@ void Compiler::vNestedWord(i8 i_Nested, Word* pNested)
 /*----------------------------------------------------------------------------*/
 /* is the compiler in postponing mode?                                        */
 /*----------------------------------------------------------------------------*/
-bool Compiler::bPostponing(void)
+bool SenCompiler::bPostponing(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   bool bIsPostponing = CM_POSTPONING == m_eMode;
   

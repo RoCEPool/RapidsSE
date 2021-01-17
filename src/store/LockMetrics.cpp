@@ -3,7 +3,10 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "RowBuffer.hpp"
+
+#include "InfoSet.hpp"
 
 #include "Grid.hpp"
 #include "LockMetrics.hpp"

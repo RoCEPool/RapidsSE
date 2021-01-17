@@ -79,6 +79,8 @@ namespace Parser
 
     PlanNode(eCN eClassNo, const PlanNode& oNode);
 
+    PlanNode(eCN eClassNo, void* aTempTest_byRay);
+
   public:
     Stz* szName();
     Stz* szType();
@@ -101,6 +103,9 @@ namespace Parser
     // May be null if there are none. The iterator must be deleted after use.
     PlanNodeIter* pNewPropertyIter();
     PlanNodeIter* pNewChildrenIter();
+
+    PlanNode* pFirstChild();
+    PlanNode* pLastChild();
   };
   
   PlanNode* _pPlanNode(void* aAddr);

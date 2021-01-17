@@ -85,10 +85,12 @@ namespace STORE
   
     struct {
       
-      JobList*      m_pDemonJobs;
-      JobList*      m_pLocalJobs;
-      JobList*      m_pOriginatingJobs;
-      JobList*      m_pParticipatingJobs;
+      JobList*  m_pDemonJobs;
+      JobList*  m_pLocalJobs;
+      JobList*  m_pOriginatingJobs;
+      JobList*  m_pParticipatingJobs;
+      
+      bool m_bSupervisorHalt;
 
     } m_xStore;
 

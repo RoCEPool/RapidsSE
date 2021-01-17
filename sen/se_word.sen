@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pwObject compiler::current!
+  pwObject senCompiler::current!
 
   pwObject encode::push
 
@@ -79,7 +79,7 @@
 
   POSTPONE exit_rt
 
-  //[ compiler::current@ word.see ]
+  //[ senCompiler::current@ word.see ]
 ;
 
 

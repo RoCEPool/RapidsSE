@@ -4,7 +4,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "LogicCompiler.hpp"
 
@@ -448,9 +447,9 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   v_DynConcluding();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//#ifdef WITH_TRACE_LOGICUNIT
+#ifdef WITH_TRACE_LOGICUNIT
   vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
-//#endif
+#endif
   
   vAcquire();
   bool b = bCompile();
@@ -747,13 +746,12 @@ bool LogicCompiler::bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill)
 /*----------------------------------------------------------------------------*/
 /* add source code fragment for given rangeof eo codes                        */
 /*----------------------------------------------------------------------------*/
-Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet)
+Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sDst)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_LOGICCOMPILER, _FOOTER_);
 
   s32 sTag;
   s4K sReplaced;
-  s4K sDst;
   bool bReplaced = false;
   sDst = gszaAmMacros[eMacro];
 
@@ -906,6 +904,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  static const i8 C_CRW_FIRSTHEAD = 0x210;"
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n"
+  "\n  #define C_BITS_PER_WORD 64"
   "\n  #define C_MAX_LVL_LEVELS 6"
   "\n  #define C_LOGIC_LOCALS 32"
   "\n  #define C_UNKNOWN -1"

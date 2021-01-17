@@ -6,6 +6,12 @@
 #include "eRA.h"
 #include "eRO.h"
 
+#include "IndexDef.hpp"
+
+#include "Pay.hpp"
+#include "Key.hpp"
+#include "Ent.hpp"
+
 namespace STORE
 {
   class IndexStream : public Object

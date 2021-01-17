@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_discount";
+projectColumns_I lineitem "l_discount";
 failure contains: "no such table"
 
 //------------------------------------------------------------------------------
@@ -30,14 +30,19 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_discount";
+projectColumns_I lineitem "l_discount";
 rows: 0
 
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
+success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_partkey";
+projectColumns lineitem " sum ( l_discount ) ";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+projectColumns_I lineitem "l_partkey";
 rows:
   (1551894)
   (673091)
@@ -51,7 +56,7 @@ rows:
   (1284483)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_discount";
+projectColumns_I lineitem "l_discount";
 rows:
   (0.04)
   (0.09)
@@ -65,7 +70,7 @@ rows:
   (0.06)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_returnflag";
+projectColumns_I lineitem "l_returnflag";
 rows:
   ('N')
   ('N')
@@ -79,7 +84,7 @@ rows:
   ('A')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_shipdate";
+projectColumns_I lineitem "l_shipdate";
 rows:
  (DATE '1993-11-09')
  (DATE '1994-02-02')
@@ -93,7 +98,7 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "l_comment";
+projectColumns_I lineitem "l_comment";
 rows:
   ('egular courts above the')
   ('ly final dependencies: slyly bold ')
@@ -107,13 +112,7 @@ rows:
   ('nal foxes wake. ')
 
 //------------------------------------------------------------------------------
-filterRows lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24.0 < <>";
-rows:
-  (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
-  (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
-
-//------------------------------------------------------------------------------
-projectColumns lineitem as a 2 , as b l_shipdate ;
+projectColumns_I lineitem as a 2 , as b l_shipdate ;
 rows:
   (2, DATE '1993-11-09')
   (2, DATE '1994-02-02')
@@ -127,7 +126,7 @@ rows:
   (2, DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem l_shipdate, l_extendedPrice 2.0 *, l_extendedPrice;
+projectColumns_I lineitem l_shipdate, l_extendedPrice 2.0 *, l_extendedPrice;
 rows:
  (DATE '1993-11-09',141644.30,70822.15)
  (DATE '1994-02-02',172167.30,86083.65)
@@ -141,7 +140,7 @@ rows:
  (DATE '1997-01-28',126132.64,63066.32)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem l_extendedPrice, l_discount, l_extendedPrice l_discount *;
+projectColumns_I lineitem l_extendedPrice, l_discount, l_extendedPrice l_discount *;
 rows:
  (33078.94,0.04,1323.15)
  (38306.16,0.09,3447.55)
@@ -155,7 +154,7 @@ rows:
  (39620.34,0.06,2377.22)
 
  //------------------------------------------------------------------------------
- projectColumns lineitem l_orderkey, l_comment, l_shipdate, l_discount, l_orderkey;
+ projectColumns_I lineitem l_orderkey, l_comment, l_shipdate, l_discount, l_orderkey;
  rows:
   (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
   (3,'ongside of the furiously brave acco',DATE '1994-02-02',0.06,3)

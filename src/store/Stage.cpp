@@ -3,9 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "ePX.h"
+
+#include "Marker.hpp"
+
+#include "PtnMap.hpp"
 
 #include "Grid.hpp"
 

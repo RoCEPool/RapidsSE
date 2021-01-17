@@ -3,12 +3,14 @@
 /*============================================================================*/
 
 #include <base/BASE.h>
-#include "STORE.h"
 
 #include "Version.h"
 
+#include "CmdLineArgs.hpp"
+
 #include "Heart.h"
 #include "Engine.hpp"
+
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
@@ -24,6 +26,8 @@ extern s256 gi_szaArgv[];
 
 extern i8   giProgressPoint;
 
+//#include <readline/readline.h>
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
@@ -31,6 +35,8 @@ int main(int argc, char* argv[])
 {
   //printf("sizeof(ColPix) %lld\n",(i8)sizeof(ColPix));
   printf("sizeof(Word) %lld\n",(i8)sizeof(Word));
+
+  //char* s = readline ("Enter a line: ");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

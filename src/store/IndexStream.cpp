@@ -3,7 +3,31 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "RowSingle.hpp"
+
+#include "IndexDef.hpp"
+#include "Pay.hpp"
+#include "Key.hpp"
+
+#include "EntWrk.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "TailLine.hpp"
+
+#include "Crw.hpp"
+
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "RowCompactor.hpp"
+#include "RowInflator.hpp"
+
+#include "KeyBuilder.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"

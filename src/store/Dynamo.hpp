@@ -28,8 +28,13 @@ namespace STORE
     Dynamo(Stz* sCmd, Job* pJob);
    ~Dynamo(void) noexcept(false);
   
+    static bool bCmdToPipeline(String* pAsPipelineStmt,
+                               TokenVec* pFromTokenVec);
+  
     static ePX eTopoloyX(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
     
+
+
     bool bCompile(void);
     PipelineSpec* pPipelineSpec(void);
     void vShow(void);

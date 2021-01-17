@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -27,9 +26,9 @@ void Step::vStepTimingReset(void)
 {
   ENTRY();
   
-#ifndef WITH_ENTRY_EXIT
+#ifndef WITH_STEP_TIMING
   
-  vTrace("WARNING: WITH_ENTRY_EXIT not defined\n"_Stz);
+  vTrace("WARNING: WITH_STEP_TIMING not defined\n"_Stz);
   return;
   
 #else
@@ -49,9 +48,9 @@ void Step::vStepTimingStart(void)
 {
   ENTRY();
   
-#ifndef WITH_ENTRY_EXIT
+#ifndef WITH_STEP_TIMING
   
-  vTrace("WARNING: WITH_ENTRY_EXIT not defined\n"_Stz);
+  vTrace("WARNING: WITH_STEP_TIMING not defined\n"_Stz);
   return;
   
 #else
@@ -71,9 +70,9 @@ void Step::vStepTimingWrite(void)
 {
   ENTRY();
 
-#ifndef WITH_ENTRY_EXIT
+#ifndef WITH_STEP_TIMING
   
-  vTrace("WARNING: WITH_ENTRY_EXIT not defined\n"_Stz);
+  vTrace("WARNING: WITH_STEP_TIMING not defined\n"_Stz);
   return;
   
 #else

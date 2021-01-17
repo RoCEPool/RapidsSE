@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -11,6 +10,19 @@
 
 #include "ePX.h"
 
+#include "Marker.hpp"
+
+#include "RowBuffer.hpp"
+
+#include "InfoSet.hpp"
+
+#include "StreamSet.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
 #include "Node.hpp"
 #include "Response.hpp"
 #include "Result.hpp"

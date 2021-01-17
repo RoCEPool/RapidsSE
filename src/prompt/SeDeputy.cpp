@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
@@ -19,6 +18,8 @@
 
 #include "PromptFun.hpp"
 #include "PromptCatalog.hpp"
+
+#include "CmdLineArgs.hpp"
 
 extern CmdLineArgs          gxCmdLineArgs;
 
@@ -64,6 +65,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);
+  
+  m_pSession->m_pInput = new Input;
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -75,7 +78,10 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-   Api::vFreeSession(m_pSession);
+  delete m_pSession->m_pInput;
+  m_pSession->m_pInput = nullptr;
+
+  Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
   
   delete m_pThread;
@@ -147,7 +153,7 @@ void SeDeputy::vExecuteJob(void)
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
   RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
   
-  vTrace("vSeDeputy::vExecuteJob\n"_Stz);
+  //vTrace("vSeDeputy::vExecuteJob\n"_Stz);
   
   Api::vExecuteJob(m_pSession);
   
@@ -205,6 +211,16 @@ Job* SeDeputy::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pSession->m_pSsnJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input                                                                  */
+/*----------------------------------------------------------------------------*/
+Input* SeDeputy::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pSession->m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/

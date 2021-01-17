@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "Procedure.hpp"
 
@@ -98,7 +97,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   pProcWord->pWrdTagSet()->vInsert("procText"_Stz,sProcText);
 }
 
-/*----------------------------------------------------------------------------*/
+ /*----------------------------------------------------------------------------*/
 /* find word for procedure matching given name                                */
 /*----------------------------------------------------------------------------*/
 Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)

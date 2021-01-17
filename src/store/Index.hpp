@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "IndexDef.hpp"
+
 static Stz* S_READAPI_I = "__READAPI_I"_Stz;
 
 namespace STORE

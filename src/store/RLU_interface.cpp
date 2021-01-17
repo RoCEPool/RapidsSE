@@ -3,9 +3,15 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "IndexDef.hpp"
+
+#include "Pay.hpp"
+#include "Key.hpp"
+#include "Ent.hpp"
 
 #include "eRO.h"
+#include "IndexDef.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Node_I.hpp"

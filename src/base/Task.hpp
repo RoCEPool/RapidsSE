@@ -51,25 +51,25 @@ namespace BASE
     //LogicUnit*   m_pLogicUnit;      // associated register set
 
   public:
-    Word*     m_pSeedWord;      // seed
-    Word*     m_pExceptionWord; // seed
+    Word* m_pSeedWord;      // seed
+    Word* m_pExceptionWord; // seed
 
-    bool      m_bSeedInitially; // seed_initially sentinel has been executed
-    bool      m_bDoneFinally;   // done_finally sentinel has been executed
+    bool m_bSeedInitially; // seed_initially sentinel has been executed
+    bool  m_bDoneFinally;   // done_finally sentinel has been executed
 
-    DicStack  m_oDicStack;      // dictionary stack
-    DicStack  m_oSaveDicStack;  // save dictionary stack
+    DicStack m_oDicStack;      // dictionary stack
+    DicStack m_oSaveDicStack;  // save dictionary stack
 
-    CodeCell*     m_aInxPtr;      // instruction/cell pointer
+    CodeCell* m_aInxPtr;      // instruction/cell pointer
 
-    TypedStack*    m_pAuxStack;    // auxiliary stack
-    TypedStack*    m_pDataStack;   // data stack
-    TypedStack*    m_pReturnStack; // return stack
+    TypedStack*  m_pAuxStack;    // auxiliary stack
+    TypedStack*  m_pDataStack;   // data stack
+    TypedStack*  m_pReturnStack; // return stack
 
-    LocalChain* m_pLocalsFrame; // locals| | register frame chain
+    LocalChain*  m_pLocalsFrame; // locals| | register frame chain
 
-    Compiler*   m_pCompiler;    // word compiler (Job boot, create table etc)
-    Input*      m_pInput;       // input stream
+    SenCompiler* m_pSenCompiler; // sen word compiler
+    Input*       m_pInput;       // input stream
 
 
     // always last
@@ -96,7 +96,7 @@ namespace BASE
     void vCaught(Exception xException);
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
-    Compiler* pCompiler(void);
+    SenCompiler* pSenCompiler(void);
     void vContentDump(void);
     void vDeleteInput(void);
     static void vDebug(void);
@@ -155,7 +155,7 @@ namespace BASE
     void vAddMunged(void);
     void vAddMunged(Task* pTask);
     void vAddAxioms(void);
-    Word* pCompileAxiomaticColon(s48K& sDefinition);
+    Word* pCompileAxiomColon(s48K& sDefinition);
     void  vCompileMungedColon(Stz* szDefinition);
     void  vCompileMungedColon(i8 i_Def);
 

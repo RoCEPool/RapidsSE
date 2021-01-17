@@ -36,6 +36,7 @@
   start::defProc_Planner
   start::defProc_PlannerTPCH
   start::defProc_Meta
+  start::defProc_SqlCompiler
 
   // define the apriori system tables
   start::defineTables

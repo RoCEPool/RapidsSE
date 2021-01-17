@@ -3,9 +3,14 @@
 /*============================================================================*/
   
 #include "BASE.h"
-#include "STORE.h"
 
 #include "Test.hpp"
+
+#include "IndexDef.hpp"
+#include "SkipRoots.hpp"
+
+#include "EntBuffer.hpp"
+#include "EntBufSorter.hpp"
 
 #include "AM.hpp"
 #include "Response.hpp"
@@ -728,36 +733,33 @@ void vTest17(void)
 /*----------------------------------------------------------------------------*/
 void vTest18(void)
 {
-  char a[C_1K];
-  char b[C_1K];
-  char c[C_1K];
-  Timer oTimer;
+  s32 sFolderNm;
+  vTrace("\nCurrentFolderNm : %s\n"_Stz,
+         SeApi::szCurrentFolderNm(sFolderNm));
   
-  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++)
-    a[i_Char] = 'a';
-  a[C_1K-1] = '\0';
+  s256 sFolderPath;
+  vTrace("\nCurrentFolderPath : %s\n"_Stz,
+         SeApi::szCurrentFolderPath(sFolderPath));
   
-  i8 n = 0;
+  vTrace("\nCurrent Folder Contents:\n"_Stz);
+  SeApi::vPrintAllTablesInCurrentFolder();
+
+  //
+  // There is a hidden/metatable called __listColumns.  Lets us that.
+  //
   
-  oTimer.vStart();
-  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
-    MemLib::vCopy(&c[0], &a[0], C_1K, CN_NONE);
-    n++;
-  }
-  oTimer.vUpdate();
-  vTrace("%s %lld\n"_Stz, c, n);
-  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
+  if (SeApi::bIsKnownTableNm("__listColumns"_Stz))
+    vTrace("\n__listColumns is a known table\n"_Stz);
+  else
+    vTrace("\n__listColumns is not a known table\n"_Stz);
+
+  vTrace("\nColumns of __listColumns:\n"_Stz);
+  SeApi::vPrintAllColumnsOfTable("__listColumns"_Stz);
   
-  n = 0;
-  oTimer.vStart();
-  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
-    i8 nL = StrLib::nCopy(&b[0],&a[0]);
-    n++;
-    //RASSERT(nL == C_1K-1);
-  }
-  oTimer.vUpdate();
-  vTrace("%s %lld\n"_Stz, b, n);
-  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
+  if (SeApi::bIsKnownTableColumnNm("__listColumns"_Stz,"columnName"_Stz))
+    vTrace("\n__listColumns.columnName is a known column\n"_Stz);
+  else
+    vTrace("\n__listColumns.columnName is not a known column\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1676,6 +1678,36 @@ void vTest62(void)
 /*----------------------------------------------------------------------------*/
 void vTest63(void)
 {
+  char a[C_1K];
+  char b[C_1K];
+  char c[C_1K];
+  Timer oTimer;
+  
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++)
+    a[i_Char] = 'a';
+  a[C_1K-1] = '\0';
+  
+  i8 n = 0;
+  
+  oTimer.vStart();
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
+    MemLib::vCopy(&c[0], &a[0], C_1K, CN_NONE);
+    n++;
+  }
+  oTimer.vUpdate();
+  vTrace("%s %lld\n"_Stz, c, n);
+  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
+  
+  n = 0;
+  oTimer.vStart();
+  for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
+    i8 nL = StrLib::nCopy(&b[0],&a[0]);
+    n++;
+    //RASSERT(nL == C_1K-1);
+  }
+  oTimer.vUpdate();
+  vTrace("%s %lld\n"_Stz, b, n);
+  vTrace("duration %lldns\n"_Stz,oTimer.iNanoseconds());
 }
 
 /*----------------------------------------------------------------------------*/

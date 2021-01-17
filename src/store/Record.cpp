@@ -3,7 +3,10 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "Row.hpp"
+
+#include "Record.hpp"
 
 #include "SP_Bcd.hpp"
 #include "SP_Bol.hpp"

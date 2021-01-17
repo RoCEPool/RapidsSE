@@ -3,8 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "RowSingle.hpp"
+#include "EntWrk.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* position at a leaf buffer starting from this buffer                        */

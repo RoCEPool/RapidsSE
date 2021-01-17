@@ -20,13 +20,13 @@
 
   // while compiling a new catgWord set the catgWord to be immediate
   true
-  compiler::current@
+  senCompiler::current@
   word.immediate!
 
   // add code into the catgWord so that when catgWord ised used while compiling
   // the target word, the category of the target word is set to be catgWord
-  compiler::current@ encode::push
-  POSTPONE compiler::current@
+  senCompiler::current@ encode::push
+  POSTPONE senCompiler::current@
   POSTPONE word.category!
 ;
 

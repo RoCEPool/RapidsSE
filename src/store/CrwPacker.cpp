@@ -3,12 +3,19 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "OverLine.hpp"
+
+#include "Encoding.hpp"
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */
 /*----------------------------------------------------------------------------*/
-void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding_v2* pEncoding)
+void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 {
   _static_
   

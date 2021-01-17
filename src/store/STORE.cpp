@@ -7,7 +7,27 @@
 
 #include "eAC.h"
 
+#include "CmdLineArgs.hpp"
+
 #include "AttachMap.hpp"
+
+#include "StreamDef.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "TailLine.hpp"
+
+#include "IndexDef.hpp"
+#include "Pay.hpp"
+#include "Key.hpp"
+
+#include "NEO.h"
+
+#include "Ent.hpp"
+
+#include "Ent_int.h"
+
+#include "Ent_gen.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */

@@ -3,9 +3,12 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "RowSingle.hpp"
+#include "EntWrk.hpp"
 
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
 
 #define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
 

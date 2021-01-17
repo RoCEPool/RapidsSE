@@ -30,13 +30,13 @@
 
     input::chars >int        // convert str to int, leave on stack
 
-    compiler::isPostponing if
+    senCompiler::isPostponing if
       "SHOULD NOT BE POSTPONING AN INT" .put
       process::quit
       reenter
     then
 
-    compiler::isCompiling if
+    senCompiler::isCompiling if
       encode::push           // compile encodes push intval
       reenter
     then
@@ -51,13 +51,13 @@
 
     input::chars             // put str on stack
 
-    compiler::isPostponing if
+    senCompiler::isPostponing if
       "SHOULD NOT BE POSTPONING A STR" .put
       process::quit
       reenter
     then
 
-    compiler::isCompiling if
+    senCompiler::isCompiling if
       encode::push           // compile encodes push stzVal
       reenter
     then
@@ -100,7 +100,7 @@
 
   // -- -- -- -- -- -- --
   // postponing mode?
-  compiler::isPostponing if
+  senCompiler::isPostponing if
     "POSTPONING" .put
     encode::push
     "encode::call" word::find encode::call
@@ -109,7 +109,7 @@
 
   // -- -- -- -- -- -- --
   // compiling mode?
-  compiler::isCompiling if
+  senCompiler::isCompiling if
     encode::call                 // encode::call encodes call to word
     reenter
   then

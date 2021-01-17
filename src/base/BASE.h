@@ -478,7 +478,7 @@ typedef void (Step::*fpSTEPFN)(void);
 #include "CodeBlock.hpp"
 #include "TypedStack.hpp"
 
-#include "Compiler.hpp"
+#include "SenCompiler.hpp"
 #include "Word.hpp"
 
 #include "Profile.hpp"
@@ -544,7 +544,7 @@ namespace BASE
 template <class OBJECT>
 static OBJECT pPoolCheck(void* aAddress)
 {
-#ifdef WITH_ADDRESS_CHECKING
+#ifdef WITH_CORRECTNESS_ALGEBRA
   if (aAddress)
     gpBufferPool->vCheckAddress(aAddress);
 #endif

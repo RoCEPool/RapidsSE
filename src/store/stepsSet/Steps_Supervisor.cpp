@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -18,6 +17,8 @@
 
 #include "Heartbeat.hpp"
 
+#include "CmdLineArgs.hpp"
+
 extern CmdLineArgs gxCmdLineArgs;
 
 extern Stz *gsBuildGitHash;
@@ -30,7 +31,9 @@ extern RingBuffer<Heartbeat> gxHeartbeatData;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Supervisor(void)
 {
-  vAddStep("Supervisor::collectInfo"_Stz,  &Step::vSupervisorCollectInfo);
+  vAddStep("Supervisor::collectInfo"_Stz, &Step::vSupervisorCollectInfo);
+  vAddStep("Supervisor::halt@"_Stz,       &Step::vSupervisorHaltFetch);
+  vAddStep("Supervisor::halt!"_Stz,       &Step::vSupervisorHaltStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +91,34 @@ void Step::vSupervisorCollectInfo(void)
 
   // NOTE: But for the time being, commented out for testing/debug
   //AM::vPutHeartbeat(AM::iThisNodeNo(), xHeartbeat);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Supervisor::halt@ -- fetch supervisor halt flag                            */
+/*----------------------------------------------------------------------------*/
+void Step::vSupervisorHaltFetch(void)
+{
+  ENTRY();
+  
+  bool bHalt = AM::bSupervisorHalt();
+  
+  m_pDataStack->vPushInt(bHalt);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Supervisor::halt! -- store supervisor halt flag                            */
+/*----------------------------------------------------------------------------*/
+void Step::vSupervisorHaltStore(void)
+{
+  ENTRY();
+  
+  bool bHalt = (bool)m_pDataStack->iPopInt(__func__);
+  
+  AM::vSupervisorHalt(bHalt);
   
   EXIT();
 }

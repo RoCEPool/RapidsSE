@@ -69,6 +69,18 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* temp constructor for use by ray to test sql compiler pipeline              */
+/*----------------------------------------------------------------------------*/
+PlanNode::PlanNode(eCN eClassNo, void* aTempTest_byRay)
+    : Object(eClassNo)
+{
+  m_pProperties = nullptr;
+  m_pChildren   = nullptr;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 PlanNode::~PlanNode(void)
@@ -229,6 +241,30 @@ PlanNodeIter* PlanNode::pNewChildrenIter()
   }
 
   return m_pChildren->pNewIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the first PlanNode child, or nullptr if there is none              */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pFirstChild()
+{
+  if (!m_pChildren || m_pChildren->nItems() == 0) {
+    return nullptr;
+  }
+
+  return m_pChildren->pHead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the last PlanNode child, or nullptr if there is none              */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pLastChild()
+{
+  if (!m_pChildren || m_pChildren->nItems() == 0) {
+    return nullptr;
+  }
+
+  return m_pChildren->pTail();
 }
 
 /*----------------------------------------------------------------------------*/

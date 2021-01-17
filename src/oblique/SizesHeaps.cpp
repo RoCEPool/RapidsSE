@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "eBO.h"
 #include "eCC.h"
@@ -39,6 +38,45 @@
 #include "eXK.h"
 
 #include "SizesHeaps.hpp"
+
+#include "CmdLineArgs.hpp"
+
+#include "IndexDef.hpp"
+
+#include "Index.hpp"
+
+#include "Folder.hpp"
+#include "Schema.hpp"
+#include "Catalog.hpp"
+#include "Tenant.hpp"
+#include "Tenants.hpp"
+#include "Marker.hpp"
+#include "Record.hpp"
+#include "RowBuffer.hpp"
+#include "HashSet.hpp"
+#include "Pot.hpp"
+
+#include "InfoSet.hpp"
+#include "StreamSet.hpp"
+#include "RowCoder.hpp"
+
+#include "HeadLine.hpp"
+#include "Crw.hpp"
+
+#include "Encoding.hpp"
+
+#include "PtnMap.hpp"
+#include "BucketMap.hpp"
+
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "RowCompactor.hpp"
+#include "OtherOperand.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "EntBufSorter.hpp"
+#include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
 #include "ReadApi.hpp"
@@ -160,7 +198,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CmdLineArgs),        HT_INVALID   ,0 }, // CN_CMDLINEARGS
   { sizeof(CodeBlock),          HT_T_SMALL   ,0 }, // CN_CODEBLOCK
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
-  { sizeof(Compiler),           HT_T_TINY    ,0 }, // CN_COMPILER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 }, // CN_CRWBUFFER
   { sizeof(CrwToRow),           HT_T_LARGE   ,0 }, // CN_CRWTOROW
@@ -182,7 +219,6 @@ SizeHeap gxaSizeHeap[]
   { 'E' - ('A' - 1),            HT_INVALID   ,0 }, // CN__E__
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_EDTVAL
   { sizeof(Encoding),           HT_T_MEDIUM  ,0 }, // CN_ENCODING
-  { sizeof(Encoding_v2),        HT_T_MEDIUM  ,0 }, // CN_ENCODING_V2
   { sizeof(Ent),                HT_INVALID   ,0 }, // CN_ENT
   { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER
@@ -195,7 +231,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Fifo),               HT_T_TINY    ,0 }, // CN_FIFO
   { sizeof(File),               HT_T_TINY    ,0 }, // CN_FILE
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FIPVAL
-  { sizeof(Filter),             HT_T_LARGE   ,0 }, // CN_FILTER
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 }, // CN_FLTVAL
   { sizeof(Format),             HT_T_TINY    ,0 }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 }, // CN_FREEBUFFER
@@ -246,6 +281,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Licence),            HT_T_TINY    ,0 }, // CN_LICENCE
   { sizeof(Limits),             HT_T_TINY    ,0 }, // CN_LIMITS
   { sizeof(ListExoNode_t<Object>), HT_T_TINY ,0 }, // CN_LISTEXONODE_t
+  { sizeof(ListExoIter_t<Object>), HT_T_TINY ,0 }, // CN_LISTEXOITER_t
   { sizeof(LoadChunk),          HT_T_LARGE   ,0 }, // CN_LOADCHUNK
   { sizeof(Local),              HT_INVALID   ,0 }, // CN_LOCAL
   { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALSCHAIN
@@ -279,6 +315,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
   { sizeof(OpSpec),             HT_T_LARGE   ,0 }, // CN_OPSPEC
+  { sizeof(OtherOperand),       HT_T_TINY    ,0 }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 }, // CN_PATHIDENTIFIER
@@ -298,7 +335,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 }, // CN_PREDICATEVEC
   { sizeof(PrimitiveNode),        HT_T_TINY    , -8 }, // CN_PRIMITIVENODE
   { sizeof(Profile),              HT_T_MEDIUM  ,0 }, // CN_PROFILE
-  { sizeof(Project),              HT_T_LARGE   ,0 }, // CN_PROJECT
   { sizeof(PsxThd),               HT_T_TINY    ,0 }, // CN_PSXTHD
   { sizeof(PtnMap),               HT_T_LARGE   ,0 }, // CN_PTNMAP
   { sizeof(PtnStream),            HT_T_TINY    ,0 }, // CN_PTNSTREAM
@@ -348,6 +384,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SeApi),              HT_T_LARGE   ,0 }, // CN_SEAPI
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
+  { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
   { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY

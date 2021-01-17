@@ -3,6 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#include "IndexDef.hpp"
+
+#include "Pay.hpp"
+#include "Key.hpp"
+#include "Ent.hpp"
+
 namespace STORE
 {
   class SP_Ent : public SPsmall

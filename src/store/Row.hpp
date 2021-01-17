@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "StreamDef.hpp"
+
 namespace STORE
 {
   class Row : public Object

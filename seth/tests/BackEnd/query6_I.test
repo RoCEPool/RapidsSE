@@ -1,0 +1,252 @@
+--------------------------------------------------------------------------------
+-- query6 tests
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    | stageC
+
+  stage stageC on origin :
+    aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    | output | sink | stageA
+end;
+failure contains: "no such table"
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+success
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | aggreg 0 " as partitionRevenue sum ( l_extendedPrice l_discount * ) "
+    | stageC
+
+  stage stageC on origin :
+    aggreg 0 " as revenue sum ( partitionRevenue ) "
+    | output | sink | stageA
+end;
+rows: 0
+
+//------------------------------------------------------------------------------
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+rows:
+  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
+  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <>"
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+rows:
+  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
+  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01  +  <= <> l_quantity 26.0 < <>"
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+rows:
+  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01  +  <= <> l_quantity 26.0 < <>"
+    | stageC
+
+  stage stageC on origin :
+    project 0 " l_extendedPrice , l_discount"
+    | output | sink | stageA
+end;
+rows:
+ (39620.34,0.06)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01  +  <= <> l_quantity 26.0 < <>"
+    | stageC
+
+  stage stageC on origin :
+    project 0 " l_extendedPrice , l_discount , l_extendedPrice l_discount * "
+    | output | sink | stageA
+end;
+rows:
+  (39620.34,0.06,2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | stageC
+
+  stage stageC on origin :
+    aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    | output | sink | stageA
+end;
+rows:
+  (2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
+    | aggreg 0 " as partitionRevenue sum ( l_extendedPrice l_discount * ) "
+    | stageC
+
+  stage stageC on origin :
+    aggreg 0 " as revenue sum ( partitionRevenue ) "
+    | output | sink | stageA
+end;
+rows:
+  (2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | stageC
+
+  stage stageC on origin :
+    project 0 " l_extendedPrice , l_discount , l_extendedPrice l_discount * "
+    | output | sink | stageA
+end;
+rows:
+  (86083.65,0.06,5165.01)
+  (39620.34,0.06,2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
+    | aggreg 0 " as revenuePart sum ( l_extendedPrice l_discount * ) "
+    | stageC
+
+  stage stageC on origin :
+    aggreg 0 " as revenue sum ( revenuePart ) "
+    | output | sink | stageA
+end;
+rows:
+  (7542.23)
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table lineitem;
+success;
+
+CLEANUP {
+
+  drop table lineitem;
+  mute
+
+  bye;
+  mute
+}

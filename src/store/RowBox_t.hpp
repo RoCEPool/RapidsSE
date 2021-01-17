@@ -3,6 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+#include "Definition.hpp"
+
+#include "Row.hpp"
+
+#include "NmlStr.hpp"
+
+#include "Record.hpp"
+
 namespace STORE
 {
   template <i8 SIZE>

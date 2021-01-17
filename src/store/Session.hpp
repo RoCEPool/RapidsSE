@@ -4,7 +4,6 @@
 #pragma once
 
 #include "BASE.h"
-#include "STORE.h"
 
 
 #include "eAC.h"
@@ -19,7 +18,12 @@ namespace STORE
     i8    m_i_NextFree;    // next state in free chain
     
     eSK   m_eSession;      // session kind
-      
+
+    Input* m_pInput;      // input processor
+  
+    Job*  m_pSsnJob;    // job session currently executing
+    Tx*   m_pTx;        // current transaction
+  
     eAC   m_eApiFun;       // current / last api function called
     i8    m_iApiLoc;       // last reported location in api function
     eEC   m_eApiError;     // last error code in api function
@@ -57,8 +61,7 @@ namespace STORE
 
     TagSet   m_oSsnTagSet; // session level tags
 
-    Job*     m_pSsnJob;    // job session currently executing
-    Tx*      m_pTx;        // current transaction
+
   
     s4K      m_sToDo;      // prompt to do
       

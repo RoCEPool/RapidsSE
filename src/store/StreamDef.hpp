@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Definition.hpp"
+
 namespace STORE
 {
   class StreamDef : public Definition
@@ -43,6 +45,7 @@ namespace STORE
     void vAddColumns(StreamDef* pStreamDef);
     void vAsString(String* pString);
     i8 nColumns(i8 iSubSet);
+    Column* pFindColumn(Stz* sColumnNm);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
     void vName(Stz* sName);

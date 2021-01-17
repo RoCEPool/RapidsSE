@@ -3,7 +3,10 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "RowBuffer.hpp"
+
+#include "InfoSet.hpp"
 
 #include "OpSpec.hpp"
 #include "PipelineSpec.hpp"

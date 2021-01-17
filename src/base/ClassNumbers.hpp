@@ -41,7 +41,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
   /* */ CN_COLUMN,
-  /* */ CN_COMPILER,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTOROW,
@@ -63,7 +62,6 @@ enum eCN : u2 // Class Number
   /* */ CN__E__,
   /* */ CN_EDTVAL,
   /* */ CN_ENCODING,
-  /* */ CN_ENCODING_V2,
   /* */ CN_ENT,
   /* */ CN_ENTBUFFER,
   /* */ CN_ENTBUFSORTER,
@@ -76,7 +74,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FIPVAL,
-  /* */ CN_FILTER,
   /* */ CN_FLTVAL,
   /* */ CN_FORMAT,
   /* */ CN_FREEBUFFER,
@@ -128,6 +125,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
+  /* */ CN_LISTEXOITER_t,
   /* */ CN_LOADCHUNK,
   /* */ CN_LOCAL,
   /* */ CN_LOCALSCHAIN,
@@ -161,7 +159,8 @@ enum eCN : u2 // Class Number
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPSPEC,
-  
+  /* */ CN_OTHEROPERAND,
+
   /* */ CN__P__,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
@@ -180,7 +179,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PREDICATEVEC,
   /* */ CN_PRIMITIVENODE,
   /* */ CN_PROFILE,
-  /* */ CN_PROJECT,
   /* */ CN_PSXTHD,
   /* */ CN_PTNMAP,
   /* */ CN_PTNSTREAM,
@@ -230,6 +228,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
+  /* */ CN_SENCOMPILER,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONARRAY,
@@ -366,7 +365,6 @@ static Stz* aCN[]
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "COLUMN"_Stz,               // CN_COLUMN
-  /* */ "COMPILER"_Stz,             // CN_COMPILER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
@@ -388,7 +386,6 @@ static Stz* aCN[]
   /* */ "_E__"_Stz,                 // CN__E__
   /* */ "EDTVAL"_Stz,               // CN_EDTVAL
   /* */ "ENCODING"_Stz,             // CN_ENCODING
-  /* */ "ENCODING_V2"_Stz,          // CN_ENCODING_V2
   /* */ "ENT"_Stz,                  // CN_ENT
   /* */ "ENTBUFFER"_Stz,            // CN_ENTBUFFER
   /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
@@ -401,7 +398,6 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
-  /* */ "FILTER"_Stz,               // CN_FILTER
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER
@@ -452,6 +448,7 @@ static Stz* aCN[]
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
+  /* */ "LISTEXOITER_t"_Stz,        // CN_LISTEXOITER_t
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
   /* */ "LOCAL"_Stz,                // CN_LOCAL
   /* */ "LOCALSCHAIN"_Stz,          // CN_LOCALSCHAIN
@@ -485,7 +482,8 @@ static Stz* aCN[]
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
-   
+  /* */ "OTGEROPERAND"_Stz,         // CN_OTHEROPERAND
+
   /* */ "_P__"_Stz,                 // CN__P__
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
@@ -504,7 +502,6 @@ static Stz* aCN[]
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
   /* */ "PROFILE"_Stz,              // CN_PROFILE
-  /* */ "PROJECT"_Stz,              // CN_PROJECT
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNMAP"_Stz,               // CN_PTNMAP
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
@@ -554,6 +551,7 @@ static Stz* aCN[]
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
+  /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONARRAY

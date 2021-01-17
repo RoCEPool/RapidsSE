@@ -3,7 +3,17 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "IndexDef.hpp"
+
+#include "RowBuffer.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "TailLine.hpp"
+
+#include "Crw.hpp"
+#include "RowInflator.hpp"
 
 
 /*----------------------------------------------------------------------------*/

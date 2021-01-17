@@ -48,6 +48,9 @@ namespace STORE
   Stage* _pStage(void* aAddr);
 }
 
+// declare a function pointer to any member function of Step
+typedef void (Step::*fpSTEPFN)(void);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

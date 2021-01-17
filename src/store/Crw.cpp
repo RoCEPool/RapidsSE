@@ -1,10 +1,15 @@
 /*============================================================================*/
-/* Crw.hpp -- Compact Row                                                    */
+/* Crw.cpp -- Compact Row                                                    */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
+#include "StreamDef.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "Crw.hpp"
 
 extern EnvFlags gxEnvFlags;
 

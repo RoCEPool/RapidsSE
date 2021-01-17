@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Compiler.hpp -- Sen Word Compiler                                          */
+/* SenCompiler.hpp -- Sen Word Compiler                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace BASE
 {
-  class Compiler : public Object
+  class SenCompiler : public Object
   {
   private:
     Word* m_pCurrent;        // current word being compiled
@@ -23,8 +23,8 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Compiler(void);
-   ~Compiler(void) noexcept(false);
+    SenCompiler(void);
+   ~SenCompiler(void) noexcept(false);
   
     bool  bCompiling(void);
     Word* pCurrentWord(void);
@@ -41,7 +41,7 @@ namespace BASE
     Footer* aFooter(void);
   };
 
-  Compiler* _pCompiler(void* aAddr);
+  SenCompiler* _pSenCompiler(void* aAddr);
 }
 
 /*============================================================================*/

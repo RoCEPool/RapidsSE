@@ -3,11 +3,10 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 
 #include "Step.hpp"
 
-fpSTEPFN gfpEntryStep = &STORE::Step::vEnterRoutine;
+fpSTEPFN gfpDoColon = &STORE::Step::vSenDoColon;
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
@@ -20,7 +19,7 @@ void Step::vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate)
   Dic* pRootDic = AM::pRootDic();
   Word* pNewWord = new(pRootDic) Word(aName);
   
-  //m_pCompiler->vCurrentWord(pNewWord);
+  //m_pSenCompiler->vCurrentWord(pNewWord);
   
   pNewWord->vWord(WK_INTRINSIC);
   pNewWord->vEntryStep(fpStepFn);
@@ -57,7 +56,6 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
-  Step::vAddSteps_Compiler();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_CrwBuffer();
   Step::vAddSteps_CrwToRow();
@@ -74,7 +72,6 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_TagSet();
   Step::vAddSteps_Encode();
-  Step::vAddSteps_Enter();
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
   Step::vAddSteps_Error();
@@ -82,9 +79,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
-  Step::vAddSteps_Filter();
-  Step::vAddSteps_Flow();
-  Step::vAddSteps_Forth();
 
   Step::vAddSteps_Grid();
   
@@ -137,7 +131,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
   Step::vAddSteps_Profile();
-  Step::vAddSteps_Project();
   Step::vAddSteps_PtnMap();
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
@@ -170,9 +163,12 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_SeekOffsets();
+  Step::vAddSteps_Sen();
+  Step::vAddSteps_SenCompiler();
   Step::vAddSteps_Session();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Socket();
+  Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();

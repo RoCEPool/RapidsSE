@@ -3,7 +3,8 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "RowBuffer.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"

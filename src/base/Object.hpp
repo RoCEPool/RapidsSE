@@ -57,7 +57,7 @@ EndDefine
 EndDefine
 
 
-#ifdef WITH_PREPOST_CHECKING
+#ifdef WITH_CORRECTNESS_ALGEBRA
 
   #define _checkCondition_(checkValue)       \
     if (typeid(checkValue) == typeid(int)) { \

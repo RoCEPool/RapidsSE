@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
@@ -38,6 +37,7 @@ void Step::vAddSteps_LogicUnit(void)
 
   vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
+  vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
@@ -272,6 +272,23 @@ void Step::vLogicUnitDynFunArgs(void)
 
   i8 iRes = ( m_pJob->pLogicUnit_job() )->iDynFun(nArgs,iArg0);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genAggregate -- generate aggregation asm text into file        */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenAggregate(void)
+{
+  ENTRY();
+
+  ExprEval* pExprEval;
+  pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
+
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  ( m_pJob->pLogicUnit_job() )->vGenerateAggregate(pExprEval, pStreamDefOut);
+
   EXIT();
 }
 

@@ -121,16 +121,6 @@ void BASE::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 bool BASE::bTraceWith(Stz* szWith)
 {
-#ifdef WITH_ACTION_SEQUENCE
-  if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
-    return true;
-#endif
-  
-#ifdef WITH_ADDRESS_CHECKING
-  if (szWith->bSame("WITH_ADDRESS_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifdef WITH_APPLE
   if (szWith->bSame("WITH_APPLE"_Stz))
     return true;
@@ -176,8 +166,8 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
   
-#ifdef WITH_ENTRY_EXIT
-  if (szWith->bSame("WITH_ENTRY_EXIT"_Stz))
+#ifdef WITH_STEP_TIMING
+  if (szWith->bSame("WITH_STEP_TIMING"_Stz))
     return true;
 #endif
     
@@ -206,11 +196,6 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
   
-#ifdef WITH_PREPOST_CHECKING
-  if (szWith->bSame("WITH_PREPOST_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifdef WITH_PULSING
   if (szWith->bSame("WITH_PULSING"_Stz))
     return true;
@@ -223,11 +208,6 @@ bool BASE::bTraceWith(Stz* szWith)
   
 #ifdef WITH_RELEASE_VERSION
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
-    return true;
-#endif
-    
-#ifdef WITH_SETH_SUPPORT
-  if (szWith->bSame("WITH_SETH_SUPPORT"_Stz))
     return true;
 #endif
   
@@ -270,15 +250,7 @@ bool BASE::bTraceWith(Stz* szWith)
 void BASE::vTraceWith(void)
 {
   vTrace("\nWith:\n"_Stz);
-
-#ifdef WITH_ACTION_SEQUENCE
-  vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
-#endif
-  
-#ifdef WITH_ADDRESS_CHECKING
-  vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
-#endif
-  
+    
 #ifdef WITH_APPLE
   vTrace("  WITH_APPLE\n"_Stz);
 #endif
@@ -315,8 +287,8 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif
   
-#ifdef WITH_ENTRY_EXIT
-  vTrace("  WITH_ENTRY_EXIT\n"_Stz);
+#ifdef WITH_STEP_TIMING
+  vTrace("  WITH_STEP_TIMING\n"_Stz);
 #endif
     
 #ifdef WITH_INFLATE_TRACE
@@ -339,10 +311,6 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
   
-#ifdef WITH_PREPOST_CHECKING
-  vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
-#endif
-  
 #ifdef WITH_PULSING
   vTrace("  WITH_PULSING\n"_Stz);
 #endif
@@ -355,10 +323,6 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
     
-#ifdef WITH_SETH_SUPPORT
-  vTrace("  WITH_SETH_SUPPORT\n"_Stz);
-#endif
-  
 #ifdef WITH_SHARED_LOG
   vTrace("  WITH_SHARED_LOG\n"_Stz);
 #endif
@@ -390,16 +354,6 @@ void BASE::vTraceWith(void)
 /*----------------------------------------------------------------------------*/
 bool BASE::bTraceWithout(Stz* szWith)
 {
-#ifndef WITH_ACTION_SEQUENCE
-  if (szWith->bSame("WITH_ACTION_SEQUENCE"_Stz))
-    return true;
-#endif
-  
-#ifndef WITH_ADDRESS_CHECKING
-  if (szWith->bSame("WITH_ADDRESS_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_APPLE
   if (szWith->bSame("WITH_APPLE"_Stz))
     return true;
@@ -445,8 +399,8 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
-#ifndef WITH_ENTRY_EXIT
-  if (szWith->bSame("WITH_ENTRY_EXIT"_Stz))
+#ifndef WITH_STEP_TIMING
+  if (szWith->bSame("WITH_STEP_TIMING"_Stz))
     return true;
 #endif
     
@@ -475,11 +429,6 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
-#ifndef WITH_PREPOST_CHECKING
-  if (szWith->bSame("WITH_PREPOST_CHECKING"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_PULSING
   if (szWith->bSame("WITH_PULSING"_Stz))
     return true;
@@ -495,11 +444,6 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
     
-#ifndef WITH_SETH_SUPPORT
-  if (szWith->bSame("WITH_SETH_SUPPORT"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_SHARED_LOG
   if (szWith->bSame("WITH_SHARED_LOG"_Stz))
     return true;
@@ -539,15 +483,7 @@ bool BASE::bTraceWithout(Stz* szWith)
 void BASE::vTraceWithout(void)
 {
   vTrace("\nWithout:\n"_Stz);
-
-#ifndef WITH_ACTION_SEQUENCE
-  vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
-#endif
-  
-#ifndef WITH_ADDRESS_CHECKING
-  vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
-#endif
-  
+    
 #ifndef WITH_APPLE
   vTrace("  WITH_APPLE\n"_Stz);
 #endif
@@ -584,8 +520,8 @@ void BASE::vTraceWithout(void)
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif
   
-#ifndef WITH_ENTRY_EXIT
-  vTrace("  WITH_ENTRY_EXIT\n"_Stz);
+#ifndef WITH_STEP_TIMING
+  vTrace("  WITH_STEP_TIMING\n"_Stz);
 #endif
     
 #ifndef WITH_INFLATE_TRACE
@@ -608,10 +544,6 @@ void BASE::vTraceWithout(void)
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
   
-#ifndef WITH_PREPOST_CHECKING
-  vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
-#endif
-  
 #ifndef WITH_PULSING
   vTrace("  WITH_PULSING\n"_Stz);
 #endif
@@ -622,10 +554,6 @@ void BASE::vTraceWithout(void)
   
 #ifndef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
-#endif
-  
-#ifndef WITH_SETH_SUPPORT
-  vTrace("  WITH_SETH_SUPPORT\n"_Stz);
 #endif
   
 #ifndef WITH_SHARED_LOG

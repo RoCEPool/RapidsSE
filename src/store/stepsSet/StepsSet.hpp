@@ -158,27 +158,6 @@ public:
   void vCommandPreJob(void);
   void vCommandSpawnJob(void);
 
-  // comment
-  void vComment(void);
-
-  // comment
-  void vCompilerCompiling(void);
-  void vCompilerCondBegin(void);
-  void vCompilerCondEnd(void);
-  void vCompilerCondElse(void);
-  void vCompilerCondTest(void);
-  void vCompilerCurrentFetch(void);
-  void vCompilerCurrentStore(void);
-  void vCompilerDiscarding(void);
-  void vCompilerInterpreting(void);
-  void vCompilerIsCompiling(void);
-  void vCompilerIsDiscarding(void);
-  void vCompilerIsInterpreting(void);
-  void vCompilerIsPostponing(void);
-  void vCompilerNestedFetch(void);
-  void vCompilerNestedStore(void);
-  void vCompilerPostponing(void);
-
   // crwBuffer
   void vCrwBufferDelete(void);
   void vCrwBufferOperandDump(void);
@@ -299,9 +278,6 @@ public:
   void vEncodeThen(void);
   void vEncodeUntil(void);
 
-  // enter
-  void vEnterRoutine(void);
-
   // entry
   void vEntryMatches(void);
   void vEntrySame(void);
@@ -341,7 +317,9 @@ public:
   // project
   void vExprEvalGet(void);
   void vExprEvalNew(void);
-  void vExprEvalColumns(void);
+  void vExprEvalAggregate(void);
+  void vExprEvalFilter(void);
+  void vExprEvalProject(void);
   void vExprEvalSet(void);
 
   // fact
@@ -390,29 +368,6 @@ public:
   void vFilterNew(void);
   void vFilterRows(void);
   void vFilterSet(void);
-
-  // flow
-  void vFlowExecute(void);
-  void vFlowHazard(void);
-  void vFlowJump(void);
-  void vFlowJumpFalse(void);
-  void vFlowJumpTrue(void);
-  void vFlowNop(void);
-  void vFlowReenter(void);
-  void vFlowTest(void);
-  void vFlowThrow(void);
-
-  // forth
-  void vColon(void);
-  void vCreateFromInRoot(void);
-  void vExit_RT(void);
-  void vFind(void);
-  void vImmediate(void);
-  void vMungedText(void);
-  void vPostpone(void);
-  void vSee(void);
-  void vSemicolon(void);
-  void vSeriesName(void);
 
   // grid
   void vGridBootNodes(void);
@@ -902,6 +857,7 @@ public:
   void vLogicCompilerDelete(void);
   void vLogicCompilerExtract(void);
   void vLogicCompilerExtractAsm(void);
+  void vLogicCompilerIsNull(void);
   void vLogicCompilerNew(void);
 
   // logic unit
@@ -920,6 +876,7 @@ public:
   void vLogicUnitDiaryTitle(void);
   void vLogicUnitDynFun(void);
   void vLogicUnitDynFunArgs(void);
+  void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenCode(void);
@@ -1379,6 +1336,50 @@ public:
   // csv buffer
   void vSeekOffsetsOperandDump(void);
 
+  // sen
+  void vSenColon(void);
+  void vSenComment(void);
+  void vSenCreateFromInRoot(void);
+  void vSenDoColon(void);
+  void vSenExecute(void);
+  void vSenExit_RT(void);
+  void vSenFind(void);
+  void vSenImmediate(void);
+  void vSenInnerInterpreter(void);
+  void vSenMungedText(void);
+  void vSenPostpone(void);
+  void vSenSee(void);
+  void vSenSemicolon(void);
+  void vSenSeriesName(void);
+
+  // sen2 (was flow
+  void vSenHazard(void);
+  void vSenJump(void);
+  void vSenJumpFalse(void);
+  void vSenJumpTrue(void);
+  void vSenNop(void);
+  void vSenReenter(void);
+  void vSenTest(void);
+  void vSenThrow(void);
+
+  // sen compiler
+  void vSenCompilerCompiling(void);
+  void vSenCompilerCondBegin(void);
+  void vSenCompilerCondEnd(void);
+  void vSenCompilerCondElse(void);
+  void vSenCompilerCondTest(void);
+  void vSenCompilerCurrentFetch(void);
+  void vSenCompilerCurrentStore(void);
+  void vSenCompilerDiscarding(void);
+  void vSenCompilerInterpreting(void);
+  void vSenCompilerIsCompiling(void);
+  void vSenCompilerIsDiscarding(void);
+  void vSenCompilerIsInterpreting(void);
+  void vSenCompilerIsPostponing(void);
+  void vSenCompilerNestedFetch(void);
+  void vSenCompilerNestedStore(void);
+  void vSenCompilerPostponing(void);
+
   // session
   void vSessionCommand(void);
   void vSessionDicStackFetch(void);
@@ -1407,6 +1408,11 @@ public:
   void vSocketRecvObject(void);
   void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
+
+  // sql compiler
+  void vSqlCompilerNameValidate(void);
+  void vSqlCompilerParser(void);
+  void vSqlCompilerTransliterate(void);
 
   // ssn
   void vSsnIncBegun(void);
@@ -1534,6 +1540,8 @@ public:
 
   // Supervisor
   void vSupervisorCollectInfo(void);
+  void vSupervisorHaltFetch(void);
+  void vSupervisorHaltStore(void);
 
   // system schedule
   void vSystemScheduleCheckSleeping(void);

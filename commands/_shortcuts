@@ -13,6 +13,7 @@ shortcut asm20  _AsmQuery20;
 shortcut b    _bm_insidx;
 shortcut bc   _bootCluster;
 shortcut i    _bm_inflateRow;
+shortcut cm   antlr: select col1 as c1, col2 as c2 from t;
 shortcut cp   _cancelPipeline;
 shortcut ct   /flow create table t (a integer);
 shortcut l    _loadPipeline;

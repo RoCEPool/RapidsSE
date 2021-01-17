@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include "Index.hpp"
+
+
 namespace STORE
 {
   static const char* C_SORT_REGION_BASE  = (char*)0x409600000000;

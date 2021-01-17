@@ -3,7 +3,20 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "IndexDef.hpp"
+
+#include "RowSingle.hpp"
+#include "RowBuffer.hpp"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "TailLine.hpp"
+
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "RowInflator.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"

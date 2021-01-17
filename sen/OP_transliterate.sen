@@ -1,0 +1,93 @@
+/*============================================================================*/
+/* OP_transliterate.sen -- Transliterate Op (SQL Compiler)                    */
+/*============================================================================*/
+
+" OP_transliterate.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: transliterate_CancelMarker \handler
+
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: transliterate_DataMarker \handler
+ 
+  ZK_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EOSMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+: transliterate_EosMarker \handler
+ 
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_OTHEROPERAND ...                                            */
+/*----------------------------------------------------------------------------*/
+: transliterate_OtherOperand \handler
+ 
+  PipeIn[] to Operand[]
+    nullptr to PipeIn[]
+
+  Operand[] nullptr to Operand[] sqlCompiler::transliterate
+  
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: transliterate_StartMarker \handler
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler op request                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: transliterate_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: transliterate_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: transliterate_DataMarker   ZK_DATAPULSE    op[].handler!
+  find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: transliterate_OtherOperand ZK_OTHEROPERAND op[].handler!
+  find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: transliterate :: transliterate ;
+
+: transliterate_cmdTags _cmdTags tagCopy: op_tags
+
+  tags{
+    <cmdDesc>    = "--desc for op--"
+  }
+
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

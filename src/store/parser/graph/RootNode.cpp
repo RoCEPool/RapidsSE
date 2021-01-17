@@ -34,6 +34,17 @@ RootNode::RootNode(Stz* szName, Stz* szType, Value xValue,
 }
 
 /*----------------------------------------------------------------------------*/
+/* temp constructor for use by ray to test sql compiler pipeline              */
+/*----------------------------------------------------------------------------*/
+RootNode::RootNode(void* aTempTest_byRay)
+    : PlanNode(CN_ROOTNODE,aTempTest_byRay)
+{
+  
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 RootNode::~RootNode(void)

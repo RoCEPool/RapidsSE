@@ -45,7 +45,7 @@ namespace STORE
 
     static eAM  eFindAM(Stz* szEOname);
     static eEO  eFindEO(Stz* szEOname);
-    static Stz* szGetMacro(eAM eMacro, TagSet* pTagSet);
+    static Stz* szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sMacro);
 
     i8 iCall(void);
     i8 iCompile(LogicUnit* pLogicUnit, void* aDynArg);

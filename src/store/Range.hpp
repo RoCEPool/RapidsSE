@@ -5,6 +5,8 @@
 
 #include "eAM.h"
 
+#include "Definition.hpp"
+
 namespace STORE
 {
   class Range : public Definition

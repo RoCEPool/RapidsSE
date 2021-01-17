@@ -3,10 +3,16 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "STORE.h"
+
+#include "RowSingle.hpp"
+#include "EntWrk.hpp"
 
 #include "SP_Key.hpp"
 #include "SP_Ref.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */
