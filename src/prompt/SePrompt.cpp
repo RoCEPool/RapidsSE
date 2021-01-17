@@ -58,7 +58,7 @@ SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput     = nullptr;
+  m_pInput    = nullptr;
   m_pInpTknVec = nullptr;
   
   m_iDivisionNo = 0;
@@ -152,11 +152,11 @@ void SePrompt::vPromptLoop(void)
   // we need to set the thread key to non-zero
   PsxThd::vMarkNonSeThread();
   
-  ASSERT(0 == m_pInput->iDepth());
-  m_pInput->vUseStdin();
-  m_pInput->vFormCppTokens();
-  m_pInput->vUseBegin();
-  //m_pInput->vInspect();
+  ASSERT(0 == pInputGet()->iDepth());
+  pInputGet()->vUseStdin();
+  pInputGet()->vFormCppTokens();
+  pInputGet()->vUseBegin();
+  //pInputGet()->vInspect();
 
   if (d_iDebugMode) {
     vJotDebug(d_iDebugMode);
@@ -251,7 +251,7 @@ bool SePrompt::bGetCommand(void)
   if (bExecuteFunction())
     return false;
 
-  Stz* szCmdFile = m_pInput->szPath();
+  Stz* szCmdFile = pInputGet()->szPath();
   i8   iCmdLine  = pTkn(0)->iLineNo();
 
   if (bIsPromptWord())
@@ -299,10 +299,10 @@ bool SePrompt::bGetCommand(void)
     m_oExtTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
   }
 
-  if (*m_pInput->szDivision()->azChar())
-    m_oExtTagSet.vInsert(C_TAG_DIVISION,m_pInput->szDivision());
-  if (*m_pInput->szSection()->azChar())
-    m_oExtTagSet.vInsert(C_TAG_SECTION,m_pInput->szSection());
+  if (*pInputGet()->szDivision()->azChar())
+    m_oExtTagSet.vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
+  if (*pInputGet()->szSection()->azChar())
+    m_oExtTagSet.vInsert(C_TAG_SECTION,pInputGet()->szSection());
 
   return true;
 }
@@ -451,7 +451,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pInpTknVec = m_pInput->pTokenVec();
+  TokenVec* pInpTknVec = pInputGet()->pTokenVec();
   
   //pTknVec->vPrint();
   
@@ -470,9 +470,9 @@ void SePrompt::vDebugMode(i8 iDebugMode)
   d_iDebugMode = iDebugMode;
 
   if (d_iDebugMode > 1)
-    m_pInput->vDebugMode(d_iDebugMode);
+    pInputGet()->vDebugMode(d_iDebugMode);
   else
-    m_pInput->vDebugMode(0);
+    pInputGet()->vDebugMode(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,7 +500,7 @@ void SePrompt::vDivision(Stz* szDivision)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput->vDivision(szDivision);
+  pInputGet()->vDivision(szDivision);
   
   m_iSectionNo = 0;
 }
@@ -851,14 +851,15 @@ void SePrompt::vInitialSettings(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput     = new Input;
-  m_pInpTknVec = m_pInput->pTokenVec();
+  vInputSet(new Input);
+  
+  m_pInpTknVec = pInputGet()->pTokenVec();
 
-  m_pInput->vDebugMode(d_iDebugMode);
+  pInputGet()->vDebugMode(d_iDebugMode);
 
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  m_pInput->vForkReset();
+  pInputGet()->vForkReset();
 
   SeDeputy* m_pCurrentDeputy = pCreateDeputy();
   
@@ -1142,7 +1143,7 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case:
   
-  if (m_bOneCommand && m_pInput->bIsStdin()) {
+  if (m_bOneCommand && pInputGet()->bIsStdin()) {
     m_pInpTknVec->vIntegrityCheck();
     return false;
   }
@@ -1150,7 +1151,7 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // general case
   
-  m_pInput->vReadCommand();
+  pInputGet()->vReadCommand();
   m_pInpTknVec->vIntegrityCheck();
 
   return true;
@@ -1168,10 +1169,10 @@ bool SePrompt::bRedirectFromFile(void)
   if (! File::bExists(szPath, false))
     return false;
       
-  m_pInput->vPushCharser();
-  bool b = m_pInput->bUseFile(szPath);
+  pInputGet()->vPushCharser();
+  bool b = pInputGet()->bUseFile(szPath);
 
-  m_pInput->vUseBegin();
+  pInputGet()->vUseBegin();
 
   return true;
 }
@@ -1290,7 +1291,7 @@ void SePrompt::vSection(Stz* szSection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput->vSection(szSection);
+  pInputGet()->vSection(szSection);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1344,7 +1345,7 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_pInput->bIsStdin())
+  if (pInputGet()->bIsStdin())
     return true;
   else
     return false;
