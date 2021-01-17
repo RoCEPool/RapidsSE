@@ -76,9 +76,9 @@ namespace PROMPT
   
     void vPromptLoop(void);
 
-    bool bGetCommand(SeDeputy* pSeDeputy);
-    bool bPrepareJob(SeDeputy* pSeDeputy);
-    void vDeputiseJob(SeDeputy* pSeDeputy);
+    bool bGetCommand(void);
+    bool bPrepareJob(void);
+    void vDeputiseJob(void);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
@@ -108,28 +108,28 @@ namespace PROMPT
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    void vMakeDiaryDir(SeDeputy* pSeDeputy);
+    void vMakeDiaryDir(void);
     Mutex* pMutex(void);
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     void vPromptUser(void);
-    bool bReadNextCommand(SeDeputy* pSeDeputy);
+    bool bReadNextCommand(void);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);
     void vReportPool(void);
     void vReportTrace();
-    void vResetExtractedTagSet(SeDeputy* pSeDeputy);
+    void vResetExtractedTagSet(void);
     void vResetSectionNo(void);
     i8   iRequestId(void);
     void vSection(Stz* szSection);
     TagSet* pPmtTagSet(void);
     Session* pSession(void);
-    bool bShortCut(SeDeputy* pSeDeputy);
+    bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
-    bool bSubSsnTags(SeDeputy* pSeDeputy);
+    bool bSubSsnTags(void);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
