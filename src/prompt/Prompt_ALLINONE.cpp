@@ -3434,7 +3434,7 @@ PromptFun __Prompt_print (
 //------------------------------------------------------------------------------
 bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 {
-  Input* pInput = pPrompt->pInput();
+  Input* pInput = pPrompt->pInputGet();
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 

@@ -104,7 +104,8 @@ namespace PROMPT
     bool bHandleDemo(void);
     void vInitialSettings(void);
     TokenVec* pInpTknVec(void);
-    Input* pInput(void);
+    Input* pInputGet(void);
+    void vInputSet(Input* pInput);
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);

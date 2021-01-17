@@ -1419,13 +1419,23 @@ TokenVec* SePrompt::pInpTknVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get input                                                                 */
+/* get input                                                                  */
 /*----------------------------------------------------------------------------*/
-Input* SePrompt::pInput(void)
+Input* SePrompt::pInputGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input                                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vInputSet(Input* pInput)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pInput = pInput;
 }
 
 /*----------------------------------------------------------------------------*/
