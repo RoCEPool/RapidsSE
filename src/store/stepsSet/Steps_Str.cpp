@@ -19,6 +19,7 @@ void Step::vAddSteps_Str(void)
   
   vAddStep("str.cat"_Stz,          &Step::vStrCat);
   vAddStep("str.clip"_Stz,         &Step::vStrClip);
+  vAddStep("str.contains"_Stz,     &Step::vStrContains);
   vAddStep("str.equal"_Stz,        &Step::vStrEqual);
   vAddStep("str.escape"_Stz,       &Step::vStrEscape);
   vAddStep("str.firstCsv"_Stz,     &Step::vStrFirstCsv);
@@ -114,6 +115,27 @@ void Step::vStrClip(void)
   
   m_pDataStack->vPushStr(sSubStr);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.contains -- test is str contains given substring argument              */
+/*----------------------------------------------------------------------------*/
+void Step::vStrContains(void)
+{
+  ENTRY();
+  
+  // get the arguments
+  s48K sString;
+  m_pDataStack->vPopStr(sString,__func__);
+  
+  s48K sArg;
+  m_pDataStack->vPopStr(sString,__func__);
+
+  bool bContains = StrLib::bContains(sString.azChar(),sArg.azChar());
+  
+  m_pDataStack->vPushInt(bContains);
+
   EXIT();
 }
 

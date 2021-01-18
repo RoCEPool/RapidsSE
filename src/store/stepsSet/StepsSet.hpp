@@ -1435,6 +1435,7 @@ public:
   void vStrAlgebra(void);
   void vStrCat(void);
   void vStrClip(void);
+  void vStrContains(void);
   void vStrEqual(void);
   void vStrEscape(void);
   void vStrFirstCsv(void);
