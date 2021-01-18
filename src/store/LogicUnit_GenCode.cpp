@@ -2549,6 +2549,7 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   pFile->vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+  delete pExprEvalStar;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file

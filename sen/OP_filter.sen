@@ -89,6 +89,11 @@
   Pot[].pipeoutAllDanglingPtns
   Pot[].delete
 
+  // delete the src streamDef linked asSrcStreamDef
+  StreamDef[].isNull not if
+    StreamDef[].delete
+  then
+
   Counter0[] cleanUpAsm
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
@@ -116,6 +121,9 @@
     eError op.pipelineJob@ ERROR_JOB
     Operand[].newErrorMarker
     Operand[].pipeOut
+    StreamDef[].delete
+    StreamDefOut[].delete
+    ExprEval[].delete
     true
     exit
   then
