@@ -442,26 +442,6 @@ bool Charser::bUseFile(Stz* szPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get include                                                                */
-/*----------------------------------------------------------------------------*/
-Word* Charser::pUseInclude(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-  
-  return m_pInclude;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use is given include group/file                                            */
-/*----------------------------------------------------------------------------*/
-void Charser::vUseInclude(Word* pInclude)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
-
-  m_pInclude = pInclude;
-}
-
-/*----------------------------------------------------------------------------*/
 /* use stdin for charsing                                                     */
 /*----------------------------------------------------------------------------*/
 void Charser::vUseStdin(void)
@@ -624,7 +604,6 @@ void Charser::vResetCharser(void)
   m_sPath      = C_NO_NAME;
   m_sDivision  = ""_Stz;
   m_sSection   = ""_Stz;
-  m_pInclude   = nullptr;
   
   // source
   m_pSrcFile->vReset();

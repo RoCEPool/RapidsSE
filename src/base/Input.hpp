@@ -69,7 +69,6 @@ namespace BASE
     void vUseClose(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
-    Word* pUseInclude(void);
     void vUseInclude(Word* pInclude);
     void vUseStdin(void);
     void vUseString(Stz* szString);

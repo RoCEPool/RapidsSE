@@ -525,7 +525,6 @@ public:
   void vInputUnknown(void);
   void vInputUseBegin(void);
   void vInputUseEnd(void);
-  void vInputUseInclude(void);
   void vInputUseString(void);
 
   // int
