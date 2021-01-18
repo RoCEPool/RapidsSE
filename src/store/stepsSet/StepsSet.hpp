@@ -881,7 +881,6 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenAsmTxt(void);
-  void vLogicUnitGenCode(void);
   void vLogicUnitGenFilter(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);

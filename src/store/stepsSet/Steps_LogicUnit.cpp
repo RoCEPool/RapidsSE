@@ -40,7 +40,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
-  vAddStep("LogicUnit[].genCode"_Stz,       &Step::vLogicUnitGenCode);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
   vAddStep("LogicUnit[].genRange"_Stz,      &Step::vLogicUnitGenRange);
@@ -342,20 +341,6 @@ void Step::vLogicUnitGenAsmTxt(void)
   i8 iQueryNo = m_pDataStack->iPopInt(__func__);
 
   //( m_pJob->pLogicUnit_job() )->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].genCode -- generate code for given test                        */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitGenCode(void)
-{
-  ENTRY();
-  
-  i8 iTestNo = m_pDataStack->iPopInt(__func__);
-      
-  ( m_pJob->pLogicUnit_job() )->vGenCode(iTestNo);
   
   EXIT();
 }
