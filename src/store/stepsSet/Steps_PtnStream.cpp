@@ -157,6 +157,9 @@ void Step::vPtnStreamRead(void)
   
   CrwBuffer* pCrwBuffer = pPtnStream->pRead();
 
+  ASSERT(! pCrwBuffer || ! pCrwBuffer->pNextItem());
+  ASSERT(! pCrwBuffer || ! pCrwBuffer->pPrevItem());
+
   m_pDataStack->vPushPtr(pCrwBuffer);
 
   EXIT();

@@ -177,6 +177,11 @@ void Step::vRegPipeinSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpPipein.bIsNull());
+  
+  ASSERT(! pOperand || ! pOperand->pNextItem());
+  ASSERT(! pOperand || ! pOperand->pPrevItem());
+
+  
   ( m_pJob->pLogicUnit_job() )->m_xpPipein = _pOperand(pOperand);
   
   EXIT();

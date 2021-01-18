@@ -53,6 +53,9 @@ void Step::vTablePtnAppendBuffer(void)
   // get the CrwBuffer
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
   
+  ASSERT(! pCrwBuffer->pNextItem());
+  ASSERT(! pCrwBuffer->pPrevItem());
+
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
   
