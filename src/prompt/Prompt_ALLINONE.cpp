@@ -77,6 +77,8 @@ PromptFun __Prompt_antlr (
 //------------------------------------------------------------------------------
 bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
 {
+  vTrace("_antrl: %s\n"_Stz,pPrompt->szOriginalCommand());
+
   // Read in and parse the plan graph definitions
   const PlanNode* pGraphTemplate = PlanDefinitionParser::pGraphTemplate();
 
