@@ -113,6 +113,7 @@
   then
 
   StreamDefOut[] ExprEval[] LogicUnit[].genProjection
+  ExprEval[].delete
 
   StreamDef[].asSrcStreamDef
   false pot[].useStreamDefOut

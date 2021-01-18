@@ -121,6 +121,7 @@
   then
 
   StreamDefOut[] ExprEval[] LogicUnit[].genFilter
+  ExprEval[].delete
 
   StreamDef[].asSrcStreamDef
   false pot[].useStreamDefOut

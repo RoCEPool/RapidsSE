@@ -20,9 +20,10 @@
 void Step::vAddSteps_ExprEval(void)
 {
   vAddStep("exprEval[]"_Stz,                 &Step::vExprEvalGet);
-  vAddStep("exprEval[].new"_Stz,             &Step::vExprEvalNew);
+  vAddStep("exprEval[].delete"_Stz,          &Step::vExprEvalDelete);
   vAddStep("exprEval[].aggregate"_Stz,       &Step::vExprEvalAggregate);
   vAddStep("exprEval[].filter"_Stz,          &Step::vExprEvalFilter);
+  vAddStep("exprEval[].new"_Stz,             &Step::vExprEvalNew);
   vAddStep("exprEval[].project"_Stz,         &Step::vExprEvalProject);
   vAddStep("exprEval[].set"_Stz,             &Step::vExprEvalSet);
 }
@@ -40,13 +41,15 @@ void Step::vExprEvalGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exprEval[].new -- new an expr evaluator                                    */
+/* exprEval[].delete -- delete the expr evaluator                             */
 /*----------------------------------------------------------------------------*/
-void Step::vExprEvalNew(void)
+void Step::vExprEvalDelete(void)
 {
   ENTRY();
 
-  ( m_pJob->pLogicUnit_job() )->m_xpExprEval = new ExprEval;
+  ExprEval* pExprEval = *( m_pJob->pLogicUnit_job() )->m_xpExprEval;
+  ( m_pJob->pLogicUnit_job() )->m_xpExprEval = nullptr;
+  delete pExprEval;
   
   EXIT();
 }
@@ -97,6 +100,18 @@ void Step::vExprEvalFilter(void)
     eError = EC_INVALID_COMMAND;
 
   m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* exprEval[].new -- new an expr evaluator                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vExprEvalNew(void)
+{
+  ENTRY();
+
+  ( m_pJob->pLogicUnit_job() )->m_xpExprEval = new ExprEval;
 
   EXIT();
 }

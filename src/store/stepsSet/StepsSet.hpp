@@ -316,6 +316,7 @@ public:
 
   // project
   void vExprEvalGet(void);
+  void vExprEvalDelete(void);
   void vExprEvalNew(void);
   void vExprEvalAggregate(void);
   void vExprEvalFilter(void);
