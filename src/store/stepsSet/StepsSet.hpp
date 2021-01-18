@@ -1863,8 +1863,6 @@ public:
   void vWordFind(void);
   void vWordImmediateGet(void);
   void vWordImmediateSet(void);
-  void vWordIncludeFetch(void);
-  void vWordIncludeStore(void);
   void vWordIsImmediate(void);
   void vWordIsIntrinsic(void);
   void vWordKindFetch(void);

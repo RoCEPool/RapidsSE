@@ -40,16 +40,9 @@
   pWord word.category@ locals| pCatg     |
   pCatg word.name@     locals| sCatgName |
 
-  pWord word.include@  locals| pInclude |
   pWord word.tagSet@   locals| pWordTags |
 
   sWordName sCatgName "%12v : %24v" .putf
-
-  pInclude if
-    pInclude word.name@ " : %16v" .putf
-  else
-    " " " : %16v" .putf
-  then
 
   pWordTags if
     pWordTags tagSet.asStr "  %v" .putf

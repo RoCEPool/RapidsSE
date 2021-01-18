@@ -96,7 +96,6 @@ Word::Word(Stz* szWordNm)
   //m_pDic     = pDic;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
-  m_pInclude   = nullptr;
   m_iLocalNo   = 0;
   m_pObject    = nullptr;
   m_iParams    = 0;
@@ -501,26 +500,6 @@ void Word::vImmediate(bool bImmediate)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_bImmediate = bImmediate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get word include                                                           */
-/*----------------------------------------------------------------------------*/
-Word* Word::pInclude(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_pInclude;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set word category                                                          */
-/*----------------------------------------------------------------------------*/
-void Word::vInclude(Word* pInclude)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_pInclude = pInclude;
 }
 
 /*----------------------------------------------------------------------------*/

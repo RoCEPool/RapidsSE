@@ -31,8 +31,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.exitHook!"_Stz,    &Step::vWordExitHookSet);
   vAddStep("word.immediate@"_Stz,   &Step::vWordImmediateGet);
   vAddStep("word.immediate!"_Stz,   &Step::vWordImmediateSet);
-  vAddStep("word.include@"_Stz,     &Step::vWordIncludeFetch);
-  vAddStep("word.include!"_Stz,     &Step::vWordIncludeStore);
   vAddStep("word.isImmediate"_Stz,  &Step::vWordIsImmediate);
   vAddStep("word.isIntrinsic"_Stz,  &Step::vWordIsIntrinsic);
   vAddStep("word.kind@"_Stz,        &Step::vWordKindFetch);
@@ -320,38 +318,6 @@ void Step::vWordImmediateSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.include@ -- word include group fetch                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vWordIncludeFetch(void)
-{
-  ENTRY();
-  
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  Word* pInclude = pWord->pInclude();
-  
-  m_pDataStack->vPushPtr(pInclude);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.include! -- word include group store                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vWordIncludeStore(void)
-{
-  ENTRY();
-  
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  Word* pInclude = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  pWord->vInclude(pInclude);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* word.isImmediate -- is word immediate?                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vWordIsImmediate(void)
@@ -491,12 +457,7 @@ void Step::vWordNew(void)
     pDic = AM::pRootDic();
 
   Word* pNewWord = new(pDic) Word(sWordNm);
-  
-  if (m_pInput) {
-    Word* pInclude = m_pInput->pUseInclude();
-    pNewWord->vInclude(pInclude);
-  }
-  
+    
   m_pDataStack->vPushPtr(pNewWord);
   //m_pSenCompiler->vCurrentWord(pNewWord);
 
