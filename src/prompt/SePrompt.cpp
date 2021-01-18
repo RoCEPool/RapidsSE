@@ -196,10 +196,12 @@ void SePrompt::vPromptLoop(void)
     
     m_pInpTknVec = pInputGet()->pTokenVec();
     
+    pInputGet()->vRawInputClear();
+    
     if (! bGetCommand())
       continue;
     
-    vTrace("Raw: %s\n"_Stz,pInputGet()->szRawInput());
+    //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
     
     if (! bPrepareJob())
       continue;
@@ -225,7 +227,7 @@ bool SePrompt::bGetCommand(void)
   Hardware::vHostName(sHostName);
 
   if (bStdIn() && ! *m_pCurrentDeputy->pSession()->m_sToDo.azChar()) {
-    vReportOther();
+    //vReportOther();
     vPromptUser();
   }
   
@@ -379,7 +381,7 @@ void SePrompt::vDeputiseJob(void)
       AM::vNapMsec(10,CN_SEPROMPT);
   }
   else {
-      m_pCurrentDeputy->vDeputiseJob();
+    m_pCurrentDeputy->vDeputiseJob();
   }
   
   m_pCurrentDeputy = nullptr;

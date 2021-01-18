@@ -317,6 +317,16 @@ Stz* Input::szRawInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* raw input clear                                                            */
+/*----------------------------------------------------------------------------*/
+void Input::vRawInputClear(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  m_pCharser->vRawInputClear();
+}
+
+/*----------------------------------------------------------------------------*/
 /* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
 void Input::vReadCommand(void)
@@ -334,11 +344,16 @@ void Input::vReadCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first line so we can test if its a command file to be executed
   
-  vSingleLineCmd(true);
+  //m_pCharser->vRawInputClear();
   
+  vSingleLineCmd(true);
+    
   if (d_iDebugMode)
     m_pTknVec->vDumpVec(16);
+  
   vCollectVecFirstLine();
+  //vTrace(" : >>>%s<<<\n"_Stz,m_pCharser->szRawInput());
+
   if (d_iDebugMode)
     m_pTknVec->vDumpVec(16);
 
@@ -383,7 +398,10 @@ void Input::vReadCommand(void)
   // read more till ;
   if (d_iDebugMode)
     m_pTknVec->vDumpVec(16);
+  
   vCollectVecTillSemicolon();
+  vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
+  
   if (d_iDebugMode)
     m_pTknVec->vDumpVec(16);
 

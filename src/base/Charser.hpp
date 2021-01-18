@@ -32,6 +32,9 @@ namespace BASE
     s48K     m_sRawBuff;  // raw buffer
     char*    m_azRawBuff; // ptr into m_sRawBuff -- debug help
     char*    m_acRawChar; // next raw char in raw buffer
+  
+    s48K     m_sRawInput; // raw input characters
+    char*    m_acRawInput;// next char in raw input
 
     // use state
     bool     m_bUseBegun; // has use of this charser begun?
@@ -51,6 +54,8 @@ namespace BASE
     eCS      m_eComment;  // comment style currently being processed
     bool     m_bRead;     // prompt user for more input
     bool     m_bSeenEOF;  // eof seen?
+  
+  
 
     // some debugging aids
     bool      d_iDebugMode;  // debug mode?
@@ -115,6 +120,8 @@ namespace BASE
     char*    azRawBuff(void);
     char*    acRawChar(void);
     Stz*     szRawInput(void);
+  
+    void     vRawInputClear(void);
 
   private:
     
