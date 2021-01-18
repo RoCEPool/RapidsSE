@@ -305,10 +305,7 @@ void Task::vAddAxioms(void)
   sDefinition =
   "axiom: include-file"
   "  input::push"
-  
-  "  dup"
-  "    word::new input::useInclude"
-  
+    
   "  args.senDir str.prepend"
   "  input::open"
   "  input::senTokens"

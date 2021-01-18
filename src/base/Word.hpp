@@ -27,7 +27,6 @@ namespace BASE
     s32       m_sExitHook;    // routine to be called on exit
     s32       m_sExceptionHook; // routine to be called on exception
     bool      m_bImmediate;   // immediate execution during compile?
-    Word*     m_pInclude;     // include group
     i8        m_iLocalNo;     // local number (for a local variable)
     Object*   m_pObject;      // optional associated object
     i8        m_iParams;      // number of parameters
@@ -104,8 +103,6 @@ namespace BASE
     bool  bHasCell(CodeCell* aCell);
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
-    Word* pInclude(void);
-    void  vInclude(Word* pInclude);
     bool  bIsName(s32& sName);
     CodeCell* aLastCell(void);
     i8    iLocalNo(void);

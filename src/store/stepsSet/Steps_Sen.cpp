@@ -71,10 +71,7 @@ void Step::vSenColon(void)
 //  }
   
   Word* pNewWord = new(pDic) Word(sWordNm);
-  
-  Word* pInclude = m_pInput->pUseInclude();
-  pNewWord->vInclude(pInclude);
-  
+    
   m_pSenCompiler->vCurrentWord(pNewWord);
   
   m_pSenCompiler->vNestedWord(0,pNewWord);

@@ -21,8 +21,7 @@ namespace BASE
     s256     m_sPath;     // the source path
     s32      m_sDivision; // division of prompt command file
     s32      m_sSection;  // section of prompt command file
-    Word*    m_pInclude;  // the include file/group
-
+ 
     // source
     File*    m_pSrcFile;  // given file
     i8       m_iSrcLine;  // line number of raw char in source
@@ -103,8 +102,6 @@ namespace BASE
     void vUseClose(void);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
-    Word* pUseInclude(void);
-    void vUseInclude(Word* pInclude);
     void vUseStdin(void);
     void vUseString(Stz* szString);
 

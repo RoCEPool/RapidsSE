@@ -591,13 +591,21 @@
 
   find: \procedure arrange::wordsOfCatg locals| pArrange |
 
+  nullptr locals| pWordTags |
+  
   nullptr locals| pCursor |
   begin
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name procsWriteFile
-    // "\n" .putf
+    pCursor pArrange arrange.name find word.tagSet@ to pWordTags
+      
+    pWordTags tagSet.asStr .
+
+    true if
+      pCursor pArrange arrange.name procsWriteFile
+    then
+      
   repeat
   
   nullptr to pCursor
@@ -605,7 +613,15 @@
     pCursor pArrange arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name "\"/procs/proc_%v.sen\"  include" str.format .
+    pCursor pArrange arrange.name find word.tagSet@ to pWordTags
+      
+    pWordTags tagSet.asStr .
+          
+    true if
+      pCursor pArrange arrange.name
+        "\"procs/proc_%v.sen\"  include" str.format .
+    then
+
   repeat
   
 
