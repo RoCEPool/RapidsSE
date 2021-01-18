@@ -55,7 +55,7 @@ namespace STORE
     
     i8       m_iPid;       // process which created this session
   
-    i8       m_i_Stream;   // which partition this session processes
+    i8       m_i_FixedPtn; // specific partition being processed
     DicStack m_oDicStack;  // dictionary stack
 
     TagSet   m_oSsnTagSet; // session level tags
@@ -86,8 +86,8 @@ namespace STORE
     void      vEndTx(void);
     void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
-    i8        i_Stream(void);
-    void      vStream(i8 i_Stream);
+    i8        i_FixedPtn(void);
+    void      vFixedPtn(i8 i_FixedPtn);
     DicStack* pPathStack(void);
       
     void      vReport(void);

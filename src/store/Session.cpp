@@ -113,7 +113,7 @@ Session::Session(void)
   
   m_iPid = Process::iGetPid();
 
-  m_i_Stream      = C_UNKNOWN;
+  m_i_FixedPtn  = C_UNKNOWN;
   
   //m_oDicStack;
   m_pSsnJob     = nullptr;
@@ -211,7 +211,7 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("pid %lld %s stream %lld"_Stz,
          pSession->m_iPid,
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
-         pSession->i_Stream());
+         pSession->i_FixedPtn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,21 +341,21 @@ Job* Session::pJob(void)
 /*----------------------------------------------------------------------------*/
 /* which partition                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Session::i_Stream(void)
+i8 Session::i_FixedPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return m_i_Stream;
+  return m_i_FixedPtn;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set partition                                                              */
 /*----------------------------------------------------------------------------*/
-void Session::vStream(i8 i_Stream)
+void Session::vFixedPtn(i8 i_FixedPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_i_Stream = i_Stream;
+  m_i_FixedPtn = i_FixedPtn;
 }
 
 /*----------------------------------------------------------------------------*/

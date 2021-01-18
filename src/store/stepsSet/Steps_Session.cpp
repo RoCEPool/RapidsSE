@@ -120,7 +120,7 @@ void Step::vSessionTablePtnFetch(void)
   Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SESSION == pSession->eGetClassNo());
   
-  m_pDataStack->vPushInt(pSession->i_Stream());
+  m_pDataStack->vPushInt(pSession->i_FixedPtn());
   
   EXIT();
 }
