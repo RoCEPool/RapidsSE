@@ -115,6 +115,7 @@ namespace PROMPT
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
+    Stz* szOriginalCommand(void);
     void vPromptUser(void);
     bool bReadNextCommand(void);
     bool bRedirectFromFile(void);

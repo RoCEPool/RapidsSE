@@ -1029,6 +1029,26 @@ TagSet* SePrompt::pPmtTagSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get original command text                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SePrompt::szOriginalCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Session* pSession = m_pCurrentDeputy->pSession();
+  if (! pSession)
+    return nullptr;
+  
+  Input* pInput = pSession->m_pInput;
+  if (! pInput)
+    return nullptr;
+
+  Stz* szCommand = pInput->szRawInput();
+  
+  return szCommand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* prompt the user for input                                                  */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPromptUser(void)
