@@ -30,7 +30,6 @@ void Step::vAddSteps_Session(void)
   vAddStep("session.dicStack@"_Stz,    &Step::vSessionDicStackFetch);
   vAddStep("session.dump"_Stz,         &Step::vSessionDump);
   vAddStep("session.tagSet@"_Stz,      &Step::vSessionTagSetFetch);
-  vAddStep("session.isExiting"_Stz,    &Step::vSessionIsExiting);
   vAddStep("session.pid"_Stz,          &Step::vSessionPid);
   vAddStep("session.tablePtn@"_Stz,    &Step::vSessionTablePtnFetch);
   vAddStep("session.todo@"_Stz,        &Step::vSessionToDoFetch);
@@ -122,21 +121,6 @@ void Step::vSessionHasCascadeStore(void)
   Session* pSession = AM::pJobSession(m_pJob);
 
   pSession->m_bHasCascade = m_pDataStack->iPopInt(__func__);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* session.isExiting -- is session exiting                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionIsExiting(void)
-{
-  ENTRY();
-  
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
-  m_pDataStack->vPushInt(pSession->m_bExiting);
   
   EXIT();
 }

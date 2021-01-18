@@ -118,7 +118,6 @@ Session::Session(void)
   //m_oDicStack;
   m_pSsnJob     = nullptr;
   m_pTx         = nullptr;
-  m_bExiting    = false;
 
   m_sToDo       = ""_Stz;
     
@@ -440,7 +439,6 @@ void Session::vFreeSession(i8 i_NextFree)
   
   m_pSsnJob    = nullptr;
   m_pTx        = nullptr;
-  m_bExiting   = false;
 }
 
 /*----------------------------------------------------------------------------*/
