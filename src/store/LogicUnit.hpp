@@ -237,31 +237,8 @@ namespace STORE
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
     void vCollectOpcode(void);
-    
-    void vGenCode(i8 iTestNo);
   
     bool bGenerateAsm(Stz* sText);
-
-    // TPCH Queries
-    void vGenerateQuery100(void);
-    void vGenerateQuery103(void);
-
-    void vGenerateQuery300(void);
-    void vGenerateQuery301(void);
-    void vGenerateQuery302(void);
-
-    void vGenerateQuery400(void);
-    void vGenerateQuery401(void);
-
-    void vGenerateQuery600(void);
-    void vGenerateQuery601(void);
-
-    void vGenerate1700(void);
-    void vGenerate1701(void);
-    void vGenerate1702(void);
-
-    void vGenerate100000(void);
-    void vGenerate100001(void);
 
     void vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
