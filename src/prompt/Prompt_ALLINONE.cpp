@@ -89,13 +89,10 @@ bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
   // Parse the SQL command.
 
   // First get the command from the prompt
-  // TODO: Ideally, get the raw command entered, not a tokenised reconstruction
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  s48K sAntlr;
-  pInpTknVec->vVecToString(sAntlr,0,true);
+  Stz* szSql = pPrompt->szOriginalCommand();
 
   SqlPlanner* pPlanner = new SqlPlanner();
-  pPlanner->plan(sAntlr.szStz(), pGraphTemplate);
+  pPlanner->plan(szSql, pGraphTemplate);
   delete pPlanner;
 
   return true;

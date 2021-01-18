@@ -14,24 +14,26 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Input(void)
 {
-  vAddStep("input::chars"_Stz,     &Step::vInputChars);
-  vAddStep("input::close"_Stz,     &Step::vInputClose);
-  vAddStep("input::cppTokens"_Stz, &Step::vInputCppTokens);
-  vAddStep("input::dump"_Stz,      &Step::vInputDump);
-  vAddStep("input::inspect"_Stz,   &Step::vInputInspect);
-  vAddStep("input::kind@"_Stz,     &Step::vInputKind);
-  vAddStep("input::next"_Stz,      &Step::vInputNext);
-  vAddStep("input::open"_Stz,      &Step::vInputOpen);
-  vAddStep("input::pop"_Stz,       &Step::vInputPop);
-  vAddStep("input::push"_Stz,      &Step::vInputPush);
-  vAddStep("input::read"_Stz,      &Step::vInputRead);
-  vAddStep("input::senTokens"_Stz, &Step::vInputSenTokens);
-  vAddStep("input::stdin"_Stz,     &Step::vInputStdin);
-  vAddStep("input::unknown"_Stz,   &Step::vInputUnknown);
-  vAddStep("input::useBegin"_Stz,  &Step::vInputUseBegin);
-  vAddStep("input::useEnd"_Stz,    &Step::vInputUseEnd);
-  vAddStep("input::useInclude"_Stz,&Step::vInputUseInclude);
-  vAddStep("input::useString"_Stz, &Step::vInputUseString);
+  vAddStep("input::chars"_Stz,         &Step::vInputChars);
+  vAddStep("input::close"_Stz,         &Step::vInputClose);
+  vAddStep("input::cppTokens"_Stz,     &Step::vInputCppTokens);
+  vAddStep("input::dump"_Stz,          &Step::vInputDump);
+  vAddStep("input::inspect"_Stz,       &Step::vInputInspect);
+  vAddStep("input::kind@"_Stz,         &Step::vInputKind);
+  vAddStep("input::next"_Stz,          &Step::vInputNext);
+  vAddStep("input::open"_Stz,          &Step::vInputOpen);
+  vAddStep("input::pop"_Stz,           &Step::vInputPop);
+  vAddStep("input::push"_Stz,          &Step::vInputPush);
+  vAddStep("input::pushVecAsStr"_Stz,  &Step::vInputPushVecAsStr);
+  vAddStep("input::read"_Stz,          &Step::vInputRead);
+  vAddStep("input::senTokens"_Stz,     &Step::vInputSenTokens);
+  vAddStep("input::stdin"_Stz,         &Step::vInputStdin);
+  vAddStep("input::tillSemicolon"_Stz, &Step::vInputTillSemicolon);
+  vAddStep("input::unknown"_Stz,       &Step::vInputUnknown);
+  vAddStep("input::useBegin"_Stz,      &Step::vInputUseBegin);
+  vAddStep("input::useEnd"_Stz,        &Step::vInputUseEnd);
+  vAddStep("input::useInclude"_Stz,    &Step::vInputUseInclude);
+  vAddStep("input::useString"_Stz,     &Step::vInputUseString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,6 +183,25 @@ void Step::vInputPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* input::pushVecAsStr -- push entire vector as one string                    */
+/*----------------------------------------------------------------------------*/
+void Step::vInputPushVecAsStr(void)
+{
+  ENTRY();
+  
+  TokenVec* pTknVec = m_pInput->pTokenVec();
+  
+  s48K sAsStr;
+  
+  pTknVec->vVecToString(sAsStr.szStz(),0,false);
+  
+  m_pDataStack->vPushStz(sAsStr.szStz());
+
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* input::read -- read next token from input stream                           */
 /*----------------------------------------------------------------------------*/
 void Step::vInputRead(void)
@@ -214,6 +235,19 @@ void Step::vInputStdin(void)
   m_pInput->vUseStdin();
   m_pInput->vSingleLineCmd(true);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input::tillSemicolon -- collect till semicolon                             */
+/*----------------------------------------------------------------------------*/
+void Step::vInputTillSemicolon(void)
+{
+  ENTRY();
+  
+  // read next token
+  m_pInput->vReadTillSemicolon();
+    
   EXIT();
 }
 

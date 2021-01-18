@@ -435,6 +435,26 @@ L_Exit:
 }
 
 /*----------------------------------------------------------------------------*/
+/* read till semicolon                                                        */
+/*----------------------------------------------------------------------------*/
+void Input::vReadTillSemicolon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  vCursorReset();
+
+  for (;;) {
+    vCursorAdvance();
+    vCollectOneToken();
+    
+    // look for terminal
+    if (m_pCurrTkn->bSame(";"_Stz))
+      break;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
 void Input::vReadToken(void)
