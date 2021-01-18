@@ -3,7 +3,7 @@
 # This is a recursive testList file.
 
 ../tests/BackEnd/testList
-//../tests/Demo/testList
+../tests/Demo/testList
 ../tests/Datums/testList
 ../tests/Ddl/testList
 ../tests/Examples/testList
