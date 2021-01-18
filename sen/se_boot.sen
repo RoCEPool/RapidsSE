@@ -120,22 +120,13 @@ cmd::fillOut_allCmds
 
         "se_procedures.sen"           include // third last
         
-"BEFORE AAA" .
-        "se_proceduresB.sen"           include // third last
+        "se_proceduresB.sen"          include // third last
 
-"BEFORE BBB" .
+        //"se_procs.sen"                include // third last
 
         "se_defineTables.sen"         include // second last
         
-"BEFORE CCC" .
-
         "se_start.sen"                include // last last
-
-"BEFORE 0" .
-
-"se_boot 0" .
-
-"AFTER 0" .
 
 .\n
 

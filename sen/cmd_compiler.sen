@@ -530,6 +530,87 @@
   repeat
 ;
 
+
+
+
+/*----------------------------------------------------------------------------*/
+/* create a file per proc                                                     */
+/*----------------------------------------------------------------------------*/
+: procsWriteFile params| sProcNm |
+
+  file::new locals| pProcFile |
+  
+  sProcNm "/Users/ray/rapidsse/Sen/procs/proc_%v.sen" str.format
+  
+  OPEN_WRITE pProcFile file.open assert
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // header
+  
+  "/*============================================================================*/\n"
+  pProcFile file.writeLine
+  
+  sProcNm sProcNm "/* proc_%v.sen -- define procedure %v                           */\n"
+  str.format pProcFile file.writeLine
+  
+  "/*============================================================================*/\n"
+  pProcFile file.writeLine
+  sProcNm "\n" pProcFile file.writeLine
+  sProcNm "\"  %v.sen\" .verbose\n" str.format pProcFile file.writeLine
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // body
+
+  sProcNm "\n" pProcFile file.writeLine
+  sProcNm "//proc: %v\n" str.format pProcFile file.writeLine
+  sProcNm "\n" pProcFile file.writeLine
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // footer
+
+  sProcNm "\n" pProcFile file.writeLine
+  "/*============================================================================*/\n"
+  pProcFile file.writeLine
+  "/* end                                                                        */\n"
+  pProcFile file.writeLine
+  "/*============================================================================*/\n"
+  pProcFile file.writeLine
+
+  pProcFile file.close
+  pProcFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* show all procedures                                                        */
+/*----------------------------------------------------------------------------*/
+: procsToFiles \prompt
+
+  find: \procedure arrange::wordsOfCatg locals| pArrange |
+
+  nullptr locals| pCursor |
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name procsWriteFile
+    // "\n" .putf
+  repeat
+  
+  nullptr to pCursor
+  begin
+    pCursor pArrange arrange.next to pCursor
+    pCursor
+  while
+    pCursor pArrange arrange.name "\"/procs/proc_%v.sen\"  include" str.format .
+  repeat
+  
+
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
