@@ -33,8 +33,8 @@ rows:
   ("P_BRAND", "VARCHAR", 10, 0, false, false)
 
 // load the table
-//load part "/TPCH/SF1/part.tbl" <field_delimiter> = "|";
-load part "/TPCH/SF1/part.tbl";
+//load part "../TPCH/SF1/part.tbl" <field_delimiter> = "|";
+load part "../TPCH/SF1/part.tbl";
 success
 
 tableScan part;
