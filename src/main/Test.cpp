@@ -280,6 +280,7 @@ void vTest7(void)
 void vTest8(void)
 {
   vTrace("Test 8\n"_Stz);
+  vTrace("original command: %s\n"_Stz,SeApi::szOriginalCommand());
 
   Text* pText;
   Text* pText0 = new Text("A"_Stz);

@@ -15,6 +15,16 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
+#include "AM.hpp"
+
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+
+#include "Job.hpp"
+#include "Session.hpp"
+#include "SessionArray.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -74,7 +84,8 @@ SeApi::~SeApi(void) noexcept(false)
 
 /*----------------------------------------------------------------------------*/
 /* get current folder path as string                                          */
-/*----------------------------------------------------------------------------*/Stz* SeApi::szCurrentFolderPath(String* psFolderPath)
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrentFolderPath(String* psFolderPath)
 {
   _static_
 
@@ -163,6 +174,32 @@ bool SeApi::bIsKnownTableColumnNm(Stz* szTableNm, Stz* szColumnNm)
     return false;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get original command text                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szOriginalCommand(void)
+{
+  Job* pJob = AM::pTaskJob();
+  if (! pJob)
+    return nullptr;
+
+  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  if (iSessionId == C_UNKNOWN)
+    return nullptr;
+  
+  Session* pSession = AM::pSessionArray()->pGetSession(iSessionId);
+  if (! pSession)
+    return nullptr;
+  
+  Input* pInput = pSession->m_pInput;
+  if (! pInput)
+    return nullptr;
+
+  Stz* szCommand = pInput->szRawInput();
+  
+  return szCommand;
 }
 
 /*----------------------------------------------------------------------------*/
