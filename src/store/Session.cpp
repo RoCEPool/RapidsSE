@@ -119,7 +119,6 @@ Session::Session(void)
   m_pSsnJob     = nullptr;
   m_pTx         = nullptr;
   m_bExiting    = false;
-  m_pJobStack   = new TypedStack(KK_JOB_STACK);
 
   m_sToDo       = ""_Stz;
     
@@ -149,10 +148,7 @@ Session::~Session(void) noexcept(false)
   ASSERT(! m_pInput);
   
   AM::pSessionArray()->vFreeSession(this);
-  
-  RASSERT(0 == m_pJobStack->nValues());
-  delete m_pJobStack;
-        
+          
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
               "Session destruct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
@@ -443,8 +439,6 @@ void Session::vFreeSession(i8 i_NextFree)
   m_pSsnJob    = nullptr;
   m_pTx        = nullptr;
   m_bExiting   = false;
-  
-  RASSERT(0 == m_pJobStack->nValues());
 }
 
 /*----------------------------------------------------------------------------*/

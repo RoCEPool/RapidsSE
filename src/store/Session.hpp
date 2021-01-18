@@ -19,10 +19,10 @@ namespace STORE
     
     eSK   m_eSession;      // session kind
 
-    Input* m_pInput;      // input processor
+    Input* m_pInput;       // input processor
   
-    Job*  m_pSsnJob;    // job session currently executing
-    Tx*   m_pTx;        // current transaction
+    Job*  m_pSsnJob;       // job session currently executing
+    Tx*   m_pTx;           // current transaction
   
     eAC   m_eApiFun;       // current / last api function called
     i8    m_iApiLoc;       // last reported location in api function
@@ -57,12 +57,9 @@ namespace STORE
   
     i8       m_i_Stream;   // which partition this session processes
     DicStack m_oDicStack;  // dictionary stack
-    TypedStack*   m_pJobStack;  // stack of jobs
 
     TagSet   m_oSsnTagSet; // session level tags
 
-
-  
     s4K      m_sToDo;      // prompt to do
       
     Mutex    m_oSsnMutex;  //
