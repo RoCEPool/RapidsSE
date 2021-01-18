@@ -10,3 +10,6 @@ startCluster.log
 tmp
 bin
 .idea/
+
+# For the Bamboo box
+TPCH/

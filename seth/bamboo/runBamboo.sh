@@ -36,6 +36,9 @@ readonly PROJ_ROOT="${DIR}/../.."
 readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/src"
 
+readonly TPCH_LINK_NAME="${PROJ_ROOT}/TPCH"
+readonly TPCH_LINK_DEST="/mnt/spinningDisk/bamboo/TPCH"
+
 readonly RELATIVE_BAMBOO_DIR="seth/bamboo"  # Relative to the project root
 
 # Set to 1 to print debug messages in Bamboo.
@@ -77,6 +80,16 @@ function onExit() {
 function errorExit() {
   >&2 echo -e "ERROR: $*"
   exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print a warning message to stderr
+## Params:  
+##   $1 : Warning message
+##   $2..$n : (optional) other arguments to print.
+  
+function printWarning() {
+  >&2 echo -e "WARNING: $*"
 }
 
 
@@ -401,6 +414,15 @@ trap onExit EXIT
 
 # First, kill any rogue SE and SETH instances owned by the current user.
 killRogueInstances
+
+# Setup a link to the TPC-H SF1 data
+if [ ! -d "${TPCH_LINK_DEST}" ]; then
+  printWarning "TPC-H SF1 data does not exist at: ${TPCH_LINK_DEST}"
+fi
+
+if [ ! -e "${TPCH_LINK_NAME}" ]; then
+  ln -s "${TPCH_LINK_DEST}" "${TPCH_LINK_NAME}"
+fi
 
 #shellcheck disable=2206
 TEST_TARGETS=(${TARGETS:-})

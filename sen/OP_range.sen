@@ -50,6 +50,9 @@
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
+    StreamDef[].delete
+    StreamDefOut[].delete
+    ExprEval[].delete
     true
     exit
   then
