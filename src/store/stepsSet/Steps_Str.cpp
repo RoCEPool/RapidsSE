@@ -130,7 +130,7 @@ void Step::vStrContains(void)
   m_pDataStack->vPopStr(sString,__func__);
   
   s48K sArg;
-  m_pDataStack->vPopStr(sString,__func__);
+  m_pDataStack->vPopStr(sArg,__func__);
 
   bool bContains = StrLib::bContains(sString.azChar(),sArg.azChar());
   

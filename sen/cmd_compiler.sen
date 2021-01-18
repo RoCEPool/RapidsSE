@@ -602,9 +602,15 @@
       
     pWordTags tagSet.asStr .
 
-    true if
-      pCursor pArrange arrange.name procsWriteFile
+    "procText=procedure " pWordTags tagSet.asStr str.contains if
+    
+      pCursor pArrange arrange.name .
+      
     then
+
+    //true if
+    //  pCursor pArrange arrange.name procsWriteFile
+    //then
       
   repeat
   
