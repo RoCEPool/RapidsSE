@@ -78,7 +78,7 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
   m_qFreePercent = C_UNKNOWN;
 
   MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
-
+  m_iNodeStatus = 0;
   
   _checkInitialised_(CN_NODE);
   
@@ -354,6 +354,26 @@ Heartbeat Node::xGetHeartbeat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return m_xHeartbeat;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set node status                                                            */
+/*----------------------------------------------------------------------------*/
+void Node::vSetNodeStatus(i1 iStatus)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  m_iNodeStatus = iStatus;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get node status                                                            */
+/*----------------------------------------------------------------------------*/
+i1 Node::iGetNodeStatus(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return m_iNodeStatus;
 }
 
 /*----------------------------------------------------------------------------*/

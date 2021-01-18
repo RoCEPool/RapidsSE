@@ -103,6 +103,7 @@ assert::stack_0
 "m" .put
 
   "OP_metaScan.sen"             include
+  "OP_monitor.sen"             include
         
 "n" .put
 

@@ -79,7 +79,7 @@ assert::stack_0
         "op__EOCommon.sen"            include
         "reg__common.sen"             include
         
-        "se_BootOps.sen"              include
+        "se_bootOps.sen"              include
 
 
 "se_boot 3" .

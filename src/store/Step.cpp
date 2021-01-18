@@ -110,6 +110,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Magnitude();
   Step::vAddSteps_MetaTable();
   Step::vAddSteps_Memory();
+  Step::vAddSteps_Monitor();
   Step::vAddSteps_Expressions();
 
   Step::vAddSteps_Node();

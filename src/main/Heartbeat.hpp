@@ -12,9 +12,12 @@
 #include <mutex>
 #include <base/BASE.h>
 
+#include "STORE_hb.h"
+#include "BASE_hb.h"
 
 
-//#include <stdatomic.h>
+
+
 
 /*----------------------------------------------------------------------------*/
 /* Heartbeat class contains data for heartbeat                                */
@@ -24,18 +27,25 @@ class Heartbeat {
 public:
   
   i8   m_iHeader;            //   8    8
-  i8   m_iSeqNo;             //   8   16
-  i8   m_iSincePosixEpoch;   //   8   24
-  char m_acBuildGitHash[32]; //  32   56
-  i8   m_iValue0;            //   8   64
-  i8   m_iValue1;            //   8   72
-  i8   m_iValue2;            //   8   80
-  char m_acString0[32];      //  32  112
-  char m_acString1[32];      //  32  144
-  char m_acString2[32];      //  32  176
-  i8   m_iChecksum;          //   8  184
-  i8   m_iFooter;            //   8  192
-  char m_acSpare[304];       // 304  496
+
+  u2   m_u2Version;           // version of the packet   2 10
+  u2   m_u2DataLen;           // length of data  includes size of itself  2 12
+  char m_acNodeName[32];     //  32   44
+  i8   m_iSeqNo;             //   8   52
+  i8   m_iSincePosixEpoch;   //   8   60
+  char m_acBuildGitHash[32]; //  32   92
+
+  // data (STORE, BASE, ...)
+
+  STORE_hb xStoreHeartbeat; // 40
+  BASE_hb xBaseHeartbeat;   // 16
+
+
+  i8   m_iChecksum;          //   8
+
+
+  i8   m_iFooter;            //   8
+  char m_acSpare[64];         // 64
                              // ---
                              // 496 bytes
 };
@@ -208,9 +218,8 @@ public:
   }
 
   // For debug only
-  i8 iWriteIdx() const { i8 iWriteIdx=m_atmWrite.load(std::memory_order_relaxed); return iWriteIdx; }//m_iWriteIdx; }
-
-  i8 iReadIdx() const { i8 iReadIdx = m_atmRead.load(std::memory_order_relaxed); return iReadIdx; } //m_iReadIdx; }
+  i8 iWriteIdx() const { return m_atmWrite.load(std::memory_order_relaxed);  }//m_iWriteIdx; }
+  i8 iReadIdx() const { return m_atmRead.load(std::memory_order_relaxed);  } //m_iReadIdx; }
 
 };
 
@@ -265,6 +274,35 @@ class Heartbeat_RTE : public std::runtime_error {
 public:
   Heartbeat_RTE(const char *w) : std::runtime_error(w) {}
 };
+
+
+
+
+// uses 8-bit blocks, it is not affected by byte endianness.
+// 16-bit checksum
+static u2 fletcher16(const byte *data, size_t len) {
+  u4 c0 = 0, c1 = 0;
+
+  /*  Found by solving for c1 overflow: */
+  /* n > 0 and n * (n+1) / 2 * (2^8-1) < (2^32-1). */
+  while (len > 0) {
+    size_t blocklen = len;
+    if (blocklen > 5002) {
+      blocklen = 5002;
+    }
+    len -= blocklen;
+
+    do {
+      c0 = c0 + *data++;
+      c1 = c1 + c0;
+    } while (--blocklen);
+
+    c0 = c0 % 255;
+    c1 = c1 % 255;
+  }
+  return (c1 << 8 | c0);
+}
+
 
 
 /*============================================================================*/

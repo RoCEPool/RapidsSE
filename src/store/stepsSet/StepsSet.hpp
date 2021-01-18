@@ -914,6 +914,9 @@ public:
   // metaTable
   void vMetaTableListTables(void);
 
+  // Monitor (Nodes)
+  void vMonitorUpdateNodeStatus(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeIP(void);
