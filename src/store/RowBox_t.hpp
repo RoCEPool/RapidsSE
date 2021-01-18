@@ -245,12 +245,13 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
   if (WspConvergent_t<SIZE,Stz,Row>::nFreeBytes() < C_2KB)
     return nullptr;
 
-  
-
   m_aRowCur = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
 
   if (! m_aRowCur)
     return nullptr;
+
+  // zero the row
+  MemLib::vZero(m_aRowCur,m_nRowSizeProper,CN_ROW);
 
   new(m_aRowCur) Row();
 
