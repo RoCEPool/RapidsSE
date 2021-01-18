@@ -517,9 +517,11 @@ public:
   void vInputOpen(void);
   void vInputPop(void);
   void vInputPush(void);
+  void vInputPushVecAsStr(void);
   void vInputRead(void);
   void vInputSenTokens(void);
   void vInputStdin(void);
+  void vInputTillSemicolon(void);
   void vInputUnknown(void);
   void vInputUseBegin(void);
   void vInputUseEnd(void);

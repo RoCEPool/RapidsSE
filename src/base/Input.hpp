@@ -56,6 +56,7 @@ namespace BASE
     Stz* szRawInput(void);
     void vRawInputClear(void);
     void vReadCommand(void);
+    void vReadTillSemicolon(void);
     void vReadToken(void);
     void vSection(Stz* szSection);
     Stz* szSection(void);
