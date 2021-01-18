@@ -18,11 +18,10 @@ namespace STORE
     i8    m_i_NextFree;    // next state in free chain
     
     eSK   m_eSession;      // session kind
-
-    Input* m_pInput;       // input processor
-  
     Job*  m_pSsnJob;       // job session currently executing
     Tx*   m_pTx;           // current transaction
+
+    Input* m_pInput;       // input processor
   
     eAC   m_eApiFun;       // current / last api function called
     i8    m_iApiLoc;       // last reported location in api function
@@ -36,7 +35,6 @@ namespace STORE
   
     void* m_aStackBase;    // stack base of thread which made api call
     void* m_aStackPtr;     // stack addr of thread which made api call
-      
       
     Timer m_oTimer;        // call timer
     i8    m_qTotalUsec;    // total-quanity time in microseconds

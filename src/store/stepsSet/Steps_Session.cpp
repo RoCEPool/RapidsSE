@@ -27,15 +27,15 @@ void Step::vAddSteps_Session(void)
   vAddStep("session::hasCascade@"_Stz, &Step::vSessionHasCascadeFetch);
   vAddStep("session::hasCascade!"_Stz, &Step::vSessionHasCascadeStore);
 
-  vAddStep("session.dicStack@"_Stz,    &Step::vSessionDicStackFetch);
-  vAddStep("session.dump"_Stz,         &Step::vSessionDump);
-  vAddStep("session.tagSet@"_Stz,      &Step::vSessionTagSetFetch);
-  vAddStep("session.pid"_Stz,          &Step::vSessionPid);
-  vAddStep("session.tablePtn@"_Stz,    &Step::vSessionTablePtnFetch);
-  vAddStep("session.todo@"_Stz,        &Step::vSessionToDoFetch);
-  vAddStep("session.todo!"_Stz,        &Step::vSessionToDoStore);
-  vAddStep("session.tx@"_Stz,          &Step::vSessionTxFetch);
-  vAddStep("session.tx!"_Stz,          &Step::vSessionTxStore);
+  vAddStep("session::dicStack@"_Stz,   &Step::vSessionDicStackFetch);
+  vAddStep("session::dump"_Stz,        &Step::vSessionDump);
+  vAddStep("session::tagSet@"_Stz,     &Step::vSessionTagSetFetch);
+  vAddStep("session::pid"_Stz,         &Step::vSessionPid);
+  vAddStep("session::tablePtn@"_Stz,   &Step::vSessionTablePtnFetch);
+  vAddStep("session::todo@"_Stz,       &Step::vSessionToDoFetch);
+  vAddStep("session::todo!"_Stz,       &Step::vSessionToDoStore);
+  vAddStep("session::tx@"_Stz,         &Step::vSessionTxFetch);
+  vAddStep("session::tx!"_Stz,         &Step::vSessionTxStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,14 +156,14 @@ void Step::vSessionTablePtnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tagSet@ -- fetch ename-set of session semantic                     */
+/* session.tagSet@ -- fetch tagset of session                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTagSetFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
+  Session* pSession = AM::pJobSession(m_pJob);
+
   TagSet* pSsnTagSet = & pSession->m_oSsnTagSet;
   
   m_pDataStack->vPushPtr(pSsnTagSet);
