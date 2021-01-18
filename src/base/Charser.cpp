@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "SP_String.hpp"
+#include "SP_Char.hpp"
 
 #include "SP_AnnChar.hpp"
 #include "SP_Charser.hpp"
@@ -40,6 +41,8 @@ Charser::Charser(Charser* pNext)
   m_bUseEnded  = true;
   
   m_pSrcFile = new File(nullptr);
+  
+  m_acRawInput = nullptr;
   
   vResetCharser();
   
@@ -578,6 +581,28 @@ char* Charser::acRawChar(void)
   return m_acRawChar;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get raw inut                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* Charser::szRawInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  return m_sRawInput.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear raw inut                                                             */
+/*----------------------------------------------------------------------------*/
+void Charser::vRawInputClear(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  m_sRawInput = ""_Stz;
+  
+  m_acRawInput = m_sRawInput.azChar();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -610,6 +635,9 @@ void Charser::vResetCharser(void)
   m_sRawBuff   = ""_Stz;
   m_azRawBuff  = m_sRawBuff.azChar();
   m_acRawChar  = m_sRawBuff.azChar();
+
+  m_sRawInput   = ""_Stz;
+  m_acRawInput  = m_sRawInput.azChar();
 
   // use state
   m_bUseBegun  = false;
@@ -1190,7 +1218,13 @@ void Charser::vReadRawCharFromRawBuff(AnnChar& rxReg)
   ASSERT(! m_bUseEnded);
 
   rxReg.m_cChar = *m_acRawChar++;
-  
+
+  if (rxReg.m_cChar) {
+    * m_acRawInput++ = rxReg.m_cChar;
+    * m_acRawInput = '\0';
+  }
+  //vTrace(" :: %s\n"_Stz,m_sRawInput.szStz());
+
   rxReg.m_iLine = m_iSrcLine;
   rxReg.m_iCol  = ++m_iSrcCol;
 }
@@ -1253,9 +1287,18 @@ void Charser::vReadStdinIntoRawBuff(void)
   
   char* acRawLine = m_sRawBuff.azChar();
       
+  SP_Char spChar;
+  
   for (;;) {
     
     char cInput = m_pSrcFile->cGetChar();
+    
+    if (! cInput) {
+      //vTrace("SKIPPING null from cGetChar()\n"_Stz);
+      continue;
+    }
+    
+    //vTrace("From gets: %s\n"_Stz,spChar.sz(cInput));
     
     *acRawLine++ = cInput;
     
@@ -1270,6 +1313,8 @@ void Charser::vReadStdinIntoRawBuff(void)
 
   m_acRawChar = m_sRawBuff.azChar();
   
+  //vTrace("From stdin: >>>%s<<<\n"_Stz,m_acRawChar);
+
   ASSERT(! m_bSeenEOF);
 }
 

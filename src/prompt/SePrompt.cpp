@@ -196,8 +196,12 @@ void SePrompt::vPromptLoop(void)
     
     m_pInpTknVec = pInputGet()->pTokenVec();
     
+    pInputGet()->vRawInputClear();
+    
     if (! bGetCommand())
       continue;
+    
+    //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
     
     if (! bPrepareJob())
       continue;
@@ -223,18 +227,22 @@ bool SePrompt::bGetCommand(void)
   Hardware::vHostName(sHostName);
 
   if (bStdIn() && ! *m_pCurrentDeputy->pSession()->m_sToDo.azChar()) {
-    vReportOther();
+    //vReportOther();
     vPromptUser();
   }
   
   vResetExtractedTagSet();
-  
-  //L_Read_Next_Command:
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read next command
   
   if (! bReadNextCommand()) {
     m_bContinue = false;
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // examine the command
   
   if (bBlankLine())
     return false;
@@ -286,12 +294,7 @@ bool SePrompt::bGetCommand(void)
     vDebugPoint();
   }
   
-  //if (bTranslateProcedure())
-  //  goto L_Read_Next_Command;
-  
-  
-  //.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.//.
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prompt has finessed the final input token vector at this stage
   
   //m_xReqTuple.m_iReqNo++;
@@ -378,7 +381,7 @@ void SePrompt::vDeputiseJob(void)
       AM::vNapMsec(10,CN_SEPROMPT);
   }
   else {
-      m_pCurrentDeputy->vDeputiseJob();
+    m_pCurrentDeputy->vDeputiseJob();
   }
   
   m_pCurrentDeputy = nullptr;

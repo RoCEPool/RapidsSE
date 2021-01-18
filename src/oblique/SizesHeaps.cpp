@@ -193,7 +193,7 @@ SizeHeap gxaSizeHeap[]
   { 'C' - ('A' - 1),            HT_INVALID   ,0 }, // CN__C__
   { sizeof(Catalog),            HT_INVALID   ,0 }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 }, // CN_CELLSIGN:E
-  { sizeof(Charser),            HT_T_MEDIUM  ,0 }, // CN_CHARSER
+  { sizeof(Charser),            HT_T_LARGE   ,0 }, // CN_CHARSER
   { sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 }, // CN_CLASSPLACEHOLDER
   { sizeof(CmdLineArgs),        HT_INVALID   ,0 }, // CN_CMDLINEARGS
   { sizeof(CodeBlock),          HT_T_SMALL   ,0 }, // CN_CODEBLOCK

@@ -710,6 +710,11 @@ bool Api::bSpawnJob_session(Job* pJob)
   _static_
   
   Session* pSession = pJob->pSession();
+  
+//  if (pSession->m_pInput)
+//    vTrace("API szRawInput() :: %s\n"_Stz,pSession->m_pInput->szRawInput());
+//
+  
   Api::vMutexLock(pSession,pJob);
 
   RASSERT(JS_LOCKED == pJob->eJobState());

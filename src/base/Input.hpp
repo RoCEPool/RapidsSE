@@ -53,6 +53,8 @@ namespace BASE
     Stz* szPath(void);
     bool bPopCharser(void);
     void vPushCharser(void);
+    Stz* szRawInput(void);
+    void vRawInputClear(void);
     void vReadCommand(void);
     void vReadToken(void);
     void vSection(Stz* szSection);
