@@ -122,7 +122,7 @@ Session::Session(void)
 
   m_sToDo       = ""_Stz;
     
-  m_bCascade    = false;
+  m_bHasCascade = false;
   m_sCascade    = ""_Stz;
 
   _checkInitialised_(CN_SESSION);

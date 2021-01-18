@@ -65,8 +65,8 @@ namespace STORE
     Mutex    m_oSsnMutex;  //
     ReqTuple m_xReqTuple;  // request information
     
-    bool     m_bCascade;   // is there a cascading statement to execute?
-    s16KB    m_sCascade;   // the cascade statement
+    bool  m_bHasCascade;   // is there a cascading statement to execute?
+    s16KB m_sCascade;      // the cascade statement
 
   private:
 

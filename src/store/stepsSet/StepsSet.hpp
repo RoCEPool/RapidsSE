@@ -1382,9 +1382,13 @@ public:
   void vSenCompilerPostponing(void);
 
   // session
+  void vSessionCascadeFetch(void);
+  void vSessionCascadeStore(void);
   void vSessionCommand(void);
   void vSessionDicStackFetch(void);
   void vSessionDump(void);
+  void vSessionHasCascadeFetch(void);
+  void vSessionHasCascadeStore(void);
   void vSessionTagSetFetch(void);
   void vSessionIsExiting(void);
   void vSessionPid(void);

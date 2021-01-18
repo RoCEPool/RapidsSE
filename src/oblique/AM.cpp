@@ -442,6 +442,19 @@ Stz* AM::szJobSeed(Job* pJob)
 }
 
 
+Session* AM::pJobSession(Job* pJob)
+{
+  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  
+  Session* pSession = nullptr;
+  
+  if (iSessionId != C_UNKNOWN)
+    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+
+  return pSession;
+}
+
+
 TagSet* AM::pJobTags(Job* pJob)
 {
   return pJob->pJobTags();
