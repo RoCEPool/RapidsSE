@@ -378,7 +378,7 @@
 
   //find: cmdSyntax: word::ofCatg
 
-  find: cmdSyntax: arrange::wordsOfCatg locals| pArrange |
+  find: cmdSyntax: arrange::wordsOfCatg locals| pProcSet |
 
   0 locals| pwCmdSyntax |
   0 locals| sCmdSyntax  |
@@ -390,19 +390,19 @@
 
   nullptr locals| pCursor |
   begin
-    pCursor pArrange arrange.next to pCursor
+    pCursor pProcSet arrange.next to pCursor
     pCursor
   while
 
-    pCursor pArrange arrange.object to pwCmdSyntax
-    pCursor pArrange arrange.name   to sCmdSyntax
+    pCursor pProcSet arrange.object to pwCmdSyntax
+    pCursor pProcSet arrange.name   to sCmdSyntax
     sCmdSyntax cmd::seriesToCmdNm   to sCmdNm
     sCmdNm "_cmdTags" str.cat       to sCmdTagsNm
 
 
-    pCursor pArrange arrange.seqNo "[%3v]" .putf
+    pCursor pProcSet arrange.seqNo "[%3v]" .putf
     sCmdNm " %18v" .putf
-    pCursor pArrange arrange.name  " %24v" .putf
+    pCursor pProcSet arrange.name  " %24v" .putf
     sCmdTagsNm " %24v" .putf
 
 
@@ -461,17 +461,17 @@
   0 locals| pwCmdTags  |
   0 locals| pCmdTagSet |
 
-  find: _cmdTags arrange::wordsOfCatg locals| pArrange |
+  find: _cmdTags arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   begin
-    pCursor pArrange arrange.next to pCursor
+    pCursor pProcSet arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.seqNo "[%2v]" .putf
-    pCursor pArrange arrange.name  " %24v"  .putf
+    pCursor pProcSet arrange.seqNo "[%2v]" .putf
+    pCursor pProcSet arrange.name  " %24v"  .putf
 
-    pCursor pArrange arrange.object to pwCmdTags
+    pCursor pProcSet arrange.object to pwCmdTags
     pwCmdTags word.tagSet@ to pCmdTagSet
 
     "<axiomOp>" pCmdTagSet tagSet.hasName if
@@ -516,15 +516,15 @@
 /*----------------------------------------------------------------------------*/
 : procs \prompt
 
-  find: \procedure arrange::wordsOfCatg locals| pArrange |
+  find: \procedure arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   begin
-    pCursor pArrange arrange.next to pCursor
+    pCursor pProcSet arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.seqNo "[%v]" .putf
-    pCursor pArrange arrange.name  " %v"  .putf
+    pCursor pProcSet arrange.seqNo "[%v]" .putf
+    pCursor pProcSet arrange.name  " %v"  .putf
 
     "\n" .putf
   repeat
@@ -589,47 +589,72 @@
 /*----------------------------------------------------------------------------*/
 : procsToFiles \prompt
 
-  find: \procedure arrange::wordsOfCatg locals| pArrange |
+  find: \procedure arrange::wordsOfCatg locals| pProcSet |
 
-  nullptr locals| pWordTags |
-  
   nullptr locals| pCursor |
+  nullptr locals| pTags   |
+  nullptr locals| sWordNm |
+
   begin
-    pCursor pArrange arrange.next to pCursor
+    pCursor pProcSet arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name find word.tagSet@ to pWordTags
-      
-    pWordTags tagSet.asStr .
+  
+    pCursor pProcSet arrange.name to sWordNm
 
-    "procText=procedure " pWordTags tagSet.asStr str.contains if
+    "" .
     
-      pCursor pArrange arrange.name .
+    sWordNm .
+    
+    sWordNm find word.tagSet@ to pTags
+      pTags tagSet.asStr .
+      
+    sWordNm "_cmdTags" str.cat find
+      dup if
+        word.tagSet@ to pTags
+        pTags tagSet.asStr .
+      else
+        discard
+        "  No cmdtags .: -> proc file" .
+      then
+      
+
+    /*
+    sWordNm find word.tagSet@ to pTags
+    
+    pTags tagSet.asStr .
+
+    "procText=procedure " pTags tagSet.asStr str.contains if
+    
+       sWordNm .
       
     then
-
+    */
+    
     //true if
-    //  pCursor pArrange arrange.name procsWriteFile
+    //  sWordNm procsWriteFile
     //then
       
   repeat
   
+  /*
   nullptr to pCursor
   begin
-    pCursor pArrange arrange.next to pCursor
+    pCursor pProcSet arrange.next to pCursor
     pCursor
   while
-    pCursor pArrange arrange.name find word.tagSet@ to pWordTags
+    pCursor pProcSet arrange.name to sWordNm
+    
+    sWordNm find word.tagSet@ to pTags
       
-    pWordTags tagSet.asStr .
+    pTags tagSet.asStr .
           
     true if
-      pCursor pArrange arrange.name
-        "\"procs/proc_%v.sen\"  include" str.format .
+      sWordNm "\"procs/proc_%v.sen\"  include" str.format .
     then
 
   repeat
-  
+  */
 
 ;
 
