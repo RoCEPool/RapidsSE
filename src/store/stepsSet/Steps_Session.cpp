@@ -47,7 +47,7 @@ void Step::vSessionCascadeFetch(void)
 {
   ENTRY();
   
-  Session* pSession = AM::pJobSession(m_pJob);
+  Session* pSession = MY::pSession();
 
   m_pDataStack->vPushStr(pSession->m_sCascade);
   
@@ -61,7 +61,7 @@ void Step::vSessionCascadeStore(void)
 {
   ENTRY();
   
-  Session* pSession = AM::pJobSession(m_pJob);
+  Session* pSession = MY::pSession();
 
   m_pDataStack->vPopStr(pSession->m_sCascade,__func__);
   
@@ -75,10 +75,8 @@ void Step::vSessionDicStackFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(pSession);
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   m_pDataStack->vPushPtr(pSession->pPathStack());
   
   EXIT();
@@ -91,9 +89,8 @@ void Step::vSessionDump(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   pSession->vContentDump();
   
   EXIT();
@@ -106,7 +103,7 @@ void Step::vSessionHasCascadeFetch(void)
 {
   ENTRY();
   
-  Session* pSession = AM::pJobSession(m_pJob);
+  Session* pSession = MY::pSession();
 
   m_pDataStack->vPushInt(pSession->m_bHasCascade);
   
@@ -120,7 +117,7 @@ void Step::vSessionHasCascadeStore(void)
 {
   ENTRY();
   
-  Session* pSession = AM::pJobSession(m_pJob);
+  Session* pSession = MY::pSession();
 
   pSession->m_bHasCascade = m_pDataStack->iPopInt(__func__);
   
@@ -134,9 +131,8 @@ void Step::vSessionPid(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   m_pDataStack->vPushInt(pSession->m_iPid);
   
   EXIT();
@@ -149,9 +145,8 @@ void Step::vSessionTablePtnFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   m_pDataStack->vPushInt(pSession->i_FixedPtn());
   
   EXIT();
@@ -180,15 +175,8 @@ void Step::vSessionThis(void)
 {
   ENTRY();
  
-  Job* pJob = m_pJob;
+  Session* pSession = MY::pSession();
 
-  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
-  
-  Session* pSession = nullptr;
-  
-  if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessionArray()->pGetSession(iSessionId);
-  
   m_pDataStack->vPushPtr(pSession);
 
   EXIT();
@@ -201,7 +189,7 @@ void Step::vSessionToDoFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
+  Session* pSession = MY::pSession();
 
   m_pDataStack->vPushStr(pSession->m_sToDo);
   
@@ -215,8 +203,8 @@ void Step::vSessionToDoStore(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
+  Session* pSession = MY::pSession();
+
   s4K sToDo;
   m_pDataStack->vPopStr(sToDo,__func__);
 
@@ -232,8 +220,8 @@ void Step::vSessionTxFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
+  Session* pSession = MY::pSession();
+
   Tx* pTx = pSession->pTx();
   
   m_pDataStack->vPushPtr(pTx);
@@ -248,8 +236,8 @@ void Step::vSessionTxStore(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
+  Session* pSession = MY::pSession();
+
   Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   pSession->vTx(pTx);
