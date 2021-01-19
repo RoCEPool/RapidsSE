@@ -745,6 +745,8 @@ bool Api::bSpawnJob_session(Job* pJob)
   
   Api::vMutexUnlock(pSession,pJob);
 
+  // if cascade,  partially reset job and run cascade statement
+  // ...
   return true;
 }
 

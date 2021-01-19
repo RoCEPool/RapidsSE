@@ -30,6 +30,27 @@ namespace OBLIQUE
     static Job*     pJob(void);
     static Session* pSession(void);
     static Task*    pTask(void);
+  
+    /*
+     
+     Possible Other Functions:
+    
+     pGrid()
+     pNode()
+     
+     pTenant()
+     pCatalog()
+     pSchema()
+     
+     pDic()
+     pDicStack()
+     
+     pPipeline()
+     pStage()
+     pStrand()
+     pOp()
+     
+     */
   };
 }
 
