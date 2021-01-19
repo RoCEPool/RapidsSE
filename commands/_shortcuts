@@ -14,6 +14,7 @@ shortcut b    _bm_insidx;
 shortcut bc   _bootCluster;
 shortcut i    _bm_inflateRow;
 shortcut cm   sqlcompiler "select col1 as c, col2 as c2 from t;";
+shortcut cj   cascadeJob;
 shortcut cp   _cancelPipeline;
 shortcut ct   /flow create table t (a integer);
 shortcut l    _loadPipeline;

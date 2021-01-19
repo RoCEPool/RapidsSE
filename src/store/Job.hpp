@@ -73,7 +73,7 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec=nullptr);
+    Job(ReqTuple* aReqTuple);
 
     // FIND CASE -- TO BE REMOVED
     Job(eCN eClass);

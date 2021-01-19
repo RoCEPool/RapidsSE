@@ -204,6 +204,52 @@ void BASE::vThreadCallStackDump(void)
   vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }
 
+/*----------------------------------------------------------------------------*/
+/* have a type error                                                          */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrowType2(eFK   eKind,
+                                            eVL   eSeverity,
+                                            const char* azFunc,
+                                            const char* azFilePath,
+                                            i8    iLineNo,
+                                            void* aObject,
+                                            eCN   eExpectingClass,
+                                            eCN   eGotClass)
+{
+  Object* pObject = static_cast<Object*>(aObject);
+  //eCN eGotClass = pObject->eGetClassNo();
+  
+  char zCondition[256];
+
+  // put a breakpoint here to trap throws
+  sleep(0);
+  
+  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+    StrLib::vSprint(zCondition,
+                    "Expecting class %d %s; Got %d %s\n"_Stz,
+                    eExpectingClass, aCN[eExpectingClass]->azChar(),
+                    eGotClass,       aCN[eGotClass]->azChar());
+  else
+    StrLib::vSprint(zCondition,
+                    "Expecting class %d %s; Got %d\n"_Stz,
+                    eExpectingClass, aCN[eExpectingClass]->azChar(),
+                    eGotClass);
+  
+  //  if (CN_FREECHUNK == eGotClass) {
+  //    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
+  //    eCN eWasClass = aFreeChunk->eWasClass();
+  //
+  //    printf("  FreeChunk was %d\n",eWasClass);
+  //  }
+  
+  if (AM::bDeveloper()) {
+    AM::vTaskDump();
+    vThreadCallStackDump();
+  }
+
+  vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

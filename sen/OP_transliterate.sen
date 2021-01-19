@@ -8,7 +8,7 @@
 /* cascade experimental code (ray)                                            */
 /******************************************************************************/
 
-: cascadeTest \prompt
+: cascadeJob \prompt
 
   "
   pipeline cascade

@@ -138,10 +138,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   //if (! AM::bPassesLowMem())
   //  return EC_LOW_MEMORY;
   
-  if (pLitTknVec)
-    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple, pLitTknVec);
-  else
-    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);
+  pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);
   
   pSession->m_xReqTuple.m_iReqNo++;
 

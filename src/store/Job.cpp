@@ -107,7 +107,61 @@ void Job::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for job__find)                                                */
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job::Job(ReqTuple* aReqTuple)
+: Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
+, m_xReqTuple(aReqTuple)
+, CRM<Job>(this)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  
+  // m_xReqTuple
+
+  m_iParentId = C_UNKNOWN;
+  m_eSeed     = SS_ENUMS;
+  m_i_TablePtn    = C_UNKNOWN;
+  
+  m_eJobKind  = JK_NONE;
+  m_eJobPhase = JP_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobState = JS_RUNNING;
+  
+  m_bNormalSides = true; //
+  m_bWasReceived = false;
+  
+  m_oTimer.vStart();
+  //m_oAcksRmg
+  
+  m_pLogicUnit_job = nullptr;
+  
+  m_pTaskJ = nullptr;
+  m_pOriginatingTask = nullptr;
+  m_iOriginatingId = C_UNKNOWN;
+
+  m_iParticipantNode  = C_UNKNOWN;
+  m_oAcksRmg_2pc.vCheckInit();
+  
+  m_pPipeline = nullptr;
+  m_pOp       = nullptr;
+  m_pOuterOp  = nullptr;
+  m_pInputOp  = nullptr;
+
+  //m_xResult
+  // -- -- -- -- -- --
+  
+  SP_Gid spId;
+  
+  vIncStepNo(); ++ gixJob;
+  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
+              "|gixJob=%lld|"_Stz, //!format-LogJob
+              * gixJob);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : Focal(eClassNo,C_UNKNOWN,C_UNKNOWN)
@@ -163,60 +217,6 @@ Job::Job(eCN eClassNo)
               * gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
-: Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
-, m_xReqTuple(aReqTuple)
-, CRM<Job>(this)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-  
-  // m_xReqTuple
-
-  m_iParentId = C_UNKNOWN;
-  m_eSeed     = SS_ENUMS;
-  m_i_TablePtn    = C_UNKNOWN;
-  
-  m_eJobKind  = JK_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eJobList  = JL_NONE;
-  m_eJobState = JS_RUNNING;
-  
-  m_bNormalSides = true; //
-  m_bWasReceived = false;
-  
-  m_oTimer.vStart();
-  //m_oAcksRmg
-  
-  m_pLogicUnit_job = nullptr;
-  
-  m_pTaskJ = nullptr;
-  m_pOriginatingTask = nullptr;
-  m_iOriginatingId = C_UNKNOWN;
-
-  m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRmg_2pc.vCheckInit();
-  
-  m_pPipeline = nullptr;
-  m_pOp       = nullptr;
-  m_pOuterOp  = nullptr;
-  m_pInputOp  = nullptr;
-
-  //m_xResult
-  // -- -- -- -- -- --
-  
-  SP_Gid spId;
-  
-  vIncStepNo(); ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "|gixJob=%lld|"_Stz, //!format-LogJob
-              * gixJob);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,7 +688,7 @@ eJK Job::eJobKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job kind                                                          */
+/* set the job kind                                                           */
 /*----------------------------------------------------------------------------*/
 void Job::vJobKind(eJK eJobKind)
 {
@@ -728,7 +728,7 @@ Stz* Job::szJobNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job name                                                          */
+/* set the job name                                                           */
 /*----------------------------------------------------------------------------*/
 void Job::vJobNm(Stz* szJobNm)
 {
@@ -1428,14 +1428,9 @@ void Job::vWasReceived(bool bWasReceived)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* check if the cluster has started                                           */
