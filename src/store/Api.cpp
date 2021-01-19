@@ -85,12 +85,17 @@ void Api::vExecuteJob(Session* pSession)
   
   Job* pJob = pSession->m_pSsnJob;
   
-  Api::bSpawnJob_session(pJob);
+  for (;;) {
   
-  if (! pSession->bHasCascade())
-    return;
+    Api::bSpawnJob_session(pJob);
   
-  vDebugPoint();
+    if (! pSession->bHasCascade())
+      return;
+  
+    pJob->vResetForReuse();
+    
+    pJob->vSetFromCascade();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

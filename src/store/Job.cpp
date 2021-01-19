@@ -1143,6 +1143,16 @@ ResponseVec* Job::pOriginResponseVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset job for cascade reuse                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vResetForReuse(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get rows skipped                                                           */
 /*----------------------------------------------------------------------------*/
 i8 Job::iRowsProcessed(void)
@@ -1195,7 +1205,7 @@ void Job::vRowsInvalid(i8 iRowsInvalid)
 /*----------------------------------------------------------------------------*/
 void Job::vReport(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
@@ -1255,6 +1265,16 @@ Session* Job::pSession(void)
   Session* pSession = AM::pSessionGet(&m_xReqTuple);
 
   return pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job to execute cascade command                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vSetFromCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

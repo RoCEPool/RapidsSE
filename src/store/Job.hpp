@@ -135,6 +135,7 @@ namespace STORE
     void vParticipantHasError(bool bHasError);
     eEC ePopulateJob(TagSet* pTagSet);
     void vPrintResult(eRS eResponse);
+    void vResetForReuse(void);
     Response* pResponse(void);
     Stz* szResponse(void);
     void vResponse(Stz* sResponse);
@@ -146,6 +147,7 @@ namespace STORE
     void vRowsSkipped(i8 iRowsSkipped);
     i8   iRowsInvalid(void);
     void vRowsInvalid(i8 iRowsInvalid);
+    void vSetFromCascade(void);
     Stz* szSide(void);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);

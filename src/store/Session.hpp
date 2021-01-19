@@ -96,7 +96,6 @@ namespace STORE
     Job* pJob(void);
     DicStack* pPathStack(void);
     void vReport(void);
-    void vReuse(void);
     void vTraceSession(void);
     Tx*  pTx(void);
     void vTx(Tx* pTx);
