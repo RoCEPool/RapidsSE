@@ -434,6 +434,7 @@ namespace OBLIQUE
     static void vTaskDump(void);
     static void vTaskDump(Task* pTask);
     static Job* pTaskJob(void);
+    static Job* pTaskJob(Task* pTask);
     static void vTaskMutexLock(Task* pTask);
     static void vTaskMutexSignal(Task* pTask);
     static void vTaskMutexUnlock(Task* pTask);

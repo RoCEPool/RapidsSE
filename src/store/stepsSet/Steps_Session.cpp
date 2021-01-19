@@ -14,6 +14,8 @@
 #include "Result.hpp"
 #include "Job.hpp"
 
+#include "MY.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -162,7 +164,7 @@ void Step::vSessionTagSetFetch(void)
 {
   ENTRY();
   
-  Session* pSession = AM::pJobSession(m_pJob);
+  Session* pSession = MY::pSession();
 
   TagSet* pSsnTagSet = & pSession->m_oSsnTagSet;
   

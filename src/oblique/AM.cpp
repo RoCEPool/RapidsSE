@@ -2009,8 +2009,12 @@ bool AM::bTaskIsLocked(Task* pTask) {
 DicStack* AM::pTaskDicStack(void) {
   return pThisTLSTask()->pDicStack();
 }
+
 Job* AM::pTaskJob(void) {
   return pThisTLSTask()->pJob();
+}
+Job* AM::pTaskJob(Task* pTask) {
+  return pTask->pJob();
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
