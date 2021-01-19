@@ -79,25 +79,23 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    bool      bBeginTx(void);
-    void      vCommitTx(void);
-    void      vContentDump(void);
-    void      vEndTx(void);
-    void      vFocalOutline(s4K& sOutline);
-    eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
-    i8        i_FixedPtn(void);
-    void      vFixedPtn(i8 i_FixedPtn);
-    DicStack* pPathStack(void);
-      
-    void      vReport(void);
-    Job*      pJob(void);
-
-    Tx*       pTx(void);
-    void      vTx(Tx* pTx);
-  
+    bool bBeginTx(void);
+    void vCommitTx(void);
+    void vContentDump(void);
+    void vEndTx(void);
+    i8   i_FixedPtn(void);
+    void vFixedPtn(i8 i_FixedPtn);
+    void vFocalOutline(s4K& sOutline);
     void vFreeSession(i8 i_NextFree);
+    eEC  eInit(Stz* pCatalogName, Stz* pSchemaName);
+    Job* pJob(void);
+    DicStack* pPathStack(void);
+    void vReport(void);
+    void vReuse(void);
     void vTraceSession(void);
-    
+    Tx*  pTx(void);
+    void vTx(Tx* pTx);
+  
     Footer* aFooter(void);
   };
   

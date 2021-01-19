@@ -50,6 +50,8 @@ namespace OBLIQUE
      pStrand()
      pOp()
      
+     szPath();
+
      */
   };
 }

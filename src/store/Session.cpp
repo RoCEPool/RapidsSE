@@ -15,22 +15,10 @@ Atomic gixSession;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Session* STORE::_pSession(void* aAddr)
-{
-  Session* pSession = reinterpret_cast<Session*>(aAddr);
-  
-  if (pSession && CN_SESSION != pSession->eGetClassNo()) {
-    vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eGetClassNo()]);
-    //return nullptr;
-  }
-  
-  RASSERT_TYPE(pSession,CN_SESSION);
-  
-  return pSession;
-}
+__pCastFunction(STORE,Session,CN_SESSION)
+__aNewFunction(Session,CN_SESSION)
+__vDeleteFunction(Session,CN_SESSION)
+__aFooterFunction(Session)
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -47,26 +35,6 @@ Session* STORE::_pSession(i8 iAddr)
   RASSERT_TYPE(pSession,CN_SESSION);
   
   return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Session::operator new(size_t)
-{
-  Session* pSession = reinterpret_cast<Session*>(HeapMem::pAllocate(CN_SESSION));
-  
-  return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Session::operator delete(void* aAddress)
-{
-  Session* pSession = reinterpret_cast<Session*>(aAddress);
-  
-  HeapMem::vFree(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,12 +129,18 @@ Session::~Session(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Session::vContentDump(void)
 {
+  _static_
+  
   vTrace("Session %p: pid %lld (%s)\n"_Stz,
          this,
          m_iPid,
          Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
          );
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Punlic ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
@@ -215,6 +189,65 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pSession->i_FixedPtn());
 }
 
+/*----------------------------------------------------------------------------*/
+/* which partition                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Session::i_FixedPtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  return m_i_FixedPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition                                                              */
+/*----------------------------------------------------------------------------*/
+void Session::vFixedPtn(i8 i_FixedPtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_i_FixedPtn = i_FixedPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free the session state                                                     */
+/*----------------------------------------------------------------------------*/
+void Session::vFreeSession(i8 i_NextFree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  RASSERT(m_i_Session >= 0 && m_i_Session < C_MAX_SESSIONS);
+  m_i_NextFree = i_NextFree;
+  
+  m_eApiFun    = AC_NONE;
+  m_iApiLoc    = 0;
+  m_eApiError  = EC_NONE;
+  m_bRunning   = false;
+  m_bSignalled = false;
+  
+  m_aStackBase = nullptr;
+  m_aStackPtr  = nullptr;
+  
+  m_eJobClass  = CN_NONE;
+  m_iJobLoc    = 0;
+  m_iSenLoc    = 0;
+  
+  m_oTimer.vReset();
+  m_qTotalUsec = 0;
+  
+  m_nBegun     = 0;
+  m_nExecuted  = 0;
+  m_nCancelled = 0;
+  m_nEnded     = 0;
+  
+  m_nApiCalls  = 0;
+  m_nApiErrors = 0;
+  m_nJobNew    = 0;
+  m_nJobDelete = 0;
+  
+  m_pSsnJob    = nullptr;
+  m_pTx        = nullptr;
+}
 /*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
@@ -338,27 +371,6 @@ Job* Session::pJob(void)
   return m_pSsnJob;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* which partition                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Session::i_FixedPtn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return m_i_FixedPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition                                                              */
-/*----------------------------------------------------------------------------*/
-void Session::vFixedPtn(i8 i_FixedPtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  m_i_FixedPtn = i_FixedPtn;
-}
-
 /*----------------------------------------------------------------------------*/
 /* get path stack                                                             */
 /*----------------------------------------------------------------------------*/
@@ -379,66 +391,6 @@ void Session::vReport(void)
   vTrace("Session %llx job %llx\n"_Stz,
          this,
          m_pSsnJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tx                                                                     */
-/*----------------------------------------------------------------------------*/
-Tx* Session::pTx(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return m_pTx;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set tx                                                                     */
-/*----------------------------------------------------------------------------*/
-void Session::vTx(Tx* pTx)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  m_pTx = pTx;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free the session state                                                     */
-/*----------------------------------------------------------------------------*/
-void Session::vFreeSession(i8 i_NextFree)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  RASSERT(m_i_Session >= 0 && m_i_Session < C_MAX_SESSIONS);
-  m_i_NextFree = i_NextFree;
-  
-  m_eApiFun    = AC_NONE;
-  m_iApiLoc    = 0;
-  m_eApiError  = EC_NONE;
-  m_bRunning   = false;
-  m_bSignalled = false;
-  
-  m_aStackBase = nullptr;
-  m_aStackPtr  = nullptr;
-  
-  m_eJobClass  = CN_NONE;
-  m_iJobLoc    = 0;
-  m_iSenLoc    = 0;
-  
-  m_oTimer.vReset();
-  m_qTotalUsec = 0;
-  
-  m_nBegun     = 0;
-  m_nExecuted  = 0;
-  m_nCancelled = 0;
-  m_nEnded     = 0;
-  
-  m_nApiCalls  = 0;
-  m_nApiErrors = 0;
-  m_nJobNew    = 0;
-  m_nJobDelete = 0;
-  
-  m_pSsnJob    = nullptr;
-  m_pTx        = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,10 +446,26 @@ void Session::vTraceSession(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/* get tx                                                                     */
 /*----------------------------------------------------------------------------*/
+Tx* Session::pTx(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  return m_pTx;
+}
 
-__aFooterFunction(Session);
+/*----------------------------------------------------------------------------*/
+/* set tx                                                                     */
+/*----------------------------------------------------------------------------*/
+void Session::vTx(Tx* pTx)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_pTx = pTx;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */
