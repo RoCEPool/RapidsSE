@@ -10,6 +10,10 @@
 
 #include "PlanNode.hpp"
 #include "RootNode.hpp"
+#include "PlanDefinitionParser.hpp"
+#include "SqlPlanner.hpp"
+#include "ShadowNode.hpp"
+#include "ShadowRoot.hpp"
 #include "OtherOperand.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -59,14 +63,33 @@ void Step::vSqlCompilerParser(void)
   ENTRY();
   
   //vTrace("\nStep::vSqlCompilerParser\n"_Stz);
-  
+
+  // Get the original SQL statement entered
   s4K sSqlStatement;
   m_pDataStack->vPopStr(sSqlStatement,__func__);
 
-  Parser::RootNode* pPlanNode_root = new Parser::RootNode(nullptr);
-  
-  OtherOperand* pOtherOperand = new OtherOperand(pPlanNode_root);
-  
+  // Read in and parse the plan graph definitions
+  const Parser::PlanNode* pGraphTemplate = Parser::PlanDefinitionParser::pGraphTemplate();
+
+  if (pGraphTemplate == nullptr) {
+    // TODO: handle error
+//    return false;
+  }
+
+  // Parse the SQL command.
+  Parser::SqlPlanner* pPlanner = new Parser::SqlPlanner();
+  Parser::PlanNode* pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
+  delete pPlanner;
+
+  if (!pPlanRoot) {
+    // TODO: handle error
+  }
+
+  s48K sExplainBuf;
+  Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
+  vTrace("%s\n"_Stz, sExplainBuf.szStz());
+
+  OtherOperand* pOtherOperand = new OtherOperand(pPlanRoot);
   m_pDataStack->vPushPtr(pOtherOperand);
 
   //vTrace("  antlr(%s) -> RootNode %p\n"_Stz,
@@ -85,13 +108,12 @@ void Step::vSqlCompilerTransliterate(void)
   //vTrace("\nStep::vSqlCompilerTransliterate\n"_Stz);
 
   OtherOperand* pOtherOperand = _pOtherOperand(m_pDataStack->pPopPtr(__func__));
-
-  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pOtherOperand->pObject();
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pOtherOperand->pObject());
 
   //vTrace("  Transliterate(RootNode %p) -> nil\n"_Stz,pPlanNode_root);
 
+  delete pPlanRoot;
   delete pOtherOperand;
-  delete pPlanNode_root;
   
   EXIT();
 }

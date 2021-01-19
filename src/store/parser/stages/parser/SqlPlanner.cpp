@@ -111,7 +111,7 @@ SqlPlanner::~SqlPlanner(void) noexcept
 /*----------------------------------------------------------------------------*/
 /* Parse and create an initial plan for a SQL statement                       */
 /*----------------------------------------------------------------------------*/
-void SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
+PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
 {
   // We need to give the Lexer a CharStream, but that requires an STL-string...
   std::string sqlStr(pStr->azChar());
@@ -137,7 +137,7 @@ void SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   // Check for any syntax errors
   if (errorListener.bGotError()) {
     vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
-    return;
+    return nullptr;
   }
   
   // Visit the parse tree that resulted from the above parsing.
@@ -158,12 +158,14 @@ void SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   pQueryNode->vAppendChild(pStatementNode);
 
   // Explain the statement
-  s48K sExplainBuf;
-  Statement::vExplain(pStatementNode, sExplainBuf, 0);
-  vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
+//  s48K sExplainBuf;
+//  Statement::vExplain(pStatementNode, sExplainBuf, 0);
+//  vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
 
   // Validate the plan subsection of the graph
   GraphValidator::vValidatePlan(pRoot);
+
+  return pRoot;
 }
 
 

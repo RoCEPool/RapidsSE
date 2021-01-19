@@ -90,6 +90,7 @@ bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
 
   // First get the command from the prompt
   Stz* szSql = pPrompt->szOriginalCommand();
+  vTrace("SQL Statement: %s"_Stz, szSql);
 
   SqlPlanner* pPlanner = new SqlPlanner();
   pPlanner->plan(szSql, pGraphTemplate);
