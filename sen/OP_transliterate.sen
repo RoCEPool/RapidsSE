@@ -4,6 +4,33 @@
 
 " OP_transliterate.sen" .verbose
 
+/******************************************************************************/
+/* cascade experimental code (ray)                                            */
+/******************************************************************************/
+
+: cascadeTest \prompt
+
+  "
+  pipeline cascade
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | metaScan tables
+    | rowToList
+    | output
+    | sink
+    | stageA
+
+  end ;
+  " session::cascade!
+  
+  true session::hasCascade!
+;
+
+
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
