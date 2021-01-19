@@ -50,7 +50,7 @@ Stz* MY::szWordNm(void)
 /*----------------------------------------------------------------------------*/
 Job* MY::pJob(void)
 {
-  Task* pTask = AM::pThisTLSTask();
+  Task* pTask = MY::pTask();
   
   Job* pJob = AM::pTaskJob(pTask);
   
@@ -69,6 +69,15 @@ Session* MY::pSession(void)
   return pSession;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get current task                                                           */
+/*----------------------------------------------------------------------------*/
+Task* MY::pTask(void)
+{
+  Task* pTask = AM::pThisTLSTask();
+
+  return pTask;
+}
 
 /*============================================================================*/
 /* end                                                                        */

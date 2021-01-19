@@ -5,6 +5,11 @@
 
 //!                    ** Do not include BASE.h **
 
+namespace BASE
+{
+  class Task;
+}
+
 namespace STORE
 {
   class Job;
@@ -22,8 +27,9 @@ namespace OBLIQUE
     static Stz* szGridNm(void);
     static Stz* szWordNm(void);
   
-    static Job* pJob(void);
+    static Job*     pJob(void);
     static Session* pSession(void);
+    static Task*    pTask(void);
   };
 }
 
