@@ -155,6 +155,26 @@ bool Session::bBeginTx()
 }
 
 /*----------------------------------------------------------------------------*/
+/* get sCascade                                                               */
+/*----------------------------------------------------------------------------*/
+Stz*  Session::szCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  return m_sCascade;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sCascade                                                               */
+/*----------------------------------------------------------------------------*/
+void Session::vCascade(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  m_sCascade = szCascade;
+}
+
+/*----------------------------------------------------------------------------*/
 /* commit a tx                                                                */
 /*----------------------------------------------------------------------------*/
 void Session::vCommitTx()
@@ -256,6 +276,26 @@ void Session::vFocalOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bHasCascade                                                            */
+/*----------------------------------------------------------------------------*/
+bool Session::bHasCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  return m_bHasCascade;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bHasCascade                                                            */
+/*----------------------------------------------------------------------------*/
+void Session::vHasCascade(bool bHasCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  m_bHasCascade = bHasCascade;
 }
 
 /*----------------------------------------------------------------------------*/

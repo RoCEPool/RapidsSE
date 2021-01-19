@@ -86,6 +86,11 @@ void Api::vExecuteJob(Session* pSession)
   Job* pJob = pSession->m_pSsnJob;
   
   Api::bSpawnJob_session(pJob);
+  
+  if (! pSession->bHasCascade())
+    return;
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -745,8 +750,6 @@ bool Api::bSpawnJob_session(Job* pJob)
   
   Api::vMutexUnlock(pSession,pJob);
 
-  // if cascade,  partially reset job and run cascade statement
-  // ...
   return true;
 }
 

@@ -67,6 +67,7 @@ namespace STORE
 
   private:
 
+
     // must be last
     Footer m_xFooter;
     
@@ -80,6 +81,8 @@ namespace STORE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     bool bBeginTx(void);
+    Stz* szCascade(void);
+    void vCascade(Stz* szCascade);
     void vCommitTx(void);
     void vContentDump(void);
     void vEndTx(void);
@@ -87,6 +90,8 @@ namespace STORE
     void vFixedPtn(i8 i_FixedPtn);
     void vFocalOutline(s4K& sOutline);
     void vFreeSession(i8 i_NextFree);
+    bool bHasCascade(void);
+    void vHasCascade(bool bHasCascade);
     eEC  eInit(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
     DicStack* pPathStack(void);
