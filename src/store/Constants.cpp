@@ -295,10 +295,15 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("CK_CHILD"_Stz,    CK_CHILD);
   /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
 
+  
+  /*    */ vAddConstant("CN_JOB"_Stz,                CN_JOB);
+  /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
+  /* 89 */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
+
+#if 0
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
-  /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   
   /* 12 */ vAddConstant("CN_CMDLINEARGS"_Stz,    CN_CMDLINEARGS);
   /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);
@@ -335,7 +340,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
   /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
 
-  /*    */ vAddConstant("CN_JOB"_Stz,                CN_JOB);
   
   /* 31 */ vAddConstant("CN_ENTWRK"_Stz,       CN_ENTWRK);
   
@@ -401,10 +405,11 @@ void Constants::vAddConstantsCpp(void)
   
   /* 88 */ vAddConstant("CN_WORD"_Stz,         CN_WORD);
   
-  /* 89 */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
   
   /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
- 
+  
+#endif
+  
   // CT_ : columne type
   /*  0 */ vAddConstant("CT_NONE"_Stz,      CT_NONE);
   /*  1 */ vAddConstant("CT_BOOLEAN"_Stz,   CT_BOOLEAN);
@@ -818,61 +823,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // SIZEOF_ : C++ class sizes
-
-  
-  /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
-  /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
-  /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
-  /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
-  /*    */ vAddConstant("SIZEOF_EntBUFFER"_Stz,    sizeof(EntBuffer));
-  /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
-  /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));
-  /* 19 */ vAddConstant("SIZEOF_GRID"_Stz,         sizeof(Grid));
-  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Stz,   sizeof(HeapBuffer));
-  /*    */ vAddConstant("SIZEOF_INDEX"_Stz,        sizeof(Index));
-  
-  /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
-  /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
-  /*    */ vAddConstant("SIZEOF_MUTEX"_Stz,        sizeof(Mutex));
-  /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
-  
-  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Charser));
-  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
-  /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
-  /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
-  /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Ent));
-  /* 37 */ vAddConstant("SIZEOF_CRWBUFFER"_Stz,    sizeof(CrwBuffer));
-  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
-  
-  /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
-  
-  /* 46 */ //vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
-  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
-  /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
-  /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));
-
-  /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(TypedStack));
-  /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
-  /* 55 */ vAddConstant("SIZEOF_STEPTIMING"_Stz,   sizeof(StepTiming));
-  /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
-  /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
-  /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
-  
-  /*    */ vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
-  /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
-  
-  /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
-  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Input));
-  /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
-  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
-  
-  /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
-  /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
-  /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
-          
+    
   #ifdef WITH_APPLE
   vAddConstant("WITH_APPLE"_Stz,(i8)true);
   #else
