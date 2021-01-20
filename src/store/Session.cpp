@@ -96,6 +96,7 @@ Session::Session(void)
   
   
   // -- -- -- -- -- --
+  m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
 
@@ -277,6 +278,10 @@ void Session::vFreeSession(i8 i_NextFree)
   m_pTx        = nullptr;
   
   // -- -- -- -- -- --
+  if (m_pOutputQueue)
+    delete m_pOutputQueue;
+  m_pOutputQueue = nullptr;
+
   if (m_pStreamDef_result)
     delete m_pStreamDef_result;
   m_pStreamDef_result = nullptr;
@@ -317,7 +322,7 @@ void Session::vHasCascade(bool bHasCascade)
 /*----------------------------------------------------------------------------*/
 /* initialise this session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
+eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -413,6 +418,8 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   m_oDicStack.vPush(pDic);
 
   //fprintf(stderr,"eInit M\n");
+  
+  m_pOutputQueue = new Queue;
   
   return EC_NONE;
 }

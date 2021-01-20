@@ -63,7 +63,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   m_pSession = Api::pAllocSession(SK_EXTERNAL);
 
-  eEC eError = m_pSession->eInit("rapidsse"_Stz,"public"_Stz);
+  eEC eError = m_pSession->eInitSession("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);
   
   m_pSession->m_pInput = new Input;

@@ -67,7 +67,8 @@ namespace STORE
     bool  m_bHasCascade;   // is there a cascading statement to execute?
     s16KB m_sCascade;      // the cascade statement
 
-  
+    // -- -- -- -- -- --
+    Queue*       m_pOutputQueue; // queue in originating node to receive 
     StreamDef*   m_pStreamDef_result;
     bool         m_bExitMarker;
   
@@ -98,7 +99,7 @@ namespace STORE
     void vFreeSession(i8 i_NextFree);
     bool bHasCascade(void);
     void vHasCascade(bool bHasCascade);
-    eEC  eInit(Stz* pCatalogName, Stz* pSchemaName);
+    eEC  eInitSession(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
     DicStack* pPathStack(void);
     void vReport(void);
