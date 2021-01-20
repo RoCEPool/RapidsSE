@@ -1156,10 +1156,46 @@ void Job::vResetForReuse(void)
 
   vDebugPoint();
   
+  // -- a -------------------
+  // m_xReqTuple
+  // m_sJobNm;
+  // m_iParentId = C_UNKNOWN;
+  // m_oTimer.vStart();
+
+  // -- b -------------------
+  m_bWasReceived     = false;
+  m_iParticipantNode = C_UNKNOWN;
+  m_bNormalSides     = true;
+
+  // -- c -------------------
+  m_eJobKind  = JK_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobPhase = JP_NONE;
+  m_eJobState = JS_RUNNING;
+
+  // -- d -------------------
+  delete m_pLogicUnit_job; m_pLogicUnit_job = nullptr;
+  // m_oJobTags
+  // m_xResult ???
   
+  // -- e -------------------
+  delete m_pPipeline; m_pPipeline = nullptr;
+  delete m_pOp;       m_pOp       = nullptr;
+  delete m_pOuterOp;  m_pOuterOp  = nullptr;
+  delete m_pInputOp;  m_pInputOp  = nullptr;
+
+  // -- f -------------------
+  m_ixErrors = 0;
+  m_pOriginatingTask = nullptr;
+  m_iOriginatingId   = C_UNKNOWN;
+
+  // -- g -------------------
+  m_oAcksRmg_2pc.vCheckInit();
+  m_eSeed      = SS_ENUMS;
+  m_i_TablePtn = C_UNKNOWN;
+  ASSERT(m_pTaskJ);   // m_pTaskJ     = nullptr;
   
-  
-  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

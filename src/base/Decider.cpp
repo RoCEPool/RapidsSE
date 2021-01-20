@@ -54,7 +54,8 @@ void Decider::vCheckInit(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
-  ASSERT(0 == m_nAcksRemaining); // logic check
+  ASSERT(0 == m_nAcksOriginally); // logic check
+  ASSERT(0 == m_nAcksRemaining);  // logic check
 }
 
 /*----------------------------------------------------------------------------*/
