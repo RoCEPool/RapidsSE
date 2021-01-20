@@ -12,43 +12,27 @@ create table nation (
 );
 
 print "loading nation.csv..." ;
-oldLoad nation "/tpch/SF1/nation.csv" ;
+load nation "../tpch/SF1/nation.csv" ;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline query
+begin
 
-markjob export on;
-markjob subExporter on;
-markjob;
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
 
-markact job_export on;
-markact job_subExporter on;
-markact job_kidExport on;
-markact job__begun on;
-markact job__cancel on;
-markact job__cancelled on;
-markact job__end on;
-markact job__ended on;
-markact job__execute on;
-markact job__executed on;
-markact task on;
-markact;
+  stage StageB on all partitions:
+    scan Nation
+    | project 0 "as col1 N_NATIONKEY , as col2 N_REGIONKEY"
+    | stageC
 
-marktrc job_export on;
-marktrc job_subexporter on;
-marktrc job_kidexport on;
-marktrc;
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
 
-markres file on;
-markres socket on;
-markres;
-
-print "exporting nation.csv..." ;
-
-logSection "EXPORT" ;
-
-export nation "/tmp/nation_export.csv" ;
-
-activityLog short;
+ end ;
 
 /*============================================================================*/
 /* end                                                                        */
