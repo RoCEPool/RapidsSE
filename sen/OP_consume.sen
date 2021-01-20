@@ -11,9 +11,10 @@
 
   //"Operand:- ZK_CANCELMARKER" .verbose
   xmits[].handleCancel if
-    PipeIn[].pipeOut
-    Op.ackPipelineJob
-    false
+    ZK_CANCELMARKER_handler
+    //PipeIn[].pipeOut
+    //Op.ackPipelineJob
+    //false
   else
     PipeIn[].delete
     true

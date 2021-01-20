@@ -20,7 +20,17 @@
 : ZK_CANCELMARKER_handler \handler
 
   //"ZK_CANCELMARKER_handler" .verbose
+
   PipeIn[].pipeOut
+
+  // drain the operand queue
+  begin
+    Pipein[].peek
+  while
+    PipeIn[].next
+    Pipein[].delete
+  repeat
+
   Op.ackPipelineJob
   false
 ;

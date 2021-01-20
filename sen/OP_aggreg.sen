@@ -81,7 +81,6 @@
   Pot[].pipeoutAllDanglingPtns
   Pot[].delete
 
-  // delete the src streamDef linked asSrcStreamDef
   StreamDef[].isNull not if
     StreamDef[].delete
   then

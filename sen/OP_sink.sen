@@ -12,10 +12,14 @@
   //"Operand:- ZK_CANCELMARKER" .verbose
   PipeIn[].pipeToJob
   Operand[].newExitedMarker
-  Operand[].pipeOut
-  Op.ackPipelineJob
+  Operand[] to Pipein[]
+  nullptr to Operand[]
 
-  false
+  //Operand[].pipeOut
+  //Op.ackPipelineJob
+  //false
+
+  ZK_CANCELMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
