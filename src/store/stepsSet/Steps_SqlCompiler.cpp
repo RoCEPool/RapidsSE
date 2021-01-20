@@ -14,7 +14,7 @@
 #include "SqlPlanner.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
-#include "OtherOperand.hpp"
+#include "PlanOperand.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -35,22 +35,22 @@ void Step::vSqlCompilerNameValidate(void)
   
   //vTrace("\nStep::vSqlCompilerNameValidate\n"_Stz);
   
-  OtherOperand* pOtherOperand = _pOtherOperand(m_pDataStack->pPopPtr(__func__));
-  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pOtherOperand->pObject();
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pPlanOperand->pPlanNode();
 
   
   Parser::RootNode* pPlanNode_root2 = new Parser::RootNode(nullptr);
-  OtherOperand* pOtherOperand2 = new OtherOperand(pPlanNode_root2);
+  PlanOperand* pPlanOperand2 = new PlanOperand(pPlanNode_root2);
 
   
   //vTrace("  NameValidate(RootNode %p)-> RootNode %p\n"_Stz,
   //       pPlanNode_root,pPlanNode_root2);
 
-  delete pOtherOperand;
+  delete pPlanOperand;
   delete pPlanNode_root;
 
   
-  m_pDataStack->vPushPtr(pOtherOperand2);
+  m_pDataStack->vPushPtr(pPlanOperand2);
 
   EXIT();
 }
@@ -89,8 +89,8 @@ void Step::vSqlCompilerParser(void)
   Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
   vTrace("%s\n"_Stz, sExplainBuf.szStz());
 
-  OtherOperand* pOtherOperand = new OtherOperand(pPlanRoot);
-  m_pDataStack->vPushPtr(pOtherOperand);
+  PlanOperand* pPlanOperand = new PlanOperand(pPlanRoot);
+  m_pDataStack->vPushPtr(pPlanOperand);
 
   //vTrace("  antlr(%s) -> RootNode %p\n"_Stz,
   //       sSqlStatement.szStz(),pPlanNode_root);
@@ -107,13 +107,13 @@ void Step::vSqlCompilerTransliterate(void)
   
   //vTrace("\nStep::vSqlCompilerTransliterate\n"_Stz);
 
-  OtherOperand* pOtherOperand = _pOtherOperand(m_pDataStack->pPopPtr(__func__));
-  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pOtherOperand->pObject());
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
 
   //vTrace("  Transliterate(RootNode %p) -> nil\n"_Stz,pPlanNode_root);
 
   delete pPlanRoot;
-  delete pOtherOperand;
+  delete pPlanOperand;
   
   EXIT();
 }

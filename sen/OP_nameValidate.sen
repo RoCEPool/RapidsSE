@@ -29,9 +29,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_OTHEROPERAND ...                                            */
+/* handler for ZK_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
-: nameValidate_OtherOperand \handler
+: nameValidate_PlanOperand \handler
  
   PipeIn[] to Operand[]
     nullptr to PipeIn[]
@@ -69,7 +69,7 @@
   find: nameValidate_CancelMarker ZK_CANCELMARKER op[].handler!
   find: nameValidate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: nameValidate_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: nameValidate_OtherOperand ZK_OTHEROPERAND op[].handler!
+  find: nameValidate_PlanOperand  ZK_PLANOPERAND  op[].handler!
   find: nameValidate_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
