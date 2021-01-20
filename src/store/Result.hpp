@@ -26,6 +26,7 @@ namespace STORE
     // buffer queue
     Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
     
+  private:
     StreamDef*   m_pStreamDef;
     bool         m_bExitMarker;
 
