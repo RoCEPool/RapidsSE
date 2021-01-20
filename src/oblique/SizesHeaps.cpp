@@ -72,6 +72,7 @@
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "OtherOperand.hpp"
+#include "PlanOperand.hpp"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
@@ -329,6 +330,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
   { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM  ,0 }, // CN_PLANNODEBUILDERSTACK
   { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
+  { sizeof(PlanOperand),          HT_T_TINY    ,0 }, // CN_PLANOPERAND
   { sizeof(ObjectSnapshot),       HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Pot),                  HT_T_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_T_TINY    ,0 }, // CN_PREDICATE
