@@ -94,7 +94,7 @@ void Api::vExecuteJob(Session* pSession)
   
     pJob->vResetForReuse();
     
-    pJob->vSetFromCascade();
+    pJob->vSetFromCascade(pSession->m_sCascade);
   }
 }
 

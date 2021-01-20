@@ -147,7 +147,7 @@ namespace STORE
     void vRowsSkipped(i8 iRowsSkipped);
     i8   iRowsInvalid(void);
     void vRowsInvalid(i8 iRowsInvalid);
-    void vSetFromCascade(void);
+    void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);

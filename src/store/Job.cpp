@@ -1193,7 +1193,7 @@ void Job::vResetForReuse(void)
   m_oAcksRmg_2pc.vCheckInit();
   m_eSeed      = SS_ENUMS;
   m_i_TablePtn = C_UNKNOWN;
-  ASSERT(m_pTaskJ);   // m_pTaskJ     = nullptr;
+  m_pTaskJ = nullptr;
   
   vDebugPoint();
 }
@@ -1316,9 +1316,13 @@ Session* Job::pSession(void)
 /*----------------------------------------------------------------------------*/
 /* set job to execute cascade command                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vSetFromCascade(void)
+void Job::vSetFromCascade(Stz* szCascade)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oJobTags.vReplace(C_TAG_CMD,szCascade);
+
+  m_oJobTags.vDumpSet(true);
 
   vDebugPoint();
 }
