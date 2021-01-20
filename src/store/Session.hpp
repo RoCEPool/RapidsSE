@@ -11,6 +11,11 @@
 
 namespace STORE
 {
+  class StreamDef;
+}
+
+namespace STORE
+{
   class Session : public Focal
   {
   public:
@@ -64,6 +69,11 @@ namespace STORE
     
     bool  m_bHasCascade;   // is there a cascading statement to execute?
     s16KB m_sCascade;      // the cascade statement
+  
+    // --- - --- - --- - --- - ---
+    // from Result
+    StreamDef*   m_pStreamDef;
+    bool         m_bExitMarker;
 
   private:
 
