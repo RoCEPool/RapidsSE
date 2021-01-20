@@ -11,7 +11,6 @@
 #include "InfoSet.hpp"
 
 #include "StreamSet.hpp"
-#include "Session.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -51,6 +50,9 @@ Result::Result(void)
   
   m_pOriginBufferQueue = nullptr;
   
+  m_pStreamDef         = nullptr;
+  m_bExitMarker        = false;
+ 
   _checkInitialised_(CN_RESULT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
@@ -69,6 +71,8 @@ Result::~Result(void) noexcept(false)
   if (m_pOriginBufferQueue)
     delete m_pOriginBufferQueue;
   
+  if (m_pStreamDef)
+    delete m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +233,7 @@ void Result::vPrintOldJobResponses(void)
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
-void Result::vProcessBufferQueue(Session* pSession)
+void Result::vProcessBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
@@ -237,7 +241,7 @@ void Result::vProcessBufferQueue(Session* pSession)
   
   while ( (pOperand = pPopBufferQueue_blocking()) ) {
     
-    if (! bProcessOperand(pSession,pOperand))
+    if (! bProcessOperand(pOperand))
       break;
     
   }
@@ -284,7 +288,7 @@ Operand* Result::pPopBufferQueue_blocking(void)
 /*----------------------------------------------------------------------------*/
 /* process an operand from the result/output queue                            */
 /*----------------------------------------------------------------------------*/
-bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
+bool Result::bProcessOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
@@ -303,7 +307,7 @@ bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       m_xJobResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
       vTrace("\n"_Stz);
-      pCrwBuffer->vPrintRows(pSession->m_pStreamDef);
+      pCrwBuffer->vPrintRows(m_pStreamDef);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -345,7 +349,7 @@ bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
       m_xJobResponse.m_ixRowsProcessed += pInfoSet->nInfoRows();
       vTrace("\n"_Stz);
-      pInfoSet->vPrintRows(pSession->m_pStreamDef);
+      pInfoSet->vPrintRows(m_pStreamDef);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -401,7 +405,7 @@ bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
           //if ( ! bHasError )
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
-          pSession->m_bExitMarker = true;
+          m_bExitMarker = true;
           bContinue = false;
           goto L_EXIT;
           break;
@@ -456,13 +460,13 @@ bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
 
     case CN_STREAMDEF: {
       //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
-      if ( ! pSession->m_pStreamDef ) {
-        pSession->m_pStreamDef = _pStreamDef(pOperand);
+      if ( ! m_pStreamDef ) {
+        m_pStreamDef = _pStreamDef(pOperand);
         
         // print the metadata
         if (AM::bMetadata()) {
           s4K sMetadata;
-          pSession->m_pStreamDef->vToMetadata(sMetadata.szStz());
+          m_pStreamDef->vToMetadata(sMetadata.szStz());
           vTrace("\n%s\n"_Stz, sMetadata.szStz());
         }
       }
@@ -475,7 +479,7 @@ bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
       ASSERT( ! pStreamSet->szInfoSetNm()->bSame(C_NO_NAME) );
       m_xJobResponse.m_ixRowsProcessed += pStreamSet->nInfoRows();
       vTrace("\n"_Stz);
-      pStreamSet->vPrintRows(pSession->m_pStreamDef);
+      pStreamSet->vPrintRows(m_pStreamDef);
       AM::vDeleteOperand(pOperand);
       break;
     }

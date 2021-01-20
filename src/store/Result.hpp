@@ -27,6 +27,8 @@ namespace STORE
     Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
     
   private:
+    StreamDef*   m_pStreamDef;
+    bool         m_bExitMarker;
 
     // must be last
     Footer m_xFooter;
@@ -46,9 +48,9 @@ namespace STORE
 
     void vPrintDist2pcResponse(void);
     void vPrintLocalResponse(void);
-    void vProcessBufferQueue(Session* pSession);
+    void vProcessBufferQueue(void);
     Operand* pPopBufferQueue_blocking(void);
-    bool bProcessOperand(Session* pSession, Operand* pOperand);
+    bool bProcessOperand(Operand* pOperand);
     
     //! TO GO
     void vPrintOldJobResponses(void);

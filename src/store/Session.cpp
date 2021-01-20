@@ -6,7 +6,6 @@
 
 #include "Session.hpp"
 #include "SessionArray.hpp"
-#include "StreamDef.hpp"
 
 #include "TagConstants.h"
 
@@ -93,12 +92,6 @@ Session::Session(void)
   m_bHasCascade = false;
   m_sCascade    = ""_Stz;
 
-  // --- - --- - --- - --- - ---
-  // from Result
-  m_pStreamDef         = nullptr;
-  m_bExitMarker        = false;
- 
-
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
@@ -121,9 +114,6 @@ Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  if (m_pStreamDef)
-    delete m_pStreamDef;
-
   ASSERT(! m_pInput);
   
   AM::pSessionArray()->vFreeSession(this);

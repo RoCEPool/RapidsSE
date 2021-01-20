@@ -186,7 +186,7 @@ eEC RapidsSE::eProcessOperand(void* aSession, void** aaOperand)
 
   Job* pJob = pSession->pJob();
 
-  bool b = pJob->m_xResult.bProcessOperand(pSession,pOperand);
+  bool b = pJob->m_xResult.bProcessOperand(pOperand);
   
   if (b)
     return EC_NONE;
