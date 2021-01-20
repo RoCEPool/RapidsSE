@@ -23,8 +23,8 @@ namespace STORE
     bool         m_bPartHasError;      // participant has an error
     ResponseVec* m_pOriginResponseVec; // vector of responses from all participant nodes on origin
     
-    // buffer queue
-    Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
+//    // buffer queue
+//    Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
     
   private:
 
@@ -47,7 +47,7 @@ namespace STORE
     void vPrintDist2pcResponse(void);
     void vPrintLocalResponse(void);
     void vProcessBufferQueue(Session* pSession);
-    Operand* pPopBufferQueue_blocking(void);
+    Operand* pPopBufferQueue_blocking(Session* pSession);
     bool bProcessOperand(Session* pSession, Operand* pOperand);
     
     //! TO GO

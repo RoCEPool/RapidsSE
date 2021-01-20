@@ -443,22 +443,22 @@ bool Job::bByPromptTag(void)
 /*----------------------------------------------------------------------------*/
 /* set the buffer queue in the result                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vBufferQueue(Queue* pBufferQueue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_pOriginBufferQueue = pBufferQueue;
-}
+//void Job::vBufferQueue(Queue* pBufferQueue)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//  
+//  m_xResult.m_pOriginBufferQueue = pBufferQueue;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get the buffer queue in the result                                         */
 /*----------------------------------------------------------------------------*/
-Queue* Job::pBufferQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_pOriginBufferQueue;
-}
+//Queue* Job::pBufferQueue(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//  
+//  return m_xResult.m_pOriginBufferQueue;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* content dump                                                               */
@@ -478,7 +478,6 @@ void Job::vContentDump(void)
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"
-         "m_pBufferQueue=%p\n"
          "m_pPipeline=%p\n"_Stz,
          this,
          aCN[eGetClassNo()],
@@ -498,7 +497,6 @@ void Job::vContentDump(void)
          m_iOriginatingId,
          
          nReferences(),
-         m_xResult.m_pOriginBufferQueue,
          m_pPipeline,
          C_VARGS_END
          );

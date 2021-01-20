@@ -16,6 +16,7 @@
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
+#include "MY.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"
@@ -1035,8 +1036,9 @@ void Op::vPipeToJob(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Queue* pBufferQueue = AM::pBufferQueue(m_pPipelineJob);
-  
+  //Queue* pBufferQueue = AM::pBufferQueue(m_pPipelineJob);
+  Queue* pBufferQueue = AM::pBufferQueue(MY::pSession());
+
   RASSERT(pBufferQueue);
   
   if (m_bTraceOp)

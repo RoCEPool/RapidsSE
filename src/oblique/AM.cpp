@@ -88,6 +88,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Session.hpp"
 #include "SessionArray.hpp"
 #include "XmitOperand.hpp"
 
@@ -268,17 +269,24 @@ void AM::vAddConstant(Stz* szName,Stz* szValue) {
 void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
-Queue* AM::pBufferQueue(Job* pJob) {
-  
-  Job* pJob_Originating;
-  
-  if (pJob->eJobKind() == JK_LOCAL)
-    pJob_Originating = pJob;
-  else
-    pJob_Originating = pJob->m_pOriginatingTask->pJob();
-  
-  return pJob_Originating->m_xResult.m_pOriginBufferQueue;
+//Queue* AM::pBufferQueue(Job* pJob) {
+//
+//  Job* pJob_Originating;
+//
+//  if (pJob->eJobKind() == JK_LOCAL)
+//    pJob_Originating = pJob;
+//  else
+//    pJob_Originating = pJob->m_pOriginatingTask->pJob();
+//
+//  return pJob_Originating->m_xResult.m_pOriginBufferQueue;
+//}
+
+Queue* AM::pBufferQueue(Session* pSession) {
+    
+  return pSession->m_pOutputQueue;
 }
+
+
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }

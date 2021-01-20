@@ -61,7 +61,7 @@ void Step::vJob_PipelineBegin(void)
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  RASSERT( ! pJob_Pipeline->pBufferQueue() );
+  //RASSERT( ! pJob_Pipeline->pBufferQueue() );
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline

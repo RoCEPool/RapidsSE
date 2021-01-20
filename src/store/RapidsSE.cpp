@@ -161,7 +161,7 @@ eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,
   
   Job* pJob = pSession->pJob();
 
-  Operand* pOperand = pJob->m_xResult.pPopBufferQueue_blocking();
+  Operand* pOperand = pJob->m_xResult.pPopBufferQueue_blocking(pSession);
 
   eCN eClassNo;
   eOM eOpMarker;

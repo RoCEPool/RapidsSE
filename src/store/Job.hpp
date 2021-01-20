@@ -96,8 +96,8 @@ namespace STORE
     void vAddRowsInvalid(i8 iRowsInvalid);
     void vAddRowsSkipped(i8 iRowsSkipped);
     bool bByPromptTag(void);
-    void vBufferQueue(Queue* pBufferQueue);
-    Queue* pBufferQueue(void);
+//    void vBufferQueue(Queue* pBufferQueue);
+//    Queue* pBufferQueue(void);
     void vContentDump(void);
     bool bDiaryTag(void);
     void vFocalOutline(s4K& sOutline);

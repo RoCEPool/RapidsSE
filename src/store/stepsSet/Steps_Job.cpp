@@ -508,10 +508,10 @@ void Step::vJobCreateBufferQueue(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  RASSERT( ! pJob->pBufferQueue() );
-  pJob->vBufferQueue(new Queue);
+//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+//  
+//  RASSERT( ! pJob->pBufferQueue() );
+//  pJob->vBufferQueue(new Queue);
   
   EXIT();
 }

@@ -49,7 +49,7 @@ Result::Result(void)
   m_pOriginResponseVec = nullptr;
   m_bPartHasError      = false;
   
-  m_pOriginBufferQueue = nullptr;
+  //m_pOriginBufferQueue = nullptr;
   
   _checkInitialised_(CN_RESULT);
   
@@ -66,8 +66,8 @@ Result::~Result(void) noexcept(false)
   if ( m_pOriginResponseVec)
     delete m_pOriginResponseVec;
   
-  if (m_pOriginBufferQueue)
-    delete m_pOriginBufferQueue;
+  //if (m_pOriginBufferQueue)
+  //  delete m_pOriginBufferQueue;
   
 }
 
@@ -235,7 +235,7 @@ void Result::vProcessBufferQueue(Session* pSession)
   
   Operand* pOperand;
   
-  while ( (pOperand = pPopBufferQueue_blocking()) ) {
+  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
     
     if (! bProcessOperand(pSession,pOperand))
       break;
@@ -247,7 +247,7 @@ void Result::vProcessBufferQueue(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* Result::pPopBufferQueue_blocking(void)
+Operand* Result::pPopBufferQueue_blocking(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
@@ -255,7 +255,7 @@ Operand* Result::pPopBufferQueue_blocking(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till the job has a buffer queue
   
-  while (m_pOriginBufferQueue == nullptr) {
+  while (pSession->m_pOutputQueue == nullptr) {
     
     // do something else release version optimizes this out
     
@@ -271,7 +271,7 @@ Operand* Result::pPopBufferQueue_blocking(void)
   
   for (;;) {
     
-    Operand* pOperand = _pOperand(m_pOriginBufferQueue->pPop());
+    Operand* pOperand = _pOperand(pSession->m_pOutputQueue->pPop());
     
     if (pOperand)
       return pOperand;
