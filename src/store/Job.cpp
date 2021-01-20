@@ -115,43 +115,48 @@ Job::Job(ReqTuple* aReqTuple)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-  
+    
+  // -- a -------------------
   // m_xReqTuple
-
+  // m_sJobNm;
   m_iParentId = C_UNKNOWN;
-  m_eSeed     = SS_ENUMS;
-  m_i_TablePtn    = C_UNKNOWN;
+  m_oTimer.vStart();
+
+  // -- b -------------------
+  m_bWasReceived     = false;
+  m_iParticipantNode = C_UNKNOWN;
+  m_bNormalSides     = true;
   
+  // -- c -------------------
   m_eJobKind  = JK_NONE;
-  m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
+  m_eJobPhase = JP_NONE;
   m_eJobState = JS_RUNNING;
   
-  m_bNormalSides = true; //
-  m_bWasReceived = false;
-  
-  m_oTimer.vStart();
-  //m_oAcksRmg
-  
+  // -- d -------------------
   m_pLogicUnit_job = nullptr;
-  
-  m_pTaskJ = nullptr;
-  m_pOriginatingTask = nullptr;
-  m_iOriginatingId = C_UNKNOWN;
+  // m_oJobTags
+  // m_xResult
 
-  m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRmg_2pc.vCheckInit();
-  
+  // -- e -------------------
   m_pPipeline = nullptr;
   m_pOp       = nullptr;
   m_pOuterOp  = nullptr;
   m_pInputOp  = nullptr;
 
-  //m_xResult
+  // -- f -------------------
+  // m_ixErrors;
+  m_pOriginatingTask = nullptr;
+  m_iOriginatingId   = C_UNKNOWN;
+
+  // -- g -------------------
+  m_oAcksRmg_2pc.vCheckInit();
+  m_eSeed      = SS_ENUMS;
+  m_i_TablePtn = C_UNKNOWN;
+  m_pTaskJ     = nullptr;
+
   // -- -- -- -- -- --
-  
-  SP_Gid spId;
-  
+    
   vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
@@ -1150,6 +1155,11 @@ void Job::vResetForReuse(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   vDebugPoint();
+  
+  
+  
+  
+  
 }
 
 /*----------------------------------------------------------------------------*/

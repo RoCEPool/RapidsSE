@@ -23,46 +23,46 @@ namespace STORE
    
    */
   
-  private:
-    s32       m_sJobNm;       // name of job
-    i8        m_iParentId;    // job id of parent job which spawned this job
-    Timer     m_oTimer;       // timer
-
-    bool      m_bWasReceived; // job was received over a socket
-    i8        m_iParticipantNode; // participant node no (FromNodeNo?)
-    bool      m_bNormalSides; // side semantics
-
-    eJK       m_eJobKind;     // kind of job
-    eJL       m_eJobList;     // which job list the job is currently in
-    eJP       m_eJobPhase;    // which job phase the job is currently in
-    eJS       m_eJobState;    // current state of the job
-
   public:
   
-    LogicUnit* m_pLogicUnit_job;      // set of registers for the task steps
+    // -- a -------------------
+    ReqTuple m_xReqTuple;    // the request tuple
+    s32      m_sJobNm;       // name of job
+    i8       m_iParentId;    // job id of parent job which spawned this job
+    Timer    m_oTimer;       // timer
 
-    TagSet    m_oJobTags;     // tags for the job
-  
-    Result    m_xResult;      // result of this job
-    
-    // into task? -------------
-    Pipeline*  m_pPipeline;   // pipeline
-    Op*        m_pOp;         // Op this job is executing
-    Op*        m_pOuterOp;    // Op that called the pipeline
-    Op*        m_pInputOp;    // The optional input op of the pipeline
+    // -- b -------------------
+    bool m_bWasReceived;     // job was received over a socket
+    i8   m_iParticipantNode; // participant node no (FromNodeNo?)
+    bool m_bNormalSides;     // side semantics
 
-    // undecided --------------
-    ReqTuple  m_xReqTuple;    // the request tuple
-    Atomic    m_ixErrors;
+    // -- c -------------------
+    eJK m_eJobKind;          // kind of job
+    eJL m_eJobList;          // which job list the job is currently in
+    eJP m_eJobPhase;         // which job phase the job is currently in
+    eJS m_eJobState;         // current state of the job
   
-    Task*     m_pOriginatingTask; // originating task of the request
-    i8        m_iOriginatingId;   // job id of originating job
+    // -- d -------------------
+    LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
+    TagSet     m_oJobTags;   // tags for the job
+    Result     m_xResult;    // result of this job
     
-  private:
-    Decider m_oAcksRmg_2pc;   // acks remaining for coordinating 2pc job
-    eSS     m_eSeed;          // seed to spawn
-    i8      m_i_TablePtn;     // table ptn on its node this job processes
-    Task*   m_pTaskJ;         // task executing the job
+    // -- e -------------------
+    Pipeline*  m_pPipeline;  // pipeline
+    Op*        m_pOp;        // Op this job is executing
+    Op*        m_pOuterOp;   // Op that called the pipeline
+    Op*        m_pInputOp;   // The optional input op of the pipeline
+
+    // -- f -------------------
+    Atomic m_ixErrors;
+    Task*  m_pOriginatingTask; // originating task of the request
+    i8     m_iOriginatingId;   // job id of originating job
+    
+    // -- g -------------------
+    Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
+    eSS     m_eSeed;         // seed to spawn
+    i8      m_i_TablePtn;    // table ptn on its node this job processes
+    Task*   m_pTaskJ;        // task executing the job
 
     // must be last
     Footer m_xFooter;
