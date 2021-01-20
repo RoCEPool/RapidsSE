@@ -9,6 +9,8 @@
 #include "eAC.h"
 #include "eSK.h"
 
+namespace STORE { class StreamDef; }
+
 namespace STORE
 {
   class Session : public Focal
@@ -64,6 +66,9 @@ namespace STORE
     
     bool  m_bHasCascade;   // is there a cascading statement to execute?
     s16KB m_sCascade;      // the cascade statement
+
+  
+    StreamDef*   m_pStreamDef_result;
 
   private:
 

@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "StreamDef.hpp"
+
 #include "Session.hpp"
 #include "SessionArray.hpp"
 
@@ -91,6 +93,11 @@ Session::Session(void)
     
   m_bHasCascade = false;
   m_sCascade    = ""_Stz;
+  
+  
+  // -- -- -- -- -- --
+  m_pStreamDef_result = nullptr;
+
 
   _checkInitialised_(CN_SESSION);
   
@@ -267,7 +274,12 @@ void Session::vFreeSession(i8 i_NextFree)
   
   m_pSsnJob    = nullptr;
   m_pTx        = nullptr;
+  
+  if (m_pStreamDef_result)
+    delete m_pStreamDef_result;
+  m_pStreamDef_result = nullptr;
 }
+
 /*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/

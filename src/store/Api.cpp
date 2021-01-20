@@ -71,8 +71,14 @@ void Api::vDeleteJob(Session* pSession)
   
   Job* pJob = pSession->m_pSsnJob;
   pSession->m_pSsnJob = nullptr;
-  
   delete pJob;
+  
+  
+  if (pSession->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pSession->m_pStreamDef_result;
+    pSession->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
 }
 
 
