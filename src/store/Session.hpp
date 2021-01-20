@@ -69,7 +69,8 @@ namespace STORE
 
   
     StreamDef*   m_pStreamDef_result;
-
+    bool         m_bExitMarker;
+  
   private:
 
 

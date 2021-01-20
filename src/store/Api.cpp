@@ -79,6 +79,8 @@ void Api::vDeleteJob(Session* pSession)
     pSession->m_pStreamDef_result = nullptr;
     delete pStreamDef;
   }
+  
+  pSession->m_bExitMarker = false;
 }
 
 

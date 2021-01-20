@@ -27,7 +27,6 @@ namespace STORE
     Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
     
   private:
-    bool         m_bExitMarker;
 
     // must be last
     Footer m_xFooter;

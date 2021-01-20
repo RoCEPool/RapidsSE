@@ -51,8 +51,6 @@ Result::Result(void)
   
   m_pOriginBufferQueue = nullptr;
   
-  m_bExitMarker        = false;
- 
   _checkInitialised_(CN_RESULT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
@@ -403,7 +401,7 @@ bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
           //if ( ! bHasError )
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
-          m_bExitMarker = true;
+          pSession->m_bExitMarker = true;
           bContinue = false;
           goto L_EXIT;
           break;
