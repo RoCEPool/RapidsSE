@@ -158,9 +158,9 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   pQueryNode->vAppendChild(pStatementNode);
 
   // Explain the statement
-  s48K sExplainBuf;
-  Statement::vExplain(pStatementNode, sExplainBuf, 0);
-  vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
+//  s48K sExplainBuf;
+//  Statement::vExplain(pStatementNode, sExplainBuf, 0);
+//  vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
 
   // Validate the plan subsection of the graph
   GraphValidator::vValidatePlan(pRoot);
