@@ -14,6 +14,8 @@
 #include "SqlPlanner.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
+#include "PlanConstants.hpp"
+#include "GraphNav.hpp"
 #include "PlanOperand.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -36,21 +38,19 @@ void Step::vSqlCompilerNameValidate(void)
   //vTrace("\nStep::vSqlCompilerNameValidate\n"_Stz);
   
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
-  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pPlanOperand->pPlanNode();
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
 
-  
-  Parser::RootNode* pPlanNode_root2 = new Parser::RootNode(nullptr);
-  PlanOperand* pPlanOperand2 = new PlanOperand(pPlanNode_root2);
+  // TODO: Walk the graph and validate that each name can be resolved uniquely.
+  //       i.e. each table is known and unambiguous, each column refers to tables
+  //       that are being used, etc.
+  // TODO: Fill in the catalog/schema/table fields of the columnRef and tableRefs
+  //       where applicable.
 
-  
-  //vTrace("  NameValidate(RootNode %p)-> RootNode %p\n"_Stz,
-  //       pPlanNode_root,pPlanNode_root2);
 
-  delete pPlanOperand;
-  delete pPlanNode_root;
-
-  
-  m_pDataStack->vPushPtr(pPlanOperand2);
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
 
   EXIT();
 }
@@ -111,6 +111,36 @@ void Step::vSqlCompilerTransliterate(void)
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
 
   //vTrace("  Transliterate(RootNode %p) -> nil\n"_Stz,pPlanNode_root);
+
+  // TODO: Walk the graph and produce a pipeline statement.
+  // Here's an example
+  vTrace("\n- - - - - - - - - - - - - - - - - - \n"_Stz);
+
+  // Lambda visitor function
+  auto fVisitor = [](Parser::PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> Parser::GraphNav::eWalkCtrl {
+
+    // We are only interested in the /__root__/plan subtree. Skip the others.
+    if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(Parser::C_PLAN_PATH))) {
+      return Parser::GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    // The root node can be useful for various graph navigation and manipulation.
+    // e.g. finding other nodes.
+    Parser::RootNode* pPlanRoot = Parser::_pRootNode(pvArg);
+
+    vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
+
+    // Keep walking
+    return Parser::GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the plan graph from the root, skipping the properties but descending
+  // the children. We don't have to walk from the root, but if we don't then
+  // the path string that is passed into our visitor function will be a relative
+  // path and not an absolute one.
+  // Let's also pass in the root node as an argument as it can be useful within
+  // the visitor function.
+  Parser::GraphNav::bWalk(pPlanRoot, false, true, fVisitor, pPlanRoot);
 
   delete pPlanRoot;
   delete pPlanOperand;
