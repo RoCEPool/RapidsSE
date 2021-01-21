@@ -9,6 +9,7 @@
 #include "SePrompt.hpp"
 
 #include "Api.hpp"
+#include "Output.hpp"
 #include "Session.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
@@ -159,7 +160,7 @@ void SeDeputy::vExecuteJob(void)
   
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
-    m_pSession->m_pSsnJob->m_xResult.vProcessBufferQueue(m_pSession);
+    m_pSession->m_pOutput->vProcessBufferQueue(m_pSession);
   
   eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
   m_pSession->m_pSsnJob->vPrintResult(eResponse);

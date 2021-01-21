@@ -88,6 +88,7 @@ void Result::vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker)
   }
 }
 
+#if 0
 /*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
@@ -116,6 +117,7 @@ void Result::vDrainBufferQueue(Session* pSession)
   }
 
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -248,6 +250,8 @@ void Result::vPrintOldJobResponses(void)
   // Success
   vTrace("\nsuccess: %lld rows affected\n"_Stz, iRowsProcessed);
 }
+
+#if 0
 
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
@@ -513,6 +517,8 @@ bool Result::bProcessOperand(Session* pSession, Operand* pOperand)
 L_EXIT:
   return bContinue;
 }
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

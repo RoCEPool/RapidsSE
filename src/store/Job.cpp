@@ -24,6 +24,8 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "Output.hpp"
+#include "Session.hpp"
 
 #include "TagConstants.h"
 
@@ -1149,7 +1151,7 @@ void Job::vResetForReuse(Session* pSession)
   m_i_TablePtn = C_UNKNOWN;
   m_pTaskJ = nullptr;
 
-  m_xResult.vDrainBufferQueue(pSession);
+  pSession->m_pOutput->vDrainBufferQueue(pSession);
 
   vDebugPoint();
 }

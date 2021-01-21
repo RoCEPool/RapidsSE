@@ -34,7 +34,7 @@ namespace STORE
     void vDrainBufferQueue(Session* pSession);
     void vProcessBufferQueue(Session* pSession);
   
-  private:
+//  private:
     Operand* pPopBufferQueue_blocking(Session* pSession);
     bool bProcessOperand(Session* pSession, Operand* pOperand);
         
