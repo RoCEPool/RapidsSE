@@ -34,6 +34,8 @@
 #include "Expr.hpp"
 #include "ColumnRef.hpp"
 #include "LiteralExpr.hpp"
+#include "TableRef.hpp"
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -1233,7 +1235,6 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& 
   // SqlOperator
 
   if (Parser::SqlOperator::bIsOfType(pNode)) {
-    vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // TableScanOp
@@ -1241,9 +1242,9 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& 
     if (Parser::TableScanOp::bIsOfType(pNode)) {
       Parser::PlanNode *pTableRefNode = Parser::GraphNav::pFindProperty(const_cast<Stz *>("tableRef"_Stz), pNode);
       Parser::QueryNode *pTableRef = static_cast<Parser::QueryNode *>(pTableRefNode);
-      Parser::QueryNode *pTableNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty(
-          "tableName"_Stz, pTableRef));
-      Stz *szTableName = pTableNode->szValue();
+
+      Stz *szTableName = Parser::TableRef::szTable(pTableRef);
+
       sSmt->vCatSprint(
           "    scan %s\n"
           ""_Stz,

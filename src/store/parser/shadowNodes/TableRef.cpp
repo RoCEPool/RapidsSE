@@ -105,6 +105,21 @@ b1 TableRef::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get catalog name from tableRef                                             */
+/*----------------------------------------------------------------------------*/
+Stz* TableRef::szCatalog(QueryNode* pTableRef)
+{
+  ASSERT(bValidate(pTableRef));
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
+  ASSERT(pCatalogNode);
+
+  Stz* szCatalogName = pCatalogNode->szValue();
+
+  return szCatalogName;
+}
+
+/*----------------------------------------------------------------------------*/
 /* A tableRef is resolved iff it has a catalog, schema and tablename          */
 /*----------------------------------------------------------------------------*/
 b1 TableRef::bIsResolved(QueryNode* pTableRef)
@@ -126,6 +141,35 @@ b1 TableRef::bIsResolved(QueryNode* pTableRef)
   return (szCatalogName && szSchemaName && szTableName);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get schema name from tableRef                                             */
+/*----------------------------------------------------------------------------*/
+Stz* TableRef::szSchema(QueryNode* pTableRef)
+{
+  ASSERT(bValidate(pTableRef));
+
+  QueryNode* pSchemaNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
+  ASSERT(pSchemaNode);
+
+  Stz* szSchemaName = pSchemaNode->szValue();
+
+  return szSchemaName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table name from tableRef                                               */
+/*----------------------------------------------------------------------------*/
+Stz* TableRef::szTable(QueryNode* pTableRef)
+{
+  ASSERT(bValidate(pTableRef));
+
+  QueryNode* pTableNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
+  ASSERT(pTableNode);
+
+  Stz* szTableName = pTableNode->szValue();
+
+  return szTableName;
+}
 
 /*============================================================================*/
 /* end                                                                        */
