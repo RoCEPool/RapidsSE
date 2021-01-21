@@ -25,6 +25,8 @@
 #include "Response.hpp"
 #include "Output.hpp"
 
+#include "Result.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -130,6 +132,9 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   for (;;) {
+    
+    if (pSession->m_pSsnJob->m_xResult.m_bJobHasError)
+      return nullptr;
     
     Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
     
