@@ -298,7 +298,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
         Parser::QueryNode *pTableRef = static_cast<Parser::QueryNode *>(pTableRefNode);
         Parser::QueryNode *pTableNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty(
             "tableName"_Stz, pTableRef));
-        Stz *szTableName = pTableNode->getStringValue();
+        Stz *szTableName = pTableNode->szValue();
         sSmt->vCatSprint(
             "    scan %s\n"
             ""_Stz,
@@ -345,7 +345,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
             ASSERT(pExprNode);
             ASSERT(pAliasNode);
 
-            Stz *szAliasName = pAliasNode->getStringValue();
+            Stz *szAliasName = pAliasNode->szValue();
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // alias
@@ -378,7 +378,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
               sSmt->vCatSprint(
                   " %s"
                   ""_Stz,
-                  pColumnNode->getStringValue());
+                  pColumnNode->szValue());
             }
           }
           delete pIter;
