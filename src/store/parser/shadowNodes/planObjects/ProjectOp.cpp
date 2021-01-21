@@ -144,6 +144,18 @@ b1 ProjectOp::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_PROJECTOP_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the tableRef of the queryNode                                      */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pProjectedExprs(QueryNode* pNode)
+{
+  Parser::PlanNode *pProjExprsNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDEXPRS_PROP), pNode));
+  QueryNode *pProjExprs = static_cast<QueryNode *>(pProjExprsNode);
+
+  return pProjExprs;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

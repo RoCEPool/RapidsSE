@@ -122,7 +122,8 @@ b1 TableScanOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* TableScanOp::pTableRef(QueryNode* pNode)
 {
-  QueryNode *pTableRefNode = static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
+  QueryNode *pTableRefNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
   QueryNode *pTableRef = static_cast<QueryNode *>(pTableRefNode);
 
   return pTableRef;

@@ -40,7 +40,7 @@ namespace STORE
     void vShow(void);
 
   private:
-  
+
     //
     // phase 1
     //
@@ -75,6 +75,12 @@ namespace STORE
     void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
     void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
+
+    //
+    // plan transliteration
+    //
+    static void vAppendProject(String* sPipeline, Parser::PlanNode* pNode);
+    static void vAppendScan(String* sPipeline, Parser::PlanNode* pNode);
 
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(Parser::PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);

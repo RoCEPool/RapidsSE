@@ -1211,13 +1211,110 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
   
   vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, 0);
 }
+
 /*----------------------------------------------------------------------------*/
-/* replace the <stageNm> with xmit <nodeNo>                                   */
+/* append scan Op to the pipeline                                             */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendProject(String* sPipeline, Parser::PlanNode* pNode) {
+
+  // Get the list of projected expressions
+  Parser::PlanNode *pProjExprs = Parser::ProjectOp::pProjectedExprs(static_cast<Parser::QueryNode *>(pNode));
+  ASSERT(pProjExprs);
+
+  // Iterate each projected expression
+  if (pProjExprs->bHasChildren()) {
+    Parser::PlanNodeIter *pIter = pProjExprs->pNewChildrenIter();
+
+    sPipeline->vCatSprint(
+        "    | project 0 \""
+        ""_Stz);
+
+    bool bFirstExpr = false;
+
+    while (pIter->bHasNext()) {
+
+      if (bFirstExpr) {
+        sPipeline->vCatSprint(" ,"_Stz);
+      }
+      else {
+        bFirstExpr = true;
+      }
+      Parser::QueryNode *pProjExpr = static_cast<Parser::QueryNode *>(pIter->pNext());
+      ASSERT(pProjExpr);
+      ASSERT(Parser::ProjectedExpr::bIsOfType(pProjExpr));
+
+      Parser::QueryNode *pProjectedExpr = static_cast<Parser::QueryNode *>(pProjExpr);
+
+      Parser::QueryNode *pExprNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty("expr"_Stz,pProjectedExpr));
+      Parser::QueryNode *pAliasNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty(
+          "alias"_Stz, pProjectedExpr));
+
+      ASSERT(pExprNode);
+      ASSERT(pAliasNode);
+
+      Stz *szAliasName = pAliasNode->szValue();
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // alias
+
+      if (szAliasName) {
+        sPipeline->vCatSprint(
+            " as %s"
+            ""_Stz,
+            szAliasName);
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // literal
+
+      if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
+        Parser::QueryNode *pExpr = static_cast<Parser::QueryNode *>(pExprNode);
+        sPipeline->vCatSprint(
+            " %s"
+            ""_Stz,
+            pExpr->szName());
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // columnRef
+
+      if (Parser::ColumnRef::bIsOfType(pExprNode)) {
+        Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
+        Parser::QueryNode *pColumnNode = static_cast<Parser::QueryNode *>(
+            Parser::GraphNav::pFindProperty("columnName"_Stz, pColumnRef));
+        sPipeline->vCatSprint(
+            " %s"
+            ""_Stz,
+            pColumnNode->szValue());
+      }
+    }
+    delete pIter;
+
+  }
+
+  sPipeline->vCatSprint(" \" \n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append scan Op to the pipeline                                             */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendScan(String* sPipeline, Parser::PlanNode* pNode) {
+
+  Parser::QueryNode *pTableRef = Parser::TableScanOp::pTableRef(static_cast<Parser::QueryNode *>(pNode));
+  Stz *szTableName = Parser::TableRef::szTable(pTableRef);
+
+  sPipeline->vCatSprint(
+      "    scan %s\n"
+      ""_Stz,
+      szTableName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
 Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
-
-  //auto fVisitor = [](Parser::PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> Parser::GraphNav::eWalkCtrl {
 
   // We are only interested in the /__root__/plan subtree. Skip the others.
   if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(Parser::C_PLAN_PATH))) {
@@ -1229,7 +1326,7 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& 
   // e.g. finding other nodes.
   //Parser::RootNode* pPlanRoot = Parser::_pRootNode(pvArg);
 
-  String* sSmt = (String*)pvArg;
+  String* sPipeline = (String*)pvArg;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SqlOperator
@@ -1240,101 +1337,14 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& 
     // TableScanOp
 
     if (Parser::TableScanOp::bIsOfType(pNode)) {
-
-      //Parser::PlanNode *pTableRefNode = Parser::GraphNav::pFindProperty(const_cast<Stz *>("tableRef"_Stz), pNode);
-      //Parser::QueryNode *pTableRef = static_cast<Parser::QueryNode *>(pTableRefNode);
-
-      Parser::QueryNode *pTableRef = Parser::TableScanOp::pTableRef(static_cast<Parser::QueryNode *>(pNode));
-      Stz *szTableName = Parser::TableRef::szTable(pTableRef);
-
-      sSmt->vCatSprint(
-          "    scan %s\n"
-          ""_Stz,
-          szTableName);
+      vAppendScan(sPipeline, pNode);
     }
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // ProjectOp
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ProjectOp
 
     else if (Parser::ProjectOp::bIsOfType(pNode)) {
-
-      // Get the list of projected expressions
-      Parser::PlanNode *pProjExprs = Parser::GraphNav::pFindProperty(const_cast<Stz *>("projectedExprs"_Stz), pNode);
-      ASSERT(pProjExprs);
-
-      // Iterate each projected expression
-      if (pProjExprs->bHasChildren()) {
-        Parser::PlanNodeIter *pIter = pProjExprs->pNewChildrenIter();
-
-        sSmt->vCatSprint(
-            "    | project 0 \""
-            ""_Stz);
-
-        bool bFirstExpr = false;
-
-        while (pIter->bHasNext()) {
-
-          if (bFirstExpr) {
-            sSmt->vCatSprint(" ,"_Stz);
-          }
-          else {
-            bFirstExpr = true;
-          }
-          Parser::QueryNode *pProjExpr = static_cast<Parser::QueryNode *>(pIter->pNext());
-          ASSERT(pProjExpr);
-          ASSERT(Parser::ProjectedExpr::bIsOfType(pProjExpr));
-
-          Parser::QueryNode *pProjectedExpr = static_cast<Parser::QueryNode *>(pProjExpr);
-
-          Parser::QueryNode *pExprNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty("expr"_Stz,pProjectedExpr));
-          Parser::QueryNode *pAliasNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty(
-              "alias"_Stz, pProjectedExpr));
-
-          ASSERT(pExprNode);
-          ASSERT(pAliasNode);
-
-          Stz *szAliasName = pAliasNode->szValue();
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // alias
-
-          if (szAliasName) {
-            sSmt->vCatSprint(
-                " as %s"
-                ""_Stz,
-                szAliasName);
-          }
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // literal
-
-          if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
-            Parser::QueryNode *pExpr = static_cast<Parser::QueryNode *>(pExprNode);
-            sSmt->vCatSprint(
-                " %s"
-                ""_Stz,
-                pExpr->szName());
-          }
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // columnRef
-
-          if (Parser::ColumnRef::bIsOfType(pExprNode)) {
-            Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
-            Parser::QueryNode *pColumnNode = static_cast<Parser::QueryNode *>(
-                Parser::GraphNav::pFindProperty("columnName"_Stz, pColumnRef));
-            sSmt->vCatSprint(
-                " %s"
-                ""_Stz,
-                pColumnNode->szValue());
-          }
-        }
-        delete pIter;
-
-      }
-
-      sSmt->vCatSprint(" \" \n"_Stz);
-
+      vAppendProject(sPipeline, pNode);
     }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
