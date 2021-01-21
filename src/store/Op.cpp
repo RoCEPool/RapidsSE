@@ -1036,10 +1036,9 @@ void Op::vPipeToJob(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  //Queue* pBufferQueue = AM::pBufferQueue(m_pPipelineJob);
-  Queue* pBufferQueue = AM::pBufferQueue(MY::pSession());
+  Queue* pOutputQueue = AM::pOutputQueue(MY::pSession());
 
-  RASSERT(pBufferQueue);
+  RASSERT(pOutputQueue);
   
   if (m_bTraceOp)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
@@ -1056,7 +1055,7 @@ void Op::vPipeToJob(Operand* pOperand)
               "vPipeToJob operand %s to queue of pipeline job"_Stz, //!format-LogOpr
               aCN[pOperand->eGetClassNo()]);
   
-  pBufferQueue->vAppend(pOperand);
+  pOutputQueue->vAppend(pOperand);
   
 }
 

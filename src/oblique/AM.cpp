@@ -269,19 +269,8 @@ void AM::vAddConstant(Stz* szName,Stz* szValue) {
 void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
-//Queue* AM::pBufferQueue(Job* pJob) {
-//
-//  Job* pJob_Originating;
-//
-//  if (pJob->eJobKind() == JK_LOCAL)
-//    pJob_Originating = pJob;
-//  else
-//    pJob_Originating = pJob->m_pOriginatingTask->pJob();
-//
-//  return pJob_Originating->m_xResult.m_pOriginBufferQueue;
-//}
 
-Queue* AM::pBufferQueue(Session* pSession) {
+Queue* AM::pOutputQueue(Session* pSession) {
     
   return pSession->m_pOutputQueue;
 }

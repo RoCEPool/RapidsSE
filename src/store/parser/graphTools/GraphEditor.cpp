@@ -76,7 +76,7 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pRootNode)
   // Now we can create a new copy of: /__root__
   PlanNode* pNewRoot = new RootNode(pRoot->szName(),
                                     pRoot->szType(),
-                                    pRoot->getValue(),
+                                    pRoot->xValue(),
                                     pNewPropertyList,
                                     pNewChildList,
                                     const_cast<Stz*>(C_ROOT_PATH));

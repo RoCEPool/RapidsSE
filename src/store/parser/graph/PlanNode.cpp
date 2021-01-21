@@ -127,48 +127,71 @@ Stz* PlanNode::szType()
 /*----------------------------------------------------------------------------*/
 /* Get the generic Value object in this PlanNode                              */
 /*----------------------------------------------------------------------------*/
-Parser::Value PlanNode::getValue()
+Parser::Value PlanNode::xValue()
 {
   return m_xValue;
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the value is null. NB: this is distinct from the type      */
+/* being VT_UNKNOWN.                                                          */
+/*----------------------------------------------------------------------------*/
+b1 PlanNode::bIsNullValue()
+{
+  return m_xValue.m_bIsNull;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the type of the value stored                                       */
+/*----------------------------------------------------------------------------*/
+Value::Type PlanNode::eValueType()
+{
+  return m_xValue.m_eType;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get the boolean value out of the Value object in this PlanNode             */
 /*----------------------------------------------------------------------------*/
-b1 PlanNode::getBooleanValue()
+b1 PlanNode::bValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_BOOLEAN);
   return m_xValue.m_bBoolean;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the integer value out of the Value object in this PlanNode             */
 /*----------------------------------------------------------------------------*/
-i8 PlanNode::getIntValue()
+i8 PlanNode::iValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_INT);
   return m_xValue.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the unsigned integer value out of the Value object in this PlanNode    */
 /*----------------------------------------------------------------------------*/
-u8 PlanNode::getUnsignedIntValue()
+u8 PlanNode::uValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_UINT);
   return m_xValue.m_uInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the floating point value out of the Value object in this PlanNode      */
 /*----------------------------------------------------------------------------*/
-d8 PlanNode::getFloatValue()
+d8 PlanNode::dValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_FLOAT);
   return m_xValue.m_dFloat;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the string value out of the Value object in this PlanNode. May be null */
 /*----------------------------------------------------------------------------*/
-Stz* PlanNode::getStringValue()
+Stz* PlanNode::szValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
+
   if (m_xValue.m_pText == nullptr) {
     return nullptr;
   }

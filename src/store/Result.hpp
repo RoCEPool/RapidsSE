@@ -22,10 +22,7 @@ namespace STORE
     // participant responses
     bool         m_bPartHasError;      // participant has an error
     ResponseVec* m_pOriginResponseVec; // vector of responses from all participant nodes on origin
-    
-//    // buffer queue
-//    Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
-    
+        
   private:
 
     // must be last

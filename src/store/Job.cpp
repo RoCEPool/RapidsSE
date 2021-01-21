@@ -441,26 +441,6 @@ bool Job::bByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the buffer queue in the result                                         */
-/*----------------------------------------------------------------------------*/
-//void Job::vBufferQueue(Queue* pBufferQueue)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//  
-//  m_xResult.m_pOriginBufferQueue = pBufferQueue;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get the buffer queue in the result                                         */
-/*----------------------------------------------------------------------------*/
-//Queue* Job::pBufferQueue(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//  
-//  return m_xResult.m_pOriginBufferQueue;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* content dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vContentDump(void)
@@ -1322,9 +1302,7 @@ void Job::vSetFromCascade(Stz* szCascade)
 
   vSeed(SS_SEED_REQ);
 
-  m_oJobTags.vDumpSet(true);
-
-  vDebugPoint();
+  //m_oJobTags.vDumpSet(true);
 }
 
 /*----------------------------------------------------------------------------*/

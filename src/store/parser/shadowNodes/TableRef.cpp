@@ -75,9 +75,9 @@ void TableRef::vDescribe(PlanNode* pNode, s2K& buf)
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
 
-  Stz* szCatalogName = pCatalogNode->getStringValue();
-  Stz* szSchemaName  = pSchemaNode->getStringValue();
-  Stz* szTableName   = pTableNode->getStringValue();
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
 
   if (szCatalogName) {
     buf.vConcat(szCatalogName);
@@ -119,9 +119,9 @@ b1 TableRef::bIsResolved(QueryNode* pTableRef)
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
 
-  Stz* szCatalogName = pCatalogNode->getStringValue();
-  Stz* szSchemaName  = pSchemaNode->getStringValue();
-  Stz* szTableName   = pTableNode->getStringValue();
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
 
   return (szCatalogName && szSchemaName && szTableName);
 }

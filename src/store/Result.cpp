@@ -48,9 +48,7 @@ Result::Result(void)
   
   m_pOriginResponseVec = nullptr;
   m_bPartHasError      = false;
-  
-  //m_pOriginBufferQueue = nullptr;
-  
+    
   _checkInitialised_(CN_RESULT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
@@ -65,10 +63,6 @@ Result::~Result(void) noexcept(false)
   
   if ( m_pOriginResponseVec)
     delete m_pOriginResponseVec;
-  
-  //if (m_pOriginBufferQueue)
-  //  delete m_pOriginBufferQueue;
-  
 }
 
 /*----------------------------------------------------------------------------*/
