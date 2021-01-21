@@ -75,13 +75,13 @@ void Api::vDeleteJob(Session* pSession)
   delete pJob;
   
   
-  if (pSession->m_pStreamDef_result) {
-    StreamDef* pStreamDef = pSession->m_pStreamDef_result;
-    pSession->m_pStreamDef_result = nullptr;
+  if (pSession->m_pOutput->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
+    pSession->m_pOutput->m_pStreamDef_result = nullptr;
     delete pStreamDef;
   }
   
-  pSession->m_bExitMarker = false;
+  pSession->m_pOutput->m_bExitMarker = false;
   
   pSession->m_pOutput->m_pOutputQueue->vReset();
 }

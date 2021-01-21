@@ -70,8 +70,6 @@ namespace STORE
     s16KB m_sCascade;      // the cascade statement
 
     // -- -- -- -- -- --
-    StreamDef*   m_pStreamDef_result;
-    bool         m_bExitMarker;
   
     Output*      m_pOutput;
   

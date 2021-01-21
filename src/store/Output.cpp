@@ -44,6 +44,9 @@ Output::Output(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
       
   m_pOutputQueue      = nullptr;
+  m_pStreamDef_result = nullptr;
+  m_bExitMarker       = false;
+
 
   _checkInitialised_(CN_OUTPUT);
   
@@ -59,7 +62,12 @@ Output::~Output(void) noexcept(false)
   
   if (m_pOutputQueue)
     delete m_pOutputQueue;
-  m_pOutputQueue = nullptr;  
+  m_pOutputQueue = nullptr;
+  
+  if (m_pStreamDef_result)
+    delete m_pStreamDef_result;
+  m_pStreamDef_result = nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,7 +163,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       m_ixRowsProcessed += pCrwBuffer->nRowCount();
       vTrace("\n"_Stz);
-      pCrwBuffer->vPrintRows(pSession->m_pStreamDef_result);
+      pCrwBuffer->vPrintRows(m_pStreamDef_result);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -197,7 +205,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
       m_ixRowsProcessed += pInfoSet->nInfoRows();
       vTrace("\n"_Stz);
-      pInfoSet->vPrintRows(pSession->m_pStreamDef_result);
+      pInfoSet->vPrintRows(m_pStreamDef_result);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -253,7 +261,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           //if ( ! bHasError )
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
-          pSession->m_bExitMarker = true;
+          m_bExitMarker = true;
           bContinue = false;
           goto L_EXIT;
           break;
@@ -308,13 +316,13 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
     case CN_STREAMDEF: {
       //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
-      if ( ! pSession->m_pStreamDef_result ) {
-        pSession->m_pStreamDef_result = _pStreamDef(pOperand);
+      if ( ! m_pStreamDef_result ) {
+        m_pStreamDef_result = _pStreamDef(pOperand);
         
         // print the metadata
         if (AM::bMetadata()) {
           s4K sMetadata;
-          pSession->m_pStreamDef_result->vToMetadata(sMetadata.szStz());
+          m_pStreamDef_result->vToMetadata(sMetadata.szStz());
           vTrace("\n%s\n"_Stz, sMetadata.szStz());
         }
       }
@@ -327,7 +335,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       ASSERT( ! pStreamSet->szInfoSetNm()->bSame(C_NO_NAME) );
       m_ixRowsProcessed += pStreamSet->nInfoRows();
       vTrace("\n"_Stz);
-      pStreamSet->vPrintRows(pSession->m_pStreamDef_result);
+      pStreamSet->vPrintRows(m_pStreamDef_result);
       AM::vDeleteOperand(pOperand);
       break;
     }

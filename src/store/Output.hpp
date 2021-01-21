@@ -17,6 +17,9 @@ namespace STORE
   public:
     Queue* m_pOutputQueue;     // queue of buffers being the job output
 
+    StreamDef* m_pStreamDef_result;
+    bool       m_bExitMarker;
+
     Atomic  m_ixRowsProcessed; // rows processed
     Atomic  m_ixRowsInvalid;   // invalid rows detected
     Atomic  m_ixRowsSkipped;   // rows skipped

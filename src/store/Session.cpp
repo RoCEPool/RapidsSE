@@ -97,9 +97,6 @@ Session::Session(void)
   
   
   // -- -- -- -- -- --
-  m_pStreamDef_result = nullptr;
-  m_bExitMarker       = false;
-
   m_pOutput           = nullptr;
 
   _checkInitialised_(CN_SESSION);
@@ -283,12 +280,6 @@ void Session::vFreeSession(i8 i_NextFree)
   if (m_pOutput)
     delete m_pOutput;
   m_pOutput = nullptr;
-
-  if (m_pStreamDef_result)
-    delete m_pStreamDef_result;
-  m_pStreamDef_result = nullptr;
-  
-  m_bExitMarker = false;
 }
 
 /*----------------------------------------------------------------------------*/
