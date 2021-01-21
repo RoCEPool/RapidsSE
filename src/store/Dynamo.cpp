@@ -1240,9 +1240,11 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& 
     // TableScanOp
 
     if (Parser::TableScanOp::bIsOfType(pNode)) {
-      Parser::PlanNode *pTableRefNode = Parser::GraphNav::pFindProperty(const_cast<Stz *>("tableRef"_Stz), pNode);
-      Parser::QueryNode *pTableRef = static_cast<Parser::QueryNode *>(pTableRefNode);
 
+      //Parser::PlanNode *pTableRefNode = Parser::GraphNav::pFindProperty(const_cast<Stz *>("tableRef"_Stz), pNode);
+      //Parser::QueryNode *pTableRef = static_cast<Parser::QueryNode *>(pTableRefNode);
+
+      Parser::QueryNode *pTableRef = Parser::TableScanOp::pTableRef(static_cast<Parser::QueryNode *>(pNode));
       Stz *szTableName = Parser::TableRef::szTable(pTableRef);
 
       sSmt->vCatSprint(
