@@ -8,6 +8,7 @@
 
 #include "Session.hpp"
 #include "SessionArray.hpp"
+#include "Output.hpp"
 
 #include "TagConstants.h"
 
@@ -100,6 +101,7 @@ Session::Session(void)
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
 
+  m_pOutput           = nullptr;
 
   _checkInitialised_(CN_SESSION);
   
@@ -282,6 +284,10 @@ void Session::vFreeSession(i8 i_NextFree)
     delete m_pOutputQueue;
   m_pOutputQueue = nullptr;
 
+  if (m_pOutput)
+    delete m_pOutput;
+  m_pOutput = nullptr;
+
   if (m_pStreamDef_result)
     delete m_pStreamDef_result;
   m_pStreamDef_result = nullptr;
@@ -420,7 +426,9 @@ eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
   //fprintf(stderr,"eInit M\n");
   
   m_pOutputQueue = new Queue;
-  
+
+  m_pOutput = new Output;
+
   return EC_NONE;
 }
 

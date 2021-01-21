@@ -9,7 +9,9 @@
 #include "eAC.h"
 #include "eSK.h"
 
-namespace STORE { class StreamDef; }
+
+
+namespace STORE { class Output; class StreamDef; }
 
 namespace STORE
 {
@@ -71,6 +73,8 @@ namespace STORE
     Queue*       m_pOutputQueue; // queue in originating node to receive 
     StreamDef*   m_pStreamDef_result;
     bool         m_bExitMarker;
+  
+    Output*      m_pOutput;
   
   private:
 

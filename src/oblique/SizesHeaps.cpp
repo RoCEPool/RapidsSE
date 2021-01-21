@@ -109,6 +109,7 @@
 #include "Log.hpp"
 #include "LogicUnit.hpp"
 
+#include "Output.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
 
@@ -312,6 +313,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
+  { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTUT
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE

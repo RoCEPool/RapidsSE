@@ -155,6 +155,7 @@ enum eCN : u2 // Class Number
   /* */ CN_NUMBAT,
   
   /* */ CN__O__,
+  /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
@@ -479,11 +480,12 @@ static Stz* aCN[]
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
    
   /* */ "_O__"_Stz,                 // CN__O__
+  /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
-  /* */ "OTGEROPERAND"_Stz,         // CN_OTHEROPERAND
+  /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
   /* */ "_P__"_Stz,                 // CN__P__
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
