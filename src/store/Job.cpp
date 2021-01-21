@@ -405,30 +405,6 @@ bool Job::bAcksRmgDec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vAddRowsProcessed(i8 iRowsProcessed)
-{
-  m_xResult.m_xJobResponse.m_ixRowsProcessed += iRowsProcessed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vAddRowsInvalid(i8 iRowsInvalid)
-{
-  m_xResult.m_xJobResponse.m_ixRowsInvalid += iRowsInvalid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vAddRowsSkipped(i8 iRowsISkipped)
-{
-  m_xResult.m_xJobResponse.m_ixRowsSkipped += iRowsISkipped;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this job has a <byPrompt> tag                                      */
 /*----------------------------------------------------------------------------*/
 bool Job::bByPromptTag(void)
