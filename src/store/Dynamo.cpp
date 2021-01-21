@@ -20,6 +20,22 @@
 
 #include "SP_TknVecStr.hpp"
 
+#include "SqlOperator.hpp"
+#include "ShadowNode.hpp"
+#include "ShadowRoot.hpp"
+#include "Statement.hpp"
+#include "PlanConstants.hpp"
+#include "GraphNav.hpp"
+#include "PlanOperand.hpp"
+#include "TableScanOp.hpp"
+#include "QueryNode.hpp"
+#include "ProjectOp.hpp"
+#include "ProjectedExpr.hpp"
+#include "Expr.hpp"
+#include "ColumnRef.hpp"
+#include "LiteralExpr.hpp"
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -242,6 +258,210 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* transliterate plan into a pipeline statement                               */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
+                             Parser::RootNode* pPlanRoot) {
+  _static_
+
+  // TODO: Walk the graph and produce a pipeline statement.
+  // Here's an example
+  vTrace("\n- - - - - - - - - - - - - - - - - - \n"_Stz);
+
+  // Lambda visitor function
+  auto fVisitor = [](Parser::PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> Parser::GraphNav::eWalkCtrl {
+
+    // We are only interested in the /__root__/plan subtree. Skip the others.
+    if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(Parser::C_PLAN_PATH))) {
+      //return Parser::GraphNav::WALK_SKIP_CHILDREN;
+      return Parser::GraphNav::WALK_CONTINUE;
+    }
+
+    // The root node can be useful for various graph navigation and manipulation.
+    // e.g. finding other nodes.
+    //Parser::RootNode* pPlanRoot = Parser::_pRootNode(pvArg);
+
+    String* sSmt = (String*)pvArg;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // SqlOperator
+
+    if (Parser::SqlOperator::bIsOfType(pNode)) {
+      vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // TableScanOp
+
+      if (Parser::TableScanOp::bIsOfType(pNode)) {
+        Parser::PlanNode *pTableRefNode = Parser::GraphNav::pFindProperty(const_cast<Stz *>("tableRef"_Stz), pNode);
+        Parser::QueryNode *pTableRef = static_cast<Parser::QueryNode *>(pTableRefNode);
+        Parser::QueryNode *pTableNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty(
+            "tableName"_Stz, pTableRef));
+        Stz *szTableName = pTableNode->getStringValue();
+        sSmt->vCatSprint(
+            "    scan %s\n"
+            ""_Stz,
+            szTableName);
+      }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // ProjectOp
+
+      else if (Parser::ProjectOp::bIsOfType(pNode)) {
+
+        // Get the list of projected expressions
+        Parser::PlanNode *pProjExprs = Parser::GraphNav::pFindProperty(const_cast<Stz *>("projectedExprs"_Stz), pNode);
+        ASSERT(pProjExprs);
+
+        // Iterate each projected expression
+        if (pProjExprs->bHasChildren()) {
+          Parser::PlanNodeIter *pIter = pProjExprs->pNewChildrenIter();
+
+          sSmt->vCatSprint(
+              "    | project 0 \""
+              ""_Stz);
+
+          bool bFirstExpr = false;
+
+          while (pIter->bHasNext()) {
+
+            if (bFirstExpr) {
+              sSmt->vCatSprint(" ,"_Stz);
+            }
+            else {
+              bFirstExpr = true;
+            }
+            Parser::QueryNode *pProjExpr = static_cast<Parser::QueryNode *>(pIter->pNext());
+            ASSERT(pProjExpr);
+            ASSERT(Parser::ProjectedExpr::bIsOfType(pProjExpr));
+
+            Parser::QueryNode *pProjectedExpr = static_cast<Parser::QueryNode *>(pProjExpr);
+
+            Parser::QueryNode *pExprNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty("expr"_Stz,pProjectedExpr));
+            Parser::QueryNode *pAliasNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty(
+                "alias"_Stz, pProjectedExpr));
+
+            ASSERT(pExprNode);
+            ASSERT(pAliasNode);
+
+            Stz *szAliasName = pAliasNode->getStringValue();
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // alias
+
+            if (szAliasName) {
+              sSmt->vCatSprint(
+                  " as %s"
+                  ""_Stz,
+                  szAliasName);
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // literal
+
+            if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
+              Parser::QueryNode *pExpr = static_cast<Parser::QueryNode *>(pExprNode);
+              sSmt->vCatSprint(
+                  " %s"
+                  ""_Stz,
+                  pExpr->szName());
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // columnRef
+
+            if (Parser::ColumnRef::bIsOfType(pExprNode)) {
+              Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
+              Parser::QueryNode *pColumnNode = static_cast<Parser::QueryNode *>(
+                  Parser::GraphNav::pFindProperty("columnName"_Stz, pColumnRef));
+              sSmt->vCatSprint(
+                  " %s"
+                  ""_Stz,
+                  pColumnNode->getStringValue());
+            }
+          }
+          delete pIter;
+
+        }
+
+        sSmt->vCatSprint(" \" \n"_Stz);
+
+      }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // other Op's
+      else {
+        RASSERT(0);
+      }
+
+    }
+
+    // Keep walking
+    return Parser::GraphNav::WALK_CONTINUE;
+  };
+
+  char cStageStart   = 'A';
+  char cStageCurrent = 'A';
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pAsPipelineStmt->vCopy(
+      "pipeline unnamed\n"
+      "begin\n"
+      ""_Stz);
+
+  pAsPipelineStmt->vCatSprint(
+      "  stage stage%c on origin :\n"
+      "    start\n"
+      "    | periodic once\n"
+      "    | stageB\n"
+      ""_Stz,
+      cStageStart);
+
+  ++ cStageCurrent;
+
+  pAsPipelineStmt->vCatSprint(
+      "  stage stage%c on all partitions :\n"
+      ""_Stz,
+      cStageCurrent);
+
+
+  // Walk the plan graph from the root, skipping the properties but descending
+  // the children. We don't have to walk from the root, but if we don't then
+  // the path string that is passed into our visitor function will be a relative
+  // path and not an absolute one.
+  // Let's also pass in the root node as an argument as it can be useful within
+  // the visitor function.
+  Parser::GraphNav::bWalkBottomUp(pPlanRoot, false, true, fVisitor, (void*)pAsPipelineStmt);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pAsPipelineStmt->vCatSprint(
+      "    | stage%c\n"
+      ""_Stz,
+      cStageCurrent + 1);
+
+  ++ cStageCurrent;
+
+  pAsPipelineStmt->vCatSprint(
+      "  stage stage%c on origin :\n"
+      "    output\n"
+      "    | sink\n"
+      "    | stage%c\n"
+      ""_Stz,
+      cStageCurrent, cStageStart);
+
+  pAsPipelineStmt->vConcat(
+      "end ;\n"
+      ""_Stz);
+
+  vTrace("Pipeline: \n %s\n"_Stz, pAsPipelineStmt);
+
+  delete pPlanRoot;
+
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get cross topology between two stages                                      */

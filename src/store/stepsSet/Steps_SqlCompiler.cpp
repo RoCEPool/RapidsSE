@@ -8,6 +8,12 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "OpSpec.hpp"
+#include "StageSpec.hpp"
+#include "PipelineSpec.hpp"
+#include "Pipeline.hpp"
+#include "Dynamo.hpp"
+
 #include "PlanNode.hpp"
 #include "RootNode.hpp"
 #include "PlanDefinitionParser.hpp"
@@ -110,41 +116,17 @@ void Step::vSqlCompilerTransliterate(void)
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
 
-  //vTrace("  Transliterate(RootNode %p) -> nil\n"_Stz,pPlanNode_root);
+  s48K sPipelineStmt;
 
-  // TODO: Walk the graph and produce a pipeline statement.
-  // Here's an example
-  vTrace("\n- - - - - - - - - - - - - - - - - - \n"_Stz);
+  // Walk the graph and produce a pipeline statement.
+  bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
+  ASSERT(bTransliterate);
 
-  // Lambda visitor function
-  auto fVisitor = [](Parser::PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> Parser::GraphNav::eWalkCtrl {
+  // return the pipeline
+  m_pDataStack->vPushStr(sPipelineStmt);
 
-    // We are only interested in the /__root__/plan subtree. Skip the others.
-    if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(Parser::C_PLAN_PATH))) {
-      return Parser::GraphNav::WALK_SKIP_SUBTREE;
-    }
-
-    // The root node can be useful for various graph navigation and manipulation.
-    // e.g. finding other nodes.
-    Parser::RootNode* pPlanRoot = Parser::_pRootNode(pvArg);
-
-    vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
-
-    // Keep walking
-    return Parser::GraphNav::WALK_CONTINUE;
-  };
-
-  // Walk the plan graph from the root, skipping the properties but descending
-  // the children. We don't have to walk from the root, but if we don't then
-  // the path string that is passed into our visitor function will be a relative
-  // path and not an absolute one.
-  // Let's also pass in the root node as an argument as it can be useful within
-  // the visitor function.
-  Parser::GraphNav::bWalk(pPlanRoot, false, true, fVisitor, pPlanRoot);
-
-  delete pPlanRoot;
   delete pPlanOperand;
-  
+
   EXIT();
 }
 

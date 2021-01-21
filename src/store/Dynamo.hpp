@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "RootNode.hpp"
+
 namespace STORE
 {
   class Dynamo : public Object
@@ -28,12 +30,9 @@ namespace STORE
     Dynamo(Stz* sCmd, Job* pJob);
    ~Dynamo(void) noexcept(false);
   
-    static bool bCmdToPipeline(String* pAsPipelineStmt,
-                               TokenVec* pFromTokenVec);
-  
+    static bool bCmdToPipeline(String* pAsPipelineStmt, TokenVec* pFromTokenVec);
+    static bool bPlanToPipeline(String* pAsPipelineStmt, Parser::RootNode* pPlanRoot);
     static ePX eTopoloyX(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
-    
-
 
     bool bCompile(void);
     PipelineSpec* pPipelineSpec(void);

@@ -59,11 +59,14 @@
 /* handler for ZK_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
- 
+
+ 0 locals| sPipeline |
+
   PipeIn[] to Operand[]
     nullptr to PipeIn[]
 
-  Operand[] nullptr to Operand[] sqlCompiler::transliterate
+  Operand[] nullptr to Operand[] sqlCompiler::transliterate to sPipeline
+  sPipeline .
   
   true
 ;
