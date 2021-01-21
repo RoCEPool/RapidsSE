@@ -100,7 +100,7 @@ void Api::vExecuteJob(Session* pSession)
     if (! pSession->bHasCascade())
       return;
   
-    pJob->vResetForReuse();
+    pJob->vResetForReuse(pSession);
     
     pJob->vSetFromCascade(pSession->m_sCascade);
     

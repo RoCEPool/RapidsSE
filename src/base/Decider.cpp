@@ -109,6 +109,17 @@ i8 Decider::iPrintOnlyValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void Decider::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
+
+  m_nAcksOriginally = 0;
+  m_nAcksRemaining  = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the number of acks remaining                                           */
 /*----------------------------------------------------------------------------*/
 void Decider::vSetRemaining(i8 nAcksRemaining)

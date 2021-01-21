@@ -89,6 +89,35 @@ void Result::vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drain the result/output queue                                              */
+/*----------------------------------------------------------------------------*/
+void Result::vDrainBufferQueue(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
+
+  Operand* pOperand;
+
+  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
+    eCN eOperandClass = pOperand->eGetClassNo();
+
+    if (eOperandClass == CN_MARKER) {
+      Marker *pMarker = _pMarker(pOperand);
+      eOM eOpMarker = pMarker->eOpMarker();
+
+      AM::vDeleteOperand(pOperand);
+
+      if (eOpMarker == OM_CANCELMARKER ||
+          eOpMarker == OM_EXITMARKER)
+        break;
+    }
+    else {
+      AM::vDeleteOperand(pOperand);
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 void Result::vPrint(eRS eResponse)
@@ -230,10 +259,10 @@ void Result::vProcessBufferQueue(Session* pSession)
   Operand* pOperand;
   
   while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
-    
+
     if (! bProcessOperand(pSession,pOperand))
       break;
-    
+
   }
   
 }

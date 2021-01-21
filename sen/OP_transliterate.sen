@@ -67,6 +67,10 @@
 
   Operand[] nullptr to Operand[] sqlCompiler::transliterate to sPipeline
   sPipeline .
+
+  sPipeline session::cascade!
+
+  true session::hasCascade!
   
   true
 ;

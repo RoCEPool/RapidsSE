@@ -1128,7 +1128,7 @@ ResponseVec* Job::pOriginResponseVec(void)
 /*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
-void Job::vResetForReuse(void)
+void Job::vResetForReuse(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -1168,11 +1168,13 @@ void Job::vResetForReuse(void)
   m_iOriginatingId   = C_UNKNOWN;
 
   // -- g -------------------
-  m_oAcksRmg_2pc.vCheckInit();
+  m_oAcksRmg_2pc.vReset();
   m_eSeed      = SS_ENUMS;
   m_i_TablePtn = C_UNKNOWN;
   m_pTaskJ = nullptr;
-  
+
+  m_xResult.vDrainBufferQueue(pSession);
+
   vDebugPoint();
 }
 
