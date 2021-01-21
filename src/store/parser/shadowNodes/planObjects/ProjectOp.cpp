@@ -145,7 +145,7 @@ b1 ProjectOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the tableRef of the queryNode                                      */
+/* Returns the projectedExprs node of the projectOp                           */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectOp::pProjectedExprs(QueryNode* pNode)
 {
