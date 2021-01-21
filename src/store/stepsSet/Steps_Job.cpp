@@ -48,7 +48,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.bideOperand"_Stz,      &Step::vJobBideOperand);
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
-  vAddStep("job.createBufferQueue"_Stz,&Step::vJobCreateBufferQueue);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
@@ -497,21 +496,6 @@ void Step::vJobCompleted(void)
   
   vGrabTaskLock();
   vScheduleDelete();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.createBufferQueue -- create the buffer queue in the job                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobCreateBufferQueue(void)
-{
-  ENTRY();
-  
-//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-//  
-//  RASSERT( ! pJob->pBufferQueue() );
-//  pJob->vBufferQueue(new Queue);
   
   EXIT();
 }

@@ -563,7 +563,6 @@ public:
 
   void vJobClass(void);
   void vJobCompleted(void);
-  void vJobCreateBufferQueue(void);
   void vJobCreateResponseVec(void);
 
   void vJobDec2pcAcksRmg(void);
