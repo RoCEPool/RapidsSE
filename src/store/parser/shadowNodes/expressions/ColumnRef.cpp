@@ -76,10 +76,10 @@ void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pTableNode);
   ASSERT(pColumnNode);
 
-  Stz* szCatalogName = pCatalogNode->getStringValue();
-  Stz* szSchemaName  = pSchemaNode->getStringValue();
-  Stz* szTableName   = pTableNode->getStringValue();
-  Stz* szColumnName  = pColumnNode->getStringValue();
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
+  Stz* szColumnName  = pColumnNode->szValue();
 
   if (szCatalogName) {
     sBuf.vConcat(szCatalogName);

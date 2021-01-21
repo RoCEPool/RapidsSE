@@ -1070,10 +1070,10 @@ void GraphValidator::vRoot_2_1(PlanNode* pRootNode)
 {
   // ROOT-2: Validate the value field:
   // ROOT-2.1: the value field must not be null and it must contains a string.
-  RASSERT(pRootNode->getStringValue());
-  RASSERT(pRootNode->getValue().m_pText->bIsClassNo(CN_TEXT));
-  RASSERT(pRootNode->getValue().m_bMustFree);
-  RASSERT(pRootNode->getStringValue()->nLength() > 0);
+  RASSERT(pRootNode->szValue());
+  RASSERT(pRootNode->xValue().m_pText->bIsClassNo(CN_TEXT));
+  RASSERT(pRootNode->xValue().m_bMustFree);
+  RASSERT(pRootNode->szValue()->nLength() > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1160,11 +1160,11 @@ void GraphValidator::vPrim_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-2: Validate the value field:
   // PRIM-2.1: the value field must not be null and it contains a string.
-  RASSERT(pNode->getValue().m_pText);
-  RASSERT(pNode->getValue().m_pText->bIsClassNo(CN_TEXT));
-  RASSERT(pNode->getValue().m_bMustFree);
-  RASSERT(pNode->getStringValue());
-  RASSERT(pNode->getStringValue()->nLength());
+  RASSERT(pNode->xValue().m_pText);
+  RASSERT(pNode->xValue().m_pText->bIsClassNo(CN_TEXT));
+  RASSERT(pNode->xValue().m_bMustFree);
+  RASSERT(pNode->szValue());
+  RASSERT(pNode->szValue()->nLength());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1241,10 +1241,10 @@ void GraphValidator::vDefn_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
   if (!pNode->szType()) {
     RASSERT(
-        pNode->getValue().m_pText &&
-        pNode->getValue().m_pText->eGetClassNo() == CN_TEXT &&
-        pNode->getStringValue() &&
-        pNode->getStringValue()->nLength() > 0
+        pNode->xValue().m_pText &&
+            pNode->xValue().m_pText->eGetClassNo() == CN_TEXT &&
+            pNode->szValue() &&
+            pNode->szValue()->nLength() > 0
     );
   }
 }
@@ -1638,14 +1638,14 @@ void GraphValidator::vDefn_5_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
         if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
             pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH))) {
           // Value must be a string
-          RASSERT(pParamNode->getValue().m_pText);
-          RASSERT(pParamNode->getValue().m_bMustFree);
-          RASSERT(pParamNode->getStringValue());
-          RASSERT(pParamNode->getStringValue()->nLength() > 0);
+          RASSERT(pParamNode->xValue().m_pText);
+          RASSERT(pParamNode->xValue().m_bMustFree);
+          RASSERT(pParamNode->szValue());
+          RASSERT(pParamNode->szValue()->nLength() > 0);
 
         } else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))) {
           // Value must be an integer
-          RASSERT(pParamNode->getIntValue() >= 0);
+          RASSERT(pParamNode->iValue() >= 0);
 
         } else {
           NEVER_REACH
@@ -1737,17 +1737,17 @@ void GraphValidator::vDefn_5_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
       while (pParamIter->bHasNext()) {
         PlanNode* pParamNode = pParamIter->pNext();
 
-        RASSERT(pParamNode->getValue().m_pText);
-        RASSERT(pParamNode->getValue().m_bMustFree);
-        RASSERT(pParamNode->getStringValue());
-        RASSERT(pParamNode->getStringValue()->nLength() > 0);
-        RASSERT(pParamNode->getStringValue()->bBeginsWith(const_cast<Stz*>(C_PRIMITIVES_PATH)));
+        RASSERT(pParamNode->xValue().m_pText);
+        RASSERT(pParamNode->xValue().m_bMustFree);
+        RASSERT(pParamNode->szValue());
+        RASSERT(pParamNode->szValue()->nLength() > 0);
+        RASSERT(pParamNode->szValue()->bBeginsWith(const_cast<Stz*>(C_PRIMITIVES_PATH)));
 
         RASSERT(pParamNode->szType());
         RASSERT(pParamNode->szType()->bBeginsWith(const_cast<Stz*>(C_VALUE_OBJ_DEFN)));
 
         PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
-        PlanNode* pItem = GraphNav::pFind(pParamNode->getStringValue(), pRootNode);
+        PlanNode* pItem = GraphNav::pFind(pParamNode->szValue(), pRootNode);
 
         RASSERT(pItem);
         RASSERT_TYPE(pItem, CN_PRIMITIVENODE);
@@ -2309,7 +2309,7 @@ void GraphValidator::vDefn_5_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
           RASSERT(pParam->m_xValue.m_pText->bIsClassNo(CN_TEXT));
           RASSERT(pParam->m_xValue.m_bMustFree);
 
-          Stz* szVal = pParam->getStringValue();
+          Stz* szVal = pParam->szValue();
           RASSERT(szVal);
           RASSERT(szVal->nLength() > 0);
           RASSERT(szVal->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)));
@@ -2379,7 +2379,7 @@ void GraphValidator::vDefn_5_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
           RASSERT(pParam->m_xValue.m_pText->bIsClassNo(CN_TEXT));
           RASSERT(pParam->m_xValue.m_bMustFree);
 
-          Stz* szVal = pParam->getStringValue();
+          Stz* szVal = pParam->szValue();
           RASSERT(szVal);
           RASSERT(szVal->nLength() > 0);
           RASSERT(szVal->bBeginsWith(const_cast<Stz*>(C_VALUE_OBJ_DEFN)));
@@ -3252,9 +3252,9 @@ void GraphValidator::vPlan_8_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
       RASSERT(pConstraintParam->m_xValue.m_pText);
       RASSERT(pConstraintParam->m_xValue.m_bMustFree);
-      RASSERT(pConstraintParam->getStringValue()->nLength() > 0);
+      RASSERT(pConstraintParam->szValue()->nLength() > 0);
 
-      if (pChild->szType()->bBeginsWith(pConstraintParam->getStringValue())) {
+      if (pChild->szType()->bBeginsWith(pConstraintParam->szValue())) {
         bMatchedType = true;
         break;
       }
@@ -3321,8 +3321,8 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
   PlanNode* pConstraintParam = pConstraint->pFirstChild();
   RASSERT(pConstraintParam);
-  RASSERT(pConstraintParam->getIntValue() >= 0);
-  RASSERT(pNode->nChildren() == pConstraintParam->getIntValue());
+  RASSERT(pConstraintParam->iValue() >= 0);
+  RASSERT(pNode->nChildren() == pConstraintParam->iValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3544,10 +3544,10 @@ void GraphValidator::vPlan_8_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
     RASSERT(pConstraintParam);
     RASSERT(pConstraintParam->m_xValue.m_pText);
     RASSERT(pConstraintParam->m_xValue.m_bMustFree);
-    RASSERT(pConstraintParam->getStringValue());
-    RASSERT(pConstraintParam->getStringValue()->nLength() > 0);
+    RASSERT(pConstraintParam->szValue());
+    RASSERT(pConstraintParam->szValue()->nLength() > 0);
 
-    Stz* szChildTypeDefn = pConstraintParam->getStringValue();
+    Stz* szChildTypeDefn = pConstraintParam->szValue();
 
     // Now we can check if the instantiation of the property meets this constraint.
     // First get the instantiated property.
@@ -3636,7 +3636,7 @@ void GraphValidator::vPlan_8_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
     PlanNode* pConstraintParam = pConstraint->pFirstChild();
     RASSERT(pConstraintParam);
 
-    i8 iCount = pConstraintParam->getIntValue();
+    i8 iCount = pConstraintParam->iValue();
     RASSERT(iCount >= 0);
 
     // Now we can check if the instantiation of the property meets this constraint.

@@ -74,7 +74,7 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pExprNode);
   ASSERT(pAliasNode);
 
-  Stz* szAliasName = pAliasNode->getStringValue();
+  Stz* szAliasName = pAliasNode->szValue();
 
   // Describe the expression
   s2K sExprBuf;

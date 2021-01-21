@@ -62,6 +62,7 @@ Stz* DefinitionNode::szPath(void)
 Stz* DefinitionNode::szDescription(void)
 {
   ASSERT(m_xValue.m_pText);
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
   return m_xValue.m_pText->szGet();
 }
 

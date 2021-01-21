@@ -36,8 +36,7 @@ QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
   ASSERT(pSelectItems->nItems() > 0);
 
   // Create the projectedExprs property of the ProjectOp
-  Value xValue;
-  QueryNode* pProjectedExprs = new QueryNode(C_PROJECTEDEXPRS_PROP, const_cast<Stz*>(C_PROJECTEDEXPRS_DEFN), xValue);
+  QueryNode* pProjectedExprs = new QueryNode(C_PROJECTEDEXPRS_PROP, const_cast<Stz*>(C_PROJECTEDEXPRS_DEFN));
 
   QueryNode* pItem;
   while ((pItem = pSelectItems->pPop()) != nullptr) {

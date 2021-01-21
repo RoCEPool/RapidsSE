@@ -61,6 +61,8 @@ Stz* PrimitiveNode::szPath(void)
 /*----------------------------------------------------------------------------*/
 Stz* PrimitiveNode::szDescription(void)
 {
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
+  ASSERT(!m_xValue.m_bIsNull);
   ASSERT(m_xValue.m_pText);
   return m_xValue.m_pText->szGet();
 }

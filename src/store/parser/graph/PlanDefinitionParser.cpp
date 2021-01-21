@@ -319,17 +319,16 @@ antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
 
 void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNodeBuilder* pNodeBuilder)
 {
-  pNodeBuilder->m_xValue.m_bMustFree = false;
+  pNodeBuilder->m_xValue.vSetNull(); // initially
 
   if (ctx->STRING() != nullptr) {
-    pNodeBuilder->m_xValue.m_pText = pCleanString(ctx->STRING()->getText());
-    pNodeBuilder->m_xValue.m_bMustFree = true;
+    pNodeBuilder->m_xValue.vSet(pCleanString(ctx->STRING()->getText()));
 
   } else if (ctx->NUMBER() != nullptr) {
     // TODO: handle floating point numbers and hexadecimal
     s256 sNum;
     vCleanString(ctx->NUMBER()->getText(), sNum);
-    pNodeBuilder->m_xValue.m_iInt = sNum.iToI8();
+    pNodeBuilder->m_xValue.vSet(sNum.iToI8());
 
   } else if (ctx->obj() != nullptr) {
     NEVER_REACH
@@ -340,13 +339,13 @@ void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNod
 
   } else if (ctx->LITERAL() != nullptr) {
     if (ctx->LITERAL()->getText().compare("true") == 0) {
-      pNodeBuilder->m_xValue.m_bBoolean = true;
+      pNodeBuilder->m_xValue.vSet((b1) true);
 
     } else if (ctx->LITERAL()->getText().compare("false") == 0) {
-      pNodeBuilder->m_xValue.m_bBoolean = false;
+      pNodeBuilder->m_xValue.vSet((b1) false);
 
     } else if (ctx->LITERAL()->getText().compare("null") == 0) {
-      pNodeBuilder->m_xValue.m_pText = nullptr;
+      pNodeBuilder->m_xValue.vSetNull();
 
     } else {
       // Got a literal value we didn't expect
