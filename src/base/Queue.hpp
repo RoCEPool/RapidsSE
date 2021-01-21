@@ -32,7 +32,8 @@ namespace BASE
     i8    iCount(void);
     void  vContentDump(Stz* aTab);
     Object* pPop(void);
-    
+    void  vReset(void);
+
   private:
     void vExpand(void);
     void vDiscard(void);

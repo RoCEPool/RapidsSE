@@ -68,10 +68,9 @@ Queue::Queue(void)
 Queue::~Queue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  while (m_pTopBuffer)
-    vDiscard();
-    
+
+  vReset();
+      
   ASSERT( ! m_pEndBuffer );
   ASSERT( ! m_pTopBuffer );
 }
@@ -182,6 +181,21 @@ Object* Queue::pPop(void)
   
   return pObject;
 }
+
+/*----------------------------------------------------------------------------*/
+/* dump grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Queue::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  while (m_pTopBuffer)
+    vDiscard();
+    
+  ASSERT( ! m_pEndBuffer );
+  ASSERT( ! m_pTopBuffer );
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -81,6 +81,8 @@ void Api::vDeleteJob(Session* pSession)
   }
   
   pSession->m_bExitMarker = false;
+  
+  pSession->m_pOutputQueue->vReset();
 }
 
 
