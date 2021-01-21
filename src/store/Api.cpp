@@ -16,6 +16,7 @@
 #include "Op.hpp"
 #include "Procedure.hpp"
 #include "SessionArray.hpp"
+#include "Output.hpp"
 
 #include "TagConstants.h"
 
@@ -82,7 +83,7 @@ void Api::vDeleteJob(Session* pSession)
   
   pSession->m_bExitMarker = false;
   
-  pSession->m_pOutputQueue->vReset();
+  pSession->m_pOutput->m_pOutputQueue->vReset();
 }
 
 

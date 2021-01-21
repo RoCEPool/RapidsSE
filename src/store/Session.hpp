@@ -70,7 +70,6 @@ namespace STORE
     s16KB m_sCascade;      // the cascade statement
 
     // -- -- -- -- -- --
-    Queue*       m_pOutputQueue; // queue in originating node to receive 
     StreamDef*   m_pStreamDef_result;
     bool         m_bExitMarker;
   

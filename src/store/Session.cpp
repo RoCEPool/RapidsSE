@@ -97,7 +97,6 @@ Session::Session(void)
   
   
   // -- -- -- -- -- --
-  m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
 
@@ -280,9 +279,6 @@ void Session::vFreeSession(i8 i_NextFree)
   m_pTx        = nullptr;
   
   // -- -- -- -- -- --
-  if (m_pOutputQueue)
-    delete m_pOutputQueue;
-  m_pOutputQueue = nullptr;
 
   if (m_pOutput)
     delete m_pOutput;
@@ -425,9 +421,9 @@ eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
-  m_pOutputQueue = new Queue;
-
   m_pOutput = new Output;
+
+  m_pOutput->m_pOutputQueue = new Queue;
 
   return EC_NONE;
 }

@@ -15,9 +15,11 @@ namespace STORE
   {
 
   public:
-    Atomic m_ixRowsProcessed; // rows processed
-    Atomic m_ixRowsInvalid;   // invalid rows detected
-    Atomic m_ixRowsSkipped;   // rows skipped
+    Queue* m_pOutputQueue;     // queue of buffers being the job output
+
+    Atomic  m_ixRowsProcessed; // rows processed
+    Atomic  m_ixRowsInvalid;   // invalid rows detected
+    Atomic  m_ixRowsSkipped;   // rows skipped
 
   private:
 

@@ -43,6 +43,8 @@ Output::Output(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
       
+  m_pOutputQueue      = nullptr;
+
   _checkInitialised_(CN_OUTPUT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
@@ -55,6 +57,9 @@ Output::~Output(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
+  if (m_pOutputQueue)
+    delete m_pOutputQueue;
+  m_pOutputQueue = nullptr;  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +123,7 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
   
   for (;;) {
     
-    Operand* pOperand = _pOperand(pSession->m_pOutputQueue->pPop());
+    Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
     
     if (pOperand)
       return pOperand;

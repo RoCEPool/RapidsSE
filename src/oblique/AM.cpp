@@ -91,6 +91,7 @@
 #include "Session.hpp"
 #include "SessionArray.hpp"
 #include "XmitOperand.hpp"
+#include "Output.hpp"
 
 #include "TagConstants.h"
 
@@ -272,7 +273,7 @@ void AM::vAttachMap(Header* aHeader) {
 
 Queue* AM::pOutputQueue(Session* pSession) {
     
-  return pSession->m_pOutputQueue;
+  return pSession->m_pOutput->m_pOutputQueue;
 }
 
 
