@@ -31,7 +31,7 @@ void Step::vMetaTableListTables(void)
 {
   ENTRY();
   
-  vTrace("vMetaTableListTable\n"_Stz);
+  //vTrace("vMetaTableListTable\n"_Stz);
   
   Pot* pPot = *m_pJob->pLogicUnit_job()->m_xpPot;
   

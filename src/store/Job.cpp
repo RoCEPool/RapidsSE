@@ -1302,9 +1302,7 @@ void Job::vSetFromCascade(Stz* szCascade)
 
   vSeed(SS_SEED_REQ);
 
-  m_oJobTags.vDumpSet(true);
-
-  vDebugPoint();
+  //m_oJobTags.vDumpSet(true);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -846,8 +846,6 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 {
   _static_
   
-  
-
   // pSession cannot be null
   if (pSession == nullptr) {
     TRACE_API_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);
