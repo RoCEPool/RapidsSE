@@ -22,6 +22,8 @@ namespace Parser
 
     StatisticsNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren);
+    StatisticsNode(const StatisticsNode& oNode);
+
     virtual ~StatisticsNode(void);
 
     Footer* aFooter(void);

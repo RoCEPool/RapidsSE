@@ -33,6 +33,19 @@ StatisticsNode::StatisticsNode(Stz* szName, Stz* szType, Value&& xValue,
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+StatisticsNode::StatisticsNode(const StatisticsNode& oNode)
+    : MutablePlanNode(CN_STATISTICSNODE, oNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STATISTICSNODE,_FOOTER_);
+
+  _checkInitialised_(CN_QUERYNODE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STATISTICSNODE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 StatisticsNode::~StatisticsNode(void)

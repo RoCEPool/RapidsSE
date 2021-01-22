@@ -33,6 +33,19 @@ MetadataNode::MetadataNode(Stz* szName, Stz* szType, Value&& xValue,
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+MetadataNode::MetadataNode(const MetadataNode& oNode)
+  : MutablePlanNode(CN_METADATANODE, oNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATANODE,_FOOTER_);
+
+  _checkInitialised_(CN_QUERYNODE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METADATANODE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 MetadataNode::~MetadataNode(void)
