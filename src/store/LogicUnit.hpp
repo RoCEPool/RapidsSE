@@ -136,7 +136,12 @@ namespace STORE
     REG<Object>      m_xpRegister3; // general purpose reg 3[]
   
     REG<Node_I>      m_xpNode_I;    // node iterator
-  
+    
+    Atomic           m_ixRowsProcessed; // rows processed
+    Atomic           m_ixRowsInvalid;   // invalid rows detected
+    Atomic           m_ixRowsSkipped;   // rows skipped
+    eEC              m_eErrorCode;      // error code
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
   

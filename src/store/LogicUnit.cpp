@@ -160,6 +160,11 @@ LogicUnit::LogicUnit(Task* pTask)
     m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
   }
 
+  // m_ixRowsProcessed;
+  // m_ixRowsInvalid;
+  // m_ixRowsSkipped;
+  m_eErrorCode = EC_NONE;
+  
   _checkInitialised_(CN_LOGICUNIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
