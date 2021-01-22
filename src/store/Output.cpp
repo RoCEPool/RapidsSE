@@ -215,6 +215,15 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
+        
+        Row* pInfoRow = pInfoSet->aFirstRow();
+        
+        i8 i0 = pInfoRow->iColVal_int(0);
+        i8 i1 = pInfoRow->iColVal_int(1);
+        i8 i2 = pInfoRow->iColVal_int(2);
+        
+        vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,i0,i1,i2);
+
         AM::vDeleteOperand(pOperand);
       }
       else {
