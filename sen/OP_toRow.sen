@@ -23,7 +23,12 @@
     Operand[].pipeOut
 
   then
-
+  
+  
+  // find the __loadResult table def
+  C_TDEF_LOADRESULT op__tableDef_infoSet assert
+  
+  
   true
 ;
 

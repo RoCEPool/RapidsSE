@@ -306,11 +306,11 @@
   sPath
   "
   define table __loadResult (
-    i_Node         INTEGER NOT NULL,
-    sResponse      VARCHAR NOT NULL,
-    iRowsProcessed INTEGER NOT NULL,
-    iRowsInvalid   INTEGER NOT NULL,
-    iRowsSkipped   INTEGER NOT NULL,
+    i_Node         INTEGER NOT NULL ,
+    sResponse      VARCHAR NOT NULL ,
+    iRowsProcessed INTEGER NOT NULL ,
+    iRowsInvalid   INTEGER NOT NULL ,
+    iRowsSkipped   INTEGER NOT NULL ,
     eErrorCode     INTEGER NOT NULL
   ) ;
   "
