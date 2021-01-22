@@ -41,17 +41,9 @@ namespace STORE
   
     static void vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker);
 
-//    void vDrainBufferQueue(Session* pSession);
-
     void vPrintDist2pcResponse(Session* pSession);
     void vPrintLocalResponse(void);
-//    void vProcessBufferQueue(Session* pSession);
-//    Operand* pPopBufferQueue_blocking(Session* pSession);
-//    bool bProcessOperand(Session* pSession, Operand* pOperand);
-    
-    //! TO GO
-    void vPrintOldJobResponses(void);
-    
+        
     Footer* aFooter(void);
   };
   
