@@ -37,10 +37,10 @@ namespace Parser
       u8         m_uInt;        // unsigned 8-byte integer value
       d8         m_dFloat;      // 8-byte floating point value
       Text*      m_pText;       // string data
-      // TODO:   m_xDate;
-      // TODO:   m_xTime;
-      // TODO:   m_xTimestamp;
-      // TODO:   m_xInterval;
+      Dte        m_xDate;
+      Tme        m_xTime;
+      Tsp        m_xTsp;
+      Ivl        m_xIvl;        // interval
     };
 
     Type m_eType;     // The type of the value stored in the union.
@@ -104,10 +104,21 @@ namespace Parser
       }
     }
 
-    // TODO: Constructor (date)
-    // TODO: Constructor (time)
-    // TODO: Constructor (timestamp)
-    // TODO: Constructor (interval)
+    // Constructor (date)
+    Value(const Dte xDate)
+        : m_xDate(xDate), m_eType(VT_DATE), m_bMustFree(false), m_bIsNull(false)     { /* noop */ }
+
+    // Constructor (time)
+    Value(const Tme xTime)
+        : m_xTime(xTime), m_eType(VT_TIME), m_bMustFree(false), m_bIsNull(false)     { /* noop */ }
+
+    // Constructor (timestamp)
+    Value(const Tsp xTsp)
+        : m_xTsp(xTsp), m_eType(VT_TIMESTAMP), m_bMustFree(false), m_bIsNull(false)  { /* noop */ }
+
+    // Constructor (interval)
+    Value(const Ivl xIvl)
+        : m_xIvl(xIvl), m_eType(VT_INTERVAL), m_bMustFree(false), m_bIsNull(false)   { /* noop */ }
 
     // Copy constructor
     Value(const Value& xVal)

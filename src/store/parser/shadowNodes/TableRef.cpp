@@ -28,6 +28,21 @@ static Stz* C_TABLE_PROP    = "tableName"_Stz;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get catalog name from tableRef                                             */
+/*----------------------------------------------------------------------------*/
+Stz* TableRef::szCatalog(QueryNode* pTableRef)
+{
+  ASSERT(bValidate(pTableRef));
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
+  ASSERT(pCatalogNode);
+
+  Stz* szCatalogName = pCatalogNode->szValue();
+
+  return szCatalogName;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Helper function to create tableRef nodes.                                  */
 /*----------------------------------------------------------------------------*/
 QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName)
@@ -102,21 +117,6 @@ void TableRef::vDescribe(PlanNode* pNode, s2K& buf)
 b1 TableRef::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_TABLEREF_DEFN);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get catalog name from tableRef                                             */
-/*----------------------------------------------------------------------------*/
-Stz* TableRef::szCatalog(QueryNode* pTableRef)
-{
-  ASSERT(bValidate(pTableRef));
-
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
-  ASSERT(pCatalogNode);
-
-  Stz* szCatalogName = pCatalogNode->szValue();
-
-  return szCatalogName;
 }
 
 /*----------------------------------------------------------------------------*/

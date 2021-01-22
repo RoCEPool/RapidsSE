@@ -80,8 +80,11 @@ namespace STORE
     //
     // plan transliteration
     //
+    static void vAppendExpr(String* sPipeline, Parser::QueryNode* pNode);
     static void vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode);
     static void vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode);
+
+    static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(Parser::PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
