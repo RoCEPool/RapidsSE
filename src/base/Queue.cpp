@@ -156,6 +156,7 @@ Object* Queue::pPop(void)
   // are there queue buffers?
   if (! m_pTopBuffer) {
     ASSERT(! m_iCount);
+    ASSERT(! m_pEndBuffer);
     m_okLock.vDropWrite();
     return nullptr;
   }
@@ -189,8 +190,12 @@ void Queue::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
+  ASSERT(0 == m_iCount);
+
   while (m_pTopBuffer)
     vDiscard();
+  
+  m_iCount = 0;
     
   ASSERT( ! m_pEndBuffer );
   ASSERT( ! m_pTopBuffer );

@@ -69,8 +69,16 @@ void Api::vFreeSession(Session* pSession)
 void Api::vDeleteJob(Session* pSession)
 {
   _static_
-  
+    
   Job* pJob = pSession->m_pSsnJob;
+
+  if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
+    pSession->m_pOutput->vProcessBufferQueue(pSession);
+
+  pSession->m_pOutput->m_pOutputQueue->vReset();
+
+  
+  
   pSession->m_pSsnJob = nullptr;
   delete pJob;
   
@@ -81,9 +89,10 @@ void Api::vDeleteJob(Session* pSession)
     delete pStreamDef;
   }
   
+  
+  
   pSession->m_pOutput->m_bExitMarker = false;
   
-  pSession->m_pOutput->m_pOutputQueue->vReset();
 }
 
 

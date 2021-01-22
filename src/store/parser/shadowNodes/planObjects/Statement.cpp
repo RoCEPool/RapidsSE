@@ -65,9 +65,9 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
   ShadowNode::vObjName(GraphNav::szLeafType(szDef), sName);
 
   // Create the object with its queryText property
-  QueryNode* pStmt = new QueryNode(sName, szDef, xValue);
+  QueryNode* pStmt = new QueryNode(sName, szDef, static_cast<Value&&>(xValue));
   Value xQueryTextVal(szQueryText);
-  QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xQueryTextVal);
+  QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xQueryTextVal));
   pStmt->vAppendProperty(pQueryText);
 
   return pStmt;

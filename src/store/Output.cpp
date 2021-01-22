@@ -133,8 +133,10 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
   
   for (;;) {
     
-    if (pSession->m_pSsnJob->m_xResult.m_bJobHasError)
-      return nullptr;
+    //if (pSession->m_pSsnJob->m_xResult.m_bJobHasError) {
+      //vDrainBufferQueue(pSession);
+      //return nullptr;
+    //}
     
     Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
     
@@ -142,6 +144,10 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
+    
+    
+    if (pSession->m_pSsnJob->m_xResult.m_bJobHasError)
+      return nullptr;
   }
   
 }
@@ -228,6 +234,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
                  *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
+          m_bExitMarker = true;
           bContinue = false;
           goto L_EXIT;
           break;

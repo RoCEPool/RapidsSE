@@ -18,7 +18,7 @@ namespace Parser
     virtual ~MutablePlanNode(void) = 0;
 
   protected:
-    MutablePlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
+    MutablePlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value&& xValue,
                     PlanNodeList* pProperties, PlanNodeList* pChildren);
 
     MutablePlanNode(eCN eClassNo, const MutablePlanNode& oNode);
@@ -28,7 +28,7 @@ namespace Parser
   public:
     void vSetName(Stz* szName);
     void vSetType(Stz* szType);
-    void vSetValue(Value xValue);
+    void vSetValue(Value&& xValue);  // move semantics
     void vAppendProperty(PlanNode* pNode);
     void vAppendChild(PlanNode* pNode);
 

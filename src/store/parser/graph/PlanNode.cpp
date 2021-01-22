@@ -17,12 +17,12 @@ __aFooterFunction(PlanNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
+PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren)
 : Object(eClassNo),
   m_sName(szName),
   m_sType(szType),
-  m_xValue{xValue},
+  m_xValue(xValue),
   m_pProperties(pProperties),
   m_pChildren(pChildren)
 {
@@ -34,10 +34,11 @@ PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
 /* copy constructor                                                           */
 /*----------------------------------------------------------------------------*/
 PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
-    : Object(eClassNo) {
+    : Object(eClassNo),
+      m_xValue(const_cast<PlanNode &>(oNode).m_xValue)
+{
   m_sName.vCopy(const_cast<PlanNode &>(oNode).m_sName.szStz());
   m_sType.vCopy(const_cast<PlanNode &>(oNode).m_sType.szStz());
-  m_xValue = const_cast<PlanNode &>(oNode).m_xValue;
 
   if (oNode.m_pProperties) {
     m_pProperties = new PlanNodeList();
@@ -68,17 +69,6 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* temp constructor for use by ray to test sql compiler pipeline              */
-/*----------------------------------------------------------------------------*/
-PlanNode::PlanNode(eCN eClassNo, void* aTempTest_byRay)
-    : Object(eClassNo)
-{
-  m_pProperties = nullptr;
-  m_pChildren   = nullptr;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -86,10 +76,6 @@ PlanNode::PlanNode(eCN eClassNo, void* aTempTest_byRay)
 PlanNode::~PlanNode(void)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
-
-  if (m_xValue.m_bMustFree && m_xValue.m_pText) {
-    delete m_xValue.m_pText;
-  }
 
   if (m_pProperties != nullptr) delete m_pProperties;
   if (m_pChildren   != nullptr) delete m_pChildren;
@@ -130,6 +116,14 @@ Stz* PlanNode::szType()
 Parser::Value PlanNode::xValue()
 {
   return m_xValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the generic Value object in this PlanNode                              */
+/*----------------------------------------------------------------------------*/
+Parser::Value* PlanNode::pValue()
+{
+  return &m_xValue;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,9 +19,10 @@ __aFooterFunction(StatisticsNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StatisticsNode::StatisticsNode(Stz* szName, Stz* szType, Value xValue,
+StatisticsNode::StatisticsNode(Stz* szName, Stz* szType, Value&& xValue,
                                PlanNodeList* pProperties, PlanNodeList* pChildren)
-    : MutablePlanNode(CN_STATISTICSNODE, szName, szType, xValue, pProperties, pChildren)
+    : MutablePlanNode(CN_STATISTICSNODE, szName, szType,
+                      static_cast<Value&&>(xValue), pProperties, pChildren)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATISTICSNODE,_FOOTER_);
 
@@ -29,6 +30,19 @@ StatisticsNode::StatisticsNode(Stz* szName, Stz* szType, Value xValue,
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STATISTICSNODE,_FOOTER_);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+StatisticsNode::StatisticsNode(const StatisticsNode& oNode)
+    : MutablePlanNode(CN_STATISTICSNODE, oNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STATISTICSNODE,_FOOTER_);
+
+  _checkInitialised_(CN_QUERYNODE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STATISTICSNODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

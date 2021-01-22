@@ -59,10 +59,10 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
   Value xColumnName(pColumnName);
 
   QueryNode* pColRef = new QueryNode(sName, C_COLREF_DEFN);
-  pColRef->vAppendProperty(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogName));
-  pColRef->vAppendProperty(new QueryNode(C_SCHEMA_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaName));
-  pColRef->vAppendProperty(new QueryNode(C_TABLE_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableName));
-  pColRef->vAppendProperty(new QueryNode(C_COLUMN_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xColumnName));
+  pColRef->vAppendProperty(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogName)));
+  pColRef->vAppendProperty(new QueryNode(C_SCHEMA_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaName)));
+  pColRef->vAppendProperty(new QueryNode(C_TABLE_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableName)));
+  pColRef->vAppendProperty(new QueryNode(C_COLUMN_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xColumnName)));
 
   return pColRef;
 }
