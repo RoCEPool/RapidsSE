@@ -214,10 +214,15 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
-      m_ixRowsProcessed += pInfoSet->nInfoRows();
-      vTrace("\n"_Stz);
-      pInfoSet->vPrintRows(m_pStreamDef_result);
-      AM::vDeleteOperand(pOperand);
+      if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
+        AM::vDeleteOperand(pOperand);
+      }
+      else {
+        m_ixRowsProcessed += pInfoSet->nInfoRows();
+        vTrace("\n"_Stz);
+        pInfoSet->vPrintRows(m_pStreamDef_result);
+        AM::vDeleteOperand(pOperand);
+      }
       break;
     }
       

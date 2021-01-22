@@ -12,7 +12,7 @@ create table nation (
 );
 
 print "loading nation.csv..." ;
-load nation "../tpch/SF1/nation.csv" ;
+/traceop load nation "../tpch/SF1/nation.csv" ;
 
 pipeline query
 begin

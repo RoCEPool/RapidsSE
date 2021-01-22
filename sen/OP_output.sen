@@ -27,6 +27,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: output_DataMarker \handler
+
+  //"Operand:- ZK_DATAPULSE" .verbose
+  PipeIn[].pipeOut
+  Operand[].newDataPulse
+  Operand[].pipeToJob
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_ENTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : output_EntBuffer \handler
@@ -64,14 +77,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* handler for ZK_LOADRESULT ...                                              */
 /*----------------------------------------------------------------------------*/
-: output_DataMarker \handler
+: output_LoadResult \handler
 
-  //"Operand:- ZK_DATAPULSE" .verbose
-  PipeIn[].pipeOut
-  Operand[].newDataPulse
-  Operand[].pipeToJob
+  //"Operand:- ZK_LOADRESULT" .verbose
+  PipeIn[].pipeToJob
 
   true
 ;
@@ -144,10 +155,11 @@ true
 
   find: output_CrwBuffer   ZK_CRWBUFFER   op[].handler!
   find: output_CsvBuffer   ZK_CSVBUFFER   op[].handler!
+  find: output_DataMarker  ZK_DATAPULSE   op[].handler!
   find: output_EntBuffer   ZK_ENTBUFFER   op[].handler!
   find: output_EosMarker   ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: output_DataMarker  ZK_DATAPULSE   op[].handler!
+  find: output_LoadResult  ZK_LOADRESULT  op[].handler!
   find: output_RowBuffer   ZK_ROWBUFFER   op[].handler!
   find: output_SrtBuffer   ZK_SRTBUFFER   op[].handler!
   find: output_StartMarker ZK_STARTMARKER op[].handler!

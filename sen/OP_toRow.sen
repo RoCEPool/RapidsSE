@@ -74,8 +74,20 @@
     OperandB[].pipeOut
     ToRow[].dangling to OperandB[]
   repeat
+
+
+  // -- -- -- -- -- --
+  // pipeout load results
   
-  //ToRow[].rowCounters@@ . . . 
+  infoSetTable[] InfoSet[].new
+  OI_LOADRESULT infoSet[].opInfoset!
+  
+  ToRow[].rowCounters@@ 3 InfoSet[].addRowVargs
+
+  infoSet[].pipeOut
+
+
+  // -- -- -- -- -- --
 
   // delete ToRow
   ToRow[].delete
