@@ -5,6 +5,7 @@
 
 #include "RootNode.hpp"
 #include "GraphNav.hpp"
+#include "QueryNode.hpp"
 
 namespace STORE
 {
@@ -79,8 +80,8 @@ namespace STORE
     //
     // plan transliteration
     //
-    static void vAppendProject(String* sPipeline, Parser::PlanNode* pNode);
-    static void vAppendScan(String* sPipeline, Parser::PlanNode* pNode);
+    static void vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode);
+    static void vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode);
 
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(Parser::PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
