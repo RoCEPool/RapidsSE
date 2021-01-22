@@ -17,6 +17,7 @@ namespace Parser
     ColumnRef();
 
   public:
+    static Stz*       szColumnName(QueryNode* pQueryNode);
     static QueryNode* pCreate(Text* pCatalogName, Text* pSchemaName,
                               Text* pTableName, Text* pColumnName);
 

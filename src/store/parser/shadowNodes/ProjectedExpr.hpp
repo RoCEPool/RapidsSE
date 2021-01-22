@@ -18,11 +18,14 @@ namespace Parser
     ProjectedExpr();
 
   public:
+    static Stz*       szAliasName(QueryNode* pQueryNode);
     static QueryNode* pCreate(QueryNode* pExprNode, Text* pAlias);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
+
+    static QueryNode* pExprNode(QueryNode* pQueryNode);
   };
 
 }
