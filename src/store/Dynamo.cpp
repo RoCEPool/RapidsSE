@@ -267,6 +267,11 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
                              Parser::RootNode* pPlanRoot) {
   _static_
 
+
+//#ifdef WITH_TRACE_DYNAMO
+  vPrintPlanGraph(pPlanRoot);
+//#endif
+
   char cStageStart   = 'A';
   char cStageCurrent = 'A';
 
@@ -326,6 +331,25 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* print the plan graph                                                       */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vPrintPlanGraph(Parser::PlanNode* pPlanRoot) {
+
+  // Lambda visitor function to print the graph
+
+  auto fVisitor = [](Parser::PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+
+    vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
+
+    // Keep walking
+    return Parser::GraphNav::WALK_CONTINUE;
+  };
+
+  Parser::GraphNav::bWalk(pPlanRoot, false, true, fVisitor, pPlanRoot);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get cross topology between two stages                                      */
@@ -1211,8 +1235,50 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
+void Dynamo::vAppendExpr(String* sPipeline, Parser::QueryNode* pNode) {
+  _static_
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // alias
+  Stz *szAliasName = Parser::ProjectedExpr::szAliasName(pNode);
+
+  if (szAliasName) {
+    sPipeline->vCatSprint(
+        " as %s"
+        ""_Stz,
+        szAliasName);
+  }
+
+  // get the expr node
+  Parser::QueryNode *pExprNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty("expr"_Stz,
+                                                                                                  pNode));
+  ASSERT(pExprNode);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // literal
+
+  if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
+    RASSERT(0);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // columnRef
+
+  if (Parser::ColumnRef::bIsOfType(pExprNode)) {
+    Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
+    sPipeline->vCatSprint(
+        " %s"
+        ""_Stz,
+        Parser::ColumnRef::szColumnName(pColumnRef));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append project Op to the pipeline                                          */
+/*----------------------------------------------------------------------------*/
 void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
 {
+  _static_
 
   bool bFirstExpr = false;
 
@@ -1243,42 +1309,7 @@ void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
       ASSERT(pProjectedExpr);
       ASSERT(Parser::ProjectedExpr::bIsOfType(pProjectedExpr));
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // alias
-      Stz* szAliasName = Parser::ProjectedExpr::szAliasName(pProjectedExpr);
-
-      if (szAliasName) {
-        sPipeline->vCatSprint(
-            " as %s"
-            ""_Stz,
-            szAliasName);
-      }
-
-      // get the expr node
-      Parser::QueryNode *pExprNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty("expr"_Stz,pProjectedExpr));
-      ASSERT(pExprNode);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // literal
-
-      if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
-        Parser::QueryNode *pExpr = static_cast<Parser::QueryNode *>(pExprNode);
-        sPipeline->vCatSprint(
-            " %s"
-            ""_Stz,
-            pExpr->szName());
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // columnRef
-
-      if (Parser::ColumnRef::bIsOfType(pExprNode)) {
-        Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
-        sPipeline->vCatSprint(
-            " %s"
-            ""_Stz,
-            Parser::ColumnRef::szColumnName(pColumnRef));
-      }
+      vAppendExpr(sPipeline, pProjectedExpr);
     }
     delete pIter;
 
@@ -1344,8 +1375,8 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& 
       vAppendProjectOp(sPipeline, pQueryNode);
     }
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // other Op's
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // other Op's
     else {
       RASSERT(0);
     }
