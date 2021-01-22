@@ -30,17 +30,18 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRow(void)
 {
-  vAddStep("toRow[].completed"_Stz,   &Step::vToRowRegCompleted);
-  vAddStep("toRow[].convert"_Stz,     &Step::vToRowRegConvert);
-  vAddStep("toRow[].create"_Stz,      &Step::vToRowRegCreate);
-  vAddStep("toRow[].dangling"_Stz,    &Step::vToRowRegDangling);
-  vAddStep("toRow[].delete"_Stz,      &Step::vToRowRegDelete);
+  vAddStep("toRow[].completed"_Stz,     &Step::vToRowCompleted);
+  vAddStep("toRow[].convert"_Stz,       &Step::vToRowConvert);
+  vAddStep("toRow[].create"_Stz,        &Step::vToRowCreate);
+  vAddStep("toRow[].dangling"_Stz,      &Step::vToRowDangling);
+  vAddStep("toRow[].delete"_Stz,        &Step::vToRowDelete);
+  vAddStep("toRow[].rowCounters@@"_Stz, &Step::vToRowRowCountersFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* toRow[].completed -- full row buffer                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToRowRegCompleted(void)
+void Step::vToRowCompleted(void)
 {
   ENTRY();
   
@@ -57,7 +58,7 @@ void Step::vToRowRegCompleted(void)
 /*----------------------------------------------------------------------------*/
 /* toRow[].convert -- convert csv buffer                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vToRowRegConvert(void)
+void Step::vToRowConvert(void)
 {
   ENTRY();
 
@@ -76,7 +77,7 @@ void Step::vToRowRegConvert(void)
 /*----------------------------------------------------------------------------*/
 /* toRow[].create -- create toRow                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vToRowRegCreate(void)
+void Step::vToRowCreate(void)
 {
   ENTRY();
   
@@ -107,7 +108,7 @@ void Step::vToRowRegCreate(void)
 /*----------------------------------------------------------------------------*/
 /* toRow[].dangling -- fetch row buffer                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToRowRegDangling(void)
+void Step::vToRowDangling(void)
 {
   ENTRY();
   
@@ -126,7 +127,7 @@ void Step::vToRowRegDangling(void)
 /*----------------------------------------------------------------------------*/
 /* toRow[].delete -- delete toRow                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vToRowRegDelete(void)
+void Step::vToRowDelete(void)
 {
   ENTRY();
   
@@ -135,6 +136,22 @@ void Step::vToRowRegDelete(void)
   
   delete pToRow;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* toRow[].rowCounters@@ -- fetch row counters                                */
+/*----------------------------------------------------------------------------*/
+void Step::vToRowRowCountersFetch(void)
+{
+  ENTRY();
+  
+  ToRow* pToRow = *( m_pJob->pLogicUnit_job() )->m_xpToRow;
+
+  m_pDataStack->vPushInt(pToRow->iRowsSkipped());
+  m_pDataStack->vPushInt(pToRow->iRowsInvalid());
+  m_pDataStack->vPushInt(pToRow->iRowsProcessed());
+
   EXIT();
 }
 

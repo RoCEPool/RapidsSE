@@ -61,6 +61,11 @@ namespace STORE
 
     RowBuffer* pDanglingRowBuffer(void);
     RowBuffer* pFullRowBuffer(void);
+  
+    i8 iRowsProcessed(void);
+    i8 iRowsInvalid(void);
+    i8 iRowsSkipped(void);
+
 
   private:
     void vNewRowBuffer(void);

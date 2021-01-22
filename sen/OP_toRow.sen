@@ -74,6 +74,8 @@
     OperandB[].pipeOut
     ToRow[].dangling to OperandB[]
   repeat
+  
+  //ToRow[].rowCounters@@ . . . 
 
   // delete ToRow
   ToRow[].delete

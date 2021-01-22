@@ -1792,11 +1792,12 @@ public:
   void vToPtnRowRegDelete(void);
 
   // toRow
-  void vToRowRegCompleted(void);
-  void vToRowRegConvert(void);
-  void vToRowRegCreate(void);
-  void vToRowRegDangling(void);
-  void vToRowRegDelete(void);
+  void vToRowCompleted(void);
+  void vToRowConvert(void);
+  void vToRowCreate(void);
+  void vToRowDangling(void);
+  void vToRowDelete(void);
+  void vToRowRowCountersFetch(void);
 
   // tokenVec
   void vTokenVecDelete(void);
