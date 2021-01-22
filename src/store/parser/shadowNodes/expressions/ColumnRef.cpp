@@ -30,6 +30,17 @@ static Stz* C_COLUMN_NAME_PROP  = "columnName"_Stz;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Returns the columnName of the projectedExpr                                */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnRef::szColumnName(QueryNode* pNode)
+{
+  QueryNode *pColumnNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_COLUMN_NAME_PROP, pNode));
+
+  return pColumnNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Helper function to create expression column reference nodes.               */
 /*----------------------------------------------------------------------------*/
 QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,

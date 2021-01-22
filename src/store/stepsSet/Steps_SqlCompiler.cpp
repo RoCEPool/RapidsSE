@@ -126,6 +126,7 @@ void Step::vSqlCompilerTransliterate(void)
   m_pDataStack->vPushStr(sPipelineStmt);
 
   delete pPlanOperand;
+  delete pPlanRoot;
 
   EXIT();
 }
