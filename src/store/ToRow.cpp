@@ -69,6 +69,10 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
   m_nMaxErrors           = pFmt->m_nMaxErrors;
 
+  m_iRowsProcessed = 0;
+  m_iRowsInvalid   = 0;
+  m_iRowsSkipped   = 0;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   vNewRowBuffer();
