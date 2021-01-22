@@ -75,7 +75,7 @@ PlanNode* PlanNodeBuilder::pBuild(void)
   if (m_sPath.bEqual(const_cast<Stz*>(C_ROOT_PATH))) {
     pPlanNode = new RootNode(m_sName.szStz(),
                              m_sType.szStz(),
-                             m_xValue,
+                             static_cast<Value&&>(m_xValue),
                              pPropertiesList,
                              pChildrenList,
                              m_sPath.szStz());
@@ -83,7 +83,7 @@ PlanNode* PlanNodeBuilder::pBuild(void)
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_PRIMITIVES_PATH))) {
     pPlanNode = new PrimitiveNode(m_sName.szStz(),
                                    m_sType.szStz(),
-                                   m_xValue,
+                                   static_cast<Value&&>(m_xValue),
                                    pPropertiesList,
                                    pChildrenList,
                                    m_sPath.szStz());
@@ -91,7 +91,7 @@ PlanNode* PlanNodeBuilder::pBuild(void)
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH))) {
     pPlanNode = new DefinitionNode(m_sName.szStz(),
                                    m_sType.szStz(),
-                                   m_xValue,
+                                   static_cast<Value&&>(m_xValue),
                                    pPropertiesList,
                                    pChildrenList,
                                    m_sPath.szStz());
@@ -99,28 +99,29 @@ PlanNode* PlanNodeBuilder::pBuild(void)
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_PLAN_PATH))) {
     pPlanNode = new QueryNode(m_sName.szStz(),
                               m_sType.szStz(),
-                              m_xValue,
-                               pPropertiesList,
-                               pChildrenList);
+                              static_cast<Value&&>(m_xValue),
+                              pPropertiesList,
+                              pChildrenList);
 
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_METADATA_PATH))) {
     pPlanNode = new MetadataNode(m_sName.szStz(),
-                                   m_sType.szStz(),
-                                   m_xValue,
-                                   pPropertiesList,
-                                   pChildrenList);
+                                 m_sType.szStz(),
+                                 static_cast<Value&&>(m_xValue),
+                                 pPropertiesList,
+                                 pChildrenList);
 
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_STATISTICS_PATH))) {
     pPlanNode = new StatisticsNode(m_sName.szStz(),
                                    m_sType.szStz(),
-                                   m_xValue,
+                                   static_cast<Value&&>(m_xValue),
                                    pPropertiesList,
                                    pChildrenList);
   } else {
     NEVER_REACH
   }
 
-  m_xValue.vReset();
+  m_xValue.vSetNull();
+  m_xValue.m_eType = Value::VT_UNKNOWN;
   return pPlanNode;
 }
 

@@ -51,7 +51,7 @@ QueryNode* ProjectedExpr::pCreate(QueryNode* pExprNode, Text* pAlias)
   pProjectedExpr->vAppendProperty(pExprNode);
 
   // Create the alias and append it as a property
-  QueryNode* pAliasNode  = new QueryNode(C_ALIAS_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xAliasValue);
+  QueryNode* pAliasNode  = new QueryNode(C_ALIAS_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xAliasValue));
   pProjectedExpr->vAppendProperty(pAliasNode);
 
   return pProjectedExpr;

@@ -21,10 +21,8 @@ namespace Parser
     void* operator new(size_t);
     void  operator delete(void*);
 
-    RootNode(Stz* szName, Stz* szType, Value xValue,
+    RootNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren, Stz* sPath);
-  
-    RootNode(void* aTempTest_byRay);
 
 
     virtual ~RootNode(void);

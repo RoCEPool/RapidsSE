@@ -27,13 +27,13 @@ using namespace Parser;
 /* Creates a new copy of the plan graph from a template. All the definition   */
 /* and primitive nodes are reused since they won't/can't be changed.          */
 /*----------------------------------------------------------------------------*/
-PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pRootNode)
+PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
 {
-  ASSERT(pRootNode);
+  ASSERT(pTemplateRoot);
 
   // Ugly hack to avoid a proliferation of const_casts or marking functions
   // as const (which will infect the rest of the system).
-  PlanNode* pRoot = const_cast<PlanNode*>(pRootNode);
+  PlanNode* pRoot = const_cast<PlanNode*>(pTemplateRoot);
 
   ASSERT(pRoot->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
 
@@ -76,7 +76,7 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pRootNode)
   // Now we can create a new copy of: /__root__
   PlanNode* pNewRoot = new RootNode(pRoot->szName(),
                                     pRoot->szType(),
-                                    pRoot->xValue(),
+                                    static_cast<Value&&>(pRoot->pValue()->xDup()),
                                     pNewPropertyList,
                                     pNewChildList,
                                     const_cast<Stz*>(C_ROOT_PATH));

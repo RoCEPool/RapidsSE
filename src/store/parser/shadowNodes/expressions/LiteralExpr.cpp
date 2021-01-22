@@ -23,7 +23,7 @@ static Stz* C_LITERAL_DEFN = "/__root__/definitions/object/expr/literal"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Helper function to create expression literal nodes.                        */
 /*----------------------------------------------------------------------------*/
-QueryNode* LiteralExpr::pCreate(eET eType, Value xVal)
+QueryNode* LiteralExpr::pCreate(eET eType, Value& xVal)
 {
   _static_
 
@@ -33,7 +33,7 @@ QueryNode* LiteralExpr::pCreate(eET eType, Value xVal)
   s256 sName;
   ShadowNode::vObjName(C_LITERAL_NAME_PREFIX, sName);
 
-  QueryNode* pExpr = new QueryNode(sName, Expr::szTypeDefinition(eType), xVal);
+  QueryNode* pExpr = new QueryNode(sName, Expr::szTypeDefinition(eType), static_cast<Value&&>(xVal));
   return pExpr;
 }
 

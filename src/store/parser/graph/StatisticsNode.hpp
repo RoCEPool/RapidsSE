@@ -20,7 +20,7 @@ namespace Parser
     void* operator new(size_t);
     void  operator delete(void*);
 
-    StatisticsNode(Stz* szName, Stz* szType, Value xValue,
+    StatisticsNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren);
     virtual ~StatisticsNode(void);
 
