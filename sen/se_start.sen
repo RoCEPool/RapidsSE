@@ -40,6 +40,7 @@
 
   // define the apriori system tables
   start::defineTables
+  start::defineTables2
 
   // define the apriori infoset tables
   start::defineInfoSets

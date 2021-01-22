@@ -160,6 +160,19 @@
   ) ;
   "
   api::executeRequest
+;
+
+
+
+/*----------------------------------------------------------------------------*/
+/* define apriori tables                                                      */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineTables2" .verbose
+
+: start::defineTables2
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_SHOWCLUSTER
@@ -260,6 +273,12 @@
 
 ;
 
+
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* define infoset tables                                                      */
 /*----------------------------------------------------------------------------*/
@@ -278,6 +297,21 @@
     request        VARCHAR NOT NULL ,
     requestNo      INTEGER NOT NULL ,
     requestOf      INTEGER NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOADRESULT
+  sPath
+  "
+  define table __loadResult (
+    i_Node         INTEGER NOT NULL,
+    sResponse      VARCHAR NOT NULL,
+    iRowsProcessed INTEGER NOT NULL,
+    iRowsInvalid   INTEGER NOT NULL,
+    iRowsSkipped   INTEGER NOT NULL,
+    eErrorCode     INTEGER NOT NULL
   ) ;
   "
   api::executeRequest

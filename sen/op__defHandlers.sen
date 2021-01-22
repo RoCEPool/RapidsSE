@@ -5,17 +5,19 @@
 " op__defHandlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CALLPIPELINE ...                                            */
+/* default handler for ZK_CALLPIPELINE operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_CALLPIPELINE_handler \handler
 
   //"ZK_CALLPIPELINE_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* default handler for ZK_CANCELMARKER operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_CANCELMARKER_handler \handler
 
@@ -32,15 +34,17 @@
   repeat
 
   Op.ackPipelineJob
-  false
+  
+  false // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELLEDMARKER ...                                         */
+/* default handler for ZK_CANCELLEDMARKER operand                             */
 /*----------------------------------------------------------------------------*/
 : ZK_CANCELLEDMARKER_handler \handler
 
   //"ZK_CANCELLEDMARKER_handler" .verbose
+  
   Pipein[].delete
 
   // an error if any other operator receives it
@@ -48,96 +52,112 @@
   Operand[].newErrorMarker
   Operand[].pipeOut
 
-  true
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_COUNTINFO ...                                               */
+/* default handler for ZK_COUNTINFO operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_COUNTINFO_handler \handler
 
   //"ZK_COUNTINFO" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* default handler for ZK_CRWBUFFER operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_CRWBUFFER_handler \handler
 
   //"ZK_CRWBUFFER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CSVBUFFER ...                                               */
+/* default handler for ZK_CSVBUFFER operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_CSVBUFFER_handler \handler
 
   //"ZK_CSVBUFFER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
+/* default handler for ZK_DATAPULSE operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_DATAPULSE_handler \handler
 
   //"ZK_DATAPULSE_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DESTROYMARKER ...                                           */
+/* default handler for ZK_DESTROYMARKER operand                               */
 /*----------------------------------------------------------------------------*/
 : ZK_DESTROYMARKER_handler \handler
 
   //"ZK_DESTROYMARKER_handler" .verbose
+  
   PipeIn[].pipeout
 
-  true
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ENTBUFFER ...                                               */
+/* default handler for ZK_ENTBUFFER operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_ENTBUFFER_handler \handler
 
   //"ZK_ENTBUFFER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* default handler for ZK_EOSMARKER operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_EOSMARKER_handler \handler
 
   //"ZK_EOSMARKER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
+/* default handler for ZK_ERRORMARKER operand                                 */
 /*----------------------------------------------------------------------------*/
 : ZK_ERRORMARKER_handler \handler
 
   //"ZK_ERRORMARKER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERROREDMARKER ...                                           */
+/* default handler for ZK_ERROREDMARKER operand                               */
 /*----------------------------------------------------------------------------*/
 : ZK_ERROREDMARKER_handler \handler
 
   //"ZK_ERROREDMARKER_handler" .verbose
+  
   PipeIn[].delete
 
   // an error if any other operator receives it
@@ -145,26 +165,29 @@
   Operand[].newErrorMarker
   Operand[].pipeOut
 
-  true
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITMARKER ...                                              */
+/* default handler for ZK_EXITMARKER operand                                  */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITMARKER_handler \handler
 
   //"ZK_EXITMARKER_handler" .verbose
+  
   PipeIn[].pipeOut
   Op.ackPipelineJob
-  false
+  
+  false // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEDMARKER ...                                            */
+/* default handler for ZK_EXITEDMARKER operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITEDMARKER_handler \handler
 
   //"ZK_EXITEDMARKER_handler" .verbose
+  
   PipeIn[].delete
 
   // an error if any other operator receives it
@@ -172,151 +195,191 @@
   Operand[].newErrorMarker
   Operand[].pipeOut
 
-  true
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_INDEXDEF ...                                                */
+/* default handler for ZK_INDEXDEF operand                                    */
 /*----------------------------------------------------------------------------*/
 : ZK_INDEXDEF_handler \handler
 
   //"ZK_INDEXDEF" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LOCKSTATS ...                                               */
+/* default handler for ZK_LOADRESULT operand                                  */
+/*----------------------------------------------------------------------------*/
+: ZK_LOADRESULT_handler \handler
+
+  //"ZK_LOADRESULT" .verbose
+  
+  PipeIn[].pipeOut
+  
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_LOCKSTATS operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_LOCKSTATS_handler \handler
 
   //"ZK_LOCKSTATS" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_NODEINFO ...                                                */
+/* default handler for ZK_NODEINFO operand                                    */
 /*----------------------------------------------------------------------------*/
 : ZK_NODEINFO_handler \handler
 
   //"ZK_NODEINFO" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_OTHEROPERAND ...                                            */
+/* default handler for ZK_OTHEROPERAND operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_OTHEROPERAND_handler \handler
 
   //"ZK_OTHEROPERAND" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PATHINFO ...                                                */
+/* default handler for ZK_PATHINFO operand                                    */
 /*----------------------------------------------------------------------------*/
 : ZK_PATHINFO_handler \handler
 
-  "ZK_PATHINFO" .
+  // "ZK_PATHINFO" .
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                             */
+/* default handler for ZK_PLANOPERAND operand                                 */
 /*----------------------------------------------------------------------------*/
 : ZK_PLANOPERAND_handler \handler
 
   //"ZK_PLANOPERAND_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PROFILE ...                                                 */
+/* default handler for ZK_PROFILE operand                                     */
 /*----------------------------------------------------------------------------*/
 : ZK_PROFILE_handler \handler
 
   //"ZK_PROFILE" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PROGRESSUNITS ...                                           */
+/* default handler for ZK_PROGRESSUNITS operand                               */
 /*----------------------------------------------------------------------------*/
 : ZK_PROGRESSUNITS_handler \handler
 
   //"ZK_PROGRESSUNITS" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PULSEDMARKER ...                                            */
+/* default handler for ZK_PULSEDMARKER operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_PULSEDMARKER_handler \handler
 
   //"ZK_PULSEDMARKER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_RETURNPIPELINE ...                                          */
+/* default handler for ZK_RETURNPIPELINE operand                              */
 /*----------------------------------------------------------------------------*/
 : ZK_RETURNPIPELINE_handler \handler
 
   //"ZK_RETURNPIPELINE_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ROWBUFFER ...                                               */
+/* default handler for ZK_ROWBUFFER operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_ROWBUFFER_handler \handler
 
   //"ZK_ROWBUFFER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_SEEKOFFSETS ...                                             */
+/* default handler for ZK_SEEKOFFSETS operand                                 */
 /*----------------------------------------------------------------------------*/
 : ZK_SEEKOFFSETS_handler \handler
 
   //"ZK_SEEKOFFSETS" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_SRTBUFFER ...                                               */
+/* default handler for ZK_SRTBUFFER operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_SRTBUFFER_handler \handler
 
   //"ZK_SRTBUFFER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
+/* default handler for ZK_STARTMARKER operand                                 */
 /*----------------------------------------------------------------------------*/
 : ZK_STARTMARKER_handler \handler
 
   //"ZK_STARTMARKER_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTEDMARKER ...                                           */
+/* default handler for ZK_STARTEDMARKER operand                               */
 /*----------------------------------------------------------------------------*/
 : ZK_STARTEDMARKER_handler \handler
 
@@ -330,41 +393,47 @@
   Operand[].newErrorMarker
   Operand[].pipeOut
 
-  true
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMDEF ...                                               */
+/* default handler for ZK_STREAMDEF operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_STREAMDEF_handler \handler
 
   //"ZK_STREAMDEF_handler" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMSET ...                                               */
+/* default handler for ZK_STREAMSET operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_STREAMSET_handler \handler
 
   //"ZK_STREAMSET" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_TOTALUNITS ...                                              */
+/* default handler for ZK_TOTALUNITS operand                                  */
 /*----------------------------------------------------------------------------*/
 : ZK_TOTALUNITS_handler \handler
 
   //"ZK_TOTALUNITS" .verbose
+  
   PipeIn[].pipeOut
-  true
+  
+  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for unexpected operand ...                                         */
+/* default handler for unexpected operand operand                             */
 /*----------------------------------------------------------------------------*/
 : INVALID_OPERAND_handler \handler
 
@@ -375,7 +444,7 @@
   Operand[].newErrorMarker
   Operand[].pipeOut
 
-  true
+  true // calling op_loop continues
 ;
 
 /*============================================================================*/
