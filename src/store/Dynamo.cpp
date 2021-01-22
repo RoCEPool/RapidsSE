@@ -267,7 +267,6 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
                              Parser::RootNode* pPlanRoot) {
   _static_
 
-
 //#ifdef WITH_TRACE_DYNAMO
   vPrintPlanGraph(pPlanRoot);
 //#endif
@@ -347,7 +346,7 @@ void Dynamo::vPrintPlanGraph(Parser::PlanNode* pPlanRoot) {
     return Parser::GraphNav::WALK_CONTINUE;
   };
 
-  Parser::GraphNav::bWalk(pPlanRoot, false, true, fVisitor, pPlanRoot);
+  Parser::GraphNav::bWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
 }
 
 

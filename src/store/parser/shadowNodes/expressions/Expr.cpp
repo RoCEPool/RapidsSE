@@ -10,7 +10,16 @@
 #include "LiteralExpr.hpp"
 #include "ColumnRef.hpp"
 
+#include "GraphNav.hpp"
+
 using namespace Parser;
+
+/*----------------------------------------------------------------------------*/
+/*-- Constants ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+static Stz* C_CATALOG_PROP  = "catalogName"_Stz;
+static Stz* C_SCHEMA_PROP   = "schemaName"_Stz;
+static Stz* C_TABLE_PROP    = "tableName"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
@@ -38,6 +47,20 @@ static Stz* aExprTypeDefns[] = {
 /*----------------------------------------------------------------------------*/
 
 
+/*----------------------------------------------------------------------------*/
+/* get catalog name from expr                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Expr::szCatalog(QueryNode* pNode)
+{
+  ASSERT(bValidate(pNode));
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pNode));
+  ASSERT(pCatalogNode);
+
+  Stz* szCatalogName = pCatalogNode->szValue();
+
+  return szCatalogName;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
@@ -61,6 +84,36 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
     // Need to add in manual polymorphism here
     NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get schema name from expr                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Expr::szSchema(QueryNode* pNode)
+{
+  ASSERT(bValidate(pNode));
+
+  QueryNode* pSchemaNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pNode));
+  ASSERT(pSchemaNode);
+
+  Stz* szSchemaName = pSchemaNode->szValue();
+
+  return szSchemaName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get schema name from expr                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Expr::szTable(QueryNode* pNode)
+{
+  ASSERT(bValidate(pNode));
+
+  QueryNode* pTableNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pNode));
+  ASSERT(pTableNode);
+
+  Stz* szTableName = pTableNode->szValue();
+
+  return szTableName;
 }
 
 /*----------------------------------------------------------------------------*/
