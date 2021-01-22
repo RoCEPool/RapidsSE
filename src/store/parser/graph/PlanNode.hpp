@@ -13,10 +13,12 @@ namespace Parser
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
   // First we need to define a multi-value struct used in every PlanNode
-  struct Value {
+  struct Value
+  {
 
     // Enum describing the type of value contained in the union
-    enum Type {
+    enum Type
+    {
       VT_NONE = 0,
       VT_UNKNOWN, // NB: this is not the same as the value being null
       VT_BOOLEAN,
@@ -31,49 +33,56 @@ namespace Parser
       VT_NENUMS
     };
 
-    union {
-      b1         m_bBoolean;
-      i8         m_iInt;        // signed 8-byte integer value
-      u8         m_uInt;        // unsigned 8-byte integer value
-      d8         m_dFloat;      // 8-byte floating point value
-      Text*      m_pText;       // string data
-      Dte        m_xDate;
-      Tme        m_xTime;
-      Tsp        m_xTsp;
-      Ivl        m_xIvl;        // interval
+    union
+    {
+      b1 m_bBoolean;
+      i8 m_iInt;        // signed 8-byte integer value
+      u8 m_uInt;        // unsigned 8-byte integer value
+      d8 m_dFloat;      // 8-byte floating point value
+      Text *m_pText;       // string data
+      Dte m_xDate;       // date
+      Tme m_xTime;       // time
+      Tsp m_xTsp;        // timestamp
+      Ivl m_xIvl;        // interval
     };
 
     Type m_eType;     // The type of the value stored in the union.
-    b1   m_bMustFree; // Do we need to delete the pointer stored in the structure?
-    b1   m_bIsNull;   // True if the value is null. Note that the value may be non-null
-                      // but the type is UNKNOWN.
+    b1 m_bMustFree; // Do we need to delete the pointer stored in the structure?
+    b1 m_bIsNull;   // True if the value is null. Note that the value may be non-null
+    // but the type is UNKNOWN.
 
     // Default constructor initialisation
     Value()
-      : m_uInt(0), m_eType(VT_UNKNOWN), m_bMustFree(false), m_bIsNull(true)         { /* noop */ }
+        : m_uInt(0), m_eType(VT_UNKNOWN), m_bMustFree(false), m_bIsNull(true)
+    { /* noop */ }
 
     // Constructor (type only, null value)
     Value(Value::Type eType)
-      : m_uInt(0), m_eType(eType), m_bMustFree(false), m_bIsNull(true)              { /* noop */ }
+        : m_uInt(0), m_eType(eType), m_bMustFree(false), m_bIsNull(true)
+    { /* noop */ }
 
     // Constructor (boolean)
     Value(b1 bVal)
-      : m_bBoolean(bVal), m_eType(VT_BOOLEAN), m_bMustFree(false), m_bIsNull(false) { /* noop */ }
+        : m_bBoolean(bVal), m_eType(VT_BOOLEAN), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Constructor (integer)
     Value(i8 iVal)
-      : m_iInt(iVal), m_eType(VT_INT), m_bMustFree(false), m_bIsNull(false)         { /* noop */ }
+        : m_iInt(iVal), m_eType(VT_INT), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Constructor (unsigned integer)
     Value(u8 uVal)
-      : m_uInt(uVal), m_eType(VT_UINT), m_bMustFree(false), m_bIsNull(false)        { /* noop */ }
+        : m_uInt(uVal), m_eType(VT_UINT), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Constructor (float)
     Value(d8 dVal)
-      : m_dFloat(dVal), m_eType(VT_FLOAT), m_bMustFree(false), m_bIsNull(false)     { /* noop */ }
+        : m_dFloat(dVal), m_eType(VT_FLOAT), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Constructor (copy stz)
-    Value(Stz* szStz)
+    Value(Stz *szStz)
     {
       m_eType = VT_STRING;
 
@@ -89,7 +98,7 @@ namespace Parser
     }
 
     // Constructor (take ownership of Text*)
-    Value(Text* pText)
+    Value(Text *pText)
     {
       m_eType = VT_STRING;
 
@@ -106,26 +115,30 @@ namespace Parser
 
     // Constructor (date)
     Value(const Dte xDate)
-        : m_xDate(xDate), m_eType(VT_DATE), m_bMustFree(false), m_bIsNull(false)     { /* noop */ }
+        : m_xDate(xDate), m_eType(VT_DATE), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Constructor (time)
     Value(const Tme xTime)
-        : m_xTime(xTime), m_eType(VT_TIME), m_bMustFree(false), m_bIsNull(false)     { /* noop */ }
+        : m_xTime(xTime), m_eType(VT_TIME), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Constructor (timestamp)
     Value(const Tsp xTsp)
-        : m_xTsp(xTsp), m_eType(VT_TIMESTAMP), m_bMustFree(false), m_bIsNull(false)  { /* noop */ }
+        : m_xTsp(xTsp), m_eType(VT_TIMESTAMP), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Constructor (interval)
     Value(const Ivl xIvl)
-        : m_xIvl(xIvl), m_eType(VT_INTERVAL), m_bMustFree(false), m_bIsNull(false)   { /* noop */ }
+        : m_xIvl(xIvl), m_eType(VT_INTERVAL), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
 
     // Copy constructor
-    Value(const Value& xVal)
+    Value(const Value &xVal)
     {
-      m_eType     = xVal.m_eType;
+      m_eType = xVal.m_eType;
       m_bMustFree = xVal.m_bMustFree;
-      m_bIsNull   = xVal.m_bIsNull;
+      m_bIsNull = xVal.m_bIsNull;
 
       switch (m_eType) {
         case VT_STRING:
@@ -146,8 +159,8 @@ namespace Parser
       }
     }
 
-    // Move Constructor
-    Value(Value&& xOtherVal)
+    // Move Constructor (takes ownership of pointers)
+    Value(Value &&xOtherVal)
     {
       m_eType = xOtherVal.m_eType;
       m_bMustFree = xOtherVal.m_bMustFree;
@@ -174,8 +187,8 @@ namespace Parser
       }
     }
 
-    // Move assignment
-    Value& operator=(Value&& xOtherVal)
+    // Move assignment (takes ownership of pointers)
+    Value &operator=(Value &&xOtherVal)
     {
       if (this == &xOtherVal) {
         return *this;
@@ -230,13 +243,13 @@ namespace Parser
       m_bMustFree = false;
     }
 
-    // Deep duplicate value and return
+    // Create a deep duplicate of Value and return
     Value xDup()
     {
       Value newVal;
-      newVal.m_eType     = m_eType;
+      newVal.m_eType = m_eType;
       newVal.m_bMustFree = m_bMustFree;
-      newVal.m_bIsNull   = m_bIsNull;
+      newVal.m_bIsNull = m_bIsNull;
 
       switch (m_eType) {
         case VT_STRING:
@@ -262,10 +275,10 @@ namespace Parser
     }
 
     // Set the value to a null value
-    void vSetNull()
+    void vSetNull(Value::Type eType)
     {
       vDealloc();
-      // Can't set the type
+      m_eType = eType;
       m_bMustFree = false;
       m_bIsNull = true;
     }
@@ -311,7 +324,7 @@ namespace Parser
     }
 
     // Set a string into the value, taking ownership of the Text*
-    void vSet(Text* pVal)
+    void vSet(Text *pVal)
     {
       vDealloc();
       m_eType = VT_STRING;
@@ -321,13 +334,43 @@ namespace Parser
     }
 
     // Set a string into the value, copying it.
-    void vSet(Stz* szVal)
+    void vSet(Stz *szVal)
     {
       vDealloc();
       m_eType = VT_STRING;
       m_bMustFree = true;
       m_bIsNull = false;
       m_pText = new Text(szVal);
+    }
+
+    // Set a date value in struct
+    void vSet(i8 iYear, i8 iMonth, i8 iDay)
+    {
+      vDealloc();
+      m_eType = VT_DATE;
+      m_bMustFree = false;
+      m_bIsNull = false;
+      m_xDate.vSet(iYear, iMonth, iDay);
+    }
+
+    // Set a time value in struct
+    void vSet(i8 iHour, i8 iMin, i8 iSec, i8 iMicro)
+    {
+      vDealloc();
+      m_eType = VT_TIME;
+      m_bMustFree = false;
+      m_bIsNull = false;
+      m_xTime.vSet(iHour, iMin, iSec, iMicro);
+    }
+
+    // Set a timestamp value in struct
+    void vSet(i8 iYear, i8 iMonth, i8 iDay, i8 iHour, i8 iMin, i8 iSec, i8 iMicro)
+    {
+      vDealloc();
+      m_eType = VT_TIMESTAMP;
+      m_bMustFree = false;
+      m_bIsNull = false;
+      m_xTsp.vSet(iYear, iMonth, iDay, iHour, iMin, iSec, iMicro);
     }
 
     // Deallocate any pointers, if required
@@ -405,10 +448,10 @@ namespace Parser
     u8   uValue();
     d8   dValue();
     Stz* szValue();
-    // TODO: getDate()
-    // TODO: getTime()
-    // TODO: getTimestamp()
-    // TODO: getInterval()
+    Dte  xDateVal();
+    Tme  xTimeVal();
+    Tsp  xTspVal();
+    Ivl  xIvlVal();
 
     b1 bHasProperties();
     b1 bHasChildren();

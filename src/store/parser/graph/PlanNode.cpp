@@ -194,6 +194,42 @@ Stz* PlanNode::szValue()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get the date value out of the Value object in this PlanNode                */
+/*----------------------------------------------------------------------------*/
+Dte PlanNode::xDateVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_DATE);
+  return m_xValue.m_xDate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the time value out of the Value object in this PlanNode                */
+/*----------------------------------------------------------------------------*/
+Tme PlanNode::xTimeVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_TIME);
+  return m_xValue.m_xTime;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the timestamp value out of the Value object in this PlanNode           */
+/*----------------------------------------------------------------------------*/
+Tsp PlanNode::xTspVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_TIMESTAMP);
+  return m_xValue.m_xTsp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the interval value out of the Value object in this PlanNode            */
+/*----------------------------------------------------------------------------*/
+Ivl PlanNode::xIvlVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_INTERVAL);
+  return m_xValue.m_xIvl;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if there are any properties of this node                      */
 /*----------------------------------------------------------------------------*/
 b1 PlanNode::bHasProperties()

@@ -120,8 +120,7 @@ PlanNode* PlanNodeBuilder::pBuild(void)
     NEVER_REACH
   }
 
-  m_xValue.vSetNull();
-  m_xValue.m_eType = Value::VT_UNKNOWN;
+  m_xValue.vSetNull(Value::VT_UNKNOWN);
   return pPlanNode;
 }
 

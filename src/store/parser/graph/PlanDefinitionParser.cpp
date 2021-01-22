@@ -319,7 +319,7 @@ antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
 
 void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNodeBuilder* pNodeBuilder)
 {
-  pNodeBuilder->m_xValue.vSetNull(); // initially
+  pNodeBuilder->m_xValue.vSetNull(Value::VT_UNKNOWN); // initially
 
   if (ctx->STRING() != nullptr) {
     pNodeBuilder->m_xValue.vSet(pCleanString(ctx->STRING()->getText()));
@@ -345,7 +345,7 @@ void PlanDefinitionParser::vExtractValue(json5Parser::ValueContext* ctx, PlanNod
       pNodeBuilder->m_xValue.vSet((b1) false);
 
     } else if (ctx->LITERAL()->getText().compare("null") == 0) {
-      pNodeBuilder->m_xValue.vSetNull();
+      pNodeBuilder->m_xValue.vSetNull(Value::VT_UNKNOWN);
 
     } else {
       // Got a literal value we didn't expect
