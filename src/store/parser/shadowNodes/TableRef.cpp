@@ -45,9 +45,9 @@ QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTable
 
   // Create the tableRef object
   QueryNode* pTableRef = new QueryNode(C_TABLEREF_NAME, const_cast<Stz*>(C_TABLEREF_DEFN));
-  QueryNode* pCatalog  = new QueryNode(C_CATALOG_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogValue);
-  QueryNode* pSchema   = new QueryNode(C_SCHEMA_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaValue);
-  QueryNode* pTable    = new QueryNode(C_TABLE_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableValue);
+  QueryNode* pCatalog  = new QueryNode(C_CATALOG_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogValue));
+  QueryNode* pSchema   = new QueryNode(C_SCHEMA_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaValue));
+  QueryNode* pTable    = new QueryNode(C_TABLE_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableValue));
 
   pTableRef->vAppendProperty(pCatalog);
   pTableRef->vAppendProperty(pSchema);

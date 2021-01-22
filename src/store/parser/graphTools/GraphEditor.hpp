@@ -15,7 +15,7 @@ namespace Parser
   public:
 
     // Create a new copy of the plan graph using the template
-    static PlanNode* pNewFromTemplate(const PlanNode* pRootNode);
+    static PlanNode* pNewFromTemplate(const PlanNode* pTemplateRoot);
 
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.

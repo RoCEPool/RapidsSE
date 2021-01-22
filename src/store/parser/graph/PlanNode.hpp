@@ -43,10 +43,10 @@ namespace Parser
       // TODO:   m_xInterval;
     };
 
-    Type m_eType;  // The type of the value stored in the union.
-    b1 m_bMustFree;     // Do we need to delete the pointer stored in the structure?
-    b1 m_bIsNull;       // True if the value is null. Note that the value may be non-null
-                        // but the type is UNKNOWN.
+    Type m_eType;     // The type of the value stored in the union.
+    b1   m_bMustFree; // Do we need to delete the pointer stored in the structure?
+    b1   m_bIsNull;   // True if the value is null. Note that the value may be non-null
+                      // but the type is UNKNOWN.
 
     // Default constructor initialisation
     Value()
@@ -108,6 +108,147 @@ namespace Parser
     // TODO: Constructor (time)
     // TODO: Constructor (timestamp)
     // TODO: Constructor (interval)
+
+    // Copy constructor
+    Value(const Value& xVal)
+    {
+      m_eType     = xVal.m_eType;
+      m_bMustFree = xVal.m_bMustFree;
+      m_bIsNull   = xVal.m_bIsNull;
+
+      switch (m_eType) {
+        case VT_STRING:
+          if (xVal.m_pText) {
+            m_pText = new Text(xVal.m_pText->szGet());
+            m_bMustFree = true;
+
+          } else {
+            m_pText = nullptr;
+            m_bIsNull = true;
+          }
+          break;
+
+        default:
+          // Assumption, the union is only 8 bytes wide
+          m_iInt = xVal.m_iInt;
+          break;
+      }
+    }
+
+    // Move Constructor
+    Value(Value&& xOtherVal)
+    {
+      m_eType = xOtherVal.m_eType;
+      m_bMustFree = xOtherVal.m_bMustFree;
+      m_bIsNull = xOtherVal.m_bIsNull;
+
+      switch (m_eType) {
+        case VT_STRING:
+          if (xOtherVal.m_pText) {
+            // Steal the string
+            m_pText = xOtherVal.m_pText;
+            xOtherVal.m_pText = nullptr;
+            xOtherVal.m_bMustFree = false;
+
+          } else {
+            m_pText = nullptr;
+            m_bIsNull = true;
+          }
+          break;
+
+        default:
+          // Assumption, the union is only 8 bytes wide
+          m_iInt = xOtherVal.m_iInt;
+          break;
+      }
+    }
+
+    // Move assignment
+    Value& operator=(Value&& xOtherVal)
+    {
+      if (this == &xOtherVal) {
+        return *this;
+      }
+
+      m_eType = xOtherVal.m_eType;
+      m_bMustFree = xOtherVal.m_bMustFree;
+      m_bIsNull = xOtherVal.m_bIsNull;
+
+      switch (m_eType) {
+        case VT_STRING:
+          if (xOtherVal.m_pText) {
+            // Steal the string
+            m_pText = xOtherVal.m_pText;
+            xOtherVal.m_pText = nullptr;
+            xOtherVal.m_bMustFree = false;
+
+          } else {
+            m_pText = nullptr;
+            m_bIsNull = true;
+          }
+          break;
+
+        default:
+          // Assumption, the union is only 8 bytes wide
+          m_iInt = xOtherVal.m_iInt;
+          break;
+      }
+
+      return *this;
+    }
+
+    // Destructor
+    ~Value()
+    {
+      if (!m_bMustFree) {
+        return;
+      }
+
+      switch (m_eType) {
+        case VT_STRING:
+          if (m_pText) {
+            delete m_pText;
+          }
+          m_pText = nullptr;
+          break;
+
+        default:
+          NEVER_REACH
+      }
+
+      m_bMustFree = false;
+    }
+
+    // Deep duplicate value and return
+    Value xDup()
+    {
+      Value newVal;
+      newVal.m_eType     = m_eType;
+      newVal.m_bMustFree = m_bMustFree;
+      newVal.m_bIsNull   = m_bIsNull;
+
+      switch (m_eType) {
+        case VT_STRING:
+          if (m_pText) {
+            // copy the string
+            newVal.m_pText = new Text(m_pText->szGet());
+            newVal.m_bMustFree = false;
+
+          } else {
+            m_pText = nullptr;
+            m_bIsNull = true;
+            m_bMustFree = false;
+          }
+          break;
+
+        default:
+          // Assumption, the union is only 8 bytes wide
+          newVal.m_iInt = m_iInt;
+          break;
+      }
+
+      return newVal;
+    }
 
     // Set the value to a null value
     void vSetNull()
@@ -233,12 +374,10 @@ namespace Parser
 
   protected:
     // Protected constructor to force inheritence of this base class.
-    PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
+    PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value&& xValue,
              PlanNodeList* pProperties, PlanNodeList* pChildren);
 
     PlanNode(eCN eClassNo, const PlanNode& oNode);
-
-    PlanNode(eCN eClassNo, void* aTempTest_byRay);
 
   public:
     Stz* szName();
@@ -246,6 +385,7 @@ namespace Parser
 
     // Convenience methods for accessing the value object
     Value xValue();
+    Value* pValue();
     b1   bIsNullValue();
     Value::Type eValueType();
 

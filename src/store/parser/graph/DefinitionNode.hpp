@@ -21,7 +21,7 @@ namespace Parser
     void* operator new(size_t);
     void  operator delete(void*);
 
-    DefinitionNode(Stz* szName, Stz* szType, Value xValue,
+    DefinitionNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren, Stz* sPath);
     virtual ~DefinitionNode(void);
 

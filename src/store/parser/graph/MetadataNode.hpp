@@ -20,8 +20,9 @@ namespace Parser
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetadataNode(Stz* szName, Stz* szType, Value xValue,
+    MetadataNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren);
+    MetadataNode(const MetadataNode& oNode);
     virtual ~MetadataNode(void);
 
     Footer* aFooter(void);

@@ -19,10 +19,11 @@ __aFooterFunction(RootNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RootNode::RootNode(Stz* szName, Stz* szType, Value xValue,
+RootNode::RootNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren,
                    Stz* szPath)
-    : PlanNode(CN_ROOTNODE, szName, szType, xValue, pProperties, pChildren),
+    : PlanNode(CN_ROOTNODE, szName, szType, static_cast<Value&&>(xValue),
+               pProperties, pChildren),
       m_sPath(szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROOTNODE,_FOOTER_);
@@ -33,16 +34,6 @@ RootNode::RootNode(Stz* szName, Stz* szType, Value xValue,
 
 }
 
-/*----------------------------------------------------------------------------*/
-/* temp constructor for use by ray to test sql compiler pipeline              */
-/*----------------------------------------------------------------------------*/
-RootNode::RootNode(void* aTempTest_byRay)
-    : PlanNode(CN_ROOTNODE,aTempTest_byRay)
-{
-  
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -51,6 +42,7 @@ RootNode::~RootNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROOTNODE,_FOOTER_);
 
+  vTrace("Deleting root node %p\n"_Stz);
   // Don't delete the /primitives and /definitions children because they
   // will be reused by other plan graphs.
 
