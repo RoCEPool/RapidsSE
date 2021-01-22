@@ -84,11 +84,17 @@ public:
     };
     i8 m_iAsI8;
   };
-  
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
-  
+
+  void vSet(i8 iYear, i8 iMonth, i8 iDay) {
+                     m_uYearDelta = iYear - C_YEAR_BASE;
+                                      m_uMonth = iMonth;
+                                          m_uDay = iDay;
+                                           m_uSpare = 0; }
+
   void vSetMax(void)                      { m_iAsI8 = 0;
                             m_uYearDelta = C_YEAR_RANGE;
                                           m_uMonth = 12;
@@ -246,7 +252,13 @@ public:
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
-  
+
+  void vSet(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro) {
+                                        m_uHour = iHour;
+                                    m_uSecond = iSecond;
+                                    m_uMinute = iMinute;
+                                      m_uMicro = iMicro;
+                                          m_uSpare  = 0; }
   void vSetMax(void)                      { m_iAsI8 = 0;
                                            m_uHour = 23;
                                          m_uMinute = 59;
@@ -297,7 +309,18 @@ public:
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
-  
+
+  void vSet(i8 iYear, i8 iMonth,  i8 iDay,
+            i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro) {
+                     m_uYearDelta = iYear - C_YEAR_BASE;
+                                  m_uMonth     = iMonth;
+                                    m_uDay       = iDay;
+                                   m_uHour      = iHour;
+                                 m_uSecond    = iSecond;
+                                 m_uMinute    = iMinute;
+                                  m_uMicro     = iMicro;
+                             m_uLocal     = C_TSP_LOCAL;
+                                       m_uSpare     = 0; }
   void vSetMax(void)                      { m_iAsI8 = 0;
                             m_uYearDelta = C_YEAR_RANGE;
                                           m_uMonth = 12;
