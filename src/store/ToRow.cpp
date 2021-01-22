@@ -2869,6 +2869,7 @@ L_FieldError:
   
   // increment invalid records
   AM::vIncRowsInvalid(m_pPipelineJob);
+  m_iRowsInvalid++;
   m_i_Rec++;
   
   // clear error code
@@ -2942,7 +2943,7 @@ L_RecordEndLineEnd:
 
   // increment records processed
   AM::vIncRowsProcessed(m_pPipelineJob);
-
+  m_iRowsProcessed++;
   
   goto L_AdvanceNextRecord;                                  // end of endRecord
   
