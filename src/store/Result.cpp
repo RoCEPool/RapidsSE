@@ -122,7 +122,7 @@ void Result::vDrainBufferQueue(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-void Result::vPrint(eRS eResponse)
+void Result::vPrint(Session* pSession, eRS eResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
@@ -135,12 +135,12 @@ void Result::vPrint(eRS eResponse)
   
   switch (eResponse) {
     
-    case RS_NONE                   : /* do nothing */              break;
-    case RS_LOCAL_RESPONSE         : vPrintLocalResponse();        break;
-    case RS_DIS2PC_RESPONSE        : vPrintDist2pcResponse();      break;
+    case RS_NONE             : /* do nothing */                  break;
+    case RS_LOCAL_RESPONSE   : vPrintLocalResponse();            break;
+    case RS_DIS2PC_RESPONSE  : vPrintDist2pcResponse(pSession);  break;
     
     //! TO GO
-    case RS_OLD_JOB_RESPONSE       : vPrintOldJobResponses();      break;
+    case RS_OLD_JOB_RESPONSE : vPrintOldJobResponses();      break;
       
     default:
       vTrace("Invalid response : %s\n"_Stz,aRS[eResponse]);
@@ -150,7 +150,7 @@ void Result::vPrint(eRS eResponse)
 /*----------------------------------------------------------------------------*/
 /* print dist2pc response                                                     */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintDist2pcResponse(void)
+void Result::vPrintDist2pcResponse(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
@@ -183,19 +183,46 @@ void Result::vPrintDist2pcResponse(void)
     iRowsSkipped   += *pResponse->m_ixRowsSkipped;
   }
   
-  if (iRowsProcessed || iRowsInvalid || iRowsSkipped ) {
+  
+  if (*pSession->m_ixRowsProcessed ||
+      *pSession->m_ixRowsInvalid   ||
+      *pSession->m_ixRowsSkipped ) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // success / error
-    if (iRowsInvalid || iRowsSkipped)
+    if (*pSession->m_ixRowsInvalid   ||
+        *pSession->m_ixRowsSkipped )
       vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+             *pSession->m_ixRowsProcessed - *pSession->m_ixRowsSkipped,
+             *pSession->m_ixRowsInvalid,
+             *pSession->m_ixRowsSkipped);
     else
       vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+             *pSession->m_ixRowsProcessed - *pSession->m_ixRowsSkipped,
+             *pSession->m_ixRowsInvalid,
+             *pSession->m_ixRowsSkipped);
   }
   else {
     vTrace("\nsuccess: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
   }
+
+  pSession->m_ixRowsProcessed = 0;
+  pSession->m_ixRowsInvalid   = 0;
+  pSession->m_ixRowsSkipped   = 0;
+
+  
+//  if (iRowsProcessed || iRowsInvalid || iRowsSkipped ) {
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // success / error
+//    if (iRowsInvalid || iRowsSkipped)
+//      vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+//             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+//    else
+//      vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+//             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+//  }
+//  else {
+//    vTrace("\nsuccess: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

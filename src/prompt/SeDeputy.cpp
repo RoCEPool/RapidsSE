@@ -163,7 +163,7 @@ void SeDeputy::vExecuteJob(void)
     m_pSession->m_pOutput->vProcessBufferQueue(m_pSession);
   
   eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
-  m_pSession->m_pSsnJob->vPrintResult(eResponse);
+  m_pSession->m_pSsnJob->vPrintResult(m_pSession,eResponse);
 
   vReportTime();
 }

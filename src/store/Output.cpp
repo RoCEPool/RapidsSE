@@ -218,11 +218,16 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         
         Row* pInfoRow = pInfoSet->aFirstRow();
         
-        i8 i0 = pInfoRow->iColVal_int(0);
-        i8 i1 = pInfoRow->iColVal_int(1);
-        i8 i2 = pInfoRow->iColVal_int(2);
+        i8 iRowsProcessed = pInfoRow->iColVal_int(0);
+        i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
+        i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
         
-        vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,i0,i1,i2);
+        pSession->m_ixRowsProcessed += iRowsProcessed;
+        pSession->m_ixRowsInvalid   += iRowsInvalid;
+        pSession->m_ixRowsSkipped   += iRowsSkipped;
+
+        //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
+        //       iRowsProcessed,iRowsInvalid,iRowsSkipped);
 
         AM::vDeleteOperand(pOperand);
       }

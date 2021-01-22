@@ -129,7 +129,7 @@ namespace STORE
     bool bParticipantHasError(void);
     void vParticipantHasError(bool bHasError);
     eEC ePopulateJob(TagSet* pTagSet);
-    void vPrintResult(eRS eResponse);
+    void vPrintResult(Session* pSession, eRS eResponse);
     void vResetForReuse(Session* pSession);
     Response* pResponse(void);
     Stz* szResponse(void);

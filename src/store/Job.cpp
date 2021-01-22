@@ -1056,9 +1056,9 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
 /*----------------------------------------------------------------------------*/
 /* print result                                                               */
 /*----------------------------------------------------------------------------*/
-void Job::vPrintResult(eRS eResponse)
+void Job::vPrintResult(Session* pSession, eRS eResponse)
 {
-  m_xResult.vPrint(eResponse);
+  m_xResult.vPrint(pSession,eResponse);
 }
 
 /*----------------------------------------------------------------------------*/

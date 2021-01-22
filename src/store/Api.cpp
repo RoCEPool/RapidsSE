@@ -223,7 +223,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   // this should go
   if (pSession->m_pSsnJob->bJobHasError()) {
     eRS eResponse = (eRS)pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
-    pSession->m_pSsnJob->vPrintResult(eResponse);
+    pSession->m_pSsnJob->vPrintResult(pSession,eResponse);
     Api::vDeleteJob(pSession);
     return EC_ZZZ_OTHER;
   }

@@ -232,7 +232,7 @@ void Step::vApiExecuteRequest(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-  pJob->vPrintResult(eResponse);
+  pJob->vPrintResult(pSession,eResponse);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

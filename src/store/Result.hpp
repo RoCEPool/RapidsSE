@@ -35,7 +35,7 @@ namespace STORE
     Result(void);
    ~Result(void) noexcept(false);
 
-    void vPrint(eRS eResponse);
+    void vPrint(Session* pSession, eRS eResponse);
     
   public:
   
@@ -43,7 +43,7 @@ namespace STORE
 
 //    void vDrainBufferQueue(Session* pSession);
 
-    void vPrintDist2pcResponse(void);
+    void vPrintDist2pcResponse(Session* pSession);
     void vPrintLocalResponse(void);
 //    void vProcessBufferQueue(Session* pSession);
 //    Operand* pPopBufferQueue_blocking(Session* pSession);
