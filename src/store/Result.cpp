@@ -137,18 +137,6 @@ void Result::vPrintDist2pcResponse(Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Responses
-  i8 iRowsProcessed = 0;
-  i8 iRowsInvalid   = 0;
-  i8 iRowsSkipped   = 0;
-  
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    
-    Response* pResponse = m_pOriginResponseVec->pGet(i_Node);
-    iRowsProcessed += *pResponse->m_ixRowsProcessed;
-    iRowsInvalid   += *pResponse->m_ixRowsInvalid;
-    iRowsSkipped   += *pResponse->m_ixRowsSkipped;
-  }
-  
   
   if (*pSession->m_ixRowsProcessed ||
       *pSession->m_ixRowsInvalid   ||
@@ -174,21 +162,6 @@ void Result::vPrintDist2pcResponse(Session* pSession)
   pSession->m_ixRowsProcessed = 0;
   pSession->m_ixRowsInvalid   = 0;
   pSession->m_ixRowsSkipped   = 0;
-
-  
-//  if (iRowsProcessed || iRowsInvalid || iRowsSkipped ) {
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // success / error
-//    if (iRowsInvalid || iRowsSkipped)
-//      vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-//             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-//    else
-//      vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-//             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-//  }
-//  else {
-//    vTrace("\nsuccess: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
-//  }
 }
 
 /*----------------------------------------------------------------------------*/

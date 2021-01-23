@@ -1949,8 +1949,6 @@ bool AM::bIsOperandOoO(Operand* pOperand)   {
   return false;
 }
 
-void AM::vIncRowsInvalid(Job* pJob)   { pJob->vIncRowsInvalid();               }
-void AM::vIncRowsProcessed(Job* pJob) { pJob->vIncRowsProcessed();             }
 bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }

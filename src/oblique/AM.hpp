@@ -325,8 +325,7 @@ namespace OBLIQUE
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
 
     static bool bIsOperandOoO(Operand* pOperand);
-    static void vIncRowsInvalid(Job* pJob);
-    static void vIncRowsProcessed(Job* pJob);
+
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);
