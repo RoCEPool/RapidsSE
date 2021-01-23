@@ -616,12 +616,6 @@ public:
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
   void vJobReturnPipeline(void);
-  void vJobRowsInvalidFetch(void);
-  void vJobRowsInvalidStore(void);
-  void vJobRowsProcessedFetch(void);
-  void vJobRowsProcessedStore(void);
-  void vJobRowsSkippedFetch(void);
-  void vJobRowsSkippedStore(void);
 
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);
