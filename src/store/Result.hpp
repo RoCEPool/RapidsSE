@@ -16,8 +16,7 @@ namespace STORE
 
   public:
     // this job
-    bool         m_bJobHasError;       // this job has an error
-    Response     m_xJobResponse;       // response of this job
+     Response     m_xJobResponse;       // response of this job
     
     // participant responses
     bool         m_bPartHasError;      // participant has an error

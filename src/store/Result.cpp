@@ -45,7 +45,6 @@ Result::Result(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
   //m_xJobResponse
-  m_bJobHasError       = false;
   
   m_pOriginResponseVec = nullptr;
   m_bPartHasError      = false;
@@ -97,7 +96,7 @@ void Result::vPrint(Session* pSession, eRS eResponse)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
   // first check for job errors
-  if (m_bJobHasError != EC_NONE) {
+  if (m_xJobResponse.m_bJobHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
            aEC[m_xJobResponse.m_eErrorCode]);
     return;
@@ -177,7 +176,7 @@ void Result::vPrintLocalResponse(Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Errors should already be handled
-  ASSERT( ! m_bJobHasError );
+  ASSERT( ! m_xJobResponse.m_bJobHasError );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // success

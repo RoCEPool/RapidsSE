@@ -146,7 +146,7 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
     AM::vNapUsec(1000,CN_OUTPUT);
     
     
-    if (pSession->m_pSsnJob->m_xResult.m_bJobHasError)
+    if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError)
       return nullptr;
   }
   
