@@ -15,6 +15,8 @@ namespace STORE
     s4K    m_sResponse;       // response string
     eEC    m_eErrorCode;      // error code
 
+    bool   m_bJobHasError;    // this job has an error
+
     // must be last
     Footer m_xFooter;
   

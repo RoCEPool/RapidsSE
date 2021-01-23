@@ -50,9 +50,11 @@ Response::Response(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESPONSE);
   
-  m_i_Node          = C_UNKNOWN;
-  m_sResponse       = ""_Stz;
-  m_eErrorCode      = EC_NONE;
+  m_i_Node       = C_UNKNOWN;
+  m_sResponse    = ""_Stz;
+  m_eErrorCode   = EC_NONE;
+  
+  m_bJobHasError = false;
   
   _checkInitialised_(CN_RESPONSE);
   

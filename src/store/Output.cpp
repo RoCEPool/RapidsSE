@@ -222,9 +222,9 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
         i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
         
-        pSession->m_ixRowsProcessed += iRowsProcessed;
-        pSession->m_ixRowsInvalid   += iRowsInvalid;
-        pSession->m_ixRowsSkipped   += iRowsSkipped;
+        m_ixRowsProcessed += iRowsProcessed;
+        m_ixRowsInvalid   += iRowsInvalid;
+        m_ixRowsSkipped   += iRowsSkipped;
 
         //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
         //       iRowsProcessed,iRowsInvalid,iRowsSkipped);

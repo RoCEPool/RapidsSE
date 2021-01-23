@@ -24,6 +24,7 @@
 #include "Grid.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
+#include "Output.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -138,30 +139,33 @@ void Result::vPrintDist2pcResponse(Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Responses
   
-  if (*pSession->m_ixRowsProcessed ||
-      *pSession->m_ixRowsInvalid   ||
-      *pSession->m_ixRowsSkipped ) {
+  if (*pSession->m_pOutput->m_ixRowsProcessed ||
+      *pSession->m_pOutput->m_ixRowsInvalid   ||
+      *pSession->m_pOutput->m_ixRowsSkipped ) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // success / error
-    if (*pSession->m_ixRowsInvalid   ||
-        *pSession->m_ixRowsSkipped )
+    if (*pSession->m_pOutput->m_ixRowsInvalid   ||
+        *pSession->m_pOutput->m_ixRowsSkipped )
       vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-             *pSession->m_ixRowsProcessed - *pSession->m_ixRowsSkipped,
-             *pSession->m_ixRowsInvalid,
-             *pSession->m_ixRowsSkipped);
+             *pSession->m_pOutput->m_ixRowsProcessed -
+               *pSession->m_pOutput->m_ixRowsSkipped,
+             *pSession->m_pOutput->m_ixRowsInvalid,
+             *pSession->m_pOutput->m_ixRowsSkipped);
     else
       vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-             *pSession->m_ixRowsProcessed - *pSession->m_ixRowsSkipped,
-             *pSession->m_ixRowsInvalid,
-             *pSession->m_ixRowsSkipped);
+             *pSession->m_pOutput->m_ixRowsProcessed -
+               *pSession->m_pOutput->m_ixRowsSkipped,
+             *pSession->m_pOutput->m_ixRowsInvalid,
+             *pSession->m_pOutput->m_ixRowsSkipped);
   }
   else {
-    vTrace("\nsuccess: %lld rows fetched\n"_Stz, *pSession->m_ixRowsProcessed);
+    vTrace("\nsuccess: %lld rows fetched\n"_Stz,
+           *pSession->m_pOutput->m_ixRowsProcessed);
   }
 
-  pSession->m_ixRowsProcessed = 0;
-  pSession->m_ixRowsInvalid   = 0;
-  pSession->m_ixRowsSkipped   = 0;
+  pSession->m_pOutput->m_ixRowsProcessed = 0;
+  pSession->m_pOutput->m_ixRowsInvalid   = 0;
+  pSession->m_pOutput->m_ixRowsSkipped   = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +181,10 @@ void Result::vPrintLocalResponse(Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // success
-  vTrace("\nsuccess: %lld rows affected\n"_Stz, *pSession->m_ixRowsProcessed);
+  vTrace("\nsuccess: %lld rows affected\n"_Stz,
+         *pSession->m_pOutput->m_ixRowsProcessed);
+  
+  pSession->m_pOutput->m_ixRowsProcessed = 0;
 }
 
 /*============================================================================*/

@@ -45,12 +45,6 @@ namespace STORE
     s16KB    m_sCascade;      // the cascade statement
   
     // -- -- -- -- -- --
- 
-    Atomic   m_ixRowsProcessed; // rows processed
-    Atomic   m_ixRowsInvalid;   // invalid rows detected
-    Atomic   m_ixRowsSkipped;   // rows skipped
-
-    // -- -- -- -- -- --
 
     Timer m_oTimer;      // call timer
     i8    m_qTotalUsec;  // total-quanity time in microseconds
