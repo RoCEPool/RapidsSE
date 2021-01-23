@@ -42,7 +42,7 @@ namespace STORE
     static void vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker);
 
     void vPrintDist2pcResponse(Session* pSession);
-    void vPrintLocalResponse(void);
+    void vPrintLocalResponse(Session* pSession);
         
     Footer* aFooter(void);
   };

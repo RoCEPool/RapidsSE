@@ -105,7 +105,7 @@ void Result::vPrint(Session* pSession, eRS eResponse)
   switch (eResponse) {
     
     case RS_NONE             : /* do nothing */                  break;
-    case RS_LOCAL_RESPONSE   : vPrintLocalResponse();            break;
+    case RS_LOCAL_RESPONSE   : vPrintLocalResponse(pSession);    break;
     case RS_DIS2PC_RESPONSE  : vPrintDist2pcResponse(pSession);  break;
     
     default:
@@ -156,7 +156,7 @@ void Result::vPrintDist2pcResponse(Session* pSession)
              *pSession->m_ixRowsSkipped);
   }
   else {
-    vTrace("\nsuccess: %lld rows fetched\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+    vTrace("\nsuccess: %lld rows fetched\n"_Stz, *pSession->m_ixRowsProcessed);
   }
 
   pSession->m_ixRowsProcessed = 0;
@@ -167,7 +167,7 @@ void Result::vPrintDist2pcResponse(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* print job response                                                         */
 /*----------------------------------------------------------------------------*/
-void Result::vPrintLocalResponse(void)
+void Result::vPrintLocalResponse(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULT,_FOOTER_);
   
@@ -177,7 +177,7 @@ void Result::vPrintLocalResponse(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // success
-  vTrace("\nsuccess: %lld rows affected\n"_Stz, *m_xJobResponse.m_ixRowsProcessed);
+  vTrace("\nsuccess: %lld rows affected\n"_Stz, *pSession->m_ixRowsProcessed);
 }
 
 /*============================================================================*/

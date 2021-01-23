@@ -100,8 +100,6 @@ namespace STORE
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
-    void vIncRowsProcessed(void);
-    void vIncRowsInvalid(void);
     Op*  pInputOp(void);
     void vInputOp(Op* pInputOp);
     bool bIsPipeline(void);
@@ -136,12 +134,6 @@ namespace STORE
     void vResponse(Stz* sResponse);
     void vOriginResponseVec(ResponseVec* pResponseVec);
     ResponseVec* pOriginResponseVec(void);
-    i8   iRowsProcessed(void);
-    void vRowsProcessed(i8 iRowsProcessed);
-    i8   iRowsSkipped(void);
-    void vRowsSkipped(i8 iRowsSkipped);
-    i8   iRowsInvalid(void);
-    void vRowsInvalid(i8 iRowsInvalid);
     void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);

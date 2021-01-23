@@ -52,9 +52,6 @@ Response::Response(void)
   
   m_i_Node          = C_UNKNOWN;
   m_sResponse       = ""_Stz;
-  m_ixRowsProcessed = 0;
-  m_ixRowsInvalid   = 0;
-  m_ixRowsSkipped   = 0;
   m_eErrorCode      = EC_NONE;
   
   _checkInitialised_(CN_RESPONSE);

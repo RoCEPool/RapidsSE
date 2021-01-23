@@ -13,9 +13,6 @@ namespace STORE
   public:
     i8     m_i_Node;          // node this response came from
     s4K    m_sResponse;       // response string
-    Atomic m_ixRowsProcessed; // rows processed
-    Atomic m_ixRowsInvalid;   // invalid rows detected
-    Atomic m_ixRowsSkipped;   // rows skipped
     eEC    m_eErrorCode;      // error code
 
     // must be last

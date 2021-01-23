@@ -544,22 +544,6 @@ bool Job::bHasTag_time(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vIncRowsProcessed(void)
-{
-  m_xResult.m_xJobResponse.m_ixRowsProcessed.iInc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vIncRowsInvalid(void)
-{
-  m_xResult.m_xJobResponse.m_ixRowsInvalid.iInc();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the input operator                                                     */
 /*----------------------------------------------------------------------------*/
 Op* Job::pInputOp(void)
@@ -1154,54 +1138,6 @@ void Job::vResetForReuse(Session* pSession)
   pSession->m_pOutput->vDrainBufferQueue(pSession);
 
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-i8 Job::iRowsProcessed(void)
-{
-  return *m_xResult.m_xJobResponse.m_ixRowsProcessed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vRowsProcessed(i8 iRowsProcessed)
-{
-  m_xResult.m_xJobResponse.m_ixRowsProcessed = iRowsProcessed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-i8 Job::iRowsSkipped(void)
-{
-  return *m_xResult.m_xJobResponse.m_ixRowsSkipped;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vRowsSkipped(i8 iRowsSkipped)
-{
-  m_xResult.m_xJobResponse.m_ixRowsSkipped = iRowsSkipped;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-i8 Job::iRowsInvalid(void)
-{
-  return *m_xResult.m_xJobResponse.m_ixRowsInvalid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vRowsInvalid(i8 iRowsInvalid)
-{
-  m_xResult.m_xJobResponse.m_ixRowsInvalid = iRowsInvalid;
 }
 
 /*----------------------------------------------------------------------------*/
