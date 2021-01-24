@@ -10,8 +10,6 @@
 #include <string.h>
 //typedef unsigned long size_t;
 
-//------------------------------------------------------------------------------
-
 #define EndDefine
 
 #define _static_ EndDefine
@@ -19,30 +17,13 @@
 #define _nonLocalStatic_ EndDefine
 #define _outsideOfPool_ EndDefine
 
+//------------------------------------------------------------------------------
+
+namespace BASE { } using namespace BASE;
+
 #include "CompiledWith.h"
 
 #include "BaseTypes.h"
-
-#include "UsefulConstants.h"
-
-static const i8 C_ALL          = -1;
-static const i8 C_VARGS_BEGIN  = -1;
-static const i8 C_VARGS_END    = -1;
-static const i8 C_NEVER_THROWN = -1;
-static const i8 C_NIL          = -1;
-static const i8 C_UNKNOWN      = -1;
-static const i8 C_IGNORED      = -1;
-
-static const bool B_CALL_AGAIN      = true;
-static const bool B_DONT_CALL_AGAIN = false;
-
-static const b8 C_NONFOCAL          = true;
-
-static const i8 C_SET_OFFSETS       = 128;
-static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
-static const i8 C_CHUNKBLOCK        = 2048;
-
-//------------------------------------------------------------------------------
 
 // initialised in IntLib::vInitGlobals()
 extern i8 C_DATUM_NULL;
@@ -57,6 +38,14 @@ extern i8 C_I8_MID;
 extern d8 C_D8_MIN;
 extern d8 C_D8_MAX;
 extern d8 C_D8_MID;
+
+//------------------------------------------------------------------------------
+
+#include "UsefulConstants.h"
+
+static const i8 C_SET_OFFSETS       = 128;
+static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
+static const i8 C_CHUNKBLOCK        = 2048;
 
 //------------------------------------------------------------------------------
 

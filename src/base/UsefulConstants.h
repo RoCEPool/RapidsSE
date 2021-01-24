@@ -38,6 +38,22 @@ static const i8 C_HRS_PER_DAY  = 24;
 static const i8 C_SECS_PER_HR  = C_SECS_PER_MIN * C_MINS_PER_HR;
 static const i8 C_SECS_PER_DAY = C_SECS_PER_HR  * C_HRS_PER_DAY;
 
+
+static const i8 C_ALL          = -1;
+static const i8 C_VARGS_BEGIN  = -1;
+static const i8 C_VARGS_END    = -1;
+static const i8 C_NEVER_THROWN = -1;
+static const i8 C_NIL          = -1;
+static const i8 C_UNKNOWN      = -1;
+static const i8 C_IGNORED      = -1;
+
+static const bool B_CALL_AGAIN      = true;
+static const bool B_DONT_CALL_AGAIN = false;
+
+static const b8 C_NONFOCAL          = true;
+
+
+
 // the 1024^n MagLib
 static const i8 C_1KB = 1024LL;          // 1 kilobyte    = 1,024
 static const i8 C_1MB = C_1KB * C_1KB;   // 1 megabyte    = 1,048,576
