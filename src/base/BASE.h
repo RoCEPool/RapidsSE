@@ -257,7 +257,6 @@ namespace BASE
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
-//namespace BASE { class TokenVec; class SelfFn; }
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 
@@ -464,21 +463,18 @@ namespace BASE
 
 //------------------------------------------------------------------------------
 
-
 #include "Operand.hpp"
 
-// declare a function pointer to any member function of Step
-typedef void (Step::*fpSTEPFN)(void);
+#include "CodeBlock.hpp"
+#include "Word.hpp"
 
 #include "Dic.hpp"
 #include "DicStack.hpp"
 #include "Local.hpp"
 #include "LocalChain.hpp"
-#include "CodeBlock.hpp"
 #include "TypedStack.hpp"
 
 #include "SenCompiler.hpp"
-#include "Word.hpp"
 
 #include "Profile.hpp"
 #include "Task.hpp"

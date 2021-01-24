@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+// declare a function pointer to any member function of Step
+typedef void (Step::*fpSTEPFN)(void);
+
 namespace BASE
 {
   static const i8 C_WSP_CODEBLOCK = C_SIZE_SMALL_OBJECT - 128;
