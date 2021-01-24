@@ -24,6 +24,9 @@ namespace BASE { } using namespace BASE;
 #include "CompiledWith.h"
 
 #include "BaseTypes.h"
+#include "UsefulConstants.h"
+#include "StringTypes.h"
+#include "BytesTypes.h"
 
 // initialised in IntLib::vInitGlobals()
 extern i8 C_DATUM_NULL;
@@ -40,17 +43,6 @@ extern d8 C_D8_MAX;
 extern d8 C_D8_MID;
 
 //------------------------------------------------------------------------------
-
-#include "UsefulConstants.h"
-
-static const i8 C_SET_OFFSETS       = 128;
-static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
-static const i8 C_CHUNKBLOCK        = 2048;
-
-//------------------------------------------------------------------------------
-
-#include "StringTypes.h"
-#include "BytesTypes.h"
 
 #include "BitLib.hpp"
 
