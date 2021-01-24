@@ -94,6 +94,24 @@ namespace BASE
    };
 }
 
+/*----------------------------------------------------------------------------*/
+/* check address is in pool                                                   */
+/*----------------------------------------------------------------------------*/
+
+template <class OBJECT>
+static OBJECT pPoolCheck(void* aAddress)
+{
+#ifdef WITH_CORRECTNESS_ALGEBRA
+  extern BufferPool* gpBufferPool;
+
+  if (aAddress)
+    gpBufferPool->vCheckAddress(aAddress);
+#endif
+  
+  return static_cast<OBJECT>(aAddress);
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

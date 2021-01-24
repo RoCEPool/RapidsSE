@@ -254,12 +254,10 @@ namespace BASE
 #include "REF_t.hpp"
 #include "REG_t.hpp"
 
-typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
-namespace BASE { class TokenVec; class SelfFn; }
-typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
+//namespace BASE { class TokenVec; class SelfFn; }
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 
@@ -417,7 +415,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 // -- -- -- -- -- -- -- --
 
-typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
 
 #include "Article.hpp"
 #include "MiniHeap_t.hpp"
@@ -467,10 +464,11 @@ typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
 
 //------------------------------------------------------------------------------
 
-// declare a function pointer to any member function of Step
-typedef void (Step::*fpSTEPFN)(void);
 
 #include "Operand.hpp"
+
+// declare a function pointer to any member function of Step
+typedef void (Step::*fpSTEPFN)(void);
 
 #include "Dic.hpp"
 #include "DicStack.hpp"
@@ -537,24 +535,7 @@ typedef void (Step::*fpSTEPFN)(void);
 namespace BASE
 {
   static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
-}
 
-/*---------------------------------------------------------------------------*/
-/* pCheck: check address                                                     */
-/*---------------------------------------------------------------------------*/
-template <class OBJECT>
-static OBJECT pPoolCheck(void* aAddress)
-{
-#ifdef WITH_CORRECTNESS_ALGEBRA
-  if (aAddress)
-    gpBufferPool->vCheckAddress(aAddress);
-#endif
-  
-  return static_cast<OBJECT>(aAddress);
-}
-
-namespace BASE
-{
   bool bTraceWith(Stz* szWith);
   void vTraceWith(void);
 
