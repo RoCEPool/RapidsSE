@@ -3,15 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-//------------------------------------------------------------------------------
-
-namespace BASE
-{
-  void vCheckAssumptions(void);
-}
-
-//------------------------------------------------------------------------------
-
 //#pragma GCC diagnostic warning "-Wunused-parameter"
 //#pragma GCC diagnostic warning "-Wunused-variable"
 
@@ -31,8 +22,6 @@ namespace BASE
 #include "CompiledWith.h"
 
 //------------------------------------------------------------------------------
-
-//#include "MachineTypes.h"
 
 namespace BASE
 {
@@ -141,28 +130,6 @@ extern d8 C_D8_MID;
 
 //------------------------------------------------------------------------------
 
-#include "BitLib.hpp"
-
-static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
-
-static const i8 C_SIZE_TINY_OBJECT   = C_1KB;
-static const i8 C_SIZE_SMALL_OBJECT  = C_4KB;
-static const i8 C_SIZE_MEDIUM_OBJECT = C_64KB;
-static const i8 C_SIZE_LARGE_OBJECT  = C_SIZE_POOL_BUFFER - C_SIZE_SMALL_OBJECT;
-
-static const u8 C_MASK_TINY_OBJECT   = 0x3FF;
-static const u8 C_MASK_SMALL_OBJECT  = 0xFFF;
-static const u8 C_MASK_MEDIUM_OBJECT = 0xFFFF;
-static const u8 C_MASK_LARGE_OBJECT  = 0xFFFFF;
-
-static const i8 C_LOW_BUFFERS        = 512;
-
-static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
-
-static const i8 C_VIA_MALLOC         = 1;
-
-//------------------------------------------------------------------------------
-
 namespace BASE
 {
   template <i8 AREA> class String_t;
@@ -187,6 +154,29 @@ namespace BASE
   typedef Bytes_t<C_32K>   b32K;  // note: K, not KB
   typedef Bytes_t<C_256K>  b256K; // note: K, not KB
 }
+
+
+//------------------------------------------------------------------------------
+
+#include "BitLib.hpp"
+
+static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
+
+static const i8 C_SIZE_TINY_OBJECT   = C_1KB;
+static const i8 C_SIZE_SMALL_OBJECT  = C_4KB;
+static const i8 C_SIZE_MEDIUM_OBJECT = C_64KB;
+static const i8 C_SIZE_LARGE_OBJECT  = C_SIZE_POOL_BUFFER - C_SIZE_SMALL_OBJECT;
+
+static const u8 C_MASK_TINY_OBJECT   = 0x3FF;
+static const u8 C_MASK_SMALL_OBJECT  = 0xFFF;
+static const u8 C_MASK_MEDIUM_OBJECT = 0xFFFF;
+static const u8 C_MASK_LARGE_OBJECT  = 0xFFFFF;
+
+static const i8 C_LOW_BUFFERS        = 512;
+
+static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
+
+static const i8 C_VIA_MALLOC         = 1;
 
 //------------------------------------------------------------------------------
 
@@ -214,10 +204,6 @@ namespace BASE
 //------------------------------------------------------------------------------
 
 #include "Hack.hpp"
-
-#define PASTE3(a,b,c) a##b##c
-#define GLOBALNM(_fun,_class,_line) PASTE3(_fun,_class,_line)
-#define HACK(_class,_text) Hack GLOBALNM(Hack,_class,__LINE__)(_text,__FILE__,__LINE__)
 
 #include "eFK.h"
 #include "Exception.hpp"
@@ -530,6 +516,7 @@ namespace BASE
 
 namespace BASE
 {
+  void vCheckAssumptions(void);
   static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
   bool bTraceWith(Stz* szWith);
