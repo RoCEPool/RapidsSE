@@ -25,10 +25,6 @@
 
 #include "UsefulConstants.h"
 
-static const i8 C_MAX_RECORD    = C_16KB;       // max length of record
-static const i8 C_MAX_STATEMENT = C_32KB - 64;  // max length of statement
-static const i8 C_MAX_VCH       = C_4K;         // max length of vch value
-
 static const i8 C_ALL          = -1;
 static const i8 C_VARGS_BEGIN  = -1;
 static const i8 C_VARGS_END    = -1;
@@ -67,29 +63,7 @@ extern d8 C_D8_MID;
 #include "StringTypes.h"
 #include "BytesTypes.h"
 
-//------------------------------------------------------------------------------
-
 #include "BitLib.hpp"
-
-static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
-
-static const i8 C_SIZE_TINY_OBJECT   = C_1KB;
-static const i8 C_SIZE_SMALL_OBJECT  = C_4KB;
-static const i8 C_SIZE_MEDIUM_OBJECT = C_64KB;
-static const i8 C_SIZE_LARGE_OBJECT  = C_SIZE_POOL_BUFFER - C_SIZE_SMALL_OBJECT;
-
-static const u8 C_MASK_TINY_OBJECT   = 0x3FF;
-static const u8 C_MASK_SMALL_OBJECT  = 0xFFF;
-static const u8 C_MASK_MEDIUM_OBJECT = 0xFFFF;
-static const u8 C_MASK_LARGE_OBJECT  = 0xFFFFF;
-
-static const i8 C_LOW_BUFFERS        = 512;
-
-static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
-
-static const i8 C_VIA_MALLOC         = 1;
-
-//------------------------------------------------------------------------------
 
 #include "ByteLiterals.hpp"
 #include "CommonTypes.h"
