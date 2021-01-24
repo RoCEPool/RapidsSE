@@ -1194,7 +1194,7 @@ public:
   void vRegOperandPipeIn(void);
   void vRegOperandPipeOut(void);
   void vRegOperandPipeOutSet(void);
-  void vRegOperandPipeToJob(void);
+  void vRegOperandPipeToOutput(void);
   void vRegOperandReport(void);
   void vRegOperandRowCountFetch(void);
   void vRegOperandSet(void);
@@ -1225,7 +1225,7 @@ public:
   void vRegOperandOoOIsNull(void);
   void vRegOperandNextOoO(void);
   void vRegOperandOoOPipeOut(void);
-  void vRegOperandOoOPipeToJob(void);
+  void vRegOperandOoOPipeToOutput(void);
   void vRegOperandOoOSet(void);
 
   // reg Path
@@ -1249,7 +1249,7 @@ public:
   void vRegPipeinNext(void);
   void vRegPipeinPeek(void);
   void vRegPipeinPipeOut(void);
-  void vRegPipeinPipeToJob(void);
+  void vRegPipeinPipeToOutput(void);
   void vRegPipeinSet(void);
   void vRegPipeinWriteProfile(void);
 

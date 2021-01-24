@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : input_DataPulse \handler
 
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
   
   begin
   
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : input_PulsedMarker \handler
 
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;

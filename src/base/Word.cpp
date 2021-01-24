@@ -8,8 +8,6 @@
 
 extern fpSTEPFN gfpDoColon;
 
-// !DIC_AS_SKIPLIST
-#define _DIC_SKIPLIST
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -625,7 +623,6 @@ i8 Word::iParams(void)
 /*----------------------------------------------------------------------------*/
 /* get previous word                                                          */
 /*----------------------------------------------------------------------------*/
-#ifdef _DIC_SKIPLIST
 Word* Word::pPrevWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
@@ -633,21 +630,6 @@ Word* Word::pPrevWord(void)
   
   return pNextWord();
 }
-#else
-/*----------------------------------------------------------------------------*/
-Word* Word::pPrevWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  Article* pPrevArticle = m_pArticle->pPrevItem();
-  if (! pPrevArticle)
-    return nullptr;
-  
-  Word* pPrevWord = _pWord(pPrevArticle->pObject());
-  
-  return pPrevWord;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* reset routine                                                              */

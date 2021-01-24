@@ -10,7 +10,7 @@
 : output_CrwBuffer \handler
 
   //"Operand:- ZK_CRWBUFFER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;
@@ -21,7 +21,7 @@
 : output_CsvBuffer \handler
 
   //"Operand:- ZK_CSVBUFFER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;
@@ -34,7 +34,7 @@
   //"Operand:- ZK_DATAPULSE" .verbose
   PipeIn[].pipeOut
   Operand[].newDataPulse
-  Operand[].pipeToJob
+  Operand[].pipeToOutput
 
   true
 ;
@@ -45,7 +45,7 @@
 : output_EntBuffer \handler
 
   //"Operand:- ZK_ENTBUFFER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;
@@ -56,7 +56,7 @@
 : output_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
   Operand[].newEosMarker
   Operand[].pipeOut
 
@@ -69,7 +69,7 @@
 : output_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
   Operand[].newErrorMarker
   Operand[].pipeOut
 
@@ -82,7 +82,7 @@
 : output_LoadResult \handler
 
   //"Operand:- ZK_LOADRESULT" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;
@@ -93,7 +93,7 @@
 : output_RowBuffer \handler
 
   //"Operand:- ZK_ROWBUFFER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;
@@ -104,7 +104,7 @@
 : output_SrtBuffer \handler
 
   //"Operand:- ZK_SRTBUFFER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;
@@ -115,7 +115,7 @@
 : output_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
   Operand[].newStartMarker
   Operand[].pipeOut
 
@@ -128,7 +128,7 @@
 : output_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
 
   true
 ;
@@ -139,7 +139,7 @@
 : output_StreamSet \handler
 
 //"Operand:- ZK_STREAMSET" .verbose
-PipeIn[].pipeToJob
+PipeIn[].pipeToOutput
 
 true
 ;

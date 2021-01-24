@@ -116,7 +116,7 @@ namespace STORE
     Job* pPipelineJob(void);
     void vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
     void vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
-    void vPipeToJob(Operand* pOperand);
+    void vPipeToOutput(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueOoO(void);
     Operand* pPopQueueLeft(void);
