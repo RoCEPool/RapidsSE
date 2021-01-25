@@ -123,25 +123,6 @@ eCT StreamDef::eColumn(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add column vec from stream def                                             */
-/*----------------------------------------------------------------------------*/
-void StreamDef::vAdd(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-
-  m_nColumns = pStreamDef->m_nColumns;
-    
-  for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
-    m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
-  }
-
-  _checkInitialised_(CN_STREAMDEF);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-}
-
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
@@ -157,22 +138,6 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8
   m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
 
   m_nColumns++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add all columns from given stream definition                               */
-/*----------------------------------------------------------------------------*/
-void StreamDef::vAddColumns(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-
-  m_nColumns = pStreamDef->m_nColumns;
-    
-  for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
-    m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
-  }
-
-  //m_nFixedSized = pStreamDef->m_nFixedSized;
 }
 
 /*----------------------------------------------------------------------------*/

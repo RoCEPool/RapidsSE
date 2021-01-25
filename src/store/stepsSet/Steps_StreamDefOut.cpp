@@ -24,7 +24,6 @@ void Step::vAddSteps_StreamDefOut(void)
 {
   vAddStep("StreamDefOut[]"_Stz,            &Step::vStreamDefOutGet);
   vAddStep("StreamDefOut[].addColumn"_Stz,  &Step::vStreamDefOutAddColumn);
-  vAddStep("StreamDefOut[].addColumns"_Stz, &Step::vStreamDefOutAddColumns);
   vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
   vAddStep("StreamDefOut[].duplicate"_Stz,  &Step::vStreamDefOutDuplicate);
   vAddStep("StreamDefOut[].isNull"_Stz,     &Step::vStreamDefOutIsNull);
@@ -53,22 +52,6 @@ void Step::vStreamDefOutAddColumn(void)
   StreamDef* pStreamDefOut = * ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut;
   
   pStreamDefOut->vAddColumn(sColNm,eColType,eColLength,eColScale);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDefOut[].addColumns -- add columns from given stream def             */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefOutAddColumns(void)
-{
-  ENTRY();
-    
-  StreamDef* pStreamDefSrc = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  StreamDef* pStreamDefOut = * ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut;
-  
-  pStreamDefOut->vAddColumns(pStreamDefSrc);
   
   EXIT();
 }

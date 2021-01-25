@@ -33,23 +33,21 @@ namespace STORE
    ~StreamDef(void) noexcept(false);
     
     static eCT eColumn(Stz* szType);
-    
-    void vAdd(StreamDef* pStreamDef);
-    void vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
-    void vAddColumns(StreamDef* pStreamDef);
-    void vAsString(String* pString);
-    i8 nColumns(void);
+
+    void    vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
+    void    vAsString(String* pString);
+    i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
-    i8 iFindColumn(char* sColumnNm, i8& iColVec);
+    i8      iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
-    void vName(Stz* sName);
-    Stz* szName(void);
-    eEC eParse(Stz* szCmd);
-    void vPrint(void);
+    void    vName(Stz* sName);
+    Stz*    szName(void);
+    eEC     eParse(Stz* szCmd);
+    void    vPrint(void);
     RowPix* aRowPix(void);
-    void vToColPix(ColPix* axColPix, bool bPtnHash);
-    void vToRowPix(RowPix* aRowPix, bool bPtnHash);
-    void vToMetadata(Stz* sMetaData);
+    void    vToColPix(ColPix* axColPix, bool bPtnHash);
+    void    vToRowPix(RowPix* aRowPix, bool bPtnHash);
+    void    vToMetadata(Stz* sMetaData);
     
   private:
     

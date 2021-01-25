@@ -1475,7 +1475,6 @@ public:
 
   // stream definition (out)
   void vStreamDefOutAddColumn(void);
-  void vStreamDefOutAddColumns(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);
