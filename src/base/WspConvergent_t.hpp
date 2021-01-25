@@ -55,7 +55,6 @@ namespace BASE
     void  vUsedTail(i8 nBytes);
   
   private:
-    byte* ayArea(void);
     bool  bStructurallyValid(void);
   };
 }
@@ -189,19 +188,6 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAllotTail(i8 nBytes)
   ++ m_nTailItems;
 
   return (TAIL*)ayAllottedTail;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of byte area                                                   */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-byte* WspConvergent_t<AREA,HEAD,TAIL>::ayArea(void)
-{
-  ASSERT(bStructurallyValid());
-
-  byte* ayArea = m_yaByteArea;
-
-  return ayArea;
 }
 
 /*----------------------------------------------------------------------------*/
