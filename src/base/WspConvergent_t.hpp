@@ -40,11 +40,8 @@ namespace BASE
     byte* ayLatterTail(void);
     i8    nLength(void);
     i8    iOffsetOfItem(TAIL* ayAllotted);
-    void  vReset(void);
-    i8    nSize(void);
     Stz*  szStzAllot_begin(void);
     void  vStzAllot_end(i8 nSize);
-    Stz*  szStzArea(void);
     Stz*  szStzDeposit(Stz* szValue);
     TAIL* aTailItem(i8 i_Tail);
     void  vTakeHead(i8 nBytes);
@@ -54,7 +51,6 @@ namespace BASE
     i8    nUsedTail(void);
     void  vUsedHead(i8 nBytes);
     void  vUsedTail(i8 nBytes);
-    void  vZero(eCN eClassNo);
   
   private:
     byte* ayArea(void);
@@ -373,46 +369,6 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::iOffsetOfItem(TAIL* ayAllotted)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this wsp                                                             */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void WspConvergent_t<AREA,HEAD,TAIL>::vReset(void)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // I DONT THINK THIS FUNCTION IS NEEDED
-  
-  vUsedHead(0);
-  vUsedTail(0);
-  
-  m_nTailItems = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total size of this Wsp_t                                               */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-i8 WspConvergent_t<AREA,HEAD,TAIL>::nSize(void)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-  return sizeof(WspConvergent_t<AREA,HEAD,TAIL>);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get byte area as Stz*                                                      */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzArea(void)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-  char* aArea = (char*)m_yaByteArea;
-  
- return reinterpret_cast<Stz*>(aArea);
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin allot of stz (of unknown size) in head                               */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
@@ -566,26 +522,6 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vUsedTail(i8 nBytes)
   
   ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
 }
-
-/*----------------------------------------------------------------------------*/
-/* zero fill the byte                                                         */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void WspConvergent_t<AREA,HEAD,TAIL>::vZero(eCN eClassNo)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-  m_nUsedHead  = 0;
-  
-  m_nTailItems = 0;
-  m_nUsedTail  = 0;
-  m_nTailSize  = C_UNKNOWN;
-
-  byte* ayDst = ayArea();
-  
-  MemLib::vZero(ayDst,AREA,eClassNo);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/

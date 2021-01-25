@@ -316,18 +316,6 @@ Stz* RowSingle::szStzAlottable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get string area                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* RowSingle::szStzArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-
-  Stz* szArea = RowBox_t<C_ROWSINGLE_WSP>::szStzArea();
-  
-  return szArea;
-}
-
-/*----------------------------------------------------------------------------*/
 /* given number of bytes have been taken from head/stz area                   */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vStzBytesTaken(i8 nBytesTaken)

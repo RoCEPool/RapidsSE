@@ -55,7 +55,6 @@ namespace STORE
     void vSetColNull(i8 i_Col);
     i8   nSumVchSizes(void);
     Stz* szStzAlottable(void);
-    Stz* szStzArea(void);
     void vStzBytesTaken(i8 nBytesTaken);
 
   private:
