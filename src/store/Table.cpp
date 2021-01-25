@@ -304,8 +304,7 @@ void Table::vCreatePtnDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Column* pColumn = nullptr;
-  
-  m_pPtnStreamDef->m_nDefSets = 1;
+
   m_pPtnStreamDef->m_i_DefStart[0] = 0;
   m_pPtnStreamDef->m_nDefColumns[0] = 0;
   

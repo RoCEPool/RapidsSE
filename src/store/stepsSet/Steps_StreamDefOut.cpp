@@ -166,7 +166,6 @@ void Step::vStreamDefOutNew(void)
   ENTRY();
     
   ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut = new StreamDef;
-  (* ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut)->vAddDefSet();
   
   EXIT();
 }

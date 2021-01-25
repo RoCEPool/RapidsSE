@@ -52,7 +52,6 @@ StreamDef::StreamDef(void)
   //m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
-  m_nDefSets = 0;
   
   //m_saDefName[C_MAX_STREAMDEFS];
   
@@ -85,16 +84,13 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   m_sPath = pStreamDef->m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
-  m_nDefSets = pStreamDef->m_nDefSets;
   
-  for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
-    m_nDefColumns[i_StreamDef] = pStreamDef->m_nDefColumns[i_StreamDef];
-    m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
+  i8 i_StreamDef = 0;
+  m_nDefColumns[i_StreamDef] = pStreamDef->m_nDefColumns[i_StreamDef];
+  m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
     
-    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
-      m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
-    }
-    
+  for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
+    m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
   }
   
   m_bTemp = true;
@@ -148,16 +144,12 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  m_nDefSets++;
-  
-  for (i8 i_StreamDef = 0; i_StreamDef < pStreamDef->m_nDefSets; i_StreamDef++) {
-    m_nDefColumns[i_StreamDef] = m_nDefColumns[i_StreamDef];
-    m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
+  i8 i_StreamDef = 0;
+  m_nDefColumns[i_StreamDef] = m_nDefColumns[i_StreamDef];
+  m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
     
-    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
-      m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
-    }
-    
+  for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
+    m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
   }
   
   m_nTotalColumns= pStreamDef->m_nTotalColumns;
@@ -168,17 +160,6 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a def set to the stream def                                            */
-/*----------------------------------------------------------------------------*/
-void StreamDef::vAddDefSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  m_nDefSets++;
-  m_i_DefStart[m_nDefSets-1] = 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
@@ -186,14 +167,14 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   //! ALKA come back to this
-  i8 i_DefCol = m_nDefColumns[m_nDefSets-1];
+  i8 i_DefCol = m_nDefColumns[0];
  
   m_xaColumn[i_DefCol].vColumnNo(m_nDefColumns[i_DefCol]);
   m_xaColumn[i_DefCol].vColumnNm(sColumnNm);
   m_xaColumn[i_DefCol].vColumnType(eColumnType);
   m_xaColumn[i_DefCol].vDatum(Column::eDatum(eColumnType));
   
-  m_nDefColumns[m_nDefSets-1]++;
+  m_nDefColumns[0]++;
   m_nTotalColumns++;
 }
 
@@ -205,7 +186,7 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   //! ALKA come back to this
-  i8 i_DefCol = m_nDefColumns[m_nDefSets-1];
+  i8 i_DefCol = m_nDefColumns[0];
   
   m_xaColumn[i_DefCol].vColumnNo(i_DefCol);
   m_xaColumn[i_DefCol].vColumnNm(sColumnNm);
@@ -214,7 +195,7 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8
   m_xaColumn[i_DefCol].vColumnScale(iColumnScale);
   m_xaColumn[i_DefCol].vDatum(Column::eDatum(eColumnType));
   
-  m_nDefColumns[m_nDefSets-1]++;
+  m_nDefColumns[0]++;
   m_nTotalColumns++;
 }
 
@@ -225,15 +206,14 @@ void StreamDef::vAddColumns(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
-    m_nDefColumns[i_StreamDef] = pStreamDef->m_nDefColumns[i_StreamDef];
-    m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
+  i8 i_StreamDef = 0;
+  m_nDefColumns[i_StreamDef] = pStreamDef->m_nDefColumns[i_StreamDef];
+  m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
     
-    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
-      m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
-    }
-    
+  for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
+    m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
   }
+
   m_nTotalColumns = pStreamDef->m_nTotalColumns;
   
   //m_nFixedSized = pStreamDef->m_nFixedSized;
@@ -248,21 +228,21 @@ void StreamDef::vAsString(String* pString)
   
   pString->vSprint("streamDef %s: ("_Stz,m_sName.szStz());
   
-  for (i8 i_DefSet = 0; i_DefSet < m_nDefSets; i_DefSet++) {
+  i8 i_DefSet = 0;
     
-    if (i_DefSet != 0)
+  if (i_DefSet != 0)
+    pString->vConcat(","_Stz);
+
+  for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
+
+    if (i_DefColumn != 0)
       pString->vConcat(","_Stz);
-    
-    for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
-        
-      if (i_DefColumn != 0)
-        pString->vConcat(","_Stz);
-      
-      pString->vCatSprint("%s %s"_Stz,
-                          m_xaColumn[i_DefColumn].szColNm(),
-                          aCT[m_xaColumn[i_DefColumn].eColumnType()]);
-    }
+
+    pString->vCatSprint("%s %s"_Stz,
+                        m_xaColumn[i_DefColumn].szColNm(),
+                        aCT[m_xaColumn[i_DefColumn].eColumnType()]);
   }
+
   pString->vConcat(")"_Stz);
 }
 
@@ -272,18 +252,8 @@ void StreamDef::vAsString(String* pString)
 i8 StreamDef::nColumns(i8 iSubSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  i8 nColumns = 0;
-  
-  if (C_ALL == iSubSet) {
-    for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
-      nColumns +=  m_nDefColumns[i_StreamDef];
-    }
-  }
-  else {
-    nColumns +=  m_nDefColumns[iSubSet];
-  }
-  return nColumns;
+
+  return m_nDefColumns[0];
   
 }
 
@@ -409,7 +379,6 @@ eEC StreamDef::eParse(Stz* szCmd)
   }
   
   // create the streamDef for this table def
-  m_nDefSets = 1;
   m_i_DefStart[0] = 0;
   m_nDefColumns[0] = 0;
   
@@ -512,22 +481,22 @@ void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
   
   i8 i_DefColumn = 0;
   
-  for (i8 i_DefSet = 0; i_DefSet < m_nDefSets; i_DefSet++) {
+  i8 i_DefSet = 0;
         
-    for ( ; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
-      
-      Column* pColumn  = &m_xaColumn[i_DefColumn];
-      ColPix* axColPix = &axaColPix[i_DefColumn];
-      
-      axColPix->m_uDatum    = (u4)pColumn->eDatum();
-      axColPix->m_uLength   = (u4)pColumn->iColumnLength();
-      axColPix->m_uScale    = (u4)pColumn->iColumnScale();
-      axColPix->m_bNullable = (u4)pColumn->bIsNullable();
-      axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
-      axColPix->m_uKind     = (u4)CX_USERCOL;
-      axColPix->m_uSpare    = (u4)0;
-    }
+  for ( ; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
+
+    Column* pColumn  = &m_xaColumn[i_DefColumn];
+    ColPix* axColPix = &axaColPix[i_DefColumn];
+
+    axColPix->m_uDatum    = (u4)pColumn->eDatum();
+    axColPix->m_uLength   = (u4)pColumn->iColumnLength();
+    axColPix->m_uScale    = (u4)pColumn->iColumnScale();
+    axColPix->m_bNullable = (u4)pColumn->bIsNullable();
+    axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
+    axColPix->m_uKind     = (u4)CX_USERCOL;
+    axColPix->m_uSpare    = (u4)0;
   }
+
   
   if (bPtnHash) {
 
@@ -575,20 +544,20 @@ void StreamDef::vToMetadata(Stz* sMetadata)
   
   sMetadata->vCopy("metadata: ("_Stz);
   
-  for (i8 i_DefSet = 0; i_DefSet < m_nDefSets; i_DefSet++) {
+  i8 i_DefSet = 0;
     
-    if (i_DefSet != 0)
+  if (i_DefSet != 0)
+    sMetadata->vConcat(","_Stz);
+
+  for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
+
+    if (i_DefColumn != 0)
       sMetadata->vConcat(","_Stz);
-    
-    for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
-        
-      if (i_DefColumn != 0)
-        sMetadata->vConcat(","_Stz);
-      
-      sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                            aCT[m_xaColumn[i_DefColumn].eColumnType()]);
-    }
+
+    sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
+                          aCT[m_xaColumn[i_DefColumn].eColumnType()]);
   }
+
   sMetadata->vConcat(")"_Stz);
 }
 
