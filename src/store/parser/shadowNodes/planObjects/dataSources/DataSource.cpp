@@ -29,7 +29,7 @@ static Stz* C_DATASOURCE_DEFN = "/__root__/definitions/object/planObject/sqlOper
 void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
@@ -53,7 +53,7 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
 void DataSource::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 

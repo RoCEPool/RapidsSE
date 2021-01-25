@@ -31,7 +31,7 @@ static Stz* C_SQLOPERATOR_DEFN = "/__root__/definitions/object/planObject/sqlOpe
 void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
@@ -58,7 +58,7 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
 void SqlOperator::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 

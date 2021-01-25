@@ -3,9 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#include <functional> // for std::function
+
 namespace Parser
 {
   class PlanNode;
+  class QueryNode;
 
   class ShadowNode
   {
@@ -17,13 +20,15 @@ namespace Parser
     ShadowNode();
 
   public:
-    // Validate a node against its definition
-    static b1 bValidate(PlanNode* pPlanNode);
-
     // Describe the object and write it into the buffer
     static void vDescribe(PlanNode* pPlanNode, s2K& sBuf);
 
   protected:
+    // Validate that a node is of the expected type and that it matches its definition.
+    // The fTypeValidator param is exected to be something like the bIsOfType() function.
+    static b1 bValidate(QueryNode* pQueryNode, PlanNode* pPlanRoot,
+                        std::function<b1(PlanNode*)> fTypeValidator);
+
     // Creates a unique ID for an object name
     static void vObjName(Stz* szPrefix, s256& sBuf);
 

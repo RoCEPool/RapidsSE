@@ -73,7 +73,7 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
 void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pColumnRef = static_cast<QueryNode*>(pNode);
 
