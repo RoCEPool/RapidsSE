@@ -55,10 +55,8 @@ StreamDef::StreamDef(void)
   
   //m_saDefName[C_MAX_STREAMDEFS];
   
-  for (i8 i_StreamDefs = 0; i_StreamDefs < C_MAX_STREAMDEFS; i_StreamDefs++) {
-    m_i_DefStart[i_StreamDefs] = C_UNKNOWN;
-    m_nDefColumns = 0;
-  }
+  m_nDefColumns = 0;
+
   //m_xaColumn[C_MAX_DEFCOLUMNS];
   
   m_bTemp = false;
@@ -84,10 +82,8 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   m_sPath = pStreamDef->m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
-  
-  i8 i_StreamDef = 0;
+
   m_nDefColumns = pStreamDef->m_nDefColumns;
-  m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
     
   for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns; i_DefCol++) {
     m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
@@ -143,10 +139,8 @@ eCT StreamDef::eColumn(Stz* szType)
 void StreamDef::vAdd(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  i8 i_StreamDef = 0;
+
   m_nDefColumns = m_nDefColumns;
-  m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
     
   for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns; i_DefCol++) {
     m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
@@ -205,10 +199,8 @@ void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8
 void StreamDef::vAddColumns(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  i8 i_StreamDef = 0;
+
   m_nDefColumns = pStreamDef->m_nDefColumns;
-  m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
     
   for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns; i_DefCol++) {
     m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
@@ -379,7 +371,6 @@ eEC StreamDef::eParse(Stz* szCmd)
   }
   
   // create the streamDef for this table def
-  m_i_DefStart[0] = 0;
   m_nDefColumns = 0;
   
   // -- -- -- -- -- -- -- -- -- -- --

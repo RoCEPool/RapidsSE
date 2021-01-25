@@ -305,7 +305,6 @@ void Table::vCreatePtnDef(void)
   
   Column* pColumn = nullptr;
 
-  m_pPtnStreamDef->m_i_DefStart[0] = 0;
   m_pPtnStreamDef->m_nDefColumns = 0;
   
   // find the column from the table columnVector
