@@ -12,14 +12,14 @@ namespace STORE
   public:
     s256   m_sName;         // name
     i8     m_iStreamId;     // unique stream identifier
-    Column m_xaColumn[C_MAX_DEFCOLUMNS];
-  
-    i8     m_nFixedSized;   // is this a fixed size row?
+
     i8     m_nColumns;      // total columns
-    
+    Column m_xaColumn[C_MAX_DEFCOLUMNS];
+
+    RowPix m_oRowPix;       // row pix
+
+    i8     m_nFixedSized;   // size of fixed size row
     bool   m_bTemp;         // is this a temporary definition?
-  
-    RowPix m_oRowPix;
 
     // must be last
     Footer m_xFooter;

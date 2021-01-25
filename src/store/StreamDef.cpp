@@ -51,14 +51,14 @@ StreamDef::StreamDef(void)
   //m_sName;
   m_iStreamId = AM::iNextStreamId();
 
-  //m_xaColumn[C_MAX_DEFCOLUMNS];
-  
-  m_bTemp = false;
-  //vTrace("StreamDef permanent %p\n"_Stz, this);
-  
   m_nColumns = 0;
+  //m_xaColumn[C_MAX_DEFCOLUMNS];
+
+  //m_oRowPix;
+
   m_nFixedSized = 0;
-  
+  m_bTemp = false;
+
   _checkInitialised_(CN_STREAMDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
@@ -73,19 +73,18 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   m_sName = pStreamDef->m_sName;
-  
   m_iStreamId = AM::iNextStreamId();
-
   m_nColumns = pStreamDef->m_nColumns;
     
   for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
     m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
   }
-  
-  m_bTemp = true;
+
+  //m_oRowPix;
 
   m_nFixedSized = pStreamDef->m_nFixedSized;
-  
+  m_bTemp = true;
+
   //_checkInitialised_(CN_STREAMDEF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
@@ -132,7 +131,7 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
 
-  m_nColumns= pStreamDef->m_nColumns;
+  m_nColumns = pStreamDef->m_nColumns;
     
   for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
     m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);

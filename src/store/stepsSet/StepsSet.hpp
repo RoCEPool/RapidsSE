@@ -1159,7 +1159,6 @@ public:
   void vRegOpIncOperandCount(void);
 
   // operand
-  void vRegOperandAddColumnDef(void);
   void vRegOperandAsSrcCrwBuffer(void);
   void vRegOperandAsSrcRowBuffer(void);
   void vRegOperandCsvAppend(void);
