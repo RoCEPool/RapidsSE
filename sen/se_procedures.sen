@@ -705,6 +705,8 @@
   stage stageD on origin :
 
     progress 'Load'    |
+    
+    output             |
 
     toStatDemon        |
 

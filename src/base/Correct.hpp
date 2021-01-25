@@ -39,6 +39,15 @@ namespace BASE
                                  i8    iLineNo,
                                  void* aObject,
                                  eCN   eExpectingClass);
+
+  [[ noreturn ]] void vThrowType2(eFK   eKind,
+                                  eVL   eSeverity,
+                                  const char* azFunc,
+                                  const char* azFilePath,
+                                  i8    iLineNo,
+                                  void* aObject,
+                                  eCN   eExpectingClass,
+                                  eCN   eGotClass);
 }
 
 /*============================================================================*/

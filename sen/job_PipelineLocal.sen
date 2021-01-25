@@ -47,9 +47,6 @@
     job[] job.addLocal
   then
 
-  // create the buffer queue in the orginating job to receive buffers
-  job[] job.createBufferQueue
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab the task lock
   pTask task.grabLock

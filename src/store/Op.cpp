@@ -16,6 +16,7 @@
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
+#include "MY.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"
@@ -1031,13 +1032,13 @@ void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 /*----------------------------------------------------------------------------*/
 /* append operand to the pipeline job's buffer queue                          */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeToJob(Operand* pOperand)
+void Op::vPipeToOutput(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Queue* pBufferQueue = AM::pBufferQueue(m_pPipelineJob);
-  
-  RASSERT(pBufferQueue);
+  Queue* pOutputQueue = AM::pOutputQueue(MY::pSession());
+
+  RASSERT(pOutputQueue);
   
   if (m_bTraceOp)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
@@ -1046,15 +1047,15 @@ void Op::vPipeToJob(Operand* pOperand)
            m_i_Node,
            m_tPtnNo,
            m_pPipelineJob,
-           "vPipeToJob :"_Stz,
+           "vPipeToOutput :"_Stz,
            AM::pOperandName(pOperand),
            pOperand);
   
   AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-              "vPipeToJob operand %s to queue of pipeline job"_Stz, //!format-LogOpr
+              "vPipeToOutput operand %s to queue of pipeline job"_Stz, //!format-LogOpr
               aCN[pOperand->eGetClassNo()]);
   
-  pBufferQueue->vAppend(pOperand);
+  pOutputQueue->vAppend(pOperand);
   
 }
 

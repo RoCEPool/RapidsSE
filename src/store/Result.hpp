@@ -16,18 +16,13 @@ namespace STORE
 
   public:
     // this job
-    bool         m_bJobHasError;       // this job has an error
-    Response     m_xJobResponse;       // response of this job
+     Response     m_xJobResponse;       // response of this job
     
     // participant responses
     bool         m_bPartHasError;      // participant has an error
     ResponseVec* m_pOriginResponseVec; // vector of responses from all participant nodes on origin
-    
-    // buffer queue
-    Queue*       m_pOriginBufferQueue; // queue in originating node to receive result buffers
-    
-    StreamDef*   m_pStreamDef;
-    bool         m_bExitMarker;
+        
+  private:
 
     // must be last
     Footer m_xFooter;
@@ -39,21 +34,15 @@ namespace STORE
     Result(void);
    ~Result(void) noexcept(false);
 
-    void vPrint(eRS eResponse);
+    void vPrint(Session* pSession, eRS eResponse);
     
   public:
   
     static void vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker);
 
-    void vPrintDist2pcResponse(void);
-    void vPrintLocalResponse(void);
-    void vProcessBufferQueue(void);
-    Operand* pPopBufferQueue_blocking(void);
-    bool bProcessOperand(Operand* pOperand);
-    
-    //! TO GO
-    void vPrintOldJobResponses(void);
-    
+    void vPrintDist2pcResponse(Session* pSession);
+    void vPrintLocalResponse(Session* pSession);
+        
     Footer* aFooter(void);
   };
   

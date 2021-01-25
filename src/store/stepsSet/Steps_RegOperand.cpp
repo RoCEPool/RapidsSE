@@ -77,7 +77,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vRegOperandPipeIn);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vRegOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vRegOperandPipeOutSet);
-  vAddStep("Operand[].pipeToJob"_Stz,      &Step::vRegOperandPipeToJob);
+  vAddStep("Operand[].pipeToOutput"_Stz,      &Step::vRegOperandPipeToOutput);
   vAddStep("Operand[].report"_Stz,         &Step::vRegOperandReport);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vRegOperandRowCountFetch);
   vAddStep("Operand[].rowToCsv"_Stz,       &Step::vRegOperandRowToCsv);
@@ -697,9 +697,9 @@ void Step::vRegOperandPipeOutSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].pipeToJob -- append operand onto the pipeline job buffer queue   */
+/* Operand[].pipeToOutput -- append operand onto the pipeline job buffer queue   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandPipeToJob(void)
+void Step::vRegOperandPipeToOutput(void)
 {
   ENTRY();
   
@@ -707,7 +707,7 @@ void Step::vRegOperandPipeToJob(void)
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeToJob(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
+  pOp->vPipeToOutput(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
   ( m_pJob->pLogicUnit_job() )->m_xpOperandA = nullptr;
   

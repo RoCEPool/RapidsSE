@@ -58,17 +58,16 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
   Stz* szDef = aST_definition[eStmtType];
 
   // Store the enum value in the value field of the statement node
-  Value xValue;
-  xValue.m_iInt = eStmtType;
+  Value xValue((i8) eStmtType);
 
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(szDef), sName);
 
   // Create the object with its queryText property
-  QueryNode* pStmt = new QueryNode(sName, szDef, xValue);
+  QueryNode* pStmt = new QueryNode(sName, szDef, static_cast<Value&&>(xValue));
   Value xQueryTextVal(szQueryText);
-  QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xQueryTextVal);
+  QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xQueryTextVal));
   pStmt->vAppendProperty(pQueryText);
 
   return pStmt;
@@ -106,7 +105,7 @@ void Statement::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
   PlanNode* pQueryTextProp = GraphNav::pFindProperty(const_cast<Stz*>(C_QUERYTEXT_PROP), pNode);
   ASSERT(pQueryTextProp);
 
-  Stz* szQueryText = pQueryTextProp->getStringValue();
+  Stz* szQueryText = pQueryTextProp->szValue();
   ASSERT(szQueryText);
 
   // Add the queryText property
@@ -146,7 +145,7 @@ Statement::eST Statement::eStatementType(PlanNode* pNode)
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
 
-  i8 iType = pNode->getIntValue();
+  i8 iType = pNode->iValue();
   ASSERT(iType > ST_NONE);
   ASSERT(iType < ST_NENUMS);
 

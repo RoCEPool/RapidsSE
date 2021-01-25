@@ -3,23 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-//------------------------------------------------------------------------------
-
-namespace BASE
-{
-  void vCheckAssumptions(void);
-}
-
-//------------------------------------------------------------------------------
-
 //#pragma GCC diagnostic warning "-Wunused-parameter"
 //#pragma GCC diagnostic warning "-Wunused-variable"
 
 #include <iostream>
 #include <string.h>
 //typedef unsigned long size_t;
-
-//------------------------------------------------------------------------------
 
 #define EndDefine
 
@@ -28,102 +17,16 @@ namespace BASE
 #define _nonLocalStatic_ EndDefine
 #define _outsideOfPool_ EndDefine
 
+//------------------------------------------------------------------------------
+
+namespace BASE { } using namespace BASE;
+
 #include "CompiledWith.h"
 
-//------------------------------------------------------------------------------
-
-//#include "MachineTypes.h"
-
-namespace BASE
-{
-  typedef unsigned char      b1;   // 1 byte boolean
-  typedef unsigned short     b2;   // 2 byte boolean
-  typedef unsigned long      b4;   // 4 byte boolean
-  typedef unsigned long long b8;   // 8 byte boolean
-  
-  typedef float              d4;   // 4 byte float
-  typedef double             d8;   // 8 byte float
-  typedef long double        d10;  // 10 byte float
-
-  typedef char               i1;   // 1 byte signed integer
-  typedef short              i2;   // 2 byte signed integer
-  typedef int                i4;   // 4 byte signed integer
-  typedef long long          i8;   // 8 byte signed integer
-  typedef __int128           i16;  // 16 byte signed integer (GNU extension)
-
-  typedef unsigned char      m1;   // 1 byte memory cell
-  typedef unsigned short     m2;   // 2 byte memory cell
-  typedef unsigned long      m4;   // 4 byte memory cell
-  typedef unsigned long long m8;   // 8 byte memory cell
-
-  typedef i8                 t8;   // 8 byte transaction perspective
-
-  typedef unsigned char      u1;   // 1 byte unsigned integer
-  typedef unsigned short     u2;   // 2 byte unsigned integer
-  typedef unsigned int       u4;   // 4 byte unsigned integer
-  typedef unsigned long long u8;   // 8 byte unsigned integer
-  typedef unsigned __int128  u16;  // 16 byte unsigned integer (GNU extension)
-
-  typedef unsigned long      w4;   // 4 byte word
-  typedef unsigned long long w8;   // 8 byte word
-
-  typedef unsigned char      byte; // a byte
-  typedef unsigned char      y1;   // 1 byte
-  typedef unsigned short     y2;   // 2 byte
-  typedef unsigned int       y4;   // 4 byte
-  typedef unsigned long long y8;   // 8 byte
-  
-  typedef void           Opaque;   //
-
-  const u8 C_BITS_PER_BYTE         = 8;
-  const u8 C_BITS_PER_WORD         = 64;
-  const u8 C_BYTES_PER_WORD        = 8;
-  const u8 C_BYTES_PER_DOUBLE_WORD = 16;
-  const u8 C_BYTES_PER_QUAD_WORD   = 32;
-  const u8 C_BYTES_PER_CACHE_LINE  = 64;
-  const u8 C_NIBBLES_PER_BYTE      = 2;
-
-  const u8 C_WORDS_PER_WORD        = 1;
-  const u8 C_WORDS_PER_DOUBLE_WORD = 2;
-  const u8 C_WORDS_PER_QUAD_WORD   = 4;
-  const u8 C_WORDS_PER_CACHE_LINE  = 8;
-
-  struct _WordAsBytes {
-    union {
-      b1 m_yaByte[C_BYTES_PER_WORD];
-      i8 m_iI8;
-      u8 m_uU8;
-    };
-  };
-
-}
-
-//------------------------------------------------------------------------------
-
+#include "BaseTypes.h"
 #include "UsefulConstants.h"
-
-static const i8 C_MAX_RECORD    = C_16KB;       // max length of record
-static const i8 C_MAX_STATEMENT = C_32KB - 64;  // max length of statement
-static const i8 C_MAX_VCH       = C_4K;         // max length of vch value
-
-static const i8 C_ALL          = -1;
-static const i8 C_VARGS_BEGIN  = -1;
-static const i8 C_VARGS_END    = -1;
-static const i8 C_NEVER_THROWN = -1;
-static const i8 C_NIL          = -1;
-static const i8 C_UNKNOWN      = -1;
-static const i8 C_IGNORED      = -1;
-
-static const bool B_CALL_AGAIN      = true;
-static const bool B_DONT_CALL_AGAIN = false;
-
-static const b8 C_NONFOCAL          = true;
-
-static const i8 C_SET_OFFSETS       = 128;
-static const i8 C_LOAD_READCHUNK    = C_1M; // its 1M not 1MB (i.e. < 1MB)
-static const i8 C_CHUNKBLOCK        = 2048;
-
-//------------------------------------------------------------------------------
+#include "StringTypes.h"
+#include "BytesTypes.h"
 
 // initialised in IntLib::vInitGlobals()
 extern i8 C_DATUM_NULL;
@@ -142,53 +45,6 @@ extern d8 C_D8_MID;
 //------------------------------------------------------------------------------
 
 #include "BitLib.hpp"
-
-static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
-
-static const i8 C_SIZE_TINY_OBJECT   = C_1KB;
-static const i8 C_SIZE_SMALL_OBJECT  = C_4KB;
-static const i8 C_SIZE_MEDIUM_OBJECT = C_64KB;
-static const i8 C_SIZE_LARGE_OBJECT  = C_SIZE_POOL_BUFFER - C_SIZE_SMALL_OBJECT;
-
-static const u8 C_MASK_TINY_OBJECT   = 0x3FF;
-static const u8 C_MASK_SMALL_OBJECT  = 0xFFF;
-static const u8 C_MASK_MEDIUM_OBJECT = 0xFFFF;
-static const u8 C_MASK_LARGE_OBJECT  = 0xFFFFF;
-
-static const i8 C_LOW_BUFFERS        = 512;
-
-static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
-
-static const i8 C_VIA_MALLOC         = 1;
-
-//------------------------------------------------------------------------------
-
-namespace BASE
-{
-  template <i8 AREA> class String_t;
-  typedef String_t<32>     s32;
-  typedef String_t<256>    s256;
-  typedef String_t<C_2K>   s2K;   // note: 2K not 2KB
-  typedef String_t<C_4K>   s4K;   // note: 4K not 4KB
-  typedef String_t<C_16KB> s16KB; // note: this is 16KB
-  typedef String_t<C_24KB> s24KB; // note: this is 24KB
-  typedef String_t<C_32KB> s32KB; // note: this is 32KB
-  typedef String_t<C_48K>  s48K;  // note: 48K not 24KB
-  typedef String_t<C_1M>   s1M;   // note: 1M not 1MB
-
-  typedef String_t<C_MAX_STATEMENT> sSTMT;
-  typedef String_t<C_MAX_VCH>       sVCH;
-
-  template <i8 AREA> class Bytes_t;
-  typedef Bytes_t<32>      b32;
-  typedef Bytes_t<256>     b256;
-  typedef Bytes_t<C_4K>    b4K;   // note: K, not KB
-  typedef Bytes_t<C_8K>    b8K;   // note: K, not KB
-  typedef Bytes_t<C_32K>   b32K;  // note: K, not KB
-  typedef Bytes_t<C_256K>  b256K; // note: K, not KB
-}
-
-//------------------------------------------------------------------------------
 
 #include "ByteLiterals.hpp"
 #include "CommonTypes.h"
@@ -214,10 +70,6 @@ namespace BASE
 //------------------------------------------------------------------------------
 
 #include "Hack.hpp"
-
-#define PASTE3(a,b,c) a##b##c
-#define GLOBALNM(_fun,_class,_line) PASTE3(_fun,_class,_line)
-#define HACK(_class,_text) Hack GLOBALNM(Hack,_class,__LINE__)(_text,__FILE__,__LINE__)
 
 #include "eFK.h"
 #include "Exception.hpp"
@@ -254,12 +106,9 @@ namespace BASE
 #include "REF_t.hpp"
 #include "REG_t.hpp"
 
-typedef bool (fpCLASSFN)(Object* pObject);
 #include "ClassFn.hpp"
 #include "ClassCatalog.hpp"
 
-namespace BASE { class TokenVec; class SelfFn; }
-typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 #include "SelfFn.hpp"
 #include "SelfCatalog.hpp"
 
@@ -417,7 +266,6 @@ typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
 // -- -- -- -- -- -- -- --
 
-typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
 
 #include "Article.hpp"
 #include "MiniHeap_t.hpp"
@@ -467,20 +315,18 @@ typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
 
 //------------------------------------------------------------------------------
 
-// declare a function pointer to any member function of Step
-typedef void (Step::*fpSTEPFN)(void);
-
 #include "Operand.hpp"
+
+#include "CodeBlock.hpp"
+#include "Word.hpp"
 
 #include "Dic.hpp"
 #include "DicStack.hpp"
 #include "Local.hpp"
 #include "LocalChain.hpp"
-#include "CodeBlock.hpp"
 #include "TypedStack.hpp"
 
 #include "SenCompiler.hpp"
-#include "Word.hpp"
 
 #include "Profile.hpp"
 #include "Task.hpp"
@@ -536,25 +382,9 @@ typedef void (Step::*fpSTEPFN)(void);
 
 namespace BASE
 {
+  void vCheckAssumptions(void);
   static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
-}
 
-/*---------------------------------------------------------------------------*/
-/* pCheck: check address                                                     */
-/*---------------------------------------------------------------------------*/
-template <class OBJECT>
-static OBJECT pPoolCheck(void* aAddress)
-{
-#ifdef WITH_CORRECTNESS_ALGEBRA
-  if (aAddress)
-    gpBufferPool->vCheckAddress(aAddress);
-#endif
-  
-  return static_cast<OBJECT>(aAddress);
-}
-
-namespace BASE
-{
   bool bTraceWith(Stz* szWith);
   void vTraceWith(void);
 

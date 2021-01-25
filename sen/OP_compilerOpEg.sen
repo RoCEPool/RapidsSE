@@ -29,7 +29,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANNODE ...                                             */
+/* handler for ZK_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_PlanNode \handler
  
@@ -59,7 +59,7 @@
   find: compilerOpEg_CancelMarker ZK_CANCELMARKER op[].handler!
   find: compilerOpEg_DataMarker   ZK_DATAPULSE    op[].handler!
   find: compilerOpEg_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: compilerOpEg_PlanNode  ZK_PLANNODE  op[].handler!
+  find: compilerOpEg_PlanNode  ZK_PLANOPERAND  op[].handler!
   find: compilerOpEg_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

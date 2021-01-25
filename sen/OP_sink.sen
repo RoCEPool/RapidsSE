@@ -10,12 +10,16 @@
 : sink_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
   Operand[].newExitedMarker
-  Operand[].pipeOut
-  Op.ackPipelineJob
+  Operand[] to Pipein[]
+  nullptr to Operand[]
 
-  false
+  //Operand[].pipeOut
+  //Op.ackPipelineJob
+  //false
+
+  ZK_CANCELMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +55,7 @@
 : sink_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
-  PipeIn[].pipeToJob
+  PipeIn[].pipeToOutput
   Operand[].newExitedMarker
   Operand[].pipeOut
   Op.ackPipelineJob

@@ -57,4 +57,14 @@ namespace Parser
   static const Stz* C_CONSTRAINTS_OPTIONAL_PATH       = "/__root__/primitives/constraints/optional"_Stz;
   static const Stz* C_CONSTRAINTS_MANDATORY_PATH      = "/__root__/primitives/constraints/mandatory"_Stz;
 
+  // Primitives
+  static const Stz* C_SCALAR_PRIMITIVE    = "/__root__/primitives/types/scalarType"_Stz;
+  static const Stz* C_STRING_PRIMITIVE    = "/__root__/primitives/types/scalarType/string"_Stz;
+  static const Stz* C_INTEGER_PRIMITIVE   = "/__root__/primitives/types/scalarType/integer"_Stz;
+  static const Stz* C_FLOAT_PRIMITIVE     = "/__root__/primitives/types/scalarType/float"_Stz;
+  static const Stz* C_BOOLEAN_PRIMITIVE   = "/__root__/primitives/types/scalarType/boolean"_Stz;
+  static const Stz* C_DATE_PRIMITIVE      = "/__root__/primitives/types/scalarType/date"_Stz;
+  static const Stz* C_TIME_PRIMITIVE      = "/__root__/primitives/types/scalarType/time"_Stz;
+  static const Stz* C_TIMESTAMP_PRIMITIVE = "/__root__/primitives/types/scalarType/timestamp"_Stz;
+  static const Stz* C_INTERVAL_PRIMITIVE  = "/__root__/primitives/types/scalarType/interval"_Stz;
 }

@@ -54,7 +54,8 @@ void Decider::vCheckInit(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
-  ASSERT(0 == m_nAcksRemaining); // logic check
+  ASSERT(0 == m_nAcksOriginally); // logic check
+  ASSERT(0 == m_nAcksRemaining);  // logic check
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,6 +106,17 @@ i8 Decider::iPrintOnlyValue(void)
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
   return m_nAcksRemaining;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void Decider::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
+
+  m_nAcksOriginally = 0;
+  m_nAcksRemaining  = 0;
 }
 
 /*----------------------------------------------------------------------------*/

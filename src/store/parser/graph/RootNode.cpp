@@ -19,10 +19,11 @@ __aFooterFunction(RootNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RootNode::RootNode(Stz* szName, Stz* szType, Value xValue,
+RootNode::RootNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren,
                    Stz* szPath)
-    : PlanNode(CN_ROOTNODE, szName, szType, xValue, pProperties, pChildren),
+    : PlanNode(CN_ROOTNODE, szName, szType, static_cast<Value&&>(xValue),
+               pProperties, pChildren),
       m_sPath(szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROOTNODE,_FOOTER_);
@@ -33,16 +34,6 @@ RootNode::RootNode(Stz* szName, Stz* szType, Value xValue,
 
 }
 
-/*----------------------------------------------------------------------------*/
-/* temp constructor for use by ray to test sql compiler pipeline              */
-/*----------------------------------------------------------------------------*/
-RootNode::RootNode(void* aTempTest_byRay)
-    : PlanNode(CN_ROOTNODE,aTempTest_byRay)
-{
-  
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -51,23 +42,24 @@ RootNode::~RootNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROOTNODE,_FOOTER_);
 
+  vTrace("Deleting root node %p\n"_Stz);
   // Don't delete the /primitives and /definitions children because they
   // will be reused by other plan graphs.
 
-  // TODO: Uncomment this when we have a list class with separate node pointers
-//  PlanNode* pItem = m_pChildren->pHead();
-//
-//  while (pItem) {
-//    if (pItem->bIsClassNo(CN_DEFINITIONNODE) || pItem->bIsClassNo(CN_PRIMITIVENODE)) {
-//      PlanNode* pNext = pItem->pNextItem();
-//      m_pChildren->vRemove(pItem);
-//      pItem = pNext;
-//      continue;
-//    }
-//
-//    pItem = pItem->pNextItem();
-//  }
+  PlanNode* pChild;
 
+  while ((pChild = m_pChildren->pPop()) != nullptr) {
+    if (pChild->bIsClassNo(CN_DEFINITIONNODE) || pChild->bIsClassNo(CN_PRIMITIVENODE)) {
+      // Don't delete these
+      continue;
+    }
+
+    // Delete the other children. Could also have done this in the base destructor.
+    ASSERT(pChild->bIsClassNo(CN_QUERYNODE) ||
+                    pChild->bIsClassNo(CN_METADATANODE) ||
+                    pChild->bIsClassNo(CN_STATISTICSNODE) );
+    delete pChild;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,6 +81,8 @@ Stz* RootNode::szPath(void)
 /*----------------------------------------------------------------------------*/
 Stz* RootNode::szDescription(void)
 {
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
+  ASSERT(!m_xValue.m_bIsNull);
   ASSERT(m_xValue.m_pText);
   return m_xValue.m_pText->szGet();
 }

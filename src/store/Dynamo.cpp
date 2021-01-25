@@ -20,6 +20,24 @@
 
 #include "SP_TknVecStr.hpp"
 
+#include "SqlOperator.hpp"
+#include "ShadowNode.hpp"
+#include "ShadowRoot.hpp"
+#include "Statement.hpp"
+#include "PlanConstants.hpp"
+#include "GraphNav.hpp"
+#include "PlanOperand.hpp"
+#include "TableScanOp.hpp"
+#include "QueryNode.hpp"
+#include "ProjectOp.hpp"
+#include "ProjectedExpr.hpp"
+#include "Expr.hpp"
+#include "ColumnRef.hpp"
+#include "LiteralExpr.hpp"
+#include "TableRef.hpp"
+
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -240,6 +258,95 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
   vTrace("bCmdToPipeline : \n%s\n"_Stz,pAsPipelineStmt->szStz());
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* transliterate plan into a pipeline statement                               */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
+                             Parser::RootNode* pPlanRoot) {
+  _static_
+
+//#ifdef WITH_TRACE_DYNAMO
+  vPrintPlanGraph(pPlanRoot);
+//#endif
+
+  char cStageStart   = 'A';
+  char cStageCurrent = 'A';
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pAsPipelineStmt->vCopy(
+      "pipeline unnamed\n"
+      "begin\n"
+      ""_Stz);
+
+  pAsPipelineStmt->vCatSprint(
+      "  stage stage%c on origin :\n"
+      "    start\n"
+      "    | periodic once\n"
+      "    | stageB\n"
+      ""_Stz,
+      cStageStart);
+
+  ++ cStageCurrent;
+
+  pAsPipelineStmt->vCatSprint(
+      "  stage stage%c on all partitions :\n"
+      ""_Stz,
+      cStageCurrent);
+
+
+  // Walk the plan graph from the root, skipping the properties but descending
+  // the children. We don't have to walk from the root, but if we don't then
+  // the path string that is passed into our visitor function will be a relative
+  // path and not an absolute one.
+  // Let's also pass in the root node as an argument as it can be useful within
+  // the visitor function.
+  Parser::GraphNav::bWalkBottomUp(pPlanRoot, false, true, vVisitorPlan, (void*)pAsPipelineStmt);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pAsPipelineStmt->vCatSprint(
+      "    | stage%c\n"
+      ""_Stz,
+      cStageCurrent + 1);
+
+  ++ cStageCurrent;
+
+  pAsPipelineStmt->vCatSprint(
+      "  stage stage%c on origin :\n"
+      "    output\n"
+      "    | sink\n"
+      "    | stage%c\n"
+      ""_Stz,
+      cStageCurrent, cStageStart);
+
+  pAsPipelineStmt->vConcat(
+      "end ;\n"
+      ""_Stz);
+
+  vTrace("Pipeline: \n %s\n"_Stz, pAsPipelineStmt->azStr());
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print the plan graph                                                       */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vPrintPlanGraph(Parser::PlanNode* pPlanRoot) {
+
+  // Lambda visitor function to print the graph
+
+  auto fVisitor = [](Parser::PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+
+    vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
+
+    // Keep walking
+    return Parser::GraphNav::WALK_CONTINUE;
+  };
+
+  Parser::GraphNav::bWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
 }
 
 
@@ -1124,6 +1231,160 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
   vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, 0);
 }
 
+/*----------------------------------------------------------------------------*/
+/* append project Op to the pipeline                                          */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendExpr(String* sPipeline, Parser::QueryNode* pNode) {
+  _static_
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // alias
+  Stz *szAliasName = Parser::ProjectedExpr::szAliasName(pNode);
+
+  if (szAliasName) {
+    sPipeline->vCatSprint(
+        " as %s"
+        ""_Stz,
+        szAliasName);
+  }
+
+  // get the expr node
+  Parser::QueryNode *pExprNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty("expr"_Stz,
+                                                                                                  pNode));
+  ASSERT(pExprNode);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // literal
+
+  if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
+    RASSERT(0);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // columnRef
+
+  if (Parser::ColumnRef::bIsOfType(pExprNode)) {
+    Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
+    sPipeline->vCatSprint(
+        " %s"
+        ""_Stz,
+        Parser::ColumnRef::szColumnName(pColumnRef));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append project Op to the pipeline                                          */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
+{
+  _static_
+
+  bool bFirstExpr = false;
+
+  // Get the list of projected expressions from ProjectOp
+  Parser::QueryNode *pProjectedExprs = Parser::ProjectOp::pProjectedExprs(pNode);
+  ASSERT(pProjectedExprs);
+
+  // Iterate each projected expression
+  if (pProjectedExprs->bHasChildren()) {
+
+    sPipeline->vCatSprint(
+        "    | project 0 \""
+        ""_Stz);
+
+    // get a plan node iterator
+    Parser::PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+
+      // append comma
+      if (bFirstExpr)
+        sPipeline->vCatSprint(" ,"_Stz);
+      else
+        bFirstExpr = true;
+
+      // get the next projExpr from the iterator
+      Parser::QueryNode *pProjectedExpr = static_cast<Parser::QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedExpr);
+      ASSERT(Parser::ProjectedExpr::bIsOfType(pProjectedExpr));
+
+      vAppendExpr(sPipeline, pProjectedExpr);
+    }
+    delete pIter;
+
+  }
+
+  sPipeline->vCatSprint(" \" \n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append scan Op to the pipeline                                             */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode)
+{
+  _static_
+
+  Parser::QueryNode *pTableRef = Parser::TableScanOp::pTableRef(pNode);
+  Stz *szTableName = Parser::TableRef::szTable(pTableRef);
+
+  sPipeline->vCatSprint(
+      "    scan %s\n"
+      ""_Stz,
+      szTableName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* visitor function for the plan graph walk                                   */
+/*----------------------------------------------------------------------------*/
+Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  _static_
+
+  Parser::QueryNode* pQueryNode = static_cast<Parser::QueryNode *>(pNode);
+
+  // We are only interested in the /__root__/plan subtree. Skip the others.
+  if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(Parser::C_PLAN_PATH))) {
+    //return Parser::GraphNav::WALK_SKIP_CHILDREN;
+    return Parser::GraphNav::WALK_CONTINUE;
+  }
+
+  // The root node can be useful for various graph navigation and manipulation.
+  // e.g. finding other nodes.
+  //Parser::RootNode* pPlanRoot = Parser::_pRootNode(pvArg);
+
+  String* sPipeline = (String*)pvArg;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SqlOperator
+
+  if (Parser::SqlOperator::bIsOfType(pQueryNode)) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // TableScanOp
+
+    if (Parser::TableScanOp::bIsOfType(pQueryNode)) {
+      vAppendScanOp(sPipeline, pQueryNode);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ProjectOp
+
+    else if (Parser::ProjectOp::bIsOfType(pQueryNode)) {
+      vAppendProjectOp(sPipeline, pQueryNode);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // other Op's
+    else {
+      RASSERT(0);
+    }
+
+  }
+
+  // Keep walking
+  return Parser::GraphNav::WALK_CONTINUE;
+}
 
 /*============================================================================*/
 /* end                                                                        */

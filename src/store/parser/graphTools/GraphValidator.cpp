@@ -702,12 +702,6 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //   and therefore its direct constraints) as well as against any additional indirect constraints
   //   applied in the declaration of the property "bar" too.
 
-  // TODO: If a property is defined of another object and that property has a __constraint container
-  //       (note, not the parent object) with children, then validate that:
-  //       1.) the constraint is not already specified in the definition (and its parents)
-  //       2.) the constraint is not incompatible with any constraints in the definition (and its parents)
-
-
   RASSERT(pNode);
   RASSERT(pNode->eGetClassNo() == CN_MUTABLEPLANNODE ||
                    pNode->eGetClassNo() == CN_QUERYNODE);
@@ -1070,10 +1064,10 @@ void GraphValidator::vRoot_2_1(PlanNode* pRootNode)
 {
   // ROOT-2: Validate the value field:
   // ROOT-2.1: the value field must not be null and it must contains a string.
-  RASSERT(pRootNode->getStringValue());
-  RASSERT(pRootNode->getValue().m_pText->bIsClassNo(CN_TEXT));
-  RASSERT(pRootNode->getValue().m_bMustFree);
-  RASSERT(pRootNode->getStringValue()->nLength() > 0);
+  RASSERT(pRootNode->szValue());
+  RASSERT(pRootNode->xValue().m_pText->bIsClassNo(CN_TEXT));
+  RASSERT(pRootNode->xValue().m_bMustFree);
+  RASSERT(pRootNode->szValue()->nLength() > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1160,11 +1154,11 @@ void GraphValidator::vPrim_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-2: Validate the value field:
   // PRIM-2.1: the value field must not be null and it contains a string.
-  RASSERT(pNode->getValue().m_pText);
-  RASSERT(pNode->getValue().m_pText->bIsClassNo(CN_TEXT));
-  RASSERT(pNode->getValue().m_bMustFree);
-  RASSERT(pNode->getStringValue());
-  RASSERT(pNode->getStringValue()->nLength());
+  RASSERT(pNode->xValue().m_pText);
+  RASSERT(pNode->xValue().m_pText->bIsClassNo(CN_TEXT));
+  RASSERT(pNode->xValue().m_bMustFree);
+  RASSERT(pNode->szValue());
+  RASSERT(pNode->szValue()->nLength());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1241,10 +1235,10 @@ void GraphValidator::vDefn_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
   if (!pNode->szType()) {
     RASSERT(
-        pNode->getValue().m_pText &&
-        pNode->getValue().m_pText->eGetClassNo() == CN_TEXT &&
-        pNode->getStringValue() &&
-        pNode->getStringValue()->nLength() > 0
+        pNode->xValue().m_pText &&
+            pNode->xValue().m_pText->eGetClassNo() == CN_TEXT &&
+            pNode->szValue() &&
+            pNode->szValue()->nLength() > 0
     );
   }
 }
@@ -1638,14 +1632,14 @@ void GraphValidator::vDefn_5_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
         if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
             pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH))) {
           // Value must be a string
-          RASSERT(pParamNode->getValue().m_pText);
-          RASSERT(pParamNode->getValue().m_bMustFree);
-          RASSERT(pParamNode->getStringValue());
-          RASSERT(pParamNode->getStringValue()->nLength() > 0);
+          RASSERT(pParamNode->xValue().m_pText);
+          RASSERT(pParamNode->xValue().m_bMustFree);
+          RASSERT(pParamNode->szValue());
+          RASSERT(pParamNode->szValue()->nLength() > 0);
 
         } else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))) {
           // Value must be an integer
-          RASSERT(pParamNode->getIntValue() >= 0);
+          RASSERT(pParamNode->iValue() >= 0);
 
         } else {
           NEVER_REACH
@@ -1737,17 +1731,17 @@ void GraphValidator::vDefn_5_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
       while (pParamIter->bHasNext()) {
         PlanNode* pParamNode = pParamIter->pNext();
 
-        RASSERT(pParamNode->getValue().m_pText);
-        RASSERT(pParamNode->getValue().m_bMustFree);
-        RASSERT(pParamNode->getStringValue());
-        RASSERT(pParamNode->getStringValue()->nLength() > 0);
-        RASSERT(pParamNode->getStringValue()->bBeginsWith(const_cast<Stz*>(C_PRIMITIVES_PATH)));
+        RASSERT(pParamNode->xValue().m_pText);
+        RASSERT(pParamNode->xValue().m_bMustFree);
+        RASSERT(pParamNode->szValue());
+        RASSERT(pParamNode->szValue()->nLength() > 0);
+        RASSERT(pParamNode->szValue()->bBeginsWith(const_cast<Stz*>(C_PRIMITIVES_PATH)));
 
         RASSERT(pParamNode->szType());
         RASSERT(pParamNode->szType()->bBeginsWith(const_cast<Stz*>(C_VALUE_OBJ_DEFN)));
 
         PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
-        PlanNode* pItem = GraphNav::pFind(pParamNode->getStringValue(), pRootNode);
+        PlanNode* pItem = GraphNav::pFind(pParamNode->szValue(), pRootNode);
 
         RASSERT(pItem);
         RASSERT_TYPE(pItem, CN_PRIMITIVENODE);
@@ -2246,7 +2240,8 @@ void GraphValidator::vDefn_5_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
           RASSERT(pParam->szName()->nLength() > 0);
           RASSERT(pParam->szType());
           RASSERT(pParam->szType()->nLength() > 0);
-          // TODO: Check that the value field is not null.
+          RASSERT(!pParam->bIsNullValue());
+          RASSERT(pParam->eValueType() != Value::VT_UNKNOWN);
         }
         delete pParamIter;
       }
@@ -2309,7 +2304,7 @@ void GraphValidator::vDefn_5_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
           RASSERT(pParam->m_xValue.m_pText->bIsClassNo(CN_TEXT));
           RASSERT(pParam->m_xValue.m_bMustFree);
 
-          Stz* szVal = pParam->getStringValue();
+          Stz* szVal = pParam->szValue();
           RASSERT(szVal);
           RASSERT(szVal->nLength() > 0);
           RASSERT(szVal->bBeginsWith(const_cast<Stz*>(C_DEFINITIONS_PATH)));
@@ -2379,7 +2374,7 @@ void GraphValidator::vDefn_5_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
           RASSERT(pParam->m_xValue.m_pText->bIsClassNo(CN_TEXT));
           RASSERT(pParam->m_xValue.m_bMustFree);
 
-          Stz* szVal = pParam->getStringValue();
+          Stz* szVal = pParam->szValue();
           RASSERT(szVal);
           RASSERT(szVal->nLength() > 0);
           RASSERT(szVal->bBeginsWith(const_cast<Stz*>(C_VALUE_OBJ_DEFN)));
@@ -3162,7 +3157,7 @@ void GraphValidator::vPlan_8_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-8.3: If a node's definition contains the "nullable" constraint
   //              then validate that the value field of the node can be null.
 
-  // TODO
+  // NB: the value field of all nodes can be made null. This is a default.
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3174,7 +3169,28 @@ void GraphValidator::vPlan_8_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-8.4: If a node's definition contains the "nonNullable" constraint
   //              then validate that the value field of the node cannot be null.
 
-  // TODO
+  // Get the root node
+  PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
+
+  // Get the definition node of pNode
+  DefinitionNode *pDefn = static_cast<DefinitionNode *>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+  RASSERT(!pDefn->szType());
+  RASSERT(pDefn->szPath() && pDefn->szPath()->nLength() > 0);
+
+  // Search for this constraint in the inheritance hierarchy
+  PlanNode *pConstraint = pGetConstraint(const_cast<Stz *>(C_CONSTRAINTS_NONNULLABLE_PATH),
+                                         pDefn,
+                                         pRootNode,
+                                         true);
+
+  if (!pConstraint) {
+    // We don't have this constraint in the inheritance hierarchy
+    return;
+  }
+
+  // We have the nonNullable constraint, so the value must not be null
+  RASSERT(!pNode->bIsNullValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3252,9 +3268,9 @@ void GraphValidator::vPlan_8_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
       RASSERT(pConstraintParam->m_xValue.m_pText);
       RASSERT(pConstraintParam->m_xValue.m_bMustFree);
-      RASSERT(pConstraintParam->getStringValue()->nLength() > 0);
+      RASSERT(pConstraintParam->szValue()->nLength() > 0);
 
-      if (pChild->szType()->bBeginsWith(pConstraintParam->getStringValue())) {
+      if (pChild->szType()->bBeginsWith(pConstraintParam->szValue())) {
         bMatchedType = true;
         break;
       }
@@ -3277,7 +3293,60 @@ void GraphValidator::vPlan_8_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //              then validate that the value field of the node must be of a type indicated
   //              by the constraint's parameter.
 
-  // TODO
+  // Get the root node
+  PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
+
+  // Get the definition node of pNode
+  DefinitionNode *pDefn = static_cast<DefinitionNode *>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+  RASSERT(!pDefn->szType());
+  RASSERT(pDefn->szPath() && pDefn->szPath()->nLength() > 0);
+
+  // Search for this constraint in the inheritance hierarchy
+  PlanNode *pConstraint = pGetConstraint(const_cast<Stz *>(C_CONSTRAINTS_VALUETYPE_PATH),
+                                         pDefn,
+                                         pRootNode,
+                                         true);
+
+  if (!pConstraint) {
+    // We don't have this constraint in the inheritance hierarchy
+    return;
+  }
+
+  // Get the parameter of this constraint. There could be parameters options provided.
+  RASSERT(pConstraint->nChildren() > 0);
+
+  b1 bMatch = false;
+  PlanNodeIter* pIter = pConstraint->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    PlanNode* pConstraintParam = pIter->pNext();
+    RASSERT(pConstraintParam->szType());
+    RASSERT(pConstraintParam->szType()->bBeginsWith(const_cast<Stz*>(C_STRING_OBJ_DEFN)));
+
+    RASSERT(!pConstraintParam->bIsNullValue());
+    Stz* szConstraintVal = pConstraintParam->szValue();
+    RASSERT(szConstraintVal->bBeginsWith(const_cast<Stz*>(C_SCALAR_PRIMITIVE)));
+
+    if (
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_STRING_PRIMITIVE))    && pNode->eValueType() == Value::VT_STRING)     ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_INTEGER_PRIMITIVE))   && pNode->eValueType() == Value::VT_INT)        ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_FLOAT_PRIMITIVE))     && pNode->eValueType() == Value::VT_FLOAT)      ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_BOOLEAN_PRIMITIVE))   && pNode->eValueType() == Value::VT_BOOLEAN)    ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_DATE_PRIMITIVE))      && pNode->eValueType() == Value::VT_DATE)       ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_TIME_PRIMITIVE))      && pNode->eValueType() == Value::VT_TIME)       ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_TIMESTAMP_PRIMITIVE)) && pNode->eValueType() == Value::VT_TIMESTAMP)  ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_INTERVAL_PRIMITIVE))  && pNode->eValueType() == Value::VT_INTERVAL))   {
+
+      bMatch = true;
+      continue;
+    }
+  }
+
+  delete pIter;
+
+  // We should have gotten a match
+  RASSERT(bMatch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3321,8 +3390,8 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 
   PlanNode* pConstraintParam = pConstraint->pFirstChild();
   RASSERT(pConstraintParam);
-  RASSERT(pConstraintParam->getIntValue() >= 0);
-  RASSERT(pNode->nChildren() == pConstraintParam->getIntValue());
+  RASSERT(pConstraintParam->iValue() >= 0);
+  RASSERT(pNode->nChildren() == pConstraintParam->iValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3469,7 +3538,50 @@ void GraphValidator::vPlan_8_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "nonNullable" constraint then validate
   //               that the value field of the property of the current node cannot be null.
 
-  // TODO
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "nonNullable" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_NONNULLABLE_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // Now we can check if the instantiation of the property meets this constraint.
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+
+    // Validate the constraint
+    RASSERT(!pProp->bIsNullValue());
+  }
+
+  delete pDefnPropIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3544,10 +3656,10 @@ void GraphValidator::vPlan_8_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
     RASSERT(pConstraintParam);
     RASSERT(pConstraintParam->m_xValue.m_pText);
     RASSERT(pConstraintParam->m_xValue.m_bMustFree);
-    RASSERT(pConstraintParam->getStringValue());
-    RASSERT(pConstraintParam->getStringValue()->nLength() > 0);
+    RASSERT(pConstraintParam->szValue());
+    RASSERT(pConstraintParam->szValue()->nLength() > 0);
 
-    Stz* szChildTypeDefn = pConstraintParam->getStringValue();
+    Stz* szChildTypeDefn = pConstraintParam->szValue();
 
     // Now we can check if the instantiation of the property meets this constraint.
     // First get the instantiated property.
@@ -3584,7 +3696,84 @@ void GraphValidator::vPlan_8_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               that the value field of the property of the current node must be of a type
   //               indicated by the constraint's parameter.
 
-  // TODO
+  if (pNode->nProperties() == 0) {
+    return;
+  }
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "valueType" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // Now we can check if the instantiation of the property meets this constraint.
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+    b1 bMatch = false;
+
+    // Iterate the parameters of this constraint and extract out their value
+    RASSERT(pConstraint->nChildren() > 0);
+
+    PlanNodeIter* pConstraintParamIter = pConstraint->pNewChildrenIter();
+    while (pConstraintParamIter->bHasNext()) {
+      PlanNode* pConstraintParam = pConstraintParamIter->pNext();
+
+      RASSERT(pConstraintParam);
+      RASSERT(pConstraintParam->eValueType() == Value::VT_STRING);
+      RASSERT(!pConstraintParam->bIsNullValue());
+      RASSERT(pConstraintParam->m_xValue.m_pText);
+      RASSERT(pConstraintParam->m_xValue.m_bMustFree);
+      RASSERT(pConstraintParam->szValue());
+      RASSERT(pConstraintParam->szValue()->nLength() > 0);
+
+      Stz* szValueTypeDefn = pConstraintParam->szValue();
+
+      // Compare to the property in question
+      if (
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_STRING_PRIMITIVE))    && pProp->eValueType() == Value::VT_STRING)     ||
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_INTEGER_PRIMITIVE))   && pProp->eValueType() == Value::VT_INT)        ||
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_FLOAT_PRIMITIVE))     && pProp->eValueType() == Value::VT_FLOAT)      ||
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_BOOLEAN_PRIMITIVE))   && pProp->eValueType() == Value::VT_BOOLEAN)    ||
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_DATE_PRIMITIVE))      && pProp->eValueType() == Value::VT_DATE)       ||
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_TIME_PRIMITIVE))      && pProp->eValueType() == Value::VT_TIME)       ||
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_TIMESTAMP_PRIMITIVE)) && pProp->eValueType() == Value::VT_TIMESTAMP)  ||
+          (szValueTypeDefn->bEqual(const_cast<Stz*>(C_INTERVAL_PRIMITIVE))  && pProp->eValueType() == Value::VT_INTERVAL))   {
+
+        bMatch = true;
+        continue;
+      }
+    }
+    delete pConstraintParamIter;
+
+    RASSERT(bMatch);
+  }
+
+  delete pDefnPropIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3636,7 +3825,7 @@ void GraphValidator::vPlan_8_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
     PlanNode* pConstraintParam = pConstraint->pFirstChild();
     RASSERT(pConstraintParam);
 
-    i8 iCount = pConstraintParam->getIntValue();
+    i8 iCount = pConstraintParam->iValue();
     RASSERT(iCount >= 0);
 
     // Now we can check if the instantiation of the property meets this constraint.

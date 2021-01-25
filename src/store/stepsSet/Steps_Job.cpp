@@ -48,7 +48,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.bideOperand"_Stz,      &Step::vJobBideOperand);
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
-  vAddStep("job.createBufferQueue"_Stz,&Step::vJobCreateBufferQueue);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
@@ -102,12 +101,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
 //  vAddStep("job.returnPipeline"_Stz,   &Step::vJobReturnPipeline);
-  vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
-  vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
-  vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
-  vAddStep("job.rowsProcessed!"_Stz,   &Step::vJobRowsProcessedStore);
-  vAddStep("job.rowsSkipped@"_Stz,     &Step::vJobRowsSkippedFetch);
-  vAddStep("job.rowsSkipped!"_Stz,     &Step::vJobRowsSkippedStore);
 
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
@@ -497,21 +490,6 @@ void Step::vJobCompleted(void)
   
   vGrabTaskLock();
   vScheduleDelete();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.createBufferQueue -- create the buffer queue in the job                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobCreateBufferQueue(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  RASSERT( ! pJob->pBufferQueue() );
-  pJob->vBufferQueue(new Queue);
   
   EXIT();
 }
@@ -1004,9 +982,6 @@ void Step::vJobParticipantResponseStore(void)
   // set node and error in the response
   pResponse->m_i_Node           = pParticipantJob->iParticipantNode();
   pResponse->m_sResponse       = pParticipantJob->szResponse();
-  pResponse->m_ixRowsProcessed = pParticipantJob->iRowsProcessed();
-  pResponse->m_ixRowsInvalid   = pParticipantJob->iRowsInvalid();
-  pResponse->m_ixRowsSkipped   = pParticipantJob->iRowsSkipped();
   pResponse->m_eErrorCode      = pParticipantJob->eJobError();
   
   if (pResponse->m_eErrorCode != EC_NONE)
@@ -1255,106 +1230,6 @@ void Step::vJobResponseStore(void)
 //
 //  EXIT();
 //}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowsInvalid@ -- fetch the rows invalid by the job from a node          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowsInvalidFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iRowsInvalid = pJob->iRowsInvalid();
-  m_pDataStack->vPushInt(iRowsInvalid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowsInvalid! -- store the rows invalid by the job from a node          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowsInvalidStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iRowsInvalid = m_pDataStack->iPopInt(__func__);
-  
-  //pJob->m_xNode[iNode].m_ixRowsInvalid = iRowsInvalid;
-  
-  pJob->vRowsInvalid(iRowsInvalid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowsProcessed@ -- fetch the rows processed by the job from a node      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowsProcessedFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iRowsProcessed = pJob->iRowsProcessed();
-  m_pDataStack->vPushInt(iRowsProcessed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowsProcessed! -- store the rows processed by the job from a node      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowsProcessedStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iRowsProcessed = m_pDataStack->iPopInt(__func__);
-  
-  //pJob->m_xNode[iNode].m_ixRowsProcessed = iRowsProcessed;
-  
-  pJob->vRowsProcessed(iRowsProcessed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowsSkipped@ -- fetch the rows skipped by the job from a node          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowsSkippedFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
- 
-  i8 iRowsSkipped = pJob->iRowsSkipped();
-
-  m_pDataStack->vPushInt(iRowsSkipped);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowsSkipped! -- store the rows skipped by the job from a node          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowsSkippedStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iRowsSkipped = m_pDataStack->iPopInt(__func__);
-  
-  //pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
-  
-  pJob->vRowsSkipped(iRowsSkipped);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* job.seedDecode -- decode seed for received job                             */

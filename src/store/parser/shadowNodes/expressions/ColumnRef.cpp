@@ -30,6 +30,17 @@ static Stz* C_COLUMN_NAME_PROP  = "columnName"_Stz;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Returns the columnName of the projectedExpr                                */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnRef::szColumnName(QueryNode* pNode)
+{
+  QueryNode *pColumnNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_COLUMN_NAME_PROP, pNode));
+
+  return pColumnNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Helper function to create expression column reference nodes.               */
 /*----------------------------------------------------------------------------*/
 QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
@@ -48,10 +59,10 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
   Value xColumnName(pColumnName);
 
   QueryNode* pColRef = new QueryNode(sName, C_COLREF_DEFN);
-  pColRef->vAppendProperty(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogName));
-  pColRef->vAppendProperty(new QueryNode(C_SCHEMA_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaName));
-  pColRef->vAppendProperty(new QueryNode(C_TABLE_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableName));
-  pColRef->vAppendProperty(new QueryNode(C_COLUMN_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), xColumnName));
+  pColRef->vAppendProperty(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogName)));
+  pColRef->vAppendProperty(new QueryNode(C_SCHEMA_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaName)));
+  pColRef->vAppendProperty(new QueryNode(C_TABLE_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableName)));
+  pColRef->vAppendProperty(new QueryNode(C_COLUMN_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xColumnName)));
 
   return pColRef;
 }
@@ -76,10 +87,10 @@ void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pTableNode);
   ASSERT(pColumnNode);
 
-  Stz* szCatalogName = pCatalogNode->getStringValue();
-  Stz* szSchemaName  = pSchemaNode->getStringValue();
-  Stz* szTableName   = pTableNode->getStringValue();
-  Stz* szColumnName  = pColumnNode->getStringValue();
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
+  Stz* szColumnName  = pColumnNode->szValue();
 
   if (szCatalogName) {
     sBuf.vConcat(szCatalogName);

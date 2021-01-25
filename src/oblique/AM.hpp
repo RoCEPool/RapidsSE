@@ -256,7 +256,7 @@ namespace OBLIQUE
     //
     static void vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddConstant(Stz* szName,Stz* szValue);
-    static Queue* pBufferQueue(Job* pJob);
+    static Queue* pOutputQueue(Session* pSession);
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vDropTaskLock(Task* pTask);
@@ -312,6 +312,7 @@ namespace OBLIQUE
     static Stz* szJobNm(Job* pJob);
     static Stz* szJobOpNm(Job* pJob);
     static Stz* szJobSeed(Job* pJob);
+    static Session* pJobSession(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
     static bool bJobWasReceived(Job* pJob);
 
@@ -327,8 +328,7 @@ namespace OBLIQUE
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
 
     static bool bIsOperandOoO(Operand* pOperand);
-    static void vIncRowsInvalid(Job* pJob);
-    static void vIncRowsProcessed(Job* pJob);
+
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);
@@ -436,6 +436,7 @@ namespace OBLIQUE
     static void vTaskDump(void);
     static void vTaskDump(Task* pTask);
     static Job* pTaskJob(void);
+    static Job* pTaskJob(Task* pTask);
     static void vTaskMutexLock(Task* pTask);
     static void vTaskMutexSignal(Task* pTask);
     static void vTaskMutexUnlock(Task* pTask);

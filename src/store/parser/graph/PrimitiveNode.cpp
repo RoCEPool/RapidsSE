@@ -19,11 +19,12 @@ __aFooterFunction(PrimitiveNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PrimitiveNode::PrimitiveNode(Stz* szName, Stz* szType, Value xValue,
+PrimitiveNode::PrimitiveNode(Stz* szName, Stz* szType, Value&& xValue,
                                PlanNodeList* pProperties, PlanNodeList* pChildren,
                                Stz* szPath)
-    : PlanNode(CN_PRIMITIVENODE, szName, szType, xValue, pProperties, pChildren),
-      m_sPath(szPath)
+    : PlanNode(CN_PRIMITIVENODE, szName, szType, static_cast<Value&&>(xValue),
+               pProperties, pChildren),
+               m_sPath(szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PRIMITIVENODE,_FOOTER_);
 
@@ -61,6 +62,8 @@ Stz* PrimitiveNode::szPath(void)
 /*----------------------------------------------------------------------------*/
 Stz* PrimitiveNode::szDescription(void)
 {
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
+  ASSERT(!m_xValue.m_bIsNull);
   ASSERT(m_xValue.m_pText);
   return m_xValue.m_pText->szGet();
 }

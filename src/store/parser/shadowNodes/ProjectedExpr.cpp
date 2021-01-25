@@ -28,6 +28,17 @@ static Stz* C_ALIAS_PROP = "alias"_Stz;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Returns the aliasName of the projectedExpr                                 */
+/*----------------------------------------------------------------------------*/
+Stz* ProjectedExpr::szAliasName(QueryNode* pNode)
+{
+  QueryNode *pAliasNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
+
+  return pAliasNode->szValue();;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Helper function to create ProjectedExpr nodes.                             */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectedExpr::pCreate(QueryNode* pExprNode, Text* pAlias)
@@ -51,7 +62,7 @@ QueryNode* ProjectedExpr::pCreate(QueryNode* pExprNode, Text* pAlias)
   pProjectedExpr->vAppendProperty(pExprNode);
 
   // Create the alias and append it as a property
-  QueryNode* pAliasNode  = new QueryNode(C_ALIAS_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), xAliasValue);
+  QueryNode* pAliasNode  = new QueryNode(C_ALIAS_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xAliasValue));
   pProjectedExpr->vAppendProperty(pAliasNode);
 
   return pProjectedExpr;
@@ -74,7 +85,7 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pExprNode);
   ASSERT(pAliasNode);
 
-  Stz* szAliasName = pAliasNode->getStringValue();
+  Stz* szAliasName = pAliasNode->szValue();
 
   // Describe the expression
   s2K sExprBuf;
@@ -88,14 +99,23 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the exprNode of the ProjectedExpr                                  */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectedExpr::pExprNode(QueryNode* pNode)
+{
+  QueryNode *pExprNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_EXPR_PROP), pNode));
+
+  return pExprNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the ProjectedExpr definition*/
 /*----------------------------------------------------------------------------*/
 b1 ProjectedExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_PROJECTEDEXPR_DEFN);
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

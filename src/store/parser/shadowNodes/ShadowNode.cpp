@@ -11,6 +11,7 @@
 #include "TableRef.hpp"
 #include "Expr.hpp"
 #include "ProjectedExpr.hpp"
+#include "ShadowRoot.hpp"
 
 using namespace Parser;
 
@@ -71,6 +72,9 @@ void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // ProjectedExpr
   else if (ProjectedExpr::bIsOfType(pNode))   { ProjectedExpr::vDescribe(pNode, sBuf);  }
+
+  // Root node
+  else if (ShadowRoot::bIsOfType(pNode))        { ShadowRoot::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here

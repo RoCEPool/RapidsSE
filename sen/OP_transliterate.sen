@@ -4,6 +4,33 @@
 
 " OP_transliterate.sen" .verbose
 
+/******************************************************************************/
+/* cascade experimental code (ray)                                            */
+/******************************************************************************/
+
+: cascadeJob \prompt
+
+  "
+  pipeline cascade
+  begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | metaScan tables
+    | rowToList
+    | output
+    | sink
+    | stageA
+
+  end ;
+  " session::cascade!
+  
+  true session::hasCascade!
+;
+
+
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
@@ -29,15 +56,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_OTHEROPERAND ...                                            */
+/* handler for ZK_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
-: transliterate_OtherOperand \handler
- 
+: transliterate_PlanOperand \handler
+
+ 0 locals| sPipeline |
+
   PipeIn[] to Operand[]
     nullptr to PipeIn[]
 
-  Operand[] nullptr to Operand[] sqlCompiler::transliterate
-  
+  Operand[] nullptr to Operand[] sqlCompiler::transliterate to sPipeline
+  sPipeline .
+
+  sPipeline session::cascade!
+
+  true session::hasCascade!
   
   true
 ;
@@ -65,7 +98,7 @@
   find: transliterate_CancelMarker ZK_CANCELMARKER op[].handler!
   find: transliterate_DataMarker   ZK_DATAPULSE    op[].handler!
   find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: transliterate_OtherOperand ZK_OTHEROPERAND op[].handler!
+  find: transliterate_PlanOperand  ZK_PLANOPERAND  op[].handler!
   find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

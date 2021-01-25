@@ -109,6 +109,7 @@ static Stz* C_TDEF_LISTFOLDER       = "__listFolder"_Stz;
 static Stz* C_TDEF_LISTINDEX        = "__listIndex"_Stz;
 static Stz* C_TDEF_LISTNODES        = "__listNodes"_Stz;
 static Stz* C_TDEF_LISTPARTITIONS   = "__listPartitions"_Stz;
+static Stz* C_TDEF_LOADRESULT       = "__loadResult"_Stz;
 static Stz* C_TDEF_LOCKSTATS        = "__lockStats"_Stz;
 static Stz* C_TDEF_NODEINFO         = "__nodeInfo"_Stz;
 static Stz* C_TDEF_PATHINFO         = "__pathInfo"_Stz;

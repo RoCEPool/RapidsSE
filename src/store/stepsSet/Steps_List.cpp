@@ -36,7 +36,7 @@ void Step::vListAddRowBuffer(void)
 {
   ENTRY();
   
-  vTrace("vListAddRowBuffer\n"_Stz);
+  //vTrace("vListAddRowBuffer\n"_Stz);
   
   RowBuffer* pRowBuffer = _pRowBuffer( m_pDataStack->pPopPtr(__func__) );
 
@@ -65,7 +65,7 @@ void Step::vListDelete(void)
 {
   ENTRY();
   
-  vTrace("vListDelete\n"_Stz);
+  //vTrace("vListDelete\n"_Stz);
   
   delete * m_pJob->pLogicUnit_job()->m_xpList;
 
@@ -81,7 +81,7 @@ void Step::vListGet(void)
 {
   ENTRY();
   
-  vTrace("vListGet\n"_Stz);
+  //vTrace("vListGet\n"_Stz);
   
   m_pDataStack->vPushPtr(* m_pJob->pLogicUnit_job()->m_xpList);
 
@@ -95,7 +95,7 @@ void Step::vListNew(void)
 {
   ENTRY();
   
-  vTrace("vListNew\n"_Stz);
+  //vTrace("vListNew\n"_Stz);
   
   m_pJob->pLogicUnit_job()->m_xpList = new RowSingleList;
 
@@ -109,7 +109,7 @@ void Step::vListPrint(void)
 {
   ENTRY();
   
-  vTrace("vListPrint\n"_Stz);
+  //vTrace("vListPrint\n"_Stz);
   
   RowSingleList* pRowSingleList = * m_pJob->pLogicUnit_job()->m_xpList;
 

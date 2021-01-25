@@ -43,7 +43,7 @@ static long  RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 //#define WITH_TRACE_API EndDefine           // trace api's
 //#define WITH_TRACE_DYNAMO EndDefine        // trace dynamo pipeline compiler
-#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
+//#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
 //#define WITH_TRACE_PURGING EndDefine       // trace purging
 

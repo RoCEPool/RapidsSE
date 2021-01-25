@@ -16,6 +16,7 @@
 #include "Op.hpp"
 #include "Procedure.hpp"
 #include "SessionArray.hpp"
+#include "Output.hpp"
 
 #include "TagConstants.h"
 
@@ -68,11 +69,30 @@ void Api::vFreeSession(Session* pSession)
 void Api::vDeleteJob(Session* pSession)
 {
   _static_
-  
+    
   Job* pJob = pSession->m_pSsnJob;
-  pSession->m_pSsnJob = nullptr;
+
+  if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
+    pSession->m_pOutput->vProcessBufferQueue(pSession);
+
+  pSession->m_pOutput->m_pOutputQueue->vReset();
+
   
+  
+  pSession->m_pSsnJob = nullptr;
   delete pJob;
+  
+  
+  if (pSession->m_pOutput->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
+    pSession->m_pOutput->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
+  
+  
+  
+  pSession->m_pOutput->m_bExitMarker = false;
+  
 }
 
 
@@ -85,7 +105,20 @@ void Api::vExecuteJob(Session* pSession)
   
   Job* pJob = pSession->m_pSsnJob;
   
-  Api::bSpawnJob_session(pJob);
+  for (;;) {
+  
+    Api::bSpawnJob_session(pJob);
+  
+    if (! pSession->bHasCascade())
+      return;
+  
+    pJob->vResetForReuse(pSession);
+    
+    pJob->vSetFromCascade(pSession->m_sCascade);
+    
+    pSession->vHasCascade(false);
+    pSession->vCascade(""_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,10 +161,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   //if (! AM::bPassesLowMem())
   //  return EC_LOW_MEMORY;
   
-  if (pLitTknVec)
-    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple, pLitTknVec);
-  else
-    pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);
+  pSession->m_pSsnJob = new Job(&pSession->m_xReqTuple);
   
   pSession->m_xReqTuple.m_iReqNo++;
 
@@ -193,7 +223,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   // this should go
   if (pSession->m_pSsnJob->bJobHasError()) {
     eRS eResponse = (eRS)pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
-    pSession->m_pSsnJob->vPrintResult(eResponse);
+    pSession->m_pSsnJob->vPrintResult(pSession,eResponse);
     Api::vDeleteJob(pSession);
     return EC_ZZZ_OTHER;
   }
@@ -828,8 +858,6 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 {
   _static_
   
-  
-
   // pSession cannot be null
   if (pSession == nullptr) {
     TRACE_API_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);

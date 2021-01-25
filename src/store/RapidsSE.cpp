@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "Output.hpp"
 #include "Session.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
@@ -161,7 +162,7 @@ eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,
   
   Job* pJob = pSession->pJob();
 
-  Operand* pOperand = pJob->m_xResult.pPopBufferQueue_blocking();
+  Operand* pOperand = pSession->m_pOutput->pPopBufferQueue_blocking(pSession);
 
   eCN eClassNo;
   eOM eOpMarker;
@@ -186,7 +187,7 @@ eEC RapidsSE::eProcessOperand(void* aSession, void** aaOperand)
 
   Job* pJob = pSession->pJob();
 
-  bool b = pJob->m_xResult.bProcessOperand(pOperand);
+  bool b = pSession->m_pOutput->bProcessOperand(pSession,pOperand);
   
   if (b)
     return EC_NONE;

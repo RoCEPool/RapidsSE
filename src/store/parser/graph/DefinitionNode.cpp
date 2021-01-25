@@ -19,10 +19,11 @@ __aFooterFunction(DefinitionNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DefinitionNode::DefinitionNode(Stz* szName, Stz* szType, Value xValue,
+DefinitionNode::DefinitionNode(Stz* szName, Stz* szType, Value&& xValue,
                                PlanNodeList* pProperties, PlanNodeList* pChildren,
                                Stz* szPath)
-    : PlanNode(CN_DEFINITIONNODE, szName, szType, xValue, pProperties, pChildren),
+    : PlanNode(CN_DEFINITIONNODE, szName, szType, static_cast<Value&&>(xValue),
+               pProperties, pChildren),
       m_sPath(szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEFINITIONNODE,_FOOTER_);
@@ -62,6 +63,7 @@ Stz* DefinitionNode::szPath(void)
 Stz* DefinitionNode::szDescription(void)
 {
   ASSERT(m_xValue.m_pText);
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
   return m_xValue.m_pText->szGet();
 }
 

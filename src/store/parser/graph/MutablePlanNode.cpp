@@ -17,9 +17,9 @@ __aFooterFunction(MutablePlanNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MutablePlanNode::MutablePlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
+MutablePlanNode::MutablePlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value&& xValue,
                                  PlanNodeList* pProperties, PlanNodeList* pChildren)
-    : PlanNode(eClassNo, szName, szType, xValue, pProperties, pChildren)
+    : PlanNode(eClassNo, szName, szType, static_cast<Value&&>(xValue), pProperties, pChildren)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTABLEPLANNODE,_FOOTER_);
 //
@@ -77,9 +77,9 @@ void MutablePlanNode::vSetType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* Sets the value component of this node                                      */
 /*----------------------------------------------------------------------------*/
-void MutablePlanNode::vSetValue(Value xValue)
+void MutablePlanNode::vSetValue(Value&& xValue)
 {
-  m_xValue = xValue;
+  m_xValue = static_cast<Value&&>(xValue);
 }
 
 /*----------------------------------------------------------------------------*/

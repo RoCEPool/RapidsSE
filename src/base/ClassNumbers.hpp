@@ -155,6 +155,7 @@ enum eCN : u2 // Class Number
   /* */ CN_NUMBAT,
   
   /* */ CN__O__,
+  /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
@@ -173,6 +174,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANNODEBUILDERLIST,
   /* */ CN_PLANNODEBUILDERSTACK,
   /* */ CN_PLANNODELIST,
+  /* */ CN_PLANOPERAND,
   /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
@@ -478,11 +480,12 @@ static Stz* aCN[]
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
    
   /* */ "_O__"_Stz,                 // CN__O__
+  /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
-  /* */ "OTGEROPERAND"_Stz,         // CN_OTHEROPERAND
+  /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
   /* */ "_P__"_Stz,                 // CN__P__
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
@@ -496,6 +499,7 @@ static Stz* aCN[]
   /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST
   /* */ "PLANNODEBUILDERSTAACK"_Stz,// CN_PLANNODEBUILDERSTACK
   /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
+  /* */ "PLANOPERAND"_Stz,          // CN_PLANOPERAND
   /* */ "POOLSNAPSHOT"_Stz,         // CN_OBJECTSNAPSHOT
   /* */ "POT"_Stz,                  // CN_POT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE

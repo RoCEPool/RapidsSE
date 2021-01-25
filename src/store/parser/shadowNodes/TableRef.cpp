@@ -28,6 +28,21 @@ static Stz* C_TABLE_PROP    = "tableName"_Stz;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get catalog name from tableRef                                             */
+/*----------------------------------------------------------------------------*/
+Stz* TableRef::szCatalog(QueryNode* pTableRef)
+{
+  ASSERT(bValidate(pTableRef));
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
+  ASSERT(pCatalogNode);
+
+  Stz* szCatalogName = pCatalogNode->szValue();
+
+  return szCatalogName;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Helper function to create tableRef nodes.                                  */
 /*----------------------------------------------------------------------------*/
 QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName)
@@ -45,9 +60,9 @@ QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTable
 
   // Create the tableRef object
   QueryNode* pTableRef = new QueryNode(C_TABLEREF_NAME, const_cast<Stz*>(C_TABLEREF_DEFN));
-  QueryNode* pCatalog  = new QueryNode(C_CATALOG_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), xCatalogValue);
-  QueryNode* pSchema   = new QueryNode(C_SCHEMA_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), xSchemaValue);
-  QueryNode* pTable    = new QueryNode(C_TABLE_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), xTableValue);
+  QueryNode* pCatalog  = new QueryNode(C_CATALOG_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogValue));
+  QueryNode* pSchema   = new QueryNode(C_SCHEMA_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaValue));
+  QueryNode* pTable    = new QueryNode(C_TABLE_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableValue));
 
   pTableRef->vAppendProperty(pCatalog);
   pTableRef->vAppendProperty(pSchema);
@@ -75,9 +90,9 @@ void TableRef::vDescribe(PlanNode* pNode, s2K& buf)
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
 
-  Stz* szCatalogName = pCatalogNode->getStringValue();
-  Stz* szSchemaName  = pSchemaNode->getStringValue();
-  Stz* szTableName   = pTableNode->getStringValue();
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
 
   if (szCatalogName) {
     buf.vConcat(szCatalogName);
@@ -119,13 +134,42 @@ b1 TableRef::bIsResolved(QueryNode* pTableRef)
   ASSERT(pSchemaNode);
   ASSERT(pTableNode);
 
-  Stz* szCatalogName = pCatalogNode->getStringValue();
-  Stz* szSchemaName  = pSchemaNode->getStringValue();
-  Stz* szTableName   = pTableNode->getStringValue();
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
 
   return (szCatalogName && szSchemaName && szTableName);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get schema name from tableRef                                             */
+/*----------------------------------------------------------------------------*/
+Stz* TableRef::szSchema(QueryNode* pTableRef)
+{
+  ASSERT(bValidate(pTableRef));
+
+  QueryNode* pSchemaNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
+  ASSERT(pSchemaNode);
+
+  Stz* szSchemaName = pSchemaNode->szValue();
+
+  return szSchemaName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table name from tableRef                                               */
+/*----------------------------------------------------------------------------*/
+Stz* TableRef::szTable(QueryNode* pTableRef)
+{
+  ASSERT(bValidate(pTableRef));
+
+  QueryNode* pTableNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
+  ASSERT(pTableNode);
+
+  Stz* szTableName = pTableNode->szValue();
+
+  return szTableName;
+}
 
 /*============================================================================*/
 /* end                                                                        */

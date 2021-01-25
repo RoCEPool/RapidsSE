@@ -9,6 +9,8 @@
 #include "PlanConstants.hpp"
 #include "QueryNode.hpp"
 #include "RootNode.hpp"
+#include "MetadataNode.hpp"
+#include "StatisticsNode.hpp"
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -27,41 +29,37 @@ using namespace Parser;
 /* Creates a new copy of the plan graph from a template. All the definition   */
 /* and primitive nodes are reused since they won't/can't be changed.          */
 /*----------------------------------------------------------------------------*/
-PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pRootNode)
+PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
 {
-  ASSERT(pRootNode);
+  ASSERT(pTemplateRoot);
 
   // Ugly hack to avoid a proliferation of const_casts or marking functions
   // as const (which will infect the rest of the system).
-  PlanNode* pRoot = const_cast<PlanNode*>(pRootNode);
+  PlanNode* pRoot = const_cast<PlanNode*>(pTemplateRoot);
 
   ASSERT(pRoot->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME)));
 
-  // Create a new copy of: /__root__/plan
-  QueryNode* pPlanNode = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot));
+  // Find each of the child nodes
+  PlanNode*       pPrimitives  = GraphNav::pFind(const_cast<Stz*>(C_PRIMITIVES_PATH), pRoot);
+  PlanNode*       pDefinitions = GraphNav::pFind(const_cast<Stz*>(C_DEFINITIONS_PATH), pRoot);
+  QueryNode*      pPlanNode    = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot));
+  MetadataNode*   pMetadata    = static_cast<MetadataNode*>(GraphNav::pFind(const_cast<Stz*>(C_METADATA_PATH), pRoot));
+  StatisticsNode* pStatistics  = static_cast<StatisticsNode*>(GraphNav::pFind(const_cast<Stz*>(C_STATISTICS_PATH), pRoot));
+  ASSERT(pPrimitives);
+  ASSERT(pDefinitions);
   ASSERT(pPlanNode);
-  ASSERT(pPlanNode->eGetClassNo() == CN_QUERYNODE);
+  ASSERT(pMetadata);
+  ASSERT(pStatistics);
 
-  PlanNode* pNewPlanChild = new QueryNode(*pPlanNode);
-
-  // Create a new list of children for the new root node. Copy all children except
-  // replace the /plan child with the new one we've created.
+  // Create a new list of children for the new root node.
+  // Add the shared primitives and definitions, but add in a new
+  // plan, metadata and statistics nodes.
   PlanNodeList* pNewChildList = new PlanNodeList();
-
-  PlanNodeIter* pIter = pRoot->pNewChildrenIter();
-  while (pIter->bHasNext()) {
-    PlanNode* pChild = pIter->pNext();
-
-    if (pChild == pPlanNode) {
-      // Copy in the new /plan child, not the old one
-      pNewChildList->vAppend(pNewPlanChild);
-
-    } else {
-      pNewChildList->vAppend(pChild);
-    }
-  }
-  delete pIter;
-
+  pNewChildList->vAppend(pPrimitives);
+  pNewChildList->vAppend(pDefinitions);
+  pNewChildList->vAppend(new QueryNode(*pPlanNode));
+  pNewChildList->vAppend(new MetadataNode(*pMetadata));
+  pNewChildList->vAppend(new StatisticsNode(*pStatistics));
 
   // Create a new list of properties for the new root node.
   PlanNodeList* pNewPropertyList = nullptr;
@@ -76,7 +74,7 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pRootNode)
   // Now we can create a new copy of: /__root__
   PlanNode* pNewRoot = new RootNode(pRoot->szName(),
                                     pRoot->szType(),
-                                    pRoot->getValue(),
+                                    static_cast<Value&&>(pRoot->pValue()->xDup()),
                                     pNewPropertyList,
                                     pNewChildList,
                                     const_cast<Stz*>(C_ROOT_PATH));

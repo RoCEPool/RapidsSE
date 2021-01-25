@@ -225,6 +225,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LISTINDEX"_Stz,     C_TDEF_LISTINDEX);
   vAddConstant("C_TDEF_LISTNODES"_Stz,     C_TDEF_LISTNODES);
   vAddConstant("C_TDEF_LISTPARTITIONS"_Stz,C_TDEF_LISTPARTITIONS);
+  vAddConstant("C_TDEF_LOADRESULT"_Stz,    C_TDEF_LOADRESULT);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,     C_TDEF_LOCKSTATS);
   vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PATHINFO"_Stz,      C_TDEF_PATHINFO);
@@ -295,116 +296,12 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("CK_CHILD"_Stz,    CK_CHILD);
   /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
 
-  // CN_ : class numbers
-  /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
-
-  /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   
-  /* 12 */ vAddConstant("CN_CMDLINEARGS"_Stz,    CN_CMDLINEARGS);
-  /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);
-  /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
-  
-  /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
-  /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
-  /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
-
-  /*    */ vAddConstant("CN_CRVBUFFER"_Stz,    CN_CRVBUFFER);
-  /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
-  /*    */ vAddConstant("CN_CSVBUFFER"_Stz,    CN_CSVBUFFER);
-  
-  /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
-  /* 19 */ vAddConstant("CN_DICSTACK"_Stz,     CN_DICSTACK);
-  /* 19 */ vAddConstant("CN_PIPELINE"_Stz,     CN_PIPELINE);
-  /* 20 */ vAddConstant("CN_DIR"_Stz,          CN_DIR);
-  
-  /* 21 */ vAddConstant("CN_FIFO"_Stz,         CN_FIFO);
-  /* 21 */ vAddConstant("CN_FILE"_Stz,         CN_FILE);
-  /*  5 */ vAddConstant("CN_FIPVAL"_Stz,       CN_FIPVAL);
-  /* 15 */ vAddConstant("CN_FREEBUFFER"_Stz,   CN_FREEBUFFER);
-  /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
-  /*    */ vAddConstant("CN_FREQDIST"_Stz,     CN_FREQDIST);
-
-  /* 26 */ vAddConstant("CN_GRID"_Stz,         CN_GRID);
-  
-  /* 27 */ vAddConstant("CN_HASHBUFFER"_Stz,   CN_HASHBUFFER);
-  /* 27 */ vAddConstant("CN_HASHMAP"_Stz,      CN_HASHMAP);
-  /* 27 */ vAddConstant("CN_HEAPBUFFER"_Stz,   CN_HEAPBUFFER);
-  
-  /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
-  /*    */ vAddConstant("CN_INDEXSTREAM"_Stz,  CN_INDEXSTREAM);
-  /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
-  /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
-
   /*    */ vAddConstant("CN_JOB"_Stz,                CN_JOB);
-  
-  /* 31 */ vAddConstant("CN_ENTWRK"_Stz,       CN_ENTWRK);
-  
-  /*    */ vAddConstant("CN_LEXICON"_Stz,      CN_LEXICON);
-  /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
-  /*    */ vAddConstant("CN_LOCAL"_Stz,        CN_LOCAL);
-  /* 47 */ vAddConstant("CN_LOCALSCHAIN"_Stz,     CN_LOCALSCHAIN);
-  /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
-  
-  /*    */ vAddConstant("CN_MARKER"_Stz,           CN_MARKER);
-  /*    */ vAddConstant("CN_MEDIUMPERSISTENT"_Stz, CN_MEDIUMPERSISTENT);
-  /*    */ vAddConstant("CN_MEDIUMTRANSIENT"_Stz,  CN_MEDIUMTRANSIENT);
-  /*    */ vAddConstant("CN_MEMTEST"_Stz,      CN_MEMTEST);
-  /* 60 */ vAddConstant("CN_MUTEX"_Stz,        CN_MUTEX);
-
-  /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
-  /*    */ vAddConstant("CN_NOW"_Stz,          CN_NOW);
-
-  /* 40 */ vAddConstant("CN_CHARSER"_Stz,      CN_CHARSER);
-  /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
-
-  /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
-  /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
-  /*    */ vAddConstant("CN_SYSTEMSCHEDULE"_Stz,       CN_SYSTEMSCHEDULE);
-  
-  /*    */ vAddConstant("CN_READAPI"_Stz,      CN_READAPI);
-  /*    */ vAddConstant("CN_RECORD"_Stz,       CN_RECORD);
-  /*    */ vAddConstant("CN_RESPONSE"_Stz,     CN_RESPONSE);
-  /*    */ vAddConstant("CN_RESPONSEVEC"_Stz,  CN_RESPONSEVEC);
-  /*    */ vAddConstant("CN_RESULT"_Stz,       CN_RESULT);
-
-  /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
-  /*    */ vAddConstant("CN_SESSIONARRAY"_Stz, CN_SESSIONARRAY);
-  /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
-  /* 61 */ vAddConstant("CN_SHORTCUT"_Stz,     CN_SHORTCUT);
-  /* 61 */ vAddConstant("CN_SHORTCUTVEC"_Stz,  CN_SHORTCUTVEC);
-  /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
-  /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
-  /* 64 */ vAddConstant("CN_SKIPNODE"_Stz,     CN_SKIPNODE);
-  /*    */ vAddConstant("CN_SMALLPERSISTENT"_Stz, CN_SMALLPERSISTENT);
-  /* 65 */ vAddConstant("CN_SMALLTRANSIENT"_Stz, CN_SMALLTRANSIENT);
-  /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
-  /* 67 */ vAddConstant("CN_STACK"_Stz,        CN_STACK);
-  /* 68 */ vAddConstant("CN_STATISTICS"_Stz,   CN_STATISTICS);
-  /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
-  /* 69 */ vAddConstant("CN_STEPTIMING"_Stz,   CN_STEPTIMING);
-  /*  1 */ vAddConstant("CN_STREAMDEF"_Stz,    CN_STREAMDEF);
-  /*  1 */ vAddConstant("CN_STREAMSET"_Stz,    CN_STREAMSET);
-  /*  1 */ vAddConstant("CN_STRING_T"_Stz,     CN_STRING_T);
-  /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
-
-  /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
-  /* 41 */ vAddConstant("CN_TABLEPTN"_Stz,     CN_TABLEPTN);
-  /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
-  /*    */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
-  /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
-  /*    */ vAddConstant("CN_TEMPNAME"_Stz,     CN_TEMPNAME);
-  /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
-  /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
-  /* 81 */ vAddConstant("CN_INPUT"_Stz,        CN_INPUT);
-  /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
-  /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);
-  
-  /* 88 */ vAddConstant("CN_WORD"_Stz,         CN_WORD);
-  
+  /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   /* 89 */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
+
   
-  /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
- 
   // CT_ : columne type
   /*  0 */ vAddConstant("CT_NONE"_Stz,      CT_NONE);
   /*  1 */ vAddConstant("CT_BOOLEAN"_Stz,   CT_BOOLEAN);
@@ -688,6 +585,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
   /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
+  /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
   /*  0 */ vAddConstant("OI_PATHINFO"_Stz,      OI_PATHINFO);
@@ -723,7 +621,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("RS_NONE"_Stz,                 RS_NONE);
   /*  0 */ vAddConstant("RS_LOCAL_RESPONSE"_Stz,       RS_LOCAL_RESPONSE);
   /*  0 */ vAddConstant("RS_DIS2PC_RESPONSE"_Stz,      RS_DIS2PC_RESPONSE);
-  /*  0 */ vAddConstant("RS_OLD_JOB_RESPONSE"_Stz,     RS_OLD_JOB_RESPONSE);
 
   // SS_ : seed strings
   /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
@@ -798,11 +695,12 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EXITMARKER"_Stz,      ZK_EXITMARKER);
   /*  0 */ vAddConstant("ZK_EXITEDMARKER"_Stz,    ZK_EXITEDMARKER);
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
+  /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
   /*  0 */ vAddConstant("ZK_OTHEROPERAND"_Stz,    ZK_OTHEROPERAND);
   /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);
-  /*  0 */ vAddConstant("ZK_PLANNODE"_Stz,        ZK_PLANNODE);
+  /*  0 */ vAddConstant("ZK_PLANOPERAND"_Stz,     ZK_PLANOPERAND);
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
@@ -818,61 +716,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // SIZEOF_ : C++ class sizes
-
-  
-  /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
-  /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
-  /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
-  /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
-  /*    */ vAddConstant("SIZEOF_EntBUFFER"_Stz,    sizeof(EntBuffer));
-  /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
-  /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));
-  /* 19 */ vAddConstant("SIZEOF_GRID"_Stz,         sizeof(Grid));
-  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Stz,   sizeof(HeapBuffer));
-  /*    */ vAddConstant("SIZEOF_INDEX"_Stz,        sizeof(Index));
-  
-  /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
-  /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
-  /*    */ vAddConstant("SIZEOF_MUTEX"_Stz,        sizeof(Mutex));
-  /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
-  
-  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Charser));
-  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
-  /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
-  /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
-  /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Ent));
-  /* 37 */ vAddConstant("SIZEOF_CRWBUFFER"_Stz,    sizeof(CrwBuffer));
-  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
-  
-  /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
-  
-  /* 46 */ //vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
-  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
-  /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
-  /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));
-
-  /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(TypedStack));
-  /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
-  /* 55 */ vAddConstant("SIZEOF_STEPTIMING"_Stz,   sizeof(StepTiming));
-  /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
-  /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
-  /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
-  
-  /*    */ vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
-  /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
-  
-  /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
-  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Input));
-  /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
-  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
-  
-  /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
-  /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
-  /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
-          
+    
   #ifdef WITH_APPLE
   vAddConstant("WITH_APPLE"_Stz,(i8)true);
   #else

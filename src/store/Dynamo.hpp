@@ -1,7 +1,11 @@
 /*============================================================================*/
-/* Dynamo.hpp -- Dynamo (pipeline plan compiler)                               */
+/* Dynamo.hpp -- Dynamo (pipeline plan compiler)                              */
 /*============================================================================*/
 #pragma once
+
+#include "RootNode.hpp"
+#include "GraphNav.hpp"
+#include "QueryNode.hpp"
 
 namespace STORE
 {
@@ -27,20 +31,17 @@ namespace STORE
   
     Dynamo(Stz* sCmd, Job* pJob);
    ~Dynamo(void) noexcept(false);
-  
-    static bool bCmdToPipeline(String* pAsPipelineStmt,
-                               TokenVec* pFromTokenVec);
-  
-    static ePX eTopoloyX(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
-    
 
+    static bool bCmdToPipeline(String* pAsPipelineStmt, TokenVec* pFromTokenVec);
+    static bool bPlanToPipeline(String* pAsPipelineStmt, Parser::RootNode* pPlanRoot);
+    static ePX eTopoloyX(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
 
     bool bCompile(void);
     PipelineSpec* pPipelineSpec(void);
     void vShow(void);
 
   private:
-  
+
     //
     // phase 1
     //
@@ -76,7 +77,18 @@ namespace STORE
     void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
 
-     
+    //
+    // plan transliteration
+    //
+    static void vAppendExpr(String* sPipeline, Parser::QueryNode* pNode);
+    static void vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode);
+    static void vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode);
+
+    static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
+
+    static Parser::GraphNav::eWalkCtrl vVisitorPlan(Parser::PlanNode* pNode,
+                                                    s256& sPath, i8 iDepth, void* pvArg);
+
     Footer* aFooter(void);
   };
 

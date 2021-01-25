@@ -90,7 +90,10 @@ SkipListNL::~SkipListNL(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  //ASSERT( ! m_nObjects ); // logic check
+  if (! m_pSlabAllocator)
+    delete m_pHead;
+  
+  ASSERT(m_pSlabAllocator || ! m_nObjects ); // logic check
 
   if (m_pSlabAllocator)
     delete m_pSlabAllocator;

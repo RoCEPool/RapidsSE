@@ -8,9 +8,21 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "OpSpec.hpp"
+#include "StageSpec.hpp"
+#include "PipelineSpec.hpp"
+#include "Pipeline.hpp"
+#include "Dynamo.hpp"
+
 #include "PlanNode.hpp"
 #include "RootNode.hpp"
-#include "OtherOperand.hpp"
+#include "PlanDefinitionParser.hpp"
+#include "SqlPlanner.hpp"
+#include "ShadowNode.hpp"
+#include "ShadowRoot.hpp"
+#include "PlanConstants.hpp"
+#include "GraphNav.hpp"
+#include "PlanOperand.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -31,22 +43,20 @@ void Step::vSqlCompilerNameValidate(void)
   
   //vTrace("\nStep::vSqlCompilerNameValidate\n"_Stz);
   
-  OtherOperand* pOtherOperand = _pOtherOperand(m_pDataStack->pPopPtr(__func__));
-  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pOtherOperand->pObject();
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
 
-  
-  Parser::RootNode* pPlanNode_root2 = new Parser::RootNode(nullptr);
-  OtherOperand* pOtherOperand2 = new OtherOperand(pPlanNode_root2);
+  // TODO: Walk the graph and validate that each name can be resolved uniquely.
+  //       i.e. each table is known and unambiguous, each column refers to tables
+  //       that are being used, etc.
+  // TODO: Fill in the catalog/schema/table fields of the columnRef and tableRefs
+  //       where applicable.
 
-  
-  //vTrace("  NameValidate(RootNode %p)-> RootNode %p\n"_Stz,
-  //       pPlanNode_root,pPlanNode_root2);
 
-  delete pOtherOperand;
-  delete pPlanNode_root;
-
-  
-  m_pDataStack->vPushPtr(pOtherOperand2);
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
 
   EXIT();
 }
@@ -59,15 +69,34 @@ void Step::vSqlCompilerParser(void)
   ENTRY();
   
   //vTrace("\nStep::vSqlCompilerParser\n"_Stz);
-  
+
+  // Get the original SQL statement entered
   s4K sSqlStatement;
   m_pDataStack->vPopStr(sSqlStatement,__func__);
 
-  Parser::RootNode* pPlanNode_root = new Parser::RootNode(nullptr);
-  
-  OtherOperand* pOtherOperand = new OtherOperand(pPlanNode_root);
-  
-  m_pDataStack->vPushPtr(pOtherOperand);
+  // Read in and parse the plan graph definitions
+  const Parser::PlanNode* pGraphTemplate = Parser::PlanDefinitionParser::pGraphTemplate();
+
+  if (pGraphTemplate == nullptr) {
+    // TODO: handle error
+//    return false;
+  }
+
+  // Parse the SQL command.
+  Parser::SqlPlanner* pPlanner = new Parser::SqlPlanner();
+  Parser::PlanNode* pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
+  delete pPlanner;
+
+  if (!pPlanRoot) {
+    // TODO: handle error
+  }
+
+  s48K sExplainBuf;
+  Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
+  vTrace("%s\n"_Stz, sExplainBuf.szStz());
+
+  PlanOperand* pPlanOperand = new PlanOperand(pPlanRoot);
+  m_pDataStack->vPushPtr(pPlanOperand);
 
   //vTrace("  antlr(%s) -> RootNode %p\n"_Stz,
   //       sSqlStatement.szStz(),pPlanNode_root);
@@ -84,15 +113,21 @@ void Step::vSqlCompilerTransliterate(void)
   
   //vTrace("\nStep::vSqlCompilerTransliterate\n"_Stz);
 
-  OtherOperand* pOtherOperand = _pOtherOperand(m_pDataStack->pPopPtr(__func__));
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
 
-  Parser::RootNode* pPlanNode_root = (Parser::RootNode*)pOtherOperand->pObject();
+  s48K sPipelineStmt;
 
-  //vTrace("  Transliterate(RootNode %p) -> nil\n"_Stz,pPlanNode_root);
+  // Walk the graph and produce a pipeline statement.
+  bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
+  ASSERT(bTransliterate);
 
-  delete pOtherOperand;
-  delete pPlanNode_root;
-  
+  // return the pipeline
+  m_pDataStack->vPushStr(sPipelineStmt);
+
+  delete pPlanOperand;
+  delete pPlanRoot;
+
   EXIT();
 }
 

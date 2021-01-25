@@ -55,10 +55,23 @@ EndDefine
 /*----------------------------------------------------------------------------*/
 /* RASSERT_TYPE macro                                                         */
 /*----------------------------------------------------------------------------*/
+//#define RASSERT_TYPE(pOBJECT,eEXPECTINGCLASS) \
+//{ \
+//  if (pOBJECT) { \
+//    eCN eGotClass = pOBJECT->eGetClassNo(); \
+//    if (eGotClass != eEXPECTINGCLASS) { \
+//      BASE::vThrowType2(FK_TYPE,VL_FATAL, \
+//                        __func__,__FILE__,__LINE__, \
+//                        pOBJECT,eEXPECTINGCLASS,eGotClass); \
+//    } \
+//  } \
+//} \
+//EndDefine
+
 #define RASSERT_TYPE(pOBJECT,eCLASS) \
   if (pOBJECT && eCLASS != pOBJECT->eGetClassNo()) \
-    BASE::vThrowType(FK_TYPE,VL_FATAL,\
-                            __func__,__FILE__,__LINE__,\
+    BASE::vThrowType(FK_TYPE,VL_FATAL, \
+                            __func__,__FILE__,__LINE__, \
                             pOBJECT,eCLASS); \
 EndDefine
 

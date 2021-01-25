@@ -69,6 +69,10 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
   m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
   m_nMaxErrors           = pFmt->m_nMaxErrors;
 
+  m_iRowsProcessed = 0;
+  m_iRowsInvalid   = 0;
+  m_iRowsSkipped   = 0;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   
   vNewRowBuffer();
@@ -124,6 +128,36 @@ RowBuffer* ToRow::pFullRowBuffer(void)
   }
   
   return pFullRiwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rows processed                                                         */
+/*----------------------------------------------------------------------------*/
+i8 ToRow::iRowsProcessed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+
+  return m_iRowsProcessed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rows processed                                                         */
+/*----------------------------------------------------------------------------*/
+i8 ToRow::iRowsInvalid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+
+  return m_iRowsInvalid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rows skipped                                                           */
+/*----------------------------------------------------------------------------*/
+i8 ToRow::iRowsSkipped(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+
+  return m_iRowsSkipped;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2864,7 +2898,7 @@ L_FieldError:
   }
   
   // increment invalid records
-  AM::vIncRowsInvalid(m_pPipelineJob);
+  m_iRowsInvalid++;
   m_i_Rec++;
   
   // clear error code
@@ -2937,8 +2971,7 @@ L_RecordEndLineEnd:
   }
 
   // increment records processed
-  AM::vIncRowsProcessed(m_pPipelineJob);
-
+  m_iRowsProcessed++;
   
   goto L_AdvanceNextRecord;                                  // end of endRecord
   

@@ -21,7 +21,7 @@ namespace Parser
     void* operator new(size_t);
     void  operator delete(void*);
 
-    PrimitiveNode(Stz* szName, Stz* szType, Value xValue,
+    PrimitiveNode(Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren, Stz* sPath);
     virtual ~PrimitiveNode(void);
 

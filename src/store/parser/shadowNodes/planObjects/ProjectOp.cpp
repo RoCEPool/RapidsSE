@@ -36,8 +36,7 @@ QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
   ASSERT(pSelectItems->nItems() > 0);
 
   // Create the projectedExprs property of the ProjectOp
-  Value xValue;
-  QueryNode* pProjectedExprs = new QueryNode(C_PROJECTEDEXPRS_PROP, const_cast<Stz*>(C_PROJECTEDEXPRS_DEFN), xValue);
+  QueryNode* pProjectedExprs = new QueryNode(C_PROJECTEDEXPRS_PROP, const_cast<Stz*>(C_PROJECTEDEXPRS_DEFN));
 
   QueryNode* pItem;
   while ((pItem = pSelectItems->pPop()) != nullptr) {
@@ -143,6 +142,18 @@ void ProjectOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 b1 ProjectOp::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_PROJECTOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the projectedExprs node of the projectOp                           */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pProjectedExprs(QueryNode* pNode)
+{
+  Parser::PlanNode *pProjExprsNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDEXPRS_PROP), pNode));
+  QueryNode *pProjExprs = static_cast<QueryNode *>(pProjExprsNode);
+
+  return pProjExprs;
 }
 
 /*============================================================================*/

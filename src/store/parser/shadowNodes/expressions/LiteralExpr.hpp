@@ -18,7 +18,7 @@ namespace Parser
     LiteralExpr();
 
   public:
-    static QueryNode* pCreate(eET eType, Value xVal);
+    static QueryNode* pCreate(eET eType, Value& xVal);
 
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
 

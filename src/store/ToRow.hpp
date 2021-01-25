@@ -40,6 +40,10 @@ namespace STORE
 
     i8   m_bAllowNonPrintable;   // allow non-printable
     i8   m_nMaxErrors;           // maximum number of allowable errors
+  
+    i8   m_iRowsProcessed;       // rows processed
+    i8   m_iRowsInvalid;         // invalid rows detected
+    i8   m_iRowsSkipped;         // rows skipped
 
     // must be last
     Footer m_xFooter;
@@ -57,6 +61,11 @@ namespace STORE
 
     RowBuffer* pDanglingRowBuffer(void);
     RowBuffer* pFullRowBuffer(void);
+  
+    i8 iRowsProcessed(void);
+    i8 iRowsInvalid(void);
+    i8 iRowsSkipped(void);
+
 
   private:
     void vNewRowBuffer(void);

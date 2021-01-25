@@ -31,7 +31,7 @@ void Step::vAddSteps_RegPipein(void)
   vAddStep("PipeIn[].next"_Stz,           &Step::vRegPipeinNext);
   vAddStep("PipeIn[].peek"_Stz,           &Step::vRegPipeinPeek);
   vAddStep("PipeIn[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
-  vAddStep("PipeIn[].pipeToJob"_Stz,      &Step::vRegPipeinPipeToJob);
+  vAddStep("PipeIn[].pipeToOutput"_Stz,   &Step::vRegPipeinPipeToOutput);
   vAddStep("PipeIn[].set"_Stz,            &Step::vRegPipeinSet);
   vAddStep("PipeIn[].writeProfile"_Stz,   &Step::vRegPipeinWriteProfile);
 }
@@ -151,9 +151,9 @@ void Step::vRegPipeinPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeIn[].pipeToJob -- append operand onto the pipeline job buffer queue    */
+/* PipeIn[].pipeToOutput -- append operand onto the pipeline job buffer queue */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinPipeToJob(void)
+void Step::vRegPipeinPipeToOutput(void)
 {
   ENTRY();
   
@@ -161,7 +161,7 @@ void Step::vRegPipeinPipeToJob(void)
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeToJob(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
+  pOp->vPipeToOutput(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
   
   ( m_pJob->pLogicUnit_job() )->m_xpPipein = nullptr;
   

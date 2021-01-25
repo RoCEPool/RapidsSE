@@ -24,6 +24,8 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "Output.hpp"
+#include "Session.hpp"
 
 #include "TagConstants.h"
 
@@ -107,7 +109,66 @@ void Job::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for job__find)                                                */
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job::Job(ReqTuple* aReqTuple)
+: Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
+, m_xReqTuple(aReqTuple)
+, CRM<Job>(this)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+    
+  // -- a -------------------
+  // m_xReqTuple
+  // m_sJobNm;
+  m_iParentId = C_UNKNOWN;
+  m_oTimer.vStart();
+
+  // -- b -------------------
+  m_bWasReceived     = false;
+  m_iParticipantNode = C_UNKNOWN;
+  m_bNormalSides     = true;
+  
+  // -- c -------------------
+  m_eJobKind  = JK_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobPhase = JP_NONE;
+  m_eJobState = JS_RUNNING;
+  
+  // -- d -------------------
+  m_pLogicUnit_job = nullptr;
+  // m_oJobTags
+  // m_xResult
+
+  // -- e -------------------
+  m_pPipeline = nullptr;
+  m_pOp       = nullptr;
+  m_pOuterOp  = nullptr;
+  m_pInputOp  = nullptr;
+
+  // -- f -------------------
+  // m_ixErrors;
+  m_pOriginatingTask = nullptr;
+  m_iOriginatingId   = C_UNKNOWN;
+
+  // -- g -------------------
+  m_oAcksRmg_2pc.vCheckInit();
+  m_eSeed      = SS_ENUMS;
+  m_i_TablePtn = C_UNKNOWN;
+  m_pTaskJ     = nullptr;
+
+  // -- -- -- -- -- --
+    
+  vIncStepNo(); ++ gixJob;
+  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
+              "|gixJob=%lld|"_Stz, //!format-LogJob
+              * gixJob);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : Focal(eClassNo,C_UNKNOWN,C_UNKNOWN)
@@ -163,60 +224,6 @@ Job::Job(eCN eClassNo)
               * gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Job::Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec)
-: Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
-, m_xReqTuple(aReqTuple)
-, CRM<Job>(this)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
-  
-  // m_xReqTuple
-
-  m_iParentId = C_UNKNOWN;
-  m_eSeed     = SS_ENUMS;
-  m_i_TablePtn    = C_UNKNOWN;
-  
-  m_eJobKind  = JK_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eJobList  = JL_NONE;
-  m_eJobState = JS_RUNNING;
-  
-  m_bNormalSides = true; //
-  m_bWasReceived = false;
-  
-  m_oTimer.vStart();
-  //m_oAcksRmg
-  
-  m_pLogicUnit_job = nullptr;
-  
-  m_pTaskJ = nullptr;
-  m_pOriginatingTask = nullptr;
-  m_iOriginatingId = C_UNKNOWN;
-
-  m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRmg_2pc.vCheckInit();
-  
-  m_pPipeline = nullptr;
-  m_pOp       = nullptr;
-  m_pOuterOp  = nullptr;
-  m_pInputOp  = nullptr;
-
-  //m_xResult
-  // -- -- -- -- -- --
-  
-  SP_Gid spId;
-  
-  vIncStepNo(); ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "|gixJob=%lld|"_Stz, //!format-LogJob
-              * gixJob);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -400,30 +407,6 @@ bool Job::bAcksRmgDec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vAddRowsProcessed(i8 iRowsProcessed)
-{
-  m_xResult.m_xJobResponse.m_ixRowsProcessed += iRowsProcessed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vAddRowsInvalid(i8 iRowsInvalid)
-{
-  m_xResult.m_xJobResponse.m_ixRowsInvalid += iRowsInvalid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vAddRowsSkipped(i8 iRowsISkipped)
-{
-  m_xResult.m_xJobResponse.m_ixRowsSkipped += iRowsISkipped;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this job has a <byPrompt> tag                                      */
 /*----------------------------------------------------------------------------*/
 bool Job::bByPromptTag(void)
@@ -433,26 +416,6 @@ bool Job::bByPromptTag(void)
   bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
   
   return bByPrompt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the buffer queue in the result                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vBufferQueue(Queue* pBufferQueue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_pOriginBufferQueue = pBufferQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the buffer queue in the result                                         */
-/*----------------------------------------------------------------------------*/
-Queue* Job::pBufferQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_pOriginBufferQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -473,7 +436,6 @@ void Job::vContentDump(void)
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"
-         "m_pBufferQueue=%p\n"
          "m_pPipeline=%p\n"_Stz,
          this,
          aCN[eGetClassNo()],
@@ -493,7 +455,6 @@ void Job::vContentDump(void)
          m_iOriginatingId,
          
          nReferences(),
-         m_xResult.m_pOriginBufferQueue,
          m_pPipeline,
          C_VARGS_END
          );
@@ -583,22 +544,6 @@ bool Job::bHasTag_time(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vIncRowsProcessed(void)
-{
-  m_xResult.m_xJobResponse.m_ixRowsProcessed.iInc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc rows processed                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vIncRowsInvalid(void)
-{
-  m_xResult.m_xJobResponse.m_ixRowsInvalid.iInc();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the input operator                                                     */
 /*----------------------------------------------------------------------------*/
 Op* Job::pInputOp(void)
@@ -639,13 +584,13 @@ void Job::vJobError(eEC eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_xResult.m_bJobHasError) {
+  if (m_xResult.m_xJobResponse.m_bJobHasError) {
     //vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
     //  aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
   }
   else {
     m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
-    m_xResult.m_bJobHasError = true;
+    m_xResult.m_xJobResponse.m_bJobHasError = true;
   }
 }
 
@@ -664,7 +609,7 @@ eEC Job::eJobError(void)
 /*----------------------------------------------------------------------------*/
 bool Job::bJobHasError(void)
 {
-  return m_xResult.m_bJobHasError;
+  return m_xResult.m_xJobResponse.m_bJobHasError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,7 +633,7 @@ eJK Job::eJobKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job kind                                                          */
+/* set the job kind                                                           */
 /*----------------------------------------------------------------------------*/
 void Job::vJobKind(eJK eJobKind)
 {
@@ -728,7 +673,7 @@ Stz* Job::szJobNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job name                                                          */
+/* set the job name                                                           */
 /*----------------------------------------------------------------------------*/
 void Job::vJobNm(Stz* szJobNm)
 {
@@ -1095,9 +1040,9 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
 /*----------------------------------------------------------------------------*/
 /* print result                                                               */
 /*----------------------------------------------------------------------------*/
-void Job::vPrintResult(eRS eResponse)
+void Job::vPrintResult(Session* pSession, eRS eResponse)
 {
-  m_xResult.vPrint(eResponse);
+  m_xResult.vPrint(pSession,eResponse);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1143,51 +1088,56 @@ ResponseVec* Job::pOriginResponseVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rows skipped                                                           */
+/* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
-i8 Job::iRowsProcessed(void)
+void Job::vResetForReuse(Session* pSession)
 {
-  return *m_xResult.m_xJobResponse.m_ixRowsProcessed;
-}
+  _precondition_(_ADDRESS_,_MAGIC_);
 
-/*----------------------------------------------------------------------------*/
-/* set rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vRowsProcessed(i8 iRowsProcessed)
-{
-  m_xResult.m_xJobResponse.m_ixRowsProcessed = iRowsProcessed;
-}
+  vDebugPoint();
+  
+  // -- a -------------------
+  // m_xReqTuple
+  // m_sJobNm;
+  // m_iParentId = C_UNKNOWN;
+  // m_oTimer.vStart();
 
-/*----------------------------------------------------------------------------*/
-/* get rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-i8 Job::iRowsSkipped(void)
-{
-  return *m_xResult.m_xJobResponse.m_ixRowsSkipped;
-}
+  // -- b -------------------
+  m_bWasReceived     = false;
+  m_iParticipantNode = C_UNKNOWN;
+  m_bNormalSides     = true;
 
-/*----------------------------------------------------------------------------*/
-/* set rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vRowsSkipped(i8 iRowsSkipped)
-{
-  m_xResult.m_xJobResponse.m_ixRowsSkipped = iRowsSkipped;
-}
+  // -- c -------------------
+  m_eJobKind  = JK_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobPhase = JP_NONE;
+  m_eJobState = JS_RUNNING;
 
-/*----------------------------------------------------------------------------*/
-/* get rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-i8 Job::iRowsInvalid(void)
-{
-  return *m_xResult.m_xJobResponse.m_ixRowsInvalid;
-}
+  // -- d -------------------
+  delete m_pLogicUnit_job; m_pLogicUnit_job = nullptr;
+  // m_oJobTags
+  // m_xResult ???
+  
+  // -- e -------------------
+  delete m_pPipeline; m_pPipeline = nullptr;
+  delete m_pOp;       m_pOp       = nullptr;
+  delete m_pOuterOp;  m_pOuterOp  = nullptr;
+  delete m_pInputOp;  m_pInputOp  = nullptr;
 
-/*----------------------------------------------------------------------------*/
-/* set rows skipped                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vRowsInvalid(i8 iRowsInvalid)
-{
-  m_xResult.m_xJobResponse.m_ixRowsInvalid = iRowsInvalid;
+  // -- f -------------------
+  m_ixErrors = 0;
+  m_pOriginatingTask = nullptr;
+  m_iOriginatingId   = C_UNKNOWN;
+
+  // -- g -------------------
+  m_oAcksRmg_2pc.vReset();
+  m_eSeed      = SS_ENUMS;
+  m_i_TablePtn = C_UNKNOWN;
+  m_pTaskJ = nullptr;
+
+  pSession->m_pOutput->vDrainBufferQueue(pSession);
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1195,7 +1145,7 @@ void Job::vRowsInvalid(i8 iRowsInvalid)
 /*----------------------------------------------------------------------------*/
 void Job::vReport(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
@@ -1255,6 +1205,20 @@ Session* Job::pSession(void)
   Session* pSession = AM::pSessionGet(&m_xReqTuple);
 
   return pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job to execute cascade command                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vSetFromCascade(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oJobTags.vReplace(C_TAG_CMD,szCascade);
+
+  vSeed(SS_SEED_REQ);
+
+  //m_oJobTags.vDumpSet(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1408,14 +1372,9 @@ void Job::vWasReceived(bool bWasReceived)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* check if the cluster has started                                           */

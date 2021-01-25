@@ -88,8 +88,10 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Session.hpp"
 #include "SessionArray.hpp"
 #include "XmitOperand.hpp"
+#include "Output.hpp"
 
 #include "TagConstants.h"
 
@@ -273,17 +275,13 @@ void AM::vAddConstant(Stz* szName,Stz* szValue) {
 void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
-Queue* AM::pBufferQueue(Job* pJob) {
-  
-  Job* pJob_Originating;
-  
-  if (pJob->eJobKind() == JK_LOCAL)
-    pJob_Originating = pJob;
-  else
-    pJob_Originating = pJob->m_pOriginatingTask->pJob();
-  
-  return pJob_Originating->m_xResult.m_pOriginBufferQueue;
+
+Queue* AM::pOutputQueue(Session* pSession) {
+    
+  return pSession->m_pOutput->m_pOutputQueue;
 }
+
+
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }
@@ -444,6 +442,19 @@ Stz* AM::szJobOpNm(Job* pJob)
 Stz* AM::szJobSeed(Job* pJob)
 {
   return pJob->szSeed();
+}
+
+
+Session* AM::pJobSession(Job* pJob)
+{
+  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  
+  Session* pSession = nullptr;
+  
+  if (iSessionId != C_UNKNOWN)
+    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+
+  return pSession;
 }
 
 
@@ -1683,9 +1694,11 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       
-      switch(pInfoSet->eOpInfoSet()) {
+      eOI eInfoSet = pInfoSet->eOpInfoSet();
+      switch(eInfoSet) {
         case OI_CALLPIPELINE:   eOperand = ZK_CALLPIPELINE;   break;
         case OI_COUNTINFO:      eOperand = ZK_COUNTINFO;      break;
+        case OI_LOADRESULT:     eOperand = ZK_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = ZK_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
         case OI_PATHINFO:       eOperand = ZK_PATHINFO;       break;
@@ -1703,26 +1716,27 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     {
       Marker* pMarker = _pMarker(pOperand);
 
-     switch(pMarker->eOpMarker()) {
-     
-       case OM_CANCELMARKER:  eOperand = ZK_CANCELMARKER;  break;
-       case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;
-       case OM_DESTROYMARKER: eOperand = ZK_DESTROYMARKER; break;
-       case OM_EOSMARKER:     eOperand = ZK_EOSMARKER;     break;
-       case OM_ERRORMARKER:   eOperand = ZK_ERRORMARKER;   break;
-       case OM_ERROREDMARKER: eOperand = ZK_ERROREDMARKER; break;
-       case OM_EXITMARKER:    eOperand = ZK_EXITMARKER;    break;
-       case OM_EXITEDMARKER:  eOperand = ZK_EXITEDMARKER;  break;
-       case OM_PULSEDMARKER:  eOperand = ZK_PULSEDMARKER;  break;
-       case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
-       case OM_STARTEDMARKER: eOperand = ZK_STARTEDMARKER; break;
-       default:
-         RASSERT(0);
-     }
+      eOM eMarker = pMarker->eOpMarker();
+      switch(eMarker) {
+        case OM_CANCELMARKER:  eOperand = ZK_CANCELMARKER;  break;
+        case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;
+        case OM_DESTROYMARKER: eOperand = ZK_DESTROYMARKER; break;
+        case OM_EOSMARKER:     eOperand = ZK_EOSMARKER;     break;
+        case OM_ERRORMARKER:   eOperand = ZK_ERRORMARKER;   break;
+        case OM_ERROREDMARKER: eOperand = ZK_ERROREDMARKER; break;
+        case OM_EXITMARKER:    eOperand = ZK_EXITMARKER;    break;
+        case OM_EXITEDMARKER:  eOperand = ZK_EXITEDMARKER;  break;
+        case OM_PULSEDMARKER:  eOperand = ZK_PULSEDMARKER;  break;
+        case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
+        case OM_STARTEDMARKER: eOperand = ZK_STARTEDMARKER; break;
+        default:
+          RASSERT(0);
+      }
       break;
     }
       
     case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
+    case CN_PLANOPERAND:  eOperand = ZK_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = ZK_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = ZK_ROWBUFFER;      break;
     case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
@@ -1940,8 +1954,6 @@ bool AM::bIsOperandOoO(Operand* pOperand)   {
   return false;
 }
 
-void AM::vIncRowsInvalid(Job* pJob)   { pJob->vIncRowsInvalid();               }
-void AM::vIncRowsProcessed(Job* pJob) { pJob->vIncRowsProcessed();             }
 bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }
@@ -2001,8 +2013,12 @@ bool AM::bTaskIsLocked(Task* pTask) {
 DicStack* AM::pTaskDicStack(void) {
   return pThisTLSTask()->pDicStack();
 }
+
 Job* AM::pTaskJob(void) {
   return pThisTLSTask()->pJob();
+}
+Job* AM::pTaskJob(Task* pTask) {
+  return pTask->pJob();
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {

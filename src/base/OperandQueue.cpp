@@ -56,6 +56,15 @@ OperandQueue::OperandQueue(void)
 OperandQueue::~OperandQueue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  if (nItems() != 0) {
+    vTrace("Operand Queue not empty\n"_Stz);
+    Operand* pOperand = ListNL_t<Operand>::pPop();
+    while (pOperand) {
+      vTrace("Operand Queue has %s\n"_Stz, AM::pOperandName(pOperand));
+      pOperand = ListNL_t<Operand>::pPop();
+    }
+    RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3,6 +3,10 @@
 /*============================================================================*/
 #pragma once
 
+namespace BASE { class SelfFn; }
+
+typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
+
 namespace BASE
 {
   class SelfFn

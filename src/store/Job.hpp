@@ -23,46 +23,46 @@ namespace STORE
    
    */
   
-  private:
-    s32       m_sJobNm;       // name of job
-    i8        m_iParentId;    // job id of parent job which spawned this job
-    Timer     m_oTimer;       // timer
-
-    bool      m_bWasReceived; // job was received over a socket
-    i8        m_iParticipantNode; // participant node no (FromNodeNo?)
-    bool      m_bNormalSides; // side semantics
-
-    eJK       m_eJobKind;     // kind of job
-    eJL       m_eJobList;     // which job list the job is currently in
-    eJP       m_eJobPhase;    // which job phase the job is currently in
-    eJS       m_eJobState;    // current state of the job
-
   public:
   
-    LogicUnit* m_pLogicUnit_job;      // set of registers for the task steps
+    // -- a -------------------
+    ReqTuple m_xReqTuple;    // the request tuple
+    s32      m_sJobNm;       // name of job
+    i8       m_iParentId;    // job id of parent job which spawned this job
+    Timer    m_oTimer;       // timer
 
-    TagSet    m_oJobTags;     // tags for the job
-  
-    Result    m_xResult;      // result of this job
-    
-    // into task? -------------
-    Pipeline*  m_pPipeline;   // pipeline
-    Op*        m_pOp;         // Op this job is executing
-    Op*        m_pOuterOp;    // Op that called the pipeline
-    Op*        m_pInputOp;    // The optional input op of the pipeline
+    // -- b -------------------
+    bool m_bWasReceived;     // job was received over a socket
+    i8   m_iParticipantNode; // participant node no (FromNodeNo?)
+    bool m_bNormalSides;     // side semantics
 
-    // undecided --------------
-    ReqTuple  m_xReqTuple;    // the request tuple
-    Atomic    m_ixErrors;
+    // -- c -------------------
+    eJK m_eJobKind;          // kind of job
+    eJL m_eJobList;          // which job list the job is currently in
+    eJP m_eJobPhase;         // which job phase the job is currently in
+    eJS m_eJobState;         // current state of the job
   
-    Task*     m_pOriginatingTask; // originating task of the request
-    i8        m_iOriginatingId;   // job id of originating job
+    // -- d -------------------
+    LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
+    TagSet     m_oJobTags;   // tags for the job
+    Result     m_xResult;    // result of this job
     
-  private:
-    Decider m_oAcksRmg_2pc;   // acks remaining for coordinating 2pc job
-    eSS     m_eSeed;          // seed to spawn
-    i8      m_i_TablePtn;     // table ptn on its node this job processes
-    Task*   m_pTaskJ;         // task executing the job
+    // -- e -------------------
+    Pipeline*  m_pPipeline;  // pipeline
+    Op*        m_pOp;        // Op this job is executing
+    Op*        m_pOuterOp;   // Op that called the pipeline
+    Op*        m_pInputOp;   // The optional input op of the pipeline
+
+    // -- f -------------------
+    Atomic m_ixErrors;
+    Task*  m_pOriginatingTask; // originating task of the request
+    i8     m_iOriginatingId;   // job id of originating job
+    
+    // -- g -------------------
+    Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job
+    eSS     m_eSeed;         // seed to spawn
+    i8      m_i_TablePtn;    // table ptn on its node this job processes
+    Task*   m_pTaskJ;        // task executing the job
 
     // must be last
     Footer m_xFooter;
@@ -73,7 +73,7 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    Job(ReqTuple* aReqTuple, TokenVec* pLitTknVec=nullptr);
+    Job(ReqTuple* aReqTuple);
 
     // FIND CASE -- TO BE REMOVED
     Job(eCN eClass);
@@ -92,12 +92,7 @@ namespace STORE
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(void);
-    void vAddRowsProcessed(i8 iRowsProcessed);
-    void vAddRowsInvalid(i8 iRowsInvalid);
-    void vAddRowsSkipped(i8 iRowsSkipped);
     bool bByPromptTag(void);
-    void vBufferQueue(Queue* pBufferQueue);
-    Queue* pBufferQueue(void);
     void vContentDump(void);
     bool bDiaryTag(void);
     void vFocalOutline(s4K& sOutline);
@@ -105,8 +100,6 @@ namespace STORE
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
     bool bHasTag_noWait(void);
-    void vIncRowsProcessed(void);
-    void vIncRowsInvalid(void);
     Op*  pInputOp(void);
     void vInputOp(Op* pInputOp);
     bool bIsPipeline(void);
@@ -134,18 +127,14 @@ namespace STORE
     bool bParticipantHasError(void);
     void vParticipantHasError(bool bHasError);
     eEC ePopulateJob(TagSet* pTagSet);
-    void vPrintResult(eRS eResponse);
+    void vPrintResult(Session* pSession, eRS eResponse);
+    void vResetForReuse(Session* pSession);
     Response* pResponse(void);
     Stz* szResponse(void);
     void vResponse(Stz* sResponse);
     void vOriginResponseVec(ResponseVec* pResponseVec);
     ResponseVec* pOriginResponseVec(void);
-    i8   iRowsProcessed(void);
-    void vRowsProcessed(i8 iRowsProcessed);
-    i8   iRowsSkipped(void);
-    void vRowsSkipped(i8 iRowsSkipped);
-    i8   iRowsInvalid(void);
-    void vRowsInvalid(i8 iRowsInvalid);
+    void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);

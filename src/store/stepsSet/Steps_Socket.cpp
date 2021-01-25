@@ -369,7 +369,6 @@ void Step::vSocketRecvObject(void)
 
     pJob->m_i_Focal = C_UNKNOWN;
     pJob->vOriginResponseVec(nullptr);
-    pJob->vBufferQueue(nullptr);
     
     m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushInt(true);
@@ -696,7 +695,6 @@ void Step::vSocketRecvObject_LowMem(void)
     
     pJob->m_i_Focal = C_UNKNOWN;
     pJob->vOriginResponseVec(nullptr);
-    pJob->vBufferQueue(nullptr);
     
     m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushInt(true);

@@ -563,7 +563,6 @@ public:
 
   void vJobClass(void);
   void vJobCompleted(void);
-  void vJobCreateBufferQueue(void);
   void vJobCreateResponseVec(void);
 
   void vJobDec2pcAcksRmg(void);
@@ -617,12 +616,6 @@ public:
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
   void vJobReturnPipeline(void);
-  void vJobRowsInvalidFetch(void);
-  void vJobRowsInvalidStore(void);
-  void vJobRowsProcessedFetch(void);
-  void vJobRowsProcessedStore(void);
-  void vJobRowsSkippedFetch(void);
-  void vJobRowsSkippedStore(void);
 
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);
@@ -1201,7 +1194,7 @@ public:
   void vRegOperandPipeIn(void);
   void vRegOperandPipeOut(void);
   void vRegOperandPipeOutSet(void);
-  void vRegOperandPipeToJob(void);
+  void vRegOperandPipeToOutput(void);
   void vRegOperandReport(void);
   void vRegOperandRowCountFetch(void);
   void vRegOperandSet(void);
@@ -1232,7 +1225,7 @@ public:
   void vRegOperandOoOIsNull(void);
   void vRegOperandNextOoO(void);
   void vRegOperandOoOPipeOut(void);
-  void vRegOperandOoOPipeToJob(void);
+  void vRegOperandOoOPipeToOutput(void);
   void vRegOperandOoOSet(void);
 
   // reg Path
@@ -1256,7 +1249,7 @@ public:
   void vRegPipeinNext(void);
   void vRegPipeinPeek(void);
   void vRegPipeinPipeOut(void);
-  void vRegPipeinPipeToJob(void);
+  void vRegPipeinPipeToOutput(void);
   void vRegPipeinSet(void);
   void vRegPipeinWriteProfile(void);
 
@@ -1382,11 +1375,14 @@ public:
   void vSenCompilerPostponing(void);
 
   // session
+  void vSessionCascadeFetch(void);
+  void vSessionCascadeStore(void);
   void vSessionCommand(void);
   void vSessionDicStackFetch(void);
   void vSessionDump(void);
+  void vSessionHasCascadeFetch(void);
+  void vSessionHasCascadeStore(void);
   void vSessionTagSetFetch(void);
-  void vSessionIsExiting(void);
   void vSessionPid(void);
   void vSessionTablePtnFetch(void);
   void vSessionThis(void);
@@ -1790,11 +1786,12 @@ public:
   void vToPtnRowRegDelete(void);
 
   // toRow
-  void vToRowRegCompleted(void);
-  void vToRowRegConvert(void);
-  void vToRowRegCreate(void);
-  void vToRowRegDangling(void);
-  void vToRowRegDelete(void);
+  void vToRowCompleted(void);
+  void vToRowConvert(void);
+  void vToRowCreate(void);
+  void vToRowDangling(void);
+  void vToRowDelete(void);
+  void vToRowRowCountersFetch(void);
 
   // tokenVec
   void vTokenVecDelete(void);

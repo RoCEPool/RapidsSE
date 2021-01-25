@@ -6,7 +6,6 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 
-
 namespace STORE
 {
   class Step : public Task

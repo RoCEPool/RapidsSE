@@ -17,12 +17,12 @@ __aFooterFunction(PlanNode)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
+PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value&& xValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren)
 : Object(eClassNo),
   m_sName(szName),
   m_sType(szType),
-  m_xValue{xValue},
+  m_xValue(xValue),
   m_pProperties(pProperties),
   m_pChildren(pChildren)
 {
@@ -34,10 +34,11 @@ PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value xValue,
 /* copy constructor                                                           */
 /*----------------------------------------------------------------------------*/
 PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
-    : Object(eClassNo) {
+    : Object(eClassNo),
+      m_xValue(const_cast<PlanNode &>(oNode).m_xValue)
+{
   m_sName.vCopy(const_cast<PlanNode &>(oNode).m_sName.szStz());
   m_sType.vCopy(const_cast<PlanNode &>(oNode).m_sType.szStz());
-  m_xValue = const_cast<PlanNode &>(oNode).m_xValue;
 
   if (oNode.m_pProperties) {
     m_pProperties = new PlanNodeList();
@@ -68,17 +69,6 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* temp constructor for use by ray to test sql compiler pipeline              */
-/*----------------------------------------------------------------------------*/
-PlanNode::PlanNode(eCN eClassNo, void* aTempTest_byRay)
-    : Object(eClassNo)
-{
-  m_pProperties = nullptr;
-  m_pChildren   = nullptr;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -86,10 +76,6 @@ PlanNode::PlanNode(eCN eClassNo, void* aTempTest_byRay)
 PlanNode::~PlanNode(void)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
-
-  if (m_xValue.m_bMustFree && m_xValue.m_pText) {
-    delete m_xValue.m_pText;
-  }
 
   if (m_pProperties != nullptr) delete m_pProperties;
   if (m_pChildren   != nullptr) delete m_pChildren;
@@ -127,53 +113,120 @@ Stz* PlanNode::szType()
 /*----------------------------------------------------------------------------*/
 /* Get the generic Value object in this PlanNode                              */
 /*----------------------------------------------------------------------------*/
-Parser::Value PlanNode::getValue()
+Parser::Value PlanNode::xValue()
 {
   return m_xValue;
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get the generic Value object in this PlanNode                              */
+/*----------------------------------------------------------------------------*/
+Parser::Value* PlanNode::pValue()
+{
+  return &m_xValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the value is null. NB: this is distinct from the type      */
+/* being VT_UNKNOWN.                                                          */
+/*----------------------------------------------------------------------------*/
+b1 PlanNode::bIsNullValue()
+{
+  return m_xValue.m_bIsNull;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the type of the value stored                                       */
+/*----------------------------------------------------------------------------*/
+Value::Type PlanNode::eValueType()
+{
+  return m_xValue.m_eType;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get the boolean value out of the Value object in this PlanNode             */
 /*----------------------------------------------------------------------------*/
-b1 PlanNode::getBooleanValue()
+b1 PlanNode::bValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_BOOLEAN);
   return m_xValue.m_bBoolean;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the integer value out of the Value object in this PlanNode             */
 /*----------------------------------------------------------------------------*/
-i8 PlanNode::getIntValue()
+i8 PlanNode::iValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_INT);
   return m_xValue.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the unsigned integer value out of the Value object in this PlanNode    */
 /*----------------------------------------------------------------------------*/
-u8 PlanNode::getUnsignedIntValue()
+u8 PlanNode::uValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_UINT);
   return m_xValue.m_uInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the floating point value out of the Value object in this PlanNode      */
 /*----------------------------------------------------------------------------*/
-d8 PlanNode::getFloatValue()
+d8 PlanNode::dValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_FLOAT);
   return m_xValue.m_dFloat;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the string value out of the Value object in this PlanNode. May be null */
 /*----------------------------------------------------------------------------*/
-Stz* PlanNode::getStringValue()
+Stz* PlanNode::szValue()
 {
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
+
   if (m_xValue.m_pText == nullptr) {
     return nullptr;
   }
 
   return m_xValue.m_pText->szGet();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the date value out of the Value object in this PlanNode                */
+/*----------------------------------------------------------------------------*/
+Dte PlanNode::xDateVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_DATE);
+  return m_xValue.m_xDate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the time value out of the Value object in this PlanNode                */
+/*----------------------------------------------------------------------------*/
+Tme PlanNode::xTimeVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_TIME);
+  return m_xValue.m_xTime;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the timestamp value out of the Value object in this PlanNode           */
+/*----------------------------------------------------------------------------*/
+Tsp PlanNode::xTspVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_TIMESTAMP);
+  return m_xValue.m_xTsp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the interval value out of the Value object in this PlanNode            */
+/*----------------------------------------------------------------------------*/
+Ivl PlanNode::xIvlVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_INTERVAL);
+  return m_xValue.m_xIvl;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -57,40 +57,48 @@ namespace STORE
   class LogicUnit : public Object
   {  
   public:
-    Task* m_pTask; // which task
-  
-    eLH              m_eDdlLocked; // this task has the ddl lock?
-    i8               m_i_NextRnd;  // which next repeatable random nummber?
-    Node*            m_pSendNode;  // node to send to
-  
-    REG<Word>        m_xpHandler;  // which handler is to be/was called
-  
-    i8               m_iDebugFlag; // general purpose debug flag
+    Task* m_pTask;      // which task
+    eLH   m_eDdlLocked; // this task has the ddl lock?
+    i8    m_i_NextRnd;  // which next repeatable random nummber?
+    i8    m_iDebugFlag; // general purpose debug flag
 
-    REF<Job>         m_xpJobRef;   // job reference
-    REF<Node>        m_xpNodeRef;  // node reference
+    Node* m_pSendNode;  // node to send to
 
-    REG<Dir>         m_xpDir0;     // dir0[]
-    REG<Dir>         m_xpDir1;     // dir1[]
-
-    REG<File>        m_xpFile0;    // file0[]
-    REG<File>        m_xpFile1;    // file1[]
-
-    REG<Dynamo>      m_xpDynamo;   // dynamo pipleine compiler
-  
+    REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
+    REG<Dir>            m_xpDir0;     // dir0[]
+    REG<Dir>            m_xpDir1;     // dir1[]
+    REG<Dynamo>         m_xpDynamo;   // dynamo pipleine compiler
+    REG<ExprEval>       m_xpExprEval; // expr eval
+    REG<File>           m_xpFile0;    // file0[]
+    REG<File>           m_xpFile1;    // file1[]
+    REG<Word>           m_xpHandler;  // which handler is to be/was called
     REG<Index>          m_xpIndex;
     REG<IndexDef>       m_xpIndexDef;
     REG<IndexStream>    m_xpIndexStream;
     REG<IndexTree>      m_xpIndexTree;
     REG<Operand>        m_xpInfoSet;
     REG<Table>          m_xpInfoSetTable;
+    REF<Job>            m_xpJobRef;   // job reference
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
+    REF<Node>           m_xpNodeRef;   // node reference
+    REG<Node_I>         m_xpNode_I;    // node iterator
+    REG<Now>            m_xpNow;       // now
+    REG<Op>             m_xpOp;        // operator
+    REG<Operand>        m_xpOperandA;  // operand A
+    REG<Operand>        m_xpOperandB;  // operand B
+    REG<Operand>        m_xpOperandC;  // operand C
+    REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<Operand>        m_xpPipein;    // Pipein
     REG<PathIdentifier> m_xpPathIdentifier;
     REG<Pot>            m_xpPot;
     REG<PtnStream>      m_xpPtnStream;
+    REG<Range>          m_xpRange;     // range
+    REG<Object>         m_xpRegister0; // general purpose reg 0[]
+    REG<Object>         m_xpRegister1; // general purpose reg 1[]
+    REG<Object>         m_xpRegister2; // general purpose reg 2[]
+    REG<Object>         m_xpRegister3; // general purpose reg 3[]
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
     REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
@@ -100,6 +108,7 @@ namespace STORE
     REG<Operand>        m_xpSubset;
     REG<Table>          m_xpTable;
     REG<TablePtn>       m_xpTablePtn;
+    REG<Timer>          m_xpTimer;     // timer
     REG<ToHshCrw>       m_xpToHshCrw;
     REG<ToNstRow>       m_xpToNstRow;
     REG<ToPtnRow>       m_xpToPtnRow;
@@ -107,36 +116,21 @@ namespace STORE
     REG<Tx>             m_xpTx;
     REG<Xmits>          m_xpXmits;     // consume xmits
     
-    REG<AggTimer>    m_xpAggTimer;  // aggregate timer
-    REG<Now>         m_xpNow;       // now
-    REG<Timer>       m_xpTimer;     // timer
-  
-    REG<Op>          m_xpOp;        // operator
-    REG<Operand>     m_xpOperandA;  // operand A
-    REG<Operand>     m_xpOperandB;  // operand B
-    REG<Operand>     m_xpOperandC;  // operand C
-    REG<Operand>     m_xpOperandOoO; // operand OoO
-
-    REG<ExprEval>     m_xpExprEval; // expr eval
-    REG<Range>       m_xpRange;     // range
-
-    i8               m_iCounter0;   // counter
-    i8               m_iCounter1;   // counter
-    i8               m_iCounter2;   // counter
+    i8                  m_iCounter0;   // counter
+    i8                  m_iCounter1;   // counter
+    i8                  m_iCounter2;   // counter
+        
+    s256                m_sStringA;    // string
+        
+    Ent*                m_aLowerEntry;
+    Ent*                m_aUpperEntry;
+    EntBuffer*          m_pEntBufferOuter;
+        
+    Atomic              m_ixRowsProcessed; // rows processed
+    Atomic              m_ixRowsInvalid;   // invalid rows detected
+    Atomic              m_ixRowsSkipped;   // rows skipped
+    eEC                 m_eErrorCode;      // error code
     
-    s256             m_sStringA;    // string
-    
-    Ent*             m_aLowerEntry;
-    Ent*             m_aUpperEntry;
-    EntBuffer*       m_pEntBufferOuter;
-    
-    REG<Object>      m_xpRegister0; // general purpose reg 0[]
-    REG<Object>      m_xpRegister1; // general purpose reg 1[]
-    REG<Object>      m_xpRegister2; // general purpose reg 2[]
-    REG<Object>      m_xpRegister3; // general purpose reg 3[]
-  
-    REG<Node_I>      m_xpNode_I;    // node iterator
-  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
   

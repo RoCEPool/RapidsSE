@@ -4,9 +4,6 @@
 
 #include "BASE.h"
 
-// !DIC_AS_SKIPLIST
-#define _DIC_SKIPLIST
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -197,7 +194,6 @@ Word* DicStack::pFindInCurrent(Stz* szWordNm)
 /*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries that has given cell                   */
 /*----------------------------------------------------------------------------*/
-#ifdef _DIC_SKIPLIST
 Word* DicStack::pLocateRoutine(CodeCell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
@@ -220,36 +216,10 @@ Word* DicStack::pLocateRoutine(CodeCell* aCell)
   
   return nullptr;
 }
-#else
-/*----------------------------------------------------------------------------*/
-Word* DicStack::pLocateRoutine(CodeCell* aCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-  
-  Word* pWord;
-  
-  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
-    
-    Dic* pDic = m_pDic[i_Dic];
-    
-    for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (pWord->bHasCell(aCell))
-        return pWord;
-  }
-  
-  Dic* pRootDic = AM::pRootDic();
-  for (pWord = pRootDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
-    if (pWord->bHasCell(aCell))
-      return pWord;
-  
-  return nullptr;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* locate word that has given step                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef _DIC_SKIPLIST
 Word* DicStack::pLocateStepWord(fpSTEPFN fpStepFn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
@@ -276,35 +246,6 @@ Word* DicStack::pLocateStepWord(fpSTEPFN fpStepFn)
   
   return nullptr;
 }
-#else
-/*----------------------------------------------------------------------------*/
-Word* DicStack::pLocateStepWord(fpSTEPFN fpStepFn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-  
-  Word* pWord;
-  
-  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
-    
-    Dic* pDic = m_pDic[i_Dic];
-    
-    for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (WK_INTRINSIC == pWord->eWord() &&
-          fpStepFn == pWord->fpEntryStep())
-        return pWord;
-  }
-  
-  Dic* pRootDic = AM::pRootDic();
-  for (pWord = pRootDic->pLastWord();
-       pWord;
-       pWord = pWord->pPrevWord())
-    if (WK_INTRINSIC == pWord->eWord() &&
-        fpStepFn == pWord->fpEntryStep())
-      return pWord;
-  
-  return nullptr;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get a particular dictionary on the stack                                   */

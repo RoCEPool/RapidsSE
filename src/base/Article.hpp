@@ -5,6 +5,8 @@
 
 #include "eNK.h"
 
+typedef void (fpARTICLEFN)(Object* pObject, SP& spObject);
+
 namespace BASE
 {
   class Article : public Object,

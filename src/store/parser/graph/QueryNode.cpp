@@ -34,8 +34,8 @@ QueryNode::QueryNode(Stz* szName, Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-QueryNode::QueryNode(Stz* szName, Stz* szType, Value xValue)
-    : MutablePlanNode(CN_QUERYNODE, szName, szType, xValue,
+QueryNode::QueryNode(Stz* szName, Stz* szType, Value&& xValue)
+    : MutablePlanNode(CN_QUERYNODE, szName, szType, static_cast<Value&&>(xValue),
                       new PlanNodeList(), new PlanNodeList())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
@@ -49,9 +49,10 @@ QueryNode::QueryNode(Stz* szName, Stz* szType, Value xValue)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-QueryNode::QueryNode(Stz* szName, Stz* szType, Value xValue,
+QueryNode::QueryNode(Stz* szName, Stz* szType, Value&& xValue,
                                PlanNodeList* pProperties, PlanNodeList* pChildren)
-    : MutablePlanNode(CN_QUERYNODE, szName, szType, xValue, pProperties, pChildren)
+    : MutablePlanNode(CN_QUERYNODE, szName, szType, static_cast<Value&&>(xValue),
+                      pProperties, pChildren)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
 

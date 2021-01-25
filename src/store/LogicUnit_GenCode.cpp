@@ -192,18 +192,21 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the code text
   m_pTknVec->vTokenise(aText);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the toekns
   i8 nTokens = m_pTknVec->nTokens();
-  
+
+#ifdef WITH_TRACE_LOGICUNIT
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the tokens
+
   for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
     Token* pTkn = m_pTknVec->pGet(i_Tkn++);
 
     vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szChars());
   }
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
-  
+#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code
   m_i_Code = 0;

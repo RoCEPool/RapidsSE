@@ -5,6 +5,8 @@
 
 #include "eCF.h"
 
+typedef bool (fpCLASSFN)(Object* pObject);
+
 namespace BASE
 {
   class ClassFn

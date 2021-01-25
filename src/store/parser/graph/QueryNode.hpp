@@ -21,8 +21,8 @@ namespace Parser
     void  operator delete(void*);
 
     QueryNode(Stz* szName, Stz* szType);
-    QueryNode(Stz* szName, Stz* szType, Value xValue);
-    QueryNode(Stz* szName, Stz* szType, Value xValue,
+    QueryNode(Stz* szName, Stz* szType, Value&& pValue);
+    QueryNode(Stz* szName, Stz* szType, Value&& pValue,
                    PlanNodeList* pProperties, PlanNodeList* pChildren);
     QueryNode(const QueryNode& oNode);
     virtual ~QueryNode(void);

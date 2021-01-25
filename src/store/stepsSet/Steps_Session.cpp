@@ -14,23 +14,58 @@
 #include "Result.hpp"
 #include "Job.hpp"
 
+#include "MY.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("session::this"_Stz,      &Step::vSessionThis);
+  vAddStep("session::this"_Stz,        &Step::vSessionThis);
   
-  vAddStep("session.dicStack@"_Stz,  &Step::vSessionDicStackFetch);
-  vAddStep("session.dump"_Stz,       &Step::vSessionDump);
-  vAddStep("session.tagSet@"_Stz,    &Step::vSessionTagSetFetch);
-  vAddStep("session.isExiting"_Stz,  &Step::vSessionIsExiting);
-  vAddStep("session.pid"_Stz,        &Step::vSessionPid);
-  vAddStep("session.tablePtn@"_Stz,  &Step::vSessionTablePtnFetch);
-  vAddStep("session.todo@"_Stz,      &Step::vSessionToDoFetch);
-  vAddStep("session.todo!"_Stz,      &Step::vSessionToDoStore);
-  vAddStep("session.tx@"_Stz,        &Step::vSessionTxFetch);
-  vAddStep("session.tx!"_Stz,        &Step::vSessionTxStore);
+  vAddStep("session::cascade@"_Stz,    &Step::vSessionCascadeFetch);
+  vAddStep("session::cascade!"_Stz,    &Step::vSessionCascadeStore);
+
+  vAddStep("session::hasCascade@"_Stz, &Step::vSessionHasCascadeFetch);
+  vAddStep("session::hasCascade!"_Stz, &Step::vSessionHasCascadeStore);
+
+  vAddStep("session::dicStack@"_Stz,   &Step::vSessionDicStackFetch);
+  vAddStep("session::dump"_Stz,        &Step::vSessionDump);
+  vAddStep("session::tagSet@"_Stz,     &Step::vSessionTagSetFetch);
+  vAddStep("session::pid"_Stz,         &Step::vSessionPid);
+  vAddStep("session::tablePtn@"_Stz,   &Step::vSessionTablePtnFetch);
+  vAddStep("session::todo@"_Stz,       &Step::vSessionToDoFetch);
+  vAddStep("session::todo!"_Stz,       &Step::vSessionToDoStore);
+  vAddStep("session::tx@"_Stz,         &Step::vSessionTxFetch);
+  vAddStep("session::tx!"_Stz,         &Step::vSessionTxStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* session::cascade@ -- fetch sCascade from session                           */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionCascadeFetch(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  m_pDataStack->vPushStr(pSession->m_sCascade);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ssession::cascade! -- store sCascade into session                          */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionCascadeStore(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  m_pDataStack->vPopStr(pSession->m_sCascade,__func__);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,10 +75,8 @@ void Step::vSessionDicStackFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(pSession);
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   m_pDataStack->vPushPtr(pSession->pPathStack());
   
   EXIT();
@@ -56,41 +89,37 @@ void Step::vSessionDump(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   pSession->vContentDump();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tagSet@ -- fetch ename-set of session semantic                     */
+/* session::hasCascade@ -- fetch bHasCascade from session                     */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionTagSetFetch(void)
+void Step::vSessionHasCascadeFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
-  TagSet* pSsnTagSet = & pSession->m_oSsnTagSet;
-  
-  m_pDataStack->vPushPtr(pSsnTagSet);
+  Session* pSession = MY::pSession();
+
+  m_pDataStack->vPushInt(pSession->m_bHasCascade);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.isExiting -- is session exiting                                    */
+/* ssession::hasCascade! -- store bHasCascade into session                    */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionIsExiting(void)
+void Step::vSessionHasCascadeStore(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
-  m_pDataStack->vPushInt(pSession->m_bExiting);
+  Session* pSession = MY::pSession();
+
+  pSession->m_bHasCascade = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }
@@ -102,9 +131,8 @@ void Step::vSessionPid(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   m_pDataStack->vPushInt(pSession->m_iPid);
   
   EXIT();
@@ -117,10 +145,25 @@ void Step::vSessionTablePtnFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_SESSION == pSession->eGetClassNo());
-  
+  Session* pSession = MY::pSession();
+
   m_pDataStack->vPushInt(pSession->i_FixedPtn());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session.tagSet@ -- fetch tagset of session                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionTagSetFetch(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  TagSet* pSsnTagSet = & pSession->m_oSsnTagSet;
+  
+  m_pDataStack->vPushPtr(pSsnTagSet);
   
   EXIT();
 }
@@ -132,15 +175,8 @@ void Step::vSessionThis(void)
 {
   ENTRY();
  
-  Job* pJob = m_pJob;
+  Session* pSession = MY::pSession();
 
-  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
-  
-  Session* pSession = nullptr;
-  
-  if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessionArray()->pGetSession(iSessionId);
-  
   m_pDataStack->vPushPtr(pSession);
 
   EXIT();
@@ -153,7 +189,7 @@ void Step::vSessionToDoFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
+  Session* pSession = MY::pSession();
 
   m_pDataStack->vPushStr(pSession->m_sToDo);
   
@@ -167,8 +203,8 @@ void Step::vSessionToDoStore(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
+  Session* pSession = MY::pSession();
+
   s4K sToDo;
   m_pDataStack->vPopStr(sToDo,__func__);
 
@@ -184,8 +220,8 @@ void Step::vSessionTxFetch(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
+  Session* pSession = MY::pSession();
+
   Tx* pTx = pSession->pTx();
   
   m_pDataStack->vPushPtr(pTx);
@@ -200,8 +236,8 @@ void Step::vSessionTxStore(void)
 {
   ENTRY();
   
-  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
-  
+  Session* pSession = MY::pSession();
+
   Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   pSession->vTx(pTx);
