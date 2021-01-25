@@ -215,7 +215,6 @@ void Step::vStreamDefNewCount(void)
   pStreamDef->m_xaColumn[0].vDatum(DM_INT);
 
   pStreamDef->m_nDefColumns = 1;
-  pStreamDef->m_i_DefStart[0] = 0;
   
   ( m_pJob->pLogicUnit_job() )->m_xpStreamDef = pStreamDef;
   
@@ -239,7 +238,6 @@ void Step::vStreamDefNewToCsv(void)
   pStreamDef->m_xaColumn[0].vDatum(DM_VCH);
 
   pStreamDef->m_nDefColumns = 1;
-  pStreamDef->m_i_DefStart[0] = 0;
   
   ( m_pJob->pLogicUnit_job() )->m_xpStreamDef = pStreamDef;
   
