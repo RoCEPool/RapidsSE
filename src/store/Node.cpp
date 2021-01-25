@@ -79,6 +79,7 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
 
   MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
   m_iNodeStatus = 0;
+  m_iPrevUserUsec = 0;
   
   _checkInitialised_(CN_NODE);
   
@@ -374,6 +375,24 @@ i1 Node::iGetNodeStatus(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return m_iNodeStatus;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get previous saved user usec                                               */
+/*----------------------------------------------------------------------------*/
+i8   Node::iGetPrevUserUsec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return m_iPrevUserUsec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set to save user usec                                                      */
+/*----------------------------------------------------------------------------*/
+void   Node::vSetPrevUserUsec(i8 iUsec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  m_iPrevUserUsec = iUsec;
 }
 
 /*----------------------------------------------------------------------------*/

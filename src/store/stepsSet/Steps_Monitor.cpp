@@ -20,8 +20,9 @@
 
 #include "Heartbeat.hpp"
 
+#include "CmdLineArgs.hpp"
 
-
+extern CmdLineArgs gxCmdLineArgs;
 extern Stz *gsBuildGitHash;
 extern RingBuffer<Heartbeat> gxHeartbeatData;
  
@@ -57,10 +58,22 @@ void Step::vMonitorUpdateNodeStatus(void)
       // This 20 seconds max should be defined somewhere
       if (iLastUpdate > 20) { // older than 20 seconds
         pNode->vSetNodeStatus(1); // late
-        vTrace("  ** Step::vMonitorUpdateNodeStatus ** Node %s last update:%lld\n"_Stz, pNode->xGetHeartbeat().m_acNodeName,iLastUpdate);
+        vTrace("Node:%s  ** Step::vMonitorUpdateNodeStatus ** Node %s last update:%lld\n"_Stz,
+               gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
+               pNode->xGetHeartbeat().m_acNodeName,
+               iLastUpdate);
       } else {
         pNode->vSetNodeStatus(0); // OK
       }
+
+      i8 iDelta = pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec;
+      vTrace("Node:%s  ** Step::vMonitorUpdateNodeStatus ** Node %s saved:%lld Now:%lld Delta:%lld\n"_Stz,
+             gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
+             pNode->xGetHeartbeat().m_acNodeName,
+             pNode->iGetPrevUserUsec(),
+             pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec,
+             pNode->iGetPrevUserUsec()+pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec);
+
     }
 
   }

@@ -8,8 +8,12 @@
 
 typedef struct
 {
-  i8 iBaseID;
-  i8 iMemUsage;
+  i8 m_iBaseID;
+  i8 m_iMemUsage;
+  i8 m_iSystemUsec;
+  i8 m_iUserUsec;
+  i8 m_iResidentSize;
+  i8 m_iVirtualSize;
 } BASE_hb;
 
 

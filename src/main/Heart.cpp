@@ -108,11 +108,14 @@ void vHeartInit(void) {
         printf("%s", azHeartbeat);
     }
 
-    /*
-    if (iCnt > 3) {
-      printf("Supervisor got killed, no more sending, but monitor continues, works fine.\n");
-      AM::vSupervisorHalt(true);
-    } */
+
+    if (iCnt > 30) {
+      if (strcmp(xHeartbeat.m_acNodeName, "NODE1") == 0) {
+        printf("Supervisor got killed, no more sending, but monitor continues, works fine.\n");
+        Process::vExitFailure();
+        //AM::vSupervisorHalt(true);
+      }
+    }
     sleep(3);
   }
 

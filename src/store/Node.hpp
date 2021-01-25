@@ -31,7 +31,9 @@ namespace STORE
     i8 m_qFreeSpace;   // last known free space
     i8 m_qFreePercent; // last known free percent
 
+
     Heartbeat m_xHeartbeat; // contains heartbeat info
+    i8 m_iPrevUserUsec;
     i1 m_iNodeStatus;  // One byte should be enough. enum later.
                        // 0=Good, 1=not heard, 2=CPU max, 3=Mem max, 4=Disk max, 99=combination of 2/3/4
 
@@ -79,6 +81,10 @@ namespace STORE
     Heartbeat xGetHeartbeat(void);
     void vSetNodeStatus(i1 iStatus);
     i1   iGetNodeStatus(void);
+    i8   iGetPrevUserUsec(void);
+    void vSetPrevUserUsec(i8 Usec);
+
+    i1   iGetPrev(void);
 
     Footer* aFooter(void);
   };

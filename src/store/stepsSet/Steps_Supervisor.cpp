@@ -11,6 +11,8 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "Node.hpp"
+#include "Grid.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
@@ -59,6 +61,22 @@ void Step::vSupervisorCollectInfo(void)
   strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
   xHeartbeat.m_acNodeName[sizeof(xHeartbeat.m_acNodeName) - 1] = 0;
 
+
+  xHeartbeat.xBaseHeartbeat.m_iSystemUsec = AM::iSystemUsec();
+  xHeartbeat.xBaseHeartbeat.m_iUserUsec = AM::iUserUsec();
+  xHeartbeat.xBaseHeartbeat.m_iResidentSize = AM::iResidentSize();
+
+  // Debug
+  s32 sResident_magn;
+  MagLib::vByteMag(xHeartbeat.xBaseHeartbeat.m_iResidentSize,3,sResident_magn);
+
+  vTrace("Node:%s  ** Step::vSupervisorCollectInfo ** SystemUsec:%lld   UserUsec::%lld Resident:%s\n"_Stz,
+         gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
+         xHeartbeat.xBaseHeartbeat.m_iSystemUsec,
+         xHeartbeat.xBaseHeartbeat.m_iUserUsec,
+         sResident_magn.azChar());
+
+
   xHeartbeat.m_u2DataLen = sizeof(xHeartbeat.m_iHeader)
       + sizeof(xHeartbeat.m_u2Version)
       + sizeof(xHeartbeat.m_u2DataLen)
@@ -80,7 +98,13 @@ void Step::vSupervisorCollectInfo(void)
   //vTrace("  ** Step::vSupervisorCollectInfo ** fletcher16 %ld\n"_Stz, xHeartbeat.m_iChecksum);
 
   // Add node number to the packet
-  //xHeartbeat.m_iValue0 = AM::iThisNodeNo();
+  //i8 iValue = AM::iThisNodeNo();
+
+  //printf("NODE:%s, This node is %lld   ", gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), iValue );
+  Node *pNode = AM::pGrid()->pThisNode();
+  if (pNode && pNode->iGetPrevUserUsec() == 0) {
+    pNode->vSetPrevUserUsec(xHeartbeat.xBaseHeartbeat.m_iUserUsec);
+  }
 
   // Write to Send-Ringbuffer
   gxHeartbeatData.bTryWrite(xHeartbeat);

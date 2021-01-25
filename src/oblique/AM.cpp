@@ -197,7 +197,12 @@ i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); 
 i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
 i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 Article* AM::pLexiconArticle(void) { return gpAttachMap->m_pLexiconArticle;    }
-void AM::vProcessExit(void)   { Process::vExitFailure();                      }
+void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
+
+i8   AM::iSystemUsec(void)    { return Process::iSystemUsec();                      }
+i8   AM::iUserUsec(void)      { return Process::iUserUsec();  };
+i8   AM::iResidentSize(void)  { return Process::iResidentSize();  };
+
 bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 

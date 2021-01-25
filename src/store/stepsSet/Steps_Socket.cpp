@@ -997,12 +997,19 @@ void Step::vSocketSendObject(void)
                 aCN[eClass],
                 nObjectSize,
                 C_VARGS_END);
-  else
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_ERROR,
+  else {
+    AM::vLogRes(SL_INF, pSocket, RA_SKT_ERROR,
                 "Error while sending object %s %lldB"_Stz, //!format-LogRes
                 aCN[eClass],
                 nObjectSize,
                 C_VARGS_END);
+
+    // Need to set status for the node
+    // ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm()
+    // Get the grid, find this node, set the status
+
+
+  }
 
   m_pDataStack->vPushInt(bResult);
 

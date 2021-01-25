@@ -221,6 +221,9 @@ namespace OBLIQUE
     static JobList* pParticipatingJobs(void);
     static i8   iPid(void);
     static void vProcessExit(void);
+    static i8   iSystemUsec(void);
+    static i8   iUserUsec(void);
+    static i8   iResidentSize(void);
     static bool bProgress(void);
     static i8   nPtnsInGrid(void);
     static SystemSchedule* pSystemSchedule(void);

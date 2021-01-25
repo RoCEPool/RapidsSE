@@ -13,9 +13,9 @@
 
   NS_ACTIVE grid::thisNode@ grid::node node.state!
 
-  args.verbose if
+  //args.verbose if
     grid::thisNode@ "receiver running on node %v" .printf
-  then
+  //then
 ;
 
 /*----------------------------------------------------------------------------*/

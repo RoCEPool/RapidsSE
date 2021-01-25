@@ -364,7 +364,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Heartbeat command is here, using the same syntax as --node command, we can finalize
     // the command syntax later, but for now to have the code in place
     if (szArg->bSame("--heartbeat"_Stz)) {
-      m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       m_xSysArgs.m_xHeartbeatNode[i_HeartbeatNode].m_iPortNo    = argv[++i_Arg].iToI8();
       i_HeartbeatNode++;
@@ -1023,8 +1022,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   }
 
   for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nHeartbeatNodes; i_Index++) {
-    vTrace("  --heartbeat %s %s %lld\n"_Stz,
-           m_xSysArgs.m_xHeartbeatNode[i_Index].m_sNodeName.azChar(),
+    vTrace("  --heartbeat %s %lld\n"_Stz,
            m_xSysArgs.m_xHeartbeatNode[i_Index].m_sIPAddress.azChar(),
            m_xSysArgs.m_xHeartbeatNode[i_Index].m_iPortNo);
   }

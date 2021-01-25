@@ -9,6 +9,13 @@
 #endif
 
 #include <signal.h>
+#include <sys/resource.h>
+#include <fstream>
+#include <sys/sysctl.h>
+
+//#include <sys/vmmeter.h>
+//#include <sys/limits.h>
+//#include <vm/vm_param.h>
 
 extern pthread_key_t giTLS_ThreadKey;
 
@@ -118,8 +125,15 @@ bool Process::bTestPid(i8 iPid)
 i8 Process::iResidentSize(void)
 {
   i8 iResident = 0;
+
+  struct rusage UsageInfo;
+  if (getrusage(RUSAGE_SELF, &UsageInfo) == 0) {
+    iResident = UsageInfo.ru_maxrss;
+  } else {
+    iResident = 0;  /* Can't access? */
+  }
   
-#ifdef WITH_APPLE
+#ifdef WITH_APPLE1
   
   // refer: http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/task_info.html
   //        http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/task_basic_info.html
@@ -134,7 +148,7 @@ i8 Process::iResidentSize(void)
     iResident = 0; /* Can't access? */
   else
     iResident = info.resident_size;
-  
+
 #endif
   
   return iResident;
@@ -174,8 +188,15 @@ i8 Process::iVirtualSize(void)
 i8 Process::iSystemUsec(void)
 {
   i8 iSystem = 0;
+
+  struct rusage UsageInfo;
+  if (getrusage(RUSAGE_SELF, &UsageInfo) == 0) {
+    iSystem = UsageInfo.ru_stime.tv_sec * C_1M + UsageInfo.ru_stime.tv_usec;
+  } else {
+    iSystem = 0;  /* Can't access? */
+  }
   
-#ifdef WITH_APPLE
+#ifdef WITH_APPLE1
   
   struct task_thread_times_info info;
   
@@ -187,7 +208,7 @@ i8 Process::iSystemUsec(void)
     iSystem = 0;      /* Can't access? */
   else
     iSystem = info.system_time.seconds * C_1M + info.system_time.microseconds;
-  
+
 #endif
   
   return iSystem;
@@ -199,8 +220,16 @@ i8 Process::iSystemUsec(void)
 i8 Process::iUserUsec(void)
 {
   i8 iUser = 0;
-  
-#ifdef WITH_APPLE
+
+  struct rusage UsageInfo;
+  if (getrusage(RUSAGE_SELF, &UsageInfo) == 0) {
+    iUser = UsageInfo.ru_utime.tv_sec * C_1M + UsageInfo.ru_utime.tv_usec;
+  } else {
+    iUser = 0;  /* Can't access? */
+  }
+
+
+#ifdef WITH_APPLE1
   
   struct task_thread_times_info info;
   

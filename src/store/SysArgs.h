@@ -36,7 +36,6 @@ namespace STORE
     // Heartbeat configuration
     i8    m_nHeartbeatNodes;
     struct {
-      s32 m_sNodeName;     // name of node
       s32 m_sIPAddress;    // ip address of node
       i8  m_iPortNo;       // port number
     } m_xHeartbeatNode[C_MAX_NODES];
