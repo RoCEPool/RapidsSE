@@ -10,8 +10,7 @@ namespace STORE
   class StreamDef : public Definition
   {
   public:
-    s32    m_sName;         // name
-    s256   m_sPath;         // full name
+    s256   m_sName;         // name
     i8     m_iStreamId;     // unique stream identifier
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
   

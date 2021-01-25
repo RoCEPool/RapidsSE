@@ -49,11 +49,7 @@ StreamDef::StreamDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   //m_sName;
-  //m_sPath;
-  
   m_iStreamId = AM::iNextStreamId();
-  
-  //m_saDefName[C_MAX_STREAMDEFS];
 
   //m_xaColumn[C_MAX_DEFCOLUMNS];
   
@@ -77,7 +73,6 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   m_sName = pStreamDef->m_sName;
-  m_sPath = pStreamDef->m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
 
