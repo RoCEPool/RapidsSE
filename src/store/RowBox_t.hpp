@@ -521,7 +521,8 @@ Row* RowBox_t<SIZE>::aNextRow(Row* aPriorRow)
 
   RASSERT(m_oRowPix.m_bInitialised);
 
-  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aAdjacentItem(aPriorRow, m_nRowSizeProper);
+  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aAdjacentTail(aPriorRow,
+                                                           m_nRowSizeProper);
   
   return aRow;
 }

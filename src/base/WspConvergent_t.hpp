@@ -5,23 +5,26 @@
 
 namespace BASE
 {
-  template<i8 SIZE, class HEAD, class TAIL>
+  template<i8 AREA, class HEAD, class TAIL>
   class WspConvergent_t
   {
   private:
-    byte m_yaByteArea[SIZE]; // allottable area
+    byte  m_yaByteArea[AREA]; // allottable area
+    i8    m_nUsedHead;    // bytes used in the area from the head
+    i8    m_nUsedTail;    // bytes used in the area frim the tail
+
+    byte* m_aAuxItem0;    // auxillary item 0
+    byte* m_aAuxItem1;    // auxillary item 0
   
-    i8   m_nUsedHead;    // bytes used in the area from the head
+    byte* m_aHeadArea;    //
   
-    i8   m_nTailItems;   // number of fixed-size items in this wsp
-    i8   m_nUsedTail;    // bytes used in the area frim the tail
-    i8   m_nTailSize;    // size of each fixed-size tail item
+    i8    m_nTailItems;   // number of fixed-size tail items in this wsp
+    i8    m_nTailSize;    // size of each fixed-size tail item
 
   public:
     WspConvergent_t(void);
 
-    TAIL* aAdjacentItem(TAIL* aPriorItem, i8 nItemBytes); // ayNextHead()
-    TAIL* aAdjacentItem(TAIL* aPriorItem); // ayNextHead()
+    TAIL* aAdjacentTail(TAIL* aPriorItem, i8 nItemBytes);
     HEAD* ayAllotHead(i8 nBytes);
     TAIL* ayAllotTail(i8 nBytes);
     byte* ayArea(void);
@@ -62,45 +65,53 @@ namespace BASE
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-WspConvergent_t<SIZE,HEAD,TAIL>::WspConvergent_t(void)
+template<i8 AREA, class HEAD, class TAIL>
+WspConvergent_t<AREA,HEAD,TAIL>::WspConvergent_t(void)
 {
-  m_nUsedHead  = 0;
-  
-  m_nTailItems = 0;
-  m_nUsedTail  = 0;
-  m_nTailSize  = C_UNKNOWN;
-  
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_yaByteArea,SIZE,CN_NONE);
+  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
 #endif
+  
+  m_nUsedHead  = 0;
+  m_nUsedTail  = 0;
+
+  m_aAuxItem0  = nullptr;
+  m_aAuxItem1  = nullptr;
+  
+  m_aHeadArea = m_yaByteArea;
+
+  m_nTailItems = 0;
+  m_nTailSize  = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vInit(void)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vInit(void)
 {
-  m_nUsedHead  = 0;
-  
-  m_nTailItems = 0;
-  m_nUsedTail  = 0;
-  m_nTailSize  = C_UNKNOWN;
-  
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_yaByteArea,SIZE,CN_NONE);
+  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
 #endif
+  
+  m_nUsedHead  = 0;
+  m_nUsedTail  = 0;
+
+  m_aAuxItem0  = nullptr;
+  m_aAuxItem1  = nullptr;
+  
+  m_aHeadArea = m_yaByteArea;
+
+  m_nTailItems = 0;
+  m_nTailSize  = C_UNKNOWN;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get item which is memory-wise the previous item in the tail area           */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aAdjacentItem(TAIL* aPriorItem,
-                                                       i8 nSizeItem)
+template<i8 AREA, class HEAD, class TAIL>
+TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAdjacentTail(TAIL* aPriorItem,
+                                                     i8 nSizeItem)
 {
   
   ASSERT(nSizeItem == m_nTailSize);
@@ -119,8 +130,8 @@ TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aAdjacentItem(TAIL* aPriorItem,
 /*----------------------------------------------------------------------------*/
 /* allot a variable-size head from byte area                                  */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-HEAD* WspConvergent_t<SIZE,HEAD,TAIL>::ayAllotHead(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+HEAD* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotHead(i8 nBytes)
 {
 
   ASSERT(m_nUsedHead < C_1MB);
@@ -148,8 +159,8 @@ HEAD* WspConvergent_t<SIZE,HEAD,TAIL>::ayAllotHead(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot a fixed size tail from byte area                                     */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::ayAllotTail(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+TAIL* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotTail(i8 nBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
   
@@ -174,8 +185,8 @@ TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::ayAllotTail(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-byte* WspConvergent_t<SIZE,HEAD,TAIL>::ayArea(void)
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayArea(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -187,8 +198,8 @@ byte* WspConvergent_t<SIZE,HEAD,TAIL>::ayArea(void)
 /*----------------------------------------------------------------------------*/
 /* dec number of items                                                        */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vDecItems(void)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -201,8 +212,8 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vDecItems(void)
 /*----------------------------------------------------------------------------*/
 /* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vFill(char cByte, eCN eClassNo)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vFill(char cByte, eCN eClassNo)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -211,14 +222,14 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vFill(char cByte, eCN eClassNo)
 
   byte* ayDst = ayArea();
   
-  MemLib::vSet(ayDst,cByte,SIZE,eClassNo);
+  MemLib::vSet(ayDst,cByte,AREA,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aFirstItem(void)
+template<i8 AREA, class HEAD, class TAIL>
+TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aFirstItem(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -227,7 +238,7 @@ TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aFirstItem(void)
   
   ASSERT(C_UNKNOWN != m_nTailSize);
   
-  byte* ayFirst = &ayArea()[SIZE - m_nTailSize];
+  byte* ayFirst = &ayArea()[AREA - m_nTailSize];
   
   return (TAIL*)ayFirst;
 }
@@ -235,12 +246,12 @@ TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aFirstItem(void)
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes in byte area                                      */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nFree(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nFree(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
-  i8 nFree = SIZE - m_nUsedHead - m_nUsedTail;
+  i8 nFree = AREA - m_nUsedHead - m_nUsedTail;
   ASSERT(nFree >= 0);
   
   return nFree;
@@ -249,12 +260,12 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::nFree(void)
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes in byte area                                      */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nFreeBytes(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nFreeBytes(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
-  i8 nFree = SIZE - m_nUsedHead - m_nUsedTail;
+  i8 nFree = AREA - m_nUsedHead - m_nUsedTail;
   ASSERT(nFree >= 0);
   
   return nFree;
@@ -263,14 +274,14 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* give chunk back to byte area at head                                       */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vGiveHead(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vGiveHead(i8 nBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
   // PRIVATE?
 
-  ASSERT(m_nUsedHead  + m_nUsedTail <= SIZE);
+  ASSERT(m_nUsedHead  + m_nUsedTail <= AREA);
 
   m_nUsedHead -= nBytes;
 }
@@ -278,14 +289,14 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vGiveHead(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* give chunk back to byte area at tail                                       */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vGiveTail(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vGiveTail(i8 nBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
   // PRIVATE?
   
-  ASSERT(m_nUsedHead  + m_nUsedTail <= SIZE);
+  ASSERT(m_nUsedHead  + m_nUsedTail <= AREA);
   
   m_nUsedTail -= nBytes;
 }
@@ -293,8 +304,8 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vGiveTail(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* does this workspace have enough free space for given size                  */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-bool WspConvergent_t<SIZE,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
+template<i8 AREA, class HEAD, class TAIL>
+bool WspConvergent_t<AREA,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -307,8 +318,8 @@ bool WspConvergent_t<SIZE,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 /*----------------------------------------------------------------------------*/
 /* inc number of items                                                        */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vIncItems(void)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vIncItems(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -320,8 +331,8 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vIncItems(void)
 /*----------------------------------------------------------------------------*/
 /* get number of items                                                        */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nItems(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nItems(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -331,8 +342,8 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* get address of last used byte in head area                                 */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-byte* WspConvergent_t<SIZE,HEAD,TAIL>::ayLatterHead(void)
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterHead(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -344,12 +355,12 @@ byte* WspConvergent_t<SIZE,HEAD,TAIL>::ayLatterHead(void)
 /*----------------------------------------------------------------------------*/
 /* get address of first used byte in head area                                */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-byte* WspConvergent_t<SIZE,HEAD,TAIL>::ayLatterTail(void)
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterTail(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
-  byte* ayNext = &ayArea()[SIZE - nUsedTail()];
+  byte* ayNext = &ayArea()[AREA - nUsedTail()];
   
   return ayNext;
 }
@@ -357,21 +368,21 @@ byte* WspConvergent_t<SIZE,HEAD,TAIL>::ayLatterTail(void)
 /*----------------------------------------------------------------------------*/
 /* get length of byte area                                                    */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nLength(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nLength(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
   // I THINK THIS SHOULD BE nSize()
   
-  return SIZE;
+  return AREA;
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset this wsp                                                             */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vReset(void)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vReset(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -386,19 +397,19 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get total size of this Wsp_t                                               */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nSize(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nSize(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
-  return sizeof(WspConvergent_t<SIZE,HEAD,TAIL>);
+  return sizeof(WspConvergent_t<AREA,HEAD,TAIL>);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get byte area as Stz*                                                      */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzArea(void)
+template<i8 AREA, class HEAD, class TAIL>
+Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzArea(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -410,8 +421,8 @@ Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzArea(void)
 /*----------------------------------------------------------------------------*/
 /* begin allot of stz (of unknown size) in head                               */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzAllot_begin(void)
+template<i8 AREA, class HEAD, class TAIL>
+Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzAllot_begin(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -423,8 +434,8 @@ Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzAllot_begin(void)
 /*----------------------------------------------------------------------------*/
 /* end allot of stz in head (size now known)                                  */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vStzAllot_end(i8 nSize)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vStzAllot_end(i8 nSize)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -434,8 +445,8 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vStzAllot_end(i8 nSize)
 /*----------------------------------------------------------------------------*/
 /* deposit given stz                                                          */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzDeposit(Stz* szValue)
+template<i8 AREA, class HEAD, class TAIL>
+Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzDeposit(Stz* szValue)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -451,8 +462,8 @@ Stz* WspConvergent_t<SIZE,HEAD,TAIL>::szStzDeposit(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aTailItem(i8 i_Tail)
+template<i8 AREA, class HEAD, class TAIL>
+TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aTailItem(i8 i_Tail)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -462,7 +473,7 @@ TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aTailItem(i8 i_Tail)
   ASSERT(C_UNKNOWN != m_nTailSize);
   
   i8 i_Area_right = (i_Tail + 1) * m_nTailSize;
-  byte* ayItem = &ayArea()[SIZE - i_Area_right];
+  byte* ayItem = &ayArea()[AREA - i_Area_right];
   
   return (TAIL*)ayItem;
 }
@@ -470,8 +481,8 @@ TAIL* WspConvergent_t<SIZE,HEAD,TAIL>::aTailItem(i8 i_Tail)
 /*----------------------------------------------------------------------------*/
 /* take chunk from byte area from the head                                    */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vTakeHead(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vTakeHead(i8 nBytes)
 {
   // PRIVATE?
   ASSERT(m_nUsedHead < C_1MB);
@@ -479,17 +490,17 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vTakeHead(i8 nBytes)
 
   m_nUsedHead += nBytes;
   
-  if (m_nUsedHead  + m_nUsedTail > SIZE) {
+  if (m_nUsedHead  + m_nUsedTail > AREA) {
     vDebugPoint();
   }
-  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
+  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
 }
 
 /*----------------------------------------------------------------------------*/
 /* take chunk from byte area from the tail                                    */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vTakeTail(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vTakeTail(i8 nBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -497,17 +508,17 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vTakeTail(i8 nBytes)
 
   m_nUsedTail += nBytes;
   
-  if (m_nUsedHead  + m_nUsedTail > SIZE) {
+  if (m_nUsedHead  + m_nUsedTail > AREA) {
     vDebugPoint();
   }
-  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
+  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get offset of an allotted                                                  */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::iOffsetInWsp(byte* ayAllotted)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::iOffsetInWsp(byte* ayAllotted)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -521,8 +532,8 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::iOffsetInWsp(byte* ayAllotted)
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nUsed(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsed(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -532,8 +543,8 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::nUsed(void)
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nUsedHead(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedHead(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -543,8 +554,8 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::nUsedHead(void)
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-i8 WspConvergent_t<SIZE,HEAD,TAIL>::nUsedTail(void)
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedTail(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -554,34 +565,34 @@ i8 WspConvergent_t<SIZE,HEAD,TAIL>::nUsedTail(void)
 /*----------------------------------------------------------------------------*/
 /* set number of used bytes at head                                           */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vUsedHead(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vUsedHead(i8 nBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
   m_nUsedHead = nBytes;
   
-  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
+  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set number of used bytes at tail                                           */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vUsedTail(i8 nBytes)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vUsedTail(i8 nBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
   m_nUsedTail = nBytes;
   
-  ASSERT(m_nUsedHead + m_nUsedTail <= SIZE);
+  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
 }
 
 /*----------------------------------------------------------------------------*/
 /* zero fill the byte                                                         */
 /*----------------------------------------------------------------------------*/
-template<i8 SIZE, class HEAD, class TAIL>
-void WspConvergent_t<SIZE,HEAD,TAIL>::vZero(eCN eClassNo)
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vZero(eCN eClassNo)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -593,7 +604,7 @@ void WspConvergent_t<SIZE,HEAD,TAIL>::vZero(eCN eClassNo)
 
   byte* ayDst = ayArea();
   
-  MemLib::vZero(ayDst,SIZE,eClassNo);
+  MemLib::vZero(ayDst,AREA,eClassNo);
 }
 
 /*============================================================================*/
