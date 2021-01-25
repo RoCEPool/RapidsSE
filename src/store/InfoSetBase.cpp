@@ -122,7 +122,7 @@ Row* InfoSetBase::aAllotRow(void)
      if (DM_VCH == pCol->eDatum()) {
        Stz* szVal = va_arg(xVarArgs,Stz*);
        if (szVal) {
-         ayDst = (Stz*)ayAllotHead(StrLib::nSize(szVal->azChar()));
+         ayDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
          
          // return early if no more space for the string
          if ( ! ayDst )

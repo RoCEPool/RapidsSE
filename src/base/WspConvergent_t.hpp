@@ -12,7 +12,7 @@ namespace BASE
     byte  m_yaByteArea[AREA]; // allottable area
     i8    m_nUsedAux;     // bytes used in the area for aux objects
     i8    m_nUsedHead;    // bytes used in the area for head objects
-    i8    m_nUsedTail;    // bytes used in the area for tail objects
+    i8    m_nUsedTail;    // bytes used in the area for tail items
 
     byte* m_aAuxItem0;    // auxillary item 0
     byte* m_aAuxItem1;    // auxillary item 1
@@ -26,8 +26,8 @@ namespace BASE
     TAIL* aAdjacentTail(TAIL* aPriorItem, i8 nItemBytes);
     byte* ayAllotAux0(i8 nBytes);
     byte* ayAllotAux1(i8 nBytes);
-    HEAD* ayAllotHead(i8 nBytes);
-    TAIL* ayAllotTail(i8 nBytes);
+    HEAD* aAllotHead(i8 nBytes);
+    TAIL* aAllotTail(i8 nBytes);
     void  vDecItems(void);
     TAIL* aFirstItem(void);
     i8    nFreeBytes(void);
@@ -128,7 +128,7 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux1(i8 nBytes)
 /* allot a variable-size head from byte area                                  */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-HEAD* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotHead(i8 nBytes)
+HEAD* WspConvergent_t<AREA,HEAD,TAIL>::aAllotHead(i8 nBytes)
 {
 
   ASSERT(m_nUsedHead < C_1MB);
@@ -157,7 +157,7 @@ HEAD* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotHead(i8 nBytes)
 /* allot a fixed size tail from byte area                                     */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-TAIL* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotTail(i8 nBytes)
+TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAllotTail(i8 nBytes)
 {
   ASSERT(m_nUsedHead < C_1MB);
   

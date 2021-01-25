@@ -243,7 +243,7 @@ Row* RowBox_t<AREA>::aAllotNewRow(void)
   if (WspConvergent_t<AREA,Stz,Row>::nFreeBytes() < C_2KB)
     return nullptr;
 
-  m_aRowCur = WspConvergent_t<AREA,Stz,Row>::ayAllotTail(m_nRowSizeProper);
+  m_aRowCur = WspConvergent_t<AREA,Stz,Row>::aAllotTail(m_nRowSizeProper);
 
   if (! m_aRowCur)
     return nullptr;
