@@ -1466,7 +1466,6 @@ public:
   void vStreamDefIsNull(void);
   void vStreamDefName(void);
   void vStreamDefNew(void);
-  void vStreamDefNewCount(void);
   void vStreamDefNewToCsv(void);
   void vStreamDefParse(void);
   void vStreamDefPipeIn(void);
