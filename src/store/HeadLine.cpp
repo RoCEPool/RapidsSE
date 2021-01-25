@@ -129,7 +129,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
-  Column* pLastCol = pStreamDef->pGetColumn(pStreamDef->nColumns(C_ALL) - 1);
+  Column* pLastCol = pStreamDef->pGetColumn(pStreamDef->nColumns() - 1);
   
  // ASSERT(pLastCol->bIsLastColumn());
   

@@ -458,9 +458,9 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
 
   u8 uProjectColumns = 0;
-  for (i8 i = 0; i < pStreamDefOut->nTotalColumns(); i++)
+  for (i8 i = 0; i < pStreamDefOut->nColumns(); i++)
     BitLib::vSetOn(uProjectColumns, i);
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nTotalColumns());
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns());
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
   oTagSet.vReset();

@@ -114,7 +114,7 @@ Row* InfoSetBase::aAllotRow(void)
    
    va_start(xVarArgs,iVArgsBegin);
    
-   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(0); i_Col++) {
+   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
    
      Column* pCol = pStreamDef->pGetColumn(i_Col);
      

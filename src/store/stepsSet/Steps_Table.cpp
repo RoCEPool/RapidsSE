@@ -216,7 +216,7 @@ void Step::vTableColumnCountFetch(void)
   ENTRY();
   
   StreamDef* pStreamDef = ( m_pJob->pLogicUnit_job() )->m_xpTable->pStreamDef();
-  i8 nColumns = pStreamDef->nColumns(C_ALL);
+  i8 nColumns = pStreamDef->nColumns();
   
   m_pDataStack->vPushInt(nColumns);
   
@@ -347,7 +347,7 @@ void Step::vTableFindColumn(void)
   bool bFound = false;
   
   // look for the column in the streamDef
-  i8 nTableColumns = pStreamDef->nColumns(C_ALL);
+  i8 nTableColumns = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
     
     pColumn = pStreamDef->pGetColumn(i_Col);
@@ -381,7 +381,7 @@ void Step::vTableIsColumn(void)
   bool bFound = false;
   
   // look for the column in the streamDef
-  i8 nTableColumns = pStreamDef->nColumns(C_ALL);
+  i8 nTableColumns = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
     
     pColumn = pStreamDef->pGetColumn(i_Col);

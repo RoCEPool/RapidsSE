@@ -749,7 +749,7 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   Column* pCol = nullptr;
   ColPix* aColPix = m_pRowBuffer->axaColPix();
-  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  i8 nCols = m_pStreamDef->nColumns();
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // determine field separator

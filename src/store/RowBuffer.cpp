@@ -93,7 +93,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy single row into this buffer
   
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(C_ALL); i_Col++) {
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
     
     Column* pCol = pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

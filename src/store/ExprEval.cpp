@@ -84,7 +84,7 @@ eEC ExprEval::eExprEvalAll(StreamDef* pStreamDefIn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
-  for (i8 iCol = 0; iCol < pStreamDefIn->nTotalColumns(); iCol++) {
+  for (i8 iCol = 0; iCol < pStreamDefIn->nColumns(); iCol++) {
     Column* pColumn = pStreamDefIn->pGetColumn(iCol);
     //Stz* m_sAsmText = m_sAsmText[iCol].szStz();
 
@@ -447,7 +447,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     // look for the column in the streamDefIn
     Column *pColumn = nullptr;
     bool bFound = false;
-    i8 nColumns = pStreamDefIn->nColumns(C_ALL);
+    i8 nColumns = pStreamDefIn->nColumns();
     Stz* sColumnNm = pTkn->szChars();
 
     for (i8 i_StreamInCol = 0; i_StreamInCol < nColumns; i_StreamInCol++) {

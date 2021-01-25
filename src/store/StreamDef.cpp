@@ -226,12 +226,11 @@ void StreamDef::vAsString(String* pString)
 /*----------------------------------------------------------------------------*/
 /* get no of columns in subset of streamDef                                   */
 /*----------------------------------------------------------------------------*/
-i8 StreamDef::nColumns(i8 iSubSet)
+i8 StreamDef::nColumns(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
 
   return m_nColumns;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,9 +425,8 @@ void StreamDef::vPrint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   vTrace("StreamDef %s\n"_Stz,m_sName.szStz());
-  
-  i8 nCols = this->nColumns(C_ALL);
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     Column* pColumn = pGetColumn(i_Col);
 
     pColumn->vShow();
@@ -499,7 +497,7 @@ void StreamDef::vToRowPix(RowPix* aRowPix, bool bPtnHash)
   
   //ASSERT(! aRowPix->m_bInitialised);
   
-  aRowPix->m_nColumns = nColumns(C_ALL);
+  aRowPix->m_nColumns = m_nColumns;
   aRowPix->m_bPtnHash = bPtnHash;
   if (aRowPix->m_bPtnHash) {
     aRowPix->m_nColumns++;
@@ -534,16 +532,6 @@ void StreamDef::vToMetadata(Stz* sMetadata)
   }
 
   sMetadata->vConcat(")"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total no of columns in streamDef                                       */
-/*----------------------------------------------------------------------------*/
-i8 StreamDef::nTotalColumns(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  return m_nColumns;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1028,7 +1016,7 @@ eEC StreamDef::eParsePartitionBy(TokenVec* pTknVec)
     }
     
     // find column and set as partition column
-    for (i8 i_Col = 0; i_Col < nColumns(C_ALL); i_Col++) {
+    for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
       Column* pCol = pGetColumn(i_Col);
       if (pCol->szColNm()->bSame(pTkn->szChars())) {
         pCol->vIsPtnKey(true);

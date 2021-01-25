@@ -108,7 +108,7 @@ void Step::vStreamDefColumnCountFetch(void)
   
   StreamDef* pStreamDef = _pStreamDef(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
   
-  m_pDataStack->vPushInt(pStreamDef->nColumns(C_ALL));
+  m_pDataStack->vPushInt(pStreamDef->nColumns());
   
   EXIT();
 }

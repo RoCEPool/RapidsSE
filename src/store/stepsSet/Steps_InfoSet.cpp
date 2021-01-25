@@ -205,7 +205,7 @@ void Step::vInfoSetAddRowVargs(void)
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpInfoSetTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
-  i8 nCols = pStreamDef->nColumns(C_ALL);
+  i8 nCols = pStreamDef->nColumns();
   i8 nArgs = m_pDataStack->iPopInt(__func__);
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
@@ -428,7 +428,7 @@ void Step::vInfoSetColValFetch(void)
     
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpInfoSetTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
-  i8 nCols = pStreamDef->nColumns(C_ALL);
+  i8 nCols = pStreamDef->nColumns();
 
   i8 i_Col = m_pDataStack->iPopInt(__func__);
 

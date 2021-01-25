@@ -40,7 +40,7 @@ namespace STORE
     void vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
     void vAddColumns(StreamDef* pStreamDef);
     void vAsString(String* pString);
-    i8 nColumns(i8 iSubSet);
+    i8 nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
@@ -52,7 +52,6 @@ namespace STORE
     void vToColPix(ColPix* axColPix, bool bPtnHash);
     void vToRowPix(RowPix* aRowPix, bool bPtnHash);
     void vToMetadata(Stz* sMetaData);
-    i8   nTotalColumns(void);
     
   private:
     
