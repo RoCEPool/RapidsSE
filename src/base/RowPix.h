@@ -32,7 +32,7 @@ namespace BASE
       m_nMaxRowSize  = 256;  // FOR TESTING PURPOSES
       
       for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
-        m_xaColPix[i_Col].m_uAsI4 = 0;
+        m_xaColPix[i_Col].m_uAsU8 = 0;
         m_bProject[i_Col] = true;
       }
     }
