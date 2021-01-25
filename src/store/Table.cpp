@@ -305,7 +305,7 @@ void Table::vCreatePtnDef(void)
   
   Column* pColumn = nullptr;
 
-  m_pPtnStreamDef->m_nDefColumns = 0;
+  m_pPtnStreamDef->m_nTotalColumns = 0;
   
   // find the column from the table columnVector
   i8 iColumns = pStreamDef()->nColumns(C_ALL);
@@ -313,8 +313,7 @@ void Table::vCreatePtnDef(void)
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
-      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns].vCopy(pColumn);
-      m_pPtnStreamDef->m_nDefColumns++;
+      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nTotalColumns].vCopy(pColumn);
       m_pPtnStreamDef->m_nTotalColumns++;
     }
   }

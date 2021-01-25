@@ -13,7 +13,6 @@ namespace STORE
     s32    m_sName;         // name
     s256   m_sPath;         // full name
     i8     m_iStreamId;     // unique stream identifier
-    i8     m_nDefColumns;
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
   
     i8     m_nFixedSized;   // is this a fixed size row?
