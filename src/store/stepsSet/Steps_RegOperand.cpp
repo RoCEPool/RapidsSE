@@ -43,7 +43,6 @@
 void Step::vAddSteps_RegOperand(void)
 {
   vAddStep("Operand[]"_Stz,                &Step::vRegOperandGet);
-  vAddStep("Operand[].addColumnDef"_Stz,   &Step::vRegOperandAddColumnDef);
   vAddStep("Operand[].asSrcCrwBuffer"_Stz, &Step::vRegOperandAsSrcCrwBuffer);
   vAddStep("Operand[].asSrcRowBuffer"_Stz,   &Step::vRegOperandAsSrcRowBuffer);
   vAddStep("Operand[].bide"_Stz,           &Step::vRegOperandBide);
@@ -84,26 +83,6 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].set"_Stz,            &Step::vRegOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vRegOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vRegOperandWriteToFile0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].addColumnDef -- operand add column definition                    */
-/*----------------------------------------------------------------------------*/
-void Step::vRegOperandAddColumnDef(void)
-{
-  ENTRY();
-  
-  StreamDef* pStreamDef = _pStreamDef(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
-  
-  s256 sColumnNm;
-  m_pDataStack->vPopStr(sColumnNm, __func__);
-  
-  eCT eColumnType;
-  eColumnType = (eCT)m_pDataStack->iPopInt(__func__);
-  
-  pStreamDef->vAddColumn(sColumnNm, eColumnType);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -432,7 +432,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   //! ALKA: shouldn't this be checking for the leading edge of the index to include
   //!  all partition keys ???
   // a unique index must include all columns in the partitioning keys
-  i8 nPtnColumns = pPtnStreamDef->nColumns(C_ALL);
+  i8 nPtnColumns = pPtnStreamDef->nColumns();
   bool bFound = false;
   for (i8 i = 0; i < nPtnColumns; i++)
   {

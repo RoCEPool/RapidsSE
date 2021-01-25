@@ -48,6 +48,28 @@ macro AM_HANDLER_CRWBUFFER_AGG
   EO_JMP QUERY_DONE
 endMacro
 
+macro AM_HANDLER_CRWBUFFER_AGG_GBY
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_CRWBUFFER_AGG_GBY                                         //
+//----------------------------------------------------------------------------//
+  // HANDLER_CRWBUFFER_AGG_GBY
+  Label HANDLER_CRWBUFFER
+  EO_PRINTF "**CRWBUFFER HANDLER**\n"
+  EO_POP
+
+  Label HANDLER_CRWBUFFER_AGG_GBY_BEGIN
+  EO_CRW_SRC_BEGIN
+
+  // NEXT_CRW_SRC
+  Label NEXT_CRW_SRC
+  EO_CRW_SRC_NEXT
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <crwProcessRoutine>
+  EO_CALL <payLoadRoutine>
+  EO_JMP NEXT_CRW_SRC
+  EO_JMP QUERY_DONE
+endMacro
+
 macro AM_CRW_PROJECT_COLUMNS
 //----------------------------------------------------------------------------//
 // macro AM_CRW_PROJECT_COLUMNS                                               //

@@ -10,20 +10,12 @@ namespace STORE
   class StreamDef : public Definition
   {
   public:
-    s32    m_sName;         // name
-    s256   m_sPath;         // full name
-    i8     m_iStreamId;     // unique stream identifier
-    i8     m_nDefSets;      // eg. 3
-    i8     m_nDefColumns[C_MAX_STREAMDEFS];
-    i8     m_i_DefStart[C_MAX_STREAMDEFS];    // 0, 4, 9
-    Column m_xaColumn[C_MAX_DEFCOLUMNS];
-  
-    i8     m_nFixedSized;   // is this a fixed size row?
-    i8     m_nTotalColumns; // total columns
-    
-    bool   m_bTemp;         // is this a temporary definition?
-  
-    RowPix m_oRowPix;
+    s256   m_sName;                       // streamDef name
+    i8     m_iStreamId;                   // unique stream identifier
+    i8     m_nColumns;                    // total columns
+    Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of clolumns
+    RowPix m_oRowPix;                     // row pix
+    i8     m_nFixedSized;                 // size of fixed size row
 
     // must be last
     Footer m_xFooter;
@@ -37,26 +29,20 @@ namespace STORE
    ~StreamDef(void) noexcept(false);
     
     static eCT eColumn(Stz* szType);
-    
-    void vAdd(StreamDef* pStreamDef);
-    void vAddDefSet(void);
-    void vAddColumn(Stz* ColumnNm, eCT eColumnType);
-    void vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
-    void vAddColumns(StreamDef* pStreamDef);
-    void vAsString(String* pString);
-    i8 nColumns(i8 iSubSet);
+
+    void    vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
+    void    vAsString(String* pString);
+    i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
-    i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
-    void vName(Stz* sName);
-    Stz* szName(void);
-    eEC eParse(Stz* szCmd);
-    void vPrint(void);
+    void    vName(Stz* sName);
+    Stz*    szName(void);
+    eEC     eParse(Stz* szCmd);
+    void    vPrint(void);
     RowPix* aRowPix(void);
-    void vToColPix(ColPix* axColPix, bool bPtnHash);
-    void vToRowPix(RowPix* aRowPix, bool bPtnHash);
-    void vToMetadata(Stz* sMetaData);
-    i8   nTotalColumns(void);
+    void    vToColPix(ColPix* axColPix, bool bPtnHash);
+    void    vToRowPix(RowPix* aRowPix, bool bPtnHash);
+    void    vToMetadata(Stz* sMetaData);
     
   private:
     

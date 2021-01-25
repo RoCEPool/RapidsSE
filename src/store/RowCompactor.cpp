@@ -390,7 +390,7 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  i8 nCols = m_pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     _ColEnc* aColEnc;
@@ -488,7 +488,7 @@ void RowCompactor::vAnalyzeSamples(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  i8 nCols = m_pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);

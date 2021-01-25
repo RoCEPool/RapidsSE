@@ -6,12 +6,15 @@
 #include "ShadowNode.hpp"
 
 #include "PlanNode.hpp"
+#include "QueryNode.hpp"
 
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
 #include "TableRef.hpp"
 #include "Expr.hpp"
 #include "ProjectedExpr.hpp"
 #include "ShadowRoot.hpp"
+
+#include "GraphValidator.hpp"
 
 using namespace Parser;
 
@@ -28,17 +31,21 @@ Atomic* ShadowNode::ms_pObjId = new Atomic();
 
 /*----------------------------------------------------------------------------*/
 /* Validates that a node is correctly built                                   */
+/* The fTypeValidator param is exected to be something like the               */
+/* bIsOfType() function.                                                      */
 /*----------------------------------------------------------------------------*/
-b1 ShadowNode::bValidate(PlanNode* pPlanNode)
+b1 ShadowNode::bValidate(QueryNode* pQueryNode, PlanNode* pPlanRoot,
+                         std::function<b1(PlanNode*)> fTypeValidator)
 {
-  ASSERT(pPlanNode);
+  ASSERT(pQueryNode);
+  ASSERT(pPlanRoot);
 
-  Stz* szDefnPath = pPlanNode->szType();
-  ASSERT(szDefnPath);
-  ASSERT(szDefnPath->nLength() > 0);
+  // Validate that this node is of the expected type
+  fTypeValidator(pQueryNode);
 
-  // TODO: Get the root of the graph
-//  PlanNode* pDefn = pFind(szDefnPath, pRoot);
+#ifdef WITH_ASSERT_MACRO
+  GraphValidator::vValidatePlanNode(pQueryNode, pPlanRoot);
+#endif
 
   return true;
 }
@@ -93,6 +100,7 @@ void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)
 b1 ShadowNode::bIsOfType(PlanNode* pNode, Stz* szTypePath)
 {
   ASSERT(pNode);
+  ASSERT(pNode->szType());
   ASSERT(szTypePath);
   ASSERT(szTypePath->nLength() > 0);
 

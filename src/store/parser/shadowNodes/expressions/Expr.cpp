@@ -52,7 +52,7 @@ static Stz* aExprTypeDefns[] = {
 /*----------------------------------------------------------------------------*/
 Stz* Expr::szCatalog(QueryNode* pNode)
 {
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pNode));
   ASSERT(pCatalogNode);
@@ -68,7 +68,7 @@ Stz* Expr::szCatalog(QueryNode* pNode)
 void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
@@ -91,7 +91,7 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 Stz* Expr::szSchema(QueryNode* pNode)
 {
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pSchemaNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pNode));
   ASSERT(pSchemaNode);
@@ -106,7 +106,7 @@ Stz* Expr::szSchema(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 Stz* Expr::szTable(QueryNode* pNode)
 {
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pTableNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pNode));
   ASSERT(pTableNode);

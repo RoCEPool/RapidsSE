@@ -1352,7 +1352,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   u1* auMetaCode;
   byte* ayDataByte;
   
-  i8 nCols = pStreamDef->nTotalColumns();
+  i8 nCols = pStreamDef->nColumns();
   
   //vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
   auMetaCode = aHeadLine->auMetaArea();
@@ -2194,7 +2194,6 @@ void vDev_REG_STREAMDEFOUT_NEW(void* aLU)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
   pLogicUnit->m_xpStreamDefOut = new StreamDef;
-  (* pLogicUnit->m_xpStreamDefOut)->vAddDefSet();
 }
 
 /*----------------------------------------------------------------------------*/

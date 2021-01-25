@@ -44,7 +44,7 @@ QueryNode* LiteralExpr::pCreate(eET eType, Value& xVal)
 void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   sBuf.vConcat(pNode->szName());
 }

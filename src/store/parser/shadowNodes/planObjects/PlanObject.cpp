@@ -39,7 +39,7 @@ static Stz* aIndentFormat[] = {
 void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
@@ -63,7 +63,7 @@ void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
 void PlanObject::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 

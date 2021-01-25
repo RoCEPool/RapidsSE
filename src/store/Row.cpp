@@ -68,7 +68,7 @@ Row::~Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 Row::nSizeBytes(StreamDef* pStreamDef)
 {
-  i8 nSize = sizeof(Row) + (pStreamDef->nColumns(0) - 1) * sizeof(Dtm);
+  i8 nSize = sizeof(Row) + (pStreamDef->nColumns() - 1) * sizeof(Dtm);
   return nSize;
 }
 
@@ -90,7 +90,7 @@ void Row::vDump(StreamDef* pStreamDef)
 {
   vTrace("ROW: %p"_Stz, this);
   
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(C_ALL); i_Col++) {
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
     
     Column* pCol = pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

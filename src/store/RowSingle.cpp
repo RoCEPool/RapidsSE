@@ -58,7 +58,7 @@ RowSingle::RowSingle(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
   m_pStreamDef  = pStreamDef;
-  m_nColumns    = pStreamDef->nColumns(C_ALL);
+  m_nColumns    = pStreamDef->nColumns();
   m_iSubSet     = C_ALL;
   
   m_bGetAll     = true;
@@ -188,7 +188,7 @@ void RowSingle::vCopyRow(Row* pRow)
   vResetValues();
   Row* aRow = aAllotNewRow();
   
-  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(); i_Col++) {
   
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -280,7 +280,7 @@ i8 RowSingle::nSumVchSizes(void)
 
   i8 nSizeVch = 0;
   
-  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(); i_Col++) {
     
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

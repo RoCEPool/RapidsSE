@@ -1159,7 +1159,6 @@ public:
   void vRegOpIncOperandCount(void);
 
   // operand
-  void vRegOperandAddColumnDef(void);
   void vRegOperandAsSrcCrwBuffer(void);
   void vRegOperandAsSrcRowBuffer(void);
   void vRegOperandCsvAppend(void);
@@ -1467,7 +1466,6 @@ public:
   void vStreamDefIsNull(void);
   void vStreamDefName(void);
   void vStreamDefNew(void);
-  void vStreamDefNewCount(void);
   void vStreamDefNewToCsv(void);
   void vStreamDefParse(void);
   void vStreamDefPipeIn(void);
@@ -1478,7 +1476,6 @@ public:
 
   // stream definition (out)
   void vStreamDefOutAddColumn(void);
-  void vStreamDefOutAddColumns(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);

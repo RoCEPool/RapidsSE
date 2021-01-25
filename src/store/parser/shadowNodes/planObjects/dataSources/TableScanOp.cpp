@@ -56,7 +56,7 @@ QueryNode* TableScanOp::pCreate(QueryNode* pTableRef)
 void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pTableScanOp = static_cast<QueryNode*>(pNode);
 
@@ -74,7 +74,7 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   sBuf.vConcat("\n\n"_Stz);
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);

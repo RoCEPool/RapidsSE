@@ -40,7 +40,6 @@ void Step::vAddSteps_StreamDef(void)
   vAddStep("StreamDef[].get"_Stz,             &Step::vStreamDefGet);
   vAddStep("StreamDef[].isNull"_Stz,          &Step::vStreamDefIsNull);
   vAddStep("StreamDef[].name"_Stz,            &Step::vStreamDefName);
-  vAddStep("StreamDef[].newCountStream"_Stz,  &Step::vStreamDefNewCount);
   vAddStep("StreamDef[].new"_Stz,             &Step::vStreamDefNew);
   vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vStreamDefNewToCsv);
   vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefParse);
@@ -108,7 +107,7 @@ void Step::vStreamDefColumnCountFetch(void)
   
   StreamDef* pStreamDef = _pStreamDef(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
   
-  m_pDataStack->vPushInt(pStreamDef->nColumns(C_ALL));
+  m_pDataStack->vPushInt(pStreamDef->nColumns());
   
   EXIT();
 }
@@ -199,52 +198,25 @@ void Step::vStreamDefNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].newCount -- new a countOp streamDef                            */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefNewCount(void)
-{
-  ENTRY();
-  
-  // create a new streamDef
-  StreamDef* pStreamDef = new StreamDef;
-  
-  // create an integer column
-  pStreamDef->m_xaColumn[0].vColumnNo(0);
-  pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
-  pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
-  pStreamDef->m_xaColumn[0].vDatum(DM_INT);
-  
-  pStreamDef->m_nDefSets++;
-  pStreamDef->m_nDefColumns[0] = 1;
-  pStreamDef->m_i_DefStart[0] = 0;
-  
-  ( m_pJob->pLogicUnit_job() )->m_xpStreamDef = pStreamDef;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* StreamDef[].newToCsvStream -- new a ToCsv streamDef                        */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamDefNewToCsv(void)
 {
   ENTRY();
-  
+
   // create a new streamDef
   StreamDef* pStreamDef = new StreamDef;
-  
+
   // create an integer column
   pStreamDef->m_xaColumn[0].vColumnNo(0);
   pStreamDef->m_xaColumn[0].vColumnNm("row"_Stz);
   pStreamDef->m_xaColumn[0].vColumnType(CT_VARCHAR);
   pStreamDef->m_xaColumn[0].vDatum(DM_VCH);
-  
-  pStreamDef->m_nDefSets++;
-  pStreamDef->m_nDefColumns[0] = 1;
-  pStreamDef->m_i_DefStart[0] = 0;
-  
+
+  pStreamDef->m_nColumns = 1;
+
   ( m_pJob->pLogicUnit_job() )->m_xpStreamDef = pStreamDef;
-  
+
   EXIT();
 }
 

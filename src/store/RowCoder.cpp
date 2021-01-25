@@ -183,7 +183,7 @@ i8 RowCoder::nMetaSize(StreamDef* pStreamDef)
 //  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
 //                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
 
-  i8 nMetaBytes = pStreamDef->nColumns(C_ALL);
+  i8 nMetaBytes = pStreamDef->nColumns();
 
   return nMetaBytes;
 }

@@ -35,7 +35,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
   u1* auMetaCode;
   byte* ayDataByte;
   
-  i8 nCols = pStreamDef->nTotalColumns();
+  i8 nCols = pStreamDef->nColumns();
 
   //vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
   auMetaCode = aHeadLine->auMetaArea();

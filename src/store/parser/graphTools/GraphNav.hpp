@@ -9,6 +9,7 @@ namespace Parser
   class PlanNode;
   class DefinitionNode;
   class PrimitiveNode;
+  class QueryNode;
 
   class GraphNav
   {
@@ -91,6 +92,9 @@ namespace Parser
 
     // Returns the parent node of a given primitive node
     static PlanNode* pGetParent(PrimitiveNode* pDefnNode, PlanNode* pRootNode);
+
+    // Walks the plan graph to find the given query node. Saves the path and depth
+    static void vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256& sPathBuf, i8& iDepth);
 
   private:
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,

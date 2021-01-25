@@ -60,7 +60,7 @@ QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
 void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pProjectOp = static_cast<QueryNode*>(pNode);
 
@@ -91,7 +91,7 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 void ProjectOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   sBuf.vConcat("\n\n"_Stz);
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);

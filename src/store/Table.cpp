@@ -304,20 +304,17 @@ void Table::vCreatePtnDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Column* pColumn = nullptr;
-  
-  m_pPtnStreamDef->m_nDefSets = 1;
-  m_pPtnStreamDef->m_i_DefStart[0] = 0;
-  m_pPtnStreamDef->m_nDefColumns[0] = 0;
+
+  m_pPtnStreamDef->m_nColumns = 0;
   
   // find the column from the table columnVector
-  i8 iColumns = pStreamDef()->nColumns(C_ALL);
+  i8 iColumns = pStreamDef()->nColumns();
   
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
-      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns[0]].vCopy(pColumn);
-      m_pPtnStreamDef->m_nDefColumns[0]++;
-      m_pPtnStreamDef->m_nTotalColumns++;
+      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nColumns].vCopy(pColumn);
+      m_pPtnStreamDef->m_nColumns++;
     }
   }
 }
@@ -357,7 +354,7 @@ Column* Table::pFindColumn(Stz* szColNm)
   
   Column* pColumn = nullptr;
   bool bFound = false;
-  i8 nColumns = m_pStreamDef->nColumns(C_ALL);
+  i8 nColumns = m_pStreamDef->nColumns();
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     pColumn = m_pStreamDef->pGetColumn(i_Col);
@@ -548,7 +545,7 @@ void Table::vMarkTable(void)
   sTableMark.vSprintCat("Table %s\n"_Stz,
                         m_sTableNm.szStz());
   
-  i8 nCols = m_pStreamDef->nColumns(C_ALL);
+  i8 nCols = m_pStreamDef->nColumns();
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     

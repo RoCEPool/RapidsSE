@@ -588,7 +588,7 @@ namespace STORE
     //vTrace("vInflate_Key_into_ElementArray\n"_Stz);
   
 
-  i8 nCols = pStreamDef->nTotalColumns();
+  i8 nCols = pStreamDef->nColumns();
   
   u1* auMetaCode = aHeadLine->auMetaArea();
   
