@@ -38,7 +38,6 @@ namespace BASE
     HEAD* aLastItem(void); // ayLasHead()
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
-    i8    nLength(void);
     i8    iOffsetOfItem(TAIL* ayAllotted);
     Stz*  szStzAllot_begin(void);
     void  vStzAllot_end(i8 nSize);
@@ -338,19 +337,6 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterTail(void)
   byte* ayNext = &ayArea()[AREA - nUsedTail()];
   
   return ayNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get length of byte area                                                    */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-i8 WspConvergent_t<AREA,HEAD,TAIL>::nLength(void)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // I THINK THIS SHOULD BE nSize()
-  
-  return AREA;
 }
 
 /*----------------------------------------------------------------------------*/
