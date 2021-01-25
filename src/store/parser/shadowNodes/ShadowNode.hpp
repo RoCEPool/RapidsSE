@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include <functional> // for std::function
+
 namespace Parser
 {
   class PlanNode;
