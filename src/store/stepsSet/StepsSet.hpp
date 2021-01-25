@@ -1405,6 +1405,7 @@ public:
   void vSocketRecvObject(void);
   void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
+  void vUpdateNodeStatus(void);
 
   // sql compiler
   void vSqlCompilerNameValidate(void);

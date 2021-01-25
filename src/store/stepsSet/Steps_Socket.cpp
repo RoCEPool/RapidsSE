@@ -38,6 +38,9 @@
 #include "SP_Header.hpp"
 #include "SP_Job.hpp"
 
+#include "Node.hpp"
+#include "Grid.hpp"
+
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -304,6 +307,7 @@ void Step::vSocketRecvObject(void)
   bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes,oSysCall);
   if (! bResult) {
     m_pDataStack->vPushInt(false);
+    vUpdateNodeStatus();
     EXIT();
     return;
   }
@@ -344,6 +348,7 @@ void Step::vSocketRecvObject(void)
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       m_pDataStack->vPushInt(false);
+      vUpdateNodeStatus();
       EXIT();
       return;
     }
@@ -387,6 +392,7 @@ void Step::vSocketRecvObject(void)
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       m_pDataStack->vPushInt(false);
+      vUpdateNodeStatus();
       EXIT();
       return;
     }
@@ -425,6 +431,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -454,6 +461,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -478,6 +486,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -502,6 +511,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -523,6 +533,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -544,6 +555,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+       vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -565,6 +577,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -586,6 +599,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -607,6 +621,7 @@ void Step::vSocketRecvObject(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -652,6 +667,7 @@ void Step::vSocketRecvObject_LowMem(void)
   bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes, oSysCall);
   if (! bResult) {
     m_pDataStack->vPushInt(false);
+    vUpdateNodeStatus();
     EXIT();
     return;
   }
@@ -683,6 +699,7 @@ void Step::vSocketRecvObject_LowMem(void)
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       m_pDataStack->vPushInt(false);
+      vUpdateNodeStatus();
       EXIT();
       return;
     }
@@ -716,6 +733,7 @@ void Step::vSocketRecvObject_LowMem(void)
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       m_pDataStack->vPushInt(false);
+      vUpdateNodeStatus();
       EXIT();
       return;
     }
@@ -767,6 +785,7 @@ void Step::vSocketRecvObject_LowMem(void)
       bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -787,6 +806,7 @@ void Step::vSocketRecvObject_LowMem(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -812,6 +832,7 @@ void Step::vSocketRecvObject_LowMem(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -851,6 +872,7 @@ void Step::vSocketRecvObject_LowMem(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -872,6 +894,7 @@ void Step::vSocketRecvObject_LowMem(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -910,6 +933,7 @@ void Step::vSocketRecvObject_LowMem(void)
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
+        vUpdateNodeStatus();
         EXIT();
         return;
       }
@@ -964,6 +988,9 @@ void Step::vSocketSendObject(void)
                          pSocket);
     
     //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
+
+    if (( m_pJob->pLogicUnit_job() )->m_pSendNode)
+      printf("Send to Node %s \n",( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm()->azChar());
   }
 
   RASSERT(_bIsValidJob(eClass) ||
@@ -984,7 +1011,6 @@ void Step::vSocketSendObject(void)
                 ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
               C_VARGS_END);
 
-    
   SysCall oSysCall;
   
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
@@ -1006,10 +1032,53 @@ void Step::vSocketSendObject(void)
     // ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm()
     // Get the grid, find this node, set the status
 
+    //printf("Socket failed %s\n", (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm()->azChar());
+
+    if (_bIsValidJob(eClass)) {
+      if (( m_pJob->pLogicUnit_job() )->m_pSendNode) {
+        Stz * pszName = (m_pJob->pLogicUnit_job())->m_pSendNode ?
+                        (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm(): "<unknown>"_Stz;
+        printf("FAILED Send to Node %s , update status\n",pszName->azChar());
+        Grid *pGrid = AM::pGrid();
+        Node *pNode = pGrid->pFindNode(pszName);
+        pNode->vSetNodeStatus(99);
+      }
+    }
+
 
   }
 
   m_pDataStack->vPushInt(bResult);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.update status                                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vUpdateNodeStatus(void)
+{
+  ENTRY();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  printf("FAILED Receive from target node\n");
+
+  if (( m_pJob->pLogicUnit_job() )->m_pSendNode)
+      printf("FAILED Send/Receive to Node %s \n",( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm()->azChar());
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  /*
+  if (( m_pJob->pLogicUnit_job() )->m_pSendNode) {
+    Stz * pszName = (m_pJob->pLogicUnit_job())->m_pSendNode ?
+                    (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm(): "<unknown>"_Stz;
+    printf("ERROR ERROR FAILED Receive to Node %s , update status\n",pszName->azChar());
+    Grid *pGrid = AM::pGrid();
+    Node *pNode = pGrid->pFindNode(pszName);
+    pNode->vSetNodeStatus(99);
+  }
+   */
+
 
   EXIT();
 }
