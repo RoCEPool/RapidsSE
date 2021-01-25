@@ -22,6 +22,9 @@ namespace Parser
     // Validate only the /plan subsection of the plan (ignoring definitions & primitives)
     static void vValidatePlan(PlanNode* pRootNode);
 
+    // Validate a single node
+    static void vValidatePlanNode(QueryNode* pQueryNode, PlanNode* pRootNode);
+
   private:
     static void                vValidateRootNode(PlanNode* pRootNode);
     static GraphNav::eWalkCtrl eValidatePrimitiveNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg);

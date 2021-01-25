@@ -31,7 +31,7 @@ void ShadowRoot::vDescribe(PlanNode* pRoot, s2K& sBuf)
 {
   _static_
 
-  ASSERT(bValidate(pRoot));
+  ASSERT(bIsOfType(pRoot));
 
   sBuf.vConcat(GraphNav::szLeafType(pRoot->szType()));
 }
@@ -43,7 +43,7 @@ void ShadowRoot::vExplain(PlanNode* pRoot, s48K& sBuf, i8 iIndent)
 {
   _static_
 
-  ASSERT(bValidate(pRoot));
+  ASSERT(bIsOfType(pRoot));
 
   // Get the first child of /__root__/plan
   PlanNode* pPlan = GraphNav::pFindChild(const_cast<Stz*>(C_PLAN_NAME), pRoot);

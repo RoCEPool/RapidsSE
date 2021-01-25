@@ -73,6 +73,21 @@ void GraphValidator::vValidatePlan(PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Validate a specific node under /plan against its definitions               */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vValidatePlanNode(QueryNode* pQueryNode, PlanNode* pRootNode)
+{
+  ASSERT(pQueryNode);
+  ASSERT(pQueryNode->eGetClassNo() == CN_QUERYNODE);
+
+  s256 sPathBuf;
+  i8 iDepth = 0;
+  GraphNav::vGetPathAndDepth(pQueryNode, pRootNode, sPathBuf, iDepth);
+
+  eValidatePlanNode(pQueryNode, sPathBuf, iDepth, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Validate the root node only                                                */
 /*----------------------------------------------------------------------------*/
 void GraphValidator::vValidateRootNode(PlanNode* pRootNode)
@@ -655,8 +670,8 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //    PLAN-8.14: If a node's definition has a property with a non-null type field, and that
   //               property definition also has the "nonNullable" constraint then validate
   //               that the value field of the property of the current node cannot be null.
-  //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.     // TODO: check
-  //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.    // TODO: check
+  //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
+  //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
   //    PLAN-8.17: If a node's definition has a property with a non-null type field, and that
   //               property definition also has the "childType" constraint then validate
   //               that any and all children of the property of the current node must be of
@@ -848,10 +863,10 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //               that the value field of the property of the current node cannot be null.
   vPlan_8_14(pNode, sPath, iDepth, pvArg);
 
-  //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.     // TODO: check
+  //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
   vPlan_8_15(pNode, sPath, iDepth, pvArg);
 
-  //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.    // TODO: check
+  //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
   vPlan_8_16(pNode, sPath, iDepth, pvArg);
 
   //    PLAN-8.17: If a node's definition has a property with a non-null type field, and that
@@ -3525,7 +3540,7 @@ void GraphValidator::vPlan_8_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "nullable" constraint then validate
   //               that the value field of the property of the current node can be null.
 
-  // TODO
+  // Noop, all values are nullable by default.
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3590,7 +3605,7 @@ void GraphValidator::vPlan_8_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 void GraphValidator::vPlan_8_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
-  //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.     // TODO: check
+  //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
 
   // Noop
 }
@@ -3601,9 +3616,9 @@ void GraphValidator::vPlan_8_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
 void GraphValidator::vPlan_8_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   // PLAN-8: Validate the object against its definition constraints:
-  //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.    // TODO: check
+  //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
 
-  // Noop
+  // Noop. All properties are mandatory by default.
 }
 
 /*----------------------------------------------------------------------------*/

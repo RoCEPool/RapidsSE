@@ -75,7 +75,7 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
 
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pProjectedExpr = static_cast<QueryNode*>(pNode);
 

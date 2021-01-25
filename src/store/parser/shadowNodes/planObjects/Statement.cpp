@@ -79,7 +79,7 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
 void Statement::vDescribe(PlanNode* pNode, s2K& buf)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pStmt = static_cast<QueryNode*>(pNode);
 
@@ -93,7 +93,7 @@ void Statement::vDescribe(PlanNode* pNode, s2K& buf)
 void Statement::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 {
   _static_
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   if (sBuf.nLength() > 0) {
     sBuf.vConcat("\n"_Stz);

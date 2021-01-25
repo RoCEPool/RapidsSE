@@ -32,7 +32,7 @@ static Stz* C_TABLE_PROP    = "tableName"_Stz;
 /*----------------------------------------------------------------------------*/
 Stz* TableRef::szCatalog(QueryNode* pTableRef)
 {
-  ASSERT(bValidate(pTableRef));
+  ASSERT(bIsOfType(pTableRef));
 
   QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
   ASSERT(pCatalogNode);
@@ -78,7 +78,7 @@ void TableRef::vDescribe(PlanNode* pNode, s2K& buf)
 {
   _static_
 
-  ASSERT(bValidate(pNode));
+  ASSERT(bIsOfType(pNode));
 
   QueryNode* pTableRef = static_cast<QueryNode*>(pNode);
 
@@ -124,7 +124,7 @@ b1 TableRef::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 TableRef::bIsResolved(QueryNode* pTableRef)
 {
-  ASSERT(bValidate(pTableRef));
+  ASSERT(bIsOfType(pTableRef));
 
   QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
   QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
@@ -146,7 +146,7 @@ b1 TableRef::bIsResolved(QueryNode* pTableRef)
 /*----------------------------------------------------------------------------*/
 Stz* TableRef::szSchema(QueryNode* pTableRef)
 {
-  ASSERT(bValidate(pTableRef));
+  ASSERT(bIsOfType(pTableRef));
 
   QueryNode* pSchemaNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
   ASSERT(pSchemaNode);
@@ -161,7 +161,7 @@ Stz* TableRef::szSchema(QueryNode* pTableRef)
 /*----------------------------------------------------------------------------*/
 Stz* TableRef::szTable(QueryNode* pTableRef)
 {
-  ASSERT(bValidate(pTableRef));
+  ASSERT(bIsOfType(pTableRef));
 
   QueryNode* pTableNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
   ASSERT(pTableNode);

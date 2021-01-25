@@ -5,6 +5,7 @@
 #include "BASE.h"
 #include "GraphNav.hpp"
 #include "PlanNode.hpp"
+#include "QueryNode.hpp"
 #include "DefinitionNode.hpp"
 #include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
@@ -678,6 +679,41 @@ b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks the plan graph to find the given query node. Saves the path and depth*/
+/*----------------------------------------------------------------------------*/
+void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256& sPathBuf, i8& iDepth)
+{
+  ASSERT(pPlanNode);
+  ASSERT(pRootNode);
+
+  iDepth == -1;
+
+  auto fVisitor = [pPlanNode, &sPathBuf, &iDepth](Parser::PlanNode *pNode, s256 &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+
+    // Only interested in /__root__/plan subtree
+    if (iWalkDepth == 1 && !sWalkPath.bEqual(const_cast<Stz*>(C_PLAN_PATH))) {
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    // Did we get a match?
+    if (pNode == pPlanNode) {
+      iDepth = iWalkDepth;
+      sPathBuf.vCopy(sWalkPath.szStz());
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  if (iDepth != -1) {
+    return;
+  }
+
+  // We couldn't find the node in the graph
+  NEVER_REACH
 }
 
 /*============================================================================*/
