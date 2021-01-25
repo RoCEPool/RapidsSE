@@ -10,8 +10,9 @@ namespace BASE
   {
   private:
     byte  m_yaByteArea[AREA]; // allottable area
-    i8    m_nUsedHead;    // bytes used in the area from the head
-    i8    m_nUsedTail;    // bytes used in the area frim the tail
+    i8    m_nUsedAux;     // bytes used in the area for aux objects
+    i8    m_nUsedHead;    // bytes used in the area for head objects
+    i8    m_nUsedTail;    // bytes used in the area for tail objects
 
     byte* m_aAuxItem0;    // auxillary item 0
     byte* m_aAuxItem1;    // auxillary item 1
@@ -23,15 +24,16 @@ namespace BASE
     WspConvergent_t(void);
 
     TAIL* aAdjacentTail(TAIL* aPriorItem, i8 nItemBytes);
+    byte* ayAllotAux0(i8 nBytes);
+    byte* ayAllotAux1(i8 nBytes);
     HEAD* ayAllotHead(i8 nBytes);
     TAIL* ayAllotTail(i8 nBytes);
     void  vDecItems(void);
-    TAIL* aFirstItem(void); // ayFirstTail()
+    TAIL* aFirstItem(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
-    void  vInit(void);
     void  vIncItems(void);
     TAIL* aItemAtOffset(i8 i_Ofs);
     i8    nItems(void);
@@ -39,6 +41,7 @@ namespace BASE
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
     i8    iOffsetOfItem(TAIL* ayAllotted);
+    void  vReset(void);
     Stz*  szStzAllot_begin(void);
     void  vStzAllot_end(i8 nSize);
     Stz*  szStzDeposit(Stz* szValue);
@@ -67,26 +70,7 @@ WspConvergent_t<AREA,HEAD,TAIL>::WspConvergent_t(void)
   MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
 #endif
   
-  m_nUsedHead  = 0;
-  m_nUsedTail  = 0;
-
-  m_aAuxItem0  = nullptr;
-  m_aAuxItem1  = nullptr;
-  
-  m_nTailItems = 0;
-  m_nTailSize  = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* init                                                                       */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void WspConvergent_t<AREA,HEAD,TAIL>::vInit(void)
-{
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
-#endif
-  
+  m_nUsedAux   = 0;
   m_nUsedHead  = 0;
   m_nUsedTail  = 0;
 
@@ -116,6 +100,28 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAdjacentTail(TAIL* aPriorItem,
     return nullptr;
   
   return aAdjacent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot variable-size auxillary item 0 from byte area                        */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux0(i8 nBytes)
+{
+  m_aAuxItem0 = nullptr;
+  
+  return m_aAuxItem0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot variable-size auxillary item 1 from byte area                        */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux1(i8 nBytes)
+{
+  m_aAuxItem1 = nullptr;
+  
+  return m_aAuxItem1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,9 +199,6 @@ template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
-
-
-  // I DONT THINK THIS FUNCTION IS NEEDED
   
   --m_nTailItems;
 }
@@ -352,6 +355,27 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::iOffsetOfItem(TAIL* ayAllotted)
   i8 i_Ofs = nDifference(ayAllotted,m_yaByteArea);
   
   return i_Ofs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vReset(void)
+{
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
+#endif
+  
+  m_nUsedAux   = 0;
+  m_nUsedHead  = 0;
+  m_nUsedTail  = 0;
+
+  m_aAuxItem0  = nullptr;
+  m_aAuxItem1  = nullptr;
+  
+  m_nTailItems = 0;
+  m_nTailSize  = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -882,7 +882,7 @@ void RowBox_t<AREA>::vReset(void)
   m_aRowCur   = nullptr;
   m_i_ColCrs  = C_UNKNOWN;
 
-  WspConvergent_t<AREA,Stz,Row>::vInit();
+  WspConvergent_t<AREA,Stz,Row>::vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -891,7 +891,7 @@ void RowBox_t<AREA>::vReset(void)
 template <i8 AREA>
 void RowBox_t<AREA>::vResetRow(void)
 {
-  WspConvergent_t<AREA,Stz,Row>::vInit();
+  WspConvergent_t<AREA,Stz,Row>::vReset();
 }
 
 /*----------------------------------------------------------------------------*/
