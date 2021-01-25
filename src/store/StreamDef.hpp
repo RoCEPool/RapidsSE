@@ -13,7 +13,7 @@ namespace STORE
     s32    m_sName;         // name
     s256   m_sPath;         // full name
     i8     m_iStreamId;     // unique stream identifier
-    i8     m_nDefColumns[C_MAX_STREAMDEFS];
+    i8     m_nDefColumns;
     i8     m_i_DefStart[C_MAX_STREAMDEFS];    // 0, 4, 9
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
   
