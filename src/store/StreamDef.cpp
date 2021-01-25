@@ -145,21 +145,6 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
- 
-  m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
-  m_xaColumn[m_nColumns].vColumnNm(sColumnNm);
-  m_xaColumn[m_nColumns].vColumnType(eColumnType);
-  m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
-
-  m_nColumns++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a column to the stream def to the current def set                      */
-/*----------------------------------------------------------------------------*/
 void StreamDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);

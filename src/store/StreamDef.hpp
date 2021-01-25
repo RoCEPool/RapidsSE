@@ -35,7 +35,6 @@ namespace STORE
     static eCT eColumn(Stz* szType);
     
     void vAdd(StreamDef* pStreamDef);
-    void vAddColumn(Stz* ColumnNm, eCT eColumnType);
     void vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
     void vAddColumns(StreamDef* pStreamDef);
     void vAsString(String* pString);
