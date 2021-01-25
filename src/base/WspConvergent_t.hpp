@@ -35,7 +35,7 @@ namespace BASE
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
     void  vIncItems(void);
-    TAIL* aItemAtOffset(i8 i_Ofs);
+    TAIL* aItemAtOffset(i8 i_Offset);
     i8    nItems(void);
     HEAD* aLastItem(void); // ayLasHead()
     byte* ayLatterHead(void);
@@ -56,7 +56,7 @@ namespace BASE
   
   private:
     byte* ayArea(void);
-
+    bool  bStructurallyValid(void);
   };
 }
 
@@ -79,6 +79,10 @@ WspConvergent_t<AREA,HEAD,TAIL>::WspConvergent_t(void)
   
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
+  
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +92,7 @@ template<i8 AREA, class HEAD, class TAIL>
 TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAdjacentTail(TAIL* aPriorItem,
                                                      i8 nSizeItem)
 {
+  ASSERT(bStructurallyValid());
   
   ASSERT(nSizeItem == m_nTailSize);
 
@@ -108,6 +113,8 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAdjacentTail(TAIL* aPriorItem,
 template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux0(i8 nBytes)
 {
+  ASSERT(bStructurallyValid());
+  
   m_aAuxItem0 = nullptr;
   
   return m_aAuxItem0;
@@ -119,6 +126,8 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux0(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux1(i8 nBytes)
 {
+  ASSERT(bStructurallyValid());
+  
   m_aAuxItem1 = nullptr;
   
   return m_aAuxItem1;
@@ -130,8 +139,7 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux1(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 HEAD* WspConvergent_t<AREA,HEAD,TAIL>::aAllotHead(i8 nBytes)
 {
-
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
   
   ASSERT(nBytes >= 2);
 
@@ -150,6 +158,10 @@ HEAD* WspConvergent_t<AREA,HEAD,TAIL>::aAllotHead(i8 nBytes)
   
   vTakeHead(nBytes);
     
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
+
   return (HEAD*)ayAllottedHead;
 }
 
@@ -159,7 +171,7 @@ HEAD* WspConvergent_t<AREA,HEAD,TAIL>::aAllotHead(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAllotTail(i8 nBytes)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
   
   ASSERT(nBytes >= 16);
 
@@ -185,7 +197,7 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAllotTail(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayArea(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   byte* ayArea = m_yaByteArea;
 
@@ -198,7 +210,7 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayArea(void)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
   
   --m_nTailItems;
 }
@@ -209,16 +221,14 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
 template<i8 AREA, class HEAD, class TAIL>
 TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aFirstItem(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   if (! m_nTailItems)
     return nullptr;
   
-  ASSERT(C_UNKNOWN != m_nTailSize);
+  TAIL* aTail = aTailItem(0);
   
-  byte* ayFirst = &ayArea()[AREA - m_nTailSize];
-  
-  return (TAIL*)ayFirst;
+  return aTail;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,9 +237,9 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aFirstItem(void)
 template<i8 AREA, class HEAD, class TAIL>
 i8 WspConvergent_t<AREA,HEAD,TAIL>::nFreeBytes(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
-  i8 nFree = AREA - m_nUsedHead - m_nUsedTail;
+  i8 nFree = AREA - m_nUsedAux - m_nUsedHead - m_nUsedTail;
   ASSERT(nFree >= 0);
   
   return nFree;
@@ -241,13 +251,13 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::nFreeBytes(void)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vGiveHead(i8 nBytes)
 {
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // PRIVATE?
-
-  ASSERT(m_nUsedHead  + m_nUsedTail <= AREA);
+  ASSERT(bStructurallyValid());
 
   m_nUsedHead -= nBytes;
+  
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,13 +266,15 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vGiveHead(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vGiveTail(i8 nBytes)
 {
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // PRIVATE?
+  ASSERT(bStructurallyValid());
   
   ASSERT(m_nUsedHead  + m_nUsedTail <= AREA);
   
   m_nUsedTail -= nBytes;
+  
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,7 +283,7 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vGiveTail(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 bool WspConvergent_t<AREA,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   if (nFreeBytes() >= nSizeBytes)
     return true;
@@ -285,9 +297,7 @@ bool WspConvergent_t<AREA,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vIncItems(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // I DONT THINK THIS FUNCTION IS NEEDED
+  ASSERT(bStructurallyValid());
 
   ++m_nTailItems;
 }
@@ -296,11 +306,11 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vIncItems(void)
 /* get tail item at given offset                                              */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aItemAtOffset(i8 i_Ofs)
+TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aItemAtOffset(i8 i_Offset)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
-  TAIL* aTail = aAdd<TAIL*>(WspConvergent_t<AREA,Stz,Row>::ayArea(),i_Ofs);
+  TAIL* aTail = (TAIL*) & m_yaByteArea[i_Offset];
 
   return aTail;
 }
@@ -311,7 +321,7 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aItemAtOffset(i8 i_Ofs)
 template<i8 AREA, class HEAD, class TAIL>
 i8 WspConvergent_t<AREA,HEAD,TAIL>::nItems(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   return m_nTailItems;
 }
@@ -322,11 +332,11 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::nItems(void)
 template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterHead(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
-  byte* ayNext = &ayArea()[m_nUsedHead - 1];
+  byte* ayLastByte = &m_yaByteArea[m_nUsedAux + m_nUsedHead - 1];
   
-  return ayNext;
+  return ayLastByte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,11 +345,11 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterHead(void)
 template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterTail(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
-  byte* ayNext = &ayArea()[AREA - nUsedTail()];
+  byte* ayLastByte = &m_yaByteArea[AREA - m_nUsedTail];
   
-  return ayNext;
+  return ayLastByte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,9 +358,7 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterTail(void)
 template<i8 AREA, class HEAD, class TAIL>
 i8 WspConvergent_t<AREA,HEAD,TAIL>::iOffsetOfItem(TAIL* ayAllotted)
 {
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // I THINK THIS SHOULD BE i_Offset()
+  ASSERT(bStructurallyValid());
 
   i8 i_Ofs = nDifference(ayAllotted,m_yaByteArea);
   
@@ -376,6 +384,10 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vReset(void)
   
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
+  
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,7 +396,7 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vReset(void)
 template<i8 AREA, class HEAD, class TAIL>
 Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzAllot_begin(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   Stz* szStz = (Stz*)ayLatterHead();
   
@@ -397,7 +409,7 @@ Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzAllot_begin(void)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vStzAllot_end(i8 nSize)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   vTakeHead(nSize);
 }
@@ -408,7 +420,7 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vStzAllot_end(i8 nSize)
 template<i8 AREA, class HEAD, class TAIL>
 Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzDeposit(Stz* szValue)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   i8 nSize = szValue->nSize();
   
@@ -416,24 +428,28 @@ Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzDeposit(Stz* szValue)
   szAllottedStz->vCopy(szValue);
   vStzAllot_end(nSize);
   
+  // !! !! !! !! !! !! !! !! !!
+  // string copy
+  ASSERT(bStructurallyValid());
+  
   return szAllottedStz;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of byte area                                                   */
+/* get address of given tail item                                             */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
 TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aTailItem(i8 i_Tail)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   if (! m_nTailItems)
     return nullptr;
   
   ASSERT(C_UNKNOWN != m_nTailSize);
   
-  i8 i_Area_right = (i_Tail + 1) * m_nTailSize;
-  byte* ayItem = &ayArea()[AREA - i_Area_right];
+  i8 i_Tail_area = (i_Tail + 1) * m_nTailSize;
+  byte* ayItem = &m_yaByteArea[AREA - i_Tail_area];
   
   return (TAIL*)ayItem;
 }
@@ -445,15 +461,13 @@ template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vTakeHead(i8 nBytes)
 {
   // PRIVATE?
-  ASSERT(m_nUsedHead < C_1MB);
-
+  ASSERT(bStructurallyValid());
 
   m_nUsedHead += nBytes;
-  
-  if (m_nUsedHead  + m_nUsedTail > AREA) {
-    vDebugPoint();
-  }
-  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
+    
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -462,16 +476,13 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vTakeHead(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vTakeTail(i8 nBytes)
 {
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // PRIVATE?
+  ASSERT(bStructurallyValid());
 
   m_nUsedTail += nBytes;
   
-  if (m_nUsedHead  + m_nUsedTail > AREA) {
-    vDebugPoint();
-  }
-  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,9 +491,7 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vTakeTail(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedBytes(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
-
-  return m_nUsedHead + m_nUsedTail;
+  return m_nUsedAux + m_nUsedHead + m_nUsedTail;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -491,7 +500,7 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedBytes(void)
 template<i8 AREA, class HEAD, class TAIL>
 i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedHead(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   return m_nUsedHead;
 }
@@ -502,7 +511,7 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedHead(void)
 template<i8 AREA, class HEAD, class TAIL>
 i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedTail(void)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   return m_nUsedTail;
 }
@@ -513,11 +522,13 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedTail(void)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vUsedHead(i8 nBytes)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   m_nUsedHead = nBytes;
   
-  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -526,16 +537,30 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vUsedHead(i8 nBytes)
 template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vUsedTail(i8 nBytes)
 {
-  ASSERT(m_nUsedHead < C_1MB);
+  ASSERT(bStructurallyValid());
 
   m_nUsedTail = nBytes;
   
-  ASSERT(m_nUsedHead + m_nUsedTail <= AREA);
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changes
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set number of used bytes at tail                                           */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+bool WspConvergent_t<AREA,HEAD,TAIL>::bStructurallyValid(void)
+{
+  if (nUsedBytes() > AREA)
+    return false;
+  
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */
