@@ -29,6 +29,7 @@ enum eAM // ASM Macros
 
   /*    */ AM_HANDLER_CRWBUFFER,
   /*    */ AM_HANDLER_CRWBUFFER_AGG,
+  /*    */ AM_HANDLER_CRWBUFFER_AGG_GBY,
   /*    */ AM_HANDLER_DATAPULSE,
   /*    */ AM_HANDLER_ROWBUFFER,
   /*    */ AM_HANDLER_ROWBUFFER_AGG,
@@ -39,6 +40,12 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_LOWER_BOUND_GE,
   /*    */ AM_INDEX_LOWER_BOUND_GT,
   /*    */ AM_INDEX_UPPER_BOUND,
+
+  /*    */ AM_PAYLOAD_ADD,
+  /*    */ AM_PAYLOAD_END,
+  /*    */ AM_PAYLOAD_GBY,
+  /*    */ AM_PAYLOAD_KEY,
+  /*    */ AM_PAYLOAD_STORE,
 
   /*    */ AM_QUERY_DONE,
   /*    */ AM_QUERY_INIT,
@@ -83,6 +90,7 @@ static Stz* aAM[]
 
     /*    */ "HANDLER_CRWBUFFER"_Stz,
     /*    */ "HANDLER_CRWBUFFER_AGG"_Stz,
+    /*    */ "HANDLER_CRWBUFFER_AGG_GBY"_Stz,
     /*    */ "HANDLER_DATAPULSE"_Stz,
     /*    */ "HANDLER_ROWBUFFER"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,
@@ -93,6 +101,12 @@ static Stz* aAM[]
     /*    */ "INDEX_LOWER_BOUND_GE"_Stz,
     /*    */ "INDEX_LOWER_BOUND_GT"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
+
+    /*    */ "AM_PAYLOAD_ADD"_Stz,
+    /*    */ "AM_PAYLOAD_END"_Stz,
+    /*    */ "AM_PAYLOAD_GBY"_Stz,
+    /*    */ "AM_PAYLOAD_KEY"_Stz,
+    /*    */ "AM_PAYLOAD_STORE"_Stz,
 
     /*    */ "QUERY_DONE"_Stz,
     /*    */ "QUERY_INIT"_Stz,
