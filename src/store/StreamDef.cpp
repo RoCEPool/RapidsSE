@@ -57,7 +57,6 @@ StreamDef::StreamDef(void)
   //m_oRowPix;
 
   m_nFixedSized = 0;
-  m_bTemp = false;
 
   _checkInitialised_(CN_STREAMDEF);
 
@@ -83,7 +82,6 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   //m_oRowPix;
 
   m_nFixedSized = pStreamDef->m_nFixedSized;
-  m_bTemp = true;
 
   //_checkInitialised_(CN_STREAMDEF);
   
@@ -193,28 +191,6 @@ Column* StreamDef::pFindColumn(Stz* szColumnNm)
   }
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column vector at index                                                 */
-/*----------------------------------------------------------------------------*/
-i8 StreamDef::iFindColumn(char* sColumnNm, i8& i_ColVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-
-// ALKA_TO_REVIEW
-//  for (i_ColVec = 0; i_ColVec < m_oColVecAry.nItems(); i_ColVec++) {
-//    ColumnVec* pColumnVec = m_oColVecAry.pGet(i_ColVec);
-//    i8 nColumns = pColumnVec->nItems();
-//    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-//      Column* pCol = pColumnVec->pGet(i_Col);
-//      if (StrLib::bEqualTo(sColumnNm,pCol->sColumnName().azChar(),C_NO_CASE)) {
-//        return i_Col;
-//      }
-//    }
-//  }
-  
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

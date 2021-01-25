@@ -10,16 +10,15 @@ namespace STORE
   class StreamDef : public Definition
   {
   public:
-    s256   m_sName;         // name
+    s256   m_sName;         // streamDef name
     i8     m_iStreamId;     // unique stream identifier
 
-    i8     m_nColumns;      // total columns
-    Column m_xaColumn[C_MAX_DEFCOLUMNS];
+    i8     m_nColumns;                    // total columns
+    Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of clolumns
 
     RowPix m_oRowPix;       // row pix
 
     i8     m_nFixedSized;   // size of fixed size row
-    bool   m_bTemp;         // is this a temporary definition?
 
     // must be last
     Footer m_xFooter;
@@ -38,7 +37,6 @@ namespace STORE
     void    vAsString(String* pString);
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
-    i8      iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
     void    vName(Stz* sName);
     Stz*    szName(void);
