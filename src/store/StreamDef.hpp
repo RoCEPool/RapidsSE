@@ -16,7 +16,7 @@ namespace STORE
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
   
     i8     m_nFixedSized;   // is this a fixed size row?
-    i8     m_nTotalColumns; // total columns
+    i8     m_nColumns;      // total columns
     
     bool   m_bTemp;         // is this a temporary definition?
   
