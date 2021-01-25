@@ -14,9 +14,7 @@ namespace BASE
     i8    m_nUsedTail;    // bytes used in the area frim the tail
 
     byte* m_aAuxItem0;    // auxillary item 0
-    byte* m_aAuxItem1;    // auxillary item 0
-  
-    byte* m_aHeadArea;    //
+    byte* m_aAuxItem1;    // auxillary item 1
   
     i8    m_nTailItems;   // number of fixed-size tail items in this wsp
     i8    m_nTailSize;    // size of each fixed-size tail item
@@ -27,22 +25,21 @@ namespace BASE
     TAIL* aAdjacentTail(TAIL* aPriorItem, i8 nItemBytes);
     HEAD* ayAllotHead(i8 nBytes);
     TAIL* ayAllotTail(i8 nBytes);
-    byte* ayArea(void);
     void  vDecItems(void);
-    void  vFill(char cByte, eCN eClassNo);
     TAIL* aFirstItem(void); // ayFirstTail()
-    i8    nFree(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
     void  vInit(void);
     void  vIncItems(void);
+    TAIL* aItemAtOffset(i8 i_Ofs);
     i8    nItems(void);
     HEAD* aLastItem(void); // ayLasHead()
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
     i8    nLength(void);
+    i8    iOffsetOfItem(TAIL* ayAllotted);
     void  vReset(void);
     i8    nSize(void);
     Stz*  szStzAllot_begin(void);
@@ -52,13 +49,16 @@ namespace BASE
     TAIL* aTailItem(i8 i_Tail);
     void  vTakeHead(i8 nBytes);
     void  vTakeTail(i8 nBytes);
-    i8    iOffsetInWsp(byte* ayAllotted);
-    i8    nUsed(void);
+    i8    nUsedBytes(void);
     i8    nUsedHead(void);
     i8    nUsedTail(void);
     void  vUsedHead(i8 nBytes);
     void  vUsedTail(i8 nBytes);
     void  vZero(eCN eClassNo);
+  
+  private:
+    byte* ayArea(void);
+
   };
 }
 
@@ -78,8 +78,6 @@ WspConvergent_t<AREA,HEAD,TAIL>::WspConvergent_t(void)
   m_aAuxItem0  = nullptr;
   m_aAuxItem1  = nullptr;
   
-  m_aHeadArea = m_yaByteArea;
-
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
 }
@@ -100,8 +98,6 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vInit(void)
   m_aAuxItem0  = nullptr;
   m_aAuxItem1  = nullptr;
   
-  m_aHeadArea = m_yaByteArea;
-
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
 }
@@ -191,7 +187,7 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayArea(void)
   ASSERT(m_nUsedHead < C_1MB);
 
   byte* ayArea = m_yaByteArea;
-  
+
   return ayArea;
 }
 
@@ -210,22 +206,6 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fill byte area with given byte                                             */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void WspConvergent_t<AREA,HEAD,TAIL>::vFill(char cByte, eCN eClassNo)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-
-  // I DONT THINK THIS FUNCTION IS NEEDED
-
-  byte* ayDst = ayArea();
-  
-  MemLib::vSet(ayDst,cByte,AREA,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
@@ -241,20 +221,6 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aFirstItem(void)
   byte* ayFirst = &ayArea()[AREA - m_nTailSize];
   
   return (TAIL*)ayFirst;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of free bytes in byte area                                      */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-i8 WspConvergent_t<AREA,HEAD,TAIL>::nFree(void)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-  i8 nFree = AREA - m_nUsedHead - m_nUsedTail;
-  ASSERT(nFree >= 0);
-  
-  return nFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,6 +295,19 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vIncItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get tail item at given offset                                              */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aItemAtOffset(i8 i_Ofs)
+{
+  ASSERT(m_nUsedHead < C_1MB);
+
+  TAIL* aTail = aAdd<TAIL*>(WspConvergent_t<AREA,Stz,Row>::ayArea(),i_Ofs);
+
+  return aTail;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of items                                                        */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
@@ -353,7 +332,7 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of first used byte in head area                                */
+/* get address of last used byte in tail area                                 */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterTail(void)
@@ -376,6 +355,21 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::nLength(void)
   // I THINK THIS SHOULD BE nSize()
   
   return AREA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of an allotted                                                  */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+i8 WspConvergent_t<AREA,HEAD,TAIL>::iOffsetOfItem(TAIL* ayAllotted)
+{
+  ASSERT(m_nUsedHead < C_1MB);
+
+  // I THINK THIS SHOULD BE i_Offset()
+
+  i8 i_Ofs = nDifference(ayAllotted,m_yaByteArea);
+  
+  return i_Ofs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -515,25 +509,10 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vTakeTail(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get offset of an allotted                                                  */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-i8 WspConvergent_t<AREA,HEAD,TAIL>::iOffsetInWsp(byte* ayAllotted)
-{
-  ASSERT(m_nUsedHead < C_1MB);
-
-  // I THINK THIS SHOULD BE i_Offset()
-
-  i8 i_Ofs = nDifference(ayAllotted,m_yaByteArea);
-  
-  return i_Ofs;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsed(void)
+i8 WspConvergent_t<AREA,HEAD,TAIL>::nUsedBytes(void)
 {
   ASSERT(m_nUsedHead < C_1MB);
 
@@ -606,6 +585,11 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vZero(eCN eClassNo)
   
   MemLib::vZero(ayDst,AREA,eClassNo);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */
