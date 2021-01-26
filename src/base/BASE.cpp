@@ -102,7 +102,8 @@ void BASE::vCheckAssumptions(void)
   
   // base
   
-  
+  ALWAYS(8 == sizeof(ColPix));
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -381,12 +381,15 @@ void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
     Column* pColumn  = &m_xaColumn[i_DefColumn];
     ColPix* axColPix = &axaColPix[i_DefColumn];
 
+    axColPix->m_uNumber   = (u4)i_DefColumn;
+    // name
+    axColPix->m_uKind     = (u4)CX_USERCOL;
+    axColPix->m_uType     = (u4)pColumn->eColumnType();
     axColPix->m_uDatum    = (u4)pColumn->eDatum();
     axColPix->m_uLength   = (u4)pColumn->iColumnLength();
     axColPix->m_uScale    = (u4)pColumn->iColumnScale();
     axColPix->m_bNullable = (u4)pColumn->bIsNullable();
     axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
-    axColPix->m_uKind     = (u4)CX_USERCOL;
     axColPix->m_uSpare    = (u4)0;
   }
 
@@ -395,12 +398,15 @@ void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
 
     ColPix* axColPix = &axaColPix[i_DefColumn];
   
+    axColPix->m_uNumber   = (u4)i_DefColumn;
+    // name
+    axColPix->m_uKind     = (u4)CX_PTNHASH;
+    axColPix->m_uType     = (u4)CT_INTEGER;
     axColPix->m_uDatum    = (u4)DM_INT;
     axColPix->m_uLength   = (u4)C_MAX_INT_PRECISION;
     axColPix->m_uScale    = (u4)0;
     axColPix->m_bNullable = (u4)false;
     axColPix->m_bPtnKey   = (u4)false;
-    axColPix->m_uKind     = (u4)CX_PTNHASH;
     axColPix->m_uSpare    = (u4)0;
   }
 }

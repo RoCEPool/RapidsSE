@@ -6,6 +6,8 @@
 
 #include "SP_ColPix.hpp"
 
+#include "eCX.h"
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -40,10 +42,12 @@ Stz* SP_ColPix::sz(ColPix* pColPix)
       
   StrLib::vSprint(m_caResult
                   
-    ,"%02lld datum %s length %lld scale %lld %s %s"_Stz
+    ,"%02lld name ? kind %s type %s datum %s length %5lld scale %2lld %s %s"_Stz
                   
     ,(i8)pColPix->m_uNumber
 //    ,m_sColumnNm.szStz()
+    ,aCX[pColPix->m_uKind]
+    ,aCT[pColPix->m_uType]
     ,aDM[pColPix->m_uDatum]
     ,(i8)pColPix->m_uLength
     ,(i8)pColPix->m_uScale
