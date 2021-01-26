@@ -46,7 +46,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_sInfoSetNm = pStreamDef->szName();
-  m_nRowSize  = Row::nSizeBytes(pStreamDef);
+  m_nRowSize  = Row::nRowProper(pStreamDef->nColumns());
   m_nInfoRows = 0;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);

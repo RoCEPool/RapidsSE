@@ -313,7 +313,7 @@ void Step::vStreamDefRowSize(void)
   ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
   StreamDef* pStreamDef = _pStreamDef(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
   
-  m_pDataStack->vPushInt(Row::nSizeBytes(pStreamDef));
+  m_pDataStack->vPushInt(Row::nRowProper(pStreamDef->nColumns()));
   
   EXIT();
 }
