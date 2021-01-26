@@ -28,6 +28,7 @@
 #include "Range.hpp"
 
 #include "InflateSet.h"
+#include "InfoSet.hpp"
 
 #include "eLH.h"
 
@@ -77,7 +78,7 @@ namespace STORE
     REG<IndexDef>       m_xpIndexDef;
     REG<IndexStream>    m_xpIndexStream;
     REG<IndexTree>      m_xpIndexTree;
-    REG<Operand>        m_xpInfoSet;
+    REG<InfoSet>        m_xpInfoSet;
     REG<Table>          m_xpInfoSetTable;
     REF<Job>            m_xpJobRef;   // job reference
     REG<RowSingleList>  m_xpList;

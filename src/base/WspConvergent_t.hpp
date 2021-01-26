@@ -14,8 +14,8 @@ namespace BASE
     i8    m_nUsedHead;    // bytes used in the area for head objects
     i8    m_nUsedTail;    // bytes used in the area for tail items
 
-    byte* m_aAuxItem0;    // auxillary item 0
-    byte* m_aAuxItem1;    // auxillary item 1
+    i8    m_i_AuxItem0;   // auxillary item 0
+    i8    m_i_AuxItem1;   // auxillary item 1
   
     i8    m_nTailItems;   // number of fixed-size tail items in this wsp
     i8    m_nTailSize;    // size of each fixed-size tail item
@@ -78,8 +78,8 @@ WspConvergent_t<AREA,HEAD,TAIL>::WspConvergent_t(void)
   m_nUsedHead  = 0;
   m_nUsedTail  = 0;
 
-  m_aAuxItem0  = nullptr;
-  m_aAuxItem1  = nullptr;
+  m_i_AuxItem0 = C_UNKNOWN;
+  m_i_AuxItem1 = C_UNKNOWN;
   
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
@@ -119,14 +119,14 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux0(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
   ASSERT(! m_nUsedHead);
-  ASSERT(! m_aAuxItem0);
-  ASSERT(! m_aAuxItem1);
+  ASSERT(C_UNKNOWN == m_i_AuxItem0);
+  ASSERT(C_UNKNOWN == m_i_AuxItem1);
   
-  m_aAuxItem0 = ayLatterHead() + 1;
+  m_i_AuxItem0 = m_nUsedAux;
   
   vTakeAux(nBytes);
     
-  return m_aAuxItem0;
+  return & m_yaByteArea[m_i_AuxItem0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,14 +137,14 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux1(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
   ASSERT(! m_nUsedHead);
-  ASSERT(m_aAuxItem0);
-  ASSERT(! m_aAuxItem1);
+  ASSERT(C_UNKNOWN != m_i_AuxItem0);
+  ASSERT(C_UNKNOWN == m_i_AuxItem1);
 
-  m_aAuxItem1 = ayLatterHead() + 1;
+  m_i_AuxItem1 =  m_nUsedAux;
   
   vTakeAux(nBytes);
 
-  return m_aAuxItem1;
+  return & m_yaByteArea[m_i_AuxItem1];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,8 +224,8 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vExtendAux0(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
   ASSERT(! m_nUsedHead);
-  ASSERT(m_aAuxItem0);
-  ASSERT(! m_aAuxItem1);
+  ASSERT(C_UNKNOWN != m_i_AuxItem0);
+  ASSERT(C_UNKNOWN == m_i_AuxItem1);
     
   vTakeAux(nBytes);
 }
@@ -238,8 +238,8 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vExtendAux1(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
   ASSERT(! m_nUsedHead);
-  ASSERT(m_aAuxItem0);
-  ASSERT(m_aAuxItem1);
+  ASSERT(C_UNKNOWN != m_i_AuxItem0);
+  ASSERT(C_UNKNOWN != m_i_AuxItem1);
     
   vTakeAux(nBytes);
 }
@@ -345,8 +345,8 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vInit(void)
   m_nUsedHead  = 0;
   m_nUsedTail  = 0;
 
-  m_aAuxItem0  = nullptr;
-  m_aAuxItem1  = nullptr;
+  m_i_AuxItem0 = C_UNKNOWN;
+  m_i_AuxItem1 = C_UNKNOWN;
   
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;

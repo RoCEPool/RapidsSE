@@ -582,6 +582,9 @@ void Step::vInfoSetNew(void)
   
   ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = new InfoSet(pStreamDef);
   
+  // test
+  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet->ayAllotAux0(C_2KB);
+  
   EXIT();
 }
 
@@ -712,7 +715,7 @@ void Step::vInfoSetSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpInfoSet.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = _pOperand(pOperand);
+  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = _pInfoSet(pOperand);
   
   EXIT();
 }
