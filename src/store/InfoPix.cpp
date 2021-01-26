@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "InfoPix.hpp"
+#include "SP_ColPix.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -81,7 +82,7 @@ void InfoPix::vColumns(i8 nColumns)
 /*----------------------------------------------------------------------------*/
 /* get col pic array                                                          */
 /*----------------------------------------------------------------------------*/
-ColPix* InfoPix::aColPix(void)
+ColPix* InfoPix::aColPixArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
@@ -115,8 +116,15 @@ void InfoPix::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
+  SP_ColPix spColPix;
+  
   vTrace("InfoPix: %s\n"_Stz,szPixNm());
   vTrace("  %lld columns\n"_Stz,nColumns());
+  
+  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
+    ColPix* aColPix = & aColPixArray()[i_Col];
+    vTrace("  %s\n"_Stz,spColPix.sz(aColPix));
+  }
 }
 
 /*============================================================================*/

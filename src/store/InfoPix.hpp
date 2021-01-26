@@ -27,7 +27,7 @@ namespace STORE
     i8 nColumns(void);
     void vColumns(i8 nColumns);
 
-    ColPix* aColPix(void);
+    ColPix* aColPixArray(void);
   
     Stz* szPixNm(void);
     void vPixNm(Stz* szPixNm);

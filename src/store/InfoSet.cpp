@@ -106,7 +106,7 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ColPix* aColPixArray = pInfoPix->aColPix();
+  ColPix* aColPixArray = pInfoPix->aColPixArray();
   
   pStreamDef->vToColPix(aColPixArray,false);
   
@@ -125,7 +125,8 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
     aColPixArray[i_Col].m_uName = i_Aux;
   }
   
-  //pInfoPix->vPrint();
+  if (AM::bDeveloper())
+    pInfoPix->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
