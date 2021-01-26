@@ -6,7 +6,7 @@
 
 #include "RowBuffer.hpp"
 
-#include "InfoPix.hpp"
+#include "SetPix.hpp"
 #include "InfoSet.hpp"
 
 #include "OpSpec.hpp"

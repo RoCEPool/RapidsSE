@@ -56,7 +56,7 @@
 #include "HashSet.hpp"
 #include "Pot.hpp"
 
-#include "InfoPix.hpp"
+#include "SetPix.hpp"
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
 #include "RowCoder.hpp"

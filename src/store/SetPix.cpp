@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "InfoPix.hpp"
+#include "SetPix.hpp"
 #include "SP_ColPix.hpp"
 
 /*----------------------------------------------------------------------------*/
