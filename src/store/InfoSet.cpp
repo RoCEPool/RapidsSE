@@ -106,9 +106,9 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ColPix* aColPixArray = pSetPix->aColPixArray();
+  ColPix* axaColPixArray = pSetPix->axaColPixArray();
   
-  pStreamDef->vToColPix(aColPixArray,false);
+  pStreamDef->vToColPix(axaColPixArray,false);
   
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
@@ -125,11 +125,11 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
     
     // -- -- -- --
     
-    i8 nStzOfs = nDifference(&aColPixArray[i_Col],
+    i8 nStzOfs = nDifference(&axaColPixArray[i_Col],
                              (byte*) pSetPix + i_Aux);
     
     
-    aColPixArray[i_Col].m_uName = nStzOfs;
+    axaColPixArray[i_Col].m_uName = nStzOfs;
   }
   
   if (AM::bDeveloper())

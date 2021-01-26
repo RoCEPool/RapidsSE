@@ -259,7 +259,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IndexTree),          HT_T_TINY    ,0 }, // CN_INDEXTREE
   { sizeof(IndexTreeVec),       HT_T_MEDIUM  ,0 }, // CN_INDEXTREEVEC
   { sizeof(IdxVec),             HT_T_MEDIUM  ,0 }, // CN_IDXVEC
-  { sizeof(SetPix),            HT_INVALID   ,0 }, // CN_INFOPIX
   { sizeof(InfoSet),            HT_T_LARGE   ,0 }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_T_LARGE   ,0 }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_T_TINY    ,0 }, // CN_INPUT
@@ -394,6 +393,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
   { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY
+  { sizeof(SetPix),             HT_INVALID   ,0 }, // CN_SETPIX
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE

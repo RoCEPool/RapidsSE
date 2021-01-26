@@ -3,10 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eOI.h"
-
-#include "InfoSetBase.hpp"
-
 namespace STORE
 {
   class SetPix : public Object
@@ -15,9 +11,10 @@ namespace STORE
     s256   m_sPixNm;       // pix name
     i8     m_nColumns;     // total columns
 
-    ColPix m_xaColPix[1];  // array of column pix
+    ColPix m_xaColPix[1];  // array of column pix, one per column
 
   public:
+    void* operator new(size_t);
     void* operator new(size_t, SetPix*);
     void operator delete(void*);
   
@@ -27,8 +24,10 @@ namespace STORE
     i8 nColumns(void);
     void vColumns(i8 nColumns);
 
-    ColPix* aColPixArray(void);
-  
+    ColPix* axColPix(i8 i_Col);
+
+    ColPix* axaColPixArray(void);
+
     Stz* szPixNm(void);
     void vPixNm(Stz* szPixNm);
 

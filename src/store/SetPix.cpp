@@ -22,6 +22,17 @@ SetPix* STORE::_pSetPix(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* SetPix::operator new(size_t)
+{
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: SetPix class cannot be new'd\n"_Stz);
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
 void* SetPix::operator new(size_t, SetPix* aInfoPix)
@@ -42,9 +53,9 @@ void SetPix::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SetPix::SetPix(void)
-: Object(CN_INFOPIX)
+: Object(CN_SETPIX)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +63,7 @@ SetPix::SetPix(void)
 /*----------------------------------------------------------------------------*/
 SetPix::~SetPix(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +75,7 @@ SetPix::~SetPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 SetPix::nColumns(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
   
   return m_nColumns;
 }
@@ -74,7 +85,7 @@ i8 SetPix::nColumns(void)
 /*----------------------------------------------------------------------------*/
 void SetPix::vColumns(i8 nColumns)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
   
   m_nColumns = nColumns;
 }
@@ -82,9 +93,19 @@ void SetPix::vColumns(i8 nColumns)
 /*----------------------------------------------------------------------------*/
 /* get col pic array                                                          */
 /*----------------------------------------------------------------------------*/
-ColPix* SetPix::aColPixArray(void)
+ColPix* SetPix::axColPix(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
+  
+  return & m_xaColPix[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get col pic array                                                          */
+/*----------------------------------------------------------------------------*/
+ColPix* SetPix::axaColPixArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
   
   return m_xaColPix;
 }
@@ -94,7 +115,7 @@ ColPix* SetPix::aColPixArray(void)
 /*----------------------------------------------------------------------------*/
 Stz* SetPix::szPixNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
   
   return m_sPixNm;
 }
@@ -104,7 +125,7 @@ Stz* SetPix::szPixNm(void)
 /*----------------------------------------------------------------------------*/
 void SetPix::vPixNm(Stz* szPixNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
   
   m_sPixNm = szPixNm;
 }
@@ -114,7 +135,7 @@ void SetPix::vPixNm(Stz* szPixNm)
 /*----------------------------------------------------------------------------*/
 void SetPix::vPrint(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
   
   SP_ColPix spColPix;
   
@@ -122,8 +143,8 @@ void SetPix::vPrint(void)
   vTrace("  %lld columns\n"_Stz,nColumns());
   
   for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
-    ColPix* aColPix = & aColPixArray()[i_Col];
-    vTrace("  %s\n"_Stz,spColPix.sz(aColPix));
+    ColPix* axColPix = this->axColPix(i_Col);
+    vTrace("  %s\n"_Stz,spColPix.sz(axColPix));
   }
 }
 
