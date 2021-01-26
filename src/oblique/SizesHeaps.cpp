@@ -56,6 +56,7 @@
 #include "HashSet.hpp"
 #include "Pot.hpp"
 
+#include "InfoPix.hpp"
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
 #include "RowCoder.hpp"
@@ -258,6 +259,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IndexTree),          HT_T_TINY    ,0 }, // CN_INDEXTREE
   { sizeof(IndexTreeVec),       HT_T_MEDIUM  ,0 }, // CN_INDEXTREEVEC
   { sizeof(IdxVec),             HT_T_MEDIUM  ,0 }, // CN_IDXVEC
+  { sizeof(InfoPix),            HT_INVALID   ,0 }, // CN_INFOPIX
   { sizeof(InfoSet),            HT_T_LARGE   ,0 }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_T_LARGE   ,0 }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_T_TINY    ,0 }, // CN_INPUT
