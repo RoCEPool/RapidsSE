@@ -122,7 +122,14 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
     
     szColNmDst->vCopy(szColNmSrc);
     
-    aColPixArray[i_Col].m_uName = i_Aux;
+    
+    // -- -- -- --
+    
+    i8 nStzOfs = nDifference(&aColPixArray[i_Col],
+                             (byte*) pInfoPix + i_Aux);
+    
+    
+    aColPixArray[i_Col].m_uName = nStzOfs;
   }
   
   if (AM::bDeveloper())

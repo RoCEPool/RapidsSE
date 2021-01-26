@@ -40,12 +40,15 @@ Stz* SP_ColPix::sz(ColPix* pColPix)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
       
+  Stz* szColNm = aAdd<Stz*>(pColPix,pColPix->m_uName);
+    
   StrLib::vSprint(m_caResult
                   
-    ,"%02lld name ? kind %s type %s datum %s length %5lld scale %2lld %s %s"_Stz
+    ,"%02lld %16s : kind %s type %s datum %s "
+     "length %5lld scale %2lld %s %s"_Stz
                   
     ,(i8)pColPix->m_uNumber
-//    ,m_sColumnNm.szStz()
+    ,szColNm
     ,aCX[pColPix->m_uKind]
     ,aCT[pColPix->m_uType]
     ,aDM[pColPix->m_uDatum]
