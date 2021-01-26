@@ -29,6 +29,8 @@ namespace BASE
     HEAD* aAllotHead(i8 nBytes);
     TAIL* aAllotTail(i8 nBytes);
     void  vDecItems(void);
+    void  vExtendAux0(i8 nBytes);
+    void  vExtendAux1(i8 nBytes);
     TAIL* aFirstItem(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
@@ -39,6 +41,7 @@ namespace BASE
     TAIL* aItemAtOffset(i8 i_Offset);
     i8    nItems(void);
     HEAD* aLastItem(void); // ayLasHead()
+    byte* ayLatterAux(void);
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
     i8    iOffsetOfItem(TAIL* ayAllotted);
@@ -115,9 +118,14 @@ template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux0(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
+  ASSERT(! m_nUsedHead);
+  ASSERT(! m_aAuxItem0);
+  ASSERT(! m_aAuxItem1);
   
-  m_aAuxItem0 = nullptr;
+  m_aAuxItem0 = ayLatterHead() + 1;
   
+  vTakeAux(nBytes);
+    
   return m_aAuxItem0;
 }
 
@@ -128,9 +136,14 @@ template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAllotAux1(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
+  ASSERT(! m_nUsedHead);
+  ASSERT(m_aAuxItem0);
+  ASSERT(! m_aAuxItem1);
+
+  m_aAuxItem1 = ayLatterHead() + 1;
   
-  m_aAuxItem1 = nullptr;
-  
+  vTakeAux(nBytes);
+
   return m_aAuxItem1;
 }
 
@@ -201,6 +214,34 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
   ASSERT(bStructurallyValid());
   
   --m_nTailItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extend aux 0                                                               */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vExtendAux0(i8 nBytes)
+{
+  ASSERT(bStructurallyValid());
+  ASSERT(! m_nUsedHead);
+  ASSERT(m_aAuxItem0);
+  ASSERT(! m_aAuxItem1);
+    
+  vTakeAux(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* extend aux 1                                                               */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+void WspConvergent_t<AREA,HEAD,TAIL>::vExtendAux1(i8 nBytes)
+{
+  ASSERT(bStructurallyValid());
+  ASSERT(! m_nUsedHead);
+  ASSERT(m_aAuxItem0);
+  ASSERT(m_aAuxItem1);
+    
+  vTakeAux(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,6 +378,19 @@ i8 WspConvergent_t<AREA,HEAD,TAIL>::nItems(void)
   ASSERT(bStructurallyValid());
 
   return m_nTailItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of last used byte in aux area                                  */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayLatterAux(void)
+{
+  ASSERT(bStructurallyValid());
+
+  byte* ayLastByte = &m_yaByteArea[m_nUsedAux - 1];
+  
+  return ayLastByte;
 }
 
 /*----------------------------------------------------------------------------*/
