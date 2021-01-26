@@ -32,9 +32,9 @@ namespace BASE
     byte* ayAux1(void);
     void  vDecItems(void);
     void  vExtendAux0(i8 nBytes);
-    byte* ayExtendAux0(i8 nBytes);
+    byte* ayExtendAux0(i8 nBytes, i8& i_Aux);
     void  vExtendAux1(i8 nBytes);
-    byte* ayExtendAux1(i8 nBytes);
+    byte* ayExtendAux1(i8 nBytes, i8& i_Aux);
     TAIL* aFirstItem(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
@@ -250,13 +250,14 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
 /* extend aux 0                                                               */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-byte* WspConvergent_t<AREA,HEAD,TAIL>::ayExtendAux0(i8 nBytes)
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayExtendAux0(i8 nBytes, i8& i_Aux)
 {
   ASSERT(bStructurallyValid());
   ASSERT(! m_nUsedHead);
   ASSERT(C_UNKNOWN != m_i_AuxItem0);
   ASSERT(C_UNKNOWN == m_i_AuxItem1);
     
+  i_Aux = m_nUsedAux;
   byte* ayExtension = & m_yaByteArea[m_nUsedAux];
   
   vTakeAux(nBytes);
@@ -282,13 +283,14 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vExtendAux0(i8 nBytes)
 /* extend aux 1                                                               */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-byte* WspConvergent_t<AREA,HEAD,TAIL>::ayExtendAux1(i8 nBytes)
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayExtendAux1(i8 nBytes, i8& i_Aux)
 {
   ASSERT(bStructurallyValid());
   ASSERT(! m_nUsedHead);
   ASSERT(C_UNKNOWN != m_i_AuxItem0);
   ASSERT(C_UNKNOWN != m_i_AuxItem1);
     
+  i_Aux = m_nUsedAux;
   byte* ayExtension = & m_yaByteArea[m_nUsedAux];
 
   vTakeAux(nBytes);

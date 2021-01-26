@@ -18,7 +18,8 @@ namespace BASE
       u8 m_uKind      :  3; // what cell contains (user col, ptn hash, ...)
       u8 m_uSpare     :  2; // round up to 32b
       
-      u8 m_uSpare2    : 32; // spare 32b
+      u8 m_uName      : 20; // name offset
+      u8 m_uSpare2    : 12; // spare 82b
 
     //                 ---
     //                 64b // so... 256 columns is 256 * 8B = 2KB

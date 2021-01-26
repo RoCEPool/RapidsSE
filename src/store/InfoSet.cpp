@@ -100,8 +100,10 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
   
   InfoPix* pInfoPix = new ((InfoPix*)ayAllotAux0(nInitialSize)) InfoPix;
   
-  ColPix* aColPix = pInfoPix->aColPix();
-    
+  ColPix* aColPixArray = pInfoPix->aColPix();
+  
+  pStreamDef->vToColPix(aColPixArray,false);
+  
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
 
@@ -109,11 +111,13 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
     
     i8 nColNmSize = szColNmSrc->nSize();
     
-    Stz* szColNmDst = (Stz*)ayExtendAux0(nColNmSize);
+    i8 i_Aux = 0;
+    Stz* szColNmDst = (Stz*)ayExtendAux0(nColNmSize,i_Aux);
     
     szColNmDst->vCopy(szColNmSrc);
+    
+    aColPixArray[i_Col].m_uName = i_Aux;
   }
-  
   
 }
 
