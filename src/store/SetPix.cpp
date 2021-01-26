@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* InfoPix.cpp -- InfoSet Pix                                                 */
+/* SetPix.cpp -- Set Pix                                                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -14,17 +14,17 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-InfoPix* STORE::_pInfoPix(void* aAddr)
+SetPix* STORE::_pSetPix(void* aAddr)
 {
-  InfoPix* pInfoPix = reinterpret_cast<InfoPix*>(aAddr);
+  SetPix* pSetPix = reinterpret_cast<SetPix*>(aAddr);
   
-  return pInfoPix;
+  return pSetPix;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* InfoPix::operator new(size_t, InfoPix* aInfoPix)
+void* SetPix::operator new(size_t, SetPix* aInfoPix)
 {
   
   return aInfoPix;
@@ -33,7 +33,7 @@ void* InfoPix::operator new(size_t, InfoPix* aInfoPix)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void InfoPix::operator delete(void* aAddress)
+void SetPix::operator delete(void* aAddress)
 {
    
 }
@@ -41,7 +41,7 @@ void InfoPix::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InfoPix::InfoPix(void)
+SetPix::SetPix(void)
 : Object(CN_INFOPIX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
@@ -50,7 +50,7 @@ InfoPix::InfoPix(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-InfoPix::~InfoPix(void) noexcept(false)
+SetPix::~SetPix(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
 }
@@ -62,7 +62,7 @@ InfoPix::~InfoPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
 /*----------------------------------------------------------------------------*/
-i8 InfoPix::nColumns(void)
+i8 SetPix::nColumns(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
@@ -72,7 +72,7 @@ i8 InfoPix::nColumns(void)
 /*----------------------------------------------------------------------------*/
 /* set number of columns                                                      */
 /*----------------------------------------------------------------------------*/
-void InfoPix::vColumns(i8 nColumns)
+void SetPix::vColumns(i8 nColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
@@ -82,7 +82,7 @@ void InfoPix::vColumns(i8 nColumns)
 /*----------------------------------------------------------------------------*/
 /* get col pic array                                                          */
 /*----------------------------------------------------------------------------*/
-ColPix* InfoPix::aColPixArray(void)
+ColPix* SetPix::aColPixArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
@@ -92,7 +92,7 @@ ColPix* InfoPix::aColPixArray(void)
 /*----------------------------------------------------------------------------*/
 /* get pix name                                                               */
 /*----------------------------------------------------------------------------*/
-Stz* InfoPix::szPixNm(void)
+Stz* SetPix::szPixNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
@@ -102,7 +102,7 @@ Stz* InfoPix::szPixNm(void)
 /*----------------------------------------------------------------------------*/
 /* set pix name                                                               */
 /*----------------------------------------------------------------------------*/
-void InfoPix::vPixNm(Stz* szPixNm)
+void SetPix::vPixNm(Stz* szPixNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
@@ -112,13 +112,13 @@ void InfoPix::vPixNm(Stz* szPixNm)
 /*----------------------------------------------------------------------------*/
 /* print this info pix                                                        */
 /*----------------------------------------------------------------------------*/
-void InfoPix::vPrint(void)
+void SetPix::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
   SP_ColPix spColPix;
   
-  vTrace("InfoPix: %s\n"_Stz,szPixNm());
+  vTrace("SetPix: %s\n"_Stz,szPixNm());
   vTrace("  %lld columns\n"_Stz,nColumns());
   
   for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {

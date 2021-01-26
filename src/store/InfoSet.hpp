@@ -7,7 +7,7 @@
 
 #include "InfoSetBase.hpp"
 
-namespace STORE { class InfoPix; }
+namespace STORE { class SetPix; }
 
 namespace STORE
 {
@@ -26,7 +26,7 @@ namespace STORE
     
     void vFormInfoPix(StreamDef* pStreamDef);
   
-    InfoPix* pInfoPix(void);
+    SetPix* pSetPix(void);
   
     void vOpInfoSet(eOI eOpInfoSet);
     eOI  eOpInfoSet(void);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SetPix.hpp -- InfoSet Pix                                                 */
+/* SetPix.hpp -- Set Pix                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class InfoPix : public Object
+  class SetPix : public Object
   {
   protected:
     s256   m_sPixNm;       // pix name
@@ -18,11 +18,11 @@ namespace STORE
     ColPix m_xaColPix[1];  // array of column pix
 
   public:
-    void* operator new(size_t, InfoPix*);
+    void* operator new(size_t, SetPix*);
     void operator delete(void*);
   
-    InfoPix(void);
-   ~InfoPix(void) noexcept(false);
+    SetPix(void);
+   ~SetPix(void) noexcept(false);
   
     i8 nColumns(void);
     void vColumns(i8 nColumns);
@@ -35,7 +35,7 @@ namespace STORE
     void vPrint(void);
   };
 
-  InfoPix* _pInfoPix(void* aAddr);
+  SetPix* _pSetPix(void* aAddr);
 }
 
 /*============================================================================*/

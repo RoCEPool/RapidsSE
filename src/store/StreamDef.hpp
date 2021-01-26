@@ -5,7 +5,7 @@
 
 #include "Definition.hpp"
 
-namespace STORE { class InfoPix; }
+namespace STORE { class SetPix; }
 
 namespace STORE
 {
@@ -21,7 +21,7 @@ namespace STORE
 
     RowPix  m_oRowPix;                    // row pix
   
-    InfoPix* m_pInfoPix;
+    SetPix* m_pSetPix;
 
     // must be last
     Footer m_xFooter;

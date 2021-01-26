@@ -56,7 +56,7 @@ StreamDef::StreamDef(void)
 
   //m_oRowPix;
 
-  m_pInfoPix = nullptr;
+  m_pSetPix = nullptr;
   m_nFixedSized = 0;
 
   _checkInitialised_(CN_STREAMDEF);

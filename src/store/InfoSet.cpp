@@ -97,16 +97,16 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
   Stz* szStreamNm = pStreamDef->szName();
   i8   nColumns = pStreamDef->nColumns();
   
-  i8 nInitialSize = sizeof(InfoPix) + ((nColumns - 1) * sizeof(ColPix));
+  i8 nInitialSize = sizeof(SetPix) + ((nColumns - 1) * sizeof(ColPix));
   
-  InfoPix* pInfoPix = new ((InfoPix*)ayAllotAux0(nInitialSize)) InfoPix;
+  SetPix* pSetPix = new ((SetPix*)ayAllotAux0(nInitialSize)) SetPix;
   
-  pInfoPix->vPixNm(szStreamNm);
-  pInfoPix->vColumns(nColumns);
+  pSetPix->vPixNm(szStreamNm);
+  pSetPix->vColumns(nColumns);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ColPix* aColPixArray = pInfoPix->aColPixArray();
+  ColPix* aColPixArray = pSetPix->aColPixArray();
   
   pStreamDef->vToColPix(aColPixArray,false);
   
@@ -126,26 +126,26 @@ void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
     // -- -- -- --
     
     i8 nStzOfs = nDifference(&aColPixArray[i_Col],
-                             (byte*) pInfoPix + i_Aux);
+                             (byte*) pSetPix + i_Aux);
     
     
     aColPixArray[i_Col].m_uName = nStzOfs;
   }
   
   if (AM::bDeveloper())
-    pInfoPix->vPrint();
+    pSetPix->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the infopix for this infoset ( aux 0 )                                 */
 /*----------------------------------------------------------------------------*/
-InfoPix* InfoSet::pInfoPix(void) {
+SetPix* InfoSet::pSetPix(void) {
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
-  InfoPix* pInfoPix = _pInfoPix(ayAux0());
+  SetPix* pSetPix = _pSetPix(ayAux0());
   
-  return pInfoPix;
+  return pSetPix;
 }
 
 /*----------------------------------------------------------------------------*/
