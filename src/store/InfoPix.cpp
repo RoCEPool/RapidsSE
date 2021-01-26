@@ -59,13 +59,64 @@ InfoPix::~InfoPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* get number of columns                                                      */
+/*----------------------------------------------------------------------------*/
+i8 InfoPix::nColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  
+  return m_nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of columns                                                      */
+/*----------------------------------------------------------------------------*/
+void InfoPix::vColumns(i8 nColumns)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  
+  m_nColumns = nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get col pic array                                                          */
 /*----------------------------------------------------------------------------*/
 ColPix* InfoPix::aColPix(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
   
   return m_xaColPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pix name                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* InfoPix::szPixNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  
+  return m_sPixNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pix name                                                               */
+/*----------------------------------------------------------------------------*/
+void InfoPix::vPixNm(Stz* szPixNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  
+  m_sPixNm = szPixNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print this info pix                                                        */
+/*----------------------------------------------------------------------------*/
+void InfoPix::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
+  
+  vTrace("InfoPix: %s\n"_Stz,szPixNm());
+  vTrace("  %lld columns\n"_Stz,nColumns());
 }
 
 /*============================================================================*/

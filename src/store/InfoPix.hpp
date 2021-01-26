@@ -9,7 +9,6 @@
 
 namespace STORE
 {
-  
   class InfoPix : public Object
   {
   protected:
@@ -25,8 +24,15 @@ namespace STORE
     InfoPix(void);
    ~InfoPix(void) noexcept(false);
   
+    i8 nColumns(void);
+    void vColumns(i8 nColumns);
+
     ColPix* aColPix(void);
   
+    Stz* szPixNm(void);
+    void vPixNm(Stz* szPixNm);
+
+    void vPrint(void);
   };
 
   InfoPix* _pInfoPix(void* aAddr);
