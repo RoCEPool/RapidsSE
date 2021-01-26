@@ -7,9 +7,10 @@
 
 #include "InfoSetBase.hpp"
 
+namespace STORE { class InfoPix; }
+
 namespace STORE
 {
-  
   class InfoSet : public InfoSetBase
   {
   protected:
@@ -21,10 +22,15 @@ namespace STORE
   
     InfoSet(void);
     InfoSet(StreamDef* pStreamDef);
-    ~InfoSet(void) noexcept(false);
+   ~InfoSet(void) noexcept(false);
     
+    void vFormInfoPix(StreamDef* pStreamDef);
+  
+    InfoPix* pInfoPix(void);
+  
     void vOpInfoSet(eOI eOpInfoSet);
     eOI  eOpInfoSet(void);
+  
   };
 
   InfoSet* _pInfoSet(void* aAddr);

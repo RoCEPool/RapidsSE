@@ -6,6 +6,7 @@
 
 #include "RowBuffer.hpp"
 
+#include "InfoPix.hpp"
 #include "InfoSet.hpp"
 
 #include "OpSpec.hpp"
@@ -48,7 +49,7 @@ void InfoSet::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* constructor                                           received over socket */
 /*----------------------------------------------------------------------------*/
 InfoSet::InfoSet(void)
 : InfoSetBase(CN_INFOSET)
@@ -70,6 +71,8 @@ InfoSet::InfoSet(StreamDef* pStreamDef)
   m_eOpInfoSet = OI_NONE;
   
   _checkInitialised_(CN_INFOSET);
+  
+  vFormInfoPix(pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +81,52 @@ InfoSet::InfoSet(StreamDef* pStreamDef)
 InfoSet::~InfoSet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* formulate info pix from stream def                                         */
+/*----------------------------------------------------------------------------*/
+void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  i8 nColumns = pStreamDef->nColumns();
+  
+  i8 nInitialSize = sizeof(InfoPix) + ((nColumns - 1) * sizeof(ColPix));
+  
+  InfoPix* pInfoPix = new ((InfoPix*)ayAllotAux0(nInitialSize)) InfoPix;
+  
+  ColPix* aColPix = pInfoPix->aColPix();
+    
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Stz* szColNmSrc = pColumn->szColNm();
+    
+    i8 nColNmSize = szColNmSrc->nSize();
+    
+    Stz* szColNmDst = (Stz*)ayExtendAux0(nColNmSize);
+    
+    szColNmDst->vCopy(szColNmSrc);
+  }
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the infopix for this infoset ( aux 0 )                                 */
+/*----------------------------------------------------------------------------*/
+InfoPix* InfoSet::pInfoPix(void) {
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  
+  InfoPix* pInfoPix = _pInfoPix(ayAux0());
+  
+  return pInfoPix;
 }
 
 /*----------------------------------------------------------------------------*/

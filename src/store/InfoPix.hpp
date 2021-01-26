@@ -13,16 +13,20 @@ namespace STORE
   class InfoPix : public Object
   {
   protected:
-    
+    s256   m_sPixNm;       // pix name
+    i8     m_nColumns;     // total columns
+
+    ColPix m_xaColPix[1];  // array of column pix
+
   public:
     void* operator new(size_t, InfoPix*);
     void operator delete(void*);
   
-    InfoPix(StreamDef* pStreamDef);
+    InfoPix(void);
    ~InfoPix(void) noexcept(false);
   
-    void vFormInfoPix(StreamDef* pStreamDef);
-    
+    ColPix* aColPix(void);
+  
   };
 
   InfoPix* _pInfoPix(void* aAddr);

@@ -40,7 +40,7 @@ void InfoPix::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InfoPix::InfoPix(StreamDef* pStreamDef)
+InfoPix::InfoPix(void)
 : Object(CN_INFOPIX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
@@ -59,12 +59,13 @@ InfoPix::~InfoPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* formulate info pix from stream def                                         */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void InfoPix::vFormInfoPix(StreamDef* pStreamDef)
+ColPix* InfoPix::aColPix(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOPIX);
-
+  
+  return m_xaColPix;
 }
 
 /*============================================================================*/

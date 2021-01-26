@@ -34,7 +34,7 @@ namespace STORE
     void    vAsString(String* pString);
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
-    Column* pGetColumn(i8 iColumn);
+    Column* pGetColumn(i8 i_Col);
     void    vName(Stz* sName);
     Stz*    szName(void);
     eEC     eParse(Stz* szCmd);

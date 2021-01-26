@@ -28,6 +28,8 @@ namespace BASE
     byte* ayAllotAux1(i8 nBytes);
     HEAD* aAllotHead(i8 nBytes);
     TAIL* aAllotTail(i8 nBytes);
+    byte* ayAux0(void);
+    byte* ayAux1(void);
     void  vDecItems(void);
     void  vExtendAux0(i8 nBytes);
     byte* ayExtendAux0(i8 nBytes);
@@ -208,6 +210,32 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAllotTail(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get auxilliary 0                                                           */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAux0(void)
+{
+  ASSERT(bStructurallyValid());
+
+  byte* ayAux0 = & m_yaByteArea[m_i_AuxItem0];
+
+  return ayAux0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get auxilliary 1                                                           */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAux1(void)
+{
+  ASSERT(bStructurallyValid());
+
+  byte* ayAux1 = & m_yaByteArea[m_i_AuxItem1];
+
+  return ayAux1;
+}
+
+//*----------------------------------------------------------------------------*/
 /* dec number of items                                                        */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
