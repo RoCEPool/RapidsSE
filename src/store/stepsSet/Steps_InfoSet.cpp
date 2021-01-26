@@ -582,9 +582,6 @@ void Step::vInfoSetNew(void)
   
   ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = new InfoSet(pStreamDef);
   
-  // test
-  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet->ayAllotAux0(C_2KB);
-  
   EXIT();
 }
 

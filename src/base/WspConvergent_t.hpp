@@ -30,7 +30,9 @@ namespace BASE
     TAIL* aAllotTail(i8 nBytes);
     void  vDecItems(void);
     void  vExtendAux0(i8 nBytes);
+    byte* ayExtendAux0(i8 nBytes);
     void  vExtendAux1(i8 nBytes);
+    byte* ayExtendAux1(i8 nBytes);
     TAIL* aFirstItem(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
@@ -220,6 +222,24 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vDecItems(void)
 /* extend aux 0                                                               */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayExtendAux0(i8 nBytes)
+{
+  ASSERT(bStructurallyValid());
+  ASSERT(! m_nUsedHead);
+  ASSERT(C_UNKNOWN != m_i_AuxItem0);
+  ASSERT(C_UNKNOWN == m_i_AuxItem1);
+    
+  byte* ayExtension = & m_yaByteArea[m_nUsedAux];
+  
+  vTakeAux(nBytes);
+  
+  return ayExtension;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extend aux 0                                                               */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
 void WspConvergent_t<AREA,HEAD,TAIL>::vExtendAux0(i8 nBytes)
 {
   ASSERT(bStructurallyValid());
@@ -228,6 +248,24 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vExtendAux0(i8 nBytes)
   ASSERT(C_UNKNOWN == m_i_AuxItem1);
     
   vTakeAux(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* extend aux 1                                                               */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+byte* WspConvergent_t<AREA,HEAD,TAIL>::ayExtendAux1(i8 nBytes)
+{
+  ASSERT(bStructurallyValid());
+  ASSERT(! m_nUsedHead);
+  ASSERT(C_UNKNOWN != m_i_AuxItem0);
+  ASSERT(C_UNKNOWN != m_i_AuxItem1);
+    
+  byte* ayExtension = & m_yaByteArea[m_nUsedAux];
+
+  vTakeAux(nBytes);
+  
+  return ayExtension;
 }
 
 /*----------------------------------------------------------------------------*/
