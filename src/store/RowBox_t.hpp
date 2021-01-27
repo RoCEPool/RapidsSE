@@ -70,10 +70,6 @@ namespace STORE
     i8   iColVal(i8 i_Col);
     Stz* szColVal(i8 i_Col);
 
-    SetPix* pSetPix(void);
-
-    void vSetPix(StreamDef* pStreamDef);
-
     bool bIsColNull(i8 i_Col);
 
     Row* pRowAddress(i8 i_Row);
@@ -119,7 +115,7 @@ namespace STORE
     Row*  aSetCurRow(i8 iRow);
     i8    iOffsetInWsp(Row* aRow);
     void  vSlabReport(void);
-    RowPix* aRowPix(void);
+    RowPix* pRowPix(void);
     void  vZeroRow(Row* aRow);
 
   private:
@@ -170,9 +166,7 @@ RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
   pStreamDef->vToRowPix(&m_oRowPix,bAddPtnHash);
 
   m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
-  
-  vSetPix(pStreamDef);
-  
+    
   //_postcondition_(_ADDRESS_);
 }
 
@@ -233,8 +227,6 @@ void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
   
   m_nRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
   
-  vSetPix(pStreamDef);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,69 +425,6 @@ Stz* RowBox_t<AREA>::szColVal(i8 i_Col)
   
   return szVal;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get the setpix                                                             */
-/*----------------------------------------------------------------------------*/
-template <i8 AREA>
-SetPix* RowBox_t<AREA>::pSetPix(void)
-{
-  SetPix* pSetPix = _pSetPix(WspConvergent_t<AREA,Stz,Row>::ayAux0());
-  
-  return pSetPix;
-}
-
-/*----------------------------------------------------------------------------*/
-/* formulate set pix from stream def                       StreamDef::vSetPix */
-/*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void RowBox_t<AREA>::vSetPix(StreamDef* pStreamDef)
-{
-  Stz* szStreamNm = pStreamDef->szName();
-  i8   nColumns = pStreamDef->nColumns();
-  
-  i8 nInitialSize = sizeof(SetPix) + ((nColumns - 1) * sizeof(ColPix));
-  
-  m_pSetPix =
-    new ((SetPix*)WspConvergent_t<AREA,Stz,Row>::ayAllotAux0(nInitialSize)) SetPix;
-  
-  m_pSetPix->vPixNm(szStreamNm);
-  m_pSetPix->vColumns(nColumns);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ColPix* axaColPixArray = m_pSetPix->axaColPixArray();
-  
-  pStreamDef->vToColPix(axaColPixArray,false);
-  
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-
-    Stz* szColNmSrc = pColumn->szColNm();
-    
-    i8 nColNmSize = szColNmSrc->nSize();
-    
-    i8 i_Aux = 0;
-    Stz* szColNmDst =
-      (Stz*)WspConvergent_t<AREA,Stz,Row>::ayExtendAux0(nColNmSize,i_Aux);
-    
-    szColNmDst->vCopy(szColNmSrc);
-    
-    
-    // -- -- -- --
-    
-    i8 nStzOfs = nDifference(&axaColPixArray[i_Col],
-                             (byte*) m_pSetPix + i_Aux);
-    
-    
-    axaColPixArray[i_Col].m_uName = nStzOfs;
-  }
-  
-  if (AM::bDeveloper())
-    m_pSetPix->vPrint();
-}
-
-
 
 
 
@@ -781,7 +710,7 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDumpRow(i8 i_Row, Row* aRow)
 {
   
-  HV_Record hvRecord(aRowPix());
+  HV_Record hvRecord(pRowPix());
 
   Stz* szRow = hvRecord->sz(aRow);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
@@ -1037,7 +966,7 @@ void RowBox_t<AREA>::vSlabReport(void)
 /* get the condensed stream def                                               */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-RowPix* RowBox_t<AREA>::aRowPix(void)
+RowPix* RowBox_t<AREA>::pRowPix(void)
 {
 
   return & m_oRowPix;

@@ -265,7 +265,7 @@ void vRapidsSE_ApiDemo_getRows(void)
       i8 nRows = pRowBuffer->nRows();
       i8 nCols = pRowBuffer->nColumns();
 
-     HV_Record hvRecord(pRowBuffer->aRowPix());
+     HV_Record hvRecord(pRowBuffer->pRowPix());
 
       for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
         Row* pRow = pRowBuffer->pRowAddress(i_Row);

@@ -141,7 +141,7 @@ void RowBuffer::vPrintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  HV_Record hvRecord(aRowPix());
+  HV_Record hvRecord(pRowPix());
 
   i8 nRows = this->nRows();
 
@@ -158,7 +158,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  HV_Record hvRecord(pStreamDef->aRowPix());
+  HV_Record hvRecord(pStreamDef->pRowPix());
   
   // NOTE: We need to print only nItem no of rows
   // as the limitOp may have truncated the rows via setting the nItems()
@@ -197,7 +197,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   Row* pRow = aFirstRow();
   HV_RowSingle hvRowSingle(pStreamDef);
   
-  HV_Record hvRecord(pStreamDef->aRowPix());
+  HV_Record hvRecord(pStreamDef->pRowPix());
   while (pRow) {
     hvRowSingle->vCopyRow(pRow);
     hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
@@ -216,7 +216,7 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  HV_Record hvRecord(aRowPix());
+  HV_Record hvRecord(pRowPix());
   
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;

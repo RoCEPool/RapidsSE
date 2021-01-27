@@ -44,11 +44,11 @@ namespace STORE
     Stz*    szName(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
-    RowPix* aRowPix(void);
+    RowPix* pRowPix(void);
     SetPix* pSetPix(void);
     void    vSetPix(StreamDef* pStreamDef);
-    void    vToColPix(ColPix* axColPix, bool bPtnHash);
-    void    vToRowPix(RowPix* aRowPix, bool bPtnHash);
+    void    vToColPix(RowPix* pRowPix, bool bPtnHash);
+    void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
     
   private:

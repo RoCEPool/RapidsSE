@@ -846,7 +846,7 @@ void vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElement(pDevRow->m_aRow,
-                                       pDevRow->m_pRowBuffer->aRowPix(),
+                                       pDevRow->m_pRowBuffer->pRowPix(),
                                        iArg);
 }
 
@@ -1067,8 +1067,6 @@ void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
   
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
-  // hack
-  pDevRow->m_pRowBuffer->pSetPix();
   pDevRow->m_pRowBuffer->vDumpRow(-1,pDevRow->m_aRow);
 }
 

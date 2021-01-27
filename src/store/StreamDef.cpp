@@ -357,7 +357,7 @@ void StreamDef::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to condensed streamPix format                            */
 /*----------------------------------------------------------------------------*/
-RowPix* StreamDef::aRowPix(void)
+RowPix* StreamDef::pRowPix(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
@@ -367,11 +367,21 @@ RowPix* StreamDef::aRowPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert this streamDef to colPix (optionally adding a ptnhash column)      */
+/* convert columns of this streamDef to colPix (opt. adding a ptnhash column) */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToColPix(ColPix* axaColPixDst, bool bAddPtnHash)
+void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  ColPix* axaColPixDst = pRowPixDst->m_xaColPix;
+  
+  char* azNameDst;
+  i8 nNameSize;
+  i8 nStzOfs;
+  
+  
+  pRowPixDst->m_nTotalChars =
+    sizeof(ColPix) * (m_nColumns - 1 + (bAddPtnHash ? 1 : 0) );
   
   i8 i_Col;
           
@@ -391,6 +401,14 @@ void StreamDef::vToColPix(ColPix* axaColPixDst, bool bAddPtnHash)
     axColPixDst->m_bNullable = (u4)pColumn->bIsNullable();
     axColPixDst->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
     axColPixDst->m_uSpare    = (u4)0;
+    
+    nNameSize = pColumn->szColNm()->nSize();
+    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
+    StrLib::vCopy(azNameDst,pColumn->szColNm()->azChar());
+    
+    nStzOfs = nDifference(axColPixDst,azNameDst);
+    axColPixDst->m_uName = nStzOfs;
+    pRowPixDst->m_nTotalChars += nNameSize;
   }
 
   // i_Col falls thru
@@ -409,35 +427,48 @@ void StreamDef::vToColPix(ColPix* axaColPixDst, bool bAddPtnHash)
     axColPixDst->m_bNullable = (u4)false;
     axColPixDst->m_bPtnKey   = (u4)false;
     axColPixDst->m_uSpare    = (u4)0;
+    
+    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
+    StrLib::vCopy(azNameDst,"__ptnHsh");
+    nNameSize = StrLib::nSize(azNameDst);
+    
+    nStzOfs = nDifference(axColPixDst,azNameDst);
+    axColPixDst->m_uName = nStzOfs;
+    pRowPixDst->m_nTotalChars += nNameSize;
+
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert this streamDef to RowPix (optionally adding a ptnhash column)      */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToRowPix(RowPix* aRowPixDst, bool bAddPtnHash)
+void StreamDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  if (aRowPixDst->m_bInitialised)
+  if (pRowPixDst->m_bInitialised)
     return;
   
-  ASSERT(! aRowPixDst->m_bPtnHash);
+  ASSERT(! pRowPixDst->m_bPtnHash);
 
-  aRowPixDst->m_sPixNm   = m_sName;
-  aRowPixDst->m_nColumns = m_nColumns;
+  pRowPixDst->m_sPixNm   = m_sName;
+  pRowPixDst->m_nColumns = m_nColumns;
 
   if (bAddPtnHash) {
-    ASSERT(! aRowPixDst->m_nExtraCols);
+    ASSERT(! pRowPixDst->m_nExtraCols);
     
-    aRowPixDst->m_nColumns++;
-    aRowPixDst->m_nExtraCols = 1;
-    aRowPixDst->m_bPtnHash = true;
+    pRowPixDst->m_nColumns++;
+    pRowPixDst->m_nExtraCols = 1;
+    pRowPixDst->m_bPtnHash = true;
   }
   
-  vToColPix(aRowPixDst->m_xaColPix,bAddPtnHash);
+  vToColPix(pRowPixDst,bAddPtnHash);
   
-  aRowPixDst->m_bInitialised = true;
+  pRowPixDst->m_bInitialised = true;
+  
+//  if (AM::bDeveloper())
+//    pRowPixDst->vPrint2();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1032,7 +1063,7 @@ void StreamDef::vSetPix(StreamDef* pStreamDef)
   
   ColPix* axaColPixArray = m_pSetPix->axaColPixArray();
   
-  pStreamDef->vToColPix(axaColPixArray,false);
+  //pStreamDef->vToColPix(axaColPixArray,false);
   
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
