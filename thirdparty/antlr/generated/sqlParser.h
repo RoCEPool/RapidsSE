@@ -32,22 +32,22 @@ public:
     TOP = 94, TRAILING = 95, TRUNCATE = 96, SQL_TRUE = 97, TYPE = 98, UNION = 99, 
     UNIQUE = 100, UPDATE = 101, USING = 102, VALUES = 103, WHERE = 104, 
     WITH = 105, BOOLEAN = 106, INTEGER = 107, DECIMAL = 108, FLOAT = 109, 
-    TIMESTAMP = 110, INTERVAL = 111, CHAR = 112, CHARACTER = 113, VARCHAR = 114, 
-    TEXT = 115, BINARY = 116, VARBINARY = 117, BLOB = 118, VARYING = 119, 
-    BIT = 120, BITS = 121, BYTE = 122, BYTES = 123, CHARS = 124, DIGITS = 125, 
-    CASE = 126, CAST = 127, COALESCE = 128, CONCAT = 129, COUNT = 130, DECODE = 131, 
-    EXTRACT = 132, EXISTS = 133, IF = 134, IFNULL = 135, NULLIF = 136, POSITION = 137, 
-    SUBSTR = 138, SUBSTRING = 139, TRIM = 140, TYPEOF = 141, WHEN = 142, 
-    THEN = 143, ELSE = 144, END = 145, DAY = 146, DAYS = 147, HOUR = 148, 
-    HOURS = 149, MINUTE = 150, MINUTES = 151, MONTH = 152, MONTHS = 153, 
-    QUARTER = 154, QUARTERS = 155, SECOND = 156, SECONDS = 157, WEEK = 158, 
-    WEEKS = 159, YEAR = 160, YEARS = 161, BLOCK = 162, BLOOM = 163, BTREE = 164, 
-    HASH = 165, LOOP = 166, SKIPLIST = 167, TREE = 168, VALUE = 169, IDENTIFIER = 170, 
-    PLAIN_IDENTIFIER = 171, BAKTIKD_IDENTIFIER = 172, DUBLQUOTED_IDENTIFIER = 173, 
-    STRING_LITERAL = 174, SINGLQUOTED_STRING = 175, DUBLQUOTED_STRING = 176, 
-    FLOAT_LITERAL = 177, DECIMAL_LITERAL = 178, INTEGER_LITERAL = 179, HINT_START = 180, 
-    HINT_END = 181, SLASH_COMMENT = 182, SQL_COMMENT = 183, BLOCK_COMMENT = 184, 
-    WHITESPACE = 185
+    TIME = 110, TIMESTAMP = 111, INTERVAL = 112, CHAR = 113, CHARACTER = 114, 
+    VARCHAR = 115, TEXT = 116, BINARY = 117, VARBINARY = 118, BLOB = 119, 
+    VARYING = 120, BIT = 121, BITS = 122, BYTE = 123, BYTES = 124, CHARS = 125, 
+    DIGITS = 126, CASE = 127, CAST = 128, COALESCE = 129, CONCAT = 130, 
+    COUNT = 131, DECODE = 132, EXTRACT = 133, EXISTS = 134, IF = 135, IFNULL = 136, 
+    NULLIF = 137, POSITION = 138, SUBSTR = 139, SUBSTRING = 140, TRIM = 141, 
+    TYPEOF = 142, WHEN = 143, THEN = 144, ELSE = 145, END = 146, DAY = 147, 
+    DAYS = 148, HOUR = 149, HOURS = 150, MINUTE = 151, MINUTES = 152, MONTH = 153, 
+    MONTHS = 154, QUARTER = 155, QUARTERS = 156, SECOND = 157, SECONDS = 158, 
+    WEEK = 159, WEEKS = 160, YEAR = 161, YEARS = 162, BLOCK = 163, BLOOM = 164, 
+    BTREE = 165, HASH = 166, LOOP = 167, SKIPLIST = 168, TREE = 169, VALUE = 170, 
+    IDENTIFIER = 171, PLAIN_IDENTIFIER = 172, BAKTIKD_IDENTIFIER = 173, 
+    DUBLQUOTED_IDENTIFIER = 174, STRING_LITERAL = 175, SINGLQUOTED_STRING = 176, 
+    DUBLQUOTED_STRING = 177, FLOAT_LITERAL = 178, DECIMAL_LITERAL = 179, 
+    INTEGER_LITERAL = 180, HINT_START = 181, HINT_END = 182, SLASH_COMMENT = 183, 
+    SQL_COMMENT = 184, BLOCK_COMMENT = 185, WHITESPACE = 186
   };
 
   enum {
@@ -75,9 +75,9 @@ public:
     RuleQualifier = 74, RulePrecision = 75, RuleScale = 76, RuleSize = 77, 
     RuleLiteral = 78, RuleSimpleLiteral = 79, RuleBooleanLiteral = 80, RuleIntegerLiteral = 81, 
     RuleDecimalLiteral = 82, RuleFloatLiteral = 83, RuleDateLiteral = 84, 
-    RuleTimestampLiteral = 85, RuleStringLiteral = 86, RuleIntervalLiteral = 87, 
-    RuleLooseInterval = 88, RuleSql92CalendarInterval = 89, RuleSql92TimeInterval = 90, 
-    RuleNonReservedWord = 91
+    RuleTimeLiteral = 85, RuleTimestampLiteral = 86, RuleStringLiteral = 87, 
+    RuleIntervalLiteral = 88, RuleLooseInterval = 89, RuleSql92CalendarInterval = 90, 
+    RuleSql92TimeInterval = 91, RuleNonReservedWord = 92
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -175,6 +175,7 @@ public:
   class DecimalLiteralContext;
   class FloatLiteralContext;
   class DateLiteralContext;
+  class TimeLiteralContext;
   class TimestampLiteralContext;
   class StringLiteralContext;
   class IntervalLiteralContext;
@@ -1026,6 +1027,7 @@ public:
     ScaleContext *scale();
     antlr4::tree::TerminalNode *FLOAT();
     antlr4::tree::TerminalNode *DATE();
+    antlr4::tree::TerminalNode *TIME();
     antlr4::tree::TerminalNode *TIMESTAMP();
     antlr4::tree::TerminalNode *COLLATE();
     SizeContext *size();
@@ -2092,6 +2094,7 @@ public:
     DecimalLiteralContext *decimalLiteral();
     FloatLiteralContext *floatLiteral();
     DateLiteralContext *dateLiteral();
+    TimeLiteralContext *timeLiteral();
     StringLiteralContext *stringLiteral();
     TimestampLiteralContext *timestampLiteral();
     IntervalLiteralContext *intervalLiteral();
@@ -2176,11 +2179,11 @@ public:
 
   class  DateLiteralContext : public antlr4::ParserRuleContext {
   public:
-    antlr4::Token *str = nullptr;;
+    sqlParser::StringLiteralContext *str = nullptr;;
     DateLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *DATE();
-    antlr4::tree::TerminalNode *STRING_LITERAL();
+    StringLiteralContext *stringLiteral();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -2189,13 +2192,27 @@ public:
 
   DateLiteralContext* dateLiteral();
 
+  class  TimeLiteralContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::StringLiteralContext *str = nullptr;;
+    TimeLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TIME();
+    StringLiteralContext *stringLiteral();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TimeLiteralContext* timeLiteral();
+
   class  TimestampLiteralContext : public antlr4::ParserRuleContext {
   public:
-    antlr4::Token *str = nullptr;;
     TimestampLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *TIMESTAMP();
-    antlr4::tree::TerminalNode *STRING_LITERAL();
+    StringLiteralContext *stringLiteral();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -2249,13 +2266,12 @@ public:
 
   class  Sql92CalendarIntervalContext : public antlr4::ParserRuleContext {
   public:
-    antlr4::Token *str = nullptr;;
     antlr4::Token *year = nullptr;;
     antlr4::Token *month = nullptr;;
     Sql92CalendarIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INTERVAL();
-    antlr4::tree::TerminalNode *STRING_LITERAL();
+    StringLiteralContext *stringLiteral();
     antlr4::tree::TerminalNode *TO();
     antlr4::tree::TerminalNode *YEAR();
     antlr4::tree::TerminalNode *MONTH();
@@ -2270,7 +2286,6 @@ public:
 
   class  Sql92TimeIntervalContext : public antlr4::ParserRuleContext {
   public:
-    antlr4::Token *str = nullptr;;
     antlr4::Token *day = nullptr;;
     antlr4::Token *hour = nullptr;;
     antlr4::Token *min = nullptr;;
@@ -2278,7 +2293,7 @@ public:
     Sql92TimeIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INTERVAL();
-    antlr4::tree::TerminalNode *STRING_LITERAL();
+    StringLiteralContext *stringLiteral();
     antlr4::tree::TerminalNode *TO();
     antlr4::tree::TerminalNode *DAY();
     antlr4::tree::TerminalNode *HOUR();
@@ -2372,6 +2387,7 @@ public:
     antlr4::tree::TerminalNode *SUBSTR();
     antlr4::tree::TerminalNode *SUBSTRING();
     antlr4::tree::TerminalNode *TABLE();
+    antlr4::tree::TerminalNode *TIME();
     antlr4::tree::TerminalNode *TREE();
     antlr4::tree::TerminalNode *TYPE();
     antlr4::tree::TerminalNode *UNION();

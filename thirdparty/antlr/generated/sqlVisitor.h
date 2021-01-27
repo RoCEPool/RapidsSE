@@ -272,6 +272,8 @@ public:
 
     virtual antlrcpp::Any visitDateLiteral(sqlParser::DateLiteralContext *context) = 0;
 
+    virtual antlrcpp::Any visitTimeLiteral(sqlParser::TimeLiteralContext *context) = 0;
+
     virtual antlrcpp::Any visitTimestampLiteral(sqlParser::TimestampLiteralContext *context) = 0;
 
     virtual antlrcpp::Any visitStringLiteral(sqlParser::StringLiteralContext *context) = 0;

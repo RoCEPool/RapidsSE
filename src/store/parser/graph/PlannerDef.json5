@@ -492,7 +492,7 @@
 // Path: /__root__/definitions/object/expr/literal/null
                     {
                       name: "null",
-                      value: "A NULL expression literal"
+                      value: "A NULL (unknown) expression literal"
                     },
 // Path: /__root__/definitions/object/expr/literal/string
                     {

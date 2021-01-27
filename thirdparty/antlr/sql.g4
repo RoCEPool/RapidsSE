@@ -177,6 +177,7 @@ sqlDataType       : BOOLEAN
                   | ( DECIMAL    ( '(' precision DIGITS? (',' scale DIGITS?)? ')')? )
                   | ( FLOAT      ( '(' precision (BITS | BYTES | DIGITS)? ')')? )
                   | DATE
+                  | TIME
                   | TIMESTAMP
 //                  | INTERVAL
                   | (
@@ -372,6 +373,7 @@ literal           : SQL_NULL
                   | decimalLiteral
                   | floatLiteral
                   | dateLiteral
+                  | timeLiteral
                   | stringLiteral
                   | timestampLiteral
                   | intervalLiteral
@@ -389,15 +391,16 @@ booleanLiteral    : SQL_TRUE | SQL_FALSE ;
 integerLiteral    : INTEGER_LITERAL ;
 decimalLiteral    : DECIMAL_LITERAL ;
 floatLiteral      : FLOAT_LITERAL ;
-dateLiteral       : DATE str = STRING_LITERAL ;
-timestampLiteral  : TIMESTAMP str=STRING_LITERAL ;
+dateLiteral       : DATE str = stringLiteral ;
+timeLiteral       : TIME str = stringLiteral ;
+timestampLiteral  : TIMESTAMP stringLiteral ;
 stringLiteral     : STRING_LITERAL ;
 intervalLiteral   : ( sql92CalendarInterval | sql92TimeInterval | looseInterval ) ;
 
 looseInterval     : INTERVAL str=expr ;
 
 sql92CalendarInterval :
-                  INTERVAL str=STRING_LITERAL
+                  INTERVAL stringLiteral
                   (
                       ( year=YEAR   ('(' precision ')')? )
                     | ( year=YEAR   ('(' precision ')')? TO month=MONTH)
@@ -405,7 +408,7 @@ sql92CalendarInterval :
                   ) ;
 
 sql92TimeInterval :
-                  INTERVAL str=STRING_LITERAL
+                  INTERVAL stringLiteral
                   (
                       ( day=DAY     ('(' precision ')')? )
                     | ( day=DAY     ('(' precision ')')? TO (hour=HOUR | min=MINUTE | sec=SECOND ('(' scale ')')? ))
@@ -431,7 +434,8 @@ nonReservedWord   :
                   | NO | NODE | NULLIF | OFFSET | OUTER | OVERLAY
                   | PARTITION | POSITION | QUARTER| QUARTERS | REFERENCE | RIGHT
                   | SCHEMA | SECOND | SECONDS | SET | SKIPLIST | SUBSTR | SUBSTRING
-                  | TABLE | TREE | TYPE | UNION | UNIQUE | UPDATE | USING | VALUE | VALUES | VARYING
+                  | TABLE | TIME | TREE | TYPE | UNION | UNIQUE | UPDATE | USING | VALUE | VALUES | VARYING
+                  | TABLE | TIME | TREE | TYPE | UNION | UNIQUE | UPDATE | USING | VALUE | VALUES | VARYING
                   | WEEK | WEEKS | YEAR | YEARS
                   | STATS | STATISTICS
                   | INTEGER | DECIMAL | FLOAT | TIMESTAMP | CHARACTER | CHAR | CHARS
@@ -528,6 +532,7 @@ BOOLEAN               : B O O L E A N;
 INTEGER               : I N T E G E R;
 DECIMAL               : D E C I M A L;
 FLOAT                 : F L O A T;
+TIME                  : T I M E;
 TIMESTAMP             : T I M E S T A M P;
 INTERVAL              : I N T E R V A L;
 CHAR                  : C H A R;

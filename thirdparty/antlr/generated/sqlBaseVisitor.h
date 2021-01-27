@@ -521,6 +521,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitTimeLiteral(sqlParser::TimeLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitTimestampLiteral(sqlParser::TimestampLiteralContext *ctx) override {
     return visitChildren(ctx);
   }

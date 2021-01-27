@@ -20,6 +20,7 @@ namespace Parser
     QueryNodeStack* m_pTableRefStack;
     QueryNodeStack* m_pExprStack;
     QueryNodeList* m_pSelectItems;
+    s2K m_sLastError;
     Footer m_xFooter;
     
    public:
@@ -30,24 +31,36 @@ namespace Parser
     SqlPlanner(void);
     
     PlanNode* plan(Stz* pStr, const PlanNode* pTemplate);
+    Stz* szLastError();
 
     ~SqlPlanner(void) noexcept;
   
     Footer* aFooter(void);
     
-    virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *ctx)      override;
-    virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *ctx)              override;
-    virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *ctx)  override;
-    virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *ctx)    override;
-    virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *ctx)              override;
-    virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *ctx) override;
-    virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *ctx)    override;
-    virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* ctx) override;
-    virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* ctx) override;
-    
+    virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *pCtx)           override;
+    virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                   override;
+    virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)       override;
+    virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)         override;
+    virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *pCtx)                   override;
+    virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx) override;
+    virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)         override;
+    virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx) override;
+    virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)           override;
+    virtual antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)               override;
+
     
   private:
-    Text* cleanId(sqlParser::IdentifierContext *ctx);
+    Text* pCleanId(sqlParser::IdentifierContext* pCtx);
+    Text* pCleanString(sqlParser::StringLiteralContext* pCtx);
+    void  vCleanString(sqlParser::StringLiteralContext* pCtx, s256& sBuf);
+    i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
+    d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
+//  ??    cleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
+    Dte   xCleanDate(sqlParser::StringLiteralContext* pCtx);
+    Tme   xCleanTime(sqlParser::StringLiteralContext* pCtx);
+    Tsp   xCleanTimestamp(sqlParser::StringLiteralContext* pCtx);
+//  Ivl   xCleanInterval(sqlParser::StringLiteralContext* pCtx);
+
   };
   
   SqlPlanner* _pSqlPlanner(void* aAddr);
