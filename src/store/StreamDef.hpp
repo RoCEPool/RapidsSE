@@ -5,8 +5,6 @@
 
 #include "Definition.hpp"
 
-namespace STORE { class SetPix; }
-
 namespace STORE
 {
   class StreamDef : public Definition,

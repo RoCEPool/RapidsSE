@@ -7,8 +7,6 @@
 
 #include "InfoSetBase.hpp"
 
-namespace STORE { class SetPix; }
-
 namespace STORE
 {
   class InfoSet : public InfoSetBase

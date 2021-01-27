@@ -4,7 +4,6 @@
 
 #include "BASE.h"
 
-#include "SetPix.hpp"
 #include "SP_ColPix.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -14,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SetPix* STORE::_pSetPix(void* aAddr)
+SetPix* BASE::_pSetPix(void* aAddr)
 {
   SetPix* pSetPix = reinterpret_cast<SetPix*>(aAddr);
   
