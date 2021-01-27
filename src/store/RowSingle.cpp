@@ -58,7 +58,6 @@ RowSingle::RowSingle(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
   m_pStreamDef  = pStreamDef;
-  m_nColumns    = pStreamDef->nColumns();
     
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
@@ -66,7 +65,6 @@ RowSingle::RowSingle(StreamDef* pStreamDef)
   // - - - - - - - - - - - - - - - - - -
   
   vResolveRowPix(pStreamDef);
-  ASSERT(nColumns() == m_nColumns);
   
   Row* aRow = aAllotNewRow();
     

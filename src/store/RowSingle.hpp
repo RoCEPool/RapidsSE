@@ -19,7 +19,6 @@ namespace STORE
     // meta data
   
     StreamDef* m_pStreamDef;     // stream def
-    i8         m_nColumns;       // no cols in stream def
     
     bool       m_abGetCol[C_MAX_COLUMNS];
 

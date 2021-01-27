@@ -726,7 +726,7 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
 
   pRowSingle->vResetRow();
 
-  i8 nCols = pRowSingle->m_nColumns;
+  i8 nCols = pRowSingle->nColumns();
 
   vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
 
