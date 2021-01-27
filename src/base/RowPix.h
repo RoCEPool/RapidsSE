@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowPix.h Stream Pix                                                        */
+/* RowPix.h -- Row Pix                                                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,34 +7,44 @@
 
 namespace BASE
 {
-  class RowPix // condensed stream def
+  class RowPix : public Object
   {
   public:
   
     // IF YOU ADD A MEMBER CHANGE CALC IN nBytes()
-  
-    b8 m_bInitialised; // has this stream pix been initialised
-    i8 m_nColumns;     // number of columns
-    i8 m_nExtraCols;   //   of which there are nExtra metadata columns
-    b8 m_bPtnHash;     // is there a partition hash ?
-    i8 m_nMaxRowSize;  //
+    s256 m_sPixNm;     // pix name
 
-    ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // col pix (C++ flexible member array must be last)
-    
+    b8 m_bInitialised; // 0) has this row pix been initialised?
+    b8 m_bShortForm;   // 1) has been compacted into short form?
+    i8 m_nColumns;     // 2) number of columns
+    i8 m_nExtraCols;   // 3)   of which there are nExtra non-user columns
+    b8 m_bPtnHash;     // 4) is there a partition hash ?
+    i8 m_nMaxRowSize;  // 5)
+    i8 m_nTotalChars;  // 6)
+
+    ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // column pix
+    s32    m_saColNm[C_MAX_DEFCOLUMNS];  // column names
+
+  
     // constructor
     RowPix(void)
+    : Object(CN_ROWPIX)
     {
       m_bInitialised = false;
-      m_nColumns        = 0;
+      m_bShortForm   = false;
+      m_nColumns     = 0;
       m_nExtraCols   = 0;
       m_bPtnHash     = false;
       m_nMaxRowSize  = 256;  // FOR TESTING PURPOSES
-      
+      m_nTotalChars  = 0;
+    
       for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
         m_xaColPix[i_Col].m_uAsU8 = 0;
       }
     }
   
+  
+    // copy row pix
     void vCopyRowPix(RowPix* pRowPixSrc)
     {
       MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
@@ -43,18 +53,17 @@ namespace BASE
     }
 
   
-  
     // calc number of bytes (this is weird)
-    i8 nBytes(i8 nCols)
+    i8 nRowPixBytes(i8 nCols)
     {
-      // there are 5 scalar 8B members in RowPix + 2 arrays
-      i8 nBytes = (  (    5 * (i8)sizeof(i8))
-                   + (nCols * (i8)sizeof(bool))
+      i8 nBytes =    (    1 * (i8)sizeof(m_sPixNm))
+                   + (    7 * (i8)sizeof(i8))
                    + (nCols * (i8)sizeof(ColPix))
-                   ) ;
+                   ;
     
       return nBytes;
     }
+  
           
     // remove partition metadata column
     void vRemovePtnHash(void)
@@ -66,14 +75,16 @@ namespace BASE
       m_nExtraCols--;
       m_bPtnHash = false;
     }
+  
     
     // calc size of this RowPix
     i8 nSize(void)
     {
-      i8 nSize = nBytes(m_nColumns);
+      i8 nSize = nRowPixBytes(m_nColumns);
     
       return nSize;
     }
+  
   
     // print
     void vPrint(void)
