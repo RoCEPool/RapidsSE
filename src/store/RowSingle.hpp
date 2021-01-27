@@ -20,12 +20,8 @@ namespace STORE
   
     StreamDef* m_pStreamDef;     // stream def
     i8         m_nColumns;       // no cols in stream def
-    i8         m_iSubSet;        // stream def subset
     
-    bool       m_bGetAll;        // get all crw columns?
-  
     bool       m_abGetCol[C_MAX_COLUMNS];
-    i8         m_iLastCol;
 
   private:
    

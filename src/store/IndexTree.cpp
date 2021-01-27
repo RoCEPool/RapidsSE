@@ -788,7 +788,6 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   
   i8 nIdxCols = pIndexDef->nColumns();
-  hvRowSingle->m_bGetAll = false;
   
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
     
@@ -798,7 +797,6 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
     // mark column to be retrieved
     i8 iColumn = pColumn->iColumnNo();
     hvRowSingle->m_abGetCol[iColumn] = true;
-    hvRowSingle->m_iLastCol = iColumn > hvRowSingle->m_iLastCol ? iColumn :  hvRowSingle->m_iLastCol;
   }
   
   // get the inflated compact row
