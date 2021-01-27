@@ -37,6 +37,34 @@ Record::Record(RowPix* pRowPix)
   
   m_oRowPix.vCopyRowPix(pRowPix);
   
+  m_pSetPix = nullptr;
+  
+  m_azCursor = & m_caRecord[0];
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
+#else
+  m_caRecord[0] = '\0';
+#endif
+  
+  //! FIX RAY
+  //_checkInitialised_(CN_RECORD);
+  
+  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Record::Record(SetPix* pSetPix)
+: Object(CN_RECORD)
+{
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  // m_oRowPix
+
+  m_pSetPix = pSetPix;
+
   m_azCursor = & m_caRecord[0];
   
 #ifdef WITH_CHECK_INITIALISED
@@ -143,7 +171,12 @@ void Record::vAddRow(Row* aRow)
   m_caRecord[0] = '\0';
   m_azCursor = & m_caRecord[0];
 
-  for (i8 i_Col = 0; i_Col < m_oRowPix.m_nColumns - m_oRowPix.m_nExtraCols; i_Col++) {
+  if (m_pSetPix)
+    goto L_SETPIX;
+  
+  for (i8 i_Col = 0;
+       i_Col < m_oRowPix.m_nColumns - m_oRowPix.m_nExtraCols;
+       i_Col++) {
 
     eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum; //pCol->eDatum();
     i8  iScale = m_oRowPix.m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
@@ -165,6 +198,38 @@ void Record::vAddRow(Row* aRow)
     
     vAppendCsvVal(eDatum,iScale,aRow->iColVal_int(i_Col));
   }
+  
+  return;
+  
+  
+  
+L_SETPIX:
+  
+  for (i8 i_Col = 0;
+       i_Col < m_pSetPix->nColumns();
+       i_Col++) {
+
+    eDM eDatum = (eDM)m_pSetPix->axColPix(i_Col)->m_uDatum;
+    i8  iScale = m_pSetPix->axColPix(i_Col)->m_uScale; ;
+
+    if (i_Col)
+      StrLib::vAppendString(&m_azCursor,",");
+
+    if (DM_VCH == eDatum) {
+      
+      if (aRow->bIsColNull(i_Col)) {
+        vAppendCsvVal(eDatum,iScale,C_DATUM_NULL);
+        continue;
+      }
+      
+      Stz* acSrcString = aRow->szColVal_ofs(i_Col);
+      vAppendCsvVal(eDatum,iScale,(i8)acSrcString);
+      continue;
+    }
+    
+    vAppendCsvVal(eDatum,iScale,aRow->iColVal_int(i_Col));
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

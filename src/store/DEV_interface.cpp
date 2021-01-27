@@ -846,7 +846,7 @@ void vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   pLogicUnit->m_oEntWrk.vAppendElement(pDevRow->m_aRow,
-                                       pDevRow->m_pRowBuffer->aRowPix(),
+                                       pDevRow->m_pRowBuffer->pRowPix(),
                                        iArg);
 }
 

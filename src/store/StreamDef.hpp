@@ -7,15 +7,20 @@
 
 namespace STORE
 {
-  class StreamDef : public Definition
+  class StreamDef : public Definition,
+                    public WspConvergent_t<C_64KB,void,void>
   {
   public:
     s256   m_sName;                       // streamDef name
     i8     m_iStreamId;                   // unique stream identifier
     i8     m_nColumns;                    // total columns
-    Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of clolumns
-    RowPix m_oRowPix;                     // row pix
+    Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
     i8     m_nFixedSized;                 // size of fixed size row
+
+    RowPix  m_oRowPix;                    // row pix
+  
+  private:
+    SetPix* m_pSetPix;
 
     // must be last
     Footer m_xFooter;
@@ -34,14 +39,16 @@ namespace STORE
     void    vAsString(String* pString);
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
-    Column* pGetColumn(i8 iColumn);
+    Column* pGetColumn(i8 i_Col);
     void    vName(Stz* sName);
     Stz*    szName(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
-    RowPix* aRowPix(void);
-    void    vToColPix(ColPix* axColPix, bool bPtnHash);
-    void    vToRowPix(RowPix* aRowPix, bool bPtnHash);
+    RowPix* pRowPix(void);
+    SetPix* pSetPix(void);
+    void    vSetPix(StreamDef* pStreamDef);
+    void    vToColPix(RowPix* pRowPix, bool bPtnHash);
+    void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
     
   private:

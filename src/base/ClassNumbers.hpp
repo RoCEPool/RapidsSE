@@ -212,6 +212,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWBUFFER,
   /* */ CN_ROWCOMPACTOR,
   /* */ CN_ROWONCE,
+  /* */ CN_ROWPIX,
   /* */ CN_ROWSINGLE,
   /* */ CN_ROWSINGLELIST,
   /* */ CN_ROWTRAY,
@@ -234,6 +235,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONARRAY,
+  /* */ CN_SETPIX,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -537,6 +539,7 @@ static Stz* aCN[]
   /* */ "ROWBUFFER"_Stz,            // CN_ROWBUFFER
   /* */ "ROWCOMPACTOR"_Stz,         // CN_ROWCOMPACTOR
   /* */ "ROWONCE"_Stz,              // CN_ROWONCE
+  /* */ "ROWPIX"_Stz,               // CN_ROWPIX
   /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
   /* */ "ROWSINGLELIST"_Stz,        // CN_ROWSINGLELIST
   /* */ "ROWTRAY"_Stz,              // CN_ROWTRAY
@@ -559,6 +562,7 @@ static Stz* aCN[]
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONARRAY
+  /* */ "SETPIX"_Stz,               // CN_SETPIX
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE

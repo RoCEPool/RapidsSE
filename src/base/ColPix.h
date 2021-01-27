@@ -5,26 +5,29 @@
 
 namespace BASE
 {
-  // the ColPix structure is 32b / u4
+  // the ColPix structure is 64b / u8
 
   union ColPix  // condensed column def 
   {
     struct {
-      u4 m_uDatum     :  4; // up to 16 types eDM
-      u4 m_uLength    : 16; // up to 65,536
-      u4 m_uScale     :  5; // up to 31 places
-      u4 m_bNullable  :  1; // is allowed to be null?
-      u4 m_bPtnKey    :  1; // is a partitioning column?
-      u4 m_uKind      :  3; // what cell contains (user col, ptn hash, ...)
+      u8 m_uNumber    :  8; // number
+      u8 m_uName      : 16; // name offset
+      u8 m_uType      :  4; // up to 16 column types eCT
+      u8 m_uKind      :  3; // cell contains (user col, ptn hash, ...) eCX
+      u8 m_uDatum     :  4; // up to 16 datums eDM
+      u8 m_uLength    : 16; // up to 65,536
+      u8 m_uScale     :  5; // up to 31 places
+      u8 m_bNullable  :  1; // is allowed to be null?
+      u8 m_bPtnKey    :  1; // is a partitioning column?
+      u8 m_uSpare     :  6; // round up to 64b
       
-      u4 m_uSpare     :  2; // round up to 32b
 
     //                 ---
-    //                 32b // so... 256 columns is 256 * 4B = 1KB
+    //                 64b // so... 256 columns is 256 * 8B = 2KB
     //                 ===
     };
     
-    u4 m_uAsI4;
+    u8 m_uAsU8;
   };
 }
 

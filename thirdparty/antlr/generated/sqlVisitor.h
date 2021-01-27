@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/ray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -271,6 +271,8 @@ public:
     virtual antlrcpp::Any visitFloatLiteral(sqlParser::FloatLiteralContext *context) = 0;
 
     virtual antlrcpp::Any visitDateLiteral(sqlParser::DateLiteralContext *context) = 0;
+
+    virtual antlrcpp::Any visitTimeLiteral(sqlParser::TimeLiteralContext *context) = 0;
 
     virtual antlrcpp::Any visitTimestampLiteral(sqlParser::TimestampLiteralContext *context) = 0;
 

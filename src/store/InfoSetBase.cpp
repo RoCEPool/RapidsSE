@@ -46,7 +46,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_sInfoSetNm = pStreamDef->szName();
-  m_nRowSize  = Row::nSizeBytes(pStreamDef);
+  m_nRowSize  = Row::nRowProper(pStreamDef->nColumns());
   m_nInfoRows = 0;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -122,7 +122,7 @@ Row* InfoSetBase::aAllotRow(void)
      if (DM_VCH == pCol->eDatum()) {
        Stz* szVal = va_arg(xVarArgs,Stz*);
        if (szVal) {
-         ayDst = (Stz*)ayAllotHead(StrLib::nSize(szVal->azChar()));
+         ayDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
          
          // return early if no more space for the string
          if ( ! ayDst )

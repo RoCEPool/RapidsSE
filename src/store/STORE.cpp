@@ -45,7 +45,7 @@ void STORE::vCheckAssumptions(void)
   
   ALWAYS(sizeof(Dtm)    == sizeof(SingleWord));
 
-  ALWAYS(sizeof(u4) == sizeof(ColPix));
+  ALWAYS(sizeof(u8) == sizeof(ColPix));
   
   
   

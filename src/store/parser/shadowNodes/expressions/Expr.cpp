@@ -7,7 +7,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "LiteralExpr.hpp"
+#include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "ColumnRef.hpp"
 
 #include "GraphNav.hpp"

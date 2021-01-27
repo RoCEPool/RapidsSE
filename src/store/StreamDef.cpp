@@ -56,6 +56,7 @@ StreamDef::StreamDef(void)
 
   //m_oRowPix;
 
+  m_pSetPix = nullptr;
   m_nFixedSized = 0;
 
   _checkInitialised_(CN_STREAMDEF);
@@ -356,7 +357,7 @@ void StreamDef::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to condensed streamPix format                            */
 /*----------------------------------------------------------------------------*/
-RowPix* StreamDef::aRowPix(void)
+RowPix* StreamDef::pRowPix(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
@@ -366,66 +367,108 @@ RowPix* StreamDef::aRowPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert streamDef to colPix format                                         */
+/* convert columns of this streamDef to colPix (opt. adding a ptnhash column) */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
+void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  i8 i_DefColumn = 0;
+  ColPix* axaColPixDst = pRowPixDst->m_xaColPix;
   
-  i8 i_DefSet = 0;
-        
-  for ( ; i_DefColumn < m_nColumns; i_DefColumn++) {
+  char* azNameDst;
+  i8 nNameSize;
+  i8 nStzOfs;
+  
+  
+  pRowPixDst->m_nTotalChars =
+    sizeof(ColPix) * (m_nColumns - 1 + (bAddPtnHash ? 1 : 0) );
+  
+  i8 i_Col;
+          
+  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
 
-    Column* pColumn  = &m_xaColumn[i_DefColumn];
-    ColPix* axColPix = &axaColPix[i_DefColumn];
+    Column* pColumn = &m_xaColumn[i_Col];
+    
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
 
-    axColPix->m_uDatum    = (u4)pColumn->eDatum();
-    axColPix->m_uLength   = (u4)pColumn->iColumnLength();
-    axColPix->m_uScale    = (u4)pColumn->iColumnScale();
-    axColPix->m_bNullable = (u4)pColumn->bIsNullable();
-    axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
-    axColPix->m_uKind     = (u4)CX_USERCOL;
-    axColPix->m_uSpare    = (u4)0;
+    axColPixDst->m_uNumber   = (u4)i_Col;
+    // name
+    axColPixDst->m_uKind     = (u4)CX_USERCOL;
+    axColPixDst->m_uType     = (u4)pColumn->eColumnType();
+    axColPixDst->m_uDatum    = (u4)pColumn->eDatum();
+    axColPixDst->m_uLength   = (u4)pColumn->iColumnLength();
+    axColPixDst->m_uScale    = (u4)pColumn->iColumnScale();
+    axColPixDst->m_bNullable = (u4)pColumn->bIsNullable();
+    axColPixDst->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
+    axColPixDst->m_uSpare    = (u4)0;
+    
+    nNameSize = pColumn->szColNm()->nSize();
+    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
+    StrLib::vCopy(azNameDst,pColumn->szColNm()->azChar());
+    
+    nStzOfs = nDifference(axColPixDst,azNameDst);
+    axColPixDst->m_uName = nStzOfs;
+    pRowPixDst->m_nTotalChars += nNameSize;
   }
 
+  // i_Col falls thru
   
-  if (bPtnHash) {
+  if (bAddPtnHash) {
 
-    ColPix* axColPix = &axaColPix[i_DefColumn];
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
   
-    axColPix->m_uDatum    = (u4)DM_INT;
-    axColPix->m_uLength   = (u4)C_MAX_INT_PRECISION;
-    axColPix->m_uScale    = (u4)0;
-    axColPix->m_bNullable = (u4)false;
-    axColPix->m_bPtnKey   = (u4)false;
-    axColPix->m_uKind     = (u4)CX_PTNHASH;
-    axColPix->m_uSpare    = (u4)0;
+    axColPixDst->m_uNumber   = (u4)i_Col;
+    // name
+    axColPixDst->m_uKind     = (u4)CX_PTNHASH;
+    axColPixDst->m_uType     = (u4)CT_INTEGER;
+    axColPixDst->m_uDatum    = (u4)DM_INT;
+    axColPixDst->m_uLength   = (u4)C_MAX_INT_PRECISION;
+    axColPixDst->m_uScale    = (u4)0;
+    axColPixDst->m_bNullable = (u4)false;
+    axColPixDst->m_bPtnKey   = (u4)false;
+    axColPixDst->m_uSpare    = (u4)0;
+    
+    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
+    StrLib::vCopy(azNameDst,"__ptnHsh");
+    nNameSize = StrLib::nSize(azNameDst);
+    
+    nStzOfs = nDifference(axColPixDst,azNameDst);
+    axColPixDst->m_uName = nStzOfs;
+    pRowPixDst->m_nTotalChars += nNameSize;
+
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert streamDef to condensed streamPix format                            */
+/* convert this streamDef to RowPix (optionally adding a ptnhash column)      */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToRowPix(RowPix* aRowPix, bool bPtnHash)
+void StreamDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  if (aRowPix->m_bInitialised)
+  if (pRowPixDst->m_bInitialised)
     return;
   
-  //ASSERT(! aRowPix->m_bInitialised);
-  
-  aRowPix->m_nColumns = m_nColumns;
-  aRowPix->m_bPtnHash = bPtnHash;
-  if (aRowPix->m_bPtnHash) {
-    aRowPix->m_nColumns++;
-    aRowPix->m_nExtraCols = 1;
+  ASSERT(! pRowPixDst->m_bPtnHash);
+
+  pRowPixDst->m_sPixNm   = m_sName;
+  pRowPixDst->m_nColumns = m_nColumns;
+
+  if (bAddPtnHash) {
+    ASSERT(! pRowPixDst->m_nExtraCols);
+    
+    pRowPixDst->m_nColumns++;
+    pRowPixDst->m_nExtraCols = 1;
+    pRowPixDst->m_bPtnHash = true;
   }
-  vToColPix(aRowPix->m_xaColPix,bPtnHash);
   
-  aRowPix->m_bInitialised = true;
+  vToColPix(pRowPixDst,bAddPtnHash);
+  
+  pRowPixDst->m_bInitialised = true;
+  
+//  if (AM::bDeveloper())
+//    pRowPixDst->vPrint2();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -983,6 +1026,70 @@ eEC StreamDef::eParseRowSize(TokenVec* pTknVec)
   m_nFixedSized = nRowSize;
   
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* formulate set pix from stream def                                          */
+/*----------------------------------------------------------------------------*/
+SetPix* StreamDef::pSetPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  if (! m_pSetPix)
+    vSetPix(this);
+  
+  return m_pSetPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* formulate set pix from stream def                  RowBox_t<AREA>::vSetPix */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vSetPix(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  Stz* szStreamNm = pStreamDef->szName();
+  i8   nColumns = pStreamDef->nColumns();
+  
+  i8 nInitialSize = sizeof(SetPix) + ((nColumns - 1) * sizeof(ColPix));
+  
+  m_pSetPix =
+    new ((SetPix*)WspConvergent_t<C_64KB,void,void>::ayAllotAux0(nInitialSize)) SetPix;
+  
+  m_pSetPix->vPixNm(szStreamNm);
+  m_pSetPix->vColumns(nColumns);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  ColPix* axaColPixArray = m_pSetPix->axaColPixArray();
+  
+  //pStreamDef->vToColPix(axaColPixArray,false);
+  
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Stz* szColNmSrc = pColumn->szColNm();
+    
+    i8 nColNmSize = szColNmSrc->nSize();
+    
+    i8 i_Aux = 0;
+    Stz* szColNmDst =
+      (Stz*)WspConvergent_t<C_64KB,void,void>::ayExtendAux0(nColNmSize,i_Aux);
+    
+    szColNmDst->vCopy(szColNmSrc);
+    
+    
+    // -- -- -- --
+    
+    i8 nStzOfs = nDifference(&axaColPixArray[i_Col],
+                             (byte*) m_pSetPix + i_Aux);
+    
+    
+    axaColPixArray[i_Col].m_uName = nStzOfs;
+  }
+  
+  if (AM::bDeveloper())
+    m_pSetPix->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/

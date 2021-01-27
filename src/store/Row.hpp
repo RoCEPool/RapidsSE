@@ -25,9 +25,8 @@ namespace STORE
     Row(void);
     ~Row(void) noexcept(false);
   
-    static i8 nSizeBytes(StreamDef* pStreamDef);
-    static i8 nRowProper(RowPix* pRowPix);
-  
+    static i8 nRowProper(i8 nColumns);
+
     void vDump(StreamDef* pStreamDef);
   
     m8*  aCellArray(void);

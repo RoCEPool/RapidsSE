@@ -6,6 +6,7 @@
 
 #include "RowBuffer.hpp"
 
+#include "SetPix.hpp"
 #include "InfoSet.hpp"
 
 #include "OpSpec.hpp"
@@ -48,7 +49,7 @@ void InfoSet::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* constructor                                           received over socket */
 /*----------------------------------------------------------------------------*/
 InfoSet::InfoSet(void)
 : InfoSetBase(CN_INFOSET)
@@ -81,10 +82,14 @@ InfoSet::~InfoSet(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* set operator infoset                                                       */
 /*----------------------------------------------------------------------------*/
-void InfoSet::vOpInfoSet(eOI eOpInfoSet) {
-  
+void InfoSet::vOpInfoSet(eOI eOpInfoSet)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
   m_eOpInfoSet = eOpInfoSet;

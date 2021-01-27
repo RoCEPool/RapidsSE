@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/ray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -518,6 +518,10 @@ public:
   }
 
   virtual antlrcpp::Any visitDateLiteral(sqlParser::DateLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitTimeLiteral(sqlParser::TimeLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 

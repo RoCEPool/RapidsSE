@@ -57,20 +57,15 @@ RowSingle::RowSingle(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  m_pStreamDef  = pStreamDef;
-  m_nColumns    = pStreamDef->nColumns();
-  m_iSubSet     = C_ALL;
-  
-  m_bGetAll     = true;
-  
+  m_pStreamDef = pStreamDef;
+    
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
-  m_iLastCol    = C_UNKNOWN;
     
   // - - - - - - - - - - - - - - - - - -
   
   vResolveRowPix(pStreamDef);
-
+  
   Row* aRow = aAllotNewRow();
     
   _checkInitialised_(CN_ROWSINGLE);
@@ -188,7 +183,7 @@ void RowSingle::vCopyRow(Row* pRow)
   vResetValues();
   Row* aRow = aAllotNewRow();
   
-  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
   
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -234,7 +229,7 @@ void RowSingle::vPrintRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
 
-  HV_Record hvRecord(m_pStreamDef->aRowPix());
+  HV_Record hvRecord(m_pStreamDef->pRowPix());
   hvRecord->vToCsvRecord(pRowCurrent());
   hvRecord->vPrintAsRow();
 }
@@ -280,7 +275,7 @@ i8 RowSingle::nSumVchSizes(void)
 
   i8 nSizeVch = 0;
   
-  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
     
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -313,18 +308,6 @@ Stz* RowSingle::szStzAlottable(void)
   Stz* szAllottable = RowBox_t<C_ROWSINGLE_WSP>::szStzAllot_begin();
   
   return szAllottable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get string area                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* RowSingle::szStzArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
-
-  Stz* szArea = RowBox_t<C_ROWSINGLE_WSP>::szStzArea();
-  
-  return szArea;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,6 +13,7 @@
 #include "SP_String.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
+#include "Record.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -2963,7 +2964,7 @@ L_RecordEndLineEnd:
   }
   
   if (iTraceBits & C_BIT_EndRecord) {
-    HV_Record hvRecord(m_pStreamDef->aRowPix());
+    HV_Record hvRecord(m_pStreamDef->pRowPix());
     vTrace("[%lld : %lld] %s\n"_Stz,
            m_i_Rec,
            m_bPtnHash ? tPtnNo : C_UNKNOWN,

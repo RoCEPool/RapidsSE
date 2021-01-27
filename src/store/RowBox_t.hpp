@@ -6,6 +6,7 @@
 #include "Definition.hpp"
 
 #include "Row.hpp"
+#include "SetPix.hpp"
 
 #include "NmlStr.hpp"
 
@@ -13,15 +14,16 @@
 
 namespace STORE
 {
-  template <i8 SIZE>
-  class RowBox_t : public WspConvergent_t<SIZE,Stz,Row>
+  template <i8 AREA>
+  class RowBox_t : public WspConvergent_t<AREA,Stz,Row>
   {
   protected:
 
     i8 m_nRowSizeProper;
   
     RowPix m_oRowPix;
-  
+    SetPix* m_pSetPix;
+
     Row* m_aRowCur;     // current row
     i8   m_i_RowCrs;    // current logical row number
     i8   m_i_ColCrs;    // current working column
@@ -113,13 +115,11 @@ namespace STORE
     Row*  aSetCurRow(i8 iRow);
     i8    iOffsetInWsp(Row* aRow);
     void  vSlabReport(void);
-    RowPix* aRowPix(void);
+    RowPix* pRowPix(void);
     void  vZeroRow(Row* aRow);
 
   private:
     i8    i_RowBufferCell(i8 i_Row);
-    m8*   amSlabCellVec(void);
-
 
   };
 
@@ -128,8 +128,8 @@ namespace STORE
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void* RowBox_t<SIZE>::operator new(size_t)
+template <i8 AREA>
+void* RowBox_t<AREA>::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "fatal: RowBox class cannot be new'd\n"_Stz);
@@ -140,8 +140,8 @@ void* RowBox_t<SIZE>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-RowBox_t<SIZE>::RowBox_t(void)
+template <i8 AREA>
+RowBox_t<AREA>::RowBox_t(void)
 {
   //_precondition_(_ADDRESS_);
   
@@ -156,8 +156,8 @@ RowBox_t<SIZE>::RowBox_t(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-RowBox_t<SIZE>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
+template <i8 AREA>
+RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 {
   //_precondition_(_ADDRESS_);
 
@@ -165,16 +165,16 @@ RowBox_t<SIZE>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   pStreamDef->vToRowPix(&m_oRowPix,bAddPtnHash);
 
-  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
-  
+  m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
+    
   //_postcondition_(_ADDRESS_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-RowBox_t<SIZE>::~RowBox_t(void) noexcept(false)
+template <i8 AREA>
+RowBox_t<AREA>::~RowBox_t(void) noexcept(false)
 {
   //_precondition_(_ADDRESS_);
 
@@ -184,8 +184,8 @@ RowBox_t<SIZE>::~RowBox_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* initialise this row box                                                    */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vInitRowBox_t(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vInitRowBox_t(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
@@ -206,6 +206,8 @@ void RowBox_t<SIZE>::vInitRowBox_t(void)
   m_i_ColCrs = C_UNKNOWN;
 
   m_nRowStringBytes = 0;
+  
+  m_pSetPix = nullptr;
 }
 
 
@@ -216,14 +218,15 @@ void RowBox_t<SIZE>::vInitRowBox_t(void)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vResolveRowPix(StreamDef* pStreamDef)
+template <i8 AREA>
+void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
   pStreamDef->vToRowPix(&m_oRowPix,false);
   
-  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
+  m_nRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,8 +235,8 @@ void RowBox_t<SIZE>::vResolveRowPix(StreamDef* pStreamDef)
 
 //HACK(RowBuffer,"quick fix to check for enough space ");
 
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::aAllotNewRow(void)
+template <i8 AREA>
+Row* RowBox_t<AREA>::aAllotNewRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
@@ -242,10 +245,10 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
   m_nRowStringBytes = 0;
   m_i_ColCrs  = 0;
 
-  if (WspConvergent_t<SIZE,Stz,Row>::nFreeBytes() < C_2KB)
+  if (WspConvergent_t<AREA,Stz,Row>::nFreeBytes() < C_2KB)
     return nullptr;
 
-  m_aRowCur = WspConvergent_t<SIZE,Stz,Row>::ayAllotTail(m_nRowSizeProper);
+  m_aRowCur = WspConvergent_t<AREA,Stz,Row>::aAllotTail(m_nRowSizeProper);
 
   if (! m_aRowCur)
     return nullptr;
@@ -263,8 +266,8 @@ Row* RowBox_t<SIZE>::aAllotNewRow(void)
 /*----------------------------------------------------------------------------*/
 /* get the condensed column pix array                                         */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-ColPix* RowBox_t<SIZE>::axaColPix(void)
+template <i8 AREA>
+ColPix* RowBox_t<AREA>::axaColPix(void)
 {
   return m_oRowPix.m_xaColPix;
 }
@@ -273,19 +276,19 @@ ColPix* RowBox_t<SIZE>::axaColPix(void)
 /*----------------------------------------------------------------------------*/
 /* copy given stream pix into the stream pix in this row                      */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vCopyRowPix(RowPix* pRowPixSrc)
+template <i8 AREA>
+void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
 {
   MemLib::vCopy(&m_oRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
-  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
+  m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
 }
 
 /*----------------------------------------------------------------------------*/
 /* copy given source row into current row of this row slab                    */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
+template <i8 AREA>
+void RowBox_t<AREA>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   i8 iVal;
   Stz* szSrcStz;
@@ -329,8 +332,8 @@ void RowBox_t<SIZE>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
 /*----------------------------------------------------------------------------*/
 /* return column value from row for given column number                       */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
+template <i8 AREA>
+i8 RowBox_t<AREA>::iColumn(Row* aRow, i8 i_Col)
 {
   i8 iVal;
   Stz* szSrcStz;
@@ -364,8 +367,8 @@ i8 RowBox_t<SIZE>::iColumn(Row* aRow, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::nColumns(void)
+template <i8 AREA>
+i8 RowBox_t<AREA>::nColumns(void)
 {
   return m_oRowPix.m_nColumns;
 }
@@ -373,8 +376,8 @@ i8 RowBox_t<SIZE>::nColumns(void)
 /*----------------------------------------------------------------------------*/
 /* get datum value of given column                                            */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Dtm* RowBox_t<SIZE>::aColDtm(i8 i_Col)
+template <i8 AREA>
+Dtm* RowBox_t<AREA>::aColDtm(i8 i_Col)
 {
   Dtm* aDtm = m_aRowCur->aColDtm(i_Col);
   
@@ -384,8 +387,8 @@ Dtm* RowBox_t<SIZE>::aColDtm(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* set column value to be dull                                                */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vColSetNull(i8 i_Col)
+template <i8 AREA>
+void RowBox_t<AREA>::vColSetNull(i8 i_Col)
 {
   m_aRowCur->vSetColNull(i_Col);
 }
@@ -393,8 +396,8 @@ void RowBox_t<SIZE>::vColSetNull(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get float value of given column                                            */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-d8 RowBox_t<SIZE>::dColVal(i8 i_Col)
+template <i8 AREA>
+d8 RowBox_t<AREA>::dColVal(i8 i_Col)
 {
   d8 dVal = m_aRowCur->dColVal_flt(i_Col);
   
@@ -404,8 +407,8 @@ d8 RowBox_t<SIZE>::dColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get integer value of given column                                          */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::iColVal(i8 i_Col)
+template <i8 AREA>
+i8 RowBox_t<AREA>::iColVal(i8 i_Col)
 {
   i8 iVal = m_aRowCur->iColVal_int(i_Col);
   
@@ -415,8 +418,8 @@ i8 RowBox_t<SIZE>::iColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get stz value of given column                                              */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Stz* RowBox_t<SIZE>::szColVal(i8 i_Col)
+template <i8 AREA>
+Stz* RowBox_t<AREA>::szColVal(i8 i_Col)
 {
   Stz* szVal = m_aRowCur->szColVal_ofs(i_Col);
   
@@ -428,8 +431,8 @@ Stz* RowBox_t<SIZE>::szColVal(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* is given column a null?                                                    */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-bool RowBox_t<SIZE>::bIsColNull(i8 i_Col)
+template <i8 AREA>
+bool RowBox_t<AREA>::bIsColNull(i8 i_Col)
 {
   bool bIsNull = m_aRowCur->bIsColNull(i_Col);
   
@@ -441,8 +444,8 @@ bool RowBox_t<SIZE>::bIsColNull(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get address of an row                                                      */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::pRowAddress(i8 i_Row)
+template <i8 AREA>
+Row* RowBox_t<AREA>::pRowAddress(i8 i_Row)
 {
   /*          v row[1]            v row[0]
        -------*----+----+----*----+----+---+----+----*
@@ -450,7 +453,7 @@ Row* RowBox_t<SIZE>::pRowAddress(i8 i_Row)
        -------*----+----+----*----+----+---+----+----*
    */
     
-  Row* pRowAddr = WspConvergent_t<SIZE,Stz,Row>::aTailItem(i_Row);
+  Row* pRowAddr = WspConvergent_t<AREA,Stz,Row>::aTailItem(i_Row);
   
   Row* pRow = _pRow(pRowAddr);
   
@@ -460,8 +463,8 @@ Row* RowBox_t<SIZE>::pRowAddress(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* get current row                                                            */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::pRowCurrent(void)
+template <i8 AREA>
+Row* RowBox_t<AREA>::pRowCurrent(void)
 {
   return m_aRowCur;
 }
@@ -469,23 +472,23 @@ Row* RowBox_t<SIZE>::pRowCurrent(void)
 /*----------------------------------------------------------------------------*/
 /* get number of rows                                                         */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::nRows(void)
+template <i8 AREA>
+i8 RowBox_t<AREA>::nRows(void)
 {
-  return WspConvergent_t<SIZE,Stz,Row>::nItems();
+  return WspConvergent_t<AREA,Stz,Row>::nItems();
 }
 
 /*----------------------------------------------------------------------------*/
 /* return first ref set in this buffer                                        */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::aFirstRow(void)
+template <i8 AREA>
+Row* RowBox_t<AREA>::aFirstRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
   
   RASSERT(m_oRowPix.m_bInitialised);
   
-  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aFirstItem();
+  Row* aRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
   
   return aRow;
 }
@@ -493,14 +496,14 @@ Row* RowBox_t<SIZE>::aFirstRow(void)
 /*----------------------------------------------------------------------------*/
 /* return last ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::aLastRow(void)
+template <i8 AREA>
+Row* RowBox_t<AREA>::aLastRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
   
   RASSERT(m_oRowPix.m_bInitialised);
 
-  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aFirstItem();
+  Row* aRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
   Row* aLastRow = nullptr;
   
   while (aRow) {
@@ -514,14 +517,15 @@ Row* RowBox_t<SIZE>::aLastRow(void)
 /*----------------------------------------------------------------------------*/
 /* return next ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::aNextRow(Row* aPriorRow)
+template <i8 AREA>
+Row* RowBox_t<AREA>::aNextRow(Row* aPriorRow)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
   RASSERT(m_oRowPix.m_bInitialised);
 
-  Row* aRow = WspConvergent_t<SIZE,Stz,Row>::aAdjacentItem(aPriorRow, m_nRowSizeProper);
+  Row* aRow = WspConvergent_t<AREA,Stz,Row>::aAdjacentTail(aPriorRow,
+                                                           m_nRowSizeProper);
   
   return aRow;
 }
@@ -539,8 +543,8 @@ Row* RowBox_t<SIZE>::aNextRow(Row* aPriorRow)
 /*--------------------------------------------------------------------------*/
 /* advance cursor                                                           */
 /*--------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vAdvanceCursor(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vAdvanceCursor(void)
 {
   m_i_ColCrs++;
 }
@@ -549,8 +553,8 @@ void RowBox_t<SIZE>::vAdvanceCursor(void)
 /*--------------------------------------------------------------------------*/
 /* deposit an d8 value into next cell                                       */
 /*--------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDepositColVal(d8 dColVal)
+template <i8 AREA>
+void RowBox_t<AREA>::vDepositColVal(d8 dColVal)
 {
 
   m_aRowCur->vColVal_flt(m_i_ColCrs,dColVal);
@@ -562,8 +566,8 @@ void RowBox_t<SIZE>::vDepositColVal(d8 dColVal)
 /*--------------------------------------------------------------------------*/
 /* deposit an i8 value into next cell                                       */
 /*--------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDepositColVal(i8 iColVal)
+template <i8 AREA>
+void RowBox_t<AREA>::vDepositColVal(i8 iColVal)
 {
 
   m_aRowCur->vColVal_int(m_i_ColCrs,iColVal);
@@ -574,8 +578,8 @@ void RowBox_t<SIZE>::vDepositColVal(i8 iColVal)
 /*----------------------------------------------------------------------------*/
 /* get datum value of given column                                            */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDepositColVal(i8 i_Col, i8 iColVal)
+template <i8 AREA>
+void RowBox_t<AREA>::vDepositColVal(i8 i_Col, i8 iColVal)
 {
   m_aRowCur->vColVal_int(i_Col,iColVal);
 }
@@ -583,8 +587,8 @@ void RowBox_t<SIZE>::vDepositColVal(i8 i_Col, i8 iColVal)
 /*--------------------------------------------------------------------------*/
 /* deposit an stz value into next cell                                      */
 /*--------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDepositColVal(Stz* szColVal)
+template <i8 AREA>
+void RowBox_t<AREA>::vDepositColVal(Stz* szColVal)
 {
 
   char* azTgt = azDepositString_begin();
@@ -597,10 +601,10 @@ void RowBox_t<SIZE>::vDepositColVal(Stz* szColVal)
 /*----------------------------------------------------------------------------*/
 /* get datum value of given column                                            */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDepositColVal(i8 i_Col, Stz* szColVal)
+template <i8 AREA>
+void RowBox_t<AREA>::vDepositColVal(i8 i_Col, Stz* szColVal)
 {
-  Stz* szDeposited = WspConvergent_t<SIZE,Stz,Row>::szStzDeposit(szColVal);
+  Stz* szDeposited = WspConvergent_t<AREA,Stz,Row>::szStzDeposit(szColVal);
   
   i8 i_Ofs = - nDifference(m_aRowCur->aColCell(i_Col),szDeposited);
   
@@ -610,11 +614,11 @@ void RowBox_t<SIZE>::vDepositColVal(i8 i_Col, Stz* szColVal)
 /*--------------------------------------------------------------------------*/
 /* begin deposit of string                                                  */
 /*--------------------------------------------------------------------------*/
-template <i8 SIZE>
-char* RowBox_t<SIZE>::azDepositString_begin(void)
+template <i8 AREA>
+char* RowBox_t<AREA>::azDepositString_begin(void)
 {
 
-  char* azStz = (char*)WspConvergent_t<SIZE,Stz,Row>::ayLatterHead();
+  char* azStz = (char*)WspConvergent_t<AREA,Stz,Row>::ayLatterHead();
   
   m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
   i8 i_Ofs = - nDifference(azStz,aColCell);
@@ -630,11 +634,11 @@ char* RowBox_t<SIZE>::azDepositString_begin(void)
 /*--------------------------------------------------------------------------*/
 /* take bytes for deposited string                                          */
 /*--------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDepositString_end(i8 nSize)
+template <i8 AREA>
+void RowBox_t<AREA>::vDepositString_end(i8 nSize)
 {
 
-  WspConvergent_t<SIZE,Stz,Row>::vTakeHead(nSize);
+  WspConvergent_t<AREA,Stz,Row>::vTakeHead(nSize);
   
   m_nRowStringBytes += nSize;
 
@@ -645,8 +649,8 @@ void RowBox_t<SIZE>::vDepositString_end(i8 nSize)
 /*----------------------------------------------------------------------------*/
 /* discard current invalid/incomplete row                                     */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDiscardInvalidRow(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vDiscardInvalidRow(void)
 {
   
   // undo the row number increments of vNewRow()
@@ -654,13 +658,13 @@ void RowBox_t<SIZE>::vDiscardInvalidRow(void)
   
   // return tail bytes allotted for cells of current row in vNewRow()
   i8 nCellBytes = nRowProperBytes();
-  WspConvergent_t<SIZE,Stz,Row>::vGiveTail(nCellBytes);
+  WspConvergent_t<AREA,Stz,Row>::vGiveTail(nCellBytes);
   
-  WspConvergent_t<SIZE,Stz,Row>::vDecItems();
+  WspConvergent_t<AREA,Stz,Row>::vDecItems();
   
   // return head bytes allotted for strings deposited in vDepositString_end()
   if (m_nRowStringBytes) {
-    WspConvergent_t<SIZE,Stz,Row>::vGiveHead(m_nRowStringBytes);
+    WspConvergent_t<AREA,Stz,Row>::vGiveHead(m_nRowStringBytes);
     m_nRowStringBytes = 0;
   }
 }
@@ -668,8 +672,8 @@ void RowBox_t<SIZE>::vDiscardInvalidRow(void)
 /*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDumpAllRows(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vDumpAllRows(void)
 {
   
   i8 nRows = this->nRows();
@@ -681,8 +685,8 @@ void RowBox_t<SIZE>::vDumpAllRows(void)
 /*----------------------------------------------------------------------------*/
 /* dump normalised string table                                               */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDumpNst(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vDumpNst(void)
 {
 
   m_oNmlStr.vDump();
@@ -691,8 +695,8 @@ void RowBox_t<SIZE>::vDumpNst(void)
 /*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDumpRow(i8 i_Row)
+template <i8 AREA>
+void RowBox_t<AREA>::vDumpRow(i8 i_Row)
 {
   
   Row* aRow = this->pRowAddress(i_Row);
@@ -702,11 +706,11 @@ void RowBox_t<SIZE>::vDumpRow(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* dump given row                                                             */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vDumpRow(i8 i_Row, Row* aRow)
+template <i8 AREA>
+void RowBox_t<AREA>::vDumpRow(i8 i_Row, Row* aRow)
 {
   
-  HV_Record hvRecord(aRowPix());
+  HV_Record hvRecord(pRowPix());
 
   Stz* szRow = hvRecord->sz(aRow);
   vTrace("[%lld] %s\n"_Stz,i_Row,szRow);
@@ -715,8 +719,8 @@ void RowBox_t<SIZE>::vDumpRow(i8 i_Row, Row* aRow)
 /*----------------------------------------------------------------------------*/
 /* get number of extra columns                                                */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::nExtraCols(void)
+template <i8 AREA>
+i8 RowBox_t<AREA>::nExtraCols(void)
 {
   
   return m_oRowPix.m_nExtraCols;
@@ -727,20 +731,20 @@ i8 RowBox_t<SIZE>::nExtraCols(void)
 /*----------------------------------------------------------------------------*/
 /* initilize col pix                                                          */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
+template <i8 AREA>
+void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 {
         
   pStreamDef->vToRowPix(&m_oRowPix,bPtnHash);
   
-  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
+  m_nRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get normalised string set                                                  */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-NmlStr* RowBox_t<SIZE>::pNmlStr(void)
+template <i8 AREA>
+NmlStr* RowBox_t<AREA>::pNmlStr(void)
 {
 
   return & m_oNmlStr;
@@ -749,8 +753,8 @@ NmlStr* RowBox_t<SIZE>::pNmlStr(void)
 /*----------------------------------------------------------------------------*/
 /* normalize repeating strings                                                */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vNormaliseStrings(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vNormaliseStrings(void)
 {
 
   //m_oNmlStr.vDump();
@@ -829,11 +833,11 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 /* get the offset of row                                                      */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::iOffsetInWsp(Row* aRow)
+template <i8 AREA>
+i8 RowBox_t<AREA>::iOffsetInWsp(Row* aRow)
 {
   
-  i8 iOfs = WspConvergent_t<SIZE,Stz,Row>::iOffsetInWsp((byte*)aRow);
+  i8 iOfs = WspConvergent_t<AREA,Stz,Row>::iOffsetOfItem(aRow);
   
   return iOfs;
 }
@@ -841,8 +845,8 @@ i8 RowBox_t<SIZE>::iOffsetInWsp(Row* aRow)
 /*----------------------------------------------------------------------------*/
 /* position on given cell in current row                                      */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vPositionOnCell(i8 i_Col)
+template <i8 AREA>
+void RowBox_t<AREA>::vPositionOnCell(i8 i_Col)
 {
   
   m_i_ColCrs = i_Col;
@@ -851,8 +855,8 @@ void RowBox_t<SIZE>::vPositionOnCell(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* is there a ptn hash?                                                       */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-bool RowBox_t<SIZE>::bPtnHash(void)
+template <i8 AREA>
+bool RowBox_t<AREA>::bPtnHash(void)
 {
 
   return m_oRowPix.m_bPtnHash;
@@ -861,8 +865,8 @@ bool RowBox_t<SIZE>::bPtnHash(void)
 /*----------------------------------------------------------------------------*/
 /* get the partition of row                                                   */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::iPtnOfRow(Row* aRow)
+template <i8 AREA>
+i8 RowBox_t<AREA>::iPtnOfRow(Row* aRow)
 {
 
   i8 i_HshCol = m_oRowPix.m_nColumns - 1;
@@ -875,31 +879,31 @@ i8 RowBox_t<SIZE>::iPtnOfRow(Row* aRow)
 /*----------------------------------------------------------------------------*/
 /* reset this rowslab                                                         */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vReset(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vReset(void)
 {
   
   m_i_RowCrs  = C_UNKNOWN;
   m_aRowCur   = nullptr;
   m_i_ColCrs  = C_UNKNOWN;
 
-  WspConvergent_t<SIZE,Stz,Row>::vReset();
+  WspConvergent_t<AREA,Stz,Row>::vInit();
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset this row                                                             */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vResetRow(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vResetRow(void)
 {
-  WspConvergent_t<SIZE,Stz,Row>::vReset();
+  WspConvergent_t<AREA,Stz,Row>::vResetHeads();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get bytes needed to hold row cells proper (i.e. without strings)           */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::nRowProperBytes(void)
+template <i8 AREA>
+i8 RowBox_t<AREA>::nRowProperBytes(void)
 {
   i8 nBytes = (m_oRowPix.m_nColumns + 1 /* dummy */ ) * C_BYTES_PER_WORD;
   
@@ -909,20 +913,21 @@ i8 RowBox_t<SIZE>::nRowProperBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get address of an row by its offset                                        */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::aRowByOfs(i8 i_Ofs)
+template <i8 AREA>
+Row* RowBox_t<AREA>::aRowByOfs(i8 i_Ofs)
 {
   
-  Row* aRow = aAdd<Row*>(WspConvergent_t<SIZE,Stz,Row>::ayArea(),i_Ofs);
-  
+  //Row* aRow = aAdd<Row*>(WspConvergent_t<AREA,Stz,Row>::ayArea(),i_Ofs);
+  Row* aRow = WspConvergent_t<AREA,Stz,Row>::aItemAtOffset(i_Ofs);
+
   return aRow;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get address of an row by its offset and set as current                     */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-Row* RowBox_t<SIZE>::aSetCurRow(i8 i_Row)
+template <i8 AREA>
+Row* RowBox_t<AREA>::aSetCurRow(i8 i_Row)
 {
   
   m_i_RowCrs = i_Row;
@@ -933,16 +938,16 @@ Row* RowBox_t<SIZE>::aSetCurRow(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* dump slap and report                                                       */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vSlabReport(void)
+template <i8 AREA>
+void RowBox_t<AREA>::vSlabReport(void)
 {
  
   s32 sSlab_magn;
-  MagLib::vByteMag(SIZE, sSlab_magn);
+  MagLib::vByteMag(AREA, sSlab_magn);
   s32 sUsed_magn;
-  MagLib::vByteMag(WspConvergent_t<SIZE,Stz,Row>::nUsed(),sUsed_magn);
+  MagLib::vByteMag(WspConvergent_t<AREA,Stz,Row>::nUsedBytes(),sUsed_magn);
   s32 sFree_magn;
-  MagLib::vByteMag(WspConvergent_t<SIZE,Stz,Row>::nFree(),sFree_magn);
+  MagLib::vByteMag(WspConvergent_t<AREA,Stz,Row>::nFreeBytes(),sFree_magn);
 
   vTrace("RowBuffer space %s, used %s, free %s %lld%%; "
          "rows %lld, %lld(B) per row\n"_Stz,
@@ -950,18 +955,18 @@ void RowBox_t<SIZE>::vSlabReport(void)
          sSlab_magn.szStz(),
          sUsed_magn.szStz(),
          sFree_magn.szStz(),
-         (WspConvergent_t<SIZE,Stz,Row>::nFree() * 100) / SIZE,
+         (WspConvergent_t<AREA,Stz,Row>::nFreeBytes() * 100) / AREA,
          
          nRows(),
-         WspConvergent_t<SIZE,Stz,Row>::nUsed() / nRows()
+         WspConvergent_t<AREA,Stz,Row>::nUsedBytes() / nRows()
          );
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the condensed stream def                                               */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-RowPix* RowBox_t<SIZE>::aRowPix(void)
+template <i8 AREA>
+RowPix* RowBox_t<AREA>::pRowPix(void)
 {
 
   return & m_oRowPix;
@@ -970,8 +975,8 @@ RowPix* RowBox_t<SIZE>::aRowPix(void)
 /*----------------------------------------------------------------------------*/
 /* mem zero the given row                                                     */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-void RowBox_t<SIZE>::vZeroRow(Row *aRow)
+template <i8 AREA>
+void RowBox_t<AREA>::vZeroRow(Row *aRow)
 {
 
   i8 nCellBytes = m_oRowPix.m_nColumns * C_BYTES_PER_WORD;
@@ -986,29 +991,17 @@ void RowBox_t<SIZE>::vZeroRow(Row *aRow)
 /*----------------------------------------------------------------------------*/
 /* get slab cell for given row                                                */
 /*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-i8 RowBox_t<SIZE>::i_RowBufferCell(i8 i_Row)
+template <i8 AREA>
+i8 RowBox_t<AREA>::i_RowBufferCell(i8 i_Row)
 {
   
   i8 i_Cell_slab = (i_Row + 1) * (m_oRowPix.m_nColumns + 1 /* Object */ );
   
-  i8 i_CellHazard = SIZE / C_BYTES_PER_WORD;
+  i8 i_CellHazard = AREA / C_BYTES_PER_WORD;
   
   i8 i_Cell_row  = i_CellHazard - i_Cell_slab;
   
   return i_Cell_row;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the cell vector for this slab                                          */
-/*----------------------------------------------------------------------------*/
-template <i8 SIZE>
-m8* RowBox_t<SIZE>::amSlabCellVec(void)
-{
-
-  m8* amCellArea = (m8*)WspConvergent_t<SIZE,Stz,Row>::ayArea();
-  
-  return amCellArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1018,8 +1011,8 @@ m8* RowBox_t<SIZE>::amSlabCellVec(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-//template <i8 SIZE>
-//Footer* RowBox_t<SIZE>::aFooter(void)
+//template <i8 AREA>
+//Footer* RowBox_t<AREA>::aFooter(void)
 //{
 //  return &m_xFooter;
 //}

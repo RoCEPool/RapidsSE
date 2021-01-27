@@ -125,8 +125,8 @@ void ToPtnRow::vNewDstRow(i8 i_Ptn)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
   if (! pDstRowBuffer) {
     pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->aRowPix());
-    pDstRowBuffer->aRowPix()->vRemovePtnHash();
+    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
+    pDstRowBuffer->pRowPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
   }
   
@@ -134,8 +134,8 @@ void ToPtnRow::vNewDstRow(i8 i_Ptn)
   Row* aNewRow = pDstRowBuffer->aAllotNewRow();
   if (! aNewRow) {
     pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->aRowPix());
-    pDstRowBuffer->aRowPix()->vRemovePtnHash();
+    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
+    pDstRowBuffer->pRowPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
     aNewRow = pDstRowBuffer->aAllotNewRow();
     ASSERT(aNewRow);

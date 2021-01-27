@@ -10,6 +10,7 @@
 
 #include "MetricsHelper.hpp"
 #include "InfoSet.hpp"
+#include "Record.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -22,7 +23,7 @@ void MetricsHelper::vWriteCsv(InfoSet* pInfoSet, StreamDef* pStreamDef, File* pF
 {
   _static_
   
-  HV_Record hvRecord(pStreamDef->aRowPix());
+  HV_Record hvRecord(pStreamDef->pRowPix());
   
   for (Row* aInfoRow = pInfoSet->aFirstRow();
        aInfoRow;

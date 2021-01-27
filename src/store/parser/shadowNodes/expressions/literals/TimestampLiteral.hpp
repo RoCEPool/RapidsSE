@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* TimestampLiteral.hpp - a timestamp literal expression                      */
+/*============================================================================*/
+#pragma once
+
+#include "LiteralExpr.hpp"
+#include "PlanNode.hpp"
+
+namespace Parser
+{
+  class QueryNode;
+  class PlanNode;
+
+  class TimestampLiteral : public LiteralExpr
+  {
+  private:
+    // Shalt never be instantiated. Static functions only.
+    TimestampLiteral();
+
+  public:
+    static QueryNode* pCreate(Tsp xTsp);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static Tsp        xValue(PlanNode* pNode);
+
+    // Returns true if a given node is a given type ** or is derived from that type **
+    static b1 bIsOfType(PlanNode* pNode);
+
+  private:
+    static b1 bHasMicros(PlanNode* pNode);
+  };
+
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -35,7 +35,7 @@ Column::Column(void)
   m_bIsNullable   = true;
   m_bIsPtnKey     = false;
 
-  m_xColPix.m_uAsI4 = 0;
+  m_xColPix.m_uAsU8 = 0;
   
   _checkInitialised_(CN_COLUMN);
   

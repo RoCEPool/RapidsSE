@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Row.cpp -- Computable form of Row                                        */
+/* Row.cpp -- Computable form of Row                                          */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -64,20 +64,11 @@ Row::~Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get size of row (needed for MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem))  */
+/* get size of row + dtm[n]                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Row::nSizeBytes(StreamDef* pStreamDef)
+i8 Row::nRowProper(i8 nColumns)
 {
-  i8 nSize = sizeof(Row) + (pStreamDef->nColumns() - 1) * sizeof(Dtm);
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of row + dtm[]                                                    */
-/*----------------------------------------------------------------------------*/
-i8 Row::nRowProper(RowPix* pRowPix)
-{
-  i8 nSize = sizeof(Row) + ( (pRowPix->m_nColumns - 1) * sizeof(Dtm) );
+  i8 nSize = sizeof(Row) + ( (nColumns - 1) * sizeof(Dtm) );
   
   return nSize;
 }
@@ -93,7 +84,7 @@ void Row::vDump(StreamDef* pStreamDef)
   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
     
     Column* pCol = pStreamDef->pGetColumn(i_Col);
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        
     // vch
     
     if (DM_VCH == pCol->eDatum()) {
@@ -110,7 +101,6 @@ void Row::vDump(StreamDef* pStreamDef)
       continue;
     }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
     vTrace(" %ld "_Stz, m_wxaColumnCell[i_Col].m_iWrd);

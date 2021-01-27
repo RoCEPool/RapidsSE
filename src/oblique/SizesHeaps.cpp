@@ -56,6 +56,7 @@
 #include "HashSet.hpp"
 #include "Pot.hpp"
 
+#include "SetPix.hpp"
 #include "InfoSet.hpp"
 #include "StreamSet.hpp"
 #include "RowCoder.hpp"
@@ -370,6 +371,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RowBuffer),          HT_T_LARGE   ,0 }, // CN_ROWBUFFER
   { sizeof(RowCompactor),       HT_T_SMALL   ,0 }, // CN_ROWCOMPACTOR
   { sizeof(RowOnce),            HT_T_TINY    ,0 }, // CN_ROWONCE
+  { sizeof(RowPix),             HT_INVALID   ,0 }, // CN_ROWPIX
   { sizeof(RowSingle),          HT_T_MEDIUM  ,0 }, // CN_ROWSINGLE
   { sizeof(RowSingleList),      HT_T_TINY    ,0 }, // CN_ROWSINGLELIST
   { sizeof(RowTray),            HT_T_LARGE   ,0 }, // CN_ROWTRAY
@@ -392,6 +394,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
   { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY
+  { sizeof(SetPix),             HT_INVALID   ,0 }, // CN_SETPIX
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE
