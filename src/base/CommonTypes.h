@@ -20,6 +20,9 @@ static const u8 C_IVL_SEC_MAX    = 999999999;
 static const u8 C_IVL_USEC_MAX   = 999999;
 static const u8 C_IVL_USEC_SHIFT = 1000000;
 
+static const u8 C_TSP_USEC_MIN = 0;
+static const u8 C_TSP_USEC_MAX = 999999;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // bcd / decimal
 class Bcd
@@ -85,9 +88,16 @@ public:
     i8 m_iAsI8;
   };
 
+  constexpr static const i8 C_DAYS_IN_MONTH[12]      = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+  constexpr static const i8 C_DAYS_IN_MONTH_LEAP[12] = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+
+  i8 iYear()                            { return C_YEAR_BASE + m_uYearDelta; }
+  i8 iMonth()                           { return m_uMonth; }
+  i8 iDay()                             { return m_uDay; }
 
   void vSet(i8 iYear, i8 iMonth, i8 iDay) {
                      m_uYearDelta = iYear - C_YEAR_BASE;
@@ -114,6 +124,10 @@ public:
                                             m_uDay = 29; }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+
+  // Tests if the given value is a valid date and if it is within range.
+  // Writes to sErrorBuf if not
+  static b1 bIsValid(i8 iYear, i8 iMonth, i8 iDay, s256& sErrorBuf);
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -253,10 +267,14 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
 
-  void vSet(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro) {
+  i8 iHour()                            { return m_uHour;   }
+  i8 iMin()                             { return m_uMinute; }
+  i8 iSec()                             { return m_uSecond; }
+
+  void vSet(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro) {
                                         m_uHour = iHour;
-                                    m_uSecond = iSecond;
                                     m_uMinute = iMinute;
+                                    m_uSecond = iSecond;
                                       m_uMicro = iMicro;
                                           m_uSpare  = 0; }
   void vSetMax(void)                      { m_iAsI8 = 0;
@@ -278,6 +296,10 @@ public:
   void vSetUsual(void)                                 { }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+
+  // Tests if the given value is a valid time and if it is within range.
+  // Writes to sErrorBuf if not
+  static b1 bIsValid(i8 iHour, i8 iMin, i8 iSec, s256& sErrorBuf);
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -310,14 +332,22 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
 
+  i8 iYear()                            { return C_YEAR_BASE + m_uYearDelta; }
+  i8 iMonth()                           { return m_uMonth;  }
+  i8 iDay()                             { return m_uDay;    }
+  i8 iHour()                            { return m_uHour;   }
+  i8 iMin()                             { return m_uMinute; }
+  i8 iSec()                             { return m_uSecond; }
+  i8 iMicro()                           { return m_uMicro;  }
+
   void vSet(i8 iYear, i8 iMonth,  i8 iDay,
-            i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro) {
+            i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro) {
                      m_uYearDelta = iYear - C_YEAR_BASE;
                                   m_uMonth     = iMonth;
                                     m_uDay       = iDay;
                                    m_uHour      = iHour;
-                                 m_uSecond    = iSecond;
                                  m_uMinute    = iMinute;
+                                 m_uSecond    = iSecond;
                                   m_uMicro     = iMicro;
                              m_uLocal     = C_TSP_LOCAL;
                                        m_uSpare     = 0; }
@@ -349,6 +379,10 @@ public:
   void vSetUsual(void)                                 { }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+
+  // Tests if the given value is a valid time and if it is within range.
+  // Writes to sErrorBuf if not
+  static b1 bIsValid(i8 iYear, i8 iMonth, i8 iDay, i8 iHour, i8 iMin, i8 iSec, i8 iMicro, s256& sErrorBuf);
 };
 
 /*============================================================================*/

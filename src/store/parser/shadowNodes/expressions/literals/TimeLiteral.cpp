@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* LiteralExpr.cpp - a literal expression                                     */
+/* TimeLiteral.cpp - a time literal expression                                */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "LiteralExpr.hpp"
+#include "TimeLiteral.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -13,8 +13,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_LITERAL_NAME_PREFIX = "ExprLiteral"_Stz;
-static Stz* C_LITERAL_DEFN = "/__root__/definitions/object/expr/literal"_Stz;
+static Stz* C_TIME_LITERAL_NAME_PREFIX = "TimeLiteral"_Stz;
+static Stz* C_TIME_LITERAL_DEFN = "/__root__/definitions/object/expr/literal/time"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -23,17 +23,17 @@ static Stz* C_LITERAL_DEFN = "/__root__/definitions/object/expr/literal"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Helper function to create expression literal nodes.                        */
 /*----------------------------------------------------------------------------*/
-QueryNode* LiteralExpr::pCreate(eET eType, Value& xVal)
+QueryNode* TimeLiteral::pCreate(Tme xTme)
 {
   _static_
 
-  ASSERT(eType > ET_NONE && eType < ET_NENUMS);
-
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_LITERAL_NAME_PREFIX, sName);
+  ShadowNode::vObjName(C_TIME_LITERAL_NAME_PREFIX, sName);
 
-  QueryNode* pExpr = new QueryNode(sName, Expr::szTypeDefinition(eType), static_cast<Value&&>(xVal));
+  Value xVal(xTme);
+
+  QueryNode* pExpr = new QueryNode(sName, C_TIME_LITERAL_DEFN, static_cast<Value&&>(xVal));
   return pExpr;
 }
 
@@ -41,20 +41,45 @@ QueryNode* LiteralExpr::pCreate(eET eType, Value& xVal)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void TimeLiteral::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->eValueType() == Value::VT_TIME);
 
-  sBuf.vConcat(pNode->szName());
+  if (pNode->bIsNullValue()) {
+    sBuf.vConcat("NULL"_Stz);
+  } else {
+    Tme xTme = pNode->xTimeVal();
+    sBuf.vCatSprint("TIME '%02lld:%02lld:%02lld'"_Stz, xTme.iHour(), xTme.iMin(), xTme.iSec());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Gets the time of this expression. NB: call bIsNull() to check if the    */
+/* value is null first.                                                       */
+/*----------------------------------------------------------------------------*/
+Tme TimeLiteral::xValue(PlanNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->eValueType() == Value::VT_TIME);
+
+  if (pNode->bIsNullValue()) {
+    Tme xTme;
+    xTme.vSetNull();
+    return xTme;
+
+  } else {
+    return pNode->xTimeVal();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
-b1 LiteralExpr::bIsOfType(PlanNode *pNode)
+b1 TimeLiteral::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_LITERAL_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_TIME_LITERAL_DEFN);
 }
 
 /*============================================================================*/
