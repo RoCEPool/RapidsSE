@@ -19,7 +19,6 @@ namespace BASE
     b8 m_bPtnHash;     // is there a partition hash ?
     i8 m_nMaxRowSize;  //
 
-    bool   m_bProject[C_MAX_DEFCOLUMNS];
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // col pix (C++ flexible member array must be last)
     
     // constructor
@@ -33,7 +32,6 @@ namespace BASE
       
       for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
         m_xaColPix[i_Col].m_uAsU8 = 0;
-        m_bProject[i_Col] = true;
       }
     }
   
@@ -57,19 +55,7 @@ namespace BASE
     
       return nBytes;
     }
-  
-    // is column being projected
-    inline i8 bIsProjected(i8 i_Col)
-    {
-      return m_bProject[i_Col];
-    }
-    
-    // mark column to be not projected
-    void vNotProject(i8 i_Col)
-    {
-      m_bProject[i_Col] = false;
-    }
-    
+          
     // remove partition metadata column
     void vRemovePtnHash(void)
     {
@@ -94,9 +80,8 @@ namespace BASE
     {
       vTrace("RowPix: %lld cols\n"_Stz,m_nColumns);
       for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-        vTrace("[%02lld] P:%s %s(%lld,%lld)%s%s\n"_Stz,
+        vTrace("[%02lld] %s(%lld,%lld)%s%s\n"_Stz,
                i_Col,
-               bIsProjected(i_Col) ? "true"_Stz : "false"_Stz ,
                aDM[m_xaColPix[i_Col].m_uDatum],
                (i8)m_xaColPix[i_Col].m_uLength,
                (i8)m_xaColPix[i_Col].m_uScale,
