@@ -55,13 +55,6 @@ SetPix::SetPix(void)
 : Object(CN_SETPIX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SETPIX);
-  
-  m_sPixNm   = C_NO_NAME;
-  m_nColumns = 0;
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_xaColPix,sizeof(m_xaColPix),CN_SETPIX);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
