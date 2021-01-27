@@ -993,6 +993,70 @@ eEC StreamDef::eParseRowSize(TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* formulate set pix from stream def                                          */
+/*----------------------------------------------------------------------------*/
+SetPix* StreamDef::pSetPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  if (! m_pSetPix)
+    vSetPix(this);
+  
+  return m_pSetPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* formulate set pix from stream def                  RowBox_t<AREA>::vSetPix */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vSetPix(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  Stz* szStreamNm = pStreamDef->szName();
+  i8   nColumns = pStreamDef->nColumns();
+  
+  i8 nInitialSize = sizeof(SetPix) + ((nColumns - 1) * sizeof(ColPix));
+  
+  m_pSetPix =
+    new ((SetPix*)WspConvergent_t<C_64KB,void,void>::ayAllotAux0(nInitialSize)) SetPix;
+  
+  m_pSetPix->vPixNm(szStreamNm);
+  m_pSetPix->vColumns(nColumns);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  ColPix* axaColPixArray = m_pSetPix->axaColPixArray();
+  
+  pStreamDef->vToColPix(axaColPixArray,false);
+  
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Stz* szColNmSrc = pColumn->szColNm();
+    
+    i8 nColNmSize = szColNmSrc->nSize();
+    
+    i8 i_Aux = 0;
+    Stz* szColNmDst =
+      (Stz*)WspConvergent_t<C_64KB,void,void>::ayExtendAux0(nColNmSize,i_Aux);
+    
+    szColNmDst->vCopy(szColNmSrc);
+    
+    
+    // -- -- -- --
+    
+    i8 nStzOfs = nDifference(&axaColPixArray[i_Col],
+                             (byte*) m_pSetPix + i_Aux);
+    
+    
+    axaColPixArray[i_Col].m_uName = nStzOfs;
+  }
+  
+  if (AM::bDeveloper())
+    m_pSetPix->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(StreamDef);

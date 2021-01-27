@@ -446,7 +446,7 @@ SetPix* RowBox_t<AREA>::pSetPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* formulate set pix from stream def                                          */
+/* formulate set pix from stream def                       StreamDef::vSetPix */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
 void RowBox_t<AREA>::vSetPix(StreamDef* pStreamDef)
