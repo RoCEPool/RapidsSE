@@ -367,72 +367,77 @@ RowPix* StreamDef::aRowPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert streamDef to colPix format                                         */
+/* convert this streamDef to colPix (optionally adding a ptnhash column)      */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToColPix(ColPix* axaColPix, bool bPtnHash)
+void StreamDef::vToColPix(ColPix* axaColPixDst, bool bAddPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  i8 i_DefColumn = 0;
-  
-  i8 i_DefSet = 0;
-        
-  for ( ; i_DefColumn < m_nColumns; i_DefColumn++) {
+  i8 i_Col;
+          
+  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
 
-    Column* pColumn  = &m_xaColumn[i_DefColumn];
-    ColPix* axColPix = &axaColPix[i_DefColumn];
+    Column* pColumn = &m_xaColumn[i_Col];
+    
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
 
-    axColPix->m_uNumber   = (u4)i_DefColumn;
+    axColPixDst->m_uNumber   = (u4)i_Col;
     // name
-    axColPix->m_uKind     = (u4)CX_USERCOL;
-    axColPix->m_uType     = (u4)pColumn->eColumnType();
-    axColPix->m_uDatum    = (u4)pColumn->eDatum();
-    axColPix->m_uLength   = (u4)pColumn->iColumnLength();
-    axColPix->m_uScale    = (u4)pColumn->iColumnScale();
-    axColPix->m_bNullable = (u4)pColumn->bIsNullable();
-    axColPix->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
-    axColPix->m_uSpare    = (u4)0;
+    axColPixDst->m_uKind     = (u4)CX_USERCOL;
+    axColPixDst->m_uType     = (u4)pColumn->eColumnType();
+    axColPixDst->m_uDatum    = (u4)pColumn->eDatum();
+    axColPixDst->m_uLength   = (u4)pColumn->iColumnLength();
+    axColPixDst->m_uScale    = (u4)pColumn->iColumnScale();
+    axColPixDst->m_bNullable = (u4)pColumn->bIsNullable();
+    axColPixDst->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
+    axColPixDst->m_uSpare    = (u4)0;
   }
 
+  // i_Col falls thru
   
-  if (bPtnHash) {
+  if (bAddPtnHash) {
 
-    ColPix* axColPix = &axaColPix[i_DefColumn];
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
   
-    axColPix->m_uNumber   = (u4)i_DefColumn;
+    axColPixDst->m_uNumber   = (u4)i_Col;
     // name
-    axColPix->m_uKind     = (u4)CX_PTNHASH;
-    axColPix->m_uType     = (u4)CT_INTEGER;
-    axColPix->m_uDatum    = (u4)DM_INT;
-    axColPix->m_uLength   = (u4)C_MAX_INT_PRECISION;
-    axColPix->m_uScale    = (u4)0;
-    axColPix->m_bNullable = (u4)false;
-    axColPix->m_bPtnKey   = (u4)false;
-    axColPix->m_uSpare    = (u4)0;
+    axColPixDst->m_uKind     = (u4)CX_PTNHASH;
+    axColPixDst->m_uType     = (u4)CT_INTEGER;
+    axColPixDst->m_uDatum    = (u4)DM_INT;
+    axColPixDst->m_uLength   = (u4)C_MAX_INT_PRECISION;
+    axColPixDst->m_uScale    = (u4)0;
+    axColPixDst->m_bNullable = (u4)false;
+    axColPixDst->m_bPtnKey   = (u4)false;
+    axColPixDst->m_uSpare    = (u4)0;
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert streamDef to condensed streamPix format                            */
+/* convert this streamDef to RowPix (optionally adding a ptnhash column)      */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vToRowPix(RowPix* aRowPix, bool bPtnHash)
+void StreamDef::vToRowPix(RowPix* aRowPixDst, bool bAddPtnHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  if (aRowPix->m_bInitialised)
+  if (aRowPixDst->m_bInitialised)
     return;
   
-  //ASSERT(! aRowPix->m_bInitialised);
-  
-  aRowPix->m_nColumns = m_nColumns;
-  aRowPix->m_bPtnHash = bPtnHash;
-  if (aRowPix->m_bPtnHash) {
-    aRowPix->m_nColumns++;
-    aRowPix->m_nExtraCols = 1;
+  ASSERT(! aRowPixDst->m_bPtnHash);
+
+  aRowPixDst->m_sPixNm   = m_sName;
+  aRowPixDst->m_nColumns = m_nColumns;
+
+  if (bAddPtnHash) {
+    ASSERT(! aRowPixDst->m_nExtraCols);
+    
+    aRowPixDst->m_nColumns++;
+    aRowPixDst->m_nExtraCols = 1;
+    aRowPixDst->m_bPtnHash = true;
   }
-  vToColPix(aRowPix->m_xaColPix,bPtnHash);
   
-  aRowPix->m_bInitialised = true;
+  vToColPix(aRowPixDst->m_xaColPix,bAddPtnHash);
+  
+  aRowPixDst->m_bInitialised = true;
 }
 
 /*----------------------------------------------------------------------------*/

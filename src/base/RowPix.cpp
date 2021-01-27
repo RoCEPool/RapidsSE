@@ -56,12 +56,15 @@ RowPix::RowPix(void)
   m_nExtraCols   = 0;
   m_bPtnHash     = false;
   m_nMaxRowSize  = 256;  // FOR TESTING PURPOSES
+  m_nNameOffset  = C_UNKNOWN;
   m_nTotalChars  = 0;
 
   for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
     m_xaColPix[i_Col].m_uAsU8 = 0;
   }
   
+  MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
+
   _checkInitialised_(CN_ROWPIX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
@@ -181,7 +184,7 @@ void RowPix::vPrint2(void)
   
   SP_ColPix spColPix;
   
-  vTrace("RpwPix: %s\n"_Stz,szPixNm());
+  vTrace("RowPix: %s\n"_Stz,szPixNm());
   vTrace("  %lld columns\n"_Stz,nColumns());
   
   for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
@@ -196,9 +199,10 @@ void RowPix::vPrint2(void)
 i8 RowPix::nRowPixBytes(i8 nCols)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  i8 nBytes =    (    1 * (i8)sizeof(m_sPixNm))
-               + (    7 * (i8)sizeof(i8))
-               + (nCols * (i8)sizeof(ColPix))
+  
+  i8 nBytes =    (    1 * sizeof(m_sPixNm))
+               + (    8 * sizeof(i8))
+               + (nCols * sizeof(ColPix))
                ;
 
   return nBytes;
