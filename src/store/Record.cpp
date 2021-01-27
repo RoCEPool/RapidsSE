@@ -37,6 +37,34 @@ Record::Record(RowPix* pRowPix)
   
   m_oRowPix.vCopyRowPix(pRowPix);
   
+  m_pSetPix = nullptr;
+  
+  m_azCursor = & m_caRecord[0];
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
+#else
+  m_caRecord[0] = '\0';
+#endif
+  
+  //! FIX RAY
+  //_checkInitialised_(CN_RECORD);
+  
+  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Record::Record(SetPix* pSetPix)
+: Object(CN_RECORD)
+{
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  // m_oRowPix
+
+  m_pSetPix = pSetPix;
+
   m_azCursor = & m_caRecord[0];
   
 #ifdef WITH_CHECK_INITIALISED

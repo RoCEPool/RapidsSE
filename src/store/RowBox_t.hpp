@@ -169,7 +169,7 @@ RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   pStreamDef->vToRowPix(&m_oRowPix,bAddPtnHash);
 
-  m_nRowSizeProper = Row::nRowProper(&m_oRowPix);
+  m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
   
   vSetPix(pStreamDef);
   

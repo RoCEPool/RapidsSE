@@ -11,7 +11,7 @@ namespace STORE
   {
   public:
     RowPix     m_oRowPix;
-
+    SetPix*    m_pSetPix;
     char       m_caRecord[C_MAX_RECORD];
     char*      m_azCursor;    // append cursor for StrLib::vAppend()
 
@@ -23,6 +23,7 @@ namespace STORE
     void  operator delete(void*);
   
     Record(RowPix* pRowPix);
+    Record(SetPix* pSetPix);
    ~Record(void) noexcept(false);
   
     char* az(void);
