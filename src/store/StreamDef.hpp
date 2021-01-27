@@ -20,7 +20,11 @@ namespace STORE
     RowPix  m_oRowPix;                    // row pix
   
     SetPix* m_pSetPix;
-
+  
+    // hack
+    SetPix  m_oSetPix;
+    ColPix  m_xaColPix[128];
+  
     // must be last
     Footer m_xFooter;
     

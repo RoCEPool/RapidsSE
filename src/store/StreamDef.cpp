@@ -59,6 +59,10 @@ StreamDef::StreamDef(void)
   m_pSetPix = nullptr;
   m_nFixedSized = 0;
 
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xaColPix,sizeof(m_xaColPix),CN_STREAMDEF);
+#endif
+
   _checkInitialised_(CN_STREAMDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
