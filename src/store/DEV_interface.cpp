@@ -1067,6 +1067,8 @@ void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
   
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
+  // hack
+  pDevRow->m_pRowBuffer->pSetPix();
   pDevRow->m_pRowBuffer->vDumpRow(-1,pDevRow->m_aRow);
 }
 
