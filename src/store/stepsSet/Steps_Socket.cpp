@@ -40,7 +40,7 @@
 
 #include "Node.hpp"
 #include "Grid.hpp"
-
+#include <arpa/inet.h>
 extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -268,7 +268,7 @@ void Step::vSocketOpen(void)
   if ( ! bResult )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
-  
+
   Object* pPtrSocket = pSocket;
   m_pDataStack->vPushPtr(pPtrSocket);
   
@@ -295,7 +295,6 @@ void Step::vSocketRecvObject(void)
   ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the object header
   
@@ -311,7 +310,7 @@ void Step::vSocketRecvObject(void)
     EXIT();
     return;
   }
-  
+
   SP_Header spHeader;
   
   //vTrace("Socket received: Header %s"_Stz,
@@ -988,9 +987,16 @@ void Step::vSocketSendObject(void)
                          pSocket);
     
     //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
+    char* pszThisNodeName = AM::pGrid()->pThisNode()->szNodeNm()->azChar();
+    if (( m_pJob->pLogicUnit_job() )->m_pSendNode) {
 
-    if (( m_pJob->pLogicUnit_job() )->m_pSendNode)
-      printf("Send to Node %s \n",( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm()->azChar());
+      printf("Node:%s Send to Node %s \n", pszThisNodeName, (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm()->azChar());
+      if (strcmp((m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm()->azChar(),"NODE1")==0) {
+        int iStat = 99;
+      }
+    }
+    else
+      printf("Node:%s Try to Send to unknown Node, has no pSendNode \n", pszThisNodeName);
   }
 
   RASSERT(_bIsValidJob(eClass) ||
@@ -1029,22 +1035,18 @@ void Step::vSocketSendObject(void)
                 C_VARGS_END);
 
     // Need to set status for the node
-    // ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm()
     // Get the grid, find this node, set the status
 
-    //printf("Socket failed %s\n", (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm()->azChar());
-
-    if (_bIsValidJob(eClass)) {
-      if (( m_pJob->pLogicUnit_job() )->m_pSendNode) {
-        Stz * pszName = (m_pJob->pLogicUnit_job())->m_pSendNode ?
-                        (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm(): "<unknown>"_Stz;
-        printf("FAILED Send to Node %s , update status\n",pszName->azChar());
-        Grid *pGrid = AM::pGrid();
-        Node *pNode = pGrid->pFindNode(pszName);
+    if ((m_pJob->pLogicUnit_job())->m_pSendNode) {
+      Stz *pszName = (m_pJob->pLogicUnit_job())->m_pSendNode ?
+                     (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm() : "<unknown>"_Stz;
+      printf("FAILED Send to Node %s , update status\n", pszName->azChar());
+      Grid *pGrid = AM::pGrid();
+      Node *pNode = pGrid->pFindNode(pszName);
+      if (pNode) {
         pNode->vSetNodeStatus(99);
       }
     }
-
 
   }
 
@@ -1061,23 +1063,7 @@ void Step::vUpdateNodeStatus(void)
   ENTRY();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  printf("FAILED Receive from target node\n");
-
-  if (( m_pJob->pLogicUnit_job() )->m_pSendNode)
-      printf("FAILED Send/Receive to Node %s \n",( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm()->azChar());
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  /*
-  if (( m_pJob->pLogicUnit_job() )->m_pSendNode) {
-    Stz * pszName = (m_pJob->pLogicUnit_job())->m_pSendNode ?
-                    (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm(): "<unknown>"_Stz;
-    printf("ERROR ERROR FAILED Receive to Node %s , update status\n",pszName->azChar());
-    Grid *pGrid = AM::pGrid();
-    Node *pNode = pGrid->pFindNode(pszName);
-    pNode->vSetNodeStatus(99);
-  }
-   */
+  printf("Socket FAILED Receiving from target node, but don't know which node to update status\n");
 
 
   EXIT();

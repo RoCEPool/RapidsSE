@@ -192,6 +192,50 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
 }
 
 
+TestConnection::TestConnection(Stz *pAddr, i8 iPort)
+{
+  m_pszAddr = pAddr->azChar();
+  m_iPort = iPort;
+  m_iSockClient = -1;
+}
+TestConnection::~TestConnection(void)
+{
+  if (m_iSockClient != -1)
+  {
+    close(m_iSockClient);
+  }
+}
+
+
+bool TestConnection::bTryConnect(void)
+{
+  struct sockaddr_in xNodeAddr;
+
+  if ((m_iSockClient = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  {
+    printf("\n Socket creation error \n");
+    return false;
+  }
+
+  xNodeAddr.sin_family = AF_INET;
+  xNodeAddr.sin_port = htons(m_iPort);
+
+  // Convert IPv4 and IPv6 addresses from text to binary form
+  if (inet_pton(AF_INET, m_pszAddr, &xNodeAddr.sin_addr)<=0)
+  {
+    printf("\nInvalid address/ Address not supported \n");
+    return false;
+  }
+
+  if (connect(m_iSockClient, (struct sockaddr *)&xNodeAddr, sizeof(xNodeAddr)) < 0)
+  {
+    printf("\nConnection Failed \n");
+    return false;
+  }
+
+  return true;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

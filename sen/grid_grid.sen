@@ -40,7 +40,7 @@
 
   // user::name "craig" str.same if
   //       " --commands /Users/craig/rapidsse/commands" str.cat
-  //    then
+  // then
 
   user::name "ray" str.same if
     " --commands /Users/ray/rapidsse/commands"  str.cat
@@ -59,6 +59,7 @@
   args.metadata    if " --metadata"    str.cat then
   args.log         if " --log"         str.cat then
   args.munged      if " --munged"      str.cat then
+  args.heartbeat   if " --heartbeat BROADCAST 8888" str.cat then
 
   " &" str.cat locals| sShellCmd |
  
@@ -101,7 +102,7 @@
     pNode node.port
     pNode node.IP
     pNode node.name
-    " --node %v %v %v  --heartbeat BROADCAST 8888" str.format  //" --node %v %v %v" str.format HACK HACK HACK
+    " --node %v %v %v" str.format
     str.cat
 
     node_I[].next

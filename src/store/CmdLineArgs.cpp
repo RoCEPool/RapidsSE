@@ -54,7 +54,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_sCommand = ""_Stz;
   m_xSysArgs.m_sInitial = ""_Stz;
 
-  
+  m_xSysArgs.m_nHeartbeatNodes = 0;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // commands

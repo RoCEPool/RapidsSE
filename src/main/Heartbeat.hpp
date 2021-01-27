@@ -275,6 +275,18 @@ public:
   Heartbeat_RTE(const char *w) : std::runtime_error(w) {}
 };
 
+class TestConnection {
+public:
+  bool m_bResult;
+  char* m_pszAddr;
+  i8 m_iPort;
+  i8 m_iSockClient;
+
+  TestConnection(Stz* pAddr, i8 iPort);
+  ~TestConnection();
+  bool bTryConnect();
+
+};
 
 
 

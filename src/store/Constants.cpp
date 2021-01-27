@@ -102,6 +102,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeCB);
   Constants::vAddConstant("args.help"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bHelp);
   Constants::vAddConstant("args.hugePages"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bHugePages);
+  Constants::vAddConstant("args.heartbeat"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nHeartbeatNodes);
   Constants::vAddConstant("args.killPrev"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bKillPrev);
   Constants::vAddConstant("args.lock"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bLock);
   Constants::vAddConstant("args.log"_Stz,               gxCmdLineArgs.m_xSysArgs.m_bLog);
