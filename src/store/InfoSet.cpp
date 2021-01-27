@@ -71,8 +71,6 @@ InfoSet::InfoSet(StreamDef* pStreamDef)
   m_eOpInfoSet = OI_NONE;
   
   _checkInitialised_(CN_INFOSET);
-  
-  vFormInfoPix(pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,71 +86,10 @@ InfoSet::~InfoSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* formulate info pix from stream def                                         */
-/*----------------------------------------------------------------------------*/
-void InfoSet::vFormInfoPix(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  Stz* szStreamNm = pStreamDef->szName();
-  i8   nColumns = pStreamDef->nColumns();
-  
-  i8 nInitialSize = sizeof(SetPix) + ((nColumns - 1) * sizeof(ColPix));
-  
-  SetPix* pSetPix = new ((SetPix*)ayAllotAux0(nInitialSize)) SetPix;
-  
-  pSetPix->vPixNm(szStreamNm);
-  pSetPix->vColumns(nColumns);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ColPix* axaColPixArray = pSetPix->axaColPixArray();
-  
-  pStreamDef->vToColPix(axaColPixArray,false);
-  
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-
-    Stz* szColNmSrc = pColumn->szColNm();
-    
-    i8 nColNmSize = szColNmSrc->nSize();
-    
-    i8 i_Aux = 0;
-    Stz* szColNmDst = (Stz*)ayExtendAux0(nColNmSize,i_Aux);
-    
-    szColNmDst->vCopy(szColNmSrc);
-    
-    
-    // -- -- -- --
-    
-    i8 nStzOfs = nDifference(&axaColPixArray[i_Col],
-                             (byte*) pSetPix + i_Aux);
-    
-    
-    axaColPixArray[i_Col].m_uName = nStzOfs;
-  }
-  
-  if (AM::bDeveloper())
-    pSetPix->vPrint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the infopix for this infoset ( aux 0 )                                 */
-/*----------------------------------------------------------------------------*/
-SetPix* InfoSet::pSetPix(void) {
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
-  
-  SetPix* pSetPix = _pSetPix(ayAux0());
-  
-  return pSetPix;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set operator infoset                                                       */
 /*----------------------------------------------------------------------------*/
-void InfoSet::vOpInfoSet(eOI eOpInfoSet) {
-  
+void InfoSet::vOpInfoSet(eOI eOpInfoSet)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
   
   m_eOpInfoSet = eOpInfoSet;

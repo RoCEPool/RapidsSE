@@ -24,9 +24,6 @@ namespace STORE
     InfoSet(StreamDef* pStreamDef);
    ~InfoSet(void) noexcept(false);
     
-    void vFormInfoPix(StreamDef* pStreamDef);
-  
-    SetPix* pSetPix(void);
   
     void vOpInfoSet(eOI eOpInfoSet);
     eOI  eOpInfoSet(void);
