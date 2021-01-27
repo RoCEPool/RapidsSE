@@ -88,9 +88,6 @@ public:
     i8 m_iAsI8;
   };
 
-  constexpr static const i8 C_DAYS_IN_MONTH[12]      = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-  constexpr static const i8 C_DAYS_IN_MONTH_LEAP[12] = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
