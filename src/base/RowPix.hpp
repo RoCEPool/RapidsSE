@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowPix.h -- Row Pix                                                        */
+/* RowPix.hpp -- Row Pix                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -25,7 +25,22 @@ namespace BASE
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS]; // column pix
     s32    m_saColNm[C_MAX_DEFCOLUMNS];  // column names
 
+  public:
   
+    void* operator new(size_t);
+    void* operator new(size_t, RowPix*);
+    void operator delete(void*);
+
+    RowPix(void);
+   ~RowPix(void) noexcept(false);
+
+    void vCopyRowPix(RowPix* pRowPixSrc);
+    i8   nRowPixBytes(i8 nCols);
+    void vRemovePtnHash(void);
+    i8   nSize(void);
+    void vPrint(void);
+
+/*
     // constructor
     RowPix(void)
     : Object(CN_ROWPIX)
@@ -102,8 +117,10 @@ namespace BASE
 
       }
     }
-  
+  */
   };
+
+  RowPix* _pRowPix(void* aAddr);
 }
 
 /*============================================================================*/
