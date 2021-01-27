@@ -34,11 +34,19 @@ namespace BASE
     RowPix(void);
    ~RowPix(void) noexcept(false);
 
+    ColPix* axColPix(i8 i_Col);
+    ColPix* axaColPixArray(void);
+  
+    i8   nColumns(void);
+    void vColumns(i8 nColumns);
     void vCopyRowPix(RowPix* pRowPixSrc);
+    Stz* szPixNm(void);
+    void vPixNm(Stz* szPixNm);
+    void vPrint(void);
+    void vPrint2(void);
     i8   nRowPixBytes(i8 nCols);
     void vRemovePtnHash(void);
     i8   nSize(void);
-    void vPrint(void);
 
 /*
     // constructor

@@ -1,8 +1,10 @@
 /*============================================================================*/
 /* RowPix.cpp -- Row Pix                                                      */
 /*============================================================================*/
+
 #include "BASE.h"
 
+#include "SP_ColPix.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -73,6 +75,51 @@ RowPix::~RowPix(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of columns                                                      */
+/*----------------------------------------------------------------------------*/
+i8 RowPix::nColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  return m_nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of columns                                                      */
+/*----------------------------------------------------------------------------*/
+void RowPix::vColumns(i8 nColumns)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  m_nColumns = nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get col pic array                                                          */
+/*----------------------------------------------------------------------------*/
+ColPix* RowPix::axColPix(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  return & m_xaColPix[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get col pic array                                                          */
+/*----------------------------------------------------------------------------*/
+ColPix* RowPix::axaColPixArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  return m_xaColPix;
+}
+
 /*----------------------------------------------------------------------------*/
 /* copy row pix                                                               */
 /*----------------------------------------------------------------------------*/
@@ -82,6 +129,65 @@ void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
   MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
   //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pix name                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* RowPix::szPixNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  return m_sPixNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pix name                                                               */
+/*----------------------------------------------------------------------------*/
+void RowPix::vPixNm(Stz* szPixNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  m_sPixNm = szPixNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void RowPix::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  vTrace("RowPix: %lld cols\n"_Stz,m_nColumns);
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    vTrace("[%02lld] %s(%lld,%lld)%s%s\n"_Stz,
+           i_Col,
+           aDM[m_xaColPix[i_Col].m_uDatum],
+           (i8)m_xaColPix[i_Col].m_uLength,
+           (i8)m_xaColPix[i_Col].m_uScale,
+           m_xaColPix[i_Col].m_bPtnKey ? " !PtnKey" : "",
+           i_Col + 1 == m_nColumns && m_nExtraCols ? " #PtnHsh" : ""
+           );
+
+  }
+}
+  
+/*----------------------------------------------------------------------------*/
+/* print this set pix                                                         */
+/*----------------------------------------------------------------------------*/
+void RowPix::vPrint2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  SP_ColPix spColPix;
+  
+  vTrace("RpwPix: %s\n"_Stz,szPixNm());
+  vTrace("  %lld columns\n"_Stz,nColumns());
+  
+  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
+    ColPix* axColPix = this->axColPix(i_Col);
+    vTrace("  %s\n"_Stz,spColPix.sz(axColPix));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,31 +224,12 @@ void RowPix::vRemovePtnHash(void)
 i8 RowPix::nSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
   i8 nSize = nRowPixBytes(m_nColumns);
 
   return nSize;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void RowPix::vPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  vTrace("RowPix: %lld cols\n"_Stz,m_nColumns);
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    vTrace("[%02lld] %s(%lld,%lld)%s%s\n"_Stz,
-           i_Col,
-           aDM[m_xaColPix[i_Col].m_uDatum],
-           (i8)m_xaColPix[i_Col].m_uLength,
-           (i8)m_xaColPix[i_Col].m_uScale,
-           m_xaColPix[i_Col].m_bPtnKey ? " !PtnKey" : "",
-           i_Col + 1 == m_nColumns && m_nExtraCols ? " #PtnHsh" : ""
-           );
-
-  }
-}
-  
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
