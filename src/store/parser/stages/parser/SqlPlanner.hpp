@@ -47,12 +47,16 @@ namespace Parser
     virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx) override;
     virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)           override;
     virtual antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)               override;
+    virtual antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)               override;
+    virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)             override;
 
     
   private:
     Text* pCleanId(sqlParser::IdentifierContext* pCtx);
     Text* pCleanString(sqlParser::StringLiteralContext* pCtx);
     void  vCleanString(sqlParser::StringLiteralContext* pCtx, s256& sBuf);
+    void  vCleanString(antlr4::Token* pToken, s256& sBuf);
+    void  vCleanString(std::string& sStr, s256& sBuf);
     i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
     d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
 //  ??    cleanDecimal(sqlParser::DecimalLiteralContext* pCtx);

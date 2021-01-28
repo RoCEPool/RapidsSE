@@ -309,6 +309,18 @@ PlanNode* PlanNode::pFirstChild()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the second PlanNode child, or nullptr if there is none             */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pSecondChild()
+{
+  if (!m_pChildren || m_pChildren->nItems() < 2) {
+    return nullptr;
+  }
+
+  return m_pChildren->pHeadNode()->pNextNode()->pItem();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the last PlanNode child, or nullptr if there is none              */
 /*----------------------------------------------------------------------------*/
 PlanNode* PlanNode::pLastChild()

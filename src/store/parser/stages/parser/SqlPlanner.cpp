@@ -23,8 +23,8 @@
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
 #include "TableRef.hpp"
 
+// Expressions
 #include "ColumnRef.hpp"
-#include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "store/parser/shadowNodes/expressions/literals/NullLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/StringLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/IntegerLiteral.hpp"
@@ -33,6 +33,12 @@
 #include "store/parser/shadowNodes/expressions/literals/DateLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimeLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimestampLiteral.hpp"
+#include "store/parser/shadowNodes/expressions/operators/AdditionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/SubtractionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/MultiplicationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/DivisionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/ModulusExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/NegationExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
@@ -472,6 +478,103 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
   return nullptr;
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Unary Expression Operators                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr1 = m_pExprStack->pPop();
+
+  // Get the string of the operator
+  s256 sOp;
+  vCleanString(pCtx->op, sOp);
+
+  if (sOp.bEqual("+"_Stz)) {
+    // We don't create the identity operator, just push the expression
+    // back onto the stack again.
+    pOpExpr = pExpr1;
+
+  } else if (sOp.bEqual("-"_Stz)) {
+    // Negate the expression on the stack
+    pOpExpr = NegationExpr::pCreate(pExpr1);
+
+  } else {
+    NEVER_REACH
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Binary Expression Operators                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr2 = m_pExprStack->pPop();
+  QueryNode* pExpr1 = m_pExprStack->pPop();
+
+  // Get the string of the operator
+  s256 sOp;
+  vCleanString(pCtx->op, sOp);
+
+  if (sOp.bEqual("+"_Stz)) {
+    pOpExpr = AdditionExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("-"_Stz)) {
+    pOpExpr = SubtractionExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("*"_Stz)) {
+    pOpExpr = MultiplicationExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("/"_Stz)) {
+    pOpExpr = DivisionExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("%"_Stz)) {
+    pOpExpr = ModulusExpr::pCreate(pExpr1, pExpr2);
+
+//  } else if (sOp.bEqual("<"_Stz)) {
+//    pOpExpr = LtExpr::pCreate(pExpr1, pExpr2);
+//
+//  } else if (sOp.bEqual("<="_Stz)) {
+//    pOpExpr = LeExpr::pCreate(pExpr1, pExpr2);
+//
+//  } else if (sOp.bEqual("="_Stz)) {
+//    pOpExpr = EqExpr::pCreate(pExpr1, pExpr2);
+//
+//  } else if (sOp.bEqual("!="_Stz)) {
+//    pOpExpr = NeqExpr::pCreate(pExpr1, pExpr2);
+//
+//  } else if (sOp.bEqual("<>"_Stz)) {
+//    pOpExpr = NeqExpr::pCreate(pExpr1, pExpr2);
+//
+//  } else if (sOp.bEqual(">="_Stz)) {
+//    pOpExpr = GeExpr::pCreate(pExpr1, pExpr2);
+//
+//  } else if (sOp.bEqual(">"_Stz)) {
+//    pOpExpr = GtExpr::pCreate(pExpr1, pExpr2);
+//
+//  } else if (sOp.bEqual("||"_Stz)) {
+//    pOpExpr = ConcatExpr::pCreate(pExpr1, pExpr2);
+
+  } else {
+    NEVER_REACH
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -562,20 +665,40 @@ void SqlPlanner::vCleanString(sqlParser::StringLiteralContext *pCtx, s256& sBuf)
   }
 
   std::string idStr = pCtx->getText();
+  vCleanString(idStr, sBuf);
+}
 
-  i8 idLen = idStr.length();
+/*----------------------------------------------------------------------------*/
+/* Clean up a a string literal. Returned string is written to the given buffer*/
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vCleanString(antlr4::Token* pToken, s256& sBuf)
+{
+  if (!pToken) {
+    return;
+  }
 
-  if (idLen == 0) {
+  std::string sStr = pToken->getText();
+  vCleanString(sStr, sBuf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a a string literal. Returned string is written to the given buffer*/
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vCleanString(std::string& sStr, s256& sBuf)
+{
+  i8 len = sStr.length();
+
+  if (len == 0) {
     return;
   }
 
   // Ensure that the string is short enough to fit in the buffer
-  RASSERT(idLen < sBuf.nSpace());
+  RASSERT(len < sBuf.nSpace());
 
   // Remove single quotes
-  if (idStr.at(0) == '\'' && idStr.at(idLen - 1) == '\'') {
+  if (sStr.at(0) == '\'' && sStr.at(len - 1) == '\'') {
     // Not great, substr() makes a another copy of the string.
-    sBuf.vCopy((Stz*) idStr.substr(1, idLen - 2).c_str());
+    sBuf.vCopy((Stz*) sStr.substr(1, len - 2).c_str());
 
     // Unescape any two consecutive single quotes
     while (StrLib::bReplace(sBuf.azChar(), "''", "'")) { /*noop*/ }
@@ -583,13 +706,18 @@ void SqlPlanner::vCleanString(sqlParser::StringLiteralContext *pCtx, s256& sBuf)
   }
 
   // Remove double quotes
-  if (idStr.at(0) == '"' && idStr.at(idLen - 1) == '"') {
+  else if (sStr.at(0) == '"' && sStr.at(len - 1) == '"') {
     // Not great, substr() makes a another copy of the string.
-    sBuf.vCopy((Stz*) idStr.substr(1, idLen - 2).c_str());
+    sBuf.vCopy((Stz*) sStr.substr(1, len - 2).c_str());
 
     // Unescape any two consecutive double quotes
     while (StrLib::bReplace(sBuf.azChar(), "\"\"", "\"")) { /*noop*/ }
     return;
+
+
+  } else {
+    // No quotes. Just copy the string
+    sBuf.vCopy((Stz*) sStr.c_str());
   }
 }
 

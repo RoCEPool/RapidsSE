@@ -710,9 +710,9 @@
                       name: "arithmetic",
                       value: "An arithmetic expression operator (+, -, *, /, etc)",
                       children: [
-// Path: /__root__/definitions/object/expr/operator/arithmetic/add
+// Path: /__root__/definitions/object/expr/operator/arithmetic/addition
                         {
-                          name: "add",
+                          name: "addition",
                           value: "Addition operator",
                           properties: [
                             // Add a constraint that the addition operator must have two children
@@ -729,9 +729,9 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/arithmetic/subtract
+// Path: /__root__/definitions/object/expr/operator/arithmetic/subtraction
                         {
-                          name: "subtract",
+                          name: "subtraction",
                           value: "Subtraction operator",
                           properties: [
                             // Add a constraint that the subtraction operator must have two children
@@ -748,9 +748,9 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/arithmetic/multiply
+// Path: /__root__/definitions/object/expr/operator/arithmetic/multiplication
                         {
-                          name: "multiply",
+                          name: "multiplication",
                           value: "Multiplication operator",
                           properties: [
                             // Add a constraint that the multiplication operator must have two children
@@ -767,9 +767,9 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/arithmetic/divide
+// Path: /__root__/definitions/object/expr/operator/arithmetic/division
                         {
-                          name: "divide",
+                          name: "division",
                           value: "Division operator",
                           properties: [
                             // Add a constraint that the division operator must have two children
@@ -786,10 +786,46 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/modulus
+// Path: /__root__/definitions/object/expr/operator/arithmetic/modulus
+                        {
+                          name: "modulus",
+                          value: "Modulus operator",
+                          properties: [
+                            // Add a constraint that the modulus operator must have two children
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 2
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        },
 // TODO Path: /__root__/definitions/object/expr/operator/arithmetic/identity   // unary +
-// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/negation   // unary -
-// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/pow
+// Path: /__root__/definitions/object/expr/operator/arithmetic/negation   // unary -
+                        {
+                          name: "negation",
+                          value: "Negation operator",
+                          properties: [
+                            // Add a constraint that the modulus operator must have one child
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        },
+// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/power
 // TODO Path: /__root__/definitions/object/expr/operator/arithmetic/log
 
                       ]
@@ -1054,6 +1090,7 @@
                           name: "count",
                           value: "COUNT() aggregation operator",
                         },
+// TODO: Path: /__root__/definitions/object/expr/operator/aggregation/countDistinct
 // Path: /__root__/definitions/object/expr/operator/aggregation/sum
                         {
                           name: "sum",
@@ -1139,7 +1176,7 @@
                       children: [
 // TODO Path: /__root__/definitions/object/expr/operator/function/like
 // TODO Path: /__root__/definitions/object/expr/operator/function/case
-// TODO Path: /__root__/definitions/object/expr/operator/function/concat
+// TODO Path: /__root__/definitions/object/expr/operator/function/concat  (also || operator)
 // TODO Path: /__root__/definitions/object/expr/operator/function/udf
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/function
