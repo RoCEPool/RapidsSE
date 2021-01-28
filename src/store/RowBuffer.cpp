@@ -76,7 +76,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_oRowPix.m_bInitialised);
+  RASSERT(m_pRowPix);
 
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   
@@ -248,6 +248,16 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
     ((char*)szRecord)[nSize-1] = '\0';
   
   return pFirstCsvBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore pointers are recv()                                                */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vRestorePointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pRowPix = & m__oRowPix;
 }
 
 /*----------------------------------------------------------------------------*/

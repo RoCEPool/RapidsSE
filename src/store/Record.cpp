@@ -35,7 +35,9 @@ Record::Record(RowPix* pRowPix)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_oRowPix.vCopyRowPix(pRowPix);
+  ASSERT(pRowPix->m_nColumns);
+  
+  m_pRowPix = pRowPix;
     
   m_azCursor = & m_caRecord[0];
   
@@ -144,11 +146,11 @@ void Record::vAddRow(Row* aRow)
   m_azCursor = & m_caRecord[0];
   
   for (i8 i_Col = 0;
-       i_Col < m_oRowPix.m_nColumns - m_oRowPix.m_nExtraCols;
+       i_Col < m_pRowPix->m_nColumns - m_pRowPix->m_nExtraCols;
        i_Col++) {
 
-    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum; //pCol->eDatum();
-    i8  iScale = m_oRowPix.m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
+    eDM eDatum = (eDM)m_pRowPix->m_xaColPix[i_Col].m_uDatum; //pCol->eDatum();
+    i8  iScale = m_pRowPix->m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
 
     if (i_Col)
       StrLib::vAppendString(&m_azCursor,",");

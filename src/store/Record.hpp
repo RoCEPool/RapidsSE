@@ -10,7 +10,7 @@ namespace STORE
   class Record : public Object
   {
   public:
-    RowPix     m_oRowPix;
+    RowPix*    m_pRowPix;
     char       m_caRecord[C_MAX_RECORD];
     char*      m_azCursor;    // append cursor for StrLib::vAppend()
 

@@ -527,6 +527,8 @@ void Step::vSocketRecvObject(void)
         return;
       }
       
+      pRowBuffer->vRestorePointers();
+      
       m_pDataStack->vPushPtr(pRowBuffer);
       m_pDataStack->vPushInt(true);
       EXIT();
