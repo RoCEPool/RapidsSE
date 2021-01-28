@@ -104,7 +104,24 @@ b1 ShadowNode::bIsOfType(PlanNode* pNode, Stz* szTypePath)
   ASSERT(szTypePath);
   ASSERT(szTypePath->nLength() > 0);
 
-  return pNode->szType()->bBeginsWith(szTypePath);
+  // Check that the type field of the given node is either equal to the
+  // type path given, or the type field of the given node begins with
+  // the type path given followed by a '/'. This indicates that it is a
+  // child of that type. It also avoids false comparisons. e.g. a "timestamp"
+  // type can be confused with a "time" type because "timestamp" begins
+  // with "time".
+  Stz* szNodeType = pNode->szType();
+
+  b1 bResult = (
+      szNodeType->bEqual(szTypePath) ||
+        (
+           szNodeType->bBeginsWith(szTypePath)            &&
+           szNodeType->nLength() > szTypePath->nLength()  &&
+           szNodeType->azChar()[szTypePath->nLength()] == '/'
+        )
+  );
+
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/

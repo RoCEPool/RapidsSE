@@ -43,8 +43,8 @@ void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   else if (FloatLiteral::bIsOfType(pNode))      { FloatLiteral::vDescribe(pNode, sBuf);     }
 //  else if (DecimalLiteral::bIsOfType(pNode))    { DecimalLiteral::vDescribe(pNode, sBuf);     }
   else if (DateLiteral::bIsOfType(pNode))       { DateLiteral::vDescribe(pNode, sBuf);      }
-  else if (TimestampLiteral::bIsOfType(pNode))  { TimestampLiteral::vDescribe(pNode, sBuf); } // must go before TimeLiteral
   else if (TimeLiteral::bIsOfType(pNode))       { TimeLiteral::vDescribe(pNode, sBuf);      }
+  else if (TimestampLiteral::bIsOfType(pNode))  { TimestampLiteral::vDescribe(pNode, sBuf); }
 //  else if (IntervalLiteral::bIsOfType(pNode))   { IntervalLiteral::vDescribe(pNode, sBuf);    }
   else if (NullLiteral::bIsOfType(pNode))       { NullLiteral::vDescribe(pNode, sBuf);      }
   else NEVER_REACH
