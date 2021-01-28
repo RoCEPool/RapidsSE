@@ -28,13 +28,13 @@ InfoSetBase* STORE::_pInfoSetBase(void* aAddr)
 InfoSetBase::InfoSetBase(eCN eClassNo)
 : RowBuffer(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
   m_sInfoSetNm = C_NO_NAME;
   m_nRowSize   = C_UNKNOWN;
   m_nInfoRows  = 0;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,14 +43,13 @@ InfoSetBase::InfoSetBase(eCN eClassNo)
 InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
 : RowBuffer(eClassNo,pStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
   m_sInfoSetNm = pStreamDef->szName();
   m_nRowSize  = Row::nRowProper(pStreamDef->nColumns());
   m_nInfoRows = 0;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +57,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 InfoSetBase::~InfoSetBase(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +65,7 @@ InfoSetBase::~InfoSetBase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Row* InfoSetBase::aAllotRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   Row* pRow = nullptr;
 
@@ -83,7 +82,7 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 //Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_);
+//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 //
 //  Row* pRow = RowBuffer::aAllotCopyRow(pRowSingle);
 //  m_nInfoRows++;
@@ -97,7 +96,7 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
  Row* InfoSetBase::aAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
  {
-   _precondition_(_ADDRESS_,_MAGIC_);
+   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
    
    // allot a row
    Row* ayRow = aAllotNewRow();
@@ -157,7 +156,7 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 Row* InfoSetBase::aFirstRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return RowBuffer::aFirstRow();
 }
@@ -167,7 +166,7 @@ Row* InfoSetBase::aFirstRow(void)
 /*----------------------------------------------------------------------------*/
 i8 InfoSetBase::nInfoRows(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_nInfoRows;
 }
@@ -177,7 +176,7 @@ i8 InfoSetBase::nInfoRows(void)
 /*----------------------------------------------------------------------------*/
 Stz* InfoSetBase::szInfoSetNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_sInfoSetNm;
 }
@@ -187,7 +186,7 @@ Stz* InfoSetBase::szInfoSetNm(void)
 /*----------------------------------------------------------------------------*/
 void InfoSetBase::vInfoSetNm(Stz* szInfoSetNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_sInfoSetNm = szInfoSetNm;
 }
@@ -197,7 +196,7 @@ void InfoSetBase::vInfoSetNm(Stz* szInfoSetNm)
 /*----------------------------------------------------------------------------*/
 Row* InfoSetBase::aNextRow(Row* aPrevRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return RowBuffer::aNextRow(aPrevRow);
 }
@@ -207,12 +206,18 @@ Row* InfoSetBase::aNextRow(Row* aPrevRow)
 /*----------------------------------------------------------------------------*/
 i8 InfoSetBase::iToOffset(Stz* aItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   i4 iOffset = static_cast<i4>(nDifference(aItem,this));
   
   return iOffset;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(InfoSetBase);
+
 
 /*============================================================================*/
 /* end                                                                        */

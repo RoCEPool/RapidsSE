@@ -16,6 +16,9 @@ namespace STORE
     i8  m_nRowSize;
     i8  m_nInfoRows;
     
+    // must be last
+    Footer m_xFooter;
+
   public:
   
     InfoSetBase(eCN eClassNo);
@@ -33,6 +36,8 @@ namespace STORE
     
   //private:
     i8   iToOffset(Stz* aItem);
+  
+    Footer* aFooter(void);
   };
 
   InfoSetBase* _pInfoSetBase(void* aAddr);

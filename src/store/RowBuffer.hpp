@@ -39,6 +39,9 @@ namespace STORE
 
   private:
     i8   iToOffset(Stz* szStr);
+  
+    Footer* aFooter(void);
+
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);

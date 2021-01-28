@@ -49,7 +49,7 @@ void StreamSet::operator delete(void* aAddress)
 StreamSet::StreamSet(void)
 : InfoSetBase(CN_STREAMSET)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
 
   m_sInfoSetNm = C_NO_NAME;
   m_nRowSize   = C_UNKNOWN;
@@ -66,7 +66,7 @@ StreamSet::StreamSet(void)
 StreamSet::StreamSet(StreamDef* pStreamDef)
 : InfoSetBase(CN_STREAMSET, pStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
   
   m_sInfoSetNm = pStreamDef->szName();
   m_nRowSize  = Row::nRowProper(pStreamDef->nColumns());
@@ -83,8 +83,14 @@ StreamSet::StreamSet(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 StreamSet::~StreamSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(StreamSet);
+
 
 /*============================================================================*/
 /* end                                                                        */
