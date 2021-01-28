@@ -59,9 +59,7 @@ RowPix::RowPix(void)
   m_nNameOffset  = C_UNKNOWN;
   m_nTotalChars  = 0;
 
-  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
-    m_xaColPix[i_Col].m_uAsU8 = 0;
-  }
+  m_xaColPix[0].m_uAsU8 = 0;
   
   MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
 
@@ -153,32 +151,11 @@ void RowPix::vPixNm(Stz* szPixNm)
   
   m_sPixNm = szPixNm;
 }
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void RowPix::vPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  
-  vTrace("RowPix: %lld cols\n"_Stz,m_nColumns);
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    vTrace("[%02lld] %s(%lld,%lld)%s%s\n"_Stz,
-           i_Col,
-           aDM[m_xaColPix[i_Col].m_uDatum],
-           (i8)m_xaColPix[i_Col].m_uLength,
-           (i8)m_xaColPix[i_Col].m_uScale,
-           m_xaColPix[i_Col].m_bPtnKey ? " !PtnKey" : "",
-           i_Col + 1 == m_nColumns && m_nExtraCols ? " #PtnHsh" : ""
-           );
-
-  }
-}
   
 /*----------------------------------------------------------------------------*/
 /* print this set pix                                                         */
 /*----------------------------------------------------------------------------*/
-void RowPix::vPrint2(void)
+void RowPix::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
@@ -191,21 +168,6 @@ void RowPix::vPrint2(void)
     ColPix* axColPix = this->axColPix(i_Col);
     vTrace("  %s\n"_Stz,spColPix.sz(axColPix));
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc number of bytes (this is weird)                                       */
-/*----------------------------------------------------------------------------*/
-i8 RowPix::nRowPixBytes(i8 nCols)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  
-  i8 nBytes =    (    1 * sizeof(m_sPixNm))
-               + (    8 * sizeof(i8))
-               + (nCols * sizeof(ColPix))
-               ;
-
-  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,17 +184,6 @@ void RowPix::vRemovePtnHash(void)
   m_bPtnHash = false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* calc size of this RowPix                                                   */
-/*----------------------------------------------------------------------------*/
-i8 RowPix::nSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  
-  i8 nSize = nRowPixBytes(m_nColumns);
-
-  return nSize;
-}
 
 /*============================================================================*/
 /* end                                                                        */

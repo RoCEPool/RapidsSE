@@ -380,7 +380,7 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   
   pRowPixDst->m_nTotalChars =
-    sizeof(ColPix) * (m_nColumns - 1 + (bAddPtnHash ? 1 : 0) );
+    sizeof(ColPix) * (m_nColumns - 1);
   
   i8 i_Col;
           
@@ -466,7 +466,7 @@ void StreamDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
   pRowPixDst->m_bInitialised = true;
   
 //  if (AM::bDeveloper())
-//    pRowPixDst->vPrint2();
+//    pRowPixDst->vPrint();
 
 }
 

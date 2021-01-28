@@ -44,10 +44,7 @@ namespace BASE
     Stz* szPixNm(void);
     void vPixNm(Stz* szPixNm);
     void vPrint(void);
-    void vPrint2(void);
-    i8   nRowPixBytes(i8 nCols);
     void vRemovePtnHash(void);
-    i8   nSize(void);
 
   };
 

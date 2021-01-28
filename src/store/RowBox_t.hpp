@@ -56,7 +56,8 @@ namespace STORE
     void vResolveRowPix(StreamDef* pStreamDef);
     
     Row* aAllotNewRow(void);
-  
+    RowPix* pAllotRowPix(void);
+
     i8   nColumns(void);
     ColPix* axaColPix(void);
     i8    iColumn(Row* aRow, i8 iColumn);
@@ -223,10 +224,9 @@ void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
 
-  pStreamDef->vToRowPix(&m__oRowPix,false);
+  pAllotRowPix();
   
-  ASSERT(! m_pRowPix);
-  m_pRowPix = &m__oRowPix;
+  pStreamDef->vToRowPix(&m__oRowPix,false);
   
   m_nRowSizeProper = Row::nRowProper(m_pRowPix->m_nColumns);
   
@@ -267,6 +267,18 @@ Row* RowBox_t<AREA>::aAllotNewRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a row pix NOT COMPLETE                                               */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+RowPix* RowBox_t<AREA>::pAllotRowPix(void)
+{
+  ASSERT(! m_pRowPix);
+  m_pRowPix = &m__oRowPix;
+
+  return m_pRowPix;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the condensed column pix array                                         */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -282,10 +294,10 @@ ColPix* RowBox_t<AREA>::axaColPix(void)
 template <i8 AREA>
 void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
 {
-  MemLib::vCopy(&m__oRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
+  
+  pAllotRowPix();
 
-  ASSERT(! m_pRowPix);
-  m_pRowPix = &m__oRowPix;
+  MemLib::vCopy(&m__oRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
   m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
 }
@@ -740,12 +752,10 @@ i8 RowBox_t<AREA>::nExtraCols(void)
 template <i8 AREA>
 void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 {
-        
+  pAllotRowPix();
+
   pStreamDef->vToRowPix(&m__oRowPix,bPtnHash);
   
-  ASSERT(! m_pRowPix);
-  m_pRowPix = &m__oRowPix;
-
   m_nRowSizeProper = Row::nRowProper(m_pRowPix->m_nColumns);
 }
 
@@ -755,7 +765,6 @@ void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 template <i8 AREA>
 NmlStr* RowBox_t<AREA>::pNmlStr(void)
 {
-
   return & m_oNmlStr;
 }
 
