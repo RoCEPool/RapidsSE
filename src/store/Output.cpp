@@ -143,11 +143,14 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
     if (pOperand)
       return pOperand;
     
-    AM::vNapUsec(1000,CN_OUTPUT);
+    AM::vNapUsec(10000,CN_OUTPUT);
     
     
-    if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError)
+    if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError) {
+      vDrainBufferQueue(pSession);
       return nullptr;
+    }
+    
   }
   
 }
