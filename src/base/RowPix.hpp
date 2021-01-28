@@ -23,8 +23,8 @@ namespace BASE
     i8 m_nNameOffset;  // 6)
     i8 m_nTotalChars;  // 7)
 
-    ColPix m_xaColPix[1];        // column pix array
-    byte   m_baPixArea[C_8KB];   // pix and names
+    ColPix m_xaColPix[C_MAX_DEFCOLUMNS];        // column pix array
+    //byte   m_baPixArea[C_8KB];   // pix and names
 
     // must be last
     Footer m_xFooter;

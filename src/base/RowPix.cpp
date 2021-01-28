@@ -59,9 +59,12 @@ RowPix::RowPix(void)
   m_nNameOffset  = C_UNKNOWN;
   m_nTotalChars  = 0;
 
-  m_xaColPix[0].m_uAsU8 = 0;
-  
-  MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
+  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
+    m_xaColPix[i_Col].m_uAsU8 = 0;
+  }
+
+  //m_xaColPix[0].m_uAsU8 = 0;
+  //MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
 
   _checkInitialised_(CN_ROWPIX);
 
@@ -127,7 +130,7 @@ ColPix* RowPix::axaColPixArray(void)
 void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
-  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
+  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWPIX);
 
   //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
 }

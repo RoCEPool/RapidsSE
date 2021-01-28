@@ -401,13 +401,13 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     axColPixDst->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
     axColPixDst->m_uSpare    = (u4)0;
     
-    nNameSize = pColumn->szColNm()->nSize();
-    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
-    StrLib::vCopy(azNameDst,pColumn->szColNm()->azChar());
-    
-    nStzOfs = nDifference(axColPixDst,azNameDst);
-    axColPixDst->m_uName = nStzOfs;
-    pRowPixDst->m_nTotalChars += nNameSize;
+//    nNameSize = pColumn->szColNm()->nSize();
+//    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
+//    StrLib::vCopy(azNameDst,pColumn->szColNm()->azChar());
+//    
+//    nStzOfs = nDifference(axColPixDst,azNameDst);
+//    axColPixDst->m_uName = nStzOfs;
+//    pRowPixDst->m_nTotalChars += nNameSize;
   }
 
   // i_Col falls thru
@@ -427,13 +427,13 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     axColPixDst->m_bPtnKey   = (u4)false;
     axColPixDst->m_uSpare    = (u4)0;
     
-    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
-    StrLib::vCopy(azNameDst,"__ptnHsh");
-    nNameSize = StrLib::nSize(azNameDst);
-    
-    nStzOfs = nDifference(axColPixDst,azNameDst);
-    axColPixDst->m_uName = nStzOfs;
-    pRowPixDst->m_nTotalChars += nNameSize;
+//    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
+//    StrLib::vCopy(azNameDst,"__ptnHsh");
+//    nNameSize = StrLib::nSize(azNameDst);
+//    
+//    nStzOfs = nDifference(axColPixDst,azNameDst);
+//    axColPixDst->m_uName = nStzOfs;
+//    pRowPixDst->m_nTotalChars += nNameSize;
 
   }
 }
