@@ -26,6 +26,9 @@ namespace BASE
     ColPix m_xaColPix[1];        // column pix array
     byte   m_baPixArea[C_8KB];   // pix and names
 
+    // must be last
+    Footer m_xFooter;
+
   public:
   
     void* operator new(size_t);
@@ -46,6 +49,7 @@ namespace BASE
     void vPrint(void);
     void vRemovePtnHash(void);
 
+    Footer* aFooter(void);
   };
 
   RowPix* _pRowPix(void* aAddr);

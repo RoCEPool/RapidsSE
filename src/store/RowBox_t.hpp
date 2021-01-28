@@ -120,6 +120,7 @@ namespace STORE
 
   private:
     i8    i_RowBufferCell(i8 i_Row);
+  
 
   };
 

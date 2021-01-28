@@ -48,7 +48,7 @@ void RowPix::operator delete(void* aAddress)
 RowPix::RowPix(void)
 : Object(CN_ROWPIX)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   m_bInitialised = false;
   m_bShortForm   = false;
@@ -65,7 +65,7 @@ RowPix::RowPix(void)
 
   _checkInitialised_(CN_ROWPIX);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ RowPix::RowPix(void)
 /*----------------------------------------------------------------------------*/
 RowPix::~RowPix(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
 }
 
 
@@ -86,7 +86,7 @@ RowPix::~RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 RowPix::nColumns(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   return m_nColumns;
 }
@@ -96,7 +96,7 @@ i8 RowPix::nColumns(void)
 /*----------------------------------------------------------------------------*/
 void RowPix::vColumns(i8 nColumns)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   m_nColumns = nColumns;
 }
@@ -106,7 +106,7 @@ void RowPix::vColumns(i8 nColumns)
 /*----------------------------------------------------------------------------*/
 ColPix* RowPix::axColPix(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   return & m_xaColPix[i_Col];
 }
@@ -116,7 +116,7 @@ ColPix* RowPix::axColPix(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 ColPix* RowPix::axaColPixArray(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   return m_xaColPix;
 }
@@ -126,7 +126,7 @@ ColPix* RowPix::axaColPixArray(void)
 /*----------------------------------------------------------------------------*/
 void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
   //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
@@ -137,7 +137,7 @@ void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
 /*----------------------------------------------------------------------------*/
 Stz* RowPix::szPixNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   return m_sPixNm;
 }
@@ -147,7 +147,7 @@ Stz* RowPix::szPixNm(void)
 /*----------------------------------------------------------------------------*/
 void RowPix::vPixNm(Stz* szPixNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   m_sPixNm = szPixNm;
 }
@@ -157,7 +157,7 @@ void RowPix::vPixNm(Stz* szPixNm)
 /*----------------------------------------------------------------------------*/
 void RowPix::vPrint(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
   SP_ColPix spColPix;
   
@@ -175,7 +175,7 @@ void RowPix::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void RowPix::vRemovePtnHash(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   ASSERT(m_bPtnHash);
   ASSERT(m_nExtraCols);
 
@@ -184,6 +184,10 @@ void RowPix::vRemovePtnHash(void)
   m_bPtnHash = false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(RowPix);
 
 /*============================================================================*/
 /* end                                                                        */
