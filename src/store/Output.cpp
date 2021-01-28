@@ -48,6 +48,7 @@ Output::Output(void)
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
+  m_bCancelMarker     = false;
 
 
   _checkInitialised_(CN_OUTPUT);
@@ -83,27 +84,66 @@ void Output::vDrainBufferQueue(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  Operand* pOperand;
-
-  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
+  while (! m_bExitMarker   &&
+         ! m_bCancelMarker &&
+         ! pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError) {
+    
+    Operand* pOperand = pPopBufferQueue_blocking(pSession);
+    
+    if (! pOperand) {
+      AM::vNapUsec(1000,CN_OUTPUT);
+      continue;
+    }
+    
     eCN eOperandClass = pOperand->eGetClassNo();
 
     if (eOperandClass == CN_MARKER) {
       Marker *pMarker = _pMarker(pOperand);
       eOM eOpMarker = pMarker->eOpMarker();
 
-      AM::vDeleteOperand(pOperand);
+      if (eOpMarker == OM_CANCELMARKER)
+        m_bExitMarker = true;
+      else
+      if (eOpMarker == OM_EXITMARKER)
+        m_bCancelMarker = true;
+    }
 
-      if (eOpMarker == OM_CANCELMARKER ||
-          eOpMarker == OM_EXITMARKER)
-        break;
-    }
-    else {
-      AM::vDeleteOperand(pOperand);
-    }
+    AM::vDeleteOperand(pOperand);
   }
 
 }
+/*----------------------------------------------------------------------------*/
+//void Output::vDrainBufferQueue(Session* pSession)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+//
+//  Operand* pOperand;
+//
+//  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
+//    eCN eOperandClass = pOperand->eGetClassNo();
+//
+//    if (eOperandClass == CN_MARKER) {
+//      Marker *pMarker = _pMarker(pOperand);
+//      eOM eOpMarker = pMarker->eOpMarker();
+//
+//      if (eOpMarker == OM_CANCELMARKER)
+//        m_bExitMarker = true;
+//
+//      if (eOpMarker == OM_EXITMARKER)
+//        m_bCancelMarker = true;
+//
+//      AM::vDeleteOperand(pOperand);
+//
+//      if (eOpMarker == OM_CANCELMARKER ||
+//          eOpMarker == OM_EXITMARKER)
+//        break;
+//    }
+//    else {
+//      AM::vDeleteOperand(pOperand);
+//    }
+//  }
+//
+//}
 
 
 /*----------------------------------------------------------------------------*/
@@ -122,6 +162,7 @@ void Output::vProcessBufferQueue(Session* pSession)
 
   }
   
+  vDrainBufferQueue(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,14 +184,10 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
     if (pOperand)
       return pOperand;
     
-    AM::vNapUsec(10000,CN_OUTPUT);
+    AM::vNapUsec(1000,CN_OUTPUT);
     
-    
-    if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError) {
-      vDrainBufferQueue(pSession);
+    if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError)
       return nullptr;
-    }
-    
   }
   
 }
