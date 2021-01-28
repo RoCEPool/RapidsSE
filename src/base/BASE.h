@@ -303,7 +303,6 @@ extern d8 C_D8_MID;
 
 #include "ColPix.h"
 #include "RowPix.hpp"
-#include "SetPix.hpp"
 
 #include "Column.hpp"
 

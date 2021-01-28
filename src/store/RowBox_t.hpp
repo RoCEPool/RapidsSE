@@ -6,7 +6,6 @@
 #include "Definition.hpp"
 
 #include "Row.hpp"
-#include "SetPix.hpp"
 
 #include "NmlStr.hpp"
 
@@ -22,7 +21,6 @@ namespace STORE
     i8 m_nRowSizeProper;
   
     RowPix m_oRowPix;
-    SetPix* m_pSetPix;
 
     Row* m_aRowCur;     // current row
     i8   m_i_RowCrs;    // current logical row number
@@ -206,8 +204,6 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
   m_i_ColCrs = C_UNKNOWN;
 
   m_nRowStringBytes = 0;
-  
-  m_pSetPix = nullptr;
 }
 
 
