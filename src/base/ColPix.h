@@ -12,8 +12,8 @@ namespace BASE
     struct {
       u8 m_uNumber    :  8; // number
       u8 m_uName      : 16; // name offset
-      u8 m_uType      :  4; // up to 16 column types eCT
       u8 m_uKind      :  3; // cell contains (user col, ptn hash, ...) eCX
+      u8 m_uType      :  4; // up to 16 column types eCT
       u8 m_uDatum     :  4; // up to 16 datums eDM
       u8 m_uLength    : 16; // up to 65,536
       u8 m_uScale     :  5; // up to 31 places

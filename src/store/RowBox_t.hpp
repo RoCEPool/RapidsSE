@@ -986,7 +986,7 @@ void RowBox_t<AREA>::vSlabReport(void)
 template <i8 AREA>
 RowPix* RowBox_t<AREA>::pRowPix(void)
 {
-
+  RASSERT(&m__oRowPix == m_pRowPix)
   return m_pRowPix;
 }
 
