@@ -66,8 +66,19 @@ void Step::vMonitorUpdateNodeStatus(void) {
           // One way for sure is try to socket-connect to this node, if failed then node-is-down message
           TestConnection TestSocket(pNode->szIPAddr(), pNode->iPortNo());
           if (!TestSocket.bTryConnect()) {
-            fprintf(stderr, "Node %s is DOWN\n", pNode->xGetHeartbeat().m_acNodeName);
+            fprintf(stderr, "Node:%s reports Node %s is DOWN\n", gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), pNode->xGetHeartbeat().m_acNodeName);
             pNode->vSetNodeStatus(99); // DOWN
+
+            // Try to restart, if this node is NODE0
+            if (gxCmdLineArgs.m_xSysArgs.m_sNodeName.bSame((Stz*)"NODE0")) {
+              Stz *pCmd = pNode->szGetStartCmd();
+              if (pCmd) printf("TRY TO START: %s\n", pCmd->azChar());
+              i8 iResult = pCmd ? system(pCmd->azChar()) : -1;
+
+              if (-1 == iResult || 127 == iResult) {
+                fprintf(stderr, "FAILED TO RESTART NODE %s\n", pNode->xGetHeartbeat().m_acNodeName);
+              }
+            }
           }
         }
 

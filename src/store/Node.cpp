@@ -80,6 +80,7 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
   MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
   m_iNodeStatus = 0;
   m_iPrevUserUsec = 0;
+  m_sStartCmd = " "_Stz;
   
   _checkInitialised_(CN_NODE);
   
@@ -393,6 +394,27 @@ void   Node::vSetPrevUserUsec(i8 iUsec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   m_iPrevUserUsec = iUsec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set to save start node cmd                                                 */
+/*----------------------------------------------------------------------------*/
+void   Node::vSetStartCmd(Stz* pCmd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  //strncpy(m_sStartCmd, pCmd->azChar(), sizeof(m_sStartCmd)-1);
+  //m_sStartCmd[sizeof(m_sStartCmd)-1] = 0;
+
+  m_sStartCmd.vCopy(pCmd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get saved start node cmd                                                   */
+/*----------------------------------------------------------------------------*/
+Stz*   Node::szGetStartCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return (Stz*)m_sStartCmd;
 }
 
 /*----------------------------------------------------------------------------*/

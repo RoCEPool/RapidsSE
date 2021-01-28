@@ -45,7 +45,7 @@ public:
 
 
   i8   m_iFooter;            //   8
-  char m_acSpare[64];         // 64
+  char m_acSpare[16];        // 16
                              // ---
                              // 496 bytes
 };

@@ -35,7 +35,8 @@ namespace STORE
     Heartbeat m_xHeartbeat; // contains heartbeat info
     i8 m_iPrevUserUsec;
     i1 m_iNodeStatus;  // One byte should be enough. enum later.
-                       // 0=Good, 1=not heard, 2=CPU max, 3=Mem max, 4=Disk max, 99=combination of 2/3/4
+                       // 0=Good, 1=not heard, 2=CPU max, 3=Mem max, 4=Disk max, 5=dead, 99=combination of 2/3/4/5
+    String_t<300> m_sStartCmd;
 
     // must be last
     Footer m_xFooter;
@@ -83,6 +84,8 @@ namespace STORE
     i1   iGetNodeStatus(void);
     i8   iGetPrevUserUsec(void);
     void vSetPrevUserUsec(i8 Usec);
+    void vSetStartCmd(Stz* sCmd);
+    Stz* szGetStartCmd(void);
 
     i1   iGetPrev(void);
 
