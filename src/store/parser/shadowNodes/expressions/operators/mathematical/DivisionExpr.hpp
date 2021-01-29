@@ -1,20 +1,20 @@
 /*============================================================================*/
-/* MultiplicationExpr.hpp - an multiplication (*) expression operator         */
+/* DivisionExpr.hpp - an division (/) expression operator                     */
 /*============================================================================*/
 #pragma once
 
-#include "ArithmeticExpr.hpp"
+#include "MathematicalExpr.hpp"
 
 namespace Parser
 {
   class QueryNode;
   class PlanNode;
 
-  class MultiplicationExpr : public ArithmeticExpr
+  class DivisionExpr : public MathematicalExpr
   {
   private:
     // Shalt never be instantiated. Static functions only.
-    MultiplicationExpr();
+    DivisionExpr();
 
   public:
     static QueryNode* pCreate(QueryNode* pExpr1, QueryNode* pExpr2);

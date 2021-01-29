@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* ArithmeticExpr.hpp - an arithmetic expression operator                     */
+/* MathematicalExpr.hpp - an mathematical expression operator                 */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "ArithmeticExpr.hpp"
+#include "MathematicalExpr.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -20,8 +20,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_ARITHMETIC_NAME_PREFIX = "ArithmeticExpr"_Stz;
-static Stz* C_ARITHMETIC_DEFN = "/__root__/definitions/object/expr/operator/arithmetic"_Stz;
+static Stz* C_MATHEMATICAL_NAME_PREFIX = "MathematicalExpr"_Stz;
+static Stz* C_MATHEMATICAL_DEFN = "/__root__/definitions/object/expr/operator/mathematical"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ static Stz* C_ARITHMETIC_DEFN = "/__root__/definitions/object/expr/operator/arit
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void ArithmeticExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void MathematicalExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -51,9 +51,9 @@ void ArithmeticExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
-b1 ArithmeticExpr::bIsOfType(PlanNode *pNode)
+b1 MathematicalExpr::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_ARITHMETIC_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_MATHEMATICAL_DEFN);
 }
 
 /*============================================================================*/

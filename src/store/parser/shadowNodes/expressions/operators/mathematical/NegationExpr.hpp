@@ -1,23 +1,26 @@
 /*============================================================================*/
-/* ArithmeticExpr.hpp - an arithmetic expression operator                     */
+/* NegationExpr.hpp - an negation (-) expression operator                     */
 /*============================================================================*/
 #pragma once
 
-#include "OperatorExpr.hpp"
+#include "MathematicalExpr.hpp"
 
 namespace Parser
 {
   class QueryNode;
   class PlanNode;
 
-  class ArithmeticExpr : public OperatorExpr
+  class NegationExpr : public MathematicalExpr
   {
   private:
     // Shalt never be instantiated. Static functions only.
-    ArithmeticExpr();
+    NegationExpr();
 
   public:
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static QueryNode* pCreate(QueryNode* pExpr1);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+
+    static QueryNode* pChild1(QueryNode* pNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);

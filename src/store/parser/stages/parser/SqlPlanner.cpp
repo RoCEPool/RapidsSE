@@ -33,12 +33,13 @@
 #include "store/parser/shadowNodes/expressions/literals/DateLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimeLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimestampLiteral.hpp"
-#include "store/parser/shadowNodes/expressions/operators/arithmetic/AdditionExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/arithmetic/SubtractionExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/arithmetic/MultiplicationExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/arithmetic/DivisionExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/arithmetic/ModulusExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/arithmetic/NegationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/AdditionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/SubtractionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/MultiplicationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/DivisionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/ModulusExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/NegationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/EqExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
@@ -547,9 +548,9 @@ antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
 //  } else if (sOp.bEqual("<="_Stz)) {
 //    pOpExpr = LeExpr::pCreate(pExpr1, pExpr2);
 //
-//  } else if (sOp.bEqual("="_Stz)) {
-//    pOpExpr = EqExpr::pCreate(pExpr1, pExpr2);
-//
+  } else if (sOp.bEqual("="_Stz)) {
+    pOpExpr = EqExpr::pCreate(pExpr1, pExpr2);
+
 //  } else if (sOp.bEqual("!="_Stz)) {
 //    pOpExpr = NeqExpr::pCreate(pExpr1, pExpr2);
 //

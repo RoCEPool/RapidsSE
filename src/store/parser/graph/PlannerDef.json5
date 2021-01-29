@@ -705,12 +705,12 @@
                     ]} // end __constraints container
                   ],
                   children: [
-// Path: /__root__/definitions/object/expr/operator/arithmetic
+// Path: /__root__/definitions/object/expr/operator/mathematical
                     {
-                      name: "arithmetic",
-                      value: "An arithmetic expression operator (+, -, *, /, etc)",
+                      name: "mathematical",
+                      value: "Mathematical expression operator that can be represented by a single symbol (+, -, *, /, etc). Not to be confused with mathematical functions.",
                       children: [
-// Path: /__root__/definitions/object/expr/operator/arithmetic/addition
+// Path: /__root__/definitions/object/expr/operator/mathematical/addition
                         {
                           name: "addition",
                           value: "Addition operator",
@@ -729,7 +729,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/arithmetic/subtraction
+// Path: /__root__/definitions/object/expr/operator/mathematical/subtraction
                         {
                           name: "subtraction",
                           value: "Subtraction operator",
@@ -748,7 +748,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/arithmetic/multiplication
+// Path: /__root__/definitions/object/expr/operator/mathematical/multiplication
                         {
                           name: "multiplication",
                           value: "Multiplication operator",
@@ -767,7 +767,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/arithmetic/division
+// Path: /__root__/definitions/object/expr/operator/mathematical/division
                         {
                           name: "division",
                           value: "Division operator",
@@ -786,7 +786,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/arithmetic/modulus
+// Path: /__root__/definitions/object/expr/operator/mathematical/modulus
                         {
                           name: "modulus",
                           value: "Modulus operator",
@@ -805,13 +805,12 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/identity   // unary +
-// Path: /__root__/definitions/object/expr/operator/arithmetic/negation   // unary -
+// Path: /__root__/definitions/object/expr/operator/mathematical/identity   // unary +
                         {
-                          name: "negation",
-                          value: "Negation operator",
+                          name: "identity",
+                          value: "Unary identity operator",
                           properties: [
-                            // Add a constraint that the modulus operator must have one child
+                            // Add a constraint that the identity operator must have one child
                             { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childCount",
@@ -825,17 +824,104 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/power
-// TODO Path: /__root__/definitions/object/expr/operator/arithmetic/log
+// Path: /__root__/definitions/object/expr/operator/mathematical/negation   // unary -
+                        {
+                          name: "negation",
+                          value: "Unary negation operator",
+                          properties: [
+                            // Add a constraint that the negation operator must have one child
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        },
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/exponentiation
+//                        {
+//                          name: "exponentiation",
+//                          value: "Exponentiation operator, x^y",
+//                          properties: [
+//                            { name: "base",     type: "/__root__/definitions/object/expr", value: "The base that is to be raised to the exponent" },
+//                            { name: "exponent", type: "/__root__/definitions/object/expr", value: "The exponent that the base is raised to" }
+//
+//                            // Add a constraint that the exponential operator must have no children
+//                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+//                              { name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
+//                            ]} // end __constraints container
+//                          ]
+//                        },
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/abs
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/ceil
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/exp
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/factorial
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/floor
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/ln
+//                        {
+//                          name: "ln",
+//                          value: "Natural logarithm operator, LN(y)",
+//                          properties: [
+//                            // Add a constraint that the log operator must have one child - the value whose natural root we're finding
+//                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+//                              {
+//                                name: "childCount",
+//                                type:  "/__root__/primitives/constraints/childCount",
+//                                children: [ {
+//                                  name: "childCountParam",
+//                                  type: "/__root__/definitions/object/valueObject/integerObject",
+//                                  value: 1
+//                                } ]
+//                              }
+//                            ]} // end __constraints container
+//                          ]
+//                        },
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/log
+//                        {
+//                          name: "log",
+//                          value: "Logarithm operator with base, LOG<base x>(y)",
+//                          properties: [
+//                            { name: "base",     type: "/__root__/definitions/object/expr", value: "The base that is to be raised to the exponent" },
+//
+//                            // Add a constraint that the log operator must have one child - the value whose root we're finding
+//                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+//                              {
+//                                name: "childCount",
+//                                type:  "/__root__/primitives/constraints/childCount",
+//                                children: [ {
+//                                  name: "childCountParam",
+//                                  type: "/__root__/definitions/object/valueObject/integerObject",
+//                                  value: 1
+//                                } ]
+//                              }
+//                            ]} // end __constraints container
+//                          ]
+//                        },
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/round
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/sqrt
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/cos
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/cot
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/sin
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/tan
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/acos
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/acot
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/asin
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/atan
+// TODO Path: /__root__/definitions/object/expr/operator/mathematical/atan2
 
                       ]
-                    }, // EndPath: /__root__/definitions/object/expr/operator/arithmetic
-// Path: /__root__/definitions/object/expr/operator/relational
+                    }, // EndPath: /__root__/definitions/object/expr/operator/mathematical
+// Path: /__root__/definitions/object/expr/operator/comparison
                     {
-                      name: "relational",
-                      value: "A relational expression operator (=, !=, <, >, etc)",
+                      name: "comparison",
+                      value: "A comparison expression operator (=, !=, <, >, etc)",
                       children: [
-// Path: /__root__/definitions/object/expr/operator/relational/eq
+// Path: /__root__/definitions/object/expr/operator/comparison/eq
                         {
                           name: "eq",
                           value: "Equals operator (=)",
@@ -854,7 +940,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/relational/ne
+// Path: /__root__/definitions/object/expr/operator/comparison/ne
                         {
                           name: "ne",
                           value: "Not equals operator (!=)",
@@ -873,7 +959,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/relational/gt
+// Path: /__root__/definitions/object/expr/operator/comparison/gt
                         {
                           name: "gt",
                           value: "Greater than operator (>)",
@@ -892,7 +978,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/relational/lt
+// Path: /__root__/definitions/object/expr/operator/comparison/lt
                         {
                           name: "lt",
                           value: "Less than operator (<)",
@@ -911,7 +997,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/relational/ge
+// Path: /__root__/definitions/object/expr/operator/comparison/ge
                         {
                           name: "ge",
                           value: "Greater than or equals to operator (>=)",
@@ -930,7 +1016,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/relational/le
+// Path: /__root__/definitions/object/expr/operator/comparison/le
                         {
                           name: "le",
                           value: "Less than or equals to operator (<=)",
@@ -949,10 +1035,10 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/relational/in
-// TODO Path: /__root__/definitions/object/expr/operator/relational/any
+// TODO Path: /__root__/definitions/object/expr/operator/comparison/in
+// TODO Path: /__root__/definitions/object/expr/operator/comparison/any
 
-// Path: /__root__/definitions/object/expr/operator/relational/between
+// Path: /__root__/definitions/object/expr/operator/comparison/between
                         {
                           name: "between",
                           value: "BETWEEN operator",
@@ -974,10 +1060,10 @@
                             }
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/relational/exits
-// TODO Path: /__root__/definitions/object/expr/operator/relational/like
+// TODO Path: /__root__/definitions/object/expr/operator/comparison/exists
+// TODO Path: /__root__/definitions/object/expr/operator/comparison/like
                       ]
-                    }, // Path: /__root__/definitions/object/expr/operator/relational
+                    }, // EndPath: /__root__/definitions/object/expr/operator/comparison
 // Path: /__root__/definitions/object/expr/operator/logical
                     {
                       name: "logical",
@@ -1077,7 +1163,8 @@
                               }
                             ]} // end __constraints container
                           ]
-                        }
+                        },
+// TODO Path: /__root__/definitions/object/expr/operator/function/like
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/logical
 // Path: /__root__/definitions/object/expr/operator/aggregation
@@ -1174,7 +1261,6 @@
                       name: "function",
                       value: "A function expression operator",
                       children: [
-// TODO Path: /__root__/definitions/object/expr/operator/function/like
 // TODO Path: /__root__/definitions/object/expr/operator/function/case
 // TODO Path: /__root__/definitions/object/expr/operator/function/concat  (also || operator)
 // TODO Path: /__root__/definitions/object/expr/operator/function/udf

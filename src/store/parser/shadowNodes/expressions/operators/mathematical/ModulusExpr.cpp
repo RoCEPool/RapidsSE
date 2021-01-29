@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* MultiplicationExpr.hpp - an multiplication (-) expression operator               */
+/* ModulusExpr.hpp - an modulus (%) expression operator                       */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "MultiplicationExpr.hpp"
+#include "ModulusExpr.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -13,22 +13,22 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_MULTIPLICATION_NAME_PREFIX = "MultiplicationExpr"_Stz;
-static Stz* C_MULTIPLICATION_DEFN = "/__root__/definitions/object/expr/operator/arithmetic/multiplication"_Stz;
+static Stz* C_MODULUS_NAME_PREFIX = "ModulusExpr"_Stz;
+static Stz* C_MODULUS_DEFN = "/__root__/definitions/object/expr/operator/mathematical/modulus"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-QueryNode* MultiplicationExpr::pCreate(QueryNode* pExpr1, QueryNode* pExpr2)
+QueryNode* ModulusExpr::pCreate(QueryNode* pExpr1, QueryNode* pExpr2)
 {
   _static_
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_MULTIPLICATION_NAME_PREFIX, sName);
+  ShadowNode::vObjName(C_MODULUS_NAME_PREFIX, sName);
 
-  QueryNode* pExpr = new QueryNode(sName, C_MULTIPLICATION_DEFN);
+  QueryNode* pExpr = new QueryNode(sName, C_MODULUS_DEFN);
   pExpr->vAppendChild(pExpr1);
   pExpr->vAppendChild(pExpr2);
 
@@ -39,13 +39,13 @@ QueryNode* MultiplicationExpr::pCreate(QueryNode* pExpr1, QueryNode* pExpr2)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void MultiplicationExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ModulusExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pChild1 = MultiplicationExpr::pChild1(static_cast<QueryNode*>(pNode));
-  QueryNode* pChild2 = MultiplicationExpr::pChild2(static_cast<QueryNode*>(pNode));
+  QueryNode* pChild1 = ModulusExpr::pChild1(static_cast<QueryNode*>(pNode));
+  QueryNode* pChild2 = ModulusExpr::pChild2(static_cast<QueryNode*>(pNode));
 
   if (pChild1->nChildren() == 0) {
     Expr::vDescribe(pChild1, sBuf);
@@ -56,7 +56,7 @@ void MultiplicationExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
     sBuf.vConcat(")"_Stz);
   }
 
-  sBuf.vConcat(" * "_Stz);
+  sBuf.vConcat(" % "_Stz);
 
   if (pChild2->nChildren() == 0) {
     Expr::vDescribe(pChild2, sBuf);
@@ -71,7 +71,7 @@ void MultiplicationExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Return the first child expression of this operator                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* MultiplicationExpr::pChild1(QueryNode *pNode)
+QueryNode* ModulusExpr::pChild1(QueryNode *pNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -83,7 +83,7 @@ QueryNode* MultiplicationExpr::pChild1(QueryNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Return the second child expression of this operator                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* MultiplicationExpr::pChild2(QueryNode *pNode)
+QueryNode* ModulusExpr::pChild2(QueryNode *pNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -96,9 +96,9 @@ QueryNode* MultiplicationExpr::pChild2(QueryNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
-b1 MultiplicationExpr::bIsOfType(PlanNode *pNode)
+b1 ModulusExpr::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_MULTIPLICATION_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_MODULUS_DEFN);
 }
 
 /*============================================================================*/

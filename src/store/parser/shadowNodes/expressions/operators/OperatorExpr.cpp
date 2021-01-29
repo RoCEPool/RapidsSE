@@ -8,7 +8,8 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "arithmetic/ArithmeticExpr.hpp"
+#include "mathematical/MathematicalExpr.hpp"
+#include "comparison/ComparisonExpr.hpp"
 
 using namespace Parser;
 
@@ -31,8 +32,8 @@ void OperatorExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (ArithmeticExpr::bIsOfType(pNode))    { ArithmeticExpr::vDescribe(pNode, sBuf); }
-//  else if (RelationalExpr::bIsOfType(pNode))    { RelationalExpr::vDescribe(pNode, sBuf); }
+  if      (MathematicalExpr::bIsOfType(pNode))  { MathematicalExpr::vDescribe(pNode, sBuf); }
+  else if (ComparisonExpr::bIsOfType(pNode))    { ComparisonExpr::vDescribe(pNode, sBuf);   }
 //  else if (LogicalExpr::bIsOfType(pNode))       { LogicalExpr::vDescribe(pNode, sBuf);    }
 //  else if (AggregateExpr::bIsOfType(pNode))     { AggregateExpr::vDescribe(pNode, sBuf);  }
 //  else if (FunctionExpr::bIsOfType(pNode))      { FunctionExpr::vDescribe(pNode, sBuf);   }

@@ -1,27 +1,23 @@
 /*============================================================================*/
-/* ModulusExpr.hpp - an modulus (%) expression operator                       */
+/* ComparisonExpr.hpp - an abstract expression operator for comparing exprs   */
 /*============================================================================*/
 #pragma once
 
-#include "ArithmeticExpr.hpp"
+#include "OperatorExpr.hpp"
 
 namespace Parser
 {
   class QueryNode;
   class PlanNode;
 
-  class ModulusExpr : public ArithmeticExpr
+  class ComparisonExpr : public OperatorExpr
   {
   private:
     // Shalt never be instantiated. Static functions only.
-    ModulusExpr();
+    ComparisonExpr();
 
   public:
-    static QueryNode* pCreate(QueryNode* pExpr1, QueryNode* pExpr2);
-    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
-
-    static QueryNode* pChild1(QueryNode* pNode);
-    static QueryNode* pChild2(QueryNode* pNode);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);

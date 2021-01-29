@@ -1,20 +1,20 @@
 /*============================================================================*/
-/* SubtractionExpr.hpp - an subtraction (-) expression operator               */
+/* EqExpr.hpp - an equality (=) expression operator                           */
 /*============================================================================*/
 #pragma once
 
-#include "ArithmeticExpr.hpp"
+#include "ComparisonExpr.hpp"
 
 namespace Parser
 {
   class QueryNode;
   class PlanNode;
 
-  class SubtractionExpr : public ArithmeticExpr
+  class EqExpr : public ComparisonExpr
   {
   private:
     // Shalt never be instantiated. Static functions only.
-    SubtractionExpr();
+    EqExpr();
 
   public:
     static QueryNode* pCreate(QueryNode* pExpr1, QueryNode* pExpr2);
