@@ -5,6 +5,8 @@
 
 #include "eDM.h"
 
+#define C_ROWPIX_TEST 512
+
 namespace BASE
 {
   class RowPix : public Object
@@ -25,6 +27,8 @@ namespace BASE
 
     ColPix m_xaColPix[C_MAX_DEFCOLUMNS];        // column pix array
     //byte   m_baPixArea[C_8KB];   // pix and names
+  
+    i8 m__Test[C_ROWPIX_TEST]; // see if this reproduces problem on Linux
 
     // must be last
     Footer m_xFooter;
