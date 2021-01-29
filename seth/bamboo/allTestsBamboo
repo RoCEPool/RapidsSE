@@ -1,3 +1,7 @@
+################################################################################
+# allTestsBamboo-- all tests (single-node)                                     #
+################################################################################
+
 # This is the testList file for Bamboo.
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
@@ -19,3 +23,7 @@
 ../tests/Table/testList
 ../tests/Index/testList
 ../tests/Tpch/testList
+
+################################################################################
+# end                                                                          #
+################################################################################
