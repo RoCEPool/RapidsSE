@@ -27,11 +27,13 @@ namespace BASE
     i8 m_nTotalChars;  // 7)
 
     //ColPix m_xaColPix[C_MAX_DEFCOLUMNS];        // column pix array
+  union {
     ColPix m_xaColPix[1];          // column pix array
     //byte   m_baPixArea[C_8KB];   // pix and names
   
     //i8 m__i8Test[C_ROWPIX_TEST_I8]; // see if this reproduces problem on Linux
     byte m__b1Test[C_ROWPIX_TEST_B1]; // see if this reproduces problem on Linux
+  };
   
     // must be last
     Footer m_xFooter;
