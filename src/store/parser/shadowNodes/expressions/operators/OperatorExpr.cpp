@@ -8,7 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "ArithmeticExpr.hpp"
+#include "arithmetic/ArithmeticExpr.hpp"
 
 using namespace Parser;
 
