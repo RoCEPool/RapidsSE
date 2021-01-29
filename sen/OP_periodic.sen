@@ -47,6 +47,7 @@
   then
 
   Operand[].newPulsedMarker
+  "piping out a pulsedMarker" .
   Operand[].pipeOut
   //Op.ackPipelineJob
 
