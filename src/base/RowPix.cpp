@@ -67,8 +67,10 @@ RowPix::RowPix(void)
   //MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
 
   for (i8 i_Test = 0; i_Test < C_ROWPIX_TEST; i_Test++)
-  m__Test[i_Test] = 0;
-  
+    m__Test[i_Test] = 0;
+
+  //MemLib::vZero(m__Test,sizeof(m__Test),CN_ROWPIX);
+
   _checkInitialised_(CN_ROWPIX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);

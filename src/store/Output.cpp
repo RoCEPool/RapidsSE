@@ -63,9 +63,11 @@ Output::~Output(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  if (m_pOutputQueue)
+  if (m_pOutputQueue) {
+    RASSERT(! m_pOutputQueue->iCount());
     delete m_pOutputQueue;
-  m_pOutputQueue = nullptr;
+    m_pOutputQueue = nullptr;
+  }
   
   if (m_pStreamDef_result)
     delete m_pStreamDef_result;
