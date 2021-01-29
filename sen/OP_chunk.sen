@@ -34,7 +34,7 @@
 
   // send EOSMARKER
   Operand[].newEosMarker
-  "piping out an EOSMARKER" .
+  //"piping out an EOSMARKER" .
   Operand[].pipeOut
 
   true
