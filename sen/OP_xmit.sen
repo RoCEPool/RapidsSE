@@ -5,17 +5,6 @@
 " OP_xmit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: xmit_CancelMarker \handler
-
-  //"Operand:- ZK_CANCELMARKER" .verbose
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  false
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
 : xmit_EosMarker \handler
@@ -75,7 +64,6 @@
 
   op__topology
 
-  find: xmit_CancelMarker  ZK_CANCELMARKER  op[].handler!
   find: xmit_DestroyMarker ZK_DESTROYMARKER op[].handler!
   find: xmit_EosMarker     ZK_EOSMARKER     op[].handler!
   find: xmit_RowBuffer     ZK_ROWBUFFER     op[].handler!
