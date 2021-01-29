@@ -33,12 +33,12 @@
 #include "store/parser/shadowNodes/expressions/literals/DateLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimeLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimestampLiteral.hpp"
-#include "store/parser/shadowNodes/expressions/operators/AdditionExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/SubtractionExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/MultiplicationExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/DivisionExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/ModulusExpr.hpp"
-#include "store/parser/shadowNodes/expressions/operators/NegationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/arithmetic/AdditionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/arithmetic/SubtractionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/arithmetic/MultiplicationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/arithmetic/DivisionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/arithmetic/ModulusExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/arithmetic/NegationExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
