@@ -24,7 +24,7 @@
   begin
     counter1[] counter0[] >
   while
-    counter1[] "counter1 %v" .printf
+    //counter1[] "counter1 %v" .printf
 
     // create an infoSet operand
     infoSetTable[] InfoSet[].new

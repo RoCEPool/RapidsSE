@@ -4165,7 +4165,7 @@ void Task::vAddMunged(Task* pTask)
     "  begin\n"
     "    counter1[] counter0[] >\n"
     "  while\n"
-    "    counter1[] \"counter1 %v\" .printf\n"
+    "    //counter1[] \"counter1 %v\" .printf\n"
     "\n"
     "    // create an infoSet operand\n"
     "    infoSetTable[] InfoSet[].new\n"
