@@ -37,6 +37,7 @@ namespace STORE
     Output(void);
    ~Output(void) noexcept(false);
   
+    void vAssertEmptyQueue(void);
     void vDrainBufferQueue(Session* pSession);
     void vProcessBufferQueue(Session* pSession);
   

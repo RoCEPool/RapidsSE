@@ -80,6 +80,19 @@ Output::~Output(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* assert empty output queue                                                  */
+/*----------------------------------------------------------------------------*/
+void Output::vAssertEmptyQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  RASSERT(! m_pOutputQueue->iCount());
+  
+  RASSERT(! m_bExitMarker);
+  RASSERT(! m_bCancelMarker);
+}
+
+/*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
 void Output::vDrainBufferQueue(Session* pSession)
