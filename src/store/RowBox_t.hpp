@@ -161,10 +161,10 @@ RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   vInitRowBox_t();
 
-  pStreamDef->vToRowPix(&m__oRowPix,bAddPtnHash);
-  
-  m_pRowPix = & m__oRowPix;
+  pAllotRowPix();
 
+  pStreamDef->vToRowPix(m_pRowPix,bAddPtnHash);
+  
   m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
     
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
@@ -226,7 +226,7 @@ void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
 
   pAllotRowPix();
   
-  pStreamDef->vToRowPix(&m__oRowPix,false);
+  pStreamDef->vToRowPix(m_pRowPix,false);
   
   m_nRowSizeProper = Row::nRowProper(m_pRowPix->m_nColumns);
   
@@ -302,7 +302,7 @@ void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
 
   pAllotRowPix();
 
-  MemLib::vCopy(&m__oRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
+  MemLib::vCopy(m_pRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
   m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
 }
@@ -802,7 +802,7 @@ void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
   
   pAllotRowPix();
 
-  pStreamDef->vToRowPix(&m__oRowPix,bPtnHash);
+  pStreamDef->vToRowPix(m_pRowPix,bPtnHash);
   
   m_nRowSizeProper = Row::nRowProper(m_pRowPix->m_nColumns);
 }
