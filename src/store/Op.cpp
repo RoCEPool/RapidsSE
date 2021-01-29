@@ -135,7 +135,7 @@ Op::~Op(void) noexcept(false)
       vTrace("Operand Queue not empty\n"_Stz);
       Operand *pOperand = m_pQueueLeft->pPop();
       while (pOperand) {
-        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+//        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
         pOperand = m_pQueueLeft->pPop();
       }
       RASSERT(0);
@@ -144,7 +144,7 @@ Op::~Op(void) noexcept(false)
       vTrace("Operand Queue not empty\n"_Stz);
       Operand *pOperand = m_pQueueRight->pPop();
       while (pOperand) {
-        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+//        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
         pOperand = m_pQueueRight->pPop();
       }
       RASSERT(0);
@@ -155,7 +155,7 @@ Op::~Op(void) noexcept(false)
       vTrace("Operand Queue not empty\n"_Stz);
       Operand *pOperand = m_pQueueLeft->pPop();
       while (pOperand) {
-        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+//        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
         pOperand = m_pQueueLeft->pPop();
       }
     }
@@ -163,7 +163,7 @@ Op::~Op(void) noexcept(false)
       vTrace("Operand Queue not empty\n"_Stz);
       Operand *pOperand = m_pQueueRight->pPop();
       while (pOperand) {
-        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+//        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
         pOperand = m_pQueueRight->pPop();
       }
     }

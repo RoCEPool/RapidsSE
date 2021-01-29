@@ -61,9 +61,11 @@ RowPix::RowPix(void)
 
   
   
-  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
-    m_xaColPix[i_Col].m_uAsU8 = 0;
-  }
+//  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
+//    m_xaColPix[i_Col].m_uAsU8 = 0;
+//  }
+  
+  m_xaColPix[0].m_uAsU8 = 0;
 
   //m_xaColPix[0].m_uAsU8 = 0;
   //MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
