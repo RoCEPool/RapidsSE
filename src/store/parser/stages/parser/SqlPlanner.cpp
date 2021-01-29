@@ -40,6 +40,11 @@
 #include "store/parser/shadowNodes/expressions/operators/mathematical/ModulusExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/NegationExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/EqExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/NeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/GtExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/GeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/LtExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/LeExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
@@ -542,28 +547,28 @@ antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
   } else if (sOp.bEqual("%"_Stz)) {
     pOpExpr = ModulusExpr::pCreate(pExpr1, pExpr2);
 
-//  } else if (sOp.bEqual("<"_Stz)) {
-//    pOpExpr = LtExpr::pCreate(pExpr1, pExpr2);
-//
-//  } else if (sOp.bEqual("<="_Stz)) {
-//    pOpExpr = LeExpr::pCreate(pExpr1, pExpr2);
-//
+  } else if (sOp.bEqual("<"_Stz)) {
+    pOpExpr = LtExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("<="_Stz)) {
+    pOpExpr = LeExpr::pCreate(pExpr1, pExpr2);
+
   } else if (sOp.bEqual("="_Stz)) {
     pOpExpr = EqExpr::pCreate(pExpr1, pExpr2);
 
-//  } else if (sOp.bEqual("!="_Stz)) {
-//    pOpExpr = NeqExpr::pCreate(pExpr1, pExpr2);
-//
-//  } else if (sOp.bEqual("<>"_Stz)) {
-//    pOpExpr = NeqExpr::pCreate(pExpr1, pExpr2);
-//
-//  } else if (sOp.bEqual(">="_Stz)) {
-//    pOpExpr = GeExpr::pCreate(pExpr1, pExpr2);
-//
-//  } else if (sOp.bEqual(">"_Stz)) {
-//    pOpExpr = GtExpr::pCreate(pExpr1, pExpr2);
-//
-//  } else if (sOp.bEqual("||"_Stz)) {
+  } else if (sOp.bEqual("!="_Stz)) {
+    pOpExpr = NeExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("<>"_Stz)) {
+    pOpExpr = NeExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual(">="_Stz)) {
+    pOpExpr = GeExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual(">"_Stz)) {
+    pOpExpr = GtExpr::pCreate(pExpr1, pExpr2);
+
+//  } else if (sOp.bEqual("||"_Stz)) {                  // concatenation
 //    pOpExpr = ConcatExpr::pCreate(pExpr1, pExpr2);
 
   } else {

@@ -9,11 +9,11 @@
 #include "QueryNode.hpp"
 
 #include "EqExpr.hpp"
-//#include "NeExpr.hpp"
-//#include "GtExpr.hpp"
-//#include "GeExpr.hpp"
-//#include "LtExpr.hpp"
-//#include "LeExpr.hpp"
+#include "NeExpr.hpp"
+#include "GtExpr.hpp"
+#include "GeExpr.hpp"
+#include "LtExpr.hpp"
+#include "LeExpr.hpp"
 //#include "BetweenExpr.hpp"
 //#include "InExpr.hpp"
 //#include "AnyExpr.hpp"
@@ -42,11 +42,11 @@ void ComparisonExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   if      (EqExpr::bIsOfType(pNode))        { EqExpr::vDescribe(pNode, sBuf);       }
-//  else if (NeExpr::bIsOfType(pNode))        { NeExpr::vDescribe(pNode, sBuf);       }
-//  else if (GtExpr::bIsOfType(pNode))        { GtExpr::vDescribe(pNode, sBuf);       }
-//  else if (GeExpr::bIsOfType(pNode))        { GeExpr::vDescribe(pNode, sBuf);       }
-//  else if (LtExpr::bIsOfType(pNode))        { LtExpr::vDescribe(pNode, sBuf);       }
-//  else if (LeExpr::bIsOfType(pNode))        { LeExpr::vDescribe(pNode, sBuf);       }
+  else if (NeExpr::bIsOfType(pNode))        { NeExpr::vDescribe(pNode, sBuf);       }
+  else if (GtExpr::bIsOfType(pNode))        { GtExpr::vDescribe(pNode, sBuf);       }
+  else if (GeExpr::bIsOfType(pNode))        { GeExpr::vDescribe(pNode, sBuf);       }
+  else if (LtExpr::bIsOfType(pNode))        { LtExpr::vDescribe(pNode, sBuf);       }
+  else if (LeExpr::bIsOfType(pNode))        { LeExpr::vDescribe(pNode, sBuf);       }
 //  else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribe(pNode, sBuf);  }
 //  else if (InExpr::bIsOfType(pNode))        { InExpr::vDescribe(pNode, sBuf);       }
 //  else if (AnyExpr::bIsOfType(pNode))       { AnyExpr::vDescribe(pNode, sBuf);      }
