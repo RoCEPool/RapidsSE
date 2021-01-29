@@ -3,10 +3,10 @@
 # This is a recursive testList file.
 
 ../tests/BackEnd/testList
-../tests/Demo/testList
-../testsMN/Datums/testList
-../tests/Ddl/testList
-../testsMN/Index/testList
-../tests/LocalFunctions/testList
-../testsMN/Misc/testList
-../tests/Table/testList
+//../tests/Demo/testList
+//../testsMN/Datums/testList
+//../tests/Ddl/testList
+//../testsMN/Index/testList
+//../tests/LocalFunctions/testList
+//../testsMN/Misc/testList
+//../tests/Table/testList
