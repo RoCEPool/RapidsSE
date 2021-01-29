@@ -240,7 +240,7 @@ void Op::vAckJob(void)
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr
   
-  if (m_bTraceOp)
+  //if (m_bTraceOp)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
            AM::szJobName(m_pOpJob),
            m_pStage->szStageNm(),
