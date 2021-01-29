@@ -61,7 +61,7 @@ RowPix::RowPix(void)
 
   
   
-  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
+  for (i8 i_Col = 0; i_Col < C_ROWPIX_COLUMNS; i_Col++) {
     m_xaColPix[i_Col].m_uAsU8 = 0;
   }
   
