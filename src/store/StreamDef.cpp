@@ -374,14 +374,16 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   ColPix* axaColPixDst = pRowPixDst->m_xaColPix;
   
-  char* azNameDst;
   i8 nNameSize;
   i8 nStzOfs;
   
   
-  pRowPixDst->m_nTotalChars =
-    sizeof(ColPix) * (m_nColumns - 1);
-  
+  pRowPixDst->m_nNameOffset = sizeof(ColPix) * m_nColumns;
+  pRowPixDst->m_nTotalChars = 0;
+
+  char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
+  char* azColNmDst = azNames;
+
   i8 i_Col;
           
   for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -390,24 +392,25 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     
     ColPix* axColPixDst = &axaColPixDst[i_Col];
 
-    axColPixDst->m_uNumber   = (u4)i_Col;
+    axColPixDst->m_uNumber   = (u8)i_Col;
     // name
-    axColPixDst->m_uKind     = (u4)CX_USERCOL;
-    axColPixDst->m_uType     = (u4)pColumn->eColumnType();
-    axColPixDst->m_uDatum    = (u4)pColumn->eDatum();
-    axColPixDst->m_uLength   = (u4)pColumn->iColumnLength();
-    axColPixDst->m_uScale    = (u4)pColumn->iColumnScale();
-    axColPixDst->m_bNullable = (u4)pColumn->bIsNullable();
-    axColPixDst->m_bPtnKey   = (u4)pColumn->bIsPtnKey();
-    axColPixDst->m_uSpare    = (u4)0;
+    axColPixDst->m_uKind     = (u8)CX_USERCOL;
+    axColPixDst->m_uType     = (u8)pColumn->eColumnType();
+    axColPixDst->m_uDatum    = (u8)pColumn->eDatum();
+    axColPixDst->m_uLength   = (u8)pColumn->iColumnLength();
+    axColPixDst->m_uScale    = (u8)pColumn->iColumnScale();
+    axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
+    axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
+    axColPixDst->m_uSpare    = (u8)0;
     
-//    nNameSize = pColumn->szColNm()->nSize();
-//    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
-//    StrLib::vCopy(azNameDst,pColumn->szColNm()->azChar());
-//    
-//    nStzOfs = nDifference(axColPixDst,azNameDst);
-//    axColPixDst->m_uName = nStzOfs;
-//    pRowPixDst->m_nTotalChars += nNameSize;
+    StrLib::vCopy(azColNmDst,pColumn->szColNm()->azChar());
+    nNameSize = StrLib::nSize(azColNmDst);
+
+    nStzOfs = nDifference(axColPixDst,azColNmDst);
+    axColPixDst->m_uName = nStzOfs;
+    
+    azColNmDst += nNameSize;
+    pRowPixDst->m_nTotalChars += nNameSize;
   }
 
   // i_Col falls thru
@@ -416,26 +419,28 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 
     ColPix* axColPixDst = &axaColPixDst[i_Col];
   
-    axColPixDst->m_uNumber   = (u4)i_Col;
+    axColPixDst->m_uNumber   = (u8)i_Col;
     // name
-    axColPixDst->m_uKind     = (u4)CX_PTNHASH;
-    axColPixDst->m_uType     = (u4)CT_INTEGER;
-    axColPixDst->m_uDatum    = (u4)DM_INT;
-    axColPixDst->m_uLength   = (u4)C_MAX_INT_PRECISION;
-    axColPixDst->m_uScale    = (u4)0;
-    axColPixDst->m_bNullable = (u4)false;
-    axColPixDst->m_bPtnKey   = (u4)false;
-    axColPixDst->m_uSpare    = (u4)0;
+    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
+    axColPixDst->m_uType     = (u8)CT_INTEGER;
+    axColPixDst->m_uDatum    = (u8)DM_INT;
+    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
+    axColPixDst->m_uScale    = (u8)0;
+    axColPixDst->m_bNullable = (u8)false;
+    axColPixDst->m_bPtnKey   = (u8)false;
+    axColPixDst->m_uSpare    = (u8)0;
     
-//    azNameDst = (char*)&pRowPixDst->m_baPixArea[pRowPixDst->m_nTotalChars];
-//    StrLib::vCopy(azNameDst,"__ptnHsh");
-//    nNameSize = StrLib::nSize(azNameDst);
-//    
-//    nStzOfs = nDifference(axColPixDst,azNameDst);
-//    axColPixDst->m_uName = nStzOfs;
-//    pRowPixDst->m_nTotalChars += nNameSize;
+    StrLib::vCopy(azColNmDst,"__ptnHsh");
+    nNameSize = StrLib::nSize(azColNmDst);
 
+    nStzOfs = nDifference(axColPixDst,azColNmDst);
+    axColPixDst->m_uName = nStzOfs;
+
+    azColNmDst += nNameSize;
+    pRowPixDst->m_nTotalChars += nNameSize;
   }
+  
+  * azColNmDst = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,8 +470,8 @@ void StreamDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   pRowPixDst->m_bInitialised = true;
   
-//  if (AM::bDeveloper())
-//    pRowPixDst->vPrint();
+  if (AM::bDeveloper())
+    pRowPixDst->vPrint();
 
 }
 

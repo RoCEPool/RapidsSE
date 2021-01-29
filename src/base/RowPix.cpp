@@ -60,25 +60,12 @@ RowPix::RowPix(void)
   m_nTotalChars  = 0;
 
   
-  
-  for (i8 i_Col = 0; i_Col < C_ROWPIX_COLUMNS; i_Col++) {
+  for (i8 i_Col = 0; i_Col < C_ROWPIX_COLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsU8 = 0;
-  }
   
-  //m_xaColPix[0].m_uAsU8 = 0;
-
-  //m_xaColPix[0].m_uAsU8 = 0;
-  //MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
-
-  //for (i8 i_Test = 0; i_Test < C_ROWPIX_TEST_I8; i_Test++)
-  //  m__i8Test[i_Test] = 0;
-
-  //MemLib::vZero(m__i8Test,sizeof(m__i8Test),CN_ROWPIX);
-
-  MemLib::vZero(m__b1Test,sizeof(m__b1Test),CN_ROWPIX);
+  MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
   
   
-
   _checkInitialised_(CN_ROWPIX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
