@@ -150,6 +150,24 @@ Op::~Op(void) noexcept(false)
       RASSERT(0);
     }
   }
+  else {
+    if (m_pQueueLeft->nItems() != 0) {
+      vTrace("Operand Queue not empty\n"_Stz);
+      Operand *pOperand = m_pQueueLeft->pPop();
+      while (pOperand) {
+        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+        pOperand = m_pQueueLeft->pPop();
+      }
+    }
+    if (m_pQueueRight->nItems() != 0) {
+      vTrace("Operand Queue not empty\n"_Stz);
+      Operand *pOperand = m_pQueueRight->pPop();
+      while (pOperand) {
+        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+        pOperand = m_pQueueRight->pPop();
+      }
+    }
+  }
 
   delete m_pQueueLeft;
   delete m_pQueueRight;
