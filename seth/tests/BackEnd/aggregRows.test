@@ -42,7 +42,7 @@ aggregRows lineitem "sum ( l_discount )";
 rows: 0
 
 // load data
-load lineitem "../DATA/TPCH/lineitem10.csv";
+/traceOp load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
