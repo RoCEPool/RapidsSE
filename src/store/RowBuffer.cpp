@@ -218,6 +218,18 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get string area                                                            */
+/*----------------------------------------------------------------------------*/
+char* RowBuffer::azStrArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  char* azArea = ((char*)ayLatterHead()) + 1;
+
+  return azArea;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert this row buffer into one or more csv buffers                       */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* RowBuffer::pToCsvBuffer(void)

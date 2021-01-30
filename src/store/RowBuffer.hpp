@@ -36,6 +36,8 @@ namespace STORE
     CsvBuffer* pToCsvBuffer(void);
   
     void vRestorePointers(void);
+  
+    char* azStrArea(void);
 
   private:
     i8   iToOffset(Stz* szStr);
