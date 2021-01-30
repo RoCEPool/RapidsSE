@@ -217,6 +217,9 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAux0(void)
 {
   ASSERT(bStructurallyValid());
 
+  if (C_UNKNOWN == m_i_AuxItem0)
+    return nullptr;
+  
   byte* ayAux0 = & m_yaByteArea[m_i_AuxItem0];
 
   return ayAux0;
@@ -229,6 +232,9 @@ template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAux1(void)
 {
   ASSERT(bStructurallyValid());
+
+  if (C_UNKNOWN == m_i_AuxItem1)
+    return nullptr;
 
   byte* ayAux1 = & m_yaByteArea[m_i_AuxItem1];
 

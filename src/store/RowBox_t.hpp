@@ -55,7 +55,7 @@ namespace STORE
     void vResolveRowPix(StreamDef* pStreamDef);
     
     Row* aAllotNewRow(void);
-    RowPix* pAllotRowPix(void);
+    RowPix* pAllotRowPix(i8 nSizeRowPix);
 
     i8   nColumns(void);
     ColPix* axaColPix(void);
@@ -162,7 +162,8 @@ RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   vInitRowBox_t();
 
-  pAllotRowPix();
+  pAllotRowPix(sizeof(RowPix));
+  //pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
 
   pStreamDef->vToRowPix(m_pRowPix,bAddPtnHash);
   
@@ -225,7 +226,8 @@ void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
 
-  pAllotRowPix();
+  pAllotRowPix(sizeof(RowPix));
+  //pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
   
   pStreamDef->vToRowPix(m_pRowPix,false);
   
@@ -271,11 +273,17 @@ Row* RowBox_t<AREA>::aAllotNewRow(void)
 /* allot a row pix NOT COMPLETE                                               */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-RowPix* RowBox_t<AREA>::pAllotRowPix(void)
+RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   
   ASSERT(! m_pRowPix);
+  
+  ASSERT(sizeof(RowPix) == nSizeRowPix);
+  ASSERT( (! WspConvergent_t<AREA,Stz,Row>::ayAux0()) );
+  WspConvergent_t<AREA,Stz,Row>::ayAllotAux0(nSizeRowPix);
+  ASSERT(! m_pRowPix);
+
   m_pRowPix = &m__oRowPix;
 
   return m_pRowPix;
@@ -301,7 +309,8 @@ void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
 
-  pAllotRowPix();
+  pAllotRowPix(sizeof(RowPix));
+  //pAllotRowPix(pRowPixSrc->nDynamicSize());
 
   MemLib::vCopy(m_pRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
@@ -801,7 +810,8 @@ void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   
-  pAllotRowPix();
+  pAllotRowPix(sizeof(RowPix));
+  //pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
 
   pStreamDef->vToRowPix(m_pRowPix,bPtnHash);
   
