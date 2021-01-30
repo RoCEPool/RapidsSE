@@ -56,6 +56,8 @@ namespace STORE
     
     Row* aAllotNewRow(void);
     RowPix* pAllotRowPix(i8 nSizeRowPix);
+  
+    void vAssertAux0(void);
 
     i8   nColumns(void);
     ColPix* axaColPix(void);
@@ -284,11 +286,32 @@ RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
   WspConvergent_t<AREA,Stz,Row>::ayAllotAux0(nSizeRowPix);
   RASSERT( (WspConvergent_t<AREA,Stz,Row>::ayAux0()) );
   
+  
+  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
+  aFooter->vSetFooter();
+  vAssertAux0();
+  
+  
   RASSERT(! m_pRowPix);
 
   m_pRowPix = &m__oRowPix;
 
   return m_pRowPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert aux is still valid                                                  */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void RowBox_t<AREA>::vAssertAux0(void)
+{
+  RowBox_t<AREA>::m_xFooter.vAssertFooter();
+  
+  if (! WspConvergent_t<AREA,Stz,Row>::ayAux0())
+    return;
+  
+  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
+  aFooter->vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
