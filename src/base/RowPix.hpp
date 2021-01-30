@@ -47,6 +47,7 @@ namespace BASE
     i8   nColumns(void);
     void vColumns(i8 nColumns);
     void vCopyRowPix(RowPix* pRowPixSrc);
+    i8   nDynamicSize(void);
     Stz* szPixNm(void);
     void vPixNm(Stz* szPixNm);
     void vPrint(void);

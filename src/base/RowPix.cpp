@@ -136,6 +136,17 @@ void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dynamic size of this RowPix                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowPix::nDynamicSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  
+  return sizeof(RowPix);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get pix name                                                               */
 /*----------------------------------------------------------------------------*/
 Stz* RowPix::szPixNm(void)

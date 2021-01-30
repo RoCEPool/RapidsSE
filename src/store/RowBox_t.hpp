@@ -115,6 +115,7 @@ namespace STORE
     i8    iOffsetInWsp(Row* aRow);
     void  vSlabReport(void);
     RowPix* pRowPix(void);
+    void  vResetRowPix(void);
     void  vZeroRow(Row* aRow);
 
   private:
@@ -1053,6 +1054,17 @@ RowPix* RowBox_t<AREA>::pRowPix(void)
   
   RASSERT(&m__oRowPix == m_pRowPix)
   return m_pRowPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the condensed stream def                                               */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void RowBox_t<AREA>::vResetRowPix(void)
+{
+  RowBox_t<AREA>::m_xFooter.vAssertFooter();
+  
+  m_pRowPix = & m__oRowPix;
 }
 
 /*----------------------------------------------------------------------------*/
