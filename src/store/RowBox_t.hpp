@@ -687,7 +687,7 @@ char* RowBox_t<AREA>::azDepositString_begin(void)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
 
-  char* azStz = (char*)WspConvergent_t<AREA,Stz,Row>::ayLatterHead();
+  char* azStz = (char*)WspConvergent_t<AREA,Stz,Row>::ayLatterHead() + 1;
   
   m8* aColCell = m_aRowCur->aColCell(m_i_ColCrs);
   i8 i_Ofs = - nDifference(azStz,aColCell);

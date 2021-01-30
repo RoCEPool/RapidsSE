@@ -506,6 +506,8 @@ void Step::vSocketRecvObject(void)
         return;
       }
       
+      pInfoSet->vRestorePointers();
+      
       m_pDataStack->vPushPtr(pInfoSet);
       m_pDataStack->vPushInt(true);
       EXIT();

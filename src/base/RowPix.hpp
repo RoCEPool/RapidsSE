@@ -44,6 +44,8 @@ namespace BASE
     ColPix* axColPix(i8 i_Col);
     ColPix* axaColPixArray(void);
   
+    void vAssertRowPix(void);
+  
     i8   nColumns(void);
     void vColumns(i8 nColumns);
     void vCopyRowPix(RowPix* pRowPixSrc);
