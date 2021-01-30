@@ -277,12 +277,14 @@ RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   
-  ASSERT(! m_pRowPix);
+  RASSERT(! m_pRowPix);
   
-  ASSERT(sizeof(RowPix) == nSizeRowPix);
-  ASSERT( (! WspConvergent_t<AREA,Stz,Row>::ayAux0()) );
+  RASSERT(sizeof(RowPix) == nSizeRowPix);
+  RASSERT( (! WspConvergent_t<AREA,Stz,Row>::ayAux0()) );
   WspConvergent_t<AREA,Stz,Row>::ayAllotAux0(nSizeRowPix);
-  ASSERT(! m_pRowPix);
+  RASSERT( (WspConvergent_t<AREA,Stz,Row>::ayAux0()) );
+  
+  RASSERT(! m_pRowPix);
 
   m_pRowPix = &m__oRowPix;
 
