@@ -523,7 +523,7 @@ Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzAllot_begin(void)
 {
   ASSERT(bStructurallyValid());
 
-  Stz* szStz = (Stz*)ayLatterHead();
+  Stz* szStz = (Stz*)ayLatterHead() + 1;
   
   return szStz;
 }
