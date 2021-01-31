@@ -276,9 +276,7 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
 void RowBuffer::vRestorePointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  //m_pRowPix = & m__oRowPix;
-  
+    
   RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
 }
 

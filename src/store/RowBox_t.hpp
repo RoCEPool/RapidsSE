@@ -20,7 +20,6 @@ namespace STORE
 
     i8 m_nRowSizeProper;
   
-    RowPix  m__oRowPix;
     RowPix* m_pRowPix;
 
     Row* m_aRowCur;     // current row
@@ -298,7 +297,6 @@ RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
   
   RASSERT(! m_pRowPix);
 
-  //m_pRowPix = &m__oRowPix;
   m_pRowPix = pRowPix;
 
   //vAssertAux0();
@@ -326,7 +324,7 @@ void RowBox_t<AREA>::vAssertAux0(void)
 //
 ////  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
 ////  aFooter->vAssertFooter();
-//  
+//
 //  RowPix* pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
 //
 //  pRowPix->vAssertRowPix();
@@ -1162,7 +1160,6 @@ RowPix* RowBox_t<AREA>::pRowPix(void)
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
 
-  //RASSERT(&m__oRowPix == m_pRowPix)
   return m_pRowPix;
 }
 
@@ -1174,7 +1171,6 @@ void RowBox_t<AREA>::vResetRowPix(void)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
 
-  //m_pRowPix = & m__oRowPix;
   m_pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
   vAssertAux0();
 }
