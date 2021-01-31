@@ -201,9 +201,9 @@ u8 Lock::iLockGrabWrite(u8* pWord)
   uCurrent = C_WRITELOCK;
   
   while (! Atomic::bTestAndSet(pWord,uCurrent,uCurrent))
-    {
-      vTrace("iLockGrabWrite failed... "_Stz);
-    }
+  {
+    vTrace("iLockGrabWrite: iLockGrabWrite failed... "_Stz);
+  }
   
   u8 uResult = 1;
   
