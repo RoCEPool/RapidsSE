@@ -440,6 +440,7 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     pRowPixDst->m_nTotalChars += nNameSize;
   }
   
+  pRowPixDst->m_nTotalChars++;
   * azColNmDst = '\0';
 }
 

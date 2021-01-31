@@ -48,7 +48,7 @@ void RowPix::operator delete(void* aAddress)
 RowPix::RowPix(void)
 : Object(CN_ROWPIX)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   m_bInitialised = false;
   m_bShortForm   = false;
@@ -68,7 +68,7 @@ RowPix::RowPix(void)
   
   _checkInitialised_(CN_ROWPIX);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ RowPix::RowPix(void)
 /*----------------------------------------------------------------------------*/
 RowPix::~RowPix(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 }
 
 
@@ -89,7 +89,7 @@ RowPix::~RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void RowPix::vAssertRowPix(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
 }
 
@@ -98,7 +98,7 @@ void RowPix::vAssertRowPix(void)
 /*----------------------------------------------------------------------------*/
 i8 RowPix::nColumns(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   return m_nColumns;
 }
@@ -108,7 +108,7 @@ i8 RowPix::nColumns(void)
 /*----------------------------------------------------------------------------*/
 void RowPix::vColumns(i8 nColumns)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   m_nColumns = nColumns;
 }
@@ -118,7 +118,7 @@ void RowPix::vColumns(i8 nColumns)
 /*----------------------------------------------------------------------------*/
 ColPix* RowPix::axColPix(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   return & m_xaColPix[i_Col];
 }
@@ -128,7 +128,7 @@ ColPix* RowPix::axColPix(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 ColPix* RowPix::axaColPixArray(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   return m_xaColPix;
 }
@@ -138,7 +138,7 @@ ColPix* RowPix::axaColPixArray(void)
 /*----------------------------------------------------------------------------*/
 //void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 //  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWPIX);
 //
 //  
@@ -150,12 +150,21 @@ ColPix* RowPix::axaColPixArray(void)
 /*----------------------------------------------------------------------------*/
 i8 RowPix::nDynamicSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   ASSERT(m_bInitialised);
   ASSERT(m_nColumns);
 
-  return sizeof(RowPix);
+  
+  i8 nNilSize = sizeof(RowPix)
+                  - sizeof(m_xaColPix) - sizeof(m_baPixArea);
+  
+  i8 nSizeColPix = m_nColumns * sizeof(ColPix);
+  
+  i8 nSize = nNilSize + nSizeColPix + m_nTotalChars + 16;
+  
+  //return sizeof(RowPix);
+  return nSize;
 }
 
 
@@ -164,7 +173,7 @@ i8 RowPix::nDynamicSize(void)
 /*----------------------------------------------------------------------------*/
 Stz* RowPix::szPixNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   return m_sPixNm;
 }
@@ -174,7 +183,7 @@ Stz* RowPix::szPixNm(void)
 /*----------------------------------------------------------------------------*/
 void RowPix::vPixNm(Stz* szPixNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   m_sPixNm = szPixNm;
 }
@@ -184,7 +193,7 @@ void RowPix::vPixNm(Stz* szPixNm)
 /*----------------------------------------------------------------------------*/
 void RowPix::vPrint(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   SP_ColPix spColPix;
   
@@ -202,7 +211,7 @@ void RowPix::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void RowPix::vRemovePtnHash(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   ASSERT(m_bPtnHash);
   ASSERT(m_nExtraCols);
 
@@ -214,7 +223,7 @@ void RowPix::vRemovePtnHash(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(RowPix);
+//__aFooterFunction(RowPix);
 
 /*============================================================================*/
 /* end                                                                        */
