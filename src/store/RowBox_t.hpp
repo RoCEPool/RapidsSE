@@ -247,6 +247,7 @@ template <i8 AREA>
 Row* RowBox_t<AREA>::aAllotNewRow(void)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
+  vAssertAux0();
 
   RASSERT(m_pRowPix);
   
@@ -260,6 +261,8 @@ Row* RowBox_t<AREA>::aAllotNewRow(void)
 
   if (! m_aRowCur)
     return nullptr;
+
+  RASSERT((void*)m_aRowCur != (void*)m_pRowPix);
 
   // zero the row
   MemLib::vZero(m_aRowCur,m_nRowSizeProper,CN_ROW);
@@ -280,7 +283,8 @@ RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   
   RASSERT(! m_pRowPix);
-  
+  RASSERT(! nRows());
+
   RASSERT(sizeof(RowPix) == nSizeRowPix);
   RASSERT( (! WspConvergent_t<AREA,Stz,Row>::ayAux0()) );
   WspConvergent_t<AREA,Stz,Row>::ayAllotAux0(nSizeRowPix);
@@ -291,12 +295,14 @@ RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
   
 //  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
 //  aFooter->vSetFooter();
-  vAssertAux0();
-  
   
   RASSERT(! m_pRowPix);
 
-  m_pRowPix = &m__oRowPix;
+  //m_pRowPix = &m__oRowPix;
+  m_pRowPix = pRowPix;
+
+  //vAssertAux0();
+  
 
   return m_pRowPix;
 }
@@ -307,17 +313,27 @@ RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
 template <i8 AREA>
 void RowBox_t<AREA>::vAssertAux0(void)
 {
-  RowBox_t<AREA>::m_xFooter.vAssertFooter();
-  
-  if (! WspConvergent_t<AREA,Stz,Row>::ayAux0())
-    return;
-  
-//  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
-//  aFooter->vAssertFooter();
-  
-  RowPix* pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
-  
-  pRowPix->vAssertRowPix();
+//  RowBox_t<AREA>::m_xFooter.vAssertFooter();
+//
+//  if (! WspConvergent_t<AREA,Stz,Row>::ayAux0()) {
+//    ASSERT(! m_pRowPix);
+//    ASSERT(! nRows());
+//    return;
+//  }
+//
+//  ASSERT(m_pRowPix);
+//  ASSERT((void*)this == (void*)m_pRowPix);
+//
+////  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
+////  aFooter->vAssertFooter();
+//  
+//  RowPix* pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
+//
+//  pRowPix->vAssertRowPix();
+//
+//  ASSERT(pRowPix == m_pRowPix);
+//  ASSERT(pRowPix->nColumns());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,6 +364,9 @@ void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
   MemLib::vCopy(m_pRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
   m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
+  
+  vAssertAux0();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -358,6 +377,9 @@ void RowBox_t<AREA>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
+  
+  ASSERT(m_pRowPix->m_bInitialised);
+  ASSERT(m_pRowPix->m_nColumns);
 
   i8 iVal;
   Stz* szSrcStz;
@@ -575,7 +597,7 @@ template <i8 AREA>
 i8 RowBox_t<AREA>::nRows(void)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
-  vAssertAux0();
+  //vAssertAux0();
 
   return WspConvergent_t<AREA,Stz,Row>::nItems();
 }
@@ -1038,11 +1060,13 @@ void RowBox_t<AREA>::vReset(void)
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
 
+  vTrace("Reset: %p \n"_Stz,this);
+
   m_i_RowCrs  = C_UNKNOWN;
   m_aRowCur   = nullptr;
   m_i_ColCrs  = C_UNKNOWN;
 
-  WspConvergent_t<AREA,Stz,Row>::vInit();
+  WspConvergent_t<AREA,Stz,Row>::vWspInit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1138,7 +1162,7 @@ RowPix* RowBox_t<AREA>::pRowPix(void)
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
 
-  RASSERT(&m__oRowPix == m_pRowPix)
+  //RASSERT(&m__oRowPix == m_pRowPix)
   return m_pRowPix;
 }
 
@@ -1149,9 +1173,10 @@ template <i8 AREA>
 void RowBox_t<AREA>::vResetRowPix(void)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
-  vAssertAux0();
 
-  m_pRowPix = & m__oRowPix;
+  //m_pRowPix = & m__oRowPix;
+  m_pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
+  vAssertAux0();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1162,6 +1187,8 @@ void RowBox_t<AREA>::vZeroRow(Row *aRow)
 {
   RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
+  
+  RASSERT((void*)aRow != (void*)m_pRowPix);
 
   i8 nCellBytes = m_pRowPix->m_nColumns * C_BYTES_PER_WORD;
 

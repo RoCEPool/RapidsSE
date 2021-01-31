@@ -136,13 +136,14 @@ ColPix* RowPix::axaColPixArray(void)
 /*----------------------------------------------------------------------------*/
 /* copy row pix                                                               */
 /*----------------------------------------------------------------------------*/
-void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
-  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWPIX);
-
-  //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
-}
+//void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
+//  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWPIX);
+//
+//  
+//  //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get dynamic size of this RowPix                                            */

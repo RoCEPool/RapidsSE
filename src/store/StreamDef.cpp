@@ -470,8 +470,8 @@ void StreamDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   pRowPixDst->m_bInitialised = true;
   
-  if (AM::bDeveloper())
-    pRowPixDst->vPrint();
+//  if (AM::bDeveloper())
+//    pRowPixDst->vPrint();
 
 }
 
