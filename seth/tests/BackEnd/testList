@@ -1,12 +1,12 @@
 
 aggregRows_I.test
-aggregRows.test
+//aggregRows.test
 
-filterRows_I.test
-filterRows.test
+//filterRows_I.test
+//filterRows.test
 
-projectColumns_I.test
-projectColumns.test
+//projectColumns_I.test
+//projectColumns.test
 
-query6_I.test
-query6.test
+//query6_I.test
+//query6.test
