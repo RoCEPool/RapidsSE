@@ -152,6 +152,9 @@ i8 RowPix::nDynamicSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX,_FOOTER_);
   
+  ASSERT(m_bInitialised);
+  ASSERT(m_nColumns);
+
   return sizeof(RowPix);
 }
 
