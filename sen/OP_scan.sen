@@ -7,16 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
-/*
 : Scan_CancelMarker \handler
 
-  nullptr to Operand[]
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  false
-
+  tablePtn[] tablePtnDropRead
+  ZK_CANCELMARKER_handler
 ;
-*/
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
