@@ -1,5 +1,5 @@
 
-// Generated from /Users/ray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -301,23 +301,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitOrOp(sqlParser::OrOpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitAndOp(sqlParser::AndOpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitNotOp(sqlParser::NotOpContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -386,6 +374,10 @@ public:
   }
 
   virtual antlrcpp::Any visitCountFunc(sqlParser::CountFuncContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *ctx) override {
     return visitChildren(ctx);
   }
 

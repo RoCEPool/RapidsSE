@@ -198,7 +198,7 @@ void RowPix::vPrint(void)
   SP_ColPix spColPix;
   
   vTrace("RowPix: %s\n"_Stz,szPixNm());
-  vTrace("  %lld columns\n"_Stz,nColumns());
+  vTrace("  %lld columns (%lld extra)\n"_Stz,nColumns(),m_nExtraCols);
   
   for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
     ColPix* axColPix = this->axColPix(i_Col);
@@ -212,12 +212,17 @@ void RowPix::vPrint(void)
 void RowPix::vRemovePtnHash(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  //vPrint();
+  
   ASSERT(m_bPtnHash);
   ASSERT(m_nExtraCols);
 
   m_nColumns--;
   m_nExtraCols--;
   m_bPtnHash = false;
+  
+  //vPrint();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -378,7 +378,8 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
   i8 nStzOfs;
   
   
-  pRowPixDst->m_nNameOffset = sizeof(ColPix) * m_nColumns;
+  pRowPixDst->m_nNameOffset = sizeof(ColPix)
+                                * ( m_nColumns + (bAddPtnHash ? 1 : 0) );
   pRowPixDst->m_nTotalChars = 0;
 
   char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
@@ -417,6 +418,13 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   if (bAddPtnHash) {
 
+    //pRowPixDst->vPrint();
+    ASSERT(! pRowPixDst->m_nExtraCols);
+    
+    pRowPixDst->m_nColumns++;
+    pRowPixDst->m_nExtraCols = 1;
+    pRowPixDst->m_bPtnHash = true;
+
     ColPix* axColPixDst = &axaColPixDst[i_Col];
   
     axColPixDst->m_uNumber   = (u8)i_Col;
@@ -438,6 +446,8 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 
     azColNmDst += nNameSize;
     pRowPixDst->m_nTotalChars += nNameSize;
+    
+    //pRowPixDst->vPrint();
   }
   
   pRowPixDst->m_nTotalChars++;
@@ -459,20 +469,23 @@ void StreamDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
   pRowPixDst->m_sPixNm   = m_sName;
   pRowPixDst->m_nColumns = m_nColumns;
 
-  if (bAddPtnHash) {
-    ASSERT(! pRowPixDst->m_nExtraCols);
-    
-    pRowPixDst->m_nColumns++;
-    pRowPixDst->m_nExtraCols = 1;
-    pRowPixDst->m_bPtnHash = true;
-  }
+//  if (bAddPtnHash) {
+//    ASSERT(! pRowPixDst->m_nExtraCols);
+//
+//    pRowPixDst->m_nColumns++;
+//    pRowPixDst->m_nExtraCols = 1;
+//    pRowPixDst->m_bPtnHash = true;
+//  }
   
   vToColPix(pRowPixDst,bAddPtnHash);
   
   pRowPixDst->m_bInitialised = true;
   
-//  if (AM::bDeveloper())
-//    pRowPixDst->vPrint();
+  if (AM::bDeveloper()) {
+    pRowPixDst->vPrint();
+
+    vDebugPoint();
+  }
 
 }
 

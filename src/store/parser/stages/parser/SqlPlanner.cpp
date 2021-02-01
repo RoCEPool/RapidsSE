@@ -45,6 +45,11 @@
 #include "store/parser/shadowNodes/expressions/operators/comparison/GeExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/LtExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/LeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/AndExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/OrExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/XorExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/NotExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/IsNullExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
@@ -573,6 +578,74 @@ antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
 
   } else {
     NEVER_REACH
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Logic Expression Operators                                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitLogicOp(sqlParser::LogicOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr2;
+  QueryNode* pExpr1;
+
+  // Get the string of the operator
+  s256 sOp;
+  vCleanString(pCtx->op, sOp);
+  sOp.vToUpper();
+
+  if (sOp.bEqual("AND"_Stz)) {
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = AndExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("OR"_Stz)) {
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = OrExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("XOR"_Stz)) {
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = XorExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("NOT"_Stz)) {
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = NotExpr::pCreate(pExpr1);
+
+  } else {
+    NEVER_REACH
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* IsNull Expression Operator                                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitIsNullOp(sqlParser::IsNullOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr1 = m_pExprStack->pPop();
+
+  pOpExpr = IsNullExpr::pCreate(pExpr1);
+
+  // Turn "IS NOT NULL <expr>" into NOT(<expr> IS NULL)
+  if (pCtx->NOT()) {
+    pOpExpr = NotExpr::pCreate(pOpExpr);
   }
 
   // Put the operator back onto the expression stack
