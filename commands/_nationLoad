@@ -18,7 +18,7 @@ load nation "../tpch/SF1/nation.csv" ;
 
 select N_NATIONKEY,N_NAME from nation;
 
-drop table nation ;
+// drop table nation ;
 
 // memoryLeaks;
 
