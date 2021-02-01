@@ -63,14 +63,14 @@ InfoSetBase::~InfoSetBase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a row                                                                */
 /*----------------------------------------------------------------------------*/
-Row* InfoSetBase::aAllotRow(void)
+Row* InfoSetBase::pAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   Row* pRow = nullptr;
 
   if (nFreeBytes() >= m_nRowSize) {
-    pRow = aAllotNewRow();
+    pRow = pAllotNewRow();
     m_nInfoRows++;
   }
 
@@ -80,7 +80,7 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
-//Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
+//Row* InfoSetBase::pAllotRow(RowSingle* pRowSingle)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 //
@@ -94,12 +94,12 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
- Row* InfoSetBase::aAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
+ Row* InfoSetBase::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
  {
    _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
    
    // allot a row
-   Row* ayRow = aAllotNewRow();
+   Row* ayRow = pAllotNewRow();
    m_nInfoRows++;
    
    Stz* ayDst;

@@ -109,7 +109,7 @@ void Step::vInfoSetAddNodeInfo(void)
   
   Grid* pGrid = AM::pGrid();
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     AM::iRegionSize(),
@@ -143,7 +143,7 @@ void Step::vInfoSetAddProgressUnits(void)
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_PROGRESSUNITS);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
@@ -184,7 +184,7 @@ void Step::vInfoSetAddRowCount(void)
   
   pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   nRows,
                                   C_VARGS_END);
@@ -210,7 +210,7 @@ void Step::vInfoSetAddRowVargs(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  Row* aRow = pInfoSet->aAllotRow();
+  Row* aRow = pInfoSet->pAllotRow();
   Stz* szTail;
   i8   nSize;
 
@@ -273,7 +273,7 @@ void Step::vInfoSetAddTotalUnits(void)
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_TOTALUNITS);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   sFileName.azChar(),
                                   iTotalUnits,
@@ -331,7 +331,7 @@ void Step::vInfoSetChunkFile(void)
       nChunkBytes = i_EofLoc - i_ChunkLoc;
       pRow = nullptr;
       if (nRows < C_MAX_SEEKOFFSETS)
-        pRow = pInfoSet->aAllotRow();
+        pRow = pInfoSet->pAllotRow();
       
       if (pRow) {
         nRows++;
@@ -389,7 +389,7 @@ void Step::vInfoSetChunkFile(void)
     
     pRow = nullptr;
     if (nRows < C_MAX_SEEKOFFSETS)
-      pRow = pInfoSet->aAllotRow();
+      pRow = pInfoSet->pAllotRow();
     
     if (pRow) {
       nRows++;

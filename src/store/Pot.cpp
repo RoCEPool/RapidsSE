@@ -144,7 +144,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   }
   
   // new a row in row buffer (new another row buffer if necessary)
-  aDstRow = pDstRowBuffer->aAllotNewRow();
+  aDstRow = pDstRowBuffer->pAllotNewRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
     pDstRowBuffer = new RowBuffer;
@@ -152,7 +152,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     pDstRowBuffer->vAssertAux0();
     vAddBuffer(i_Ptn,pDstRowBuffer);
     //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-    aDstRow = pDstRowBuffer->aAllotNewRow();
+    aDstRow = pDstRowBuffer->pAllotNewRow();
     ASSERT(aDstRow);
   }
   

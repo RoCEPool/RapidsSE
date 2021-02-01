@@ -122,7 +122,7 @@ void Step::vGridListNodes(void)
   i8 i_Node = m_pDataStack->iPopAsInt(__func__);
   for (Node_I oNode_I(i_Node,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
 
-    Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       (*oNode_I)->iNodeNo(),
                                       (*oNode_I)->szNodeNm(),
