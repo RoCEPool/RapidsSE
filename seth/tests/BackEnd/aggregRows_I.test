@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- aggregRows_I tests
 --------------------------------------------------------------------------------
-Loop 100 {
+//Loop 100 {
 //------------------------------------------------------------------------------
 aggregRows_I lineitem "sum ( l_discount )";
 failure contains: "no such table"
@@ -85,7 +85,7 @@ failure contains: "invalid command"
 // drop the table
 drop table lineitem;
 success;
-}
+//}
 
 CLEANUP {
   
