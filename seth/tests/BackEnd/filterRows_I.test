@@ -2,9 +2,6 @@
 -- filter tests
 --------------------------------------------------------------------------------
 
-trackMemory;
-success
-
 //------------------------------------------------------------------------------
 filterRows_I lineitem "l_discount 0.04 >= <>";
 failure contains: "no such table"
@@ -157,9 +154,6 @@ rows:
 // drop the table
 drop table lineitem;
 success;
-
-memoryLeaks;
-rows: 0
 
 CLEANUP {
   

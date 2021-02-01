@@ -2,9 +2,6 @@
 -- projection tests
 --------------------------------------------------------------------------------
 
-trackMemory;
-success
-
 //------------------------------------------------------------------------------
 projectColumns_I lineitem "l_discount";
 failure contains: "no such table"
@@ -174,9 +171,6 @@ rows:
 // drop the table
 drop table lineitem;
 success;
-
-memoryLeaks;
-rows: 0
 
 CLEANUP {
   
