@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _nationLoad - create and oldLoad TPC-H Nation table for SF1                   */
+/* _nationLoad - create and oldLoad TPC-H Nation table for SF1                */
 /*============================================================================*/
 
 bc;
@@ -14,11 +14,13 @@ create table nation (
 );
 
 print "loading nation.csv..." ;
-/traceop load nation "../tpch/SF1/nation.csv" ;
+load nation "../tpch/SF1/nation.csv" ;
+
+select N_NATIONKEY,N_NAME from nation;
 
 drop table nation ;
 
-memoryLeaks;
+// memoryLeaks;
 
 /*
 pipeline query
