@@ -49,6 +49,8 @@ namespace Parser
     virtual antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)               override;
     virtual antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)               override;
     virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)             override;
+    virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *pCtx)               override;
+    virtual antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)             override;
 
     
   private:

@@ -1038,38 +1038,38 @@
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/in
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/any
 
-// Path: /__root__/definitions/object/expr/operator/comparison/between
-                        {
-                          name: "between",
-                          value: "BETWEEN operator",
-                          properties: [
-                            {
-                              name: "operandExpr",
-                              value: "The expression to be compared against the lower and upper bounds",
-                              type: "/__root__/definitions/object/expr",
-                            },
-                            {
-                              name: "lowerExpr",
-                              value: "The expression representing the lower bound to be compared against the operand",
-                              type: "/__root__/definitions/object/expr",
-                            },
-                            {
-                              name: "upperExpr",
-                              value: "The expression representing the upper bound to be compared against the operand",
-                              type: "/__root__/definitions/object/expr",
-                            }
-                          ]
-                        },
+// TODO Path: /__root__/definitions/object/expr/operator/comparison/between
+//                        {
+//                          name: "between",
+//                          value: "BETWEEN operator",
+//                          properties: [
+//                            {
+//                              name: "operandExpr",
+//                              value: "The expression to be compared against the lower and upper bounds",
+//                              type: "/__root__/definitions/object/expr",
+//                            },
+//                            {
+//                              name: "lowerExpr",
+//                              value: "The expression representing the lower bound to be compared against the operand",
+//                              type: "/__root__/definitions/object/expr",
+//                            },
+//                            {
+//                              name: "upperExpr",
+//                              value: "The expression representing the upper bound to be compared against the operand",
+//                              type: "/__root__/definitions/object/expr",
+//                            }
+//                          ]
+//                        },
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/exists
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/like
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/comparison
-// Path: /__root__/definitions/object/expr/operator/logical
+// Path: /__root__/definitions/object/expr/operator/logic
                     {
-                      name: "logical",
+                      name: "logic",
                       value: "A logical expression operator (AND, OR, NOT, etc)",
                       children: [
-// Path: /__root__/definitions/object/expr/operator/logical/and
+// Path: /__root__/definitions/object/expr/operator/logic/and
                         {
                           name: "and",
                           value: "Logical AND operator",
@@ -1088,7 +1088,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/logical/or
+// Path: /__root__/definitions/object/expr/operator/logic/or
                         {
                           name: "or",
                           value: "Logical OR operator",
@@ -1107,7 +1107,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/logical/xor
+// Path: /__root__/definitions/object/expr/operator/logic/xor
                         {
                           name: "xor",
                           value: "Logical exclusive-or (XOR) operator",
@@ -1126,7 +1126,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/logical/not
+// Path: /__root__/definitions/object/expr/operator/logic/not
                         {
                           name: "not",
                           value: "Logical NOT operator",
@@ -1145,7 +1145,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/logical/isnull
+// Path: /__root__/definitions/object/expr/operator/logic/isnull
                         {
                           name: "isnull",
                           value: "Logical IS NULL operator",
@@ -1166,7 +1166,7 @@
                         },
 // TODO Path: /__root__/definitions/object/expr/operator/function/like
                       ]
-                    }, // EndPath: /__root__/definitions/object/expr/operator/logical
+                    }, // EndPath: /__root__/definitions/object/expr/operator/logic
 // Path: /__root__/definitions/object/expr/operator/aggregation
                     {
                       name: "aggregation",

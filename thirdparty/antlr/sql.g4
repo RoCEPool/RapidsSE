@@ -322,7 +322,7 @@ expr
  | expr    NOT? IN     ( '(' query ')' )                        #subqueryInOp
  | expr    NOT? IN     ( '(' (expr (',' expr)*)? ')' )          #inOp
 // | expr    NOT? BETWEEN expr AND expr                           #betweenOp
- |          op=NOT expr                                             #notOp
+ |          op=NOT expr                                         #logicOp
 //
 // The semantic predicate below is a hack to fix a precedence problem (ANTLR4 bug?)
 // where the AND of a BETWEEN operator is incorrectly interpreted as an AND operator.
@@ -331,9 +331,9 @@ expr
 //
 // | expr {!(_ctx.parent instanceof BetweenOpContext)}? op=AND expr   #andOp
 
- | expr     op=AND expr                                           #andOp
-
- | expr     op=OR  expr                                             #orOp
+ | expr     op=AND expr                                         #logicOp
+ | expr     op=OR  expr                                         #logicOp
+ | expr     op=XOR  expr                                        #logicOp
  ;
 
 
@@ -527,6 +527,7 @@ USING                 : U S I N G;
 VALUES                : V A L U E S ;
 WHERE                 : W H E R E;
 WITH                  : W I T H;
+XOR                   : X O R;
 
 BOOLEAN               : B O O L E A N;
 INTEGER               : I N T E G E R;

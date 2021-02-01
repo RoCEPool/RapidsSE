@@ -3431,6 +3431,19 @@ void StrLib::vToLower(char* s)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert arg to upper case                                                  */
+/*----------------------------------------------------------------------------*/
+void StrLib::vToUpper(char* s)
+{
+  _static_
+
+  while (*s) {
+    *s = (char)toupper((unsigned char)*s);
+    s++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove prefix / suffix from arg (where suffix is introduced by given char) */
 /*----------------------------------------------------------------------------*/
 void StrLib::vTopTail(char *azArg, char cIntro)

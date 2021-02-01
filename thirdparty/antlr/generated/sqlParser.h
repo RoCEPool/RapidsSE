@@ -1,5 +1,5 @@
 
-// Generated from /Users/ray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -31,23 +31,23 @@ public:
     SELECT = 88, SET = 89, STATS = 90, STATISTICS = 91, TABLE = 92, TO = 93, 
     TOP = 94, TRAILING = 95, TRUNCATE = 96, SQL_TRUE = 97, TYPE = 98, UNION = 99, 
     UNIQUE = 100, UPDATE = 101, USING = 102, VALUES = 103, WHERE = 104, 
-    WITH = 105, BOOLEAN = 106, INTEGER = 107, DECIMAL = 108, FLOAT = 109, 
-    TIME = 110, TIMESTAMP = 111, INTERVAL = 112, CHAR = 113, CHARACTER = 114, 
-    VARCHAR = 115, TEXT = 116, BINARY = 117, VARBINARY = 118, BLOB = 119, 
-    VARYING = 120, BIT = 121, BITS = 122, BYTE = 123, BYTES = 124, CHARS = 125, 
-    DIGITS = 126, CASE = 127, CAST = 128, COALESCE = 129, CONCAT = 130, 
-    COUNT = 131, DECODE = 132, EXTRACT = 133, EXISTS = 134, IF = 135, IFNULL = 136, 
-    NULLIF = 137, POSITION = 138, SUBSTR = 139, SUBSTRING = 140, TRIM = 141, 
-    TYPEOF = 142, WHEN = 143, THEN = 144, ELSE = 145, END = 146, DAY = 147, 
-    DAYS = 148, HOUR = 149, HOURS = 150, MINUTE = 151, MINUTES = 152, MONTH = 153, 
-    MONTHS = 154, QUARTER = 155, QUARTERS = 156, SECOND = 157, SECONDS = 158, 
-    WEEK = 159, WEEKS = 160, YEAR = 161, YEARS = 162, BLOCK = 163, BLOOM = 164, 
-    BTREE = 165, HASH = 166, LOOP = 167, SKIPLIST = 168, TREE = 169, VALUE = 170, 
-    IDENTIFIER = 171, PLAIN_IDENTIFIER = 172, BAKTIKD_IDENTIFIER = 173, 
-    DUBLQUOTED_IDENTIFIER = 174, STRING_LITERAL = 175, SINGLQUOTED_STRING = 176, 
-    DUBLQUOTED_STRING = 177, FLOAT_LITERAL = 178, DECIMAL_LITERAL = 179, 
-    INTEGER_LITERAL = 180, HINT_START = 181, HINT_END = 182, SLASH_COMMENT = 183, 
-    SQL_COMMENT = 184, BLOCK_COMMENT = 185, WHITESPACE = 186
+    WITH = 105, XOR = 106, BOOLEAN = 107, INTEGER = 108, DECIMAL = 109, 
+    FLOAT = 110, TIME = 111, TIMESTAMP = 112, INTERVAL = 113, CHAR = 114, 
+    CHARACTER = 115, VARCHAR = 116, TEXT = 117, BINARY = 118, VARBINARY = 119, 
+    BLOB = 120, VARYING = 121, BIT = 122, BITS = 123, BYTE = 124, BYTES = 125, 
+    CHARS = 126, DIGITS = 127, CASE = 128, CAST = 129, COALESCE = 130, CONCAT = 131, 
+    COUNT = 132, DECODE = 133, EXTRACT = 134, EXISTS = 135, IF = 136, IFNULL = 137, 
+    NULLIF = 138, POSITION = 139, SUBSTR = 140, SUBSTRING = 141, TRIM = 142, 
+    TYPEOF = 143, WHEN = 144, THEN = 145, ELSE = 146, END = 147, DAY = 148, 
+    DAYS = 149, HOUR = 150, HOURS = 151, MINUTE = 152, MINUTES = 153, MONTH = 154, 
+    MONTHS = 155, QUARTER = 156, QUARTERS = 157, SECOND = 158, SECONDS = 159, 
+    WEEK = 160, WEEKS = 161, YEAR = 162, YEARS = 163, BLOCK = 164, BLOOM = 165, 
+    BTREE = 166, HASH = 167, LOOP = 168, SKIPLIST = 169, TREE = 170, VALUE = 171, 
+    IDENTIFIER = 172, PLAIN_IDENTIFIER = 173, BAKTIKD_IDENTIFIER = 174, 
+    DUBLQUOTED_IDENTIFIER = 175, STRING_LITERAL = 176, SINGLQUOTED_STRING = 177, 
+    DUBLQUOTED_STRING = 178, FLOAT_LITERAL = 179, DECIMAL_LITERAL = 180, 
+    INTEGER_LITERAL = 181, HINT_START = 182, HINT_END = 183, SLASH_COMMENT = 184, 
+    SQL_COMMENT = 185, BLOCK_COMMENT = 186, WHITESPACE = 187
   };
 
   enum {
@@ -1458,18 +1458,6 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  OrOpContext : public ExprContext {
-  public:
-    OrOpContext(ExprContext *ctx);
-
-    antlr4::Token *op = nullptr;
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *OR();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
   class  IfNullOpContext : public ExprContext {
   public:
     IfNullOpContext(ExprContext *ctx);
@@ -1487,29 +1475,6 @@ public:
 
     antlr4::tree::TerminalNode *EXISTS();
     QueryContext *query();
-    antlr4::tree::TerminalNode *NOT();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  AndOpContext : public ExprContext {
-  public:
-    AndOpContext(ExprContext *ctx);
-
-    antlr4::Token *op = nullptr;
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *AND();
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  NotOpContext : public ExprContext {
-  public:
-    NotOpContext(ExprContext *ctx);
-
-    antlr4::Token *op = nullptr;
-    ExprContext *expr();
     antlr4::tree::TerminalNode *NOT();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1715,6 +1680,21 @@ public:
     ExprContext *expr();
     antlr4::tree::TerminalNode *ALL();
     antlr4::tree::TerminalNode *DISTINCT();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  LogicOpContext : public ExprContext {
+  public:
+    LogicOpContext(ExprContext *ctx);
+
+    antlr4::Token *op = nullptr;
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *NOT();
+    antlr4::tree::TerminalNode *AND();
+    antlr4::tree::TerminalNode *OR();
+    antlr4::tree::TerminalNode *XOR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
