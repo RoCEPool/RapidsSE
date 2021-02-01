@@ -286,7 +286,11 @@ void Step::vLogicUnitGenAggregate(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateAggregate(pExprEval, pStreamDefOut);
+  if (pExprEval->bHasAggregate())
+    ( m_pJob->pLogicUnit_job() )->vGenerateAggregate(pExprEval, pStreamDefOut);
+  else {
+    ( m_pJob->pLogicUnit_job() )->vGenerateGroupBy(pExprEval, pStreamDefOut);
+  }
 
   EXIT();
 }

@@ -7,12 +7,12 @@ macro AM_PAYLOAD_GBY
 // macro AM_PAYLOAD_GBY                                                       //
 //----------------------------------------------------------------------------//
   // AM_PAYLOAD_GBY
-  Label AM_PAYLOAD_GBY
+  Label PAYLOAD_GBY
 
   // reset entwrk
   EO_ENTWRK_RESET
 
-  EO_CALL <groupByKey>
+  EO_CALL <payLoadKey>
 
   EO_ENT_FINDI
   EO_JMP_TRUE FOUND
@@ -43,7 +43,7 @@ macro AM_PAYLOAD_KEY
 // macro AM_PAYLOAD_KEY                                                       //
 //----------------------------------------------------------------------------//
   // AM_PAYLOAD_KEY
-  Label AM_PAYLOAD_KEY
+  Label PAYLOAD_KEY
   //EO_PUSH_LOCALS <local>
   //EO_ENTWRK_SETINTELM
 endMacro
@@ -59,7 +59,7 @@ macro AM_PAYLOAD_STORE
   // store L_RETURNFLAG -> Q100_RETURNFLAG
   //EO_PUSH_LOCALS 4
   //EO_PAY_STORE_COLS 0
-endMarco
+endMacro
 
 macro AM_PAYLOAD_ADD
 //----------------------------------------------------------------------------//
@@ -73,12 +73,12 @@ macro AM_PAYLOAD_ADD
   //  EO_PUSH_LOCALI 0
   //  EO_ADD
   //  EO_PAY_STORE_COLI 2
-endMarco
+endMacro
 
+macro AM_PAYLOAD_END
 //----------------------------------------------------------------------------//
 // macro AM_PAYLOAD_END                                                       //
 //----------------------------------------------------------------------------//
-macro PAYLOAD_END
  EO_IXT_DUMP
  EO_RETURN
 endMacro

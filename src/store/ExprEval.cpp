@@ -52,7 +52,12 @@ ExprEval::ExprEval(void)
   m_iStreamInColumns = 0;
   m_uExprEvalColumns = 0;
   //m_sAsmText;
+  //m_sAsmGbyIdx;
+  //m_sAsmGbyKey;
   m_bHasAgg = false;
+  m_bHasGby = false;
+  m_nPayLoadBytes = 0;
+
   //m_pStreamInCol;
 
   //_checkInitialised_(CN_EXPREVAL);
@@ -212,6 +217,55 @@ eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr) {
   }
 
   return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for groupBy                                                    */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eAddGby(Column* pColumn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  i8 iLocal = 0;
+  i8 iBit = -1;
+  for (i8 i = 0; i < pColumn->iColumnNo(); i++) {
+    if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
+      if (iBit < pColumn->iColumnNo()) {
+        iLocal++;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // switch on column type
+  switch (pColumn->eColumnType()) {
+    case CT_INTEGER:
+    case CT_DECIMAL:
+    case CT_FLOAT:
+      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
+                         aCT_long[pColumn->eColumnType()]);
+      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_REG_INDEXDEF_ADDCOLUMN \"intA\"\n"_Stz);
+
+      StrLib::vSprintCat(m_sAsmGbyKey, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+      StrLib::vSprintCat(m_sAsmGbyKey, "  EO_ENTWRK_SETINTELM\n"_Stz);
+      m_nPayLoadBytes += 8;
+      return EC_NONE;
+
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+    case CT_INTERVAL:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+      return EC_INVALID_COMMAND;
+
+    default:
+      RASSERT(0);
+  }
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,6 +477,18 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
       continue;
     }
 
+    if (pTkn->bIsName()  && pTkn->bSame("GROUP"_Stz) ) {
+
+      // next token should be BY
+      pTkn = pTknVec->pGet(++i_Tkn);
+
+      if ( ! pTkn->bSame("BY"_Stz) ) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+      continue;
+    }
+
     if (pTkn->bIsName()  && pTkn->bSame(")"_Stz) ) {
 
       // // should have seen a (
@@ -496,6 +562,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
   Column *pColumnExpr =  new Column;
   TagSet oTagSet;
   bool bSum = false;
+  bool bGroupBy = false;
 
   Token* pTkn = pTknVec->pCurrToken();
 
@@ -510,17 +577,11 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
       // discovered a comma, add the column to the streamDefOut
       if (pStreamDefOut) {
-        vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
-
-        // add EO code for pop column
-        if (bSum) {
-          eError = eAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
-          if (eError == EC_INVALID_COMMAND)
+        eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
+                                  sAliasName, i_DstColumn, bSum);
+        if (eError == EC_INVALID_COMMAND)
             goto L_RETURN;
-          bSum = false;
-        }
-        else
-          vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+        bSum = false;
       }
 
       pColumn = nullptr;
@@ -629,6 +690,25 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       continue;
     }
 
+    if (pTkn->bIsName()  && pTkn->bSame("GROUP"_Stz) ) {
+
+      bGroupBy = true;
+      i_DstColumn++;
+
+      ASSERT(bSum);
+      eError = eAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
+      if (eError == EC_INVALID_COMMAND)
+        goto L_RETURN;
+      bSum = false;
+
+      // skip next token BY
+      pTkn = pTknVec->pNextToken();
+      ASSERT(pTkn->bSame("BY"_Stz));
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     // found a src column
     Stz *sColumnNm = pTkn->szChars();
 
@@ -667,18 +747,9 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
   i_DstColumn++;
 
   // discovered a comma, add the column to the streamDefOut
-  if (pStreamDefOut) {
-    vUpdateStreamDefOut(pStreamDefOut, pColumn ? pColumn : pColumnExpr, sAliasName);
-
-    // add EO code for pop column
-    if (bSum) {
-      eError = eAddSum(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
-      if (eError == EC_INVALID_COMMAND)
-        goto L_RETURN;bSum = false;
-    }
-    else
-      vAddPopCol(pColumn ? pColumn->eColumnType() : pColumnExpr->eColumnType(), i_DstColumn);
-  }
+  if (pStreamDefOut)
+    eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
+                              sAliasName, i_DstColumn, bSum);
 
   L_RETURN:
     delete pColumnExpr;
@@ -686,13 +757,47 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse project                                                              */
+/* handle an out column                                                       */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName, i8 i_DstColumn, bool bSum) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eEC eError = EC_NONE;
+
+  vUpdateStreamDefOut(pStreamDefOut, pColumn, sAliasName);
+
+  if (bSum) {
+    eError = eAddSum(pColumn->eColumnType(), i_DstColumn);
+    if (eError == EC_INVALID_COMMAND)
+      return eError;
+  }
+  else {
+    vAddPopCol(pColumn->eColumnType(), i_DstColumn);
+    m_nPayLoadBytes += 8;
+  }
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr has an aggregate ?                                                    */
 /*----------------------------------------------------------------------------*/
 bool ExprEval::bHasAggregate(void) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   return m_bHasAgg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr has an aggregate with groupBy ?                                       */
+/*----------------------------------------------------------------------------*/
+bool ExprEval::bHasGroupBy(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  return m_bHasGby;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -237,6 +237,7 @@ namespace STORE
 
     void vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
+    void vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     void vGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
 

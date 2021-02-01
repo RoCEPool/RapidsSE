@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* AM_StreamDef.macro -- ASM StreamDef Handlers Macros                        */
+/*============================================================================*/
+
+macro AM_HANDLER_STREAMDEF_GBY
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_STREAMDEF_GBY                                             //
+//----------------------------------------------------------------------------//
+  // AM_HANDLER_STREAMDEF_GBY
+  Label HANDLER_STREAMDEF
+  EO_PRINTF "**HANDLER_STREAMDEF**\n"
+  EO_POP
+  EO_REG_INDEXDEF_NEW "gby_idx"
+endMacro
+
+macro AM_HANDLER_STREAMDEF_GBY_END
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_STREAMDEF_GBY_END                                         //
+//----------------------------------------------------------------------------//
+  // AM_HANDLER_STREAMDEF_GBY_END
+  EO_REG_INDEXTREE_NEW
+  EO_REG_INDEXDEF_DELETE
+  EO_INDEXTREE_TMP_SET
+  EO_JMP QUERY_DONE
+endMacro
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

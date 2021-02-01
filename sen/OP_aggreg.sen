@@ -132,6 +132,9 @@
     LogicCompiler[].compile
   then
 
+  // execute the streamDef asm handler
+  ZK_STREAMDEF Counter0[] executeAsmArgs
+
   true
 ;
 

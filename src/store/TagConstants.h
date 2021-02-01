@@ -93,7 +93,10 @@ static Stz* C_TAG_CRW_FILTER_ROUTINE    = "<crwFilterRoutine>"_Stz;
 static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
 static Stz* C_TAG_ROW_PROCESS_ROUTINE   = "<rowProcessRoutine>"_Stz;
 
+static Stz* C_TAG_PAYLOAD_BYTES         = "<payLoadBytes>"_Stz;
 static Stz* C_TAG_PAYLOAD_ROUTINE       = "<payLoadRoutine>"_Stz;
+static Stz* C_TAG_PAYLOAD_KEY           = "<payLoadKey>"_Stz;
+static Stz* C_TAG_PAYLOAD_STORE         = "<payLoadStore>"_Stz;
 
 static Stz* C_TAG_INDEX_RANGE_ROUTINE   = "<indexRangeRoutine>"_Stz;
 
