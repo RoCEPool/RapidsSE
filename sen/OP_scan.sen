@@ -97,8 +97,8 @@
   // grab table ptn read lock
   tablePtn[] tablePtnGrabRead
 
-  // set counter0 to false to indicate lock held
-  false to counter0[]
+  // set counter0 to true to indicate lock held
+  true to counter0[]
 
   // new a partition stream for access crw buffer
   tablePtn[] ptnStream::new to ptnStream[]
@@ -121,7 +121,7 @@
     tablePtn[] tablePtnDropRead
 
     // set counter0 to 0 to indicate lock released
-    0 to counter0[]
+    false to counter0[]
 
     // send an eos marker (there was no data)
     Operand[].newEosMarker
