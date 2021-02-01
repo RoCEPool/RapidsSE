@@ -9,7 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : Scan_CancelMarker \handler
 
-  tablePtn[] tablePtnDropRead
+// drop the tablePtn lock if held
+  counter0[] true == if
+    tablePtn[] tablePtnDropRead
+    false to counter0[]
+  then
+
   ZK_CANCELMARKER_handler
 ;
 
@@ -44,7 +49,10 @@
  
     // drop partition lock
     tablePtn[] tablePtnDropRead
- 
+
+    // set counter0 to false to indicate lock released
+    false to counter0[]
+
     // pipe out an eos marker
     Operand[].newEosMarker
     Operand[].pipeOut
@@ -89,6 +97,9 @@
   // grab table ptn read lock
   tablePtn[] tablePtnGrabRead
 
+  // set counter0 to false to indicate lock held
+  false to counter0[]
+
   // new a partition stream for access crw buffer
   tablePtn[] ptnStream::new to ptnStream[]
 
@@ -108,6 +119,9 @@
 
     // drop table ptn lock
     tablePtn[] tablePtnDropRead
+
+    // set counter0 to 0 to indicate lock released
+    0 to counter0[]
 
     // send an eos marker (there was no data)
     Operand[].newEosMarker
@@ -166,9 +180,9 @@
 
   op__topology
 
-  //find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
   find: scan_CrwBuffer    ZK_CRWBUFFER    op[].handler!
-  find: scan_DataMarker  ZK_DATAPULSE  op[].handler!
+  find: scan_DataMarker   ZK_DATAPULSE  op[].handler!
   find: scan_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop
