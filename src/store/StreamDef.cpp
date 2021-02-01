@@ -418,7 +418,7 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   if (bAddPtnHash) {
 
-    pRowPixDst->vPrint();
+    //pRowPixDst->vPrint();
     ASSERT(! pRowPixDst->m_nExtraCols);
     
     pRowPixDst->m_nColumns++;
@@ -447,13 +447,11 @@ void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     azColNmDst += nNameSize;
     pRowPixDst->m_nTotalChars += nNameSize;
     
-    pRowPixDst->vPrint();
+    //pRowPixDst->vPrint();
   }
   
   pRowPixDst->m_nTotalChars++;
   * azColNmDst = '\0';
-  
-  
 }
 
 /*----------------------------------------------------------------------------*/
