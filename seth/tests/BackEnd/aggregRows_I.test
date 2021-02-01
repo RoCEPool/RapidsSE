@@ -1,6 +1,9 @@
 --------------------------------------------------------------------------------
 -- aggregRows_I tests
 --------------------------------------------------------------------------------
+trackMemory;
+success
+
 //------------------------------------------------------------------------------
 aggregRows_I lineitem "sum ( l_discount )";
 failure contains: "no such table"
@@ -84,6 +87,9 @@ failure contains: "invalid command"
 // drop the table
 drop table lineitem;
 success;
+
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   

@@ -5,23 +5,6 @@
 " OP_consume.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
-/*----------------------------------------------------------------------------*/
-: consumeOp_CancelMarker \handler
-
-  //"Operand:- ZK_CANCELMARKER" .verbose
-  xmits[].handleCancel if
-    //ZK_CANCELMARKER_handler
-    PipeIn[].pipeOut
-    Op.ackPipelineJob
-    false
-  else
-    PipeIn[].delete
-    true
-  then
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_EosMarker \handler
@@ -148,7 +131,6 @@
   // set topology, next stage and op
   op__topology
 
-  find: consumeOp_CancelMarker   ZK_CANCELMARKER op[].handler!
   find: consumeOp_EosMarker      ZK_EOSMARKER    op[].handler!
   //find: consumeOp_ErrorMarker  ZK_ERRORMARKER  op[].handler!
   find: consumeOp_ExitMarker     ZK_EXITMARKER   op[].handler!

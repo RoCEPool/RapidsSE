@@ -129,44 +129,23 @@ Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  if ( ! StrLib::bSame(m_sOpNm.azChar(), (char*)"consumeOp"_Stz) &&
-       ! StrLib::bSame(m_sOpNm.azChar(), (char*)"xmit"_Stz)) {
-    if (m_pQueueLeft->nItems() != 0) {
-      vTrace("Operand Queue not empty\n"_Stz);
-      Operand *pOperand = m_pQueueLeft->pPop();
-      while (pOperand) {
+  if (m_pQueueLeft->nItems() != 0) {
+    vTrace("Operand Queue not empty\n"_Stz);
+    Operand *pOperand = m_pQueueLeft->pPop();
+    while (pOperand) {
 //        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
-        pOperand = m_pQueueLeft->pPop();
-      }
-      RASSERT(0);
+      pOperand = m_pQueueLeft->pPop();
     }
-    if (m_pQueueRight->nItems() != 0) {
-      vTrace("Operand Queue not empty\n"_Stz);
-      Operand *pOperand = m_pQueueRight->pPop();
-      while (pOperand) {
-//        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
-        pOperand = m_pQueueRight->pPop();
-      }
-      RASSERT(0);
-    }
+    RASSERT(0);
   }
-  else {
-    if (m_pQueueLeft->nItems() != 0) {
-      vTrace("Operand Queue not empty\n"_Stz);
-      Operand *pOperand = m_pQueueLeft->pPop();
-      while (pOperand) {
+  if (m_pQueueRight->nItems() != 0) {
+    vTrace("Operand Queue not empty\n"_Stz);
+    Operand *pOperand = m_pQueueRight->pPop();
+    while (pOperand) {
 //        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
-        pOperand = m_pQueueLeft->pPop();
-      }
+      pOperand = m_pQueueRight->pPop();
     }
-    if (m_pQueueRight->nItems() != 0) {
-      vTrace("Operand Queue not empty\n"_Stz);
-      Operand *pOperand = m_pQueueRight->pPop();
-      while (pOperand) {
-//        vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
-        pOperand = m_pQueueRight->pPop();
-      }
-    }
+    RASSERT(0);
   }
 
   delete m_pQueueLeft;
@@ -2025,3 +2004,140 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+/*
+[NODE0 origin periodic 232.418ms] piping out a pulsedMarker
+
+periodic (    stageA) (N0) (P-1) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e81040
+
+chunk (    stageA) (N0) (P-1) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e81040
+chunk (    stageA) (N0) (P-1) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e81040
+
+rdCsvChunk (    stageA) (N0) (P-1) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e81040
+rdCsvChunk (    stageA) (N0) (P-1) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e81040
+
+xmit (    stageA) (N0) (P-1) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e81040
+xmit (    stageA) (N0) (P-1) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e81040
+
+consumeOp (    stageB) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819efb440
+consumeOp (    stageB) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819efb440
+consumeOp (    stageB) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+consumeOp (    stageB) (N0) (P03) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80c40
+consumeOp (    stageB) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80840
+consumeOp (    stageB) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80840
+consumeOp (    stageB) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7f840
+consumeOp (    stageB) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7f840
+
+toRow (    stageB) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+toRow (    stageB) (N0) (P03) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80c40
+
+toPtnRow (    stageB) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+toPtnRow (    stageB) (N0) (P03) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80c40
+
+toRow (    stageB) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80840
+toRow (    stageB) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80840
+
+toNstRow (    stageB) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+toNstRow (    stageB) (N0) (P03) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80c40
+
+toPtnRow (    stageB) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80840
+toPtnRow (    stageB) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80840
+
+toRow (    stageB) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7f840
+toRow (    stageB) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7f840
+
+toHshCrw (    stageB) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+toHshCrw (    stageB) (N0) (P03) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80c40
+
+toNstRow (    stageB) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80840
+toNstRow (    stageB) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80840
+
+toPtnRow (    stageB) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7f840
+toPtnRow (    stageB) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7f840
+
+toHshCrw (    stageB) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80840
+toHshCrw (    stageB) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80840
+
+xmit (    stageB) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+xmit (    stageB) (N0) (P03) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80c40
+
+toNstRow (    stageB) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7f840
+toNstRow (    stageB) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7f840
+
+xmit (    stageB) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80840
+xmit (    stageB) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e80840
+
+
+
+consumeOp (    stageC) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+consumeOp (    stageC) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7d040
+consumeOp (    stageC) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e81c40
+consumeOp (    stageC) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819ee0040
+consumeOp (    stageC) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e80c40
+consumeOp (    stageC) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e83040
+consumeOp (    stageC) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7c840
+consumeOp (    stageC) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7e040
+
+toHshCrw (    stageB) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7f840
+toHshCrw (    stageB) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7f840
+
+
+toRow (    stageB) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819efb440
+toRow (    stageB) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819efb440
+
+toPtnRow (    stageB) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819efb440
+toPtnRow (    stageB) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819efb440
+
+toNstRow (    stageB) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819efb440
+toNstRow (    stageB) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819efb440
+
+xmit (    stageB) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7f840
+xmit (    stageB) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7f840
+
+consumeOp (    stageC) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204808c0f840
+consumeOp (    stageC) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7b440
+consumeOp (    stageC) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e86040
+
+toHshCrw (    stageB) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819efb440
+toHshCrw (    stageB) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819efb440
+
+consumeOp (    stageC) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7d840
+
+xmit (    stageB) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819efb440
+xmit (    stageB) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819efb440
+
+consumeOp (    stageC) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7b440
+consumeOp (    stageC) (N0) (P03) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e83840
+
+consumeOp (    stageC) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7b440
+consumeOp (    stageC) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7b840
+consumeOp (    stageC) (N0) (P03) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e83840
+consumeOp (    stageC) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7b840
+consumeOp (    stageC) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7d840
+
+insert (    stageC) (N0) (P03) (job:0x2048254a0040):: pPopQueue :    CRWBUFFER 0x204823f00040
+
+consumeOp (    stageC) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7d840
+
+insert (    stageC) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7b440
+insert (    stageC) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7b440
+
+insert (    stageC) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7d840
+insert (    stageC) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7d840
+
+xmit (    stageC) (N0) (P02) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7b440
+xmit (    stageC) (N0) (P02) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7b440
+
+xmit (    stageC) (N0) (P00) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7d840
+xmit (    stageC) (N0) (P00) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7d840
+
+consumeOp (    stageD) (N0) (P-1) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7d840
+consumeOp (    stageD) (N0) (P-1) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819efb440
+
+insert (    stageC) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7b840
+insert (    stageC) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7b840
+
+xmit (    stageC) (N0) (P01) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819e7b840
+xmit (    stageC) (N0) (P01) (job:0x2048254a0040)::  vPipeOut : PULSEDMARKER 0x204819e7b840
+
+consumeOp (    stageD) (N0) (P-1) (job:0x2048254a0040):: pPopQueue : PULSEDMARKER 0x204819edbc40
+ */
