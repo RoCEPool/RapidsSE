@@ -212,6 +212,9 @@ void RowPix::vPrint(void)
 void RowPix::vRemovePtnHash(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  vPrint();
+  
   ASSERT(m_bPtnHash);
   ASSERT(m_nExtraCols);
 
