@@ -1058,7 +1058,7 @@ void RowBox_t<AREA>::vReset(void)
   //RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
 
-  vTrace("Reset: %p \n"_Stz,this);
+  //vTrace("Reset: %p \n"_Stz,this);
 
   m_i_RowCrs  = C_UNKNOWN;
   m_aRowCur   = nullptr;
