@@ -88,19 +88,13 @@ void Step::vSqlCompilerParser(void)
   s48K sExplainBuf;
   PlanOperand* pPlanOperand;
 
-  //vTrace("\nStep::vSqlCompilerParser\n"_Stz);
-
   // Get the original SQL statement entered
   s4K sSqlStatement;
   m_pDataStack->vPopStr(sSqlStatement,__func__);
 
   // Read in and parse the plan graph definitions
   const Parser::PlanNode* pGraphTemplate = Parser::PlanDefinitionParser::pGraphTemplate();
-
-  if (pGraphTemplate == nullptr) {
-    // TODO: handle error
-//    return false;
-  }
+  RASSERT(pGraphTemplate);
 
   // Parse the SQL command.
   Parser::SqlPlanner* pPlanner = new Parser::SqlPlanner();
