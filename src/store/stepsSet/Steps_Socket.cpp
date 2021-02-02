@@ -317,6 +317,10 @@ void Step::vSocketRecvObject(void)
               "Socket received: Header %s"_Stz, //!format-LogRes
               spHeader.sz(aHeader));
   
+//  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
+//         AM::iThisNodeNo(),
+//         spHeader.sz(aHeader));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the details about the received object
   
