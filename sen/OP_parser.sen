@@ -16,15 +16,20 @@
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : parser_DataMarker \handler
- 
-  ZK_DATAPULSE_handler
 
   <sqlStatement> sqlCompiler::parser to Operand[]
-  
-  Operand[].pipeOut
-  
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  Operand[].isNull if
+    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB !!logError
+    Pipein[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    true
+  else
+    ZK_DATAPULSE_handler
+    Operand[].pipeOut
+    Operand[].newEosMarker
+    Operand[].pipeOut
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

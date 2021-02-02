@@ -269,14 +269,29 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
-      if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
+      if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_COMMANDERRORS)) {
+
+        Row *pInfoRow = pInfoSet->aFirstRow();
+
+        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
+        i8 iSeverity    = pInfoRow->iColVal_int(1);
+        i8 iLineNo      = pInfoRow->iColVal_int(2);
+        i8 iColumnNo    = pInfoRow->iColVal_int(3);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(4);
+
+        vTrace("COMMAND ERROR:( %s ) %s; Severity: %lld ;Line: %lld; Column: %lld;\n"_Stz,
+               aEC[eErrorCode], sErrorText, iSeverity, iLineNo, iColumnNo);
+
+        AM::vDeleteOperand(pOperand);
+      }
+      else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
         
         Row* pInfoRow = pInfoSet->aFirstRow();
-        
+
         i8 iRowsProcessed = pInfoRow->iColVal_int(0);
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
         i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
-        
+
         m_ixRowsProcessed += iRowsProcessed;
         m_ixRowsInvalid   += iRowsInvalid;
         m_ixRowsSkipped   += iRowsSkipped;
@@ -286,6 +301,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         AM::vDeleteOperand(pOperand);
       }
+
       else {
         m_ixRowsProcessed += pInfoSet->nInfoRows();
         vTrace("\n"_Stz);

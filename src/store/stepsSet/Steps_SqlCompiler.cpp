@@ -69,7 +69,10 @@ void Step::vSqlCompilerNameValidate(void)
 void Step::vSqlCompilerParser(void)
 {
   ENTRY();
-  
+
+  s48K sExplainBuf;
+  PlanOperand* pPlanOperand;
+
   //vTrace("\nStep::vSqlCompilerParser\n"_Stz);
 
   // Get the original SQL statement entered
@@ -93,26 +96,28 @@ void Step::vSqlCompilerParser(void)
 
   } catch (Parser::SyntaxException& e) {
     vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
-    RASSERT(0);
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
 
   } catch (Parser::SemanticException& e) {
     vTrace("SemanticException: %s\n"_Stz, e.szError());
-    RASSERT(0);
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
   }
-  delete pPlanner;
 
   ASSERT(pPlanRoot);
 
-  s48K sExplainBuf;
   Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
   vTrace("%s\n"_Stz, sExplainBuf.szStz());
 
-  PlanOperand* pPlanOperand = new PlanOperand(pPlanRoot);
+  pPlanOperand = new PlanOperand(pPlanRoot);
   m_pDataStack->vPushPtr(pPlanOperand);
 
   //vTrace("  antlr(%s) -> RootNode %p\n"_Stz,
   //       sSqlStatement.szStz(),pPlanNode_root);
 
+L_Exit:
+  delete pPlanner;
   EXIT();
 }
 

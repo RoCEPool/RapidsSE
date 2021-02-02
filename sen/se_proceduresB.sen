@@ -1292,7 +1292,7 @@
     stage stageA on origin :
       start
       | periodic once
-      | sqlInit
+      //| sqlInit
       | parser $sqlStatement
       | nameValidate
       | transliterate

@@ -7,28 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
-: op__file ( fileNm mode -- )
-
-  params| mode sFileNm |
-
-  // open the file for reading
-  file::new to File0[]
-  sfileNm mode File0[].get file.open
-  if
-    true
-  else
-    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
-    op.pipelineJob@ ERROR_JOB !!logError
-    PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
-    false
-  then
-  ;
-
-/*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm> of tabledef                             */
-/*----------------------------------------------------------------------------*/
 : op__tableDef_infoSet ( tableNm -- )
 
   params| sTableNm |
@@ -57,6 +35,41 @@
 
   true
 ;
+
+/*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm> of tabledef                             */
+/*----------------------------------------------------------------------------*/
+: op__file ( fileNm mode -- )
+
+  params| mode sFileNm |
+
+  // open the file for reading
+  file::new to File0[]
+  sfileNm mode File0[].get file.open
+  if
+    true
+  else
+    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
+    op.pipelineJob@ ERROR_JOB !!logError
+
+    // create the infoSetTable for C_TDEF_COMMANDERRORS
+    C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
+
+    // create an infoSet operand for commandErrors
+    infoSetTable[] InfoSet[].new
+    OI_COMMANDERRORS infoSet[].opInfoset!
+
+    sFileNm "File '%v' does not exist" str.format -1 -1 -1 EC_INVALID_FILE
+      infoSetTable[] InfoSet[].addCommandError assert
+
+    InfoSet[].pipeOut
+
+    PipeIn[].delete
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    false
+  then
+ ;
 
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
