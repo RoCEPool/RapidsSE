@@ -279,8 +279,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         i8 iColumnNo    = pInfoRow->iColVal_int(3);
         Stz* sErrorText = pInfoRow->szColVal_ofs(4);
 
-        vTrace("COMMAND ERROR:( %s ) %s; Severity: %lld ;Line: %lld; Column: %lld;\n"_Stz,
-               aEC[eErrorCode], sErrorText, iSeverity, iLineNo, iColumnNo);
+        vTrace("%s : Line: %lld; Column: %lld; ErrorMsg: %s; \n"_Stz,
+               aEC[eErrorCode] , iLineNo, iColumnNo, sErrorText);
 
         AM::vDeleteOperand(pOperand);
       }
