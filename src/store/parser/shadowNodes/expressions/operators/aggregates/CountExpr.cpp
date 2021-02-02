@@ -75,13 +75,18 @@ void CountExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   } else {
     sBuf.vConcat("COUNT("_Stz);
 
-    if (bIsDistinct(pNode)) {
-      sBuf.vConcat("DISTINCT "_Stz);
+    b1 bDistinct = bIsDistinct(pNode);
+    if (bDistinct) {
+      sBuf.vConcat("DISTINCT("_Stz);
     }
 
     ASSERT(pNode->nChildren() == 1);
     PlanNode* pChildExpr = pNode->pFirstChild();
     Expr::vDescribe(pChildExpr, sBuf);
+
+    if (bDistinct) {
+      sBuf.vConcat(")"_Stz);
+    }
 
     sBuf.vConcat(")"_Stz);
   }

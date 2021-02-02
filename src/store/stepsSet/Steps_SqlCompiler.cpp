@@ -24,6 +24,8 @@
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"
 
+#include "ParserException.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -84,7 +86,16 @@ void Step::vSqlCompilerParser(void)
 
   // Parse the SQL command.
   Parser::SqlPlanner* pPlanner = new Parser::SqlPlanner();
-  Parser::PlanNode* pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
+  Parser::PlanNode* pPlanRoot;
+
+  try {
+    pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
+    
+  } catch (Parser::SyntaxException& e) {
+    vTrace("SyntaxException: %s\n"_Stz, e.szError());
+  } catch (Parser::SemanticException& e) {
+    vTrace("SemanticException: %s\n"_Stz, e.szError());
+  }
   delete pPlanner;
 
   if (!pPlanRoot) {

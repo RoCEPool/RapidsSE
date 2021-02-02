@@ -5,10 +5,10 @@
 #include "BASE.h"
 #include "AggregateExpr.hpp"
 #include "CountExpr.hpp"
-//#include "SumExpr.hpp"
-//#include "MinExpr.hpp"
-//#include "MaxExpr.hpp"
-//#include "AvgExpr.hpp"
+#include "SumExpr.hpp"
+#include "MinExpr.hpp"
+#include "MaxExpr.hpp"
+#include "AvgExpr.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -38,10 +38,10 @@ void AggregateExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   if      (CountExpr::bIsOfType(pNode))  { CountExpr::vDescribe(pNode, sBuf); }
-//  else if (SumExpr::bIsOfType(pNode))    { SumExpr::vDescribe(pNode, sBuf);   }
-//  else if (MinExpr::bIsOfType(pNode))    { MinExpr::vDescribe(pNode, sBuf);   }
-//  else if (MaxExpr::bIsOfType(pNode))    { MaxExpr::vDescribe(pNode, sBuf);   }
-//  else if (AvgExpr::bIsOfType(pNode))    { AvgExpr::vDescribe(pNode, sBuf);   }
+  else if (SumExpr::bIsOfType(pNode))    { SumExpr::vDescribe(pNode, sBuf);   }
+  else if (MinExpr::bIsOfType(pNode))    { MinExpr::vDescribe(pNode, sBuf);   }
+  else if (MaxExpr::bIsOfType(pNode))    { MaxExpr::vDescribe(pNode, sBuf);   }
+  else if (AvgExpr::bIsOfType(pNode))    { AvgExpr::vDescribe(pNode, sBuf);   }
   else NEVER_REACH
 }
 

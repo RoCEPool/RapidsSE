@@ -51,6 +51,10 @@
 #include "store/parser/shadowNodes/expressions/operators/logic/NotExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/IsNullExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/CountExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/SumExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/AvgExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
@@ -319,45 +323,18 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   pStatement->vAppendChild(pProjectOp);
 
 
-
   // Check for a tableRef. If one exists, add it to a TableScanOp
   // and attach the TableScanOp as a child of the ProjectOp
-  if (m_pTableRefStack->nItems() > 0) {
-    ASSERT(m_pTableRefStack->nItems() == 1);
-    QueryNode* pTableRef = m_pTableRefStack->pPop();
-
-    QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
-    pProjectOp->vAppendChild(pTableScanOp);
+  if (m_pTableRefStack->nItems() == 0) {
+    SemanticException::vThrow("No table source specified"_Stz);
   }
 
+  ASSERT(m_pTableRefStack->nItems() == 1);
+  QueryNode* pTableRef = m_pTableRefStack->pPop();
 
+  QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
+  pProjectOp->vAppendChild(pTableScanOp);
 
-  ////////////////////////////////////////////////////////
-//  if (m_pTableRefStack->nItems() > 0) {
-//    vTrace("  /from\n"_Stz);
-//
-//    s2K sBuf;
-//    QueryNode* pTableRef = m_pTableRefStack->pPop();
-//    ShadowNode::vDescribe(pTableRef, sBuf);
-//
-//    vTrace("    /%s\n"_Stz, sBuf.szStz());
-//    delete pTableRef;
-//  }
-//
-//  ASSERT(m_pSelectItems->nItems() > 0);
-//  vTrace("  /project\n"_Stz);
-//
-//  while (m_pSelectItems->nItems() > 0) {
-//    QueryNode* pSelectItem = m_pSelectItems->pPop();
-//    s2K buf;
-//
-//    buf.vCopy("    /"_Stz);
-//    ShadowNode::vDescribe(pSelectItem, buf);
-//
-//    buf.vConcat("\n"_Stz);
-//    vTrace(buf.szStz());
-//  }
-  ////////////////////////////////////////////////////////
 
   ASSERT(m_pSelectItems->nItems() == 0);
   delete m_pSelectItems;
@@ -671,9 +648,9 @@ antlrcpp::Any SqlPlanner::visitCountAll(sqlParser::CountAllContext *pCtx)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* COUNT(expr) Expression Operator                                            */
+/* Generic Aggregate Expression Operator                                      */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any SqlPlanner::visitCountFunc(sqlParser::CountFuncContext *pCtx)
+antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
 {
   visitChildren(pCtx);
 
@@ -682,13 +659,40 @@ antlrcpp::Any SqlPlanner::visitCountFunc(sqlParser::CountFuncContext *pCtx)
   ASSERT(m_pExprStack->nItems() > 0);
   QueryNode* pChildExpr = m_pExprStack->pPop();
 
-  QueryNode* pOpExpr = CountExpr::pCreate(false, bIsDistinct, pChildExpr);
+  s256 sFunc;
+  vCleanString(pCtx->func, sFunc);
+  sFunc.vToUpper();
+
+  QueryNode* pAggExpr = nullptr;
+
+  if (sFunc.bEqual("COUNT"_Stz)) {
+    pAggExpr = CountExpr::pCreate(false, bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("SUM"_Stz)) {
+    pAggExpr = SumExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("AVG"_Stz)) {
+    pAggExpr = AvgExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("MIN"_Stz)) {
+    pAggExpr = MinExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("MAX"_Stz)) {
+    pAggExpr = MaxExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else {
+    SyntaxException::vThrow("Unrecognised aggregate function: %s"_Stz, sFunc.szStz());
+  }
+
+  ASSERT(pAggExpr);
 
   // Put the operator back onto the expression stack
-  m_pExprStack->vPush(pOpExpr);
+  m_pExprStack->vPush(pAggExpr);
 
   return nullptr;
 }
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -774,6 +778,19 @@ Text* SqlPlanner::pCleanString(sqlParser::StringLiteralContext *pCtx)
 /* Clean up a a string literal. Returned string is written to the given buffer*/
 /*----------------------------------------------------------------------------*/
 void SqlPlanner::vCleanString(sqlParser::StringLiteralContext *pCtx, s256& sBuf)
+{
+  if (!pCtx) {
+    return;
+  }
+
+  std::string idStr = pCtx->getText();
+  vCleanString(idStr, sBuf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a a string literal. Returned string is written to the given buffer*/
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vCleanString(sqlParser::IdentifierContext *pCtx, s256& sBuf)
 {
   if (!pCtx) {
     return;
