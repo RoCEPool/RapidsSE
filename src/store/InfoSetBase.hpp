@@ -28,6 +28,7 @@ namespace STORE
     Row* pAllotRow(void);
     //Row* pAllotRow(RowSingle* pRowSingle);
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
+    Row* pAllotRow(i8 iVargsBegin, ...);
     Row* aFirstRow();
     i8   nInfoRows(void);
     Stz* szInfoSetNm(void);

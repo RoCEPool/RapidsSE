@@ -8,11 +8,26 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "InfoSet.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
 #include "Dynamo.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "Node_I.hpp"
+#include "LogicUnit.hpp"
 
 #include "PlanNode.hpp"
 #include "RootNode.hpp"
@@ -95,12 +110,29 @@ void Step::vSqlCompilerParser(void)
     pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
 
   } catch (Parser::SyntaxException& e) {
-    vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
+    //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
+    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    EC_SYNTAX_ERROR,
+                                    0,
+                                    e.iLine(),
+                                    e.iColumn(),
+                                    e.szError(),
+                                    C_VARGS_END);
+
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
 
   } catch (Parser::SemanticException& e) {
-    vTrace("SemanticException: %s\n"_Stz, e.szError());
+    //vTrace("SemanticException: %s\n"_Stz, e.szError());
+    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    -1,
+                                    -1,
+                                    e.szError(),
+                                    C_VARGS_END);
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
   }

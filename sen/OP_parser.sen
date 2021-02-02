@@ -17,14 +17,19 @@
 /*----------------------------------------------------------------------------*/
 : parser_DataMarker \handler
 
+  // create the command error info set
+  op__cmdErr
+
   <sqlStatement> sqlCompiler::parser to Operand[]
   Operand[].isNull if
     EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB !!logError
+    InfoSet[].pipeOut
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
     true
   else
+    InfoSet[].delete
     ZK_DATAPULSE_handler
     Operand[].pipeOut
     Operand[].newEosMarker

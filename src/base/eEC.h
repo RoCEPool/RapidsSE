@@ -133,7 +133,9 @@ enum eEC // error code
   /* */ EC_SCHEMA_EXISTS,
   /* */ EC_SE_NOT_RUNNING,
   /* */ EC_SE_UNKNOWN_ERROR,
+  /* */ EC_SEMANTIC_ERROR,
   /* */ EC_SEND_FAILURE,
+  /* */ EC_SYNTAX_ERROR,
   
   /* */ EC_TABLE_ALREADY_LOADED,
   /* */ EC_TABLE_EXISTS,
@@ -282,7 +284,9 @@ static Stz* aEC[]
   /* */ "schema exists"_Stz,
   /* */ "SE is not running"_Stz,
   /* */ "SE unknown error"_Stz,
+  /* */ "semantic error"_Stz,
   /* */ "send failure"_Stz,
+  /* */ "syntax error"_Stz,
   
   /* */ "table already loaded"_Stz,
   /* */ "table exists"_Stz,
