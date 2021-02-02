@@ -168,23 +168,13 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   
   // Check for any syntax errors
   if (errorListener.bGotError()) {
-    vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
-    m_sLastError.vCopy(errorListener.szErrorMsg());
-    return nullptr;
+    //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
+    SyntaxException::vThrow(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
   }
   
   // Visit the parse tree that resulted from the above parsing.
-  try {
-    this->visitStatement(pStatementCtx);
-
-  } catch (SyntaxException& e) {
-    m_sLastError.vCopy(e.szError());
-    return nullptr;
-
-  } catch (SemanticException& e) {
-    m_sLastError.vCopy(e.szError());
-    return nullptr;
-  }
+  // May throw a SyntaxException or SemanticException.
+  this->visitStatement(pStatementCtx);
 
   // Create a new plan graph using the template
   PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
@@ -200,27 +190,10 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   QueryNode* pStatementNode = m_pStatementStack->pPop();
   pQueryNode->vAppendChild(pStatementNode);
 
-  // Explain the statement
-//  s48K sExplainBuf;
-//  Statement::vExplain(pStatementNode, sExplainBuf, 0);
-//  vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
-
   // Validate the plan subsection of the graph
   GraphValidator::vValidatePlan(pRoot);
 
   return pRoot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the last error message encountered, or nullptr if there is none.   */
-/*----------------------------------------------------------------------------*/
-Stz* SqlPlanner::szLastError()
-{
-  if (m_sLastError.nLength() == 0) {
-    return nullptr;
-  }
-
-  return m_sLastError.szStz();
 }
 
 
@@ -681,7 +654,9 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
     pAggExpr = MaxExpr::pCreate(bIsDistinct, pChildExpr);
 
   } else {
-    SyntaxException::vThrow("Unrecognised aggregate function: %s"_Stz, sFunc.szStz());
+    SyntaxException::vThrow(pCtx->func->getLine(),
+                            pCtx->func->getCharPositionInLine(),
+                            "Unrecognised aggregate function: %s"_Stz, sFunc.szStz());
   }
 
   ASSERT(pAggExpr);
@@ -926,7 +901,7 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -934,14 +909,14 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
   vCleanString(pCtx, sBuf);
 
   if (sBuf.nLength() != 10) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-') {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0]) ||
@@ -952,7 +927,7 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[8]) ||
       !StrLib::bIsDigit(pcBuf[9]) ) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Parse out the fields
@@ -994,7 +969,7 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -1002,14 +977,14 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   vCleanString(pCtx, sBuf);
 
   if (sBuf.nLength() != 8) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[2] != ':' || pcBuf[5] != ':') {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0]) ||
@@ -1018,7 +993,7 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[4]) ||
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[7]) ) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Parse out the fields
@@ -1058,7 +1033,7 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -1067,14 +1042,14 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   i8 iLen = sBuf.nLength();
   if (iLen < 19) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-' || pcBuf[10] != ' ' || pcBuf[13] != ':' || pcBuf[16] != ':') {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0])  ||
@@ -1091,7 +1066,7 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[15]) ||
       !StrLib::bIsDigit(pcBuf[17]) ||
       !StrLib::bIsDigit(pcBuf[18]) ) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // check for optional micros
@@ -1099,17 +1074,17 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   if (iLen > 19) {
     if (pcBuf[19] != '.') {
-      throw SyntaxException(_szInvalidFormat);
+      throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
     }
 
     for (i8 iIdx = 20; iIdx < iLen; iIdx++) {
       if (iIdx > 25) {
         // can only have 6 digits of microseconds
-        throw SyntaxException(_szInvalidFormat);
+        throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
       }
 
       if (!StrLib::bIsDigit(pcBuf[iIdx])) {
-        throw SyntaxException(_szInvalidFormat);
+        throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
       }
     }
 

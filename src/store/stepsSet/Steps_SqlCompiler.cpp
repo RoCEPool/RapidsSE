@@ -90,17 +90,18 @@ void Step::vSqlCompilerParser(void)
 
   try {
     pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
-    
+
   } catch (Parser::SyntaxException& e) {
-    vTrace("SyntaxException: %s\n"_Stz, e.szError());
+    vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
+    RASSERT(0);
+
   } catch (Parser::SemanticException& e) {
     vTrace("SemanticException: %s\n"_Stz, e.szError());
+    RASSERT(0);
   }
   delete pPlanner;
 
-  if (!pPlanRoot) {
-    // TODO: handle error
-  }
+  ASSERT(pPlanRoot);
 
   s48K sExplainBuf;
   Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);

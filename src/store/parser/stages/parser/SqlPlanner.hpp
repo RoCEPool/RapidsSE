@@ -20,7 +20,6 @@ namespace Parser
     QueryNodeStack* m_pTableRefStack;
     QueryNodeStack* m_pExprStack;
     QueryNodeList* m_pSelectItems;
-    s2K m_sLastError;
     Footer m_xFooter;
     
    public:
@@ -31,7 +30,6 @@ namespace Parser
     SqlPlanner(void);
     
     PlanNode* plan(Stz* pStr, const PlanNode* pTemplate);
-    Stz* szLastError();
 
     ~SqlPlanner(void) noexcept;
   

@@ -22,12 +22,18 @@ namespace Parser
   // An error with the format of the input
   class SyntaxException : public ParserException
   {
+  private:
+    i8 m_iLine;
+    i8 m_iColumn;
+
   public:
     // Constructor
-    SyntaxException(const Stz* szErrorMsg) : ParserException(szErrorMsg)    { /* noop */ }
+    SyntaxException(i8 iLine, i8 iColumn, const Stz* szErrorMsg)
+      : ParserException(szErrorMsg), m_iLine(iLine), m_iColumn(iColumn)
+      { /* noop */ }
 
     // Creates and throws a SyntaxException
-    static void vThrow(Stz* szFormat, ...) {
+    static void vThrow(i8 iLine, i8 iColumn, Stz* szFormat, ...) {
       s256 sErrMsg;
       va_list vaArgs;
 
@@ -35,8 +41,11 @@ namespace Parser
       sErrMsg.vSprint(vaArgs, szFormat);
       va_end(vaArgs);
 
-      throw new SyntaxException(sErrMsg.szStz());
+      throw SyntaxException(iLine, iColumn, sErrMsg.szStz());
     }
+
+    i8 iLine()            { return m_iLine;   }
+    i8 iColumn()          { return m_iColumn; }
   };
 
   // An error with the meaning of the input
@@ -55,7 +64,7 @@ namespace Parser
       sErrMsg.vSprint(vaArgs, szFormat);
       va_end(vaArgs);
 
-      throw new SemanticException(sErrMsg.szStz());
+      throw SemanticException(sErrMsg.szStz());
     }
   };
 }
