@@ -14,7 +14,7 @@ create table nation (
 print "loading nation.csv..." ;
 load nation "../TPCH/SF1/nation.tbl" ;
 
-sqlCompiler "select n_nationkey as col1, n_regionkey as col2 from nation;" ;
+select n_nationkey as col1, n_regionkey as col2 from nation;
 
 /*============================================================================*/
 /* end                                                                        */

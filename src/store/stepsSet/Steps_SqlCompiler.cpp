@@ -129,8 +129,8 @@ void Step::vSqlCompilerParser(void)
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     EC_SEMANTIC_ERROR,
                                     0,
-                                    -1,
-                                    -1,
+                                    0,
+                                    0,
                                     e.szError(),
                                     C_VARGS_END);
     m_pDataStack->vPushPtr(nullptr);
