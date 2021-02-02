@@ -50,6 +50,7 @@
 #include "store/parser/shadowNodes/expressions/operators/logic/XorExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/NotExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/IsNullExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/CountExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
@@ -647,6 +648,41 @@ antlrcpp::Any SqlPlanner::visitIsNullOp(sqlParser::IsNullOpContext *pCtx)
   if (pCtx->NOT()) {
     pOpExpr = NotExpr::pCreate(pOpExpr);
   }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* COUNT(*) Expression Operator                                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCountAll(sqlParser::CountAllContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = CountExpr::pCreate(true, false, nullptr);
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* COUNT(expr) Expression Operator                                            */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCountFunc(sqlParser::CountFuncContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  b1 bIsDistinct = (pCtx->distinct != nullptr);
+
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pChildExpr = m_pExprStack->pPop();
+
+  QueryNode* pOpExpr = CountExpr::pCreate(false, bIsDistinct, pChildExpr);
 
   // Put the operator back onto the expression stack
   m_pExprStack->vPush(pOpExpr);

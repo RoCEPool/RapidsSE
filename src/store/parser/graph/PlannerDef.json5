@@ -276,6 +276,27 @@
                       }
                     ]}
                   ]
+                },
+// Path: /__root__/definitions/object/valueObject/booleanObject
+                {
+                  name: "booleanObject",
+                  value: "A simple object that only contains a boolean value",
+                  properties: [
+                    // Add a constraint that the value of this object must be of a boolean primitive type
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
+                        children: [
+                          {
+                            name: "valueTypeParam",
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/primitives/types/scalarType/boolean"
+                          }
+                        ]
+                      }
+                    ]}
+                  ]
                 }
               ]
             }, // EndPath: /__root__/definitions/object/valueObject
@@ -1167,18 +1188,40 @@
 // TODO Path: /__root__/definitions/object/expr/operator/function/like
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/logic
-// Path: /__root__/definitions/object/expr/operator/aggregation
+// Path: /__root__/definitions/object/expr/operator/aggregate
                     {
-                      name: "aggregation",
+                      name: "aggregate",
                       value: "An aggregation expression operator (SUM, COUNT, AVG, MIN, etc)",
+                      properties: [
+                        { name: "isDistinct", type:  "/__root__/definitions/object/valueObject/booleanObject" }
+                      ],
                       children: [
-// Path: /__root__/definitions/object/expr/operator/aggregation/count
+// Path: /__root__/definitions/object/expr/operator/aggregate/count
                         {
                           name: "count",
                           value: "COUNT() aggregation operator",
+                          properties: [
+                            { name: "isCountAll", type:  "/__root__/definitions/object/valueObject/booleanObject" },
+                            // Add a constraint that the COUNT operator must have zero or one child
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam1",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 0
+                                },
+                                {
+                                  name: "childCountParam2",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                }]
+                              }
+                            ]} // end __constraints container
+                          ]
                         },
-// TODO: Path: /__root__/definitions/object/expr/operator/aggregation/countDistinct
-// Path: /__root__/definitions/object/expr/operator/aggregation/sum
+// Path: /__root__/definitions/object/expr/operator/aggregate/sum
                         {
                           name: "sum",
                           value: "SUM() aggregation operator",
@@ -1197,7 +1240,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/aggregation/average
+// Path: /__root__/definitions/object/expr/operator/aggregate/average
                         {
                           name: "avg",
                           value: "AVG() aggregation operator",
@@ -1216,7 +1259,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/aggregation/min
+// Path: /__root__/definitions/object/expr/operator/aggregate/min
                         {
                           name: "min",
                           value: "MIN() aggregation operator",
@@ -1235,7 +1278,7 @@
                             ]} // end __constraints container
                           ]
                         },
-// Path: /__root__/definitions/object/expr/operator/aggregation/max
+// Path: /__root__/definitions/object/expr/operator/aggregate/max
                         {
                           name: "max",
                           value: "MAX() aggregation operator",
@@ -1255,7 +1298,7 @@
                           ]
                         }
                       ]
-                    }, // EndPath: /__root__/definitions/object/expr/operator/aggregation
+                    }, // EndPath: /__root__/definitions/object/expr/operator/aggregate
 // Path: /__root__/definitions/object/expr/operator/function
                     {
                       name: "function",

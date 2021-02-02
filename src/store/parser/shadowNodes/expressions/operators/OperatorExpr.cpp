@@ -11,6 +11,7 @@
 #include "mathematical/MathematicalExpr.hpp"
 #include "comparison/ComparisonExpr.hpp"
 #include "logic/LogicExpr.hpp"
+#include "aggregates/AggregateExpr.hpp"
 
 using namespace Parser;
 
@@ -36,7 +37,7 @@ void OperatorExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   if      (MathematicalExpr::bIsOfType(pNode))  { MathematicalExpr::vDescribe(pNode, sBuf); }
   else if (ComparisonExpr::bIsOfType(pNode))    { ComparisonExpr::vDescribe(pNode, sBuf);   }
   else if (LogicExpr::bIsOfType(pNode))         { LogicExpr::vDescribe(pNode, sBuf);        }
-//  else if (AggregateExpr::bIsOfType(pNode))     { AggregateExpr::vDescribe(pNode, sBuf);  }
+  else if (AggregateExpr::bIsOfType(pNode))     { AggregateExpr::vDescribe(pNode, sBuf);    }
 //  else if (FunctionExpr::bIsOfType(pNode))      { FunctionExpr::vDescribe(pNode, sBuf);   }
   else NEVER_REACH
 }

@@ -275,9 +275,9 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //    DEFN-5.3: validate that if any of the following constraints exist as children
   //              under a __constraints container, then those constraints must also have
   //              one or more child nodes (being a parameter of the constraint):
-  //                - childType (one or more permitted)
-  //                - valueType (one or more permitted)
-  //                - childCount (only one child permitted)
+  //                - childType
+  //                - valueType
+  //                - childCount
   //    DEFN-5.4: if any of the constraints specified in DEFN-5.3 exist, then validate that
   //              their parameter nodes must have non-null name, type and value fields.
   //    DEFN-5.5: If the childType constraint is used then validate that its child parameter
@@ -311,9 +311,9 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //               children under a __constraints container of that property, then those
   //               constraints must also have one or more child nodes (being a parameter of
   //               the constraint):
-  //                - childType (one or more permitted)
-  //                - valueType (one or more permitted)
-  //                - childCount (only one child permitted)
+  //                - childType
+  //                - valueType
+  //                - childCount
   //    DEFN-5.14: If an object definition has a property where the property's type field
   //               is non null, validate that if any of the constraints specified in
   //               DEFN-5.13 are specified for the property in question, then validate that
@@ -513,9 +513,9 @@ GraphNav::eWalkCtrl GraphValidator::eValidateDefinitionNode(PlanNode* pNode, s25
   //               children under a __constraints container of that property, then those
   //               constraints must also have one or more child nodes (being a parameter of
   //               the constraint):
-  //                - childType (one or more permitted)
-  //                - valueType (one or more permitted)
-  //                - childCount (only one child permitted)
+  //                - childType
+  //                - valueType
+  //                - childCount
   vDefn_5_13(pNode, sPath, iDepth, pvArg);
 
   //    DEFN-5.14: If an object definition has a property where the property's type field
@@ -655,7 +655,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //               by the constraint's parameter.
   //    PLAN-8.9:  If a node's definition contains the "childCount" constraint
   //               then validate that the number of children of the node must equal that indicated
-  //               by the constraint's parameter.
+  //               by any of the constraint's parameters.
   //    PLAN-8.10: <not used>
   //    (Validating indirect constraints):
   //    PLAN-8.11: If a node's definition has a property with a non-null type field, and that
@@ -683,7 +683,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //    PLAN-8.19: If a node's definition has a property with a non-null type field, and that
   //               property definition also has the "childCount" constraint then validate
   //               that the number of children of the property of the current node must equal
-  //               that indicated by the constraint's parameter.
+  //               that indicated by any of the constraint's parameters.
 
 
 
@@ -836,7 +836,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
 
   //    PLAN-8.9: If a node's definition contains the "childCount" constraint
   //              then validate that the number of children of the node must equal that indicated
-  //              by the constraint's parameter.
+  //              by any of the constraint's parameters.
   vPlan_8_9(pNode, sPath, iDepth, pvArg);
 
   //    PLAN-8.10: <not used>
@@ -884,7 +884,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //    PLAN-8.19: If a node's definition has a property with a non-null type field, and that
   //               property definition also has the "childCount" constraint then validate
   //               that the number of children of the property of the current node must equal
-  //               that indicated by the constraint's parameter.
+  //               that indicated by any of the constraint's parameters.
   vPlan_8_19(pNode, sPath, iDepth, pvArg);
 
 
@@ -1568,9 +1568,9 @@ void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5.3: validate that if any of the following constraints exist as children
   //           under a __constraints container, then those constraints must also have
   //           one or more child nodes (being a parameter of the constraint):
-  //             - childType (one or more permitted)
-  //             - valueType (one or more permitted)
-  //             - childCount (only one child permitted)
+  //             - childType
+  //             - valueType
+  //             - childCount
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1584,16 +1584,14 @@ void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
     PlanNode* pConstraint = pConstraintsIter->pNext();
 
     RASSERT(pConstraint->szType());
+
     if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
-        pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH))
-       ) {
+        pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH))  ||
+        pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))
+        ) {
 
       // The constraint must have at least one child
       RASSERT(pConstraint->nChildren() >= 1);
-
-    } else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))) {
-      // The constraint must have only one child
-      RASSERT(pConstraint->nChildren() == 1);
     }
   }
 
@@ -2154,9 +2152,9 @@ void GraphValidator::vDefn_5_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               children under a __constraints container of that property, then those
   //               constraints must also have one or more child nodes (being a parameter of
   //               the constraint):
-  //                - childType (one or more permitted)
-  //                - valueType (one or more permitted)
-  //                - childCount (only one child permitted)
+  //                - childType
+  //                - valueType
+  //                - childCount
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -2186,14 +2184,13 @@ void GraphValidator::vDefn_5_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
     while (pConstraintIter->bHasNext()) {
       PlanNode* pConstraint = pConstraintIter->pNext();
 
-      if ( pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
-           pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH)) ) {
+      if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDTYPE_PATH)) ||
+          pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_VALUETYPE_PATH))  ||
+          pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))
+          ) {
 
-        RASSERT(pConstraint->nChildren() > 0);
-
-      } else if (pConstraint->szType()->bEqual(const_cast<Stz*>(C_CONSTRAINTS_CHILDCOUNT_PATH))) {
-
-        RASSERT(pConstraint->nChildren() == 1);
+        // The constraint must have at least one child
+        RASSERT(pConstraint->nChildren() >= 1);
       }
     }
     delete pConstraintIter;
@@ -3372,7 +3369,7 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.9: If a node's definition contains the "childCount" constraint
   //              then validate that the number of children of the node must equal that indicated
-  //              by the constraint's parameter.
+  //              by any of the constraint's parameters.
 
   if (pNode->nChildren() == 0) {
     return;
@@ -3401,12 +3398,23 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // We have the childCount constraint. It must have only one child
   // where the child's value field contains an integer with the number
   // of children that pNode must adhere to.
-  RASSERT(pConstraint->nChildren() == 1);
+  RASSERT(pConstraint->nChildren() > 0);
 
-  PlanNode* pConstraintParam = pConstraint->pFirstChild();
-  RASSERT(pConstraintParam);
-  RASSERT(pConstraintParam->iValue() >= 0);
-  RASSERT(pNode->nChildren() == pConstraintParam->iValue());
+  b1 bGotMatch = false;
+  PlanNodeIter* pParamIter = pConstraint->pNewChildrenIter();
+  while (pParamIter->bHasNext()) {
+    PlanNode* pConstraintParam = pParamIter->pNext();
+    RASSERT(pConstraintParam);
+    RASSERT(pConstraintParam->iValue() >= 0);
+
+    if (pNode->nChildren() == pConstraintParam->iValue()) {
+      bGotMatch = true;
+      break;
+    }
+  }
+  delete pParamIter;
+
+  RASSERT(bGotMatch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3836,20 +3844,26 @@ void GraphValidator::vPlan_8_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
       continue;
     }
 
-    // Get the parameter of this constraint and extract out its value
-    PlanNode* pConstraintParam = pConstraint->pFirstChild();
-    RASSERT(pConstraintParam);
-
-    i8 iCount = pConstraintParam->iValue();
-    RASSERT(iCount >= 0);
-
-    // Now we can check if the instantiation of the property meets this constraint.
     // First get the instantiated property.
     PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
     RASSERT(pProp);
 
-    // Validate the constraint
-    RASSERT(pProp->nChildren() == iCount);
+    // Get the parameter of this constraint and extract out its value
+    b1 bGotMatch = false;
+    PlanNodeIter* pParamIter = pConstraint->pNewChildrenIter();
+    while (pParamIter->bHasNext()) {
+      PlanNode* pConstraintParam = pParamIter->pNext();
+      RASSERT(pConstraintParam);
+      RASSERT(pConstraintParam->iValue() >= 0);
+
+      if (pProp->nChildren() == pConstraintParam->iValue()) {
+        bGotMatch = true;
+        break;
+      }
+    }
+    delete pParamIter;
+
+    RASSERT(bGotMatch);
   }
 
   delete pDefnPropIter;
