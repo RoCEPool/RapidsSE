@@ -1351,7 +1351,135 @@
                     ]} // end __constraints container
                   ], // end projectedExprs properties
                   children: []
-                } // EndPath: /__root__/definitions/object/list/projectedExprs
+                }, // EndPath: /__root__/definitions/object/list/projectedExprs
+
+// Path: /__root__/definitions/object/list/catalogDefs
+                {
+                  name: "catalogDefs",
+                  value: "A list of catalog definition objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/catalogDef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/catalogDef"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/catalogDefs
+
+// Path: /__root__/definitions/object/list/schemaDefs
+                {
+                  name: "schemaDefs",
+                  value: "A list of schema definition objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/schemaDef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/schemaDef"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/schemaDefs
+
+// Path: /__root__/definitions/object/list/tableDefs
+                {
+                  name: "tableDefs",
+                  value: "A list of table definition objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/tableDef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/tableDef"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/tableDefs
+
+// Path: /__root__/definitions/object/list/columnDefs
+                {
+                  // NOTE: Not to be confused with columnRefs
+                  name: "columnDefs",
+                  value: "A list of column definition objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/columnDef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/columnDefs"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/columnDefs
+
+// Path: /__root__/definitions/object/list/indexDefs
+                {
+                  name: "indexDefs",
+                  value: "A list of index definition objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/indexDef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/indexDefs"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/indexDefs
+// Path: /__root__/definitions/object/list/columnRefs
+                {
+                  // NOTE: Not to be confused with columnDefs
+                  name: "columnRefs",
+                  value: "A list of column definition objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /definitions/object/compound/columnRef
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/expr/columnRef"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/columnRefs
+                
               ]
             }, // EndPath: /__root__/definitions/object/list
 
@@ -1396,6 +1524,131 @@
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/projectedExpr
 
+// Path: /__root__/definitions/object/compound/catalogDef
+                {
+                  name: "catalogDef",
+                  value: "Definition of a catalog that is used in the plan",
+                  properties: [
+                    {
+                      name: "catalogName",
+                      value: "The name of the catalog",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "schemas",
+                      value: "A list of schemas used in the plan that belong to this catalog",
+                      type: "/__root__/definitions/object/list/schemaDefs"
+                    }
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/catalogDef
+
+// Path: /__root__/definitions/object/compound/schemaDef
+                {
+                  name: "schemaDef",
+                  value: "Definition of a schema that is used in the plan",
+                  properties: [
+                    {
+                      name: "catalogName",
+                      value: "The name of the catalog",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "schemaName",
+                      value: "The name of this schema",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "tables",
+                      value: "A list of tables used in the plan that belong to this schema",
+                      type: "/__root__/definitions/object/list/tableDefs"
+                    }
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/schemaDef
+
+// Path: /__root__/definitions/object/compound/tableDef
+                {
+                  name: "tableDef",
+                  value: "Definition of a table that is used in the plan",
+                  properties: [
+                    {
+                      name: "catalogName",
+                      value: "The name of the catalog",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "schemaName",
+                      value: "The name of the schema",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "tableName",
+                      value: "The name of this table",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "columns",
+                      value: "A list of columns used in the plan that belong to this table",
+                      type: "/__root__/definitions/object/list/columnDefs"
+                    },
+                    {
+                      name: "indexes",
+                      value: "A list of indexes that belong to this table",
+                      type: "/__root__/definitions/object/list/indexDefs"
+                    }
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/tableDef
+
+// Path: /__root__/definitions/object/compound/columnDef
+                {
+                  name: "columnDef",
+                  value: "Definition of a column of a table that is used in the plan",
+                  properties: [
+                    {
+                      name: "columnName",
+                      value: "The name of the column",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "columnType",
+                      value: "The data type of the column",
+                      type: "/__root__/definitions/types/sqlType"
+                    },
+                    {
+                      name: "notNull",
+                      value: "true if the column cannot contain a NULL value",
+                      type: "/__root__/definitions/object/valueObject/booleanObject"
+                    },
+                    // TODO: collation?
+                    // TODO: primary key?
+                    // TODO: unique key?
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/columnDef
+
+// Path: /__root__/definitions/object/compound/indexDef
+                {
+                  name: "indexDef",
+                  value: "Definition of a index of a table that is used in the plan",
+                  properties: [
+                    {
+                      name: "indexName",
+                      value: "The name of the index",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "columns",
+                      value: "The names of the columns that make up the index key",
+                      type: "/__root__/definitions/object/list/columnRefs"
+                    },
+                    {
+                      name: "unique",
+                      value: "true if the index cannot contain any duplicate values in the index key",
+                      type: "/__root__/definitions/object/valueObject/booleanObject"
+                    },
+                    // TODO: method?
+                    // TODO: is primary key?
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/columnDef
+
               ]
             }, // EndPath: /__root__/definitions/object/compound
 
@@ -1414,11 +1667,160 @@
                   ]}
                 ]}
               ]
-            } // EndPath: /__root__/definitions/object/planNode
+            }, // EndPath: /__root__/definitions/object/planNode
+// Path: /__root__/definitions/object/metadataNode
+            {
+              name: "metadataNode",
+              value: "A definition for the node that occurs at /__root__/metadata.",
+              properties: [
+                {
+                  name: "catalogs",
+                  value: "A list of catalogs used by the current plan",
+                  type: "/__root__/definitions/object/list/catalogDefs"
+                },
+                // TODO: Add session information into the plan. e.g. current username, timezone, CURRENT_TIMESTAMP, etc
+//                {
+//                  name: "session",
+//                  value: "Metadata about the session running the query",
+//                  type: "/__root__/definitions/object/compound/metaSession"
+//                }
+              ]
+            }, // EndPath: /__root__/definitions/object/metadataNode
+
           ]
         }, // EndPath: /__root__/definitions/object
 
-// TODO Path: /__root__/definitions/enums
+// Path: /__root__/definitions/types
+        {
+          name: "types",
+          value: "a container of different types used in the system",
+          children: [
+
+// Path: /__root__/definitions/types/sqlType
+            {
+              name: "sqlType",
+              value: "Covers the main SQL data types used in planning queries",
+              children: [
+// Path: /__root__/definitions/types/sqlType/boolean
+                {
+                  name: "boolean",
+                  value: "an SQL true/false value"
+                },
+// Path: /__root__/definitions/types/sqlType/integer
+                {
+                  name: "integer",
+                  value: "an SQL exact-numeric integer",
+                },
+// Path: /__root__/definitions/types/sqlType/float
+                {
+                  name: "float",
+                  value: "an SQL approximate-numeric floating point value",
+                },
+// Path: /__root__/definitions/types/sqlType/decimal
+                {
+                  name: "decimal",
+                  value: "an SQL exact-numeric decimal value",
+                  properties: [
+                    {
+                      name: "precision",
+                      value: "An optional property that is the number of digits in the value",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    },
+                    {
+                      name: "scale",
+                      value: "An optional property that is the number of digits to the right of the decimal point in the value",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
+// Path: /__root__/definitions/types/sqlType/varchar
+                {
+                  name: "varchar",
+                  value: "an SQL exact-numeric decimal value",
+                  properties: [
+                    {
+                      name: "length",
+                      value: "An optional property that is the max number of bytes in the value",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
+// Path: /__root__/definitions/types/sqlType/date
+                {
+                  name: "date",
+                  value: "a SQL date value with optional timezone information",
+                  properties: [
+                    {
+                      name: "tz",
+                      value: "Optional number of minutes offset from GMT. East of Greenwich is positive, west is negative.",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
+// Path: /__root__/definitions/types/sqlType/time
+                {
+                  name: "time",
+                  value: "a SQL time value with optional timezone information",
+                  properties: [
+                    {
+                      name: "tz",
+                      value: "Optional number of minutes offset from GMT. East of Greenwich is positive, west is negative.",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
+// Path: /__root__/definitions/types/sqlType/timestamp
+                {
+                  name: "timestamp",
+                  value: "a SQL date value with optional timezone information",
+                  properties: [
+                    {
+                      name: "tz",
+                      value: "Optional number of minutes offset from GMT. East of Greenwich is positive, west is negative.",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
+// Path: /__root__/definitions/types/sqlType/interval
+                {
+                  // TODO: Do we need to separate into year-month and day-time intervals, or keep as one???
+                  name: "interval",
+                  value: "a range between two timestamps"
+                }
+              ]
+            } // EndPath: /__root__/definitions/types/sqlType
+          ]
+        }, // EndPath: /__root__/definitions/types
       ]
     }, // EndPath: /__root__/definitions
 
@@ -1436,7 +1838,7 @@
 // Path: /__root__/metadata
     {
       name: "metadata",
-      type: "/__root__/primitives/trunk",
+      type: "/__root__/definitions/object/metadataNode",
       children: [
         // Note: Children will get populated when a query is being plannned.
       ]
