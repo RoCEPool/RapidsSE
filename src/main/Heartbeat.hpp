@@ -34,6 +34,7 @@ public:
   i8   m_iSeqNo;             //   8   52
   i8   m_iSincePosixEpoch;   //   8   60
   char m_acBuildGitHash[32]; //  32   92
+  i8   m_iPid;               //   8
 
   // data (STORE, BASE, ...)
 

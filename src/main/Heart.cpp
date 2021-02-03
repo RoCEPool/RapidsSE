@@ -109,10 +109,9 @@ void vHeartInit(void) {
     }
 
 
-    if (iCnt > 2) {
+    if (iCnt >8) {
       if (strcmp(xHeartbeat.m_acNodeName, "NODE1") == 0) {
         printf("Process NODE1 got killed!!!!!!!\n");
-        //sleep(3);
         Process::vExitSuccess();
         //printf("Supervisor got killed, no more sending, but monitor continues, works fine.\n");
         //AM::vSupervisorHalt(true);

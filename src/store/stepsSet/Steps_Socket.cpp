@@ -987,16 +987,6 @@ void Step::vSocketSendObject(void)
                          pSocket);
     
     //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
-    char* pszThisNodeName = AM::pGrid()->pThisNode()->szNodeNm()->azChar();
-    if (( m_pJob->pLogicUnit_job() )->m_pSendNode) {
-
-      printf("Node:%s Send to Node %s \n", pszThisNodeName, (m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm()->azChar());
-      if (strcmp((m_pJob->pLogicUnit_job())->m_pSendNode->szNodeNm()->azChar(),"NODE1")==0) {
-        int iStat = 99;
-      }
-    }
-    else
-      printf("Node:%s Try to Send to unknown Node, has no pSendNode \n", pszThisNodeName);
   }
 
   RASSERT(_bIsValidJob(eClass) ||

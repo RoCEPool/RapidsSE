@@ -402,9 +402,6 @@ void   Node::vSetPrevUserUsec(i8 iUsec)
 void   Node::vSetStartCmd(Stz* pCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  //strncpy(m_sStartCmd, pCmd->azChar(), sizeof(m_sStartCmd)-1);
-  //m_sStartCmd[sizeof(m_sStartCmd)-1] = 0;
-
   m_sStartCmd.vCopy(pCmd);
 }
 
@@ -415,6 +412,15 @@ Stz*   Node::szGetStartCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return (Stz*)m_sStartCmd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get saved pid from heartbeat                                               */
+/*----------------------------------------------------------------------------*/
+i8   Node::iGetPid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return (m_xHeartbeat.m_iPid);
 }
 
 /*----------------------------------------------------------------------------*/

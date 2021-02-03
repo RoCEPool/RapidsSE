@@ -61,38 +61,81 @@ void Step::vMonitorUpdateNodeStatus(void) {
                pNode->xGetHeartbeat().m_acNodeName,
                iLastUpdate);
 
-        // a longer period, this node has not reportedor has been mark as down from somewhere else
-        if (iLastUpdate > 60 || pNode->iGetNodeStatus() == 99) {
-          // One way for sure is try to socket-connect to this node, if failed then node-is-down message
-          TestConnection TestSocket(pNode->szIPAddr(), pNode->iPortNo());
-          if (!TestSocket.bTryConnect()) {
-            fprintf(stderr, "Node:%s reports Node %s is DOWN\n", gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), pNode->xGetHeartbeat().m_acNodeName);
-            pNode->vSetNodeStatus(99); // DOWN
+        // One way for sure is try to socket-connect to this node, if failed then node-is-down message
+        TestConnection TestSocket(pNode->szIPAddr(), pNode->iPortNo());
+        if (!TestSocket.bTryConnect()) {
+          vTrace("Node:%s reports Node %s is DOWN\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
+                 pNode->xGetHeartbeat().m_acNodeName);
+          pNode->vSetNodeStatus(99); // DOWN
 
+          // This node is down, better to remove its sockets
+          SysCall sysCall;
+
+          Socket *pSock = pNode->pRecvSocket();
+          if (pSock) {
+            pSock->bClose(sysCall);
+            delete pSock;
+            pNode->vRecvSocket((Socket *) nullptr);
+          }
+
+
+          pSock = pNode->pSendSocket();
+          if (pSock) {
+            pSock->bClose(sysCall);
+            delete pSock;
+            pNode->vSendSocket((Socket *) nullptr);
+          }
+
+          AM::pGrid()->vDecConnectedNodes();
+
+          /*
+          pSock = AM::pGrid()->pThisNode()->pSendSocket();
+          if (pSock) {
+            pSock->bClose(sysCall);
+            delete pSock;
+            AM::pGrid()->pThisNode()->vSendSocket((Socket*) nullptr);
+          }*/
+
+          // a longer period, this node has not reported and has been marked as "down"
+          // try to restart
+          if (iLastUpdate > 40 && pNode->iGetNodeStatus() == 99) {
             // Try to restart, if this node is NODE0
-            if (gxCmdLineArgs.m_xSysArgs.m_sNodeName.bSame((Stz*)"NODE0")) {
+            if (gxCmdLineArgs.m_xSysArgs.m_sNodeName.bSame((Stz *) "NODE0")) {
               Stz *pCmd = pNode->szGetStartCmd();
-              if (pCmd) printf("TRY TO START: %s\n", pCmd->azChar());
+              if (pCmd) {
+                vTrace("NODE: %s TRYING TO RESTART NODE: %s\n %s\n"_Stz,
+                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), pNode->xGetHeartbeat().m_acNodeName,
+                       pCmd->azChar());
+              }
+
+              // Restart the node
               i8 iResult = pCmd ? system(pCmd->azChar()) : -1;
 
               if (-1 == iResult || 127 == iResult) {
-                fprintf(stderr, "FAILED TO RESTART NODE %s\n", pNode->xGetHeartbeat().m_acNodeName);
+                vTrace("FAILED TO RESTART NODE %s\n"_Stz, pNode->xGetHeartbeat().m_acNodeName);
+              } else {
+                AM::pGrid()->vIncConnectedNodes();
               }
+
             }
+
           }
+
         }
+
 
       } else {
         pNode->vSetNodeStatus(0); // OK
       }
 
       i8 iDelta = pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec;
+      /*
       vTrace("Node:%s  ** Step::vMonitorUpdateNodeStatus ** Node %s saved:%lld Now:%lld Delta:%lld\n"_Stz,
              gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
              pNode->xGetHeartbeat().m_acNodeName,
              pNode->iGetPrevUserUsec(),
              pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec,
-             pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec);
+             pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec);*/
 
     }
 

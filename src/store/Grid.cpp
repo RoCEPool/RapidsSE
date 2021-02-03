@@ -275,6 +275,16 @@ void Grid::vIncConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decrement number of connected nodes                                        */
+/*----------------------------------------------------------------------------*/
+void Grid::vDecConnectedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_nConnectedNodes--;
+}
+
+/*----------------------------------------------------------------------------*/
 /* increment number of defined nodes                                          */
 /*----------------------------------------------------------------------------*/
 void Grid::vIncDefinedNodes(void)

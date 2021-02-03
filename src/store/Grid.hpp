@@ -51,6 +51,7 @@ namespace STORE
     void vIncBootNodes(void);
     void vIncDefinedNodes(void);
     void vIncConnectedNodes(void);
+    void vDecConnectedNodes(void);
     i8   nNodes(void);
     void vPutNode(Node* pNode);
     void vRemoveNode(Node* pNode);

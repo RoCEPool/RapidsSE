@@ -308,7 +308,7 @@ SizeHeap gxaSizeHeap[]
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
   { sizeof(NextGid),            HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 }, // CN_NMLSTR
-  { sizeof(Node),               HT_T_TINY    ,0 }, // CN_NODE
+  { sizeof(Node),               HT_T_MEDIUM  ,0 }, // CN_NODE
   { sizeof(Node_I),             HT_T_TINY    ,0 }, // CN_NODE_I
   { sizeof(Now),                HT_T_TINY    ,0 }, // CN_NOW
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
